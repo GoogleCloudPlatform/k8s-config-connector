@@ -1,0 +1,191 @@
+# Phase: CREATE
+POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "avatarUri": "https://storage.cloud.google.com/dialogflow-test-host-image/cloud-logo.png",
+  "defaultLanguageCode": "en",
+  "description": "A test agent for Dialogflow CX",
+  "displayName": "agent-max-${uniqueId}",
+  "enableStackdriverLogging": true,
+  "supportedLanguageCodes": [
+    "fr",
+    "de"
+  ],
+  "timeZone": "America/New_York"
+}
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {
+      "enableStackdriverLogging": true
+    }
+  },
+  "avatarUri": "https://storage.cloud.google.com/dialogflow-test-host-image/cloud-logo.png",
+  "defaultLanguageCode": "en",
+  "description": "A test agent for Dialogflow CX",
+  "displayName": "agent-max-${uniqueId}",
+  "enableStackdriverLogging": true,
+  "name": "projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc",
+  "startFlow": "projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc/flows/00000000-0000-0000-0000-000000000000",
+  "supportedLanguageCodes": [
+    "fr",
+    "de"
+  ],
+  "timeZone": "America/New_York"
+}
+
+---
+
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {
+      "enableStackdriverLogging": true
+    }
+  },
+  "avatarUri": "https://storage.cloud.google.com/dialogflow-test-host-image/cloud-logo.png",
+  "defaultLanguageCode": "en",
+  "description": "A test agent for Dialogflow CX",
+  "displayName": "agent-max-${uniqueId}",
+  "enableStackdriverLogging": true,
+  "name": "projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc",
+  "startFlow": "projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc/flows/00000000-0000-0000-0000-000000000000",
+  "supportedLanguageCodes": [
+    "fr",
+    "de"
+  ],
+  "timeZone": "America/New_York"
+}
+
+---
+
+# Phase: UPDATE
+PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc?alt=json&updateMask=displayName%2CsupportedLanguageCodes%2CtimeZone%2Cdescription%2CspeechToTextSettings%2CenableSpellCorrection
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "avatarUri": "https://storage.cloud.google.com/dialogflow-test-host-image/cloud-logo.png",
+  "description": "Updated test agent for Dialogflow CX",
+  "displayName": "agent-max-${uniqueId}-updated",
+  "enableSpellCorrection": true,
+  "enableStackdriverLogging": true,
+  "speechToTextSettings": {
+    "enableSpeechAdaptation": true
+  },
+  "supportedLanguageCodes": [
+    "es"
+  ],
+  "timeZone": "America/Los_Angeles"
+}
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {
+      "enableStackdriverLogging": true
+    }
+  },
+  "avatarUri": "https://storage.cloud.google.com/dialogflow-test-host-image/cloud-logo.png",
+  "defaultLanguageCode": "en",
+  "description": "Updated test agent for Dialogflow CX",
+  "displayName": "agent-max-${uniqueId}-updated",
+  "enableSpellCorrection": true,
+  "enableStackdriverLogging": true,
+  "name": "projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc",
+  "speechToTextSettings": {
+    "enableSpeechAdaptation": true
+  },
+  "startFlow": "projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc/flows/00000000-0000-0000-0000-000000000000",
+  "supportedLanguageCodes": [
+    "es"
+  ],
+  "timeZone": "America/Los_Angeles"
+}
+
+---
+
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {
+      "enableStackdriverLogging": true
+    }
+  },
+  "avatarUri": "https://storage.cloud.google.com/dialogflow-test-host-image/cloud-logo.png",
+  "defaultLanguageCode": "en",
+  "description": "Updated test agent for Dialogflow CX",
+  "displayName": "agent-max-${uniqueId}-updated",
+  "enableSpellCorrection": true,
+  "enableStackdriverLogging": true,
+  "name": "projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc",
+  "speechToTextSettings": {
+    "enableSpeechAdaptation": true
+  },
+  "startFlow": "projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc/flows/00000000-0000-0000-0000-000000000000",
+  "supportedLanguageCodes": [
+    "es"
+  ],
+  "timeZone": "America/Los_Angeles"
+}
+
+---
+
+# Phase: DELETE
+DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

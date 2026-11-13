@@ -1,0 +1,135 @@
+# Phase: CREATE
+POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "timeZone": "America/New_York"
+}
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75",
+  "startFlow": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75",
+  "startFlow": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+# Phase: UPDATE
+PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?alt=json&updateMask=timeZone%2Cdescription
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "description": "Updated minimal agent description",
+  "displayName": "agent-${uniqueId}",
+  "timeZone": "America/Chicago"
+}
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "description": "Updated minimal agent description",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75",
+  "startFlow": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/Chicago"
+}
+
+---
+
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "description": "Updated minimal agent description",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75",
+  "startFlow": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/Chicago"
+}
+
+---
+
+# Phase: DELETE
+DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
