@@ -299,6 +299,8 @@ func AIPlatformExecutionObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	}
 	out := &krm.AIPlatformExecutionObservedState{}
 	// MISSING: Name
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
@@ -310,6 +312,8 @@ func AIPlatformExecutionObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	}
 	out := &pb.Execution{}
 	// MISSING: Name
+	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
@@ -323,8 +327,7 @@ func AIPlatformExecutionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Executi
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.SchemaTitle = direct.LazyPtr(in.GetSchemaTitle())
 	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
 	if v := direct.Struct_FromProto(mapCtx, in.GetMetadata()); v != nil {
@@ -342,8 +345,7 @@ func AIPlatformExecutionSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatfo
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.State = direct.Enum_ToProto[pb.Execution_State](mapCtx, in.State)
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.SchemaTitle = direct.ValueOf(in.SchemaTitle)
 	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
 	out.Metadata = direct.Struct_ToProto(mapCtx, &in.Metadata)

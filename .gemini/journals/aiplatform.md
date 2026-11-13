@@ -203,3 +203,21 @@
   4. **Exceptions & Golden Updates**: Ran `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...` to record untriaged entries in `spec_dislike_etag.txt` and `alpha-missingfields.txt`. Reverted spurious formatting diff in `tests/apichecks/testdata/exceptions/multi_version_crd_diff/IAPSettings.diff`.
 - **Impact**: Clean mechanical prepopulation ready for Step 1b triage.
 
+### [2026-11-12] Finalizing Direct KRM Types, ParentRef, and Judgement Queue for AIPlatformExecution
+- **Context**: Greenfield Step 1b types-judgement for `AIPlatformExecution` (Issue #15521).
+- **Implementation & Observations**:
+  1. **Single Parent Resolution**: `AIPlatformExecution` is a child resource under `VertexAIMetadataStore` (`projects/{project}/locations/{location}/metadataStores/{metadata_store}`). Reused `MetadataStoreRef` from `apis/vertexai/v1beta1`, implementing `refs.Ref` interface (`GetGVK`, `GetNamespacedName`, `GetExternal`, `SetExternal`, `ValidateExternal`, `Normalize`) on `MetadataStoreRef` in both `v1alpha1` and `v1beta1` while preserving `refsv1beta1.ExternalNormalizer` for backward compatibility. Replaced `projectRef` and `location` on `AIPlatformExecutionSpec` with required, immutable `parentRef *vertexaiv1beta1.MetadataStoreRef`.
+  2. **Identity & Client-Specified ID**: In `google.cloud.aiplatform.v1.CreateExecutionRequest`, field `execution_id` allows client-specified IDs (or service-generated UUID if omitted). `IdentityV2` and `spec.resourceID` are kept as accepted.
+  3. **KRM Conventions & Field Sanitization**:
+     - Removed `Etag` from `AIPlatformExecutionSpec` and moved it to `AIPlatformExecutionObservedState`.
+     - Removed top-level `Labels` from `AIPlatformExecutionSpec` as top-level labels are reconciled via `metadata.labels`.
+     - Retained `State` in `AIPlatformExecutionSpec` as client-managed desired state per proto documentation ("This property is managed by clients and the system does not prescribe or check the validity of state transitions").
+     - Updated documentation link to valid `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.metadataStores.executions` and removed `+kcc:guess` annotation.
+  4. **Judgement Queue & Golden Exceptions**:
+     - Resolved all 8 entries for `AIPlatformExecution` in `apis/aiplatform/judgement_queue.yaml`.
+     - Regenerated CRD and types via `./apis/aiplatform/generate.sh`.
+     - Re-recorded `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` and `spec_dislike_etag.txt` (which removed `AIPlatformExecution` from `spec_dislike_etag.txt`).
+     - Verified all apichecks, CAI template, and package tests with clean passes.
+- **Impact**: Cleanly finalized types, identity, and CRD for `AIPlatformExecution`.
+
+

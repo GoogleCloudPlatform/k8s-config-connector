@@ -15,13 +15,12 @@
 // API sources for AIPlatformExecution, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/e7513c828b8db536fa12fc5493d541f323aedf90/google/cloud/aiplatform/v1/execution.proto
 // +kcc:source:service-docs=https://cloud.google.com/vertex-ai/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.metadataStores.executions
+// +kcc:source:resource-docs=https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.metadataStores.executions
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -33,14 +32,14 @@ var AIPlatformExecutionGVK = GroupVersion.WithKind("AIPlatformExecution")
 // +kcc:spec:proto=google.cloud.aiplatform.v1.Execution
 // +kcc:required-from-proto
 type AIPlatformExecutionSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// The VertexAIMetadataStore this AIPlatformExecution is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *vertexaiv1beta1.MetadataStoreRef `json:"parentRef"`
 
 	// The AIPlatformExecution name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// User provided display name of the Execution.
 	//  May be up to 128 Unicode characters.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Execution.display_name
@@ -52,21 +51,6 @@ type AIPlatformExecutionSpec struct {
 	//  or check the validity of state transitions.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Execution.state
 	State *string `json:"state,omitempty"`
-
-	// An eTag used to perform consistent read-modify-write updates. If not set, a
-	//  blind "overwrite" update happens.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Execution.etag
-	Etag *string `json:"etag,omitempty"`
-
-	// The labels with user-defined metadata to organize your Executions.
-	//
-	//  Label keys and values can be no longer than 64 characters
-	//  (Unicode codepoints), can only contain lowercase letters, numeric
-	//  characters, underscores and dashes. International characters are allowed.
-	//  No more than 64 user labels can be associated with one Execution (System
-	//  labels are excluded).
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Execution.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
 	// The title of the schema describing the metadata.
 	//
@@ -121,6 +105,10 @@ type AIPlatformExecutionObservedState struct {
 	// Output only. Timestamp when this Execution was last updated.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Execution.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// An eTag used to perform consistent read-modify-write updates.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Execution.etag
+	Etag *string `json:"etag,omitempty"`
 }
 
 // +genclient

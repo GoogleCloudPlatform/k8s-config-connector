@@ -509,45 +509,61 @@ entries:
     group: aiplatform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged all findings; modelled parentRef as *vertexaiv1beta1.MetadataStoreRef, moved etag to observedState, removed top-level labels, verified client-managed state, and fixed documentation link.
   - kind: AIPlatformExecution
     group: aiplatform.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/metadataStores/{metadata_store}/executions/{execution}" contains ancestor segment(s) metadataStores/{metadata_store} with no matching reference or field on AIPlatformExecutionSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*vertexaiv1beta1.MetadataStoreRef) per the single-parent rule; removed projectRef and location.
   - kind: AIPlatformExecution
     group: aiplatform.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
-    status: open
+    status: resolved
+    resolution: accepted
+    note: CreateExecutionRequest has execution_id allowing client-specified ID, so IdentityV2 is appropriate.
   - kind: AIPlatformExecution
     group: aiplatform.cnrm.cloud.google.com
     reason: parent-ref-not-modelled
     detail: the parent is projects/{project}/locations/{location}/metadataStores/{metadata_store}, and no MetadataStoreRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: reused existing MetadataStoreRef from vertexai v1beta1 and modelled spec.parentRef (*vertexaiv1beta1.MetadataStoreRef) per the single-parent rule; removed projectRef and location.
   - kind: AIPlatformExecution
     group: aiplatform.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: 'none of these loaded as a page ending in /v1/projects.locations.metadataStores.executions: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.metadataStores.executions, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.metadataStores.executions'
-    status: open
+    status: resolved
+    resolution: edited
+    note: updated resource doc URL to valid cloud.google.com page and removed guess annotation.
   - kind: AIPlatformExecution
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.etag
     reason: etag-in-spec
     detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
-    status: open
+    status: resolved
+    resolution: edited
+    note: removed from spec and moved to observedState.
   - kind: AIPlatformExecution
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/metadataStores/{metadata_store}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*vertexaiv1beta1.MetadataStoreRef); removed projectRef and location.
   - kind: AIPlatformExecution
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.state
     reason: possible-status-field-in-spec
     detail: state was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState
-    status: open
+    status: resolved
+    resolution: accepted
+    note: state is client-managed and user-configurable per proto documentation.
   - kind: AIPlatformFeatureView
     group: aiplatform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
