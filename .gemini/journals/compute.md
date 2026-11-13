@@ -141,3 +141,14 @@
   5. **Custom Mappers**: Implemented `ComputeVMExtensionPolicySpec_v1alpha1_FromProto` and `ComputeVMExtensionPolicySpec_v1alpha1_ToProto` in `pkg/controller/direct/compute/computevmextensionpolicy_mapper.go` so `generate-mapper` avoids attempting to map the moved output-only fields to Spec.
   6. **Testing**: Added unit tests in `computevmextensionpolicy_identity_test.go` covering `FromExternal`, `ParentString`, `GetIdentity` (including status drift detection), and `ComputeVMExtensionPolicyRef.ValidateExternal`/`Normalize`. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` for the removed Spec fields.
 
+### [2026-11-13] Greenfield Prepopulate of ComputeNotificationEndpoint
+- **Context**: Prepopulating direct KRM types, identity, reference, and `judgement_queue.yaml` for Greenfield resource `ComputeNotificationEndpoint` under `apis/compute/v1alpha1/` (issue #15537).
+- **Implementation**:
+  1. Configured dedicated `generate-types` and `generate-identity` commands for `ComputeNotificationEndpoint:NotificationEndpoint` in `apis/compute/generate.sh` using `--prepopulate-resource` and `--include-skipped-output`.
+  2. Executed `./apis/compute/generate.sh`, which automatically generated `computenotificationendpoint_types.go`, `computenotificationendpoint_identity.generated.go`, `computenotificationendpoint_reference.generated.go`, `computenotificationendpoint_identity_generated_test.go`, and CRD manifests.
+  3. Added `ComputeNotificationEndpoint` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` with entries for `computenotificationendpoints.compute.cnrm.cloud.google.com`.
+  5. Kept all entries in `apis/compute/judgement_queue.yaml` with `status: open` for Step 1b triage.
+- **Impact**: Prepopulation completed mechanically with all queue entries left open for Step 1b triage. Generation is idempotent and all unit tests and API checks pass cleanly.
+
+

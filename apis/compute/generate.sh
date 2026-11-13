@@ -67,6 +67,18 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource ComputeVMExtensionPolicy:VmExtensionPolicy \
   --pattern ComputeVMExtensionPolicy=projects/{project}/zones/{zone}/vmExtensionPolicies/{vmextensionpolicy}
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeNotificationEndpoint:NotificationEndpoint \
+  --include-skipped-output \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeNotificationEndpoint:NotificationEndpoint
+
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.compute.v1 \
