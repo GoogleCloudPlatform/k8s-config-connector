@@ -32,6 +32,10 @@ var (
 	_ refsv1beta1.Ref                = &MetadataStoreRef{}
 )
 
+func init() {
+	refsv1beta1.Register(&MetadataStoreRef{}, &VertexAIMetadataStore{})
+}
+
 // MetadataStoreRef is a reference to a VertexAIMetadataStore.
 type MetadataStoreRef struct {
 	// A reference to an externally managed VertexAIMetadataStore resource.
@@ -43,10 +47,6 @@ type MetadataStoreRef struct {
 
 	// The namespace of a VertexAIMetadataStore resource.
 	Namespace string `json:"namespace,omitempty"`
-}
-
-func init() {
-	refsv1beta1.Register(&MetadataStoreRef{}, &VertexAIMetadataStore{})
 }
 
 func (r *MetadataStoreRef) GetGVK() schema.GroupVersionKind {

@@ -63,6 +63,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource AIPlatformArtifact:Artifact \
   --resource AIPlatformCachedContent:CachedContent \
   --resource AIPlatformContext:Context \
+  --resource AIPlatformExecution:Execution \
   --resource AIPlatformFeatureView:FeatureView \
   --resource AIPlatformHyperparameterTuningJob:HyperparameterTuningJob \
   --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate \
@@ -81,6 +82,7 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource AIPlatformArtifact:Artifact \
   --resource AIPlatformCachedContent:CachedContent \
   --resource AIPlatformContext:Context \
+  --resource AIPlatformExecution:Execution \
   --resource AIPlatformFeatureView:FeatureView \
   --resource AIPlatformHyperparameterTuningJob:HyperparameterTuningJob \
   --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate \

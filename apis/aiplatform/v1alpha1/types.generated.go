@@ -41,6 +41,7 @@
 // resource: AIPlatformRAGCorpus:RagCorpus
 // resource: AIPlatformArtifact:Artifact
 // resource: AIPlatformContext:Context
+// resource: AIPlatformExecution:Execution
 
 package v1alpha1
 
