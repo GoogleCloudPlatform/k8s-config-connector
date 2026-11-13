@@ -262,7 +262,6 @@ BLOCKED_KINDS=(
     "NetworkConnectivityPolicyBasedRoute"
     "NetworkConnectivityServiceConnectionToken"
     "NetworkManagementVpcFlowLogsConfig"
-    "NetworkSecurityBackendAuthenticationConfig"
     "NetworkSecurityGatewaySecurityPolicy"
     "NetworkSecurityInterceptDeployment"
     "NetworkSecurityInterceptDeploymentGroup"
