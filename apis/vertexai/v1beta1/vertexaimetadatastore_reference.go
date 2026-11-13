@@ -34,7 +34,7 @@ var (
 )
 
 func init() {
-	refs.Register(&MetadataStoreRef{}, nil)
+	refs.Register(&MetadataStoreRef{}, &VertexAIMetadataStore{})
 }
 
 // MetadataStoreRef is a reference to a VertexAIMetadataStore.
