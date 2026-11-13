@@ -117,6 +117,7 @@ BLOCKED_KINDS=(
     "ArtifactRegistryVPCSCConfig"
     "AutoMLDataset"
     "BackupdrBackup"
+    "BackupDRRestoreVerificationPlan"
     "BeyondCorpClientConnectorService"
     "BigLakeCatalog"
     "BigLakeLock"
