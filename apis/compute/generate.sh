@@ -35,6 +35,13 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource ComputeCrossSiteNetwork:CrossSiteNetwork \
+  --include-skipped-output
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeNetworkEdgeSecurityService:NetworkEdgeSecurityService \
   --resource ComputeNetworkAttachment:NetworkAttachment \
   --resource ComputeInterconnect:Interconnect \
@@ -59,6 +66,12 @@ ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeHealthCheckService:HealthCheckService
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeCrossSiteNetwork:CrossSiteNetwork \
+  --pattern ComputeCrossSiteNetwork="projects/{project}/global/crossSiteNetworks/{crossSiteNetwork}"
 
 rm -f ${REPO_ROOT}/apis/compute/v1alpha1/computeregionautoscaler_types.go
 
