@@ -15,13 +15,11 @@
 // API sources for BackupDRRestoreVerificationPlan, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/backupdr/v1/restore_verification_plan.proto
 // +kcc:source:service-docs=https://cloud.google.com/backup-disaster-recovery
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/backup-disaster-recovery/docs/reference/rest/v1/projects.locations.restoreVerificationPlans
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,11 +30,8 @@ var BackupDRRestoreVerificationPlanGVK = GroupVersion.WithKind("BackupDRRestoreV
 // +kcc:spec:proto=google.cloud.backupdr.v1.RestoreVerificationPlan
 // +kcc:required-from-proto
 type BackupDRRestoreVerificationPlanSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// Required. Defines the parent path of the resource.
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The BackupDRRestoreVerificationPlan name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -49,10 +44,6 @@ type BackupDRRestoreVerificationPlanSpec struct {
 	//  after." The description must be at most 2048 characters.
 	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.description
 	Description *string `json:"description,omitempty"`
-
-	// Optional. User-defined labels.
-	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
 	// Required. Describes the schedule on which the restore verification will be
 	//  executed.

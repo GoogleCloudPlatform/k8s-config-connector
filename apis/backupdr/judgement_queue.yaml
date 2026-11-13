@@ -25,25 +25,35 @@ entries:
     group: backupdr.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged all findings; replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef, removed top-level labels from Spec in favor of metadata, confirmed client-specified resource ID, verified CAI URL format, and resolved docs link
   - kind: BackupDRRestoreVerificationPlan
     group: backupdr.cnrm.cloud.google.com
     reason: identity-not-in-cai
     detail: template "//backupdr.googleapis.com/projects/{project}/locations/{location}/restoreVerificationPlans/{restoreVerificationPlan}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
-    status: open
+    status: resolved
+    resolution: accepted
+    note: verified template against proto google.api.resource pattern
   - kind: BackupDRRestoreVerificationPlan
     group: backupdr.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
-    status: open
+    status: resolved
+    resolution: accepted
+    note: 'client-specified: CreateRestoreVerificationPlanRequest defines required restore_verification_plan_id'
   - kind: BackupDRRestoreVerificationPlan
     group: backupdr.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: 'none of these loaded as a page ending in /v1/projects.locations.restoreVerificationPlans: https://docs.cloud.google.com/backup-disaster-recovery/docs/reference/rest/v1/projects.locations.restoreVerificationPlans'
-    status: open
+    status: resolved
+    resolution: edited
+    note: removed unverified resource-docs URL as public page does not exist yet; removed guess marker
   - kind: BackupDRRestoreVerificationPlan
     group: backupdr.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef

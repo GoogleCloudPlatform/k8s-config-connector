@@ -1,3 +1,15 @@
+### [2026-11-13] Greenfield Step 1b: Triage judgement queue and finalize direct KRM types and identity for BackupDRRestoreVerificationPlan
+- **Context**: Triaged `apis/backupdr/judgement_queue.yaml` and finalized KRM types and identity for `BackupDRRestoreVerificationPlan` (Issue #15568).
+- **Details**:
+  1. Inlined `*parent.ProjectAndLocationRef` in `BackupDRRestoreVerificationPlanSpec`, replacing `ProjectRef` and `Location`.
+  2. Removed `Labels map[string]string` from `Spec` in favor of top-level KRM `metadata.labels`.
+  3. Confirmed resource ID is client-specified via `restore_verification_plan_id` in `CreateRestoreVerificationPlanRequest`.
+  4. Verified CAI URL template `//backupdr.googleapis.com/projects/{project}/locations/{location}/restoreVerificationPlans/{restoreVerificationPlan}` matching proto resource definition.
+  5. Removed unverified REST documentation URL (`+kcc:guess=source-link reason=verify-resource-docs-link` and `+kcc:source:resource-docs=...`) as public documentation page does not exist yet.
+  6. Resolved all entries in `apis/backupdr/judgement_queue.yaml`.
+  7. Ran `./apis/backupdr/generate.sh` to update `zz_generated.deepcopy.go` and CRD definitions, and updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+- **Impact**: Finalized direct KRM types, identity, and CRDs for `BackupDRRestoreVerificationPlan`.
+
 ### [2026-11-13] Greenfield Step 1a: Prepopulate direct KRM types, identity, and judgement queue for BackupDRRestoreVerificationPlan
 - **Context**: Prepopulating direct KRM types, identity, reference, and `judgement_queue.yaml` for `BackupDRRestoreVerificationPlan` under `backupdr.cnrm.cloud.google.com/v1alpha1` (Issue #15530).
 - **Details**:
