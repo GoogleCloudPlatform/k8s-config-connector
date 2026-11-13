@@ -31,6 +31,7 @@ type setupOptions struct {
 	baseOptions
 
 	bucket         string
+	bucketLocation string
 	leaseName      string
 	leaseNamespace string
 	yamlOnly       bool
@@ -71,6 +72,7 @@ func NewSetupCmd() *cobra.Command {
 
 const (
 	bucketFlag         = "bucket"
+	bucketLocationFlag = "bucket-location"
 	leaseNameFlag      = "lease-name"
 	leaseNamespaceFlag = "lease-namespace"
 	yamlOnlyFlag       = "yaml-only"
@@ -80,6 +82,7 @@ const (
 func (o *setupOptions) addFlags(flags *pflag.FlagSet) {
 	o.baseOptions.addFlags(flags)
 	flags.StringVar(&o.bucket, bucketFlag, o.bucket, "GCS bucket name used to store the multi-cluster leader election lock.")
+	flags.StringVar(&o.bucketLocation, bucketLocationFlag, o.bucketLocation, "GCS bucket location for the multi-cluster lease bucket (e.g. 'us', 'eu', 'asia', a dual-region, or a single region). If not specified, automatically derived from the cluster locations.")
 	flags.StringVar(&o.leaseName, leaseNameFlag, o.leaseName, "Name of the MultiClusterLease object across all clusters.")
 	flags.StringVar(&o.leaseNamespace, leaseNamespaceFlag, o.leaseNamespace, "Namespace of the MultiClusterLease object across all clusters.")
 	flags.BoolVar(&o.yamlOnly, yamlOnlyFlag, o.yamlOnly, "If true, print rendered manifests to stdout without applying them.")
@@ -93,6 +96,7 @@ func (o *setupOptions) validate() error {
 	}
 
 	o.bucket = normalizeBucketName(o.bucket)
+	o.bucketLocation = strings.ToLower(strings.TrimSpace(o.bucketLocation))
 	o.leaseName = strings.TrimSpace(o.leaseName)
 	o.leaseNamespace = strings.TrimSpace(o.leaseNamespace)
 
@@ -100,6 +104,12 @@ func (o *setupOptions) validate() error {
 		errs = append(errs, fmt.Errorf("--%s is required; specify a GCS bucket name for the multi-cluster lease lock, e.g. --%s=my-kcc-ha-bucket", bucketFlag, bucketFlag))
 	} else if err := validateBucketName(o.bucket); err != nil {
 		errs = append(errs, err)
+	}
+
+	if o.bucketLocation != "" {
+		if !isValidBucketLocation(o.bucketLocation) {
+			errs = append(errs, fmt.Errorf("--%s %q is not a valid GCS bucket location; use lowercase alphanumeric characters and hyphens (e.g. 'us', 'eu', 'asia', 'us-central1')", bucketLocationFlag, o.bucketLocation))
+		}
 	}
 
 	if o.leaseName == "" {
@@ -115,6 +125,22 @@ func (o *setupOptions) validate() error {
 	}
 
 	return errors.Join(errs...)
+}
+
+func isValidBucketLocation(loc string) bool {
+	if len(loc) < 2 {
+		return false
+	}
+	for i := 0; i < len(loc); i++ {
+		c := loc[i]
+		if !((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '-') {
+			return false
+		}
+	}
+	if loc[0] == '-' || loc[len(loc)-1] == '-' {
+		return false
+	}
+	return true
 }
 
 func runSetup(ctx context.Context, opts setupOptions) error {
@@ -137,7 +163,7 @@ func executeSetup(ctx context.Context, opts setupOptions, handles []*clusterHand
 		return renderClusterYAMLs(configurers, opts.stdout)
 	}
 
-	provisioner := newGCPProvisioner(runner, opts.bucket)
+	provisioner := newGCPProvisioner(runner, opts.bucket, opts.bucketLocation, opts.stderr)
 	if err := provisioner.provision(ctx, gkeClusters); err != nil {
 		return err
 	}
