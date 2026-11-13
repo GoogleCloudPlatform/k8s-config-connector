@@ -318,7 +318,6 @@ BLOCKED_KINDS=(
     "VertexAIDeploymentResourcePool"
     "VertexAIExampleStore"
     "VertexAIFeatureGroup"
-    "VertexAIFeatureOnlineStore"
     "VertexAIHyperparameterTuningJob"
     "VertexAIModelDeploymentMonitoringJob"
     "VertexAIPersistentResource"
