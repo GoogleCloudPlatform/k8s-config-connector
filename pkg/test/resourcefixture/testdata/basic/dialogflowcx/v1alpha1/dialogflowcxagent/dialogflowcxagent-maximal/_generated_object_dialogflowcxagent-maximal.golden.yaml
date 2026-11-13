@@ -22,7 +22,7 @@ spec:
   location: global
   projectRef:
     external: ${projectId}
-  resourceID: 962ddb85-5a13-429a-9ddd-bb115af6759c
+  resourceID: 55e317ec-6752-43b2-bb5c-98b81f5178dc
   speechToTextSettings:
     enableSpeechAdaptation: true
   supportedLanguageCodes:
@@ -35,6 +35,6 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  name: 962ddb85-5a13-429a-9ddd-bb115af6759c
+  name: 55e317ec-6752-43b2-bb5c-98b81f5178dc
   observedGeneration: 3
-  startFlow: projects/${projectId}/locations/global/agents/962ddb85-5a13-429a-9ddd-bb115af6759c/flows/00000000-0000-0000-0000-000000000000
+  startFlow: projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc/flows/00000000-0000-0000-0000-000000000000
