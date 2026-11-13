@@ -33,10 +33,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
@@ -118,6 +120,9 @@ func resolveHealthCheckServiceReferences(ctx context.Context, reader client.Read
 		u.SetGroupVersionKind(computev1beta1.ComputeHealthCheckGVK)
 		key := types.NamespacedName{Namespace: ns, Name: ref.Name}
 		if err := reader.Get(ctx, key, u); err != nil {
+			if apierrors.IsNotFound(err) {
+				return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+			}
 			return fmt.Errorf("getting referenced ComputeHealthCheck %s: %w", key, err)
 		}
 		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
@@ -126,38 +131,7 @@ func resolveHealthCheckServiceReferences(ctx context.Context, reader client.Read
 			selfLink = externalRef
 		}
 		if selfLink == "" {
-			return fmt.Errorf("referenced ComputeHealthCheck %s does not have status.selfLink or status.externalRef populated", key)
-		}
-		ref.External = apirefs.TrimComputeURIPrefix(selfLink)
-	}
-	for _, ref := range obj.Spec.NetworkEndpointGroupRefs {
-		if ref == nil {
-			continue
-		}
-		if ref.External != "" {
-			ref.External = apirefs.TrimComputeURIPrefix(ref.External)
-			continue
-		}
-		if ref.Name == "" {
-			continue
-		}
-		ns := ref.Namespace
-		if ns == "" {
-			ns = defaultNamespace
-		}
-		u := &unstructured.Unstructured{}
-		u.SetGroupVersionKind(computev1beta1.ComputeNetworkEndpointGroupGVK)
-		key := types.NamespacedName{Namespace: ns, Name: ref.Name}
-		if err := reader.Get(ctx, key, u); err != nil {
-			return fmt.Errorf("getting referenced ComputeNetworkEndpointGroup %s: %w", key, err)
-		}
-		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
-		if selfLink == "" {
-			externalRef, _, _ := unstructured.NestedString(u.Object, "status", "externalRef")
-			selfLink = externalRef
-		}
-		if selfLink == "" {
-			return fmt.Errorf("referenced ComputeNetworkEndpointGroup %s does not have status.selfLink or status.externalRef populated", key)
+			return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
 		ref.External = apirefs.TrimComputeURIPrefix(selfLink)
 	}
