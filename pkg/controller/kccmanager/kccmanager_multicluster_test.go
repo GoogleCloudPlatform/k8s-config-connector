@@ -514,3 +514,80 @@ func TestSplitBrainProtection(t *testing.T) {
 		})
 	}
 }
+
+// With multi-cluster leader election enabled, the manager follows the ConfigConnector object:
+// it takes part in the election if the object configures a lease, and runs without leader
+// election if it doesn't. If the object is missing, the manager isn't created: it can't tell
+// whether another cluster leads, so it must not run without leader election.
+func TestMultiClusterLeaseFromConfigConnector(t *testing.T) {
+	ctx := context.Background()
+	cfg, kubeClient := startSyncerEnvtest(t)
+
+	newManager := func() (manager.Manager, error) {
+		return New(ctx, cfg, Config{
+			ManagerOptions: manager.Options{
+				Metrics:                metricsserver.Options{BindAddress: "0"},
+				HealthProbeBindAddress: "0",
+			},
+			MultiClusterLease: true,
+			testConfig:        testConfig{skipControllerRegistration: true},
+		})
+	}
+	wantNoElection := func() {
+		t.Helper()
+		mgr, err := newManager()
+		if err != nil {
+			t.Errorf("New: %v", err)
+			return
+		}
+		if _, ok := mgr.(*leaderElectionManager); ok {
+			t.Errorf("the manager takes part in an election, want it to run without leader election")
+		}
+	}
+
+	// There is no ConfigConnector object.
+	want := `ConfigConnector "configconnector.core.cnrm.cloud.google.com" not found; refusing to run without leader election`
+	if _, err := newManager(); err == nil || !strings.Contains(err.Error(), want) {
+		t.Errorf("New: got error %v, want an error containing %q", err, want)
+	}
+
+	// The ConfigConnector object doesn't configure a lease, without and with other experiments.
+	cc := &operatorv1beta1.ConfigConnector{
+		ObjectMeta: metav1.ObjectMeta{Name: operatorv1beta1.ConfigConnectorAllowedName},
+		Spec:       operatorv1beta1.ConfigConnectorSpec{Mode: "cluster"},
+	}
+	if err := kubeClient.Create(ctx, cc); err != nil {
+		t.Fatalf("creating ConfigConnector: %v", err)
+	}
+	wantNoElection()
+
+	cc.Spec.Experiments = &operatorv1beta1.CCExperiments{
+		MaxConcurrentReconcilesOverrides: map[string]int{"BigQueryDataset.bigquery.cnrm.cloud.google.com": 50},
+	}
+	if err := kubeClient.Update(ctx, cc); err != nil {
+		t.Fatalf("updating ConfigConnector: %v", err)
+	}
+	wantNoElection()
+
+	// The ConfigConnector object configures a lease: the manager takes part in the election.
+	cluster := testGKECluster("cluster-a")
+	cc.Spec.Experiments.MultiClusterLease = &operatorv1beta1.MultiClusterLeaseSpec{
+		LeaseName:  testLeaseName,
+		Namespace:  "cnrm-system",
+		GKECluster: cluster,
+	}
+	if err := kubeClient.Update(ctx, cc); err != nil {
+		t.Fatalf("updating ConfigConnector: %v", err)
+	}
+	mgr, err := newManager()
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	lem, ok := mgr.(*leaderElectionManager)
+	if !ok {
+		t.Fatalf("manager is not *leaderElectionManager, it is %T", mgr)
+	}
+	if got, want := lem.leConfig.Lock.Identity(), cluster.ResourceName(); got != want {
+		t.Errorf("identity in the election is %q, want %q", got, want)
+	}
+}
