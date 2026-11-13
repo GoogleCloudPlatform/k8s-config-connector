@@ -634,29 +634,10 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 			return
 		}
 		mockObj = normalizeRepresentation(mockObj)
-		if strings.Contains(t.Name(), "fullrediscluster") {
-			stripActiveZones(mockObj)
-		}
 	}
 
 	if diff := cmp.Diff(realObj, mockObj); diff != "" {
 		t.Errorf("%s: payload mismatch (-real +mock):\n%s", context, diff)
-	}
-}
-
-func stripActiveZones(obj interface{}) {
-	switch v := obj.(type) {
-	case map[string]interface{}:
-		if zdc, ok := v["zoneDistributionConfig"].(map[string]interface{}); ok {
-			delete(zdc, "activeZones")
-		}
-		for _, val := range v {
-			stripActiveZones(val)
-		}
-	case []interface{}:
-		for _, item := range v {
-			stripActiveZones(item)
-		}
 	}
 }
 
