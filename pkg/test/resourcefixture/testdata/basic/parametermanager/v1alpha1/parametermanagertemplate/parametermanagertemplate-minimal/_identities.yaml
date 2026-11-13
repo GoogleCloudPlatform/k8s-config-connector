@@ -1,0 +1,6 @@
+- caisURL: //parametermanager.googleapis.com/projects/${projectId}/locations/global/templates/parametermanagertemplate-minimal-${uniqueId}
+  group: parametermanager.cnrm.cloud.google.com
+  kind: ParameterManagerTemplate
+  name: parametermanagertemplate-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

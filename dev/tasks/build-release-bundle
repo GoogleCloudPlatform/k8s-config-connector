@@ -276,7 +276,6 @@ BLOCKED_KINDS=(
     "OracleDatabaseCloudExadataInfrastructure"
     "OracleDatabaseCloudVMCluster"
     "ParallelstoreInstance"
-    "ParameterManagerTemplate"
     "RapidMigrationAssessmentCollector"
     "RetailControl"
     "RetailModel"
