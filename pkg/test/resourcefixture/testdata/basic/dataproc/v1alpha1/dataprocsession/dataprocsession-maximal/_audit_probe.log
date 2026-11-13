@@ -1,0 +1,58 @@
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "environmentConfig": {
+    "executionConfig": {
+      "idleTtl": "3600s",
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "ttl": "86400s"
+    },
+    "peripheralsConfig": {
+      "sparkHistoryServerConfig": {}
+    }
+  },
+  "jupyterSession": {
+    "displayName": "test-kernel-maximal",
+    "kernel": 1
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
+    "goog-dataproc-location": "us-central1",
+    "goog-dataproc-session-id": "dataprocsession-maximal-${uniqueId}",
+    "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
+    "managed-by-cnrm": "true",
+    "test-label": "maximal-test"
+  },
+  "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}",
+  "runtimeConfig": {
+    "properties": {
+      "spark:spark.dataproc.engine": "default",
+      "spark:spark.dataproc.lightningEngine.runtime": "default",
+      "spark:spark.dataproc.scaling.version": "1",
+      "spark:spark.driver.cores": "4",
+      "spark:spark.driver.memory": "9600m",
+      "spark:spark.dynamicAllocation.executorAllocationRatio": "0.3",
+      "spark:spark.executor.cores": "4",
+      "spark:spark.executor.instances": "2",
+      "spark:spark.executor.memory": "4g"
+    },
+    "version": "2.1.50"
+  },
+  "runtimeInfo": {},
+  "state": 2,
+  "stateHistory": [
+    {
+      "state": 1,
+      "stateStartTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "stateTime": "2024-04-01T12:34:56.123456Z",
+  "uuid": "00000000-0000-0000-0000-000000000001"
+}

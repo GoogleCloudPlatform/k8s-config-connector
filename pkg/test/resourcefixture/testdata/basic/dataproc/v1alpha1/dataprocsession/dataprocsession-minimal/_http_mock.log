@@ -151,7 +151,7 @@ X-Xss-Protection: 0
         "spark:spark.executor.instances": "2",
         "spark:spark.executor.memory": "9600m"
       },
-      "version": "2.2.82"
+      "version": "2.2.86"
     },
     "runtimeInfo": {},
     "state": "ACTIVE",
@@ -223,7 +223,7 @@ X-Xss-Protection: 0
       "spark:spark.executor.instances": "2",
       "spark:spark.executor.memory": "9600m"
     },
-    "version": "2.2.82"
+    "version": "2.2.86"
   },
   "runtimeInfo": {},
   "state": 2,
@@ -354,7 +354,7 @@ X-Xss-Protection: 0
         "spark:spark.executor.instances": "2",
         "spark:spark.executor.memory": "9600m"
       },
-      "version": "2.2.82"
+      "version": "2.2.86"
     },
     "runtimeInfo": {},
     "state": "ACTIVE",
