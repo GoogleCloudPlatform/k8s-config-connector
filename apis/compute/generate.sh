@@ -77,6 +77,7 @@ ${CONTROLLERBUILDER} generate-identity \
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1beta1 \
+  --resource ComputeAddress:Address \
   --resource ComputeBackendService:BackendService \
   --resource ComputeBackendBucket:BackendBucket \
   --resource ComputeExternalVPNGateway:ExternalVpnGateway \
