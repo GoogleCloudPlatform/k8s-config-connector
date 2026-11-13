@@ -1,0 +1,44 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "DialogflowCXAgent/dialogflowcxagent-${uniqueId}",
+    "fields": [
+      {
+        "id": "default_language_code",
+        "old": "",
+        "new": "en"
+      },
+      {
+        "id": "display_name",
+        "old": "",
+        "new": "agent-${uniqueId}"
+      },
+      {
+        "id": "location",
+        "old": "",
+        "new": "global"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "start_flow",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "time_zone",
+        "old": "",
+        "new": "America/New_York"
+      }
+    ]
+  }
+]
