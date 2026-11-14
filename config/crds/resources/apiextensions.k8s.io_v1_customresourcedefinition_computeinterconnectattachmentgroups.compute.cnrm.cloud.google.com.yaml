@@ -227,8 +227,9 @@ spec:
                             items:
                               properties:
                                 attachments:
-                                  description: '[Output Only] URLs of any particular
-                                    Attachments to explain this blocker in more detail.'
+                                  description: Output only. [Output Only] URLs of
+                                    any particular Attachments to explain this blocker
+                                    in more detail.
                                   items:
                                     type: string
                                   type: array
@@ -237,38 +238,40 @@ spec:
                                     list of possible values.
                                   type: string
                                 documentationLink:
-                                  description: '[Output Only] The url of Google Cloud
-                                    public documentation explaining this requirement.
-                                    This is set for every type of requirement.'
+                                  description: Output only. [Output Only] The url
+                                    of Google Cloud public documentation explaining
+                                    this requirement. This is set for every type of
+                                    requirement.
                                   type: string
                                 explanation:
-                                  description: '[Output Only] A human-readable explanation
-                                    of this requirement and why it''s not met. This
-                                    is set for every type of requirement.'
+                                  description: Output only. [Output Only] A human-readable
+                                    explanation of this requirement and why it's not
+                                    met. This is set for every type of requirement.
                                   type: string
                                 metros:
-                                  description: '[Output Only] Metros used to explain
-                                    this blocker in more detail. These are three-letter
-                                    lowercase strings like "iad". This will be set
-                                    for some blockers (like NO_ATTACHMENTS_IN_METRO_AND_ZONE)
-                                    but does not apply to others.'
+                                  description: Output only. [Output Only] Metros used
+                                    to explain this blocker in more detail. These
+                                    are three-letter lowercase strings like "iad".
+                                    This will be set for some blockers (like NO_ATTACHMENTS_IN_METRO_AND_ZONE)
+                                    but does not apply to others.
                                   items:
                                     type: string
                                   type: array
                                 regions:
-                                  description: '[Output Only] Regions used to explain
-                                    this blocker in more detail. These are region
-                                    names formatted like "us-central1". This will
-                                    be set for some blockers (like INCOMPATIBLE_REGIONS)
-                                    but does not apply to others.'
+                                  description: Output only. [Output Only] Regions
+                                    used to explain this blocker in more detail. These
+                                    are region names formatted like "us-central1".
+                                    This will be set for some blockers (like INCOMPATIBLE_REGIONS)
+                                    but does not apply to others.
                                   items:
                                     type: string
                                   type: array
                                 zones:
-                                  description: '[Output Only] Zones used to explain
-                                    this blocker in more detail. Format is "zone1"
-                                    and/or "zone2". This will be set for some blockers
-                                    (like MISSING_ZONE) but does not apply to others.'
+                                  description: Output only. [Output Only] Zones used
+                                    to explain this blocker in more detail. Format
+                                    is "zone1" and/or "zone2". This will be set for
+                                    some blockers (like  MISSING_ZONE) but does not
+                                    apply to others.
                                   items:
                                     type: string
                                   type: array
@@ -310,41 +313,42 @@ spec:
                                     items:
                                       properties:
                                         facility:
-                                          description: '[Output Only] The name of
-                                            a facility, like "iad-1234".'
+                                          description: Output only. [Output Only]
+                                            The name of a facility, like "iad-1234".
                                           type: string
                                         zones:
                                           items:
                                             properties:
                                               attachments:
-                                                description: '[Output Only] URLs of
-                                                  Attachments in the given zone, to
-                                                  the given region, on Interconnects
-                                                  in the given facility and metro.
-                                                  Every Attachment in the AG has such
-                                                  an entry.'
+                                                description: Output only. [Output
+                                                  Only] URLs of Attachments in the
+                                                  given zone, to the given region,
+                                                  on Interconnects in the given facility
+                                                  and metro. Every Attachment in the
+                                                  AG has such an entry.
                                                 items:
                                                   type: string
                                                 type: array
                                               zone:
-                                                description: '[Output Only] The name
-                                                  of a zone, either "zone1" or "zone2".'
+                                                description: Output only. [Output
+                                                  Only] The name of a zone, either
+                                                  "zone1" or "zone2".
                                                 type: string
                                             type: object
                                           type: array
                                       type: object
                                     type: array
                                   metro:
-                                    description: '[Output Only] The name of the metro,
-                                      as a three-letter lowercase string like "iad".
-                                      This is the first component of the location
-                                      of an Interconnect.'
+                                    description: Output only. [Output Only] The name
+                                      of the metro, as a three-letter lowercase string
+                                      like "iad". This is the first component of the
+                                      location of an Interconnect.
                                     type: string
                                 type: object
                               type: array
                             region:
-                              description: '[Output Only] The name of a region, like
-                                "us-central1".'
+                              description: Output only. [Output Only] The name of
+                                a region, like "us-central1".
                               type: string
                           type: object
                         type: array

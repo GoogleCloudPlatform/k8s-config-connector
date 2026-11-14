@@ -92,8 +92,17 @@ spec:
                         inclusionLabels:
                           additionalProperties:
                             type: string
-                          description: Optional. A map of key-value pairs representing
-                            VM labels.
+                          description: |-
+                            Optional. A map of key-value pairs representing VM labels.
+                             VMs must have all of the labels specified in this map to be selected
+                             (logical AND).
+
+                             e.g. If the `inclusion_labels` are {("key1", "value1"), ("key2",
+                             "value2")}, the VM labels must contain both ("key1", "value1") and
+                             ("key2", "value2") to be selected. If the VM labels are ("key1",
+                             "value1") and ("something", "else"), it will not be selected.
+
+                             If the map is empty, it's considered a match.
                           type: object
                       type: object
                   type: object

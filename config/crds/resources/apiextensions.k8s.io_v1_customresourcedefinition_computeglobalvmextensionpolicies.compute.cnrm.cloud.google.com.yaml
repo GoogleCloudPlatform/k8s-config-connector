@@ -70,12 +70,13 @@ spec:
                 additionalProperties:
                   properties:
                     pinnedVersion:
-                      description: Optional. The specific version of the extension
-                        to install. If not set, the latest version is used.
+                      description: Optional. The version pinning for the extension.
+                        If empty, the extension will be installed with the latest
+                        version released by the extension producer.
                       type: string
                     stringConfig:
-                      description: Optional. String-based configuration data for the
-                        extension.
+                      description: Optional. String configuration. Any string payload
+                        that the extension understands.
                       type: string
                   type: object
                 description: Required. A map of extension names (for example, "ops-agent")
@@ -86,14 +87,14 @@ spec:
                 items:
                   properties:
                     labelSelector:
-                      description: Optional. LabelSelector selects VMs based on their
-                        labels.
+                      description: Optional. Labels within the LabelSelector are OR'd.
                       properties:
                         inclusionLabels:
                           additionalProperties:
                             type: string
-                          description: Optional. A map of key-value pairs representing
-                            VM labels.
+                          description: Optional. Labels as key value pairs. A VM should
+                            contain all the pairs specified in this map to be selected;
+                            Labels within the LabelSelector are OR'ed.
                           type: object
                       type: object
                   type: object
@@ -146,19 +147,48 @@ spec:
                       plan.
                     properties:
                       conflictBehavior:
-                        description: Optional. Specifies the behavior of the rollout
-                          if a conflict is detected.
+                        description: |-
+                          Optional. Specifies the behavior of the rollout if a conflict is detected in a
+                           project during a rollout. This only applies to `insert` and `update`
+                           methods.
+
+                           A conflict occurs in the following cases:
+
+                           * `insert` method: If the zonal policy already exists when the insert
+                             happens.
+                           * `update` method: If the zonal policy was modified by a zonal API call
+                             outside of this rollout.
+
+                           Possible values are the following:
+
+                           * `""` (empty string): If a conflict occurs, the local value is not
+                             overwritten. This is the default behavior.
+                           * `"overwrite"`: If a conflict occurs, the local value is overwritten
+                             with the rollout value.
                         type: string
                       name:
-                        description: Optional. The name of the rollout plan.
+                        description: Optional. The name of the rollout plan. Ex. projects//locations/global/rolloutPlans/.
                         type: string
                       predefinedRolloutPlan:
                         description: Optional. Specifies the predefined rollout plan
-                          for the policy.
+                          for the policy. Valid values are `SLOW_ROLLOUT` and `FAST_ROLLOUT`.
+                          The recommended value is `SLOW_ROLLOUT` for progressive
+                          rollout. For more information, see Rollout plans for global
+                          policies. Check the PredefinedRolloutPlan enum for the list
+                          of possible values.
                         type: string
                       retryUuid:
-                        description: Optional. The UUID that identifies a policy rollout
-                          retry attempt.
+                        description: |-
+                          Optional. The UUID that identifies a policy rollout retry attempt for update and
+                           delete operations. Set this field only when retrying a rollout for an
+                           existing extension policy.
+
+                           * `update` method: Lets you retry policy rollout without changes.
+                           An error occurs if you set retry_uuid but the policy is modified.
+                           * `delete` method: Lets you retry policy deletion rollout if the
+                           previous deletion rollout is not finished and the policy is in the
+                           DELETING state. If you set this field when the policy is not in the
+                           DELETING state, an error occurs.
                         type: string
                     type: object
                 type: object

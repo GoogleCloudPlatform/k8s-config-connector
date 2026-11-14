@@ -215,9 +215,29 @@ spec:
                         description: '[Output Only] Number of disks used.'
                         format: int64
                         type: integer
+                      exapoolMaxReadIops:
+                        description: Output only. [Output Only] Maximum allowed read
+                          IOPS for this Exapool.
+                        format: int64
+                        type: integer
+                      exapoolMaxReadThroughput:
+                        description: Output only. [Output Only] Maximum allowed read
+                          throughput in MiB/s for this Exapool.
+                        format: int64
+                        type: integer
+                      exapoolMaxWriteIops:
+                        description: Output only. [Output Only] Maximum allowed write
+                          IOPS for this Exapool.
+                        format: int64
+                        type: integer
+                      exapoolMaxWriteThroughput:
+                        description: Output only. [Output Only] Maximum allowed write
+                          throughput in MiB/s for this Exapool.
+                        format: int64
+                        type: integer
                       lastResizeTimestamp:
-                        description: '[Output Only] Timestamp of the last successful
-                          resize in RFC3339 text format.'
+                        description: Output only. [Output Only] Timestamp of the last
+                          successful resize inRFC3339 text format.
                         type: string
                       maxTotalProvisionedDiskCapacityGB:
                         description: '[Output Only] Maximum allowed aggregate disk
@@ -289,9 +309,29 @@ spec:
                         description: '[Output Only] Number of disks used.'
                         format: int64
                         type: integer
+                      exapoolMaxReadIops:
+                        description: Output only. [Output Only] Maximum allowed read
+                          IOPS for this Exapool.
+                        format: int64
+                        type: integer
+                      exapoolMaxReadThroughput:
+                        description: Output only. [Output Only] Maximum allowed read
+                          throughput in MiB/s for this Exapool.
+                        format: int64
+                        type: integer
+                      exapoolMaxWriteIops:
+                        description: Output only. [Output Only] Maximum allowed write
+                          IOPS for this Exapool.
+                        format: int64
+                        type: integer
+                      exapoolMaxWriteThroughput:
+                        description: Output only. [Output Only] Maximum allowed write
+                          throughput in MiB/s for this Exapool.
+                        format: int64
+                        type: integer
                       lastResizeTimestamp:
-                        description: '[Output Only] Timestamp of the last successful
-                          resize in RFC3339 text format.'
+                        description: Output only. [Output Only] Timestamp of the last
+                          successful resize inRFC3339 text format.
                         type: string
                       maxTotalProvisionedDiskCapacityGB:
                         description: '[Output Only] Maximum allowed aggregate disk
