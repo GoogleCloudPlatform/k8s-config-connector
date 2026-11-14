@@ -43,7 +43,7 @@ Familiarity with Kubernetes is not required to develop Config Connector resource
 
 The [scenarios](./scenarios) section lists all the common scenarios you may want to contribute to Config Connector. Each scenario contains the tools and guided steps to establish your task. We recommend you use the following principles to find the scenario best suite your case, and get started from there. 
 
-*  **Check the CRD:** Examine the latest [CRDs](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/crds). The version can be found from the file name. If the resource exists but is in Alpha (and therefore not yet in the [Config Connector API Reference](https://cloud.google.com/config-connector/docs/reference/overview)), follow the [Alpha to Beta promotion guide](./scenarios/alpha-to-beta.md). This may be the simplest solution.
+*  **Check the CRD:** Examine the latest [CRDs](../../config/crds). The version can be found from the file name. If the resource exists but is in Alpha (and therefore not yet in the [Config Connector API Reference](https://cloud.google.com/config-connector/docs/reference/overview)), follow the [Alpha to Beta promotion guide](./scenarios/alpha-to-beta.md). This may be the simplest solution.
 
 * **File an issue (if no CRD exists):** If no CRD is found, you'll likely need to create a new resource. Before starting this process, check if an issue is already filed. If not, please file an issue to avoid duplication of effort and allow us to coordinate effectively. If you are willing to take the resource yourself, please assign the issue.
 
@@ -57,11 +57,22 @@ The [deep-dives](./deep-dives) section gives you all the tools and exit criteria
 
 ## Develop by scenarios
 
-* [Add a new resource](./scenarios/new-resource.md)
-* [Add a new field](./scenarios/new-field.md)
-* [Promote a Alpha Resource to Beta](./scenarios/alpha-to-beta.md)
+### Direct Resources
+* [Add a new resource (Direct)](./scenarios/new-resource.md) (or [AI-assisted](./ai/scenarios/new-resource.md))
+* [Add a new field (Direct)](./scenarios/new-field.md) (or [AI-assisted](./ai/scenarios/new-field.md))
+* [Promote an Alpha Resource to Beta](./scenarios/alpha-to-beta.md) (or [AI-assisted](./ai/scenarios/alpha-to-beta.md))
+
+### Migration to Direct
 * [Migrate a Terraform/DCL-based Resource to Direct (Alpha)](./scenarios/migrate-tf-resource-alpha.md)
 * [Migrate a Terraform/DCL-based Resource to Direct (Beta)](./scenarios/migrate-tf-resource-beta.md)
+
+### Terraform-Based Resources (Legacy)
+* [Add a new resource from Terraform](../archive/README.NewResourceFromTerraform.md)
+* [Modify a Terraform-based resource](../archive/README.ChangingTerraform.md)
+* [Update Terraform provider](../archive/README.UpdatingTerraformProvider.md)
+
+### DCL-Based Resources (Legacy)
+* [Update DCL library and resources](../archive/README.UpdatingDCL.md)
 
 ## API conventions
 
