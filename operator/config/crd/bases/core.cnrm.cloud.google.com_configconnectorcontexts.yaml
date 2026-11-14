@@ -109,6 +109,10 @@ spec:
                           type: object
                         type: array
                     type: object
+                  usePriorityQueue:
+                    description: UsePriorityQueue enables the starvation-bounded priority
+                      work queue across controllers.
+                    type: boolean
                 type: object
               googleServiceAccount:
                 description: |-

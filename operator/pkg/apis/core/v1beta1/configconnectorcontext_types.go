@@ -104,6 +104,10 @@ type Experiments struct {
 	// Validation likely enforces uniqueness, but if duplicates exist, behavior is undefined.
 	// +optional
 	ResourceSettings *ResourceSettings `json:"resourceSettings,omitempty"`
+
+	// UsePriorityQueue enables the starvation-bounded priority work queue across controllers.
+	// +optional
+	UsePriorityQueue *bool `json:"usePriorityQueue,omitempty"`
 }
 
 type StateIntoSpecValue string
