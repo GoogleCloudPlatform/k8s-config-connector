@@ -1145,6 +1145,8 @@ type QaQuestion_TuningMetadata struct {
 	TuningError *string `json:"tuningError,omitempty"`
 }
 
+/* found existing non-generated go type "QaScorecard", skipping
+
 // +kcc:proto=google.cloud.contactcenterinsights.v1.QaScorecard
 type QaScorecard struct {
 	// Identifier. The scorecard name.
@@ -1161,6 +1163,7 @@ type QaScorecard struct {
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecard.description
 	Description *string `json:"description,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.contactcenterinsights.v1.QaScorecardResult
 type QaScorecardResult struct {
@@ -1738,6 +1741,8 @@ type QaQuestion_MetricsObservedState struct {
 	Accuracy *float64 `json:"accuracy,omitempty"`
 }
 
+/* found existing non-generated go type "QaScorecardObservedState", skipping
+
 // +kcc:observedstate:proto=google.cloud.contactcenterinsights.v1.QaScorecard
 type QaScorecardObservedState struct {
 	// Output only. The time at which this scorecard was created.
@@ -1748,6 +1753,7 @@ type QaScorecardObservedState struct {
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecard.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
+*/
 
 // +kcc:observedstate:proto=google.cloud.contactcenterinsights.v1.QaScorecardResult
 type QaScorecardResultObservedState struct {

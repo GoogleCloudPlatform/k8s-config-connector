@@ -1724,7 +1724,7 @@ func QaScorecard_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecard) *krm.Q
 		return nil
 	}
 	out := &krm.QaScorecard{}
-	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	// MISSING: CreateTime
@@ -1736,7 +1736,7 @@ func QaScorecard_ToProto(mapCtx *direct.MapContext, in *krm.QaScorecard) *pb.QaS
 		return nil
 	}
 	out := &pb.QaScorecard{}
-	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	// MISSING: CreateTime
@@ -1748,7 +1748,7 @@ func QaScorecardObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QaScor
 		return nil
 	}
 	out := &krm.QaScorecardObservedState{}
-	// MISSING: Name
+	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: DisplayName
 	// MISSING: Description
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -1760,7 +1760,7 @@ func QaScorecardObservedState_ToProto(mapCtx *direct.MapContext, in *krm.QaScore
 		return nil
 	}
 	out := &pb.QaScorecard{}
-	// MISSING: Name
+	out.Name = direct.ValueOf(in.Name)
 	// MISSING: DisplayName
 	// MISSING: Description
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)

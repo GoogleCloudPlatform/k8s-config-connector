@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,21 +30,28 @@ var CCInsightsQAScorecardRevisionGVK = GroupVersion.WithKind("CCInsightsQAScorec
 // +kcc:spec:proto=google.cloud.contactcenterinsights.v1.QaScorecardRevision
 // +kcc:required-from-proto
 type CCInsightsQAScorecardRevisionSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/qaScorecards/{qa_scorecard} this resource belongs to.
-	// +kcc:guess
-	// QaScorecardRef *CCInsightsQAScorecardRef `json:"qaScorecardRef,omitempty"`
+	// The CCInsightsQAScorecard this CCInsightsQAScorecardRevision is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *CCInsightsQAScorecardRef `json:"parentRef"`
 
 	// The CCInsightsQAScorecardRevision name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// The snapshot of the scorecard at the time of this revision's creation.
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecardRevision.snapshot
 	Snapshot *QaScorecard `json:"snapshot,omitempty"`
+}
+
+// +kcc:proto=google.cloud.contactcenterinsights.v1.QaScorecard
+type QaScorecard struct {
+	// The user-specified display name of the scorecard.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecard.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// A text description explaining the intent of the scorecard.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecard.description
+	Description *string `json:"description,omitempty"`
 }
 
 // CCInsightsQAScorecardRevisionStatus defines the config connector machine state of CCInsightsQAScorecardRevision
@@ -84,6 +90,23 @@ type CCInsightsQAScorecardRevisionObservedState struct {
 	//  to be used in analysis.
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecardRevision.state
 	State *string `json:"state,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.contactcenterinsights.v1.QaScorecard
+type QaScorecardObservedState struct {
+	// Identifier. The scorecard name.
+	// Format:
+	// projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecard.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The time at which this scorecard was created.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecard.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The most recent time at which the scorecard was updated.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecard.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

@@ -84,6 +84,21 @@
   5. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via golden test recording.
 - **Verification**: Verified `apis/contactcenterinsights/...`, `pkg/controller/direct/contactcenterinsights/...`, and `tests/apichecks/...` all pass with zero errors.
 
+### [2026-11-14] CCInsightsQAScorecardRevision Greenfield Types Judgement Triage (Step 1b)
+- **Context**: Triaging `judgement_queue.yaml` entries and finalizing direct KRM types and identity for `CCInsightsQAScorecardRevision` (`google.cloud.contactcenterinsights.v1.QaScorecardRevision`).
+- **Parent & Identity Resolution**:
+  - `CCInsightsQAScorecardRevision` is a child resource under `qaScorecards/{qa_scorecard}`.
+  - Replaced `projectRef` and `location` with `spec.parentRef *CCInsightsQAScorecardRef`, marked `// +required` and immutable via `+kubebuilder:validation:XValidation:rule="self == oldSelf"`.
+  - Re-generated identity via `generate-identity`, which resolves `ParentRef` and builds identity from the parent's external reference and `resourceID`.
+- **Nested Snapshot Struct Customization**:
+  - `snapshot` represents a `QaScorecard`. Moved `QaScorecard` and `QaScorecardObservedState` into `ccinsightsqascorecardrevision_types.go` with `+kcc:proto=` annotations.
+  - Removed `name` (resource identifier) from `spec.snapshot` as it is output-only/server-set from the parent scorecard, and preserved it under `status.observedState.snapshot.name`.
+- **Queue Triage & Verification**:
+  - Resolved all 5 `judgement_queue.yaml` entries (`untriaged-bulk-generation`, `identity-root-unknown`, `location-or-parent-ref`, `parent-ref-guessed`, and `possible-reference-by-description`).
+  - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via golden recording.
+  - Verified `generate.sh` produces zero diff, and all tests in `apis/contactcenterinsights/...`, `pkg/controller/direct/contactcenterinsights/...`, and `tests/apichecks/...` pass cleanly.
+
+
 
 
 

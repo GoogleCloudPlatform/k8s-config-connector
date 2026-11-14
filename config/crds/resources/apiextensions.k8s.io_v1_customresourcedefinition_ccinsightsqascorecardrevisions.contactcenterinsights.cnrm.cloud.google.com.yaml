@@ -63,11 +63,9 @@ spec:
             description: CCInsightsQAScorecardRevisionSpec defines the desired state
               of CCInsightsQAScorecardRevision
             properties:
-              location:
-                description: The location of this resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The CCInsightsQAScorecard this CCInsightsQAScorecardRevision
+                  is created under.
                 oneOf:
                 - not:
                     required:
@@ -84,20 +82,19 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed CCInsightsQAScorecard
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/qaScorecards/{{qaScorecardID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a CCInsightsQAScorecard resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a CCInsightsQAScorecard resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The CCInsightsQAScorecardRevision name. If not given,
                   the metadata.name will be used.
@@ -112,13 +109,9 @@ spec:
                   displayName:
                     description: The user-specified display name of the scorecard.
                     type: string
-                  name:
-                    description: 'Identifier. The scorecard name. Format: projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}'
-                    type: string
                 type: object
             required:
-            - location
-            - projectRef
+            - parentRef
             type: object
           status:
             description: CCInsightsQAScorecardRevisionStatus defines the config connector
@@ -183,6 +176,9 @@ spec:
                       createTime:
                         description: Output only. The time at which this scorecard
                           was created.
+                        type: string
+                      name:
+                        description: 'Identifier. The scorecard name. Format: projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}'
                         type: string
                       updateTime:
                         description: Output only. The most recent time at which the
