@@ -58,7 +58,11 @@ func NewUnstructuredStream(params *parameters.Parameters, assetStream stream.Ass
 	if err != nil {
 		return nil, fmt.Errorf("error creating unstructured resource stream: %w", err)
 	}
-	fixupStream := stream.NewUnstructuredResourceFixupStream(unstructuredResourceStream)
+	fixupStream := stream.NewUnstructuredResourceFixupStreamWithOptions(unstructuredResourceStream, stream.FixupOptions{
+		FilterSensitiveFields: params.FilterSensitiveFields,
+		SMLoader:              smLoader,
+		TFProvider:            provider,
+	})
 	if params.IAMFormat == commonparams.NoneIAMFormatOption {
 		return fixupStream, nil
 	}
