@@ -66,6 +66,7 @@ func computeSSLPolicyFuzzer() fuzztesting.KRMFuzzer {
 	// Unimplemented / Not Yet Triaged fields
 	f.Unimplemented_NotYetTriaged(".id")
 	f.Unimplemented_NotYetTriaged(".kind")
+	f.Unimplemented_NotYetTriaged(".post_quantum_key_exchange")
 	f.Unimplemented_NotYetTriaged(".region")
 	f.Unimplemented_NotYetTriaged(".warnings")
 

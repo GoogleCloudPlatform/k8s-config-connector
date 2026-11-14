@@ -1,0 +1,1531 @@
+# Phase: CREATE
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/vmExtensionPolicies/${globalVmExtensionPolicyID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&global_vm_extension_policy=${globalVmExtensionPolicyID}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/globalVmExtensionPolicies/${globalVmExtensionPolicyID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/globalVmExtensionPolicies/${globalVmExtensionPolicyID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/vmExtensionPolicies
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}
+
+{
+  "extensionPolicies": {
+    "ops-agent": {}
+  },
+  "name": "${globalVmExtensionPolicyID}",
+  "rolloutOperation": {
+    "rolloutInput": {
+      "predefinedRolloutPlan": "FAST_ROLLOUT"
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${globalVmExtensionPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/globalVmExtensionPolicies/${globalVmExtensionPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${globalVmExtensionPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/globalVmExtensionPolicies/${globalVmExtensionPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/vmExtensionPolicies/${globalVmExtensionPolicyID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&global_vm_extension_policy=${globalVmExtensionPolicyID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "extensionPolicies": {
+    "ops-agent": {
+      "pinnedVersion": "",
+      "stringConfig": ""
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "compute#globalVmExtensionPolicy",
+  "name": "${globalVmExtensionPolicyID}",
+  "priority": 1000,
+  "rolloutOperation": {
+    "rolloutInput": {
+      "conflictBehavior": "",
+      "predefinedRolloutPlan": "FAST_ROLLOUT",
+      "retryUuid": ""
+    },
+    "rolloutStatus": {
+      "currentRollouts": [
+        {
+          "locationRolloutStatus": {
+            "africa-south1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "africa-south1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "africa-south1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-east1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-east1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-east1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-east2-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-east2-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-east2-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-northeast1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-northeast1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-northeast1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-northeast2-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-northeast2-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-northeast2-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-northeast3-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-northeast3-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-northeast3-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-south1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-south1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-south1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-south2-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-south2-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-south2-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-southeast1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-southeast1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-southeast1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-southeast2-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-southeast2-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-southeast2-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-southeast3-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-southeast3-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-southeast3-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "australia-southeast1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "australia-southeast1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "australia-southeast1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "australia-southeast2-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "australia-southeast2-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "australia-southeast2-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-central2-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-central2-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-central2-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-north1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-north1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-north1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-north2-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-north2-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-north2-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-southwest1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-southwest1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-southwest1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west1-d": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west10-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west10-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west10-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west12-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west12-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west12-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west2-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west2-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west2-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west3-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west3-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west3-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west4-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west4-ai1a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west4-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west4-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west6-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west6-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west6-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west8-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west8-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west8-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west9-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west9-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west9-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "me-central1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "me-central1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "me-central1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "me-west1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "me-west1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "me-west1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "northamerica-northeast1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "northamerica-northeast1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "northamerica-northeast1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "northamerica-northeast2-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "northamerica-northeast2-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "northamerica-northeast2-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "northamerica-south1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "northamerica-south1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "northamerica-south1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "southamerica-east1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "southamerica-east1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "southamerica-east1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "southamerica-west1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "southamerica-west1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "southamerica-west1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-central1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-central1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-central1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-central1-f": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-east1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-east1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-east1-d": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-east4-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-east4-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-east4-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-east5-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-east5-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-east5-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-south1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-south1-ai1b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-south1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-south1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west2-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west2-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west2-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west3-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west3-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west3-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west4-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west4-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west4-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            }
+          },
+          "rollout": "projects/${projectNumber}/locations/global/rollouts/vm-extension-policy-insert-rollout-20240401-123456",
+          "rolloutPlan": "projects/${projectNumber}/locations/global/rolloutPlans/vm-policy-fast-rollout-plan",
+          "state": "STATE_PROCESSING"
+        }
+      ]
+    }
+  },
+  "scopedResourceStatus": "SCOPED_RESOURCE_STATUS_UNSPECIFIED",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/globalVmExtensionPolicies/${globalVmExtensionPolicyID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/globalVmExtensionPolicies/${globalVmExtensionPolicyID}",
+  "updateTimestamp": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: UPDATE
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/vmExtensionPolicies/${globalVmExtensionPolicyID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&global_vm_extension_policy=${globalVmExtensionPolicyID}
+
+{
+  "description": "Updated minimal description",
+  "extensionPolicies": {
+    "ops-agent": {}
+  },
+  "name": "${globalVmExtensionPolicyID}",
+  "rolloutOperation": {
+    "rolloutInput": {
+      "predefinedRolloutPlan": "FAST_ROLLOUT"
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "update",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${globalVmExtensionPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/globalVmExtensionPolicies/${globalVmExtensionPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "update",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${globalVmExtensionPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/globalVmExtensionPolicies/${globalVmExtensionPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/vmExtensionPolicies/${globalVmExtensionPolicyID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&global_vm_extension_policy=${globalVmExtensionPolicyID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated minimal description",
+  "extensionPolicies": {
+    "ops-agent": {
+      "pinnedVersion": "",
+      "stringConfig": ""
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "compute#globalVmExtensionPolicy",
+  "name": "${globalVmExtensionPolicyID}",
+  "priority": 1000,
+  "rolloutOperation": {
+    "rolloutInput": {
+      "conflictBehavior": "",
+      "predefinedRolloutPlan": "FAST_ROLLOUT",
+      "retryUuid": ""
+    },
+    "rolloutStatus": {
+      "currentRollouts": [
+        {
+          "locationRolloutStatus": {
+            "africa-south1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "africa-south1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "africa-south1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-east1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-east1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-east1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-east2-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-east2-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-east2-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-northeast1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-northeast1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-northeast1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-northeast2-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-northeast2-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-northeast2-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-northeast3-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-northeast3-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-northeast3-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-south1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-south1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-south1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-south2-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-south2-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-south2-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-southeast1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-southeast1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-southeast1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-southeast2-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-southeast2-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-southeast2-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-southeast3-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-southeast3-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "asia-southeast3-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "australia-southeast1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "australia-southeast1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "australia-southeast1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "australia-southeast2-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "australia-southeast2-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "australia-southeast2-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-central2-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-central2-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-central2-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-north1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-north1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-north1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-north2-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-north2-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-north2-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-southwest1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-southwest1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-southwest1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west1-d": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west10-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west10-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west10-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west12-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west12-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west12-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west2-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west2-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west2-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west3-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west3-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west3-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west4-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west4-ai1a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west4-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west4-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west6-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west6-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west6-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west8-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west8-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west8-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west9-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west9-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "europe-west9-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "me-central1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "me-central1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "me-central1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "me-west1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "me-west1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "me-west1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "northamerica-northeast1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "northamerica-northeast1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "northamerica-northeast1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "northamerica-northeast2-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "northamerica-northeast2-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "northamerica-northeast2-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "northamerica-south1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "northamerica-south1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "northamerica-south1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "southamerica-east1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "southamerica-east1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "southamerica-east1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "southamerica-west1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "southamerica-west1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "southamerica-west1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-central1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-central1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-central1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-central1-f": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-east1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-east1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-east1-d": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-east4-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-east4-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-east4-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-east5-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-east5-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-east5-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-south1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-south1-ai1b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-south1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-south1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west1-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west1-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west1-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west2-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west2-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west2-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west3-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west3-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west3-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west4-a": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west4-b": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            },
+            "us-west4-c": {
+              "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+            }
+          },
+          "rollout": "projects/${projectNumber}/locations/global/rollouts/vm-extension-policy-update-rollout-20240401-123456",
+          "rolloutPlan": "projects/${projectNumber}/locations/global/rolloutPlans/vm-policy-fast-rollout-plan",
+          "state": "STATE_PROCESSING"
+        }
+      ],
+      "previousRollout": {
+        "locationRolloutStatus": {
+          "africa-south1-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "africa-south1-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "africa-south1-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-east1-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-east1-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-east1-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-east2-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-east2-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-east2-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-northeast1-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-northeast1-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-northeast1-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-northeast2-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-northeast2-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-northeast2-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-northeast3-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-northeast3-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-northeast3-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-south1-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-south1-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-south1-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-south2-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-south2-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-south2-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-southeast1-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-southeast1-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-southeast1-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-southeast2-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-southeast2-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-southeast2-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-southeast3-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-southeast3-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "asia-southeast3-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "australia-southeast1-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "australia-southeast1-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "australia-southeast1-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "australia-southeast2-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "australia-southeast2-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "australia-southeast2-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-central2-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-central2-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-central2-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-north1-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-north1-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-north1-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-north2-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-north2-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-north2-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-southwest1-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-southwest1-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-southwest1-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west1-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west1-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west1-d": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west10-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west10-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west10-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west12-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west12-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west12-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west2-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west2-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west2-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west3-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west3-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west3-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west4-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west4-ai1a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west4-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west4-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west6-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west6-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west6-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west8-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west8-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west8-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west9-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west9-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "europe-west9-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "me-central1-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "me-central1-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "me-central1-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "me-west1-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "me-west1-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "me-west1-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "northamerica-northeast1-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "northamerica-northeast1-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "northamerica-northeast1-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "northamerica-northeast2-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "northamerica-northeast2-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "northamerica-northeast2-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "northamerica-south1-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "northamerica-south1-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "northamerica-south1-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "southamerica-east1-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "southamerica-east1-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "southamerica-east1-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "southamerica-west1-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "southamerica-west1-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "southamerica-west1-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-central1-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-central1-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-central1-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-central1-f": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-east1-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-east1-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-east1-d": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-east4-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-east4-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-east4-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-east5-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-east5-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-east5-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-south1-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-south1-ai1b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-south1-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-south1-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-west1-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-west1-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-west1-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-west2-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-west2-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-west2-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-west3-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-west3-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-west3-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-west4-a": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-west4-b": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          },
+          "us-west4-c": {
+            "state": "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+          }
+        },
+        "rollout": "projects/${projectNumber}/locations/global/rollouts/vm-extension-policy-insert-rollout-20240401-123456",
+        "rolloutPlan": "projects/${projectNumber}/locations/global/rolloutPlans/vm-policy-fast-rollout-plan",
+        "state": "STATE_CANCELLED"
+      }
+    }
+  },
+  "scopedResourceStatus": "SCOPED_RESOURCE_STATUS_UNSPECIFIED",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/globalVmExtensionPolicies/${globalVmExtensionPolicyID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/globalVmExtensionPolicies/${globalVmExtensionPolicyID}",
+  "updateTimestamp": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/vmExtensionPolicies/${globalVmExtensionPolicyID}/delete
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&global_vm_extension_policy=${globalVmExtensionPolicyID}
+
+{
+  "predefinedRolloutPlan": "FAST_ROLLOUT"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "update",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${globalVmExtensionPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/globalVmExtensionPolicies/${globalVmExtensionPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "update",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${globalVmExtensionPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/globalVmExtensionPolicies/${globalVmExtensionPolicyID}",
+  "user": "user@example.com"
+}

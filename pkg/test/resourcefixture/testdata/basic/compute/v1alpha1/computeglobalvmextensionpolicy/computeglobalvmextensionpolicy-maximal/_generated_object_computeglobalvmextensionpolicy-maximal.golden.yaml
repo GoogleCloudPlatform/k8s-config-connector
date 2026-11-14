@@ -1,0 +1,42 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha1
+kind: ComputeGlobalVMExtensionPolicy
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: ${globalVmExtensionPolicyID}
+  namespace: ${uniqueId}
+spec:
+  description: Updated description
+  extensionPolicies:
+    ops-agent:
+      pinnedVersion: 2.58.0
+      stringConfig: updated config
+  instanceSelectors:
+  - labelSelector:
+      inclusionLabels:
+        env: prod
+  priority: 600
+  projectRef:
+    external: ${projectId}
+  resourceID: ${globalVmExtensionPolicyID}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/global/vmExtensionPolicies/${globalVmExtensionPolicyID}
+  observedGeneration: 2
+  observedState:
+    creationTimestamp: "1970-01-01T00:00:00Z"
+    id: 1111111111111111
+    kind: compute#globalVmExtensionPolicy
+    scopedResourceStatus: SCOPED_RESOURCE_STATUS_UNSPECIFIED
+    selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/globalVmExtensionPolicies/${globalVmExtensionPolicyID}
+    selfLinkWithID: https://www.googleapis.com/compute/v1/projects/${projectId}/global/globalVmExtensionPolicies/${globalVmExtensionPolicyID}
+    updateTimestamp: "1970-01-01T00:00:00Z"
