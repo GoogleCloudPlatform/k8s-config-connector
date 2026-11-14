@@ -4037,6 +4037,8 @@ type RolloutPlan struct {
 }
 */
 
+/* found existing non-generated go type "RolloutPlanWave", skipping
+
 // +kcc:proto=google.cloud.compute.v1.RolloutPlanWave
 type RolloutPlanWave struct {
 	// Optional. The display name of this wave of the rollout plan.
@@ -4061,6 +4063,7 @@ type RolloutPlanWave struct {
 	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWave.validation
 	Validation *RolloutPlanWaveValidation `json:"validation,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.compute.v1.RolloutPlanWaveOrchestrationOptions
 type RolloutPlanWaveOrchestrationOptions struct {
@@ -4125,6 +4128,8 @@ type RolloutPlanWaveSelectorLocationSelector struct {
 	IncludedLocations []string `json:"includedLocations,omitempty"`
 }
 
+/* found existing non-generated go type "RolloutPlanWaveSelectorResourceHierarchySelector", skipping
+
 // +kcc:proto=google.cloud.compute.v1.RolloutPlanWaveSelectorResourceHierarchySelector
 type RolloutPlanWaveSelectorResourceHierarchySelector struct {
 	// Optional. Format: "folders/{folder_id}"
@@ -4139,6 +4144,7 @@ type RolloutPlanWaveSelectorResourceHierarchySelector struct {
 	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWaveSelectorResourceHierarchySelector.included_projects
 	IncludedProjects []string `json:"includedProjects,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.compute.v1.RolloutPlanWaveValidation
 type RolloutPlanWaveValidation struct {
