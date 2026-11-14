@@ -1,0 +1,17 @@
+apiVersion: securityposture.cnrm.cloud.google.com/v1alpha1
+kind: SecurityposturePosture
+metadata:
+  name: posture-min-${uniqueId}
+spec:
+  organizationRef:
+    external: organizations/${TEST_ORG_ID}
+  location: global
+  state: DRAFT
+  policySets:
+    - policySetID: set-1
+      policies:
+        - policyID: policy-1
+          constraint:
+            securityHealthAnalyticsModule:
+              moduleName: BIGQUERY_TABLE_CMEK_DISABLED
+              moduleEnablementState: ENABLED
