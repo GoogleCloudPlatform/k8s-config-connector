@@ -75,7 +75,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "Example Display Name",
     "etag": "abcdef0123A=",
-    "keyString": "AIzaSyBqQFfa2nOCc7yUKDzmaQ_3mYqSImeawis",
+    "keyString": "${keyString}",
     "name": "projects/${projectNumber}/locations/global/keys/apikeyskey${uniqueId}",
     "restrictions": {
       "apiTargets": [
@@ -239,7 +239,7 @@ X-Xss-Protection: 0
     "deleteTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "Example Display Name - Updated",
     "etag": "abcdef0123A=",
-    "keyString": "AIzaSyBqQFfa2nOCc7yUKDzmaQ_3mYqSImeawis",
+    "keyString": "${keyString}",
     "name": "projects/${projectNumber}/locations/global/keys/apikeyskey${uniqueId}",
     "restrictions": {
       "apiTargets": [
