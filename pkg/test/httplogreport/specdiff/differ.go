@@ -178,7 +178,7 @@ func (d *Differ) populateUpdateCoverage(diffs []Item) {
 
 	allClientSide := true
 	for _, item := range diffs {
-		if !IsClientSideKRMField(item.Path) {
+		if !IsClientSideOrDiffSuppressedItem(item) {
 			allClientSide = false
 			break
 		}
@@ -201,7 +201,7 @@ func (d *Differ) populateUpdateCoverage(diffs []Item) {
 
 	for i := range diffs {
 		item := &diffs[i]
-		if IsClientSideKRMField(item.Path) {
+		if IsClientSideOrDiffSuppressedItem(*item) {
 			item.SentInUpdateRPC = true
 			item.UpdateRPCDetail = "N/A (KCC client-side policy)"
 			continue
@@ -285,7 +285,7 @@ func (d *Differ) populateFinalStateCoverage(diffs []Item) {
 	finalBodies := collectFinalPhaseResponseBodies(d.primary, logparser.PhaseUpdate)
 	for i := range diffs {
 		item := &diffs[i]
-		if IsClientSideKRMField(item.Path) {
+		if IsClientSideOrDiffSuppressedItem(*item) {
 			item.FinalStateMatch = true
 			item.FinalStateDetail = "Yes"
 			continue
@@ -681,6 +681,22 @@ func IsClientSideKRMField(path string) bool {
 	switch path {
 	case "spec.deletionPolicy", "spec.skipDelete", "spec.retainOnDelete", "spec.managementPolicy":
 		return true
+	}
+	return false
+}
+
+// IsClientSideOrDiffSuppressedItem returns true if the diff item is a KCC-internal policy field
+// or a case-only change to spec.resourceID that is intentionally diff-suppressed on the client side.
+func IsClientSideOrDiffSuppressedItem(item Item) bool {
+	if IsClientSideKRMField(item.Path) {
+		return true
+	}
+	if item.Path == "spec.resourceID" {
+		cStr, cOk := item.CreateVal.(string)
+		uStr, uOk := item.UpdateVal.(string)
+		if cOk && uOk && cStr != uStr && strings.EqualFold(cStr, uStr) {
+			return true
+		}
 	}
 	return false
 }

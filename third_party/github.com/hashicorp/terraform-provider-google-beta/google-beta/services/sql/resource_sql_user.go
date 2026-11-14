@@ -26,6 +26,22 @@ func diffSuppressIamUserName(_, old, new string, d *schema.ResourceData) bool {
 		return true
 	}
 
+	// MySQL casts all hostnames to lowercase. For MySQL Cloud IAM Groups
+	// make sure comparison checks lowercase everything after the "@" symbol.
+	// Only MySQL has "%" populated for empty hostnames so we can use
+	// that to identify MySQL Cloud IAM Groups.
+	if strings.Contains(userType, "CLOUD_IAM_GROUP") && d.Get("host") == "%" {
+		splitName := strings.SplitN(new, "@", 2)
+		if len(splitName) == 2 {
+			groupUsername := splitName[0]
+			groupHostname := splitName[1]
+			groupName := groupUsername + "@" + strings.ToLower(groupHostname)
+			if old == groupName {
+				return true
+			}
+		}
+	}
+
 	return false
 }
 
@@ -339,26 +355,12 @@ func resourceSqlUserRead(d *schema.ResourceData, meta interface{}) error {
 		return handleUserNotFoundError(err, d, fmt.Sprintf("SQL User %q in instance %q", name, instance))
 	}
 
-	var user *sqladmin.User
 	databaseInstance, err := config.NewSqlAdminClient(userAgent).Instances.Get(project, instance).Do()
 	if err != nil {
 		return err
 	}
 
-	for _, currentUser := range users.Items {
-		if !strings.Contains(databaseInstance.DatabaseVersion, "POSTGRES") {
-			name = strings.Split(name, "@")[0]
-		}
-
-		if currentUser.Name == name {
-			// Host can only be empty for postgres instances,
-			// so don't compare the host if the API host is empty.
-			if host == "" || currentUser.Host == host {
-				user = currentUser
-				break
-			}
-		}
-	}
+	user := findSqlUser(databaseInstance.DatabaseVersion, name, host, users.Items)
 
 	if user == nil {
 		log.Printf("[WARN] Removing SQL User %q because it's gone", d.Get("name").(string))
@@ -395,6 +397,32 @@ func resourceSqlUserRead(d *schema.ResourceData, meta interface{}) error {
 	}
 
 	d.SetId(fmt.Sprintf("%s/%s/%s", user.Name, user.Host, user.Instance))
+	return nil
+}
+
+func findSqlUser(databaseVersion, name, host string, users []*sqladmin.User) *sqladmin.User {
+	for _, currentUser := range users {
+		var username string
+		if !(strings.Contains(databaseVersion, "POSTGRES") || strings.Contains(databaseVersion, "SQLSERVER") || currentUser.Type == "CLOUD_IAM_GROUP" || currentUser.Type == "ENTRAID_USER") {
+			username = strings.Split(name, "@")[0]
+		} else if strings.Contains(databaseVersion, "MYSQL") && currentUser.Type == "CLOUD_IAM_GROUP" {
+			splitName := strings.SplitN(name, "@", 2)
+			if len(splitName) == 2 {
+				groupUsername := splitName[0]
+				groupHostname := splitName[1]
+				username = groupUsername + "@" + strings.ToLower(groupHostname)
+			}
+		} else {
+			username = name
+		}
+		if currentUser.Name == username {
+			// Host can only be empty for Postgres and SQL Server instances,
+			// so don't compare the host if the configured host is empty.
+			if host == "" || currentUser.Host == host {
+				return currentUser
+			}
+		}
+	}
 	return nil
 }
 
