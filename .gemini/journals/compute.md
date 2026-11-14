@@ -244,3 +244,32 @@
   4. **Normalization**: Configured normalization in `mockgcp/mockcompute/normalize.go` and `tests/e2e/normalize.go` for `updateTimestamp` (`mockgcpregistry.PlaceholderTimestamp` / `mockgcpregistry.PlaceholderTime`) matching server timestamps.
   5. **Validation**: Ran `hack/compare-mock` for minimal and maximal fixtures; both passed with zero diff in golden objects and mock HTTP logs (`_http_mock.log`), and verified `./dev/ci/presubmits/tests-e2e-fixtures-suite compute` succeeded.
 
+### [2026-11-13] Greenfield Prepopulate of ComputeInterconnectGroup
+- **Context**: Prepopulating direct KRM types, IdentityV2, reference, and `judgement_queue.yaml` for Greenfield resource `ComputeInterconnectGroup` under `apis/compute/v1alpha1/` (issue #15613).
+- **Proto & Service Details**: `InterconnectGroup` is defined in Google Cloud Compute API v1 (`google/cloud/compute/v1/compute.proto`), and managed via the `InterconnectGroups` service (`projects/{project}/global/interconnectGroups/{interconnectgroup}`).
+- **Implementation**:
+  1. Configured `apis/compute/generate.sh` with `generate-types` (adding `ComputeInterconnectGroup:InterconnectGroup` with `--prepopulate-resource`) and `generate-identity`.
+  2. Executed `./apis/compute/generate.sh`, automatically generating `computeinterconnectgroup_types.go`, `computeinterconnectgroup_identity.generated.go`, `computeinterconnectgroup_reference.generated.go`, `computeinterconnectgroup_identity_generated_test.go`, and CRD manifests.
+  3. Added `ComputeInterconnectGroup` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. Added `computeinterconnectgroups.compute.cnrm.cloud.google.com` entries to `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+  5. Recorded review items in `apis/compute/judgement_queue.yaml` with `status: open` for Step 1b triage.
+- **Verification**:
+  - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.
+
+### [2026-11-14] Greenfield: Triage judgement queue and finalize direct KRM types and identity for ComputeInterconnectGroup
+- **Context**: Triaged and finalized direct KRM types, identity, and references for `ComputeInterconnectGroup` (issue #15621) following Greenfield Step 1b (`judgement/SKILL.md`).
+- **Judgement Queue Resolutions & Learnings**:
+  1. `untriaged-bulk-generation`: Resolved after triaging all fields, omissions, references, and KRM conventions.
+  2. `verify-resource-docs-link`: Corrected resource documentation link to `https://cloud.google.com/compute/docs/reference/rest/v1/interconnectGroups`.
+  3. `location-parent-unknown`: Verified `InterconnectGroup` is a global resource parented by project (`projects/{project}/global/interconnectGroups/{interconnectgroup}`). Removed `spec.location` and kept `spec.projectRef` (`// +required`).
+  4. `possible-reference-by-sibling` on `.spec.interconnects.KEY.interconnect`: Converted to `InterconnectRef *ComputeInterconnectRef` in `InterconnectGroupInterconnect` (moved to `computeinterconnectgroup_types.go`). `generate-mapper` generates conversion to/from proto string field.
+  5. `message-map-derived` on `.spec.interconnects`: Accepted; accurately models proto `map<string, InterconnectGroupInterconnect>`.
+  6. `well-known-output-only-pattern-in-comment` on `configured` and `physicalStructure`: Proto comments mark `InterconnectGroupConfigured` and `InterconnectGroupPhysicalStructure` as output-only. Moved `Configured *InterconnectGroupConfigured` and `PhysicalStructure *InterconnectGroupPhysicalStructure` from `ComputeInterconnectGroupSpec` to `ComputeInterconnectGroupObservedState`. Marked corresponding `possible-reference-by-sibling` and `location-or-parent-ref` on their nested fields as `not-applicable` because status fields do not use KRM references.
+  7. `server-set-field-placed` on `creationTimestamp`, `etag`, `id`, `kind`, and `selfLink`: Confirmed server-generated output-only fields; verified placement in `ComputeInterconnectGroupObservedState` and removed `+kcc:guess` comments.
+- **Verification**:
+  - Re-ran `./apis/compute/generate.sh` and verified CRD generation, mappers, deepcopy code.
+  - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.
+
+
+
+

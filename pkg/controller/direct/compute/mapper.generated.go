@@ -3312,58 +3312,124 @@ func ComputeInterconnectAttachmentSpec_v1beta1_FromProto(mapCtx *direct.MapConte
 }
 */
 
-/* found existing non-generated mapping function "ComputeInterconnectAttachmentSpec_v1beta1_ToProto", skipping
-func ComputeInterconnectAttachmentSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeInterconnectAttachmentSpec) *pb.InterconnectAttachment {
+/*
+found existing non-generated mapping function "ComputeInterconnectAttachmentSpec_v1beta1_ToProto", skipping
+
+	func ComputeInterconnectAttachmentSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeInterconnectAttachmentSpec) *pb.InterconnectAttachment {
+		if in == nil {
+			return nil
+		}
+		out := &pb.InterconnectAttachment{}
+		out.AdminEnabled = in.AdminEnabled
+		// MISSING: AttachmentGroup
+		out.Bandwidth = in.Bandwidth
+		// MISSING: CandidateIPV6Subnets
+		out.CandidateSubnets = in.CandidateSubnets
+		// MISSING: CloudRouterIPAddress
+		// MISSING: CloudRouterIPV6Address
+		// MISSING: CloudRouterIPV6InterfaceID
+		// MISSING: ConfigurationConstraints
+		// MISSING: CreationTimestamp
+		// MISSING: CustomerRouterIPAddress
+		// MISSING: CustomerRouterIPV6Address
+		// MISSING: CustomerRouterIPV6InterfaceID
+		// MISSING: DataplaneVersion
+		out.Description = in.Description
+		out.EdgeAvailabilityDomain = in.EdgeAvailabilityDomain
+		out.Encryption = in.Encryption
+		// MISSING: GoogleReferenceID
+		// MISSING: ID
+		out.Interconnect = in.Interconnect
+		out.IpsecInternalAddresses = ComputeInterconnectAttachmentSpec_IpsecInternalAddresses_ToProto(mapCtx, in.IpsecInternalAddresses)
+		// MISSING: Kind
+		// MISSING: LabelFingerprint
+		// MISSING: Labels
+		out.Mtu = in.Mtu
+		// MISSING: Name
+		// MISSING: OperationalStatus
+		// MISSING: PairingKey
+		// MISSING: PartnerAsn
+		// MISSING: PartnerMetadata
+		// MISSING: PrivateInterconnectInfo
+		out.Region = in.Region
+		// MISSING: RemoteService
+		if in.RouterRef != nil {
+			out.Router = &in.RouterRef.External
+		}
+		// MISSING: SatisfiesPzs
+		// MISSING: SelfLink
+		// MISSING: StackType
+		// MISSING: State
+		// MISSING: SubnetLength
+		out.Type = in.Type
+		out.VlanTag8021q = in.VlanTag8021q
+		return out
+	}
+*/
+func ComputeInterconnectGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroup) *krmcomputev1alpha1.ComputeInterconnectGroupObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.InterconnectAttachment{}
-	out.AdminEnabled = in.AdminEnabled
-	// MISSING: AttachmentGroup
-	out.Bandwidth = in.Bandwidth
-	// MISSING: CandidateIPV6Subnets
-	out.CandidateSubnets = in.CandidateSubnets
-	// MISSING: CloudRouterIPAddress
-	// MISSING: CloudRouterIPV6Address
-	// MISSING: CloudRouterIPV6InterfaceID
-	// MISSING: ConfigurationConstraints
-	// MISSING: CreationTimestamp
-	// MISSING: CustomerRouterIPAddress
-	// MISSING: CustomerRouterIPV6Address
-	// MISSING: CustomerRouterIPV6InterfaceID
-	// MISSING: DataplaneVersion
-	out.Description = in.Description
-	out.EdgeAvailabilityDomain = in.EdgeAvailabilityDomain
-	out.Encryption = in.Encryption
-	// MISSING: GoogleReferenceID
-	// MISSING: ID
-	out.Interconnect = in.Interconnect
-	out.IpsecInternalAddresses = ComputeInterconnectAttachmentSpec_IpsecInternalAddresses_ToProto(mapCtx, in.IpsecInternalAddresses)
-	// MISSING: Kind
-	// MISSING: LabelFingerprint
-	// MISSING: Labels
-	out.Mtu = in.Mtu
+	out := &krmcomputev1alpha1.ComputeInterconnectGroupObservedState{}
+	out.Configured = InterconnectGroupConfigured_v1alpha1_FromProto(mapCtx, in.GetConfigured())
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Etag = in.Etag
+	out.ID = in.Id
+	out.Kind = in.Kind
 	// MISSING: Name
-	// MISSING: OperationalStatus
-	// MISSING: PairingKey
-	// MISSING: PartnerAsn
-	// MISSING: PartnerMetadata
-	// MISSING: PrivateInterconnectInfo
-	out.Region = in.Region
-	// MISSING: RemoteService
-	if in.RouterRef != nil {
-		out.Router = &in.RouterRef.External
-	}
-	// MISSING: SatisfiesPzs
-	// MISSING: SelfLink
-	// MISSING: StackType
-	// MISSING: State
-	// MISSING: SubnetLength
-	out.Type = in.Type
-	out.VlanTag8021q = in.VlanTag8021q
+	out.PhysicalStructure = InterconnectGroupPhysicalStructure_v1alpha1_FromProto(mapCtx, in.GetPhysicalStructure())
+	out.SelfLink = in.SelfLink
 	return out
 }
-*/
+func ComputeInterconnectGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInterconnectGroupObservedState) *pb.InterconnectGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroup{}
+	out.Configured = InterconnectGroupConfigured_v1alpha1_ToProto(mapCtx, in.Configured)
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Etag = in.Etag
+	out.Id = in.ID
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.PhysicalStructure = InterconnectGroupPhysicalStructure_v1alpha1_ToProto(mapCtx, in.PhysicalStructure)
+	out.SelfLink = in.SelfLink
+	return out
+}
+func ComputeInterconnectGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroup) *krmcomputev1alpha1.ComputeInterconnectGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeInterconnectGroupSpec{}
+	out.Description = in.Description
+	out.Intent = InterconnectGroupIntent_v1alpha1_FromProto(mapCtx, in.GetIntent())
+	if in.Interconnects != nil {
+		out.Interconnects = make(map[string]krmcomputev1alpha1.InterconnectGroupInterconnect, len(in.Interconnects))
+		for k, v := range in.Interconnects {
+			if c := InterconnectGroupInterconnect_v1alpha1_FromProto(mapCtx, v); c != nil {
+				out.Interconnects[k] = *c
+			}
+		}
+	}
+	// MISSING: Name
+	return out
+}
+func ComputeInterconnectGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInterconnectGroupSpec) *pb.InterconnectGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroup{}
+	out.Description = in.Description
+	out.Intent = InterconnectGroupIntent_v1alpha1_ToProto(mapCtx, in.Intent)
+	if in.Interconnects != nil {
+		out.Interconnects = make(map[string]*pb.InterconnectGroupInterconnect, len(in.Interconnects))
+		for k, v := range in.Interconnects {
+			out.Interconnects[k] = InterconnectGroupInterconnect_v1alpha1_ToProto(mapCtx, &v)
+		}
+	}
+	// MISSING: Name
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeInterconnectObservedState_v1alpha1_FromProto", skipping
 func ComputeInterconnectObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Interconnect) *krmcomputev1alpha1.ComputeInterconnectObservedState {
@@ -7402,6 +7468,174 @@ func InterconnectCircuitInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.CustomerDemarcId = in.CustomerDemarcID
 	out.GoogleCircuitId = in.GoogleCircuitID
 	out.GoogleDemarcId = in.GoogleDemarcID
+	return out
+}
+func InterconnectGroupConfigured_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroupConfigured) *krmcomputev1alpha1.InterconnectGroupConfigured {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectGroupConfigured{}
+	out.TopologyCapability = InterconnectGroupConfiguredTopologyCapability_v1alpha1_FromProto(mapCtx, in.GetTopologyCapability())
+	return out
+}
+func InterconnectGroupConfigured_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectGroupConfigured) *pb.InterconnectGroupConfigured {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroupConfigured{}
+	out.TopologyCapability = InterconnectGroupConfiguredTopologyCapability_v1alpha1_ToProto(mapCtx, in.TopologyCapability)
+	return out
+}
+func InterconnectGroupConfiguredTopologyCapability_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroupConfiguredTopologyCapability) *krmcomputev1alpha1.InterconnectGroupConfiguredTopologyCapability {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectGroupConfiguredTopologyCapability{}
+	out.IntendedCapabilityBlockers = direct.Slice_FromProto(mapCtx, in.IntendedCapabilityBlockers, InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers_v1alpha1_FromProto)
+	out.SupportedSla = in.SupportedSla
+	return out
+}
+func InterconnectGroupConfiguredTopologyCapability_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectGroupConfiguredTopologyCapability) *pb.InterconnectGroupConfiguredTopologyCapability {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroupConfiguredTopologyCapability{}
+	out.IntendedCapabilityBlockers = direct.Slice_ToProto(mapCtx, in.IntendedCapabilityBlockers, InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers_v1alpha1_ToProto)
+	out.SupportedSla = in.SupportedSla
+	return out
+}
+func InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers) *krmcomputev1alpha1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers{}
+	out.BlockerType = in.BlockerType
+	out.DocumentationLink = in.DocumentationLink
+	out.Explanation = in.Explanation
+	out.Facilities = in.Facilities
+	out.Interconnects = in.Interconnects
+	out.Metros = in.Metros
+	out.Zones = in.Zones
+	return out
+}
+func InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers) *pb.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers{}
+	out.BlockerType = in.BlockerType
+	out.DocumentationLink = in.DocumentationLink
+	out.Explanation = in.Explanation
+	out.Facilities = in.Facilities
+	out.Interconnects = in.Interconnects
+	out.Metros = in.Metros
+	out.Zones = in.Zones
+	return out
+}
+func InterconnectGroupIntent_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroupIntent) *krmcomputev1alpha1.InterconnectGroupIntent {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectGroupIntent{}
+	out.TopologyCapability = in.TopologyCapability
+	return out
+}
+func InterconnectGroupIntent_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectGroupIntent) *pb.InterconnectGroupIntent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroupIntent{}
+	out.TopologyCapability = in.TopologyCapability
+	return out
+}
+func InterconnectGroupInterconnect_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroupInterconnect) *krmcomputev1alpha1.InterconnectGroupInterconnect {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectGroupInterconnect{}
+	if in.GetInterconnect() != "" {
+		out.InterconnectRef = &krmcomputev1alpha1.ComputeInterconnectRef{External: in.GetInterconnect()}
+	}
+	return out
+}
+func InterconnectGroupInterconnect_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectGroupInterconnect) *pb.InterconnectGroupInterconnect {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroupInterconnect{}
+	if in.InterconnectRef != nil {
+		out.Interconnect = &in.InterconnectRef.External
+	}
+	return out
+}
+func InterconnectGroupPhysicalStructure_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroupPhysicalStructure) *krmcomputev1alpha1.InterconnectGroupPhysicalStructure {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectGroupPhysicalStructure{}
+	out.Metros = direct.Slice_FromProto(mapCtx, in.Metros, InterconnectGroupPhysicalStructureMetros_v1alpha1_FromProto)
+	return out
+}
+func InterconnectGroupPhysicalStructure_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectGroupPhysicalStructure) *pb.InterconnectGroupPhysicalStructure {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroupPhysicalStructure{}
+	out.Metros = direct.Slice_ToProto(mapCtx, in.Metros, InterconnectGroupPhysicalStructureMetros_v1alpha1_ToProto)
+	return out
+}
+func InterconnectGroupPhysicalStructureMetros_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroupPhysicalStructureMetros) *krmcomputev1alpha1.InterconnectGroupPhysicalStructureMetros {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectGroupPhysicalStructureMetros{}
+	out.Facilities = direct.Slice_FromProto(mapCtx, in.Facilities, InterconnectGroupPhysicalStructureMetrosFacilities_v1alpha1_FromProto)
+	out.Metro = in.Metro
+	return out
+}
+func InterconnectGroupPhysicalStructureMetros_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectGroupPhysicalStructureMetros) *pb.InterconnectGroupPhysicalStructureMetros {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroupPhysicalStructureMetros{}
+	out.Facilities = direct.Slice_ToProto(mapCtx, in.Facilities, InterconnectGroupPhysicalStructureMetrosFacilities_v1alpha1_ToProto)
+	out.Metro = in.Metro
+	return out
+}
+func InterconnectGroupPhysicalStructureMetrosFacilities_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroupPhysicalStructureMetrosFacilities) *krmcomputev1alpha1.InterconnectGroupPhysicalStructureMetrosFacilities {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectGroupPhysicalStructureMetrosFacilities{}
+	out.Facility = in.Facility
+	out.Zones = direct.Slice_FromProto(mapCtx, in.Zones, InterconnectGroupPhysicalStructureMetrosFacilitiesZones_v1alpha1_FromProto)
+	return out
+}
+func InterconnectGroupPhysicalStructureMetrosFacilities_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectGroupPhysicalStructureMetrosFacilities) *pb.InterconnectGroupPhysicalStructureMetrosFacilities {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroupPhysicalStructureMetrosFacilities{}
+	out.Facility = in.Facility
+	out.Zones = direct.Slice_ToProto(mapCtx, in.Zones, InterconnectGroupPhysicalStructureMetrosFacilitiesZones_v1alpha1_ToProto)
+	return out
+}
+func InterconnectGroupPhysicalStructureMetrosFacilitiesZones_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroupPhysicalStructureMetrosFacilitiesZones) *krmcomputev1alpha1.InterconnectGroupPhysicalStructureMetrosFacilitiesZones {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectGroupPhysicalStructureMetrosFacilitiesZones{}
+	out.Interconnects = in.Interconnects
+	out.Zone = in.Zone
+	return out
+}
+func InterconnectGroupPhysicalStructureMetrosFacilitiesZones_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectGroupPhysicalStructureMetrosFacilitiesZones) *pb.InterconnectGroupPhysicalStructureMetrosFacilitiesZones {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroupPhysicalStructureMetrosFacilitiesZones{}
+	out.Interconnects = in.Interconnects
+	out.Zone = in.Zone
 	return out
 }
 func InterconnectMacsec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectMacsec) *krmcomputev1alpha1.InterconnectMacsec {
