@@ -70,8 +70,8 @@ cloud.google.com/go/cloudsecuritycompliance v1.0.0 h1:CB/BJL7Ye+8EG7T1pKUZQ5/vcb
 cloud.google.com/go/cloudsecuritycompliance v1.0.0/go.mod h1:gxkuafvJ+IL5CQLSXRFGUZCkyZOmtd7vo4UHrnT79NM=
 cloud.google.com/go/cloudtasks v1.18.0 h1:KzT7hfix/9/xAf20tNPIxwX59XGpRF0Lun2t8LHOj9E=
 cloud.google.com/go/cloudtasks v1.18.0/go.mod h1:3KeCxwtGEyaySL7CR3lMmEa2I4mq1ynXdgmfNiO4RYE=
-cloud.google.com/go/compute v1.63.0 h1:KsBourH0wajM4RhzwPwRMKbxHVdvzGsk7StvACoWXD8=
-cloud.google.com/go/compute v1.63.0/go.mod h1:Xm6PbsLgBpAg4va77ljbBdpMjzuU+uPp5Ze2dnZq7lw=
+cloud.google.com/go/compute v1.64.0 h1:7MmuzeAxlG5MOG5PQD2NLtyYR6bWjkvGljRu7pByoRU=
+cloud.google.com/go/compute v1.64.0/go.mod h1:eHhcRZ6vf70fQCS3VEsiWSh+nQ+tLvSMb7mwLQskgN0=
 cloud.google.com/go/compute/metadata v0.9.0 h1:pDUj4QMoPejqq20dK0Pg2N4yG9zIkYGdBtwLoEkH9Zs=
 cloud.google.com/go/compute/metadata v0.9.0/go.mod h1:E0bWwX5wTnLPedCKqk3pJmVgCBSM6qQI1yTBdEb3C10=
 cloud.google.com/go/config v1.12.0 h1:PrU7nSKveVGxtkbQcB6nYX574FB4T+u8/o6UN6JHDi0=
@@ -188,8 +188,7 @@ cloud.google.com/go/oslogin v1.18.0 h1:OkccORMcY2XEHwN5+AP0XH/SCUNBl39GGjaQuSCVc
 cloud.google.com/go/oslogin v1.18.0/go.mod h1:3Oa36T3781Mv+yCSVYlfasi7auHjfPFqvNOd1q92umc=
 cloud.google.com/go/parallelstore v1.2.0 h1:VXi9dggRgjugOoSC2iCsdwSmfqwqoSj1H6Tn9ALjl2E=
 cloud.google.com/go/parallelstore v1.2.0/go.mod h1:WvAO6RXodd9N39pM5mCzLSB+X7aZYDQYskeGCcNC80o=
-cloud.google.com/go/parametermanager v0.3.1 h1:hmT52JUztk7pTLbTdAlXavZaiR6FfArH4CPTtmy635g=
-cloud.google.com/go/parametermanager v0.3.1/go.mod h1:uVdpZMPcSzEWaup+Bt0usxRYxyLzIbZffKXyQduX/2E=
+cloud.google.com/go/parametermanager v1.1.0 h1:4v/Ra8K5GR8TtK+JCIx6xVDZX9nH9ZEtG1MGNsHUU98=
 cloud.google.com/go/parametermanager v1.1.0/go.mod h1:kMe4ZH0nuH7LIrfVowtVeT9zuJlWXZVIxRr7IzySIbI=
 cloud.google.com/go/privilegedaccessmanager v0.3.1 h1:gnsf+cXnxF3BLsIFbfeVNxQsvcF0EkeezuB3ZOT2ggA=
 cloud.google.com/go/privilegedaccessmanager v0.3.1/go.mod h1:liYHa55U6nlwfca5OvJ6f31fcgC6UYU0Np+Sc9yIiB4=

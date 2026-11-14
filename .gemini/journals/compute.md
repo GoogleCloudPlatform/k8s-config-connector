@@ -341,9 +341,9 @@
   3. Both fixtures passed all 7/7 automated validation checks (`V1`-`V7`), verified zero-diff re-reconciliation, and deleted cleanly.
   4. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha`.
 
-  ### [2026-11-14] Greenfield: MockGCP and Alignment for ComputeInterconnectGroup
-  - **Context**: Implementing MockGCP and aligning golden HTTP logs for `ComputeInterconnectGroup` under `compute.cnrm.cloud.google.com/v1alpha1` (issue #15663) following Greenfield Step 3 (`kcc-direct-mockgcp-implementer/SKILL.md`).
-  - **Implementation & Alignment**:
+### [2026-11-14] Greenfield: MockGCP and Alignment for ComputeInterconnectGroup
+- **Context**: Implementing MockGCP and aligning golden HTTP logs for `ComputeInterconnectGroup` under `compute.cnrm.cloud.google.com/v1alpha1` (issue #15663) following Greenfield Step 3 (`kcc-direct-mockgcp-implementer/SKILL.md`).
+- **Implementation & Alignment**:
   1. Implemented `InterconnectGroupsV1` mock service under `mockgcp/mockcompute/interconnectgroupsv1.go` providing CRUD operations (`Get`, `Insert`, `Patch`, `Delete`, `List`) backed by MockGCP storage and `startGlobalLRO`.
   2. Registered `InterconnectGroupsV1` in `MockService.Register` (gRPC) and `MockService.NewHTTPMux` (HTTP gateway) in `mockgcp/mockcompute/service.go`.
   3. Added `ComputeInterconnectGroup` to supported mock GCP GroupKinds in `config/tests/samples/create/harness.go`.
@@ -354,8 +354,23 @@
     - Populated `configured.topologyCapability` dynamically based on `intent.topologyCapability`: when `NO_SLA` returns `supportedSla: "NO_SLA"`; when requiring SLAs (e.g. `PRODUCTION_NON_CRITICAL`) without interconnects, includes `intendedCapabilityBlockers` of type `NO_INTERCONNECTS`.
     - Handled update masks in `Patch` (`description`, `intent`, `interconnects`).
   5. Normalized `etag` to `PlaceholderFingerprint` in `cleanComputeResource` (`mockgcp/mockcompute/normalize.go`).
-  - **Verification**:
+- **Verification**:
   - `hack/compare-mock "fixtures/computeinterconnectgroup"` passed cleanly with zero errors.
   - `go test -v ./pkg/test/resourcefixture -run 'TestGoldenLogAlignment/compute/v1alpha1/computeinterconnectgroup'` passed with zero diffs across both minimal and maximal fixtures.
   - `./dev/ci/presubmits/tests-e2e-fixtures-suite compute` passed (192/192 tests pass).
   - Authentic real-GCP baseline logs (`_http.log`, `_audit_probe.log`) remain untouched.
+
+### [2026-11-14] Greenfield Controller, Fuzzer, and E2E Fixtures for ComputeGlobalVMExtensionPolicy
+- **Context**: Implementing direct controller, fuzzer, and real-GCP recorded E2E fixtures for `ComputeGlobalVMExtensionPolicy` (issue #15617).
+- **Findings & Implementation**:
+  1. **Client**: Upgraded `cloud.google.com/go/compute` from `v1.63.0` to `v1.64.0` in `go.mod` and `mockgcp/go.mod` to access `GlobalVmExtensionPoliciesClient` (`gcp.NewGlobalVmExtensionPoliciesRESTClient(ctx, opts...)`).
+  2. **Controller Logic**: Implemented `GlobalVmExtensionPolicyAdapter` satisfying all 5 canonical Greenfield controller standards:
+     - Configured REST client options via `m.config.RESTClientOptions()`.
+     - Called `common.NormalizeGreenfieldReferences(ctx, reader, obj, nil)` first in `AdapterForObject`.
+     - Obtained identity via `obj.GetIdentity` (`ComputeGlobalVMExtensionPolicyIdentity`).
+     - Defaulted `rolloutOperation.rolloutInput.predefinedRolloutPlan` to `FAST_ROLLOUT` on `Create` and `Update` if unspecified, preventing Compute Engine 503 Internal Error caused by missing rollout plan on global policies.
+     - Implemented `Delete` by passing `predefinedRolloutPlan: "FAST_ROLLOUT"` in the request body to `/delete` POST RPC as required by Compute Engine API for GlobalVmExtensionPolicies.
+     - Registered `ComputeGlobalVMExtensionPolicy` in `pkg/controller/resourceconfig/static_config.go` with `ReconcilerTypeDirect`.
+  3. **Httplogreport Validator**: Updated `pkg/test/httplogreport/logparser/entry.go` `IsDelete()` to recognize Compute Engine's `POST .../delete` endpoint pattern as a valid deletion RPC for V4 Delete checks.
+  4. **Fuzzer & Mappers**: Implemented mappers in `computeglobalvmextensionpolicy_mapper.go` and generated `computeglobalvmextensionpolicy_fuzzer.generated.go`. Verified with `FOCUS=ComputeGlobalVMExtensionPolicy go test -v ./pkg/fuzztesting/fuzztests/ -run TestFocusedMappers`.
+  5. **E2E Golden Testing**: Authored minimal and maximal test fixtures with `ops-agent` extensions and recorded authentic golden logs against real GCP using `./hack/record-gcp`. Passed all V1-V7 checks, steady-state re-reconciliation, and deletion. Verified all compute fixtures with `./dev/ci/presubmits/tests-e2e-fixtures-suite compute`.
