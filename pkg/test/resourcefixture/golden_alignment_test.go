@@ -664,6 +664,8 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "activityDataRetentionPeriodDays")
 		// WebSecurityScanner targetPlatforms is returned by real GCP (e.g. [1] for App Engine) but not in v1 proto
 		delete(v, "targetPlatforms")
+		// CESApp: retentionWindow is returned by real GCP but not in cespb.ConversationLoggingSettings
+		delete(v, "retentionWindow")
 		if qm, ok := v["qualityMetadata"].(map[string]interface{}); ok {
 			if agentInfo, ok := qm["agentInfo"].([]interface{}); ok {
 				for _, a := range agentInfo {
