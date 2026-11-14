@@ -56,6 +56,7 @@ ${CONTROLLERBUILDER} generate-identity \
   --api-version dialogflowcx.cnrm.cloud.google.com/v1alpha1 \
   --resource DialogflowCXEntityType:EntityType \
   --resource DialogflowCXFlow:Flow \
+  --resource DialogflowCXIntent:Intent \
   --resource DialogflowCXPage:Page \
   --resource DialogflowCXWebhook:Webhook
 
