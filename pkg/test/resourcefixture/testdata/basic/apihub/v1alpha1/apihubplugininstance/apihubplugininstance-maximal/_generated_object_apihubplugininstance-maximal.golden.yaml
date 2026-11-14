@@ -1,0 +1,45 @@
+apiVersion: apihub.cnrm.cloud.google.com/v1alpha1
+kind: APIHubPluginInstance
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: apihubplugininstance-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  actions:
+  - actionID: action-1
+    curationConfig:
+      curationType: DEFAULT_CURATION_FOR_API_METADATA
+  displayName: Updated Maximal Plugin Instance ${uniqueId}
+  parentRef:
+    name: apihubplugin-${uniqueId}
+  sourceProjectID: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}/instances/apihubplugininstance-maximal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    actions:
+    - hubInstanceAction:
+        currentExecutionState: NOT_RUNNING
+        lastExecution:
+          endTime: "0001-01-01T00:00:00Z"
+          startTime: "0001-01-01T00:00:00Z"
+      state: ENABLED
+    - hubInstanceAction:
+        lastExecution:
+          endTime: "0001-01-01T00:00:00Z"
+          startTime: "0001-01-01T00:00:00Z"
+      state: DISABLED
+    createTime: "1970-01-01T00:00:00Z"
+    state: ACTIVE
+    updateTime: "1970-01-01T00:00:00Z"

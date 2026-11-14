@@ -62,6 +62,10 @@ func (m *modelPluginInstance) AdapterForObject(ctx context.Context, op *directba
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	i, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
@@ -194,8 +198,15 @@ func (a *PluginInstanceAdapter) Update(ctx context.Context, updateOp *directbase
 	if err != nil {
 		return err
 	}
+
+	for _, path := range updateMask.Paths {
+		if path == "actions" || strings.HasPrefix(path, "actions.") {
+			return fmt.Errorf("field %q is immutable and cannot be updated", path)
+		}
+	}
+
 	updated := a.actual
-	if !report.HasDiff() {
+	if len(updateMask.Paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 	} else {
 		report.Object = updateOp.GetUnstructured()
