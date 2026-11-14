@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: sql.cnrm.cloud.google.com
+  kind: SQLInstance
+  name: sqluser-dep-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: sql.cnrm.cloud.google.com
+  kind: SQLUser
+  name: sqluser-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
