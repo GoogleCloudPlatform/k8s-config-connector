@@ -799,6 +799,7 @@ func AIPlatformNotebookExecutionJobObservedState_ToProto(mapCtx *direct.MapConte
 	return out
 }
 
+/* found existing non-generated mapping function "AIPlatformNotebookExecutionJobSpec_FromProto", skipping
 func AIPlatformNotebookExecutionJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob) *krm.AIPlatformNotebookExecutionJobSpec {
 	if in == nil {
 		return nil
@@ -824,6 +825,7 @@ func AIPlatformNotebookExecutionJobSpec_FromProto(mapCtx *direct.MapContext, in 
 	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "AIPlatformNotebookExecutionJobSpec_ToProto", skipping
 func AIPlatformNotebookExecutionJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformNotebookExecutionJobSpec) *pb.NotebookExecutionJob {
