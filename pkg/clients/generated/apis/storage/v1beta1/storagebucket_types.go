@@ -268,6 +268,10 @@ type StorageBucketSpec struct {
 	// +optional
 	RetentionPolicy *BucketRetentionPolicy `json:"retentionPolicy,omitempty"`
 
+	/* Specifies the RPO setting of bucket. If set 'ASYNC_TURBO', The Turbo Replication will be enabled for the dual-region bucket. Value 'DEFAULT' will set RPO setting to default. See the docs for more details. */
+	// +optional
+	Rpo *string `json:"rpo,omitempty"`
+
 	/* The bucket's soft delete policy, which defines the period of time that soft-deleted objects will be retained, and cannot be permanently deleted. If it is not provided, by default Google Cloud Storage sets this to default soft delete policy. */
 	// +optional
 	SoftDeletePolicy *BucketSoftDeletePolicy `json:"softDeletePolicy,omitempty"`
