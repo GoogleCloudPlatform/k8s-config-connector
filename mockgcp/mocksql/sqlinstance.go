@@ -982,6 +982,9 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 		if settings.Tier != "" {
 			obj.Settings.Tier = settings.Tier
 		}
+		if settings.RetainBackupsOnDelete != nil {
+			obj.Settings.RetainBackupsOnDelete = settings.RetainBackupsOnDelete
+		}
 		if settings.IpConfiguration != nil {
 			if obj.Settings.IpConfiguration == nil {
 				obj.Settings.IpConfiguration = &pb.IpConfiguration{}

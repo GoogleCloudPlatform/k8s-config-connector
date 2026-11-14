@@ -1,10 +1,14 @@
 GOOGLEAPI_VERSION?=$(shell grep https://github.com/googleapis/googleapis ../../apis/git.versions | awk '{print $$2}' )
 GOLANG_X_TOOLS_VERSION?=$(shell grep -E '^\s*golang.org/x/tools\s+' ../../go.mod | awk '{print $$2}')
 
+.ONESHELL:
+.SHELLFLAGS := -e -c
+
 .PHONY: generate-grpc-for-google-protos
 generate-grpc-for-google-protos: tools
 	mkdir -p .build/
-	git clone https://github.com/googleapis/googleapis.git .build/googleapis || (cd .build/googleapis && git fetch --all && git reset --hard $(GOOGLEAPI_VERSION))
+	if [ ! -d .build/googleapis ]; then git clone --depth 1 https://github.com/googleapis/googleapis.git .build/googleapis; fi
+	(cd .build/googleapis && (git cat-file -e $(GOOGLEAPI_VERSION)^{commit} 2>/dev/null || git fetch --depth 1 origin $(GOOGLEAPI_VERSION)) && git reset --hard $(GOOGLEAPI_VERSION) && git clean -df .)
 	mkdir -p ./generated
 
 	PATH=.build/bin/:${PATH} .build/bin/protoc/bin/protoc \
@@ -16,16 +20,22 @@ generate-grpc-for-google-protos: tools
 		--go-grpc_opt paths=source_relative \
 		./.build/googleapis/google/cloud/tpu/v2/*.proto
 
-	go -C ../../mockgcp/tools/patch-proto run . --file ./.build/googleapis/google/cloud/sql/v1beta4/cloud_sql_resources.proto --message IpConfiguration --mode append <<EOF
-  // The server CA mode.
-  optional string server_ca_mode = 11;
+	go -C ../../mockgcp/tools/patch-proto run . --file $(CURDIR)/.build/googleapis/google/cloud/sql/v1beta4/cloud_sql_resources.proto --message IpConfiguration --mode append <<EOF
+	  // The server CA mode.
+	  optional string server_ca_mode = 11;
 
-  // The server CA pool.
-  optional string server_ca_pool = 12;
+	  // The server CA pool.
+	  optional string server_ca_pool = 12;
 
-  // Custom Subject Alternative Names.
-  repeated string custom_subject_alternative_names = 13;
-EOF
+	  // Custom Subject Alternative Names.
+	  repeated string custom_subject_alternative_names = 13;
+	EOF
+
+	go -C ../../mockgcp/tools/patch-proto run . --file $(CURDIR)/.build/googleapis/google/cloud/sql/v1beta4/cloud_sql_resources.proto --message Settings --mode append <<EOF
+	  // Optional. When this parameter is set to true, Cloud SQL retains backups
+	  // of the instance even after the instance is deleted.
+	  google.protobuf.BoolValue retain_backups_on_delete = 42;
+	EOF
 
 	PATH=.build/bin/:${PATH} .build/bin/protoc/bin/protoc \
 		-I ./.build/googleapis \

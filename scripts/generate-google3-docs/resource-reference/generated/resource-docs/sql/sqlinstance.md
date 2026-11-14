@@ -223,6 +223,7 @@ settings:
     reuseInterval: integer
   pricingPlan: string
   replicationType: string
+  retainBackupsOnDelete: boolean
   sqlServerAuditConfig:
     bucketRef:
       external: string
@@ -1649,6 +1650,16 @@ settings:
         <td>
             <p><code class="apitype">string</code></p>
             <p>DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances. Specifying this field has no-ops; it's recommended to remove this field from your configuration.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.retainBackupsOnDelete</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>When this parameter is set to true, Cloud SQL retains backups of the instance even after the instance is deleted. The ON_DEMAND backup will be retained until customer deletes the backup or the project. The AUTOMATED backup will be retained based on the backups retention setting. If unset, Config Connector keeps the instance's current value.</p>
         </td>
     </tr>
     <tr>
