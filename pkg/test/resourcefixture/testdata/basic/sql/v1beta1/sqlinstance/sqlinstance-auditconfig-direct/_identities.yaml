@@ -4,7 +4,7 @@
   name: storagebucket-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //sqladmin.googleapis.com/projects/${projectId}/instances/sqlinstance-auditconfig-direct-${uniqueId}
   group: sql.cnrm.cloud.google.com
   kind: SQLInstance
   name: sqlinstance-auditconfig-direct-${uniqueId}
