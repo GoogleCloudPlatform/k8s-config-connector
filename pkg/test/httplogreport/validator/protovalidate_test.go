@@ -130,6 +130,16 @@ DELETE https://example.googleapis.com/v1/projects/${projectId}/locations/us-cent
 			rawLog:        strings.ReplaceAll(validLog, `"state": 1`, `"state": "ACTIVE"`),
 			wantErrSubstr: "enum-encoding=int",
 		},
+		{
+			name: "custom verb POST validates against custom method request schema",
+			rawLog: strings.Replace(
+				validLog,
+				"POST https://example.googleapis.com/v1/projects/${projectId}/locations/us-central1/widgets?%24alt=json%3Benum-encoding%3Dint&widgetId=widget-${uniqueId}",
+				"POST https://example.googleapis.com/v1/projects/${projectId}/locations/us-central1/widgets:batchUpdate",
+				1,
+			),
+			wantErrSubstr: "BatchUpdateWidgetsRequest",
+		},
 	}
 
 	for _, tc := range tests {
@@ -172,6 +182,14 @@ func writeSyntheticDescriptorSet(t *testing.T) string {
 		Pattern: &annotations.HttpRule_Get{
 			Get: "/v1/{name=projects/*/locations/*/widgets/*}",
 		},
+	})
+
+	batchUpdateOpts := &descriptorpb.MethodOptions{}
+	proto.SetExtension(batchUpdateOpts, annotations.E_Http, &annotations.HttpRule{
+		Pattern: &annotations.HttpRule_Post{
+			Post: "/v1/{name=projects/*/locations/*/widgets}:batchUpdate",
+		},
+		Body: "*",
 	})
 
 	createOpts := &descriptorpb.MethodOptions{}
@@ -302,6 +320,26 @@ func writeSyntheticDescriptorSet(t *testing.T) string {
 						},
 					},
 					{
+						Name: proto.String("BatchUpdateWidgetsRequest"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{
+								Name:     proto.String("name"),
+								Number:   proto.Int32(1),
+								Label:    descriptorpb.FieldDescriptorProto_LABEL_OPTIONAL.Enum(),
+								Type:     descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum(),
+								JsonName: proto.String("name"),
+							},
+							{
+								Name:     proto.String("overridden_widgets"),
+								Number:   proto.Int32(2),
+								Label:    descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum(),
+								Type:     descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum(),
+								TypeName: proto.String(".google.example.v1.Widget"),
+								JsonName: proto.String("overriddenWidgets"),
+							},
+						},
+					},
+					{
 						Name: proto.String("CreateWidgetRequest"),
 						Field: []*descriptorpb.FieldDescriptorProto{
 							{
@@ -345,6 +383,12 @@ func writeSyntheticDescriptorSet(t *testing.T) string {
 								InputType:  proto.String(".google.example.v1.GetWidgetRequest"),
 								OutputType: proto.String(".google.example.v1.Widget"),
 								Options:    getOpts,
+							},
+							{
+								Name:       proto.String("BatchUpdateWidgets"),
+								InputType:  proto.String(".google.example.v1.BatchUpdateWidgetsRequest"),
+								OutputType: proto.String(".google.longrunning.Operation"),
+								Options:    batchUpdateOpts,
 							},
 							{
 								Name:       proto.String("CreateWidget"),
