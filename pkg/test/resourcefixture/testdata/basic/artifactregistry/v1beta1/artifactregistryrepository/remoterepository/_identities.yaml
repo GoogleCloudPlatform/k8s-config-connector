@@ -1,0 +1,6 @@
+- caisURL: //artifactregistry.googleapis.com/projects/${projectId}/locations/us-central1/repositories/arrepository-remote-${uniqueId}
+  group: artifactregistry.cnrm.cloud.google.com
+  kind: ArtifactRegistryRepository
+  name: arrepository-remote-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
