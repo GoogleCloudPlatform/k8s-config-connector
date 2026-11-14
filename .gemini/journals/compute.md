@@ -388,3 +388,17 @@
   - Ran `hack/compare-mock` for both minimal and maximal fixtures; generated `_http_mock.log` files with zero diffs and passed re-reconciliation and deletion steps.
   - Verified `TestGoldenLogAlignment` and `TestRealHTTPLogsDoNotContainMockGCP` pass cleanly.
   - Verified `./dev/ci/presubmits/tests-e2e-fixtures-suite compute` passes all 192 fixtures.
+
+### [2026-11-14] Greenfield: Prepopulate direct KRM types, identity, and judgement queue for ComputeRolloutPlan
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for `ComputeRolloutPlan` (issue #15642) following Greenfield Step 1a (`prepopulate/SKILL.md`).
+- **Proto & Client Upgrade**:
+  - `RolloutPlan` is defined in Google Cloud Compute API v1 (`google/cloud/compute/v1/compute.proto`) and managed via the `RolloutPlans` service with global scope `projects/{project}/global/rolloutPlans/{rolloutPlan}`.
+  - Pinned `PROTO_SHA` in `apis/compute/generate.sh` to `7e7f1e9533723bcf3821e681e564b27f92fd46f5` (commit adding `RolloutPlan` in `google/cloud/compute/v1`) without modifying the global default in `apis/git.versions`.
+  - Upgraded `cloud.google.com/go/compute` to `v1.64.0` in `go.mod` and `mockgcp/go.mod` to support the `RolloutPlan` Go SDK types without introducing breaking changes.
+- **Scaffolding & Mapper Fix**:
+  - Configured `apis/compute/generate.sh` with `generate-types --prepopulate-resource` and `generate-identity` using `--pattern ComputeRolloutPlan="projects/{project}/global/rolloutPlans/{rolloutPlan}"`.
+  - Created `pkg/controller/direct/compute/computerolloutplan_mapper.go` with minimal hand-written mapper functions for `RolloutPlanWaveValidationTimeBasedValidationMetadata` which was skipped by `generate-mapper` due to its `*Metadata` suffix.
+  - Added `ComputeRolloutPlan` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Added open entry in `apis/compute/judgement_queue.yaml` for `ComputeGlobalVMExtensionPolicy` `.spec.rolloutOperation.rolloutInput.name` (`possible-reference-by-description`) which arose from proto comment updates mentioning `projects//locations/global/rolloutPlans/`.
+- **Verification**:
+  - Identity conformance tests (`TestComputeRolloutPlanIdentity_Conformance`), unit tests (`apis/compute/...`, `pkg/controller/direct/compute/...`), CRD generation, and API checks (`tests/apichecks/...`) all pass cleanly.

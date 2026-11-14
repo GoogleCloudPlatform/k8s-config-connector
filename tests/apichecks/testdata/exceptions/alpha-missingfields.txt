@@ -2306,6 +2306,23 @@
 [missing_field] crd=computeregionsslpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.profile" is not set in unstructured objects
 [missing_field] crd=computeregionsslpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeregionsslpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.region" is not set in unstructured objects
+[missing_field] crd=computerolloutplans.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=computerolloutplans.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=computerolloutplans.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.locationScope" is not set in unstructured objects
+[missing_field] crd=computerolloutplans.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=computerolloutplans.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.waves[].displayName" is not set in unstructured objects
+[missing_field] crd=computerolloutplans.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.waves[].number" is not set in unstructured objects
+[missing_field] crd=computerolloutplans.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.waves[].orchestrationOptions.delays[].delimiter" is not set in unstructured objects
+[missing_field] crd=computerolloutplans.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.waves[].orchestrationOptions.delays[].duration" is not set in unstructured objects
+[missing_field] crd=computerolloutplans.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.waves[].orchestrationOptions.delays[].type" is not set in unstructured objects
+[missing_field] crd=computerolloutplans.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.waves[].orchestrationOptions.maxConcurrentLocations" is not set in unstructured objects
+[missing_field] crd=computerolloutplans.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.waves[].orchestrationOptions.maxConcurrentResourcesPerLocation" is not set in unstructured objects
+[missing_field] crd=computerolloutplans.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.waves[].selectors[].locationSelector.includedLocations[]" is not set in unstructured objects
+[missing_field] crd=computerolloutplans.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.waves[].selectors[].resourceHierarchySelector.includedFolders[]" is not set in unstructured objects
+[missing_field] crd=computerolloutplans.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.waves[].selectors[].resourceHierarchySelector.includedOrganizations[]" is not set in unstructured objects
+[missing_field] crd=computerolloutplans.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.waves[].selectors[].resourceHierarchySelector.includedProjects[]" is not set in unstructured objects
+[missing_field] crd=computerolloutplans.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.waves[].validation.timeBasedValidationMetadata.waitDuration" is not set in unstructured objects
+[missing_field] crd=computerolloutplans.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.waves[].validation.type" is not set in unstructured objects
 [missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.capacityProvisioningType" is not set in unstructured objects
 [missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
