@@ -84,7 +84,7 @@ func checkCRDFileBackwardCompatibility(repoRoot, baseRev, relCRDPath string) str
 	group := oldCRD.Spec.Group
 	baseQueue := loadServiceQueueAtRef(repoRoot, baseRev, group)
 	headQueue := loadServiceQueueFromDisk(repoRoot, group)
-	if isKindUntriaged(kind, group, baseQueue, headQueue) {
+	if isKindUntriaged(kind, group, baseQueue, headQueue) || isAlphaCRD(oldCRD) {
 		return ""
 	}
 
@@ -134,6 +134,20 @@ func untriagedEntryStatus(q *judgement.Queue, kind, group string) judgement.Stat
 		}
 	}
 	return ""
+}
+
+// isAlphaCRD reports whether all versions of the CRD are alpha versions.
+// Schema compatibility is not guaranteed for alpha resources.
+func isAlphaCRD(crd *apiextensionsv1.CustomResourceDefinition) bool {
+	if crd == nil || len(crd.Spec.Versions) == 0 {
+		return false
+	}
+	for _, v := range crd.Spec.Versions {
+		if !strings.Contains(v.Name, "alpha") {
+			return false
+		}
+	}
+	return true
 }
 
 func loadServiceQueueAtRef(repoRoot, rev, group string) *judgement.Queue {
@@ -551,6 +565,57 @@ func TestIsKindUntriaged(t *testing.T) {
 	}
 }
 
+func TestIsAlphaCRD(t *testing.T) {
+	for _, tc := range []struct {
+		name     string
+		versions []string
+		want     bool
+	}{
+		{
+			name:     "single alpha version",
+			versions: []string{"v1alpha1"},
+			want:     true,
+		},
+		{
+			name:     "multiple alpha versions",
+			versions: []string{"v1alpha1", "v1alpha2"},
+			want:     true,
+		},
+		{
+			name:     "single beta version",
+			versions: []string{"v1beta1"},
+			want:     false,
+		},
+		{
+			name:     "mixed alpha and beta versions",
+			versions: []string{"v1alpha1", "v1beta1"},
+			want:     false,
+		},
+		{
+			name:     "ga version",
+			versions: []string{"v1"},
+			want:     false,
+		},
+		{
+			name:     "no versions",
+			versions: nil,
+			want:     false,
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			crd := &apiextensionsv1.CustomResourceDefinition{}
+			for _, v := range tc.versions {
+				crd.Spec.Versions = append(crd.Spec.Versions, apiextensionsv1.CustomResourceDefinitionVersion{
+					Name: v,
+				})
+			}
+			if got := isAlphaCRD(crd); got != tc.want {
+				t.Errorf("isAlphaCRD() = %v, want %v", got, tc.want)
+			}
+		})
+	}
+}
+
 func TestCompareCRDBackwardCompatibility(t *testing.T) {
 	baseYAML := `
 apiVersion: apiextensions.k8s.io/v1
@@ -737,7 +802,7 @@ func TestCheckCRDFileBackwardCompatibilityGitRepo(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	crdForKind := func(kind, fieldName string) string {
+	crdForKind := func(kind, version, fieldName string) string {
 		return fmt.Sprintf(`apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -749,7 +814,7 @@ spec:
     plural: %ss
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: %s
     served: true
     storage: true
     schema:
@@ -761,7 +826,7 @@ spec:
             properties:
               %s:
                 type: string
-`, strings.ToLower(kind), kind, strings.ToLower(kind), fieldName)
+`, strings.ToLower(kind), kind, strings.ToLower(kind), version, fieldName)
 	}
 
 	runGit("init")
@@ -769,18 +834,25 @@ spec:
 	runGit("config", "user.name", "Test")
 
 	const (
-		untriagedCRDPath   = "config/crds/resources/untriaged.yaml"
-		triagedCRDPath     = "config/crds/resources/triaged.yaml"
-		preexistingCRDPath = "config/crds/resources/preexisting.yaml"
-		newCRDPath         = "config/crds/resources/brandnew.yaml"
-		queuePath          = "apis/svc/judgement_queue.yaml"
+		untriagedCRDPath    = "config/crds/resources/untriaged.yaml"
+		triagedBetaCRDPath  = "config/crds/resources/triagedbeta.yaml"
+		triagedAlphaCRDPath = "config/crds/resources/triagedalpha.yaml"
+		preexistingCRDPath  = "config/crds/resources/preexisting.yaml"
+		newCRDPath          = "config/crds/resources/brandnew.yaml"
+		queuePath           = "apis/svc/judgement_queue.yaml"
 	)
 
-	writeRepoFile(untriagedCRDPath, crdForKind("SvcUntriaged", "rawNetwork"))
-	writeRepoFile(triagedCRDPath, crdForKind("SvcTriaged", "sharedField"))
-	writeRepoFile(preexistingCRDPath, crdForKind("SvcPreexisting", "sharedField"))
+	writeRepoFile(untriagedCRDPath, crdForKind("SvcUntriaged", "v1alpha1", "rawNetwork"))
+	writeRepoFile(triagedBetaCRDPath, crdForKind("SvcTriagedBeta", "v1beta1", "sharedField"))
+	writeRepoFile(triagedAlphaCRDPath, crdForKind("SvcTriagedAlpha", "v1alpha1", "sharedField"))
+	writeRepoFile(preexistingCRDPath, crdForKind("SvcPreexisting", "v1beta1", "sharedField"))
 	writeRepoFile(queuePath, `entries:
-- kind: SvcTriaged
+- kind: SvcTriagedBeta
+  group: svc.cnrm.cloud.google.com
+  reason: untriaged-bulk-generation
+  status: resolved
+  resolution: accepted
+- kind: SvcTriagedAlpha
   group: svc.cnrm.cloud.google.com
   reason: untriaged-bulk-generation
   status: resolved
@@ -794,12 +866,18 @@ spec:
 	runGit("commit", "-m", "base commit")
 
 	// Simulate a triage PR that resolves SvcUntriaged while mutating all CRDs.
-	writeRepoFile(untriagedCRDPath, crdForKind("SvcUntriaged", "networkRef"))
-	writeRepoFile(triagedCRDPath, crdForKind("SvcTriaged", "renamedField"))
-	writeRepoFile(preexistingCRDPath, crdForKind("SvcPreexisting", "renamedField"))
-	writeRepoFile(newCRDPath, crdForKind("SvcBrandNew", "anyField"))
+	writeRepoFile(untriagedCRDPath, crdForKind("SvcUntriaged", "v1alpha1", "networkRef"))
+	writeRepoFile(triagedBetaCRDPath, crdForKind("SvcTriagedBeta", "v1beta1", "renamedField"))
+	writeRepoFile(triagedAlphaCRDPath, crdForKind("SvcTriagedAlpha", "v1alpha1", "renamedField"))
+	writeRepoFile(preexistingCRDPath, crdForKind("SvcPreexisting", "v1beta1", "renamedField"))
+	writeRepoFile(newCRDPath, crdForKind("SvcBrandNew", "v1beta1", "anyField"))
 	writeRepoFile(queuePath, `entries:
-- kind: SvcTriaged
+- kind: SvcTriagedBeta
+  group: svc.cnrm.cloud.google.com
+  reason: untriaged-bulk-generation
+  status: resolved
+  resolution: accepted
+- kind: SvcTriagedAlpha
   group: svc.cnrm.cloud.google.com
   reason: untriaged-bulk-generation
   status: resolved
@@ -818,11 +896,14 @@ spec:
 	if got := checkCRDFileBackwardCompatibility(repo, "HEAD", newCRDPath); got != "" {
 		t.Errorf("brand-new CRD should be allowed, got: %s", got)
 	}
-	if got := checkCRDFileBackwardCompatibility(repo, "HEAD", triagedCRDPath); !strings.Contains(got, "field removed: spec.sharedField") {
-		t.Errorf("already-triaged Kind should reject breaking changes, got: %q", got)
+	if got := checkCRDFileBackwardCompatibility(repo, "HEAD", triagedAlphaCRDPath); got != "" {
+		t.Errorf("alpha Kind should allow breaking changes because schema compatibility is not guaranteed, got: %s", got)
+	}
+	if got := checkCRDFileBackwardCompatibility(repo, "HEAD", triagedBetaCRDPath); !strings.Contains(got, "field removed: spec.sharedField") {
+		t.Errorf("already-triaged beta Kind should reject breaking changes, got: %q", got)
 	}
 	if got := checkCRDFileBackwardCompatibility(repo, "HEAD", preexistingCRDPath); !strings.Contains(got, "field removed: spec.sharedField") {
-		t.Errorf("pre-existing Kind should reject breaking changes, got: %q", got)
+		t.Errorf("pre-existing beta Kind should reject breaking changes, got: %q", got)
 	}
 }
 

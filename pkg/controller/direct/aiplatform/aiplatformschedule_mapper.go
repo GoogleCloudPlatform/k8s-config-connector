@@ -363,3 +363,25 @@ func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *
 	}
 	return out
 }
+
+func EncryptionSpecWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpecWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionSpecWithRequired{}
+	if in.GetKmsKeyName() != "" {
+		out.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+	}
+	return out
+}
+
+func EncryptionSpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpecWithRequired) *pb.EncryptionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionSpec{}
+	if in.KmsKeyRef != nil {
+		out.KmsKeyName = in.KmsKeyRef.External
+	}
+	return out
+}

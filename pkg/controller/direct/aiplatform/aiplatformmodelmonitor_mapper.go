@@ -52,7 +52,7 @@ func ExplanationSpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.Expl
 	}
 	out := &aiplatformpb.ExplanationSpec{}
 	if in.Parameters != nil {
-		v1Params := ExplanationParameters_ToProto(mapCtx, in.Parameters)
+		v1Params := ExplanationParametersWithRequired_ToProto(mapCtx, in.Parameters)
 		if v1Params != nil {
 			bytes, err := proto.Marshal(v1Params)
 			if err != nil {
@@ -68,7 +68,7 @@ func ExplanationSpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.Expl
 		}
 	}
 	if in.Metadata != nil {
-		v1Meta := ExplanationMetadata_ToProto(mapCtx, in.Metadata)
+		v1Meta := ExplanationMetadataWithRequired_ToProto(mapCtx, in.Metadata)
 		if v1Meta != nil {
 			bytes, err := proto.Marshal(v1Meta)
 			if err != nil {
@@ -100,7 +100,7 @@ func ExplanationSpecWithRequired_FromProto(mapCtx *direct.MapContext, in *aiplat
 			if err := proto.Unmarshal(bytes, v1Params); err != nil {
 				mapCtx.Errorf("unmarshaling explanation parameters: %w", err)
 			} else {
-				out.Parameters = ExplanationParameters_FromProto(mapCtx, v1Params)
+				out.Parameters = ExplanationParametersWithRequired_FromProto(mapCtx, v1Params)
 			}
 		}
 	}
@@ -113,10 +113,158 @@ func ExplanationSpecWithRequired_FromProto(mapCtx *direct.MapContext, in *aiplat
 			if err := proto.Unmarshal(bytes, v1Meta); err != nil {
 				mapCtx.Errorf("unmarshaling explanation metadata: %w", err)
 			} else {
-				out.Metadata = ExplanationMetadata_FromProto(mapCtx, v1Meta)
+				out.Metadata = ExplanationMetadataWithRequired_FromProto(mapCtx, v1Meta)
 			}
 		}
 	}
+	return out
+}
+
+func ExplanationMetadataWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationMetadata) *krm.ExplanationMetadataWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExplanationMetadataWithRequired{}
+	out.Inputs = make(map[string]*krm.ExplanationMetadata_InputMetadata)
+	for k, v := range in.Inputs {
+		out.Inputs[k] = ExplanationMetadata_InputMetadata_FromProto(mapCtx, v)
+	}
+	out.Outputs = make(map[string]*krm.ExplanationMetadata_OutputMetadata)
+	for k, v := range in.Outputs {
+		out.Outputs[k] = ExplanationMetadata_OutputMetadata_FromProto(mapCtx, v)
+	}
+	out.FeatureAttributionsSchemaURI = direct.LazyPtr(in.FeatureAttributionsSchemaUri)
+	out.LatentSpaceSource = direct.LazyPtr(in.LatentSpaceSource)
+	return out
+}
+
+func ExplanationMetadataWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationMetadataWithRequired) *pb.ExplanationMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExplanationMetadata{}
+	out.Inputs = make(map[string]*pb.ExplanationMetadata_InputMetadata)
+	for k, v := range in.Inputs {
+		out.Inputs[k] = ExplanationMetadata_InputMetadata_ToProto(mapCtx, v)
+	}
+	out.Outputs = make(map[string]*pb.ExplanationMetadata_OutputMetadata)
+	for k, v := range in.Outputs {
+		out.Outputs[k] = ExplanationMetadata_OutputMetadata_ToProto(mapCtx, v)
+	}
+	out.FeatureAttributionsSchemaUri = direct.ValueOf(in.FeatureAttributionsSchemaURI)
+	out.LatentSpaceSource = direct.ValueOf(in.LatentSpaceSource)
+	return out
+}
+
+func ExplanationParametersWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationParameters) *krm.ExplanationParametersWithRequired {
+	if in == nil {
+		return nil
+	}
+	bytes, err := proto.Marshal(in)
+	if err != nil {
+		mapCtx.Errorf("marshaling explanation parameters: %w", err)
+		return nil
+	}
+	v1beta1Params := &aiplatformpb.ExplanationParameters{}
+	if err := proto.Unmarshal(bytes, v1beta1Params); err != nil {
+		mapCtx.Errorf("unmarshaling explanation parameters: %w", err)
+		return nil
+	}
+	out := &krm.ExplanationParametersWithRequired{}
+	out.SampledShapleyAttribution = SampledShapleyAttributionWithRequired_FromProto(mapCtx, v1beta1Params.GetSampledShapleyAttribution())
+	out.IntegratedGradientsAttribution = IntegratedGradientsAttributionWithRequired_FromProto(mapCtx, v1beta1Params.GetIntegratedGradientsAttribution())
+	out.XraiAttribution = XraiAttributionWithRequired_FromProto(mapCtx, v1beta1Params.GetXraiAttribution())
+	out.Examples = ExamplesWithRequired_FromProto(mapCtx, v1beta1Params.GetExamples())
+	out.TopK = direct.LazyPtr(v1beta1Params.GetTopK())
+	return out
+}
+
+func ExplanationParametersWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationParametersWithRequired) *pb.ExplanationParameters {
+	if in == nil {
+		return nil
+	}
+	v1beta1Params := &aiplatformpb.ExplanationParameters{}
+	if oneof := SampledShapleyAttributionWithRequired_ToProto(mapCtx, in.SampledShapleyAttribution); oneof != nil {
+		v1beta1Params.Method = &aiplatformpb.ExplanationParameters_SampledShapleyAttribution{SampledShapleyAttribution: oneof}
+	}
+	if oneof := IntegratedGradientsAttributionWithRequired_ToProto(mapCtx, in.IntegratedGradientsAttribution); oneof != nil {
+		v1beta1Params.Method = &aiplatformpb.ExplanationParameters_IntegratedGradientsAttribution{IntegratedGradientsAttribution: oneof}
+	}
+	if oneof := XraiAttributionWithRequired_ToProto(mapCtx, in.XraiAttribution); oneof != nil {
+		v1beta1Params.Method = &aiplatformpb.ExplanationParameters_XraiAttribution{XraiAttribution: oneof}
+	}
+	if oneof := ExamplesWithRequired_ToProto(mapCtx, in.Examples); oneof != nil {
+		v1beta1Params.Method = &aiplatformpb.ExplanationParameters_Examples{Examples: oneof}
+	}
+	v1beta1Params.TopK = direct.ValueOf(in.TopK)
+
+	bytes, err := proto.Marshal(v1beta1Params)
+	if err != nil {
+		mapCtx.Errorf("marshaling explanation parameters: %w", err)
+		return nil
+	}
+	out := &pb.ExplanationParameters{}
+	if err := proto.Unmarshal(bytes, out); err != nil {
+		mapCtx.Errorf("unmarshaling explanation parameters: %w", err)
+		return nil
+	}
+	return out
+}
+
+func ExamplesWithRequired_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.Examples) *krm.ExamplesWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExamplesWithRequired{}
+	out.ExampleGCSSource = Examples_ExampleGCSSourceWithRequired_FromProto(mapCtx, in.GetExampleGcsSource())
+	out.NearestNeighborSearchConfig = Value_FromProto(mapCtx, in.GetNearestNeighborSearchConfig())
+	if in.GetPresets() != nil {
+		bytes, err := proto.Marshal(in.GetPresets())
+		if err != nil {
+			mapCtx.Errorf("marshaling presets: %w", err)
+		} else {
+			v1Presets := &pb.Presets{}
+			if err := proto.Unmarshal(bytes, v1Presets); err != nil {
+				mapCtx.Errorf("unmarshaling presets: %w", err)
+			} else {
+				out.Presets = Presets_FromProto(mapCtx, v1Presets)
+			}
+		}
+	}
+	out.GCSSource = GCSSourceWithRequired_FromProto(mapCtx, in.GetGcsSource())
+	out.NeighborCount = direct.LazyPtr(in.GetNeighborCount())
+	return out
+}
+
+func ExamplesWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.ExamplesWithRequired) *aiplatformpb.Examples {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.Examples{}
+	if oneof := Examples_ExampleGCSSourceWithRequired_ToProto(mapCtx, in.ExampleGCSSource); oneof != nil {
+		out.Source = &aiplatformpb.Examples_ExampleGcsSource_{ExampleGcsSource: oneof}
+	}
+	if oneof := Value_ToProto(mapCtx, in.NearestNeighborSearchConfig); oneof != nil {
+		out.Config = &aiplatformpb.Examples_NearestNeighborSearchConfig{NearestNeighborSearchConfig: oneof}
+	}
+	if in.Presets != nil {
+		v1Presets := Presets_ToProto(mapCtx, in.Presets)
+		if v1Presets != nil {
+			bytes, err := proto.Marshal(v1Presets)
+			if err != nil {
+				mapCtx.Errorf("marshaling presets: %w", err)
+			} else {
+				v1beta1Presets := &aiplatformpb.Presets{}
+				if err := proto.Unmarshal(bytes, v1beta1Presets); err != nil {
+					mapCtx.Errorf("unmarshaling presets: %w", err)
+				} else {
+					out.Config = &aiplatformpb.Examples_Presets{Presets: v1beta1Presets}
+				}
+			}
+		}
+	}
+	out.GcsSource = GCSSourceWithRequired_ToProto(mapCtx, in.GCSSource)
+	out.NeighborCount = direct.ValueOf(in.NeighborCount)
 	return out
 }
 
@@ -173,6 +321,59 @@ func BatchDedicatedResources_FromProto(mapCtx *direct.MapContext, in *aiplatform
 	return out
 }
 
+func BatchDedicatedResourcesWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.BatchDedicatedResourcesWithRequired) *aiplatformpb.BatchDedicatedResources {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.BatchDedicatedResources{}
+	if in.MachineSpec != nil {
+		v1MachineSpec := MachineSpecWithRequired_ToProto(mapCtx, in.MachineSpec)
+		if v1MachineSpec != nil {
+			bytes, err := proto.Marshal(v1MachineSpec)
+			if err != nil {
+				mapCtx.Errorf("marshaling machineSpec: %w", err)
+			} else {
+				v1beta1MachineSpec := &aiplatformpb.MachineSpec{}
+				if err := proto.Unmarshal(bytes, v1beta1MachineSpec); err != nil {
+					mapCtx.Errorf("unmarshaling machineSpec: %w", err)
+				} else {
+					out.MachineSpec = v1beta1MachineSpec
+				}
+			}
+		}
+	}
+	out.StartingReplicaCount = direct.ValueOf(in.StartingReplicaCount)
+	out.MaxReplicaCount = direct.ValueOf(in.MaxReplicaCount)
+	out.FlexStart = FlexStart_ToProto(mapCtx, in.FlexStart)
+	out.Spot = direct.ValueOf(in.Spot)
+	return out
+}
+
+func BatchDedicatedResourcesWithRequired_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.BatchDedicatedResources) *krm.BatchDedicatedResourcesWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BatchDedicatedResourcesWithRequired{}
+	if in.GetMachineSpec() != nil {
+		bytes, err := proto.Marshal(in.GetMachineSpec())
+		if err != nil {
+			mapCtx.Errorf("marshaling machineSpec: %w", err)
+		} else {
+			v1MachineSpec := &pb.MachineSpec{}
+			if err := proto.Unmarshal(bytes, v1MachineSpec); err != nil {
+				mapCtx.Errorf("unmarshaling machineSpec: %w", err)
+			} else {
+				out.MachineSpec = MachineSpecWithRequired_FromProto(mapCtx, v1MachineSpec)
+			}
+		}
+	}
+	out.StartingReplicaCount = direct.LazyPtr(in.GetStartingReplicaCount())
+	out.MaxReplicaCount = direct.LazyPtr(in.GetMaxReplicaCount())
+	out.FlexStart = FlexStart_FromProto(mapCtx, in.GetFlexStart())
+	out.Spot = direct.LazyPtr(in.GetSpot())
+	return out
+}
+
 func ModelMonitoringObjectiveSpec_DataDriftSpec_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringObjectiveSpec_DataDriftSpec) *aiplatformpb.ModelMonitoringObjectiveSpec_DataDriftSpec {
 	if in == nil {
 		return nil
@@ -206,6 +407,175 @@ func ModelMonitoringObjectiveSpec_FeatureAttributionSpec_ToProto(mapCtx *direct.
 		}
 	}
 	out.BatchExplanationDedicatedResources = BatchDedicatedResources_ToProto(mapCtx, in.BatchExplanationDedicatedResources)
+	return out
+}
+
+func ModelMonitoringObjectiveSpec_FeatureAttributionSpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringObjectiveSpec_FeatureAttributionSpecWithRequired) *aiplatformpb.ModelMonitoringObjectiveSpec_FeatureAttributionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringObjectiveSpec_FeatureAttributionSpec{}
+	out.Features = in.Features
+	out.DefaultAlertCondition = ModelMonitoringAlertCondition_ToProto(mapCtx, in.DefaultAlertCondition)
+	if in.FeatureAlertConditions != nil {
+		out.FeatureAlertConditions = make(map[string]*aiplatformpb.ModelMonitoringAlertCondition, len(in.FeatureAlertConditions))
+		for k, v := range in.FeatureAlertConditions {
+			out.FeatureAlertConditions[k] = ModelMonitoringAlertCondition_ToProto(mapCtx, &v)
+		}
+	}
+	out.BatchExplanationDedicatedResources = BatchDedicatedResourcesWithRequired_ToProto(mapCtx, in.BatchExplanationDedicatedResources)
+	return out
+}
+
+func IntegratedGradientsAttributionWithRequired_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.IntegratedGradientsAttribution) *krm.IntegratedGradientsAttributionWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IntegratedGradientsAttributionWithRequired{}
+	out.StepCount = direct.LazyPtr(in.GetStepCount())
+	if in.GetSmoothGradConfig() != nil {
+		bytes, err := proto.Marshal(in.GetSmoothGradConfig())
+		if err != nil {
+			mapCtx.Errorf("marshaling smoothGradConfig: %w", err)
+		} else {
+			v1Smooth := &pb.SmoothGradConfig{}
+			if err := proto.Unmarshal(bytes, v1Smooth); err != nil {
+				mapCtx.Errorf("unmarshaling smoothGradConfig: %w", err)
+			} else {
+				out.SmoothGradConfig = SmoothGradConfig_FromProto(mapCtx, v1Smooth)
+			}
+		}
+	}
+	if in.GetBlurBaselineConfig() != nil {
+		bytes, err := proto.Marshal(in.GetBlurBaselineConfig())
+		if err != nil {
+			mapCtx.Errorf("marshaling blurBaselineConfig: %w", err)
+		} else {
+			v1Blur := &pb.BlurBaselineConfig{}
+			if err := proto.Unmarshal(bytes, v1Blur); err != nil {
+				mapCtx.Errorf("unmarshaling blurBaselineConfig: %w", err)
+			} else {
+				out.BlurBaselineConfig = BlurBaselineConfig_FromProto(mapCtx, v1Blur)
+			}
+		}
+	}
+	return out
+}
+
+func IntegratedGradientsAttributionWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.IntegratedGradientsAttributionWithRequired) *aiplatformpb.IntegratedGradientsAttribution {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.IntegratedGradientsAttribution{}
+	out.StepCount = direct.ValueOf(in.StepCount)
+	if in.SmoothGradConfig != nil {
+		v1Smooth := SmoothGradConfig_ToProto(mapCtx, in.SmoothGradConfig)
+		if v1Smooth != nil {
+			bytes, err := proto.Marshal(v1Smooth)
+			if err != nil {
+				mapCtx.Errorf("marshaling smoothGradConfig: %w", err)
+			} else {
+				v1beta1Smooth := &aiplatformpb.SmoothGradConfig{}
+				if err := proto.Unmarshal(bytes, v1beta1Smooth); err != nil {
+					mapCtx.Errorf("unmarshaling smoothGradConfig: %w", err)
+				} else {
+					out.SmoothGradConfig = v1beta1Smooth
+				}
+			}
+		}
+	}
+	if in.BlurBaselineConfig != nil {
+		v1Blur := BlurBaselineConfig_ToProto(mapCtx, in.BlurBaselineConfig)
+		if v1Blur != nil {
+			bytes, err := proto.Marshal(v1Blur)
+			if err != nil {
+				mapCtx.Errorf("marshaling blurBaselineConfig: %w", err)
+			} else {
+				v1beta1Blur := &aiplatformpb.BlurBaselineConfig{}
+				if err := proto.Unmarshal(bytes, v1beta1Blur); err != nil {
+					mapCtx.Errorf("unmarshaling blurBaselineConfig: %w", err)
+				} else {
+					out.BlurBaselineConfig = v1beta1Blur
+				}
+			}
+		}
+	}
+	return out
+}
+
+func XraiAttributionWithRequired_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.XraiAttribution) *krm.XraiAttributionWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.XraiAttributionWithRequired{}
+	out.StepCount = direct.LazyPtr(in.GetStepCount())
+	if in.GetSmoothGradConfig() != nil {
+		bytes, err := proto.Marshal(in.GetSmoothGradConfig())
+		if err != nil {
+			mapCtx.Errorf("marshaling smoothGradConfig: %w", err)
+		} else {
+			v1Smooth := &pb.SmoothGradConfig{}
+			if err := proto.Unmarshal(bytes, v1Smooth); err != nil {
+				mapCtx.Errorf("unmarshaling smoothGradConfig: %w", err)
+			} else {
+				out.SmoothGradConfig = SmoothGradConfig_FromProto(mapCtx, v1Smooth)
+			}
+		}
+	}
+	if in.GetBlurBaselineConfig() != nil {
+		bytes, err := proto.Marshal(in.GetBlurBaselineConfig())
+		if err != nil {
+			mapCtx.Errorf("marshaling blurBaselineConfig: %w", err)
+		} else {
+			v1Blur := &pb.BlurBaselineConfig{}
+			if err := proto.Unmarshal(bytes, v1Blur); err != nil {
+				mapCtx.Errorf("unmarshaling blurBaselineConfig: %w", err)
+			} else {
+				out.BlurBaselineConfig = BlurBaselineConfig_FromProto(mapCtx, v1Blur)
+			}
+		}
+	}
+	return out
+}
+
+func XraiAttributionWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.XraiAttributionWithRequired) *aiplatformpb.XraiAttribution {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.XraiAttribution{}
+	out.StepCount = direct.ValueOf(in.StepCount)
+	if in.SmoothGradConfig != nil {
+		v1Smooth := SmoothGradConfig_ToProto(mapCtx, in.SmoothGradConfig)
+		if v1Smooth != nil {
+			bytes, err := proto.Marshal(v1Smooth)
+			if err != nil {
+				mapCtx.Errorf("marshaling smoothGradConfig: %w", err)
+			} else {
+				v1beta1Smooth := &aiplatformpb.SmoothGradConfig{}
+				if err := proto.Unmarshal(bytes, v1beta1Smooth); err != nil {
+					mapCtx.Errorf("unmarshaling smoothGradConfig: %w", err)
+				} else {
+					out.SmoothGradConfig = v1beta1Smooth
+				}
+			}
+		}
+	}
+	if in.BlurBaselineConfig != nil {
+		v1Blur := BlurBaselineConfig_ToProto(mapCtx, in.BlurBaselineConfig)
+		if v1Blur != nil {
+			bytes, err := proto.Marshal(v1Blur)
+			if err != nil {
+				mapCtx.Errorf("marshaling blurBaselineConfig: %w", err)
+			} else {
+				v1beta1Blur := &aiplatformpb.BlurBaselineConfig{}
+				if err := proto.Unmarshal(bytes, v1beta1Blur); err != nil {
+					mapCtx.Errorf("unmarshaling blurBaselineConfig: %w", err)
+				} else {
+					out.BlurBaselineConfig = v1beta1Blur
+				}
+			}
+		}
+	}
 	return out
 }
 
@@ -366,7 +736,7 @@ func AIPlatformModelMonitorSpec_FromProto(mapCtx *direct.MapContext, in *aiplatf
 		return nil
 	}
 	out := &krm.AIPlatformModelMonitorSpec{}
-	out.TabularObjective = ModelMonitoringObjectiveSpec_TabularObjective_FromProto(mapCtx, in.GetTabularObjective())
+	out.TabularObjective = ModelMonitoringObjectiveSpec_TabularObjectiveWithRequired_FromProto(mapCtx, in.GetTabularObjective())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.ModelMonitoringTarget = ModelMonitor_ModelMonitoringTarget_FromProto(mapCtx, in.GetModelMonitoringTarget())
 	out.TrainingDataset = ModelMonitoringInput_FromProto(mapCtx, in.GetTrainingDataset())
@@ -375,7 +745,7 @@ func AIPlatformModelMonitorSpec_FromProto(mapCtx *direct.MapContext, in *aiplatf
 	out.ExplanationSpec = ExplanationSpecWithRequired_FromProto(mapCtx, in.GetExplanationSpec())
 	out.ModelMonitoringSchema = ModelMonitoringSchema_FromProto(mapCtx, in.GetModelMonitoringSchema())
 	if in.GetEncryptionSpec() != nil {
-		out.EncryptionSpec = &krm.EncryptionSpec{}
+		out.EncryptionSpec = &krm.EncryptionSpecWithRequired{}
 		if in.GetEncryptionSpec().GetKmsKeyName() != "" {
 			out.EncryptionSpec.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetEncryptionSpec().GetKmsKeyName()}
 		}
@@ -388,7 +758,7 @@ func AIPlatformModelMonitorSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPla
 		return nil
 	}
 	out := &aiplatformpb.ModelMonitor{}
-	if oneof := ModelMonitoringObjectiveSpec_TabularObjective_ToProto(mapCtx, in.TabularObjective); oneof != nil {
+	if oneof := ModelMonitoringObjectiveSpec_TabularObjectiveWithRequired_ToProto(mapCtx, in.TabularObjective); oneof != nil {
 		out.DefaultObjective = &aiplatformpb.ModelMonitor_TabularObjective{TabularObjective: oneof}
 	}
 	out.DisplayName = direct.ValueOf(in.DisplayName)

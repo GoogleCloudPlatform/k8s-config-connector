@@ -100,7 +100,7 @@ type AIPlatformNotebookExecutionJobSpec struct {
 	//  [NotebookRuntimeTemplate][google.cloud.aiplatform.v1.NotebookRuntimeTemplate]
 	//  has an encryption spec.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.encryption_spec
-	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
+	EncryptionSpec *EncryptionSpecWithRequired `json:"encryptionSpec,omitempty"`
 }
 
 // AIPlatformNotebookExecutionJobStatus defines the config connector machine state of AIPlatformNotebookExecutionJob

@@ -91,7 +91,7 @@ type AIPlatformHyperparameterTuningJobSpec struct {
 	//  If this is set, then all resources created by the HyperparameterTuningJob
 	//  will be encrypted with the provided encryption key.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.HyperparameterTuningJob.encryption_spec
-	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
+	EncryptionSpec *EncryptionSpecWithRequired `json:"encryptionSpec,omitempty"`
 }
 
 // AIPlatformHyperparameterTuningJobStatus defines the config connector machine state of AIPlatformHyperparameterTuningJob

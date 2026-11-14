@@ -71,6 +71,13 @@ The entry's `detail` specifies where the field was generated in Spec (`.spec.<x>
 
 ## 4. Resolving `required-not-enforced`
 
+A `required-not-enforced` reason is emitted when the proto marks a field `REQUIRED`, but the KRM CRD schema leaves it optional (usually because the Go struct is shared with another Kind that does not enforce required fields, or because the struct is defined in another file).
+
+> [!WARNING]
+> **Never mark `resolution: accepted`** for `required-not-enforced` with notes like "kept optional to match the shared struct", "kept optional in KRM", or "to avoid breaking existing resources sharing it". Leaving proto-required fields optional in the CRD causes breaking changes if enforced after release. Enforce them before release!
+
 Follow the instructions in `detail`:
-- If a hand-written struct holds a generated struct `<Struct>` that has a `<Struct>WithRequired` copy, switch the field type to `<Struct>WithRequired` (isolating the parent struct per Section 1 if the parent struct is shared with a non-strict Kind).
-- If a shared struct in `types.generated.go` needs `+required` alongside other edits (such as `*Ref` conversions or output-only field removal), fork it in `<kind>_types.go` per Section 1 (preserving `// +kcc:proto=<full.proto.MessageName>` and keeping `<Struct>` in its Go name) and add `// +required` to the required fields. Mark `resolution: edited`.
+- **Generated types**: If a struct holds a generated struct `<Struct>` that has (or can generate) a `<Struct>WithRequired` copy, switch the field type to `<Struct>WithRequired` in `<kind>_types.go` and run `generate.sh`.
+- **Hand-written shared structs**: If `<Struct>` is a hand-written shared struct (e.g., `EncryptionSpec`), create a `<Struct>WithRequired` (or `<Kind>_<Struct>`) variant with `// +required` on the required field, point `<Kind>Spec` at it, and add the corresponding mapper functions. Leave the original shared `<Struct>` untouched so existing resources do not change.
+- **Nested shared structs**: If a required field is nested inside intermediate structs (`KindSpec -> Outer -> Inner -> Target`), fork the intermediate chain using `WithRequired` variants (`OuterWithRequired`, etc.) in `<kind>_types.go` per Section 1 so the Kind points to the customized chain without mutating the shared types.
+- **Judgement queue update**: Mark `status: resolved`, `resolution: edited`, and rewrite `note` to name the new type (e.g., `note: enforced via <Struct>WithRequired`).
