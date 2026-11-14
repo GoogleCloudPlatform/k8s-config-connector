@@ -57,14 +57,11 @@ var realGCPSkipFixtures = map[string]bool{
 	"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-maximal": true,
 	"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-minimal": true,
 	// Tags acquire and project tag key tests have environment-dependent real GCP payloads
-	"tags/v1beta1/tagstagkey/tagkeyacquire":        true,
-	"tags/v1beta1/tagstagvalue/tagvalueacquire":    true,
-	"tags/v1beta1/tagstagkey/tagkeyprojectautogen": true,
-	// NetworkSecurity BackendAuthenticationConfig requires invitation-only early access allowlist.
-	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-maximal": true,
-	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-minimal": true,
-	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect":                                     true,
-	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect-direct":                              true,
+	"tags/v1beta1/tagstagkey/tagkeyacquire":                            true,
+	"tags/v1beta1/tagstagvalue/tagvalueacquire":                        true,
+	"tags/v1beta1/tagstagkey/tagkeyprojectautogen":                     true,
+	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect":        true,
+	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect-direct": true,
 }
 
 func TestGoldenLogAlignment(t *testing.T) {

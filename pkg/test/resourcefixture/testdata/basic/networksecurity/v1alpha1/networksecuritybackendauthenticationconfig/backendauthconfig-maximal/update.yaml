@@ -10,4 +10,5 @@ spec:
   labels:
     foo: baz
     new-key: new-val
-  wellKnownRoots: NONE
+  # wellKnownRoots cannot be set to NONE without specifying trustConfig
+  wellKnownRoots: PUBLIC_ROOTS
