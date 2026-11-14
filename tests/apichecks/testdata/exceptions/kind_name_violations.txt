@@ -13,7 +13,6 @@
 [kind-name-violation] kind=CloudNumberRegistryIpamAdminScope api=cloudnumberregistry message=IpamAdminScope: expected kind name is CloudNumberRegistryIPAMAdminScope
 [kind-name-violation] kind=CloudcontrolspartnerCustomer api=cloudcontrolspartner message=Customer: the service prefix of API cloudcontrolspartner (Cloudcontrolspartner) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=ComputeOrganizationSecurityPolicyRule api=compute message=FirewallPolicyRule: expected kind name is ComputeFirewallPolicyRule
-[kind-name-violation] kind=ConfigDeployment api=config message=Deployment: expected kind name is ConfigDeploymentDeployment
 [kind-name-violation] kind=ConfigdeliveryVariant api=configdelivery message=Variant: expected kind name is ConfigDeliveryVariant
 [kind-name-violation] kind=DataMigrationMappingRule api=datamigration message=MappingRule: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=DatabaseMigrationConversionWorkspace api=datamigration message=ConversionWorkspace: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml
