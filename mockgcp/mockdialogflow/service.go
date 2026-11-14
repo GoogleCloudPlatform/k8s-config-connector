@@ -69,6 +69,8 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterSipTrunksServer(grpcServer, &sipTrunksServer{MockService: s})
 	pb.RegisterGeneratorsServer(grpcServer, &generatorsServer{MockService: s})
 	pb.RegisterKnowledgeBasesServer(grpcServer, &knowledgeBasesServer{MockService: s})
+	pb.RegisterEntityTypesServer(grpcServer, &entityTypesServer{MockService: s})
+	pb.RegisterAgentsServer(grpcServer, &v2AgentsServer{MockService: s})
 	pb_v2.RegisterConversationDatasetsServer(grpcServer, &conversationDatasetsServer{MockService: s})
 	cxpb.RegisterWebhooksServer(grpcServer, &webhooksServer{MockService: s})
 	cxpb.RegisterAgentsServer(grpcServer, &cxAgentsServer{MockService: s})
@@ -80,6 +82,8 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		grpcpb.RegisterSipTrunksHandler,
 		grpcpb.RegisterGeneratorsHandler,
 		grpcpb.RegisterKnowledgeBasesHandler,
+		grpcpb.RegisterEntityTypesHandler,
+		grpcpb.RegisterAgentsHandler,
 		RegisterConversationDatasetsHandler,
 		RegisterWebhooksHandler,
 		RegisterCXAgentsHandler,
@@ -97,6 +101,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		// Rewrite /v2/ to /v2beta1/ for dialogflow
 		if strings.HasPrefix(r.URL.Path, "/v2/") {
 			r.URL.Path = "/v2beta1/" + strings.TrimPrefix(r.URL.Path, "/v2/")
+		}
+		if len(r.URL.Path) > 1 && strings.HasSuffix(r.URL.Path, "/") {
+			r.URL.Path = strings.TrimSuffix(r.URL.Path, "/")
 		}
 		grpcMux.ServeHTTP(w, r)
 	})

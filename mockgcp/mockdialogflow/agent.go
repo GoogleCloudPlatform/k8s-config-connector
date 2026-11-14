@@ -32,6 +32,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
+	pb "cloud.google.com/go/dialogflow/apiv2beta1/dialogflowpb"
 	cxpb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
 )
 
@@ -375,4 +376,94 @@ func RegisterCXAgentsHandler(ctx context.Context, mux *runtime.ServeMux, conn *g
 	}
 
 	return nil
+}
+
+type v2AgentsServer struct {
+	*MockService
+	pb.UnimplementedAgentsServer
+}
+
+func (s *v2AgentsServer) GetAgent(ctx context.Context, req *pb.GetAgentRequest) (*pb.Agent, error) {
+	parent := req.GetParent()
+	if parent == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "parent must be provided")
+	}
+
+	project, err := s.Projects.GetProjectByIDOrNumber(strings.TrimPrefix(parent, "projects/"))
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := fmt.Sprintf("projects/%s/agent", project.ID)
+	obj := &pb.Agent{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "com.google.apps.framework.request.NotFoundException: No DesignTimeAgent found for project '%s'.", project.ID)
+		}
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *v2AgentsServer) SetAgent(ctx context.Context, req *pb.SetAgentRequest) (*pb.Agent, error) {
+	agent := req.GetAgent()
+	if agent == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "agent is required")
+	}
+
+	parent := agent.GetParent()
+	if parent == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "parent must be provided")
+	}
+
+	project, err := s.Projects.GetProjectByIDOrNumber(strings.TrimPrefix(parent, "projects/"))
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := fmt.Sprintf("projects/%s/agent", project.ID)
+	obj := proto.Clone(agent).(*pb.Agent)
+	obj.Parent = fmt.Sprintf("projects/%s", project.ID)
+	if obj.ApiVersion == pb.Agent_API_VERSION_UNSPECIFIED {
+		obj.ApiVersion = pb.Agent_API_VERSION_V2
+	}
+	if obj.Tier == pb.Agent_TIER_UNSPECIFIED {
+		obj.Tier = pb.Agent_TIER_STANDARD
+	}
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.AlreadyExists {
+			if err := s.storage.Update(ctx, fqn, obj); err != nil {
+				return nil, err
+			}
+		} else {
+			return nil, err
+		}
+	}
+
+	return obj, nil
+}
+
+func (s *v2AgentsServer) DeleteAgent(ctx context.Context, req *pb.DeleteAgentRequest) (*emptypb.Empty, error) {
+	parent := req.GetParent()
+	if parent == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "parent must be provided")
+	}
+
+	project, err := s.Projects.GetProjectByIDOrNumber(strings.TrimPrefix(parent, "projects/"))
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := fmt.Sprintf("projects/%s/agent", project.ID)
+	deletedObj := &pb.Agent{}
+	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Agent not found: %s", fqn)
+		}
+		return nil, err
+	}
+
+	return &emptypb.Empty{}, nil
 }

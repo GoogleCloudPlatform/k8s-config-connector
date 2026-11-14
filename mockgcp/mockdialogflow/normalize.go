@@ -50,6 +50,15 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 				}
 			}
 		}
+		if path == ".name" && strings.Contains(value, "/entityTypes/") {
+			tokens := strings.Split(value, "/")
+			for i := 0; i < len(tokens)-1; i++ {
+				if tokens[i] == "entityTypes" {
+					entityTypeID := tokens[i+1]
+					replacements.ReplaceStringValue(entityTypeID, "${entityTypeID}")
+				}
+			}
+		}
 		if strings.Contains(value, "/conversationDatasets/") {
 			tokens := strings.Split(value, "/")
 			for i := 0; i < len(tokens)-1; i++ {

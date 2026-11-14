@@ -67,6 +67,8 @@ func (m *ServeMux) customErrorHandler(ctx context.Context, mux *runtime.ServeMux
 		wrapped.Error.Status = "PERMISSION_DENIED"
 	case codes.AlreadyExists:
 		wrapped.Error.Status = "ALREADY_EXISTS"
+	case codes.FailedPrecondition:
+		wrapped.Error.Status = "FAILED_PRECONDITION"
 	case codes.NotFound:
 		wrapped.Error.Status = "NOT_FOUND"
 		wrapped.Error.Errors = append(wrapped.Error.Errors, ErrorResponseDetails{
