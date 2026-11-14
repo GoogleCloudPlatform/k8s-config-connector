@@ -1,0 +1,42 @@
+GET https://agentregistry.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/agentregistryservice-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal MCP Server Description Updated",
+  "displayName": "Maximal MCP Server Updated",
+  "interfaces": [
+    {
+      "protocolBinding": 1,
+      "url": "https://mcp-maximal-updated-${uniqueId}.com"
+    }
+  ],
+  "mcpServerSpec": {
+    "content": {
+      "tools": [
+        {
+          "description": "Get current weather",
+          "inputSchema": {
+            "properties": {
+              "location": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "location"
+            ],
+            "type": "object"
+          },
+          "name": "get_weather"
+        }
+      ]
+    },
+    "type": 2
+  },
+  "name": "projects/${projectId}/locations/us-central1/services/agentregistryservice-maximal-${uniqueId}",
+  "registryResource": "projects/${projectNumber}/locations/us-central1/mcpServers/agentregistry-00000000-0000-0000-d1d7-1b952e0bc752",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

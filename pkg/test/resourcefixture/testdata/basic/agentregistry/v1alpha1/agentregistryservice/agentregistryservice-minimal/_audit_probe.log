@@ -1,0 +1,21 @@
+GET https://agentregistry.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/agentregistryservice-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "interfaces": [
+    {
+      "protocolBinding": 1,
+      "url": "https://mcp-minimal-updated-${uniqueId}.com"
+    }
+  ],
+  "mcpServerSpec": {
+    "type": 1
+  },
+  "name": "projects/${projectId}/locations/us-central1/services/agentregistryservice-minimal-${uniqueId}",
+  "registryResource": "projects/${projectNumber}/locations/us-central1/mcpServers/agentregistry-00000000-0000-0000-5350-a990b235d253",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
