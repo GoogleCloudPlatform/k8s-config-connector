@@ -23,8 +23,12 @@
 # Not after hand-over (overseer/ready-for-human): the automated reviewer no
 # longer reviews new heads then, so reviewed-at-head stays false, and this
 # rule would take off the grade assess-controller-step just gave the head.
-# Nor once mockgcp has started on the PR (step/mockgcp): later pushes are
-# its work, and the controller's assessment stays.
+# Nor once any later step has started on the PR (step/mockgcp,
+# step/mockgcp-alignment, step/release): later pushes are its work, and the
+# controller's assessment stays. Not step/mockgcp alone: a mockgcp step that
+# finds the work already done commits nothing, never becomes one of the
+# PR's closing issues, and so never labels it; the next step's push would
+# then take off the controller's grade (KCC #15572).
 name: assess-controller-step-stale
 description: Take a controller step's assessment label off when its PR moves to a new head
 on: pr
@@ -34,7 +38,7 @@ when:
   labels:
     all: [step/controller, greenfield]
     any: [overseer/assessment/good, overseer/assessment/fair, overseer/assessment/poor]
-    none: [step/mockgcp, overseer/ready-for-human]
+    none: [step/mockgcp, step/mockgcp-alignment, step/release, overseer/ready-for-human]
   reviewed-at-head: false
 run:
   unlabel: [overseer/assessment/good, overseer/assessment/fair, overseer/assessment/poor]
