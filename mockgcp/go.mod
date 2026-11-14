@@ -15,7 +15,7 @@ replace github.com/gke-labs/kube-etl/syncer => ../third_party/github.com/gke-lab
 require (
 	cloud.google.com/go/accesscontextmanager v1.14.0
 	cloud.google.com/go/aiplatform v1.125.0
-	cloud.google.com/go/alloydb v1.26.0
+	cloud.google.com/go/alloydb v1.30.0
 	cloud.google.com/go/analytics v0.35.0
 	cloud.google.com/go/apigateway v1.12.0
 	cloud.google.com/go/apihub v1.0.0

@@ -1,0 +1,3224 @@
+# Phase: CREATE
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "autoCreateSubnetworks": false,
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/europe-west1/subnetworks/${subnetworkID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/europe-west1/subnetworks/${subnetworkID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "ipCidrRange": "10.0.0.0/16",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "${subnetworkID}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "region": "projects/${projectId}/global/regions/europe-west1"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${subnetworkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${subnetworkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowSubnetCidrRoutesOverlap": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "abcdef0123A=",
+  "gatewayAddress": "10.0.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.0.0.0/16",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "${subnetworkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${subnetworkID}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/networkAttachments/${networkAttachmentID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west1&network_attachment=${networkAttachmentID}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/europe-west1/networkAttachments/${networkAttachmentID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/europe-west1/networkAttachments/${networkAttachmentID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/networkAttachments
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west1
+
+{
+  "connectionPreference": "ACCEPT_AUTOMATIC",
+  "name": "${networkAttachmentID}",
+  "subnetworks": [
+    "projects/${projectId}/regions/europe-west1/subnetworks/${subnetworkID}"
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkAttachments.insert",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkAttachmentID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/networkAttachments/${networkAttachmentID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west1&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkAttachments.insert",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkAttachmentID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/networkAttachments/${networkAttachmentID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/networkAttachments/${networkAttachmentID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west1&network_attachment=${networkAttachmentID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "connectionPreference": "ACCEPT_AUTOMATIC",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#networkAttachment",
+  "name": "${networkAttachmentID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/networkAttachments/${networkAttachmentID}",
+  "subnetworks": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${subnetworkID}"
+  ]
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters?%24alt=json%3Benum-encoding%3Dint&clusterId=alloydbcluster-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Feurope-west1
+
+{
+  "clusterType": 1,
+  "initialUser": {
+    "password": "alloydb-pg"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "pscConfig": {
+    "pscEnabled": true
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}"
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.Cluster",
+    "automatedBackupPolicy": {
+      "backupWindow": "3600s",
+      "enabled": false,
+      "location": "europe-west1",
+      "timeBasedRetention": {
+        "retentionPeriod": "1209600s"
+      },
+      "weeklySchedule": {
+        "daysOfWeek": [
+          "MONDAY",
+          "TUESDAY",
+          "WEDNESDAY",
+          "THURSDAY",
+          "FRIDAY",
+          "SATURDAY",
+          "SUNDAY"
+        ],
+        "startTimes": [
+          {
+            "hours": 23
+          }
+        ]
+      }
+    },
+    "clusterType": "PRIMARY",
+    "continuousBackupConfig": {
+      "enabled": true,
+      "recoveryWindowDays": 14
+    },
+    "continuousBackupInfo": {
+      "enabledTime": "2024-04-01T12:34:56.123456Z",
+      "encryptionInfo": {
+        "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+      },
+      "schedule": [
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY"
+      ]
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "databaseVersion": "POSTGRES_18",
+    "dataplexConfig": {
+      "enabled": true
+    },
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
+    "geminiConfig": {
+      "entitled": true
+    },
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}",
+    "pscConfig": {
+      "pscEnabled": true,
+      "serviceOwnedProjectNumber": "123456789"
+    },
+    "reconciling": false,
+    "serviceAccountEmail": "c-${projectNumber}-12345678@gcp-sa-alloydb.iam.gserviceaccount.com",
+    "state": "READY",
+    "subscriptionType": "STANDARD",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=alloydbinstance-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}
+
+{
+  "availabilityType": 2,
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectId}"
+    ],
+    "pscAutoConnectionPolicyState": 1,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
+        "consumerProject": "${projectId}"
+      }
+    ],
+    "pscAutoDnsState": 1,
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}"
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.Instance",
+    "activationPolicy": "ALWAYS",
+    "availabilityType": "REGIONAL",
+    "clientConnectionConfig": {
+      "sslConfig": {
+        "sslMode": "ENCRYPTED_ONLY"
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "gcaConfig": {},
+    "geminiConfig": {
+      "entitled": true
+    },
+    "instanceType": "PRIMARY",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "machineConfig": {
+      "cpuCount": 2
+    },
+    "maintenanceVersionName": "POSTGRES_18.20260930.03_07",
+    "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+    "nodes": [
+      {
+        "isHotStandby": true,
+        "zoneId": "europe-west1-d"
+      }
+    ],
+    "observabilityConfig": {
+      "assistiveExperiencesEnabled": false,
+      "enabled": false,
+      "maxQueryStringLength": 10240,
+      "preserveComments": false,
+      "queryPlansPerMinute": 20,
+      "recordApplicationTags": false,
+      "trackActiveQueries": false,
+      "trackClientAddress": false,
+      "trackWaitEventTypes": true,
+      "trackWaitEvents": true
+    },
+    "observabilityInstanceInfo": {
+      "maxQueryStringLength": 10240,
+      "queryPlansPerMinute": 20,
+      "trackWaitEventTypes": true,
+      "trackWaitEvents": true
+    },
+    "pscInstanceConfig": {
+      "allowedConsumerProjects": [
+        "${projectNumber}"
+      ],
+      "pscAutoConnectionPolicyState": "ENABLED",
+      "pscAutoConnections": [
+        {
+          "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+          "consumerNetworkStatus": "CONNECTION_POLICY_MISSING",
+          "consumerProject": "${projectId}",
+          "serviceConnectionPolicyCreationState": "PERMISSION_DENIED"
+        }
+      ],
+      "pscAutoDnsState": "PSC_AUTO_DNS_STATE_ENABLED",
+      "pscDnsName": "00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.europe-west1.alloydb-psc.goog.",
+      "pscInterfaceConfigs": [
+        {
+          "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+        }
+      ],
+      "serviceAttachmentLink": "https://www.googleapis.com/compute/v1/projects/tenant-project/regions/europe-west1/serviceAttachments/alloydb-psc-sa"
+    },
+    "pscInstanceInfo": {
+      "effectivePscAutoConnectionPolicy": true,
+      "effectivePscAutoDnsEnabled": true
+    },
+    "queryInsightsConfig": {
+      "queryPlansPerMinute": 5,
+      "queryStringLength": 1024,
+      "recordApplicationTags": false,
+      "recordClientAddress": false
+    },
+    "queryInsightsInfo": {
+      "enabled": true,
+      "queryPlansPerMinute": 5,
+      "queryStringLength": 1024
+    },
+    "reconciling": false,
+    "state": "READY",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "writableNode": {
+      "zoneId": "europe-west1-b"
+    }
+  }
+}
+
+---
+
+# Phase: UPDATE
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activationPolicy": 1,
+  "availabilityType": 2,
+  "clientConnectionConfig": {
+    "sslConfig": {
+      "sslMode": 5
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "gcaConfig": {},
+  "geminiConfig": {
+    "entitled": true
+  },
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "maintenanceVersionName": "POSTGRES_18.20260930.03_07",
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "nodes": [
+    {
+      "isHotStandby": true,
+      "zoneId": "europe-west1-d"
+    }
+  ],
+  "observabilityConfig": {
+    "assistiveExperiencesEnabled": false,
+    "enabled": false,
+    "maxQueryStringLength": 10240,
+    "preserveComments": false,
+    "queryPlansPerMinute": 20,
+    "recordApplicationTags": false,
+    "trackActiveQueries": false,
+    "trackClientAddress": false,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "observabilityInstanceInfo": {
+    "maxQueryStringLength": 10240,
+    "queryPlansPerMinute": 20,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectNumber}"
+    ],
+    "pscAutoConnectionPolicyState": 1,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetworkStatus": "CONNECTION_POLICY_MISSING",
+        "consumerProject": "${projectId}",
+        "serviceConnectionPolicyCreationState": "PERMISSION_DENIED"
+      }
+    ],
+    "pscAutoDnsState": 1,
+    "pscDnsName": "00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.europe-west1.alloydb-psc.goog.",
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ],
+    "serviceAttachmentLink": "https://www.googleapis.com/compute/v1/projects/tenant-project/regions/europe-west1/serviceAttachments/alloydb-psc-sa"
+  },
+  "pscInstanceInfo": {
+    "effectivePscAutoConnectionPolicy": true,
+    "effectivePscAutoDnsEnabled": true
+  },
+  "queryInsightsConfig": {
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024,
+    "recordApplicationTags": false,
+    "recordClientAddress": false
+  },
+  "queryInsightsInfo": {
+    "enabled": true,
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024
+  },
+  "reconciling": true,
+  "state": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "writableNode": {
+    "zoneId": "europe-west1-b"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "${projectId}",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}",
+  "parent": "folders/${folderID}",
+  "projectId": "${projectId}",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=pscInstanceConfig.pscAutoDnsState%2CpscInstanceConfig.pscAutoConnectionPolicyState
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+{
+  "availabilityType": 2,
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectId}"
+    ],
+    "pscAutoConnectionPolicyState": 2,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
+        "consumerProject": "${projectId}"
+      }
+    ],
+    "pscAutoDnsState": 2,
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ]
+  },
+  "reconciling": false
+}
+
+409 Conflict
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 409,
+    "message": "unable to queue the operation",
+    "status": "ABORTED"
+  }
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activationPolicy": 1,
+  "availabilityType": 2,
+  "clientConnectionConfig": {
+    "sslConfig": {
+      "sslMode": 5
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "gcaConfig": {},
+  "geminiConfig": {
+    "entitled": true
+  },
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "maintenanceVersionName": "POSTGRES_18.20260930.03_07",
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "nodes": [
+    {
+      "isHotStandby": true,
+      "zoneId": "europe-west1-d"
+    }
+  ],
+  "observabilityConfig": {
+    "assistiveExperiencesEnabled": false,
+    "enabled": false,
+    "maxQueryStringLength": 10240,
+    "preserveComments": false,
+    "queryPlansPerMinute": 20,
+    "recordApplicationTags": false,
+    "trackActiveQueries": false,
+    "trackClientAddress": false,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "observabilityInstanceInfo": {
+    "maxQueryStringLength": 10240,
+    "queryPlansPerMinute": 20,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectNumber}"
+    ],
+    "pscAutoConnectionPolicyState": 1,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetworkStatus": "CONNECTION_POLICY_MISSING",
+        "consumerProject": "${projectId}",
+        "serviceConnectionPolicyCreationState": "PERMISSION_DENIED"
+      }
+    ],
+    "pscAutoDnsState": 1,
+    "pscDnsName": "00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.europe-west1.alloydb-psc.goog.",
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ],
+    "serviceAttachmentLink": "https://www.googleapis.com/compute/v1/projects/tenant-project/regions/europe-west1/serviceAttachments/alloydb-psc-sa"
+  },
+  "pscInstanceInfo": {
+    "effectivePscAutoConnectionPolicy": true,
+    "effectivePscAutoDnsEnabled": true
+  },
+  "queryInsightsConfig": {
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024,
+    "recordApplicationTags": false,
+    "recordClientAddress": false
+  },
+  "queryInsightsInfo": {
+    "enabled": true,
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024
+  },
+  "reconciling": true,
+  "state": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "writableNode": {
+    "zoneId": "europe-west1-b"
+  }
+}
+
+---
+
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=pscInstanceConfig.pscAutoDnsState%2CpscInstanceConfig.pscAutoConnectionPolicyState
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+{
+  "availabilityType": 2,
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectId}"
+    ],
+    "pscAutoConnectionPolicyState": 2,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
+        "consumerProject": "${projectId}"
+      }
+    ],
+    "pscAutoDnsState": 2,
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ]
+  },
+  "reconciling": false
+}
+
+409 Conflict
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 409,
+    "message": "unable to queue the operation",
+    "status": "ABORTED"
+  }
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activationPolicy": 1,
+  "availabilityType": 2,
+  "clientConnectionConfig": {
+    "sslConfig": {
+      "sslMode": 5
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "gcaConfig": {},
+  "geminiConfig": {
+    "entitled": true
+  },
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "maintenanceVersionName": "POSTGRES_18.20260930.03_07",
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "nodes": [
+    {
+      "isHotStandby": true,
+      "zoneId": "europe-west1-d"
+    }
+  ],
+  "observabilityConfig": {
+    "assistiveExperiencesEnabled": false,
+    "enabled": false,
+    "maxQueryStringLength": 10240,
+    "preserveComments": false,
+    "queryPlansPerMinute": 20,
+    "recordApplicationTags": false,
+    "trackActiveQueries": false,
+    "trackClientAddress": false,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "observabilityInstanceInfo": {
+    "maxQueryStringLength": 10240,
+    "queryPlansPerMinute": 20,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectNumber}"
+    ],
+    "pscAutoConnectionPolicyState": 1,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetworkStatus": "CONNECTION_POLICY_MISSING",
+        "consumerProject": "${projectId}",
+        "serviceConnectionPolicyCreationState": "PERMISSION_DENIED"
+      }
+    ],
+    "pscAutoDnsState": 1,
+    "pscDnsName": "00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.europe-west1.alloydb-psc.goog.",
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ],
+    "serviceAttachmentLink": "https://www.googleapis.com/compute/v1/projects/tenant-project/regions/europe-west1/serviceAttachments/alloydb-psc-sa"
+  },
+  "pscInstanceInfo": {
+    "effectivePscAutoConnectionPolicy": true,
+    "effectivePscAutoDnsEnabled": true
+  },
+  "queryInsightsConfig": {
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024,
+    "recordApplicationTags": false,
+    "recordClientAddress": false
+  },
+  "queryInsightsInfo": {
+    "enabled": true,
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024
+  },
+  "reconciling": true,
+  "state": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "writableNode": {
+    "zoneId": "europe-west1-b"
+  }
+}
+
+---
+
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=pscInstanceConfig.pscAutoDnsState%2CpscInstanceConfig.pscAutoConnectionPolicyState
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+{
+  "availabilityType": 2,
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectId}"
+    ],
+    "pscAutoConnectionPolicyState": 2,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
+        "consumerProject": "${projectId}"
+      }
+    ],
+    "pscAutoDnsState": 2,
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ]
+  },
+  "reconciling": false
+}
+
+409 Conflict
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 409,
+    "message": "unable to queue the operation",
+    "status": "ABORTED"
+  }
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activationPolicy": 1,
+  "availabilityType": 2,
+  "clientConnectionConfig": {
+    "sslConfig": {
+      "sslMode": 5
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "gcaConfig": {},
+  "geminiConfig": {
+    "entitled": true
+  },
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "maintenanceVersionName": "POSTGRES_18.20260930.03_07",
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "nodes": [
+    {
+      "isHotStandby": true,
+      "zoneId": "europe-west1-d"
+    }
+  ],
+  "observabilityConfig": {
+    "assistiveExperiencesEnabled": false,
+    "enabled": false,
+    "maxQueryStringLength": 10240,
+    "preserveComments": false,
+    "queryPlansPerMinute": 20,
+    "recordApplicationTags": false,
+    "trackActiveQueries": false,
+    "trackClientAddress": false,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "observabilityInstanceInfo": {
+    "maxQueryStringLength": 10240,
+    "queryPlansPerMinute": 20,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectNumber}"
+    ],
+    "pscAutoConnectionPolicyState": 1,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetworkStatus": "CONNECTION_POLICY_MISSING",
+        "consumerProject": "${projectId}",
+        "serviceConnectionPolicyCreationState": "PERMISSION_DENIED"
+      }
+    ],
+    "pscAutoDnsState": 1,
+    "pscDnsName": "00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.europe-west1.alloydb-psc.goog.",
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ],
+    "serviceAttachmentLink": "https://www.googleapis.com/compute/v1/projects/tenant-project/regions/europe-west1/serviceAttachments/alloydb-psc-sa"
+  },
+  "pscInstanceInfo": {
+    "effectivePscAutoConnectionPolicy": true,
+    "effectivePscAutoDnsEnabled": true
+  },
+  "queryInsightsConfig": {
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024,
+    "recordApplicationTags": false,
+    "recordClientAddress": false
+  },
+  "queryInsightsInfo": {
+    "enabled": true,
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024
+  },
+  "reconciling": true,
+  "state": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "writableNode": {
+    "zoneId": "europe-west1-b"
+  }
+}
+
+---
+
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=pscInstanceConfig.pscAutoDnsState%2CpscInstanceConfig.pscAutoConnectionPolicyState
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+{
+  "availabilityType": 2,
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectId}"
+    ],
+    "pscAutoConnectionPolicyState": 2,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
+        "consumerProject": "${projectId}"
+      }
+    ],
+    "pscAutoDnsState": 2,
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ]
+  },
+  "reconciling": false
+}
+
+409 Conflict
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 409,
+    "message": "unable to queue the operation",
+    "status": "ABORTED"
+  }
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activationPolicy": 1,
+  "availabilityType": 2,
+  "clientConnectionConfig": {
+    "sslConfig": {
+      "sslMode": 5
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "gcaConfig": {},
+  "geminiConfig": {
+    "entitled": true
+  },
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "maintenanceVersionName": "POSTGRES_18.20260930.03_07",
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "nodes": [
+    {
+      "isHotStandby": true,
+      "zoneId": "europe-west1-d"
+    }
+  ],
+  "observabilityConfig": {
+    "assistiveExperiencesEnabled": false,
+    "enabled": false,
+    "maxQueryStringLength": 10240,
+    "preserveComments": false,
+    "queryPlansPerMinute": 20,
+    "recordApplicationTags": false,
+    "trackActiveQueries": false,
+    "trackClientAddress": false,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "observabilityInstanceInfo": {
+    "maxQueryStringLength": 10240,
+    "queryPlansPerMinute": 20,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectNumber}"
+    ],
+    "pscAutoConnectionPolicyState": 1,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetworkStatus": "CONNECTION_POLICY_MISSING",
+        "consumerProject": "${projectId}",
+        "serviceConnectionPolicyCreationState": "PERMISSION_DENIED"
+      }
+    ],
+    "pscAutoDnsState": 1,
+    "pscDnsName": "00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.europe-west1.alloydb-psc.goog.",
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ],
+    "serviceAttachmentLink": "https://www.googleapis.com/compute/v1/projects/tenant-project/regions/europe-west1/serviceAttachments/alloydb-psc-sa"
+  },
+  "pscInstanceInfo": {
+    "effectivePscAutoConnectionPolicy": true,
+    "effectivePscAutoDnsEnabled": true
+  },
+  "queryInsightsConfig": {
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024,
+    "recordApplicationTags": false,
+    "recordClientAddress": false
+  },
+  "queryInsightsInfo": {
+    "enabled": true,
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024
+  },
+  "reconciling": true,
+  "state": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "writableNode": {
+    "zoneId": "europe-west1-b"
+  }
+}
+
+---
+
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=pscInstanceConfig.pscAutoDnsState%2CpscInstanceConfig.pscAutoConnectionPolicyState
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+{
+  "availabilityType": 2,
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectId}"
+    ],
+    "pscAutoConnectionPolicyState": 2,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
+        "consumerProject": "${projectId}"
+      }
+    ],
+    "pscAutoDnsState": 2,
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ]
+  },
+  "reconciling": false
+}
+
+409 Conflict
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 409,
+    "message": "unable to queue the operation",
+    "status": "ABORTED"
+  }
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activationPolicy": 1,
+  "availabilityType": 2,
+  "clientConnectionConfig": {
+    "sslConfig": {
+      "sslMode": 5
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "gcaConfig": {},
+  "geminiConfig": {
+    "entitled": true
+  },
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "maintenanceVersionName": "POSTGRES_18.20260930.03_07",
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "nodes": [
+    {
+      "isHotStandby": true,
+      "zoneId": "europe-west1-d"
+    }
+  ],
+  "observabilityConfig": {
+    "assistiveExperiencesEnabled": false,
+    "enabled": false,
+    "maxQueryStringLength": 10240,
+    "preserveComments": false,
+    "queryPlansPerMinute": 20,
+    "recordApplicationTags": false,
+    "trackActiveQueries": false,
+    "trackClientAddress": false,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "observabilityInstanceInfo": {
+    "maxQueryStringLength": 10240,
+    "queryPlansPerMinute": 20,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectNumber}"
+    ],
+    "pscAutoConnectionPolicyState": 1,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetworkStatus": "CONNECTION_POLICY_MISSING",
+        "consumerProject": "${projectId}",
+        "serviceConnectionPolicyCreationState": "PERMISSION_DENIED"
+      }
+    ],
+    "pscAutoDnsState": 1,
+    "pscDnsName": "00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.europe-west1.alloydb-psc.goog.",
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ],
+    "serviceAttachmentLink": "https://www.googleapis.com/compute/v1/projects/tenant-project/regions/europe-west1/serviceAttachments/alloydb-psc-sa"
+  },
+  "pscInstanceInfo": {
+    "effectivePscAutoConnectionPolicy": true,
+    "effectivePscAutoDnsEnabled": true
+  },
+  "queryInsightsConfig": {
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024,
+    "recordApplicationTags": false,
+    "recordClientAddress": false
+  },
+  "queryInsightsInfo": {
+    "enabled": true,
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024
+  },
+  "reconciling": true,
+  "state": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "writableNode": {
+    "zoneId": "europe-west1-b"
+  }
+}
+
+---
+
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=pscInstanceConfig.pscAutoDnsState%2CpscInstanceConfig.pscAutoConnectionPolicyState
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+{
+  "availabilityType": 2,
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectId}"
+    ],
+    "pscAutoConnectionPolicyState": 2,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
+        "consumerProject": "${projectId}"
+      }
+    ],
+    "pscAutoDnsState": 2,
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ]
+  },
+  "reconciling": false
+}
+
+409 Conflict
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 409,
+    "message": "unable to queue the operation",
+    "status": "ABORTED"
+  }
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activationPolicy": 1,
+  "availabilityType": 2,
+  "clientConnectionConfig": {
+    "sslConfig": {
+      "sslMode": 5
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "gcaConfig": {},
+  "geminiConfig": {
+    "entitled": true
+  },
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "maintenanceVersionName": "POSTGRES_18.20260930.03_07",
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "nodes": [
+    {
+      "isHotStandby": true,
+      "zoneId": "europe-west1-d"
+    }
+  ],
+  "observabilityConfig": {
+    "assistiveExperiencesEnabled": false,
+    "enabled": false,
+    "maxQueryStringLength": 10240,
+    "preserveComments": false,
+    "queryPlansPerMinute": 20,
+    "recordApplicationTags": false,
+    "trackActiveQueries": false,
+    "trackClientAddress": false,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "observabilityInstanceInfo": {
+    "maxQueryStringLength": 10240,
+    "queryPlansPerMinute": 20,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectNumber}"
+    ],
+    "pscAutoConnectionPolicyState": 1,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetworkStatus": "CONNECTION_POLICY_MISSING",
+        "consumerProject": "${projectId}",
+        "serviceConnectionPolicyCreationState": "PERMISSION_DENIED"
+      }
+    ],
+    "pscAutoDnsState": 1,
+    "pscDnsName": "00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.europe-west1.alloydb-psc.goog.",
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ],
+    "serviceAttachmentLink": "https://www.googleapis.com/compute/v1/projects/tenant-project/regions/europe-west1/serviceAttachments/alloydb-psc-sa"
+  },
+  "pscInstanceInfo": {
+    "effectivePscAutoConnectionPolicy": true,
+    "effectivePscAutoDnsEnabled": true
+  },
+  "queryInsightsConfig": {
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024,
+    "recordApplicationTags": false,
+    "recordClientAddress": false
+  },
+  "queryInsightsInfo": {
+    "enabled": true,
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024
+  },
+  "reconciling": true,
+  "state": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "writableNode": {
+    "zoneId": "europe-west1-b"
+  }
+}
+
+---
+
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=pscInstanceConfig.pscAutoDnsState%2CpscInstanceConfig.pscAutoConnectionPolicyState
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+{
+  "availabilityType": 2,
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectId}"
+    ],
+    "pscAutoConnectionPolicyState": 2,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
+        "consumerProject": "${projectId}"
+      }
+    ],
+    "pscAutoDnsState": 2,
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ]
+  },
+  "reconciling": false
+}
+
+409 Conflict
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 409,
+    "message": "unable to queue the operation",
+    "status": "ABORTED"
+  }
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activationPolicy": 1,
+  "availabilityType": 2,
+  "clientConnectionConfig": {
+    "sslConfig": {
+      "sslMode": 5
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "gcaConfig": {},
+  "geminiConfig": {
+    "entitled": true
+  },
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "maintenanceVersionName": "POSTGRES_18.20260930.03_07",
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "nodes": [
+    {
+      "isHotStandby": true,
+      "zoneId": "europe-west1-d"
+    }
+  ],
+  "observabilityConfig": {
+    "assistiveExperiencesEnabled": false,
+    "enabled": false,
+    "maxQueryStringLength": 10240,
+    "preserveComments": false,
+    "queryPlansPerMinute": 20,
+    "recordApplicationTags": false,
+    "trackActiveQueries": false,
+    "trackClientAddress": false,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "observabilityInstanceInfo": {
+    "maxQueryStringLength": 10240,
+    "queryPlansPerMinute": 20,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectNumber}"
+    ],
+    "pscAutoConnectionPolicyState": 1,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetworkStatus": "CONNECTION_POLICY_MISSING",
+        "consumerProject": "${projectId}",
+        "serviceConnectionPolicyCreationState": "PERMISSION_DENIED"
+      }
+    ],
+    "pscAutoDnsState": 1,
+    "pscDnsName": "00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.europe-west1.alloydb-psc.goog.",
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ],
+    "serviceAttachmentLink": "https://www.googleapis.com/compute/v1/projects/tenant-project/regions/europe-west1/serviceAttachments/alloydb-psc-sa"
+  },
+  "pscInstanceInfo": {
+    "effectivePscAutoConnectionPolicy": true,
+    "effectivePscAutoDnsEnabled": true
+  },
+  "queryInsightsConfig": {
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024,
+    "recordApplicationTags": false,
+    "recordClientAddress": false
+  },
+  "queryInsightsInfo": {
+    "enabled": true,
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024
+  },
+  "reconciling": true,
+  "state": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "writableNode": {
+    "zoneId": "europe-west1-b"
+  }
+}
+
+---
+
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=pscInstanceConfig.pscAutoDnsState%2CpscInstanceConfig.pscAutoConnectionPolicyState
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+{
+  "availabilityType": 2,
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectId}"
+    ],
+    "pscAutoConnectionPolicyState": 2,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
+        "consumerProject": "${projectId}"
+      }
+    ],
+    "pscAutoDnsState": 2,
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ]
+  },
+  "reconciling": false
+}
+
+409 Conflict
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 409,
+    "message": "unable to queue the operation",
+    "status": "ABORTED"
+  }
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activationPolicy": 1,
+  "availabilityType": 2,
+  "clientConnectionConfig": {
+    "sslConfig": {
+      "sslMode": 5
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "gcaConfig": {},
+  "geminiConfig": {
+    "entitled": true
+  },
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "maintenanceVersionName": "POSTGRES_18.20260930.03_07",
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "nodes": [
+    {
+      "isHotStandby": true,
+      "zoneId": "europe-west1-d"
+    }
+  ],
+  "observabilityConfig": {
+    "assistiveExperiencesEnabled": false,
+    "enabled": false,
+    "maxQueryStringLength": 10240,
+    "preserveComments": false,
+    "queryPlansPerMinute": 20,
+    "recordApplicationTags": false,
+    "trackActiveQueries": false,
+    "trackClientAddress": false,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "observabilityInstanceInfo": {
+    "maxQueryStringLength": 10240,
+    "queryPlansPerMinute": 20,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectNumber}"
+    ],
+    "pscAutoConnectionPolicyState": 1,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetworkStatus": "CONNECTION_POLICY_MISSING",
+        "consumerProject": "${projectId}",
+        "serviceConnectionPolicyCreationState": "PERMISSION_DENIED"
+      }
+    ],
+    "pscAutoDnsState": 1,
+    "pscDnsName": "00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.europe-west1.alloydb-psc.goog.",
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ],
+    "serviceAttachmentLink": "https://www.googleapis.com/compute/v1/projects/tenant-project/regions/europe-west1/serviceAttachments/alloydb-psc-sa"
+  },
+  "pscInstanceInfo": {
+    "effectivePscAutoConnectionPolicy": true,
+    "effectivePscAutoDnsEnabled": true
+  },
+  "queryInsightsConfig": {
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024,
+    "recordApplicationTags": false,
+    "recordClientAddress": false
+  },
+  "queryInsightsInfo": {
+    "enabled": true,
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024
+  },
+  "reconciling": true,
+  "state": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "writableNode": {
+    "zoneId": "europe-west1-b"
+  }
+}
+
+---
+
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=pscInstanceConfig.pscAutoDnsState%2CpscInstanceConfig.pscAutoConnectionPolicyState
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+{
+  "availabilityType": 2,
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectId}"
+    ],
+    "pscAutoConnectionPolicyState": 2,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
+        "consumerProject": "${projectId}"
+      }
+    ],
+    "pscAutoDnsState": 2,
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ]
+  },
+  "reconciling": false
+}
+
+409 Conflict
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 409,
+    "message": "unable to queue the operation",
+    "status": "ABORTED"
+  }
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activationPolicy": 1,
+  "availabilityType": 2,
+  "clientConnectionConfig": {
+    "sslConfig": {
+      "sslMode": 5
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "gcaConfig": {},
+  "geminiConfig": {
+    "entitled": true
+  },
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "maintenanceVersionName": "POSTGRES_18.20260930.03_07",
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "nodes": [
+    {
+      "isHotStandby": true,
+      "zoneId": "europe-west1-d"
+    }
+  ],
+  "observabilityConfig": {
+    "assistiveExperiencesEnabled": false,
+    "enabled": false,
+    "maxQueryStringLength": 10240,
+    "preserveComments": false,
+    "queryPlansPerMinute": 20,
+    "recordApplicationTags": false,
+    "trackActiveQueries": false,
+    "trackClientAddress": false,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "observabilityInstanceInfo": {
+    "maxQueryStringLength": 10240,
+    "queryPlansPerMinute": 20,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectNumber}"
+    ],
+    "pscAutoConnectionPolicyState": 1,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetworkStatus": "CONNECTION_POLICY_MISSING",
+        "consumerProject": "${projectId}",
+        "serviceConnectionPolicyCreationState": "PERMISSION_DENIED"
+      }
+    ],
+    "pscAutoDnsState": 1,
+    "pscDnsName": "00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.europe-west1.alloydb-psc.goog.",
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ],
+    "serviceAttachmentLink": "https://www.googleapis.com/compute/v1/projects/tenant-project/regions/europe-west1/serviceAttachments/alloydb-psc-sa"
+  },
+  "pscInstanceInfo": {
+    "effectivePscAutoConnectionPolicy": true,
+    "effectivePscAutoDnsEnabled": true
+  },
+  "queryInsightsConfig": {
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024,
+    "recordApplicationTags": false,
+    "recordClientAddress": false
+  },
+  "queryInsightsInfo": {
+    "enabled": true,
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024
+  },
+  "reconciling": false,
+  "state": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "writableNode": {
+    "zoneId": "europe-west1-b"
+  }
+}
+
+---
+
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=pscInstanceConfig.pscAutoDnsState%2CpscInstanceConfig.pscAutoConnectionPolicyState
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+{
+  "availabilityType": 2,
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectId}"
+    ],
+    "pscAutoConnectionPolicyState": 2,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
+        "consumerProject": "${projectId}"
+      }
+    ],
+    "pscAutoDnsState": 2,
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ]
+  },
+  "reconciling": false
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}"
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.Instance",
+    "activationPolicy": "ALWAYS",
+    "availabilityType": "REGIONAL",
+    "clientConnectionConfig": {
+      "sslConfig": {
+        "sslMode": "ENCRYPTED_ONLY"
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "gcaConfig": {},
+    "geminiConfig": {
+      "entitled": true
+    },
+    "instanceType": "PRIMARY",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "machineConfig": {
+      "cpuCount": 2
+    },
+    "maintenanceVersionName": "POSTGRES_18.20260930.03_07",
+    "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+    "nodes": [
+      {
+        "isHotStandby": true,
+        "zoneId": "europe-west1-d"
+      }
+    ],
+    "observabilityConfig": {
+      "assistiveExperiencesEnabled": false,
+      "enabled": false,
+      "maxQueryStringLength": 10240,
+      "preserveComments": false,
+      "queryPlansPerMinute": 20,
+      "recordApplicationTags": false,
+      "trackActiveQueries": false,
+      "trackClientAddress": false,
+      "trackWaitEventTypes": true,
+      "trackWaitEvents": true
+    },
+    "observabilityInstanceInfo": {
+      "maxQueryStringLength": 10240,
+      "queryPlansPerMinute": 20,
+      "trackWaitEventTypes": true,
+      "trackWaitEvents": true
+    },
+    "pscInstanceConfig": {
+      "allowedConsumerProjects": [
+        "${projectNumber}"
+      ],
+      "pscAutoConnectionPolicyState": "DISABLED",
+      "pscAutoConnections": [
+        {
+          "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+          "consumerNetworkStatus": "CONNECTION_POLICY_MISSING",
+          "consumerProject": "${projectId}"
+        }
+      ],
+      "pscAutoDnsState": "PSC_AUTO_DNS_STATE_DISABLED",
+      "pscDnsName": "00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.europe-west1.alloydb-psc.goog.",
+      "pscInterfaceConfigs": [
+        {
+          "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+        }
+      ],
+      "serviceAttachmentLink": "https://www.googleapis.com/compute/v1/projects/tenant-project/regions/europe-west1/serviceAttachments/alloydb-psc-sa"
+    },
+    "pscInstanceInfo": {},
+    "queryInsightsConfig": {
+      "queryPlansPerMinute": 5,
+      "queryStringLength": 1024,
+      "recordApplicationTags": false,
+      "recordClientAddress": false
+    },
+    "queryInsightsInfo": {
+      "enabled": true,
+      "queryPlansPerMinute": 5,
+      "queryStringLength": 1024
+    },
+    "reconciling": false,
+    "state": "READY",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "writableNode": {
+      "zoneId": "europe-west1-b"
+    }
+  }
+}
+
+---
+
+# Phase: DELETE
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activationPolicy": 1,
+  "availabilityType": 2,
+  "clientConnectionConfig": {
+    "sslConfig": {
+      "sslMode": 5
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "gcaConfig": {},
+  "geminiConfig": {
+    "entitled": true
+  },
+  "instanceType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineConfig": {
+    "cpuCount": 2
+  },
+  "maintenanceVersionName": "POSTGRES_18.20260930.03_07",
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "nodes": [
+    {
+      "isHotStandby": true,
+      "zoneId": "europe-west1-d"
+    }
+  ],
+  "observabilityConfig": {
+    "assistiveExperiencesEnabled": false,
+    "enabled": false,
+    "maxQueryStringLength": 10240,
+    "preserveComments": false,
+    "queryPlansPerMinute": 20,
+    "recordApplicationTags": false,
+    "trackActiveQueries": false,
+    "trackClientAddress": false,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "observabilityInstanceInfo": {
+    "maxQueryStringLength": 10240,
+    "queryPlansPerMinute": 20,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "pscInstanceConfig": {
+    "allowedConsumerProjects": [
+      "${projectNumber}"
+    ],
+    "pscAutoConnectionPolicyState": 2,
+    "pscAutoConnections": [
+      {
+        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetworkStatus": "CONNECTION_POLICY_MISSING",
+        "consumerProject": "${projectId}"
+      }
+    ],
+    "pscAutoDnsState": 2,
+    "pscDnsName": "00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.europe-west1.alloydb-psc.goog.",
+    "pscInterfaceConfigs": [
+      {
+        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
+      }
+    ],
+    "serviceAttachmentLink": "https://www.googleapis.com/compute/v1/projects/tenant-project/regions/europe-west1/serviceAttachments/alloydb-psc-sa"
+  },
+  "pscInstanceInfo": {},
+  "queryInsightsConfig": {
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024,
+    "recordApplicationTags": false,
+    "recordClientAddress": false
+  },
+  "queryInsightsInfo": {
+    "enabled": true,
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024
+  },
+  "reconciling": false,
+  "state": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "writableNode": {
+    "zoneId": "europe-west1-b"
+  }
+}
+
+---
+
+DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}"
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "automatedBackupPolicy": {
+    "backupWindow": "3600s",
+    "enabled": false,
+    "location": "europe-west1",
+    "timeBasedRetention": {
+      "retentionPeriod": "1209600s"
+    },
+    "weeklySchedule": {
+      "daysOfWeek": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "startTimes": [
+        {
+          "hours": 23
+        }
+      ]
+    }
+  },
+  "clusterType": 1,
+  "continuousBackupConfig": {
+    "enabled": true,
+    "recoveryWindowDays": 14
+  },
+  "continuousBackupInfo": {
+    "enabledTime": "2024-04-01T12:34:56.123456Z",
+    "encryptionInfo": {
+      "encryptionType": 1
+    },
+    "schedule": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseVersion": 6,
+  "dataplexConfig": {
+    "enabled": true
+  },
+  "encryptionInfo": {
+    "encryptionType": 1
+  },
+  "geminiConfig": {
+    "entitled": true
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}",
+  "pscConfig": {
+    "pscEnabled": true,
+    "serviceOwnedProjectNumber": "123456789"
+  },
+  "reconciling": false,
+  "serviceAccountEmail": "c-${projectNumber}-12345678@gcp-sa-alloydb.iam.gserviceaccount.com",
+  "state": 1,
+  "subscriptionType": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}"
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/networkAttachments/${networkAttachmentID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west1&network_attachment=${networkAttachmentID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "connectionPreference": "ACCEPT_AUTOMATIC",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#networkAttachment",
+  "name": "${networkAttachmentID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/networkAttachments/${networkAttachmentID}",
+  "subnetworks": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${subnetworkID}"
+  ]
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/networkAttachments/${networkAttachmentID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west1&network_attachment=${networkAttachmentID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkAttachments.delete",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkAttachmentID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/networkAttachments/${networkAttachmentID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west1&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkAttachments.delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkAttachmentID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/networkAttachments/${networkAttachmentID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowSubnetCidrRoutesOverlap": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "abcdef0123A=",
+  "gatewayAddress": "10.0.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.0.0.0/16",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "${subnetworkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${subnetworkID}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${subnetworkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${subnetworkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}

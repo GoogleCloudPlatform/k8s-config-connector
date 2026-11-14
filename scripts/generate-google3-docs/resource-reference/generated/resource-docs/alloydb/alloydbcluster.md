@@ -128,6 +128,8 @@ projectRef:
   kind: string
   name: string
   namespace: string
+pscConfig:
+  pscEnabled: boolean
 resourceID: string
 restoreBackupSource:
   backupNameRef:
@@ -903,6 +905,26 @@ secondaryConfig:
         <td>
             <p><code class="apitype">string</code></p>
             <p>The `namespace` field of a `Project` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. The configuration for Private Service Connect (PSC) for the cluster.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscConfig.pscEnabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Optional. Create an instance that allows connections from Private Service Connect endpoints to the instance.</p>
         </td>
     </tr>
     <tr>

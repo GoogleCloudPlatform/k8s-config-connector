@@ -270,6 +270,77 @@ spec:
                       only after observability enabled flag is also turned on.
                     type: boolean
                 type: object
+              pscInstanceConfig:
+                description: Optional. The configuration for Private Service Connect
+                  (PSC) for the instance.
+                properties:
+                  allowedConsumerProjects:
+                    description: Optional. List of consumer projects that are allowed
+                      to create PSC endpoints to service-attachments to this instance.
+                      Specify project numbers if Config Connector cannot read the
+                      consumer project.
+                    items:
+                      type: string
+                    type: array
+                  pscAutoConnectionPolicyState:
+                    description: 'Optional. Configuration for setting up PSC auto
+                      connection policy automation for the instance. For new PSC instances,
+                      leaving this field unset enables PSC auto connection policy
+                      automation by default. When enabled, AlloyDB may create or update
+                      a Network Connectivity ServiceConnectionPolicy in the consumer
+                      network that Config Connector does not manage or delete, and
+                      deleting the AlloyDBInstance does not delete that policy. Check
+                      status.observedState.pscInstanceInfo.effectivePSCAutoConnectionPolicy
+                      for the effective state. Possible values: ["ENABLED", "DISABLED"].'
+                    enum:
+                    - ENABLED
+                    - DISABLED
+                    type: string
+                  pscAutoConnections:
+                    description: Optional. Configurations for setting up PSC service
+                      automation. Specify project numbers if Config Connector cannot
+                      read the consumer project.
+                    items:
+                      properties:
+                        consumerNetwork:
+                          description: 'The consumer network for the PSC service automation,
+                            example: "projects/vpc-host-project/global/networks/default".
+                            The consumer network might be hosted a different project
+                            than the consumer project.'
+                          type: string
+                        consumerProject:
+                          description: The consumer project to which the PSC service
+                            automation endpoint will be created.
+                          type: string
+                      type: object
+                    type: array
+                  pscAutoDNSState:
+                    description: 'Optional. Configuration for setting up PSC auto
+                      DNS for the instance. For new PSC instances, leaving this field
+                      unset enables PSC auto DNS by default. Check status.observedState.pscInstanceInfo.effectivePSCAutoDNSEnabled
+                      for the effective state. Possible values: ["PSC_AUTO_DNS_STATE_ENABLED",
+                      "PSC_AUTO_DNS_STATE_DISABLED"].'
+                    enum:
+                    - PSC_AUTO_DNS_STATE_ENABLED
+                    - PSC_AUTO_DNS_STATE_DISABLED
+                    type: string
+                  pscInterfaceConfigs:
+                    description: Optional. Configurations for setting up PSC interfaces
+                      attached to the instance which are used for outbound connectivity.
+                      Only primary instances can have PSC interface attached. Currently
+                      we only support 0 or 1 PSC interface.
+                    items:
+                      properties:
+                        networkAttachmentResource:
+                          description: 'The network attachment resource created in
+                            the consumer network to which the PSC interface will be
+                            linked. This is of the format: "projects/${CONSUMER_PROJECT}/regions/${REGION}/networkAttachments/${NETWORK_ATTACHMENT_NAME}".
+                            The network attachment must be in the same region as the
+                            instance.'
+                          type: string
+                      type: object
+                    type: array
+                type: object
               queryInsightsConfig:
                 properties:
                   queryPlansPerMinute:
@@ -384,6 +455,84 @@ spec:
                           flag is also turned on. This is read-only flag and only
                           modifiable by internal API.
                         type: boolean
+                    type: object
+                  pscInstanceConfig:
+                    description: Output only. The configuration for Private Service
+                      Connect (PSC) for the instance.
+                    properties:
+                      pscAutoConnections:
+                        description: Optional. Configurations for setting up PSC service
+                          automation.
+                        items:
+                          properties:
+                            consumerNetworkStatus:
+                              description: 'Output only. The status of the service
+                                connection policy. Possible values: "STATE_UNSPECIFIED"
+                                - Default state, when Connection Map is created initially.
+                                "VALID" - Set when policy and map configuration is
+                                valid, and their matching can lead to allowing creation
+                                of PSC Connections subject to other constraints like
+                                connections limit. "CONNECTION_POLICY_MISSING" - No
+                                Service Connection Policy found for this network and
+                                Service Class "POLICY_LIMIT_REACHED" - Service Connection
+                                Policy limit reached for this network and Service
+                                Class "CONSUMER_INSTANCE_PROJECT_NOT_ALLOWLISTED"
+                                - The consumer instance project is not in AllowedGoogleProducersResourceHierarchyLevels
+                                of the matching ServiceConnectionPolicy.'
+                              type: string
+                            ipAddress:
+                              description: Output only. The IP address of the PSC
+                                service automation endpoint.
+                              type: string
+                            status:
+                              description: 'Output only. The status of the PSC service
+                                automation connection. Possible values: "STATE_UNSPECIFIED"
+                                - An invalid state as the default case. "ACTIVE" -
+                                The connection has been created successfully. "FAILED"
+                                - The connection is not functional since some resources
+                                on the connection fail to be created. "CREATING" -
+                                The connection is being created. "DELETING" - The
+                                connection is being deleted. "CREATE_REPAIRING" -
+                                The connection is being repaired to complete creation.
+                                "DELETE_REPAIRING" - The connection is being repaired
+                                to complete deletion.'
+                              type: string
+                          type: object
+                        type: array
+                      pscDNSName:
+                        description: 'Output only. The DNS name of the instance for
+                          PSC connectivity. Name convention: <uid>.<uid>.<region>.alloydb-psc.goog'
+                        type: string
+                      serviceAttachmentLink:
+                        description: Output only. The service attachment created when
+                          Private Service Connect (PSC) is enabled for the instance.
+                          The name of the resource will be in the format of `projects/<alloydb-tenant-project-number>/regions/<region-name>/serviceAttachments/<service-attachment-name>`
+                        type: string
+                    type: object
+                  pscInstanceInfo:
+                    description: Output only. The Private Service Connect (PSC) information
+                      of the instance.
+                    properties:
+                      effectivePSCAutoConnectionPolicy:
+                        description: Output only. Indicates if the PSC auto connection
+                          policy is enabled for the instance. For older instances,
+                          this will be off by default, but for newer instances, this
+                          will be auto-enabled.
+                        type: boolean
+                      effectivePSCAutoDNSEnabled:
+                        description: Output only. The effective state of the PSC auto
+                          DNS for the instance.
+                        type: boolean
+                      pscAutoDNSNames:
+                        description: Output only. Specifies the auto DNS names for
+                          the instance.
+                        items:
+                          type: string
+                        type: array
+                      serviceConnectionPolicy:
+                        description: Output only. The PSC service connection policy
+                          name. The format is "projects/<PROJECT_ID>/regions/<REGION_ID>/serviceConnectionPolicies/<alloydb-$NETWORK-$RANDOM-scp>"
+                        type: string
                     type: object
                 type: object
               outboundPublicIpAddresses:
@@ -665,6 +814,77 @@ spec:
                       only after observability enabled flag is also turned on.
                     type: boolean
                 type: object
+              pscInstanceConfig:
+                description: Optional. The configuration for Private Service Connect
+                  (PSC) for the instance.
+                properties:
+                  allowedConsumerProjects:
+                    description: Optional. List of consumer projects that are allowed
+                      to create PSC endpoints to service-attachments to this instance.
+                      Specify project numbers if Config Connector cannot read the
+                      consumer project.
+                    items:
+                      type: string
+                    type: array
+                  pscAutoConnectionPolicyState:
+                    description: 'Optional. Configuration for setting up PSC auto
+                      connection policy automation for the instance. For new PSC instances,
+                      leaving this field unset enables PSC auto connection policy
+                      automation by default. When enabled, AlloyDB may create or update
+                      a Network Connectivity ServiceConnectionPolicy in the consumer
+                      network that Config Connector does not manage or delete, and
+                      deleting the AlloyDBInstance does not delete that policy. Check
+                      status.observedState.pscInstanceInfo.effectivePSCAutoConnectionPolicy
+                      for the effective state. Possible values: ["ENABLED", "DISABLED"].'
+                    enum:
+                    - ENABLED
+                    - DISABLED
+                    type: string
+                  pscAutoConnections:
+                    description: Optional. Configurations for setting up PSC service
+                      automation. Specify project numbers if Config Connector cannot
+                      read the consumer project.
+                    items:
+                      properties:
+                        consumerNetwork:
+                          description: 'The consumer network for the PSC service automation,
+                            example: "projects/vpc-host-project/global/networks/default".
+                            The consumer network might be hosted a different project
+                            than the consumer project.'
+                          type: string
+                        consumerProject:
+                          description: The consumer project to which the PSC service
+                            automation endpoint will be created.
+                          type: string
+                      type: object
+                    type: array
+                  pscAutoDNSState:
+                    description: 'Optional. Configuration for setting up PSC auto
+                      DNS for the instance. For new PSC instances, leaving this field
+                      unset enables PSC auto DNS by default. Check status.observedState.pscInstanceInfo.effectivePSCAutoDNSEnabled
+                      for the effective state. Possible values: ["PSC_AUTO_DNS_STATE_ENABLED",
+                      "PSC_AUTO_DNS_STATE_DISABLED"].'
+                    enum:
+                    - PSC_AUTO_DNS_STATE_ENABLED
+                    - PSC_AUTO_DNS_STATE_DISABLED
+                    type: string
+                  pscInterfaceConfigs:
+                    description: Optional. Configurations for setting up PSC interfaces
+                      attached to the instance which are used for outbound connectivity.
+                      Only primary instances can have PSC interface attached. Currently
+                      we only support 0 or 1 PSC interface.
+                    items:
+                      properties:
+                        networkAttachmentResource:
+                          description: 'The network attachment resource created in
+                            the consumer network to which the PSC interface will be
+                            linked. This is of the format: "projects/${CONSUMER_PROJECT}/regions/${REGION}/networkAttachments/${NETWORK_ATTACHMENT_NAME}".
+                            The network attachment must be in the same region as the
+                            instance.'
+                          type: string
+                      type: object
+                    type: array
+                type: object
               queryInsightsConfig:
                 properties:
                   queryPlansPerMinute:
@@ -779,6 +999,84 @@ spec:
                           flag is also turned on. This is read-only flag and only
                           modifiable by internal API.
                         type: boolean
+                    type: object
+                  pscInstanceConfig:
+                    description: Output only. The configuration for Private Service
+                      Connect (PSC) for the instance.
+                    properties:
+                      pscAutoConnections:
+                        description: Optional. Configurations for setting up PSC service
+                          automation.
+                        items:
+                          properties:
+                            consumerNetworkStatus:
+                              description: 'Output only. The status of the service
+                                connection policy. Possible values: "STATE_UNSPECIFIED"
+                                - Default state, when Connection Map is created initially.
+                                "VALID" - Set when policy and map configuration is
+                                valid, and their matching can lead to allowing creation
+                                of PSC Connections subject to other constraints like
+                                connections limit. "CONNECTION_POLICY_MISSING" - No
+                                Service Connection Policy found for this network and
+                                Service Class "POLICY_LIMIT_REACHED" - Service Connection
+                                Policy limit reached for this network and Service
+                                Class "CONSUMER_INSTANCE_PROJECT_NOT_ALLOWLISTED"
+                                - The consumer instance project is not in AllowedGoogleProducersResourceHierarchyLevels
+                                of the matching ServiceConnectionPolicy.'
+                              type: string
+                            ipAddress:
+                              description: Output only. The IP address of the PSC
+                                service automation endpoint.
+                              type: string
+                            status:
+                              description: 'Output only. The status of the PSC service
+                                automation connection. Possible values: "STATE_UNSPECIFIED"
+                                - An invalid state as the default case. "ACTIVE" -
+                                The connection has been created successfully. "FAILED"
+                                - The connection is not functional since some resources
+                                on the connection fail to be created. "CREATING" -
+                                The connection is being created. "DELETING" - The
+                                connection is being deleted. "CREATE_REPAIRING" -
+                                The connection is being repaired to complete creation.
+                                "DELETE_REPAIRING" - The connection is being repaired
+                                to complete deletion.'
+                              type: string
+                          type: object
+                        type: array
+                      pscDNSName:
+                        description: 'Output only. The DNS name of the instance for
+                          PSC connectivity. Name convention: <uid>.<uid>.<region>.alloydb-psc.goog'
+                        type: string
+                      serviceAttachmentLink:
+                        description: Output only. The service attachment created when
+                          Private Service Connect (PSC) is enabled for the instance.
+                          The name of the resource will be in the format of `projects/<alloydb-tenant-project-number>/regions/<region-name>/serviceAttachments/<service-attachment-name>`
+                        type: string
+                    type: object
+                  pscInstanceInfo:
+                    description: Output only. The Private Service Connect (PSC) information
+                      of the instance.
+                    properties:
+                      effectivePSCAutoConnectionPolicy:
+                        description: Output only. Indicates if the PSC auto connection
+                          policy is enabled for the instance. For older instances,
+                          this will be off by default, but for newer instances, this
+                          will be auto-enabled.
+                        type: boolean
+                      effectivePSCAutoDNSEnabled:
+                        description: Output only. The effective state of the PSC auto
+                          DNS for the instance.
+                        type: boolean
+                      pscAutoDNSNames:
+                        description: Output only. Specifies the auto DNS names for
+                          the instance.
+                        items:
+                          type: string
+                        type: array
+                      serviceConnectionPolicy:
+                        description: Output only. The PSC service connection policy
+                          name. The format is "projects/<PROJECT_ID>/regions/<REGION_ID>/serviceConnectionPolicies/<alloydb-$NETWORK-$RANDOM-scp>"
+                        type: string
                     type: object
                 type: object
               outboundPublicIpAddresses:

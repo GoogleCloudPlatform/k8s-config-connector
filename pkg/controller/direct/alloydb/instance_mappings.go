@@ -39,6 +39,7 @@ func AlloyDBInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *
 	out.ReadPoolConfig = Instance_ReadPoolConfig_FromProto(mapCtx, in.GetReadPoolConfig())
 	out.QueryInsightsInstanceConfig = Instance_QueryInsightsInstanceConfig_FromProto(mapCtx, in.GetQueryInsightsConfig())
 	out.ObservabilityInstanceConfig = Instance_ObservabilityInstanceConfig_FromProto(mapCtx, in.GetObservabilityConfig())
+	out.PSCInstanceConfig = Instance_PSCInstanceConfig_FromProto(mapCtx, in.GetPscInstanceConfig())
 
 	return out
 }
@@ -60,6 +61,7 @@ func AlloyDBInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBInsta
 	out.ReadPoolConfig = Instance_ReadPoolConfig_ToProto(mapCtx, in.ReadPoolConfig)
 	out.QueryInsightsConfig = Instance_QueryInsightsInstanceConfig_ToProto(mapCtx, in.QueryInsightsInstanceConfig)
 	out.ObservabilityConfig = Instance_ObservabilityInstanceConfig_ToProto(mapCtx, in.ObservabilityInstanceConfig)
+	out.PscInstanceConfig = Instance_PSCInstanceConfig_ToProto(mapCtx, in.PSCInstanceConfig)
 	return out
 }
 
@@ -80,7 +82,9 @@ func AlloyDBInstanceStatus_FromProto(mapCtx *direct.MapContext, in *pb.Instance)
 
 	observabilityConfigEnabled := in.GetObservabilityConfig() != nil && in.GetObservabilityConfig().GetEnabled()
 	connectionPoolConfigEnabled := in.GetConnectionPoolConfig() != nil && in.GetConnectionPoolConfig().GetEnabled()
-	if observabilityConfigEnabled || connectionPoolConfigEnabled {
+	pscConfigSet := in.GetPscInstanceConfig() != nil
+	pscInfoSet := in.GetPscInstanceInfo() != nil
+	if observabilityConfigEnabled || connectionPoolConfigEnabled || pscConfigSet || pscInfoSet {
 		out.ObservedState = &krm.AlloyDBInstanceObservedState{}
 	}
 	if observabilityConfigEnabled {
@@ -88,6 +92,12 @@ func AlloyDBInstanceStatus_FromProto(mapCtx *direct.MapContext, in *pb.Instance)
 	}
 	if connectionPoolConfigEnabled {
 		out.ObservedState.ConnectionPoolConfig = Instance_ConnectionPoolConfigObservedState_FromProto(mapCtx, in.GetConnectionPoolConfig())
+	}
+	if pscConfigSet {
+		out.ObservedState.PSCInstanceConfig = Instance_PSCInstanceConfigObservedState_FromProto(mapCtx, in.GetPscInstanceConfig())
+	}
+	if pscInfoSet {
+		out.ObservedState.PSCInstanceInfo = Instance_PSCInstanceInfoObservedState_FromProto(mapCtx, in.GetPscInstanceInfo())
 	}
 
 	return out
@@ -110,6 +120,8 @@ func AlloyDBInstanceStatus_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBIns
 	if in.ObservedState != nil {
 		out.ObservabilityConfig = Instance_ObservabilityInstanceConfigObservedState_ToProto(mapCtx, in.ObservedState.ObservabilityInstanceConfig)
 		out.ConnectionPoolConfig = Instance_ConnectionPoolConfigObservedState_ToProto(mapCtx, in.ObservedState.ConnectionPoolConfig)
+		out.PscInstanceConfig = Instance_PSCInstanceConfigObservedState_ToProto(mapCtx, in.ObservedState.PSCInstanceConfig)
+		out.PscInstanceInfo = Instance_PSCInstanceInfoObservedState_ToProto(mapCtx, in.ObservedState.PSCInstanceInfo)
 	}
 
 	return out

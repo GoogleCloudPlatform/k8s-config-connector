@@ -166,6 +166,9 @@ func setClusterFields(name *clusterName, obj *pb.Cluster) {
 	if obj.ServiceAccountEmail == "" {
 		obj.ServiceAccountEmail = fmt.Sprintf("c-%d-12345678@gcp-sa-alloydb.iam.gserviceaccount.com", name.Project.Number)
 	}
+	if obj.PscConfig != nil && obj.PscConfig.PscEnabled && obj.PscConfig.ServiceOwnedProjectNumber == 0 {
+		obj.PscConfig.ServiceOwnedProjectNumber = 123456789
+	}
 	// TODO: Validate the logic for PrimaryConfig.
 	// PrimaryConfig is probably set when the primary cluster has a secondary
 	// cluster associated with it.
