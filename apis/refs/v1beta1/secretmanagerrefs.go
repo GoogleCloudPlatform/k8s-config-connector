@@ -27,6 +27,22 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+var (
+	SecretManagerSecretGVK = schema.GroupVersionKind{
+		Group:   "secretmanager.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "SecretManagerSecret",
+	}
+	SecretManagerSecretVersionGVK = schema.GroupVersionKind{
+		Group:   "secretmanager.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "SecretManagerSecretVersion",
+	}
+
+	_ Ref = &SecretManagerSecretRef{}
+	_ Ref = &SecretManagerSecretVersionRef{}
+)
+
 type SecretManagerSecretRef struct {
 	//  If provided must be in the format `projects/*/secrets/*`.
 	External string `json:"external,omitempty"`
@@ -34,6 +50,51 @@ type SecretManagerSecretRef struct {
 	Name string `json:"name,omitempty"`
 	// The `metadata.namespace` field of a `SecretManagerSecret` resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func (r *SecretManagerSecretRef) GetGVK() schema.GroupVersionKind {
+	return SecretManagerSecretGVK
+}
+
+func (r *SecretManagerSecretRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *SecretManagerSecretRef) GetExternal() string {
+	return r.External
+}
+
+func (r *SecretManagerSecretRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *SecretManagerSecretRef) ValidateExternal(ref string) error {
+	tokens := strings.Split(ref, "/")
+	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "secrets" && tokens[1] != "" && tokens[3] != "" {
+		return nil
+	}
+	return fmt.Errorf("format of secretManagerSecretRef external=%q was not known (use projects/<projectId>/secrets/<secretID>)", ref)
+}
+
+func (r *SecretManagerSecretRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.External != "" && r.Name != "" {
+		return fmt.Errorf("cannot specify both name and external on SecretManagerSecretRef")
+	}
+	if r.External == "" && r.Name == "" {
+		return fmt.Errorf("must specify either name or external on SecretManagerSecretRef")
+	}
+	fallback := func(u *unstructured.Unstructured) string {
+		if name, _, err := unstructured.NestedString(u.Object, "status", "name"); err == nil && name != "" {
+			return name
+		}
+		return ""
+	}
+	return NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
 
 type SecretManagerSecret struct {
@@ -76,11 +137,7 @@ func ResolveSecretManagerSecretRef(ctx context.Context, reader client.Reader, sr
 
 	// Fetch object from k8s cluster to construct the external form
 	secret := &unstructured.Unstructured{}
-	secret.SetGroupVersionKind(schema.GroupVersionKind{
-		Group:   "secretmanager.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "SecretManagerSecret",
-	})
+	secret.SetGroupVersionKind(SecretManagerSecretGVK)
 	if err := reader.Get(ctx, key, secret); err != nil {
 		if apierrors.IsNotFound(err) {
 			return nil, fmt.Errorf("referenced SecretManagerSecret %v not found", key)
@@ -130,6 +187,55 @@ type SecretManagerSecretVersionRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
+func (r *SecretManagerSecretVersionRef) GetGVK() schema.GroupVersionKind {
+	return SecretManagerSecretVersionGVK
+}
+
+func (r *SecretManagerSecretVersionRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *SecretManagerSecretVersionRef) GetExternal() string {
+	return r.External
+}
+
+func (r *SecretManagerSecretVersionRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *SecretManagerSecretVersionRef) ValidateExternal(ref string) error {
+	if ref == "latest" {
+		return nil
+	}
+	tokens := strings.Split(ref, "/")
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "secrets" && tokens[4] == "versions" &&
+		tokens[1] != "" && tokens[3] != "" && tokens[5] != "" {
+		return nil
+	}
+	return fmt.Errorf("format of secretManagerSecretVersionRef external=%q was not known (use projects/<projectId>/secrets/<secretID>/versions/<versionID>)", ref)
+}
+
+func (r *SecretManagerSecretVersionRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.External != "" && r.Name != "" {
+		return fmt.Errorf("cannot specify both name and external on SecretManagerSecretVersionRef")
+	}
+	if r.External == "" && r.Name == "" {
+		return fmt.Errorf("must specify either name or external on SecretManagerSecretVersionRef")
+	}
+	fallback := func(u *unstructured.Unstructured) string {
+		if name, _, err := unstructured.NestedString(u.Object, "status", "name"); err == nil && name != "" {
+			return name
+		}
+		return ""
+	}
+	return NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+}
+
 // ResolveSecretManagerSecretVersionRef will resolve a SecretManagerSecretVersionRef to a SecretManagerSecretVersion.
 func ResolveSecretManagerSecretVersionRef(ctx context.Context, reader client.Reader, src client.Object, ref *SecretManagerSecretVersionRef) (*SecretManagerSecretVersionRef, error) {
 	if ref == nil {
@@ -168,11 +274,7 @@ func ResolveSecretManagerSecretVersionRef(ctx context.Context, reader client.Rea
 
 	// Fetch object from k8s cluster to construct the external form
 	secretversion := &unstructured.Unstructured{}
-	secretversion.SetGroupVersionKind(schema.GroupVersionKind{
-		Group:   "secretmanager.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "SecretManagerSecretVersion",
-	})
+	secretversion.SetGroupVersionKind(SecretManagerSecretVersionGVK)
 	if err := reader.Get(ctx, key, secretversion); err != nil {
 		if apierrors.IsNotFound(err) {
 			return nil, fmt.Errorf("referenced SecretManagerSecretVersion %v not found", key)
