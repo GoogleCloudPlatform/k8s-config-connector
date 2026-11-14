@@ -1328,6 +1328,14 @@
 [missing_field] crd=bigquerymigrationmigrationworkflows.bigquerymigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=bigquerymigrationmigrationworkflows.bigquerymigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=bigquerymigrationmigrationworkflows.bigquerymigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.tasks" is not set in unstructured objects
+[missing_field] crd=bigqueryrowaccesspolicies.bigquery.cnrm.cloud.google.com version=v1alpha1: field ".spec.filterPredicate" is not set in unstructured objects
+[missing_field] crd=bigqueryrowaccesspolicies.bigquery.cnrm.cloud.google.com version=v1alpha1: field ".spec.grantees[]" is not set in unstructured objects
+[missing_field] crd=bigqueryrowaccesspolicies.bigquery.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=bigqueryrowaccesspolicies.bigquery.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=bigqueryrowaccesspolicies.bigquery.cnrm.cloud.google.com version=v1alpha1: field ".spec.rowAccessPolicyReference.datasetID" is not set in unstructured objects
+[missing_field] crd=bigqueryrowaccesspolicies.bigquery.cnrm.cloud.google.com version=v1alpha1: field ".spec.rowAccessPolicyReference.policyID" is not set in unstructured objects
+[missing_field] crd=bigqueryrowaccesspolicies.bigquery.cnrm.cloud.google.com version=v1alpha1: field ".spec.rowAccessPolicyReference.projectID" is not set in unstructured objects
+[missing_field] crd=bigqueryrowaccesspolicies.bigquery.cnrm.cloud.google.com version=v1alpha1: field ".spec.rowAccessPolicyReference.tableID" is not set in unstructured objects
 [missing_field] crd=bigtableclusters.bigtable.cnrm.cloud.google.com version=v1alpha1: field ".spec.clusterConfig.clusterAutoscalingConfig.autoscalingLimits.maxServeNodes" is not set in unstructured objects
 [missing_field] crd=bigtableclusters.bigtable.cnrm.cloud.google.com version=v1alpha1: field ".spec.clusterConfig.clusterAutoscalingConfig.autoscalingLimits.minServeNodes" is not set in unstructured objects
 [missing_field] crd=bigtableclusters.bigtable.cnrm.cloud.google.com version=v1alpha1: field ".spec.clusterConfig.clusterAutoscalingConfig.autoscalingTargets.cpuUtilizationPercent" is not set in unstructured objects
