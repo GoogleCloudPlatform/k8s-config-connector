@@ -156,6 +156,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		if s.handleBucketIAM(w, r) {
 			return
 		}
+		// Uploads and content reads.
+		if s.handleObjectMedia(w, r) {
+			return
+		}
 		handler.ServeHTTP(w, r)
 	}), nil
 }
