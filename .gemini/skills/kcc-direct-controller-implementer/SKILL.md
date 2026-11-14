@@ -35,19 +35,25 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
     - **Client Creation Options & Go Client Preference**:
       * **Prefer GAPIC REST Client over gRPC (`go-client`)**: When building the GCP client in `m.client(ctx)`, ALWAYS prefer using the official Google Cloud Go client library (GAPIC client, e.g., `cloud.google.com/go/<service>/apivX`, or discovery client `google.golang.org/api/...`). Many GAPIC libraries provide both REST (`NewFooRESTClient`) and gRPC (`NewFooClient`) constructors. **You MUST prefer the REST variant (`NewFooRESTClient`)** initialized with `m.config.RESTClientOptions()`.
       * Why: REST GAPIC clients integrate cleanly with HTTP golden traffic recording (`_http.log`), mock layer HTTP alignment, and avoid gRPC transport/auth quirks, while still automatically wrapping Long-Running Operations (`*service.FooOperation`), OAuth scopes, and retry logic.
-      * **Client Construction Example (GAPIC REST Primary Choice)**: Retrieve configuration options using `m.config.RESTClientOptions()` and construct the REST client:
+      * **Client Construction Example (GAPIC REST Primary Choice)**: Retrieve configuration options using `m.config.RESTClientOptions(config.WithDefaultQuotaProject(project))` and construct the REST client:
         ```go
-        var opts []option.ClientOption
-        opts, err := m.config.RESTClientOptions()
-        if err != nil {
-            return nil, err
-        }
-        // Always prefer GAPIC New*RESTClient over New*Client (gRPC) or raw pb clients
-        gcpClient, err := gcp.NewMyResourceRESTClient(ctx, opts...)
-        if err != nil {
-            return nil, fmt.Errorf("building MyResource REST client: %w", err)
+        // Always pass config.WithDefaultQuotaProject(project) to RESTClientOptions.
+        // This ensures outgoing requests include X-Goog-User-Project for User Application Default Credentials (ADC),
+        // preventing HTTP 403 SERVICE_DISABLED errors on global APIs (e.g. apikeys.googleapis.com).
+        func (m *model) client(ctx context.Context, project string) (*gcp.Client, error) {
+            opts, err := m.config.RESTClientOptions(config.WithDefaultQuotaProject(project))
+            if err != nil {
+                return nil, err
+            }
+            // Always prefer GAPIC New*RESTClient over New*Client (gRPC) or raw pb clients
+            gcpClient, err := gcp.NewMyResourceRESTClient(ctx, opts...)
+            if err != nil {
+                return nil, fmt.Errorf("building MyResource REST client: %w", err)
+            }
+            return gcpClient, nil
         }
         ```
+        In `AdapterForObject`, extract `project` from the resolved identity (e.g. `keyIdentity.Project`) and pass it to `m.client(ctx, keyIdentity.Project)`.
       * **Fallback Order & Troubleshooting**:
         1. **GAPIC REST Client (`NewFooRESTClient`)**: Primary preference.
         2. **GAPIC gRPC Client (`NewFooClient`)**: Try with `m.config.GRPCClientOptions()` if the REST constructor is missing or fails during live GCP testing.
