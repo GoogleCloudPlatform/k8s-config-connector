@@ -1,0 +1,32 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePools/computestoragepool-maximal-${uniqueId}
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "capacityProvisioningType": "ADVANCED",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "A test storage pool",
+  "id": "000000000000000000000",
+  "kind": "compute#storagePool",
+  "name": "computestoragepool-maximal-${uniqueId}",
+  "performanceProvisioningType": "ADVANCED",
+  "poolProvisionedCapacityGb": "11264",
+  "poolProvisionedIops": "20000",
+  "poolProvisionedThroughput": "2048",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePools/computestoragepool-maximal-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePools/4204736521537159360",
+  "state": "READY",
+  "status": {
+    "diskCount": "0",
+    "maxTotalProvisionedDiskCapacityGb": "112640",
+    "poolUsedCapacityBytes": "0",
+    "poolUserWrittenBytes": "0",
+    "totalProvisionedDiskCapacityGb": "0",
+    "totalProvisionedDiskIops": "0",
+    "totalProvisionedDiskThroughput": "0"
+  },
+  "storagePoolType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePoolTypes/hyperdisk-balanced",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a"
+}

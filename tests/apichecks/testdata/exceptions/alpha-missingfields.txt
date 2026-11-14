@@ -2318,15 +2318,6 @@
 [missing_field] crd=computeregionsslpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.profile" is not set in unstructured objects
 [missing_field] crd=computeregionsslpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeregionsslpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.region" is not set in unstructured objects
-[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.capacityProvisioningType" is not set in unstructured objects
-[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.performanceProvisioningType" is not set in unstructured objects
-[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.poolProvisionedCapacityGB" is not set in unstructured objects
-[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.poolProvisionedIops" is not set in unstructured objects
-[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.poolProvisionedThroughput" is not set in unstructured objects
-[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.storagePoolType" is not set in unstructured objects
 [missing_field] crd=configdeliveryfleetpackages.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceBundleSelector.cloudBuildRepository.path" is not set in unstructured objects
 [missing_field] crd=configdeliveryfleetpackages.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceBundleSelector.cloudBuildRepository.repositoryRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=configdeliveryfleetpackages.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceBundleSelector.cloudBuildRepository.serviceAccountRef" is not set; neither 'external' nor 'name' are set
