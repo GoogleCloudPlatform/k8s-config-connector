@@ -18,8 +18,23 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.backupdr.v1
 // resource: BackupDRManagementServer:ManagementServer
+// resource: BackupDRRestoreTemplate:RestoreTemplate
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.backupdr.v1.BackupSelectionConfig
+type BackupSelectionConfig struct {
+	// Required. Immutable. The fully qualified URI of the backupdr data source.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupSelectionConfig.data_source
+	// +required
+	DataSource *string `json:"dataSource,omitempty"`
+}
+
+/* unreachable type ExecutionSummary
+// +kcc:proto=google.cloud.backupdr.v1.ExecutionSummary
+type ExecutionSummary struct {
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.backupdr.v1.ManagementServer", skipping
 
@@ -78,6 +93,105 @@ type NetworkConfig struct {
 }
 */
 
+// +kcc:proto=google.cloud.backupdr.v1.PostRestoreConfig
+type PostRestoreConfig struct {
+	// Optional. The `timeout` for this phase.
+	//  If set, the `timeout` must be positive and less than or equal to 24 hours
+	//  (86400s).
+	// +kcc:proto:field=google.cloud.backupdr.v1.PostRestoreConfig.timeout
+	Timeout *string `json:"timeout,omitempty"`
+
+	// Cloud Run job action to execute.
+	//  Format: `projects/{project}/locations/{location}/jobs/{job}`
+	// +kcc:proto:field=google.cloud.backupdr.v1.PostRestoreConfig.cloud_run_job
+	CloudRunJob *string `json:"cloudRunJob,omitempty"`
+}
+
+// +kcc:proto=google.cloud.backupdr.v1.PreRestoreConfig
+type PreRestoreConfig struct {
+	// Optional. The `timeout` for this phase.
+	//  If set, the `timeout` must be positive and less than or equal to 24 hours
+	//  (86400s).
+	// +kcc:proto:field=google.cloud.backupdr.v1.PreRestoreConfig.timeout
+	Timeout *string `json:"timeout,omitempty"`
+
+	// Cloud Run job action to execute.
+	//  Format: `projects/{project}/locations/{location}/jobs/{job}`
+	// +kcc:proto:field=google.cloud.backupdr.v1.PreRestoreConfig.cloud_run_job
+	CloudRunJob *string `json:"cloudRunJob,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.backupdr.v1.RestoreTemplate", skipping
+
+// +kcc:proto=google.cloud.backupdr.v1.RestoreTemplate
+type RestoreTemplate struct {
+	// Identifier. The resource name of the RestoreTemplate.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreTemplate.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. User-provided description of the restore template.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreTemplate.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. Immutable. The specific type of the workload being restored.
+	//  The format is "{service_name}/{resource_kind}", for example,
+	//  "compute.googleapis.com/Instance".
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreTemplate.resource_type
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// Optional. User-defined labels.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreTemplate.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Required. Backup selection configuration.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreTemplate.backup_selection_config
+	BackupSelectionConfig *BackupSelectionConfig `json:"backupSelectionConfig,omitempty"`
+
+	// Optional. Pre-restore configuration.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreTemplate.pre_restore_config
+	PreRestoreConfig *PreRestoreConfig `json:"preRestoreConfig,omitempty"`
+
+	// Optional. Post-restore configuration.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreTemplate.post_restore_config
+	PostRestoreConfig *PostRestoreConfig `json:"postRestoreConfig,omitempty"`
+
+	// Optional. Verification configuration.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreTemplate.verification_config
+	VerificationConfig *VerificationConfig `json:"verificationConfig,omitempty"`
+
+	// Required. Defines target environments where the resource will be restored.
+	//
+	//  The target resource name in `restore_properties` supports the
+	//  `{EXECUTION_ID}` token to dynamically generate unique resource names for
+	//  each execution. During restore execution, every occurrence of
+	//  `{EXECUTION_ID}` in the target resource name is replaced with the
+	//  8-character `RestoreTemplateExecution` ID (for example,
+	//  `"restored-resource-{EXECUTION_ID}"` or
+	//  `"restored-{EXECUTION_ID}-resource"` resolves to
+	//  `"restored-resource-5d437b06"` or `"restored-5d437b06-resource"`).
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreTemplate.restore_properties
+	RestoreProperties apiextensionsv1.JSON `json:"restoreProperties,omitempty"`
+
+	// Optional. Etag for concurrency control.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreTemplate.etag
+	Etag *string `json:"etag,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.backupdr.v1.VerificationConfig
+type VerificationConfig struct {
+	// Optional. The `timeout` for this phase.
+	//  If set, the `timeout` must be positive and less than or equal to 24 hours
+	//  (86400s).
+	// +kcc:proto:field=google.cloud.backupdr.v1.VerificationConfig.timeout
+	Timeout *string `json:"timeout,omitempty"`
+
+	// Cloud Run job action to execute.
+	//  Format: `projects/{project}/locations/{location}/jobs/{job}`
+	// +kcc:proto:field=google.cloud.backupdr.v1.VerificationConfig.cloud_run_job
+	CloudRunJob *string `json:"cloudRunJob,omitempty"`
+}
+
 /* unreachable type WorkforceIdentityBasedManagementURI
 // +kcc:proto=google.cloud.backupdr.v1.WorkforceIdentityBasedManagementURI
 type WorkforceIdentityBasedManagementURI struct {
@@ -90,6 +204,19 @@ type WorkforceIdentityBasedManagementURI struct {
 type WorkforceIdentityBasedOAuth2ClientID struct {
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.backupdr.v1.ExecutionSummary
+type ExecutionSummaryObservedState struct {
+	// Output only. The resource name of the last execution.
+	//  Format:
+	//  `projects/{project}/locations/{location}/restoreTemplates/{restore_template}/executions/{execution}`
+	// +kcc:proto:field=google.cloud.backupdr.v1.ExecutionSummary.last_execution
+	LastExecution *string `json:"lastExecution,omitempty"`
+
+	// Output only. The state of the last execution.
+	// +kcc:proto:field=google.cloud.backupdr.v1.ExecutionSummary.last_execution_state
+	LastExecutionState *string `json:"lastExecutionState,omitempty"`
+}
 
 /* found existing non-generated go type with proto tag "google.cloud.backupdr.v1.ManagementServer", skipping
 
@@ -159,6 +286,28 @@ type ManagementURIObservedState struct {
 	// Output only. The ManagementServer AGM/RD API URL.
 	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementURI.api
 	API *string `json:"api,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.backupdr.v1.RestoreTemplate", skipping
+
+// +kcc:observedstate:proto=google.cloud.backupdr.v1.RestoreTemplate
+type RestoreTemplateObservedState struct {
+	// Output only. The time when the restore template was created.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreTemplate.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the restore template was last updated.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreTemplate.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The state of the restore template.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreTemplate.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Summary of the last execution.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreTemplate.execution_summary
+	ExecutionSummary *ExecutionSummaryObservedState `json:"executionSummary,omitempty"`
 }
 */
 
