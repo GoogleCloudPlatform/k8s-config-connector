@@ -73,6 +73,10 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "networkPolicy": {},
     "nodeConfig": {
       "kubeletConfig": {
+        "allowedUnsafeSysctls": [
+          "kernel.msg*",
+          "net.core.somaxconn"
+        ],
         "cpuCfsQuota": true,
         "cpuCfsQuotaPeriod": "100ms",
         "cpuManagerPolicy": "none",

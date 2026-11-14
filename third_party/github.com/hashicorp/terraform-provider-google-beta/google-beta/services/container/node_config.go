@@ -536,6 +536,12 @@ func schemaNodeConfig() *schema.Schema {
 								Optional:    true,
 								Description: `Defines the maximum age an image can be unused before it is garbage collected.`,
 							},
+							"allowed_unsafe_sysctls": {
+								Type:        schema.TypeList,
+								Optional:    true,
+								Description: `Defines a comma-separated allowlist of unsafe sysctls or sysctl patterns which can be set on the Pods.`,
+								Elem:        &schema.Schema{Type: schema.TypeString},
+							},
 						},
 					},
 				},
@@ -1166,6 +1172,13 @@ func expandKubeletConfig(v interface{}) *container.NodeKubeletConfig {
 	if imageMaximumGcAge, ok := cfg["image_maximum_gc_age"]; ok {
 		kConfig.ImageMaximumGcAge = imageMaximumGcAge.(string)
 	}
+	if allowedUnsafeSysctls, ok := cfg["allowed_unsafe_sysctls"]; ok {
+		sysctls := allowedUnsafeSysctls.([]interface{})
+		kConfig.AllowedUnsafeSysctls = make([]string, len(sysctls))
+		for i, s := range sysctls {
+			kConfig.AllowedUnsafeSysctls[i] = s.(string)
+		}
+	}
 	return kConfig
 }
 
@@ -1634,6 +1647,7 @@ func flattenKubeletConfig(c *container.NodeKubeletConfig) []map[string]interface
 			"image_gc_high_threshold_percent": c.ImageGcHighThresholdPercent,
 			"image_minimum_gc_age":            c.ImageMinimumGcAge,
 			"image_maximum_gc_age":            c.ImageMaximumGcAge,
+			"allowed_unsafe_sysctls":          c.AllowedUnsafeSysctls,
 		})
 	}
 	return result
