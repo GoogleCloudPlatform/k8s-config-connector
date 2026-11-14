@@ -147,11 +147,16 @@ spec:
                   observed in GCP.
                 properties:
                   memoryConfig:
-                    description: Output only. The configuration of this memory layer.
+                    description: 'DEPRECATED: MemoryConfig no longer surfaces storageSizeGib
+                      in the Bigtable API, and memory layer presence is modelled by
+                      the existence of the BigtableMemoryLayer object. Output only.
+                      The configuration of this memory layer.'
                     properties:
                       storageSizeGib:
-                        description: Output only. Reporting the current size of the
-                          memory layer in GiB.
+                        description: 'DEPRECATED: storage_size_gib is removed from
+                          the Bigtable MemoryLayer API and is no longer populated.
+                          Output only. Reporting the current size of the memory layer
+                          in GiB.'
                         format: int32
                         type: integer
                     type: object
