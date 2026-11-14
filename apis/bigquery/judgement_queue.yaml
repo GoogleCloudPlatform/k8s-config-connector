@@ -39,49 +39,67 @@ entries:
     group: bigquery.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: modeled parent hierarchy as spec.parentRef (*BigQueryTableRef); removed projectRef, location, and rowAccessPolicyReference; locked identity pattern via --pattern
   - kind: BigQueryRowAccessPolicy
     group: bigquery.cnrm.cloud.google.com
     reason: identity-multi-pattern
     detail: proto message google.cloud.bigquery.v2.RowAccessPolicy declares 2 resource name patterns (projects/{project}/datasets/{data_set}/tables/{table}/rowAccessPolicies/{row_access_policy}, projects/{projectsid}/datasets/{datasetsid}/tables/{tablesid}/rowAccessPolicies/{rowaccesspoliciesid}) that tied on BigQueryRowAccessPolicySpec; generated identity defaulted to "projects/{project}/datasets/{data_set}/tables/{table}/rowAccessPolicies/{row_access_policy}" (pass --pattern BigQueryRowAccessPolicy=<pattern> to override)
-    status: open
+    status: resolved
+    resolution: accepted
+    note: Used --pattern BigQueryRowAccessPolicy=projects/{project}/datasets/{dataset}/tables/{table}/rowAccessPolicies/{rowAccessPolicy}
   - kind: BigQueryRowAccessPolicy
     group: bigquery.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/datasets/{data_set}/tables/{table}/rowAccessPolicies/{row_access_policy}" contains ancestor segment(s) datasets/{data_set}, tables/{table} with no matching reference or field on BigQueryRowAccessPolicySpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modeled as spec.parentRef (*BigQueryTableRef); removed ProjectRef and Location
   - kind: BigQueryRowAccessPolicy
     group: bigquery.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
-    status: open
+    status: resolved
+    resolution: edited
+    note: updated resource docs link to https://cloud.google.com/bigquery/docs/reference/rest/v2/rowAccessPolicies
   - kind: BigQueryRowAccessPolicy
     group: bigquery.cnrm.cloud.google.com
     field: .spec.location
     reason: location-parent-unknown
     detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
-    status: open
+    status: resolved
+    resolution: edited
+    note: modeled parent as spec.parentRef (*BigQueryTableRef); removed Location and ProjectRef
   - kind: BigQueryRowAccessPolicy
     group: bigquery.cnrm.cloud.google.com
     field: .spec.rowAccessPolicyReference.datasetID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: removed rowAccessPolicyReference from spec as parent table and policy ID are modeled via parentRef and resourceID
   - kind: BigQueryRowAccessPolicy
     group: bigquery.cnrm.cloud.google.com
     field: .spec.rowAccessPolicyReference.policyID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: removed rowAccessPolicyReference from spec as parent table and policy ID are modeled via parentRef and resourceID
   - kind: BigQueryRowAccessPolicy
     group: bigquery.cnrm.cloud.google.com
     field: .spec.rowAccessPolicyReference.projectID
     reason: possible-reference-by-name
     detail: ProjectRef
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: removed rowAccessPolicyReference from spec as parent table and policy ID are modeled via parentRef and resourceID
   - kind: BigQueryRowAccessPolicy
     group: bigquery.cnrm.cloud.google.com
     field: .spec.rowAccessPolicyReference.tableID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: removed rowAccessPolicyReference from spec as parent table and policy ID are modeled via parentRef and resourceID

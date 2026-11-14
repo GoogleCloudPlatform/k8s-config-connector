@@ -36,7 +36,7 @@ var _ refs.Ref = &BigQueryRowAccessPolicyRef{}
 // BigQueryRowAccessPolicyRef is a reference to a GCP BigQueryRowAccessPolicy resource.
 type BigQueryRowAccessPolicyRef struct {
 	// A reference to an externally managed BigQueryRowAccessPolicy resource.
-	// Should be in the format "projects/{{projectID}}/datasets/{{dataSetID}}/tables/{{tableID}}/rowAccessPolicies/{{rowAccessPolicyID}}".
+	// Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}/tables/{{tableID}}/rowAccessPolicies/{{rowAccessPolicyID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a BigQueryRowAccessPolicy resource.

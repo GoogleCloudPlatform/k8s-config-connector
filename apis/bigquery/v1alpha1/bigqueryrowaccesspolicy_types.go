@@ -15,13 +15,12 @@
 // API sources for BigQueryRowAccessPolicy, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/bigquery/v2/row_access_policy.proto
 // +kcc:source:service-docs=https://cloud.google.com/bigquery/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/bigquery/docs/reference/rest
+// +kcc:source:resource-docs=https://cloud.google.com/bigquery/docs/reference/rest/v2/rowAccessPolicies
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,18 +31,13 @@ var BigQueryRowAccessPolicyGVK = GroupVersion.WithKind("BigQueryRowAccessPolicy"
 // +kcc:spec:proto=google.cloud.bigquery.v2.RowAccessPolicy
 // +kcc:required-from-proto
 type BigQueryRowAccessPolicySpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// The BigQueryTable this BigQueryRowAccessPolicy is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *bigqueryv1beta1.BigQueryTableRef `json:"parentRef"`
 
 	// The BigQueryRowAccessPolicy name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// Required. Reference describing the ID of this row access policy.
-	// +kcc:proto:field=google.cloud.bigquery.v2.RowAccessPolicy.row_access_policy_reference
-	// +required
-	RowAccessPolicyReference *RowAccessPolicyReference `json:"rowAccessPolicyReference,omitempty"`
 
 	// Required. A SQL boolean expression that represents the rows defined by this
 	//  row access policy, similar to the boolean expression in a WHERE clause of a

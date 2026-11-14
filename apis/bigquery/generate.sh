@@ -53,7 +53,8 @@ ${CONTROLLERBUILDER} generate-identity \
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.bigquery.v2 \
   --api-version bigquery.cnrm.cloud.google.com/v1alpha1 \
-  --resource BigQueryRowAccessPolicy:RowAccessPolicy
+  --resource BigQueryRowAccessPolicy:RowAccessPolicy \
+  --pattern BigQueryRowAccessPolicy=projects/{project}/datasets/{dataset}/tables/{table}/rowAccessPolicies/{rowAccessPolicy}
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

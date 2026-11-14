@@ -24,6 +24,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -37,13 +38,13 @@ var (
 	_ identity.Resource   = &BigQueryRowAccessPolicy{}
 )
 
-var BigQueryRowAccessPolicyIdentityFormat = gcpurls.Template[BigQueryRowAccessPolicyIdentity]("bigquery.googleapis.com", "projects/{project}/datasets/{dataSet}/tables/{table}/rowAccessPolicies/{rowAccessPolicy}")
+var BigQueryRowAccessPolicyIdentityFormat = gcpurls.Template[BigQueryRowAccessPolicyIdentity]("bigquery.googleapis.com", "projects/{project}/datasets/{dataset}/tables/{table}/rowAccessPolicies/{rowAccessPolicy}")
 
 // BigQueryRowAccessPolicyIdentity is the identity of a GCP BigQueryRowAccessPolicy resource.
 // +k8s:deepcopy-gen=false
 type BigQueryRowAccessPolicyIdentity struct {
 	Project         string
-	DataSet         string
+	Dataset         string
 	Table           string
 	RowAccessPolicy string
 }
@@ -70,7 +71,7 @@ func (i *BigQueryRowAccessPolicyIdentity) Host() string {
 }
 
 func (i *BigQueryRowAccessPolicyIdentity) ParentString() string {
-	return "projects/" + i.Project + "/datasets/" + i.DataSet + "/tables/" + i.Table
+	return "projects/" + i.Project + "/datasets/" + i.Dataset + "/tables/" + i.Table
 }
 
 func getIdentityFromBigQueryRowAccessPolicySpec(ctx context.Context, reader client.Reader, obj *BigQueryRowAccessPolicy) (*BigQueryRowAccessPolicyIdentity, error) {
@@ -79,29 +80,19 @@ func getIdentityFromBigQueryRowAccessPolicySpec(ctx context.Context, reader clie
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	if obj.Spec.ParentRef == nil {
+		return nil, fmt.Errorf("spec.parentRef is required")
 	}
-
-	// +kcc:guess reason=identity-root-unknown
-	dataSet := ""
-	if dataSet == "" {
-		return nil, fmt.Errorf("cannot resolve data_set for BigQueryRowAccessPolicy")
+	parentRef := *obj.Spec.ParentRef
+	if err := parentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, fmt.Errorf("resolving spec.parentRef: %w", err)
 	}
-
-	// +kcc:guess reason=identity-root-unknown
-	table := ""
-	if table == "" {
-		return nil, fmt.Errorf("cannot resolve table for BigQueryRowAccessPolicy")
+	parsed := &BigQueryRowAccessPolicyIdentity{}
+	if err := parsed.FromExternal(strings.TrimSuffix(parentRef.GetExternal(), "/") + "/rowAccessPolicies" + "/" + resourceID); err != nil {
+		return nil, fmt.Errorf("parsing spec.parentRef external=%q: %w", parentRef.GetExternal(), err)
 	}
-
-	return &BigQueryRowAccessPolicyIdentity{
-		Project:         projectID,
-		DataSet:         dataSet,
-		Table:           table,
-		RowAccessPolicy: resourceID,
-	}, nil
+	parsed.RowAccessPolicy = resourceID
+	return parsed, nil
 }
 
 func (obj *BigQueryRowAccessPolicy) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {

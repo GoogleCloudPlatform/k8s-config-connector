@@ -29,14 +29,14 @@ import (
 
 func TestBigQueryRowAccessPolicyIdentity_Conformance(t *testing.T) {
 	identity.AssertConformance(t, identity.ConformanceCase[BigQueryRowAccessPolicyIdentity]{
-		SampleExternal: "projects/my-project/datasets/my-data-set/tables/my-table/rowAccessPolicies/my-row-access-policy",
+		SampleExternal: "projects/my-project/datasets/my-dataset/tables/my-table/rowAccessPolicies/my-rowaccesspolicy",
 		WantHost:       "bigquery.googleapis.com",
-		WantParent:     "projects/my-project/datasets/my-data-set/tables/my-table",
+		WantParent:     "projects/my-project/datasets/my-dataset/tables/my-table",
 		WantIdentity: &BigQueryRowAccessPolicyIdentity{
 			Project:         "my-project",
-			DataSet:         "my-data-set",
+			Dataset:         "my-dataset",
 			Table:           "my-table",
-			RowAccessPolicy: "my-row-access-policy",
+			RowAccessPolicy: "my-rowaccesspolicy",
 		},
 		Ref: &BigQueryRowAccessPolicyRef{},
 	})

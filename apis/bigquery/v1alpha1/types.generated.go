@@ -21,27 +21,25 @@
 
 package v1alpha1
 
+/* unreachable type RowAccessPolicyReference
 // +kcc:proto=google.cloud.bigquery.v2.RowAccessPolicyReference
 type RowAccessPolicyReference struct {
 	// Required. The ID of the project containing this row access policy.
 	// +kcc:proto:field=google.cloud.bigquery.v2.RowAccessPolicyReference.project_id
-	// +required
 	ProjectID *string `json:"projectID,omitempty"`
 
 	// Required. The ID of the dataset containing this row access policy.
 	// +kcc:proto:field=google.cloud.bigquery.v2.RowAccessPolicyReference.dataset_id
-	// +required
 	DatasetID *string `json:"datasetID,omitempty"`
 
 	// Required. The ID of the table containing this row access policy.
 	// +kcc:proto:field=google.cloud.bigquery.v2.RowAccessPolicyReference.table_id
-	// +required
 	TableID *string `json:"tableID,omitempty"`
 
 	// Required. The ID of the row access policy. The ID must contain only
 	//  letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum
 	//  length is 256 characters.
 	// +kcc:proto:field=google.cloud.bigquery.v2.RowAccessPolicyReference.policy_id
-	// +required
 	PolicyID *string `json:"policyID,omitempty"`
 }
+*/
