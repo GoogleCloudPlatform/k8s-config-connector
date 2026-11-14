@@ -138,6 +138,51 @@ spec:
               encryption:
                 description: The bucket's encryption configuration.
                 properties:
+                  customerManagedEncryptionEnforcementConfig:
+                    description: Controls whether new objects can be encrypted with
+                      customer-managed encryption keys (CMEK). If omitted, the existing
+                      configuration is preserved.
+                    properties:
+                      restrictionMode:
+                        description: Whether this encryption type is allowed for new
+                          objects. Supported values are "NotRestricted" and "FullyRestricted".
+                        enum:
+                        - NotRestricted
+                        - FullyRestricted
+                        type: string
+                    required:
+                    - restrictionMode
+                    type: object
+                  customerSuppliedEncryptionEnforcementConfig:
+                    description: Controls whether new objects can be encrypted with
+                      customer-supplied encryption keys (CSEK). If omitted, the existing
+                      configuration is preserved.
+                    properties:
+                      restrictionMode:
+                        description: Whether this encryption type is allowed for new
+                          objects. Supported values are "NotRestricted" and "FullyRestricted".
+                        enum:
+                        - NotRestricted
+                        - FullyRestricted
+                        type: string
+                    required:
+                    - restrictionMode
+                    type: object
+                  googleManagedEncryptionEnforcementConfig:
+                    description: Controls whether new objects can be encrypted with
+                      Google-managed encryption keys (GMEK). If omitted, the existing
+                      configuration is preserved.
+                    properties:
+                      restrictionMode:
+                        description: Whether this encryption type is allowed for new
+                          objects. Supported values are "NotRestricted" and "FullyRestricted".
+                        enum:
+                        - NotRestricted
+                        - FullyRestricted
+                        type: string
+                    required:
+                    - restrictionMode
+                    type: object
                   kmsKeyRef:
                     description: A reference to the KMS Crypto Key that will be used
                       to encrypt objects inserted into this bucket.
@@ -167,8 +212,6 @@ spec:
                         description: The namespace of a KMSCryptoKey resource.
                         type: string
                     type: object
-                required:
-                - kmsKeyRef
                 type: object
               ipFilter:
                 description: The bucket IP filtering configuration.
