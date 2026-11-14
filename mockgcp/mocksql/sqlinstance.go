@@ -17,6 +17,7 @@ package mocksql
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"strings"
 	"time"
 
@@ -100,6 +101,9 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 	if maintenanceVersion := req.GetBody().GetMaintenanceVersion(); maintenanceVersion != "" {
 		return nil, status.Errorf(codes.InvalidArgument, "Invalid request: Maintenance version (%s) must not be set.", maintenanceVersion)
 	}
+	if req.GetBody().GetSettings().GetIpConfiguration().GetPscConfig().GetNetworkAttachmentUri() != "" {
+		return nil, status.Errorf(codes.InvalidArgument, "Invalid request: Network attachment used for Private Service Connect interfaces can not be assigned with instance creation. Please create a Private Service Connect enabled instance first and then assign the network attachment.")
+	}
 
 	fqn := name.String()
 	now := time.Now()
@@ -179,7 +183,7 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 
 	obj.GceZone = obj.Settings.LocationPreference.Zone
 
-	if obj.DnsName == nil && obj.Settings.GetIpConfiguration().GetServerCaMode() != "" {
+	if obj.DnsName == nil && (obj.Settings.GetIpConfiguration().GetServerCaMode() != "" || obj.Settings.GetIpConfiguration().GetPscConfig().GetPscEnabled()) {
 		obj.DnsName = PtrTo(name.InstanceName + ".example." + obj.Region + ".sql.goog.")
 	}
 
@@ -872,6 +876,10 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 		// 	}
 	}
 
+	if settings.IpConfiguration.GetPscConfig().GetPscEnabled() && obj.PscServiceAttachmentLink == nil {
+		obj.PscServiceAttachmentLink = PtrTo(fmt.Sprintf("projects/tenanta-tp/regions/%s/serviceAttachments/a-abcdef-psc-service-attachment-0123456789abcdef", obj.Region))
+	}
+
 	if isSqlServer(obj) || settings.IpConfiguration.GetServerCaMode() != "" {
 		if settings.IpConfiguration.ServerCertificateRotationMode == nil {
 			settings.IpConfiguration.ServerCertificateRotationMode = PtrTo("SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED")
@@ -914,6 +922,8 @@ func isSqlServer(obj *pb.DatabaseInstance) bool {
 	return strings.HasPrefix(obj.GetDatabaseVersion().String(), "SQLSERVER_")
 }
 
+var pscNetworkAttachmentURIRegex = regexp.MustCompile(`^projects/(.+)/regions/(.+)/networkAttachments/(.+)$`)
+
 func validateDatabaseInstance(obj *pb.DatabaseInstance) error {
 	// Validate some things we hit when running tests
 	if isMysql(obj) {
@@ -936,6 +946,22 @@ func validateDatabaseInstance(obj *pb.DatabaseInstance) error {
 	if obj.GetSettings().GetEdition() == pb.Settings_ENTERPRISE {
 		if strings.HasPrefix(obj.GetSettings().GetTier(), "db-c4a-") {
 			return status.Errorf(codes.InvalidArgument, "Invalid request: Invalid Tier (%s) for (ENTERPRISE) Edition.", obj.GetSettings().GetTier())
+		}
+	}
+
+	if naURI := obj.GetSettings().GetIpConfiguration().GetPscConfig().GetNetworkAttachmentUri(); naURI != "" {
+		if !obj.GetSettings().GetIpConfiguration().GetPscConfig().GetPscEnabled() {
+			return status.Errorf(codes.InvalidArgument, "Invalid request: Private Service Connect must be enabled when networkAttachmentUri is configured.")
+		}
+		if obj.GetSettings().GetIpConfiguration().GetPrivateNetwork() != "" {
+			return status.Errorf(codes.InvalidArgument, "Invalid request: Network attachment used for Private Service Connect interfaces cannot be configured with Private IP.")
+		}
+		m := pscNetworkAttachmentURIRegex.FindStringSubmatch(naURI)
+		if len(m) != 4 {
+			return status.Errorf(codes.InvalidArgument, "Invalid request: The network attachment %s used for Private Service Connect interfaces is in invalid format.", naURI)
+		}
+		if m[2] != obj.GetRegion() {
+			return status.Errorf(codes.InvalidArgument, "Invalid request: Network attachment used for Private Service Connect interfaces should be in the same region as the Cloud SQL instance.")
 		}
 	}
 
@@ -1121,6 +1147,13 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 		return nil, status.Errorf(codes.InvalidArgument, "Invalid request: instanceType cannot be updated.")
 	}
 
+	if existing.GetSettings().GetIpConfiguration().GetPscConfig().GetPscEnabled() &&
+		existing.GetSettings().GetIpConfiguration().GetPrivateNetwork() == "" &&
+		!existing.GetSettings().GetIpConfiguration().GetIpv4Enabled().GetValue() &&
+		!req.GetBody().GetSettings().GetIpConfiguration().GetPscConfig().GetPscEnabled() {
+		return nil, status.Errorf(codes.InvalidArgument, "Invalid request: For instances having only psc connectivity, psc connectivity can not be disabled.")
+	}
+
 	if req.GetBody().GetMaintenanceVersion() != "" && req.GetBody().GetMaintenanceVersion() != existing.GetMaintenanceVersion() {
 		// Maintenance version is changing.
 		// Check if any other fields are changing.
@@ -1143,6 +1176,7 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 	obj.DatabaseInstalledVersion = existing.DatabaseInstalledVersion
 	obj.DatabaseVersion = existing.DatabaseVersion
 	obj.DnsName = existing.DnsName
+	obj.PscServiceAttachmentLink = existing.PscServiceAttachmentLink
 	obj.GceZone = existing.GceZone
 	obj.IpAddresses = existing.IpAddresses
 	obj.ServerCaCert = existing.ServerCaCert

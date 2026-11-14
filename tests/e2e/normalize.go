@@ -38,6 +38,8 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
+var sqlPscServiceAttachmentRegex = regexp.MustCompile(`^projects/[^/]+/regions/([^/]+)/serviceAttachments/[^/]+$`)
+
 func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID string, uniqueID string) {
 	visitor := buildKRMNormalizer(t, u, project, folderID, uniqueID)
 	if err := visitor.VisitUnstructured(u); err != nil {
@@ -204,6 +206,14 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.serverCaCert.expirationTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.serverCaCert.sha1Fingerprint"] = "12345678"
 	visitor.replacePaths[".status.serviceAccountEmailAddress"] = "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com"
+	if u.GroupVersionKind().Group == "sql.cnrm.cloud.google.com" && u.GroupVersionKind().Kind == "SQLInstance" {
+		visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+			if path == ".status.pscServiceAttachmentLink" {
+				return sqlPscServiceAttachmentRegex.ReplaceAllString(s, "projects/tenanta-tp/regions/$1/serviceAttachments/a-abcdef-psc-service-attachment-0123456789abcdef")
+			}
+			return s
+		})
+	}
 
 	// Specific to VertexAI
 	visitor.replacePaths[".status.observedState.versionCreateTime"] = mockgcpregistry.PlaceholderTime

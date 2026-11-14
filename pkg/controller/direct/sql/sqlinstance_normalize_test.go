@@ -18,8 +18,10 @@ import (
 	"context"
 	"testing"
 
+	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -39,8 +41,17 @@ func TestSQLInstance_NormalizeReferences(t *testing.T) {
 		t.Fatalf("failed to set status.selfLink: %v", err)
 	}
 
+	readyNA := &unstructured.Unstructured{}
+	readyNA.SetGroupVersionKind(computev1alpha1.ComputeNetworkAttachmentGVK)
+	readyNA.SetName("test-na")
+	readyNA.SetNamespace("test-ns")
+	naExternal := "projects/test-project/regions/us-central1/networkAttachments/test-na"
+	if err := unstructured.SetNestedField(readyNA.Object, naExternal, "status", "externalRef"); err != nil {
+		t.Fatalf("failed to set status.externalRef: %v", err)
+	}
+
 	scheme := runtime.NewScheme()
-	reader := fake.NewClientBuilder().WithScheme(scheme).WithObjects(readyKey).Build()
+	reader := fake.NewClientBuilder().WithScheme(scheme).WithObjects(readyKey, readyNA).Build()
 
 	t.Run("resolves EncryptionKMSCryptoKeyRef by name", func(t *testing.T) {
 		obj := &krm.SQLInstance{
@@ -123,6 +134,77 @@ func TestSQLInstance_NormalizeReferences(t *testing.T) {
 		gcpConfig := InstanceEncryptionKMSCryptoKeyRefKRMToGCP(obj.Spec.EncryptionKMSCryptoKeyRef)
 		if gcpConfig != nil {
 			t.Errorf("InstanceEncryptionKMSCryptoKeyRefKRMToGCP() = %v, want nil", gcpConfig)
+		}
+	})
+
+	t.Run("resolves PscConfig.NetworkAttachmentRef by name", func(t *testing.T) {
+		obj := &krm.SQLInstance{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test-instance",
+				Namespace: "test-ns",
+			},
+			Spec: krm.SQLInstanceSpec{
+				Settings: krm.InstanceSettings{
+					IpConfiguration: &krm.InstanceIpConfiguration{
+						PscConfig: []krm.InstancePscConfig{
+							{
+								PscEnabled: direct.PtrTo(true),
+								NetworkAttachmentRef: &computev1alpha1.ComputeNetworkAttachmentRef{
+									Name: "test-na",
+								},
+							},
+						},
+					},
+				},
+			},
+		}
+
+		if err := ResolveSQLInstanceRefs(ctx, reader, obj); err != nil {
+			t.Fatalf("ResolveSQLInstanceRefs() unexpected error: %v", err)
+		}
+
+		gotExternal := obj.Spec.Settings.IpConfiguration.PscConfig[0].NetworkAttachmentRef.External
+		if gotExternal != naExternal {
+			t.Errorf("ResolveSQLInstanceRefs() External = %q, want %q", gotExternal, naExternal)
+		}
+
+		gcpPsc := InstancePscConfigKRMToGCP(obj.Spec.Settings.IpConfiguration.PscConfig)
+		if gcpPsc == nil || gcpPsc.NetworkAttachmentUri != naExternal {
+			t.Errorf("InstancePscConfigKRMToGCP() NetworkAttachmentUri = %v, want %q", gcpPsc, naExternal)
+		}
+	})
+
+	t.Run("handles external PscConfig.NetworkAttachmentRef directly", func(t *testing.T) {
+		fullURL := "https://compute.googleapis.com/projects/test-project/regions/us-central1/networkAttachments/ext-na"
+		wantCanonical := "projects/test-project/regions/us-central1/networkAttachments/ext-na"
+		obj := &krm.SQLInstance{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test-instance",
+				Namespace: "test-ns",
+			},
+			Spec: krm.SQLInstanceSpec{
+				Settings: krm.InstanceSettings{
+					IpConfiguration: &krm.InstanceIpConfiguration{
+						PscConfig: []krm.InstancePscConfig{
+							{
+								PscEnabled: direct.PtrTo(true),
+								NetworkAttachmentRef: &computev1alpha1.ComputeNetworkAttachmentRef{
+									External: fullURL,
+								},
+							},
+						},
+					},
+				},
+			},
+		}
+
+		if err := ResolveSQLInstanceRefs(ctx, reader, obj); err != nil {
+			t.Fatalf("ResolveSQLInstanceRefs() unexpected error: %v", err)
+		}
+
+		gcpPsc := InstancePscConfigKRMToGCP(obj.Spec.Settings.IpConfiguration.PscConfig)
+		if gcpPsc == nil || gcpPsc.NetworkAttachmentUri != wantCanonical {
+			t.Errorf("InstancePscConfigKRMToGCP() NetworkAttachmentUri = %v, want %q", gcpPsc, wantCanonical)
 		}
 	})
 }

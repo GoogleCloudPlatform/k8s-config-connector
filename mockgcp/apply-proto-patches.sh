@@ -66,6 +66,16 @@ go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/sql/v1b
 
 EOF
 
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/sql/v1beta4/cloud_sql_resources.proto --message PscConfig --mode append <<EOF
+
+  // Optional. The network attachment of the consumer network that the
+  // Private Service Connect enabled Cloud SQL instance is
+  // authorized to connect via PSC interface.
+  // format: projects/PROJECT/regions/REGION/networkAttachments/ID
+  optional string network_attachment_uri = 4;
+
+EOF
+
 go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/sql/v1beta4/cloud_sql_resources.proto --message Settings --mode append <<EOF
 
   // Maximum replication lag in seconds.

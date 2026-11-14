@@ -482,9 +482,12 @@ func unmarshalDynamicJSON(reg *descriptorRegistry, msgDesc protoreflect.MessageD
 	s = strings.ReplaceAll(s, `"111111111111111111111"`, `"1"`)
 	dynMsg := dynamicpb.NewMessage(msgDesc)
 	if msgDesc.FullName() == "google.cloud.orchestration.airflow.service.v1.Environment" ||
-		msgDesc.FullName() == "google.cloud.dataform.v1.WorkflowConfig" {
-		// TODO: Discard unknown fields on WorkflowConfig because fields such as queryPriority and executionMode
-		// are returned in real GCP responses for invocationConfig but are absent in the vendored googleapis proto schema.
+		msgDesc.FullName() == "google.cloud.dataform.v1.WorkflowConfig" ||
+		msgDesc.FullName() == "google.cloud.sql.v1beta4.DatabaseInstance" ||
+		msgDesc.FullName() == "google.cloud.sql.v1beta4.UsersListResponse" {
+		// TODO: Discard unknown fields on these messages because live GCP responses return newer fields
+		// (e.g., queryPriority/executionMode on WorkflowConfig; dnsNames/networkAttachmentUri on DatabaseInstance; iamStatus on UsersListResponse)
+		// that are absent in the vendored googleapis proto schema.
 		discardUnknown = true
 	}
 	opts := protojson.UnmarshalOptions{
