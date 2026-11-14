@@ -54,6 +54,7 @@ func BigQueryReservationReservationFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".autoscale.current_slots")
 	f.UnimplementedFields.Insert(".replication_status")
 	f.UnimplementedFields.Insert(".max_slots")
+	f.Unimplemented_NotYetTriaged(".reservation_group_path")
 
 	f.Unimplemented_LabelsAnnotations(".labels")
 

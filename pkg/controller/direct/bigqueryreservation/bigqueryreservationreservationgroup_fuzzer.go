@@ -34,5 +34,9 @@ func BigQueryReservationReservationGroupFuzzer() fuzztesting.KRMFuzzer {
 
 	f.IdentityField(".name")
 
+	f.Unimplemented_NotYetTriaged(".creation_time")
+	f.Unimplemented_NotYetTriaged(".update_time")
+	f.Unimplemented_NotYetTriaged(".parent_group")
+
 	return f
 }

@@ -282,8 +282,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   },
   "name": "operations/${operationID}",
   "response": {
@@ -360,8 +359,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   },
   "name": "operations/${operationID}",
   "response": {
@@ -441,8 +439,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   },
   "name": "operations/${operationID}",
   "response": {
@@ -525,8 +522,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   },
   "name": "operations/${operationID}",
   "response": {
@@ -612,8 +608,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   },
   "name": "operations/${operationID}",
   "response": {
