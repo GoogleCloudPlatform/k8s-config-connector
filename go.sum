@@ -1035,8 +1035,8 @@ cloud.google.com/go/networksecurity v0.9.4/go.mod h1:E9CeMZ2zDsNBkr8axKSYm8XyTqN
 cloud.google.com/go/networksecurity v0.9.5/go.mod h1:KNkjH/RsylSGyyZ8wXpue8xpCEK+bTtvof8SBfIhMG8=
 cloud.google.com/go/networksecurity v0.17.0 h1:6rH2+St9F9n6r49bZ0u7X0Bp7tmWkE0ZguYCWU69xKc=
 cloud.google.com/go/networksecurity v0.17.0/go.mod h1:NlMistWENBCFt1v748gUn4v9Rk5AVCTDTFs1VSE3JUg=
-cloud.google.com/go/networkservices v0.6.0 h1:aCKiXdS8I4AWg8OoX7paBo5uqHmVEPwJvBZUDePpklE=
-cloud.google.com/go/networkservices v0.6.0/go.mod h1:XsqKTDTiNou1raaZmqmi1I3s/lKarmqWClq6bq23Q5Q=
+cloud.google.com/go/networkservices v1.4.0 h1:mKB4B+5WjQjftUSzeq7OylfWArz4xTyNxchrNCPiJ60=
+cloud.google.com/go/networkservices v1.4.0/go.mod h1:iTD7Ngw2qL0oLF4+fytSHho9XMBnzqHaPNpbIyvhh14=
 cloud.google.com/go/notebooks v1.2.0/go.mod h1:9+wtppMfVPUeJ8fIWPOq1UnATHISkGXGqTkxeieQ6UY=
 cloud.google.com/go/notebooks v1.3.0/go.mod h1:bFR5lj07DtCPC7YAAJ//vHskFBxA5JzYlH68kXVdk34=
 cloud.google.com/go/notebooks v1.4.0/go.mod h1:4QPMngcwmgb6uw7Po99B2xv5ufVoIQ7nOGDyL4P8AgA=

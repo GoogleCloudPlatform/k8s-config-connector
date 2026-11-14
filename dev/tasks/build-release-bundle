@@ -272,6 +272,7 @@ BLOCKED_KINDS=(
     "NetworkSecurityPartnerSSEGateway"
     "NetworkSecurityPartnerSSERealm"
     "NetworkSecurityUrlList"
+    "NetworkServicesAgentGateway"
     "NetworkServicesAuthzExtension"
     "NotebookRuntime"
     "NotebooksRuntime"
