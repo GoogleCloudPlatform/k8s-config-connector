@@ -1,0 +1,33 @@
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/a0ce0649-e3e9-40a3-97b3-cf5d51550487?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {
+      "enableStackdriverLogging": true
+    }
+  },
+  "avatarUri": "https://storage.cloud.google.com/dialogflow-test-host-image/cloud-logo.png",
+  "defaultLanguageCode": "en",
+  "description": "A test agent for Dialogflow CX",
+  "displayName": "agent-max-${uniqueId}",
+  "enableStackdriverLogging": true,
+  "name": "projects/${projectId}/locations/global/agents/a0ce0649-e3e9-40a3-97b3-cf5d51550487",
+  "startFlow": "projects/${projectId}/locations/global/agents/a0ce0649-e3e9-40a3-97b3-cf5d51550487/flows/00000000-0000-0000-0000-000000000000",
+  "supportedLanguageCodes": [
+    "fr",
+    "de"
+  ],
+  "timeZone": "America/New_York"
+}
