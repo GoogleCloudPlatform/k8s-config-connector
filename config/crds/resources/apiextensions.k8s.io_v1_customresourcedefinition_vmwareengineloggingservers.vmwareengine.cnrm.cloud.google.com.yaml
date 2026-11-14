@@ -67,16 +67,9 @@ spec:
                 description: Required. Fully-qualified domain name (FQDN) or IP Address
                   of the logging server.
                 type: string
-              location:
-                description: The location of this resource.
-                type: string
-              port:
-                description: Required. Port number at which the logging server receives
-                  logs.
-                format: int32
-                type: integer
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The VMwareEnginePrivateCloud this VMwareEngineLoggingServer
+                  is created under.
                 oneOf:
                 - not:
                     required:
@@ -93,20 +86,24 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed VMwareEnginePrivateCloud
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/privateClouds/{{privatecloudID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a VMwareEnginePrivateCloud resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a VMwareEnginePrivateCloud resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
+              port:
+                description: Required. Port number at which the logging server receives
+                  logs.
+                format: int32
+                type: integer
               protocol:
                 description: Required. Protocol used by vCenter to send logs to a
                   logging server.
@@ -121,9 +118,8 @@ spec:
                 type: string
             required:
             - hostname
-            - location
+            - parentRef
             - port
-            - projectRef
             - protocol
             - sourceType
             type: object

@@ -7558,9 +7558,8 @@
 [missing_field] crd=vmwareengineexternalaccessrules.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceIPRanges[].externalAddressRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vmwareengineexternalaccessrules.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceIPRanges[].ipAddress" is not set in unstructured objects
 [missing_field] crd=vmwareengineloggingservers.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.hostname" is not set in unstructured objects
-[missing_field] crd=vmwareengineloggingservers.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=vmwareengineloggingservers.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vmwareengineloggingservers.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.port" is not set in unstructured objects
-[missing_field] crd=vmwareengineloggingservers.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vmwareengineloggingservers.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.protocol" is not set in unstructured objects
 [missing_field] crd=vmwareengineloggingservers.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceType" is not set in unstructured objects
 [missing_field] crd=vmwareenginemanagementdnszonebindings.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
