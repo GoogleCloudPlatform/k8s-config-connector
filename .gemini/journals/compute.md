@@ -340,3 +340,22 @@
   2. Recorded authentic golden logs against real GCP project `cnrm-barni-4` using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`.
   3. Both fixtures passed all 7/7 automated validation checks (`V1`-`V7`), verified zero-diff re-reconciliation, and deleted cleanly.
   4. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha`.
+
+  ### [2026-11-14] Greenfield: MockGCP and Alignment for ComputeInterconnectGroup
+  - **Context**: Implementing MockGCP and aligning golden HTTP logs for `ComputeInterconnectGroup` under `compute.cnrm.cloud.google.com/v1alpha1` (issue #15663) following Greenfield Step 3 (`kcc-direct-mockgcp-implementer/SKILL.md`).
+  - **Implementation & Alignment**:
+  1. Implemented `InterconnectGroupsV1` mock service under `mockgcp/mockcompute/interconnectgroupsv1.go` providing CRUD operations (`Get`, `Insert`, `Patch`, `Delete`, `List`) backed by MockGCP storage and `startGlobalLRO`.
+  2. Registered `InterconnectGroupsV1` in `MockService.Register` (gRPC) and `MockService.NewHTTPMux` (HTTP gateway) in `mockgcp/mockcompute/service.go`.
+  3. Added `ComputeInterconnectGroup` to supported mock GCP GroupKinds in `config/tests/samples/create/harness.go`.
+  4. Handled default population and dynamic behavior:
+    - Set default `description: ""` when not provided.
+    - Set `kind: "compute#InterconnectGroup"`.
+    - Populated `physicalStructure: {}`.
+    - Populated `configured.topologyCapability` dynamically based on `intent.topologyCapability`: when `NO_SLA` returns `supportedSla: "NO_SLA"`; when requiring SLAs (e.g. `PRODUCTION_NON_CRITICAL`) without interconnects, includes `intendedCapabilityBlockers` of type `NO_INTERCONNECTS`.
+    - Handled update masks in `Patch` (`description`, `intent`, `interconnects`).
+  5. Normalized `etag` to `PlaceholderFingerprint` in `cleanComputeResource` (`mockgcp/mockcompute/normalize.go`).
+  - **Verification**:
+  - `hack/compare-mock "fixtures/computeinterconnectgroup"` passed cleanly with zero errors.
+  - `go test -v ./pkg/test/resourcefixture -run 'TestGoldenLogAlignment/compute/v1alpha1/computeinterconnectgroup'` passed with zero diffs across both minimal and maximal fixtures.
+  - `./dev/ci/presubmits/tests-e2e-fixtures-suite compute` passed (192/192 tests pass).
+  - Authentic real-GCP baseline logs (`_http.log`, `_audit_probe.log`) remain untouched.
