@@ -188,6 +188,19 @@ func TestSyncerIntegration_OnStartedLeading_CacheSafety(t *testing.T) {
 		t.Fatalf("failed to get updated syncer: %v", err)
 	}
 	assertSyncer(t, updatedSyncer, cluster, "Default", true)
+
+	// An update from the time when this cluster was a standby, for the previous leader, comes
+	// late. It must not resume the syncer.
+	lem, ok := mgr.(*leaderElectionManager)
+	if !ok {
+		t.Fatalf("manager is not *leaderElectionManager, it is %T", mgr)
+	}
+	lem.follower.setLeader(testGKECluster("previous-leader"))
+	lem.follower.pullFromLeader(ctx)
+	if err := kubeClient.Get(ctx, leaseNN, updatedSyncer); err != nil {
+		t.Fatalf("failed to get updated syncer: %v", err)
+	}
+	assertSyncer(t, updatedSyncer, cluster, "Default", true)
 }
 
 func TestSyncerIntegration_NamespacedMode(t *testing.T) {
