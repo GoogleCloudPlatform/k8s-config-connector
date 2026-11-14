@@ -405,3 +405,17 @@
   1. Fuzzer round-trip test (`FOCUS=ComputeStoragePool`) passes with 200 seeds.
   2. Real GCP golden logs (`_http.log`, `_generated_object_*.golden.yaml`, `_identities.yaml`) recorded with `RECORD_AUDIT_PROBE=1 ./hack/record-gcp` for both `computestoragepool-minimal` and `computestoragepool-maximal`. Both fixtures passed all 7 automated validation checks (V1-V7) including re-reconciliation.
   3. Re-recorded `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`, removing all 9 exception entries for `computestoragepools`.
+
+### [2026-11-14] Greenfield Step 3: MockGCP Implementation and Alignment for ComputeStoragePool
+- **Context**: Implementing MockGCP service emulation and test log alignment for `ComputeStoragePool` (`compute.cnrm.cloud.google.com/v1alpha1`, issue #15684) following Greenfield Step 3 (`kcc-direct-mockgcp-implementer/SKILL.md`).
+- **Mock Service Implementation**:
+  1. Added `StoragePoolsV1` under `mockgcp/mockcompute/storagepoolsv1.go` implementing `Get`, `Insert`, `Update`, `Delete`, and `List` on `pb.UnimplementedStoragePoolsServer`.
+  2. Handled standard GCP Compute response defaults on create/read (`kind: "compute#storagePool"`, `state: "READY"`, `capacityProvisioningType: "ADVANCED"`, `performanceProvisioningType: "ADVANCED"`, `description: ""`, self-links, and nested `status` with `maxTotalProvisionedDiskCapacityGb = poolProvisionedCapacityGb * 10`).
+  3. Qualified `storagePoolType` to absolute self-link URL matching real GCP behavior.
+  4. Registered `pb.RegisterStoragePoolsServer` and `pb.RegisterStoragePoolsHandler` in `mockgcp/mockcompute/service.go`.
+  5. Added `ComputeStoragePool` to allowed mock kinds in `config/tests/samples/create/harness.go`.
+- **Verification**:
+  1. Generated `_http_mock.log` for both `computestoragepool-minimal` and `computestoragepool-maximal`.
+  2. Verified 0 diffs against authentic real-GCP golden logs via `TestGoldenLogAlignment/compute/v1alpha1/computestoragepool` and `hack/compare-mock`.
+  3. Ran `./dev/ci/presubmits/tests-e2e-fixtures-suite compute` with 192/192 tests passing.
+

@@ -1,0 +1,342 @@
+# Phase: CREATE
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePools/${storagePoolID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&zone=us-east4-a&storage_pool=${storagePoolID}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/zones/us-east4-a/storagePools/${storagePoolID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/zones/us-east4-a/storagePools/${storagePoolID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePools
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&zone=us-east4-a
+
+{
+  "capacityProvisioningType": "ADVANCED",
+  "description": "A test storage pool",
+  "name": "${storagePoolID}",
+  "performanceProvisioningType": "ADVANCED",
+  "poolProvisionedCapacityGb": "10240",
+  "poolProvisionedIops": "10000",
+  "poolProvisionedThroughput": "1024",
+  "storagePoolType": "projects/${projectId}/zones/us-east4-a/storagePoolTypes/hyperdisk-balanced"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${storagePoolID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePools/${storagePoolID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&zone=us-east4-a&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${storagePoolID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePools/${storagePoolID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePools/${storagePoolID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&zone=us-east4-a&storage_pool=${storagePoolID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "capacityProvisioningType": "ADVANCED",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "A test storage pool",
+  "id": "000000000000000000000",
+  "kind": "compute#storagePool",
+  "name": "${storagePoolID}",
+  "performanceProvisioningType": "ADVANCED",
+  "poolProvisionedCapacityGb": "10240",
+  "poolProvisionedIops": "10000",
+  "poolProvisionedThroughput": "1024",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePools/${storagePoolID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePools/${storagePoolID}",
+  "state": "READY",
+  "status": {
+    "diskCount": "0",
+    "maxTotalProvisionedDiskCapacityGb": "102400",
+    "poolUsedCapacityBytes": "0",
+    "poolUserWrittenBytes": "0",
+    "totalProvisionedDiskCapacityGb": "0",
+    "totalProvisionedDiskIops": "0",
+    "totalProvisionedDiskThroughput": "0"
+  },
+  "storagePoolType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePoolTypes/hyperdisk-balanced",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a"
+}
+
+---
+
+# Phase: UPDATE
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePools/${storagePoolID}?updateMask=pool_provisioned_capacity_gb%2Cpool_provisioned_iops%2Cpool_provisioned_throughput
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&zone=us-east4-a&storage_pool=${storagePoolID}
+
+{
+  "capacityProvisioningType": "ADVANCED",
+  "description": "A test storage pool",
+  "name": "${storagePoolID}",
+  "performanceProvisioningType": "ADVANCED",
+  "poolProvisionedCapacityGb": "11264",
+  "poolProvisionedIops": "20000",
+  "poolProvisionedThroughput": "2048",
+  "storagePoolType": "projects/${projectId}/zones/us-east4-a/storagePoolTypes/hyperdisk-balanced"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "update",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${storagePoolID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePools/${storagePoolID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&zone=us-east4-a&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "update",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${storagePoolID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePools/${storagePoolID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePools/${storagePoolID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&zone=us-east4-a&storage_pool=${storagePoolID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "capacityProvisioningType": "ADVANCED",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "A test storage pool",
+  "id": "000000000000000000000",
+  "kind": "compute#storagePool",
+  "name": "${storagePoolID}",
+  "performanceProvisioningType": "ADVANCED",
+  "poolProvisionedCapacityGb": "11264",
+  "poolProvisionedIops": "20000",
+  "poolProvisionedThroughput": "2048",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePools/${storagePoolID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePools/${storagePoolID}",
+  "state": "READY",
+  "status": {
+    "diskCount": "0",
+    "maxTotalProvisionedDiskCapacityGb": "112640",
+    "poolUsedCapacityBytes": "0",
+    "poolUserWrittenBytes": "0",
+    "totalProvisionedDiskCapacityGb": "0",
+    "totalProvisionedDiskIops": "0",
+    "totalProvisionedDiskThroughput": "0"
+  },
+  "storagePoolType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePoolTypes/hyperdisk-balanced",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a"
+}
+
+---
+
+# Phase: DELETE
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePools/${storagePoolID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&zone=us-east4-a&storage_pool=${storagePoolID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${storagePoolID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePools/${storagePoolID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&zone=us-east4-a&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${storagePoolID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a/storagePools/${storagePoolID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east4-a"
+}
