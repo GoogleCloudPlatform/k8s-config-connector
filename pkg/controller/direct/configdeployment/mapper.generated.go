@@ -234,7 +234,9 @@ func ConfigPreviewObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Prev
 	out := &krm.ConfigPreviewObservedState{}
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	// MISSING: Labels
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: ArtifactsGCSBucket
 	out.ErrorCode = direct.Enum_FromProto(mapCtx, in.GetErrorCode())
 	out.ErrorStatus = direct.Status_FromProto(mapCtx, in.GetErrorStatus())
 	out.Build = direct.LazyPtr(in.GetBuild())
@@ -252,7 +254,9 @@ func ConfigPreviewObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Confi
 	out := &pb.Preview{}
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	// MISSING: Labels
 	out.State = direct.Enum_ToProto[pb.Preview_State](mapCtx, in.State)
+	// MISSING: ArtifactsGCSBucket
 	out.ErrorCode = direct.Enum_ToProto[pb.Preview_ErrorCode](mapCtx, in.ErrorCode)
 	out.ErrorStatus = direct.Status_ToProto(mapCtx, in.ErrorStatus)
 	out.Build = direct.ValueOf(in.Build)
@@ -263,6 +267,8 @@ func ConfigPreviewObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Confi
 	out.TfVersion = direct.ValueOf(in.TfVersion)
 	return out
 }
+
+/* found existing non-generated mapping function "ConfigPreviewSpec_FromProto", skipping
 func ConfigPreviewSpec_FromProto(mapCtx *direct.MapContext, in *pb.Preview) *krm.ConfigPreviewSpec {
 	if in == nil {
 		return nil
@@ -270,37 +276,55 @@ func ConfigPreviewSpec_FromProto(mapCtx *direct.MapContext, in *pb.Preview) *krm
 	out := &krm.ConfigPreviewSpec{}
 	out.TerraformBlueprint = TerraformBlueprint_FromProto(mapCtx, in.GetTerraformBlueprint())
 	// MISSING: Name
-	out.Labels = in.Labels
-	out.Deployment = direct.LazyPtr(in.GetDeployment())
+	// MISSING: Labels
+	if in.GetDeployment() != "" {
+		out.DeploymentRef = &krm.ConfigDeploymentRef{External: in.GetDeployment()}
+	}
 	out.PreviewMode = direct.Enum_FromProto(mapCtx, in.GetPreviewMode())
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
-	out.ArtifactsGCSBucket = in.ArtifactsGcsBucket
-	out.WorkerPool = in.WorkerPool
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	// MISSING: ArtifactsGCSBucket
+	if in.GetWorkerPool() != "" {
+		out.WorkerPoolRef = &krmcloudbuildv1beta1.CloudBuildWorkerPoolRef{External: in.GetWorkerPool()}
+	}
 	out.TfVersionConstraint = in.TfVersionConstraint
 	out.Annotations = in.Annotations
 	out.ProviderConfig = ProviderConfig_FromProto(mapCtx, in.GetProviderConfig())
 	return out
 }
-func ConfigPreviewSpec_ToProto(mapCtx *direct.MapContext, in *krm.ConfigPreviewSpec) *pb.Preview {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ConfigPreviewSpec_ToProto", skipping
+
+	func ConfigPreviewSpec_ToProto(mapCtx *direct.MapContext, in *krm.ConfigPreviewSpec) *pb.Preview {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Preview{}
+		if oneof := TerraformBlueprint_ToProto(mapCtx, in.TerraformBlueprint); oneof != nil {
+			out.Blueprint = &pb.Preview_TerraformBlueprint{TerraformBlueprint: oneof}
+		}
+		// MISSING: Name
+		// MISSING: Labels
+		if in.DeploymentRef != nil {
+			out.Deployment = in.DeploymentRef.External
+		}
+		out.PreviewMode = direct.Enum_ToProto[pb.Preview_PreviewMode](mapCtx, in.PreviewMode)
+		if in.ServiceAccountRef != nil {
+			out.ServiceAccount = in.ServiceAccountRef.External
+		}
+		// MISSING: ArtifactsGCSBucket
+		if in.WorkerPoolRef != nil {
+			out.WorkerPool = in.WorkerPoolRef.External
+		}
+		out.TfVersionConstraint = in.TfVersionConstraint
+		out.Annotations = in.Annotations
+		out.ProviderConfig = ProviderConfig_ToProto(mapCtx, in.ProviderConfig)
+		return out
 	}
-	out := &pb.Preview{}
-	if oneof := TerraformBlueprint_ToProto(mapCtx, in.TerraformBlueprint); oneof != nil {
-		out.Blueprint = &pb.Preview_TerraformBlueprint{TerraformBlueprint: oneof}
-	}
-	// MISSING: Name
-	out.Labels = in.Labels
-	out.Deployment = direct.ValueOf(in.Deployment)
-	out.PreviewMode = direct.Enum_ToProto[pb.Preview_PreviewMode](mapCtx, in.PreviewMode)
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
-	out.ArtifactsGcsBucket = in.ArtifactsGCSBucket
-	out.WorkerPool = in.WorkerPool
-	out.TfVersionConstraint = in.TfVersionConstraint
-	out.Annotations = in.Annotations
-	out.ProviderConfig = ProviderConfig_ToProto(mapCtx, in.ProviderConfig)
-	return out
-}
+*/
 func DeploymentSource_FromProto(mapCtx *direct.MapContext, in *pb.DeploymentSource) *krm.DeploymentSource {
 	if in == nil {
 		return nil

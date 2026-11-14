@@ -16,3 +16,14 @@
 - **Service Prefix**: Updated `dev/tools/controllerbuilder/serviceprefixes/service-prefixes.yaml` servicePrefix for API `config` from `ConfigDeployment` to `Config` so that Kinds follow `<servicePrefix><Message>` uniformly (`Config` + `Deployment` = `ConfigDeployment`, `Config` + `Preview` = `ConfigPreview`, `Config` + `DeploymentGroup` = `ConfigDeploymentGroup`). This removed the spurious kind name violation for `ConfigDeployment`.
 - **Non-declarative Resource**: `Preview` has `CreatePreview`, `GetPreview`, `ListPreviews`, and `DeletePreview` without `UpdatePreview` in `google.cloud.config.v1`. Added `--allow-non-declarative` flag to `controllerbuilder generate-types` in `apis/configdeployment/generate.sh`.
 - **Blocked Kinds**: Added `ConfigPreview` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+
+### 2026-11-14 ConfigPreview Judgement Queue Triage & Types Finalization
+- **Context**: Triaging `judgement_queue.yaml` and finalizing direct KRM types and identity for `ConfigPreview` (Issue #15651).
+- **Parent & Location**: `projects/{project}/locations/{location}/previews/{preview}` is a regional project-parented resource. Inlined `*parent.ProjectAndLocationRef` in `ConfigPreviewSpec`.
+- **Reference Fields**:
+  - `deployment`: mapped to `DeploymentRef *ConfigDeploymentRef` in `ConfigPreviewSpec`.
+  - `service_account`: mapped to `ServiceAccountRef *refsv1beta1.IAMServiceAccountRef` (+required).
+  - `worker_pool`: mapped to `WorkerPoolRef *cloudbuildv1beta1.CloudBuildWorkerPoolRef`.
+  - `artifacts_gcs_bucket`: mapped to `ArtifactsLocation *ArtifactsLocation` reusing the struct in `configdeployment_types.go` (`BucketRef *storagev1beta1.StorageBucketRef` + `Folder *string`).
+- **Mapper**: Implemented `ConfigPreviewSpec_FromProto` and `ConfigPreviewSpec_ToProto` in `configpreview_mapper.go` to handle pointer wrapping for optional proto fields (e.g. `worker_pool`) and to translate `ArtifactsLocation` (`BucketRef` + `Folder`) to/from `artifacts_gcs_bucket`.
+- **Top-Level Labels**: Removed `Labels map[string]string` from `ConfigPreviewSpec` as labels are managed via `metadata.labels`.

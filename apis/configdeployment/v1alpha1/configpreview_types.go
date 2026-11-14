@@ -20,7 +20,9 @@
 package v1alpha1
 
 import (
+	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
 	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -32,11 +34,7 @@ var ConfigPreviewGVK = GroupVersion.WithKind("ConfigPreview")
 // +kcc:spec:proto=google.cloud.config.v1.Preview
 // +kcc:required-from-proto
 type ConfigPreviewSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The ConfigPreview name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -44,16 +42,12 @@ type ConfigPreviewSpec struct {
 	// +kcc:proto:field=google.cloud.config.v1.Preview.terraform_blueprint
 	TerraformBlueprint *TerraformBlueprint `json:"terraformBlueprint,omitempty"`
 
-	// Optional. User-defined labels for the preview.
-	// +kcc:proto:field=google.cloud.config.v1.Preview.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
 	// Optional. Optional deployment reference. If specified, the preview will be
 	//  performed using the provided deployment's current state and use any
 	//  relevant fields from the deployment unless explicitly specified in the
 	//  preview create request.
 	// +kcc:proto:field=google.cloud.config.v1.Preview.deployment
-	Deployment *string `json:"deployment,omitempty"`
+	DeploymentRef *ConfigDeploymentRef `json:"deploymentRef,omitempty"`
 
 	// Optional. Current mode of preview.
 	// +kcc:proto:field=google.cloud.config.v1.Preview.preview_mode
@@ -64,20 +58,19 @@ type ConfigPreviewSpec struct {
 	//  Format: `projects/{projectID}/serviceAccounts/{serviceAccount}`
 	// +kcc:proto:field=google.cloud.config.v1.Preview.service_account
 	// +required
-	ServiceAccount *string `json:"serviceAccount,omitempty"`
+	ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"serviceAccountRef"`
 
 	// Optional. User-defined location of Cloud Build logs, artifacts, and
 	//  in Google Cloud Storage.
-	//  Format: `gs://{bucket}/{folder}`
-	//  A default bucket will be bootstrapped if the field is not set or empty
-	//  Default Bucket Format: `gs://<project number>-<region>-blueprint-config`
+	//
+	//  A default bucket will be bootstrapped if the field is not set or empty.
 	//  Constraints:
 	//  - The bucket needs to be in the same project as the deployment
 	//  - The path cannot be within the path of `gcs_source`
 	//  If omitted and deployment resource ref provided has artifacts_gcs_bucket
 	//  defined, that artifact bucket is used.
 	// +kcc:proto:field=google.cloud.config.v1.Preview.artifacts_gcs_bucket
-	ArtifactsGCSBucket *string `json:"artifactsGCSBucket,omitempty"`
+	ArtifactsLocation *ArtifactsLocation `json:"artifactsLocation,omitempty"`
 
 	// Optional. The user-specified Worker Pool resource in which the Cloud Build
 	//  job will execute. Format
@@ -86,7 +79,7 @@ type ConfigPreviewSpec struct {
 	//  omitted and deployment resource ref provided has worker_pool defined, that
 	//  worker pool is used.
 	// +kcc:proto:field=google.cloud.config.v1.Preview.worker_pool
-	WorkerPool *string `json:"workerPool,omitempty"`
+	WorkerPoolRef *cloudbuildv1beta1.CloudBuildWorkerPoolRef `json:"workerPoolRef,omitempty"`
 
 	// Optional. The user-specified Terraform version constraint.
 	//  Example: "=1.3.10".

@@ -25,76 +25,102 @@ entries:
     group: configdeployment.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged judgement queue, updated references, inlined ProjectAndLocationRef, removed top-level labels, and finalized KRM types
   - kind: ConfigPreview
     group: configdeployment.cnrm.cloud.google.com
     field: .spec.artifactsGCSBucket
     reason: possible-reference-by-description
     detail: the field name has bucket and the description mentions Cloud Storage
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to artifactsLocation (*ArtifactsLocation) supporting bucketRef (*storagev1beta1.StorageBucketRef) and folder
   - kind: ConfigPreview
     group: configdeployment.cnrm.cloud.google.com
     field: .spec.deployment
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to config.googleapis.com/Deployment (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to deploymentRef (*ConfigDeploymentRef)
   - kind: ConfigPreview
     group: configdeployment.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced projectRef and location with inlined *parent.ProjectAndLocationRef
   - kind: ConfigPreview
     group: configdeployment.cnrm.cloud.google.com
     field: .spec.serviceAccount
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to iam.googleapis.com/ServiceAccount (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to serviceAccountRef (*refsv1beta1.IAMServiceAccountRef)
   - kind: ConfigPreview
     group: configdeployment.cnrm.cloud.google.com
     field: .spec.terraformBlueprint.externalValues
     reason: message-map-derived
     detail: derived as map[string]ExternalValueSource from proto google.cloud.config.v1.ExternalValueSource; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: accepted
+    note: verified map[string]ExternalValueSource type and mapping
   - kind: ConfigPreview
     group: configdeployment.cnrm.cloud.google.com
     field: .spec.terraformBlueprint.externalValues.KEY.deploymentSource.deployment
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to config.googleapis.com/Deployment (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: accepted
+    note: already modeled as deploymentRef (*ConfigDeploymentRef) in shared DeploymentSource
   - kind: ConfigPreview
     group: configdeployment.cnrm.cloud.google.com
     field: .spec.terraformBlueprint.externalValues.KEY.deploymentSource.deploymentRef
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DeploymentSource in configdeployment_types.go is also used by ConfigDeployment. +required on DeploymentSource.DeploymentRef would apply there too. To enforce it for ConfigPreview only, give ConfigPreview its own copy of DeploymentSource. ConfigPreview is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional to maintain shared DeploymentSource compatibility with ConfigDeployment
   - kind: ConfigPreview
     group: configdeployment.cnrm.cloud.google.com
     field: .spec.terraformBlueprint.externalValues.KEY.deploymentSource.outputName
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DeploymentSource in configdeployment_types.go is also used by ConfigDeployment. +required on DeploymentSource.OutputName would apply there too. To enforce it for ConfigPreview only, give ConfigPreview its own copy of DeploymentSource. ConfigPreview is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional to maintain shared DeploymentSource compatibility with ConfigDeployment
   - kind: ConfigPreview
     group: configdeployment.cnrm.cloud.google.com
     field: .spec.terraformBlueprint.gcsSource
     reason: reference-not-representable
     detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: GCS path URI is not representable as a single reference today; kept as string
   - kind: ConfigPreview
     group: configdeployment.cnrm.cloud.google.com
     field: .spec.terraformBlueprint.inputValues
     reason: message-map-derived
     detail: derived as map[string]TerraformVariable from proto google.cloud.config.v1.TerraformVariable; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: accepted
+    note: verified map[string]TerraformVariable type and mapping
   - kind: ConfigPreview
     group: configdeployment.cnrm.cloud.google.com
     field: .spec.terraformBlueprint.inputValues.KEY.inputValue
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: deferred
+    note: deferred well-known protobuf type resolution pending team-wide conventions
   - kind: ConfigPreview
     group: configdeployment.cnrm.cloud.google.com
     field: .spec.workerPool
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to cloudbuild.googleapis.com/WorkerPool (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to workerPoolRef (*cloudbuildv1beta1.CloudBuildWorkerPoolRef)
