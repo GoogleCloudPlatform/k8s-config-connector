@@ -112,3 +112,24 @@
   4. Resolved `possible-reference-by-name` for `operationID`: Confirmed it is an OpenAPI operationId within the toolset schema, not a GCP resource reference (`resolution: not-applicable`).
   5. Resolved `untriaged-bulk-generation` after verifying all fields and types.
 - **Impact**: All 5 judgement queue entries for DialogflowCompanionAgent resolved; CRD and API checks cleanly pass.
+
+### [2026-11-14] DialogflowConversationProfile Greenfield Step 1b Judgement Queue Triage
+- **Context**: Triaging judgement queue and finalizing KRM types, identity, and references for DialogflowConversationProfile (Issue #15630).
+- **Details**:
+  1. Resolved parent & identity: Mapped parent as inlined `*parent.ProjectAndLocationRef` in `DialogflowConversationProfileSpec`. Configured `--pattern DialogflowConversationProfile=projects/{project}/locations/{location}/conversationProfiles/{conversationProfile}` in `apis/dialogflow/generate.sh` to match CAIS naming format. Confirmed server-generated identity as `CreateConversationProfileRequest` has no client-specified ID parameter.
+  2. References modeled:
+     - `SecuritySettingsRef *DialogflowSecuritySettingsRef`: Converted `security_settings` to `SecuritySettingsRef`.
+     - `NotificationConfig.TopicRef *pubsubv1beta1.PubSubTopicRef`: Moved `NotificationConfig` to `dialogflowconversationprofile_types.go` and converted `topic` to `TopicRef` across all 4 notification config usages.
+     - `SpeechToTextConfig.PhraseSetRefs []speechv1beta1.PhraseSetRef`: Moved `SpeechToTextConfig` to `dialogflowconversationprofile_types.go` and converted `phrase_sets` to `PhraseSetRefs`.
+     - `HumanAgentAssistantConfig_ConversationModelConfig.ModelRef *DialogflowConversationModelRef`: Converted `model` to `ModelRef`.
+     - `HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource.KnowledgeBaseRefs []DialogflowKnowledgeBaseRef`: Converted `knowledge_bases` to required `KnowledgeBaseRefs`.
+     - `HumanAgentAssistantConfig_SuggestionConfig.GeneratorRefs []DialogflowGeneratorRef`: Converted `generators` to `GeneratorRefs`.
+  3. Non-reference fields resolved:
+     - `salesforceLiveAgentConfig` fields (`buttonID`, `deploymentID`, `organizationID`): Third-party Salesforce IDs (`resolution: not-applicable`).
+     - `ttsConfig.effectsProfileID`: Cloud Text-to-Speech audio effect profile identifiers (`resolution: not-applicable`).
+  4. Deferred references in `refs_deferred.txt`:
+     - `automatedAgentConfig.agent`: Polymorphic ES/CX agent environment path (`projects/*/locations/*/agent/environments/*` or `projects/*/locations/*/agents/*/environments/*`).
+     - `dialogflowQuerySource.agent` and `humanAgentSideConfig.agent`: Regional Dialogflow agent paths (`projects/*/locations/*/agent`), whereas `DialogflowAgentRef` is global (`projects/{project}/agent`).
+     - `documentQuerySource.documents`: Data-plane knowledge documents.
+  5. Triaged all 27 judgement queue entries for DialogflowConversationProfile in `apis/dialogflow/judgement_queue.yaml`.
+- **Impact**: Cleanly finalizes KRM types, identity, references, CRD schema, and generated mappers for DialogflowConversationProfile, passing all tests and apichecks.

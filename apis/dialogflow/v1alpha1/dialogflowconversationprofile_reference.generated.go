@@ -36,7 +36,7 @@ var _ refs.Ref = &DialogflowConversationProfileRef{}
 // DialogflowConversationProfileRef is a reference to a GCP DialogflowConversationProfile resource.
 type DialogflowConversationProfileRef struct {
 	// A reference to an externally managed DialogflowConversationProfile resource.
-	// Should be in the format "projects/{{projectID}}/conversationProfiles/{{conversationProfileID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/conversationProfiles/{{conversationProfileID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DialogflowConversationProfile resource.

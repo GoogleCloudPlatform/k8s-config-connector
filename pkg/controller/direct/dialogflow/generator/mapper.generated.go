@@ -26,6 +26,8 @@ package generator
 import (
 	pb "cloud.google.com/go/dialogflow/apiv2/dialogflowpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
+	krmpubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
+	krmspeechv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/speech/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -218,7 +220,9 @@ func DialogflowConversationProfileSpec_FromProto(mapCtx *direct.MapContext, in *
 	out.SttConfig = SpeechToTextConfig_FromProto(mapCtx, in.GetSttConfig())
 	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
 	out.TimeZone = direct.LazyPtr(in.GetTimeZone())
-	out.SecuritySettings = direct.LazyPtr(in.GetSecuritySettings())
+	if in.GetSecuritySettings() != "" {
+		out.SecuritySettingsRef = &krm.DialogflowSecuritySettingsRef{External: in.GetSecuritySettings()}
+	}
 	out.TtsConfig = SynthesizeSpeechConfig_FromProto(mapCtx, in.GetTtsConfig())
 	return out
 }
@@ -239,7 +243,9 @@ func DialogflowConversationProfileSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	out.SttConfig = SpeechToTextConfig_ToProto(mapCtx, in.SttConfig)
 	out.LanguageCode = direct.ValueOf(in.LanguageCode)
 	out.TimeZone = direct.ValueOf(in.TimeZone)
-	out.SecuritySettings = direct.ValueOf(in.SecuritySettings)
+	if in.SecuritySettingsRef != nil {
+		out.SecuritySettings = in.SecuritySettingsRef.External
+	}
 	out.TtsConfig = SynthesizeSpeechConfig_ToProto(mapCtx, in.TtsConfig)
 	return out
 }
@@ -458,7 +464,9 @@ func HumanAgentAssistantConfig_ConversationModelConfig_FromProto(mapCtx *direct.
 		return nil
 	}
 	out := &krm.HumanAgentAssistantConfig_ConversationModelConfig{}
-	out.Model = direct.LazyPtr(in.GetModel())
+	if in.GetModel() != "" {
+		out.ModelRef = &krm.DialogflowConversationModelRef{External: in.GetModel()}
+	}
 	out.BaselineModelVersion = direct.LazyPtr(in.GetBaselineModelVersion())
 	return out
 }
@@ -467,7 +475,9 @@ func HumanAgentAssistantConfig_ConversationModelConfig_ToProto(mapCtx *direct.Ma
 		return nil
 	}
 	out := &pb.HumanAgentAssistantConfig_ConversationModelConfig{}
-	out.Model = direct.ValueOf(in.Model)
+	if in.ModelRef != nil {
+		out.Model = in.ModelRef.External
+	}
 	out.BaselineModelVersion = direct.ValueOf(in.BaselineModelVersion)
 	return out
 }
@@ -512,7 +522,13 @@ func HumanAgentAssistantConfig_SuggestionConfig_FromProto(mapCtx *direct.MapCont
 	out := &krm.HumanAgentAssistantConfig_SuggestionConfig{}
 	out.FeatureConfigs = direct.Slice_FromProto(mapCtx, in.FeatureConfigs, HumanAgentAssistantConfig_SuggestionFeatureConfig_FromProto)
 	out.GroupSuggestionResponses = direct.LazyPtr(in.GetGroupSuggestionResponses())
-	out.Generators = in.Generators
+
+	if v := in.GetGenerators(); len(v) != 0 {
+		for i := range v {
+			out.GeneratorRefs = append(out.GeneratorRefs, krm.DialogflowGeneratorRef{External: v[i]})
+		}
+	}
+
 	out.DisableHighLatencyFeaturesSyncDelivery = direct.LazyPtr(in.GetDisableHighLatencyFeaturesSyncDelivery())
 	return out
 }
@@ -523,7 +539,13 @@ func HumanAgentAssistantConfig_SuggestionConfig_ToProto(mapCtx *direct.MapContex
 	out := &pb.HumanAgentAssistantConfig_SuggestionConfig{}
 	out.FeatureConfigs = direct.Slice_ToProto(mapCtx, in.FeatureConfigs, HumanAgentAssistantConfig_SuggestionFeatureConfig_ToProto)
 	out.GroupSuggestionResponses = direct.ValueOf(in.GroupSuggestionResponses)
-	out.Generators = in.Generators
+
+	if v := in.GeneratorRefs; len(v) != 0 {
+		for i := range v {
+			out.Generators = append(out.Generators, v[i].External)
+		}
+	}
+
 	out.DisableHighLatencyFeaturesSyncDelivery = direct.ValueOf(in.DisableHighLatencyFeaturesSyncDelivery)
 	return out
 }
@@ -672,7 +694,13 @@ func HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource_Fr
 		return nil
 	}
 	out := &krm.HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource{}
-	out.KnowledgeBases = in.KnowledgeBases
+
+	if v := in.GetKnowledgeBases(); len(v) != 0 {
+		for i := range v {
+			out.KnowledgeBaseRefs = append(out.KnowledgeBaseRefs, krm.DialogflowKnowledgeBaseRef{External: v[i]})
+		}
+	}
+
 	return out
 }
 func HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource) *pb.HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource {
@@ -680,7 +708,13 @@ func HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource_To
 		return nil
 	}
 	out := &pb.HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource{}
-	out.KnowledgeBases = in.KnowledgeBases
+
+	if v := in.KnowledgeBaseRefs; len(v) != 0 {
+		for i := range v {
+			out.KnowledgeBases = append(out.KnowledgeBases, v[i].External)
+		}
+	}
+
 	return out
 }
 func HumanAgentAssistantConfig_SuggestionQueryConfig_Sections_FromProto(mapCtx *direct.MapContext, in *pb.HumanAgentAssistantConfig_SuggestionQueryConfig_Sections) *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_Sections {
@@ -876,7 +910,9 @@ func NotificationConfig_FromProto(mapCtx *direct.MapContext, in *pb.Notification
 		return nil
 	}
 	out := &krm.NotificationConfig{}
-	out.Topic = direct.LazyPtr(in.GetTopic())
+	if in.GetTopic() != "" {
+		out.TopicRef = &krmpubsubv1beta1.PubSubTopicRef{External: in.GetTopic()}
+	}
 	out.MessageFormat = direct.Enum_FromProto(mapCtx, in.GetMessageFormat())
 	return out
 }
@@ -885,7 +921,9 @@ func NotificationConfig_ToProto(mapCtx *direct.MapContext, in *krm.NotificationC
 		return nil
 	}
 	out := &pb.NotificationConfig{}
-	out.Topic = direct.ValueOf(in.Topic)
+	if in.TopicRef != nil {
+		out.Topic = in.TopicRef.External
+	}
 	out.MessageFormat = direct.Enum_ToProto[pb.NotificationConfig_MessageFormat](mapCtx, in.MessageFormat)
 	return out
 }
@@ -896,7 +934,13 @@ func SpeechToTextConfig_FromProto(mapCtx *direct.MapContext, in *pb.SpeechToText
 	out := &krm.SpeechToTextConfig{}
 	out.SpeechModelVariant = direct.Enum_FromProto(mapCtx, in.GetSpeechModelVariant())
 	out.Model = direct.LazyPtr(in.GetModel())
-	out.PhraseSets = in.PhraseSets
+
+	if v := in.GetPhraseSets(); len(v) != 0 {
+		for i := range v {
+			out.PhraseSetRefs = append(out.PhraseSetRefs, krmspeechv1beta1.PhraseSetRef{External: v[i]})
+		}
+	}
+
 	out.AudioEncoding = direct.Enum_FromProto(mapCtx, in.GetAudioEncoding())
 	out.SampleRateHertz = direct.LazyPtr(in.GetSampleRateHertz())
 	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
@@ -911,7 +955,13 @@ func SpeechToTextConfig_ToProto(mapCtx *direct.MapContext, in *krm.SpeechToTextC
 	out := &pb.SpeechToTextConfig{}
 	out.SpeechModelVariant = direct.Enum_ToProto[pb.SpeechModelVariant](mapCtx, in.SpeechModelVariant)
 	out.Model = direct.ValueOf(in.Model)
-	out.PhraseSets = in.PhraseSets
+
+	if v := in.PhraseSetRefs; len(v) != 0 {
+		for i := range v {
+			out.PhraseSets = append(out.PhraseSets, v[i].External)
+		}
+	}
+
 	out.AudioEncoding = direct.Enum_ToProto[pb.AudioEncoding](mapCtx, in.AudioEncoding)
 	out.SampleRateHertz = direct.ValueOf(in.SampleRateHertz)
 	out.LanguageCode = direct.ValueOf(in.LanguageCode)
