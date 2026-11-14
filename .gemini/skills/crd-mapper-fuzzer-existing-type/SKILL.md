@@ -8,32 +8,50 @@ description: Standards and workflows for creating direct KRM Go types for an exi
 ## Overview
 This skill outlines standard practices when transitioning an existing KCC resource (e.g., from Terraform or DCL) to a direct controller by generating the initial KRM types (`_types.go`), ensuring **strict schema compatibility** with the baseline CRD. You must NOT change the schema at all (other than descriptions). Do not add any new fields, including `spec.projectRef`, unless it was already part of the baseline CRD. You MUST run `dev/tasks/diff-crds` to check for any schema changes.
 
-## Workflow
+## Migration Lifecycle & Step Boundaries
 
-### 1. Configure generate.sh
-Configure `apis/<service>/generate.sh` to include the resource. 
+The KCC Brownfield migration lifecycle is strictly partitioned across distinct sequential steps:
+1. **Step 1 (`step/types`)**: Direct KRM Go types, `generate.sh` (`generate-types`), and CRD schema equivalence.
+2. **Step 2 (`step/identity`)**: Direct Identity and Reference (`_identity.go`, `_reference.go`, `generate-identity`).
+3. **Step 3 (`step/fuzzer`)**: Direct Mappers (`generate-mapper`, `mappers.go`) and round-trip KRM Fuzzer (`<kind>_fuzzer.go`).
+4. **Step 4 (`step/mockgcp`)**: MockGCP implementation and Real GCP alignment (`_http.log`).
+5. **Step 5 (`step/controller`)**: Direct reconciliation controller (`<kind>_controller.go`) and E2E test fixtures.
+
+### Step 1 Scope Boundaries (Strict Rules)
+When working on a **Step 1 (`step/types`)** issue or PR:
+- **IN SCOPE**:
+  - Direct KRM Go types definition (`apis/<service>/<version>/<kind>_types.go`)
+  - Auto-generated deepcopy and type files (`zz_generated.deepcopy.go`, `types.generated.go`)
+  - API package files if new package (`doc.go`, `groupversion_info.go`)
+  - Configuration of `apis/<service>/generate.sh` to run `generate-types` and `dev/tasks/generate-crds`
+  - CRD regeneration in `config/crds/resources/`
+  - Zero-diff validation via `./dev/tasks/diff-crds --base master --allow-status-external-ref-addition`
+- **STRICTLY OUT OF SCOPE (DO NOT INCLUDE IN STEP 1 PRs)**:
+  - **NO Mappers**: Do NOT run `generate-mapper` or create mapper files (`pkg/controller/direct/<service>/mapper.generated.go`, `mappers.go`). Mappers belong to **Step 3 (Fuzzer)** / **Step 5 (Controller)**. Running `generate-mapper` prematurely causes cross-service code pollution and unneeded churn.
+  - **NO Identity/References**: Do NOT run `generate-identity` or create `_identity.go` / `_reference.go`. Identity belongs to **Step 2 (Identity)**.
+  - **NO Controller Logic**: Do NOT implement `<kind>_controller.go` or touch `pkg/controller/direct/`.
+  - **NO Committed Journals**: Do NOT commit agent journal markdown files or anything under `.gemini/skills/` to git branches.
+
+## Step 1 Workflow
+
+### 1. Configure generate.sh (Types Only)
+Configure `apis/<service>/generate.sh` to include the resource for type generation only:
 
 * **Types Generation**: Run `generate-types` for each version present under `apis/<service>/` (e.g. `v1alpha1` and `v1beta1`).
-* **Mappers Generation**: Run `generate-mapper` **exactly once** at the very end of the consolidated script (targeting the highest supported version, e.g. `v1beta1`) and **always pass `--multiversion` by default**. Because `generate-mapper` scans the entire service API directory, running it once with `--multiversion` compiles mappers for all versions into `mapper.generated.go` with version suffixes, avoiding duplicate clashes and accidental file overwrites.
+* **DO NOT run `generate-mapper` or `generate-identity` in Step 1**: Mappers belong to Step 3 and Identity belongs to Step 2.
 
-Sourcing `${REPO_ROOT}/dev/tools/goimports.sh`, cd'ing to `${REPO_ROOT}/dev/tools/controllerbuilder`, and passing `--include-skipped-output` to both `generate-types` and `generate-mapper` ensures that any output otherwise skipped is still generated but commented out. This provides an invaluable reference when manual modifications/hand-coding of types are needed.
+Sourcing `${REPO_ROOT}/dev/tools/goimports.sh`, cd'ing to `${REPO_ROOT}/dev/tools/controllerbuilder`, and passing `--include-skipped-output` to `generate-types` ensures that any output otherwise skipped is still generated but commented out. This provides an invaluable reference when manual modifications/hand-coding of types are needed.
 
 - **Missing Protos in generate-proto.sh**: If `generate-types` reports `failed to find the proto message ... proto: not found`, verify that the proto package directory (e.g. `${VERSION_DIR}/google/<service>/*/*.proto`) is listed under `PROTO_FILES` in `dev/tools/controllerbuilder/generate-proto.sh`.
 - **Keep Type File Names Matching Lowercase Proto Message**: If the KRM Kind name differs from the underlying Proto message name (e.g. Kind `NotebookInstance` but Proto `Instance`), do NOT rename the types file to follow the lowercase KRM Kind name (e.g. `notebookinstance_types.go`). The `generate-types` tool expects the file to be named `<lowercase_proto_message_name>_types.go` (e.g. `instance_types.go`). Renaming it will cause generator panics and duplicate/untracked file generation.
 
 ```bash
-# Run from dev/tools/controllerbuilder
+# Run from dev/tools/controllerbuilder for Step 1
 go run . generate-types \
     --service <proto.package> \
     --api-version "<service>.cnrm.cloud.google.com/<version>" \
     --include-skipped-output \
     --resource <Kind>:<ProtoMessage>
-
-go run . generate-mapper \
-    --service <proto.package> \
-    --api-version "<service>.cnrm.cloud.google.com/<version>" \
-    --include-skipped-output \
-    --multiversion
 ```
 
 ### 2. Standards for Strict Schema Compatibility
@@ -68,11 +86,12 @@ When defining the KRM Go type in `<kind>_types.go`, you must ensure it matches t
 - **Preserve OpenAPI integer without format**: If the baseline CRD defined integer fields with `type: integer` without `format: int32` or `format: int64`, using Go `int32` / `int64` types will cause `controller-gen` to emit `format: int32` / `int64`, failing `TestCRDBackwardCompatibility` (`field type changed: ... (integer -> int32)`). Use Go `int` (or `*int` for optional fields) so `controller-gen` emits plain `type: integer` without a format tag, and write handcoded mappers if needed to cast between `int` and proto `int32` / `int64`.
 - **Matching Go struct field names to Proto field names**: The mapping generator automatically matches KRM Go struct fields to Proto fields by mapping Go camel-case names to proto snake_case/camel-case field names. If a KRM field is named differently in the CRD (e.g., `filterLabels`), we can rename the Go struct field to match the proto name exactly (e.g., renaming the Go field name to `Labels` while preserving the JSON tag `json:"filterLabels,omitempty"` so that there is absolutely no schema change). This allows us to fully leverage automatic mapper generation and completely avoid writing hand-coded mappers. If the mapped type is defined in a different package (like `google.api.MonitoredResource`), we can also specify multiple services to the `--service` flag of `generate-mapper` (e.g. `--service google.monitoring.v3,google.api`) to enable automatic traversal and generation for that shared type.
 
-### 3. Fuzzer Best Practices
-**Fuzzer implementation timing**: Note that implementing a fuzzer is **NOT required for brownfield resources in the first step** (defining direct types). The fuzzer is implemented and run later in the transition lifecycle (e.g., in Step 3 or 4 when writing and validating the controller reconciliation logic).
+### 3. Step 3 (Fuzzer & Mappers) Best Practices
+**Fuzzer and Mapper implementation timing**: Implementing mappers and fuzzers is **strictly deferred to Step 3 (`step/fuzzer`)**. They MUST NOT be included in Step 1 PRs.
 
-When writing a KRM round-trip fuzzer, or if a fuzzer already exists:
-- **File Naming**: Ensure the fuzzer is named `<kind>_fuzzer.go` (e.g., `entitlement_fuzzer.go`) in lowercase. Do not use generic names like `fuzzers.go`.
+When implementing Step 3 (`step/fuzzer`):
+- **Generate Mappers**: Add `generate-mapper` to `apis/<service>/generate.sh` targeting the direct controller directory `pkg/controller/direct/<service>/`.
+- **File Naming**: Ensure the fuzzer is named `<kind>_fuzzer.go` (e.g., `entitlement_fuzzer.go`) in lowercase under `pkg/controller/direct/<service>/`. Do not use generic names like `fuzzers.go`.
 - **Use Type-Safe Helpers**: Do not call `f.SpecFields.Insert`, `f.StatusFields.Insert`, or `f.UnimplementedFields.Insert` directly on sets. Instead, use the type-safe helper methods defined on the `KRMTypedFuzzer` struct:
   - Use `f.SpecField(fieldPath)` to mark a field as round-tripping to/from the Spec.
   - Use `f.StatusField(fieldPath)` to mark a field as round-tripping to/from the Status.
@@ -84,7 +103,13 @@ When writing a KRM round-trip fuzzer, or if a fuzzer already exists:
 
 **No Dedicated Unit Test Needed**: There is no need to add a dedicated/standalone `_fuzzer_test.go` file for the resource. Simply registering the fuzzer using `fuzztesting.RegisterKRMFuzzer()` in your fuzzer implementation file (e.g. `backupvault_fuzzer.go`) is fully sufficient. The existing shared testing framework (such as `pkg/fuzztesting/fuzztests/fuzz_test.go`) will automatically discover and run it.
 
-### 4. Verification & Acceptance Criteria
-- Run `dev/tasks/diff-crds --allow-status-external-ref-addition` to verify there are absolutely no unintended schema changes.
+### 4. Verification & Acceptance Criteria (Step 1 Types)
+- Run `dev/tasks/diff-crds --base master --allow-status-external-ref-addition` to verify there are absolutely no unintended schema changes.
 - Since we are transitioning an existing type, the primary acceptance criterion is "does it generate the same CRD schema" (with the expected addition of `status.externalRef`).
+- Verify no mappers, identity files, or controller files were added to the PR.
 - Once the schema is identical, run `make ready-pr` to regenerate Go clients (and compile-check the changes, run custom linters, format the files, and regenerate static configs).
+- When creating the PR, include the release note block set to NONE:
+  ```release-note
+  NONE
+  ```
+

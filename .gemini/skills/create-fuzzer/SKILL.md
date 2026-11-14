@@ -31,7 +31,6 @@ This skill guides an automated agent through the process of implementing a round
      - **File Name:** Use the full lowercase kind name for the fuzzer file (e.g., `monitoringgroup_fuzzer.go`, `computeexternalvpngateway_fuzzer.go`).
      - **Function Name:** Use a function name matching the full resource kind (e.g., `monitoringGroupFuzzer`, `computeExternalVPNGatewayFuzzer`).
      - In both cases, the **full form is highly preferred** over any abbreviated or shortened forms (for example, prefer `computeexternalvpngateway_fuzzer.go` over `externalvpngateway_fuzzer.go`). However, if a fuzzer is already merged, it is **not worth changing or renaming** if that is the only thing changing in a PR, as it can cause unnecessary git/review noise.
-     - Note that submitting PRs that only add journal notes is perfectly acceptable to help keep track of the work done, even if no other codebase changes were required.
    - Use the appropriate package name matching the surrounding controller files.
    - Annotate the file with the appropriate `+tool:fuzz-gen`, `proto.message`, and `api.group` metadata.
 
@@ -140,4 +139,16 @@ Run the central fuzz test suite:
 ```bash
 go test -count=1 -v ./pkg/fuzztesting/fuzztests/
 ```
+
+### 6. Scope Boundaries & PR Description
+
+* **Step 3 Scope Boundaries**:
+  - **In Scope**: Add `generate-mapper` to `apis/<service>/generate.sh`, implement any hand-coded mappers in `pkg/controller/direct/<service>/mappers.go`, and implement the round-trip fuzzer in `pkg/controller/direct/<service>/<kind_lowercase>_fuzzer.go`.
+  - Register the direct controller package in `pkg/controller/direct/register/register.go`.
+  - **Out of Scope**: Do NOT implement controller reconciliation logic (Adapter) yet; that belongs to Step 5. Do NOT commit internal journal files or changes under `.gemini/skills/` to git branches.
+* **Code Health & Design**: Ensure hand-coded mappers and fuzzer files follow the principles in [reviewgen-code-health](file:///.gemini/skills/reviewgen-code-health/SKILL.md) (`.gemini/skills/reviewgen-code-health/SKILL.md`).
+* **Release Note Block**: Include the release note block set to `NONE`:
+  ```release-note
+  NONE
+  ```
 

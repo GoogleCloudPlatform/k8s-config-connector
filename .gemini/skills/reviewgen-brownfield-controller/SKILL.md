@@ -32,12 +32,31 @@ Please respect the following review criteria and invariants when reviewing PRs f
 *   **Do Not Change Default Controller**: Verify that the PR does NOT switch the default controller to `direct` in `pkg/controller/resourceconfig/static_config.go` (or via the `cnrm.cloud.google.com/default-controller=direct` label comment in KRM type definitions). The legacy controller must remain the `DefaultController` for now, and the direct controller should only be added to `SupportedControllers` to allow side-by-side testing.
 *   The controller must implement the `directbase.Model` and `directbase.Adapter` interfaces.
 
+## 7. Code Quality, Style & Design Practices
+Pay attention to race conditions, edge cases, and input/output correctness. Once correctness is verified, ensure code adheres to the architecture, style, and code health principles defined in [reviewgen-code-health](file:///.gemini/skills/reviewgen-code-health/SKILL.md) (`.gemini/skills/reviewgen-code-health/SKILL.md`):
+* **Single Responsibility per File** (1 File = 1 Class/Struct; Arrange-Act-Assert in tests).
+* **Treat Files as Private by Default** (Strict encapsulation; no cross-file private field access or global helper reaching).
+* **No Feature Envy on Data Structs** (Keep value structs focused strictly on data and validation).
+* **Own Collaborators via Constructor** (Wire dependencies in constructor rather than method parameter threading).
+* **Depth-First Call-Tree Ordering (Stepdown Rule)** (Place private helpers directly below their caller in call order).
+* **Colocate Constants with First Caller** (Declare constants immediately above the function using them).
+* **Orchestrator vs. Leaf Method Granularity** (Single level of abstraction for orchestrators; avoid over-shredding leaves).
+* **No `(nil, nil)` Return Contracts** (Return valid value or descriptive error).
+
+## 8. PR Description & Metadata
+* **Release Note Block**: Verify that the PR description includes a release note block set to `NONE`:
+  ```release-note
+  NONE
+  ```
+  Fail or flag if the release note block is missing or not set to `NONE`.
+
 # Review Comment Template
 When proposing changes or stating LGTM, format the review description as follows:
 
 ```markdown
 ### KCC Auto-Review Results
 * **Trigger criteria matched**: [Yes/No]
+* **Release Note Check**: [Pass/Fail] - (Confirm release-note block is set to NONE)
 * **Diff Analysis**: [Pass/Fail] - (List any unjustified or regression diffs in _http.diff, _final_object.diff, etc.)
 * **Zero-Write Steady State**: [Pass/Fail] - (List if ratcheting exclusion is not removed or spurious updates occur)
 * **Client Creation**: [Pass/Fail] - (List if raw pb/grpc.Dial is used instead of GAPIC go-client)
@@ -45,6 +64,7 @@ When proposing changes or stating LGTM, format the review description as follows
 * **Proto Diffs & Update Mask**: [Pass/Fail] - (List any issues with diff calculation)
 * **Structured Reporting**: [Pass/Fail] - (List if structured reporting is missing)
 * **LRO Wait**: [Pass/Fail] - (List if LRO waits are missing)
+* **Code Quality & Design**: [Pass/Fail] - (Check single responsibility, encapsulation, Stepdown ordering, collaborator ownership, no (nil, nil))
 
 #### Detailed Findings / Actions Required:
 1. [Specify file, line number, and exact issue]
