@@ -1,0 +1,60 @@
+2c2
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?alt=json
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint
+20,21c20,23
+<       "v2": 1
+<     }
+---
+>       "v1": 0.8,
+>       "v2": 0.2
+>     },
+>     "shardBy": 2
+27c29
+< PATCH https://appengine.googleapis.com/v1/apps/${projectId}/services/default?alt=json&migrateTraffic=false&updateMask=split
+---
+> PATCH https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint&updateMask=split
+34,35c36,37
+<       "v1": "0.5",
+<       "v2": "0.5"
+---
+>       "v1": 0.5,
+>       "v2": 0.5
+37c39
+<     "shardBy": "IP"
+---
+>     "shardBy": 2
+64c66,67
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+> Content-Type: application/json
+103c106
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?alt=json
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint
+124c127
+<     "shardBy": "IP"
+---
+>     "shardBy": 2
+131c134
+< PATCH https://appengine.googleapis.com/v1/apps/${projectId}/services/default?alt=json&migrateTraffic=false&updateMask=split
+---
+> PATCH https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint&updateMask=split
+138c141
+<       "v2": "1"
+---
+>       "v2": 1
+140c143
+<     "shardBy": "IP"
+---
+>     "shardBy": 2
+167c170,171
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+> Content-Type: application/json
+204c208
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?alt=json
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint

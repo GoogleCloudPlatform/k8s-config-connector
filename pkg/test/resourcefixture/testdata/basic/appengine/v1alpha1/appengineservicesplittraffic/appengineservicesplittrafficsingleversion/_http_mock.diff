@@ -1,0 +1,56 @@
+2c2
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?alt=json
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint
+23c23
+<     "shardBy": "IP"
+---
+>     "shardBy": 2
+29c29
+< PATCH https://appengine.googleapis.com/v1/apps/${projectId}/services/default?alt=json&migrateTraffic=false&updateMask=split
+---
+> PATCH https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint&updateMask=split
+36,37c36,37
+<       "v1": "0.5",
+<       "v2": "0.5"
+---
+>       "v1": 0.5,
+>       "v2": 0.5
+39c39
+<     "shardBy": "IP"
+---
+>     "shardBy": 2
+66c66,67
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+> Content-Type: application/json
+105c106
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?alt=json
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint
+126c127
+<     "shardBy": "IP"
+---
+>     "shardBy": 2
+133c134
+< PATCH https://appengine.googleapis.com/v1/apps/${projectId}/services/default?alt=json&migrateTraffic=false&updateMask=split
+---
+> PATCH https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint&updateMask=split
+140c141
+<       "v2": "1"
+---
+>       "v2": 1
+142c143
+<     "shardBy": "IP"
+---
+>     "shardBy": 2
+169c170,171
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+> Content-Type: application/json
+206c208
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?alt=json
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint

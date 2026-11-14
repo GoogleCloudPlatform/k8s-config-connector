@@ -21,6 +21,7 @@ package mockappengine
 import (
 	"context"
 	"fmt"
+	"slices"
 	"strings"
 
 	pb "cloud.google.com/go/appengine/apiv1/appenginepb"
@@ -78,6 +79,15 @@ func (s *servicesServer) UpdateService(ctx context.Context, req *pb.UpdateServic
 		return nil, err
 	}
 
+	// Like App Engine, reject an update with an empty update mask, and a traffic migration
+	// that does not update the traffic split.
+	if len(req.GetUpdateMask().GetPaths()) == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "At least one field must be specified for this operation.")
+	}
+	if req.GetMigrateTraffic() && !slices.Contains(req.GetUpdateMask().GetPaths(), "split") {
+		return nil, status.Errorf(codes.InvalidArgument, "Traffic migrations must specify the traffic split path for updating.")
+	}
+
 	fqn := name.String()
 	obj := &pb.Service{}
 	exists := true
@@ -99,6 +109,12 @@ func (s *servicesServer) UpdateService(ctx context.Context, req *pb.UpdateServic
 			case "split":
 				if req.GetService() != nil && req.GetService().GetSplit() != nil {
 					obj.Split = proto.Clone(req.GetService().GetSplit()).(*pb.TrafficSplit)
+					// Like App Engine: when an update that is not a traffic migration leaves
+					// one version in the split, the diversion method is irrelevant, so
+					// shardBy is cleared.
+					if !req.GetMigrateTraffic() && len(obj.Split.GetAllocations()) == 1 {
+						obj.Split.ShardBy = pb.TrafficSplit_UNSPECIFIED
+					}
 				} else {
 					obj.Split = nil
 				}

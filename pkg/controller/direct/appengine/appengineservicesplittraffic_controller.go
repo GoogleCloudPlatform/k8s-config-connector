@@ -31,6 +31,7 @@ import (
 
 	api "cloud.google.com/go/appengine/apiv1"
 	pb "cloud.google.com/go/appengine/apiv1/appenginepb"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -161,15 +162,7 @@ func (a *splitTrafficAdapter) Update(ctx context.Context, updateOp *directbase.U
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating AppEngineServiceSplitTraffic", "name", a.id.String())
 
-	diffRes, err := common.CompareSpecifiedSpec(
-		ctx,
-		&a.desired.Spec,
-		a.actual,
-		AppEngineServiceSplitTrafficSpec_v1alpha1_FromProto,
-		AppEngineServiceSplitTrafficSpec_v1alpha1_ToProto,
-		nil,
-		false,
-	)
+	diffRes, err := a.diffSplit(ctx)
 	if err != nil {
 		return err
 	}
@@ -202,6 +195,44 @@ func (a *splitTrafficAdapter) Update(ctx context.Context, updateOp *directbase.U
 	}
 
 	return nil
+}
+
+// diffSplit compares the desired split with the split read from App Engine.
+func (a *splitTrafficAdapter) diffSplit(ctx context.Context) (*common.SpecDiffResult[*pb.Service], error) {
+	return common.CompareSpecifiedSpec(
+		ctx,
+		&a.desired.Spec,
+		a.withShardByDroppedByAppEngine(),
+		AppEngineServiceSplitTrafficSpec_v1alpha1_FromProto,
+		AppEngineServiceSplitTrafficSpec_v1alpha1_ToProto,
+		nil,
+		false,
+	)
+}
+
+// withShardByDroppedByAppEngine returns the live service to compare the desired spec with.
+//
+// When an update that is not a traffic migration leaves only one version in the split,
+// App Engine clears shardBy ("the diversion method is irrelevant"), so GetService doesn't
+// return it. If the live split has one version and no shardBy, the desired shardBy is put
+// back on a copy of the live service. A shardBy that App Engine dropped then doesn't look
+// like a change, while a change to the allocations is still detected and the update still
+// sends the desired shardBy.
+func (a *splitTrafficAdapter) withShardByDroppedByAppEngine() *pb.Service {
+	split := a.actual.GetSplit()
+	if split == nil || len(split.GetAllocations()) != 1 || split.GetShardBy() != pb.TrafficSplit_UNSPECIFIED {
+		return a.actual
+	}
+	if a.desired == nil || a.desired.Spec.Split == nil || a.desired.Spec.Split.ShardBy == nil {
+		return a.actual
+	}
+	shardBy, ok := pb.TrafficSplit_ShardBy_value[*a.desired.Spec.Split.ShardBy]
+	if !ok {
+		return a.actual
+	}
+	filled := proto.Clone(a.actual).(*pb.Service)
+	filled.Split.ShardBy = pb.TrafficSplit_ShardBy(shardBy)
+	return filled
 }
 
 func (a *splitTrafficAdapter) computeMBUR() (string, error) {
