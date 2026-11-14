@@ -151,6 +151,9 @@ func KRMResourceToTFResourceConfigFull(r *Resource, c client.Client, smLoader *s
 	}
 	// Set desired state with default values.
 	defaultingMap := map[string]map[string]string{
+		"CertificateManagerCertificateMap": {
+			"location": "global",
+		},
 		"CloudBuildTrigger": {
 			"location": "global",
 		},
