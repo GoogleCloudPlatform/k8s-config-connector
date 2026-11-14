@@ -98,6 +98,21 @@
   - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via golden recording.
   - Verified `generate.sh` produces zero diff, and all tests in `apis/contactcenterinsights/...`, `pkg/controller/direct/contactcenterinsights/...`, and `tests/apichecks/...` pass cleanly.
 
+### [2026-11-14] CCInsightsQAScorecardRevision Greenfield Direct Controller & E2E Fixtures (Step 2)
+- **Context**: Implementing Phase 2 (direct controller, fuzzer, and E2E fixtures recorded against RealGCP) for `CCInsightsQAScorecardRevision`.
+- **GCP API Nuances & Architecture**:
+  1. **Scorecard Lifecycle & Revision Mutability**: `QaScorecardRevision` is completely immutable in GCP (there is no `UpdateQaScorecardRevision` RPC). When a `QaScorecard` is created, GCP automatically creates an initial revision in state `EDITABLE`.
+  2. **Precondition for Creating Revisions**: A scorecard can only have one `EDITABLE` revision at a time. Attempting to call `CreateQaScorecardRevision` while another revision is in state `EDITABLE` returns `400 FAILED_PRECONDITION: Precondition check failed.`. To create a new revision, any in-flight `EDITABLE` revision on the parent scorecard must first be tuned (`TuneQaScorecardRevision`) until `State == READY` and deployed (`DeployQaScorecardRevision`). The controller's `Create` method proactively checks for and prepares (`prepareParentScorecard`) any in-flight initial `EDITABLE` revision.
+  3. **ID Length Limit (Discrepancy with Proto)**: While the protobuf documentation for `CreateQaScorecardRevisionRequest` states `qaScorecardRevisionId` allows 4-64 characters matching `^[a-z0-9-]{4,64}$`, real GCP rejects IDs longer than 32 characters with `400 INVALID_ARGUMENT: Request contains an invalid argument.`. The fixture metadata names use `rev-minimal-${uniqueId}` and `rev-maximal-${uniqueId}` (<= 32 characters).
+  4. **Required Snapshot Field**: GCP requires `snapshot.displayName` to be populated when creating a revision; omitting it returns `400 INVALID_ARGUMENT: Request contains an invalid argument.`.
+  5. **Protobuf Validation (`protovalidate.go`)**:
+     - Custom verbs (e.g. `:tuneQaScorecardRevision`, `:deploy`) were previously stripped in `expandHTTPPathTemplate`, causing different RPCs sharing the same path template to collide. `matchHTTPRule` and `httpBindingRule` now preserve and match `customVerb`.
+     - Real GCP returns `source` on `QaScorecard` snapshots which is absent in the pinned `.build/googleapis.pb` descriptor; `QaScorecardRevision` and `ListQaScorecardRevisionsResponse` were added to `discardUnknown = true`.
+- **Verification**:
+  - `FOCUS=CCInsightsQAScorecardRevision go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers` passes 200-seed round-trip.
+  - Both `ccinsightsqascorecardrevision-minimal` and `ccinsightsqascorecardrevision-maximal` passed all 7/7 automated validation checks in `unified_test.go` (`hack/record-gcp`) against real GCP (`cnrm-barni-4`) with genuine `_http.log` and `_audit_probe.log` recorded.
+
+
 
 
 

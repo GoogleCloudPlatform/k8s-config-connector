@@ -1,0 +1,34 @@
+apiVersion: contactcenterinsights.cnrm.cloud.google.com/v1alpha1
+kind: CCInsightsQAScorecardRevision
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: rev-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  parentRef:
+    name: ccinsightsqascorecard-${uniqueId}
+  resourceID: rev-maximal-${uniqueId}
+  snapshot:
+    description: Scorecard snapshot maximal description ${uniqueId}
+    displayName: Scorecard Snapshot Maximal ${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/rev-maximal-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    snapshot:
+      createTime: "2026-11-14T20:26:20.505407Z"
+      name: projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}
+      updateTime: "2026-11-14T20:26:20.505407Z"
+    state: EDITABLE

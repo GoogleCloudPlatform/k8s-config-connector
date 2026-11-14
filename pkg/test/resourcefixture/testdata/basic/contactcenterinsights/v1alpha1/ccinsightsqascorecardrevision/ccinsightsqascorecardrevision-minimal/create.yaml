@@ -1,0 +1,9 @@
+apiVersion: contactcenterinsights.cnrm.cloud.google.com/v1alpha1
+kind: CCInsightsQAScorecardRevision
+metadata:
+  name: rev-minimal-${uniqueId}
+spec:
+  parentRef:
+    name: ccinsightsqascorecard-${uniqueId}
+  snapshot:
+    displayName: "Scorecard Snapshot Minimal ${uniqueId}"
