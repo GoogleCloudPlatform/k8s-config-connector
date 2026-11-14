@@ -85,7 +85,6 @@ kustomize create
 # CRD has a v1beta1 or later version, or if its versions can't be read.
 BLOCKED_KINDS=(
     "AIPlatformCachedContent"
-    "AIPlatformExecution"
     "AIPlatformHyperparameterTuningJob"
     "AIPlatformModelDeploymentMonitoringJob"
     "AIPlatformModelMonitor"
