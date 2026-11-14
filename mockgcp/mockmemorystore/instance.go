@@ -165,6 +165,21 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	}
 
 	if len(obj.Endpoints) > 0 {
+		var instanceIPVersion pb.IpVersion
+		for _, endpoint := range obj.Endpoints {
+			for _, conn := range endpoint.GetConnections() {
+				if autoConn := conn.GetPscAutoConnection(); autoConn != nil {
+					if v := autoConn.GetIpVersion(); v != pb.IpVersion_IP_VERSION_UNSPECIFIED {
+						if instanceIPVersion == pb.IpVersion_IP_VERSION_UNSPECIFIED {
+							instanceIPVersion = v
+						} else if instanceIPVersion != v {
+							return status.Errorf(codes.InvalidArgument, "all PSC auto connections on an instance must use the same IP version: got %v and %v", instanceIPVersion, v)
+						}
+					}
+				}
+			}
+		}
+
 		if obj.Endpoints[0] != nil && len(obj.Endpoints[0].Connections) > 0 {
 			connections := obj.Endpoints[0].Connections
 			if len(connections) == 1 {
@@ -188,9 +203,12 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 					if err != nil {
 						return status.Errorf(codes.InvalidArgument, "unexpected format for network %q", autoConnection.Network)
 					}
-					autoConnection.IpAddress = fmt.Sprintf("10.128.0.%d", pscConnectionID%256)
-					autoConnection.ForwardingRule = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/sca-auto-fr-%x", network.Project.ID, name.Location, pscConnectionID)
-					autoConnection.IpAddress = fmt.Sprintf("10.128.0.%d", pscConnectionID%256)
+					autoConnection.IpVersion = instanceIPVersion
+					if instanceIPVersion == pb.IpVersion_IPV6 {
+						autoConnection.IpAddress = fmt.Sprintf("fd20:0:0:0:0:0:0:%x", pscConnectionID%256)
+					} else {
+						autoConnection.IpAddress = fmt.Sprintf("10.128.0.%d", pscConnectionID%256)
+					}
 					autoConnection.ForwardingRule = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/sca-auto-fr-%x", network.Project.ID, name.Location, pscConnectionID)
 					autoConnection.PscConnectionId = fmt.Sprintf("%d", pscConnectionID)
 					autoConnection.ConnectionType = attachmentDetails.ConnectionType
