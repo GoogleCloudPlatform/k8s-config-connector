@@ -21,6 +21,7 @@ package mockappengine
 import (
 	"context"
 	"fmt"
+	"slices"
 	"strings"
 
 	pb "cloud.google.com/go/appengine/apiv1/appenginepb"
@@ -76,6 +77,15 @@ func (s *servicesServer) UpdateService(ctx context.Context, req *pb.UpdateServic
 	name, err := parseServiceName(req.GetName())
 	if err != nil {
 		return nil, err
+	}
+
+	// Like App Engine, reject an update with an empty update mask, and a traffic migration
+	// that does not update the traffic split.
+	if len(req.GetUpdateMask().GetPaths()) == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "At least one field must be specified for this operation.")
+	}
+	if req.GetMigrateTraffic() && !slices.Contains(req.GetUpdateMask().GetPaths(), "split") {
+		return nil, status.Errorf(codes.InvalidArgument, "Traffic migrations must specify the traffic split path for updating.")
 	}
 
 	fqn := name.String()
