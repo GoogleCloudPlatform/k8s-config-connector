@@ -1,0 +1,35 @@
+GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "For TagHold maximal test.",
+  "etag": "abcdef0123A=",
+  "name": "tagKeys/${tagKeyID}",
+  "namespacedName": "${projectId}/kmax${uniqueId}",
+  "parent": "projects/${projectNumber}",
+  "shortName": "kmax${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "For TagHold maximal test.",
+  "etag": "abcdef0123A=",
+  "name": "tagValues/${tagValueID}",
+  "namespacedName": "${projectId}/kmax${uniqueId}/vmax${uniqueId}",
+  "parent": "tagKeys/${tagKeyID}",
+  "shortName": "vmax${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
