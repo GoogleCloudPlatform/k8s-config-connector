@@ -204,12 +204,6 @@ type DataQualityColumnResultObservedState struct {
 type DataQualityDimensionResultObservedState struct {
 }
 
-type DataplexEntityRef struct {
-	/* A reference to an externally managed Dataplex Entity.
-	   Should be of the format `projects/{projectID}/locations/{location}/lakes/{lakeID}/zones/{zoneID}/entities/{entityID}`. */
-	External string `json:"external,omitempty"`
-}
-
 type BigQueryConnectionRef struct {
 	/* The `name` of a `BigQueryConnectionConnection` resource. */
 	Name string `json:"name,omitempty"`

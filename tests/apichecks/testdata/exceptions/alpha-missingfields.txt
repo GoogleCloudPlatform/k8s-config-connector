@@ -2825,12 +2825,11 @@
 [missing_field] crd=dataplexencryptionconfigs.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.key" is not set in unstructured objects
 [missing_field] crd=dataplexencryptionconfigs.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=dataplexencryptionconfigs.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.asset" is not set in unstructured objects
+[missing_field] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.assetRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataPath" is not set in unstructured objects
 [missing_field] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataPathPattern" is not set in unstructured objects
 [missing_field] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
 [missing_field] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.format.compressionFormat" is not set in unstructured objects
 [missing_field] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.format.csv.delimiter" is not set in unstructured objects
 [missing_field] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.format.csv.encoding" is not set in unstructured objects
@@ -2840,8 +2839,7 @@
 [missing_field] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.format.json.encoding" is not set in unstructured objects
 [missing_field] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.format.mimeType" is not set in unstructured objects
 [missing_field] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.id" is not set in unstructured objects
-[missing_field] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.schema.fields[].description" is not set in unstructured objects
 [missing_field] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.schema.fields[].fields[]" is not set in unstructured objects
 [missing_field] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.schema.fields[].mode" is not set in unstructured objects

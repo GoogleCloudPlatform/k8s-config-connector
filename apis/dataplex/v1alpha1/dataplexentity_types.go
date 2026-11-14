@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,14 +30,14 @@ var DataplexEntityGVK = GroupVersion.WithKind("DataplexEntity")
 // +kcc:spec:proto=google.cloud.dataplex.v1.Entity
 // +kcc:required-from-proto
 type DataplexEntitySpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// The DataplexZone this DataplexEntity is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *ZoneRef `json:"parentRef"`
 
 	// The DataplexEntity name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Optional. Display name must be shorter than or equal to 256 characters.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Entity.display_name
 	DisplayName *string `json:"displayName,omitempty"`
@@ -57,23 +56,17 @@ type DataplexEntitySpec struct {
 	// +required
 	ID *string `json:"id,omitempty"`
 
-	// Optional. The etag associated with the entity, which can be retrieved with
-	//  a [GetEntity][] request. Required for update and delete requests.
-	// +kcc:proto:field=google.cloud.dataplex.v1.Entity.etag
-	Etag *string `json:"etag,omitempty"`
-
 	// Required. Immutable. The type of entity.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Entity.type
 	// +required
 	Type *string `json:"type,omitempty"`
 
-	// Required. Immutable. The ID of the asset associated with the storage
-	//  location containing the entity data. The entity must be with in the same
+	// Required. Immutable. The DataplexAsset associated with the storage
+	//  location containing the entity data. The entity must be within the same
 	//  zone with the asset.
-	// +kcc:guess=possible-reference target=DataplexAsset
 	// +kcc:proto:field=google.cloud.dataplex.v1.Entity.asset
 	// +required
-	Asset *string `json:"asset,omitempty"`
+	AssetRef *DataplexAssetRef `json:"assetRef,omitempty"`
 
 	// Required. Immutable. The storage path of the entity data.
 	//  For Cloud Storage data, this is the fully-qualified path to the entity,
@@ -158,6 +151,11 @@ type DataplexEntityObservedState struct {
 	//  different if the Entity is deleted and re-created with the same name.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Entity.uid
 	Uid *string `json:"uid,omitempty"`
+
+	// The etag associated with the entity, which can be retrieved with
+	//  a [GetEntity][] request. Required for update and delete requests.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Entity.etag
+	Etag *string `json:"etag,omitempty"`
 }
 
 // +genclient
