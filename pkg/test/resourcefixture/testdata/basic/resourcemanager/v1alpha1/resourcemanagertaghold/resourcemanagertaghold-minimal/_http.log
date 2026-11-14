@@ -1,0 +1,432 @@
+# Phase: CREATE
+POST https://cloudresourcemanager.googleapis.com/v3/tagKeys?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "For TagHold minimal test.",
+  "parent": "projects/${projectId}",
+  "shortName": "kmin${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateTagKeyMetadata"
+  },
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateTagKeyMetadata"
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagKey",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "For TagHold minimal test.",
+    "etag": "abcdef0123A=",
+    "name": "tagKeys/${tagKeyID}",
+    "namespacedName": "${projectId}/kmin${uniqueId}",
+    "parent": "projects/${projectNumber}",
+    "shortName": "kmin${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "For TagHold minimal test.",
+  "etag": "abcdef0123A=",
+  "name": "tagKeys/${tagKeyID}",
+  "namespacedName": "${projectId}/kmin${uniqueId}",
+  "parent": "projects/${projectNumber}",
+  "shortName": "kmin${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v3/tagValues?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "For TagHold minimal test.",
+  "parent": "tagKeys/${tagKeyID}",
+  "shortName": "vmin${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateTagValueMetadata"
+  },
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateTagValueMetadata"
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagValue",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "For TagHold minimal test.",
+    "etag": "abcdef0123A=",
+    "name": "tagValues/${tagValueID}",
+    "namespacedName": "${projectId}/kmin${uniqueId}/vmin${uniqueId}",
+    "parent": "tagKeys/${tagKeyID}",
+    "shortName": "vmin${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "For TagHold minimal test.",
+  "etag": "abcdef0123A=",
+  "name": "tagValues/${tagValueID}",
+  "namespacedName": "${projectId}/kmin${uniqueId}/vmin${uniqueId}",
+  "parent": "tagKeys/${tagKeyID}",
+  "shortName": "vmin${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}/tagHolds?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=tagValues%2F${tagValueID}
+
+{
+  "holder": "//compute.googleapis.com/compute/projects/${projectId}/regions/us-central1/instanceGroupManagers/igm-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagHold",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "holder": "//compute.googleapis.com/compute/projects/${projectId}/regions/us-central1/instanceGroupManagers/igm-${uniqueId}",
+    "name": "tagValues/${tagValueID}/tagHolds/1a169d35-7132-4512-a405-28ed1dff13ac"
+  }
+}
+
+---
+
+# Phase: DELETE
+GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}/tagHolds?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "tagHolds": [
+    {
+      "createTime": "2026-11-14T17:04:48.630688Z",
+      "holder": "//compute.googleapis.com/compute/projects/${projectId}/regions/us-central1/instanceGroupManagers/igm-${uniqueId}",
+      "name": "tagValues/${tagValueID}/tagHolds/1a169d35-7132-4512-a405-28ed1dff13ac"
+    }
+  ]
+}
+
+---
+
+DELETE https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}/tagHolds/1a169d35-7132-4512-a405-28ed1dff13ac?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=tagValues%2F${tagValueID}%2FtagHolds%2F1a169d35-7132-4512-a405-28ed1dff13ac
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "For TagHold minimal test.",
+  "etag": "abcdef0123A=",
+  "name": "tagValues/${tagValueID}",
+  "namespacedName": "${projectId}/kmin${uniqueId}/vmin${uniqueId}",
+  "parent": "tagKeys/${tagKeyID}",
+  "shortName": "vmin${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.DeleteTagValueMetadata"
+  },
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.DeleteTagValueMetadata"
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagValue",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "For TagHold minimal test.",
+    "etag": "abcdef0123A=",
+    "name": "tagValues/${tagValueID}",
+    "namespacedName": "${projectId}/kmin${uniqueId}/vmin${uniqueId}",
+    "parent": "tagKeys/${tagKeyID}",
+    "shortName": "vmin${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "For TagHold minimal test.",
+  "etag": "abcdef0123A=",
+  "name": "tagKeys/${tagKeyID}",
+  "namespacedName": "${projectId}/kmin${uniqueId}",
+  "parent": "projects/${projectNumber}",
+  "shortName": "kmin${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.DeleteTagKeyMetadata"
+  },
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.DeleteTagKeyMetadata"
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagKey",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "For TagHold minimal test.",
+    "etag": "abcdef0123A=",
+    "name": "tagKeys/${tagKeyID}",
+    "namespacedName": "${projectId}/kmin${uniqueId}",
+    "parent": "projects/${projectNumber}",
+    "shortName": "kmin${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
