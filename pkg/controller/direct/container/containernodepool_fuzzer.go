@@ -60,6 +60,7 @@ func containerNodePoolFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".update_info")
 	f.Unimplemented_NotYetTriaged(".conditions")
 	f.Unimplemented_NotYetTriaged(".max_pods_constraint")
+	f.Unimplemented_NotYetTriaged(".kubelet_cert_info")
 
 	// Unimplemented sub-fields in config (NodeConfig)
 	f.Unimplemented_NotYetTriaged(".config.containerd_config")
@@ -114,6 +115,9 @@ func containerNodePoolFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".config.linux_node_config.transparent_hugepage_enabled")
 	f.Unimplemented_NotYetTriaged(".config.linux_node_config.transparent_hugepage_defrag")
 	f.Unimplemented_NotYetTriaged(".config.linux_node_config.custom_node_init")
+	f.Unimplemented_NotYetTriaged(".config.linux_node_config.disk_io_scheduler")
+	f.Unimplemented_NotYetTriaged(".config.linux_node_config.node_vfio_config")
+	f.Unimplemented_NotYetTriaged(".config.node_image_config")
 	f.Unimplemented_NotYetTriaged(".config.accelerators")
 
 	// Unimplemented sub-fields in network_config

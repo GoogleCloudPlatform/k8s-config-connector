@@ -33,6 +33,10 @@ func grafeasNoteFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_Identity(".name")
 	f.Unimplemented_NotYetTriaged(".secret")
 	f.Unimplemented_NotYetTriaged(".vulnerability.advisory_publish_time")
+	f.Unimplemented_NotYetTriaged(".vulnerability.cvss_v2.exploit_maturity")
+	f.Unimplemented_NotYetTriaged(".vulnerability.cvss_v2.subsequent_system_availability_impact")
+	f.Unimplemented_NotYetTriaged(".vulnerability.cvss_v2.subsequent_system_integrity_impact")
+	f.Unimplemented_NotYetTriaged(".vulnerability.cvss_v4")
 
 	f.SpecField(".short_description")
 	f.SpecField(".long_description")
