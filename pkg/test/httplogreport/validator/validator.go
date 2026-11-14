@@ -157,7 +157,7 @@ func (v *Validator) validateV2Update() Check {
 
 	allClientSide := true
 	for _, d := range v.diffs {
-		if !specdiff.IsClientSideKRMField(d.Path) {
+		if !specdiff.IsClientSideOrDiffSuppressedItem(d) {
 			allClientSide = false
 			break
 		}
@@ -200,7 +200,7 @@ func (v *Validator) validateV2Update() Check {
 	coveredCount := 0
 	var missingPaths []string
 	for _, item := range v.diffs {
-		if specdiff.IsClientSideKRMField(item.Path) || item.SentInUpdateRPC {
+		if specdiff.IsClientSideOrDiffSuppressedItem(item) || item.SentInUpdateRPC {
 			coveredCount++
 		} else {
 			missingPaths = append(missingPaths, item.Path)
@@ -245,7 +245,7 @@ func (v *Validator) validateV3EndState() Check {
 	matchedCount := 0
 	var mismatchedPaths []string
 	for _, item := range v.diffs {
-		if specdiff.IsClientSideKRMField(item.Path) || item.FinalStateMatch {
+		if specdiff.IsClientSideOrDiffSuppressedItem(item) || item.FinalStateMatch {
 			matchedCount++
 		} else {
 			mismatchedPaths = append(mismatchedPaths, item.Path)
