@@ -80,10 +80,11 @@ Metadata that goes beyond any these limits will be rejected.`,
 				Elem: &schema.Schema{Type: schema.TypeString},
 			},
 			"network": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				ForceNew:    true,
-				Description: `The URL to the network, such as projects/PROJECT_NUMBER/locations/global/networks/NETWORK_NAME.`,
+				Type:             schema.TypeString,
+				Optional:         true,
+				ForceNew:         true,
+				DiffSuppressFunc: compareServiceDirectoryEndpointNetwork,
+				Description:      `The URL to the network, such as projects/PROJECT_NUMBER/locations/global/networks/NETWORK_NAME.`,
 			},
 			"port": {
 				Type:         schema.TypeInt,
@@ -454,6 +455,21 @@ func expandServiceDirectoryEndpointMetadata(v interface{}, d tpgresource.Terrafo
 	return m, nil
 }
 
+func compareServiceDirectoryEndpointNetwork(k, old, new string, d *schema.ResourceData) bool {
+	normalize := func(s string) string {
+		if idx := strings.Index(s, "projects/"); idx > 0 {
+			s = s[idx:]
+		}
+		return strings.Replace(s, "/locations/global/networks/", "/global/networks/", 1)
+	}
+	return tpgresource.CompareSelfLinkRelativePaths(k, normalize(old), normalize(new), d)
+}
+
 func expandServiceDirectoryEndpointNetwork(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	if s, ok := v.(string); ok {
+		if idx := strings.Index(s, "projects/"); idx > 0 {
+			return s[idx:], nil
+		}
+	}
 	return v, nil
 }
