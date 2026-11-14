@@ -2335,6 +2335,39 @@
 [missing_field] crd=computeregionsslpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.profile" is not set in unstructured objects
 [missing_field] crd=computeregionsslpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeregionsslpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.region" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.capacityProvisioningType" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.labelFingerprint" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.performanceProvisioningType" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.poolProvisionedCapacityGB" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.poolProvisionedIops" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.poolProvisionedThroughput" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceStatus.diskCount" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceStatus.lastResizeTimestamp" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceStatus.maxTotalProvisionedDiskCapacityGB" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceStatus.poolUsedCapacityBytes" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceStatus.poolUsedIops" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceStatus.poolUsedThroughput" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceStatus.poolUserWrittenBytes" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceStatus.totalProvisionedDiskCapacityGB" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceStatus.totalProvisionedDiskIops" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceStatus.totalProvisionedDiskThroughput" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.state" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.diskCount" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.lastResizeTimestamp" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.maxTotalProvisionedDiskCapacityGB" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.poolUsedCapacityBytes" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.poolUsedIops" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.poolUsedThroughput" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.poolUserWrittenBytes" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.totalProvisionedDiskCapacityGB" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.totalProvisionedDiskIops" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.totalProvisionedDiskThroughput" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.storagePoolType" is not set in unstructured objects
+[missing_field] crd=computestoragepools.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.zone" is not set in unstructured objects
 [missing_field] crd=configdeliveryfleetpackages.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceBundleSelector.cloudBuildRepository.path" is not set in unstructured objects
 [missing_field] crd=configdeliveryfleetpackages.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceBundleSelector.cloudBuildRepository.repositoryRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=configdeliveryfleetpackages.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceBundleSelector.cloudBuildRepository.serviceAccountRef" is not set; neither 'external' nor 'name' are set

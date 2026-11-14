@@ -270,6 +270,11 @@
   - Re-ran `./apis/compute/generate.sh` and verified CRD generation, mappers, deepcopy code.
   - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.
 
-
-
+### [2026-11-14] Greenfield Step 1a: Prepopulate ComputeStoragePool
+- **Context**: Prepopulating direct KRM types, IdentityV2, reference, CRD, and `judgement_queue.yaml` for `ComputeStoragePool` (issue #15640).
+- **Findings & Implementation**:
+  1. **Proto & Pattern**: Compute StoragePool message is in `google.cloud.compute.v1` (`StoragePool`). Due to compute proto RPC HTTP bindings lacking `{name=...}` assignment patterns, `--pattern ComputeStoragePool=projects/{project}/zones/{zone}/storagePools/{storagePool}` was provided to `generate-identity` in `apis/compute/generate.sh` to resolve pattern ambiguity.
+  2. **Generation**: Added `--prepopulate-resource` block for `ComputeStoragePool:StoragePool` and `generate-identity` in `apis/compute/generate.sh`. Ran script to generate KRM types (`computestoragepool_types.go`), IdentityV2 (`computestoragepool_identity.generated.go`), reference (`computestoragepool_reference.generated.go`), CRD (`apiextensions.k8s.io_v1_customresourcedefinition_computestoragepools.compute.cnrm.cloud.google.com.yaml`), and mapper stubs.
+  3. **Release Bundle & Apichecks**: Added `ComputeStoragePool` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...`.
+  4. **Validation**: Verified `apis/compute/generate.sh` idempotency, `TestComputeStoragePoolIdentity_Conformance`, apichecks, cais tests, and full package builds with zero errors.
 
