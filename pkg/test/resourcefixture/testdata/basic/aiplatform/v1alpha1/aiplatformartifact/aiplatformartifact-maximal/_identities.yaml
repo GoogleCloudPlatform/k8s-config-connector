@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: vertexai.cnrm.cloud.google.com
+  kind: VertexAIMetadataStore
+  name: metadatastore${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //aiplatform.googleapis.com/projects/${projectId}/locations/us-central1/metadataStores/metadatastore${uniqueId}/artifacts/artifact-maximal-${uniqueId}
+  group: aiplatform.cnrm.cloud.google.com
+  kind: AIPlatformArtifact
+  name: aiplatformartifact-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

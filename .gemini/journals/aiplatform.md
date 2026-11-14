@@ -251,3 +251,41 @@
   3. **Vertex AI Metadata Service API Requirements**: Vertex AI `MetadataService.CreateContext` requires `schemaTitle` (`schema_title` in proto, e.g., `system.Experiment`) to be specified on context creation.
   4. **MockGCP Support**: Implemented `GetContext`, `CreateContext`, `UpdateContext`, and `DeleteContext` in `mockgcp/mockaiplatform/context.go`, registered `google.cloud.aiplatform.v1.MetadataService` in `mockaiplatform/service.go`, and added `AIPlatformContext` to `supportMockGCP` in `config/tests/samples/create/harness.go`.
   5. **Golden E2E Fixtures & Mock Verification**: Recorded and verified minimal and maximal test fixtures (`aiplatformcontext-minimal` and `aiplatformcontext-maximal`) against both real GCP (`RECORD_AUDIT_PROBE=1 ./hack/record-gcp`) and MockGCP (`./hack/compare-mock`), passing all E2E validation checks (V1 through V7).
+
+### [2026-11-13] Greenfield Step 2: Implementing Direct Controller, Fuzzer, and E2E Fixtures for AIPlatformArtifact
+- **Context**: Implementing Greenfield Step 2 direct controller, fuzzer, and real GCP E2E fixtures for `AIPlatformArtifact` under `aiplatform.cnrm.cloud.google.com/v1alpha1` (Issue #15555).
+- **Implementation & Learnings**:
+  1. **Deterministic Controller & Fuzzer Generation**:
+     - Generated direct controller `pkg/controller/direct/aiplatform/aiplatformartifact_controller.go` and round-trip fuzzer `aiplatformartifact_fuzzer.generated.go` via one-shot `controllerbuilder generate-controller` and `generate-fuzzer --prepopulate-resource` (never added to `apis/aiplatform/generate.sh`).
+     - Registered `AIPlatformArtifact` in `pkg/controller/resourceconfig/static_config.go` via `python3 dev/tasks/generate_static_config.py`.
+     - Verified fuzzer roundtripping with `FOCUS=AIPlatformArtifact go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`.
+  2. **GAPIC Client & Standards Alignment**:
+     - `cloud.google.com/go/aiplatform/apiv1` only provides `MetadataClient` over gRPC (`NewMetadataClient`), falling back to `m.config.GRPCClientOptions()` with endpoint `fmt.Sprintf("%s-aiplatform.googleapis.com:443", location)`.
+     - Ensured `common.NormalizeGreenfieldReferences(ctx, reader, obj, nil)` is called in `AdapterForObject` before `obj.GetIdentity(ctx, reader)` so `spec.parentRef` is normalized before identity resolution.
+     - Reconciled top-level labels via `metadata.labels`: set `resource.Labels = label.GCPLabels(a.desired)` on `Create`, and used `common.CompareGreenfieldSpecAndLabels` with `updateMask` on `Update`.
+  3. **`MetadataStoreRef` Normalization Fix**:
+     - In `apis/vertexai/v1beta1/vertexaimetadatastore_reference.go`, `Normalize()` was delegating to `NormalizedExternal()`, which assigned `r.External = actualExternalRef` without clearing `r.Name` via `r.SetExternal(actualExternalRef)`. On subsequent reconciliations (e.g. during update), this triggered `cannot specify both name and external on VertexAIMetadataStore reference`.
+     - Updated `Normalize` to delegate to standard `refs.Normalize(ctx, reader, r, defaultNamespace)` and updated `NormalizedExternal` to call `r.SetExternal(actualExternalRef)`.
+  4. **Required `schemaTitle` on GCP**:
+     - Vertex AI Metadata API requires `schema_title` when creating an Artifact (`rpc error: code = InvalidArgument desc = Resource Type through schema_title for beta API or instance_schema or instance_schema_title for alpha API is expected`).
+     - Configured `schemaTitle: system.Artifact` in minimal fixture, and tested `schemaVersion: 0.0.1` and all remaining spec fields in maximal fixture.
+  5. **Golden Fixtures & Exception Cleanup**:
+     - Recorded real GCP golden logs (`_http.log`, `_identities.yaml`, `_generated_object_*.golden.yaml`, and `_audit_probe.log`) using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp` for both `aiplatformartifact-minimal` and `aiplatformartifact-maximal`, with all 7/7 automated validation checks passing.
+     - Ran `WRITE_GOLDEN_OUTPUT=1 go test -v ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha`, removing all 8 missing field exceptions from `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+
+### [2026-11-13] Greenfield Step 3: Implementing MockGCP and Alignment for AIPlatformArtifact
+- **Context**: Implementing Greenfield Step 3 MockGCP and Alignment for `AIPlatformArtifact` under `aiplatform.cnrm.cloud.google.com/v1alpha1` (Issue #15583).
+- **Implementation & Learnings**:
+  1. **Dual API Version Support in Mock Service**:
+     - `MetadataService` in `cloud.google.com/go/aiplatform/apiv1/aiplatformpb` (v1) and `cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb` (v1beta1) have different service descriptors (`google.cloud.aiplatform.v1.MetadataService` vs `google.cloud.aiplatform.v1beta1.MetadataService`).
+     - Implemented `artifactService` embedding `pbv1.UnimplementedMetadataServiceServer` in `mockgcp/mockaiplatform/artifact.go`, handling `GetArtifact`, `CreateArtifact`, `UpdateArtifact`, `DeleteArtifact`, and `ListArtifacts`.
+     - Registered `artifactService` under `pbv1.RegisterMetadataServiceServer` on the gRPC server and registered `pbv1.NewMetadataServiceClient(conn)` on `mux` in `mockgcp/mockaiplatform/service.go`.
+  2. **Metadata & Schema Defaults**:
+     - On creation and retrieval, defaulted `metadata` to empty `structpb.Struct` when nil, and defaulted `schemaVersion` to `"0.0.1"` when `schemaTitle` is provided without an explicit version, matching real Vertex AI behavior.
+     - Formatted `NotFound` error messages to match live GCP's canonical string pattern with resolved project numbers (`Resource not found.; GetArtifact is unable to find artifact resource with name: ...`).
+     - Supported field mask paths in `UpdateArtifact` for selective field mutation, and implemented LRO completion with `DeleteOperationMetadata` on deletion.
+  3. **Verification**:
+     - Added unit tests in `mockgcp/mockaiplatform/artifact_test.go` verifying name parsing and the full CRUD lifecycle.
+     - Added `AIPlatformArtifact` to the MockGCP allowlist in `config/tests/samples/create/harness.go`.
+     - Verified alignment via `hack/compare-mock` and confirmed 0 discrepancies in `TestGoldenLogAlignment` for both `aiplatformartifact-minimal` and `aiplatformartifact-maximal`. All 29 tests in `./dev/ci/presubmits/tests-e2e-fixtures-suite aiplatform` passed.
+

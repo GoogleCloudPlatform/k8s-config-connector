@@ -18,14 +18,6 @@
 [missing_field] crd=agentregistryservices.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpServerSpec.content" is not set in unstructured objects
 [missing_field] crd=agentregistryservices.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpServerSpec.type" is not set in unstructured objects
 [missing_field] crd=agentregistryservices.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=aiplatformartifacts.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=aiplatformartifacts.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=aiplatformartifacts.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata" is not set in unstructured objects
-[missing_field] crd=aiplatformartifacts.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=aiplatformartifacts.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.schemaTitle" is not set in unstructured objects
-[missing_field] crd=aiplatformartifacts.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.schemaVersion" is not set in unstructured objects
-[missing_field] crd=aiplatformartifacts.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.state" is not set in unstructured objects
-[missing_field] crd=aiplatformartifacts.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.uri" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.contents[].parts[].codeExecutionResult.outcome" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.contents[].parts[].codeExecutionResult.output" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.contents[].parts[].executableCode.code" is not set in unstructured objects
