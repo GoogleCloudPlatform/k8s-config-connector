@@ -85,6 +85,7 @@ customAudiences:
 - string
 description: string
 ingress: string
+invokerIamDisabled: boolean
 launchStage: string
 location: string
 projectRef:
@@ -335,6 +336,16 @@ For more information, see https://cloud.google.com/run/docs/configuring/custom-a
         <td>
             <p><code class="apitype">string</code></p>
             <p>Provides the ingress settings for this Service. On output, returns the currently observed ingress settings, or INGRESS_TRAFFIC_UNSPECIFIED if no revision is active. Possible values: ["INGRESS_TRAFFIC_ALL", "INGRESS_TRAFFIC_INTERNAL_ONLY", "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"].</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>invokerIamDisabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Disables IAM permission check for run.routes.invoke for callers of this service. For more information, visit https://cloud.google.com/run/docs/securing/managing-access#invoker_check.</p>
         </td>
     </tr>
     <tr>
