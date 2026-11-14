@@ -372,6 +372,11 @@ services:
   - api: deploymentmanager
     title: Cloud Deployment Manager V2 API
     servicePrefix: DeploymentManager
+  - api: designcenter
+    title: Application Design Center API
+    servicePrefix: DesignCenter
+    protoPackages:
+      - google.cloud.designcenter.v1
   - api: developerconnect
     title: Developer Connect API
     servicePrefix: DevConnect
