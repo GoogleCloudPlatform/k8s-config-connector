@@ -29,9 +29,17 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
+
+# Pin a googleapis SHA that contains the google.cloud.observability.v1 service definition
+PROTO_SHA="9f84face29bd2b2333f1927a24512b9ff2d195bc"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+if [[ -z "${SKIP_GENERATE_PROTOS:-}" ]]; then
+  ./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+fi
 
 ${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.observability.v1 \
   --api-version observability.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
@@ -39,11 +47,13 @@ ${CONTROLLERBUILDER} generate-types \
   --prepopulate-resource
 
 ${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.observability.v1 \
   --api-version observability.cnrm.cloud.google.com/v1alpha1 \
   --resource ObservabilityTraceScope:TraceScope
 
 ${CONTROLLERBUILDER} generate-mapper \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.observability.v1 \
   --api-version observability.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
