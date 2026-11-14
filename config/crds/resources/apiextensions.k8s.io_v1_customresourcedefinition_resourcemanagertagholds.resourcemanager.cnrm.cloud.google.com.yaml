@@ -76,12 +76,46 @@ spec:
                   information to distinguish origins from each other. Must be less
                   than 200 characters. E.g. `migs-35678234`
                 type: string
+              parentRef:
+                description: The TagsTagValue this ResourceManagerTagHold is created
+                  under.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed TagsTagValue
+                      resource. Should be in the format "tagValues/{{tagValueID}}".
+                    type: string
+                  name:
+                    description: The name of a TagsTagValue resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a TagsTagValue resource.
+                    type: string
+                type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
-                description: The ResourceManagerTagHold name. If not given, the metadata.name
-                  will be used.
+                description: The ResourceManagerTagHold name. The server-generated
+                  name of the resource. Used for acquisition only. Leave unset to
+                  create a new resource.
                 type: string
             required:
             - holder
+            - parentRef
             type: object
           status:
             description: ResourceManagerTagHoldStatus defines the config connector

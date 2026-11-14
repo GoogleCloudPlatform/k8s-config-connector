@@ -15,12 +15,12 @@
 // API sources for ResourceManagerTagHold, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/resourcemanager/v3/tag_holds.proto
 // +kcc:source:service-docs=https://cloud.google.com/resource-manager
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/resource-manager/docs/reference/rest/v3/tagValues.tagHolds
+// +kcc:source:resource-docs=https://cloud.google.com/resource-manager/reference/rest/v3/tagValues.tagHolds
 
 package v1alpha1
 
 import (
+	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tags/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,8 +31,12 @@ var ResourceManagerTagHoldGVK = GroupVersion.WithKind("ResourceManagerTagHold")
 // +kcc:spec:proto=google.cloud.resourcemanager.v3.TagHold
 // +kcc:required-from-proto
 type ResourceManagerTagHoldSpec struct {
+	// The TagsTagValue this ResourceManagerTagHold is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *tagsv1beta1.TagsTagValueRef `json:"parentRef"`
 
-	// The ResourceManagerTagHold name. If not given, the metadata.name will be used.
+	// The ResourceManagerTagHold name. The server-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// Required. The name of the resource where the TagValue is being used. Must
 	//  be less than 200 characters. E.g.

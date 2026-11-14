@@ -24,6 +24,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -77,16 +78,19 @@ func (i *ResourceManagerTagHoldIdentity) ParentString() string {
 func getIdentityFromResourceManagerTagHoldSpec(ctx context.Context, reader client.Reader, obj *ResourceManagerTagHold) (*ResourceManagerTagHoldIdentity, error) {
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
-	// +kcc:guess reason=identity-root-unknown
-	tagValue := ""
-	if tagValue == "" {
-		return nil, fmt.Errorf("cannot resolve tag_value for ResourceManagerTagHold")
+	if obj.Spec.ParentRef == nil {
+		return nil, fmt.Errorf("spec.parentRef is required")
 	}
-
-	return &ResourceManagerTagHoldIdentity{
-		TagValue: tagValue,
-		TagHold:  resourceID,
-	}, nil
+	parentRef := *obj.Spec.ParentRef
+	if err := parentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, fmt.Errorf("resolving spec.parentRef: %w", err)
+	}
+	parsed := &ResourceManagerTagHoldIdentity{}
+	if err := parsed.FromExternal(strings.TrimSuffix(parentRef.GetExternal(), "/") + "/tagHolds" + "/_"); err != nil {
+		return nil, fmt.Errorf("parsing spec.parentRef external=%q: %w", parentRef.GetExternal(), err)
+	}
+	parsed.TagHold = resourceID
+	return parsed, nil
 }
 
 func (obj *ResourceManagerTagHold) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {

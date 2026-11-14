@@ -6187,6 +6187,7 @@
 [missing_field] crd=resourcemanagertagholds.resourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.helpLink" is not set in unstructured objects
 [missing_field] crd=resourcemanagertagholds.resourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.holder" is not set in unstructured objects
 [missing_field] crd=resourcemanagertagholds.resourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.origin" is not set in unstructured objects
+[missing_field] crd=resourcemanagertagholds.resourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=retailcontrols.retail.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=retailcontrols.retail.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=retailcontrols.retail.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
