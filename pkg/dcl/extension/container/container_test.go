@@ -20,6 +20,8 @@ import (
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/extension/container"
+	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
 	testdclschemaloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/dclschemaloader"
 	testservicemetadataloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemetadataloader"
 
@@ -117,6 +119,32 @@ func TestGetContainersForGVK(t *testing.T) {
 				t.Fatalf("got unexpected containers (-want +got): \n%v", cmp.Diff(tc.expected, actual))
 			}
 		})
+	}
+}
+
+func TestGetContainersForNetworkConnectivityHub(t *testing.T) {
+	smLoader := dclmetadata.New()
+	schemaLoader, err := dclschemaloader.New()
+	if err != nil {
+		t.Fatalf("unexpected error creating schema loader: %v", err)
+	}
+	hubGVK := k8sschema.GroupVersionKind{
+		Group:   "networkconnectivity.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "NetworkConnectivityHub",
+	}
+	actual, err := container.GetContainersForGVK(hubGVK, smLoader, schemaLoader)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	expected := []corekccv1alpha1.Container{
+		{
+			TFField: "project",
+			Type:    corekccv1alpha1.ContainerTypeProject,
+		},
+	}
+	if !reflect.DeepEqual(expected, actual) {
+		t.Fatalf("got unexpected containers (-want +got):\n%v", cmp.Diff(expected, actual))
 	}
 }
 
