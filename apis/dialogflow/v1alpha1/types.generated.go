@@ -1322,25 +1322,6 @@ type HumanAgentAssistantConfig struct {
 	MessageAnalysisConfig *HumanAgentAssistantConfig_MessageAnalysisConfig `json:"messageAnalysisConfig,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.ConversationModelConfig
-type HumanAgentAssistantConfig_ConversationModelConfig struct {
-	// Conversation model resource name. Format: `projects/<Project
-	//  ID>/conversationModels/<Model ID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.ConversationModelConfig.model
-	Model *string `json:"model,omitempty"`
-
-	// Version of current baseline model. It will be ignored if
-	//  [model][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.ConversationModelConfig.model]
-	//  is set. Valid versions are:
-	//    Article Suggestion baseline model:
-	//      - 0.9
-	//      - 1.0 (default)
-	//    Summarization baseline model:
-	//      - 1.0
-	// +kcc:proto:field=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.ConversationModelConfig.baseline_model_version
-	BaselineModelVersion *string `json:"baselineModelVersion,omitempty"`
-}
-
 // +kcc:proto=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.ConversationProcessConfig
 type HumanAgentAssistantConfig_ConversationProcessConfig struct {
 	// Number of recent non-small-talk sentences to use as context for article
@@ -1382,42 +1363,6 @@ type HumanAgentAssistantConfig_MessageAnalysisConfig struct {
 	//  [ConversationEvent.new_message_payload.SentimentAnalysisResult][google.cloud.dialogflow.v2.ConversationEvent.new_message_payload].
 	// +kcc:proto:field=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.MessageAnalysisConfig.enable_sentiment_analysis
 	EnableSentimentAnalysis *bool `json:"enableSentimentAnalysis,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig
-type HumanAgentAssistantConfig_SuggestionConfig struct {
-	// Configuration of different suggestion features. One feature can have only
-	//  one config.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.feature_configs
-	FeatureConfigs []HumanAgentAssistantConfig_SuggestionFeatureConfig `json:"featureConfigs,omitempty"`
-
-	// If `group_suggestion_responses` is false, and there are multiple
-	//  `feature_configs` in `event based suggestion` or
-	//  StreamingAnalyzeContent, we will try to deliver suggestions to customers
-	//  as soon as we get new suggestion. Different type of suggestions based on
-	//  the same context will be in  separate Pub/Sub event or
-	//  `StreamingAnalyzeContentResponse`.
-	//
-	//  If `group_suggestion_responses` set to true. All the suggestions to the
-	//  same participant based on the same context will be grouped into a single
-	//  Pub/Sub event or StreamingAnalyzeContentResponse.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.group_suggestion_responses
-	GroupSuggestionResponses *bool `json:"groupSuggestionResponses,omitempty"`
-
-	// Optional. List of various generator resource names used in the
-	//  conversation profile.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.generators
-	Generators []string `json:"generators,omitempty"`
-
-	// Optional. When disable_high_latency_features_sync_delivery is true and
-	//  using the AnalyzeContent API, we will not deliver the responses from high
-	//  latency features in the API response. The
-	//  human_agent_assistant_config.notification_config must be configured and
-	//  enable_event_based_suggestion must be set to true to receive the
-	//  responses from high latency features in Pub/Sub. High latency feature(s):
-	//  KNOWLEDGE_ASSIST
-	// +kcc:proto:field=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.disable_high_latency_features_sync_delivery
-	DisableHighLatencyFeaturesSyncDelivery *bool `json:"disableHighLatencyFeaturesSyncDelivery,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionFeatureConfig
@@ -1587,17 +1532,6 @@ type HumanAgentAssistantConfig_SuggestionQueryConfig_DocumentQuerySource struct 
 	Documents []string `json:"documents,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionQueryConfig.KnowledgeBaseQuerySource
-type HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource struct {
-	// Required. Knowledge bases to query. Format:
-	//  `projects/<Project ID>/locations/<Location
-	//  ID>/knowledgeBases/<Knowledge Base ID>`. Currently, at most 5 knowledge
-	//  bases are supported.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionQueryConfig.KnowledgeBaseQuerySource.knowledge_bases
-	// +required
-	KnowledgeBases []string `json:"knowledgeBases,omitempty"`
-}
-
 // +kcc:proto=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionQueryConfig.Sections
 type HumanAgentAssistantConfig_SuggestionQueryConfig_Sections struct {
 	// The selected sections chosen to return when requesting a summary of a
@@ -1752,117 +1686,12 @@ type MessageEntry struct {
 	CreateTime *string `json:"createTime,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.NotificationConfig
-type NotificationConfig struct {
-	// Name of the Pub/Sub topic to publish conversation
-	//  events like
-	//  [CONVERSATION_STARTED][google.cloud.dialogflow.v2.ConversationEvent.Type.CONVERSATION_STARTED]
-	//  as serialized
-	//  [ConversationEvent][google.cloud.dialogflow.v2.ConversationEvent] protos.
-	//
-	//  For telephony integration to receive notification, make sure either this
-	//  topic is in the same project as the conversation or you grant
-	//  `service-<Conversation Project
-	//  Number>@gcp-sa-dialogflow.iam.gserviceaccount.com` the `Dialogflow Service
-	//  Agent` role in the topic project.
-	//
-	//  For chat integration to receive notification, make sure API caller has been
-	//  granted the `Dialogflow Service Agent` role for the topic.
-	//
-	//  Format: `projects/<Project ID>/locations/<Location ID>/topics/<Topic ID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.NotificationConfig.topic
-	Topic *string `json:"topic,omitempty"`
-
-	// Format of message.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.NotificationConfig.message_format
-	MessageFormat *string `json:"messageFormat,omitempty"`
-}
-
 // +kcc:proto=google.cloud.dialogflow.v2.SmartReplyModelMetadata
 type SmartReplyModelMetadata struct {
 	// Optional. Type of the smart reply model. If not provided, model_type is
 	//  used.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.SmartReplyModelMetadata.training_model_type
 	TrainingModelType *string `json:"trainingModelType,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dialogflow.v2.SpeechToTextConfig
-type SpeechToTextConfig struct {
-	// The speech model used in speech to text.
-	//  `SPEECH_MODEL_VARIANT_UNSPECIFIED`, `USE_BEST_AVAILABLE` will be treated as
-	//  `USE_ENHANCED`. It can be overridden in
-	//  [AnalyzeContentRequest][google.cloud.dialogflow.v2.AnalyzeContentRequest]
-	//  and
-	//  [StreamingAnalyzeContentRequest][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest]
-	//  request. If enhanced model variant is specified and an enhanced version of
-	//  the specified model for the language does not exist, then it would emit an
-	//  error.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.SpeechToTextConfig.speech_model_variant
-	SpeechModelVariant *string `json:"speechModelVariant,omitempty"`
-
-	// Which Speech model to select. Select the
-	//  model best suited to your domain to get best results. If a model is not
-	//  explicitly specified, then Dialogflow auto-selects a model based on other
-	//  parameters in the SpeechToTextConfig and Agent settings.
-	//  If enhanced speech model is enabled for the agent and an enhanced
-	//  version of the specified model for the language does not exist, then the
-	//  speech is recognized using the standard version of the specified model.
-	//  Refer to
-	//  [Cloud Speech API
-	//  documentation](https://cloud.google.com/speech-to-text/docs/basics#select-model)
-	//  for more details.
-	//  If you specify a model, the following models typically have the best
-	//  performance:
-	//
-	//  - phone_call (best for Agent Assist and telephony)
-	//  - latest_short (best for Dialogflow non-telephony)
-	//  - command_and_search
-	//
-	//  Leave this field unspecified to use
-	//  [Agent Speech
-	//  settings](https://cloud.google.com/dialogflow/cx/docs/concept/agent#settings-speech)
-	//  for model selection.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.SpeechToTextConfig.model
-	Model *string `json:"model,omitempty"`
-
-	// List of names of Cloud Speech phrase sets that are used for transcription.
-	//  For phrase set limitations, please refer to [Cloud Speech API quotas and
-	//  limits](https://cloud.google.com/speech-to-text/quotas#content).
-	// +kcc:proto:field=google.cloud.dialogflow.v2.SpeechToTextConfig.phrase_sets
-	PhraseSets []string `json:"phraseSets,omitempty"`
-
-	// Audio encoding of the audio content to process.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.SpeechToTextConfig.audio_encoding
-	AudioEncoding *string `json:"audioEncoding,omitempty"`
-
-	// Sample rate (in Hertz) of the audio content sent in the query.
-	//  Refer to [Cloud Speech API
-	//  documentation](https://cloud.google.com/speech-to-text/docs/basics) for
-	//  more details.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.SpeechToTextConfig.sample_rate_hertz
-	SampleRateHertz *int32 `json:"sampleRateHertz,omitempty"`
-
-	// The language of the supplied audio. Dialogflow does not do
-	//  translations. See [Language
-	//  Support](https://cloud.google.com/dialogflow/docs/reference/language)
-	//  for a list of the currently supported language codes. Note that queries in
-	//  the same session do not necessarily need to specify the same language.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.SpeechToTextConfig.language_code
-	LanguageCode *string `json:"languageCode,omitempty"`
-
-	// If `true`, Dialogflow returns
-	//  [SpeechWordInfo][google.cloud.dialogflow.v2.SpeechWordInfo] in
-	//  [StreamingRecognitionResult][google.cloud.dialogflow.v2.StreamingRecognitionResult]
-	//  with information about the recognized speech words, e.g. start and end time
-	//  offsets. If false or unspecified, Speech doesn't return any word-level
-	//  information.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.SpeechToTextConfig.enable_word_info
-	EnableWordInfo *bool `json:"enableWordInfo,omitempty"`
-
-	// Use timeout based endpointing, interpreting endpointer sensitivity as
-	//  seconds of timeout value.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.SpeechToTextConfig.use_timeout_based_endpointing
-	UseTimeoutBasedEndpointing *bool `json:"useTimeoutBasedEndpointing,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dialogflow.v2.SuggestionFeature
