@@ -791,6 +791,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - ftp.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - geminidataanalytics.cnrm.cloud.google.com
   resources:
   - '*'
