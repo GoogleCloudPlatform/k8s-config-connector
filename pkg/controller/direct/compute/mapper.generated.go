@@ -3263,10 +3263,12 @@ func ComputeInterconnectAttachmentGroupObservedState_v1alpha1_FromProto(mapCtx *
 		return nil
 	}
 	out := &krmcomputev1alpha1.ComputeInterconnectAttachmentGroupObservedState{}
+	out.Configured = InterconnectAttachmentGroupConfigured_v1alpha1_FromProto(mapCtx, in.GetConfigured())
 	out.CreationTimestamp = in.CreationTimestamp
 	out.Etag = in.Etag
 	out.ID = in.Id
 	out.Kind = in.Kind
+	out.LogicalStructure = InterconnectAttachmentGroupLogicalStructure_v1alpha1_FromProto(mapCtx, in.GetLogicalStructure())
 	// MISSING: Name
 	out.SelfLink = in.SelfLink
 	return out
@@ -3276,10 +3278,12 @@ func ComputeInterconnectAttachmentGroupObservedState_v1alpha1_ToProto(mapCtx *di
 		return nil
 	}
 	out := &pb.InterconnectAttachmentGroup{}
+	out.Configured = InterconnectAttachmentGroupConfigured_v1alpha1_ToProto(mapCtx, in.Configured)
 	out.CreationTimestamp = in.CreationTimestamp
 	out.Etag = in.Etag
 	out.Id = in.ID
 	out.Kind = in.Kind
+	out.LogicalStructure = InterconnectAttachmentGroupLogicalStructure_v1alpha1_ToProto(mapCtx, in.LogicalStructure)
 	// MISSING: Name
 	out.SelfLink = in.SelfLink
 	return out
@@ -3297,11 +3301,11 @@ func ComputeInterconnectAttachmentGroupSpec_v1alpha1_FromProto(mapCtx *direct.Ma
 			}
 		}
 	}
-	out.Configured = InterconnectAttachmentGroupConfigured_v1alpha1_FromProto(mapCtx, in.GetConfigured())
 	out.Description = in.Description
 	out.Intent = InterconnectAttachmentGroupIntent_v1alpha1_FromProto(mapCtx, in.GetIntent())
-	out.InterconnectGroup = in.InterconnectGroup
-	out.LogicalStructure = InterconnectAttachmentGroupLogicalStructure_v1alpha1_FromProto(mapCtx, in.GetLogicalStructure())
+	if in.GetInterconnectGroup() != "" {
+		out.InterconnectGroupRef = &krmcomputev1alpha1.ComputeInterconnectGroupRef{External: in.GetInterconnectGroup()}
+	}
 	// MISSING: Name
 	return out
 }
@@ -3316,11 +3320,11 @@ func ComputeInterconnectAttachmentGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapC
 			out.Attachments[k] = InterconnectAttachmentGroupAttachment_v1alpha1_ToProto(mapCtx, &v)
 		}
 	}
-	out.Configured = InterconnectAttachmentGroupConfigured_v1alpha1_ToProto(mapCtx, in.Configured)
 	out.Description = in.Description
 	out.Intent = InterconnectAttachmentGroupIntent_v1alpha1_ToProto(mapCtx, in.Intent)
-	out.InterconnectGroup = in.InterconnectGroup
-	out.LogicalStructure = InterconnectAttachmentGroupLogicalStructure_v1alpha1_ToProto(mapCtx, in.LogicalStructure)
+	if in.InterconnectGroupRef != nil {
+		out.InterconnectGroup = &in.InterconnectGroupRef.External
+	}
 	// MISSING: Name
 	return out
 }
@@ -7591,7 +7595,9 @@ func InterconnectAttachmentGroupAttachment_v1alpha1_FromProto(mapCtx *direct.Map
 		return nil
 	}
 	out := &krmcomputev1alpha1.InterconnectAttachmentGroupAttachment{}
-	out.Attachment = in.Attachment
+	if in.GetAttachment() != "" {
+		out.AttachmentRef = &krmcomputev1beta1.ComputeInterconnectAttachmentRef{External: in.GetAttachment()}
+	}
 	return out
 }
 func InterconnectAttachmentGroupAttachment_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectAttachmentGroupAttachment) *pb.InterconnectAttachmentGroupAttachment {
@@ -7599,7 +7605,9 @@ func InterconnectAttachmentGroupAttachment_v1alpha1_ToProto(mapCtx *direct.MapCo
 		return nil
 	}
 	out := &pb.InterconnectAttachmentGroupAttachment{}
-	out.Attachment = in.Attachment
+	if in.AttachmentRef != nil {
+		out.Attachment = &in.AttachmentRef.External
+	}
 	return out
 }
 func InterconnectAttachmentGroupConfigured_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroupConfigured) *krmcomputev1alpha1.InterconnectAttachmentGroupConfigured {

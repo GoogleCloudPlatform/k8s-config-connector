@@ -1524,11 +1524,14 @@ type InterconnectAttachmentGroup struct {
 }
 */
 
+/* found existing non-generated go type "InterconnectAttachmentGroupAttachment", skipping
+
 // +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupAttachment
 type InterconnectAttachmentGroupAttachment struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupAttachment.attachment
 	Attachment *string `json:"attachment,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupConfigured
 type InterconnectAttachmentGroupConfigured struct {

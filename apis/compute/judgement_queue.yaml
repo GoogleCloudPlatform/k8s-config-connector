@@ -621,138 +621,184 @@ entries:
     group: compute.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged fields; removed spec.location, moved output-only configured and logicalStructure to observedState, converted interconnectGroup to ComputeInterconnectGroupRef and attachments.attachment to ComputeInterconnectAttachmentRef, verified doc link and server-set fields
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
-    status: open
+    status: resolved
+    resolution: edited
+    note: updated resource doc link to https://cloud.google.com/compute/docs/reference/rest/v1/interconnectAttachmentGroups
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     field: .spec.attachments
     reason: message-map-derived
     detail: derived as map[string]InterconnectAttachmentGroupAttachment from proto google.cloud.compute.v1.InterconnectAttachmentGroupAttachment; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: accepted
+    note: verified map[string]InterconnectAttachmentGroupAttachment accurately models proto map; converted attachment to attachmentRef (*computev1beta1.ComputeInterconnectAttachmentRef)
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     field: .spec.interconnectGroup
     reason: possible-reference-by-sibling
     detail: the name matches ComputeInterconnectGroup, a resource this service declares; confirm whether it should be a reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to interconnectGroupRef (*ComputeInterconnectGroupRef)
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     field: .spec.location
     reason: location-parent-unknown
     detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
-    status: open
+    status: resolved
+    resolution: edited
+    note: resource is global (/compute/v1/projects/{project}/global/interconnectAttachmentGroups/{name}); dropped spec.location and retained required spec.projectRef
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     field: .spec.logicalStructure.regions[].metros[].facilities[].zones[].zone
     reason: location-or-parent-ref
     detail: proto defines a zone field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: field is part of output-only LogicalStructure struct moved to status.observedState; zone is an output-only string identifier
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     field: .spec.logicalStructure.regions[].region
     reason: location-or-parent-ref
     detail: proto defines a region field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: field is part of output-only LogicalStructure struct moved to status.observedState; region is an output-only string identifier
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.configured.availabilitySla.intendedSlaBlockers[].attachments
     reason: well-known-output-only-pattern-in-comment
     detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.configured.availabilitySla.intendedSlaBlockers[].attachments. Move the field to .status.observedState.configured.availabilitySla.intendedSlaBlockers[].attachments if it is confirmed output only. Proto comment: [Output Only] URLs of any particular Attachments to explain this blocker in more detail.'
-    status: open
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved Configured to status.observedState
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.configured.availabilitySla.intendedSlaBlockers[].documentationLink
     reason: well-known-output-only-pattern-in-comment
     detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.configured.availabilitySla.intendedSlaBlockers[].documentationLink. Move the field to .status.observedState.configured.availabilitySla.intendedSlaBlockers[].documentationLink if it is confirmed output only. Proto comment: [Output Only] The url of Google Cloud public documentation explaining this requirement. This is set for every type of requirement.'
-    status: open
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved Configured to status.observedState
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.configured.availabilitySla.intendedSlaBlockers[].explanation
     reason: well-known-output-only-pattern-in-comment
     detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.configured.availabilitySla.intendedSlaBlockers[].explanation. Move the field to .status.observedState.configured.availabilitySla.intendedSlaBlockers[].explanation if it is confirmed output only. Proto comment: [Output Only] A human-readable explanation of this requirement and why it''s not met. This is set for every type of requirement.'
-    status: open
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved Configured to status.observedState
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.configured.availabilitySla.intendedSlaBlockers[].metros
     reason: well-known-output-only-pattern-in-comment
     detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.configured.availabilitySla.intendedSlaBlockers[].metros. Move the field to .status.observedState.configured.availabilitySla.intendedSlaBlockers[].metros if it is confirmed output only. Proto comment: [Output Only] Metros used to explain this blocker in more detail. These are three-letter lowercase strings like "iad". This will be set for some blockers (like NO_ATTACHMENTS_IN_METRO_AND_ZONE) but does not apply to others.'
-    status: open
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved Configured to status.observedState
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.configured.availabilitySla.intendedSlaBlockers[].regions
     reason: well-known-output-only-pattern-in-comment
     detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.configured.availabilitySla.intendedSlaBlockers[].regions. Move the field to .status.observedState.configured.availabilitySla.intendedSlaBlockers[].regions if it is confirmed output only. Proto comment: [Output Only] Regions used to explain this blocker in more detail. These are region names formatted like "us-central1". This will be set for some blockers (like INCOMPATIBLE_REGIONS) but does not apply to others.'
-    status: open
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved Configured to status.observedState
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.configured.availabilitySla.intendedSlaBlockers[].zones
     reason: well-known-output-only-pattern-in-comment
     detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.configured.availabilitySla.intendedSlaBlockers[].zones. Move the field to .status.observedState.configured.availabilitySla.intendedSlaBlockers[].zones if it is confirmed output only. Proto comment: [Output Only] Zones used to explain this blocker in more detail. Format is "zone1" and/or "zone2". This will be set for some blockers (like MISSING_ZONE) but does not apply to others.'
-    status: open
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved Configured to status.observedState
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.creationTimestamp
     reason: server-set-field-placed
     detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed server-set output field per proto comments
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.etag
     reason: server-set-field-placed
     detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed server-set output field per proto comments
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.id
     reason: server-set-field-placed
     detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed server-set output field per proto comments
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.kind
     reason: server-set-field-placed
     detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed server-set output field per proto comments
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.logicalStructure.regions[].metros[].facilities[].facility
     reason: well-known-output-only-pattern-in-comment
     detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.logicalStructure.regions[].metros[].facilities[].facility. Move the field to .status.observedState.logicalStructure.regions[].metros[].facilities[].facility if it is confirmed output only. Proto comment: [Output Only] The name of a facility, like "iad-1234".'
-    status: open
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved LogicalStructure to status.observedState
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.logicalStructure.regions[].metros[].facilities[].zones[].attachments
     reason: well-known-output-only-pattern-in-comment
     detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.logicalStructure.regions[].metros[].facilities[].zones[].attachments. Move the field to .status.observedState.logicalStructure.regions[].metros[].facilities[].zones[].attachments if it is confirmed output only. Proto comment: [Output Only] URLs of Attachments in the given zone, to the given region, on Interconnects in the given facility and metro. Every Attachment in the AG has such an entry.'
-    status: open
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved LogicalStructure to status.observedState
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.logicalStructure.regions[].metros[].facilities[].zones[].zone
     reason: well-known-output-only-pattern-in-comment
     detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.logicalStructure.regions[].metros[].facilities[].zones[].zone. Move the field to .status.observedState.logicalStructure.regions[].metros[].facilities[].zones[].zone if it is confirmed output only. Proto comment: [Output Only] The name of a zone, either "zone1" or "zone2".'
-    status: open
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved LogicalStructure to status.observedState
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.logicalStructure.regions[].metros[].metro
     reason: well-known-output-only-pattern-in-comment
     detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.logicalStructure.regions[].metros[].metro. Move the field to .status.observedState.logicalStructure.regions[].metros[].metro if it is confirmed output only. Proto comment: [Output Only] The name of the metro, as a three-letter lowercase string like "iad". This is the first component of the location of an Interconnect.'
-    status: open
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved LogicalStructure to status.observedState
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.logicalStructure.regions[].region
     reason: well-known-output-only-pattern-in-comment
     detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.logicalStructure.regions[].region. Move the field to .status.observedState.logicalStructure.regions[].region if it is confirmed output only. Proto comment: [Output Only] The name of a region, like "us-central1".'
-    status: open
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved LogicalStructure to status.observedState
   - kind: ComputeInterconnectAttachmentGroup
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.selfLink
     reason: server-set-field-placed
     detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed server-set output field per proto comments
   - kind: ComputeInterconnectGroup
     group: compute.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

@@ -307,3 +307,17 @@
 - **Verification**:
   - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.
 
+### [2026-11-14] Greenfield: Triage judgement queue and finalize direct KRM types and identity for ComputeInterconnectAttachmentGroup
+- **Context**: Triaged and finalized direct KRM types, identity, and references for `ComputeInterconnectAttachmentGroup` (issue #15665) following Greenfield Step 1b (`judgement/SKILL.md`).
+- **Judgement Queue Resolutions & Learnings**:
+  1. `untriaged-bulk-generation`: Resolved after triaging all fields, omissions, references, and KRM conventions.
+  2. `verify-resource-docs-link`: Corrected resource documentation link to `https://cloud.google.com/compute/docs/reference/rest/v1/interconnectAttachmentGroups`.
+  3. `location-parent-unknown`: Verified `InterconnectAttachmentGroup` is a global resource parented by project (`projects/{project}/global/interconnectAttachmentGroups/{interconnectattachmentgroup}`). Removed `spec.location` and kept `spec.projectRef` (`// +required`).
+  4. `possible-reference-by-sibling` on `.spec.interconnectGroup`: Converted to `InterconnectGroupRef *ComputeInterconnectGroupRef` in `ComputeInterconnectAttachmentGroupSpec`. `generate-mapper` automatically maps to/from proto string field.
+  5. `message-map-derived` on `.spec.attachments`: Accepted; accurately models proto `map<string, InterconnectAttachmentGroupAttachment>`. Moved `InterconnectAttachmentGroupAttachment` to `computeinterconnectattachmentgroup_types.go` and converted `attachment` to `AttachmentRef *computev1beta1.ComputeInterconnectAttachmentRef`. `generate-mapper` automatically generates bidirectional conversion between `*computev1beta1.ComputeInterconnectAttachmentRef` and proto string field `attachment`.
+  6. `well-known-output-only-pattern-in-comment` on `configured` and `logicalStructure`: Proto comments mark `InterconnectAttachmentGroupConfigured` and `InterconnectAttachmentGroupLogicalStructure` as output-only. Moved `Configured *InterconnectAttachmentGroupConfigured` and `LogicalStructure *InterconnectAttachmentGroupLogicalStructure` from `ComputeInterconnectAttachmentGroupSpec` to `ComputeInterconnectAttachmentGroupObservedState`. Marked corresponding `location-or-parent-ref` on nested fields as `not-applicable` because status fields do not use KRM references.
+  7. `server-set-field-placed` on `creationTimestamp`, `etag`, `id`, `kind`, and `selfLink`: Confirmed server-generated output-only fields; verified placement in `ComputeInterconnectAttachmentGroupObservedState` and removed `+kcc:guess` comments.
+- **Verification**:
+  - Re-ran `./apis/compute/generate.sh` and verified CRD generation, mappers, deepcopy code.
+  - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+  - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.
