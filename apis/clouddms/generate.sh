@@ -35,16 +35,33 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.clouddms.v1 \
     --api-version "clouddms.cnrm.cloud.google.com/v1alpha1" \
+    --include-skipped-output \
     --resource CloudDMSConversionWorkspace:ConversionWorkspace \
     --resource CloudDMSPrivateConnection:PrivateConnection \
     --resource CloudDMSMigrationJob:MigrationJob
 
+${CONTROLLERBUILDER} generate-types \
+    --service google.cloud.clouddms.v1 \
+    --api-version "clouddms.cnrm.cloud.google.com/v1alpha1" \
+    --include-skipped-output \
+    --prepopulate-resource \
+    --resource CloudDMSConnectionProfile:ConnectionProfile
+
+${CONTROLLERBUILDER} generate-identity \
+    --service google.cloud.clouddms.v1 \
+    --api-version "clouddms.cnrm.cloud.google.com/v1alpha1" \
+    --resource CloudDMSConnectionProfile:ConnectionProfile
+
 ${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.clouddms.v1 \
-    --api-version "clouddms.cnrm.cloud.google.com/v1alpha1"
+    --api-version "clouddms.cnrm.cloud.google.com/v1alpha1" \
+    --include-skipped-output \
+    --prepopulate-resource
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/clouddms" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/clouddms/
