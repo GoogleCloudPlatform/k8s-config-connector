@@ -16,10 +16,13 @@ package parent
 
 import (
 	"context"
+	"strings"
 	"sync/atomic"
 	"testing"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/tf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	corev1 "k8s.io/api/core/v1"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -32,6 +35,28 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
+
+func newTestCRD(group, version, kind, description string) *apiextensions.CustomResourceDefinition {
+	return &apiextensions.CustomResourceDefinition{
+		Spec: apiextensions.CustomResourceDefinitionSpec{
+			Group: group,
+			Names: apiextensions.CustomResourceDefinitionNames{
+				Kind: kind,
+			},
+			Versions: []apiextensions.CustomResourceDefinitionVersion{
+				{
+					Name: version,
+					Schema: &apiextensions.CustomResourceValidation{
+						OpenAPIV3Schema: &apiextensions.JSONSchemaProps{
+							Type:        "object",
+							Description: description,
+						},
+					},
+				},
+			},
+		},
+	}
+}
 
 func TestReconcilers_UpdateSchema_NilReconcilers(t *testing.T) {
 	// Arrange
@@ -48,6 +73,119 @@ func TestReconcilers_UpdateSchema_NilReconcilers(t *testing.T) {
 	// Assert
 	if err != nil {
 		t.Fatalf("expected nil error when child reconcilers are nil, got: %v", err)
+	}
+}
+
+func TestReconcilers_UpdateSchema_ChildReconcilers(t *testing.T) {
+	tests := []struct {
+		name          string
+		newReconciler func(crd *apiextensions.CustomResourceDefinition) (k8s.SchemaReferenceUpdater, func() *k8s.SchemaReference)
+	}{
+		{
+			name: "Terraform Reconciler",
+			newReconciler: func(crd *apiextensions.CustomResourceDefinition) (k8s.SchemaReferenceUpdater, func() *k8s.SchemaReference) {
+				r := &tf.Reconciler{}
+				if err := r.UpdateSchema(crd); err != nil {
+					t.Fatalf("failed to initialize schema: %v", err)
+				}
+				return r, r.SchemaReference
+			},
+		},
+		{
+			name: "DCL Reconciler",
+			newReconciler: func(crd *apiextensions.CustomResourceDefinition) (k8s.SchemaReferenceUpdater, func() *k8s.SchemaReference) {
+				r := &dclcontroller.Reconciler{}
+				if err := r.UpdateSchema(crd); err != nil {
+					t.Fatalf("failed to initialize schema: %v", err)
+				}
+				return r, r.SchemaReference
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name+"_Success", func(t *testing.T) {
+			group := "foo.cnrm.cloud.google.com"
+			version := "v1beta1"
+			kind := "FooResource"
+			initialCRD := newTestCRD(group, version, kind, "initial description")
+			updater, getSchemaRef := tc.newReconciler(initialCRD)
+			updatedCRD := newTestCRD(group, version, kind, "updated description")
+
+			err := updater.UpdateSchema(updatedCRD)
+			if err != nil {
+				t.Fatalf("unexpected error updating schema: %v", err)
+			}
+			newRef := getSchemaRef()
+			if newRef == nil {
+				t.Fatal("expected non-nil schemaRef after update")
+			}
+			if newRef.JSONSchema.Description != "updated description" {
+				t.Fatalf("expected description 'updated description', got %q", newRef.JSONSchema.Description)
+			}
+			if newRef.GVK.Kind != kind || newRef.GVK.Group != group || newRef.GVK.Version != version {
+				t.Fatalf("expected GVK %s/%s, %s, got %v", group, version, kind, newRef.GVK)
+			}
+		})
+
+		t.Run(tc.name+"_MismatchedGVK", func(t *testing.T) {
+			group := "foo.cnrm.cloud.google.com"
+			version := "v1beta1"
+			initialCRD := newTestCRD(group, version, "FooResource", "description")
+			updater, getSchemaRef := tc.newReconciler(initialCRD)
+			differentCRD := newTestCRD(group, version, "BarResource", "description")
+
+			err := updater.UpdateSchema(differentCRD)
+			if err == nil {
+				t.Fatal("expected error due to mismatched GVK, got nil")
+			}
+			if !strings.Contains(err.Error(), "unexpected mismatch of GVK") {
+				t.Fatalf("expected error message to contain 'unexpected mismatch of GVK', got %q", err.Error())
+			}
+			currentRef := getSchemaRef()
+			if currentRef.GVK.Kind != "FooResource" {
+				t.Fatalf("expected schemaRef to remain FooResource, got %s", currentRef.GVK.Kind)
+			}
+		})
+	}
+}
+
+func TestReconcilers_UpdateSchema_ParentBothChildren(t *testing.T) {
+	group := "foo.cnrm.cloud.google.com"
+	version := "v1beta1"
+	kind := "FooResource"
+	initialCRD := newTestCRD(group, version, kind, "initial description")
+
+	tfReconciler := &tf.Reconciler{}
+	if err := tfReconciler.UpdateSchema(initialCRD); err != nil {
+		t.Fatalf("failed to init TF schema: %v", err)
+	}
+	dclReconciler := &dclcontroller.Reconciler{}
+	if err := dclReconciler.UpdateSchema(initialCRD); err != nil {
+		t.Fatalf("failed to init DCL schema: %v", err)
+	}
+
+	reconcilers := &Reconcilers{
+		TF:  tfReconciler,
+		DCL: dclReconciler,
+	}
+
+	updatedCRD := newTestCRD(group, version, kind, "updated description")
+	if err := reconcilers.UpdateSchema(updatedCRD); err != nil {
+		t.Fatalf("unexpected error updating schema via parent Reconcilers: %v", err)
+	}
+
+	if tfReconciler.SchemaReference().JSONSchema.Description != "updated description" {
+		t.Errorf("expected TF schema to be updated, got %q", tfReconciler.SchemaReference().JSONSchema.Description)
+	}
+	if dclReconciler.SchemaReference().JSONSchema.Description != "updated description" {
+		t.Errorf("expected DCL schema to be updated, got %q", dclReconciler.SchemaReference().JSONSchema.Description)
+	}
+
+	// Mismatched GVK propagates error
+	mismatchedCRD := newTestCRD(group, version, "BarResource", "description")
+	if err := reconcilers.UpdateSchema(mismatchedCRD); err == nil {
+		t.Fatal("expected error on mismatched GVK, got nil")
 	}
 }
 
