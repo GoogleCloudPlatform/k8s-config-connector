@@ -55,9 +55,15 @@ policy:
   # again once the success cooldown is over. The merge recipe approves
   # once per head and re-sets auto-merge, which puts the PR back in the
   # queue. A PR in the queue gets nothing from any rule.
+  # A merge run that fails is almost always transient: the PR conflicted
+  # (another merged first) or a check was pending when it ran. A new head -
+  # care-rebase, a fix - ends any wait at once; at the same head the merge is
+  # tried again after 20m (a failure) or 30m (the queue dropped it). The
+  # give-up below still stops a PR after 6 runs at one head.
   cooldown:
-    success: 1h
-    failure: 12h
+    success: 30m
+    failure: 20m
+    reset-on: [head]
   give-up:
     attempts: 6
     since: [head, pause]
