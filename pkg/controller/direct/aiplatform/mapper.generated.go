@@ -137,11 +137,11 @@ func AIPlatformCachedContentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cac
 	if in.GetModel() != "" {
 		out.ModelRef = &krm.AIPlatformModelRef{External: in.GetModel()}
 	}
-	out.SystemInstruction = Content_FromProto(mapCtx, in.GetSystemInstruction())
-	out.Contents = direct.Slice_FromProto(mapCtx, in.Contents, Content_FromProto)
+	out.SystemInstruction = ContentWithRequired_FromProto(mapCtx, in.GetSystemInstruction())
+	out.Contents = direct.Slice_FromProto(mapCtx, in.Contents, ContentWithRequired_FromProto)
 	out.Tools = direct.Slice_FromProto(mapCtx, in.Tools, Tool_FromProto)
 	out.ToolConfig = ToolConfig_FromProto(mapCtx, in.GetToolConfig())
-	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	out.EncryptionSpec = EncryptionSpecWithRequired_FromProto(mapCtx, in.GetEncryptionSpec())
 	return out
 }
 
@@ -161,11 +161,11 @@ func AIPlatformCachedContentSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPl
 	if in.ModelRef != nil {
 		out.Model = in.ModelRef.External
 	}
-	out.SystemInstruction = Content_ToProto(mapCtx, in.SystemInstruction)
-	out.Contents = direct.Slice_ToProto(mapCtx, in.Contents, Content_ToProto)
+	out.SystemInstruction = ContentWithRequired_ToProto(mapCtx, in.SystemInstruction)
+	out.Contents = direct.Slice_ToProto(mapCtx, in.Contents, ContentWithRequired_ToProto)
 	out.Tools = direct.Slice_ToProto(mapCtx, in.Tools, Tool_ToProto)
 	out.ToolConfig = ToolConfig_ToProto(mapCtx, in.ToolConfig)
-	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	out.EncryptionSpec = EncryptionSpecWithRequired_ToProto(mapCtx, in.EncryptionSpec)
 	return out
 }
 
@@ -474,7 +474,7 @@ func AIPlatformHyperparameterTuningJobSpec_FromProto(mapCtx *direct.MapContext, 
 	out.MaxFailedTrialCount = direct.LazyPtr(in.GetMaxFailedTrialCount())
 	out.TrialJobSpec = CustomJobSpecWithRequired_FromProto(mapCtx, in.GetTrialJobSpec())
 	out.Labels = in.Labels
-	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	out.EncryptionSpec = EncryptionSpecWithRequired_FromProto(mapCtx, in.GetEncryptionSpec())
 	return out
 }
 
@@ -491,7 +491,7 @@ func AIPlatformHyperparameterTuningJobSpec_ToProto(mapCtx *direct.MapContext, in
 	out.MaxFailedTrialCount = direct.ValueOf(in.MaxFailedTrialCount)
 	out.TrialJobSpec = CustomJobSpecWithRequired_ToProto(mapCtx, in.TrialJobSpec)
 	out.Labels = in.Labels
-	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	out.EncryptionSpec = EncryptionSpecWithRequired_ToProto(mapCtx, in.EncryptionSpec)
 	return out
 }
 
@@ -613,7 +613,7 @@ func AIPlatformModelMonitorSpec_FromProto(mapCtx *direct.MapContext, in *aiplatf
 		return nil
 	}
 	out := &krm.AIPlatformModelMonitorSpec{}
-	out.TabularObjective = ModelMonitoringObjectiveSpec_TabularObjective_FromProto(mapCtx, in.GetTabularObjective())
+	out.TabularObjective = ModelMonitoringObjectiveSpec_TabularObjectiveWithRequired_FromProto(mapCtx, in.GetTabularObjective())
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.ModelMonitoringTarget = ModelMonitor_ModelMonitoringTarget_FromProto(mapCtx, in.GetModelMonitoringTarget())
@@ -622,7 +622,7 @@ func AIPlatformModelMonitorSpec_FromProto(mapCtx *direct.MapContext, in *aiplatf
 	out.OutputSpec = ModelMonitoringOutputSpec_FromProto(mapCtx, in.GetOutputSpec())
 	out.ExplanationSpec = ExplanationSpecWithRequired_FromProto(mapCtx, in.GetExplanationSpec())
 	out.ModelMonitoringSchema = ModelMonitoringSchema_FromProto(mapCtx, in.GetModelMonitoringSchema())
-	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	out.EncryptionSpec = EncryptionSpecWithRequired_FromProto(mapCtx, in.GetEncryptionSpec())
 	return out
 }
 */
@@ -633,7 +633,7 @@ func AIPlatformModelMonitorSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPla
 		return nil
 	}
 	out := &aiplatformpb.ModelMonitor{}
-	if oneof := ModelMonitoringObjectiveSpec_TabularObjective_ToProto(mapCtx, in.TabularObjective); oneof != nil {
+	if oneof := ModelMonitoringObjectiveSpec_TabularObjectiveWithRequired_ToProto(mapCtx, in.TabularObjective); oneof != nil {
 		out.DefaultObjective = &aiplatformpb.ModelMonitor_TabularObjective{TabularObjective: oneof}
 	}
 	// MISSING: Name
@@ -644,7 +644,7 @@ func AIPlatformModelMonitorSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPla
 	out.OutputSpec = ModelMonitoringOutputSpec_ToProto(mapCtx, in.OutputSpec)
 	out.ExplanationSpec = ExplanationSpecWithRequired_ToProto(mapCtx, in.ExplanationSpec)
 	out.ModelMonitoringSchema = ModelMonitoringSchema_ToProto(mapCtx, in.ModelMonitoringSchema)
-	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	out.EncryptionSpec = EncryptionSpecWithRequired_ToProto(mapCtx, in.EncryptionSpec)
 	return out
 }
 */
@@ -821,7 +821,7 @@ func AIPlatformNotebookExecutionJobSpec_FromProto(mapCtx *direct.MapContext, in 
 	// MISSING: ScheduleResourceName
 	// MISSING: Labels
 	out.KernelName = direct.LazyPtr(in.GetKernelName())
-	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	out.EncryptionSpec = EncryptionSpecWithRequired_FromProto(mapCtx, in.GetEncryptionSpec())
 	return out
 }
 
@@ -862,7 +862,7 @@ func AIPlatformNotebookExecutionJobSpec_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: ScheduleResourceName
 	// MISSING: Labels
 	out.KernelName = direct.ValueOf(in.KernelName)
-	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	out.EncryptionSpec = EncryptionSpecWithRequired_ToProto(mapCtx, in.EncryptionSpec)
 	return out
 }
 */
@@ -1149,7 +1149,7 @@ func AIPlatformRAGCorpusSpec_FromProto(mapCtx *direct.MapContext, in *pb.RagCorp
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	out.EncryptionSpec = EncryptionSpecWithRequired_FromProto(mapCtx, in.GetEncryptionSpec())
 	return out
 }
 
@@ -1167,7 +1167,7 @@ func AIPlatformRAGCorpusSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatfo
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
-	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	out.EncryptionSpec = EncryptionSpecWithRequired_ToProto(mapCtx, in.EncryptionSpec)
 	return out
 }
 
@@ -1458,6 +1458,36 @@ func BatchDedicatedResources_ToProto(mapCtx *direct.MapContext, in *krm.BatchDed
 }
 */
 
+/* found existing non-generated mapping function "BatchDedicatedResourcesWithRequired_FromProto", skipping
+func BatchDedicatedResourcesWithRequired_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.BatchDedicatedResources) *krm.BatchDedicatedResourcesWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BatchDedicatedResourcesWithRequired{}
+	out.MachineSpec = MachineSpecWithRequired_FromProto(mapCtx, in.GetMachineSpec())
+	out.StartingReplicaCount = direct.LazyPtr(in.GetStartingReplicaCount())
+	out.MaxReplicaCount = direct.LazyPtr(in.GetMaxReplicaCount())
+	out.FlexStart = FlexStart_FromProto(mapCtx, in.GetFlexStart())
+	out.Spot = direct.LazyPtr(in.GetSpot())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "BatchDedicatedResourcesWithRequired_ToProto", skipping
+func BatchDedicatedResourcesWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.BatchDedicatedResourcesWithRequired) *aiplatformpb.BatchDedicatedResources {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.BatchDedicatedResources{}
+	out.MachineSpec = MachineSpecWithRequired_ToProto(mapCtx, in.MachineSpec)
+	out.StartingReplicaCount = direct.ValueOf(in.StartingReplicaCount)
+	out.MaxReplicaCount = direct.ValueOf(in.MaxReplicaCount)
+	out.FlexStart = FlexStart_ToProto(mapCtx, in.FlexStart)
+	out.Spot = direct.ValueOf(in.Spot)
+	return out
+}
+*/
+
 func BigQueryDestination_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDestination) *krm.BigQueryDestination {
 	if in == nil {
 		return nil
@@ -1669,6 +1699,26 @@ func Content_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krm.Content {
 }
 
 func Content_ToProto(mapCtx *direct.MapContext, in *krm.Content) *pb.Content {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Content{}
+	out.Role = direct.ValueOf(in.Role)
+	out.Parts = direct.Slice_ToProto(mapCtx, in.Parts, Part_ToProto)
+	return out
+}
+
+func ContentWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krm.ContentWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContentWithRequired{}
+	out.Role = direct.LazyPtr(in.GetRole())
+	out.Parts = direct.Slice_FromProto(mapCtx, in.Parts, Part_FromProto)
+	return out
+}
+
+func ContentWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.ContentWithRequired) *pb.Content {
 	if in == nil {
 		return nil
 	}
@@ -2038,6 +2088,28 @@ func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *
 }
 */
 
+/* found existing non-generated mapping function "EncryptionSpecWithRequired_FromProto", skipping
+func EncryptionSpecWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpecWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionSpecWithRequired{}
+	// MISSING: KMSKeyName
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "EncryptionSpecWithRequired_ToProto", skipping
+func EncryptionSpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpecWithRequired) *pb.EncryptionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionSpec{}
+	// MISSING: KMSKeyName
+	return out
+}
+*/
+
 func EnterpriseWebSearch_FromProto(mapCtx *direct.MapContext, in *pb.EnterpriseWebSearch) *krm.EnterpriseWebSearch {
 	if in == nil {
 		return nil
@@ -2142,6 +2214,42 @@ func Examples_ToProto(mapCtx *direct.MapContext, in *krm.Examples) *pb.Examples 
 	return out
 }
 
+/* found existing non-generated mapping function "ExamplesWithRequired_FromProto", skipping
+func ExamplesWithRequired_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.Examples) *krm.ExamplesWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExamplesWithRequired{}
+	out.ExampleGCSSource = Examples_ExampleGCSSourceWithRequired_FromProto(mapCtx, in.GetExampleGcsSource())
+	out.NearestNeighborSearchConfig = Value_FromProto(mapCtx, in.GetNearestNeighborSearchConfig())
+	out.Presets = Presets_FromProto(mapCtx, in.GetPresets())
+	out.GCSSource = GCSSourceWithRequired_FromProto(mapCtx, in.GetGcsSource())
+	out.NeighborCount = direct.LazyPtr(in.GetNeighborCount())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ExamplesWithRequired_ToProto", skipping
+func ExamplesWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.ExamplesWithRequired) *aiplatformpb.Examples {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.Examples{}
+	if oneof := Examples_ExampleGCSSourceWithRequired_ToProto(mapCtx, in.ExampleGCSSource); oneof != nil {
+		out.Source = &aiplatformpb.Examples_ExampleGcsSource_{ExampleGcsSource: oneof}
+	}
+	if oneof := Value_ToProto(mapCtx, in.NearestNeighborSearchConfig); oneof != nil {
+		out.Config = &aiplatformpb.Examples_NearestNeighborSearchConfig{NearestNeighborSearchConfig: oneof}
+	}
+	if oneof := Presets_ToProto(mapCtx, in.Presets); oneof != nil {
+		out.Config = &aiplatformpb.Examples_Presets{Presets: oneof}
+	}
+	out.GcsSource = GCSSourceWithRequired_ToProto(mapCtx, in.GCSSource)
+	out.NeighborCount = direct.ValueOf(in.NeighborCount)
+	return out
+}
+*/
+
 func Examples_ExampleGCSSource_FromProto(mapCtx *direct.MapContext, in *pb.Examples_ExampleGcsSource) *krm.Examples_ExampleGCSSource {
 	if in == nil {
 		return nil
@@ -2159,6 +2267,26 @@ func Examples_ExampleGCSSource_ToProto(mapCtx *direct.MapContext, in *krm.Exampl
 	out := &pb.Examples_ExampleGcsSource{}
 	out.DataFormat = direct.Enum_ToProto[pb.Examples_ExampleGcsSource_DataFormat](mapCtx, in.DataFormat)
 	out.GcsSource = GCSSource_ToProto(mapCtx, in.GCSSource)
+	return out
+}
+
+func Examples_ExampleGCSSourceWithRequired_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.Examples_ExampleGcsSource) *krm.Examples_ExampleGCSSourceWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Examples_ExampleGCSSourceWithRequired{}
+	out.DataFormat = direct.Enum_FromProto(mapCtx, in.GetDataFormat())
+	out.GCSSource = GCSSourceWithRequired_FromProto(mapCtx, in.GetGcsSource())
+	return out
+}
+
+func Examples_ExampleGCSSourceWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.Examples_ExampleGCSSourceWithRequired) *aiplatformpb.Examples_ExampleGcsSource {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.Examples_ExampleGcsSource{}
+	out.DataFormat = direct.Enum_ToProto[aiplatformpb.Examples_ExampleGcsSource_DataFormat](mapCtx, in.DataFormat)
+	out.GcsSource = GCSSourceWithRequired_ToProto(mapCtx, in.GCSSource)
 	return out
 }
 
@@ -2320,6 +2448,46 @@ func ExplanationParameters_ToProto(mapCtx *direct.MapContext, in *krm.Explanatio
 	return out
 }
 
+/* found existing non-generated mapping function "ExplanationParametersWithRequired_FromProto", skipping
+func ExplanationParametersWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationParameters) *krm.ExplanationParametersWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExplanationParametersWithRequired{}
+	out.SampledShapleyAttribution = SampledShapleyAttributionWithRequired_FromProto(mapCtx, in.GetSampledShapleyAttribution())
+	out.IntegratedGradientsAttribution = IntegratedGradientsAttributionWithRequired_FromProto(mapCtx, in.GetIntegratedGradientsAttribution())
+	out.XraiAttribution = XraiAttributionWithRequired_FromProto(mapCtx, in.GetXraiAttribution())
+	out.Examples = ExamplesWithRequired_FromProto(mapCtx, in.GetExamples())
+	out.TopK = direct.LazyPtr(in.GetTopK())
+	// MISSING: OutputIndices
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ExplanationParametersWithRequired_ToProto", skipping
+func ExplanationParametersWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationParametersWithRequired) *pb.ExplanationParameters {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExplanationParameters{}
+	if oneof := SampledShapleyAttributionWithRequired_ToProto(mapCtx, in.SampledShapleyAttribution); oneof != nil {
+		out.Method = &pb.ExplanationParameters_SampledShapleyAttribution{SampledShapleyAttribution: oneof}
+	}
+	if oneof := IntegratedGradientsAttributionWithRequired_ToProto(mapCtx, in.IntegratedGradientsAttribution); oneof != nil {
+		out.Method = &pb.ExplanationParameters_IntegratedGradientsAttribution{IntegratedGradientsAttribution: oneof}
+	}
+	if oneof := XraiAttributionWithRequired_ToProto(mapCtx, in.XraiAttribution); oneof != nil {
+		out.Method = &pb.ExplanationParameters_XraiAttribution{XraiAttribution: oneof}
+	}
+	if oneof := ExamplesWithRequired_ToProto(mapCtx, in.Examples); oneof != nil {
+		out.Method = &pb.ExplanationParameters_Examples{Examples: oneof}
+	}
+	out.TopK = direct.ValueOf(in.TopK)
+	// MISSING: OutputIndices
+	return out
+}
+*/
+
 func ExplanationSpec_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationSpec) *krm.ExplanationSpec {
 	if in == nil {
 		return nil
@@ -2346,8 +2514,8 @@ func ExplanationSpecWithRequired_FromProto(mapCtx *direct.MapContext, in *aiplat
 		return nil
 	}
 	out := &krm.ExplanationSpecWithRequired{}
-	out.Parameters = ExplanationParameters_FromProto(mapCtx, in.GetParameters())
-	out.Metadata = ExplanationMetadata_FromProto(mapCtx, in.GetMetadata())
+	out.Parameters = ExplanationParametersWithRequired_FromProto(mapCtx, in.GetParameters())
+	out.Metadata = ExplanationMetadataWithRequired_FromProto(mapCtx, in.GetMetadata())
 	return out
 }
 */
@@ -2358,8 +2526,8 @@ func ExplanationSpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.Expl
 		return nil
 	}
 	out := &aiplatformpb.ExplanationSpec{}
-	out.Parameters = ExplanationParameters_ToProto(mapCtx, in.Parameters)
-	out.Metadata = ExplanationMetadata_ToProto(mapCtx, in.Metadata)
+	out.Parameters = ExplanationParametersWithRequired_ToProto(mapCtx, in.Parameters)
+	out.Metadata = ExplanationMetadataWithRequired_ToProto(mapCtx, in.Metadata)
 	return out
 }
 */
@@ -2902,6 +3070,24 @@ func GCSSource_ToProto(mapCtx *direct.MapContext, in *krm.GCSSource) *pb.GcsSour
 	return out
 }
 
+func GCSSourceWithRequired_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.GcsSource) *krm.GCSSourceWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GCSSourceWithRequired{}
+	out.URIs = in.Uris
+	return out
+}
+
+func GCSSourceWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.GCSSourceWithRequired) *aiplatformpb.GcsSource {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.GcsSource{}
+	out.Uris = in.URIs
+	return out
+}
+
 func GenerationConfig_FromProto(mapCtx *direct.MapContext, in *pb.GenerationConfig) *krm.GenerationConfig {
 	if in == nil {
 		return nil
@@ -3157,6 +3343,32 @@ func IntegratedGradientsAttribution_ToProto(mapCtx *direct.MapContext, in *krm.I
 	out.BlurBaselineConfig = BlurBaselineConfig_ToProto(mapCtx, in.BlurBaselineConfig)
 	return out
 }
+
+/* found existing non-generated mapping function "IntegratedGradientsAttributionWithRequired_FromProto", skipping
+func IntegratedGradientsAttributionWithRequired_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.IntegratedGradientsAttribution) *krm.IntegratedGradientsAttributionWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IntegratedGradientsAttributionWithRequired{}
+	out.StepCount = direct.LazyPtr(in.GetStepCount())
+	out.SmoothGradConfig = SmoothGradConfig_FromProto(mapCtx, in.GetSmoothGradConfig())
+	out.BlurBaselineConfig = BlurBaselineConfig_FromProto(mapCtx, in.GetBlurBaselineConfig())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "IntegratedGradientsAttributionWithRequired_ToProto", skipping
+func IntegratedGradientsAttributionWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.IntegratedGradientsAttributionWithRequired) *aiplatformpb.IntegratedGradientsAttribution {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.IntegratedGradientsAttribution{}
+	out.StepCount = direct.ValueOf(in.StepCount)
+	out.SmoothGradConfig = SmoothGradConfig_ToProto(mapCtx, in.SmoothGradConfig)
+	out.BlurBaselineConfig = BlurBaselineConfig_ToProto(mapCtx, in.BlurBaselineConfig)
+	return out
+}
+*/
 
 /* found existing non-generated mapping function "Interval_FromProto", skipping
 func Interval_FromProto(mapCtx *direct.MapContext, in *intervalpb.Interval) *krm.Interval {
@@ -4087,6 +4299,44 @@ func ModelMonitoringObjectiveSpec_FeatureAttributionSpec_ToProto(mapCtx *direct.
 }
 */
 
+func ModelMonitoringObjectiveSpec_FeatureAttributionSpecWithRequired_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringObjectiveSpec_FeatureAttributionSpec) *krm.ModelMonitoringObjectiveSpec_FeatureAttributionSpecWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringObjectiveSpec_FeatureAttributionSpecWithRequired{}
+	out.Features = in.Features
+	out.DefaultAlertCondition = ModelMonitoringAlertCondition_FromProto(mapCtx, in.GetDefaultAlertCondition())
+	if in.FeatureAlertConditions != nil {
+		out.FeatureAlertConditions = make(map[string]krm.ModelMonitoringAlertCondition, len(in.FeatureAlertConditions))
+		for k, v := range in.FeatureAlertConditions {
+			if c := ModelMonitoringAlertCondition_FromProto(mapCtx, v); c != nil {
+				out.FeatureAlertConditions[k] = *c
+			}
+		}
+	}
+	out.BatchExplanationDedicatedResources = BatchDedicatedResourcesWithRequired_FromProto(mapCtx, in.GetBatchExplanationDedicatedResources())
+	return out
+}
+
+/* found existing non-generated mapping function "ModelMonitoringObjectiveSpec_FeatureAttributionSpecWithRequired_ToProto", skipping
+func ModelMonitoringObjectiveSpec_FeatureAttributionSpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringObjectiveSpec_FeatureAttributionSpecWithRequired) *aiplatformpb.ModelMonitoringObjectiveSpec_FeatureAttributionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringObjectiveSpec_FeatureAttributionSpec{}
+	out.Features = in.Features
+	out.DefaultAlertCondition = ModelMonitoringAlertCondition_ToProto(mapCtx, in.DefaultAlertCondition)
+	if in.FeatureAlertConditions != nil {
+		out.FeatureAlertConditions = make(map[string]*pb.ModelMonitoringAlertCondition, len(in.FeatureAlertConditions))
+		for k, v := range in.FeatureAlertConditions {
+			out.FeatureAlertConditions[k] = ModelMonitoringAlertCondition_ToProto(mapCtx, &v)
+		}
+	}
+	out.BatchExplanationDedicatedResources = BatchDedicatedResourcesWithRequired_ToProto(mapCtx, in.BatchExplanationDedicatedResources)
+	return out
+}
+*/
+
 func ModelMonitoringObjectiveSpec_TabularObjective_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringObjectiveSpec_TabularObjective) *krm.ModelMonitoringObjectiveSpec_TabularObjective {
 	if in == nil {
 		return nil
@@ -4106,6 +4356,28 @@ func ModelMonitoringObjectiveSpec_TabularObjective_ToProto(mapCtx *direct.MapCon
 	out.FeatureDriftSpec = ModelMonitoringObjectiveSpec_DataDriftSpec_ToProto(mapCtx, in.FeatureDriftSpec)
 	out.PredictionOutputDriftSpec = ModelMonitoringObjectiveSpec_DataDriftSpec_ToProto(mapCtx, in.PredictionOutputDriftSpec)
 	out.FeatureAttributionSpec = ModelMonitoringObjectiveSpec_FeatureAttributionSpec_ToProto(mapCtx, in.FeatureAttributionSpec)
+	return out
+}
+
+func ModelMonitoringObjectiveSpec_TabularObjectiveWithRequired_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringObjectiveSpec_TabularObjective) *krm.ModelMonitoringObjectiveSpec_TabularObjectiveWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringObjectiveSpec_TabularObjectiveWithRequired{}
+	out.FeatureDriftSpec = ModelMonitoringObjectiveSpec_DataDriftSpec_FromProto(mapCtx, in.GetFeatureDriftSpec())
+	out.PredictionOutputDriftSpec = ModelMonitoringObjectiveSpec_DataDriftSpec_FromProto(mapCtx, in.GetPredictionOutputDriftSpec())
+	out.FeatureAttributionSpec = ModelMonitoringObjectiveSpec_FeatureAttributionSpecWithRequired_FromProto(mapCtx, in.GetFeatureAttributionSpec())
+	return out
+}
+
+func ModelMonitoringObjectiveSpec_TabularObjectiveWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringObjectiveSpec_TabularObjectiveWithRequired) *aiplatformpb.ModelMonitoringObjectiveSpec_TabularObjective {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringObjectiveSpec_TabularObjective{}
+	out.FeatureDriftSpec = ModelMonitoringObjectiveSpec_DataDriftSpec_ToProto(mapCtx, in.FeatureDriftSpec)
+	out.PredictionOutputDriftSpec = ModelMonitoringObjectiveSpec_DataDriftSpec_ToProto(mapCtx, in.PredictionOutputDriftSpec)
+	out.FeatureAttributionSpec = ModelMonitoringObjectiveSpec_FeatureAttributionSpecWithRequired_ToProto(mapCtx, in.FeatureAttributionSpec)
 	return out
 }
 
@@ -6216,6 +6488,24 @@ func SampledShapleyAttribution_ToProto(mapCtx *direct.MapContext, in *krm.Sample
 	return out
 }
 
+func SampledShapleyAttributionWithRequired_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.SampledShapleyAttribution) *krm.SampledShapleyAttributionWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SampledShapleyAttributionWithRequired{}
+	out.PathCount = direct.LazyPtr(in.GetPathCount())
+	return out
+}
+
+func SampledShapleyAttributionWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.SampledShapleyAttributionWithRequired) *aiplatformpb.SampledShapleyAttribution {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.SampledShapleyAttribution{}
+	out.PathCount = direct.ValueOf(in.PathCount)
+	return out
+}
+
 func SamplingStrategy_FromProto(mapCtx *direct.MapContext, in *pb.SamplingStrategy) *krm.SamplingStrategy {
 	if in == nil {
 		return nil
@@ -8112,3 +8402,29 @@ func XraiAttribution_ToProto(mapCtx *direct.MapContext, in *krm.XraiAttribution)
 	out.BlurBaselineConfig = BlurBaselineConfig_ToProto(mapCtx, in.BlurBaselineConfig)
 	return out
 }
+
+/* found existing non-generated mapping function "XraiAttributionWithRequired_FromProto", skipping
+func XraiAttributionWithRequired_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.XraiAttribution) *krm.XraiAttributionWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.XraiAttributionWithRequired{}
+	out.StepCount = direct.LazyPtr(in.GetStepCount())
+	out.SmoothGradConfig = SmoothGradConfig_FromProto(mapCtx, in.GetSmoothGradConfig())
+	out.BlurBaselineConfig = BlurBaselineConfig_FromProto(mapCtx, in.GetBlurBaselineConfig())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "XraiAttributionWithRequired_ToProto", skipping
+func XraiAttributionWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.XraiAttributionWithRequired) *aiplatformpb.XraiAttribution {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.XraiAttribution{}
+	out.StepCount = direct.ValueOf(in.StepCount)
+	out.SmoothGradConfig = SmoothGradConfig_ToProto(mapCtx, in.SmoothGradConfig)
+	out.BlurBaselineConfig = BlurBaselineConfig_ToProto(mapCtx, in.BlurBaselineConfig)
+	return out
+}
+*/

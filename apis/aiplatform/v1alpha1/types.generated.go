@@ -306,6 +306,22 @@ type Content struct {
 	Parts []Part `json:"parts,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.Content
+type ContentWithRequired struct {
+	// Optional. The producer of the content. Must be either 'user' or 'model'.
+	//
+	//  Useful to set for multi-turn conversations, otherwise can be left blank
+	//  or unset.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Content.role
+	Role *string `json:"role,omitempty"`
+
+	// Required. Ordered `Parts` that constitute a single message. Parts may have
+	//  different IANA MIME types.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Content.parts
+	// +required
+	Parts []Part `json:"parts,omitempty"`
+}
+
 /* unreachable type CorpusStatus
 // +kcc:proto=google.cloud.aiplatform.v1.CorpusStatus
 type CorpusStatus struct {
@@ -3988,7 +4004,6 @@ type XraiAttribution struct {
 type BatchDedicatedResources struct {
 	// Required. Immutable. The specification of a single machine.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BatchDedicatedResources.machine_spec
-	// +required
 	MachineSpec *MachineSpec `json:"machineSpec,omitempty"`
 
 	// Immutable. The number of machine replicas used at the start of the batch
@@ -4112,7 +4127,6 @@ type EvaluationParserConfig_CustomCodeParserConfig struct {
 }
 */
 
-/* unreachable type ExamplesWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1beta1.Examples
 type ExamplesWithRequired struct {
 	// The Cloud Storage input instances.
@@ -4140,9 +4154,7 @@ type ExamplesWithRequired struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Examples.neighbor_count
 	NeighborCount *int32 `json:"neighborCount,omitempty"`
 }
-*/
 
-/* unreachable type Examples_ExampleGCSSourceWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1beta1.Examples.ExampleGcsSource
 type Examples_ExampleGCSSourceWithRequired struct {
 	// The format in which instances are given, if not specified, assume it's
@@ -4154,19 +4166,6 @@ type Examples_ExampleGCSSourceWithRequired struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Examples.ExampleGcsSource.gcs_source
 	GCSSource *GCSSourceWithRequired `json:"gcsSource,omitempty"`
 }
-*/
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ExplanationSpec
-type ExplanationSpecWithRequired struct {
-	// Required. Parameters that configure explaining of the Model's predictions.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExplanationSpec.parameters
-	// +required
-	Parameters *ExplanationParameters `json:"parameters,omitempty"`
-
-	// Optional. Metadata describing the Model's input and output for explanation.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExplanationSpec.metadata
-	Metadata *ExplanationMetadata `json:"metadata,omitempty"`
-}
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.FlexStart
 type FlexStart struct {
@@ -4177,7 +4176,6 @@ type FlexStart struct {
 	MaxRuntimeDuration *string `json:"maxRuntimeDuration,omitempty"`
 }
 
-/* unreachable type GCSSourceWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1beta1.GcsSource
 type GCSSourceWithRequired struct {
 	// Required. Google Cloud Storage URI(-s) to the input file(s). May contain
@@ -4187,7 +4185,6 @@ type GCSSourceWithRequired struct {
 	// +required
 	URIs []string `json:"uris,omitempty"`
 }
-*/
 
 /* unreachable type GenerationConfig_ModelConfig
 // +kcc:proto=google.cloud.aiplatform.v1beta1.GenerationConfig.ModelConfig
@@ -4198,7 +4195,6 @@ type GenerationConfig_ModelConfig struct {
 }
 */
 
-/* unreachable type IntegratedGradientsAttributionWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1beta1.IntegratedGradientsAttribution
 type IntegratedGradientsAttributionWithRequired struct {
 	// Required. The number of steps for approximating the path integral.
@@ -4228,7 +4224,6 @@ type IntegratedGradientsAttributionWithRequired struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.IntegratedGradientsAttribution.blur_baseline_config
 	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
 }
-*/
 
 /* unreachable type MetricMetadata
 // +kcc:proto=google.cloud.aiplatform.v1beta1.MetricMetadata
@@ -4720,7 +4715,6 @@ type RubricGenerationSpec struct {
 }
 */
 
-/* unreachable type SampledShapleyAttributionWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1beta1.SampledShapleyAttribution
 type SampledShapleyAttributionWithRequired struct {
 	// Required. The number of feature permutations to consider when approximating
@@ -4731,9 +4725,7 @@ type SampledShapleyAttributionWithRequired struct {
 	// +required
 	PathCount *int32 `json:"pathCount,omitempty"`
 }
-*/
 
-/* unreachable type XraiAttributionWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1beta1.XraiAttribution
 type XraiAttributionWithRequired struct {
 	// Required. The number of steps for approximating the path integral.
@@ -4763,7 +4755,6 @@ type XraiAttributionWithRequired struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.XraiAttribution.blur_baseline_config
 	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
 }
-*/
 
 // +kcc:proto=google.protobuf.Int32Value
 type Int32Value struct {

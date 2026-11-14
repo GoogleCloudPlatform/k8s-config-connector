@@ -107,80 +107,80 @@ entries:
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional in KRM.
+    resolution: edited
+    note: enforced via ContentWithRequired
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.contents[].parts[].codeExecutionResult.outcome
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional in KRM.
+    resolution: edited
+    note: enforced via ContentWithRequired referencing CodeExecutionResult
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.contents[].parts[].executableCode.code
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional in KRM.
+    resolution: edited
+    note: enforced via ContentWithRequired referencing ExecutableCode
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.contents[].parts[].executableCode.language
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional in KRM.
+    resolution: edited
+    note: enforced via ContentWithRequired referencing ExecutableCode
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.contents[].parts[].fileData.fileURI
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional in KRM.
+    resolution: edited
+    note: enforced via ContentWithRequired referencing FileData
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.contents[].parts[].fileData.mimeType
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional in KRM.
+    resolution: edited
+    note: enforced via ContentWithRequired referencing FileData
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.contents[].parts[].functionResponse.name
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional in KRM.
+    resolution: edited
+    note: enforced via ContentWithRequired referencing FunctionResponse
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.contents[].parts[].functionResponse.response
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional in KRM.
+    resolution: edited
+    note: enforced via ContentWithRequired referencing FunctionResponse
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.contents[].parts[].inlineData.data
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional in KRM.
+    resolution: edited
+    note: enforced via ContentWithRequired referencing Blob
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.contents[].parts[].inlineData.mimeType
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional in KRM.
+    resolution: edited
+    note: enforced via ContentWithRequired referencing Blob
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.encryptionSpec.kmsKeyName
@@ -195,8 +195,8 @@ entries:
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformModelMonitor, AIPlatformNotebookRuntimeTemplate, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformCachedContent only, give AIPlatformCachedContent its own copy of EncryptionSpec. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional in KRM.
+    resolution: edited
+    note: enforced via EncryptionSpecWithRequired
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.location
@@ -227,80 +227,80 @@ entries:
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional in KRM.
+    resolution: edited
+    note: enforced via ContentWithRequired
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.systemInstruction.parts[].codeExecutionResult.outcome
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional in KRM.
+    resolution: edited
+    note: enforced via ContentWithRequired referencing CodeExecutionResult
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.systemInstruction.parts[].executableCode.code
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional in KRM.
+    resolution: edited
+    note: enforced via ContentWithRequired referencing ExecutableCode
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.systemInstruction.parts[].executableCode.language
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional in KRM.
+    resolution: edited
+    note: enforced via ContentWithRequired referencing ExecutableCode
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.systemInstruction.parts[].fileData.fileURI
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional in KRM.
+    resolution: edited
+    note: enforced via ContentWithRequired referencing FileData
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.systemInstruction.parts[].fileData.mimeType
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional in KRM.
+    resolution: edited
+    note: enforced via ContentWithRequired referencing FileData
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.systemInstruction.parts[].functionResponse.name
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional in KRM.
+    resolution: edited
+    note: enforced via ContentWithRequired referencing FunctionResponse
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.systemInstruction.parts[].functionResponse.response
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional in KRM.
+    resolution: edited
+    note: enforced via ContentWithRequired referencing FunctionResponse
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.systemInstruction.parts[].inlineData.data
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional in KRM.
+    resolution: edited
+    note: enforced via ContentWithRequired referencing Blob
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.systemInstruction.parts[].inlineData.mimeType
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional in KRM.
+    resolution: edited
+    note: enforced via ContentWithRequired referencing Blob
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].functionDeclarations[].parameters.additionalProperties
@@ -675,8 +675,8 @@ entries:
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCachedContent, AIPlatformCustomJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformModelMonitor, AIPlatformNotebookRuntimeTemplate, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of EncryptionSpec. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional to match existing shared EncryptionSpec across aiplatform resources
+    resolution: edited
+    note: enforced via EncryptionSpecWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.location
@@ -1041,8 +1041,8 @@ entries:
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCachedContent, AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformNotebookRuntimeTemplate, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformModelMonitor only, give AIPlatformModelMonitor its own copy of EncryptionSpec. AIPlatformModelMonitor is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept kmsKeyRef optional to avoid breaking existing resources sharing EncryptionSpec.
+    resolution: edited
+    note: enforced via EncryptionSpecWithRequired
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.metadata.featureAttributionsSchemaURI
@@ -1065,8 +1065,8 @@ entries:
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationMetadata in aiplatformmodel_types.go is also used by AIPlatformModel, VertexAITrainingPipeline. +required on ExplanationMetadata.Inputs would apply there too. To enforce it for AIPlatformModelMonitor only, give AIPlatformModelMonitor its own copy of ExplanationMetadata. AIPlatformModelMonitor is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept inputs optional to maintain shared ExplanationMetadata consistency.
+    resolution: edited
+    note: enforced via ExplanationMetadataWithRequired on ExplanationSpecWithRequired
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.metadata.inputs.KEY.encodedBaselines
@@ -1097,8 +1097,8 @@ entries:
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationMetadata in aiplatformmodel_types.go is also used by AIPlatformModel, VertexAITrainingPipeline. +required on ExplanationMetadata.Outputs would apply there too. To enforce it for AIPlatformModelMonitor only, give AIPlatformModelMonitor its own copy of ExplanationMetadata. AIPlatformModelMonitor is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept outputs optional to maintain shared ExplanationMetadata consistency.
+    resolution: edited
+    note: enforced via ExplanationMetadataWithRequired on ExplanationSpecWithRequired
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.metadata.outputs.KEY.indexDisplayNameMapping
@@ -1113,16 +1113,16 @@ entries:
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformModel, VertexAITrainingPipeline. To enforce it for AIPlatformModelMonitor only, give AIPlatformModelMonitor its own copy of ExplanationParameters whose Examples field holds ExamplesWithRequired, and run generate.sh again. AIPlatformModelMonitor is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept uris optional to maintain shared ExplanationParameters consistency.
+    resolution: edited
+    note: enforced via ExamplesWithRequired and Examples_ExampleGCSSourceWithRequired on ExplanationParametersWithRequired
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.parameters.examples.gcsSource.uris
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformModel, VertexAITrainingPipeline. To enforce it for AIPlatformModelMonitor only, give AIPlatformModelMonitor its own copy of ExplanationParameters whose Examples field holds ExamplesWithRequired, and run generate.sh again. AIPlatformModelMonitor is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept uris optional to maintain shared ExplanationParameters consistency.
+    resolution: edited
+    note: enforced via ExamplesWithRequired and GCSSourceWithRequired on ExplanationParametersWithRequired
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.parameters.examples.nearestNeighborSearchConfig
@@ -1137,8 +1137,8 @@ entries:
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformModel, VertexAITrainingPipeline. To enforce it for AIPlatformModelMonitor only, give AIPlatformModelMonitor its own copy of ExplanationParameters whose IntegratedGradientsAttribution field holds IntegratedGradientsAttributionWithRequired, and run generate.sh again. AIPlatformModelMonitor is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept stepCount optional to maintain shared ExplanationParameters consistency.
+    resolution: edited
+    note: enforced via IntegratedGradientsAttributionWithRequired on ExplanationParametersWithRequired
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.parameters.outputIndices
@@ -1153,16 +1153,16 @@ entries:
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformModel, VertexAITrainingPipeline. To enforce it for AIPlatformModelMonitor only, give AIPlatformModelMonitor its own copy of ExplanationParameters whose SampledShapleyAttribution field holds SampledShapleyAttributionWithRequired, and run generate.sh again. AIPlatformModelMonitor is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept pathCount optional to maintain shared ExplanationParameters consistency.
+    resolution: edited
+    note: enforced via SampledShapleyAttributionWithRequired on ExplanationParametersWithRequired
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.parameters.xraiAttribution.stepCount
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformModel, VertexAITrainingPipeline. To enforce it for AIPlatformModelMonitor only, give AIPlatformModelMonitor its own copy of ExplanationParameters whose XraiAttribution field holds XraiAttributionWithRequired, and run generate.sh again. AIPlatformModelMonitor is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept stepCount optional to maintain shared ExplanationParameters consistency.
+    resolution: edited
+    note: enforced via XraiAttributionWithRequired on ExplanationParametersWithRequired
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.location
@@ -1209,8 +1209,8 @@ entries:
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformModelMonitorSpec.TabularObjective in aiplatformmodelmonitor_types.go from ModelMonitoringObjectiveSpec_TabularObjective to ModelMonitoringObjectiveSpec_TabularObjectiveWithRequired and run generate.sh again. AIPlatformModelMonitor is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept reservationAffinityType optional to avoid breaking existing resources sharing TabularObjective.
+    resolution: edited
+    note: enforced via ModelMonitoringObjectiveSpec_TabularObjectiveWithRequired, ModelMonitoringObjectiveSpec_FeatureAttributionSpecWithRequired, and BatchDedicatedResourcesWithRequired referencing MachineSpecWithRequired and ReservationAffinityWithRequired
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tabularObjective.featureAttributionSpec.batchExplanationDedicatedResources.machineSpec.reservationAffinity.values
@@ -1342,8 +1342,8 @@ entries:
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCachedContent, AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformModelMonitor, AIPlatformNotebookRuntimeTemplate, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformNotebookExecutionJob only, give AIPlatformNotebookExecutionJob its own copy of EncryptionSpec. AIPlatformNotebookExecutionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: keeping shared EncryptionSpec optional to avoid diverging from other aiplatform resources and breaking existing configurations.
+    resolution: edited
+    note: enforced via EncryptionSpecWithRequired
   - kind: AIPlatformNotebookExecutionJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.gcsNotebookSource
@@ -1420,7 +1420,7 @@ entries:
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.encryptionSpec.kmsKeyRef
     reason: required-not-enforced
-    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCachedContent, AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformModelMonitor, AIPlatformNotebookExecutionJob, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformNotebookRuntimeTemplate only, give AIPlatformNotebookRuntimeTemplate its own copy of EncryptionSpec. AIPlatformNotebookRuntimeTemplate is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCustomJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformNotebookRuntimeTemplate only, give AIPlatformNotebookRuntimeTemplate its own copy of EncryptionSpec. AIPlatformNotebookRuntimeTemplate is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: open
   - kind: AIPlatformNotebookRuntimeTemplate
     group: aiplatform.cnrm.cloud.google.com
@@ -1498,8 +1498,8 @@ entries:
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelMonitor, AIPlatformNotebookRuntimeTemplate, AIPlatformPersistentResource, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, AIPlatformPipelineJob, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformRAGCorpus only, give AIPlatformRAGCorpus its own copy of EncryptionSpec. AIPlatformRAGCorpus is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: EncryptionSpec is optional, so KmsKeyRef remains optional.
+    resolution: edited
+    note: enforced via EncryptionSpecWithRequired
   - kind: AIPlatformRAGCorpus
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.location

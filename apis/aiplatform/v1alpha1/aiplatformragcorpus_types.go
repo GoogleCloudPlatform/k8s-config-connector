@@ -65,7 +65,7 @@ type AIPlatformRAGCorpusSpec struct {
 	//  field can only be set at corpus creation time, and cannot be updated or
 	//  deleted.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.RagCorpus.encryption_spec
-	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
+	EncryptionSpec *EncryptionSpecWithRequired `json:"encryptionSpec,omitempty"`
 }
 
 // AIPlatformRAGCorpusStatus defines the config connector machine state of AIPlatformRAGCorpus

@@ -371,6 +371,7 @@
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.metadata.outputs" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.examples.exampleGCSSource.dataFormat" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.examples.exampleGCSSource.gcsSource.uris[]" is not set in unstructured objects
+[missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.examples.gcsSource.uris[]" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.examples.nearestNeighborSearchConfig.boolValue" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.examples.nearestNeighborSearchConfig.nullValue" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.examples.nearestNeighborSearchConfig.numberValue" is not set in unstructured objects

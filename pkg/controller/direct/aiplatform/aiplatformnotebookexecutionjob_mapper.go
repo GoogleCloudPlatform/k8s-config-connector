@@ -62,6 +62,6 @@ func AIPlatformNotebookExecutionJobSpec_ToProto(mapCtx *direct.MapContext, in *k
 		out.ScheduleResourceName = in.ScheduleRef.External
 	}
 	out.KernelName = direct.ValueOf(in.KernelName)
-	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	out.EncryptionSpec = EncryptionSpecWithRequired_ToProto(mapCtx, in.EncryptionSpec)
 	return out
 }
