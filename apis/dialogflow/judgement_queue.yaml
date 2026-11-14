@@ -115,7 +115,7 @@ entries:
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
     status: resolved
     resolution: not-applicable
-    note: polymorphic reference to an ES or CX agent environment path (projects/*/locations/*/agent/environments/* or projects/*/locations/*/agents/*/environments/*) rather than a single direct KCC resource
+    note: polymorphic target accepts ES or CX agent or environment path; DialogflowEnvironmentRef only models CX environments and cannot represent ES environments or direct agent paths
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.endUserSuggestionConfig.featureConfigs[].conversationModelConfig.model
@@ -131,7 +131,7 @@ entries:
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
     status: resolved
     resolution: not-applicable
-    note: expects regional agent path projects/<Project ID>/locations/<Location ID>/agent whereas DialogflowAgentRef is global projects/{project}/agent
+    note: target requires regional Dialogflow ES agent (projects/*/locations/*/agent); DialogflowAgentRef is global only (projects/*/agent) and DialogflowCXAgent has distinct format (.../agents/*)
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.endUserSuggestionConfig.featureConfigs[].queryConfig.dialogflowQuerySource.humanAgentSideConfig.agent
@@ -139,7 +139,7 @@ entries:
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
     status: resolved
     resolution: not-applicable
-    note: expects regional agent path projects/<Project ID>/locations/<Location ID>/agent whereas DialogflowAgentRef is global projects/{project}/agent
+    note: target requires regional Dialogflow ES agent (projects/*/locations/*/agent); DialogflowAgentRef is global only (projects/*/agent) and DialogflowCXAgent has distinct format (.../agents/*)
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.endUserSuggestionConfig.featureConfigs[].queryConfig.documentQuerySource.documents
@@ -147,7 +147,7 @@ entries:
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Document (google.api.resource_reference); confirm whether it should be a KCC reference
     status: resolved
     resolution: not-applicable
-    note: documents are data-plane knowledge content rather than declarative KCC resources
+    note: DialogflowDocument is a non-declarative data-plane document (excluded in nondeclarative.go) with no KCC resource or Ref type
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.endUserSuggestionConfig.featureConfigs[].queryConfig.knowledgeBaseQuerySource.knowledgeBases
@@ -179,7 +179,7 @@ entries:
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
     status: resolved
     resolution: not-applicable
-    note: expects regional agent path projects/<Project ID>/locations/<Location ID>/agent whereas DialogflowAgentRef is global projects/{project}/agent
+    note: target requires regional Dialogflow ES agent (projects/*/locations/*/agent); DialogflowAgentRef is global only (projects/*/agent) and DialogflowCXAgent has distinct format (.../agents/*)
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.humanAgentSuggestionConfig.featureConfigs[].queryConfig.dialogflowQuerySource.humanAgentSideConfig.agent
@@ -187,7 +187,7 @@ entries:
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
     status: resolved
     resolution: not-applicable
-    note: expects regional agent path projects/<Project ID>/locations/<Location ID>/agent whereas DialogflowAgentRef is global projects/{project}/agent
+    note: target requires regional Dialogflow ES agent (projects/*/locations/*/agent); DialogflowAgentRef is global only (projects/*/agent) and DialogflowCXAgent has distinct format (.../agents/*)
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.humanAgentSuggestionConfig.featureConfigs[].queryConfig.documentQuerySource.documents
@@ -195,7 +195,7 @@ entries:
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Document (google.api.resource_reference); confirm whether it should be a KCC reference
     status: resolved
     resolution: not-applicable
-    note: documents are data-plane knowledge content rather than declarative KCC resources
+    note: DialogflowDocument is a non-declarative data-plane document (excluded in nondeclarative.go) with no KCC resource or Ref type
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.humanAgentSuggestionConfig.featureConfigs[].queryConfig.knowledgeBaseQuerySource.knowledgeBases
