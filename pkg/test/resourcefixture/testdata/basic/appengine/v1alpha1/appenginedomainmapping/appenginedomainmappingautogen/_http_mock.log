@@ -1,7 +1,6 @@
 # Phase: CREATE
-GET https://appengine.googleapis.com/v1/apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}?alt=json
+GET https://appengine.googleapis.com/v1/apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -23,14 +22,13 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://appengine.googleapis.com/v1/apps/${projectId}/domainMappings?alt=json
+POST https://appengine.googleapis.com/v1/apps/${projectId}/domainMappings?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "id": "000000000000000000000",
   "sslSettings": {
-    "sslManagementType": "AUTOMATIC"
+    "sslManagementType": 1
   }
 }
 
@@ -57,8 +55,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -100,9 +98,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://appengine.googleapis.com/v1/apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}?alt=json
+GET https://appengine.googleapis.com/v1/apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -121,20 +118,19 @@ X-Xss-Protection: 0
     {
       "name": "appenginedomainmapping${uniqueId}",
       "rrdata": "ghs.googlehosted.com.",
-      "type": "CNAME"
+      "type": 3
     }
   ],
   "sslSettings": {
-    "sslManagementType": "AUTOMATIC"
+    "sslManagementType": 1
   }
 }
 
 ---
 
 # Phase: DELETE
-DELETE https://appengine.googleapis.com/v1/apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}?alt=json
+DELETE https://appengine.googleapis.com/v1/apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -159,8 +155,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8

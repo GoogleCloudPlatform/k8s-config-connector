@@ -1,0 +1,38 @@
+2c2
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}?alt=json
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+25c25
+< POST https://appengine.googleapis.com/v1/apps/${projectId}/domainMappings?alt=json
+---
+> POST https://appengine.googleapis.com/v1/apps/${projectId}/domainMappings?%24alt=json%3Benum-encoding%3Dint
+31c31
+<     "sslManagementType": "AUTOMATIC"
+---
+>     "sslManagementType": 1
+58c58,59
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+> Content-Type: application/json
+100c101
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}?alt=json
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+120c121
+<       "type": "CNAME"
+---
+>       "type": 3
+124c125
+<     "sslManagementType": "AUTOMATIC"
+---
+>     "sslManagementType": 1
+131c132
+< DELETE https://appengine.googleapis.com/v1/apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}?alt=json
+---
+> DELETE https://appengine.googleapis.com/v1/apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+157c158,159
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+> Content-Type: application/json
