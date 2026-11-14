@@ -549,6 +549,52 @@ func CCInsightsQAScorecardObservedState_ToProto(mapCtx *direct.MapContext, in *k
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
+func CCInsightsQAScorecardRevisionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecardRevision) *krm.CCInsightsQAScorecardRevisionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CCInsightsQAScorecardRevisionObservedState{}
+	// MISSING: Name
+	out.Snapshot = QaScorecardObservedState_FromProto(mapCtx, in.GetSnapshot())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	// MISSING: AlternateIds
+	// (near miss): "AlternateIds" vs "AlternateIDs"
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func CCInsightsQAScorecardRevisionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsQAScorecardRevisionObservedState) *pb.QaScorecardRevision {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QaScorecardRevision{}
+	// MISSING: Name
+	out.Snapshot = QaScorecardObservedState_ToProto(mapCtx, in.Snapshot)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	// MISSING: AlternateIds
+	// (near miss): "AlternateIds" vs "AlternateIDs"
+	out.State = direct.Enum_ToProto[pb.QaScorecardRevision_State](mapCtx, in.State)
+	return out
+}
+func CCInsightsQAScorecardRevisionSpec_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecardRevision) *krm.CCInsightsQAScorecardRevisionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CCInsightsQAScorecardRevisionSpec{}
+	// MISSING: Name
+	out.Snapshot = QaScorecard_FromProto(mapCtx, in.GetSnapshot())
+	// MISSING: AlternateIds
+	return out
+}
+func CCInsightsQAScorecardRevisionSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsQAScorecardRevisionSpec) *pb.QaScorecardRevision {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QaScorecardRevision{}
+	// MISSING: Name
+	out.Snapshot = QaScorecard_ToProto(mapCtx, in.Snapshot)
+	// MISSING: AlternateIds
+	return out
+}
 func CCInsightsQAScorecardSpec_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecard) *krm.CCInsightsQAScorecardSpec {
 	if in == nil {
 		return nil
@@ -1671,6 +1717,54 @@ func QaQuestion_MetricsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	}
 	out := &pb.QaQuestion_Metrics{}
 	out.Accuracy = direct.ValueOf(in.Accuracy)
+	return out
+}
+func QaScorecard_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecard) *krm.QaScorecard {
+	if in == nil {
+		return nil
+	}
+	out := &krm.QaScorecard{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	return out
+}
+func QaScorecard_ToProto(mapCtx *direct.MapContext, in *krm.QaScorecard) *pb.QaScorecard {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QaScorecard{}
+	out.Name = direct.ValueOf(in.Name)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	return out
+}
+func QaScorecardObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecard) *krm.QaScorecardObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.QaScorecardObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func QaScorecardObservedState_ToProto(mapCtx *direct.MapContext, in *krm.QaScorecardObservedState) *pb.QaScorecard {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QaScorecard{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
 func QaScorecardResult_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecardResult) *krm.QaScorecardResult {

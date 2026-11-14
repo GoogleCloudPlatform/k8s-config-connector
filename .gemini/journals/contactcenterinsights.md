@@ -74,6 +74,17 @@
   3. Verified ID generation, timestamp updates, field mask updates, and URL normalizations for `${analysisRuleId}` in `mockgcp/mockcontactcenterinsights/normalize.go`.
   4. Verified both `ccinsightsanalysisrule-minimal` and `ccinsightsanalysisrule-maximal` test fixtures pass `hack/compare-mock "fixtures/ccinsightsanalysisrule"` and `TestGoldenLogAlignment` with 0 diffs.
 
+### [2026-11-14] CCInsightsQAScorecardRevision Greenfield Prepopulate (Step 1a)
+- **Context**: Mechanically prepopulating direct KRM types, IdentityV2, reference, CRD, and `judgement_queue.yaml` for `CCInsightsQAScorecardRevision` (`google.cloud.contactcenterinsights.v1.QaScorecardRevision`).
+- **Implementation**:
+  1. Configured `apis/contactcenterinsights/generate.sh` with `--prepopulate-resource` for `CCInsightsQAScorecardRevision:QaScorecardRevision` in `generate-types` and `generate-identity`.
+  2. Generated `apis/contactcenterinsights/v1alpha1/ccinsightsqascorecardrevision_types.go`, identity, reference, deepcopy, mapper, and CRD.
+  3. Added `CCInsightsQAScorecardRevision` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. Added untriaged findings for `CCInsightsQAScorecardRevision` into `apis/contactcenterinsights/judgement_queue.yaml`.
+  5. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via golden test recording.
+- **Verification**: Verified `apis/contactcenterinsights/...`, `pkg/controller/direct/contactcenterinsights/...`, and `tests/apichecks/...` all pass with zero errors.
+
+
 
 
 

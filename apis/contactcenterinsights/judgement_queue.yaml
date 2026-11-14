@@ -21,6 +21,34 @@
 # file does not have.
 
 entries:
+  - kind: CCInsightsQAScorecardRevision
+    group: contactcenterinsights.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: CCInsightsQAScorecardRevision
+    group: contactcenterinsights.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}/revisions/{revision}" contains ancestor segment(s) qaScorecards/{qa_scorecard} with no matching reference or field on CCInsightsQAScorecardRevisionSpec
+    status: open
+  - kind: CCInsightsQAScorecardRevision
+    group: contactcenterinsights.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: CCInsightsQAScorecardRevision
+    group: contactcenterinsights.cnrm.cloud.google.com
+    field: .spec.qaScorecardRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to CCInsightsQAScorecardRef, read from the qaScorecards segment of projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}/revisions/{revision}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: CCInsightsQAScorecardRevision
+    group: contactcenterinsights.cnrm.cloud.google.com
+    field: .spec.snapshot.name
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}"
+    status: open
   - kind: CCInsightsQaQuestion
     group: contactcenterinsights.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
