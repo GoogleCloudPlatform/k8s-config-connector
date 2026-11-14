@@ -184,15 +184,21 @@ spec:
                               description: (Optional) A list of identities that are
                                 allowed access through this EgressPolicy. Should be
                                 in the format of email address. The email address
-                                should represent individual user or service account
-                                only.
+                                should represent an individual user, service account,
+                                or Google group.
                               items:
                                 oneOf:
                                 - required:
                                   - serviceAccountRef
                                 - required:
+                                  - group
+                                - required:
                                   - user
                                 properties:
+                                  group:
+                                    description: A Google group identity, in the format
+                                      of a Google Groups email address.
+                                    type: string
                                   serviceAccountRef:
                                     description: A reference to an IAMServiceAccount
                                       resource.
@@ -350,15 +356,21 @@ spec:
                               description: (Optional) A list of identities that are
                                 allowed access through this ingress policy. Should
                                 be in the format of email address. The email address
-                                should represent individual user or service account
-                                only.
+                                should represent an individual user, service account,
+                                or Google group.
                               items:
                                 oneOf:
                                 - required:
                                   - serviceAccountRef
                                 - required:
+                                  - group
+                                - required:
                                   - user
                                 properties:
+                                  group:
+                                    description: A Google group identity, in the format
+                                      of a Google Groups email address.
+                                    type: string
                                   serviceAccountRef:
                                     description: A reference to an IAMServiceAccount
                                       resource.
@@ -696,15 +708,21 @@ spec:
                               description: (Optional) A list of identities that are
                                 allowed access through this EgressPolicy. Should be
                                 in the format of email address. The email address
-                                should represent individual user or service account
-                                only.
+                                should represent an individual user, service account,
+                                or Google group.
                               items:
                                 oneOf:
                                 - required:
                                   - serviceAccountRef
                                 - required:
+                                  - group
+                                - required:
                                   - user
                                 properties:
+                                  group:
+                                    description: A Google group identity, in the format
+                                      of a Google Groups email address.
+                                    type: string
                                   serviceAccountRef:
                                     description: A reference to an IAMServiceAccount
                                       resource.
@@ -862,15 +880,21 @@ spec:
                               description: (Optional) A list of identities that are
                                 allowed access through this ingress policy. Should
                                 be in the format of email address. The email address
-                                should represent individual user or service account
-                                only.
+                                should represent an individual user, service account,
+                                or Google group.
                               items:
                                 oneOf:
                                 - required:
                                   - serviceAccountRef
                                 - required:
+                                  - group
+                                - required:
                                   - user
                                 properties:
+                                  group:
+                                    description: A Google group identity, in the format
+                                      of a Google Groups email address.
+                                    type: string
                                   serviceAccountRef:
                                     description: A reference to an IAMServiceAccount
                                       resource.
