@@ -115,8 +115,11 @@ spec:
                   type: object
                 type: array
               location:
-                description: The location of this resource.
+                description: The location that this resource belongs to.
                 type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
               mcpServerSpec:
                 description: Optional. The spec of the MCP Server. When `mcp_server_spec`
                   is set, the type of the service is MCP Server.
@@ -133,7 +136,7 @@ spec:
                 - type
                 type: object
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:

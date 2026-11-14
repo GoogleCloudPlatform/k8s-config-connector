@@ -14,14 +14,12 @@
 
 // API sources for AgentRegistryService, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/5e3f9202b4b2311a242e8fcb3d8f95dac63a9c7b/google/cloud/agentregistry/v1/service.proto
-// +kcc:source:service-docs=https://docs.cloud.google.com/agent-registry/overview
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/agent-registry/overview/docs/reference/rest/v1/projects.locations.services
+// +kcc:source:service-docs=https://cloud.google.com/gemini-enterprise-agent-platform/govern/agent-registry
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,11 +30,7 @@ var AgentRegistryServiceGVK = GroupVersion.WithKind("AgentRegistryService")
 // +kcc:spec:proto=google.cloud.agentregistry.v1.Service
 // +kcc:required-from-proto
 type AgentRegistryServiceSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The AgentRegistryService name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
