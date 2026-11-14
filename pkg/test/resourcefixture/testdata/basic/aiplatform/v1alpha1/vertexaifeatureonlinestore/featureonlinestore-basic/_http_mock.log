@@ -1,10 +1,11 @@
+# Phase: CREATE
 GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnlineStore
 
 {
-  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = The FeatureOnlineStore "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}" does not exist.
+error: rpc error: code = NotFound desc = The FeatureOnlineStore does not exist.
 
 {}
 
@@ -25,7 +26,7 @@ GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/CreateFeatureOnl
       "foo": "bar"
     }
   },
-  "featureOnlineStoreId": "featureonlinestore-${uniqueId}",
+  "featureOnlineStoreId": "featureonlinestore${uniqueId}",
   "parent": "projects/${projectId}/locations/us-central1"
 }
 
@@ -39,7 +40,7 @@ OK
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}/operations/${operationID}"
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}/operations/${operationID}"
 }
 
 ---
@@ -47,7 +48,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}/operations/${operationID}"
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}/operations/${operationID}"
 }
 
 OK
@@ -61,24 +62,10 @@ OK
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}/operations/${operationID}",
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1.FeatureOnlineStore",
-    "bigtable": {
-      "autoScaling": {
-        "cpuUtilizationTarget": 50,
-        "maxNodeCount": 2,
-        "minNodeCount": 1
-      }
-    },
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "etag": "abcdef0123A=",
-    "labels": {
-      "foo": "bar"
-    },
-    "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}",
-    "state": "STABLE",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
+    "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}"
   }
 }
 
@@ -87,7 +74,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnlineStore
 
 {
-  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}"
 }
 
 OK
@@ -105,7 +92,36 @@ OK
   "labels": {
     "foo": "bar"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}",
+  "state": "STABLE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: UPDATE
+GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnlineStore
+
+{
+  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}"
+}
+
+OK
+
+{
+  "bigtable": {
+    "autoScaling": {
+      "cpuUtilizationTarget": 50,
+      "maxNodeCount": 2,
+      "minNodeCount": 1
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "foo": "bar"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}",
   "state": "STABLE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -126,7 +142,7 @@ GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/UpdateFeatureOnl
     "labels": {
       "foo": "baz"
     },
-    "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}"
+    "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}"
   },
   "updateMask": "labels"
 }
@@ -141,7 +157,7 @@ OK
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}/operations/${operationID}"
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}/operations/${operationID}"
 }
 
 ---
@@ -149,7 +165,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}/operations/${operationID}"
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}/operations/${operationID}"
 }
 
 OK
@@ -163,24 +179,10 @@ OK
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}/operations/${operationID}",
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1.FeatureOnlineStore",
-    "bigtable": {
-      "autoScaling": {
-        "cpuUtilizationTarget": 50,
-        "maxNodeCount": 2,
-        "minNodeCount": 1
-      }
-    },
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "etag": "abcdef0123A=",
-    "labels": {
-      "foo": "baz"
-    },
-    "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}",
-    "state": "STABLE",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
+    "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}"
   }
 }
 
@@ -189,7 +191,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnlineStore
 
 {
-  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}"
 }
 
 OK
@@ -207,7 +209,36 @@ OK
   "labels": {
     "foo": "baz"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}",
+  "state": "STABLE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnlineStore
+
+{
+  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}"
+}
+
+OK
+
+{
+  "bigtable": {
+    "autoScaling": {
+      "cpuUtilizationTarget": 50,
+      "maxNodeCount": 2,
+      "minNodeCount": 1
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "foo": "baz"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}",
   "state": "STABLE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -217,7 +248,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnlineStore
 
 {
-  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}"
 }
 
 OK
@@ -235,7 +266,7 @@ OK
   "labels": {
     "foo": "baz"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}",
   "state": "STABLE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -245,7 +276,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/DeleteFeatureOnlineStore
 
 {
-  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}"
 }
 
 OK

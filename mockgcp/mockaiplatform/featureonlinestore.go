@@ -47,7 +47,7 @@ func (s *featureOnlineStoreAdminService) GetFeatureOnlineStore(ctx context.Conte
 	obj := &pb.FeatureOnlineStore{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "The FeatureOnlineStore %q does not exist.", req.Name)
+			return nil, status.Errorf(codes.NotFound, "The FeatureOnlineStore does not exist.")
 		}
 		return nil, err
 	}
@@ -85,7 +85,9 @@ func (s *featureOnlineStoreAdminService) CreateFeatureOnlineStore(ctx context.Co
 	}
 	opPrefix := fqn
 	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
-		result := proto.CloneOf(obj)
+		result := &pb.FeatureOnlineStore{
+			Name: fqn,
+		}
 		return result, nil
 	})
 }
@@ -130,7 +132,9 @@ func (s *featureOnlineStoreAdminService) UpdateFeatureOnlineStore(ctx context.Co
 	}
 	opPrefix := fqn
 	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
-		result := proto.CloneOf(obj)
+		result := &pb.FeatureOnlineStore{
+			Name: fqn,
+		}
 		return result, nil
 	})
 }
