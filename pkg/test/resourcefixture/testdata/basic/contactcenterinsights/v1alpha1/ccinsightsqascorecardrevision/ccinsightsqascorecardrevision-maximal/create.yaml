@@ -1,0 +1,11 @@
+apiVersion: contactcenterinsights.cnrm.cloud.google.com/v1alpha1
+kind: CCInsightsQAScorecardRevision
+metadata:
+  name: rev-maximal-${uniqueId}
+spec:
+  parentRef:
+    name: ccinsightsqascorecard-${uniqueId}
+  resourceID: rev-maximal-${uniqueId}
+  snapshot:
+    displayName: "Scorecard Snapshot Maximal ${uniqueId}"
+    description: "Scorecard snapshot maximal description ${uniqueId}"
