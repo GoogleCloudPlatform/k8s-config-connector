@@ -374,3 +374,17 @@
   3. **Httplogreport Validator**: Updated `pkg/test/httplogreport/logparser/entry.go` `IsDelete()` to recognize Compute Engine's `POST .../delete` endpoint pattern as a valid deletion RPC for V4 Delete checks.
   4. **Fuzzer & Mappers**: Implemented mappers in `computeglobalvmextensionpolicy_mapper.go` and generated `computeglobalvmextensionpolicy_fuzzer.generated.go`. Verified with `FOCUS=ComputeGlobalVMExtensionPolicy go test -v ./pkg/fuzztesting/fuzztests/ -run TestFocusedMappers`.
   5. **E2E Golden Testing**: Authored minimal and maximal test fixtures with `ops-agent` extensions and recorded authentic golden logs against real GCP using `./hack/record-gcp`. Passed all V1-V7 checks, steady-state re-reconciliation, and deletion. Verified all compute fixtures with `./dev/ci/presubmits/tests-e2e-fixtures-suite compute`.
+
+### [2026-11-14] Greenfield MockGCP and Alignment for ComputeGlobalVMExtensionPolicy
+- **Context**: Implementing Phase 3 (MockGCP and Alignment) for `ComputeGlobalVMExtensionPolicy` (issue #15657).
+- **Findings & Implementation**:
+  1. **Mock Service**: Implemented `GlobalVmExtensionPoliciesV1` in `mockgcp/mockcompute/globalvmextensionpoliciesv1.go` with `Get`, `Insert`, `Update`, and `Delete` endpoints, and registered it on `runtime.ServeMux` in `mockgcp/mockcompute/service.go`.
+  2. **URL Routing**: Handled GET, POST, and PATCH under `/compute/v1/projects/{project}/global/vmExtensionPolicies`, as well as Compute Engine's custom `POST /delete` action (`/compute/v1/projects/{project}/global/vmExtensionPolicies/{global_vm_extension_policy}/delete`).
+  3. **Rollout Operation Simulation**: Populated `rolloutOperation` with initial location rollout statuses (`LOCATION_ROLLOUT_STATE_NOT_STARTED`) across all Compute Engine global rollout zones, and maintained `previousRollout` state (`STATE_CANCELLED`) on updates to match GCP's rollout lifecycle.
+  4. **Normalizers & Golden Log Alignment**:
+     - Normalized `.status.observedState.rolloutOperation` in `tests/e2e/normalize.go` and `delete(v, "rolloutOperation")` in `golden_alignment_test.go` to eliminate non-deterministic diffs caused by dynamic rollout timestamps and asynchronous background rollout progress across 129 GCP zones during real GCP runs.
+     - Enabled `ComputeGlobalVMExtensionPolicy` in `config/tests/samples/create/harness.go`.
+- **Verification**:
+  - Ran `hack/compare-mock` for both minimal and maximal fixtures; generated `_http_mock.log` files with zero diffs and passed re-reconciliation and deletion steps.
+  - Verified `TestGoldenLogAlignment` and `TestRealHTTPLogsDoNotContainMockGCP` pass cleanly.
+  - Verified `./dev/ci/presubmits/tests-e2e-fixtures-suite compute` passes all 192 fixtures.

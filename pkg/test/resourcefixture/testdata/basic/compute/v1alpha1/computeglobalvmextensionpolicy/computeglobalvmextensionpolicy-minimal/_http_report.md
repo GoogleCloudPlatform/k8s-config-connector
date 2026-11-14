@@ -4,7 +4,7 @@
 - **Resource Name:** `computeglobalvmextensionpolicy-minimal-${uniqueId}`
 - **Source Log:** `_http.log` (9 total HTTP entries, 0 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:1cad734e8feb1d9a`
+- **Integrity Hash:** `sha256:4edd7ed955bf47b9`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 
