@@ -158,7 +158,6 @@ BLOCKED_KINDS=(
     "CloudTalentSolutionCompany"
     "CloudTalentSolutionTenant"
     "CloudTasksQueue"
-    "ComputeCrossSiteNetwork"
     "ComputeHealthCheckService"
     "ComputeNotificationEndpoint"
     "ConfigDeliveryFleetPackage"
