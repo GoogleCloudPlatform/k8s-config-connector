@@ -6,8 +6,9 @@ than some of our other yaml-driven tests.
 The `script.yaml` file contains a set of kube objects, which are applied
 in turn.  After each object is applied, we run some golden checks:
 
-* We export the GCP object and we golden-compare to _exportNN.yaml
-* We read the KRM object from the kubernetes cluster, and we golden-compare to _objectNN.yaml
+* We export the GCP object and we golden-compare to _exportNN.yaml (or _exportNN_mock.yaml when running against mock GCP)
+* We read the KRM object from the kubernetes cluster, and we golden-compare to _objectNN.yaml (or _objectNN_mock.yaml when running against mock GCP)
+* We golden-compare HTTP traffic to _httpNN.log (or _httpNN_mock.log when running against mock GCP)
 
 
 We also support a few "special actions", which are triggered by setting
