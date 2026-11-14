@@ -51,7 +51,7 @@ func TestTagHoldAdapter_Export(t *testing.T) {
 		t.Fatal("Export returned nil unstructured object")
 	}
 
-	if got, want := u.GetName(), id.String(); got != want {
+	if got, want := u.GetName(), id.TagHold; got != want {
 		t.Errorf("GetName() = %q, want %q", got, want)
 	}
 

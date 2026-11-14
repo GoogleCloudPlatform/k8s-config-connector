@@ -269,7 +269,7 @@ func (a *TagHoldAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 	}
 
 	u.Object = uObj
-	u.SetName(a.id.String())
+	u.SetName(a.id.TagHold)
 	u.SetGroupVersionKind(krm.ResourceManagerTagHoldGVK)
 
 	return u, nil
