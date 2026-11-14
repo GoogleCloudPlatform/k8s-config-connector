@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 
 	corev1 "k8s.io/api/core/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -93,9 +94,15 @@ func ToGVR(gvk schema.GroupVersionKind) schema.GroupVersionResource {
 	}
 }
 
-func GetProjectIDForNamespace(ctx context.Context, c client.Client, namespaceName string) (string, error) {
+func GetProjectIDForNamespace(ctx context.Context, c client.Reader, namespaceName string) (string, error) {
+	if c == nil {
+		return namespaceName, nil
+	}
 	var ns corev1.Namespace
 	if err := c.Get(ctx, types.NamespacedName{Name: namespaceName}, &ns); err != nil {
+		if apierrors.IsNotFound(err) {
+			return namespaceName, nil
+		}
 		return "", fmt.Errorf("error getting namespace '%v': %w", namespaceName, err)
 	}
 	if val, ok := GetAnnotation(ProjectIDAnnotation, &ns); ok {
