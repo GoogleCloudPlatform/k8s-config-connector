@@ -32,6 +32,7 @@ require (
 	cloud.google.com/go/bigtable v1.58.0
 	cloud.google.com/go/billing v1.26.0
 	cloud.google.com/go/certificatemanager v1.14.0
+	cloud.google.com/go/ces v1.0.0
 	cloud.google.com/go/cloudbuild v1.30.0
 	cloud.google.com/go/clouddms v1.13.0
 	cloud.google.com/go/cloudquotas v1.11.0
