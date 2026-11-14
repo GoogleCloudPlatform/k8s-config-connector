@@ -294,7 +294,7 @@ services:
       - google.cloud.compute.v1
   - api: config
     title: Infrastructure Manager API
-    servicePrefix: ConfigDeployment
+    servicePrefix: Config
     protoPackages:
       - google.cloud.config.v1
   - api: configdelivery

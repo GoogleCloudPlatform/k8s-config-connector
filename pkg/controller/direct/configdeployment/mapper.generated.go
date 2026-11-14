@@ -61,6 +61,72 @@ func ApplyResults_ToProto(mapCtx *direct.MapContext, in *krm.ApplyResults) *pb.A
 	}
 	return out
 }
+
+/* found existing non-generated mapping function "ConfigDeploymentGroupObservedState_FromProto", skipping
+func ConfigDeploymentGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DeploymentGroup) *krm.ConfigDeploymentGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConfigDeploymentGroupObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StateDescription = direct.LazyPtr(in.GetStateDescription())
+	out.ProvisioningState = direct.Enum_FromProto(mapCtx, in.GetProvisioningState())
+	out.ProvisioningStateDescription = direct.LazyPtr(in.GetProvisioningStateDescription())
+	out.ProvisioningError = direct.Status_FromProto(mapCtx, in.GetProvisioningError())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ConfigDeploymentGroupObservedState_ToProto", skipping
+func ConfigDeploymentGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ConfigDeploymentGroupObservedState) *pb.DeploymentGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DeploymentGroup{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.DeploymentGroup_State](mapCtx, in.State)
+	out.StateDescription = direct.ValueOf(in.StateDescription)
+	out.ProvisioningState = direct.Enum_ToProto[pb.DeploymentGroup_ProvisioningState](mapCtx, in.ProvisioningState)
+	out.ProvisioningStateDescription = direct.ValueOf(in.ProvisioningStateDescription)
+	out.ProvisioningError = direct.Status_ToProto(mapCtx, in.ProvisioningError)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ConfigDeploymentGroupSpec_FromProto", skipping
+func ConfigDeploymentGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.DeploymentGroup) *krm.ConfigDeploymentGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConfigDeploymentGroupSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	out.DeploymentUnits = direct.Slice_FromProto(mapCtx, in.DeploymentUnits, DeploymentUnit_FromProto)
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ConfigDeploymentGroupSpec_ToProto", skipping
+
+	func ConfigDeploymentGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.ConfigDeploymentGroupSpec) *pb.DeploymentGroup {
+		if in == nil {
+			return nil
+		}
+		out := &pb.DeploymentGroup{}
+		// MISSING: Name
+		out.Labels = in.Labels
+		out.Annotations = in.Annotations
+		out.DeploymentUnits = direct.Slice_ToProto(mapCtx, in.DeploymentUnits, DeploymentUnit_ToProto)
+		return out
+	}
+*/
 func ConfigDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Deployment) *krm.ConfigDeploymentObservedState {
 	if in == nil {
 		return nil
@@ -107,6 +173,158 @@ func ConfigDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Co
 	out.TfVersion = direct.ValueOf(in.TfVersion)
 	return out
 }
+
+/* found existing non-generated mapping function "ConfigDeploymentSpec_FromProto", skipping
+func ConfigDeploymentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Deployment) *krm.ConfigDeploymentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConfigDeploymentSpec{}
+	out.TerraformBlueprint = TerraformBlueprint_FromProto(mapCtx, in.GetTerraformBlueprint())
+	// MISSING: Name
+	// MISSING: Labels
+	// MISSING: ArtifactsGCSBucket
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	out.ImportExistingResources = in.ImportExistingResources
+	if in.GetWorkerPool() != "" {
+		out.WorkerPoolRef = &krmcloudbuildv1beta1.CloudBuildWorkerPoolRef{External: in.GetWorkerPool()}
+	}
+	out.TfVersionConstraint = in.TfVersionConstraint
+	out.QuotaValidation = direct.Enum_FromProto(mapCtx, in.GetQuotaValidation())
+	out.Annotations = in.Annotations
+	out.ProviderConfig = ProviderConfig_FromProto(mapCtx, in.GetProviderConfig())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ConfigDeploymentSpec_ToProto", skipping
+
+	func ConfigDeploymentSpec_ToProto(mapCtx *direct.MapContext, in *krm.ConfigDeploymentSpec) *pb.Deployment {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Deployment{}
+		if oneof := TerraformBlueprint_ToProto(mapCtx, in.TerraformBlueprint); oneof != nil {
+			out.Blueprint = &pb.Deployment_TerraformBlueprint{TerraformBlueprint: oneof}
+		}
+		// MISSING: Name
+		// MISSING: Labels
+		// MISSING: ArtifactsGCSBucket
+		if in.ServiceAccountRef != nil {
+			out.ServiceAccount = in.ServiceAccountRef.External
+		}
+		out.ImportExistingResources = in.ImportExistingResources
+		if in.WorkerPoolRef != nil {
+			out.WorkerPool = in.WorkerPoolRef.External
+		}
+		out.TfVersionConstraint = in.TfVersionConstraint
+		out.QuotaValidation = direct.Enum_ToProto[pb.QuotaValidation](mapCtx, in.QuotaValidation)
+		out.Annotations = in.Annotations
+		out.ProviderConfig = ProviderConfig_ToProto(mapCtx, in.ProviderConfig)
+		return out
+	}
+*/
+func ConfigPreviewObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Preview) *krm.ConfigPreviewObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConfigPreviewObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	// MISSING: Labels
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: ArtifactsGCSBucket
+	out.ErrorCode = direct.Enum_FromProto(mapCtx, in.GetErrorCode())
+	out.ErrorStatus = direct.Status_FromProto(mapCtx, in.GetErrorStatus())
+	out.Build = direct.LazyPtr(in.GetBuild())
+	out.TfErrors = direct.Slice_FromProto(mapCtx, in.TfErrors, TerraformErrorObservedState_FromProto)
+	out.ErrorLogs = direct.LazyPtr(in.GetErrorLogs())
+	out.PreviewArtifacts = PreviewArtifactsObservedState_FromProto(mapCtx, in.GetPreviewArtifacts())
+	out.Logs = direct.LazyPtr(in.GetLogs())
+	out.TfVersion = direct.LazyPtr(in.GetTfVersion())
+	return out
+}
+func ConfigPreviewObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ConfigPreviewObservedState) *pb.Preview {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Preview{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	// MISSING: Labels
+	out.State = direct.Enum_ToProto[pb.Preview_State](mapCtx, in.State)
+	// MISSING: ArtifactsGCSBucket
+	out.ErrorCode = direct.Enum_ToProto[pb.Preview_ErrorCode](mapCtx, in.ErrorCode)
+	out.ErrorStatus = direct.Status_ToProto(mapCtx, in.ErrorStatus)
+	out.Build = direct.ValueOf(in.Build)
+	out.TfErrors = direct.Slice_ToProto(mapCtx, in.TfErrors, TerraformErrorObservedState_ToProto)
+	out.ErrorLogs = direct.ValueOf(in.ErrorLogs)
+	out.PreviewArtifacts = PreviewArtifactsObservedState_ToProto(mapCtx, in.PreviewArtifacts)
+	out.Logs = direct.ValueOf(in.Logs)
+	out.TfVersion = direct.ValueOf(in.TfVersion)
+	return out
+}
+
+/* found existing non-generated mapping function "ConfigPreviewSpec_FromProto", skipping
+func ConfigPreviewSpec_FromProto(mapCtx *direct.MapContext, in *pb.Preview) *krm.ConfigPreviewSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConfigPreviewSpec{}
+	out.TerraformBlueprint = TerraformBlueprint_FromProto(mapCtx, in.GetTerraformBlueprint())
+	// MISSING: Name
+	// MISSING: Labels
+	if in.GetDeployment() != "" {
+		out.DeploymentRef = &krm.ConfigDeploymentRef{External: in.GetDeployment()}
+	}
+	out.PreviewMode = direct.Enum_FromProto(mapCtx, in.GetPreviewMode())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	// MISSING: ArtifactsGCSBucket
+	if in.GetWorkerPool() != "" {
+		out.WorkerPoolRef = &krmcloudbuildv1beta1.CloudBuildWorkerPoolRef{External: in.GetWorkerPool()}
+	}
+	out.TfVersionConstraint = in.TfVersionConstraint
+	out.Annotations = in.Annotations
+	out.ProviderConfig = ProviderConfig_FromProto(mapCtx, in.GetProviderConfig())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ConfigPreviewSpec_ToProto", skipping
+
+	func ConfigPreviewSpec_ToProto(mapCtx *direct.MapContext, in *krm.ConfigPreviewSpec) *pb.Preview {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Preview{}
+		if oneof := TerraformBlueprint_ToProto(mapCtx, in.TerraformBlueprint); oneof != nil {
+			out.Blueprint = &pb.Preview_TerraformBlueprint{TerraformBlueprint: oneof}
+		}
+		// MISSING: Name
+		// MISSING: Labels
+		if in.DeploymentRef != nil {
+			out.Deployment = in.DeploymentRef.External
+		}
+		out.PreviewMode = direct.Enum_ToProto[pb.Preview_PreviewMode](mapCtx, in.PreviewMode)
+		if in.ServiceAccountRef != nil {
+			out.ServiceAccount = in.ServiceAccountRef.External
+		}
+		// MISSING: ArtifactsGCSBucket
+		if in.WorkerPoolRef != nil {
+			out.WorkerPool = in.WorkerPoolRef.External
+		}
+		out.TfVersionConstraint = in.TfVersionConstraint
+		out.Annotations = in.Annotations
+		out.ProviderConfig = ProviderConfig_ToProto(mapCtx, in.ProviderConfig)
+		return out
+	}
+*/
 func DeploymentSource_FromProto(mapCtx *direct.MapContext, in *pb.DeploymentSource) *krm.DeploymentSource {
 	if in == nil {
 		return nil
@@ -129,6 +347,38 @@ func DeploymentSource_ToProto(mapCtx *direct.MapContext, in *krm.DeploymentSourc
 	out.OutputName = direct.ValueOf(in.OutputName)
 	return out
 }
+
+/* found existing non-generated mapping function "DeploymentUnit_FromProto", skipping
+func DeploymentUnit_FromProto(mapCtx *direct.MapContext, in *pb.DeploymentUnit) *krm.DeploymentUnit {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DeploymentUnit{}
+	out.ID = direct.LazyPtr(in.GetId())
+	if in.GetDeployment() != "" {
+		out.DeploymentRef = &krm.ConfigDeploymentRef{External: in.GetDeployment()}
+	}
+	out.Dependencies = in.Dependencies
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "DeploymentUnit_ToProto", skipping
+
+	func DeploymentUnit_ToProto(mapCtx *direct.MapContext, in *krm.DeploymentUnit) *pb.DeploymentUnit {
+		if in == nil {
+			return nil
+		}
+		out := &pb.DeploymentUnit{}
+		out.Id = direct.ValueOf(in.ID)
+		if in.DeploymentRef != nil {
+			out.Deployment = in.DeploymentRef.External
+		}
+		out.Dependencies = in.Dependencies
+		return out
+	}
+*/
 func ExternalValueSource_FromProto(mapCtx *direct.MapContext, in *pb.ExternalValueSource) *krm.ExternalValueSource {
 	if in == nil {
 		return nil
@@ -167,6 +417,24 @@ func GitSource_ToProto(mapCtx *direct.MapContext, in *krm.GitSource) *pb.GitSour
 	out.Ref = in.Ref
 	return out
 }
+func PreviewArtifactsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PreviewArtifacts) *krm.PreviewArtifactsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PreviewArtifactsObservedState{}
+	out.Content = direct.LazyPtr(in.GetContent())
+	out.Artifacts = direct.LazyPtr(in.GetArtifacts())
+	return out
+}
+func PreviewArtifactsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PreviewArtifactsObservedState) *pb.PreviewArtifacts {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PreviewArtifacts{}
+	out.Content = direct.ValueOf(in.Content)
+	out.Artifacts = direct.ValueOf(in.Artifacts)
+	return out
+}
 func ProviderConfig_FromProto(mapCtx *direct.MapContext, in *pb.ProviderConfig) *krm.ProviderConfig {
 	if in == nil {
 		return nil
@@ -183,6 +451,73 @@ func ProviderConfig_ToProto(mapCtx *direct.MapContext, in *krm.ProviderConfig) *
 	out.SourceType = direct.EnumPtr_ToProto[pb.ProviderConfig_ProviderSource](mapCtx, in.SourceType)
 	return out
 }
+
+/* found existing non-generated mapping function "TerraformBlueprint_FromProto", skipping
+func TerraformBlueprint_FromProto(mapCtx *direct.MapContext, in *pb.TerraformBlueprint) *krm.TerraformBlueprint {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TerraformBlueprint{}
+	out.GCSSource = direct.LazyPtr(in.GetGcsSource())
+	out.GitSource = GitSource_FromProto(mapCtx, in.GetGitSource())
+	if in.InputValues != nil {
+		out.InputValues = make(map[string]krm.TerraformVariable, len(in.InputValues))
+		for k, v := range in.InputValues {
+			if c := TerraformVariable_FromProto(mapCtx, v); c != nil {
+				out.InputValues[k] = *c
+			}
+		}
+	}
+	if in.ExternalValues != nil {
+		out.ExternalValues = make(map[string]krm.ExternalValueSource, len(in.ExternalValues))
+		for k, v := range in.ExternalValues {
+			if c := ExternalValueSource_FromProto(mapCtx, v); c != nil {
+				out.ExternalValues[k] = *c
+			}
+		}
+	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "TerraformBlueprint_ToProto", skipping
+func TerraformBlueprint_ToProto(mapCtx *direct.MapContext, in *krm.TerraformBlueprint) *pb.TerraformBlueprint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TerraformBlueprint{}
+	if oneof := TerraformBlueprint_GcsSource_ToProto(mapCtx, in.GCSSource); oneof != nil {
+		out.Source = oneof
+	}
+	if oneof := GitSource_ToProto(mapCtx, in.GitSource); oneof != nil {
+		out.Source = &pb.TerraformBlueprint_GitSource{GitSource: oneof}
+	}
+	if in.InputValues != nil {
+		out.InputValues = make(map[string]*pb.TerraformVariable, len(in.InputValues))
+		for k, v := range in.InputValues {
+			out.InputValues[k] = TerraformVariable_ToProto(mapCtx, &v)
+		}
+	}
+	if in.ExternalValues != nil {
+		out.ExternalValues = make(map[string]*pb.ExternalValueSource, len(in.ExternalValues))
+		for k, v := range in.ExternalValues {
+			out.ExternalValues[k] = ExternalValueSource_ToProto(mapCtx, &v)
+		}
+	}
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "TerraformBlueprint_GcsSource_ToProto", skipping
+
+	func TerraformBlueprint_GcsSource_ToProto(mapCtx *direct.MapContext, in *GCSSource) *pb.TerraformBlueprint_GcsSource {
+		if in == nil {
+			return nil
+		}
+		return &pb.TerraformBlueprint_GcsSource{GcsSource: *in}
+	}
+*/
 func TerraformErrorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TerraformError) *krm.TerraformErrorObservedState {
 	if in == nil {
 		return nil
