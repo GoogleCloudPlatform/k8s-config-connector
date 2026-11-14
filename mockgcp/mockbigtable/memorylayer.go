@@ -28,7 +28,6 @@ import (
 	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
 	// MemoryLayer is only defined in the newer admin proto.
 	"cloud.google.com/go/bigtable/admin/apiv2/adminpb"
-	pb "google.golang.org/genproto/googleapis/bigtable/admin/v2"
 )
 
 // mockMemoryLayerStorageSizeGibPerNode is the size per cluster node in GiB that
@@ -68,7 +67,7 @@ func (s *instanceAdminServer) GetMemoryLayer(ctx context.Context, req *adminpb.G
 	}
 
 	// A memory layer only exists as part of its cluster.
-	cluster := &pb.Cluster{}
+	cluster := &adminpb.Cluster{}
 	if err := s.storage.Get(ctx, name.cluster.String(), cluster); err != nil {
 		return nil, err
 	}
@@ -106,7 +105,7 @@ func (s *instanceAdminServer) UpdateMemoryLayer(ctx context.Context, req *adminp
 		return nil, err
 	}
 
-	cluster := &pb.Cluster{}
+	cluster := &adminpb.Cluster{}
 	if err := s.storage.Get(ctx, name.cluster.String(), cluster); err != nil {
 		return nil, err
 	}

@@ -43,5 +43,7 @@ func tasksQueueFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".state")
 	f.StatusFields.Insert(".purge_time")
 
+	f.Unimplemented_NotYetTriaged(".http_target")
+
 	return f
 }

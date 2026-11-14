@@ -19,8 +19,8 @@
 package billing
 
 import (
+	pb "cloud.google.com/go/billing/apiv1/billingpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
-	pb "google.golang.org/genproto/googleapis/cloud/billing/v1"
 )
 
 func init() {

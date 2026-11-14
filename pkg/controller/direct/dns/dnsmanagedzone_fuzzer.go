@@ -80,6 +80,7 @@ func dnsManagedZoneFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Unimplemented_NotYetTriaged(".CloudLoggingConfig.Kind")
 	f.Unimplemented_NotYetTriaged(".DnssecConfig.Kind")
 	f.Unimplemented_NotYetTriaged(".ForwardingConfig.Kind")
+	f.Unimplemented_NotYetTriaged(".ForwardingConfig.OutboundEndpoints")
 	f.Unimplemented_NotYetTriaged(".ForwardingConfig.TargetNameServers[].Kind")
 	f.Unimplemented_NotYetTriaged(".DomainName")
 	f.Unimplemented_NotYetTriaged(".Ipv6Address")
