@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -59,7 +60,12 @@ func (obj *DialogflowCXFlow) GetIdentity(ctx context.Context, reader client.Read
 	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef == "" {
-		externalRef = common.ValueOf(obj.Status.Name)
+		statusName := common.ValueOf(obj.Status.Name)
+		if strings.Contains(statusName, "/") {
+			externalRef = statusName
+		} else if statusName != "" && specIdentity.Flow != "" && statusName != specIdentity.Flow {
+			return nil, fmt.Errorf("cannot change DialogflowCXFlow identity (old=%q, new=%q)", statusName, specIdentity.Flow)
+		}
 	}
 	if externalRef != "" {
 		statusIdentity := &DialogflowCXFlowIdentity{}

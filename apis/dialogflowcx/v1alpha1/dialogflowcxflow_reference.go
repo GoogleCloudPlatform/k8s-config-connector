@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	"context"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -45,7 +46,7 @@ func (r *DialogflowCXFlowRef) Normalize(ctx context.Context, reader client.Reade
 			return ""
 		}
 		name, _, _ := unstructured.NestedString(u.Object, "status", "name")
-		if name != "" {
+		if name != "" && strings.Contains(name, "/") {
 			return name
 		}
 		obj, err := common.ToStructuredType[*DialogflowCXFlow](u)
@@ -53,7 +54,13 @@ func (r *DialogflowCXFlowRef) Normalize(ctx context.Context, reader client.Reade
 			return ""
 		}
 		id, err := getIdentityFromDialogflowCXFlowSpec(ctx, reader, obj)
-		if err != nil || id.Flow == "" {
+		if err != nil {
+			return ""
+		}
+		if id.Flow == "" && name != "" {
+			id.Flow = name
+		}
+		if id.Flow == "" {
 			return ""
 		}
 		return id.String()
