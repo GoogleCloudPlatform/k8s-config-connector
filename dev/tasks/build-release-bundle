@@ -256,6 +256,7 @@ BLOCKED_KINDS=(
     "MigrationCenterImportJob"
     "MigrationCenterReportConfig"
     "ModelArmorTemplate"
+    "NetAppVolume"
     "NetappQuotaRule"
     "NetappReplication"
     "NetworkConnectivityDestination"
