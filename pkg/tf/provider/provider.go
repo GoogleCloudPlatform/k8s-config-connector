@@ -20,6 +20,7 @@ import (
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/version"
@@ -63,6 +64,11 @@ type Config struct {
 
 	// EnableMetricsTransport enables automatic wrapping of HTTP clients with metrics transport
 	EnableMetricsTransport bool
+
+	// UniverseDomain specifies a custom Google Cloud universe domain (for example,
+	// in sovereign cloud or air-gapped environments). When empty, environment
+	// variables (GOOGLE_CLOUD_UNIVERSE_DOMAIN, UNIVERSE_DOMAIN) are checked.
+	UniverseDomain string
 }
 
 var DefaultConfig = NewConfig()
@@ -113,6 +119,9 @@ func New(ctx context.Context, config Config) (*tfschema.Provider, error) {
 	cfgMap["scopes"] = config.Scopes
 	cfgMap["user_project_override"] = config.UserProjectOverride
 	cfgMap["billing_project"] = config.BillingProject
+	if universeDomain := gcp.ResolveUniverseDomain(config.UniverseDomain); gcp.IsCustomUniverse(universeDomain) {
+		cfgMap["universe_domain"] = universeDomain
+	}
 
 	schema := tfschema.InternalMap(googleProvider.Schema).CoreConfigSchema()
 	cfg := terraform.NewResourceConfigShimmed(krmtotf.MapToCtyVal(cfgMap, schema.ImpliedType()), schema)
