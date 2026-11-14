@@ -23,12 +23,18 @@
 
 package resourcemanager
 
-/* found existing non-generated mapping function "FolderSpec_FromProto", skipping
-func FolderSpec_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krm.FolderSpec {
+import (
+	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
+	krmresourcemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+)
+
+/* found existing non-generated mapping function "FolderSpec_v1beta1_FromProto", skipping
+func FolderSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krmresourcemanagerv1beta1.FolderSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.FolderSpec{}
+	out := &krmresourcemanagerv1beta1.FolderSpec{}
 	// MISSING: Name
 	// MISSING: Parent
 	out.DisplayName = in.GetDisplayName()
@@ -41,8 +47,8 @@ func FolderSpec_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krm.FolderS
 }
 */
 
-/* found existing non-generated mapping function "FolderSpec_ToProto", skipping
-func FolderSpec_ToProto(mapCtx *direct.MapContext, in *krm.FolderSpec) *pb.Folder {
+/* found existing non-generated mapping function "FolderSpec_v1beta1_ToProto", skipping
+func FolderSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmresourcemanagerv1beta1.FolderSpec) *pb.Folder {
 	if in == nil {
 		return nil
 	}
@@ -59,12 +65,12 @@ func FolderSpec_ToProto(mapCtx *direct.MapContext, in *krm.FolderSpec) *pb.Folde
 }
 */
 
-/* found existing non-generated mapping function "ProjectSpec_FromProto", skipping
-func ProjectSpec_FromProto(mapCtx *direct.MapContext, in *pb.Project) *krm.ProjectSpec {
+/* found existing non-generated mapping function "ProjectSpec_v1beta1_FromProto", skipping
+func ProjectSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Project) *krmresourcemanagerv1beta1.ProjectSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ProjectSpec{}
+	out := &krmresourcemanagerv1beta1.ProjectSpec{}
 	// MISSING: Name
 	// MISSING: Parent
 	// MISSING: ProjectID
@@ -79,8 +85,8 @@ func ProjectSpec_FromProto(mapCtx *direct.MapContext, in *pb.Project) *krm.Proje
 }
 */
 
-/* found existing non-generated mapping function "ProjectSpec_ToProto", skipping
-func ProjectSpec_ToProto(mapCtx *direct.MapContext, in *krm.ProjectSpec) *pb.Project {
+/* found existing non-generated mapping function "ProjectSpec_v1beta1_ToProto", skipping
+func ProjectSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmresourcemanagerv1beta1.ProjectSpec) *pb.Project {
 	if in == nil {
 		return nil
 	}
@@ -99,12 +105,12 @@ func ProjectSpec_ToProto(mapCtx *direct.MapContext, in *krm.ProjectSpec) *pb.Pro
 }
 */
 
-/* found existing non-generated mapping function "ProjectStatus_FromProto", skipping
-func ProjectStatus_FromProto(mapCtx *direct.MapContext, in *pb.Project) *krm.ProjectStatus {
+/* found existing non-generated mapping function "ProjectStatus_v1beta1_FromProto", skipping
+func ProjectStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Project) *krmresourcemanagerv1beta1.ProjectStatus {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ProjectStatus{}
+	out := &krmresourcemanagerv1beta1.ProjectStatus{}
 	// MISSING: Name
 	// MISSING: Parent
 	// MISSING: ProjectID
@@ -119,22 +125,64 @@ func ProjectStatus_FromProto(mapCtx *direct.MapContext, in *pb.Project) *krm.Pro
 }
 */
 
-/* found existing non-generated mapping function "ProjectStatus_ToProto", skipping
-func ProjectStatus_ToProto(mapCtx *direct.MapContext, in *krm.ProjectStatus) *pb.Project {
+/*
+found existing non-generated mapping function "ProjectStatus_v1beta1_ToProto", skipping
+
+	func ProjectStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmresourcemanagerv1beta1.ProjectStatus) *pb.Project {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Project{}
+		// MISSING: Name
+		// MISSING: Parent
+		// MISSING: ProjectID
+		// MISSING: State
+		// MISSING: DisplayName
+		// MISSING: CreateTime
+		// MISSING: UpdateTime
+		// MISSING: DeleteTime
+		// MISSING: Etag
+		// MISSING: Labels
+		return out
+	}
+*/
+func ResourceManagerTagHoldObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TagHold) *krmresourcemanagerv1alpha1.ResourceManagerTagHoldObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Project{}
+	out := &krmresourcemanagerv1alpha1.ResourceManagerTagHoldObservedState{}
 	// MISSING: Name
-	// MISSING: Parent
-	// MISSING: ProjectID
-	// MISSING: State
-	// MISSING: DisplayName
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: Etag
-	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	return out
 }
-*/
+func ResourceManagerTagHoldObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmresourcemanagerv1alpha1.ResourceManagerTagHoldObservedState) *pb.TagHold {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TagHold{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	return out
+}
+func ResourceManagerTagHoldSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TagHold) *krmresourcemanagerv1alpha1.ResourceManagerTagHoldSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmresourcemanagerv1alpha1.ResourceManagerTagHoldSpec{}
+	// MISSING: Name
+	out.Holder = direct.LazyPtr(in.GetHolder())
+	out.Origin = direct.LazyPtr(in.GetOrigin())
+	out.HelpLink = direct.LazyPtr(in.GetHelpLink())
+	return out
+}
+func ResourceManagerTagHoldSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmresourcemanagerv1alpha1.ResourceManagerTagHoldSpec) *pb.TagHold {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TagHold{}
+	// MISSING: Name
+	out.Holder = direct.ValueOf(in.Holder)
+	out.Origin = direct.ValueOf(in.Origin)
+	out.HelpLink = direct.ValueOf(in.HelpLink)
+	return out
+}

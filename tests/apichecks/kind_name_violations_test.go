@@ -214,6 +214,7 @@ var knownKindNames = []struct {
 	// Others
 	{ServicePrefix: "CloudResourceManager", Message: "Folder", Want: "Folder"},
 	{ServicePrefix: "CloudResourceManager", Message: "Project", Want: "Project"},
+	{ServicePrefix: "CloudResourceManager", Message: "TagHold", Want: "ResourceManagerTagHold"},
 }
 
 // isKnownKindName reports whether knownKindNames allows kind for a message of
