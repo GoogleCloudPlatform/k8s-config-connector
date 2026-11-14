@@ -1,0 +1,270 @@
+86,87c86
+< GET https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService/GetAppConnector
+89,104c88,89
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "message": "Resource 'projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}' was not found",
+<     "status": "NOT_FOUND"
+<   }
+---
+> {
+>   "name": "projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}"
+106a92,95
+> error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}' was not found
+> 
+> {}
+> 
+109,110c98
+< POST https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/appConnectors?alt=json&app_connector_id=beyondcorpappconnector${uniqueId}
+< Content-Type: application/json
+---
+> GRPC /google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService/CreateAppConnector
+113,120c101,110
+<   "displayName": "Sample App Connector",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   },
+<   "principalInfo": {
+<     "serviceAccount": {
+<       "email": "sa${uniqueId}@${projectId}.iam.gserviceaccount.com"
+---
+>   "appConnector": {
+>     "displayName": "Sample App Connector",
+>     "labels": {
+>       "cnrm-test": "true",
+>       "managed-by-cnrm": "true"
+>     },
+>     "principalInfo": {
+>       "serviceAccount": {
+>         "email": "sa${uniqueId}@${projectId}.iam.gserviceaccount.com"
+>       }
+122c112,114
+<   }
+---
+>   },
+>   "appConnectorId": "beyondcorpappconnector${uniqueId}",
+>   "parent": "projects/${projectId}/locations/us-central1"
+125,133c117
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK
+148,149c132
+< GET https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.longrunning.Operations/GetOperation
+151,159c134,138
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> {
+>   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+> }
+> 
+> OK
+194,195c173
+< GET https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService/GetAppConnector
+197,205c175,179
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> {
+>   "name": "projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}"
+> }
+> 
+> OK
+227,228c201
+< PATCH https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}?alt=json&updateMask=displayName
+< Content-Type: application/json
+---
+> GRPC /google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService/UpdateAppConnector
+231,238c204,214
+<   "displayName": "Updated App Connector",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   },
+<   "principalInfo": {
+<     "serviceAccount": {
+<       "email": "sa${uniqueId}@${projectId}.iam.gserviceaccount.com"
+---
+>   "appConnector": {
+>     "displayName": "Updated App Connector",
+>     "labels": {
+>       "cnrm-test": "true",
+>       "managed-by-cnrm": "true"
+>     },
+>     "name": "projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}",
+>     "principalInfo": {
+>       "serviceAccount": {
+>         "email": "sa${uniqueId}@${projectId}.iam.gserviceaccount.com"
+>       }
+240c216,217
+<   }
+---
+>   },
+>   "updateMask": "displayName"
+243,251c220
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK
+266,267c235
+< GET https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.longrunning.Operations/GetOperation
+269,277c237,241
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> {
+>   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+> }
+> 
+> OK
+312,313c276,308
+< GET https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService/GetAppConnector
+> 
+> {
+>   "name": "projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}"
+> }
+> 
+> OK
+> 
+> {
+>   "createTime": "2024-04-01T12:34:56.123456Z",
+>   "displayName": "Updated App Connector",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "name": "projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}",
+>   "principalInfo": {
+>     "serviceAccount": {
+>       "email": "sa${uniqueId}@${projectId}.iam.gserviceaccount.com"
+>     }
+>   },
+>   "state": "CREATED",
+>   "uid": "111111111111111111111",
+>   "updateTime": "2024-04-01T12:34:56.123456Z"
+> }
+> 
+> ---
+> 
+> GRPC /google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService/GetAppConnector
+> 
+> {
+>   "name": "projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}"
+> }
+315,323c310
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK
+345,346c332
+< DELETE https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService/DeleteAppConnector
+348,356c334,338
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> {
+>   "name": "projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}"
+> }
+> 
+> OK
+371,372c353,357
+< GET https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.longrunning.Operations/GetOperation
+> 
+> {
+>   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+> }
+374,382c359
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK

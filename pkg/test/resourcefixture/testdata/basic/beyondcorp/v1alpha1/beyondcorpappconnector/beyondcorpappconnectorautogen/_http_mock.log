@@ -1,5 +1,4 @@
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -30,7 +29,6 @@ X-Xss-Protection: 0
 
 POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "accountId": "sa${uniqueId}",
@@ -62,7 +60,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -86,56 +83,38 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+GRPC /google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService/GetAppConnector
 
 {
-  "error": {
-    "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}' was not found",
-    "status": "NOT_FOUND"
-  }
+  "name": "projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}"
 }
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}' was not found
+
+{}
 
 ---
 
-POST https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/appConnectors?alt=json&app_connector_id=beyondcorpappconnector${uniqueId}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GRPC /google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService/CreateAppConnector
 
 {
-  "displayName": "Sample App Connector",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "principalInfo": {
-    "serviceAccount": {
-      "email": "sa${uniqueId}@${projectId}.iam.gserviceaccount.com"
+  "appConnector": {
+    "displayName": "Sample App Connector",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "principalInfo": {
+      "serviceAccount": {
+        "email": "sa${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      }
     }
-  }
+  },
+  "appConnectorId": "beyondcorpappconnector${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
 }
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+OK
 
 {
   "metadata": {
@@ -150,19 +129,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GRPC /google.longrunning.Operations/GetOperation
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
 
 {
   "done": true,
@@ -197,19 +170,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GRPC /google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService/GetAppConnector
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+{
+  "name": "projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}"
+}
+
+OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -231,32 +198,26 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}?alt=json&updateMask=displayName
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GRPC /google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService/UpdateAppConnector
 
 {
-  "displayName": "Updated App Connector",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "principalInfo": {
-    "serviceAccount": {
-      "email": "sa${uniqueId}@${projectId}.iam.gserviceaccount.com"
+  "appConnector": {
+    "displayName": "Updated App Connector",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}",
+    "principalInfo": {
+      "serviceAccount": {
+        "email": "sa${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      }
     }
-  }
+  },
+  "updateMask": "displayName"
 }
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+OK
 
 {
   "metadata": {
@@ -271,19 +232,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GRPC /google.longrunning.Operations/GetOperation
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
 
 {
   "done": true,
@@ -318,19 +273,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GRPC /google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService/GetAppConnector
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+{
+  "name": "projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}"
+}
+
+OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -352,19 +301,41 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GRPC /google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService/GetAppConnector
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+{
+  "name": "projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Updated App Connector",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}",
+  "principalInfo": {
+    "serviceAccount": {
+      "email": "sa${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    }
+  },
+  "state": "CREATED",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService/DeleteAppConnector
+
+{
+  "name": "projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}"
+}
+
+OK
 
 {
   "metadata": {
@@ -379,19 +350,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GRPC /google.longrunning.Operations/GetOperation
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
 
 {
   "done": true,
@@ -412,7 +377,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -437,7 +401,6 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
