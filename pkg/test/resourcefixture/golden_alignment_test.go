@@ -1496,6 +1496,9 @@ func isDependencyEvent(ev httpEvent, depKinds map[string]string, primaryKind str
 			if kind == "KMSCryptoKey" && strings.HasPrefix(trimmedSuffix, "cryptoKeyVersions/") && primaryKind != "KMSCryptoKeyVersion" {
 				return true
 			}
+			if kind == "StorageBucket" && strings.HasPrefix(trimmedSuffix, "o/") {
+				return true
+			}
 			continue
 		}
 
