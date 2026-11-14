@@ -2539,6 +2539,7 @@ func DataplexEntityObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Ent
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.CatalogEntry = direct.LazyPtr(in.GetCatalogEntry())
 	out.Format = StorageFormatObservedState_FromProto(mapCtx, in.GetFormat())
 	out.Compatibility = Entity_CompatibilityStatusObservedState_FromProto(mapCtx, in.GetCompatibility())
@@ -2555,6 +2556,7 @@ func DataplexEntityObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Data
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
 	out.CatalogEntry = direct.ValueOf(in.CatalogEntry)
 	out.Format = StorageFormatObservedState_ToProto(mapCtx, in.Format)
 	out.Compatibility = Entity_CompatibilityStatusObservedState_ToProto(mapCtx, in.Compatibility)
@@ -2572,9 +2574,10 @@ func DataplexEntitySpec_FromProto(mapCtx *direct.MapContext, in *pb.Entity) *krm
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.ID = direct.LazyPtr(in.GetId())
-	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.Asset = direct.LazyPtr(in.GetAsset())
+	if in.GetAsset() != "" {
+		out.AssetRef = &krm.DataplexAssetRef{External: in.GetAsset()}
+	}
 	out.DataPath = direct.LazyPtr(in.GetDataPath())
 	out.DataPathPattern = direct.LazyPtr(in.GetDataPathPattern())
 	out.System = direct.Enum_FromProto(mapCtx, in.GetSystem())
@@ -2592,9 +2595,10 @@ func DataplexEntitySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntit
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	out.Id = direct.ValueOf(in.ID)
-	out.Etag = direct.ValueOf(in.Etag)
 	out.Type = direct.Enum_ToProto[pb.Entity_Type](mapCtx, in.Type)
-	out.Asset = direct.ValueOf(in.Asset)
+	if in.AssetRef != nil {
+		out.Asset = in.AssetRef.External
+	}
 	out.DataPath = direct.ValueOf(in.DataPath)
 	out.DataPathPattern = direct.ValueOf(in.DataPathPattern)
 	out.System = direct.Enum_ToProto[pb.StorageSystem](mapCtx, in.System)
