@@ -110,7 +110,7 @@ func resolveHealthCheckServiceReferences(ctx context.Context, reader client.Read
 			continue
 		}
 		if ref.Name == "" {
-			continue
+			return fmt.Errorf("must specify either name or external on healthCheckRef")
 		}
 		ns := ref.Namespace
 		if ns == "" {
