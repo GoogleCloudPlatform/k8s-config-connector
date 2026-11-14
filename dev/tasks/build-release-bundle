@@ -201,6 +201,7 @@ BLOCKED_KINDS=(
     "DialogflowCompanionAgent"
     "DialogflowConversationDataset"
     "DialogflowConversationModel"
+    "DialogflowConversationProfile"
     "DialogflowEnvironment"
     "DialogflowFlow"
     "DialogflowGenerator"
