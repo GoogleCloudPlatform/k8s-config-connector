@@ -38,6 +38,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
@@ -116,10 +117,9 @@ func (m *sessionModel) AdapterForObject(ctx context.Context, op *directbase.Adap
 	if desired.Labels == nil {
 		desired.Labels = make(map[string]string)
 	}
-	for k, v := range obj.GetLabels() {
+	for k, v := range label.GCPLabels(obj) {
 		desired.Labels[k] = v
 	}
-	desired.Labels["managed-by-cnrm"] = "true"
 
 	return &sessionAdapter{
 		gcpClient: gcpClient,
