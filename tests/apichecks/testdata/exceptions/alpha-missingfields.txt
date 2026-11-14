@@ -1224,6 +1224,15 @@
 [missing_field] crd=backupdrmanagementservers.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=backupdrmanagementservers.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=backupdrmanagementservers.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.networks[].peeringMode" is not set in unstructured objects
+[missing_field] crd=backupdrrestoreverificationplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=backupdrrestoreverificationplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.failureCleanupRule.cleanupDelay" is not set in unstructured objects
+[missing_field] crd=backupdrrestoreverificationplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.failureCleanupRule.skipCleanup" is not set in unstructured objects
+[missing_field] crd=backupdrrestoreverificationplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=backupdrrestoreverificationplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=backupdrrestoreverificationplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.schedule" is not set in unstructured objects
+[missing_field] crd=backupdrrestoreverificationplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.successCleanupRule.cleanupDelay" is not set in unstructured objects
+[missing_field] crd=backupdrrestoreverificationplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.successCleanupRule.skipCleanup" is not set in unstructured objects
+[missing_field] crd=backupdrrestoreverificationplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeZone" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.instances[].blockProjectSSHKeys" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.instances[].installGpuDrivers" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.instances[].installOpsAgent" is not set in unstructured objects
