@@ -131,7 +131,7 @@ func resolveHealthCheckServiceReferences(ctx context.Context, reader client.Read
 			selfLink = externalRef
 		}
 		if selfLink == "" {
-			return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+			return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 		}
 		ref.External = apirefs.TrimComputeURIPrefix(selfLink)
 	}
