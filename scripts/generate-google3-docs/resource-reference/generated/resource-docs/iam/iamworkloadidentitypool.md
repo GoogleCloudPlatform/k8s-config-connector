@@ -60,6 +60,7 @@ description: string
 disabled: boolean
 displayName: string
 location: string
+mode: string
 projectRef:
   external: string
   name: string
@@ -112,6 +113,16 @@ resourceID: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>Immutable. The location for the resource</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Immutable. The mode the pool operates on. Possible values: MODE_UNSPECIFIED, FEDERATION_ONLY, TRUST_DOMAIN</p>
         </td>
     </tr>
     <tr>

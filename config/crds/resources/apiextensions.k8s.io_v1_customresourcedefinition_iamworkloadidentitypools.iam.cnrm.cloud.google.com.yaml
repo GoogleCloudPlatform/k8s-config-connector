@@ -72,6 +72,10 @@ spec:
               location:
                 description: Immutable. The location for the resource
                 type: string
+              mode:
+                description: 'Immutable. The mode the pool operates on. Possible values:
+                  MODE_UNSPECIFIED, FEDERATION_ONLY, TRUST_DOMAIN'
+                type: string
               projectRef:
                 description: Immutable. The Project that this resource belongs to.
                 oneOf:
