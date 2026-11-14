@@ -1,0 +1,955 @@
+# Phase: CREATE
+GRPC /google.cloud.dataplex.v1.DataplexService/GetLake
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/CreateLake
+
+{
+  "lake": {
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "lakeId": "dplake-min-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.Lake",
+    "assetStatus": {},
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "metastore": {},
+    "metastoreStatus": {
+      "state": "NONE",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "name": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}",
+    "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
+    "state": "ACTIVE",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/GetZone
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/CreateZone
+
+{
+  "parent": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}",
+  "zone": {
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "resourceSpec": {
+      "locationType": "SINGLE_REGION"
+    },
+    "type": "RAW"
+  },
+  "zoneId": "dpzone-min-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.Zone",
+    "assetStatus": {},
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "discoverySpec": {
+      "csvOptions": {},
+      "jsonOptions": {},
+      "schedule": ""
+    },
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}",
+    "resourceSpec": {
+      "locationType": "SINGLE_REGION"
+    },
+    "state": "ACTIVE",
+    "type": "RAW",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/dpasset-min-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": []
+  },
+  "location": "us-central1",
+  "name": "dpasset-min-${uniqueId}",
+  "storageClass": "STANDARD"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "dpasset-min-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/dpasset-min-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/dpasset-min-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "dpasset-min-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/dpasset-min-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://dataplex.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/dataplexasset-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Flakes%2Fdplake-min-${uniqueId}%2Fzones%2Fdpzone-min-${uniqueId}%2Fassets%2Fdataplexasset-minimal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/dataplexasset-minimal-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dataplex.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets?%24alt=json%3Benum-encoding%3Dint&assetId=dataplexasset-minimal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2Flakes%2Fdplake-min-${uniqueId}%2Fzones%2Fdpzone-min-${uniqueId}
+
+{
+  "resourceSpec": {
+    "name": "projects/${projectId}/buckets/dpasset-min-${uniqueId}",
+    "type": 1
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/dataplexasset-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://dataplex.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/dataplexasset-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.Asset",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "discoveryStatus": {
+      "state": "DISABLED",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "name": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/dataplexasset-minimal-${uniqueId}",
+    "resourceSpec": {
+      "name": "dpasset-min-${uniqueId}",
+      "readAccessMode": "DIRECT",
+      "type": "STORAGE_BUCKET"
+    },
+    "resourceStatus": {
+      "state": "READY",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "securityStatus": {
+      "state": "READY",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "state": "ACTIVE",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+# Phase: UPDATE
+GET https://dataplex.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/dataplexasset-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Flakes%2Fdplake-min-${uniqueId}%2Fzones%2Fdpzone-min-${uniqueId}%2Fassets%2Fdataplexasset-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "discoveryStatus": {
+    "state": 5,
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/dataplexasset-minimal-${uniqueId}",
+  "resourceSpec": {
+    "name": "dpasset-min-${uniqueId}",
+    "readAccessMode": 1,
+    "type": 1
+  },
+  "resourceStatus": {
+    "state": 1,
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "securityStatus": {
+    "state": 1,
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "state": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://dataplex.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/dataplexasset-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CresourceSpec
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: asset.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Flakes%2Fdplake-min-${uniqueId}%2Fzones%2Fdpzone-min-${uniqueId}%2Fassets%2Fdataplexasset-minimal-${uniqueId}
+
+{
+  "description": "Updated description for minimal asset",
+  "name": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/dataplexasset-minimal-${uniqueId}",
+  "resourceSpec": {
+    "name": "projects/${projectId}/buckets/dpasset-min-${uniqueId}",
+    "readAccessMode": 1,
+    "type": 1
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/dataplexasset-minimal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://dataplex.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/dataplexasset-minimal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.Asset",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated description for minimal asset",
+    "discoveryStatus": {
+      "state": "DISABLED",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "name": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/dataplexasset-minimal-${uniqueId}",
+    "resourceSpec": {
+      "name": "dpasset-min-${uniqueId}",
+      "readAccessMode": "DIRECT",
+      "type": "STORAGE_BUCKET"
+    },
+    "resourceStatus": {
+      "state": "READY",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "securityStatus": {
+      "state": "READY",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "state": "ACTIVE",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+# Phase: DELETE
+GET https://dataplex.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/dataplexasset-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Flakes%2Fdplake-min-${uniqueId}%2Fzones%2Fdpzone-min-${uniqueId}%2Fassets%2Fdataplexasset-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description for minimal asset",
+  "discoveryStatus": {
+    "state": 5,
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/dataplexasset-minimal-${uniqueId}",
+  "resourceSpec": {
+    "name": "dpasset-min-${uniqueId}",
+    "readAccessMode": 1,
+    "type": 1
+  },
+  "resourceStatus": {
+    "state": 1,
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "securityStatus": {
+    "state": 1,
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "state": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://dataplex.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/dataplexasset-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Flakes%2Fdplake-min-${uniqueId}%2Fzones%2Fdpzone-min-${uniqueId}%2Fassets%2Fdataplexasset-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/dataplexasset-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://dataplex.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/dataplexasset-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/dpasset-min-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "dpasset-min-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/dpasset-min-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/dpasset-min-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "kind": "storage#objects",
+  "prefixes": [
+    "testfolder",
+    "testmanagedfolder"
+  ]
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/dpasset-min-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+204 No Content
+Content-Type: application/json
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/GetZone
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}"
+}
+
+OK
+
+{
+  "assetStatus": {
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "discoverySpec": {
+    "csvOptions": {},
+    "jsonOptions": {},
+    "schedule": ""
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}",
+  "resourceSpec": {
+    "locationType": "SINGLE_REGION"
+  },
+  "state": "ACTIVE",
+  "type": "RAW",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/GetZone
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}"
+}
+
+OK
+
+{
+  "assetStatus": {
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "discoverySpec": {
+    "csvOptions": {},
+    "jsonOptions": {},
+    "schedule": ""
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}",
+  "resourceSpec": {
+    "locationType": "SINGLE_REGION"
+  },
+  "state": "ACTIVE",
+  "type": "RAW",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/DeleteZone
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/GetLake
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}"
+}
+
+OK
+
+{
+  "assetStatus": {
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "metastore": {},
+  "metastoreStatus": {
+    "state": "NONE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}",
+  "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
+  "state": "ACTIVE",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/GetLake
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}"
+}
+
+OK
+
+{
+  "assetStatus": {
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "metastore": {},
+  "metastoreStatus": {
+    "state": "NONE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}",
+  "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
+  "state": "ACTIVE",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/DeleteLake
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

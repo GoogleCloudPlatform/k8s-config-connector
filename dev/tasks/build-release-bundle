@@ -183,7 +183,6 @@ BLOCKED_KINDS=(
     "DatamigrationConnectionProfile"
     "DataMigrationMappingRule"
     "DataplexAspectType"
-    "DataplexAsset"
     "DataplexContent"
     "DataplexDataAttribute"
     "DataplexDataAttributeBinding"
