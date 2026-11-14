@@ -21,6 +21,7 @@ package redis
 import (
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 func init() {
@@ -43,6 +44,8 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".server_ca_mode")
 	f.UnimplementedFields.Insert(".server_ca_pool")
 	f.UnimplementedFields.Insert(".async_cluster_endpoints_deletion_enabled")
+	f.Unimplemented_NotYetTriaged(".acl_policy")
+	f.Unimplemented_NotYetTriaged(".acl_policy_info")
 
 	f.SpecFields.Insert(".authorization_mode")
 	f.SpecFields.Insert(".transit_encryption_mode")
@@ -52,7 +55,9 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".persistence_config")
 	f.SpecFields.Insert(".redis_configs")
 	f.SpecFields.Insert(".replica_count")
-	f.SpecFields.Insert(".zone_distribution_config")
+	f.SpecFields.Insert(".zone_distribution_config.mode")
+	f.SpecFields.Insert(".zone_distribution_config.zone")
+	f.SpecFields.Insert(".zone_distribution_config.zones")
 	f.SpecFields.Insert(".deletion_protection_enabled")
 	f.SpecFields.Insert(".automated_backup_config")
 	f.SpecFields.Insert(".maintenance_policy.weekly_maintenance_window")
@@ -77,6 +82,33 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".encryption_info")
 	f.StatusFields.Insert(".cross_cluster_replication_config")
 	f.StatusFields.Insert(".cluster_endpoints")
+	f.StatusFields.Insert(".zone_distribution_config.active_zones")
+
+	f.FilterStatus = func(in *pb.Cluster) {
+		cleanEmptyMessages(in.ProtoReflect())
+	}
 
 	return f
+}
+
+func cleanEmptyMessages(m protoreflect.Message) {
+	m.Range(func(fd protoreflect.FieldDescriptor, v protoreflect.Value) bool {
+		if fd.Kind() == protoreflect.MessageKind {
+			if fd.IsList() || fd.IsMap() {
+				return true
+			}
+			sub := v.Message()
+			cleanEmptyMessages(sub)
+			// check if sub has any populated fields now
+			hasFields := false
+			sub.Range(func(fd2 protoreflect.FieldDescriptor, v2 protoreflect.Value) bool {
+				hasFields = true
+				return false
+			})
+			if !hasFields {
+				m.Clear(fd)
+			}
+		}
+		return true
+	})
 }

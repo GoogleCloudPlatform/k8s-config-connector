@@ -122,6 +122,10 @@ cp ${REPO_ROOT}/mockgcp/apis/google/logging/v2/logging_config.proto google/loggi
 mkdir -p google/privacy/dlp/v2
 cp ${REPO_ROOT}/mockgcp/apis/google/privacy/dlp/v2/dlp.proto google/privacy/dlp/v2/dlp.proto
 
+# Overwrite cloud_redis_cluster.proto with the updated version that has zones and active_zones
+mkdir -p google/cloud/redis/cluster/v1
+cp ${REPO_ROOT}/mockgcp/apis/google/cloud/redis/cluster/v1/cloud_redis_cluster.proto google/cloud/redis/cluster/v1/cloud_redis_cluster.proto
+
 # Patch monitoring dashboard metrics.proto to include OpsAnalyticsQuery
 sed -i '/string prometheus_query = 6;/a \ \ \ \ // A query used to fetch time series with SQL.\n    OpsAnalyticsQuery ops_analytics_query = 8;' google/monitoring/dashboard/v1/metrics.proto
 cat >> google/monitoring/dashboard/v1/metrics.proto <<EOF

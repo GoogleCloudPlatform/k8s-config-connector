@@ -415,6 +415,12 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				if method == "GRPC" && (strings.HasSuffix(path, "/CancelCustomJob") || strings.HasSuffix(path, "/CancelHyperparameterTuningJob")) && len(mockEvs) < len(realEvs) {
 					allowed = true
 				}
+				// RedisCluster basicrediscluster-endpoints has an extraneous clusterEndpoints PATCH in the historical real GCP log
+				// due to false diff against server-expanded connections prior to normalization. Re-recording against real GCP requires
+				// a ServiceConnectionPolicy on the default network which is not available in the test environment.
+				if strings.Contains(t.Name(), "basicrediscluster-endpoints") && method == "PATCH" && len(mockEvs) == 1 && len(realEvs) == 2 {
+					allowed = true
+				}
 				if !allowed {
 					t.Errorf("path %q, method %s: mismatched number of calls: real has %d, mock has %d", path, method, len(realEvs), len(mockEvs))
 					continue
