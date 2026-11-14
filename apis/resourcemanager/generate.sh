@@ -38,15 +38,29 @@ ${CONTROLLERBUILDER} generate-types \
   --resource Folder:Folder \
   --include-skipped-output
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.resourcemanager.v3 \
+  --api-version resourcemanager.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource ResourceManagerTagHold:TagHold \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.resourcemanager.v3 \
+  --api-version resourcemanager.cnrm.cloud.google.com/v1alpha1 \
+  --resource ResourceManagerTagHold:TagHold
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.resourcemanager.v3 \
   --api-version resourcemanager.cnrm.cloud.google.com/v1beta1 \
-  --api-dir ${REPO_ROOT}/apis/resourcemanager/v1beta1 \
-  --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1 \
-  --include-skipped-output
+  --include-skipped-output \
+  --multiversion \
+  --prepopulate-resource
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/resourcemanager" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/resourcemanager/

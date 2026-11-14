@@ -178,3 +178,35 @@ func FolderStatus_ToProto(mapCtx *direct.MapContext, in *krm.FolderStatus) *pb.F
 	}
 	return out
 }
+
+func FolderSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krm.FolderSpec {
+	return FolderSpec_FromProto(mapCtx, in)
+}
+
+func FolderSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FolderSpec) *pb.Folder {
+	return FolderSpec_ToProto(mapCtx, in)
+}
+
+func FolderStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krm.FolderStatus {
+	return FolderStatus_FromProto(mapCtx, in)
+}
+
+func FolderStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FolderStatus) *pb.Folder {
+	return FolderStatus_ToProto(mapCtx, in)
+}
+
+func ProjectSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Project) *krm.ProjectSpec {
+	return ProjectSpec_FromProto(mapCtx, in)
+}
+
+func ProjectSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ProjectSpec) *pb.Project {
+	return ProjectSpec_ToProto(mapCtx, in)
+}
+
+func ProjectStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Project) *krm.ProjectStatus {
+	return ProjectStatus_FromProto(mapCtx, in)
+}
+
+func ProjectStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ProjectStatus) *pb.Project {
+	return ProjectStatus_ToProto(mapCtx, in)
+}

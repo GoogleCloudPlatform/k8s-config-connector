@@ -6184,6 +6184,9 @@
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].substitute.path" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.condition" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.path" is not set in unstructured objects
+[missing_field] crd=resourcemanagertagholds.resourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.helpLink" is not set in unstructured objects
+[missing_field] crd=resourcemanagertagholds.resourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.holder" is not set in unstructured objects
+[missing_field] crd=resourcemanagertagholds.resourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.origin" is not set in unstructured objects
 [missing_field] crd=retailcontrols.retail.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=retailcontrols.retail.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=retailcontrols.retail.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
