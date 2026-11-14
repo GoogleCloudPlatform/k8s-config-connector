@@ -1,0 +1,232 @@
+GET https://oracledatabase.googleapis.com/v1/projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east4%2FexadbVmClusters%2Fexadbvm-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://oracledatabase.googleapis.com/v1/projects/${projectId}/locations/us-east4/exadbVmClusters?%24alt=json%3Benum-encoding%3Dint&exadbVmClusterId=exadbvm-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-east4
+
+{
+  "backupOdbSubnet": "projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/backup-subnet-${uniqueId}",
+  "displayName": "Exadb VM Cluster Minimal",
+  "odbSubnet": "projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/odb-subnet-${uniqueId}",
+  "properties": {
+    "enabledEcpuCountPerNode": 4,
+    "exascaleDbStorageVault": "projects/${projectId}/locations/us-east4/exascaleDbStorageVaults/vault-${uniqueId}",
+    "gridImageId": "gi-image-id-val",
+    "hostnamePrefix": "host-pref",
+    "nodeCount": 2,
+    "shapeAttribute": 1,
+    "sshPublicKeys": [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6f3v..."
+    ],
+    "vmFileSystemStorage": {
+      "sizeInGbsPerNode": 120
+    }
+  }
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The billing account doesn't have an associated marketplace order. Please confirm or complete a purchasing offer before provisioning the resource.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+GET https://oracledatabase.googleapis.com/v1/projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east4%2FexadbVmClusters%2Fexadbvm-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://oracledatabase.googleapis.com/v1/projects/${projectId}/locations/us-east4/exadbVmClusters?%24alt=json%3Benum-encoding%3Dint&exadbVmClusterId=exadbvm-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-east4
+
+{
+  "backupOdbSubnet": "projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/backup-subnet-${uniqueId}",
+  "displayName": "Exadb VM Cluster Minimal",
+  "odbSubnet": "projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/odb-subnet-${uniqueId}",
+  "properties": {
+    "enabledEcpuCountPerNode": 4,
+    "exascaleDbStorageVault": "projects/${projectId}/locations/us-east4/exascaleDbStorageVaults/vault-${uniqueId}",
+    "gridImageId": "gi-image-id-val",
+    "hostnamePrefix": "host-pref",
+    "nodeCount": 2,
+    "shapeAttribute": 1,
+    "sshPublicKeys": [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6f3v..."
+    ],
+    "vmFileSystemStorage": {
+      "sizeInGbsPerNode": 120
+    }
+  }
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The billing account doesn't have an associated marketplace order. Please confirm or complete a purchasing offer before provisioning the resource.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+GET https://oracledatabase.googleapis.com/v1/projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east4%2FexadbVmClusters%2Fexadbvm-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://oracledatabase.googleapis.com/v1/projects/${projectId}/locations/us-east4/exadbVmClusters?%24alt=json%3Benum-encoding%3Dint&exadbVmClusterId=exadbvm-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-east4
+
+{
+  "backupOdbSubnet": "projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/backup-subnet-${uniqueId}",
+  "displayName": "Exadb VM Cluster Minimal",
+  "odbSubnet": "projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/odb-subnet-${uniqueId}",
+  "properties": {
+    "enabledEcpuCountPerNode": 4,
+    "exascaleDbStorageVault": "projects/${projectId}/locations/us-east4/exascaleDbStorageVaults/vault-${uniqueId}",
+    "gridImageId": "gi-image-id-val",
+    "hostnamePrefix": "host-pref",
+    "nodeCount": 3,
+    "shapeAttribute": 1,
+    "sshPublicKeys": [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6f3v..."
+    ],
+    "vmFileSystemStorage": {
+      "sizeInGbsPerNode": 120
+    }
+  }
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The billing account doesn't have an associated marketplace order. Please confirm or complete a purchasing offer before provisioning the resource.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+GET https://oracledatabase.googleapis.com/v1/projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east4%2FexadbVmClusters%2Fexadbvm-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
