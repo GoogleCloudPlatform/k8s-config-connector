@@ -22,6 +22,8 @@ pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeglobalvmextensio
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeglobalvmextensionpolicy/computeglobalvmextensionpolicy-minimal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinstantsnapshot/computeinstantsnapshot-maximal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinstantsnapshot/computeinstantsnapshot-minimal
+pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinterconnectattachmentgroup/computeinterconnectattachmentgroup-maximal
+pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinterconnectattachmentgroup/computeinterconnectattachmentgroup-minimal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinterconnectgroup/computeinterconnectgroup-maximal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinterconnectgroup/computeinterconnectgroup-minimal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computemachineimage/computemachineimageautogen
