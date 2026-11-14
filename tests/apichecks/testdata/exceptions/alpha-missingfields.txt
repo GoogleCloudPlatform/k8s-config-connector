@@ -2223,22 +2223,9 @@
 [missing_field] crd=computeinstancegroupnamedports.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.port" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupnamedports.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeinstancegroupnamedports.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.zone" is not set in unstructured objects
-[missing_field] crd=computeinterconnectgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.configured.topologyCapability.intendedCapabilityBlockers[].blockerType" is not set in unstructured objects
-[missing_field] crd=computeinterconnectgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.configured.topologyCapability.intendedCapabilityBlockers[].documentationLink" is not set in unstructured objects
-[missing_field] crd=computeinterconnectgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.configured.topologyCapability.intendedCapabilityBlockers[].explanation" is not set in unstructured objects
-[missing_field] crd=computeinterconnectgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.configured.topologyCapability.intendedCapabilityBlockers[].facilities[]" is not set in unstructured objects
-[missing_field] crd=computeinterconnectgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.configured.topologyCapability.intendedCapabilityBlockers[].interconnects[]" is not set in unstructured objects
-[missing_field] crd=computeinterconnectgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.configured.topologyCapability.intendedCapabilityBlockers[].metros[]" is not set in unstructured objects
-[missing_field] crd=computeinterconnectgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.configured.topologyCapability.intendedCapabilityBlockers[].zones[]" is not set in unstructured objects
-[missing_field] crd=computeinterconnectgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.configured.topologyCapability.supportedSla" is not set in unstructured objects
 [missing_field] crd=computeinterconnectgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computeinterconnectgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.intent.topologyCapability" is not set in unstructured objects
 [missing_field] crd=computeinterconnectgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.interconnects" is not set in unstructured objects
-[missing_field] crd=computeinterconnectgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=computeinterconnectgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.physicalStructure.metros[].facilities[].facility" is not set in unstructured objects
-[missing_field] crd=computeinterconnectgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.physicalStructure.metros[].facilities[].zones[].interconnects[]" is not set in unstructured objects
-[missing_field] crd=computeinterconnectgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.physicalStructure.metros[].facilities[].zones[].zone" is not set in unstructured objects
-[missing_field] crd=computeinterconnectgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.physicalStructure.metros[].metro" is not set in unstructured objects
 [missing_field] crd=computeinterconnectgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.adminEnabled" is not set in unstructured objects
 [missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.customerName" is not set in unstructured objects

@@ -3371,11 +3371,13 @@ func ComputeInterconnectGroupObservedState_v1alpha1_FromProto(mapCtx *direct.Map
 		return nil
 	}
 	out := &krmcomputev1alpha1.ComputeInterconnectGroupObservedState{}
+	out.Configured = InterconnectGroupConfigured_v1alpha1_FromProto(mapCtx, in.GetConfigured())
 	out.CreationTimestamp = in.CreationTimestamp
 	out.Etag = in.Etag
 	out.ID = in.Id
 	out.Kind = in.Kind
 	// MISSING: Name
+	out.PhysicalStructure = InterconnectGroupPhysicalStructure_v1alpha1_FromProto(mapCtx, in.GetPhysicalStructure())
 	out.SelfLink = in.SelfLink
 	return out
 }
@@ -3384,11 +3386,13 @@ func ComputeInterconnectGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapCo
 		return nil
 	}
 	out := &pb.InterconnectGroup{}
+	out.Configured = InterconnectGroupConfigured_v1alpha1_ToProto(mapCtx, in.Configured)
 	out.CreationTimestamp = in.CreationTimestamp
 	out.Etag = in.Etag
 	out.Id = in.ID
 	out.Kind = in.Kind
 	// MISSING: Name
+	out.PhysicalStructure = InterconnectGroupPhysicalStructure_v1alpha1_ToProto(mapCtx, in.PhysicalStructure)
 	out.SelfLink = in.SelfLink
 	return out
 }
@@ -3397,7 +3401,6 @@ func ComputeInterconnectGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, 
 		return nil
 	}
 	out := &krmcomputev1alpha1.ComputeInterconnectGroupSpec{}
-	out.Configured = InterconnectGroupConfigured_v1alpha1_FromProto(mapCtx, in.GetConfigured())
 	out.Description = in.Description
 	out.Intent = InterconnectGroupIntent_v1alpha1_FromProto(mapCtx, in.GetIntent())
 	if in.Interconnects != nil {
@@ -3409,7 +3412,6 @@ func ComputeInterconnectGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, 
 		}
 	}
 	// MISSING: Name
-	out.PhysicalStructure = InterconnectGroupPhysicalStructure_v1alpha1_FromProto(mapCtx, in.GetPhysicalStructure())
 	return out
 }
 func ComputeInterconnectGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInterconnectGroupSpec) *pb.InterconnectGroup {
@@ -3417,7 +3419,6 @@ func ComputeInterconnectGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 		return nil
 	}
 	out := &pb.InterconnectGroup{}
-	out.Configured = InterconnectGroupConfigured_v1alpha1_ToProto(mapCtx, in.Configured)
 	out.Description = in.Description
 	out.Intent = InterconnectGroupIntent_v1alpha1_ToProto(mapCtx, in.Intent)
 	if in.Interconnects != nil {
@@ -3427,7 +3428,6 @@ func ComputeInterconnectGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 		}
 	}
 	// MISSING: Name
-	out.PhysicalStructure = InterconnectGroupPhysicalStructure_v1alpha1_ToProto(mapCtx, in.PhysicalStructure)
 	return out
 }
 
@@ -7553,7 +7553,9 @@ func InterconnectGroupInterconnect_v1alpha1_FromProto(mapCtx *direct.MapContext,
 		return nil
 	}
 	out := &krmcomputev1alpha1.InterconnectGroupInterconnect{}
-	out.Interconnect = in.Interconnect
+	if in.GetInterconnect() != "" {
+		out.InterconnectRef = &krmcomputev1alpha1.ComputeInterconnectRef{External: in.GetInterconnect()}
+	}
 	return out
 }
 func InterconnectGroupInterconnect_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectGroupInterconnect) *pb.InterconnectGroupInterconnect {
@@ -7561,7 +7563,9 @@ func InterconnectGroupInterconnect_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 		return nil
 	}
 	out := &pb.InterconnectGroupInterconnect{}
-	out.Interconnect = in.Interconnect
+	if in.InterconnectRef != nil {
+		out.Interconnect = &in.InterconnectRef.External
+	}
 	return out
 }
 func InterconnectGroupPhysicalStructure_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroupPhysicalStructure) *krmcomputev1alpha1.InterconnectGroupPhysicalStructure {

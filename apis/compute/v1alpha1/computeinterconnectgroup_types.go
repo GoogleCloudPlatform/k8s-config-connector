@@ -15,8 +15,7 @@
 // API sources for ComputeInterconnectGroup, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/compute/v1/compute.proto
 // +kcc:source:service-docs=https://developers.google.com/compute/docs/reference/latest/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/compute/docs/reference/rest
+// +kcc:source:resource-docs=https://cloud.google.com/compute/docs/reference/rest/v1/interconnectGroups
 
 package v1alpha1
 
@@ -33,15 +32,11 @@ var ComputeInterconnectGroupGVK = GroupVersion.WithKind("ComputeInterconnectGrou
 // +kcc:required-from-proto
 type ComputeInterconnectGroupSpec struct {
 	// The project that this resource belongs to.
+	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
 
 	// The ComputeInterconnectGroup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.configured
-	Configured *InterconnectGroupConfigured `json:"configured,omitempty"`
 
 	// An optional description of this resource. Provide this property when you create the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.description
@@ -53,9 +48,13 @@ type ComputeInterconnectGroupSpec struct {
 	// Interconnects in the InterconnectGroup. Keys are arbitrary user-specified strings. Users are encouraged, but not required, to use their preferred format for resource links as keys. Note that there are add-members and remove-members methods in gcloud. The size of this map is limited by an "Interconnects per group" quota.
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.interconnects
 	Interconnects map[string]InterconnectGroupInterconnect `json:"interconnects,omitempty"`
+}
 
-	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.physical_structure
-	PhysicalStructure *InterconnectGroupPhysicalStructure `json:"physicalStructure,omitempty"`
+// +kcc:proto=google.cloud.compute.v1.InterconnectGroupInterconnect
+type InterconnectGroupInterconnect struct {
+	// The URL of an Interconnect in this group. All Interconnects in the group are unique.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupInterconnect.interconnect
+	InterconnectRef *ComputeInterconnectRef `json:"interconnectRef,omitempty"`
 }
 
 // ComputeInterconnectGroupStatus defines the config connector machine state of ComputeInterconnectGroup
@@ -77,28 +76,31 @@ type ComputeInterconnectGroupStatus struct {
 // ComputeInterconnectGroupObservedState is the state of the ComputeInterconnectGroup resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.compute.v1.InterconnectGroup
 type ComputeInterconnectGroupObservedState struct {
+	// [Output Only] The status of the group as configured.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.configured
+	Configured *InterconnectGroupConfigured `json:"configured,omitempty"`
+
 	// [Output Only] Creation timestamp in RFC3339 text format.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.creation_timestamp
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
 	// Opaque system-generated token that uniquely identifies the configuration. If provided when patching a configuration in update mode, the provided token must match the current token or the update is rejected. This provides a reliable means of doing read-modify-write (optimistic locking) as described by API 154.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.etag
 	Etag *string `json:"etag,omitempty"`
 
 	// [Output Only] The unique identifier for the resource type. The server generates this identifier.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.id
 	ID *uint64 `json:"id,omitempty"`
 
 	// [Output Only] Type of the resource. Always compute#InterconnectGroup
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.kind
 	Kind *string `json:"kind,omitempty"`
 
+	// [Output Only] An analysis of the physical layout of Interconnects in this group.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.physical_structure
+	PhysicalStructure *InterconnectGroupPhysicalStructure `json:"physicalStructure,omitempty"`
+
 	// [Output Only] Server-defined URL for the resource.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
 }

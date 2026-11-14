@@ -1571,7 +1571,6 @@ type InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers str
 	Facilities []string `json:"facilities,omitempty"`
 
 	// [Output Only] Interconnects used to explain this blocker in more detail.
-	// +kcc:guess=possible-reference target=ComputeInterconnect
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers.interconnects
 	Interconnects []string `json:"interconnects,omitempty"`
 
@@ -1591,13 +1590,15 @@ type InterconnectGroupIntent struct {
 	TopologyCapability *string `json:"topologyCapability,omitempty"`
 }
 
+/* found existing non-generated go type "InterconnectGroupInterconnect", skipping
+
 // +kcc:proto=google.cloud.compute.v1.InterconnectGroupInterconnect
 type InterconnectGroupInterconnect struct {
 	// The URL of an Interconnect in this group. All Interconnects in the group are unique.
-	// +kcc:guess=possible-reference target=ComputeInterconnect
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupInterconnect.interconnect
 	Interconnect *string `json:"interconnect,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.compute.v1.InterconnectGroupPhysicalStructure
 type InterconnectGroupPhysicalStructure struct {
@@ -1628,7 +1629,6 @@ type InterconnectGroupPhysicalStructureMetrosFacilities struct {
 // +kcc:proto=google.cloud.compute.v1.InterconnectGroupPhysicalStructureMetrosFacilitiesZones
 type InterconnectGroupPhysicalStructureMetrosFacilitiesZones struct {
 	// [Output Only] URLs of Interconnects in this redundancy group in the given metro, facility, and zone.
-	// +kcc:guess=possible-reference target=ComputeInterconnect
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupPhysicalStructureMetrosFacilitiesZones.interconnects
 	Interconnects []string `json:"interconnects,omitempty"`
 
