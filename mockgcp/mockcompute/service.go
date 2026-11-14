@@ -150,6 +150,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 	pb.RegisterInstantSnapshotsServer(grpcServer, &InstantSnapshotsV1{MockService: s})
 	pb.RegisterRegionInstantSnapshotsServer(grpcServer, &RegionInstantSnapshotsV1{MockService: s})
+	pb.RegisterInterconnectGroupsServer(grpcServer, &InterconnectGroupsV1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -379,6 +380,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 	if err := pb.RegisterRegionInstantSnapshotsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterInterconnectGroupsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 	if err := RegisterZoneVmExtensionPoliciesHandler(ctx, mux.ServeMux, &ZoneVmExtensionPoliciesV1{MockService: s}); err != nil {

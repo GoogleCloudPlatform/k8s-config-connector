@@ -1,0 +1,6 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/interconnectGroups/computeinterconnectgroup-minimal-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeInterconnectGroup
+  name: computeinterconnectgroup-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
