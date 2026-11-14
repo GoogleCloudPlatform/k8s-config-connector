@@ -1368,6 +1368,54 @@ func AIPlatformSpecialistPoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIP
 	return out
 }
 
+func AIPlatformTensorboardRunObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TensorboardRun) *krm.AIPlatformTensorboardRunObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformTensorboardRunObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func AIPlatformTensorboardRunObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformTensorboardRunObservedState) *pb.TensorboardRun {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TensorboardRun{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func AIPlatformTensorboardRunSpec_FromProto(mapCtx *direct.MapContext, in *pb.TensorboardRun) *krm.AIPlatformTensorboardRunSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformTensorboardRunSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+
+func AIPlatformTensorboardRunSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformTensorboardRunSpec) *pb.TensorboardRun {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TensorboardRun{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
+
 func APIAuth_FromProto(mapCtx *direct.MapContext, in *pb.ApiAuth) *krm.APIAuth {
 	if in == nil {
 		return nil

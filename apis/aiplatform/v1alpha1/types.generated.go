@@ -43,6 +43,7 @@
 // resource: AIPlatformContext:Context
 // resource: AIPlatformExecution:Execution
 // resource: AIPlatformNotebookExecutionJob:NotebookExecutionJob
+// resource: AIPlatformTensorboardRun:TensorboardRun
 
 package v1alpha1
 
