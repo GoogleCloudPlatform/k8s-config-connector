@@ -264,6 +264,31 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 			}
 
+			// Inject status.externalRef for ResourceManagerTagHold to simulate a reconciled tag hold in static unit tests.
+			if u.GetKind() == "ResourceManagerTagHold" && u.GroupVersionKind().Group == "resourcemanager.cnrm.cloud.google.com" {
+				goldens, _ := filepath.Glob(filepath.Join(dir, "_generated_object_*.golden.yaml"))
+				for _, gPath := range goldens {
+					for _, gu := range parseFixtureYAML(t, gPath, gcpProject) {
+						if gu.GetKind() == u.GetKind() && gu.GetName() == u.GetName() {
+							if extRef, ok, _ := unstructured.NestedString(gu.Object, "status", "externalRef"); ok && extRef != "" {
+								_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+							}
+						}
+					}
+				}
+			}
+
+			// Inject status.name and status.externalRef for TagsTagValue to simulate a reconciled tag value in static unit tests.
+			if u.GetKind() == "TagsTagValue" && u.GroupVersionKind().Group == "tags.cnrm.cloud.google.com" {
+				tagValueID := "${tagValueID}"
+				if err := unstructured.SetNestedField(u.Object, "tagValues/"+tagValueID, "status", "externalRef"); err != nil {
+					t.Fatalf("failed to inject status.externalRef for TagsTagValue %s: %v", u.GetName(), err)
+				}
+				if err := unstructured.SetNestedField(u.Object, tagValueID, "status", "name"); err != nil {
+					t.Fatalf("failed to inject status.name for TagsTagValue %s: %v", u.GetName(), err)
+				}
+			}
+
 			// Inject status.name and status.externalRef for Folders to simulate a reconciled folder in static unit tests.
 			if u.GetKind() == "Folder" && u.GroupVersionKind().Group == "resourcemanager.cnrm.cloud.google.com" {
 				folderID := u.GetName()

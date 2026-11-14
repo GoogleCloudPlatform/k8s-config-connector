@@ -50,6 +50,7 @@ type MockService struct {
 	tagKeys     *TagKeys
 	tagValues   *TagValues
 	tagBindings *TagBindingsServer
+	tagHolds    *TagHoldsServer
 }
 
 type TagKeys struct {
@@ -65,6 +66,11 @@ type TagValues struct {
 type TagBindingsServer struct {
 	*MockService
 	pb_v3.UnimplementedTagBindingsServer
+}
+
+type TagHoldsServer struct {
+	*MockService
+	pb_v3.UnimplementedTagHoldsServer
 }
 
 func NewProjectStore(storage storage.Storage) projects.ProjectStore {
@@ -84,6 +90,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 	s.tagKeys = &TagKeys{MockService: s}
 	s.tagValues = &TagValues{MockService: s}
 	s.tagBindings = &TagBindingsServer{MockService: s}
+	s.tagHolds = &TagHoldsServer{MockService: s}
 
 	env.Projects = s.projectsInternal
 
@@ -105,6 +112,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb_v3.RegisterTagKeysServer(grpcServer, s.tagKeys)
 	pb_v3.RegisterTagValuesServer(grpcServer, s.tagValues)
 	pb_v3.RegisterTagBindingsServer(grpcServer, s.tagBindings)
+	pb_v3.RegisterTagHoldsServer(grpcServer, s.tagHolds)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -115,6 +123,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb_v3.RegisterTagKeysHandler,
 		pb_v3.RegisterTagValuesHandler,
 		pb_v3.RegisterTagBindingsHandler,
+		pb_v3.RegisterTagHoldsHandler,
 		s.operations.RegisterOperationsPath("/v1/operations/{name}"),
 		s.operations.RegisterOperationsPath("/v3/operations/{name}"))
 	if err != nil {
