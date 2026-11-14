@@ -163,6 +163,7 @@ BLOCKED_KINDS=(
     "ComputeHealthCheckService"
     "ComputeInterconnectGroup"
     "ComputeNotificationEndpoint"
+    "ComputeStoragePool"
     "ConfigDeliveryFleetPackage"
     "ConnectorsConnection"
     "ContactCenterInsightsConversation"

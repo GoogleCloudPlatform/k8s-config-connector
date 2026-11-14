@@ -96,6 +96,19 @@ ${CONTROLLERBUILDER} generate-identity \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeGlobalVMExtensionPolicy:GlobalVmExtensionPolicy \
   --pattern ComputeGlobalVMExtensionPolicy=projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource \
+  --resource ComputeStoragePool:StoragePool
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeStoragePool:StoragePool \
+  --pattern ComputeStoragePool=projects/{project}/zones/{zone}/storagePools/{storagePool}
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.compute.v1 \

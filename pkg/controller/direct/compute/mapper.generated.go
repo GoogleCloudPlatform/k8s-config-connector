@@ -5924,6 +5924,76 @@ func ComputeSnapshotStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcom
 	// MISSING: StorageLocations
 	return out
 }
+func ComputeStoragePoolObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.StoragePool) *krmcomputev1alpha1.ComputeStoragePoolObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeStoragePoolObservedState{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ID = in.Id
+	out.Kind = in.Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	out.ResourceStatus = StoragePoolResourceStatus_v1alpha1_FromProto(mapCtx, in.GetResourceStatus())
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithID = in.SelfLinkWithId
+	out.State = in.State
+	out.Status = StoragePoolResourceStatus_v1alpha1_FromProto(mapCtx, in.GetStatus())
+	out.Zone = in.Zone
+	return out
+}
+func ComputeStoragePoolObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeStoragePoolObservedState) *pb.StoragePool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StoragePool{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Id = in.ID
+	out.Kind = in.Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	out.ResourceStatus = StoragePoolResourceStatus_v1alpha1_ToProto(mapCtx, in.ResourceStatus)
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithId = in.SelfLinkWithID
+	out.State = in.State
+	out.Status = StoragePoolResourceStatus_v1alpha1_ToProto(mapCtx, in.Status)
+	out.Zone = in.Zone
+	return out
+}
+func ComputeStoragePoolSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.StoragePool) *krmcomputev1alpha1.ComputeStoragePoolSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeStoragePoolSpec{}
+	out.CapacityProvisioningType = in.CapacityProvisioningType
+	out.Description = in.Description
+	// MISSING: Labels
+	// MISSING: Name
+	out.PerformanceProvisioningType = in.PerformanceProvisioningType
+	out.PoolProvisionedCapacityGB = in.PoolProvisionedCapacityGb
+	out.PoolProvisionedIops = in.PoolProvisionedIops
+	out.PoolProvisionedThroughput = in.PoolProvisionedThroughput
+	out.StoragePoolType = in.StoragePoolType
+	return out
+}
+func ComputeStoragePoolSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeStoragePoolSpec) *pb.StoragePool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StoragePool{}
+	out.CapacityProvisioningType = in.CapacityProvisioningType
+	out.Description = in.Description
+	// MISSING: Labels
+	// MISSING: Name
+	out.PerformanceProvisioningType = in.PerformanceProvisioningType
+	out.PoolProvisionedCapacityGb = in.PoolProvisionedCapacityGB
+	out.PoolProvisionedIops = in.PoolProvisionedIops
+	out.PoolProvisionedThroughput = in.PoolProvisionedThroughput
+	out.StoragePoolType = in.StoragePoolType
+	return out
+}
 func ComputeSubnetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Subnetwork) *krmcomputev1beta1.ComputeSubnetworkSpec {
 	if in == nil {
 		return nil
@@ -9416,6 +9486,40 @@ found existing non-generated mapping function "SnapshotSourceDiskEncryptionKey_v
 		return out
 	}
 */
+func StoragePoolResourceStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.StoragePoolResourceStatus) *krmcomputev1alpha1.StoragePoolResourceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.StoragePoolResourceStatus{}
+	out.DiskCount = in.DiskCount
+	out.LastResizeTimestamp = in.LastResizeTimestamp
+	out.MaxTotalProvisionedDiskCapacityGB = in.MaxTotalProvisionedDiskCapacityGb
+	out.PoolUsedCapacityBytes = in.PoolUsedCapacityBytes
+	out.PoolUsedIops = in.PoolUsedIops
+	out.PoolUsedThroughput = in.PoolUsedThroughput
+	out.PoolUserWrittenBytes = in.PoolUserWrittenBytes
+	out.TotalProvisionedDiskCapacityGB = in.TotalProvisionedDiskCapacityGb
+	out.TotalProvisionedDiskIops = in.TotalProvisionedDiskIops
+	out.TotalProvisionedDiskThroughput = in.TotalProvisionedDiskThroughput
+	return out
+}
+func StoragePoolResourceStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.StoragePoolResourceStatus) *pb.StoragePoolResourceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StoragePoolResourceStatus{}
+	out.DiskCount = in.DiskCount
+	out.LastResizeTimestamp = in.LastResizeTimestamp
+	out.MaxTotalProvisionedDiskCapacityGb = in.MaxTotalProvisionedDiskCapacityGB
+	out.PoolUsedCapacityBytes = in.PoolUsedCapacityBytes
+	out.PoolUsedIops = in.PoolUsedIops
+	out.PoolUsedThroughput = in.PoolUsedThroughput
+	out.PoolUserWrittenBytes = in.PoolUserWrittenBytes
+	out.TotalProvisionedDiskCapacityGb = in.TotalProvisionedDiskCapacityGB
+	out.TotalProvisionedDiskIops = in.TotalProvisionedDiskIops
+	out.TotalProvisionedDiskThroughput = in.TotalProvisionedDiskThroughput
+	return out
+}
 func SubnetworkLogConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SubnetworkLogConfig) *krmcomputev1beta1.SubnetworkLogConfig {
 	if in == nil {
 		return nil
