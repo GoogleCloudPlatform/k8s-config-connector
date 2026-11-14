@@ -149,3 +149,15 @@
   5. Updated CAIS golden files and alpha-missingfields exception entries.
 - **Impact**: Conforms to Greenfield single-parent conventions, passes all apichecks, unit tests, and round-trip fuzz tests (`FOCUS=DataplexGlossaryCategory`).
 
+### [2026-11-14] Finalize Direct KRM Types and Identity for DataplexEntity
+- **Context**: Triaging judgement queue and finalizing KRM types, identity, and references for `DataplexEntity` under `v1alpha1` (#15695).
+- **Problem**: `DataplexEntity` is a child resource of `DataplexZone` (`projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/entities/{entity}`). It was prepopulated with `projectRef`, `location`, raw string `asset`, and `etag` in `spec`. In addition, `DataplexEntityRef` was previously defined in `dataplexdatascan_types.go` without `Name` or `Namespace`, blocking `generate-identity` from generating standard reference struct boilerplate.
+- **Solution**:
+  1. Replaced `projectRef` and `location` with required, immutable `parentRef *ZoneRef` (`+kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"`).
+  2. Converted raw string `asset` to `assetRef *DataplexAssetRef`.
+  3. Removed `etag` from `spec` and added to `observedState`.
+  4. Removed redundant `DataplexEntityRef` definition from `dataplexdatascan_types.go`, allowing `generate-identity` to generate standard `DataplexEntityRef` with `External`, `Name`, and `Namespace`.
+  5. Triaged all 7 entries for `DataplexEntity` in `apis/dataplex/judgement_queue.yaml`.
+  6. Regenerated CRD, mapper, controller, and fuzzer using `generate.sh` and one-shot `controllerbuilder generate-controller` / `generate-fuzzer`.
+- **Impact**: Conforms to Greenfield Step 1b conventions, passes all apichecks, unit tests, and round-trip fuzz tests (`FOCUS=DataplexEntity`).
+
