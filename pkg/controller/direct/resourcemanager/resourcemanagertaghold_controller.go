@@ -27,6 +27,7 @@ import (
 	"time"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1alpha1"
+	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tags/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -178,12 +179,8 @@ func (a *TagHoldAdapter) Create(ctx context.Context, createOp *directbase.Create
 		TagHold: resource,
 	}
 
-	// Newly created TagValues in GCP Resource Manager require ~60-75 seconds for IAM permissions
-	// (resourcemanager.tagHolds.create) to replicate to the TagHold backend.
-	time.Sleep(75 * time.Second)
-
 	var op *gcp.CreateTagHoldOperation
-	err := wait.PollUntilContextTimeout(ctx, 5*time.Second, 1*time.Minute, true, func(ctx context.Context) (bool, error) {
+	err := wait.PollUntilContextTimeout(ctx, 5*time.Second, 2*time.Minute, true, func(ctx context.Context) (bool, error) {
 		var createErr error
 		op, createErr = a.gcpClient.CreateTagHold(ctx, req)
 		if createErr != nil {
@@ -262,6 +259,9 @@ func (a *TagHoldAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 	obj.Spec = direct.ValueOf(ResourceManagerTagHoldSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
+	}
+	obj.Spec.ParentRef = &tagsv1beta1.TagsTagValueRef{
+		External: a.id.ParentString(),
 	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
