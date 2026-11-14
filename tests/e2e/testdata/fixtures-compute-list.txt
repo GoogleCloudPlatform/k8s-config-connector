@@ -20,6 +20,8 @@ pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computefuturereservatio
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computefuturereservation/sharefuturereservation-remove-project
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeglobalvmextensionpolicy/computeglobalvmextensionpolicy-maximal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeglobalvmextensionpolicy/computeglobalvmextensionpolicy-minimal
+pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computehealthaggregationpolicy/computehealthaggregationpolicy-maximal
+pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computehealthaggregationpolicy/computehealthaggregationpolicy-minimal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinstantsnapshot/computeinstantsnapshot-maximal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinstantsnapshot/computeinstantsnapshot-minimal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinterconnectgroup/computeinterconnectgroup-maximal
