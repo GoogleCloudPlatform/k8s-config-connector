@@ -209,6 +209,16 @@ func (a *PolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
+func policySpecEqual(actual, desired *orgpolicypb.PolicySpec) bool {
+	if actual == nil || desired == nil {
+		return proto.Equal(actual, desired)
+	}
+	normalized := proto.Clone(actual).(*orgpolicypb.PolicySpec)
+	normalized.Etag = ""
+	normalized.UpdateTime = nil
+	return proto.Equal(normalized, desired)
+}
+
 // Export maps the GCP object to a Config Connector resource `spec`.
 func (a *PolicyAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	if a.actual == nil {
