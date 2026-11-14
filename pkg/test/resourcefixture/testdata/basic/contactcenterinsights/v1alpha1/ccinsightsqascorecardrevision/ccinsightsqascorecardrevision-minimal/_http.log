@@ -122,14 +122,14 @@ X-Xss-Protection: 0
       "alternateIds": [
         "latest"
       ],
-      "createTime": "2026-11-14T20:26:49.905431Z",
-      "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/9642586111448304558",
+      "createTime": "2026-11-14T22:55:57.258506Z",
+      "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/16702347239979751940",
       "snapshot": {
-        "createTime": "2026-11-14T20:26:49.905431Z",
+        "createTime": "2026-11-14T22:55:57.258506Z",
         "displayName": "Scorecard for revision ${uniqueId}",
         "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}",
         "source": 1,
-        "updateTime": "2026-11-14T20:26:49.905431Z"
+        "updateTime": "2026-11-14T22:55:57.258506Z"
       },
       "state": 12
     }
@@ -138,13 +138,13 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://contactcenterinsights.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/9642586111448304558:tuneQaScorecardRevision?%24alt=json%3Benum-encoding%3Dint
+POST https://contactcenterinsights.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/16702347239979751940:tuneQaScorecardRevision?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FqaScorecards%2Fccinsightsqascorecard-${uniqueId}%2Frevisions%2F9642586111448304558
+X-Goog-Request-Params: parent=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FqaScorecards%2Fccinsightsqascorecard-${uniqueId}%2Frevisions%2F16702347239979751940
 
 {
-  "parent": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/9642586111448304558"
+  "parent": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/16702347239979751940"
 }
 
 200 OK
@@ -162,7 +162,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.contactcenterinsights.v1.TuneQaScorecardRevisionMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "request": {
-      "parent": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/9642586111448304558"
+      "parent": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/16702347239979751940"
     }
   },
   "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}"
@@ -170,10 +170,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://contactcenterinsights.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/9642586111448304558?%24alt=json%3Benum-encoding%3Dint
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FqaScorecards%2Fccinsightsqascorecard-${uniqueId}%2Frevisions%2F9642586111448304558
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -186,29 +186,27 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "alternateIds": [
-    "latest"
-  ],
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/9642586111448304558",
-  "snapshot": {
-    "createTime": "2026-11-14T20:26:49.905431Z",
-    "displayName": "Scorecard for revision ${uniqueId}",
-    "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}",
-    "source": 1,
-    "updateTime": "2026-11-14T20:26:49.905431Z"
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.contactcenterinsights.v1.TuneQaScorecardRevisionMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "request": {
+      "parent": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/16702347239979751940"
+    },
+    "tuningCompletionRatio": 0.2
   },
-  "state": 2
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}"
 }
 
 ---
 
-GET https://contactcenterinsights.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/9642586111448304558?%24alt=json%3Benum-encoding%3Dint
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/rev-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FqaScorecards%2Fccinsightsqascorecard-${uniqueId}%2Frevisions%2F9642586111448304558
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FqaScorecards%2Fccinsightsqascorecard-${uniqueId}%2Frevisions%2Frev-minimal-${uniqueId}
 
-200 OK
+404 Not Found
 Content-Type: application/json; charset=UTF-8
 Server: scaffolding on HTTPServer2
 Vary: Origin
@@ -219,31 +217,18 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "alternateIds": [
-    "latest"
-  ],
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/9642586111448304558",
-  "snapshot": {
-    "createTime": "2026-11-14T20:26:49.905431Z",
-    "displayName": "Scorecard for revision ${uniqueId}",
-    "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}",
-    "source": 1,
-    "updateTime": "2026-11-14T20:26:49.905431Z"
-  },
-  "state": 11
+  "error": {
+    "code": 404,
+    "message": "No QaScorecardRevision found for (project ${projectNumber}, qa_scorecard_id ccinsightsqascorecard-${uniqueId}, revision_id rev-minimal-${uniqueId}).",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
 
-POST https://contactcenterinsights.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/9642586111448304558:deploy?%24alt=json%3Benum-encoding%3Dint
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FqaScorecards%2Fccinsightsqascorecard-${uniqueId}%2Frevisions%2F9642586111448304558
-
-{
-  "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/9642586111448304558"
-}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -256,20 +241,23 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "alternateIds": [
-    "latest",
-    "default"
-  ],
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/9642586111448304558",
-  "snapshot": {
-    "createTime": "2026-11-14T20:26:49.905431Z",
-    "displayName": "Scorecard for revision ${uniqueId}",
-    "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}",
-    "source": 1,
-    "updateTime": "2026-11-14T20:26:49.905431Z"
-  },
-  "state": 11
+  "qaScorecardRevisions": [
+    {
+      "alternateIds": [
+        "latest"
+      ],
+      "createTime": "2026-11-14T22:55:57.258506Z",
+      "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/16702347239979751940",
+      "snapshot": {
+        "createTime": "2026-11-14T22:55:57.258506Z",
+        "displayName": "Scorecard for revision ${uniqueId}",
+        "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}",
+        "source": 1,
+        "updateTime": "2026-11-14T22:55:57.258506Z"
+      },
+      "state": 11
+    }
+  ]
 }
 
 ---
@@ -297,17 +285,16 @@ X-Xss-Protection: 0
 
 {
   "alternateIds": [
-    "default",
     "latest"
   ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/rev-minimal-${uniqueId}",
   "snapshot": {
-    "createTime": "2026-11-14T20:26:49.905431Z",
+    "createTime": "2026-11-14T22:55:57.258506Z",
     "displayName": "Scorecard for revision ${uniqueId}",
     "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}",
     "source": 1,
-    "updateTime": "2026-11-14T20:26:49.905431Z"
+    "updateTime": "2026-11-14T22:55:57.258506Z"
   },
   "state": 12
 }
@@ -337,11 +324,11 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/rev-minimal-${uniqueId}",
   "snapshot": {
-    "createTime": "2026-11-14T20:26:49.905431Z",
+    "createTime": "2026-11-14T22:55:57.258506Z",
     "displayName": "Scorecard for revision ${uniqueId}",
     "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}",
     "source": 1,
-    "updateTime": "2026-11-14T20:27:02.998719Z"
+    "updateTime": "2026-11-14T22:56:23.764617Z"
   },
   "state": 12
 }

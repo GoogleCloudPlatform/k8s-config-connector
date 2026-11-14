@@ -23,8 +23,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strconv"
 	"strings"
-	"time"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/contactcenterinsights/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -231,6 +231,8 @@ func (a *QaScorecardRevisionAdapter) Export(ctx context.Context) (*unstructured.
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+	obj.Spec.ParentRef = &krm.CCInsightsQAScorecardRef{External: a.id.ParentString()}
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.Revision)
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -264,11 +266,15 @@ func (a *QaScorecardRevisionAdapter) Delete(ctx context.Context, deleteOp *direc
 	return true, nil
 }
 
-// prepareParentScorecard ensures the parent scorecard has no in-flight EDITABLE revisions
-// before creating a new revision. A scorecard in GCP can only have one EDITABLE revision at a time;
-// any existing EDITABLE revision must be tuned and deployed before a new revision can be created.
+// prepareParentScorecard ensures the parent scorecard is ready to accept new revisions.
+// When a QaScorecard is created, GCP automatically creates an initial revision in state EDITABLE.
+// A scorecard in GCP can only have one EDITABLE revision at a time; before a new revision can be
+// created, this initial EDITABLE revision must be tuned and deployed.
+// We guard against mutating user-defined revisions by ensuring we only tune and deploy the initial
+// revision (when it is the only revision on the scorecard and has a numeric server-generated ID).
 func (a *QaScorecardRevisionAdapter) prepareParentScorecard(ctx context.Context) error {
 	log := klog.FromContext(ctx)
+	var revisions []*contactcenterinsightspb.QaScorecardRevision
 	it := a.gcpClient.ListQaScorecardRevisions(ctx, &contactcenterinsightspb.ListQaScorecardRevisionsRequest{
 		Parent: a.id.ParentString(),
 	})
@@ -280,33 +286,24 @@ func (a *QaScorecardRevisionAdapter) prepareParentScorecard(ctx context.Context)
 		if err != nil {
 			return fmt.Errorf("listing scorecard revisions under %s: %w", a.id.ParentString(), err)
 		}
+		revisions = append(revisions, resp)
+	}
+
+	for _, resp := range revisions {
 		if resp.GetState() == contactcenterinsightspb.QaScorecardRevision_EDITABLE && resp.GetName() != a.id.String() {
+			if !isInitialScorecardRevision(resp, len(revisions)) {
+				return fmt.Errorf("parent scorecard %s has an in-flight editable revision %s; cannot create revision %s until the existing revision is tuned and deployed", a.id.ParentString(), resp.GetName(), a.id.String())
+			}
 			log.V(2).Info("tuning initial scorecard revision to make it deployable", "name", resp.GetName())
-			_, err := a.gcpClient.TuneQaScorecardRevision(ctx, &contactcenterinsightspb.TuneQaScorecardRevisionRequest{
+			op, err := a.gcpClient.TuneQaScorecardRevision(ctx, &contactcenterinsightspb.TuneQaScorecardRevisionRequest{
 				Parent:       resp.GetName(),
 				ValidateOnly: false,
 			})
 			if err != nil {
 				return fmt.Errorf("tuning scorecard revision %s: %w", resp.GetName(), err)
 			}
-			for {
-				rev, err := a.gcpClient.GetQaScorecardRevision(ctx, &contactcenterinsightspb.GetQaScorecardRevisionRequest{
-					Name: resp.GetName(),
-				})
-				if err != nil {
-					return fmt.Errorf("getting scorecard revision %s during tuning: %w", resp.GetName(), err)
-				}
-				if rev.GetState() == contactcenterinsightspb.QaScorecardRevision_READY {
-					break
-				}
-				if rev.GetState() == contactcenterinsightspb.QaScorecardRevision_TRAINING_FAILED || rev.GetState() == contactcenterinsightspb.QaScorecardRevision_TRAINING_CANCELLED {
-					return fmt.Errorf("tuning scorecard revision %s failed with state: %v", resp.GetName(), rev.GetState())
-				}
-				select {
-				case <-ctx.Done():
-					return ctx.Err()
-				case <-time.After(2 * time.Second):
-				}
+			if _, err := op.Wait(ctx); err != nil {
+				return fmt.Errorf("waiting for tuning scorecard revision %s: %w", resp.GetName(), err)
 			}
 			log.V(2).Info("deploying scorecard revision", "name", resp.GetName())
 			if _, err := a.gcpClient.DeployQaScorecardRevision(ctx, &contactcenterinsightspb.DeployQaScorecardRevisionRequest{
@@ -317,4 +314,21 @@ func (a *QaScorecardRevisionAdapter) prepareParentScorecard(ctx context.Context)
 		}
 	}
 	return nil
+}
+
+func isInitialScorecardRevision(rev *contactcenterinsightspb.QaScorecardRevision, totalRevisions int) bool {
+	// The initial revision provisioned by GCP upon scorecard creation is the sole revision
+	// on the scorecard, in EDITABLE state, and has a server-generated numeric ID.
+	if totalRevisions != 1 {
+		return false
+	}
+	if rev.GetState() != contactcenterinsightspb.QaScorecardRevision_EDITABLE {
+		return false
+	}
+	revName := rev.GetName()
+	revID := revName[strings.LastIndex(revName, "/")+1:]
+	if _, err := strconv.ParseUint(revID, 10, 64); err != nil {
+		return false
+	}
+	return true
 }

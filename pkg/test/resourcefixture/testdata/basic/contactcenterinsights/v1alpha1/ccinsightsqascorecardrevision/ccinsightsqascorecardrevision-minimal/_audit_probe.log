@@ -26,11 +26,11 @@ X-Gfe-Server: scaffolding on HTTPServer2
   "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/rev-minimal-${uniqueId}",
   "snapshot": {
-    "createTime": "2026-11-14T20:26:49.905431Z",
+    "createTime": "2026-11-14T22:55:57.258506Z",
     "displayName": "Scorecard for revision ${uniqueId}",
     "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}",
     "source": 1,
-    "updateTime": "2026-11-14T20:27:02.998719Z"
+    "updateTime": "2026-11-14T22:56:23.764617Z"
   },
   "state": 12
 }
@@ -49,55 +49,28 @@ X-Gfe-Server: scaffolding on HTTPServer2
       "alternateIds": [
         "latest"
       ],
-      "createTime": "2026-11-14T20:27:02.998719Z",
+      "createTime": "2026-11-14T22:56:23.764617Z",
       "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/rev-minimal-${uniqueId}",
       "snapshot": {
-        "createTime": "2026-11-14T20:26:49.905431Z",
+        "createTime": "2026-11-14T22:55:57.258506Z",
         "displayName": "Scorecard for revision ${uniqueId}",
         "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}",
         "source": 1,
-        "updateTime": "2026-11-14T20:27:02.998719Z"
+        "updateTime": "2026-11-14T22:56:23.764617Z"
       },
       "state": 12
     },
     {
-      "alternateIds": [
-        "default"
-      ],
-      "createTime": "2026-11-14T20:26:49.905431Z",
-      "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/9642586111448304558",
+      "createTime": "2026-11-14T22:55:57.258506Z",
+      "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/16702347239979751940",
       "snapshot": {
-        "createTime": "2026-11-14T20:26:49.905431Z",
+        "createTime": "2026-11-14T22:55:57.258506Z",
         "displayName": "Scorecard for revision ${uniqueId}",
         "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}",
         "source": 1,
-        "updateTime": "2026-11-14T20:26:49.905431Z"
+        "updateTime": "2026-11-14T22:55:57.258506Z"
       },
       "state": 11
     }
   ]
-}
-
----
-
-GET https://contactcenterinsights.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/9642586111448304558?%24alt=json%3Benum-encoding%3Dint
-X-Audit-Probe: true
-
-200 OK
-X-Gfe-Server: scaffolding on HTTPServer2
-
-{
-  "alternateIds": [
-    "default"
-  ],
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}/revisions/9642586111448304558",
-  "snapshot": {
-    "createTime": "2026-11-14T20:26:49.905431Z",
-    "displayName": "Scorecard for revision ${uniqueId}",
-    "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}",
-    "source": 1,
-    "updateTime": "2026-11-14T20:26:49.905431Z"
-  },
-  "state": 11
 }
