@@ -50,12 +50,14 @@ ${CONTROLLERBUILDER} generate-types \
   --include-skipped-output \
   --prepopulate-resource \
   --resource CCInsightsQaQuestion:QaQuestion \
+  --resource CCInsightsQAScorecardRevision:QaScorecardRevision \
   --prune-unused-types=false
 
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.contactcenterinsights.v1 \
   --api-version contactcenterinsights.cnrm.cloud.google.com/v1alpha1 \
-  --resource CCInsightsQaQuestion:QaQuestion
+  --resource CCInsightsQaQuestion:QaQuestion \
+  --resource CCInsightsQAScorecardRevision:QaScorecardRevision
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.contactcenterinsights.v1 \

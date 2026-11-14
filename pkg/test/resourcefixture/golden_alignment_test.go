@@ -57,14 +57,11 @@ var realGCPSkipFixtures = map[string]bool{
 	"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-maximal": true,
 	"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-minimal": true,
 	// Tags acquire and project tag key tests have environment-dependent real GCP payloads
-	"tags/v1beta1/tagstagkey/tagkeyacquire":        true,
-	"tags/v1beta1/tagstagvalue/tagvalueacquire":    true,
-	"tags/v1beta1/tagstagkey/tagkeyprojectautogen": true,
-	// NetworkSecurity BackendAuthenticationConfig requires invitation-only early access allowlist.
-	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-maximal": true,
-	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-minimal": true,
-	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect":                                     true,
-	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect-direct":                              true,
+	"tags/v1beta1/tagstagkey/tagkeyacquire":                            true,
+	"tags/v1beta1/tagstagvalue/tagvalueacquire":                        true,
+	"tags/v1beta1/tagstagkey/tagkeyprojectautogen":                     true,
+	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect":        true,
+	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect-direct": true,
 }
 
 func TestGoldenLogAlignment(t *testing.T) {
@@ -647,6 +644,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "creationTime")
 		delete(v, "updateTime")
 		delete(v, "updateTimestamp")
+		delete(v, "rolloutOperation")
 		delete(v, "activationUpdateTime")
 		delete(v, "revisionCreateTime")
 		delete(v, "uid")
@@ -664,6 +662,8 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "activityDataRetentionPeriodDays")
 		// WebSecurityScanner targetPlatforms is returned by real GCP (e.g. [1] for App Engine) but not in v1 proto
 		delete(v, "targetPlatforms")
+		// CESApp: retentionWindow is returned by real GCP but not in cespb.ConversationLoggingSettings
+		delete(v, "retentionWindow")
 		if qm, ok := v["qualityMetadata"].(map[string]interface{}); ok {
 			if agentInfo, ok := qm["agentInfo"].([]interface{}); ok {
 				for _, a := range agentInfo {
@@ -1495,6 +1495,9 @@ func isDependencyEvent(ev httpEvent, depKinds map[string]string, primaryKind str
 		trimmedSuffix := strings.TrimPrefix(suffix, "/")
 		if strings.Contains(trimmedSuffix, "/") {
 			if kind == "KMSCryptoKey" && strings.HasPrefix(trimmedSuffix, "cryptoKeyVersions/") && primaryKind != "KMSCryptoKeyVersion" {
+				return true
+			}
+			if kind == "StorageBucket" && strings.HasPrefix(trimmedSuffix, "o/") {
 				return true
 			}
 			continue

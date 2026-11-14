@@ -17,8 +17,45 @@ package aiplatform
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
+func AIPlatformNotebookExecutionJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob) *krm.AIPlatformNotebookExecutionJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformNotebookExecutionJobSpec{}
+	out.DataformRepositorySource = NotebookExecutionJob_DataformRepositorySource_FromProto(mapCtx, in.GetDataformRepositorySource())
+	out.GCSNotebookSource = NotebookExecutionJob_GCSNotebookSource_FromProto(mapCtx, in.GetGcsNotebookSource())
+	out.DirectNotebookSource = NotebookExecutionJob_DirectNotebookSource_FromProto(mapCtx, in.GetDirectNotebookSource())
+	if in.GetNotebookRuntimeTemplateResourceName() != "" {
+		out.NotebookRuntimeTemplateRef = &krm.AIPlatformNotebookRuntimeTemplateRef{
+			External: in.GetNotebookRuntimeTemplateResourceName(),
+		}
+	}
+	out.CustomEnvironmentSpec = NotebookExecutionJob_CustomEnvironmentSpecWithRequired_FromProto(mapCtx, in.GetCustomEnvironmentSpec())
+	if in.GetGcsOutputUri() != "" {
+		out.GCSOutputURI = direct.LazyPtr(in.GetGcsOutputUri())
+	}
+	if in.GetExecutionUser() != "" {
+		out.ExecutionUser = direct.LazyPtr(in.GetExecutionUser())
+	}
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	out.WorkbenchRuntime = NotebookExecutionJob_WorkbenchRuntime_FromProto(mapCtx, in.GetWorkbenchRuntime())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.ExecutionTimeout = direct.StringDuration_FromProto(mapCtx, in.GetExecutionTimeout())
+	if in.GetScheduleResourceName() != "" {
+		out.ScheduleRef = &krm.AIPlatformScheduleRef{
+			External: in.GetScheduleResourceName(),
+		}
+	}
+	out.KernelName = direct.LazyPtr(in.GetKernelName())
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	return out
+}
 
 func AIPlatformNotebookExecutionJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformNotebookExecutionJobSpec) *pb.NotebookExecutionJob {
 	if in == nil {

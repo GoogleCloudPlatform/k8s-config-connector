@@ -64,6 +64,12 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 		return
 	}
 
+	if strings.HasSuffix(string(descriptor.FullName()), ".Schema") {
+		if depth > 1 {
+			return
+		}
+	}
+
 	fields := descriptor.Fields()
 	n := fields.Len()
 	for i := 0; i < n; i++ {

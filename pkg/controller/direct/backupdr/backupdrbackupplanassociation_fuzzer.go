@@ -62,6 +62,8 @@ func backupDRBackupPlanAssociationFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_Identity(".name")
 	f.Unimplemented_Identity(".resource") // special field, the value has to be a URL representing ComputeInstance.
 
+	f.Unimplemented_NotYetTriaged(".alloydb_cluster_backup_plan_association_properties")
+	f.Unimplemented_NotYetTriaged(".auto_protection_policy_binding")
 	f.Unimplemented_NotYetTriaged(".backup_plan_revision_name")
 	f.Unimplemented_NotYetTriaged(".backup_plan_revision_id")
 	f.Unimplemented_NotYetTriaged(".cloud_sql_instance_backup_plan_association_properties")

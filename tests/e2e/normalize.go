@@ -412,6 +412,10 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	if u.GetKind() == "DocumentAIProcessorVersion" {
 		visitor.replacePaths[".status.observedState.create_time"] = mockgcpregistry.PlaceholderTime
 	}
+	if u.GetKind() == "ComputeGlobalVMExtensionPolicy" {
+		// rolloutOperation contains dynamic rollout timestamps and timing-dependent async zone rollout states in real GCP.
+		visitor.removePaths.Insert(".status.observedState.rolloutOperation")
+	}
 
 	// Specific to Datacatalog
 	visitor.replacePaths[".dataCatalogTimestamps.createTime"] = mockgcpregistry.PlaceholderTimestamp

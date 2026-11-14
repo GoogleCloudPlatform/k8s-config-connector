@@ -125,6 +125,9 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 			if obj["labelFingerprint"] != nil {
 				obj["labelFingerprint"] = PlaceholderFingerprint
 			}
+			if obj["etag"] != nil {
+				obj["etag"] = PlaceholderFingerprint
+			}
 			if obj["address"] != nil {
 				obj["address"] = "8.8.8.8"
 			}

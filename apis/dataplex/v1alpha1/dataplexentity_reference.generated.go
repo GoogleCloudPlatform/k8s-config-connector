@@ -33,6 +33,19 @@ import (
 
 var _ refs.Ref = &DataplexEntityRef{}
 
+// DataplexEntityRef is a reference to a GCP DataplexEntity resource.
+type DataplexEntityRef struct {
+	// A reference to an externally managed DataplexEntity resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/lakes/{{lakeID}}/zones/{{zone}}/entities/{{entityID}}".
+	External string `json:"external,omitempty"`
+
+	// The name of a DataplexEntity resource.
+	Name string `json:"name,omitempty"`
+
+	// The namespace of a DataplexEntity resource.
+	Namespace string `json:"namespace,omitempty"`
+}
+
 func init() {
 	refs.Register(&DataplexEntityRef{}, &DataplexEntity{})
 }
@@ -42,7 +55,10 @@ func (r *DataplexEntityRef) GetGVK() schema.GroupVersionKind {
 }
 
 func (r *DataplexEntityRef) GetNamespacedName() types.NamespacedName {
-	return types.NamespacedName{}
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
 }
 
 func (r *DataplexEntityRef) GetExternal() string {
@@ -51,6 +67,8 @@ func (r *DataplexEntityRef) GetExternal() string {
 
 func (r *DataplexEntityRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *DataplexEntityRef) ValidateExternal(ref string) error {

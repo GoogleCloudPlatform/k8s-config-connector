@@ -251,3 +251,81 @@
   3. **Vertex AI Metadata Service API Requirements**: Vertex AI `MetadataService.CreateContext` requires `schemaTitle` (`schema_title` in proto, e.g., `system.Experiment`) to be specified on context creation.
   4. **MockGCP Support**: Implemented `GetContext`, `CreateContext`, `UpdateContext`, and `DeleteContext` in `mockgcp/mockaiplatform/context.go`, registered `google.cloud.aiplatform.v1.MetadataService` in `mockaiplatform/service.go`, and added `AIPlatformContext` to `supportMockGCP` in `config/tests/samples/create/harness.go`.
   5. **Golden E2E Fixtures & Mock Verification**: Recorded and verified minimal and maximal test fixtures (`aiplatformcontext-minimal` and `aiplatformcontext-maximal`) against both real GCP (`RECORD_AUDIT_PROBE=1 ./hack/record-gcp`) and MockGCP (`./hack/compare-mock`), passing all E2E validation checks (V1 through V7).
+
+### [2026-11-13] Greenfield Step 2: Implementing Direct Controller, Fuzzer, and E2E Fixtures for AIPlatformArtifact
+- **Context**: Implementing Greenfield Step 2 direct controller, fuzzer, and real GCP E2E fixtures for `AIPlatformArtifact` under `aiplatform.cnrm.cloud.google.com/v1alpha1` (Issue #15555).
+- **Implementation & Learnings**:
+  1. **Deterministic Controller & Fuzzer Generation**:
+     - Generated direct controller `pkg/controller/direct/aiplatform/aiplatformartifact_controller.go` and round-trip fuzzer `aiplatformartifact_fuzzer.generated.go` via one-shot `controllerbuilder generate-controller` and `generate-fuzzer --prepopulate-resource` (never added to `apis/aiplatform/generate.sh`).
+     - Registered `AIPlatformArtifact` in `pkg/controller/resourceconfig/static_config.go` via `python3 dev/tasks/generate_static_config.py`.
+     - Verified fuzzer roundtripping with `FOCUS=AIPlatformArtifact go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`.
+  2. **GAPIC Client & Standards Alignment**:
+     - `cloud.google.com/go/aiplatform/apiv1` only provides `MetadataClient` over gRPC (`NewMetadataClient`), falling back to `m.config.GRPCClientOptions()` with endpoint `fmt.Sprintf("%s-aiplatform.googleapis.com:443", location)`.
+     - Ensured `common.NormalizeGreenfieldReferences(ctx, reader, obj, nil)` is called in `AdapterForObject` before `obj.GetIdentity(ctx, reader)` so `spec.parentRef` is normalized before identity resolution.
+     - Reconciled top-level labels via `metadata.labels`: set `resource.Labels = label.GCPLabels(a.desired)` on `Create`, and used `common.CompareGreenfieldSpecAndLabels` with `updateMask` on `Update`.
+  3. **`MetadataStoreRef` Normalization Fix**:
+     - In `apis/vertexai/v1beta1/vertexaimetadatastore_reference.go`, `Normalize()` was delegating to `NormalizedExternal()`, which assigned `r.External = actualExternalRef` without clearing `r.Name` via `r.SetExternal(actualExternalRef)`. On subsequent reconciliations (e.g. during update), this triggered `cannot specify both name and external on VertexAIMetadataStore reference`.
+     - Updated `Normalize` to delegate to standard `refs.Normalize(ctx, reader, r, defaultNamespace)` and updated `NormalizedExternal` to call `r.SetExternal(actualExternalRef)`.
+  4. **Required `schemaTitle` on GCP**:
+     - Vertex AI Metadata API requires `schema_title` when creating an Artifact (`rpc error: code = InvalidArgument desc = Resource Type through schema_title for beta API or instance_schema or instance_schema_title for alpha API is expected`).
+     - Configured `schemaTitle: system.Artifact` in minimal fixture, and tested `schemaVersion: 0.0.1` and all remaining spec fields in maximal fixture.
+  5. **Golden Fixtures & Exception Cleanup**:
+     - Recorded real GCP golden logs (`_http.log`, `_identities.yaml`, `_generated_object_*.golden.yaml`, and `_audit_probe.log`) using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp` for both `aiplatformartifact-minimal` and `aiplatformartifact-maximal`, with all 7/7 automated validation checks passing.
+     - Ran `WRITE_GOLDEN_OUTPUT=1 go test -v ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha`, removing all 8 missing field exceptions from `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+
+### [2026-11-13] Greenfield Step 3: Implementing MockGCP and Alignment for AIPlatformArtifact
+- **Context**: Implementing Greenfield Step 3 MockGCP and Alignment for `AIPlatformArtifact` under `aiplatform.cnrm.cloud.google.com/v1alpha1` (Issue #15583).
+- **Implementation & Learnings**:
+  1. **Dual API Version Support in Mock Service**:
+     - `MetadataService` in `cloud.google.com/go/aiplatform/apiv1/aiplatformpb` (v1) and `cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb` (v1beta1) have different service descriptors (`google.cloud.aiplatform.v1.MetadataService` vs `google.cloud.aiplatform.v1beta1.MetadataService`).
+     - Implemented `artifactService` embedding `pbv1.UnimplementedMetadataServiceServer` in `mockgcp/mockaiplatform/artifact.go`, handling `GetArtifact`, `CreateArtifact`, `UpdateArtifact`, `DeleteArtifact`, and `ListArtifacts`.
+     - Registered `artifactService` under `pbv1.RegisterMetadataServiceServer` on the gRPC server and registered `pbv1.NewMetadataServiceClient(conn)` on `mux` in `mockgcp/mockaiplatform/service.go`.
+  2. **Metadata & Schema Defaults**:
+     - On creation and retrieval, defaulted `metadata` to empty `structpb.Struct` when nil, and defaulted `schemaVersion` to `"0.0.1"` when `schemaTitle` is provided without an explicit version, matching real Vertex AI behavior.
+     - Formatted `NotFound` error messages to match live GCP's canonical string pattern with resolved project numbers (`Resource not found.; GetArtifact is unable to find artifact resource with name: ...`).
+     - Supported field mask paths in `UpdateArtifact` for selective field mutation, and implemented LRO completion with `DeleteOperationMetadata` on deletion.
+  3. **Verification**:
+     - Added unit tests in `mockgcp/mockaiplatform/artifact_test.go` verifying name parsing and the full CRUD lifecycle.
+     - Added `AIPlatformArtifact` to the MockGCP allowlist in `config/tests/samples/create/harness.go`.
+     - Verified alignment via `hack/compare-mock` and confirmed 0 discrepancies in `TestGoldenLogAlignment` for both `aiplatformartifact-minimal` and `aiplatformartifact-maximal`. All 29 tests in `./dev/ci/presubmits/tests-e2e-fixtures-suite aiplatform` passed.
+
+### [2026-11-13] Greenfield Step 2: Implementing Direct Controller, Fuzzer, and E2E Fixtures for AIPlatformExecution
+- **Context**: Greenfield Step 2 direct controller, fuzzer, and real GCP E2E fixtures for `AIPlatformExecution` (Issue #15567).
+- **Implementation & Learnings**:
+  1. **Autogenerated Direct Controller & Fuzzer**: Generated direct controller `pkg/controller/direct/aiplatform/aiplatformexecution_controller.go` and round-trip fuzzer `aiplatformexecution_fuzzer.generated.go` using `controllerbuilder generate-controller` and `generate-fuzzer --prepopulate-resource`.
+  2. **MetadataStoreRef Normalization Alignment**: Fixed `Normalize` / `NormalizedExternal` in `apis/vertexai/v1beta1/vertexaimetadatastore_reference.go` and `apis/vertexai/v1alpha1/vertexaimetadatastore_reference.go` to delegate to `refs.Normalize`, ensuring `SetExternal` clears `Name` and `Namespace` when resolving `status.externalRef`. This prevents duplicate name/external error on reference re-evaluation.
+  3. **Vertex AI ML Metadata API Schema Requirement**: GCP's Vertex AI ML Metadata API requires `schemaTitle` (e.g. `"system.ContainerExecution"`) on `Execution` resources (`rpc error: code = InvalidArgument desc = Resource Type through schema_title for beta API or instance_schema or instance_schema_title for alpha API is expected.`). Included `schemaTitle: "system.ContainerExecution"` in both minimal and maximal test fixtures.
+  4. **Real GCP E2E Recording**: Recorded golden logs for `aiplatformexecution-minimal` and `aiplatformexecution-maximal` against real GCP (`./hack/record-gcp`). All V1-V7 automated validation checks passed cleanly.
+- **Impact**: Greenfield direct controller, fuzzer, and golden test fixtures for `AIPlatformExecution` are fully implemented and verified against real GCP.
+
+### [2026-11-13] Greenfield Step 3: Implementing MockGCP and Alignment for AIPlatformExecution
+- **Context**: Greenfield Step 3 MockGCP implementation and golden log alignment for `AIPlatformExecution` (Issue #15603).
+- **Implementation & Learnings**:
+  1. **Mock Service Implementation**: Implemented `executionService` in `mockgcp/mockaiplatform/aiplatformexecution.go` fulfilling `google.cloud.aiplatform.v1.MetadataService` methods `GetExecution`, `CreateExecution`, `UpdateExecution`, `DeleteExecution`, and `ListExecutions`.
+  2. **MetadataService Registration**: Registered `executionService` with `pbv1.RegisterMetadataServiceServer(grpcServer, &executionService{MockService: s})` and added `pbv1.NewMetadataServiceClient(conn)` to `NewHTTPMux` in `mockgcp/mockaiplatform/service.go`.
+  3. **Mock GCP Test Allowlist**: Added `AIPlatformExecution` to `config/tests/samples/create/harness.go` under `MaybeSkip`.
+  4. **Behavioral Alignment**:
+     - `CreateExecution`: Handles default `schemaVersion: "0.0.1"`, empty structpb `metadata: {}`, computeEtag hash, and resource name formatting matching real GCP (`projects/{projectNumber}/locations/{location}/metadataStores/{metadatastore}/executions/{execution}`).
+     - `GetExecution`: Returns exact NotFound error format matching real GCP (`Resource not found.; GetExecution is unable to find execution resource with name: ...`).
+     - `UpdateExecution`: Supports fieldmask paths (`description`, `displayName`, `metadata`, `state`, `labels`, `schemaTitle`, `schemaVersion`).
+     - `DeleteExecution`: Returns completed LRO with `DeleteOperationMetadata` matching v1 schema.
+  5. **Verification**: Successfully generated and aligned `_http_mock.log` for both `aiplatformexecution-minimal` and `aiplatformexecution-maximal`. `TestGoldenLogAlignment` and `./dev/ci/presubmits/tests-e2e-fixtures-suite aiplatform` pass with zero diffs and zero errors.
+- **Impact**: Behavioral simulation for `AIPlatformExecution` in MockGCP fully matches real GCP.
+
+### [2026-11-14] Implementing Direct Controller, Fuzzer, and Real GCP E2E Fixtures for AIPlatformNotebookExecutionJob
+- **Context**: Greenfield Step 2 direct controller, fuzzer, and real GCP E2E fixtures for `AIPlatformNotebookExecutionJob` under `aiplatform.cnrm.cloud.google.com/v1alpha1` (Issue #15615).
+- **Problems & Solutions**:
+  1. **Autogenerated Controller & Fuzzer**: Generated direct controller `pkg/controller/direct/aiplatform/aiplatformnotebookexecutionjob_controller.go` and round-trip fuzzer `aiplatformnotebookexecutionjob_fuzzer.generated.go` via one-shot `controllerbuilder generate-controller` and `generate-fuzzer --prepopulate-resource`.
+  2. **Immutability and Diff Normalization**: `NotebookExecutionJob` has no Update RPC in GCP. `Update` calls `common.CompareGreenfieldSpec` and returns an error if any diff is found. Because GCP does not return notebook content in `directNotebookSource` on GET requests (`"directNotebookSource": {}`), added a `normalize` callback to `CompareGreenfieldSpec` to preserve the user's `directNotebookSource.Content` on actual state and avoid false diffs during re-reconciliation.
+  3. **Mapper & Reference Fields**: Added `AIPlatformNotebookExecutionJobSpec_FromProto` in `aiplatformnotebookexecutionjob_mapper.go` to cleanly map `NotebookRuntimeTemplateRef`, `ScheduleRef`, `ServiceAccountRef`, and oneof fields, enabling `mapper.generated.go` to skip the incomplete generator version and allowing the fuzzer to round-trip all spec and status fields cleanly.
+  4. **Dependency Cleanup in Real GCP**: Execution jobs emit notebook artifacts to `gcsOutputURI` during initialization and execution. The dependency `StorageBucket` must specify annotation `cnrm.cloud.google.com/force-destroy: "true"` so bucket deletion does not fail when non-empty.
+  5. **Real GCP E2E Verification**: Successfully recorded and verified both minimal and maximal E2E fixtures (`aiplatformnotebookexecutionjob-minimal` and `aiplatformnotebookexecutionjob-maximal`) against real GCP with PASS (7/7 checks passed).
+
+### [2026-11-14] Implementing MockGCP and Alignment for AIPlatformNotebookExecutionJob
+- **Context**: Implementing Greenfield Step 3 MockGCP emulation and test log alignment for `AIPlatformNotebookExecutionJob` under `aiplatform.cnrm.cloud.google.com/v1alpha1` (Issue #15647).
+- **Implementation & Learnings**:
+  1. **v1 vs v1beta1 NotebookService Registration**: The direct controller communicates with `google.cloud.aiplatform.v1.NotebookService` via GAPIC `cloud.google.com/go/aiplatform/apiv1`. While `runtimetemplate.go` implemented `pb.NotebookServiceServer` using `v1beta1`, `NotebookExecutionJob` requires `pbv1` (`apiv1/aiplatformpb`) to ensure LRO responses and metadata match `google.cloud.aiplatform.v1.NotebookExecutionJob` and avoid type mismatches during `op.Wait(ctx)`. Implemented `notebookServiceV1` implementing `pbv1.NotebookServiceServer` and registered via `pbv1.RegisterNotebookServiceServer(grpcServer, &notebookServiceV1{MockService: s})` and HTTP mux `pbv1.NewNotebookServiceClient(conn)`.
+  2. **NotebookExecutionJob CRUD and Defaults**: Implemented `GetNotebookExecutionJob`, `CreateNotebookExecutionJob`, `DeleteNotebookExecutionJob`, and `ListNotebookExecutionJobs` in `mockgcp/mockaiplatform/notebookexecutionjob.go`. Populated default values (`jobState: JOB_STATE_SUCCEEDED`, default service account `${projectNumber}-compute@developer.gserviceaccount.com`), and stripped `directNotebookSource.content` on GET/list matching real GCP's behavior (`"directNotebookSource": {}`).
+  3. **LRO Progress Message Sequencing**: Real GCP returns the initial LRO from `CreateNotebookExecutionJob` without `progressMessage`, and populates `progressMessage: "NotebookExecutionJob is initializing, waiting for execution to start."` on subsequent `GetOperation` polls. Moved `ProgressMessage` assignment inside the `StartLRO` completion callback so the initial LRO response matches real GCP exactly.
+  4. **Dependency StorageBucket Cleanup Event Filtering**: In `pkg/test/resourcefixture/golden_alignment_test.go`, added a condition in `isDependencyEvent` for `kind == "StorageBucket"` with `strings.HasPrefix(trimmedSuffix, "o/")` so that object deletion events produced by Terraform's `force-destroy: true` cleanup on the dependency bucket are identified as dependency events and excluded from primary resource log alignment.
+  5. **Verification**: Successfully generated `_http_mock.log` files with zero diffs across all fixtures (`aiplatformnotebookexecutionjob-minimal` and `aiplatformnotebookexecutionjob-maximal`), verified with `TestGoldenLogAlignment` and full parallel execution of all 31 `aiplatform` fixtures via `./dev/ci/presubmits/tests-e2e-fixtures-suite aiplatform`.

@@ -5,7 +5,6 @@
 [spec_etag] crd=cloudsecuritycomplianceframeworkdeployments.cloudsecuritycompliance.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=dataplexdataattributes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=dataplexencryptionconfigs.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
-[spec_etag] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=developerconnectgitrepositorylinks.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=gkemulticloudawsnodepools.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=gkemulticloudazurenodepools.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
