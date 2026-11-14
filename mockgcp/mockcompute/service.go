@@ -65,6 +65,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterFutureReservationsServer(grpcServer, &FutureReservationsV1{MockService: s})
 
 	pb.RegisterBackendBucketsServer(grpcServer, &backendBuckets{MockService: s})
+	pb.RegisterCrossSiteNetworksServer(grpcServer, &crossSiteNetworks{MockService: s})
 
 	pb.RegisterExternalVpnGatewaysServer(grpcServer, &externalVPNGateways{MockService: s})
 
@@ -181,6 +182,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	if err := pb.RegisterBackendBucketsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterCrossSiteNetworksHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
