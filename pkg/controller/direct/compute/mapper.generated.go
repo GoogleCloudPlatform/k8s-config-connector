@@ -5932,9 +5932,15 @@ func ComputeStoragePoolObservedState_v1alpha1_FromProto(mapCtx *direct.MapContex
 	out.CreationTimestamp = in.CreationTimestamp
 	out.ID = in.Id
 	out.Kind = in.Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
 	// MISSING: Name
+	out.ResourceStatus = StoragePoolResourceStatus_v1alpha1_FromProto(mapCtx, in.GetResourceStatus())
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithID = in.SelfLinkWithId
+	out.State = in.State
+	out.Status = StoragePoolResourceStatus_v1alpha1_FromProto(mapCtx, in.GetStatus())
+	out.Zone = in.Zone
 	return out
 }
 func ComputeStoragePoolObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeStoragePoolObservedState) *pb.StoragePool {
@@ -5945,9 +5951,15 @@ func ComputeStoragePoolObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext,
 	out.CreationTimestamp = in.CreationTimestamp
 	out.Id = in.ID
 	out.Kind = in.Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
 	// MISSING: Name
+	out.ResourceStatus = StoragePoolResourceStatus_v1alpha1_ToProto(mapCtx, in.ResourceStatus)
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithId = in.SelfLinkWithID
+	out.State = in.State
+	out.Status = StoragePoolResourceStatus_v1alpha1_ToProto(mapCtx, in.Status)
+	out.Zone = in.Zone
 	return out
 }
 func ComputeStoragePoolSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.StoragePool) *krmcomputev1alpha1.ComputeStoragePoolSpec {
@@ -5957,18 +5969,13 @@ func ComputeStoragePoolSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb
 	out := &krmcomputev1alpha1.ComputeStoragePoolSpec{}
 	out.CapacityProvisioningType = in.CapacityProvisioningType
 	out.Description = in.Description
-	out.LabelFingerprint = in.LabelFingerprint
-	out.Labels = in.Labels
+	// MISSING: Labels
 	// MISSING: Name
 	out.PerformanceProvisioningType = in.PerformanceProvisioningType
 	out.PoolProvisionedCapacityGB = in.PoolProvisionedCapacityGb
 	out.PoolProvisionedIops = in.PoolProvisionedIops
 	out.PoolProvisionedThroughput = in.PoolProvisionedThroughput
-	out.ResourceStatus = StoragePoolResourceStatus_v1alpha1_FromProto(mapCtx, in.GetResourceStatus())
-	out.State = in.State
-	out.Status = StoragePoolResourceStatus_v1alpha1_FromProto(mapCtx, in.GetStatus())
 	out.StoragePoolType = in.StoragePoolType
-	out.Zone = in.Zone
 	return out
 }
 func ComputeStoragePoolSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeStoragePoolSpec) *pb.StoragePool {
@@ -5978,18 +5985,13 @@ func ComputeStoragePoolSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmc
 	out := &pb.StoragePool{}
 	out.CapacityProvisioningType = in.CapacityProvisioningType
 	out.Description = in.Description
-	out.LabelFingerprint = in.LabelFingerprint
-	out.Labels = in.Labels
+	// MISSING: Labels
 	// MISSING: Name
 	out.PerformanceProvisioningType = in.PerformanceProvisioningType
 	out.PoolProvisionedCapacityGb = in.PoolProvisionedCapacityGB
 	out.PoolProvisionedIops = in.PoolProvisionedIops
 	out.PoolProvisionedThroughput = in.PoolProvisionedThroughput
-	out.ResourceStatus = StoragePoolResourceStatus_v1alpha1_ToProto(mapCtx, in.ResourceStatus)
-	out.State = in.State
-	out.Status = StoragePoolResourceStatus_v1alpha1_ToProto(mapCtx, in.Status)
 	out.StoragePoolType = in.StoragePoolType
-	out.Zone = in.Zone
 	return out
 }
 func ComputeSubnetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Subnetwork) *krmcomputev1beta1.ComputeSubnetworkSpec {

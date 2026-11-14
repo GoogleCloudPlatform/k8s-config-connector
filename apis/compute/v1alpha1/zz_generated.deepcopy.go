@@ -4598,6 +4598,16 @@ func (in *ComputeStoragePoolObservedState) DeepCopyInto(out *ComputeStoragePoolO
 		*out = new(string)
 		**out = **in
 	}
+	if in.LabelFingerprint != nil {
+		in, out := &in.LabelFingerprint, &out.LabelFingerprint
+		*out = new(string)
+		**out = **in
+	}
+	if in.ResourceStatus != nil {
+		in, out := &in.ResourceStatus, &out.ResourceStatus
+		*out = new(StoragePoolResourceStatus)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.SelfLink != nil {
 		in, out := &in.SelfLink, &out.SelfLink
 		*out = new(string)
@@ -4605,6 +4615,21 @@ func (in *ComputeStoragePoolObservedState) DeepCopyInto(out *ComputeStoragePoolO
 	}
 	if in.SelfLinkWithID != nil {
 		in, out := &in.SelfLinkWithID, &out.SelfLinkWithID
+		*out = new(string)
+		**out = **in
+	}
+	if in.State != nil {
+		in, out := &in.State, &out.State
+		*out = new(string)
+		**out = **in
+	}
+	if in.Status != nil {
+		in, out := &in.Status, &out.Status
+		*out = new(StoragePoolResourceStatus)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.Zone != nil {
+		in, out := &in.Zone, &out.Zone
 		*out = new(string)
 		**out = **in
 	}
@@ -4643,11 +4668,6 @@ func (in *ComputeStoragePoolSpec) DeepCopyInto(out *ComputeStoragePoolSpec) {
 		*out = new(v1beta1.ProjectRef)
 		**out = **in
 	}
-	if in.Location != nil {
-		in, out := &in.Location, &out.Location
-		*out = new(string)
-		**out = **in
-	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
@@ -4662,18 +4682,6 @@ func (in *ComputeStoragePoolSpec) DeepCopyInto(out *ComputeStoragePoolSpec) {
 		in, out := &in.Description, &out.Description
 		*out = new(string)
 		**out = **in
-	}
-	if in.LabelFingerprint != nil {
-		in, out := &in.LabelFingerprint, &out.LabelFingerprint
-		*out = new(string)
-		**out = **in
-	}
-	if in.Labels != nil {
-		in, out := &in.Labels, &out.Labels
-		*out = make(map[string]string, len(*in))
-		for key, val := range *in {
-			(*out)[key] = val
-		}
 	}
 	if in.PerformanceProvisioningType != nil {
 		in, out := &in.PerformanceProvisioningType, &out.PerformanceProvisioningType
@@ -4695,28 +4703,8 @@ func (in *ComputeStoragePoolSpec) DeepCopyInto(out *ComputeStoragePoolSpec) {
 		*out = new(int64)
 		**out = **in
 	}
-	if in.ResourceStatus != nil {
-		in, out := &in.ResourceStatus, &out.ResourceStatus
-		*out = new(StoragePoolResourceStatus)
-		(*in).DeepCopyInto(*out)
-	}
-	if in.State != nil {
-		in, out := &in.State, &out.State
-		*out = new(string)
-		**out = **in
-	}
-	if in.Status != nil {
-		in, out := &in.Status, &out.Status
-		*out = new(StoragePoolResourceStatus)
-		(*in).DeepCopyInto(*out)
-	}
 	if in.StoragePoolType != nil {
 		in, out := &in.StoragePoolType, &out.StoragePoolType
-		*out = new(string)
-		**out = **in
-	}
-	if in.Zone != nil {
-		in, out := &in.Zone, &out.Zone
 		*out = new(string)
 		**out = **in
 	}

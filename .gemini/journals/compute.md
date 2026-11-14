@@ -278,3 +278,19 @@
   3. **Release Bundle & Apichecks**: Added `ComputeStoragePool` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...`.
   4. **Validation**: Verified `apis/compute/generate.sh` idempotency, `TestComputeStoragePoolIdentity_Conformance`, apichecks, cais tests, and full package builds with zero errors.
 
+### [2026-11-14] Greenfield Step 1b: Triage judgement queue and finalize direct KRM types and identity for ComputeStoragePool
+- **Context**: Triaged and finalized direct KRM types, identity, and references for `ComputeStoragePool` (issue #15652) following Greenfield Step 1b (`judgement/SKILL.md`).
+- **Judgement Queue Resolutions & Learnings**:
+  1. `untriaged-bulk-generation`: Resolved after triaging all spec and status fields, omissions, docs link, output-only fields, and KRM conventions.
+  2. `verify-resource-docs-link`: Verified and updated `+kcc:source:resource-docs` link to `https://cloud.google.com/compute/docs/reference/rest/v1/storagePools`.
+  3. `location-parent-unknown`: Verified `StoragePool` is a zonal resource parented by project and zone (`projects/{project}/zones/{zone}/storagePools/{storagePool}`). Kept `spec.projectRef` (`*refsv1beta1.ProjectRef` with `// +required`) and `spec.location` (`string` with `// +required`, representing the zone name) matching Compute conventions.
+  4. `location-or-parent-ref` and `well-known-output-only-pattern-in-comment` on `zone`: In the proto, `StoragePool.zone` is explicitly output-only (`[Output Only] URL of the zone where the storage pool resides...`). Removed `zone` from Spec and moved to `ComputeStoragePoolObservedState.zone`; zone location on creation is specified via `spec.location`.
+  5. `possible-status-field-in-spec` and `well-known-output-only-pattern-in-comment` on `state`, `status`, and `resource_status`: Proto comments mark `state`, `status`, and `resource_status` (and all nested fields in `StoragePoolResourceStatus`) as output-only. Moved them from `ComputeStoragePoolSpec` to `ComputeStoragePoolObservedState`.
+  6. Top-level `labels` and `label_fingerprint`: Removed top-level `labels` from `ComputeStoragePoolSpec` (reconciled via `metadata.labels`); moved `label_fingerprint` to `ComputeStoragePoolObservedState`.
+  7. `server-set-field-placed` on `creationTimestamp`, `id`, `kind`, `selfLink`, and `selfLinkWithID`: Confirmed output-only server-set fields and removed guess markers.
+  8. Implemented unit tests in `computestoragepool_identity_test.go` covering identity parsing, parent string formatting, spec identity resolution, and drift detection.
+- **Verification**:
+  - Re-ran `./apis/compute/generate.sh` and verified CRD generation, mappers, deepcopy code.
+  - Re-recorded `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+  - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.
+
