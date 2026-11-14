@@ -41,6 +41,7 @@ type httpBindingRule struct {
 	host       string
 	httpMethod string
 	segments   []string
+	customVerb string
 	reqMsg     protoreflect.MessageDescriptor
 	respMsg    protoreflect.MessageDescriptor
 }
@@ -304,10 +305,16 @@ func collectMethodHTTPRules(host string, m protoreflect.MethodDescriptor, rule *
 			respMsg = m.Output()
 		}
 
+		customVerb := ""
+		if colonIdx := strings.Index(pattern, ":"); colonIdx != -1 {
+			customVerb = pattern[colonIdx:]
+		}
+
 		out[host] = append(out[host], httpBindingRule{
 			host:       host,
 			httpMethod: httpMethod,
 			segments:   expandHTTPPathTemplate(pattern),
+			customVerb: customVerb,
 			reqMsg:     reqMsg,
 			respMsg:    respMsg,
 		})
@@ -385,7 +392,9 @@ func (r *descriptorRegistry) matchHTTPRule(rawURL, httpMethod string) *httpBindi
 	}
 	host := strings.ToLower(parsed.Hostname())
 	uPath := parsed.Path
+	customVerb := ""
 	if colonIdx := strings.Index(uPath, ":"); colonIdx != -1 {
+		customVerb = uPath[colonIdx:]
 		uPath = uPath[:colonIdx]
 	}
 	urlSegs := splitNonEmptySegments(uPath)
@@ -394,7 +403,7 @@ func (r *descriptorRegistry) matchHTTPRule(rawURL, httpMethod string) *httpBindi
 		rules := r.httpRules[candidateHost]
 		for i := range rules {
 			rule := &rules[i]
-			if rule.httpMethod == httpMethod && matchSegments(rule.segments, urlSegs) {
+			if rule.httpMethod == httpMethod && rule.customVerb == customVerb && matchSegments(rule.segments, urlSegs) {
 				return rule
 			}
 		}
@@ -482,9 +491,11 @@ func unmarshalDynamicJSON(reg *descriptorRegistry, msgDesc protoreflect.MessageD
 	s = strings.ReplaceAll(s, `"111111111111111111111"`, `"1"`)
 	dynMsg := dynamicpb.NewMessage(msgDesc)
 	if msgDesc.FullName() == "google.cloud.orchestration.airflow.service.v1.Environment" ||
-		msgDesc.FullName() == "google.cloud.dataform.v1.WorkflowConfig" {
-		// TODO: Discard unknown fields on WorkflowConfig because fields such as queryPriority and executionMode
-		// are returned in real GCP responses for invocationConfig but are absent in the vendored googleapis proto schema.
+		msgDesc.FullName() == "google.cloud.dataform.v1.WorkflowConfig" ||
+		msgDesc.FullName() == "google.cloud.contactcenterinsights.v1.QaScorecardRevision" ||
+		msgDesc.FullName() == "google.cloud.contactcenterinsights.v1.ListQaScorecardRevisionsResponse" {
+		// Discard unknown fields (e.g. source on QaScorecard) returned in real GCP responses
+		// but absent in vendored googleapis proto schemas.
 		discardUnknown = true
 	}
 	opts := protojson.UnmarshalOptions{
