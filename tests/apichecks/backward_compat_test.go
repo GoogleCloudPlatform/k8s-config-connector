@@ -84,7 +84,7 @@ func checkCRDFileBackwardCompatibility(repoRoot, baseRev, relCRDPath string) str
 	group := oldCRD.Spec.Group
 	baseQueue := loadServiceQueueAtRef(repoRoot, baseRev, group)
 	headQueue := loadServiceQueueFromDisk(repoRoot, group)
-	if isKindUntriaged(kind, group, baseQueue, headQueue) {
+	if isKindUntriaged(kind, group, baseQueue, headQueue) || isKindBlocked(repoRoot, baseRev, kind) {
 		return ""
 	}
 
@@ -134,6 +134,53 @@ func untriagedEntryStatus(q *judgement.Queue, kind, group string) judgement.Stat
 		}
 	}
 	return ""
+}
+
+// isKindBlocked reports whether a Kind is listed in BLOCKED_KINDS in dev/tasks/build-release-bundle
+// at baseRev and HEAD, meaning it has not yet shipped in any release bundle and may have
+// pre-release schema corrections.
+func isKindBlocked(repoRoot, baseRev, kind string) bool {
+	baseBlocked := loadBlockedKindsAtRef(repoRoot, baseRev)
+	headBlocked := loadBlockedKindsFromDisk(repoRoot)
+	return (baseBlocked != nil && baseBlocked[kind]) && (headBlocked != nil && headBlocked[kind])
+}
+
+func loadBlockedKindsAtRef(repoRoot, rev string) map[string]bool {
+	data, _, err := gitShowFile(repoRoot, rev, "dev/tasks/build-release-bundle")
+	if err != nil {
+		return nil
+	}
+	return parseBlockedKinds(data)
+}
+
+func loadBlockedKindsFromDisk(repoRoot string) map[string]bool {
+	data, err := os.ReadFile(filepath.Join(repoRoot, "dev/tasks/build-release-bundle"))
+	if err != nil {
+		return nil
+	}
+	return parseBlockedKinds(data)
+}
+
+func parseBlockedKinds(content []byte) map[string]bool {
+	blocked := make(map[string]bool)
+	inArray := false
+	for _, line := range strings.Split(string(content), "\n") {
+		trimmed := strings.TrimSpace(line)
+		if strings.HasPrefix(trimmed, "BLOCKED_KINDS=(") {
+			inArray = true
+			continue
+		}
+		if inArray {
+			if strings.HasPrefix(trimmed, ")") {
+				break
+			}
+			trimmed = strings.Trim(trimmed, `", `)
+			if trimmed != "" && !strings.HasPrefix(trimmed, "#") {
+				blocked[trimmed] = true
+			}
+		}
+	}
+	return blocked
 }
 
 func loadServiceQueueAtRef(repoRoot, rev, group string) *judgement.Queue {
@@ -548,6 +595,30 @@ func TestIsKindUntriaged(t *testing.T) {
 				t.Errorf("isKindUntriaged() = %v, want %v", got, tc.want)
 			}
 		})
+	}
+}
+
+func TestParseBlockedKinds(t *testing.T) {
+	script := `#!/bin/bash
+BLOCKED_KINDS=(
+    "KindOne"
+    # CommentedKind
+    "KindTwo"
+)
+OTHER_VAR="something"
+`
+	got := parseBlockedKinds([]byte(script))
+	if !got["KindOne"] {
+		t.Errorf("expected KindOne to be blocked")
+	}
+	if !got["KindTwo"] {
+		t.Errorf("expected KindTwo to be blocked")
+	}
+	if got["CommentedKind"] {
+		t.Errorf("did not expect CommentedKind to be blocked")
+	}
+	if got["OTHER_VAR"] {
+		t.Errorf("did not expect OTHER_VAR to be blocked")
 	}
 }
 

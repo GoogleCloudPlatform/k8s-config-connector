@@ -522,6 +522,22 @@ type Content struct {
 	Parts []Part `json:"parts,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.Content
+type ContentWithRequired struct {
+	// Optional. The producer of the content. Must be either 'user' or 'model'.
+	//
+	//  Useful to set for multi-turn conversations, otherwise can be left blank
+	//  or unset.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Content.role
+	Role *string `json:"role,omitempty"`
+
+	// Required. Ordered `Parts` that constitute a single message. Parts may have
+	//  different IANA MIME types.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Content.parts
+	// +required
+	Parts []Part `json:"parts,omitempty"`
+}
+
 /* unreachable type CorpusStatus
 // +kcc:proto=google.cloud.aiplatform.v1.CorpusStatus
 type CorpusStatus struct {
@@ -669,7 +685,6 @@ type Examples struct {
 	NeighborCount *int32 `json:"neighborCount,omitempty"`
 }
 
-/* unreachable type ExamplesWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1.Examples
 type ExamplesWithRequired struct {
 	// The Cloud Storage input instances.
@@ -692,7 +707,6 @@ type ExamplesWithRequired struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Examples.neighbor_count
 	NeighborCount *int32 `json:"neighborCount,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.Examples.ExampleGcsSource
 type Examples_ExampleGCSSource struct {
@@ -706,7 +720,6 @@ type Examples_ExampleGCSSource struct {
 	GCSSource *GCSSource `json:"gcsSource,omitempty"`
 }
 
-/* unreachable type Examples_ExampleGCSSourceWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1.Examples.ExampleGcsSource
 type Examples_ExampleGCSSourceWithRequired struct {
 	// The format in which instances are given, if not specified, assume it's
@@ -718,7 +731,6 @@ type Examples_ExampleGCSSourceWithRequired struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Examples.ExampleGcsSource.gcs_source
 	GCSSource *GCSSourceWithRequired `json:"gcsSource,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.ExecutableCode
 type ExecutableCode struct {
@@ -942,18 +954,6 @@ type ExplanationMetadata_OutputMetadata struct {
 type ExplanationSpec struct {
 	// Required. Parameters that configure explaining of the Model's predictions.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationSpec.parameters
-	Parameters *ExplanationParameters `json:"parameters,omitempty"`
-
-	// Optional. Metadata describing the Model's input and output for explanation.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationSpec.metadata
-	Metadata *ExplanationMetadata `json:"metadata,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1.ExplanationSpec
-type ExplanationSpecWithRequired struct {
-	// Required. Parameters that configure explaining of the Model's predictions.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationSpec.parameters
-	// +required
 	Parameters *ExplanationParameters `json:"parameters,omitempty"`
 
 	// Optional. Metadata describing the Model's input and output for explanation.
@@ -1636,7 +1636,6 @@ type IntegratedGradientsAttribution struct {
 	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
 }
 
-/* unreachable type IntegratedGradientsAttributionWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1.IntegratedGradientsAttribution
 type IntegratedGradientsAttributionWithRequired struct {
 	// Required. The number of steps for approximating the path integral.
@@ -1666,7 +1665,6 @@ type IntegratedGradientsAttributionWithRequired struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.IntegratedGradientsAttribution.blur_baseline_config
 	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.LustreMount
 type LustreMount struct {
@@ -3440,7 +3438,6 @@ type SampledShapleyAttribution struct {
 	PathCount *int32 `json:"pathCount,omitempty"`
 }
 
-/* unreachable type SampledShapleyAttributionWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1.SampledShapleyAttribution
 type SampledShapleyAttributionWithRequired struct {
 	// Required. The number of feature permutations to consider when approximating
@@ -3451,7 +3448,6 @@ type SampledShapleyAttributionWithRequired struct {
 	// +required
 	PathCount *int32 `json:"pathCount,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.SamplingStrategy
 type SamplingStrategy struct {
@@ -4640,7 +4636,6 @@ type XraiAttribution struct {
 	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
 }
 
-/* unreachable type XraiAttributionWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1.XraiAttribution
 type XraiAttributionWithRequired struct {
 	// Required. The number of steps for approximating the path integral.
@@ -4670,7 +4665,6 @@ type XraiAttributionWithRequired struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.XraiAttribution.blur_baseline_config
 	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
 }
-*/
 
 /* unreachable type CustomCodeExecutionSpec
 // +kcc:proto=google.cloud.aiplatform.v1beta1.CustomCodeExecutionSpec
