@@ -1135,7 +1135,8 @@ Content-Type: application/json
 {
   "bigqueryConfig": {
     "dropUnknownFields": true,
-    "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable1${uniqueId}"
+    "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable1${uniqueId}",
+    "useTableSchema": true
   },
   "deadLetterPolicy": null,
   "expirationPolicy": null,
@@ -1163,7 +1164,8 @@ X-Xss-Protection: 0
   "bigqueryConfig": {
     "dropUnknownFields": true,
     "state": "ACTIVE",
-    "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable1${uniqueId}"
+    "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable1${uniqueId}",
+    "useTableSchema": true
   },
   "expirationPolicy": {
     "ttl": "2678400s"
@@ -1223,7 +1225,8 @@ X-Xss-Protection: 0
   "bigqueryConfig": {
     "dropUnknownFields": true,
     "state": "ACTIVE",
-    "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable1${uniqueId}"
+    "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable1${uniqueId}",
+    "useTableSchema": true
   },
   "expirationPolicy": {
     "ttl": "2678400s"
