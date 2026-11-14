@@ -495,6 +495,11 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 										if err := unstructured.SetNestedField(u.Object, placeholder, "spec", "resourceID"); err != nil {
 											t.Fatalf("failed to set spec.resourceID for %s: %v", u.GetName(), err)
 										}
+									} else if gk.Kind == "AIPlatformOnlineEvaluator" {
+										placeholder := "${onlineEvaluatorID}"
+										if err := unstructured.SetNestedField(u.Object, placeholder, "spec", "resourceID"); err != nil {
+											t.Fatalf("failed to set spec.resourceID for %s: %v", u.GetName(), err)
+										}
 									}
 								}
 							}

@@ -114,6 +114,19 @@
   During live execution against real GCP (`./hack/record-gcp`), the Vertex AI `CreateModelDeploymentMonitoringJob` API returned `rpc error: code = InvalidArgument desc = Deployed Model ID: deployed-model-1 does not match existing Deployed Models from ModelMonitoringObjectiveConfig`. The API requires deployed models to already exist on the target `VertexAIEndpoint`. Deploying a model to an endpoint requires a trained model artifact or container to be deployed first, which cannot be provisioned purely through basic test fixtures. Golden HTTP logs will be aligned with MockGCP in Phase 3.
 - **Impact**: Greenfield controller, fuzzer, and E2E fixtures implemented and verified with clean unit and fuzzer tests.
 
+### [2026-11-05] Implementing AIPlatformOnlineEvaluator Greenfield Direct Controller, Fuzzer, and E2E Fixtures
+- **Context**: Implementing the direct controller, E2E fixtures, and fuzzer for `AIPlatformOnlineEvaluator` (Issue #14933).
+- **Problem**: 
+  1. `OnlineEvaluator` proto definitions (`online_evaluator.proto`, `online_evaluator_service.proto`, `evaluation_service.proto`) were added in `googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb`, but are not exported in the published Go SDK (`cloud.google.com/go/aiplatform@v1.125.0`).
+  2. Compiling proto files into `pkg/controller/direct/aiplatform/pb` caused Go protobuf registry duplicate registration panics (`evaluation_service.proto` already registered by `cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb`).
+- **Solution**:
+  1. Updated `apis/aiplatform/generate.sh` to pass `--proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb` to `generate-mapper`.
+  2. Updated `dev/tools/controllerbuilder/pkg/codegen/mappergenerator.go` to route `v1beta1/online_evaluator` and `v1beta1/evaluation_` proto files to `github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aiplatform/pb` with import alias `aiplatformdirectpb`.
+  3. Compiled `online_evaluator.proto`, `online_evaluator_service.proto`, and dependent evaluation protos in `pkg/controller/direct/aiplatform/pb` under package `google.cloud.aiplatform.v1beta1.onlineevaluator` to avoid GlobalTypes/GlobalFiles protobuf collisions with GAPIC `apiv1beta1/aiplatformpb`.
+  4. Handwrote `MetricSource` and `Metric` mapping functions in `aiplatformonlineevaluator_mappings.go` to handle `MetricSpec` oneof branches, `PredefinedRubricGenerationSpec`, `AdditionalConfig`, and enum slice conversions.
+  5. Implemented `aiplatformonlineevaluator_controller.go`, generated and qualified `aiplatformonlineevaluator_fuzzer.generated.go` via `TestFocusedMappers`, registered `AIPlatformOnlineEvaluator` in `pkg/controller/resourceconfig/static_config.go`, and created minimal and maximal E2E fixtures under `pkg/test/resourcefixture/testdata/basic/aiplatform/v1alpha1/aiplatformonlineevaluator/`.
+- **Impact**: Provides a fully-compliant, package-isolated Greenfield direct controller, round-trip fuzzer, and E2E test fixtures for `AIPlatformOnlineEvaluator`.
+
 ### [2026-11-06] Triaging Judgement Queue and Finalizing Direct KRM Types and Identity for AIPlatformCachedContent
 - **Context**: Triaging judgement queue and finalizing types/identity for `AIPlatformCachedContent` (Issue #15070).
 - **Problem**: `AIPlatformCachedContent` was generated with separate `ProjectRef` and `Location` fields and open findings in `judgement_queue.yaml`.

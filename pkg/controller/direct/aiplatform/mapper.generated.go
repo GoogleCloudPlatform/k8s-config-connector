@@ -37,6 +37,8 @@ import (
 	krmvertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	krmvertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	aiplatformdirectpb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aiplatform/pb"
+	structpb "google.golang.org/protobuf/types/known/structpb"
 )
 
 func AIPlatformArtifactObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Artifact) *krm.AIPlatformArtifactObservedState {
@@ -961,6 +963,66 @@ func AIPlatformNotebookRuntimeTemplateSpec_ToProto(mapCtx *direct.MapContext, in
 	return out
 }
 
+func AIPlatformOnlineEvaluatorObservedState_FromProto(mapCtx *direct.MapContext, in *aiplatformdirectpb.OnlineEvaluator) *krm.AIPlatformOnlineEvaluatorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformOnlineEvaluatorObservedState{}
+	// MISSING: Name
+	// MISSING: AgentResource
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StateDetails = direct.Slice_FromProto(mapCtx, in.StateDetails, OnlineEvaluatorStateDetailsObservedState_FromProto)
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func AIPlatformOnlineEvaluatorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformOnlineEvaluatorObservedState) *aiplatformdirectpb.OnlineEvaluator {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformdirectpb.OnlineEvaluator{}
+	// MISSING: Name
+	// MISSING: AgentResource
+	out.State = direct.Enum_ToProto[aiplatformdirectpb.OnlineEvaluator_State](mapCtx, in.State)
+	out.StateDetails = direct.Slice_ToProto(mapCtx, in.StateDetails, OnlineEvaluatorStateDetailsObservedState_ToProto)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func AIPlatformOnlineEvaluatorSpec_FromProto(mapCtx *direct.MapContext, in *aiplatformdirectpb.OnlineEvaluator) *krm.AIPlatformOnlineEvaluatorSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformOnlineEvaluatorSpec{}
+	out.CloudObservability = OnlineEvaluatorCloudObservability_FromProto(mapCtx, in.GetCloudObservability())
+	if in.GetAgentResource() != "" {
+		out.AgentRef = &krm.AIPlatformReasoningEngineRef{External: in.GetAgentResource()}
+	}
+	out.MetricSources = direct.Slice_FromProto(mapCtx, in.MetricSources, MetricSource_FromProto)
+	out.Config = OnlineEvaluatorConfig_FromProto(mapCtx, in.GetConfig())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	return out
+}
+
+func AIPlatformOnlineEvaluatorSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformOnlineEvaluatorSpec) *aiplatformdirectpb.OnlineEvaluator {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformdirectpb.OnlineEvaluator{}
+	if in.AgentRef != nil {
+		out.AgentResource = in.AgentRef.External
+	}
+	if oneof := OnlineEvaluatorCloudObservability_ToProto(mapCtx, in.CloudObservability); oneof != nil {
+		out.DataSource = &aiplatformdirectpb.OnlineEvaluator_CloudObservability_{CloudObservability: oneof}
+	}
+	out.MetricSources = direct.Slice_ToProto(mapCtx, in.MetricSources, MetricSource_ToProto)
+	out.Config = OnlineEvaluatorConfig_ToProto(mapCtx, in.Config)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	return out
+}
+
 func AIPlatformPersistentResourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PersistentResource) *krm.AIPlatformPersistentResourceObservedState {
 	if in == nil {
 		return nil
@@ -1430,6 +1492,30 @@ func AutomaticResources_ToProto(mapCtx *direct.MapContext, in *krm.AutomaticReso
 	return out
 }
 
+func AutoraterConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutoraterConfig) *krm.AutoraterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutoraterConfig{}
+	out.SamplingCount = in.SamplingCount
+	out.FlipEnabled = in.FlipEnabled
+	out.AutoraterModel = direct.LazyPtr(in.GetAutoraterModel())
+	out.GenerationConfig = GenerationConfig_FromProto(mapCtx, in.GetGenerationConfig())
+	return out
+}
+
+func AutoraterConfig_ToProto(mapCtx *direct.MapContext, in *krm.AutoraterConfig) *pb.AutoraterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoraterConfig{}
+	out.SamplingCount = in.SamplingCount
+	out.FlipEnabled = in.FlipEnabled
+	out.AutoraterModel = direct.ValueOf(in.AutoraterModel)
+	out.GenerationConfig = GenerationConfig_ToProto(mapCtx, in.GenerationConfig)
+	return out
+}
+
 /* found existing non-generated mapping function "BatchDedicatedResources_FromProto", skipping
 func BatchDedicatedResources_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.BatchDedicatedResources) *krm.BatchDedicatedResources {
 	if in == nil {
@@ -1609,6 +1695,28 @@ func ColabImageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ColabIma
 	out := &pb.ColabImage{}
 	// MISSING: ReleaseName
 	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+
+func ComputationBasedMetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.ComputationBasedMetricSpec) *krm.ComputationBasedMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputationBasedMetricSpec{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	if v := direct.Struct_FromProto(mapCtx, in.GetParameters()); v != nil {
+		out.Parameters = *v
+	}
+	return out
+}
+
+func ComputationBasedMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.ComputationBasedMetricSpec) *pb.ComputationBasedMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ComputationBasedMetricSpec{}
+	out.Type = direct.EnumPtr_ToProto[pb.ComputationBasedMetricSpec_ComputationBasedMetricType](mapCtx, in.Type)
+	out.Parameters = direct.Struct_ToProto(mapCtx, &in.Parameters)
 	return out
 }
 
@@ -1896,6 +2004,33 @@ func CustomJobSpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.Custom
 	}
 
 	return out
+}
+
+func CustomOutputFormatConfig_FromProto(mapCtx *direct.MapContext, in *pb.CustomOutputFormatConfig) *krm.CustomOutputFormatConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomOutputFormatConfig{}
+	out.ReturnRawOutput = direct.LazyPtr(in.GetReturnRawOutput())
+	return out
+}
+
+func CustomOutputFormatConfig_ToProto(mapCtx *direct.MapContext, in *krm.CustomOutputFormatConfig) *pb.CustomOutputFormatConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomOutputFormatConfig{}
+	if oneof := CustomOutputFormatConfig_ReturnRawOutput_ToProto(mapCtx, in.ReturnRawOutput); oneof != nil {
+		out.CustomOutputFormatConfig = oneof
+	}
+	return out
+}
+
+func CustomOutputFormatConfig_ReturnRawOutput_ToProto(mapCtx *direct.MapContext, in *bool) *pb.CustomOutputFormatConfig_ReturnRawOutput {
+	if in == nil {
+		return nil
+	}
+	return &pb.CustomOutputFormatConfig_ReturnRawOutput{ReturnRawOutput: *in}
 }
 
 func DNSPeeringConfig_FromProto(mapCtx *direct.MapContext, in *pb.DnsPeeringConfig) *krm.DNSPeeringConfig {
@@ -3084,6 +3219,50 @@ func GoogleSearchRetrieval_ToProto(mapCtx *direct.MapContext, in *krm.GoogleSear
 	return out
 }
 
+func ImageConfig_FromProto(mapCtx *direct.MapContext, in *pb.ImageConfig) *krm.ImageConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ImageConfig{}
+	out.ImageOutputOptions = ImageConfig_ImageOutputOptions_FromProto(mapCtx, in.GetImageOutputOptions())
+	out.AspectRatio = in.AspectRatio
+	out.PersonGeneration = direct.Enum_FromProto(mapCtx, in.GetPersonGeneration())
+	out.ImageSize = in.ImageSize
+	return out
+}
+
+func ImageConfig_ToProto(mapCtx *direct.MapContext, in *krm.ImageConfig) *pb.ImageConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ImageConfig{}
+	out.ImageOutputOptions = ImageConfig_ImageOutputOptions_ToProto(mapCtx, in.ImageOutputOptions)
+	out.AspectRatio = in.AspectRatio
+	out.PersonGeneration = direct.EnumPtr_ToProto[pb.ImageConfig_PersonGeneration](mapCtx, in.PersonGeneration)
+	out.ImageSize = in.ImageSize
+	return out
+}
+
+func ImageConfig_ImageOutputOptions_FromProto(mapCtx *direct.MapContext, in *pb.ImageConfig_ImageOutputOptions) *krm.ImageConfig_ImageOutputOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ImageConfig_ImageOutputOptions{}
+	out.MimeType = in.MimeType
+	out.CompressionQuality = in.CompressionQuality
+	return out
+}
+
+func ImageConfig_ImageOutputOptions_ToProto(mapCtx *direct.MapContext, in *krm.ImageConfig_ImageOutputOptions) *pb.ImageConfig_ImageOutputOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ImageConfig_ImageOutputOptions{}
+	out.MimeType = in.MimeType
+	out.CompressionQuality = in.CompressionQuality
+	return out
+}
+
 func InputDataConfig_FromProto(mapCtx *direct.MapContext, in *pb.InputDataConfig) *krm.InputDataConfig {
 	if in == nil {
 		return nil
@@ -3208,6 +3387,71 @@ func LatLng_ToProto(mapCtx *direct.MapContext, in *krm.LatLng) *latlngpb.LatLng 
 }
 */
 
+func LlmBasedMetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.LLMBasedMetricSpec) *krm.LlmBasedMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LlmBasedMetricSpec{}
+	out.RubricGroupKey = direct.LazyPtr(in.GetRubricGroupKey())
+	out.PredefinedRubricGenerationSpec = PredefinedMetricSpec_FromProto(mapCtx, in.GetPredefinedRubricGenerationSpec())
+	out.MetricPromptTemplate = in.MetricPromptTemplate
+	out.SystemInstruction = in.SystemInstruction
+	out.JudgeAutoraterConfig = AutoraterConfig_FromProto(mapCtx, in.GetJudgeAutoraterConfig())
+	if v := direct.Struct_FromProto(mapCtx, in.GetAdditionalConfig()); v != nil {
+		out.AdditionalConfig = *v
+	}
+	return out
+}
+
+func LlmBasedMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.LlmBasedMetricSpec) *pb.LLMBasedMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LLMBasedMetricSpec{}
+	if oneof := LlmBasedMetricSpec_RubricGroupKey_ToProto(mapCtx, in.RubricGroupKey); oneof != nil {
+		out.RubricsSource = oneof
+	}
+	if oneof := PredefinedMetricSpec_ToProto(mapCtx, in.PredefinedRubricGenerationSpec); oneof != nil {
+		out.RubricsSource = &pb.LLMBasedMetricSpec_PredefinedRubricGenerationSpec{PredefinedRubricGenerationSpec: oneof}
+	}
+	out.MetricPromptTemplate = in.MetricPromptTemplate
+	out.SystemInstruction = in.SystemInstruction
+	out.JudgeAutoraterConfig = AutoraterConfig_ToProto(mapCtx, in.JudgeAutoraterConfig)
+	out.AdditionalConfig = direct.Struct_ToProto(mapCtx, &in.AdditionalConfig)
+	return out
+}
+
+func LlmBasedMetricSpec_RubricGroupKey_ToProto(mapCtx *direct.MapContext, in *string) *pb.LLMBasedMetricSpec_RubricGroupKey {
+	if in == nil {
+		return nil
+	}
+	return &pb.LLMBasedMetricSpec_RubricGroupKey{RubricGroupKey: *in}
+}
+
+func LustreMount_FromProto(mapCtx *direct.MapContext, in *pb.LustreMount) *krm.LustreMount {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LustreMount{}
+	out.InstanceIP = direct.LazyPtr(in.GetInstanceIp())
+	out.VolumeHandle = direct.LazyPtr(in.GetVolumeHandle())
+	out.Filesystem = direct.LazyPtr(in.GetFilesystem())
+	out.MountPoint = direct.LazyPtr(in.GetMountPoint())
+	return out
+}
+
+func LustreMount_ToProto(mapCtx *direct.MapContext, in *krm.LustreMount) *pb.LustreMount {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LustreMount{}
+	out.InstanceIp = direct.ValueOf(in.InstanceIP)
+	out.VolumeHandle = direct.ValueOf(in.VolumeHandle)
+	out.Filesystem = direct.ValueOf(in.Filesystem)
+	out.MountPoint = direct.ValueOf(in.MountPoint)
+	return out
+}
+
 func MachineSpec_FromProto(mapCtx *direct.MapContext, in *pb.MachineSpec) *krm.MachineSpec {
 	if in == nil {
 		return nil
@@ -3300,6 +3544,97 @@ func Measurement_MetricObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.MetricId = direct.ValueOf(in.MetricID)
 	out.Value = direct.ValueOf(in.Value)
 	return out
+}
+
+/* found existing non-generated mapping function "Metric_FromProto", skipping
+func Metric_FromProto(mapCtx *direct.MapContext, in *pb.Metric) *krm.Metric {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Metric{}
+	out.PredefinedMetricSpec = PredefinedMetricSpec_FromProto(mapCtx, in.GetPredefinedMetricSpec())
+	out.ComputationBasedMetricSpec = ComputationBasedMetricSpec_FromProto(mapCtx, in.GetComputationBasedMetricSpec())
+	out.LlmBasedMetricSpec = LlmBasedMetricSpec_FromProto(mapCtx, in.GetLlmBasedMetricSpec())
+	out.PointwiseMetricSpec = PointwiseMetricSpec_FromProto(mapCtx, in.GetPointwiseMetricSpec())
+	out.PairwiseMetricSpec = PairwiseMetricSpec_FromProto(mapCtx, in.GetPairwiseMetricSpec())
+	out.ExactMatchSpec = ExactMatchSpec_FromProto(mapCtx, in.GetExactMatchSpec())
+	out.BleuSpec = BleuSpec_FromProto(mapCtx, in.GetBleuSpec())
+	out.RougeSpec = RougeSpec_FromProto(mapCtx, in.GetRougeSpec())
+	out.AggregationMetrics = direct.EnumSlice_FromProto(mapCtx, in.AggregationMetrics)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "Metric_ToProto", skipping
+func Metric_ToProto(mapCtx *direct.MapContext, in *krm.Metric) *pb.Metric {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Metric{}
+	if oneof := PredefinedMetricSpec_ToProto(mapCtx, in.PredefinedMetricSpec); oneof != nil {
+		out.MetricSpec = &pb.Metric_PredefinedMetricSpec{PredefinedMetricSpec: oneof}
+	}
+	if oneof := ComputationBasedMetricSpec_ToProto(mapCtx, in.ComputationBasedMetricSpec); oneof != nil {
+		out.MetricSpec = &pb.Metric_ComputationBasedMetricSpec{ComputationBasedMetricSpec: oneof}
+	}
+	if oneof := LlmBasedMetricSpec_ToProto(mapCtx, in.LlmBasedMetricSpec); oneof != nil {
+		out.MetricSpec = &pb.Metric_LlmBasedMetricSpec{LlmBasedMetricSpec: oneof}
+	}
+	if oneof := PointwiseMetricSpec_ToProto(mapCtx, in.PointwiseMetricSpec); oneof != nil {
+		out.MetricSpec = &pb.Metric_PointwiseMetricSpec{PointwiseMetricSpec: oneof}
+	}
+	if oneof := PairwiseMetricSpec_ToProto(mapCtx, in.PairwiseMetricSpec); oneof != nil {
+		out.MetricSpec = &pb.Metric_PairwiseMetricSpec{PairwiseMetricSpec: oneof}
+	}
+	if oneof := ExactMatchSpec_ToProto(mapCtx, in.ExactMatchSpec); oneof != nil {
+		out.MetricSpec = &pb.Metric_ExactMatchSpec{ExactMatchSpec: oneof}
+	}
+	if oneof := BleuSpec_ToProto(mapCtx, in.BleuSpec); oneof != nil {
+		out.MetricSpec = &pb.Metric_BleuSpec{BleuSpec: oneof}
+	}
+	if oneof := RougeSpec_ToProto(mapCtx, in.RougeSpec); oneof != nil {
+		out.MetricSpec = &pb.Metric_RougeSpec{RougeSpec: oneof}
+	}
+	out.AggregationMetrics = direct.EnumSlice_ToProto[pb.Metric_AggregationMetric](mapCtx, in.AggregationMetrics)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "MetricSource_FromProto", skipping
+func MetricSource_FromProto(mapCtx *direct.MapContext, in *aiplatformdirectpb.MetricSource) *krm.MetricSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetricSource{}
+	out.Metric = Metric_FromProto(mapCtx, in.GetMetric())
+	out.MetricResourceName = direct.LazyPtr(in.GetMetricResourceName())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "MetricSource_ToProto", skipping
+
+	func MetricSource_ToProto(mapCtx *direct.MapContext, in *krm.MetricSource) *aiplatformdirectpb.MetricSource {
+		if in == nil {
+			return nil
+		}
+		out := &aiplatformdirectpb.MetricSource{}
+		if oneof := Metric_ToProto(mapCtx, in.Metric); oneof != nil {
+			out.MetricSource = &aiplatformdirectpb.MetricSource_Metric{Metric: oneof}
+		}
+		if oneof := MetricSource_MetricResourceName_ToProto(mapCtx, in.MetricResourceName); oneof != nil {
+			out.MetricSource = oneof
+		}
+		return out
+	}
+*/
+
+func MetricSource_MetricResourceName_ToProto(mapCtx *direct.MapContext, in *string) *aiplatformdirectpb.MetricSource_MetricResourceName {
+	if in == nil {
+		return nil
+	}
+	return &aiplatformdirectpb.MetricSource_MetricResourceName{MetricResourceName: *in}
 }
 
 func ModelContainerSpec_FromProto(mapCtx *direct.MapContext, in *pb.ModelContainerSpec) *krm.ModelContainerSpec {
@@ -3980,13 +4315,6 @@ func ModelMonitoringObjectiveConfig_TrainingDataset_ToProto(mapCtx *direct.MapCo
 }
 */
 
-func ModelMonitoringObjectiveConfig_TrainingDataset_Dataset_ToProto(mapCtx *direct.MapContext, in *string) *pb.ModelMonitoringObjectiveConfig_TrainingDataset_Dataset {
-	if in == nil {
-		return nil
-	}
-	return &pb.ModelMonitoringObjectiveConfig_TrainingDataset_Dataset{Dataset: *in}
-}
-
 func ModelMonitoringObjectiveConfig_TrainingPredictionSkewDetectionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ModelMonitoringObjectiveConfig_TrainingPredictionSkewDetectionConfig) *krm.ModelMonitoringObjectiveConfig_TrainingPredictionSkewDetectionConfig {
 	if in == nil {
 		return nil
@@ -4284,6 +4612,24 @@ func Model_OriginalModelInfo_ToProto(mapCtx *direct.MapContext, in *krm.Model_Or
 	}
 	out := &pb.Model_OriginalModelInfo{}
 	// MISSING: Model
+	return out
+}
+
+func MultiSpeakerVoiceConfig_FromProto(mapCtx *direct.MapContext, in *pb.MultiSpeakerVoiceConfig) *krm.MultiSpeakerVoiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MultiSpeakerVoiceConfig{}
+	out.SpeakerVoiceConfigs = direct.Slice_FromProto(mapCtx, in.SpeakerVoiceConfigs, SpeakerVoiceConfig_FromProto)
+	return out
+}
+
+func MultiSpeakerVoiceConfig_ToProto(mapCtx *direct.MapContext, in *krm.MultiSpeakerVoiceConfig) *pb.MultiSpeakerVoiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MultiSpeakerVoiceConfig{}
+	out.SpeakerVoiceConfigs = direct.Slice_ToProto(mapCtx, in.SpeakerVoiceConfigs, SpeakerVoiceConfig_ToProto)
 	return out
 }
 
@@ -4747,6 +5093,172 @@ func NotebookSoftwareConfigObservedState_ToProto(mapCtx *direct.MapContext, in *
 	return out
 }
 
+func OnlineEvaluatorCloudObservability_FromProto(mapCtx *direct.MapContext, in *aiplatformdirectpb.OnlineEvaluator_CloudObservability) *krm.OnlineEvaluatorCloudObservability {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OnlineEvaluatorCloudObservability{}
+	out.TraceScope = OnlineEvaluatorCloudObservabilityTraceScope_FromProto(mapCtx, in.GetTraceScope())
+	out.OpenTelemetry = OnlineEvaluatorCloudObservabilityOpenTelemetry_FromProto(mapCtx, in.GetOpenTelemetry())
+	out.LogView = direct.LazyPtr(in.GetLogView())
+	out.TraceView = direct.LazyPtr(in.GetTraceView())
+	return out
+}
+
+func OnlineEvaluatorCloudObservability_ToProto(mapCtx *direct.MapContext, in *krm.OnlineEvaluatorCloudObservability) *aiplatformdirectpb.OnlineEvaluator_CloudObservability {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformdirectpb.OnlineEvaluator_CloudObservability{}
+	if oneof := OnlineEvaluatorCloudObservabilityTraceScope_ToProto(mapCtx, in.TraceScope); oneof != nil {
+		out.EvalScope = &aiplatformdirectpb.OnlineEvaluator_CloudObservability_TraceScope_{TraceScope: oneof}
+	}
+	if oneof := OnlineEvaluatorCloudObservabilityOpenTelemetry_ToProto(mapCtx, in.OpenTelemetry); oneof != nil {
+		out.Convention = &aiplatformdirectpb.OnlineEvaluator_CloudObservability_OpenTelemetry_{OpenTelemetry: oneof}
+	}
+	out.LogView = direct.ValueOf(in.LogView)
+	out.TraceView = direct.ValueOf(in.TraceView)
+	return out
+}
+
+func OnlineEvaluatorCloudObservabilityNumericPredicate_FromProto(mapCtx *direct.MapContext, in *aiplatformdirectpb.OnlineEvaluator_CloudObservability_NumericPredicate) *krm.OnlineEvaluatorCloudObservabilityNumericPredicate {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OnlineEvaluatorCloudObservabilityNumericPredicate{}
+	out.ComparisonOperator = direct.Enum_FromProto(mapCtx, in.GetComparisonOperator())
+	out.Value = direct.LazyPtr(in.GetValue())
+	return out
+}
+
+func OnlineEvaluatorCloudObservabilityNumericPredicate_ToProto(mapCtx *direct.MapContext, in *krm.OnlineEvaluatorCloudObservabilityNumericPredicate) *aiplatformdirectpb.OnlineEvaluator_CloudObservability_NumericPredicate {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformdirectpb.OnlineEvaluator_CloudObservability_NumericPredicate{}
+	out.ComparisonOperator = direct.Enum_ToProto[aiplatformdirectpb.OnlineEvaluator_CloudObservability_NumericPredicate_ComparisonOperator](mapCtx, in.ComparisonOperator)
+	out.Value = direct.ValueOf(in.Value)
+	return out
+}
+
+func OnlineEvaluatorCloudObservabilityOpenTelemetry_FromProto(mapCtx *direct.MapContext, in *aiplatformdirectpb.OnlineEvaluator_CloudObservability_OpenTelemetry) *krm.OnlineEvaluatorCloudObservabilityOpenTelemetry {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OnlineEvaluatorCloudObservabilityOpenTelemetry{}
+	out.SemconvVersion = direct.LazyPtr(in.GetSemconvVersion())
+	return out
+}
+
+func OnlineEvaluatorCloudObservabilityOpenTelemetry_ToProto(mapCtx *direct.MapContext, in *krm.OnlineEvaluatorCloudObservabilityOpenTelemetry) *aiplatformdirectpb.OnlineEvaluator_CloudObservability_OpenTelemetry {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformdirectpb.OnlineEvaluator_CloudObservability_OpenTelemetry{}
+	out.SemconvVersion = direct.ValueOf(in.SemconvVersion)
+	return out
+}
+
+func OnlineEvaluatorCloudObservabilityTraceScope_FromProto(mapCtx *direct.MapContext, in *aiplatformdirectpb.OnlineEvaluator_CloudObservability_TraceScope) *krm.OnlineEvaluatorCloudObservabilityTraceScope {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OnlineEvaluatorCloudObservabilityTraceScope{}
+	out.Filter = direct.Slice_FromProto(mapCtx, in.Filter, OnlineEvaluatorCloudObservabilityTraceScopePredicate_FromProto)
+	return out
+}
+
+func OnlineEvaluatorCloudObservabilityTraceScope_ToProto(mapCtx *direct.MapContext, in *krm.OnlineEvaluatorCloudObservabilityTraceScope) *aiplatformdirectpb.OnlineEvaluator_CloudObservability_TraceScope {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformdirectpb.OnlineEvaluator_CloudObservability_TraceScope{}
+	out.Filter = direct.Slice_ToProto(mapCtx, in.Filter, OnlineEvaluatorCloudObservabilityTraceScopePredicate_ToProto)
+	return out
+}
+
+func OnlineEvaluatorCloudObservabilityTraceScopePredicate_FromProto(mapCtx *direct.MapContext, in *aiplatformdirectpb.OnlineEvaluator_CloudObservability_TraceScope_Predicate) *krm.OnlineEvaluatorCloudObservabilityTraceScopePredicate {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OnlineEvaluatorCloudObservabilityTraceScopePredicate{}
+	out.Duration = OnlineEvaluatorCloudObservabilityNumericPredicate_FromProto(mapCtx, in.GetDuration())
+	out.TotalTokenUsage = OnlineEvaluatorCloudObservabilityNumericPredicate_FromProto(mapCtx, in.GetTotalTokenUsage())
+	return out
+}
+
+func OnlineEvaluatorCloudObservabilityTraceScopePredicate_ToProto(mapCtx *direct.MapContext, in *krm.OnlineEvaluatorCloudObservabilityTraceScopePredicate) *aiplatformdirectpb.OnlineEvaluator_CloudObservability_TraceScope_Predicate {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformdirectpb.OnlineEvaluator_CloudObservability_TraceScope_Predicate{}
+	if oneof := OnlineEvaluatorCloudObservabilityNumericPredicate_ToProto(mapCtx, in.Duration); oneof != nil {
+		out.Predicate = &aiplatformdirectpb.OnlineEvaluator_CloudObservability_TraceScope_Predicate_Duration{Duration: oneof}
+	}
+	if oneof := OnlineEvaluatorCloudObservabilityNumericPredicate_ToProto(mapCtx, in.TotalTokenUsage); oneof != nil {
+		out.Predicate = &aiplatformdirectpb.OnlineEvaluator_CloudObservability_TraceScope_Predicate_TotalTokenUsage{TotalTokenUsage: oneof}
+	}
+	return out
+}
+
+func OnlineEvaluatorConfig_FromProto(mapCtx *direct.MapContext, in *aiplatformdirectpb.OnlineEvaluator_Config) *krm.OnlineEvaluatorConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OnlineEvaluatorConfig{}
+	out.RandomSampling = OnlineEvaluatorConfigRandomSampling_FromProto(mapCtx, in.GetRandomSampling())
+	out.MaxEvaluatedSamplesPerRun = direct.LazyPtr(in.GetMaxEvaluatedSamplesPerRun())
+	return out
+}
+
+func OnlineEvaluatorConfig_ToProto(mapCtx *direct.MapContext, in *krm.OnlineEvaluatorConfig) *aiplatformdirectpb.OnlineEvaluator_Config {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformdirectpb.OnlineEvaluator_Config{}
+	if oneof := OnlineEvaluatorConfigRandomSampling_ToProto(mapCtx, in.RandomSampling); oneof != nil {
+		out.SamplingMethod = &aiplatformdirectpb.OnlineEvaluator_Config_RandomSampling_{RandomSampling: oneof}
+	}
+	out.MaxEvaluatedSamplesPerRun = direct.ValueOf(in.MaxEvaluatedSamplesPerRun)
+	return out
+}
+
+func OnlineEvaluatorConfigRandomSampling_FromProto(mapCtx *direct.MapContext, in *aiplatformdirectpb.OnlineEvaluator_Config_RandomSampling) *krm.OnlineEvaluatorConfigRandomSampling {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OnlineEvaluatorConfigRandomSampling{}
+	out.Percentage = direct.LazyPtr(in.GetPercentage())
+	return out
+}
+
+func OnlineEvaluatorConfigRandomSampling_ToProto(mapCtx *direct.MapContext, in *krm.OnlineEvaluatorConfigRandomSampling) *aiplatformdirectpb.OnlineEvaluator_Config_RandomSampling {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformdirectpb.OnlineEvaluator_Config_RandomSampling{}
+	out.Percentage = direct.ValueOf(in.Percentage)
+	return out
+}
+
+func OnlineEvaluatorStateDetailsObservedState_FromProto(mapCtx *direct.MapContext, in *aiplatformdirectpb.OnlineEvaluator_StateDetails) *krm.OnlineEvaluatorStateDetailsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OnlineEvaluatorStateDetailsObservedState{}
+	out.Message = direct.LazyPtr(in.GetMessage())
+	return out
+}
+
+func OnlineEvaluatorStateDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OnlineEvaluatorStateDetailsObservedState) *aiplatformdirectpb.OnlineEvaluator_StateDetails {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformdirectpb.OnlineEvaluator_StateDetails{}
+	out.Message = direct.ValueOf(in.Message)
+	return out
+}
+
 func PSCAutomationConfig_FromProto(mapCtx *direct.MapContext, in *pb.PSCAutomationConfig) *krm.PSCAutomationConfig {
 	if in == nil {
 		return nil
@@ -4902,6 +5414,97 @@ func Part_Text_ToProto(mapCtx *direct.MapContext, in *string) *pb.Part_Text {
 		return nil
 	}
 	return &pb.Part_Text{Text: *in}
+}
+
+func Part_MediaResolution_FromProto(mapCtx *direct.MapContext, in *pb.Part_MediaResolution) *krm.Part_MediaResolution {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Part_MediaResolution{}
+	out.Level = direct.Enum_FromProto(mapCtx, in.GetLevel())
+	return out
+}
+
+func Part_MediaResolution_ToProto(mapCtx *direct.MapContext, in *krm.Part_MediaResolution) *pb.Part_MediaResolution {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Part_MediaResolution{}
+	if oneof := Part_MediaResolution_Level_ToProto(mapCtx, in.Level); oneof != nil {
+		out.Value = oneof
+	}
+	return out
+}
+
+func Part_MediaResolution_Level_ToProto(mapCtx *direct.MapContext, in *string) *pb.Part_MediaResolution_Level_ {
+	if in == nil {
+		return nil
+	}
+	return &pb.Part_MediaResolution_Level_{Level: direct.Enum_ToProto[pb.Part_MediaResolution_Level](mapCtx, in)}
+}
+
+func PartialArg_FromProto(mapCtx *direct.MapContext, in *pb.PartialArg) *krm.PartialArg {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PartialArg{}
+	out.NullValue = direct.Enum_FromProto(mapCtx, in.GetNullValue())
+	out.NumberValue = direct.LazyPtr(in.GetNumberValue())
+	out.StringValue = direct.LazyPtr(in.GetStringValue())
+	out.BoolValue = direct.LazyPtr(in.GetBoolValue())
+	out.JsonPath = direct.LazyPtr(in.GetJsonPath())
+	out.WillContinue = direct.LazyPtr(in.GetWillContinue())
+	return out
+}
+
+func PartialArg_ToProto(mapCtx *direct.MapContext, in *krm.PartialArg) *pb.PartialArg {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PartialArg{}
+	if oneof := PartialArg_NullValue_ToProto(mapCtx, in.NullValue); oneof != nil {
+		out.Delta = oneof
+	}
+	if oneof := PartialArg_NumberValue_ToProto(mapCtx, in.NumberValue); oneof != nil {
+		out.Delta = oneof
+	}
+	if oneof := PartialArg_StringValue_ToProto(mapCtx, in.StringValue); oneof != nil {
+		out.Delta = oneof
+	}
+	if oneof := PartialArg_BoolValue_ToProto(mapCtx, in.BoolValue); oneof != nil {
+		out.Delta = oneof
+	}
+	out.JsonPath = direct.ValueOf(in.JsonPath)
+	out.WillContinue = direct.ValueOf(in.WillContinue)
+	return out
+}
+
+func PartialArg_NullValue_ToProto(mapCtx *direct.MapContext, in *string) *pb.PartialArg_NullValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.PartialArg_NullValue{NullValue: direct.Enum_ToProto[structpb.NullValue](mapCtx, in)}
+}
+
+func PartialArg_NumberValue_ToProto(mapCtx *direct.MapContext, in *float64) *pb.PartialArg_NumberValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.PartialArg_NumberValue{NumberValue: *in}
+}
+
+func PartialArg_StringValue_ToProto(mapCtx *direct.MapContext, in *string) *pb.PartialArg_StringValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.PartialArg_StringValue{StringValue: *in}
+}
+
+func PartialArg_BoolValue_ToProto(mapCtx *direct.MapContext, in *bool) *pb.PartialArg_BoolValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.PartialArg_BoolValue{BoolValue: *in}
 }
 
 func PersistentDiskSpec_FromProto(mapCtx *direct.MapContext, in *pb.PersistentDiskSpec) *krm.PersistentDiskSpec {
@@ -5165,6 +5768,46 @@ func PostStartupScriptConfig_ToProto(mapCtx *direct.MapContext, in *krm.PostStar
 	out.PostStartupScript = direct.ValueOf(in.PostStartupScript)
 	out.PostStartupScriptUrl = direct.ValueOf(in.PostStartupScriptURL)
 	out.PostStartupScriptBehavior = direct.Enum_ToProto[pb.PostStartupScriptConfig_PostStartupScriptBehavior](mapCtx, in.PostStartupScriptBehavior)
+	return out
+}
+
+func PrebuiltVoiceConfig_FromProto(mapCtx *direct.MapContext, in *pb.PrebuiltVoiceConfig) *krm.PrebuiltVoiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrebuiltVoiceConfig{}
+	out.VoiceName = in.VoiceName
+	return out
+}
+
+func PrebuiltVoiceConfig_ToProto(mapCtx *direct.MapContext, in *krm.PrebuiltVoiceConfig) *pb.PrebuiltVoiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrebuiltVoiceConfig{}
+	out.VoiceName = in.VoiceName
+	return out
+}
+
+func PredefinedMetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.PredefinedMetricSpec) *krm.PredefinedMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PredefinedMetricSpec{}
+	out.MetricSpecName = direct.LazyPtr(in.GetMetricSpecName())
+	if v := direct.Struct_FromProto(mapCtx, in.GetMetricSpecParameters()); v != nil {
+		out.MetricSpecParameters = *v
+	}
+	return out
+}
+
+func PredefinedMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.PredefinedMetricSpec) *pb.PredefinedMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PredefinedMetricSpec{}
+	out.MetricSpecName = direct.ValueOf(in.MetricSpecName)
+	out.MetricSpecParameters = direct.Struct_ToProto(mapCtx, &in.MetricSpecParameters)
 	return out
 }
 
@@ -5974,6 +6617,26 @@ func ReasoningEngineSpec_PackageSpec_ToProto(mapCtx *direct.MapContext, in *krm.
 	return out
 }
 
+func ReplicatedVoiceConfig_FromProto(mapCtx *direct.MapContext, in *pb.ReplicatedVoiceConfig) *krm.ReplicatedVoiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReplicatedVoiceConfig{}
+	out.MimeType = direct.LazyPtr(in.GetMimeType())
+	out.VoiceSampleAudio = in.GetVoiceSampleAudio()
+	return out
+}
+
+func ReplicatedVoiceConfig_ToProto(mapCtx *direct.MapContext, in *krm.ReplicatedVoiceConfig) *pb.ReplicatedVoiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReplicatedVoiceConfig{}
+	out.MimeType = direct.ValueOf(in.MimeType)
+	out.VoiceSampleAudio = in.VoiceSampleAudio
+	return out
+}
+
 func ReservationAffinity_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krm.ReservationAffinity {
 	if in == nil {
 		return nil
@@ -6478,6 +7141,48 @@ func SmoothGradConfig_NoiseSigma_ToProto(mapCtx *direct.MapContext, in *float32)
 	return &pb.SmoothGradConfig_NoiseSigma{NoiseSigma: *in}
 }
 */
+
+func SpeakerVoiceConfig_FromProto(mapCtx *direct.MapContext, in *pb.SpeakerVoiceConfig) *krm.SpeakerVoiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SpeakerVoiceConfig{}
+	out.Speaker = direct.LazyPtr(in.GetSpeaker())
+	out.VoiceConfig = VoiceConfig_FromProto(mapCtx, in.GetVoiceConfig())
+	return out
+}
+
+func SpeakerVoiceConfig_ToProto(mapCtx *direct.MapContext, in *krm.SpeakerVoiceConfig) *pb.SpeakerVoiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SpeakerVoiceConfig{}
+	out.Speaker = direct.ValueOf(in.Speaker)
+	out.VoiceConfig = VoiceConfig_ToProto(mapCtx, in.VoiceConfig)
+	return out
+}
+
+func SpeechConfig_FromProto(mapCtx *direct.MapContext, in *pb.SpeechConfig) *krm.SpeechConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SpeechConfig{}
+	out.VoiceConfig = VoiceConfig_FromProto(mapCtx, in.GetVoiceConfig())
+	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
+	out.MultiSpeakerVoiceConfig = MultiSpeakerVoiceConfig_FromProto(mapCtx, in.GetMultiSpeakerVoiceConfig())
+	return out
+}
+
+func SpeechConfig_ToProto(mapCtx *direct.MapContext, in *krm.SpeechConfig) *pb.SpeechConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SpeechConfig{}
+	out.VoiceConfig = VoiceConfig_ToProto(mapCtx, in.VoiceConfig)
+	out.LanguageCode = direct.ValueOf(in.LanguageCode)
+	out.MultiSpeakerVoiceConfig = MultiSpeakerVoiceConfig_ToProto(mapCtx, in.MultiSpeakerVoiceConfig)
+	return out
+}
 
 func StratifiedSplit_FromProto(mapCtx *direct.MapContext, in *pb.StratifiedSplit) *krm.StratifiedSplit {
 	if in == nil {
@@ -7458,6 +8163,30 @@ func Tool_ComputerUse_ToProto(mapCtx *direct.MapContext, in *krm.Tool_ComputerUs
 	return out
 }
 
+/*
+func Tool_ExaAiSearch_FromProto(mapCtx *direct.MapContext, in *pb.Tool_ExaAiSearch) *krm.Tool_ExaAiSearch {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_ExaAiSearch{}
+	out.APIKey = direct.LazyPtr(in.GetApiKey())
+	if v := direct.Struct_FromProto(mapCtx, in.GetCustomConfigs()); v != nil {
+		out.CustomConfigs = *v
+	}
+	return out
+}
+
+func Tool_ExaAiSearch_ToProto(mapCtx *direct.MapContext, in *krm.Tool_ExaAiSearch) *pb.Tool_ExaAiSearch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_ExaAiSearch{}
+	out.ApiKey = direct.ValueOf(in.APIKey)
+	out.CustomConfigs = direct.Struct_ToProto(mapCtx, &in.CustomConfigs)
+	return out
+}
+*/
+
 func Tool_GoogleSearch_FromProto(mapCtx *direct.MapContext, in *pb.Tool_GoogleSearch) *krm.Tool_GoogleSearch {
 	if in == nil {
 		return nil
@@ -7475,6 +8204,32 @@ func Tool_GoogleSearch_ToProto(mapCtx *direct.MapContext, in *krm.Tool_GoogleSea
 	out.ExcludeDomains = in.ExcludeDomains
 	return out
 }
+
+/*
+func Tool_ParallelAiSearch_FromProto(mapCtx *direct.MapContext, in *pb.Tool_ParallelAiSearch) *krm.Tool_ParallelAiSearch {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_ParallelAiSearch{}
+	out.APIKey = direct.LazyPtr(in.GetApiKey())
+	out.EnableZeroDataRetention = direct.LazyPtr(in.GetEnableZeroDataRetention())
+	if v := direct.Struct_FromProto(mapCtx, in.GetCustomConfigs()); v != nil {
+		out.CustomConfigs = *v
+	}
+	return out
+}
+
+func Tool_ParallelAiSearch_ToProto(mapCtx *direct.MapContext, in *krm.Tool_ParallelAiSearch) *pb.Tool_ParallelAiSearch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_ParallelAiSearch{}
+	out.ApiKey = direct.ValueOf(in.APIKey)
+	out.EnableZeroDataRetention = direct.ValueOf(in.EnableZeroDataRetention)
+	out.CustomConfigs = direct.Struct_ToProto(mapCtx, &in.CustomConfigs)
+	return out
+}
+*/
 
 func TrialObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Trial) *krm.TrialObservedState {
 	if in == nil {
@@ -8026,6 +8781,30 @@ func VideoMetadata_ToProto(mapCtx *direct.MapContext, in *krm.VideoMetadata) *pb
 	out := &pb.VideoMetadata{}
 	out.StartOffset = direct.StringDuration_ToProto(mapCtx, in.StartOffset)
 	out.EndOffset = direct.StringDuration_ToProto(mapCtx, in.EndOffset)
+	return out
+}
+
+func VoiceConfig_FromProto(mapCtx *direct.MapContext, in *pb.VoiceConfig) *krm.VoiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VoiceConfig{}
+	out.PrebuiltVoiceConfig = PrebuiltVoiceConfig_FromProto(mapCtx, in.GetPrebuiltVoiceConfig())
+	out.ReplicatedVoiceConfig = ReplicatedVoiceConfig_FromProto(mapCtx, in.GetReplicatedVoiceConfig())
+	return out
+}
+
+func VoiceConfig_ToProto(mapCtx *direct.MapContext, in *krm.VoiceConfig) *pb.VoiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VoiceConfig{}
+	if oneof := PrebuiltVoiceConfig_ToProto(mapCtx, in.PrebuiltVoiceConfig); oneof != nil {
+		out.VoiceConfig = &pb.VoiceConfig_PrebuiltVoiceConfig{PrebuiltVoiceConfig: oneof}
+	}
+	if oneof := ReplicatedVoiceConfig_ToProto(mapCtx, in.ReplicatedVoiceConfig); oneof != nil {
+		out.VoiceConfig = &pb.VoiceConfig_ReplicatedVoiceConfig{ReplicatedVoiceConfig: oneof}
+	}
 	return out
 }
 
