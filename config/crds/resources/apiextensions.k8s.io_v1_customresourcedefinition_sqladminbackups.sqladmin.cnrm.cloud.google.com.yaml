@@ -119,7 +119,7 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The SQLInstance selfLink, when not managed by Config
+                    description: The SQLInstance name, when not managed by Config
                       Connector.
                     type: string
                   name:
