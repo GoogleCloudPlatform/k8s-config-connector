@@ -162,6 +162,12 @@ spec:
     # Step 3.
     - id: mockgcp
       after: [controller]
+      # Often already done by the controller step on the group's PR: a fix
+      # that finds MockGCP implemented and aligned makes no commit and says
+      # so, which closes this step's issue and moves on. A fix that is
+      # blocked says so too (blocked: true), and its issue waits for a
+      # person instead (gke-labs/gemini-for-kubernetes-development#2270).
+      no-change: ok
       # Wait for the controller step's assessment (assess-controller-step adds
       # one of these to the PR carrying the controller's work once it is green
       # and reviewed at its head), so MockGCP is built only on controller
@@ -209,6 +215,9 @@ spec:
     # Step 5. Ships the Kind, once the steps before it are done.
     - id: release
       after: [mockgcp-alignment]
+      # Already released (not in BLOCKED_KINDS): no commit, which closes this
+      # step's issue. A blocked release waits for a person instead.
+      no-change: ok
       title: 'Greenfield: Release {{ .Params.kind }} (remove it from BLOCKED_KINDS)'
       labels: [step/release]
       review: |
