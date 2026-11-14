@@ -17,6 +17,7 @@ package sql
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"sort"
 	"strings"
@@ -769,6 +770,13 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating SQLInstance", "desired", a.desired)
 
+	// This check must run before any of the early-return paths below (advanced DR
+	// skip, last-modified-cookie match, empty diff), because they all report the
+	// resource as Ready/UpToDate.
+	if err := checkInstanceCanBeReconciled(a.projectID, a.actual); err != nil {
+		return err
+	}
+
 	if err := ResolveSQLInstanceRefs(ctx, a.kube, a.desired); err != nil {
 		return err
 	}
@@ -1045,7 +1053,6 @@ func (a *sqlInstanceAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 
 func (a *sqlInstanceAdapter) pollForLROCompletion(ctx context.Context, op *api.Operation, verb string) error {
 	log := klog.FromContext(ctx)
-	var err error
 
 	pollingBackoff := gax.Backoff{
 		Initial:    time.Second,
@@ -1061,13 +1068,57 @@ func (a *sqlInstanceAdapter) pollForLROCompletion(ctx context.Context, op *api.O
 		if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
 			return fmt.Errorf("waiting for SQLInstance %s %s failed: %w", a.resourceID, verb, err)
 		}
-		op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
+		// Do() returns a nil operation on error, so keep the name for the error message.
+		opName := op.Name
+		latest, err := a.sqlOperationsClient.Get(a.projectID, opName).Context(ctx).Do()
 		if err != nil {
-			return fmt.Errorf("getting SQLInstance %s %s operation %s failed: %w", a.resourceID, verb, op.Name, err)
+			return fmt.Errorf("getting SQLInstance %s %s operation %s failed: %w", a.resourceID, verb, opName, err)
 		}
+		op = latest
+	}
+
+	// A Cloud SQL operation that fails still finishes with status DONE; the failure
+	// (for example ERROR_STOCKOUT) is only reported in op.Error.
+	if err := sqlOperationError(op); err != nil {
+		return fmt.Errorf("SQLInstance %s %s operation %s failed: %w", a.resourceID, verb, op.Name, err)
 	}
 
 	return nil
+}
+
+// sqlOperationError returns an error describing the failure of a completed Cloud SQL
+// operation, or nil if the operation succeeded.
+func sqlOperationError(op *api.Operation) error {
+	if op == nil || op.Error == nil {
+		return nil
+	}
+	var details []string
+	for _, e := range op.Error.Errors {
+		if e == nil {
+			continue
+		}
+		details = append(details, fmt.Sprintf("%s: %s", e.Code, e.Message))
+	}
+	if len(details) == 0 {
+		return errors.New("operation reported an error without details")
+	}
+	return errors.New(strings.Join(details, "; "))
+}
+
+// sqlInstanceStateFailed is the state GCP leaves an instance in when its creation
+// fails (for example with ERROR_STOCKOUT) or a fatal error occurs during maintenance.
+const sqlInstanceStateFailed = "FAILED"
+
+// checkInstanceCanBeReconciled returns an error if the instance is in a state in which
+// GCP rejects updates and the resource must not be reported as Ready.
+func checkInstanceCanBeReconciled(projectID string, instance *api.DatabaseInstance) error {
+	if instance == nil || instance.State != sqlInstanceStateFailed {
+		return nil
+	}
+	return fmt.Errorf("instance %q is in state %s and cannot be reconciled; this usually means that instance creation failed (for example with ERROR_STOCKOUT) or that a fatal error occurred during maintenance. "+
+		"Run `gcloud sql operations list --instance=%s --project=%s` for details. "+
+		"To recover, delete the failed instance (deleting this SQLInstance does this, unless its deletion policy is abandon) and re-apply the SQLInstance",
+		instance.Name, instance.State, instance.Name, projectID)
 }
 
 func (a *sqlInstanceAdapter) toProto(ctx context.Context, instance *api.DatabaseInstance) (*pb.DatabaseInstance, error) {
