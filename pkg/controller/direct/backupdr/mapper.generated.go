@@ -32,6 +32,56 @@ import (
 	monthpb "google.golang.org/genproto/googleapis/type/month"
 )
 
+func BackupDRAutoProtectionPolicyObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoProtectionPolicy) *krmbackupdrv1alpha1.BackupDRAutoProtectionPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmbackupdrv1alpha1.BackupDRAutoProtectionPolicyObservedState{}
+	// MISSING: Name
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.BindingSummary = BindingSummaryObservedState_v1alpha1_FromProto(mapCtx, in.GetBindingSummary())
+	out.PolicyEvaluationSummary = PolicyEvaluationSummaryObservedState_v1alpha1_FromProto(mapCtx, in.GetPolicyEvaluationSummary())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func BackupDRAutoProtectionPolicyObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.BackupDRAutoProtectionPolicyObservedState) *pb.AutoProtectionPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoProtectionPolicy{}
+	// MISSING: Name
+	out.State = direct.Enum_ToProto[pb.AutoProtectionPolicy_State](mapCtx, in.State)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.BindingSummary = BindingSummaryObservedState_v1alpha1_ToProto(mapCtx, in.BindingSummary)
+	out.PolicyEvaluationSummary = PolicyEvaluationSummaryObservedState_v1alpha1_ToProto(mapCtx, in.PolicyEvaluationSummary)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func BackupDRAutoProtectionPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoProtectionPolicy) *krmbackupdrv1alpha1.BackupDRAutoProtectionPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmbackupdrv1alpha1.BackupDRAutoProtectionPolicySpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.BackupPlanDetails = direct.Slice_FromProto(mapCtx, in.BackupPlanDetails, BackupPlanDetail_v1alpha1_FromProto)
+	out.Criteria = Criteria_v1alpha1_FromProto(mapCtx, in.GetCriteria())
+	return out
+}
+func BackupDRAutoProtectionPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.BackupDRAutoProtectionPolicySpec) *pb.AutoProtectionPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoProtectionPolicy{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.BackupPlanDetails = direct.Slice_ToProto(mapCtx, in.BackupPlanDetails, BackupPlanDetail_v1alpha1_ToProto)
+	out.Criteria = Criteria_v1alpha1_ToProto(mapCtx, in.Criteria)
+	return out
+}
 func BackupDRBackupPlanAssociationObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlanAssociation) *krm.BackupDRBackupPlanAssociationObservedState {
 	if in == nil {
 		return nil
@@ -351,6 +401,28 @@ func BackupDRManagementServerSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	// MISSING: SatisfiesPzi
 	return out
 }
+func BackupPlanDetail_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlanDetail) *krmbackupdrv1alpha1.BackupPlanDetail {
+	if in == nil {
+		return nil
+	}
+	out := &krmbackupdrv1alpha1.BackupPlanDetail{}
+	out.ResourceType = direct.LazyPtr(in.GetResourceType())
+	if in.GetBackupPlan() != "" {
+		out.BackupPlanRef = &krmbackupdrv1alpha1.BackupPlanRef{External: in.GetBackupPlan()}
+	}
+	return out
+}
+func BackupPlanDetail_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.BackupPlanDetail) *pb.BackupPlanDetail {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackupPlanDetail{}
+	out.ResourceType = direct.ValueOf(in.ResourceType)
+	if in.BackupPlanRef != nil {
+		out.BackupPlan = in.BackupPlanRef.External
+	}
+	return out
+}
 func BackupRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupRule) *krm.BackupRule {
 	if in == nil {
 		return nil
@@ -391,6 +463,56 @@ func BackupWindow_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackupWindo
 	out.EndHourOfDay = direct.ValueOf(in.EndHourOfDay)
 	return out
 }
+func BindingSummaryObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BindingSummary) *krmbackupdrv1alpha1.BindingSummaryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmbackupdrv1alpha1.BindingSummaryObservedState{}
+	out.ProjectCount = direct.LazyPtr(in.GetProjectCount())
+	return out
+}
+func BindingSummaryObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.BindingSummaryObservedState) *pb.BindingSummary {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BindingSummary{}
+	out.ProjectCount = direct.ValueOf(in.ProjectCount)
+	return out
+}
+func Criteria_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Criteria) *krmbackupdrv1alpha1.Criteria {
+	if in == nil {
+		return nil
+	}
+	out := &krmbackupdrv1alpha1.Criteria{}
+	out.MatchingConditions = direct.Slice_FromProto(mapCtx, in.MatchingConditions, MatchingCondition_v1alpha1_FromProto)
+	return out
+}
+func Criteria_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.Criteria) *pb.Criteria {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Criteria{}
+	out.MatchingConditions = direct.Slice_ToProto(mapCtx, in.MatchingConditions, MatchingCondition_v1alpha1_ToProto)
+	return out
+}
+func KeyValuePair_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.KeyValuePair) *krmbackupdrv1alpha1.KeyValuePair {
+	if in == nil {
+		return nil
+	}
+	out := &krmbackupdrv1alpha1.KeyValuePair{}
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Values = in.Values
+	return out
+}
+func KeyValuePair_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.KeyValuePair) *pb.KeyValuePair {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KeyValuePair{}
+	out.Key = direct.ValueOf(in.Key)
+	out.Values = in.Values
+	return out
+}
 
 /* found existing non-generated mapping function "ManagementURIObservedState_v1alpha1_FromProto", skipping
 func ManagementURIObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ManagementURI) *krmbackupdrv1alpha1.ManagementURIObservedState {
@@ -405,18 +527,38 @@ func ManagementURIObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 }
 */
 
-/* found existing non-generated mapping function "ManagementURIObservedState_v1alpha1_ToProto", skipping
-func ManagementURIObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.ManagementURIObservedState) *pb.ManagementURI {
+/*
+found existing non-generated mapping function "ManagementURIObservedState_v1alpha1_ToProto", skipping
+
+	func ManagementURIObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.ManagementURIObservedState) *pb.ManagementURI {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ManagementURI{}
+		// MISSING: WebUi
+		// (near miss): "WebUi" vs "WebUI"
+		out.Api = direct.ValueOf(in.API)
+		return out
+	}
+*/
+func MatchingCondition_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MatchingCondition) *krmbackupdrv1alpha1.MatchingCondition {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ManagementURI{}
-	// MISSING: WebUi
-	// (near miss): "WebUi" vs "WebUI"
-	out.Api = direct.ValueOf(in.API)
+	out := &krmbackupdrv1alpha1.MatchingCondition{}
+	out.LabelCondition = KeyValuePair_v1alpha1_FromProto(mapCtx, in.GetLabelCondition())
 	return out
 }
-*/
+func MatchingCondition_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.MatchingCondition) *pb.MatchingCondition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MatchingCondition{}
+	if oneof := KeyValuePair_v1alpha1_ToProto(mapCtx, in.LabelCondition); oneof != nil {
+		out.Condition = &pb.MatchingCondition_LabelCondition{LabelCondition: oneof}
+	}
+	return out
+}
 
 /*
 found existing non-generated mapping function "NetworkConfig_v1alpha1_FromProto", skipping
@@ -442,6 +584,26 @@ func NetworkConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1
 		out.Network = in.NetworkRef.External
 	}
 	out.PeeringMode = direct.Enum_ToProto[pb.NetworkConfig_PeeringMode](mapCtx, in.PeeringMode)
+	return out
+}
+func PolicyEvaluationSummaryObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PolicyEvaluationSummary) *krmbackupdrv1alpha1.PolicyEvaluationSummaryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmbackupdrv1alpha1.PolicyEvaluationSummaryObservedState{}
+	out.MatchingResourceCount = direct.LazyPtr(in.GetMatchingResourceCount())
+	out.ProtectedResourceCount = direct.LazyPtr(in.GetProtectedResourceCount())
+	out.FailedResourceCount = direct.LazyPtr(in.GetFailedResourceCount())
+	return out
+}
+func PolicyEvaluationSummaryObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.PolicyEvaluationSummaryObservedState) *pb.PolicyEvaluationSummary {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PolicyEvaluationSummary{}
+	out.MatchingResourceCount = direct.ValueOf(in.MatchingResourceCount)
+	out.ProtectedResourceCount = direct.ValueOf(in.ProtectedResourceCount)
+	out.FailedResourceCount = direct.ValueOf(in.FailedResourceCount)
 	return out
 }
 

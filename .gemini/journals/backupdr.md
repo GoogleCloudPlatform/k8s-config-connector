@@ -20,3 +20,16 @@
   5. Added `BackupDRRestoreVerificationPlan` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
   6. Verified all unit tests and `apichecks` pass, updating `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 - **Impact**: Establishes initial scaffolding and judgement queue for `BackupDRRestoreVerificationPlan` ready for Step 1b triage.
+
+### [2026-11-12] BackupDRAutoProtectionPolicy Proto Overlay, Prepopulation, and Client Library Upgrade
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for `BackupDRAutoProtectionPolicy` under `apis/backupdr/v1alpha1`.
+- **Problem**: The pinned googleapis commit in `apis/git.versions` does not contain `AutoProtectionPolicy`, which was added upstream in `google/cloud/backupdr/v1/autoprotectionpolicy.proto` and `backupdr.proto`. In addition, `cloud.google.com/go/backupdr` pinned in `go.mod` (v1.6.0) did not include `AutoProtectionPolicy` in `backupdrpb`. Upgrading `backupdr` to v1.20.0 via Go MVS pulled newer `google.golang.org/genproto` which removed legacy `cloud/billing/v1` used by billing fuzzer.
+- **Solution**:
+  1. Created a proto overlay `mockgcp/apis/google/cloud/backupdr/v1/autoprotectionpolicy.proto` and `mockgcp/apis/google/cloud/backupdr/v1/backupdr.proto` that preserves the pinned base for existing BackupDR resources while adding `AutoProtectionPolicy`, its RPCs, and its request/response messages.
+  2. Registered the overlay in `dev/tools/controllerbuilder/generate-proto.sh` and in `kccProtoOverrides` in `dev/tools/controllerbuilder/pkg/sourcelinks/sourcelinks.go`.
+  3. Added `replace` directives in `go.mod` and `mockgcp/go.mod` for `google.golang.org/genproto`, `google.golang.org/api`, `google.golang.org/protobuf`, `google.golang.org/grpc`, and `cloud.google.com/go/longrunning` to allow `cloud.google.com/go/backupdr` upgrade to v1.20.0 without triggering unwanted MVS upgrades across the repository that break other fuzzers and mockgcp test logs.
+  4. Marked new `backupdrpb.BackupPlanAssociation` fields (`.alloydb_cluster_backup_plan_association_properties` and `.auto_protection_policy_binding`) as untriaged in `pkg/controller/direct/backupdr/backupdrbackupplanassociation_fuzzer.go`.
+  5. Added `BackupDRAutoProtectionPolicy` to `dev/tasks/build-release-bundle` `BLOCKED_KINDS` list in alphabetical order.
+  6. Added `generate-types` with `--prepopulate-resource`, `generate-identity`, and `--prepopulate-resource` on `generate-mapper` in `apis/backupdr/generate.sh`.
+  7. Updated `alpha-missingfields.txt` and `spec_dislike_etag.txt` in `tests/apichecks/testdata/exceptions/`.
+- **Impact**: Enables clean mechanical scaffolding of `BackupDRAutoProtectionPolicy` with types, IdentityV2, and judgement queue open for Step 1b triage.
