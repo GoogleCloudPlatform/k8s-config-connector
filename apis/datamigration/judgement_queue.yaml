@@ -93,7 +93,7 @@ entries:
     group: datamigration.cnrm.cloud.google.com
     field: .spec.alloydb.settings.encryptionConfig.kmsKeyName
     reason: possible-reference-by-description
-    detail: the description has the resource-name template "projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]"
+    detail: the description has the resource-name template "projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]"; the field name is kmsKeyName or cmekKeyName
     status: open
   - kind: DatamigrationConnectionProfile
     group: datamigration.cnrm.cloud.google.com
@@ -110,14 +110,32 @@ entries:
   - kind: DatamigrationConnectionProfile
     group: datamigration.cnrm.cloud.google.com
     field: .spec.cloudsql.settings.cmekKeyName
+    reason: possible-reference-by-description
+    detail: the field name is kmsKeyName or cmekKeyName
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.cloudsql.settings.cmekKeyName
     reason: possible-reference-by-name
     detail: KMSCryptoKeyRef
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.cloudsql.settings.ipConfig.privateNetwork
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/myProject/global/networks/default"
     status: open
   - kind: DatamigrationConnectionProfile
     group: datamigration.cnrm.cloud.google.com
     field: .spec.cloudsql.settings.rootPassword
     reason: sensitive-field
     detail: the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.cloudsql.settings.sourceID
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/my_project_name/locations/us-central1/connectionProfiles/connection_profile_ID"
     status: open
   - kind: DatamigrationConnectionProfile
     group: datamigration.cnrm.cloud.google.com
