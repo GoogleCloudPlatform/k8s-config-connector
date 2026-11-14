@@ -248,6 +248,7 @@ BLOCKED_KINDS=(
     "LicenseManagerConfiguration"
     "LiveStreamAsset"
     "LiveStreamDVRSession"
+    "LustreInstance"
     "ManagedKafkaSchemaRegistry"
     "MapManagementMapConfig"
     "MapmanagementMapContextConfig"
