@@ -367,7 +367,7 @@ type InstanceSettings struct {
 	// +optional
 	DiskSize *int64 `json:"diskSize,omitempty"`
 
-	/* Immutable. The type of data disk: PD_SSD or PD_HDD. Defaults to PD_SSD. */
+	/* Immutable. The type of data disk: PD_SSD, PD_HDD, or HYPERDISK_BALANCED. Defaults to PD_SSD for Enterprise edition in standard regions. */
 	// +optional
 	DiskType *string `json:"diskType,omitempty"`
 

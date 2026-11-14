@@ -52,7 +52,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "transactionLogRetentionDays": 14
     },
     "connectorEnforcement": "NOT_REQUIRED",
-    "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE_PLUS",
     "ipConfiguration": {
       "ipv4Enabled": true,
