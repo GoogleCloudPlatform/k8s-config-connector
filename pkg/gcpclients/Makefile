@@ -4,7 +4,10 @@ GOLANG_X_TOOLS_VERSION?=$(shell grep -E '^\s*golang.org/x/tools\s+' ../../go.mod
 .PHONY: generate-grpc-for-google-protos
 generate-grpc-for-google-protos: tools
 	mkdir -p .build/
-	git clone https://github.com/googleapis/googleapis.git .build/googleapis || (cd .build/googleapis && git fetch --all && git reset --hard $(GOOGLEAPI_VERSION))
+	@if [ ! -d .build/googleapis ]; then \
+		git clone https://github.com/googleapis/googleapis.git .build/googleapis; \
+	fi
+	cd .build/googleapis && git fetch --all && git reset --hard $(GOOGLEAPI_VERSION) && git clean -fd
 	mkdir -p ./generated
 
 	PATH=.build/bin/:${PATH} .build/bin/protoc/bin/protoc \
@@ -16,16 +19,9 @@ generate-grpc-for-google-protos: tools
 		--go-grpc_opt paths=source_relative \
 		./.build/googleapis/google/cloud/tpu/v2/*.proto
 
-	go -C ../../mockgcp/tools/patch-proto run . --file ./.build/googleapis/google/cloud/sql/v1beta4/cloud_sql_resources.proto --message IpConfiguration --mode append <<EOF
-  // The server CA mode.
-  optional string server_ca_mode = 11;
+	printf "// The server CA mode.\noptional string server_ca_mode = 11;\n\n// The server CA pool.\noptional string server_ca_pool = 12;\n\n// Custom Subject Alternative Names.\nrepeated string custom_subject_alternative_names = 13;\n" | go -C ../../mockgcp/tools/patch-proto run . --file $$(pwd)/.build/googleapis/google/cloud/sql/v1beta4/cloud_sql_resources.proto --message IpConfiguration --mode append
 
-  // The server CA pool.
-  optional string server_ca_pool = 12;
-
-  // Custom Subject Alternative Names.
-  repeated string custom_subject_alternative_names = 13;
-EOF
+	sed -i '/POSTGRES_16 = 272;/a \  // The database version is PostgreSQL 17.\n  POSTGRES_17 = 408;\n\n  // The database version is PostgreSQL 18.\n  POSTGRES_18 = 557;' ./.build/googleapis/google/cloud/sql/v1beta4/cloud_sql_resources.proto
 
 	PATH=.build/bin/:${PATH} .build/bin/protoc/bin/protoc \
 		-I ./.build/googleapis \
