@@ -256,6 +256,15 @@
   1. Created minimal and maximal fixtures under `pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computecrosssitenetwork/`.
   2. Recorded golden HTTP logs and object states against real GCP via `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`. Both minimal and maximal fixtures passed all 7 automated lifecycle validation checks.
 
+### [2026-11-14] MockGCP Implementation and Alignment for ComputeCrossSiteNetwork
+- **Context**: Implementing MockGCP service handlers and aligning mock golden logs with authentic real GCP traffic for `ComputeCrossSiteNetwork` (issue #15622).
+- **Findings & Implementation**:
+  1. **Mock Service**: Implemented `crossSiteNetworks` in `mockgcp/mockcompute/computecrosssitenetworks.go`, handling `Get`, `Insert`, `Patch`, `Delete`, and `List` requests using the generated protobuf types (`mockgcp/generated/mockgcp/cloud/compute/v1`), backed by mock storage and global LROs (`startGlobalLRO`).
+  2. **Registration**: Registered `CrossSiteNetworksServer` on gRPC server and registered HTTP handler with `RegisterCrossSiteNetworksHandler` in `mockgcp/mockcompute/service.go`.
+  3. **Harness Support**: Added `ComputeCrossSiteNetwork` to the supported mock GCP resources in `config/tests/samples/create/harness.go`.
+  4. **Log Alignment**: Existing compute normalizers in `mockgcp/mockcompute/normalize.go` automatically match `${crossSiteNetworkID}` via `targetLink` placeholder parsing.
+  5. **Validation**: Ran `hack/compare-mock` for minimal and maximal fixtures; both passed with zero discrepancies in mock HTTP logs (`_http_mock.log`) and golden files. Verified `TestGoldenLogAlignment/compute/v1alpha1/computecrosssitenetwork` passes with zero errors.
+
 ### [2026-11-13] Greenfield Prepopulate of ComputeInterconnectGroup
 - **Context**: Prepopulating direct KRM types, IdentityV2, reference, and `judgement_queue.yaml` for Greenfield resource `ComputeInterconnectGroup` under `apis/compute/v1alpha1/` (issue #15613).
 - **Proto & Service Details**: `InterconnectGroup` is defined in Google Cloud Compute API v1 (`google/cloud/compute/v1/compute.proto`), and managed via the `InterconnectGroups` service (`projects/{project}/global/interconnectGroups/{interconnectgroup}`).
