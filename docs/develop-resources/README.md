@@ -62,6 +62,7 @@ The [deep-dives](./deep-dives) section gives you all the tools and exit criteria
 * [Promote a Alpha Resource to Beta](./scenarios/alpha-to-beta.md)
 * [Migrate a Terraform/DCL-based Resource to Direct (Alpha)](./scenarios/migrate-tf-resource-alpha.md)
 * [Migrate a Terraform/DCL-based Resource to Direct (Beta)](./scenarios/migrate-tf-resource-beta.md)
+* [DCL-Based Field and Resource Additions & Maintenance](./scenarios/dcl-field-and-resource.md)
 
 ## API conventions
 
