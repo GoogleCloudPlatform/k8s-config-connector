@@ -754,8 +754,8 @@ cloud.google.com/go/gaming v1.7.0/go.mod h1:LrB8U7MHdGgFG851iHAfqUdLcKBdQ55hzXy9
 cloud.google.com/go/gaming v1.8.0/go.mod h1:xAqjS8b7jAVW0KFYeRUxngo9My3f33kFmua++Pi+ggM=
 cloud.google.com/go/gaming v1.9.0/go.mod h1:Fc7kEmCObylSWLO334NcO+O9QMDyz+TKC4v1D7X+Bc0=
 cloud.google.com/go/gaming v1.10.1/go.mod h1:XQQvtfP8Rb9Rxnxm5wFVpAp9zCQkJi2bLIb7iHGwB3s=
-cloud.google.com/go/geminidataanalytics v1.3.0 h1:YZWLabHpHD2NXFOBp/VslLH9IsTkaeFPGFYHcGWJdqM=
-cloud.google.com/go/geminidataanalytics v1.3.0/go.mod h1:IW2F6GCTSJFhvwZ0cNZrzvtKgJzdDsPQAptX8OMdvoU=
+cloud.google.com/go/geminidataanalytics v1.6.0 h1:uIN4auPsApA5yuSddAjTUtPySf73BwIeoScSol7JMco=
+cloud.google.com/go/geminidataanalytics v1.6.0/go.mod h1:w1J4ERxExUZuPMJuHIaeO/p/KwDjirdP3KDE8iQue4A=
 cloud.google.com/go/gkebackup v0.2.0/go.mod h1:XKvv/4LfG829/B8B7xRkk8zRrOEbKtEam6yNfuQNH60=
 cloud.google.com/go/gkebackup v0.3.0/go.mod h1:n/E671i1aOQvUxT541aTkCwExO/bTer2HDlj4TsBRAo=
 cloud.google.com/go/gkebackup v0.4.0/go.mod h1:byAyBGUwYGEEww7xsbnUTBHIYcOPy/PgUWUtOeRm9Vg=

@@ -126,6 +126,8 @@ cloud.google.com/go/firestore v1.22.0 h1:avooeboIq37vKXobrbPUFhFBxS/c3FqmWoX0xs8
 cloud.google.com/go/firestore v1.22.0/go.mod h1:PaM4i7i7ruALSKmlpHXXZaPObcZw0W7ie5UOPr72iTU=
 cloud.google.com/go/geminidataanalytics v1.3.0 h1:YZWLabHpHD2NXFOBp/VslLH9IsTkaeFPGFYHcGWJdqM=
 cloud.google.com/go/geminidataanalytics v1.3.0/go.mod h1:IW2F6GCTSJFhvwZ0cNZrzvtKgJzdDsPQAptX8OMdvoU=
+cloud.google.com/go/geminidataanalytics v1.6.0 h1:uIN4auPsApA5yuSddAjTUtPySf73BwIeoScSol7JMco=
+cloud.google.com/go/geminidataanalytics v1.6.0/go.mod h1:w1J4ERxExUZuPMJuHIaeO/p/KwDjirdP3KDE8iQue4A=
 cloud.google.com/go/gkebackup v1.13.0 h1:QyeJc4XPqV0hzoAcAQIi8YMveT8eRI21oOK16qKItJo=
 cloud.google.com/go/gkebackup v1.13.0/go.mod h1:D2MDbHW4V/uKCmS9TnT8hNKX2tPkE/pWp9nSm0TQ9hY=
 cloud.google.com/go/gkemulticloud v1.11.0 h1:MTqEPjiNVY9bcliSfQR23HHaTPlfFinDh+4ARB5Gn14=

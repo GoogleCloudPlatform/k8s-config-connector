@@ -20,3 +20,18 @@
   2. Implemented `mockgeminidataanalytics` in MockGCP using the GCP Go client library `apiv1beta` directly, registering it under `mockgcp/mock_http_roundtrip.go`.
 - **Impact**: Provides full Greenfield direct controller reconciliation and MockGCP testability for `GeminiDataAnalyticsConversation` without needing a real GCP account.
 
+### 2026-11-11 Prepopulate GeminiDataAnalyticsDataAgent Types, IdentityV2, and Judgement Queue
+- **Context**: Prepopulating initial direct KRM types, identity, reference, and judgement queue for `GeminiDataAnalyticsDataAgent` (Greenfield Step 1a).
+- **Problem**:
+  1. The base pinned googleapis SHA in `apis/git.versions` (`1765b559c42386788ff0c6412491277b4791107a`) only had `google.cloud.geminidataanalytics.v1beta` (and `v1alpha`), whereas GA proto `google.cloud.geminidataanalytics.v1` is available in newer googleapis releases.
+  2. The proto message contains a recursive type `Field` (`Subfields []Field`), causing CRD generation to emit `items: {}` without OpenAPI v3 type specifications and failing envtest validation.
+  3. A temporary external-only stub `GeminiDataAnalyticsDataAgentRef` was previously defined in `geminidataanalyticsconversation_types.go`.
+- **Solution**:
+  1. Pinned `PROTO_SHA="e7513c828b8db536fa12fc5493d541f323aedf90"` in `apis/geminidataanalytics/generate.sh` to generate from GA proto `google.cloud.geminidataanalytics.v1` for `DataAgent` while keeping `v1beta` for `Conversation`.
+  2. Extracted `Field` to `apis/geminidataanalytics/v1alpha1/field.go` with `// +kubebuilder:validation:items:XPreserveUnknownFields` and `// +kubebuilder:validation:items:Type=object` annotations so OpenAPI v3 schema validates cleanly.
+  3. Removed the temporary `GeminiDataAnalyticsDataAgentRef` from `geminidataanalyticsconversation_types.go` so `generate-identity` generates the canonical `GeminiDataAnalyticsDataAgentRef` with `External`, `Name`, and `Namespace`.
+  4. Added `GeminiDataAnalyticsDataAgent` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  5. Updated `generate-mapper` invocation in `apis/geminidataanalytics/generate.sh` to include both `--service google.cloud.geminidataanalytics.v1,google.cloud.geminidataanalytics.v1beta` and `--prepopulate-resource`. Upgraded `cloud.google.com/go/geminidataanalytics` to `v1.6.0` in root and mockgcp `go.mod` so mappers for `GeminiDataAnalyticsDataAgent` compile against `apiv1/geminidataanalyticspb` while preserving repository dependencies (such as `google.golang.org/api` and `protobuf`). Marked newly added `.title` field as untriaged in `geminidataanalyticsconversation_fuzzer.go`.
+- **Impact**: Clean, mechanical Greenfield Step 1a scaffolding for `GeminiDataAnalyticsDataAgent` with all apichecks, mappers, and preview envtest tests passing.
+
+

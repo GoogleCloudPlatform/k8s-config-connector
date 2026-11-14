@@ -29,17 +29,35 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
 
+PROTO_SHA="e7513c828b8db536fa12fc5493d541f323aedf90"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-types \
+    --proto-source-path ${PROTO_OUT} \
     --service google.cloud.geminidataanalytics.v1beta \
     --api-version "geminidataanalytics.cnrm.cloud.google.com/v1alpha1" \
     --resource GeminiDataAnalyticsConversation:Conversation
 
+${CONTROLLERBUILDER} generate-types \
+    --proto-source-path ${PROTO_OUT} \
+    --service google.cloud.geminidataanalytics.v1 \
+    --api-version "geminidataanalytics.cnrm.cloud.google.com/v1alpha1" \
+    --resource GeminiDataAnalyticsDataAgent:DataAgent \
+    --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+    --proto-source-path ${PROTO_OUT} \
+    --service google.cloud.geminidataanalytics.v1 \
+    --api-version "geminidataanalytics.cnrm.cloud.google.com/v1alpha1" \
+    --resource GeminiDataAnalyticsDataAgent:DataAgent
+
 ${CONTROLLERBUILDER} generate-mapper \
-    --service google.cloud.geminidataanalytics.v1beta \
-    --api-version "geminidataanalytics.cnrm.cloud.google.com/v1alpha1"
+    --proto-source-path ${PROTO_OUT} \
+    --service google.cloud.geminidataanalytics.v1,google.cloud.geminidataanalytics.v1beta \
+    --api-version "geminidataanalytics.cnrm.cloud.google.com/v1alpha1" \
+    --prepopulate-resource
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
