@@ -29,6 +29,7 @@ import (
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmnetworkconnectivitynetworkconnectivityrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/networkconnectivityrefs"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -5365,6 +5366,7 @@ func ComputeRolloutPlanObservedState_v1alpha1_FromProto(mapCtx *direct.MapContex
 	// MISSING: Name
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithID = in.SelfLinkWithId
+	out.Waves = direct.Slice_FromProto(mapCtx, in.Waves, RolloutPlanWaveObservedState_v1alpha1_FromProto)
 	return out
 }
 func ComputeRolloutPlanObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeRolloutPlanObservedState) *pb.RolloutPlan {
@@ -5378,6 +5380,7 @@ func ComputeRolloutPlanObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext,
 	// MISSING: Name
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithId = in.SelfLinkWithID
+	out.Waves = direct.Slice_ToProto(mapCtx, in.Waves, RolloutPlanWaveObservedState_v1alpha1_ToProto)
 	return out
 }
 func ComputeRolloutPlanSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlan) *krmcomputev1alpha1.ComputeRolloutPlanSpec {
@@ -9748,7 +9751,7 @@ func RolloutPlanWave_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Rollou
 	}
 	out := &krmcomputev1alpha1.RolloutPlanWave{}
 	out.DisplayName = in.DisplayName
-	out.Number = in.Number
+	// MISSING: Number
 	out.OrchestrationOptions = RolloutPlanWaveOrchestrationOptions_v1alpha1_FromProto(mapCtx, in.GetOrchestrationOptions())
 	out.Selectors = direct.Slice_FromProto(mapCtx, in.Selectors, RolloutPlanWaveSelector_v1alpha1_FromProto)
 	out.Validation = RolloutPlanWaveValidation_v1alpha1_FromProto(mapCtx, in.GetValidation())
@@ -9760,10 +9763,34 @@ func RolloutPlanWave_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev
 	}
 	out := &pb.RolloutPlanWave{}
 	out.DisplayName = in.DisplayName
-	out.Number = in.Number
+	// MISSING: Number
 	out.OrchestrationOptions = RolloutPlanWaveOrchestrationOptions_v1alpha1_ToProto(mapCtx, in.OrchestrationOptions)
 	out.Selectors = direct.Slice_ToProto(mapCtx, in.Selectors, RolloutPlanWaveSelector_v1alpha1_ToProto)
 	out.Validation = RolloutPlanWaveValidation_v1alpha1_ToProto(mapCtx, in.Validation)
+	return out
+}
+func RolloutPlanWaveObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlanWave) *krmcomputev1alpha1.RolloutPlanWaveObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RolloutPlanWaveObservedState{}
+	// MISSING: DisplayName
+	out.Number = in.Number
+	// MISSING: OrchestrationOptions
+	// MISSING: Selectors
+	// MISSING: Validation
+	return out
+}
+func RolloutPlanWaveObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RolloutPlanWaveObservedState) *pb.RolloutPlanWave {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutPlanWave{}
+	// MISSING: DisplayName
+	out.Number = in.Number
+	// MISSING: OrchestrationOptions
+	// MISSING: Selectors
+	// MISSING: Validation
 	return out
 }
 func RolloutPlanWaveOrchestrationOptions_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlanWaveOrchestrationOptions) *krmcomputev1alpha1.RolloutPlanWaveOrchestrationOptions {
@@ -9845,9 +9872,25 @@ func RolloutPlanWaveSelectorResourceHierarchySelector_v1alpha1_FromProto(mapCtx 
 		return nil
 	}
 	out := &krmcomputev1alpha1.RolloutPlanWaveSelectorResourceHierarchySelector{}
-	out.IncludedFolders = in.IncludedFolders
-	out.IncludedOrganizations = in.IncludedOrganizations
-	out.IncludedProjects = in.IncludedProjects
+
+	if v := in.GetIncludedFolders(); len(v) != 0 {
+		for i := range v {
+			out.IncludedFolderRefs = append(out.IncludedFolderRefs, refsv1beta1.FolderRef{External: v[i]})
+		}
+	}
+
+	if v := in.GetIncludedOrganizations(); len(v) != 0 {
+		for i := range v {
+			out.IncludedOrganizationRefs = append(out.IncludedOrganizationRefs, refsv1beta1.OrganizationRef{External: v[i]})
+		}
+	}
+
+	if v := in.GetIncludedProjects(); len(v) != 0 {
+		for i := range v {
+			out.IncludedProjectRefs = append(out.IncludedProjectRefs, refsv1beta1.ProjectRef{External: v[i]})
+		}
+	}
+
 	return out
 }
 func RolloutPlanWaveSelectorResourceHierarchySelector_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RolloutPlanWaveSelectorResourceHierarchySelector) *pb.RolloutPlanWaveSelectorResourceHierarchySelector {
@@ -9855,9 +9898,25 @@ func RolloutPlanWaveSelectorResourceHierarchySelector_v1alpha1_ToProto(mapCtx *d
 		return nil
 	}
 	out := &pb.RolloutPlanWaveSelectorResourceHierarchySelector{}
-	out.IncludedFolders = in.IncludedFolders
-	out.IncludedOrganizations = in.IncludedOrganizations
-	out.IncludedProjects = in.IncludedProjects
+
+	if v := in.IncludedFolderRefs; len(v) != 0 {
+		for i := range v {
+			out.IncludedFolders = append(out.IncludedFolders, v[i].External)
+		}
+	}
+
+	if v := in.IncludedOrganizationRefs; len(v) != 0 {
+		for i := range v {
+			out.IncludedOrganizations = append(out.IncludedOrganizations, v[i].External)
+		}
+	}
+
+	if v := in.IncludedProjectRefs; len(v) != 0 {
+		for i := range v {
+			out.IncludedProjects = append(out.IncludedProjects, v[i].External)
+		}
+	}
+
 	return out
 }
 func RolloutPlanWaveValidation_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlanWaveValidation) *krmcomputev1alpha1.RolloutPlanWaveValidation {

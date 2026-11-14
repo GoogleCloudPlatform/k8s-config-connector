@@ -402,3 +402,18 @@
   - Added open entry in `apis/compute/judgement_queue.yaml` for `ComputeGlobalVMExtensionPolicy` `.spec.rolloutOperation.rolloutInput.name` (`possible-reference-by-description`) which arose from proto comment updates mentioning `projects//locations/global/rolloutPlans/`.
 - **Verification**:
   - Identity conformance tests (`TestComputeRolloutPlanIdentity_Conformance`), unit tests (`apis/compute/...`, `pkg/controller/direct/compute/...`), CRD generation, and API checks (`tests/apichecks/...`) all pass cleanly.
+
+### [2026-11-14] Greenfield: Triage judgement queue and finalize direct KRM types and identity for ComputeRolloutPlan
+- **Context**: Triaged and finalized direct KRM types, identity, and references for `ComputeRolloutPlan` (issue #15677) following Greenfield Step 1b (`judgement/SKILL.md`).
+- **Judgement Queue Resolutions & Learnings**:
+  1. `untriaged-bulk-generation`: Resolved after triaging all fields, omissions, references, and KRM conventions.
+  2. `identity-multi-pattern` & `identity-root-unknown`: Verified `RolloutPlan` is a global resource parented by project (`projects/{project}/global/rolloutPlans/{rolloutPlan}`) in compute v1. Marked `spec.projectRef` as required (`// +required`) and removed `spec.location`.
+  3. `verify-resource-docs-link`: Corrected resource documentation link to `https://cloud.google.com/compute/docs/reference/rest/v1/rolloutPlans`.
+  4. `location-parent-unknown`: Dropped `spec.location` as `ComputeRolloutPlan` is a global resource parented by project.
+  5. `possible-reference-by-description` on `.spec.waves[].selectors[].resourceHierarchySelector` fields: Moved `RolloutPlanWaveSelectorResourceHierarchySelector` to `computerolloutplan_types.go` and converted `includedFolders`, `includedOrganizations`, and `includedProjects` to `IncludedFolderRefs []refsv1beta1.FolderRef`, `IncludedOrganizationRefs []refsv1beta1.OrganizationRef`, and `IncludedProjectRefs []refsv1beta1.ProjectRef`. `controllerbuilder generate-mapper` automatically maps these slice references to/from proto string slices via `.External`.
+  6. `well-known-output-only-pattern-in-comment` on `waves[].number`: In proto, `number` is marked `Output only. The wave number.` Moved `RolloutPlanWave` to `computerolloutplan_types.go` without `number` in Spec, created `RolloutPlanWaveObservedState` containing `number`, and added `Waves []RolloutPlanWaveObservedState` under `ComputeRolloutPlanObservedState`. `generate-mapper` automatically generates `RolloutPlanWaveObservedState_v1alpha1_FromProto`.
+  7. `server-set-field-placed` on `creationTimestamp`, `id`, `kind`, `selfLink`, and `selfLinkWithID`: Confirmed server-generated output-only fields; verified placement in `ComputeRolloutPlanObservedState` and removed `+kcc:guess` comments.
+- **Verification**:
+  - Re-ran `./apis/compute/generate.sh` and verified CRD generation, mappers, deepcopy code.
+  - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+  - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.

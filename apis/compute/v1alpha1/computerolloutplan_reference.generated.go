@@ -31,12 +31,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var ComputeRolloutPlanGVK = schema.GroupVersionKind{
-	Group:   "compute.cnrm.cloud.google.com",
-	Version: "v1alpha1",
-	Kind:    "ComputeRolloutPlan",
-}
-
 var _ refs.Ref = &ComputeRolloutPlanRef{}
 
 // ComputeRolloutPlanRef is a reference to a GCP ComputeRolloutPlan resource.

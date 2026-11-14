@@ -1061,82 +1061,110 @@ entries:
     group: compute.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: finalized types, resolved references, marked projectRef required, dropped spec.location, and moved output-only number field to status.observedState
   - kind: ComputeRolloutPlan
     group: compute.cnrm.cloud.google.com
     reason: identity-multi-pattern
     detail: proto message google.cloud.compute.v1.RolloutPlan declares 2 resource name patterns (organizations/{organizationsid}/global/rolloutPlans/{rolloutplan}, projects/{project}/global/rolloutPlans/{rolloutplan}); generated identity uses "projects/{project}/global/rolloutPlans/{rolloutplan}" (pass --pattern ComputeRolloutPlan=<pattern> to override)
-    status: open
+    status: resolved
+    resolution: accepted
+    note: verified projects/{project}/global/rolloutPlans/{rolloutPlan} pattern against compute v1 API
   - kind: ComputeRolloutPlan
     group: compute.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/global/rolloutPlans/{rolloutPlan}" contains ancestor segment(s) projects/{project} with no matching reference or field on ComputeRolloutPlanSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: added +required to spec.projectRef and removed spec.location
   - kind: ComputeRolloutPlan
     group: compute.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
-    status: open
+    status: resolved
+    resolution: edited
+    note: corrected resource-docs to https://cloud.google.com/compute/docs/reference/rest/v1/rolloutPlans
   - kind: ComputeRolloutPlan
     group: compute.cnrm.cloud.google.com
     field: .spec.location
     reason: location-parent-unknown
     detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
-    status: open
+    status: resolved
+    resolution: edited
+    note: removed spec.location because ComputeRolloutPlan is a global resource parented by project
   - kind: ComputeRolloutPlan
     group: compute.cnrm.cloud.google.com
     field: .spec.waves[].selectors[].resourceHierarchySelector.includedFolders
     reason: possible-reference-by-description
     detail: the description has the resource-name template "folders/{folder_id}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to includedFolderRefs ([]refsv1beta1.FolderRef)
   - kind: ComputeRolloutPlan
     group: compute.cnrm.cloud.google.com
     field: .spec.waves[].selectors[].resourceHierarchySelector.includedOrganizations
     reason: possible-reference-by-description
     detail: the description has the resource-name template "organizations/{organization_id}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to includedOrganizationRefs ([]refsv1beta1.OrganizationRef)
   - kind: ComputeRolloutPlan
     group: compute.cnrm.cloud.google.com
     field: .spec.waves[].selectors[].resourceHierarchySelector.includedProjects
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project_id}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to includedProjectRefs ([]refsv1beta1.ProjectRef)
   - kind: ComputeRolloutPlan
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.creationTimestamp
     reason: server-set-field-placed
     detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only server-set field
   - kind: ComputeRolloutPlan
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.id
     reason: server-set-field-placed
     detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only server-set field
   - kind: ComputeRolloutPlan
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.kind
     reason: server-set-field-placed
     detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only server-set field
   - kind: ComputeRolloutPlan
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.selfLink
     reason: server-set-field-placed
     detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only server-set field
   - kind: ComputeRolloutPlan
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.selfLinkWithID
     reason: server-set-field-placed
     detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only server-set field
   - kind: ComputeRolloutPlan
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.waves[].number
     reason: well-known-output-only-pattern-in-comment
     detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.waves[].number. Move the field to .status.observedState.waves[].number if it is confirmed output only. Proto comment: Output only. The wave number.'
-    status: open
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved to status.observedState.waves[].number
   - kind: ComputeStoragePool
     group: compute.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

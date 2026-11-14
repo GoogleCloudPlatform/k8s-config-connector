@@ -65,9 +65,6 @@ spec:
                 description: An optional description of this resource. Provide this
                   property when you create the resource.
                 type: string
-              location:
-                description: The location of this resource.
-                type: string
               locationScope:
                 description: The location scope of the rollout plan. If not specified,
                   the location scope is considered as ZONAL. Check the LocationScope
@@ -117,10 +114,6 @@ spec:
                       description: Optional. The display name of this wave of the
                         rollout plan.
                       type: string
-                    number:
-                      description: Output only. The wave number.
-                      format: int64
-                      type: integer
                     orchestrationOptions:
                       description: Optional. The orchestration options for this wave.
                       properties:
@@ -189,20 +182,93 @@ spec:
                             description: Optional. Roll out to resources by Cloud
                               Resource Manager resource hierarchy.
                             properties:
-                              includedFolders:
+                              includedFolderRefs:
                                 description: 'Optional. Format: "folders/{folder_id}"'
                                 items:
-                                  type: string
+                                  description: The Folder that contains this resource.
+                                  oneOf:
+                                  - not:
+                                      required:
+                                      - external
+                                    required:
+                                    - name
+                                  - not:
+                                      anyOf:
+                                      - required:
+                                        - name
+                                      - required:
+                                        - namespace
+                                    required:
+                                    - external
+                                  properties:
+                                    external:
+                                      description: The 'name' field of a folder, when
+                                        not managed by Config Connector. This field
+                                        must be set when 'name' field is not set.
+                                      type: string
+                                    name:
+                                      description: The 'name' field of a 'Folder'
+                                        resource. This field must be set when 'external'
+                                        field is not set.
+                                      type: string
+                                    namespace:
+                                      description: The 'namespace' field of a 'Folder'
+                                        resource. If unset, the namespace is defaulted
+                                        to the namespace of the referencer resource.
+                                      type: string
+                                  type: object
                                 type: array
-                              includedOrganizations:
+                              includedOrganizationRefs:
                                 description: 'Optional. Format: "organizations/{organization_id}"'
                                 items:
-                                  type: string
+                                  description: OrganizationRef represents the Organization
+                                    that this resource belongs to.
+                                  properties:
+                                    external:
+                                      description: The 'name' field of an organization,
+                                        when not managed by Config Connector.
+                                      type: string
+                                  required:
+                                  - external
+                                  type: object
                                 type: array
-                              includedProjects:
+                              includedProjectRefs:
                                 description: 'Optional. Format: "projects/{project_id}"'
                                 items:
-                                  type: string
+                                  description: The Project that this resource belongs
+                                    to.
+                                  oneOf:
+                                  - not:
+                                      required:
+                                      - external
+                                    required:
+                                    - name
+                                  - not:
+                                      anyOf:
+                                      - required:
+                                        - name
+                                      - required:
+                                        - namespace
+                                    required:
+                                    - external
+                                  properties:
+                                    external:
+                                      description: The `projectID` field of a project,
+                                        when not managed by Config Connector.
+                                      type: string
+                                    kind:
+                                      description: The kind of the Project resource;
+                                        optional but must be `Project` if provided.
+                                      type: string
+                                    name:
+                                      description: The `name` field of a `Project`
+                                        resource.
+                                      type: string
+                                    namespace:
+                                      description: The `namespace` field of a `Project`
+                                        resource.
+                                      type: string
+                                  type: object
                                 type: array
                             type: object
                         type: object
@@ -235,7 +301,6 @@ spec:
                   type: object
                 type: array
             required:
-            - location
             - projectRef
             type: object
           status:
@@ -305,6 +370,16 @@ spec:
                     description: Output only. [Output Only] Server-defined URL for
                       this resource's resource id.
                     type: string
+                  waves:
+                    description: Output only. The waves included in this rollout plan.
+                    items:
+                      properties:
+                        number:
+                          description: Output only. The wave number.
+                          format: int64
+                          type: integer
+                      type: object
+                    type: array
                 type: object
             type: object
         required:
