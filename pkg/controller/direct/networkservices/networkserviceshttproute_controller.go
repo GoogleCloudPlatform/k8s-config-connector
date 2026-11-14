@@ -245,6 +245,7 @@ func normalizeGCPResourceName(val string) string {
 	val = strings.TrimPrefix(val, "https://")
 	val = strings.TrimPrefix(val, "http://")
 	val = strings.TrimPrefix(val, "//")
+	val = strings.TrimPrefix(val, "gs://")
 
 	prefixes := []string{
 		"networkservices.googleapis.com/v1alpha1/",
@@ -255,6 +256,9 @@ func normalizeGCPResourceName(val string) string {
 		"www.googleapis.com/compute/beta/",
 		"compute.googleapis.com/compute/v1/",
 		"compute.googleapis.com/compute/beta/",
+		"storage.googleapis.com/storage/v1/b/",
+		"www.googleapis.com/storage/v1/b/",
+		"storage.googleapis.com/",
 	}
 	for _, prefix := range prefixes {
 		if strings.HasPrefix(val, prefix) {

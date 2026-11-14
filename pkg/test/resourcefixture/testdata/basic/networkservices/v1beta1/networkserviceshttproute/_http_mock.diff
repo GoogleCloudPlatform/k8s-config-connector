@@ -112,10 +112,6 @@
 <     "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}"
 ---
 >     "projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}"
-1557c1556
-<   "name": "projects/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}",
----
->   "name": "projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}",
 1562d1560
 <           "allowCredentials": false,
 1588c1586

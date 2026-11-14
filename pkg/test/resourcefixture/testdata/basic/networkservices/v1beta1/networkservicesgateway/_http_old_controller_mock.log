@@ -403,7 +403,7 @@ Content-Type: application/json
     "foo1": "bar1",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}",
   "ports": [
     81
   ],

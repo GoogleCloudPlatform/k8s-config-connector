@@ -116,6 +116,9 @@ func (s *NetworkServicesServer) CreateHttpRoute(ctx context.Context, req *pb.Cre
 
 func (s *NetworkServicesServer) UpdateHttpRoute(ctx context.Context, req *pb.UpdateHttpRouteRequest) (*longrunningpb.Operation, error) {
 	reqName := req.GetHttpRoute().GetName()
+	if strings.HasPrefix(reqName, "projects/projects/") {
+		req.GetHttpRoute().Name = strings.TrimPrefix(reqName, "projects/")
+	}
 
 	name, err := s.parseHttpRouteName(reqName)
 	if err != nil {
@@ -127,6 +130,8 @@ func (s *NetworkServicesServer) UpdateHttpRoute(ctx context.Context, req *pb.Upd
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+
+	obj.Name = fqn
 
 	paths := req.GetUpdateMask().GetPaths()
 	if len(paths) == 0 {
