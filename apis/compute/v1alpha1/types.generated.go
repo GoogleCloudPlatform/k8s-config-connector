@@ -39,6 +39,7 @@
 // resource: ComputeGlobalVMExtensionPolicy:GlobalVmExtensionPolicy
 // resource: ComputeCrossSiteNetwork:CrossSiteNetwork
 // resource: ComputeInterconnectGroup:InterconnectGroup
+// resource: ComputeInterconnectAttachmentGroup:InterconnectAttachmentGroup
 // resource: ComputeStoragePool:StoragePool
 
 package v1alpha1
@@ -1471,6 +1472,167 @@ type InterconnectApplicationAwareInterconnectBandwidthPercentagePolicy struct {
 type InterconnectApplicationAwareInterconnectStrictPriorityPolicy struct {
 }
 */
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.InterconnectAttachmentGroup", skipping
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroup
+type InterconnectAttachmentGroup struct {
+	// Attachments in the AttachmentGroup. Keys are arbitrary user-specified strings. Users are encouraged, but not required, to use their preferred format for resource links as keys. Note that there are add-members and remove-members methods in gcloud. The size of this map is limited by an "Attachments per group" quota.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.attachments
+	Attachments map[string]InterconnectAttachmentGroupAttachment `json:"attachments,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.configured
+	Configured *InterconnectAttachmentGroupConfigured `json:"configured,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.description
+	Description *string `json:"description,omitempty"`
+
+	// Opaque system-generated token that uniquely identifies the configuration. If provided when patching a configuration in update mode, the provided token must match the current token or the update is rejected. This provides a reliable means of doing read-modify-write (optimistic locking) as described by AIP 154.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// [Output Only] The unique identifier for the resource type. The server generates this identifier.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.intent
+	Intent *InterconnectAttachmentGroupIntent `json:"intent,omitempty"`
+
+	// The URL of an InterconnectGroup that groups these Attachments' Interconnects. Customers do not need to set this unless directed by Google Support.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.interconnect_group
+	InterconnectGroup *string `json:"interconnectGroup,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#interconnectAttachmentGroup.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.logical_structure
+	LogicalStructure *InterconnectAttachmentGroupLogicalStructure `json:"logicalStructure,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.name
+	Name *string `json:"name,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "InterconnectAttachmentGroupAttachment", skipping
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupAttachment
+type InterconnectAttachmentGroupAttachment struct {
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupAttachment.attachment
+	Attachment *string `json:"attachment,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupConfigured
+type InterconnectAttachmentGroupConfigured struct {
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupConfigured.availability_sla
+	AvailabilitySla *InterconnectAttachmentGroupConfiguredAvailabilitySla `json:"availabilitySla,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLA
+type InterconnectAttachmentGroupConfiguredAvailabilitySla struct {
+	// Check the EffectiveSla enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLA.effective_sla
+	EffectiveSla *string `json:"effectiveSla,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLA.intended_sla_blockers
+	IntendedSlaBlockers []InterconnectAttachmentGroupConfiguredAvailabilitySlaIntendedSlaBlockers `json:"intendedSlaBlockers,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers
+type InterconnectAttachmentGroupConfiguredAvailabilitySlaIntendedSlaBlockers struct {
+	// [Output Only] URLs of any particular Attachments to explain this blocker in more detail.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers.attachments
+	Attachments []string `json:"attachments,omitempty"`
+
+	// Check the BlockerType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers.blocker_type
+	BlockerType *string `json:"blockerType,omitempty"`
+
+	// [Output Only] The url of Google Cloud public documentation explaining this requirement. This is set for every type of requirement.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers.documentation_link
+	DocumentationLink *string `json:"documentationLink,omitempty"`
+
+	// [Output Only] A human-readable explanation of this requirement and why it's not met. This is set for every type of requirement.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers.explanation
+	Explanation *string `json:"explanation,omitempty"`
+
+	// [Output Only] Metros used to explain this blocker in more detail. These are three-letter lowercase strings like "iad". This will be set for some blockers (like NO_ATTACHMENTS_IN_METRO_AND_ZONE) but does not apply to others.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers.metros
+	Metros []string `json:"metros,omitempty"`
+
+	// [Output Only] Regions used to explain this blocker in more detail. These are region names formatted like "us-central1". This will be set for some blockers (like INCOMPATIBLE_REGIONS) but does not apply to others.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers.regions
+	Regions []string `json:"regions,omitempty"`
+
+	// [Output Only] Zones used to explain this blocker in more detail. Format is "zone1" and/or "zone2". This will be set for some blockers (like MISSING_ZONE) but does not apply to others.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers.zones
+	Zones []string `json:"zones,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupIntent
+type InterconnectAttachmentGroupIntent struct {
+	// Check the AvailabilitySla enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupIntent.availability_sla
+	AvailabilitySla *string `json:"availabilitySla,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructure
+type InterconnectAttachmentGroupLogicalStructure struct {
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructure.regions
+	Regions []InterconnectAttachmentGroupLogicalStructureRegion `json:"regions,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegion
+type InterconnectAttachmentGroupLogicalStructureRegion struct {
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegion.metros
+	Metros []InterconnectAttachmentGroupLogicalStructureRegionMetro `json:"metros,omitempty"`
+
+	// [Output Only] The name of a region, like "us-central1".
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegion.region
+	Region *string `json:"region,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegionMetro
+type InterconnectAttachmentGroupLogicalStructureRegionMetro struct {
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegionMetro.facilities
+	Facilities []InterconnectAttachmentGroupLogicalStructureRegionMetroFacility `json:"facilities,omitempty"`
+
+	// [Output Only] The name of the metro, as a three-letter lowercase string like "iad". This is the first component of the location of an Interconnect.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegionMetro.metro
+	Metro *string `json:"metro,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacility
+type InterconnectAttachmentGroupLogicalStructureRegionMetroFacility struct {
+	// [Output Only] The name of a facility, like "iad-1234".
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacility.facility
+	Facility *string `json:"facility,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacility.zones
+	Zones []InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone `json:"zones,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone
+type InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone struct {
+	// [Output Only] URLs of Attachments in the given zone, to the given region, on Interconnects in the given facility and metro. Every Attachment in the AG has such an entry.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone.attachments
+	Attachments []string `json:"attachments,omitempty"`
+
+	// [Output Only] The name of a zone, either "zone1" or "zone2".
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone.zone
+	Zone *string `json:"zone,omitempty"`
+}
 
 /* found existing non-generated go type "InterconnectCircuitInfo", skipping
 
@@ -3898,6 +4060,32 @@ type CrossSiteNetworkObservedState struct {
 
 	// Output only. [Output Only] Server-defined URL for the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.InterconnectAttachmentGroup", skipping
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.InterconnectAttachmentGroup
+type InterconnectAttachmentGroupObservedState struct {
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// Opaque system-generated token that uniquely identifies the configuration. If provided when patching a configuration in update mode, the provided token must match the current token or the update is rejected. This provides a reliable means of doing read-modify-write (optimistic locking) as described by AIP 154.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// [Output Only] The unique identifier for the resource type. The server generates this identifier.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#interconnectAttachmentGroup.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
 }
 */

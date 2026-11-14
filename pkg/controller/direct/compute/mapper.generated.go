@@ -3258,6 +3258,76 @@ func ComputeInstantSnapshotSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	}
 	return out
 }
+func ComputeInterconnectAttachmentGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroup) *krmcomputev1alpha1.ComputeInterconnectAttachmentGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeInterconnectAttachmentGroupObservedState{}
+	out.Configured = InterconnectAttachmentGroupConfigured_v1alpha1_FromProto(mapCtx, in.GetConfigured())
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Etag = in.Etag
+	out.ID = in.Id
+	out.Kind = in.Kind
+	out.LogicalStructure = InterconnectAttachmentGroupLogicalStructure_v1alpha1_FromProto(mapCtx, in.GetLogicalStructure())
+	// MISSING: Name
+	out.SelfLink = in.SelfLink
+	return out
+}
+func ComputeInterconnectAttachmentGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInterconnectAttachmentGroupObservedState) *pb.InterconnectAttachmentGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroup{}
+	out.Configured = InterconnectAttachmentGroupConfigured_v1alpha1_ToProto(mapCtx, in.Configured)
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Etag = in.Etag
+	out.Id = in.ID
+	out.Kind = in.Kind
+	out.LogicalStructure = InterconnectAttachmentGroupLogicalStructure_v1alpha1_ToProto(mapCtx, in.LogicalStructure)
+	// MISSING: Name
+	out.SelfLink = in.SelfLink
+	return out
+}
+func ComputeInterconnectAttachmentGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroup) *krmcomputev1alpha1.ComputeInterconnectAttachmentGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeInterconnectAttachmentGroupSpec{}
+	if in.Attachments != nil {
+		out.Attachments = make(map[string]krmcomputev1alpha1.InterconnectAttachmentGroupAttachment, len(in.Attachments))
+		for k, v := range in.Attachments {
+			if c := InterconnectAttachmentGroupAttachment_v1alpha1_FromProto(mapCtx, v); c != nil {
+				out.Attachments[k] = *c
+			}
+		}
+	}
+	out.Description = in.Description
+	out.Intent = InterconnectAttachmentGroupIntent_v1alpha1_FromProto(mapCtx, in.GetIntent())
+	if in.GetInterconnectGroup() != "" {
+		out.InterconnectGroupRef = &krmcomputev1alpha1.ComputeInterconnectGroupRef{External: in.GetInterconnectGroup()}
+	}
+	// MISSING: Name
+	return out
+}
+func ComputeInterconnectAttachmentGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInterconnectAttachmentGroupSpec) *pb.InterconnectAttachmentGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroup{}
+	if in.Attachments != nil {
+		out.Attachments = make(map[string]*pb.InterconnectAttachmentGroupAttachment, len(in.Attachments))
+		for k, v := range in.Attachments {
+			out.Attachments[k] = InterconnectAttachmentGroupAttachment_v1alpha1_ToProto(mapCtx, &v)
+		}
+	}
+	out.Description = in.Description
+	out.Intent = InterconnectAttachmentGroupIntent_v1alpha1_ToProto(mapCtx, in.Intent)
+	if in.InterconnectGroupRef != nil {
+		out.InterconnectGroup = &in.InterconnectGroupRef.External
+	}
+	// MISSING: Name
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeInterconnectAttachmentSpec_v1beta1_FromProto", skipping
 func ComputeInterconnectAttachmentSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachment) *krmcomputev1beta1.ComputeInterconnectAttachmentSpec {
@@ -7518,6 +7588,192 @@ func InstantSnapshotResourceStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 	}
 	out := &pb.InstantSnapshotResourceStatus{}
 	out.StorageSizeBytes = in.StorageSizeBytes
+	return out
+}
+func InterconnectAttachmentGroupAttachment_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroupAttachment) *krmcomputev1alpha1.InterconnectAttachmentGroupAttachment {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectAttachmentGroupAttachment{}
+	if in.GetAttachment() != "" {
+		out.AttachmentRef = &krmcomputev1beta1.ComputeInterconnectAttachmentRef{External: in.GetAttachment()}
+	}
+	return out
+}
+func InterconnectAttachmentGroupAttachment_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectAttachmentGroupAttachment) *pb.InterconnectAttachmentGroupAttachment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroupAttachment{}
+	if in.AttachmentRef != nil {
+		out.Attachment = &in.AttachmentRef.External
+	}
+	return out
+}
+func InterconnectAttachmentGroupConfigured_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroupConfigured) *krmcomputev1alpha1.InterconnectAttachmentGroupConfigured {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectAttachmentGroupConfigured{}
+	out.AvailabilitySla = InterconnectAttachmentGroupConfiguredAvailabilitySla_v1alpha1_FromProto(mapCtx, in.GetAvailabilitySla())
+	return out
+}
+func InterconnectAttachmentGroupConfigured_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectAttachmentGroupConfigured) *pb.InterconnectAttachmentGroupConfigured {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroupConfigured{}
+	out.AvailabilitySla = InterconnectAttachmentGroupConfiguredAvailabilitySla_v1alpha1_ToProto(mapCtx, in.AvailabilitySla)
+	return out
+}
+func InterconnectAttachmentGroupConfiguredAvailabilitySla_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroupConfiguredAvailabilitySLA) *krmcomputev1alpha1.InterconnectAttachmentGroupConfiguredAvailabilitySla {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectAttachmentGroupConfiguredAvailabilitySla{}
+	out.EffectiveSla = in.EffectiveSla
+	out.IntendedSlaBlockers = direct.Slice_FromProto(mapCtx, in.IntendedSlaBlockers, InterconnectAttachmentGroupConfiguredAvailabilitySlaIntendedSlaBlockers_v1alpha1_FromProto)
+	return out
+}
+func InterconnectAttachmentGroupConfiguredAvailabilitySla_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectAttachmentGroupConfiguredAvailabilitySla) *pb.InterconnectAttachmentGroupConfiguredAvailabilitySLA {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroupConfiguredAvailabilitySLA{}
+	out.EffectiveSla = in.EffectiveSla
+	out.IntendedSlaBlockers = direct.Slice_ToProto(mapCtx, in.IntendedSlaBlockers, InterconnectAttachmentGroupConfiguredAvailabilitySlaIntendedSlaBlockers_v1alpha1_ToProto)
+	return out
+}
+func InterconnectAttachmentGroupConfiguredAvailabilitySlaIntendedSlaBlockers_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers) *krmcomputev1alpha1.InterconnectAttachmentGroupConfiguredAvailabilitySlaIntendedSlaBlockers {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectAttachmentGroupConfiguredAvailabilitySlaIntendedSlaBlockers{}
+	out.Attachments = in.Attachments
+	out.BlockerType = in.BlockerType
+	out.DocumentationLink = in.DocumentationLink
+	out.Explanation = in.Explanation
+	out.Metros = in.Metros
+	out.Regions = in.Regions
+	out.Zones = in.Zones
+	return out
+}
+func InterconnectAttachmentGroupConfiguredAvailabilitySlaIntendedSlaBlockers_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectAttachmentGroupConfiguredAvailabilitySlaIntendedSlaBlockers) *pb.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers{}
+	out.Attachments = in.Attachments
+	out.BlockerType = in.BlockerType
+	out.DocumentationLink = in.DocumentationLink
+	out.Explanation = in.Explanation
+	out.Metros = in.Metros
+	out.Regions = in.Regions
+	out.Zones = in.Zones
+	return out
+}
+func InterconnectAttachmentGroupIntent_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroupIntent) *krmcomputev1alpha1.InterconnectAttachmentGroupIntent {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectAttachmentGroupIntent{}
+	out.AvailabilitySla = in.AvailabilitySla
+	return out
+}
+func InterconnectAttachmentGroupIntent_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectAttachmentGroupIntent) *pb.InterconnectAttachmentGroupIntent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroupIntent{}
+	out.AvailabilitySla = in.AvailabilitySla
+	return out
+}
+func InterconnectAttachmentGroupLogicalStructure_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroupLogicalStructure) *krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructure {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructure{}
+	out.Regions = direct.Slice_FromProto(mapCtx, in.Regions, InterconnectAttachmentGroupLogicalStructureRegion_v1alpha1_FromProto)
+	return out
+}
+func InterconnectAttachmentGroupLogicalStructure_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructure) *pb.InterconnectAttachmentGroupLogicalStructure {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroupLogicalStructure{}
+	out.Regions = direct.Slice_ToProto(mapCtx, in.Regions, InterconnectAttachmentGroupLogicalStructureRegion_v1alpha1_ToProto)
+	return out
+}
+func InterconnectAttachmentGroupLogicalStructureRegion_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroupLogicalStructureRegion) *krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegion {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegion{}
+	out.Metros = direct.Slice_FromProto(mapCtx, in.Metros, InterconnectAttachmentGroupLogicalStructureRegionMetro_v1alpha1_FromProto)
+	out.Region = in.Region
+	return out
+}
+func InterconnectAttachmentGroupLogicalStructureRegion_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegion) *pb.InterconnectAttachmentGroupLogicalStructureRegion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroupLogicalStructureRegion{}
+	out.Metros = direct.Slice_ToProto(mapCtx, in.Metros, InterconnectAttachmentGroupLogicalStructureRegionMetro_v1alpha1_ToProto)
+	out.Region = in.Region
+	return out
+}
+func InterconnectAttachmentGroupLogicalStructureRegionMetro_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroupLogicalStructureRegionMetro) *krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegionMetro {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegionMetro{}
+	out.Facilities = direct.Slice_FromProto(mapCtx, in.Facilities, InterconnectAttachmentGroupLogicalStructureRegionMetroFacility_v1alpha1_FromProto)
+	out.Metro = in.Metro
+	return out
+}
+func InterconnectAttachmentGroupLogicalStructureRegionMetro_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegionMetro) *pb.InterconnectAttachmentGroupLogicalStructureRegionMetro {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroupLogicalStructureRegionMetro{}
+	out.Facilities = direct.Slice_ToProto(mapCtx, in.Facilities, InterconnectAttachmentGroupLogicalStructureRegionMetroFacility_v1alpha1_ToProto)
+	out.Metro = in.Metro
+	return out
+}
+func InterconnectAttachmentGroupLogicalStructureRegionMetroFacility_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroupLogicalStructureRegionMetroFacility) *krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacility {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacility{}
+	out.Facility = in.Facility
+	out.Zones = direct.Slice_FromProto(mapCtx, in.Zones, InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone_v1alpha1_FromProto)
+	return out
+}
+func InterconnectAttachmentGroupLogicalStructureRegionMetroFacility_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacility) *pb.InterconnectAttachmentGroupLogicalStructureRegionMetroFacility {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroupLogicalStructureRegionMetroFacility{}
+	out.Facility = in.Facility
+	out.Zones = direct.Slice_ToProto(mapCtx, in.Zones, InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone_v1alpha1_ToProto)
+	return out
+}
+func InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone) *krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone{}
+	out.Attachments = in.Attachments
+	out.Zone = in.Zone
+	return out
+}
+func InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone) *pb.InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone{}
+	out.Attachments = in.Attachments
+	out.Zone = in.Zone
 	return out
 }
 func InterconnectCircuitInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectCircuitInfo) *krmcomputev1alpha1.InterconnectCircuitInfo {
