@@ -968,3 +968,154 @@ tbody tr.row-expanded-details:hover {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--text-muted);
 }
+
+/* Migration Progress Tab Styles */
+.advisory-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.advisory-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 18px 22px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3);
+    position: relative;
+    border-left: 5px solid var(--border-color);
+}
+
+.advisory-card.ahead {
+    border-left-color: var(--google-blue);
+    background: linear-gradient(to right, var(--google-blue-light), var(--bg-card) 60%);
+}
+
+.advisory-card.ontime {
+    border-left-color: var(--google-green);
+    background: linear-gradient(to right, var(--google-green-light), var(--bg-card) 60%);
+}
+
+.advisory-card.behind {
+    border-left-color: var(--google-red);
+    background: linear-gradient(to right, var(--google-red-light), var(--bg-card) 60%);
+}
+
+.advisory-icon {
+    font-size: 24px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.advisory-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.advisory-detail {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    line-height: 1.45;
+}
+
+.progress-chart-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 32px;
+    box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3);
+}
+
+.chart-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.chart-header-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.chart-header-sub {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.progress-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 18px;
+}
+
+.progress-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.scope-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 32px;
+}
+
+.scope-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px 20px;
+    box-shadow: 0 1px 2px 0 rgba(60,64,67,0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.scope-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: var(--border-color);
+}
+
+.scope-card.tf::before { background-color: var(--google-yellow); }
+.scope-card.dcl::before { background-color: var(--google-blue); }
+.scope-card.dual::before { background-color: #8b5cf6; }
+.scope-card.direct::before { background-color: var(--google-green); }
+
+.scope-card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.scope-card-count {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.scope-card-desc {
+    font-size: 11.5px;
+    color: var(--text-muted);
+}
+
