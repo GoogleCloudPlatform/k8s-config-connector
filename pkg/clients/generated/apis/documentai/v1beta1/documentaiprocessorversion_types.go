@@ -68,7 +68,7 @@ type DocumentAIProcessorVersionSpec struct {
 	/* ProcessorRef is a reference to a DocumentAIProcessor. */
 	ProcessorRef v1alpha1.ResourceRef `json:"processorRef"`
 
-	/* The DocumentAIProcessorVersion name. If not given, the metadata.name will be used. */
+	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
