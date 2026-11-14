@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: dialogflowcx.cnrm.cloud.google.com
+  kind: DialogflowCXWebhook
+  name: dialogflowcxwebhook-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

@@ -550,6 +550,7 @@ func cleanURL(u string) string {
 	u = regexp.MustCompile(`/instanceGroupManagers/gke-.*-grp`).ReplaceAllString(u, "/instanceGroupManagers/gke-containercluster-normalized-grp")
 	u = regexp.MustCompile(`/contacts/[0-9]+`).ReplaceAllString(u, "/contacts/${contactID}")
 	u = regexp.MustCompile(`/agents/[0-9a-fA-F-]+`).ReplaceAllString(u, "/agents/${agentID}")
+	u = regexp.MustCompile(`/webhooks/[0-9a-fA-F-]+`).ReplaceAllString(u, "/webhooks/${webhookID}")
 	return u
 }
 
@@ -1370,6 +1371,8 @@ func getPlaceholdersForKind(kind string) []string {
 		return []string{"${datasetID}"}
 	case "DialogflowCXAgent":
 		return []string{"${agentID}"}
+	case "DialogflowCXWebhook", "DialogflowWebhook":
+		return []string{"${agentID}", "${webhookID}"}
 	}
 	return nil
 }

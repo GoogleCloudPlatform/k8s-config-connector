@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -62,17 +63,28 @@ func (obj *DialogflowCXWebhook) GetIdentity(ctx context.Context, reader client.R
 		externalRef = common.ValueOf(obj.Status.Name)
 	}
 	if externalRef != "" {
-		statusIdentity := &DialogflowCXWebhookIdentity{}
-		if err := statusIdentity.FromExternal(externalRef); err != nil {
-			return nil, err
-		}
+		// To preserve backward compatibility with Terraform, status.Name can be just the webhook ID
+		// (e.g. "4150c119-76bc-4592-b12d-8d65e0b22606") or the full path. If it doesn't contain a "/", it's
+		// the short ID; we can verify it directly against specIdentity.Webhook.
+		if !strings.Contains(externalRef, "/") {
+			if specIdentity.Webhook == "" {
+				specIdentity.Webhook = externalRef
+			} else if specIdentity.Webhook != externalRef {
+				return nil, fmt.Errorf("cannot change DialogflowCXWebhook identity (old=%q, new=%q)", externalRef, specIdentity.Webhook)
+			}
+		} else {
+			statusIdentity := &DialogflowCXWebhookIdentity{}
+			if err := statusIdentity.FromExternal(externalRef); err != nil {
+				return nil, err
+			}
 
-		if specIdentity.Webhook == "" {
-			specIdentity.Webhook = statusIdentity.Webhook
-		}
+			if specIdentity.Webhook == "" {
+				specIdentity.Webhook = statusIdentity.Webhook
+			}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change DialogflowCXWebhook identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			if statusIdentity.String() != specIdentity.String() {
+				return nil, fmt.Errorf("cannot change DialogflowCXWebhook identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			}
 		}
 	}
 
