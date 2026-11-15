@@ -17,6 +17,7 @@ package bigquery
 import (
 	"context"
 	"fmt"
+	"slices"
 	"sort"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1alpha1"
@@ -131,17 +132,23 @@ func (a *bigQueryRowAccessPolicyAdapter) Find(ctx context.Context) (bool, error)
 	if err != nil {
 		return false, fmt.Errorf("getting IAM policy for RowAccessPolicy %q: %w", a.id.String(), err)
 	}
+	actual.Grantees = extractGrantees(iamPolicy.Bindings)
+
+	a.actual = actual
+	return true, nil
+}
+
+// extractGrantees aggregates, sorts, and deduplicates members from IAM policy bindings
+// matching "roles/bigquery.filteredDataViewer".
+func extractGrantees(bindings []*bigquery.Binding) []string {
 	var grantees []string
-	for _, b := range iamPolicy.Bindings {
+	for _, b := range bindings {
 		if b.Role == "roles/bigquery.filteredDataViewer" {
 			grantees = append(grantees, b.Members...)
 		}
 	}
 	sort.Strings(grantees)
-	actual.Grantees = grantees
-
-	a.actual = actual
-	return true, nil
+	return slices.Compact(grantees)
 }
 
 func (a *bigQueryRowAccessPolicyAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
