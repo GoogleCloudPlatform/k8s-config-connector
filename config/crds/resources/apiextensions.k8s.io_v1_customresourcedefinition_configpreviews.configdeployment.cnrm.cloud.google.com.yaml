@@ -256,6 +256,9 @@ spec:
                                 in the source deployment's latest successfully applied
                                 revision.
                               type: string
+                          required:
+                          - deploymentRef
+                          - outputName
                           type: object
                       type: object
                     description: Optional. Map of input variable names in this blueprint

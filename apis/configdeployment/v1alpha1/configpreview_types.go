@@ -40,7 +40,7 @@ type ConfigPreviewSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 	// The terraform blueprint to preview.
 	// +kcc:proto:field=google.cloud.config.v1.Preview.terraform_blueprint
-	TerraformBlueprint *TerraformBlueprint `json:"terraformBlueprint,omitempty"`
+	TerraformBlueprint *TerraformBlueprintWithRequired `json:"terraformBlueprint,omitempty"`
 
 	// Optional. Optional deployment reference. If specified, the preview will be
 	//  performed using the provided deployment's current state and use any

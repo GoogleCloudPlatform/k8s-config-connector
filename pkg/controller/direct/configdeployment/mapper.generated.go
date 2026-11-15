@@ -274,7 +274,7 @@ func ConfigPreviewSpec_FromProto(mapCtx *direct.MapContext, in *pb.Preview) *krm
 		return nil
 	}
 	out := &krm.ConfigPreviewSpec{}
-	out.TerraformBlueprint = TerraformBlueprint_FromProto(mapCtx, in.GetTerraformBlueprint())
+	out.TerraformBlueprint = TerraformBlueprintWithRequired_FromProto(mapCtx, in.GetTerraformBlueprint())
 	// MISSING: Name
 	// MISSING: Labels
 	if in.GetDeployment() != "" {
@@ -303,7 +303,7 @@ found existing non-generated mapping function "ConfigPreviewSpec_ToProto", skipp
 			return nil
 		}
 		out := &pb.Preview{}
-		if oneof := TerraformBlueprint_ToProto(mapCtx, in.TerraformBlueprint); oneof != nil {
+		if oneof := TerraformBlueprintWithRequired_ToProto(mapCtx, in.TerraformBlueprint); oneof != nil {
 			out.Blueprint = &pb.Preview_TerraformBlueprint{TerraformBlueprint: oneof}
 		}
 		// MISSING: Name
@@ -419,6 +419,24 @@ func ExternalValueSource_ToProto(mapCtx *direct.MapContext, in *krm.ExternalValu
 	}
 	return out
 }
+func ExternalValueSourceWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.ExternalValueSource) *krm.ExternalValueSourceWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExternalValueSourceWithRequired{}
+	out.DeploymentSource = DeploymentSourceWithRequired_FromProto(mapCtx, in.GetDeploymentSource())
+	return out
+}
+func ExternalValueSourceWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.ExternalValueSourceWithRequired) *pb.ExternalValueSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExternalValueSource{}
+	if oneof := DeploymentSourceWithRequired_ToProto(mapCtx, in.DeploymentSource); oneof != nil {
+		out.Source = &pb.ExternalValueSource_DeploymentSource{DeploymentSource: oneof}
+	}
+	return out
+}
 func GitSource_FromProto(mapCtx *direct.MapContext, in *pb.GitSource) *krm.GitSource {
 	if in == nil {
 		return nil
@@ -530,10 +548,75 @@ func TerraformBlueprint_ToProto(mapCtx *direct.MapContext, in *krm.TerraformBlue
 }
 */
 
-/*
-found existing non-generated mapping function "TerraformBlueprint_GcsSource_ToProto", skipping
+/* found existing non-generated mapping function "TerraformBlueprint_GcsSource_ToProto", skipping
+func TerraformBlueprint_GcsSource_ToProto(mapCtx *direct.MapContext, in *GCSSource) *pb.TerraformBlueprint_GcsSource {
+	if in == nil {
+		return nil
+	}
+	return &pb.TerraformBlueprint_GcsSource{GcsSource: *in}
+}
+*/
 
-	func TerraformBlueprint_GcsSource_ToProto(mapCtx *direct.MapContext, in *GCSSource) *pb.TerraformBlueprint_GcsSource {
+/* found existing non-generated mapping function "TerraformBlueprintWithRequired_FromProto", skipping
+func TerraformBlueprintWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.TerraformBlueprint) *krm.TerraformBlueprintWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TerraformBlueprintWithRequired{}
+	out.GCSSource = direct.LazyPtr(in.GetGcsSource())
+	out.GitSource = GitSource_FromProto(mapCtx, in.GetGitSource())
+	if in.InputValues != nil {
+		out.InputValues = make(map[string]krm.TerraformVariable, len(in.InputValues))
+		for k, v := range in.InputValues {
+			if c := TerraformVariable_FromProto(mapCtx, v); c != nil {
+				out.InputValues[k] = *c
+			}
+		}
+	}
+	if in.ExternalValues != nil {
+		out.ExternalValues = make(map[string]krm.ExternalValueSourceWithRequired, len(in.ExternalValues))
+		for k, v := range in.ExternalValues {
+			if c := ExternalValueSourceWithRequired_FromProto(mapCtx, v); c != nil {
+				out.ExternalValues[k] = *c
+			}
+		}
+	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "TerraformBlueprintWithRequired_ToProto", skipping
+func TerraformBlueprintWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.TerraformBlueprintWithRequired) *pb.TerraformBlueprint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TerraformBlueprint{}
+	if oneof := TerraformBlueprintWithRequired_GcsSource_ToProto(mapCtx, in.GCSSource); oneof != nil {
+		out.Source = oneof
+	}
+	if oneof := GitSource_ToProto(mapCtx, in.GitSource); oneof != nil {
+		out.Source = &pb.TerraformBlueprint_GitSource{GitSource: oneof}
+	}
+	if in.InputValues != nil {
+		out.InputValues = make(map[string]*pb.TerraformVariable, len(in.InputValues))
+		for k, v := range in.InputValues {
+			out.InputValues[k] = TerraformVariable_ToProto(mapCtx, &v)
+		}
+	}
+	if in.ExternalValues != nil {
+		out.ExternalValues = make(map[string]*pb.ExternalValueSource, len(in.ExternalValues))
+		for k, v := range in.ExternalValues {
+			out.ExternalValues[k] = ExternalValueSourceWithRequired_ToProto(mapCtx, &v)
+		}
+	}
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "TerraformBlueprintWithRequired_GcsSource_ToProto", skipping
+
+	func TerraformBlueprintWithRequired_GcsSource_ToProto(mapCtx *direct.MapContext, in *GCSSource) *pb.TerraformBlueprint_GcsSource {
 		if in == nil {
 			return nil
 		}
