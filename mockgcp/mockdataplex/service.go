@@ -47,11 +47,17 @@ type MockService struct {
 	dataProductService      *DataProductService
 	dataScanService         *DataScanService
 	businessGlossaryService *BusinessGlossaryService
+	metadataService         *MetadataService
 }
 
 type DataplexService struct {
 	*MockService
 	pb.UnimplementedDataplexServiceServer
+}
+
+type MetadataService struct {
+	*MockService
+	pb.UnimplementedMetadataServiceServer
 }
 
 // New creates a MockService.
@@ -67,6 +73,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s.dataProductService = &DataProductService{MockService: s}
 	s.dataScanService = &DataScanService{MockService: s}
 	s.businessGlossaryService = &BusinessGlossaryService{MockService: s}
+	s.metadataService = &MetadataService{MockService: s}
 	return s
 }
 
@@ -85,6 +92,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDataProductServiceServer(grpcServer, s.dataProductService)
 	pb.RegisterDataScanServiceServer(grpcServer, s.dataScanService)
 	pb.RegisterBusinessGlossaryServiceServer(grpcServer, s.businessGlossaryService)
+	pb.RegisterMetadataServiceServer(grpcServer, s.metadataService)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -99,6 +107,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	grpcMux.AddService(pb.NewDataProductServiceClient(conn))
 	grpcMux.AddService(pb.NewDataScanServiceClient(conn))
 	grpcMux.AddService(pb.NewBusinessGlossaryServiceClient(conn))
+	grpcMux.AddService(pb.NewMetadataServiceClient(conn))
 	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
 	return grpcMux, nil
