@@ -1,0 +1,16 @@
+apiVersion: migrationcenter.cnrm.cloud.google.com/v1alpha1
+kind: MigrationCenterReportConfig
+metadata:
+  name: migrationcenterreportconfig-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  resourceID: migrationcenterreportconfig-maximal-${uniqueId}
+  displayName: Maximal Report Config
+  description: Maximal report config description
+  groupPreferencesetAssignments:
+    - groupRef:
+        name: migrationcentergroup-maximal-${uniqueId}
+      preferenceSetRef:
+        name: migrationcenterpreferenceset-maximal-${uniqueId}
