@@ -104,7 +104,7 @@ spec:
                 type: object
               resourceID:
                 description: The CloudSupportSupportEventSubscription name. If not
-                  given, the metadata.name will be used.
+                  given, it will be server generated.
                 type: string
             required:
             - organizationRef
