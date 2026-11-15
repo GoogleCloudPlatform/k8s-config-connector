@@ -351,6 +351,7 @@ func MigrationCenterReportObservedState_FromProto(mapCtx *direct.MapContext, in 
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.Summary = ReportSummary_FromProto(mapCtx, in.GetSummary())
 	return out
 }
@@ -362,6 +363,7 @@ func MigrationCenterReportObservedState_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.Report_State](mapCtx, in.State)
 	out.Summary = ReportSummary_ToProto(mapCtx, in.Summary)
 	return out
 }
@@ -374,7 +376,6 @@ func MigrationCenterReportSpec_FromProto(mapCtx *direct.MapContext, in *pb.Repor
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
 func MigrationCenterReportSpec_ToProto(mapCtx *direct.MapContext, in *krm.MigrationCenterReportSpec) *pb.Report {
@@ -386,7 +387,6 @@ func MigrationCenterReportSpec_ToProto(mapCtx *direct.MapContext, in *krm.Migrat
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	out.Type = direct.Enum_ToProto[pb.Report_Type](mapCtx, in.Type)
-	out.State = direct.Enum_ToProto[pb.Report_State](mapCtx, in.State)
 	return out
 }
 func MigrationCenterSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Source) *krm.MigrationCenterSourceObservedState {

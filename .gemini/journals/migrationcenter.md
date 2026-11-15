@@ -46,5 +46,17 @@
   - Recorded untriaged fields in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 - **Impact**: Mechanical prepopulation complete with clean compilation, passing unit tests, and passing `apichecks`.
 
+### 2026-11-15 Greenfield Step 1b judgement queue triage for MigrationCenterReport
+- **Context**: Triaging judgement queue and finalizing direct KRM types, identity, and references for `MigrationCenterReport` under `v1alpha1`.
+- **Solution**:
+  - Replaced separate `projectRef`, `location`, and guessed `reportConfigRef` fields in `MigrationCenterReportSpec` with `spec.parentRef *MigrationCenterReportConfigRef` following `PARENT_AND_IDENTITY.md` Case B.
+  - Moved server-populated `state` field from `MigrationCenterReportSpec` to `MigrationCenterReportObservedState.state`.
+  - Confirmed client-specified resource ID support (`CreateReportRequest` has `report_id`), retaining `IdentityV2`.
+  - Resolved all 6 entries in `apis/migrationcenter/judgement_queue.yaml`.
+  - Regenerated CRD, deepcopy code, identity, and mappers via `apis/migrationcenter/generate.sh`.
+  - Re-recorded `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` to reflect the updated spec fields.
+- **Impact**: Clean, type-safe API for `MigrationCenterReport` ready for Phase 2 direct controller implementation.
+
+
 
 

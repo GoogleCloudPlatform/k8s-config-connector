@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,18 +30,14 @@ var MigrationCenterReportGVK = GroupVersion.WithKind("MigrationCenterReport")
 // +kcc:spec:proto=google.cloud.migrationcenter.v1.Report
 // +kcc:required-from-proto
 type MigrationCenterReportSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/reportConfigs/{report_config} this resource belongs to.
-	// +kcc:guess
-	// ReportConfigRef *MigrationCenterReportConfigRef `json:"reportConfigRef,omitempty"`
+	// The MigrationCenterReportConfig this MigrationCenterReport is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *MigrationCenterReportConfigRef `json:"parentRef"`
 
 	// The MigrationCenterReport name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// User-friendly display name. Maximum length is 63 characters.
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.Report.display_name
 	DisplayName *string `json:"displayName,omitempty"`
@@ -54,10 +49,6 @@ type MigrationCenterReportSpec struct {
 	// Report type.
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.Report.type
 	Type *string `json:"type,omitempty"`
-
-	// Report creation state.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.Report.state
-	State *string `json:"state,omitempty"`
 }
 
 // MigrationCenterReportStatus defines the config connector machine state of MigrationCenterReport
@@ -86,6 +77,10 @@ type MigrationCenterReportObservedState struct {
 	// Output only. Last update timestamp.
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.Report.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Report creation state.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.Report.state
+	State *string `json:"state,omitempty"`
 
 	// Output only. Summary view of the Report.
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.Report.summary

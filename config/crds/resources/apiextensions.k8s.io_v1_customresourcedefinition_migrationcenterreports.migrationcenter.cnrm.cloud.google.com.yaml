@@ -68,11 +68,9 @@ spec:
               displayName:
                 description: User-friendly display name. Maximum length is 63 characters.
                 type: string
-              location:
-                description: The location of this resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The MigrationCenterReportConfig this MigrationCenterReport
+                  is created under.
                 oneOf:
                 - not:
                     required:
@@ -89,33 +87,28 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed MigrationCenterReportConfig
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/reportConfigs/{{reportConfigID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a MigrationCenterReportConfig resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a MigrationCenterReportConfig resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The MigrationCenterReport name. If not given, the metadata.name
                   will be used.
-                type: string
-              state:
-                description: Report creation state.
                 type: string
               type:
                 description: Report type.
                 type: string
             required:
-            - location
-            - projectRef
+            - parentRef
             type: object
           status:
             description: MigrationCenterReportStatus defines the config connector
@@ -165,6 +158,9 @@ spec:
                 properties:
                   createTime:
                     description: Output only. Creation timestamp.
+                    type: string
+                  state:
+                    description: Report creation state.
                     type: string
                   summary:
                     description: Output only. Summary view of the Report.
