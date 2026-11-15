@@ -63,6 +63,8 @@ func (r *InstanceRef) GetExternal() string {
 
 func (r *InstanceRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *InstanceRef) ValidateExternal(ref string) error {
@@ -74,11 +76,17 @@ func (r *InstanceRef) Normalize(ctx context.Context, reader client.Reader, defau
 	if r.External == "" && r.Name == "" {
 		return nil
 	}
+	if r.External != "" && r.Name != "" {
+		return fmt.Errorf("cannot specify both name and external on %s reference", BigtableInstanceGVK.Kind)
+	}
+	if r.External != "" {
+		return r.ValidateExternal(r.External)
+	}
 	ext, err := r.NormalizedExternal(ctx, reader, defaultNamespace)
 	if err != nil {
 		return err
 	}
-	r.External = ext
+	r.SetExternal(ext)
 	return nil
 }
 
@@ -116,6 +124,7 @@ func (r *InstanceRef) NormalizedExternal(ctx context.Context, reader client.Read
 		return "", fmt.Errorf("reading status.externalRef: %w", err)
 	}
 	if externalRef != "" {
+		r.SetExternal(externalRef)
 		return externalRef, nil
 	}
 
@@ -135,6 +144,7 @@ func (r *InstanceRef) NormalizedExternal(ctx context.Context, reader client.Read
 		}
 		resourceID = metadataName
 	}
-	r.External = fmt.Sprintf("projects/%s/instances/%s", projectID, resourceID)
-	return r.External, nil
+	ext := fmt.Sprintf("projects/%s/instances/%s", projectID, resourceID)
+	r.SetExternal(ext)
+	return ext, nil
 }
