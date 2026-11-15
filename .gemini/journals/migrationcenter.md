@@ -57,6 +57,18 @@
   - Re-recorded `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` to reflect the updated spec fields.
 - **Impact**: Clean, type-safe API for `MigrationCenterReport` ready for Phase 2 direct controller implementation.
 
+### 2026-11-15 Greenfield Step 2 direct controller, E2E fixtures, and fuzzer for MigrationCenterReport
+- **Context**: Implementing Greenfield direct controller, E2E fixtures, and fuzzer for `MigrationCenterReport` under `v1alpha1`.
+- **Details**:
+  - Direct controller in `pkg/controller/direct/migrationcenter/migrationcenterreport_controller.go` handles immutable `MigrationCenterReport` (GCP Migration Center API only provides `Create`, `Get`, `Delete`, `List` operations and no `Update` RPC; in-place diffs are rejected and status refreshed from `actual`).
+  - Round-trip fuzzer in `migrationcenterreport_fuzzer.generated.go` covers all proto fields (`description`, `display_name`, `type`, `create_time`, `state`, `summary`, `update_time`, and identity `.name`).
+  - Implemented custom mapper in `migrationcenterreport_mapper.go` for `ReportSummary_HistogramChartData_Bucket`: GCP returns `upper_bound: math.MaxInt64` (9223372036854775807) to represent +infinity for the final bucket. Kubernetes API Server OpenAPI v3 schema validation unmarshals numbers through float64, causing float precision overflow for `math.MaxInt64` and rejecting the status update as `must be of type int64: "float64"`. Mapping `math.MaxInt64` to `nil` (matching `lower_bound: nil` for -infinity) allows the KRM status to be cleanly persisted without schema rejection.
+  - Created minimal and maximal E2E test fixtures with dependencies on `MigrationCenterGroup`, `MigrationCenterPreferenceSet`, and `MigrationCenterReportConfig`. Since the resource is immutable, `update.yaml` is omitted.
+  - Recorded golden HTTP logs (`_http.log`), golden objects, and audit probes against real GCP using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`.
+  - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` as all spec fields are now tested.
+- **Impact**: Full lifecycle reconciliation for `MigrationCenterReport` verified with authentic GCP audit logs and golden traffic.
+
+
 
 
 
