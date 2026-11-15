@@ -36,4 +36,27 @@
   - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` as all spec fields are now tested.
 - **Impact**: Full lifecycle reconciliation for `MigrationCenterReportConfig` verified with authentic GCP audit logs and golden traffic.
 
+### 2026-11-15 Greenfield Step 1a prepopulate types, identity, and judgement queue for MigrationCenterReport
+- **Context**: Prepopulating direct KRM types, identity, references, and `judgement_queue.yaml` for `MigrationCenterReport` under `v1alpha1`.
+- **Details**:
+  - Added `MigrationCenterReport:Report` to `generate-types` and `generate-identity` in `apis/migrationcenter/generate.sh`.
+  - Added `google.type` to `generate-mapper`'s `--service` flag in `apis/migrationcenter/generate.sh` to resolve missing external mappers for `Money_FromProto` / `Money_ToProto` referenced in `ReportSummary`.
+  - Added `MigrationCenterReport` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Ran `apis/migrationcenter/generate.sh` to scaffold `migrationcenterreport_types.go`, identity, reference, CRD, and entries in `apis/migrationcenter/judgement_queue.yaml`.
+  - Recorded untriaged fields in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+- **Impact**: Mechanical prepopulation complete with clean compilation, passing unit tests, and passing `apichecks`.
+
+### 2026-11-15 Greenfield Step 1b judgement queue triage for MigrationCenterReport
+- **Context**: Triaging judgement queue and finalizing direct KRM types, identity, and references for `MigrationCenterReport` under `v1alpha1`.
+- **Solution**:
+  - Replaced separate `projectRef`, `location`, and guessed `reportConfigRef` fields in `MigrationCenterReportSpec` with `spec.parentRef *MigrationCenterReportConfigRef` following `PARENT_AND_IDENTITY.md` Case B.
+  - Moved server-populated `state` field from `MigrationCenterReportSpec` to `MigrationCenterReportObservedState.state`.
+  - Confirmed client-specified resource ID support (`CreateReportRequest` has `report_id`), retaining `IdentityV2`.
+  - Resolved all 6 entries in `apis/migrationcenter/judgement_queue.yaml`.
+  - Regenerated CRD, deepcopy code, identity, and mappers via `apis/migrationcenter/generate.sh`.
+  - Re-recorded `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` to reflect the updated spec fields.
+- **Impact**: Clean, type-safe API for `MigrationCenterReport` ready for Phase 2 direct controller implementation.
+
+
+
 

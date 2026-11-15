@@ -17,10 +17,8 @@
 // krm.group: migrationcenter.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.migrationcenter.v1
-// resource: MigrationCenterGroup:Group
-// resource: MigrationCenterPreferenceSet:PreferenceSet
-// resource: MigrationCenterSource:Source
 // resource: MigrationCenterImportJob:ImportJob
+// resource: MigrationCenterReport:Report
 // resource: MigrationCenterReportConfig:ReportConfig
 
 package v1alpha1
@@ -70,25 +68,6 @@ type FileValidationReport struct {
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.FileValidationReport.file_errors
 	FileErrors []ImportError `json:"fileErrors,omitempty"`
 }
-
-/* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.Group", skipping
-
-// +kcc:proto=google.cloud.migrationcenter.v1.Group
-type Group struct {
-
-	// Labels as key value pairs.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.Group.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// User-friendly display name.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.Group.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// The description of the resource.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.Group.description
-	Description *string `json:"description,omitempty"`
-}
-*/
 
 // +kcc:proto=google.cloud.migrationcenter.v1.ImportError
 type ImportError struct {
@@ -156,25 +135,6 @@ type MachineSeries struct {
 	Code *string `json:"code,omitempty"`
 }
 
-/* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.PreferenceSet", skipping
-
-// +kcc:proto=google.cloud.migrationcenter.v1.PreferenceSet
-type PreferenceSet struct {
-
-	// User-friendly display name. Maximum length is 63 characters.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.PreferenceSet.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// A description of the preference set.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.PreferenceSet.description
-	Description *string `json:"description,omitempty"`
-
-	// A set of preferences that applies to all virtual machines in the context.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.PreferenceSet.virtual_machine_preferences
-	VirtualMachinePreferences *VirtualMachinePreferences `json:"virtualMachinePreferences,omitempty"`
-}
-*/
-
 // +kcc:proto=google.cloud.migrationcenter.v1.RegionPreferences
 type RegionPreferences struct {
 	// A list of preferred regions,
@@ -185,6 +145,29 @@ type RegionPreferences struct {
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.RegionPreferences.preferred_regions
 	PreferredRegions []string `json:"preferredRegions,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.Report", skipping
+
+// +kcc:proto=google.cloud.migrationcenter.v1.Report
+type Report struct {
+
+	// User-friendly display name. Maximum length is 63 characters.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.Report.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Free-text description.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.Report.description
+	Description *string `json:"description,omitempty"`
+
+	// Report type.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.Report.type
+	Type *string `json:"type,omitempty"`
+
+	// Report creation state.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.Report.state
+	State *string `json:"state,omitempty"`
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.ReportConfig", skipping
 
@@ -219,6 +202,290 @@ type ReportConfig_GroupPreferenceSetAssignment struct {
 }
 */
 
+// +kcc:proto=google.cloud.migrationcenter.v1.ReportSummary
+type ReportSummary struct {
+	// Aggregate statistics for all the assets across all the groups.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.all_assets_stats
+	AllAssetsStats *ReportSummary_AssetAggregateStats `json:"allAssetsStats,omitempty"`
+
+	// Findings for each Group included in this report.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.group_findings
+	GroupFindings []ReportSummary_GroupFinding `json:"groupFindings,omitempty"`
+}
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ReportSummary.AssetAggregateStats
+type ReportSummary_AssetAggregateStats struct {
+	// Sum of the memory in bytes of all the assets in this collection.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.AssetAggregateStats.total_memory_bytes
+	TotalMemoryBytes *int64 `json:"totalMemoryBytes,omitempty"`
+
+	// Sum of persistent storage in bytes of all the assets in this collection.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.AssetAggregateStats.total_storage_bytes
+	TotalStorageBytes *int64 `json:"totalStorageBytes,omitempty"`
+
+	// Sum of the CPU core count of all the assets in this collection.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.AssetAggregateStats.total_cores
+	TotalCores *int64 `json:"totalCores,omitempty"`
+
+	// Count of the number of unique assets in this collection.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.AssetAggregateStats.total_assets
+	TotalAssets *int64 `json:"totalAssets,omitempty"`
+
+	// Total memory split into Used/Free buckets.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.AssetAggregateStats.memory_utilization_chart
+	MemoryUtilizationChart *ReportSummary_UtilizationChartData `json:"memoryUtilizationChart,omitempty"`
+
+	// Total memory split into Used/Free buckets.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.AssetAggregateStats.storage_utilization_chart
+	StorageUtilizationChart *ReportSummary_UtilizationChartData `json:"storageUtilizationChart,omitempty"`
+
+	// Count of assets grouped by Operating System families.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.AssetAggregateStats.operating_system
+	OperatingSystem *ReportSummary_ChartData `json:"operatingSystem,omitempty"`
+
+	// Histogram showing a distribution of CPU core counts.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.AssetAggregateStats.core_count_histogram
+	CoreCountHistogram *ReportSummary_HistogramChartData `json:"coreCountHistogram,omitempty"`
+
+	// Histogram showing a distribution of memory sizes.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.AssetAggregateStats.memory_bytes_histogram
+	MemoryBytesHistogram *ReportSummary_HistogramChartData `json:"memoryBytesHistogram,omitempty"`
+
+	// Histogram showing a distribution of memory sizes.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.AssetAggregateStats.storage_bytes_histogram
+	StorageBytesHistogram *ReportSummary_HistogramChartData `json:"storageBytesHistogram,omitempty"`
+}
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ReportSummary.ChartData
+type ReportSummary_ChartData struct {
+	// Each data point in the chart is represented as a name-value pair
+	//  with the name being the x-axis label, and the value being the y-axis
+	//  value.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.ChartData.data_points
+	DataPoints []ReportSummary_ChartData_DataPoint `json:"dataPoints,omitempty"`
+}
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ReportSummary.ChartData.DataPoint
+type ReportSummary_ChartData_DataPoint struct {
+	// The X-axis label for this data point.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.ChartData.DataPoint.label
+	Label *string `json:"label,omitempty"`
+
+	// The Y-axis value for this data point.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.ChartData.DataPoint.value
+	Value *float64 `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ReportSummary.ComputeEngineFinding
+type ReportSummary_ComputeEngineFinding struct {
+	// Set of regions in which the assets were allocated.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.ComputeEngineFinding.allocated_regions
+	AllocatedRegions []string `json:"allocatedRegions,omitempty"`
+
+	// Count of assets which were allocated.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.ComputeEngineFinding.allocated_asset_count
+	AllocatedAssetCount *int64 `json:"allocatedAssetCount,omitempty"`
+
+	// Distribution of assets based on the Machine Series.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.ComputeEngineFinding.machine_series_allocations
+	MachineSeriesAllocations []ReportSummary_MachineSeriesAllocation `json:"machineSeriesAllocations,omitempty"`
+
+	// Set of disk types allocated to assets.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.ComputeEngineFinding.allocated_disk_types
+	AllocatedDiskTypes []string `json:"allocatedDiskTypes,omitempty"`
+}
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ReportSummary.GroupFinding
+type ReportSummary_GroupFinding struct {
+	// Display Name for the Group.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.GroupFinding.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Description for the Group.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.GroupFinding.description
+	Description *string `json:"description,omitempty"`
+
+	// Summary statistics for all the assets in this group.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.GroupFinding.asset_aggregate_stats
+	AssetAggregateStats *ReportSummary_AssetAggregateStats `json:"assetAggregateStats,omitempty"`
+
+	// This field is deprecated, do not rely on it having a value.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.GroupFinding.overlapping_asset_count
+	OverlappingAssetCount *int64 `json:"overlappingAssetCount,omitempty"`
+
+	// Findings for each of the PreferenceSets for this group.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.GroupFinding.preference_set_findings
+	PreferenceSetFindings []ReportSummary_GroupPreferenceSetFinding `json:"preferenceSetFindings,omitempty"`
+}
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ReportSummary.GroupPreferenceSetFinding
+type ReportSummary_GroupPreferenceSetFinding struct {
+	// Display Name of the Preference Set
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.GroupPreferenceSetFinding.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Description for the Preference Set.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.GroupPreferenceSetFinding.description
+	Description *string `json:"description,omitempty"`
+
+	// A set of preferences that applies to all machines in the context.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.GroupPreferenceSetFinding.machine_preferences
+	MachinePreferences *VirtualMachinePreferences `json:"machinePreferences,omitempty"`
+
+	// Total monthly cost for this preference set.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.GroupPreferenceSetFinding.monthly_cost_total
+	MonthlyCostTotal *Money `json:"monthlyCostTotal,omitempty"`
+
+	// Compute monthly cost for this preference set.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.GroupPreferenceSetFinding.monthly_cost_compute
+	MonthlyCostCompute *Money `json:"monthlyCostCompute,omitempty"`
+
+	// Licensing monthly cost for this preference set.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.GroupPreferenceSetFinding.monthly_cost_os_license
+	MonthlyCostOSLicense *Money `json:"monthlyCostOSLicense,omitempty"`
+
+	// Network Egress monthly cost for this preference set.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.GroupPreferenceSetFinding.monthly_cost_network_egress
+	MonthlyCostNetworkEgress *Money `json:"monthlyCostNetworkEgress,omitempty"`
+
+	// Storage monthly cost for this preference set.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.GroupPreferenceSetFinding.monthly_cost_storage
+	MonthlyCostStorage *Money `json:"monthlyCostStorage,omitempty"`
+
+	// Miscellaneous monthly cost for this preference set.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.GroupPreferenceSetFinding.monthly_cost_other
+	MonthlyCostOther *Money `json:"monthlyCostOther,omitempty"`
+
+	// A set of findings that applies to Compute Engine machines in the input.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.GroupPreferenceSetFinding.compute_engine_finding
+	ComputeEngineFinding *ReportSummary_ComputeEngineFinding `json:"computeEngineFinding,omitempty"`
+
+	// A set of findings that applies to VMWare machines in the input.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.GroupPreferenceSetFinding.vmware_engine_finding
+	VmwareEngineFinding *ReportSummary_VmwareEngineFinding `json:"vmwareEngineFinding,omitempty"`
+
+	// A set of findings that applies to Sole-Tenant machines in the input.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.GroupPreferenceSetFinding.sole_tenant_finding
+	SoleTenantFinding *ReportSummary_SoleTenantFinding `json:"soleTenantFinding,omitempty"`
+}
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ReportSummary.HistogramChartData
+type ReportSummary_HistogramChartData struct {
+	// Buckets in the histogram.
+	//  There will be `n+1` buckets matching `n` lower bounds in the request.
+	//  The first bucket will be from -infinity to the first bound.
+	//  Subsequent buckets will be between one bound and the next.
+	//  The final bucket will be from the final bound to infinity.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.HistogramChartData.buckets
+	Buckets []ReportSummary_HistogramChartData_Bucket `json:"buckets,omitempty"`
+}
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ReportSummary.HistogramChartData.Bucket
+type ReportSummary_HistogramChartData_Bucket struct {
+	// Lower bound - inclusive.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.HistogramChartData.Bucket.lower_bound
+	LowerBound *int64 `json:"lowerBound,omitempty"`
+
+	// Upper bound - exclusive.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.HistogramChartData.Bucket.upper_bound
+	UpperBound *int64 `json:"upperBound,omitempty"`
+
+	// Count of items in the bucket.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.HistogramChartData.Bucket.count
+	Count *int64 `json:"count,omitempty"`
+}
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ReportSummary.MachineSeriesAllocation
+type ReportSummary_MachineSeriesAllocation struct {
+	// The Machine Series (e.g. "E2", "N2")
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.MachineSeriesAllocation.machine_series
+	MachineSeries *MachineSeries `json:"machineSeries,omitempty"`
+
+	// Count of assets allocated to this machine series.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.MachineSeriesAllocation.allocated_asset_count
+	AllocatedAssetCount *int64 `json:"allocatedAssetCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ReportSummary.SoleTenantFinding
+type ReportSummary_SoleTenantFinding struct {
+	// Set of regions in which the assets are allocated
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.SoleTenantFinding.allocated_regions
+	AllocatedRegions []string `json:"allocatedRegions,omitempty"`
+
+	// Count of assets which are allocated
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.SoleTenantFinding.allocated_asset_count
+	AllocatedAssetCount *int64 `json:"allocatedAssetCount,omitempty"`
+
+	// Set of per-nodetype allocation records
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.SoleTenantFinding.node_allocations
+	NodeAllocations []ReportSummary_SoleTenantNodeAllocation `json:"nodeAllocations,omitempty"`
+}
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ReportSummary.SoleTenantNodeAllocation
+type ReportSummary_SoleTenantNodeAllocation struct {
+	// Sole Tenant node type, e.g. "m3-node-128-3904"
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.SoleTenantNodeAllocation.node
+	Node *SoleTenantNodeType `json:"node,omitempty"`
+
+	// Count of this node type to be provisioned
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.SoleTenantNodeAllocation.node_count
+	NodeCount *int64 `json:"nodeCount,omitempty"`
+
+	// Count of assets allocated to these nodes
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.SoleTenantNodeAllocation.allocated_asset_count
+	AllocatedAssetCount *int64 `json:"allocatedAssetCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ReportSummary.UtilizationChartData
+type ReportSummary_UtilizationChartData struct {
+	// Aggregate value which falls into the "Used" bucket.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.UtilizationChartData.used
+	Used *int64 `json:"used,omitempty"`
+
+	// Aggregate value which falls into the "Free" bucket.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.UtilizationChartData.free
+	Free *int64 `json:"free,omitempty"`
+}
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ReportSummary.VmwareEngineFinding
+type ReportSummary_VmwareEngineFinding struct {
+	// Set of regions in which the assets were allocated
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.VmwareEngineFinding.allocated_regions
+	AllocatedRegions []string `json:"allocatedRegions,omitempty"`
+
+	// Count of assets which are allocated
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.VmwareEngineFinding.allocated_asset_count
+	AllocatedAssetCount *int64 `json:"allocatedAssetCount,omitempty"`
+
+	// Set of per-nodetype allocation records
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.VmwareEngineFinding.node_allocations
+	NodeAllocations []ReportSummary_VmwareNodeAllocation `json:"nodeAllocations,omitempty"`
+}
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ReportSummary.VmwareNode
+type ReportSummary_VmwareNode struct {
+	// Code to identify VMware Engine node series, e.g. "ve1-standard-72". Based
+	//  on the displayName of
+	//  cloud.google.com/vmware-engine/docs/reference/rest/v1/projects.locations.nodeTypes
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.VmwareNode.code
+	Code *string `json:"code,omitempty"`
+}
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ReportSummary.VmwareNodeAllocation
+type ReportSummary_VmwareNodeAllocation struct {
+	// VMWare node type, e.g. "ve1-standard-72"
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.VmwareNodeAllocation.vmware_node
+	VmwareNode *ReportSummary_VmwareNode `json:"vmwareNode,omitempty"`
+
+	// Count of this node type to be provisioned
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.VmwareNodeAllocation.node_count
+	NodeCount *int64 `json:"nodeCount,omitempty"`
+
+	// Count of assets allocated to these nodes
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportSummary.VmwareNodeAllocation.allocated_asset_count
+	AllocatedAssetCount *int64 `json:"allocatedAssetCount,omitempty"`
+}
+
 // +kcc:proto=google.cloud.migrationcenter.v1.SoleTenancyPreferences
 type SoleTenancyPreferences struct {
 	// CPU overcommit ratio.
@@ -250,34 +517,6 @@ type SoleTenantNodeType struct {
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.SoleTenantNodeType.node_name
 	NodeName *string `json:"nodeName,omitempty"`
 }
-
-/* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.Source", skipping
-
-// +kcc:proto=google.cloud.migrationcenter.v1.Source
-type Source struct {
-
-	// User-friendly display name.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Free-text description.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.description
-	Description *string `json:"description,omitempty"`
-
-	// Data source type.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.type
-	Type *string `json:"type,omitempty"`
-
-	// The information confidence of the source.
-	//  The higher the value, the higher the confidence.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.priority
-	Priority *int32 `json:"priority,omitempty"`
-
-	// If `true`, the source is managed by other service(s).
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.managed
-	Managed *bool `json:"managed,omitempty"`
-}
-*/
 
 // +kcc:proto=google.cloud.migrationcenter.v1.ValidationReport
 type ValidationReport struct {
@@ -365,6 +604,27 @@ type VmwareEnginePreferences struct {
 	CommitmentPlan *string `json:"commitmentPlan,omitempty"`
 }
 
+// +kcc:proto=google.type.Money
+type Money struct {
+	// The three-letter currency code defined in ISO 4217.
+	// +kcc:proto:field=google.type.Money.currency_code
+	CurrencyCode *string `json:"currencyCode,omitempty"`
+
+	// The whole units of the amount.
+	//  For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar.
+	// +kcc:proto:field=google.type.Money.units
+	Units *int64 `json:"units,omitempty"`
+
+	// Number of nano (10^-9) units of the amount.
+	//  The value must be between -999,999,999 and +999,999,999 inclusive.
+	//  If `units` is positive, `nanos` must be positive or zero.
+	//  If `units` is zero, `nanos` can be positive, zero, or negative.
+	//  If `units` is negative, `nanos` must be negative or zero.
+	//  For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
+	// +kcc:proto:field=google.type.Money.nanos
+	Nanos *int32 `json:"nanos,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.migrationcenter.v1.ExecutionReport
 type ExecutionReportObservedState struct {
 	// Total number of asset frames reported for the import job.
@@ -379,24 +639,6 @@ type ExecutionReportObservedState struct {
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.ExecutionReport.total_rows_count
 	TotalRowsCount *int32 `json:"totalRowsCount,omitempty"`
 }
-
-/* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.Group", skipping
-
-// +kcc:observedstate:proto=google.cloud.migrationcenter.v1.Group
-type GroupObservedState struct {
-	// Output only. The name of the group.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.Group.name
-	Name *string `json:"name,omitempty"`
-
-	// Output only. The timestamp when the group was created.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.Group.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The timestamp when the group was last updated.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.Group.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-}
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.ImportJob", skipping
 
@@ -432,21 +674,25 @@ type ImportJobObservedState struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.PreferenceSet", skipping
+/* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.Report", skipping
 
-// +kcc:observedstate:proto=google.cloud.migrationcenter.v1.PreferenceSet
-type PreferenceSetObservedState struct {
-	// Output only. Name of the preference set.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.PreferenceSet.name
+// +kcc:observedstate:proto=google.cloud.migrationcenter.v1.Report
+type ReportObservedState struct {
+	// Output only. Name of resource.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.Report.name
 	Name *string `json:"name,omitempty"`
 
-	// Output only. The timestamp when the preference set was created.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.PreferenceSet.create_time
+	// Output only. Creation timestamp.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.Report.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. The timestamp when the preference set was last updated.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.PreferenceSet.update_time
+	// Output only. Last update timestamp.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.Report.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Summary view of the Report.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.Report.summary
+	Summary *ReportSummary `json:"summary,omitempty"`
 }
 */
 
@@ -465,36 +711,5 @@ type ReportConfigObservedState struct {
 	// Output only. The timestamp when the resource was last updated.
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportConfig.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.Source", skipping
-
-// +kcc:observedstate:proto=google.cloud.migrationcenter.v1.Source
-type SourceObservedState struct {
-	// Output only. The full name of the source.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.name
-	Name *string `json:"name,omitempty"`
-
-	// Output only. The timestamp when the source was created.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The timestamp when the source was last updated.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. Number of frames that are still being processed.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.pending_frame_count
-	PendingFrameCount *int32 `json:"pendingFrameCount,omitempty"`
-
-	// Output only. The number of frames that were reported by the source and
-	//  contained errors.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.error_frame_count
-	ErrorFrameCount *int32 `json:"errorFrameCount,omitempty"`
-
-	// Output only. The state of the source.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.state
-	State *string `json:"state,omitempty"`
 }
 */
