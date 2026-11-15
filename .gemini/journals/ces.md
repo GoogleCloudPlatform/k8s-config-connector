@@ -38,6 +38,15 @@
   2. **LRO Behavior**: `CreateApp` and `DeleteApp` return Long-Running Operations (LROs), handled via `op.Wait(ctx)`. `UpdateApp` is synchronous and returns `*cespb.App`.
   3. **Language Code Normalization**: The CES API automatically normalizes short language codes like `en` or `es` to full BCP-47 tags (`en-US`, `es-ES`). Fixture YAMLs should declare canonical BCP-47 tags in `languageSettings` to avoid spurious diffs.
   4. **VariableDeclarations Schema**: `App_VariableDeclaration.Schema` is an OpenAPI 3.0 recursive schema object with `type Schema struct {}` in KRM (`Schemaless` and `PreserveUnknownFields`). Since `Schema_ToProto` in `mapper.go` is stubbed and `schema.type` is required by GCP when variable declarations are present, `variableDeclarations` is omitted from maximal fixtures until full schema serialization is implemented.
-  5. **Audit Probe & E2E Validation**: Golden HTTP logs and audit probes were recorded against real GCP project `cnrm-barni-4` for `cesapp-minimal` and `cesapp-maximal`, with all 7/7 automated lifecycle checks passing cleanly.
+  5. Audit Probe & E2E Validation: Golden HTTP logs and audit probes were recorded against real GCP project `cnrm-barni-4` for `cesapp-minimal` and `cesapp-maximal`, with all 7/7 automated lifecycle checks passing cleanly.
+
+  ### [2026-11-15] Prepopulating CESDeployment
+  - **Context**: Prepopulating direct KRM types, identity, reference, and judgement queue for `CESDeployment` using `google.cloud.ces.v1` and `--prepopulate-resource`.
+  - **Learnings & Observations**:
+  1. `Deployment` in `google.cloud.ces.v1` maps cleanly to `CESDeployment`.
+  2. Identity pattern follows `projects/{project}/locations/{location}/apps/{app}/deployments/{deployment}`, with parent app resource `projects/{project}/locations/{location}/apps/{app}`.
+  3. Generated `cesdeployment_identity.generated.go`, `cesdeployment_reference.generated.go`, and conformance tests cleanly.
+  4. Updated `dev/tasks/build-release-bundle` with `CESDeployment` in `BLOCKED_KINDS` and updated `alpha-missingfields.txt` and `kind_name_violations.txt`.
+
 
 

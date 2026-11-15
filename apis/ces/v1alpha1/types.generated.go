@@ -19,6 +19,7 @@
 // proto.service: google.cloud.ces.v1
 // resource: CESApp:App
 // resource: CesAgent:Agent
+// resource: CESDeployment:Deployment
 
 package v1alpha1
 

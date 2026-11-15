@@ -134,6 +134,7 @@ BLOCKED_KINDS=(
     "CCInsightsView"
     "CertificateManagerTrustConfig"
     "CesAgent"
+    "CESDeployment"
     "ChronicleDataAccessLabel"
     "ChronicleDataAccessScope"
     "ChronicleDataTable"
