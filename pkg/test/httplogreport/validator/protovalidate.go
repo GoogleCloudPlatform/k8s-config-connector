@@ -480,6 +480,9 @@ func unmarshalDynamicJSON(reg *descriptorRegistry, msgDesc protoreflect.MessageD
 	// "111111111111111111111") which exceed 64-bit uint64 max (20 digits).
 	s := strings.ReplaceAll(string(rawBytes), `"000000000000000000000"`, `"0"`)
 	s = strings.ReplaceAll(s, `"111111111111111111111"`, `"1"`)
+	// Replace KCC's epoch millisecond timestamp placeholder ("123456789") with RFC3339
+	// when validating against protobuf schema expecting google.protobuf.Timestamp.
+	s = strings.ReplaceAll(s, `"123456789"`, `"1973-11-29T21:33:09Z"`)
 	dynMsg := dynamicpb.NewMessage(msgDesc)
 	if msgDesc.FullName() == "google.cloud.orchestration.airflow.service.v1.Environment" ||
 		msgDesc.FullName() == "google.cloud.dataform.v1.WorkflowConfig" {

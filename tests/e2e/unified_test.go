@@ -768,7 +768,8 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 							isReadOnly = true
 						case "POST":
 							if strings.Contains(event.Request.URL, "/listNetworkEndpoints") ||
-								strings.Contains(event.Request.URL, "/listPerInstanceConfigs") {
+								strings.Contains(event.Request.URL, "/listPerInstanceConfigs") ||
+								strings.Contains(event.Request.URL, ":getIamPolicy") {
 								isReadOnly = true
 							}
 						case "GRPC":
