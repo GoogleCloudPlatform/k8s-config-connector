@@ -26,3 +26,14 @@
   - Regenerated CRD, deepcopy code, mappers, and updated pre-generated controller and fuzzer in lockstep.
 - **Impact**: Clean, type-safe API for `MigrationCenterReportConfig` with validated reference relationships and complete test passes.
 
+### 2026-11-15 Greenfield Step 2 direct controller, E2E fixtures, and fuzzer for MigrationCenterReportConfig
+- **Context**: Implementing Greenfield direct controller, E2E fixtures, and fuzzer for `MigrationCenterReportConfig` under `v1alpha1`.
+- **Details**:
+  - Direct controller in `pkg/controller/direct/migrationcenter/migrationcenterreportconfig_controller.go` handles immutable `MigrationCenterReportConfig` (GCP Migration Center API only provides `Create`, `Get`, `Delete`, `List` operations and no `Update` RPC).
+  - Round-trip fuzzer in `migrationcenterreportconfig_fuzzer.generated.go` covers all proto fields (`description`, `display_name`, `group_preferenceset_assignments`, `create_time`, `update_time`, and identity `.name`).
+  - Created minimal and maximal E2E test fixtures with dependencies on `MigrationCenterGroup` and `MigrationCenterPreferenceSet`. Since the resource is immutable, `update.yaml` is omitted.
+  - Recorded golden HTTP logs (`_http.log`), golden objects, and audit probes against real GCP using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`.
+  - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` as all spec fields are now tested.
+- **Impact**: Full lifecycle reconciliation for `MigrationCenterReportConfig` verified with authentic GCP audit logs and golden traffic.
+
+
