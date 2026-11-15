@@ -227,6 +227,13 @@ func (a *bigQueryRowAccessPolicyAdapter) Update(ctx context.Context, updateOp *d
 	desired.RowAccessPolicyReference.TableId = a.id.Table
 	desired.RowAccessPolicyReference.PolicyId = a.id.RowAccessPolicy
 
+	// When clearing spec.grantees from an existing policy that has grantees, desired.Grantees is empty.
+	// Because Grantees in bigquery.RowAccessPolicy has omitempty, it would be omitted from the JSON
+	// payload unless "Grantees" is explicitly added to ForceSendFields.
+	if len(desired.Grantees) == 0 && len(a.actual.Grantees) > 0 {
+		desired.ForceSendFields = append(desired.ForceSendFields, "Grantees")
+	}
+
 	updated, err := a.service.Update(a.id.Project, a.id.Dataset, a.id.Table, a.id.RowAccessPolicy, desired).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("updating RowAccessPolicy %q: %w", a.id.String(), err)

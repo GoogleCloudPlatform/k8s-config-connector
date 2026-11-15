@@ -15,7 +15,9 @@
 package bigquery
 
 import (
+	"encoding/json"
 	"reflect"
+	"strings"
 	"testing"
 
 	"google.golang.org/api/bigquery/v2"
@@ -79,5 +81,32 @@ func TestExtractGrantees(t *testing.T) {
 				t.Errorf("extractGrantees() = %v, want %v", got, tc.want)
 			}
 		})
+	}
+}
+
+func TestRowAccessPolicy_ForceSendFields(t *testing.T) {
+	// Without ForceSendFields, empty Grantees is omitted due to omitempty.
+	p1 := &bigquery.RowAccessPolicy{
+		FilterPredicate: "true",
+	}
+	b1, err := json.Marshal(p1)
+	if err != nil {
+		t.Fatalf("json.Marshal failed: %v", err)
+	}
+	if strings.Contains(string(b1), "grantees") {
+		t.Errorf("expected grantees to be omitted, got %s", string(b1))
+	}
+
+	// With ForceSendFields, empty Grantees is serialized as empty array.
+	p2 := &bigquery.RowAccessPolicy{
+		FilterPredicate: "true",
+		ForceSendFields: []string{"Grantees"},
+	}
+	b2, err := json.Marshal(p2)
+	if err != nil {
+		t.Fatalf("json.Marshal failed: %v", err)
+	}
+	if !strings.Contains(string(b2), `"grantees":[]`) {
+		t.Errorf("expected grantees to be serialized as empty array, got %s", string(b2))
 	}
 }
