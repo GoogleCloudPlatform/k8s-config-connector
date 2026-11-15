@@ -22,11 +22,17 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var _ refsv1beta1.ExternalNormalizer = &InstanceRef{}
+var _ refsv1beta1.Ref = &InstanceRef{}
+
+func init() {
+	refsv1beta1.Register(&InstanceRef{}, &BigtableInstance{})
+}
 
 // InstanceRef is a reference to a BigtableInstance.
 type InstanceRef struct {
@@ -38,6 +44,42 @@ type InstanceRef struct {
 
 	// The namespace of a BigtableInstance resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func (r *InstanceRef) GetGVK() schema.GroupVersionKind {
+	return BigtableInstanceGVK
+}
+
+func (r *InstanceRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *InstanceRef) GetExternal() string {
+	return r.External
+}
+
+func (r *InstanceRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *InstanceRef) ValidateExternal(ref string) error {
+	_, _, err := ParseInstanceExternal(ref)
+	return err
+}
+
+func (r *InstanceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.External == "" && r.Name == "" {
+		return nil
+	}
+	ext, err := r.NormalizedExternal(ctx, reader, defaultNamespace)
+	if err != nil {
+		return err
+	}
+	r.External = ext
+	return nil
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on BigtableInstance.

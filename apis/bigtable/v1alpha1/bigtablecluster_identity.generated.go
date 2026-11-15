@@ -24,9 +24,11 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -69,6 +71,24 @@ func (i *BigtableClusterIdentity) Host() string {
 
 func (i *BigtableClusterIdentity) ParentString() string {
 	return "projects/" + i.Project + "/instances/" + i.Instance
+}
+
+func getIdentityFromBigtableClusterSpec(ctx context.Context, reader client.Reader, obj *BigtableCluster) (*BigtableClusterIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
+	}
+
+	parentRef := obj.Spec.InstanceRef
+	if err := parentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, fmt.Errorf("resolving spec.instanceRef: %w", err)
+	}
+	parsed := &BigtableClusterIdentity{}
+	if err := parsed.FromExternal(strings.TrimSuffix(parentRef.GetExternal(), "/") + "/clusters" + "/" + resourceID); err != nil {
+		return nil, fmt.Errorf("parsing spec.instanceRef external=%q: %w", parentRef.GetExternal(), err)
+	}
+	parsed.Cluster = resourceID
+	return parsed, nil
 }
 
 func (obj *BigtableCluster) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {

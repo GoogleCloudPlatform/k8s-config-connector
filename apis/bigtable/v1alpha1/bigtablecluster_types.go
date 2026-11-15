@@ -25,6 +25,7 @@ import (
 var BigtableClusterGVK = GroupVersion.WithKind("BigtableCluster")
 
 type BigtableClusterParent struct {
+	// The BigtableInstance this BigtableCluster is created under.
 	// +required
 	InstanceRef bigtablev1beta1.InstanceRef `json:"instanceRef"`
 }

@@ -107,30 +107,3 @@ func ParseClusterExternal(external string) (*bigtablev1beta1.InstanceIdentity, s
 	resourceID := tokens[5]
 	return p, resourceID, nil
 }
-
-func getIdentityFromBigtableClusterSpec(ctx context.Context, reader client.Reader, obj *BigtableCluster) (*BigtableClusterIdentity, error) {
-	// Get Parent
-	instanceExternal, err := obj.Spec.InstanceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-	if err != nil {
-		return nil, err
-	}
-	instanceParent, instanceID, err := bigtablev1beta1.ParseInstanceExternal(instanceExternal)
-	if err != nil {
-		return nil, err
-	}
-
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	return &BigtableClusterIdentity{
-		Project:  instanceParent.ProjectID,
-		Instance: instanceID,
-		Cluster:  resourceID,
-	}, nil
-}
