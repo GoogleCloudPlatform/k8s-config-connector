@@ -1,0 +1,6 @@
+- caisURL: //appengine.googleapis.com/apps/${projectId}/firewall/ingressRules/2147483647
+  group: appengine.cnrm.cloud.google.com
+  kind: AppEngineFirewallRule
+  name: appenginefirewallruledefault-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

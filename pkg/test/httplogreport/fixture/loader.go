@@ -257,6 +257,8 @@ func FileExists(path string) bool {
 	return err == nil
 }
 
+const defaultAppEngineFirewallRulePriority = "2147483647"
+
 // IsNonDeletable reports whether the primary resource in the fixture does not issue a DELETE RPC on teardown.
 func (d *Data) IsNonDeletable() bool {
 	if d == nil || d.PrimaryCreate == nil {
@@ -275,6 +277,12 @@ func (d *Data) IsNonDeletable() bool {
 		}
 	}
 	switch d.PrimaryCreate.Kind {
+	case "AppEngineFirewallRule":
+		resID := d.PrimaryCreate.ResourceID
+		if resID == "" {
+			resID = d.PrimaryCreate.Name
+		}
+		return resID == defaultAppEngineFirewallRulePriority
 	case "IAMPolicy", "IAMPartialPolicy", "IAMPolicyMember", "IAMAuditConfig",
 		"AppEngineServiceSplitTraffic",
 		"ComputeProjectMetadata", "ComputeSharedVPCHostProject", "Service", "ServiceIdentity",

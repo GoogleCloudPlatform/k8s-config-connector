@@ -1,0 +1,154 @@
+# Phase: CREATE
+GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/200?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=apps%2F${projectId}%2Ffirewall%2FingressRules%2F200
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "No rule found at position 200",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=apps%2F${projectId}
+
+{
+  "action": 1,
+  "description": "Firewall rule using metadata.name as priority",
+  "priority": 200,
+  "sourceRange": "192.0.2.0/24"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "action": 1,
+  "description": "Firewall rule using metadata.name as priority",
+  "priority": 200,
+  "sourceRange": "192.0.2.0/24"
+}
+
+---
+
+# Phase: UPDATE
+GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/200?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=apps%2F${projectId}%2Ffirewall%2FingressRules%2F200
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "action": 1,
+  "description": "Firewall rule using metadata.name as priority",
+  "priority": 200,
+  "sourceRange": "192.0.2.0/24"
+}
+
+---
+
+PATCH https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/200?%24alt=json%3Benum-encoding%3Dint&updateMask=action%2Cdescription%2CsourceRange
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=apps%2F${projectId}%2Ffirewall%2FingressRules%2F200
+
+{
+  "action": 2,
+  "description": "Updated firewall rule using metadata.name",
+  "priority": 200,
+  "sourceRange": "198.51.100.0/24"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "action": 2,
+  "description": "Updated firewall rule using metadata.name",
+  "priority": 200,
+  "sourceRange": "198.51.100.0/24"
+}
+
+---
+
+# Phase: DELETE
+GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/200?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=apps%2F${projectId}%2Ffirewall%2FingressRules%2F200
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "action": 2,
+  "description": "Updated firewall rule using metadata.name",
+  "priority": 200,
+  "sourceRange": "198.51.100.0/24"
+}
+
+---
+
+DELETE https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/200?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=apps%2F${projectId}%2Ffirewall%2FingressRules%2F200
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

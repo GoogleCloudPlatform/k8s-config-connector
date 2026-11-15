@@ -142,3 +142,68 @@ spec:
 		})
 	}
 }
+
+func TestIsNonDeletable_AppEngineFirewallRuleDefaultPriority(t *testing.T) {
+	// Arrange
+	fixDir := t.TempDir()
+	createYAML := `apiVersion: appengine.cnrm.cloud.google.com/v1alpha1
+kind: AppEngineFirewallRule
+metadata:
+  name: appenginefirewallruledefault-${uniqueId}
+spec:
+  project: ${projectId}
+  resourceID: "2147483647"
+  action: DENY
+  sourceRange: "*"
+`
+	if err := os.WriteFile(filepath.Join(fixDir, "create.yaml"), []byte(createYAML), 0644); err != nil {
+		t.Fatalf("WriteFile(create.yaml): %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(fixDir, "_http.log"), []byte("# Phase: CREATE\n"), 0644); err != nil {
+		t.Fatalf("WriteFile(_http.log): %v", err)
+	}
+	data, err := Load(fixDir)
+	if err != nil {
+		t.Fatalf("Load() unexpected error: %v", err)
+	}
+
+	// Act
+	got := data.IsNonDeletable()
+
+	// Assert
+	if !got {
+		t.Errorf("IsNonDeletable() = false, want true for default AppEngineFirewallRule (2147483647)")
+	}
+}
+
+func TestIsNonDeletable_AppEngineFirewallRuleCustomPriority(t *testing.T) {
+	// Arrange
+	fixDir := t.TempDir()
+	createYAML := `apiVersion: appengine.cnrm.cloud.google.com/v1alpha1
+kind: AppEngineFirewallRule
+metadata:
+  name: "200"
+spec:
+  project: ${projectId}
+  action: ALLOW
+  sourceRange: 192.0.2.0/24
+`
+	if err := os.WriteFile(filepath.Join(fixDir, "create.yaml"), []byte(createYAML), 0644); err != nil {
+		t.Fatalf("WriteFile(create.yaml): %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(fixDir, "_http.log"), []byte("# Phase: CREATE\n"), 0644); err != nil {
+		t.Fatalf("WriteFile(_http.log): %v", err)
+	}
+	data, err := Load(fixDir)
+	if err != nil {
+		t.Fatalf("Load() unexpected error: %v", err)
+	}
+
+	// Act
+	got := data.IsNonDeletable()
+
+	// Assert
+	if got {
+		t.Errorf("IsNonDeletable() = true, want false for custom AppEngineFirewallRule (200)")
+	}
+}

@@ -23,7 +23,9 @@ package appengine
 import (
 	"context"
 	"fmt"
+	"math"
 	"net/url"
+	"slices"
 	"strings"
 
 	api "cloud.google.com/go/appengine/apiv1"
@@ -152,11 +154,10 @@ func (a *adapter) Find(ctx context.Context) (bool, error) {
 func (a *adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating AppEngineFirewallRule", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
-	desiredPb := AppEngineFirewallRuleSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
+	desiredPb, err := a.desiredRule()
+	if err != nil {
+		return err
 	}
 
 	req := &pb.CreateIngressRuleRequest{
@@ -177,6 +178,11 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating AppEngineFirewallRule", "name", a.id)
 
+	desiredPb, err := a.desiredRule()
+	if err != nil {
+		return err
+	}
+
 	diffs, updateMask, err := common.CompareBrownfieldSpec(
 		ctx,
 		&a.desired.Spec,
@@ -194,14 +200,12 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	if err := a.validateDefaultRuleUpdate(updateMask.GetPaths()); err != nil {
+		return err
+	}
+
 	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
-
-	mapCtx := &direct.MapContext{}
-	desiredPb := AppEngineFirewallRuleSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
 
 	req := &pb.UpdateIngressRuleRequest{
 		Name:       a.id.String(),
@@ -220,6 +224,10 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 func (a *adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
+	if a.isDefaultRule() {
+		log.Info("deleting default AppEngineFirewallRule is a no-op because the default rule cannot be deleted in GCP; current default action remains in effect", "name", a.id.String())
+		return false, nil
+	}
 	log.V(2).Info("deleting AppEngineFirewallRule", "name", a.id)
 
 	req := &pb.DeleteIngressRuleRequest{
@@ -268,4 +276,45 @@ func (a *adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 func (a *adapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.FirewallRule) error {
 	status := &krm.AppEngineFirewallRuleStatus{}
 	return op.UpdateStatus(ctx, status, nil)
+}
+
+func (a *adapter) desiredRule() (*pb.FirewallRule, error) {
+	if a.desired == nil {
+		return nil, fmt.Errorf("missing desired AppEngineFirewallRule")
+	}
+	priority, err := a.id.Priority()
+	if err != nil {
+		return nil, err
+	}
+
+	mapCtx := &direct.MapContext{}
+	desiredPb := AppEngineFirewallRuleSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	desiredPb.Priority = priority
+	return desiredPb, nil
+}
+
+const defaultFirewallRulePriority int32 = math.MaxInt32
+
+func (a *adapter) isDefaultRule() bool {
+	priority, err := a.id.Priority()
+	return err == nil && priority == defaultFirewallRulePriority
+}
+
+const defaultFirewallRuleAllowedUpdateField = "action"
+
+func (a *adapter) validateDefaultRuleUpdate(paths []string) error {
+	if !a.isDefaultRule() {
+		return nil
+	}
+	for _, p := range paths {
+		if p != defaultFirewallRuleAllowedUpdateField {
+			sortedPaths := slices.Clone(paths)
+			slices.Sort(sortedPaths)
+			return fmt.Errorf("invalid update to default AppEngineFirewallRule %s: only the action of the default rule can be modified (changed fields: %v)", a.id.String(), sortedPaths)
+		}
+	}
+	return nil
 }

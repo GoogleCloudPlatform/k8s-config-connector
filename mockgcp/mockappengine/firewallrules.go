@@ -63,12 +63,14 @@ func parseFirewallRuleParent(parent string) (appID string, err error) {
 	return "", status.Errorf(codes.InvalidArgument, "invalid firewall rule parent: %q", parent)
 }
 
+const defaultRulePriority = 2147483647
+
 func (s *firewallServer) ensureDefaultRule(ctx context.Context, appID string) {
-	fqn := fmt.Sprintf("apps/%s/firewall/ingressRules/2147483647", appID)
+	fqn := fmt.Sprintf("apps/%s/firewall/ingressRules/%d", appID, defaultRulePriority)
 	existing := &pb.FirewallRule{}
 	if err := s.storage.Get(ctx, fqn, existing); err != nil && status.Code(err) == codes.NotFound {
 		defaultRule := &pb.FirewallRule{
-			Priority:    2147483647,
+			Priority:    defaultRulePriority,
 			Action:      pb.FirewallRule_ALLOW,
 			SourceRange: "*",
 			Description: "The default action.",
@@ -94,6 +96,11 @@ func (s *firewallServer) GetIngressRule(ctx context.Context, req *pb.GetIngressR
 	return obj, nil
 }
 
+const (
+	addRuleIncrement = 1000
+	maxFirewallRules = 1000
+)
+
 func (s *firewallServer) CreateIngressRule(ctx context.Context, req *pb.CreateIngressRuleRequest) (*pb.FirewallRule, error) {
 	appID, err := parseFirewallRuleParent(req.Parent)
 	if err != nil {
@@ -102,16 +109,62 @@ func (s *firewallServer) CreateIngressRule(ctx context.Context, req *pb.CreateIn
 	if req.Rule == nil {
 		return nil, status.Errorf(codes.InvalidArgument, "rule is required")
 	}
-	priority := req.Rule.Priority
-	if priority <= 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "priority must be greater than 0")
+	if req.Rule.SourceRange == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "Rules must specify a strategy, such as a source range, to filter on.")
 	}
+	if req.Rule.Action == pb.FirewallRule_UNSPECIFIED_ACTION {
+		return nil, status.Errorf(codes.InvalidArgument, "A rule action must be provided.")
+	}
+	priority := req.Rule.Priority
+	if priority < 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "priority must be non-negative")
+	}
+	if priority >= defaultRulePriority {
+		return nil, status.Errorf(codes.InvalidArgument, "Cannot add rule at priority %d. The priority for new rules must be less than the priority %d for the Default Action.", priority, defaultRulePriority)
+	}
+
 	s.ensureDefaultRule(ctx, appID)
+
+	prefix := fmt.Sprintf("apps/%s/firewall/ingressRules/", appID)
+	findKind := (&pb.FirewallRule{}).ProtoReflect().Descriptor()
+	ruleCount := 0
+	var maxPriority int32
+	if err := s.storage.List(ctx, findKind, storage.ListOptions{Prefix: prefix}, func(msg proto.Message) error {
+		r := msg.(*pb.FirewallRule)
+		if r.Priority == defaultRulePriority {
+			return nil
+		}
+		ruleCount++
+		if r.Priority > maxPriority {
+			maxPriority = r.Priority
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	if ruleCount >= maxFirewallRules {
+		return nil, status.Errorf(codes.InvalidArgument, "Cannot add rule. Total rule count may not exceed %d rules", maxFirewallRules)
+	}
+
+	// Match App Engine Zeus CreateRuleProducerModule: priority == 0 auto-assigns max + 1000.
+	if priority == 0 {
+		nextPriority := int64(addRuleIncrement)
+		if ruleCount > 0 {
+			nextPriority = int64(maxPriority) + int64(addRuleIncrement)
+		}
+		if nextPriority >= defaultRulePriority {
+			return nil, status.Errorf(codes.OutOfRange, "Could not add new rule. The priority for the new rule was not specified explicitly. The automatically chosen priority %d is invalid.", nextPriority)
+		}
+		priority = int32(nextPriority)
+	}
+
 	fqn := fmt.Sprintf("apps/%s/firewall/ingressRules/%d", appID, priority)
 	obj := proto.Clone(req.Rule).(*pb.FirewallRule)
+	obj.Priority = priority
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.AlreadyExists {
-			return nil, status.Errorf(codes.AlreadyExists, "Rule already exists at position %d", priority)
+			return nil, status.Errorf(codes.AlreadyExists, "Rule already exists at priority %d.", priority)
 		}
 		return nil, err
 	}
@@ -126,6 +179,13 @@ func (s *firewallServer) UpdateIngressRule(ctx context.Context, req *pb.UpdateIn
 	if req.Rule == nil {
 		return nil, status.Errorf(codes.InvalidArgument, "rule is required")
 	}
+	if req.UpdateMask == nil || len(req.UpdateMask.Paths) == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "At least one field must be specified for this operation.")
+	}
+	if req.Rule.Priority != 0 && req.Rule.Priority != priority {
+		return nil, status.Errorf(codes.InvalidArgument, "Rule position may not be modified.")
+	}
+
 	s.ensureDefaultRule(ctx, appID)
 	fqn := fmt.Sprintf("apps/%s/firewall/ingressRules/%d", appID, priority)
 	existing := &pb.FirewallRule{}
@@ -136,22 +196,36 @@ func (s *firewallServer) UpdateIngressRule(ctx context.Context, req *pb.UpdateIn
 		return nil, err
 	}
 
-	paths := []string{"action", "description", "source_range"}
-	if req.UpdateMask != nil && len(req.UpdateMask.Paths) > 0 {
-		paths = req.UpdateMask.Paths
+	paths := req.UpdateMask.Paths
+	if req.Rule.Priority == defaultRulePriority && (len(paths) != 1 || paths[0] != "action") {
+		return nil, status.Errorf(codes.InvalidArgument, "Only the action of the default rule can be modified")
 	}
 
+	merged := proto.Clone(existing).(*pb.FirewallRule)
 	for _, path := range paths {
 		switch path {
 		case "action":
-			existing.Action = req.Rule.Action
+			merged.Action = req.Rule.Action
 		case "description":
-			existing.Description = req.Rule.Description
+			merged.Description = req.Rule.Description
 		case "source_range", "sourceRange":
-			existing.SourceRange = req.Rule.SourceRange
+			if req.Rule.SourceRange == "" {
+				return nil, status.Errorf(codes.InvalidArgument, "Rules must specify a strategy, such as a source range, to filter on.")
+			}
+			merged.SourceRange = req.Rule.SourceRange
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "field %q cannot be updated", path)
 		}
+	}
+	if merged.Action == pb.FirewallRule_UNSPECIFIED_ACTION {
+		return nil, status.Errorf(codes.InvalidArgument, "Action may not be unspecified if requested in the update mask.")
+	}
+
+	// Match Zeus UpdateRuleConfigModifier: for the default rule, only defaultAction is persisted.
+	if priority == defaultRulePriority {
+		existing.Action = merged.Action
+	} else {
+		existing = merged
 	}
 	existing.Priority = priority
 
@@ -166,8 +240,8 @@ func (s *firewallServer) DeleteIngressRule(ctx context.Context, req *pb.DeleteIn
 	if err != nil {
 		return nil, err
 	}
-	if priority == 2147483647 {
-		return nil, status.Errorf(codes.InvalidArgument, "Cannot delete the default rule")
+	if priority == defaultRulePriority {
+		return nil, status.Errorf(codes.InvalidArgument, "The default rule can not be deleted.")
 	}
 	s.ensureDefaultRule(ctx, appID)
 	fqn := fmt.Sprintf("apps/%s/firewall/ingressRules/%d", appID, priority)

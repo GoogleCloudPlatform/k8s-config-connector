@@ -1,0 +1,22 @@
+GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/0?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=apps%2F${projectId}%2Ffirewall%2FingressRules%2F0
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "No rule found at position 0",
+    "status": "NOT_FOUND"
+  }
+}
