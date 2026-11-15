@@ -280,7 +280,6 @@ BLOCKED_KINDS=(
     "OracleDatabaseCloudVMCluster"
     "ParallelstoreInstance"
     "RapidMigrationAssessmentCollector"
-    "ResourceManagerTagHold"
     "RetailControl"
     "RetailModel"
     "RetailServingConfig"

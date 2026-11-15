@@ -1,0 +1,28 @@
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1alpha1
+kind: ResourceManagerTagHold
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: resourcemanagertaghold-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  helpLink: https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing
+  holder: //compute.googleapis.com/compute/projects/${projectId}/regions/us-central1/instanceGroupManagers/igm-${uniqueId}
+  origin: origin-${uniqueId}
+  parentRef:
+    name: tagstagvalue-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: tagValues/${tagValueID}/tagHolds/d33e9c4a-abe6-4847-a568-6433eb67dfb6
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"

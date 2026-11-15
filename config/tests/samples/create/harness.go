@@ -1441,6 +1441,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 
 			case schema.GroupKind{Group: "resourcemanager.cnrm.cloud.google.com", Kind: "Folder"}:
 			case schema.GroupKind{Group: "resourcemanager.cnrm.cloud.google.com", Kind: "Project"}:
+			case schema.GroupKind{Group: "resourcemanager.cnrm.cloud.google.com", Kind: "ResourceManagerTagHold"}:
 
 			case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
 			case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunService"}:

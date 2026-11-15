@@ -15,6 +15,7 @@
 package caistesting
 
 import (
+	"regexp"
 	"strings"
 
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
@@ -354,6 +355,11 @@ func NormalizeDynamicIDs(s string) string {
 			} else {
 				lines[i] = "  caisURL: unknown"
 			}
+		}
+		// Normalize TagHolds parent TagValue ID: tagValues/<tagValueID>/tagHolds/<tagHoldID>
+		if strings.Contains(line, "/tagValues/") && strings.Contains(line, "/tagHolds/") {
+			re := regexp.MustCompile(`/tagValues/\d+/tagHolds/`)
+			lines[i] = re.ReplaceAllString(line, "/tagValues/$${tagValueID}/tagHolds/")
 		}
 	}
 	return strings.Join(lines, "\n")
