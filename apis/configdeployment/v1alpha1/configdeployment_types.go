@@ -233,6 +233,21 @@ type DeploymentSource struct {
 	OutputName *string `json:"outputName,omitempty"`
 }
 
+// +kcc:proto=google.cloud.config.v1.DeploymentSource
+type DeploymentSourceWithRequired struct {
+	// Required. The source Deployment to import the output from.
+	// The source deployment must be in the same project and location.
+	// +kcc:proto:field=google.cloud.config.v1.DeploymentSource.deployment
+	// +required
+	DeploymentRef *ConfigDeploymentRef `json:"deploymentRef,omitempty"`
+
+	// Required. The name of the output variable in the source deployment's latest
+	//  successfully applied revision.
+	// +kcc:proto:field=google.cloud.config.v1.DeploymentSource.output_name
+	// +required
+	OutputName *string `json:"outputName,omitempty"`
+}
+
 type ArtifactsLocation struct {
 	// A reference to a StorageBucket resource.
 	BucketRef *storagev1beta1.StorageBucketRef `json:"bucketRef,omitempty"`
@@ -247,6 +262,13 @@ type GCSSource struct {
 
 	// Optional. Object path or subfolder within the bucket.
 	Object *string `json:"object,omitempty"`
+}
+
+// +kcc:proto=google.cloud.config.v1.ExternalValueSource
+type ExternalValueSourceWithRequired struct {
+	// A source from a Deployment.
+	// +kcc:proto:field=google.cloud.config.v1.ExternalValueSource.deployment_source
+	DeploymentSource *DeploymentSourceWithRequired `json:"deploymentSource,omitempty"`
 }
 
 // +kcc:proto=google.cloud.config.v1.TerraformBlueprint
@@ -267,6 +289,26 @@ type TerraformBlueprint struct {
 	//  for importing values from external sources.
 	// +kcc:proto:field=google.cloud.config.v1.TerraformBlueprint.external_values
 	ExternalValues map[string]ExternalValueSource `json:"externalValues,omitempty"`
+}
+
+// +kcc:proto=google.cloud.config.v1.TerraformBlueprint
+type TerraformBlueprintWithRequired struct {
+	// Location of an object in Google Cloud Storage.
+	// +kcc:proto:field=google.cloud.config.v1.TerraformBlueprint.gcs_source
+	GCSSource *GCSSource `json:"gcsSource,omitempty"`
+
+	// URI of a public Git repo.
+	// +kcc:proto:field=google.cloud.config.v1.TerraformBlueprint.git_source
+	GitSource *GitSource `json:"gitSource,omitempty"`
+
+	// Optional. Input variable values for the Terraform blueprint.
+	// +kcc:proto:field=google.cloud.config.v1.TerraformBlueprint.input_values
+	InputValues map[string]TerraformVariable `json:"inputValues,omitempty"`
+
+	// Optional. Map of input variable names in this blueprint to configurations
+	//  for importing values from external sources.
+	// +kcc:proto:field=google.cloud.config.v1.TerraformBlueprint.external_values
+	ExternalValues map[string]ExternalValueSourceWithRequired `json:"externalValues,omitempty"`
 }
 
 // +kcc:proto=google.protobuf.ListValue

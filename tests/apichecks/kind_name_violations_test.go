@@ -207,7 +207,6 @@ var knownKindNames = []struct {
 	{ServicePrefix: "BigQueryDataPolicy", Message: "DataPolicy", Want: "BigQueryDataPolicy"},
 	{ServicePrefix: "Billing", Message: "BillingAccount", Want: "BillingAccount"},
 	{ServicePrefix: "CloudBuild", Message: "BuildTrigger", Want: "CloudBuildTrigger"},
-	{ServicePrefix: "ConfigDeployment", Message: "DeploymentGroup", Want: "ConfigDeploymentGroup"},
 	{ServicePrefix: "IAP", Message: "IapSettings", Want: "IAPSettings"},
 	{ServicePrefix: "VMwareEngine", Message: "VmwareEngineNetwork", Want: "VMwareEngineNetwork"},
 

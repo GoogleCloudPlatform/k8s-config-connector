@@ -39,10 +39,24 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ConfigDeployment:Deployment \
   --emit-message-maps
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.config.v1 \
+  --api-version configdeployment.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource ConfigPreview:Preview \
+  --prepopulate-resource \
+  --allow-non-declarative
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.config.v1 \
+  --api-version configdeployment.cnrm.cloud.google.com/v1alpha1 \
+  --resource ConfigPreview:Preview
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.config.v1 \
   --api-version "configdeployment.cnrm.cloud.google.com/v1alpha1" \
-  --emit-message-maps
+  --include-skipped-output \
+  --prepopulate-resource
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
