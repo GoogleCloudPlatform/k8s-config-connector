@@ -43,6 +43,39 @@ entries:
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
     status: open
+  - kind: MigrationCenterReport
+    group: migrationcenter.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: MigrationCenterReport
+    group: migrationcenter.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/reportConfigs/{report_config}/reports/{report}" contains ancestor segment(s) reportConfigs/{report_config} with no matching reference or field on MigrationCenterReportSpec
+    status: open
+  - kind: MigrationCenterReport
+    group: migrationcenter.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
+    status: open
+  - kind: MigrationCenterReport
+    group: migrationcenter.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/reportConfigs/{report_config}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: MigrationCenterReport
+    group: migrationcenter.cnrm.cloud.google.com
+    field: .spec.reportConfigRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to MigrationCenterReportConfigRef, read from the reportConfigs segment of projects/{project}/locations/{location}/reportConfigs/{report_config}/reports/{report}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: MigrationCenterReport
+    group: migrationcenter.cnrm.cloud.google.com
+    field: .spec.state
+    reason: possible-status-field-in-spec
+    detail: state was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState
+    status: open
   - kind: MigrationCenterReportConfig
     group: migrationcenter.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

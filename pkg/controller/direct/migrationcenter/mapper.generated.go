@@ -20,6 +20,7 @@
 // krm.group: migrationcenter.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.migrationcenter.v1
+// proto.service: google.type
 
 package migrationcenter
 
@@ -27,6 +28,7 @@ import (
 	pb "cloud.google.com/go/migrationcenter/apiv1/migrationcenterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/migrationcenter/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	moneypb "google.golang.org/genproto/googleapis/type/money"
 )
 
 func ComputeEnginePreferences_FromProto(mapCtx *direct.MapContext, in *pb.ComputeEnginePreferences) *krm.ComputeEnginePreferences {
@@ -341,6 +343,52 @@ func MigrationCenterReportConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.GroupPreferencesetAssignments = direct.Slice_ToProto(mapCtx, in.GroupPreferencesetAssignments, ReportConfig_GroupPreferenceSetAssignment_ToProto)
 	return out
 }
+func MigrationCenterReportObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Report) *krm.MigrationCenterReportObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MigrationCenterReportObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Summary = ReportSummary_FromProto(mapCtx, in.GetSummary())
+	return out
+}
+func MigrationCenterReportObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MigrationCenterReportObservedState) *pb.Report {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Report{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Summary = ReportSummary_ToProto(mapCtx, in.Summary)
+	return out
+}
+func MigrationCenterReportSpec_FromProto(mapCtx *direct.MapContext, in *pb.Report) *krm.MigrationCenterReportSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MigrationCenterReportSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func MigrationCenterReportSpec_ToProto(mapCtx *direct.MapContext, in *krm.MigrationCenterReportSpec) *pb.Report {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Report{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Type = direct.Enum_ToProto[pb.Report_Type](mapCtx, in.Type)
+	out.State = direct.Enum_ToProto[pb.Report_State](mapCtx, in.State)
+	return out
+}
 func MigrationCenterSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Source) *krm.MigrationCenterSourceObservedState {
 	if in == nil {
 		return nil
@@ -393,6 +441,26 @@ func MigrationCenterSourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Migrat
 	out.Managed = direct.ValueOf(in.Managed)
 	return out
 }
+func Money_FromProto(mapCtx *direct.MapContext, in *moneypb.Money) *krm.Money {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Money{}
+	out.CurrencyCode = direct.LazyPtr(in.GetCurrencyCode())
+	out.Units = direct.LazyPtr(in.GetUnits())
+	out.Nanos = direct.LazyPtr(in.GetNanos())
+	return out
+}
+func Money_ToProto(mapCtx *direct.MapContext, in *krm.Money) *moneypb.Money {
+	if in == nil {
+		return nil
+	}
+	out := &moneypb.Money{}
+	out.CurrencyCode = direct.ValueOf(in.CurrencyCode)
+	out.Units = direct.ValueOf(in.Units)
+	out.Nanos = direct.ValueOf(in.Nanos)
+	return out
+}
 func RegionPreferences_FromProto(mapCtx *direct.MapContext, in *pb.RegionPreferences) *krm.RegionPreferences {
 	if in == nil {
 		return nil
@@ -433,6 +501,344 @@ func ReportConfig_GroupPreferenceSetAssignment_ToProto(mapCtx *direct.MapContext
 	if in.PreferenceSetRef != nil {
 		out.PreferenceSet = in.PreferenceSetRef.External
 	}
+	return out
+}
+func ReportSummary_FromProto(mapCtx *direct.MapContext, in *pb.ReportSummary) *krm.ReportSummary {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReportSummary{}
+	out.AllAssetsStats = ReportSummary_AssetAggregateStats_FromProto(mapCtx, in.GetAllAssetsStats())
+	out.GroupFindings = direct.Slice_FromProto(mapCtx, in.GroupFindings, ReportSummary_GroupFinding_FromProto)
+	return out
+}
+func ReportSummary_ToProto(mapCtx *direct.MapContext, in *krm.ReportSummary) *pb.ReportSummary {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReportSummary{}
+	out.AllAssetsStats = ReportSummary_AssetAggregateStats_ToProto(mapCtx, in.AllAssetsStats)
+	out.GroupFindings = direct.Slice_ToProto(mapCtx, in.GroupFindings, ReportSummary_GroupFinding_ToProto)
+	return out
+}
+func ReportSummary_AssetAggregateStats_FromProto(mapCtx *direct.MapContext, in *pb.ReportSummary_AssetAggregateStats) *krm.ReportSummary_AssetAggregateStats {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReportSummary_AssetAggregateStats{}
+	out.TotalMemoryBytes = direct.LazyPtr(in.GetTotalMemoryBytes())
+	out.TotalStorageBytes = direct.LazyPtr(in.GetTotalStorageBytes())
+	out.TotalCores = direct.LazyPtr(in.GetTotalCores())
+	out.TotalAssets = direct.LazyPtr(in.GetTotalAssets())
+	out.MemoryUtilizationChart = ReportSummary_UtilizationChartData_FromProto(mapCtx, in.GetMemoryUtilizationChart())
+	out.StorageUtilizationChart = ReportSummary_UtilizationChartData_FromProto(mapCtx, in.GetStorageUtilizationChart())
+	out.OperatingSystem = ReportSummary_ChartData_FromProto(mapCtx, in.GetOperatingSystem())
+	out.CoreCountHistogram = ReportSummary_HistogramChartData_FromProto(mapCtx, in.GetCoreCountHistogram())
+	out.MemoryBytesHistogram = ReportSummary_HistogramChartData_FromProto(mapCtx, in.GetMemoryBytesHistogram())
+	out.StorageBytesHistogram = ReportSummary_HistogramChartData_FromProto(mapCtx, in.GetStorageBytesHistogram())
+	return out
+}
+func ReportSummary_AssetAggregateStats_ToProto(mapCtx *direct.MapContext, in *krm.ReportSummary_AssetAggregateStats) *pb.ReportSummary_AssetAggregateStats {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReportSummary_AssetAggregateStats{}
+	out.TotalMemoryBytes = direct.ValueOf(in.TotalMemoryBytes)
+	out.TotalStorageBytes = direct.ValueOf(in.TotalStorageBytes)
+	out.TotalCores = direct.ValueOf(in.TotalCores)
+	out.TotalAssets = direct.ValueOf(in.TotalAssets)
+	out.MemoryUtilizationChart = ReportSummary_UtilizationChartData_ToProto(mapCtx, in.MemoryUtilizationChart)
+	out.StorageUtilizationChart = ReportSummary_UtilizationChartData_ToProto(mapCtx, in.StorageUtilizationChart)
+	out.OperatingSystem = ReportSummary_ChartData_ToProto(mapCtx, in.OperatingSystem)
+	out.CoreCountHistogram = ReportSummary_HistogramChartData_ToProto(mapCtx, in.CoreCountHistogram)
+	out.MemoryBytesHistogram = ReportSummary_HistogramChartData_ToProto(mapCtx, in.MemoryBytesHistogram)
+	out.StorageBytesHistogram = ReportSummary_HistogramChartData_ToProto(mapCtx, in.StorageBytesHistogram)
+	return out
+}
+func ReportSummary_ChartData_FromProto(mapCtx *direct.MapContext, in *pb.ReportSummary_ChartData) *krm.ReportSummary_ChartData {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReportSummary_ChartData{}
+	out.DataPoints = direct.Slice_FromProto(mapCtx, in.DataPoints, ReportSummary_ChartData_DataPoint_FromProto)
+	return out
+}
+func ReportSummary_ChartData_ToProto(mapCtx *direct.MapContext, in *krm.ReportSummary_ChartData) *pb.ReportSummary_ChartData {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReportSummary_ChartData{}
+	out.DataPoints = direct.Slice_ToProto(mapCtx, in.DataPoints, ReportSummary_ChartData_DataPoint_ToProto)
+	return out
+}
+func ReportSummary_ChartData_DataPoint_FromProto(mapCtx *direct.MapContext, in *pb.ReportSummary_ChartData_DataPoint) *krm.ReportSummary_ChartData_DataPoint {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReportSummary_ChartData_DataPoint{}
+	out.Label = direct.LazyPtr(in.GetLabel())
+	out.Value = direct.LazyPtr(in.GetValue())
+	return out
+}
+func ReportSummary_ChartData_DataPoint_ToProto(mapCtx *direct.MapContext, in *krm.ReportSummary_ChartData_DataPoint) *pb.ReportSummary_ChartData_DataPoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReportSummary_ChartData_DataPoint{}
+	out.Label = direct.ValueOf(in.Label)
+	out.Value = direct.ValueOf(in.Value)
+	return out
+}
+func ReportSummary_ComputeEngineFinding_FromProto(mapCtx *direct.MapContext, in *pb.ReportSummary_ComputeEngineFinding) *krm.ReportSummary_ComputeEngineFinding {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReportSummary_ComputeEngineFinding{}
+	out.AllocatedRegions = in.AllocatedRegions
+	out.AllocatedAssetCount = direct.LazyPtr(in.GetAllocatedAssetCount())
+	out.MachineSeriesAllocations = direct.Slice_FromProto(mapCtx, in.MachineSeriesAllocations, ReportSummary_MachineSeriesAllocation_FromProto)
+	out.AllocatedDiskTypes = direct.EnumSlice_FromProto(mapCtx, in.AllocatedDiskTypes)
+	return out
+}
+func ReportSummary_ComputeEngineFinding_ToProto(mapCtx *direct.MapContext, in *krm.ReportSummary_ComputeEngineFinding) *pb.ReportSummary_ComputeEngineFinding {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReportSummary_ComputeEngineFinding{}
+	out.AllocatedRegions = in.AllocatedRegions
+	out.AllocatedAssetCount = direct.ValueOf(in.AllocatedAssetCount)
+	out.MachineSeriesAllocations = direct.Slice_ToProto(mapCtx, in.MachineSeriesAllocations, ReportSummary_MachineSeriesAllocation_ToProto)
+	out.AllocatedDiskTypes = direct.EnumSlice_ToProto[pb.PersistentDiskType](mapCtx, in.AllocatedDiskTypes)
+	return out
+}
+func ReportSummary_GroupFinding_FromProto(mapCtx *direct.MapContext, in *pb.ReportSummary_GroupFinding) *krm.ReportSummary_GroupFinding {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReportSummary_GroupFinding{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.AssetAggregateStats = ReportSummary_AssetAggregateStats_FromProto(mapCtx, in.GetAssetAggregateStats())
+	out.OverlappingAssetCount = direct.LazyPtr(in.GetOverlappingAssetCount())
+	out.PreferenceSetFindings = direct.Slice_FromProto(mapCtx, in.PreferenceSetFindings, ReportSummary_GroupPreferenceSetFinding_FromProto)
+	return out
+}
+func ReportSummary_GroupFinding_ToProto(mapCtx *direct.MapContext, in *krm.ReportSummary_GroupFinding) *pb.ReportSummary_GroupFinding {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReportSummary_GroupFinding{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.AssetAggregateStats = ReportSummary_AssetAggregateStats_ToProto(mapCtx, in.AssetAggregateStats)
+	out.OverlappingAssetCount = direct.ValueOf(in.OverlappingAssetCount)
+	out.PreferenceSetFindings = direct.Slice_ToProto(mapCtx, in.PreferenceSetFindings, ReportSummary_GroupPreferenceSetFinding_ToProto)
+	return out
+}
+func ReportSummary_GroupPreferenceSetFinding_FromProto(mapCtx *direct.MapContext, in *pb.ReportSummary_GroupPreferenceSetFinding) *krm.ReportSummary_GroupPreferenceSetFinding {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReportSummary_GroupPreferenceSetFinding{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.MachinePreferences = VirtualMachinePreferences_FromProto(mapCtx, in.GetMachinePreferences())
+	out.MonthlyCostTotal = Money_FromProto(mapCtx, in.GetMonthlyCostTotal())
+	out.MonthlyCostCompute = Money_FromProto(mapCtx, in.GetMonthlyCostCompute())
+	out.MonthlyCostOSLicense = Money_FromProto(mapCtx, in.GetMonthlyCostOsLicense())
+	out.MonthlyCostNetworkEgress = Money_FromProto(mapCtx, in.GetMonthlyCostNetworkEgress())
+	out.MonthlyCostStorage = Money_FromProto(mapCtx, in.GetMonthlyCostStorage())
+	out.MonthlyCostOther = Money_FromProto(mapCtx, in.GetMonthlyCostOther())
+	out.ComputeEngineFinding = ReportSummary_ComputeEngineFinding_FromProto(mapCtx, in.GetComputeEngineFinding())
+	out.VmwareEngineFinding = ReportSummary_VmwareEngineFinding_FromProto(mapCtx, in.GetVmwareEngineFinding())
+	out.SoleTenantFinding = ReportSummary_SoleTenantFinding_FromProto(mapCtx, in.GetSoleTenantFinding())
+	return out
+}
+func ReportSummary_GroupPreferenceSetFinding_ToProto(mapCtx *direct.MapContext, in *krm.ReportSummary_GroupPreferenceSetFinding) *pb.ReportSummary_GroupPreferenceSetFinding {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReportSummary_GroupPreferenceSetFinding{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.MachinePreferences = VirtualMachinePreferences_ToProto(mapCtx, in.MachinePreferences)
+	out.MonthlyCostTotal = Money_ToProto(mapCtx, in.MonthlyCostTotal)
+	out.MonthlyCostCompute = Money_ToProto(mapCtx, in.MonthlyCostCompute)
+	out.MonthlyCostOsLicense = Money_ToProto(mapCtx, in.MonthlyCostOSLicense)
+	out.MonthlyCostNetworkEgress = Money_ToProto(mapCtx, in.MonthlyCostNetworkEgress)
+	out.MonthlyCostStorage = Money_ToProto(mapCtx, in.MonthlyCostStorage)
+	out.MonthlyCostOther = Money_ToProto(mapCtx, in.MonthlyCostOther)
+	out.ComputeEngineFinding = ReportSummary_ComputeEngineFinding_ToProto(mapCtx, in.ComputeEngineFinding)
+	out.VmwareEngineFinding = ReportSummary_VmwareEngineFinding_ToProto(mapCtx, in.VmwareEngineFinding)
+	out.SoleTenantFinding = ReportSummary_SoleTenantFinding_ToProto(mapCtx, in.SoleTenantFinding)
+	return out
+}
+func ReportSummary_HistogramChartData_FromProto(mapCtx *direct.MapContext, in *pb.ReportSummary_HistogramChartData) *krm.ReportSummary_HistogramChartData {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReportSummary_HistogramChartData{}
+	out.Buckets = direct.Slice_FromProto(mapCtx, in.Buckets, ReportSummary_HistogramChartData_Bucket_FromProto)
+	return out
+}
+func ReportSummary_HistogramChartData_ToProto(mapCtx *direct.MapContext, in *krm.ReportSummary_HistogramChartData) *pb.ReportSummary_HistogramChartData {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReportSummary_HistogramChartData{}
+	out.Buckets = direct.Slice_ToProto(mapCtx, in.Buckets, ReportSummary_HistogramChartData_Bucket_ToProto)
+	return out
+}
+func ReportSummary_HistogramChartData_Bucket_FromProto(mapCtx *direct.MapContext, in *pb.ReportSummary_HistogramChartData_Bucket) *krm.ReportSummary_HistogramChartData_Bucket {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReportSummary_HistogramChartData_Bucket{}
+	out.LowerBound = direct.LazyPtr(in.GetLowerBound())
+	out.UpperBound = direct.LazyPtr(in.GetUpperBound())
+	out.Count = direct.LazyPtr(in.GetCount())
+	return out
+}
+func ReportSummary_HistogramChartData_Bucket_ToProto(mapCtx *direct.MapContext, in *krm.ReportSummary_HistogramChartData_Bucket) *pb.ReportSummary_HistogramChartData_Bucket {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReportSummary_HistogramChartData_Bucket{}
+	out.LowerBound = direct.ValueOf(in.LowerBound)
+	out.UpperBound = direct.ValueOf(in.UpperBound)
+	out.Count = direct.ValueOf(in.Count)
+	return out
+}
+func ReportSummary_MachineSeriesAllocation_FromProto(mapCtx *direct.MapContext, in *pb.ReportSummary_MachineSeriesAllocation) *krm.ReportSummary_MachineSeriesAllocation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReportSummary_MachineSeriesAllocation{}
+	out.MachineSeries = MachineSeries_FromProto(mapCtx, in.GetMachineSeries())
+	out.AllocatedAssetCount = direct.LazyPtr(in.GetAllocatedAssetCount())
+	return out
+}
+func ReportSummary_MachineSeriesAllocation_ToProto(mapCtx *direct.MapContext, in *krm.ReportSummary_MachineSeriesAllocation) *pb.ReportSummary_MachineSeriesAllocation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReportSummary_MachineSeriesAllocation{}
+	out.MachineSeries = MachineSeries_ToProto(mapCtx, in.MachineSeries)
+	out.AllocatedAssetCount = direct.ValueOf(in.AllocatedAssetCount)
+	return out
+}
+func ReportSummary_SoleTenantFinding_FromProto(mapCtx *direct.MapContext, in *pb.ReportSummary_SoleTenantFinding) *krm.ReportSummary_SoleTenantFinding {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReportSummary_SoleTenantFinding{}
+	out.AllocatedRegions = in.AllocatedRegions
+	out.AllocatedAssetCount = direct.LazyPtr(in.GetAllocatedAssetCount())
+	out.NodeAllocations = direct.Slice_FromProto(mapCtx, in.NodeAllocations, ReportSummary_SoleTenantNodeAllocation_FromProto)
+	return out
+}
+func ReportSummary_SoleTenantFinding_ToProto(mapCtx *direct.MapContext, in *krm.ReportSummary_SoleTenantFinding) *pb.ReportSummary_SoleTenantFinding {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReportSummary_SoleTenantFinding{}
+	out.AllocatedRegions = in.AllocatedRegions
+	out.AllocatedAssetCount = direct.ValueOf(in.AllocatedAssetCount)
+	out.NodeAllocations = direct.Slice_ToProto(mapCtx, in.NodeAllocations, ReportSummary_SoleTenantNodeAllocation_ToProto)
+	return out
+}
+func ReportSummary_SoleTenantNodeAllocation_FromProto(mapCtx *direct.MapContext, in *pb.ReportSummary_SoleTenantNodeAllocation) *krm.ReportSummary_SoleTenantNodeAllocation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReportSummary_SoleTenantNodeAllocation{}
+	out.Node = SoleTenantNodeType_FromProto(mapCtx, in.GetNode())
+	out.NodeCount = direct.LazyPtr(in.GetNodeCount())
+	out.AllocatedAssetCount = direct.LazyPtr(in.GetAllocatedAssetCount())
+	return out
+}
+func ReportSummary_SoleTenantNodeAllocation_ToProto(mapCtx *direct.MapContext, in *krm.ReportSummary_SoleTenantNodeAllocation) *pb.ReportSummary_SoleTenantNodeAllocation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReportSummary_SoleTenantNodeAllocation{}
+	out.Node = SoleTenantNodeType_ToProto(mapCtx, in.Node)
+	out.NodeCount = direct.ValueOf(in.NodeCount)
+	out.AllocatedAssetCount = direct.ValueOf(in.AllocatedAssetCount)
+	return out
+}
+func ReportSummary_UtilizationChartData_FromProto(mapCtx *direct.MapContext, in *pb.ReportSummary_UtilizationChartData) *krm.ReportSummary_UtilizationChartData {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReportSummary_UtilizationChartData{}
+	out.Used = direct.LazyPtr(in.GetUsed())
+	out.Free = direct.LazyPtr(in.GetFree())
+	return out
+}
+func ReportSummary_UtilizationChartData_ToProto(mapCtx *direct.MapContext, in *krm.ReportSummary_UtilizationChartData) *pb.ReportSummary_UtilizationChartData {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReportSummary_UtilizationChartData{}
+	out.Used = direct.ValueOf(in.Used)
+	out.Free = direct.ValueOf(in.Free)
+	return out
+}
+func ReportSummary_VmwareEngineFinding_FromProto(mapCtx *direct.MapContext, in *pb.ReportSummary_VmwareEngineFinding) *krm.ReportSummary_VmwareEngineFinding {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReportSummary_VmwareEngineFinding{}
+	out.AllocatedRegions = in.AllocatedRegions
+	out.AllocatedAssetCount = direct.LazyPtr(in.GetAllocatedAssetCount())
+	out.NodeAllocations = direct.Slice_FromProto(mapCtx, in.NodeAllocations, ReportSummary_VmwareNodeAllocation_FromProto)
+	return out
+}
+func ReportSummary_VmwareEngineFinding_ToProto(mapCtx *direct.MapContext, in *krm.ReportSummary_VmwareEngineFinding) *pb.ReportSummary_VmwareEngineFinding {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReportSummary_VmwareEngineFinding{}
+	out.AllocatedRegions = in.AllocatedRegions
+	out.AllocatedAssetCount = direct.ValueOf(in.AllocatedAssetCount)
+	out.NodeAllocations = direct.Slice_ToProto(mapCtx, in.NodeAllocations, ReportSummary_VmwareNodeAllocation_ToProto)
+	return out
+}
+func ReportSummary_VmwareNode_FromProto(mapCtx *direct.MapContext, in *pb.ReportSummary_VmwareNode) *krm.ReportSummary_VmwareNode {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReportSummary_VmwareNode{}
+	out.Code = direct.LazyPtr(in.GetCode())
+	return out
+}
+func ReportSummary_VmwareNode_ToProto(mapCtx *direct.MapContext, in *krm.ReportSummary_VmwareNode) *pb.ReportSummary_VmwareNode {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReportSummary_VmwareNode{}
+	out.Code = direct.ValueOf(in.Code)
+	return out
+}
+func ReportSummary_VmwareNodeAllocation_FromProto(mapCtx *direct.MapContext, in *pb.ReportSummary_VmwareNodeAllocation) *krm.ReportSummary_VmwareNodeAllocation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReportSummary_VmwareNodeAllocation{}
+	out.VmwareNode = ReportSummary_VmwareNode_FromProto(mapCtx, in.GetVmwareNode())
+	out.NodeCount = direct.LazyPtr(in.GetNodeCount())
+	out.AllocatedAssetCount = direct.LazyPtr(in.GetAllocatedAssetCount())
+	return out
+}
+func ReportSummary_VmwareNodeAllocation_ToProto(mapCtx *direct.MapContext, in *krm.ReportSummary_VmwareNodeAllocation) *pb.ReportSummary_VmwareNodeAllocation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReportSummary_VmwareNodeAllocation{}
+	out.VmwareNode = ReportSummary_VmwareNode_ToProto(mapCtx, in.VmwareNode)
+	out.NodeCount = direct.ValueOf(in.NodeCount)
+	out.AllocatedAssetCount = direct.ValueOf(in.AllocatedAssetCount)
 	return out
 }
 func SoleTenancyPreferences_FromProto(mapCtx *direct.MapContext, in *pb.SoleTenancyPreferences) *krm.SoleTenancyPreferences {
