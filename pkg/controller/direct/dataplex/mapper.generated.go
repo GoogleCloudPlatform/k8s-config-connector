@@ -2565,48 +2565,6 @@ func DataplexEntityObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Data
 	return out
 }
 
-func DataplexEntitySpec_FromProto(mapCtx *direct.MapContext, in *pb.Entity) *krm.DataplexEntitySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataplexEntitySpec{}
-	// MISSING: Name
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.ID = direct.LazyPtr(in.GetId())
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	if in.GetAsset() != "" {
-		out.AssetRef = &krm.DataplexAssetRef{External: in.GetAsset()}
-	}
-	out.DataPath = direct.LazyPtr(in.GetDataPath())
-	out.DataPathPattern = direct.LazyPtr(in.GetDataPathPattern())
-	out.System = direct.Enum_FromProto(mapCtx, in.GetSystem())
-	out.Format = StorageFormat_FromProto(mapCtx, in.GetFormat())
-	out.Schema = Schema_FromProto(mapCtx, in.GetSchema())
-	return out
-}
-
-func DataplexEntitySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntitySpec) *pb.Entity {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Entity{}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.Id = direct.ValueOf(in.ID)
-	out.Type = direct.Enum_ToProto[pb.Entity_Type](mapCtx, in.Type)
-	if in.AssetRef != nil {
-		out.Asset = in.AssetRef.External
-	}
-	out.DataPath = direct.ValueOf(in.DataPath)
-	out.DataPathPattern = direct.ValueOf(in.DataPathPattern)
-	out.System = direct.Enum_ToProto[pb.StorageSystem](mapCtx, in.System)
-	out.Format = StorageFormat_ToProto(mapCtx, in.Format)
-	out.Schema = Schema_ToProto(mapCtx, in.Schema)
-	return out
-}
-
 func DataplexEntryGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryGroup) *krm.DataplexEntryGroupObservedState {
 	if in == nil {
 		return nil
