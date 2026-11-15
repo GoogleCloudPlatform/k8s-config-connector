@@ -25,6 +25,7 @@ import (
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudsupport/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -242,13 +243,16 @@ func (a *SupportEventSubscriptionAdapter) Export(ctx context.Context) (*unstruct
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+
+	obj.Spec.OrganizationRef = &refsv1beta1.OrganizationRef{External: a.id.ParentString()}
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u.Object = uObj
-	u.SetName(a.id.String())
+	u.SetName(a.id.SupportEventSubscription)
 	u.SetGroupVersionKind(krm.CloudSupportSupportEventSubscriptionGVK)
 
 	return u, nil
