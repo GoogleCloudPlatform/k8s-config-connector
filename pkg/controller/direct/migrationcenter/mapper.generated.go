@@ -414,8 +414,12 @@ func ReportConfig_GroupPreferenceSetAssignment_FromProto(mapCtx *direct.MapConte
 		return nil
 	}
 	out := &krm.ReportConfig_GroupPreferenceSetAssignment{}
-	out.Group = direct.LazyPtr(in.GetGroup())
-	out.PreferenceSet = direct.LazyPtr(in.GetPreferenceSet())
+	if in.GetGroup() != "" {
+		out.GroupRef = &krm.MigrationCenterGroupRef{External: in.GetGroup()}
+	}
+	if in.GetPreferenceSet() != "" {
+		out.PreferenceSetRef = &krm.MigrationCenterPreferenceSetRef{External: in.GetPreferenceSet()}
+	}
 	return out
 }
 func ReportConfig_GroupPreferenceSetAssignment_ToProto(mapCtx *direct.MapContext, in *krm.ReportConfig_GroupPreferenceSetAssignment) *pb.ReportConfig_GroupPreferenceSetAssignment {
@@ -423,8 +427,12 @@ func ReportConfig_GroupPreferenceSetAssignment_ToProto(mapCtx *direct.MapContext
 		return nil
 	}
 	out := &pb.ReportConfig_GroupPreferenceSetAssignment{}
-	out.Group = direct.ValueOf(in.Group)
-	out.PreferenceSet = direct.ValueOf(in.PreferenceSet)
+	if in.GroupRef != nil {
+		out.Group = in.GroupRef.External
+	}
+	if in.PreferenceSetRef != nil {
+		out.PreferenceSet = in.PreferenceSetRef.External
+	}
 	return out
 }
 func SoleTenancyPreferences_FromProto(mapCtx *direct.MapContext, in *pb.SoleTenancyPreferences) *krm.SoleTenancyPreferences {
