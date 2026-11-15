@@ -83,8 +83,7 @@ ${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.backupdr.v1 \
     --api-version backupdr.cnrm.cloud.google.com/v1beta1 \
     --include-skipped-output \
-    --prepopulate-resource \
-    --skip-proto RestoreVerificationPlan,RestoreVerificationCleanupRule
+    --prepopulate-resource
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
