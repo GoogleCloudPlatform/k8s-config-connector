@@ -263,7 +263,7 @@ func (a *SupportEventSubscriptionAdapter) Delete(ctx context.Context, deleteOp *
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting SupportEventSubscription", "name", a.id)
 	if !a.id.HasIdentitySpecified() {
-		return false, nil
+		return true, nil
 	}
 
 	req := &supportpb.DeleteSupportEventSubscriptionRequest{

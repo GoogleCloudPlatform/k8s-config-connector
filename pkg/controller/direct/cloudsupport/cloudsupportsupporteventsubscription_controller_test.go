@@ -118,3 +118,20 @@ func TestCloudSupportSupportEventSubscription_Export(t *testing.T) {
 		t.Errorf("expected error when actual is nil")
 	}
 }
+
+func TestCloudSupportSupportEventSubscription_Delete(t *testing.T) {
+	ctx := context.Background()
+
+	t.Run("returns true when identity is not specified", func(t *testing.T) {
+		adapter := &SupportEventSubscriptionAdapter{
+			id: &krm.CloudSupportSupportEventSubscriptionIdentity{},
+		}
+		deleted, err := adapter.Delete(ctx, nil)
+		if err != nil {
+			t.Fatalf("Delete() unexpected error: %v", err)
+		}
+		if !deleted {
+			t.Errorf("Delete() got %v, want true when identity is not specified", deleted)
+		}
+	})
+}
