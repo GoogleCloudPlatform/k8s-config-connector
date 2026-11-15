@@ -41,6 +41,13 @@ ${CONTROLLERBUILDER} generate-types \
   --resource AppEngineServiceSplitTraffic:Service \
   --resource AppEngineStandardAppVersion:Version
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.appengine.v1 \
+  --api-version appengine.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource \
+  --resource AppEngineAuthorizedCertificate:AuthorizedCertificate
+
 ${CONTROLLERBUILDER} generate-identity \
   --service google.appengine.v1 \
   --api-version appengine.cnrm.cloud.google.com/v1alpha1 \
@@ -48,13 +55,15 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource AppEngineFirewallRule:FirewallRule \
   --resource AppEngineFlexibleAppVersion:Version \
   --resource AppEngineServiceSplitTraffic:Service \
-  --resource AppEngineStandardAppVersion:Version
+  --resource AppEngineStandardAppVersion:Version \
+  --resource AppEngineAuthorizedCertificate:AuthorizedCertificate
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.appengine.v1 \
   --api-version appengine.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
-  --multiversion
+  --multiversion \
+  --prepopulate-resource
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

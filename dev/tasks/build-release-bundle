@@ -107,6 +107,7 @@ BLOCKED_KINDS=(
     "ApiHubRuntimeProjectAttachment"
     "ApihubSpec"
     "APIHubVersion"
+    "AppEngineAuthorizedCertificate"
     "AppHubService"
     "AppHubServiceProjectAttachment"
     "AppHubWorkload"
