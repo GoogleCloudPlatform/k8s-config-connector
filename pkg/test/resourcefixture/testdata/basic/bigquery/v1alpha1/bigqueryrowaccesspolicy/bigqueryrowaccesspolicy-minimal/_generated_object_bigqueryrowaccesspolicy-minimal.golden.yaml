@@ -1,0 +1,28 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1alpha1
+kind: BigQueryRowAccessPolicy
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: bigqueryrowaccesspolicy${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  filterPredicate: region = "EU"
+  parentRef:
+    name: bigquerytable${uniqueId}
+  resourceID: bqrap_${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/datasets/bigquerydataset_${uniqueId}/tables/bigquerytable_${uniqueId}/rowAccessPolicies/bqrap_${uniqueId}
+  observedGeneration: 2
+  observedState:
+    creationTime: "1970-01-01T00:00:00Z"
+    lastModifiedTime: "1970-01-01T00:00:00Z"
