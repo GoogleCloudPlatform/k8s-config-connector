@@ -162,7 +162,6 @@ BLOCKED_KINDS=(
     "ComputeCrossSiteNetwork"
     "ComputeHealthAggregationPolicy"
     "ComputeHealthCheckService"
-    "ComputeInterconnectAttachmentGroup"
     "ComputeNotificationEndpoint"
     "ConfigDeliveryFleetPackage"
     "ConnectorsConnection"
