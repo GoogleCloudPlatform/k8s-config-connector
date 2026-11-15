@@ -119,6 +119,7 @@ func AIPlatformBatchPredictionJobObservedState_FromProto(mapCtx *direct.MapConte
 	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
 	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
 	return out
@@ -143,6 +144,7 @@ func AIPlatformBatchPredictionJobObservedState_ToProto(mapCtx *direct.MapContext
 	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
 	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
 	return out
@@ -157,18 +159,22 @@ func AIPlatformBatchPredictionJobSpec_FromProto(mapCtx *direct.MapContext, in *p
 	out := &krm.AIPlatformBatchPredictionJobSpec{}
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Model = direct.LazyPtr(in.GetModel())
+	if in.GetModel() != "" {
+		out.ModelRef = &krm.AIPlatformModelRef{External: in.GetModel()}
+	}
 	out.UnmanagedContainerModel = UnmanagedContainerModel_FromProto(mapCtx, in.GetUnmanagedContainerModel())
 	out.InputConfig = BatchPredictionJob_InputConfig_FromProto(mapCtx, in.GetInputConfig())
 	out.InstanceConfig = BatchPredictionJob_InstanceConfig_FromProto(mapCtx, in.GetInstanceConfig())
 	out.ModelParameters = Value_FromProto(mapCtx, in.GetModelParameters())
 	out.OutputConfig = BatchPredictionJob_OutputConfig_FromProto(mapCtx, in.GetOutputConfig())
 	out.DedicatedResources = BatchDedicatedResources_FromProto(mapCtx, in.GetDedicatedResources())
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
 	out.ManualBatchTuningParameters = ManualBatchTuningParameters_FromProto(mapCtx, in.GetManualBatchTuningParameters())
 	out.GenerateExplanation = direct.LazyPtr(in.GetGenerateExplanation())
 	out.ExplanationSpec = ExplanationSpecWithRequired_FromProto(mapCtx, in.GetExplanationSpec())
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
 	out.DisableContainerLogging = direct.LazyPtr(in.GetDisableContainerLogging())
 	return out
@@ -183,18 +189,22 @@ func AIPlatformBatchPredictionJobSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	out := &pb.BatchPredictionJob{}
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Model = direct.ValueOf(in.Model)
+	if in.ModelRef != nil {
+		out.Model = in.ModelRef.External
+	}
 	out.UnmanagedContainerModel = UnmanagedContainerModel_ToProto(mapCtx, in.UnmanagedContainerModel)
 	out.InputConfig = BatchPredictionJob_InputConfig_ToProto(mapCtx, in.InputConfig)
 	out.InstanceConfig = BatchPredictionJob_InstanceConfig_ToProto(mapCtx, in.InstanceConfig)
 	out.ModelParameters = Value_ToProto(mapCtx, in.ModelParameters)
 	out.OutputConfig = BatchPredictionJob_OutputConfig_ToProto(mapCtx, in.OutputConfig)
 	out.DedicatedResources = BatchDedicatedResources_ToProto(mapCtx, in.DedicatedResources)
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
 	out.ManualBatchTuningParameters = ManualBatchTuningParameters_ToProto(mapCtx, in.ManualBatchTuningParameters)
 	out.GenerateExplanation = direct.ValueOf(in.GenerateExplanation)
 	out.ExplanationSpec = ExplanationSpecWithRequired_ToProto(mapCtx, in.ExplanationSpec)
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
 	out.DisableContainerLogging = direct.ValueOf(in.DisableContainerLogging)
 	return out
@@ -1560,6 +1570,7 @@ func BatchDedicatedResources_ToProto(mapCtx *direct.MapContext, in *krm.BatchDed
 }
 */
 
+/* found existing non-generated mapping function "BatchPredictionJob_InputConfig_FromProto", skipping
 func BatchPredictionJob_InputConfig_FromProto(mapCtx *direct.MapContext, in *pb.BatchPredictionJob_InputConfig) *krm.BatchPredictionJob_InputConfig {
 	if in == nil {
 		return nil
@@ -1570,7 +1581,9 @@ func BatchPredictionJob_InputConfig_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.InstancesFormat = direct.LazyPtr(in.GetInstancesFormat())
 	return out
 }
+*/
 
+/* found existing non-generated mapping function "BatchPredictionJob_InputConfig_ToProto", skipping
 func BatchPredictionJob_InputConfig_ToProto(mapCtx *direct.MapContext, in *krm.BatchPredictionJob_InputConfig) *pb.BatchPredictionJob_InputConfig {
 	if in == nil {
 		return nil
@@ -1585,6 +1598,7 @@ func BatchPredictionJob_InputConfig_ToProto(mapCtx *direct.MapContext, in *krm.B
 	out.InstancesFormat = direct.ValueOf(in.InstancesFormat)
 	return out
 }
+*/
 
 func BatchPredictionJob_InstanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.BatchPredictionJob_InstanceConfig) *krm.BatchPredictionJob_InstanceConfig {
 	if in == nil {

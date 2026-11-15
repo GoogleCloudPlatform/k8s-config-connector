@@ -4491,15 +4491,6 @@ type VertexMultimodalDatasetDestination struct {
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.VertexMultimodalDatasetSource
-type VertexMultimodalDatasetSource struct {
-	// Required. The resource name of the Vertex Dataset.
-	//  Format: `projects/{project}/locations/{location}/datasets/{dataset}`
-	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexMultimodalDatasetSource.dataset_name
-	// +required
-	DatasetName *string `json:"datasetName,omitempty"`
-}
-
 // +kcc:proto=google.cloud.aiplatform.v1.VertexRagStore
 type VertexRagStore struct {
 	// Optional. The representation of the rag source. It can be used to specify

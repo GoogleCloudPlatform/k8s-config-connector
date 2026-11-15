@@ -15,14 +15,15 @@
 // API sources for AIPlatformBatchPredictionJob, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/e7513c828b8db536fa12fc5493d541f323aedf90/google/cloud/aiplatform/v1/batch_prediction_job.proto
 // +kcc:source:service-docs=https://cloud.google.com/vertex-ai/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.batchPredictionJobs
+// +kcc:source:resource-docs=https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.batchPredictionJobs
 
 package v1alpha1
 
 import (
 	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -33,14 +34,11 @@ var AIPlatformBatchPredictionJobGVK = GroupVersion.WithKind("AIPlatformBatchPred
 // +kcc:spec:proto=google.cloud.aiplatform.v1.BatchPredictionJob
 // +kcc:required-from-proto
 type AIPlatformBatchPredictionJobSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// The AIPlatformBatchPredictionJob name. If not given, the metadata.name will be used.
+	// Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Required. The user-defined name of this BatchPredictionJob.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.BatchPredictionJob.display_name
 	// +required
@@ -64,7 +62,7 @@ type AIPlatformBatchPredictionJobSpec struct {
 	//               or
 	//            `projects/{project}/locations/{location}/publishers/{publisher}/models/{model}`
 	// +kcc:proto:field=google.cloud.aiplatform.v1.BatchPredictionJob.model
-	Model *string `json:"model,omitempty"`
+	ModelRef *AIPlatformModelRef `json:"modelRef,omitempty"`
 
 	// Contains model information necessary to perform batch prediction without
 	//  requiring uploading to model registry.
@@ -123,7 +121,7 @@ type AIPlatformBatchPredictionJobSpec struct {
 	//  Users deploying the Model must have the `iam.serviceAccounts.actAs`
 	//  permission on this service account.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.BatchPredictionJob.service_account
-	ServiceAccount *string `json:"serviceAccount,omitempty"`
+	ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 
 	// Immutable. Parameters configuring the batch behavior. Currently only
 	//  applicable when
@@ -172,16 +170,6 @@ type AIPlatformBatchPredictionJobSpec struct {
 	//  object is inherited.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.BatchPredictionJob.explanation_spec
 	ExplanationSpec *ExplanationSpecWithRequired `json:"explanationSpec,omitempty"`
-
-	// The labels with user-defined metadata to organize BatchPredictionJobs.
-	//
-	//  Label keys and values can be no longer than 64 characters
-	//  (Unicode codepoints), can only contain lowercase letters, numeric
-	//  characters, underscores and dashes. International characters are allowed.
-	//
-	//  See https://goo.gl/xmQnxf for more information and examples of labels.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.BatchPredictionJob.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
 	// Customer-managed encryption key options for a BatchPredictionJob. If this
 	//  is set, then all resources created by the BatchPredictionJob will be
@@ -316,4 +304,13 @@ type AIPlatformBatchPredictionJobList struct {
 
 func init() {
 	SchemeBuilder.Register(&AIPlatformBatchPredictionJob{}, &AIPlatformBatchPredictionJobList{})
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.VertexMultimodalDatasetSource
+type VertexMultimodalDatasetSource struct {
+	// The resource name of the Vertex Dataset.
+	// Format: `projects/{project}/locations/{location}/datasets/{dataset}`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexMultimodalDatasetSource.dataset_name
+	// +required
+	DatasetRef *vertexaiv1beta1.VertexAIDatasetRef `json:"datasetRef,omitempty"`
 }

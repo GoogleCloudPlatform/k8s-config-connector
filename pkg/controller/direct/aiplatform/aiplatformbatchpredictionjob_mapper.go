@@ -17,6 +17,8 @@ package aiplatform
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -71,18 +73,21 @@ func AIPlatformBatchPredictionJobSpec_FromProto(mapCtx *direct.MapContext, in *p
 	out := &krm.AIPlatformBatchPredictionJobSpec{}
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Model = direct.LazyPtr(in.GetModel())
+	if in.GetModel() != "" {
+		out.ModelRef = &krm.AIPlatformModelRef{External: in.GetModel()}
+	}
 	out.UnmanagedContainerModel = UnmanagedContainerModel_FromProto(mapCtx, in.GetUnmanagedContainerModel())
 	out.InputConfig = BatchPredictionJob_InputConfig_FromProto(mapCtx, in.GetInputConfig())
 	out.InstanceConfig = BatchPredictionJob_InstanceConfig_FromProto(mapCtx, in.GetInstanceConfig())
 	out.ModelParameters = Value_FromProto(mapCtx, in.GetModelParameters())
 	out.OutputConfig = BatchPredictionJob_OutputConfig_FromProto(mapCtx, in.GetOutputConfig())
 	out.DedicatedResources = batchDedicatedResources_v1_FromProto(mapCtx, in.GetDedicatedResources())
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
 	out.ManualBatchTuningParameters = ManualBatchTuningParameters_FromProto(mapCtx, in.GetManualBatchTuningParameters())
 	out.GenerateExplanation = direct.LazyPtr(in.GetGenerateExplanation())
 	out.ExplanationSpec = explanationSpecWithRequired_v1_FromProto(mapCtx, in.GetExplanationSpec())
-	out.Labels = in.Labels
 	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
 	out.DisableContainerLogging = direct.LazyPtr(in.GetDisableContainerLogging())
 	return out
@@ -95,20 +100,75 @@ func AIPlatformBatchPredictionJobSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	out := &pb.BatchPredictionJob{}
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Model = direct.ValueOf(in.Model)
+	if in.ModelRef != nil {
+		out.Model = in.ModelRef.External
+	}
 	out.UnmanagedContainerModel = UnmanagedContainerModel_ToProto(mapCtx, in.UnmanagedContainerModel)
 	out.InputConfig = BatchPredictionJob_InputConfig_ToProto(mapCtx, in.InputConfig)
 	out.InstanceConfig = BatchPredictionJob_InstanceConfig_ToProto(mapCtx, in.InstanceConfig)
 	out.ModelParameters = Value_ToProto(mapCtx, in.ModelParameters)
 	out.OutputConfig = BatchPredictionJob_OutputConfig_ToProto(mapCtx, in.OutputConfig)
 	out.DedicatedResources = batchDedicatedResources_v1_ToProto(mapCtx, in.DedicatedResources)
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
 	out.ManualBatchTuningParameters = ManualBatchTuningParameters_ToProto(mapCtx, in.ManualBatchTuningParameters)
 	out.GenerateExplanation = direct.ValueOf(in.GenerateExplanation)
 	out.ExplanationSpec = explanationSpecWithRequired_v1_ToProto(mapCtx, in.ExplanationSpec)
-	out.Labels = in.Labels
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
 	out.DisableContainerLogging = direct.ValueOf(in.DisableContainerLogging)
+	return out
+}
+
+func VertexMultimodalDatasetSource_FromProto(mapCtx *direct.MapContext, in *pb.VertexMultimodalDatasetSource) *krm.VertexMultimodalDatasetSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexMultimodalDatasetSource{}
+	if in.GetDatasetName() != "" {
+		out.DatasetRef = &vertexaiv1beta1.VertexAIDatasetRef{External: in.GetDatasetName()}
+	}
+	return out
+}
+
+func VertexMultimodalDatasetSource_ToProto(mapCtx *direct.MapContext, in *krm.VertexMultimodalDatasetSource) *pb.VertexMultimodalDatasetSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VertexMultimodalDatasetSource{}
+	if in.DatasetRef != nil {
+		out.DatasetName = in.DatasetRef.External
+	}
+	return out
+}
+
+func BatchPredictionJob_InputConfig_FromProto(mapCtx *direct.MapContext, in *pb.BatchPredictionJob_InputConfig) *krm.BatchPredictionJob_InputConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BatchPredictionJob_InputConfig{}
+	out.GCSSource = GCSSourceWithRequired_FromProto(mapCtx, in.GetGcsSource())
+	out.BigquerySource = BigQuerySourceWithRequired_FromProto(mapCtx, in.GetBigquerySource())
+	out.VertexMultimodalDatasetSource = VertexMultimodalDatasetSource_FromProto(mapCtx, in.GetVertexMultimodalDatasetSource())
+	out.InstancesFormat = direct.LazyPtr(in.GetInstancesFormat())
+	return out
+}
+
+func BatchPredictionJob_InputConfig_ToProto(mapCtx *direct.MapContext, in *krm.BatchPredictionJob_InputConfig) *pb.BatchPredictionJob_InputConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BatchPredictionJob_InputConfig{}
+	if oneof := GCSSourceWithRequired_ToProto(mapCtx, in.GCSSource); oneof != nil {
+		out.Source = &pb.BatchPredictionJob_InputConfig_GcsSource{GcsSource: oneof}
+	}
+	if oneof := BigQuerySourceWithRequired_ToProto(mapCtx, in.BigquerySource); oneof != nil {
+		out.Source = &pb.BatchPredictionJob_InputConfig_BigquerySource{BigquerySource: oneof}
+	}
+	if oneof := VertexMultimodalDatasetSource_ToProto(mapCtx, in.VertexMultimodalDatasetSource); oneof != nil {
+		out.Source = &pb.BatchPredictionJob_InputConfig_VertexMultimodalDatasetSource{VertexMultimodalDatasetSource: oneof}
+	}
+	out.InstancesFormat = direct.ValueOf(in.InstancesFormat)
 	return out
 }
 

@@ -366,3 +366,19 @@
      - Added `AIPlatformBatchPredictionJob` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
      - Synchronized `alpha-missingfields.txt`, `refs_not_representable.txt`, and removed the obsolete stub entry from `naming_violations.txt`.
 - **Impact**: Cleanly scaffolds `AIPlatformBatchPredictionJob` direct KRM types, identity, reference, CRD, and opens untriaged entries in `judgement_queue.yaml` ready for Step 1b.
+
+### [2026-11-15] Greenfield Step 1b: Triaging Judgement Queue and Finalizing Direct KRM Types and Identity for AIPlatformBatchPredictionJob
+- **Context**: Greenfield Step 1b judgement queue triage and finalization for `AIPlatformBatchPredictionJob` under `aiplatform.cnrm.cloud.google.com/v1alpha1` (Issue #15780).
+- **Implementation & Learnings**:
+  1. **Regional Project-Parented Resource**: Inlined `*parent.ProjectAndLocationRef` in `AIPlatformBatchPredictionJobSpec`, replacing separate `ProjectRef` and `Location` fields. Retained server-generated `ResourceID` comment (`// Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.`) confirming `identity.ServerGeneratedIdentity`.
+  2. **Top-Level Labels and Resource Docs Link**: Removed `Labels` map from `AIPlatformBatchPredictionJobSpec` per KRM top-level labels convention (reconciled via `metadata.labels`), and updated `resource-docs` link to `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.batchPredictionJobs`.
+  3. **References Finalized**:
+     - Modeled `modelRef` as `*AIPlatformModelRef` (with support for custom models, regional publisher models, and global publisher models).
+     - Modeled `serviceAccountRef` as `*refsv1beta1.IAMServiceAccountRef`.
+     - Moved `VertexMultimodalDatasetSource` to `aiplatformbatchpredictionjob_types.go` and modeled `datasetRef` as `*vertexaiv1beta1.VertexAIDatasetRef`.
+  4. **Mapper Updates**:
+     - Updated `AIPlatformBatchPredictionJobSpec_FromProto` and `AIPlatformBatchPredictionJobSpec_ToProto` in `aiplatformbatchpredictionjob_mapper.go` to handle `ModelRef` and `ServiceAccountRef`, and removed `Labels` assignment.
+     - Added `VertexMultimodalDatasetSource_FromProto`, `VertexMultimodalDatasetSource_ToProto`, `BatchPredictionJob_InputConfig_FromProto`, and `BatchPredictionJob_InputConfig_ToProto` to properly convert the oneof dataset source and `DatasetRef`.
+  5. **Judgement Queue Triaged**: Triaged all 36 entries for `AIPlatformBatchPredictionJob` in `apis/aiplatform/judgement_queue.yaml` (editing parent, docs link, modelRef, serviceAccountRef, datasetRef; accepting non-representable URIs and shared structs; deferring well-known proto types).
+- **Impact**: `AIPlatformBatchPredictionJob` KRM types, identity, references, CRD, and mapper functions are fully finalized, verified with 100% passing tests across `apichecks` and service unit tests.
+
