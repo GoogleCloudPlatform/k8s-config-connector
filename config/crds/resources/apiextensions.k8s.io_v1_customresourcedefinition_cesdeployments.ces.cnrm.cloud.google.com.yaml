@@ -61,12 +61,37 @@ spec:
           spec:
             description: CESDeploymentSpec defines the desired state of CESDeployment
             properties:
-              appVersion:
+              appVersionRef:
                 description: 'Optional. The resource name of the app version to deploy.
                   Format: `projects/{project}/locations/{location}/apps/{app}/versions/{version}`
                   Use `projects/{project}/locations/{location}/apps/{app}/versions/-`
                   to use the draft app.'
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed CesAppVersion
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/apps/{{appID}}/versions/{{versionID}}".
+                    type: string
+                  name:
+                    description: The name of a CesAppVersion resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a CesAppVersion resource.
+                    type: string
+                type: object
               channelProfile:
                 description: Required. The channel profile used in the deployment.
                 properties:
@@ -144,11 +169,8 @@ spec:
               displayName:
                 description: Required. Display name of the deployment.
                 type: string
-              location:
-                description: The location of this resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The CESApp this CESDeployment is created under.
                 oneOf:
                 - not:
                     required:
@@ -165,20 +187,19 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed CESApp resource.
+                      Should be in the format "projects/{{projectID}}/locations/{{location}}/apps/{{appID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a CESApp resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a CESApp resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The CESDeployment name. If not given, the metadata.name
                   will be used.
@@ -186,8 +207,7 @@ spec:
             required:
             - channelProfile
             - displayName
-            - location
-            - projectRef
+            - parentRef
             type: object
           status:
             description: CESDeploymentStatus defines the config connector machine

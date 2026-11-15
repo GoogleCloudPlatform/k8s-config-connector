@@ -396,7 +396,9 @@ func CESDeploymentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Deployment) *
 	out := &krm.CESDeploymentSpec{}
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.AppVersion = direct.LazyPtr(in.GetAppVersion())
+	if in.GetAppVersion() != "" {
+		out.AppVersionRef = &krm.CesAppVersionRef{External: in.GetAppVersion()}
+	}
 	out.ChannelProfile = ChannelProfile_FromProto(mapCtx, in.GetChannelProfile())
 	return out
 }
@@ -407,7 +409,9 @@ func CESDeploymentSpec_ToProto(mapCtx *direct.MapContext, in *krm.CESDeploymentS
 	out := &pb.Deployment{}
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.AppVersion = direct.ValueOf(in.AppVersion)
+	if in.AppVersionRef != nil {
+		out.AppVersion = in.AppVersionRef.External
+	}
 	out.ChannelProfile = ChannelProfile_ToProto(mapCtx, in.ChannelProfile)
 	return out
 }

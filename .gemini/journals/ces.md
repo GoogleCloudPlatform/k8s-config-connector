@@ -48,5 +48,15 @@
   3. Generated `cesdeployment_identity.generated.go`, `cesdeployment_reference.generated.go`, and conformance tests cleanly.
   4. Updated `dev/tasks/build-release-bundle` with `CESDeployment` in `BLOCKED_KINDS` and updated `alpha-missingfields.txt` and `kind_name_violations.txt`.
 
+### [2026-11-15] Triaging Judgement Queue and Finalizing CESDeployment Direct Types
+- **Context**: Triaging `apis/ces/judgement_queue.yaml` entries and finalizing direct KRM types and identity for `CESDeployment` (`ces.cnrm.cloud.google.com/v1alpha1`).
+- **Decisions**:
+  1. Replaced separate `projectRef` and `location` fields on `CESDeploymentSpec` with required immutable `parentRef *CESAppRef` following `go/kcc-oneparent` and Case B of `PARENT_AND_IDENTITY.md`.
+  2. Converted GCP reference `appVersion` (`ces.googleapis.com/AppVersion`) to `appVersionRef *CesAppVersionRef`, backed by external-only `CesAppVersionIdentity` and `CesAppVersionRef` in `apis/ces/v1alpha1/cesappversion_identity.go` and `apis/ces/v1alpha1/cesappversion_reference.go`.
+  3. Resolved `channelProfile.profileID` as `not-applicable` because it is an inline profile identifier rather than an external GCP resource reference.
+  4. Resolved all open `CESDeployment` entries in `apis/ces/judgement_queue.yaml`.
+  5. Regenerated CRDs, mappers, deepcopy methods, and updated `alpha-missingfields.txt` and `naming_violations.txt` exceptions.
+
+
 
 
