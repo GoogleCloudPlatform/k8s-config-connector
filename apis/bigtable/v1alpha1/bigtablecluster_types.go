@@ -66,6 +66,7 @@ type Cluster_EncryptionConfig struct {
 
 // BigtableClusterSpec defines the desired state of BigtableCluster
 // +kcc:spec:proto=google.bigtable.admin.v2.Cluster
+// +kcc:required-from-proto
 type BigtableClusterSpec struct {
 	BigtableClusterParent `json:",inline"`
 

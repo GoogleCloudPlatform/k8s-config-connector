@@ -44,9 +44,7 @@ func AppProfile_DataBoostIsolationReadOnly_v1beta1_ToProto(mapCtx *direct.MapCon
 		return nil
 	}
 	out := &pb.AppProfile_DataBoostIsolationReadOnly{}
-	if oneof := AppProfile_DataBoostIsolationReadOnly_ComputeBillingOwner_ToProto(mapCtx, in.ComputeBillingOwner); oneof != nil {
-		out.ComputeBillingOwner = oneof
-	}
+	out.ComputeBillingOwner = direct.EnumPtr_ToProto[pb.AppProfile_DataBoostIsolationReadOnly_ComputeBillingOwner](mapCtx, in.ComputeBillingOwner)
 	return out
 }
 func AppProfile_SingleClusterRouting_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_SingleClusterRouting) *krmbigtablev1beta1.AppProfile_SingleClusterRouting {
@@ -73,6 +71,7 @@ func AppProfile_StandardIsolation_v1beta1_FromProto(mapCtx *direct.MapContext, i
 	}
 	out := &krmbigtablev1beta1.AppProfile_StandardIsolation{}
 	out.Priority = direct.Enum_FromProto(mapCtx, in.GetPriority())
+	// MISSING: MemoryConfig
 	return out
 }
 func AppProfile_StandardIsolation_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.AppProfile_StandardIsolation) *pb.AppProfile_StandardIsolation {
@@ -81,6 +80,21 @@ func AppProfile_StandardIsolation_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	}
 	out := &pb.AppProfile_StandardIsolation{}
 	out.Priority = direct.Enum_ToProto[pb.AppProfile_Priority](mapCtx, in.Priority)
+	// MISSING: MemoryConfig
+	return out
+}
+func AppProfile_StandardIsolation_MemoryConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_StandardIsolation_MemoryConfig) *krmbigtablev1beta1.AppProfile_StandardIsolation_MemoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigtablev1beta1.AppProfile_StandardIsolation_MemoryConfig{}
+	return out
+}
+func AppProfile_StandardIsolation_MemoryConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.AppProfile_StandardIsolation_MemoryConfig) *pb.AppProfile_StandardIsolation_MemoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AppProfile_StandardIsolation_MemoryConfig{}
 	return out
 }
 func AuthorizedView_SubsetView_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedView_SubsetView) *krmbigtablev1alpha1.AuthorizedView_SubsetView {
@@ -183,6 +197,52 @@ func BigtableAppProfileObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	// MISSING: Priority
 	return out
 }
+
+/* found existing non-generated mapping function "BigtableAppProfileSpec_v1beta1_FromProto", skipping
+func BigtableAppProfileSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krmbigtablev1beta1.BigtableAppProfileSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigtablev1beta1.BigtableAppProfileSpec{}
+	// MISSING: Name
+	// MISSING: Etag
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.MultiClusterRoutingUseAny = bool_v1beta1_FromProto(mapCtx, in.GetMultiClusterRoutingUseAny())
+	out.SingleClusterRouting = AppProfile_SingleClusterRouting_v1beta1_FromProto(mapCtx, in.GetSingleClusterRouting())
+	// MISSING: Priority
+	out.StandardIsolation = AppProfile_StandardIsolation_v1beta1_FromProto(mapCtx, in.GetStandardIsolation())
+	out.DataBoostIsolationReadOnly = AppProfile_DataBoostIsolationReadOnly_v1beta1_FromProto(mapCtx, in.GetDataBoostIsolationReadOnly())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "BigtableAppProfileSpec_v1beta1_ToProto", skipping
+
+	func BigtableAppProfileSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.BigtableAppProfileSpec) *pb.AppProfile {
+		if in == nil {
+			return nil
+		}
+		out := &pb.AppProfile{}
+		// MISSING: Name
+		// MISSING: Etag
+		out.Description = direct.ValueOf(in.Description)
+		if oneof := bool_v1beta1_ToProto(mapCtx, in.MultiClusterRoutingUseAny); oneof != nil {
+			out.RoutingPolicy = &pb.AppProfile_MultiClusterRoutingUseAny_{MultiClusterRoutingUseAny: oneof}
+		}
+		if oneof := AppProfile_SingleClusterRouting_v1beta1_ToProto(mapCtx, in.SingleClusterRouting); oneof != nil {
+			out.RoutingPolicy = &pb.AppProfile_SingleClusterRouting_{SingleClusterRouting: oneof}
+		}
+		// MISSING: Priority
+		if oneof := AppProfile_StandardIsolation_v1beta1_ToProto(mapCtx, in.StandardIsolation); oneof != nil {
+			out.Isolation = &pb.AppProfile_StandardIsolation_{StandardIsolation: oneof}
+		}
+		if oneof := AppProfile_DataBoostIsolationReadOnly_v1beta1_ToProto(mapCtx, in.DataBoostIsolationReadOnly); oneof != nil {
+			out.Isolation = &pb.AppProfile_DataBoostIsolationReadOnly_{DataBoostIsolationReadOnly: oneof}
+		}
+		return out
+	}
+*/
 func BigtableAuthorizedViewSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedView) *krmbigtablev1alpha1.BigtableAuthorizedViewSpec {
 	if in == nil {
 		return nil
@@ -311,6 +371,40 @@ func BigtableClusterSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigt
 	out.EncryptionConfig = Cluster_EncryptionConfig_v1alpha1_ToProto(mapCtx, in.EncryptionConfig)
 	return out
 }
+
+/* found existing non-generated mapping function "BigtableGCPolicySpec_v1beta1_FromProto", skipping
+func BigtableGCPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GcRule) *krmbigtablev1beta1.BigtableGCPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigtablev1beta1.BigtableGCPolicySpec{}
+	// MISSING: MaxNumVersions
+	if v := in.GetMaxAge(); v != nil {
+		out.MaxAge = []krmbigtablev1beta1.GcpolicyMaxAge{direct.StringDuration_FromProto(mapCtx, v)}
+	}
+	// MISSING: Intersection
+	// MISSING: Union
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "BigtableGCPolicySpec_v1beta1_ToProto", skipping
+
+	func BigtableGCPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.BigtableGCPolicySpec) *pb.GcRule {
+		if in == nil {
+			return nil
+		}
+		out := &pb.GcRule{}
+		// MISSING: MaxNumVersions
+		if len(in.MaxAge) > 0 && in.MaxAge[0] != nil {
+			out.MaxAge = direct.StringDuration_ToProto(mapCtx, in.MaxAge[0])
+		}
+		// MISSING: Intersection
+		// MISSING: Union
+		return out
+	}
+*/
 func BigtableInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmbigtablev1beta1.BigtableInstanceSpec {
 	if in == nil {
 		return nil
@@ -389,6 +483,60 @@ func BigtableMaterializedViewSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	out.DeletionProtection = direct.ValueOf(in.DeletionProtection)
 	return out
 }
+
+/* found existing non-generated mapping function "BigtableMemoryLayerObservedState_v1alpha1_FromProto", skipping
+func BigtableMemoryLayerObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MemoryLayer) *krmbigtablev1alpha1.BigtableMemoryLayerObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigtablev1alpha1.BigtableMemoryLayerObservedState{}
+	// MISSING: Name
+	out.MemoryConfig = MemoryLayer_MemoryConfigObservedState_v1alpha1_FromProto(mapCtx, in.GetMemoryConfig())
+	// MISSING: Etag
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "BigtableMemoryLayerObservedState_v1alpha1_ToProto", skipping
+func BigtableMemoryLayerObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1alpha1.BigtableMemoryLayerObservedState) *pb.MemoryLayer {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MemoryLayer{}
+	// MISSING: Name
+	out.MemoryConfig = MemoryLayer_MemoryConfigObservedState_v1alpha1_ToProto(mapCtx, in.MemoryConfig)
+	// MISSING: Etag
+	out.State = direct.Enum_ToProto[pb.MemoryLayer_State](mapCtx, in.State)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "BigtableMemoryLayerSpec_v1alpha1_FromProto", skipping
+func BigtableMemoryLayerSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MemoryLayer) *krmbigtablev1alpha1.BigtableMemoryLayerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigtablev1alpha1.BigtableMemoryLayerSpec{}
+	// MISSING: Name
+	// MISSING: Etag
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "BigtableMemoryLayerSpec_v1alpha1_ToProto", skipping
+
+	func BigtableMemoryLayerSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1alpha1.BigtableMemoryLayerSpec) *pb.MemoryLayer {
+		if in == nil {
+			return nil
+		}
+		out := &pb.MemoryLayer{}
+		// MISSING: Name
+		// MISSING: Etag
+		return out
+	}
+*/
 func BigtableSchemaBundleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SchemaBundle) *krmbigtablev1alpha1.BigtableSchemaBundleSpec {
 	if in == nil {
 		return nil
@@ -413,6 +561,92 @@ func BigtableSchemaBundleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: Etag
 	return out
 }
+
+/* found existing non-generated mapping function "BigtableTableObservedState_v1beta1_FromProto", skipping
+func BigtableTableObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table) *krmbigtablev1beta1.BigtableTableObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigtablev1beta1.BigtableTableObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	if in.ClusterStates != nil {
+		out.ClusterStates = make(map[string]krmbigtablev1beta1.Table_ClusterState, len(in.ClusterStates))
+		for k, v := range in.ClusterStates {
+			if c := Table_ClusterState_v1beta1_FromProto(mapCtx, v); c != nil {
+				out.ClusterStates[k] = *c
+			}
+		}
+	}
+	// MISSING: ColumnFamilies
+	// MISSING: Granularity
+	out.RestoreInfo = RestoreInfo_v1beta1_FromProto(mapCtx, in.GetRestoreInfo())
+	// MISSING: ChangeStreamConfig
+	// MISSING: TieredStorageConfig
+	// MISSING: RowKeySchema
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "BigtableTableObservedState_v1beta1_ToProto", skipping
+func BigtableTableObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.BigtableTableObservedState) *pb.Table {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Table{}
+	out.Name = direct.ValueOf(in.Name)
+	if in.ClusterStates != nil {
+		out.ClusterStates = make(map[string]*pb.Table_ClusterState, len(in.ClusterStates))
+		for k, v := range in.ClusterStates {
+			out.ClusterStates[k] = Table_ClusterState_v1beta1_ToProto(mapCtx, &v)
+		}
+	}
+	// MISSING: ColumnFamilies
+	// MISSING: Granularity
+	out.RestoreInfo = RestoreInfo_v1beta1_ToProto(mapCtx, in.RestoreInfo)
+	// MISSING: ChangeStreamConfig
+	// MISSING: TieredStorageConfig
+	// MISSING: RowKeySchema
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "BigtableTableSpec_v1beta1_FromProto", skipping
+func BigtableTableSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table) *krmbigtablev1beta1.BigtableTableSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigtablev1beta1.BigtableTableSpec{}
+	// MISSING: ColumnFamilies
+	// MISSING: Granularity
+	// MISSING: ChangeStreamConfig
+	out.DeletionProtection = direct.LazyPtr(in.GetDeletionProtection())
+	out.AutomatedBackupPolicy = Table_AutomatedBackupPolicy_v1beta1_FromProto(mapCtx, in.GetAutomatedBackupPolicy())
+	// MISSING: TieredStorageConfig
+	// MISSING: RowKeySchema
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "BigtableTableSpec_v1beta1_ToProto", skipping
+
+	func BigtableTableSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.BigtableTableSpec) *pb.Table {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Table{}
+		// MISSING: ColumnFamilies
+		// MISSING: Granularity
+		// MISSING: ChangeStreamConfig
+		out.DeletionProtection = direct.ValueOf(in.DeletionProtection)
+		if oneof := Table_AutomatedBackupPolicy_v1beta1_ToProto(mapCtx, in.AutomatedBackupPolicy); oneof != nil {
+			out.AutomatedBackupConfig = &pb.Table_AutomatedBackupPolicy_{AutomatedBackupPolicy: oneof}
+		}
+		// MISSING: TieredStorageConfig
+		// MISSING: RowKeySchema
+		return out
+	}
+*/
 func ChangeStreamConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ChangeStreamConfig) *krmbigtablev1beta1.ChangeStreamConfig {
 	if in == nil {
 		return nil
@@ -505,6 +739,56 @@ func EncryptionInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1
 	// (near miss): "KMSKeyVersion" vs "KmsKeyVersion"
 	return out
 }
+
+/* found existing non-generated mapping function "EncryptionInfoObservedState_v1alpha1_FromProto", skipping
+func EncryptionInfoObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krmbigtablev1alpha1.EncryptionInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigtablev1alpha1.EncryptionInfoObservedState{}
+	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
+	out.EncryptionStatus = direct.Status_FromProto(mapCtx, in.GetEncryptionStatus())
+	out.KMSKeyVersion = direct.LazyPtr(in.GetKmsKeyVersion())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "EncryptionInfoObservedState_v1alpha1_ToProto", skipping
+func EncryptionInfoObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1alpha1.EncryptionInfoObservedState) *pb.EncryptionInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionInfo{}
+	out.EncryptionType = direct.Enum_ToProto[pb.EncryptionInfo_EncryptionType](mapCtx, in.EncryptionType)
+	out.EncryptionStatus = direct.Status_ToProto(mapCtx, in.EncryptionStatus)
+	out.KmsKeyVersion = direct.ValueOf(in.KMSKeyVersion)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "MemoryLayer_MemoryConfigObservedState_v1alpha1_FromProto", skipping
+func MemoryLayer_MemoryConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MemoryLayer_MemoryConfig) *krmbigtablev1alpha1.MemoryLayer_MemoryConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigtablev1alpha1.MemoryLayer_MemoryConfigObservedState{}
+	out.StorageSizeGib = direct.LazyPtr(in.GetStorageSizeGib())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "MemoryLayer_MemoryConfigObservedState_v1alpha1_ToProto", skipping
+
+	func MemoryLayer_MemoryConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1alpha1.MemoryLayer_MemoryConfigObservedState) *pb.MemoryLayer_MemoryConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.MemoryLayer_MemoryConfig{}
+		out.StorageSizeGib = direct.ValueOf(in.StorageSizeGib)
+		return out
+	}
+*/
 func ProtoSchema_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ProtoSchema) *krmbigtablev1alpha1.ProtoSchema {
 	if in == nil {
 		return nil

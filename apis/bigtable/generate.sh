@@ -41,16 +41,29 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version bigtable.cnrm.cloud.google.com/v1alpha1  \
   --resource BigtableAuthorizedView:AuthorizedView \
   --resource BigtableBackup:Backup \
-  --resource BigtableCluster:Cluster \
   --resource BigtableLogicalView:LogicalView \
   --resource BigtableMaterializedView:MaterializedView \
   --resource BigtableSchemaBundle:SchemaBundle \
   --proto-source-path ${PROTO_OUT}
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.bigtable.admin.v2 \
+  --api-version bigtable.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource \
+  --resource BigtableCluster:Cluster \
+  --proto-source-path ${PROTO_OUT}
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.bigtable.admin.v2 \
+  --api-version bigtable.cnrm.cloud.google.com/v1alpha1 \
+  --resource BigtableCluster:Cluster \
+  --proto-source-path ${PROTO_OUT}
+
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.bigtable.admin.v2 \
-  --api-version bigtable.cnrm.cloud.google.com/v1beta1  \
+  --api-version bigtable.cnrm.cloud.google.com/v1beta1 \
   --resource BigtableAppProfile:AppProfile \
   --resource BigtableTable:Table \
   --resource BigtableGCPolicy:GcRule \
@@ -60,6 +73,8 @@ ${CONTROLLERBUILDER} generate-mapper \
   --service google.bigtable.admin.v2 \
   --api-version "bigtable.cnrm.cloud.google.com/v1beta1" \
   --multiversion \
+  --include-skipped-output \
+  --prepopulate-resource \
   --proto-source-path ${PROTO_OUT}
 
 cd ${REPO_ROOT}
