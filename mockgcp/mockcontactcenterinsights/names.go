@@ -54,6 +54,43 @@ func (s *MockService) parseQaScorecardName(name string) (*qaScorecardName, error
 	}
 }
 
+type qaScorecardRevisionName struct {
+	Project     *projects.ProjectData
+	Location    string
+	QaScorecard string
+	Revision    string
+}
+
+func (n *qaScorecardRevisionName) String() string {
+	return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/locations/" + n.Location + "/qaScorecards/" + n.QaScorecard + "/revisions/" + n.Revision
+}
+
+func (n *qaScorecardRevisionName) ParentString() string {
+	return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/locations/" + n.Location + "/qaScorecards/" + n.QaScorecard
+}
+
+// parseQaScorecardRevisionName parses a string into a qaScorecardRevisionName.
+// The expected form is projects/<projectID>/locations/<location>/qaScorecards/<qaScorecard>/revisions/<revision>
+func (s *MockService) parseQaScorecardRevisionName(name string) (*qaScorecardRevisionName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "qaScorecards" && tokens[6] == "revisions" {
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &qaScorecardRevisionName{
+			Project:     project,
+			Location:    tokens[3],
+			QaScorecard: tokens[5],
+			Revision:    tokens[7],
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
 type phraseMatcherName struct {
 	Project       *projects.ProjectData
 	Location      string

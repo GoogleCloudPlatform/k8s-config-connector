@@ -130,7 +130,6 @@ BLOCKED_KINDS=(
     "CCInsightsIssueModel"
     "CCInsightsQaQuestion"
     "CCInsightsQAScorecard"
-    "CCInsightsQAScorecardRevision"
     "CCInsightsView"
     "CertificateManagerTrustConfig"
     "CesAgent"

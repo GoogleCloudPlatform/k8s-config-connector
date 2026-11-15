@@ -32,6 +32,7 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath("activationUpdateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath("revisionCreateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath("startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath("endTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath("messageTime", "1970-01-01T00:00:01Z")
 
 	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
@@ -39,7 +40,22 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".activationUpdateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".revisionCreateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.endTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".messageTime", "1970-01-01T00:00:01Z")
+
+	replacements.ReplacePath(".snapshot.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".snapshot.updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".status.observedState.snapshot.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".status.observedState.snapshot.updateTime", mockgcpregistry.PlaceholderTimestamp)
+
+	replacements.ReplacePath(".qaScorecardRevisions[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".qaScorecardRevisions[].snapshot.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".qaScorecardRevisions[].snapshot.updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.qaScorecardRevisions[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.qaScorecardRevisions[].snapshot.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.qaScorecardRevisions[].snapshot.updateTime", mockgcpregistry.PlaceholderTimestamp)
 
 	replacements.RemovePath("source")
 	replacements.RemovePath(".source")

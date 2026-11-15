@@ -550,6 +550,7 @@ func cleanURL(u string) string {
 	u = regexp.MustCompile(`/instanceGroupManagers/gke-.*-grp`).ReplaceAllString(u, "/instanceGroupManagers/gke-containercluster-normalized-grp")
 	u = regexp.MustCompile(`/contacts/[0-9]+`).ReplaceAllString(u, "/contacts/${contactID}")
 	u = regexp.MustCompile(`/agents/[0-9a-fA-F-]+`).ReplaceAllString(u, "/agents/${agentID}")
+	u = regexp.MustCompile(`/revisions/[0-9]+`).ReplaceAllString(u, "/revisions/${qaScorecardRevisionID}")
 	return u
 }
 
