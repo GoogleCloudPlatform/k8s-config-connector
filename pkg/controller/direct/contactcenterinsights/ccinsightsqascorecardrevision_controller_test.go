@@ -20,6 +20,8 @@ import (
 
 	contactcenterinsightspb "cloud.google.com/go/contactcenterinsights/apiv1/contactcenterinsightspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/contactcenterinsights/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
@@ -137,5 +139,45 @@ func TestIsInitialScorecardRevision(t *testing.T) {
 				t.Errorf("isInitialScorecardRevision() = %v, want %v", got, tc.want)
 			}
 		})
+	}
+}
+
+func TestCCInsightsQAScorecardRevision_UpdateSnapshotNormalization(t *testing.T) {
+	ctx := context.Background()
+
+	desired := &krm.CCInsightsQAScorecardRevisionSpec{
+		Snapshot: &krm.QaScorecard{
+			DisplayName: direct.LazyPtr("Scorecard Snapshot Minimal 123"),
+		},
+	}
+
+	actual := &contactcenterinsightspb.QaScorecardRevision{
+		Name: "projects/test-project/locations/us-central1/qaScorecards/scorecard-123/revisions/rev-456",
+		Snapshot: &contactcenterinsightspb.QaScorecard{
+			DisplayName: "Scorecard for revision 123",
+		},
+	}
+
+	normalize := func(ctx context.Context, pb *contactcenterinsightspb.QaScorecardRevision) error {
+		if actual != nil {
+			pb.Snapshot = actual.GetSnapshot()
+		}
+		return nil
+	}
+
+	_, report, updateMask, err := common.CompareGreenfieldSpec(
+		ctx,
+		desired,
+		actual,
+		CCInsightsQAScorecardRevisionSpec_FromProto,
+		CCInsightsQAScorecardRevisionSpec_ToProto,
+		normalize,
+	)
+	if err != nil {
+		t.Fatalf("CompareGreenfieldSpec failed: %v", err)
+	}
+
+	if report.HasDiff() {
+		t.Errorf("expected no diff after normalization, got diff on paths: %v", updateMask.Paths)
 	}
 }

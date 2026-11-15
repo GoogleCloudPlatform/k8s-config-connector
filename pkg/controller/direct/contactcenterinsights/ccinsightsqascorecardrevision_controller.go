@@ -191,13 +191,23 @@ func (a *QaScorecardRevisionAdapter) Update(ctx context.Context, updateOp *direc
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating QaScorecardRevision", "name", a.id)
 
+	normalize := func(ctx context.Context, pb *contactcenterinsightspb.QaScorecardRevision) error {
+		// GCP automatically populates snapshot from the parent QaScorecard upon revision creation,
+		// and revisions are immutable in GCP. Adopt the server-set snapshot during comparison
+		// so re-reconciliation does not falsely report an unsupported update error.
+		if a.actual != nil {
+			pb.Snapshot = a.actual.GetSnapshot()
+		}
+		return nil
+	}
+
 	_, report, updateMask, err := common.CompareGreenfieldSpec(
 		ctx,
 		&a.desired.Spec,
 		a.actual,
 		CCInsightsQAScorecardRevisionSpec_FromProto,
 		CCInsightsQAScorecardRevisionSpec_ToProto,
-		nil,
+		normalize,
 	)
 	if err != nil {
 		return err
