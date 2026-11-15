@@ -187,4 +187,19 @@
   5. Updated `alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...`.
 - **Impact**: All unit tests, conformance tests, and apichecks pass cleanly without manual edits to `dataplexpartition_types.go` or `apis/dataplex/judgement_queue.yaml`.
 
+### [2026-11-15] Triage Judgement Queue and Finalize Direct KRM Types for DataplexPartition
+- **Context**: Triaging judgement queue and finalizing KRM types, identity, and references for `DataplexPartition` under `v1alpha1` (#15776).
+- **Problem**:
+  1. `DataplexPartition` is a child resource under `DataplexEntity` (`projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/entities/{entity}/partitions/{partition}`). Initial mechanical scaffolding generated `projectRef`, while the parent hierarchy needed to be consolidated into a single required immutable `parentRef` (`*DataplexEntityRef`).
+  2. The proto defines `string location = 3;`, which represents the entity data location path within the partition (GCS URI or BigQuery table path). This field is kept as a plain string rather than a location/region reference.
+  3. `CreatePartitionRequest` has no `partition_id` parameter and `Partition.name` is output-only (derived from double-encoded partition values by GCP), conforming to `identity.ServerGeneratedIdentity`.
+  4. `Partition` has no non-deprecated output-only fields, so `ObservedState` is commented out.
+- **Solution**:
+  1. Replaced `projectRef` with `parentRef *DataplexEntityRef` (`+required`, immutable via `self == oldSelf` CEL rule) in `DataplexPartitionSpec`.
+  2. Enforced `+required` on `Location *string` and `Values []string`.
+  3. Regenerated identity, types, CRDs, and mappers via `./apis/dataplex/generate.sh`.
+  4. Triaged all 8 entries for `DataplexPartition` in `apis/dataplex/judgement_queue.yaml` to `status: resolved`.
+  5. Updated `alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks -run TestCRDFieldPresenceInTestsForAlpha`.
+- **Impact**: All unit tests, conformance tests, and apichecks pass cleanly, adhering strictly to Greenfield Step 1b and single-parent standards.
+
 

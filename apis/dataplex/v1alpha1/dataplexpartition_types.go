@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,11 +30,14 @@ var DataplexPartitionGVK = GroupVersion.WithKind("DataplexPartition")
 // +kcc:spec:proto=google.cloud.dataplex.v1.Partition
 // +kcc:required-from-proto
 type DataplexPartitionSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	// The DataplexEntity that this partition belongs to.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *DataplexEntityRef `json:"parentRef"`
 
 	// The DataplexPartition name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Required. Immutable. The set of values representing the partition, which
 	//  correspond to the partition schema defined in the parent entity.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Partition.values

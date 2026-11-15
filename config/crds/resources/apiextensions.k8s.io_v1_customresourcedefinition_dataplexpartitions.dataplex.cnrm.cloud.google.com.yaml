@@ -66,8 +66,8 @@ spec:
                   within the partition, for example, `gs://bucket/path/to/entity/key1=value1/key2=value2`.
                   Or `projects/<project_id>/datasets/<dataset_id>/tables/<table_id>`
                 type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The DataplexEntity that this partition belongs to.
                 oneOf:
                 - not:
                     required:
@@ -84,20 +84,19 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed DataplexEntity
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/lakes/{{lakeID}}/zones/{{zone}}/entities/{{entityID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a DataplexEntity resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a DataplexEntity resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The DataplexPartition name. If not given, the metadata.name
                   will be used.
@@ -111,7 +110,7 @@ spec:
                 type: array
             required:
             - location
-            - projectRef
+            - parentRef
             - values
             type: object
           status:
