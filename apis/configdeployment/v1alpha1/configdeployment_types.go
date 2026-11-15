@@ -233,6 +233,21 @@ type DeploymentSource struct {
 	OutputName *string `json:"outputName,omitempty"`
 }
 
+// +kcc:proto=google.cloud.config.v1.DeploymentSource
+type DeploymentSourceWithRequired struct {
+	// Required. The source Deployment to import the output from.
+	// The source deployment must be in the same project and location.
+	// +kcc:proto:field=google.cloud.config.v1.DeploymentSource.deployment
+	// +required
+	DeploymentRef *ConfigDeploymentRef `json:"deploymentRef,omitempty"`
+
+	// Required. The name of the output variable in the source deployment's latest
+	//  successfully applied revision.
+	// +kcc:proto:field=google.cloud.config.v1.DeploymentSource.output_name
+	// +required
+	OutputName *string `json:"outputName,omitempty"`
+}
+
 type ArtifactsLocation struct {
 	// A reference to a StorageBucket resource.
 	BucketRef *storagev1beta1.StorageBucketRef `json:"bucketRef,omitempty"`

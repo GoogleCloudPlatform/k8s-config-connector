@@ -347,6 +347,28 @@ func DeploymentSource_ToProto(mapCtx *direct.MapContext, in *krm.DeploymentSourc
 	out.OutputName = direct.ValueOf(in.OutputName)
 	return out
 }
+func DeploymentSourceWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.DeploymentSource) *krm.DeploymentSourceWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DeploymentSourceWithRequired{}
+	if in.GetDeployment() != "" {
+		out.DeploymentRef = &krm.ConfigDeploymentRef{External: in.GetDeployment()}
+	}
+	out.OutputName = direct.LazyPtr(in.GetOutputName())
+	return out
+}
+func DeploymentSourceWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.DeploymentSourceWithRequired) *pb.DeploymentSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DeploymentSource{}
+	if in.DeploymentRef != nil {
+		out.Deployment = in.DeploymentRef.External
+	}
+	out.OutputName = direct.ValueOf(in.OutputName)
+	return out
+}
 
 /* found existing non-generated mapping function "DeploymentUnit_FromProto", skipping
 func DeploymentUnit_FromProto(mapCtx *direct.MapContext, in *pb.DeploymentUnit) *krm.DeploymentUnit {

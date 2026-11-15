@@ -82,16 +82,16 @@ entries:
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DeploymentSource in configdeployment_types.go is also used by ConfigDeployment. +required on DeploymentSource.DeploymentRef would apply there too. To enforce it for ConfigPreview only, give ConfigPreview its own copy of DeploymentSource. ConfigPreview is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional to maintain shared DeploymentSource compatibility with ConfigDeployment
+    resolution: edited
+    note: enforced on DeploymentSourceWithRequired
   - kind: ConfigPreview
     group: configdeployment.cnrm.cloud.google.com
     field: .spec.terraformBlueprint.externalValues.KEY.deploymentSource.outputName
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DeploymentSource in configdeployment_types.go is also used by ConfigDeployment. +required on DeploymentSource.OutputName would apply there too. To enforce it for ConfigPreview only, give ConfigPreview its own copy of DeploymentSource. ConfigPreview is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: resolved
-    resolution: accepted
-    note: kept optional to maintain shared DeploymentSource compatibility with ConfigDeployment
+    resolution: edited
+    note: enforced on DeploymentSourceWithRequired
   - kind: ConfigPreview
     group: configdeployment.cnrm.cloud.google.com
     field: .spec.terraformBlueprint.gcsSource
