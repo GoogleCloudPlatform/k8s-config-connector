@@ -74,21 +74,6 @@ func (i *AppEngineAuthorizedCertificateIdentity) ParentString() string {
 	return "apps/" + i.App
 }
 
-func getIdentityFromAppEngineAuthorizedCertificateSpec(ctx context.Context, reader client.Reader, obj *AppEngineAuthorizedCertificate) (*AppEngineAuthorizedCertificateIdentity, error) {
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-
-	// +kcc:guess reason=identity-root-unknown
-	app := ""
-	if app == "" {
-		return nil, fmt.Errorf("cannot resolve app for AppEngineAuthorizedCertificate")
-	}
-
-	return &AppEngineAuthorizedCertificateIdentity{
-		App:                   app,
-		AuthorizedCertificate: resourceID,
-	}, nil
-}
-
 func (obj *AppEngineAuthorizedCertificate) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
 	specIdentity, err := getIdentityFromAppEngineAuthorizedCertificateSpec(ctx, reader, obj)
 	if err != nil {

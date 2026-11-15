@@ -36,6 +36,11 @@ func AppEngineAuthorizedCertificateObservedState_v1alpha1_FromProto(mapCtx *dire
 	out := &krmappenginev1alpha1.AppEngineAuthorizedCertificateObservedState{}
 	// MISSING: Name
 	out.ID = direct.LazyPtr(in.GetId())
+	out.DomainNames = in.DomainNames
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	out.ManagedCertificate = ManagedCertificate_v1alpha1_FromProto(mapCtx, in.GetManagedCertificate())
+	out.VisibleDomainMappings = in.VisibleDomainMappings
+	out.DomainMappingsCount = direct.LazyPtr(in.GetDomainMappingsCount())
 	return out
 }
 func AppEngineAuthorizedCertificateObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.AppEngineAuthorizedCertificateObservedState) *pb.AuthorizedCertificate {
@@ -45,6 +50,11 @@ func AppEngineAuthorizedCertificateObservedState_v1alpha1_ToProto(mapCtx *direct
 	out := &pb.AuthorizedCertificate{}
 	// MISSING: Name
 	out.Id = direct.ValueOf(in.ID)
+	out.DomainNames = in.DomainNames
+	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
+	out.ManagedCertificate = ManagedCertificate_v1alpha1_ToProto(mapCtx, in.ManagedCertificate)
+	out.VisibleDomainMappings = in.VisibleDomainMappings
+	out.DomainMappingsCount = direct.ValueOf(in.DomainMappingsCount)
 	return out
 }
 func AppEngineAuthorizedCertificateSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedCertificate) *krmappenginev1alpha1.AppEngineAuthorizedCertificateSpec {
@@ -54,12 +64,7 @@ func AppEngineAuthorizedCertificateSpec_v1alpha1_FromProto(mapCtx *direct.MapCon
 	out := &krmappenginev1alpha1.AppEngineAuthorizedCertificateSpec{}
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.DomainNames = in.DomainNames
-	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	out.CertificateRawData = CertificateRawData_v1alpha1_FromProto(mapCtx, in.GetCertificateRawData())
-	out.ManagedCertificate = ManagedCertificate_v1alpha1_FromProto(mapCtx, in.GetManagedCertificate())
-	out.VisibleDomainMappings = in.VisibleDomainMappings
-	out.DomainMappingsCount = direct.LazyPtr(in.GetDomainMappingsCount())
 	return out
 }
 func AppEngineAuthorizedCertificateSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.AppEngineAuthorizedCertificateSpec) *pb.AuthorizedCertificate {
@@ -69,12 +74,7 @@ func AppEngineAuthorizedCertificateSpec_v1alpha1_ToProto(mapCtx *direct.MapConte
 	out := &pb.AuthorizedCertificate{}
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.DomainNames = in.DomainNames
-	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
 	out.CertificateRawData = CertificateRawData_v1alpha1_ToProto(mapCtx, in.CertificateRawData)
-	out.ManagedCertificate = ManagedCertificate_v1alpha1_ToProto(mapCtx, in.ManagedCertificate)
-	out.VisibleDomainMappings = in.VisibleDomainMappings
-	out.DomainMappingsCount = direct.ValueOf(in.DomainMappingsCount)
 	return out
 }
 func AppEngineDomainMappingSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DomainMapping) *krmappenginev1alpha1.AppEngineDomainMappingSpec {
