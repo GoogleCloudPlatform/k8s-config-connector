@@ -1,0 +1,51 @@
+apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1
+kind: DataplexEntity
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: dataplexentity-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  assetRef:
+    name: dataplexasset-${uniqueId}
+  dataPath: gs://dataplexbucket-${uniqueId}/data
+  description: Updated description
+  format:
+    mimeType: text/csv
+  id: entity_${uniqueId}
+  parentRef:
+    name: dataplexzone-${uniqueId}
+  schema:
+    fields:
+    - mode: REQUIRED
+      name: id
+      type: INT64
+    userManaged: true
+  system: CLOUD_STORAGE
+  type: TABLE
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/zones/dataplexzone-${uniqueId}/entities/entity_${uniqueId}
+  observedGeneration: 2
+  observedState:
+    access:
+      read: DIRECT
+    compatibility:
+      bigquery: {}
+      hiveMetastore:
+        compatible: true
+    createTime: "1970-01-01T00:00:00Z"
+    etag: abcdef123456
+    format:
+      format: CSV
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"

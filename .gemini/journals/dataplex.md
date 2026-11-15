@@ -161,3 +161,19 @@
   6. Regenerated CRD, mapper, controller, and fuzzer using `generate.sh` and one-shot `controllerbuilder generate-controller` / `generate-fuzzer`.
 - **Impact**: Conforms to Greenfield Step 1b conventions, passes all apichecks, unit tests, and round-trip fuzz tests (`FOCUS=DataplexEntity`).
 
+### [2026-11-15] Implement Greenfield DataplexEntity Controller, Fixtures, and Fuzzer
+- **Context**: Greenfield Step 2 implementation for DataplexEntity (direct controller, E2E fixtures, and fuzzer) under issue #15706.
+- **Problem**:
+  1. `GetEntityRequest` defaults to `View: BASIC`, which omits the schema in GCP responses. In `Find`, `View: dataplexpb.GetEntityRequest_FULL` must be explicitly requested so `actual.Schema` is returned and compared correctly.
+  2. `UpdateEntityRequest` and `DeleteEntityRequest` require `Etag` to be supplied; in `Update`, `resource.Etag = a.actual.Etag` must be set, and in `Delete`, `a.actual.Etag` (or fetching via `GetEntityRequest_BASIC` if `a.actual == nil`) must be passed.
+  3. `Entity.asset` in the GCP Dataplex API expects the short Asset ID (e.g. `dataplexasset-...`), not the full resource path (`projects/.../assets/...`). However, KCC reference normalization populates `spec.assetRef.external` with the full external path. In `dataplexentity_mapper.go`, `DataplexEntitySpec_ToProto` extracts `id.Asset` from `in.AssetRef.External` if it is a full path, and `DataplexEntitySpec_FromProto` reconstructs the full path when `in.GetName()` is present. For fuzzer tests where `in.GetName()` is empty, `in.GetAsset()` roundtrips cleanly.
+  4. GCP Dataplex CSV format `headerRows` only accepts 0 or 1; values > 1 result in `400 Bad Request` ("The header row must be 0 or 1").
+- **Solution**:
+  1. Updated `dataplexentity_controller.go` to use `View: dataplexpb.GetEntityRequest_FULL` in `Find`, supply `resource.Etag` in `Update`, and retrieve/pass `Etag` in `Delete`.
+  2. Isolated `DataplexEntitySpec_FromProto` and `DataplexEntitySpec_ToProto` in `pkg/controller/direct/dataplex/dataplexentity_mapper.go` with bidirectional asset reference mapping.
+  3. Created `dataplexentity-minimal` and `dataplexentity-maximal` E2E test suites with `DataplexLake`, `DataplexZone`, `StorageBucket`, and `DataplexAsset` dependencies.
+  4. Recorded authentic golden HTTP traffic and objects against real GCP (`cnrm-barni-4`) using `./hack/record-gcp`.
+  5. Verified all 7 HTTP log validation checks pass (`TestCommittedHTTPLogReports/dataplexentity`), unit tests pass, and focused fuzzer passes.
+- **Impact**: Full Greenfield direct controller coverage and verified golden test fixtures for DataplexEntity.
+
+
