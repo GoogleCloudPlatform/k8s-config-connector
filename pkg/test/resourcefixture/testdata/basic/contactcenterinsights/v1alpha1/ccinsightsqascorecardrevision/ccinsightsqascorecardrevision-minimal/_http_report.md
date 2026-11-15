@@ -4,7 +4,7 @@
 - **Resource Name:** `rev-minimal-${uniqueId}`
 - **Source Log:** `_http.log` (14 total HTTP entries, 5 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:0530db104dc30e4f`
+- **Integrity Hash:** `sha256:9e722b6a41ee6975`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 

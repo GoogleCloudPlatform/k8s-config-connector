@@ -28,7 +28,7 @@ status:
   observedState:
     createTime: "1970-01-01T00:00:00Z"
     snapshot:
-      createTime: "2026-11-14T22:57:26.855371Z"
+      createTime: "2024-04-01T12:34:56.123456Z"
       name: projects/${projectNumber}/locations/us-central1/qaScorecards/ccinsightsqascorecard-${uniqueId}
-      updateTime: "2026-11-14T22:57:26.855371Z"
+      updateTime: "2024-04-01T12:34:56.123456Z"
     state: EDITABLE

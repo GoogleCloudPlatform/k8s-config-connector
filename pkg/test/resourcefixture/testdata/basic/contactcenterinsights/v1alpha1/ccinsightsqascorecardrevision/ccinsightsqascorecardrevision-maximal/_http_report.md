@@ -4,7 +4,7 @@
 - **Resource Name:** `rev-maximal-${uniqueId}`
 - **Source Log:** `_http.log` (14 total HTTP entries, 5 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:b354f0c1fa5317a1`
+- **Integrity Hash:** `sha256:e4f7228e499c99bf`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 
