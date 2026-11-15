@@ -163,6 +163,13 @@ type Cluster_ClusterConfig struct {
 	ClusterAutoscalingConfig *Cluster_ClusterAutoscalingConfig `json:"clusterAutoscalingConfig,omitempty"`
 }
 
+// +kcc:proto=google.bigtable.admin.v2.Cluster.ClusterConfig
+type Cluster_ClusterConfigWithRequired struct {
+	// Autoscaling configuration for this cluster.
+	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.ClusterConfig.cluster_autoscaling_config
+	ClusterAutoscalingConfig *Cluster_ClusterAutoscalingConfig `json:"clusterAutoscalingConfig,omitempty"`
+}
+
 /* found existing non-generated go type "Cluster_EncryptionConfig", skipping
 
 // +kcc:proto=google.bigtable.admin.v2.Cluster.EncryptionConfig

@@ -92,7 +92,7 @@ type BigtableClusterSpec struct {
 
 	// Configuration for this cluster.
 	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.cluster_config
-	ClusterConfig *Cluster_ClusterConfig `json:"clusterConfig,omitempty"`
+	ClusterConfig *Cluster_ClusterConfigWithRequired `json:"clusterConfig,omitempty"`
 
 	// Immutable. The type of storage used by this cluster to serve its
 	//  parent instance's tables, unless explicitly overridden.

@@ -350,7 +350,7 @@ func BigtableClusterSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Cl
 	out.Location = direct.LazyPtr(in.GetLocation())
 	out.ServeNodes = direct.LazyPtr(in.GetServeNodes())
 	out.NodeScalingFactor = direct.Enum_FromProto(mapCtx, in.GetNodeScalingFactor())
-	out.ClusterConfig = Cluster_ClusterConfig_v1alpha1_FromProto(mapCtx, in.GetClusterConfig())
+	out.ClusterConfig = Cluster_ClusterConfigWithRequired_v1alpha1_FromProto(mapCtx, in.GetClusterConfig())
 	out.DefaultStorageType = direct.Enum_FromProto(mapCtx, in.GetDefaultStorageType())
 	out.EncryptionConfig = Cluster_EncryptionConfig_v1alpha1_FromProto(mapCtx, in.GetEncryptionConfig())
 	return out
@@ -364,7 +364,7 @@ func BigtableClusterSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigt
 	out.Location = direct.ValueOf(in.Location)
 	out.ServeNodes = direct.ValueOf(in.ServeNodes)
 	out.NodeScalingFactor = direct.Enum_ToProto[pb.Cluster_NodeScalingFactor](mapCtx, in.NodeScalingFactor)
-	if oneof := Cluster_ClusterConfig_v1alpha1_ToProto(mapCtx, in.ClusterConfig); oneof != nil {
+	if oneof := Cluster_ClusterConfigWithRequired_v1alpha1_ToProto(mapCtx, in.ClusterConfig); oneof != nil {
 		out.Config = &pb.Cluster_ClusterConfig_{ClusterConfig: oneof}
 	}
 	out.DefaultStorageType = direct.Enum_ToProto[pb.StorageType](mapCtx, in.DefaultStorageType)
@@ -690,6 +690,22 @@ func Cluster_ClusterConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.
 	return out
 }
 func Cluster_ClusterConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1alpha1.Cluster_ClusterConfig) *pb.Cluster_ClusterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Cluster_ClusterConfig{}
+	out.ClusterAutoscalingConfig = Cluster_ClusterAutoscalingConfig_v1alpha1_ToProto(mapCtx, in.ClusterAutoscalingConfig)
+	return out
+}
+func Cluster_ClusterConfigWithRequired_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_ClusterConfig) *krmbigtablev1alpha1.Cluster_ClusterConfigWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigtablev1alpha1.Cluster_ClusterConfigWithRequired{}
+	out.ClusterAutoscalingConfig = Cluster_ClusterAutoscalingConfig_v1alpha1_FromProto(mapCtx, in.GetClusterAutoscalingConfig())
+	return out
+}
+func Cluster_ClusterConfigWithRequired_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1alpha1.Cluster_ClusterConfigWithRequired) *pb.Cluster_ClusterConfig {
 	if in == nil {
 		return nil
 	}
