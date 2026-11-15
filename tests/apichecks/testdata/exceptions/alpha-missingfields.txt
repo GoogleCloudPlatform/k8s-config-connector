@@ -2865,6 +2865,9 @@
 [missing_field] crd=dataplexlakes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=dataplexlakes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.metastore.serviceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataplexmetadatafeeds.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.scope.organizationLevel" is not set in unstructured objects
+[missing_field] crd=dataplexpartitions.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=dataplexpartitions.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataplexpartitions.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.values[]" is not set in unstructured objects
 [missing_field] crd=dataplextasks.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=dataplextasks.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionSpec.args" is not set in unstructured objects
 [missing_field] crd=dataplextasks.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set

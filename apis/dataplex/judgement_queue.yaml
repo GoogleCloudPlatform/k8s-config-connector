@@ -502,3 +502,46 @@ entries:
     status: resolved
     resolution: edited
     note: modelled as spec.parentRef (*DataplexGlossaryRef); removed spec.parent, spec.projectRef, and spec.location
+  - kind: DataplexPartition
+    group: dataplex.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: DataplexPartition
+    group: dataplex.cnrm.cloud.google.com
+    reason: empty-observedstate
+    detail: nothing was generated into status.observedState; the proto probably marks no field OUTPUT_ONLY, so output fields landed in the Spec. Decide what belongs in status
+    status: open
+  - kind: DataplexPartition
+    group: dataplex.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/entities/{entity}/partitions/{partition}" contains ancestor segment(s) lakes/{lake}, zones/{zone}, entities/{entity} with no matching reference or field on DataplexPartitionSpec
+    status: open
+  - kind: DataplexPartition
+    group: dataplex.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: generated DataplexPartitionIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
+    status: open
+  - kind: DataplexPartition
+    group: dataplex.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/entities/{entity}, and several reference types match it (DataplexEntityRef, EntityRef); pick one and add the field by hand
+    status: open
+  - kind: DataplexPartition
+    group: dataplex.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: deprecated-field
+    detail: the proto marks this field deprecated, so new Kinds leave it out of the Spec. If this Spec still has it, remove it by hand; add it back only if users still need it
+    status: open
+  - kind: DataplexPartition
+    group: dataplex.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: proto defines a location field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
+    status: open
+  - kind: DataplexPartition
+    group: dataplex.cnrm.cloud.google.com
+    field: .spec.location
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to DataplexPartitionSpec.Location in dataplexpartition_types.go. DataplexPartition is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open

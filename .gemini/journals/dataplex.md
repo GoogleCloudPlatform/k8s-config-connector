@@ -176,4 +176,15 @@
   5. Verified all 7 HTTP log validation checks pass (`TestCommittedHTTPLogReports/dataplexentity`), unit tests pass, and focused fuzzer passes.
 - **Impact**: Full Greenfield direct controller coverage and verified golden test fixtures for DataplexEntity.
 
+### [2026-11-15] Prepopulate Direct KRM Types, Identity, and Judgement Queue for DataplexPartition
+- **Context**: Prepopulating direct KRM types, IdentityV2, and judgement queue for `DataplexPartition` under `v1alpha1` following Greenfield Step 1a (#15760).
+- **Problem**: `DataplexPartition` (`Partition` in `google.cloud.dataplex.v1.metadata`) has a proto field named `location` (`string location = 3;` representing the Cloud Storage / data storage URI). The resource URL pattern also contains `{location}` (`projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/entities/{entity}/partitions/{partition}`). During mechanical scaffolding (`controllerbuilder generate-types --prepopulate-resource`), `applyParentFields` generated parent field `Location *string` in addition to the proto-derived `Location *string` field, resulting in a duplicate field declaration compile error (`Location redeclared`).
+- **Solution**:
+  1. Updated `applyParentFields` in `dev/tools/controllerbuilder/scaffold/apis.go` to suppress generating parent `LocationField` / `RootRefField` when `cArgs.SpecFields` already declares a field with that name, retaining the judgement queue item for triage in Step 1b. Added unit test in `types_test.go`.
+  2. Added `DataplexPartition:Partition` to `generate-types` and `generate-identity` in `apis/dataplex/generate.sh`.
+  3. Added `DataplexPartition` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. Ran `./apis/dataplex/generate.sh`, generating types, IdentityV2, reference, and CRD.
+  5. Updated `alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...`.
+- **Impact**: All unit tests, conformance tests, and apichecks pass cleanly without manual edits to `dataplexpartition_types.go` or `apis/dataplex/judgement_queue.yaml`.
+
 
