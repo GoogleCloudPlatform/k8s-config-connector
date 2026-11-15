@@ -16,3 +16,13 @@
 - **Solution**: Implemented direct controller in `pkg/controller/direct/migrationcenter/migrationcentersource_controller.go` and fuzzer in `migrationcentersource_fuzzer.go` reusing existing generated mappers. Registered `MigrationCenterSource` in `pkg/controller/resourceconfig/static_config.go`. Created minimal and maximal test fixtures, recorded golden outputs and HTTP traffic against real GCP using `hack/record-gcp` with `RECORD_AUDIT_PROBE=1`, and updated test coverage exceptions.
 - **Impact**: Full CRUD reconciliation support for `MigrationCenterSource` with 100% test coverage for all CRD spec and status fields.
 
+### 2026-11-15 Greenfield Step 1b judgement queue triage for MigrationCenterReportConfig
+- **Context**: Triaging judgement queue and finalizing direct KRM types, identity, and references for `MigrationCenterReportConfig` under `v1alpha1`.
+- **Solution**:
+  - Replaced separate `projectRef` and `location` fields in `MigrationCenterReportConfigSpec` with inlined `*parent.ProjectAndLocationRef`.
+  - Moved `ReportConfig_GroupPreferenceSetAssignment` from `types.generated.go` to `migrationcenterreportconfig_types.go`, replacing raw `group` and `preferenceSet` strings with strongly-typed `GroupRef *MigrationCenterGroupRef` and `PreferenceSetRef *MigrationCenterPreferenceSetRef`.
+  - Confirmed client-specified resource ID support (`CreateReportConfigRequest` has `report_config_id`), retaining `IdentityV2`.
+  - Resolved all 5 entries in `apis/migrationcenter/judgement_queue.yaml`.
+  - Regenerated CRD, deepcopy code, mappers, and updated pre-generated controller and fuzzer in lockstep.
+- **Impact**: Clean, type-safe API for `MigrationCenterReportConfig` with validated reference relationships and complete test passes.
+
