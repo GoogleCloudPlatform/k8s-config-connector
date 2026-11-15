@@ -101,6 +101,106 @@ func AIPlatformArtifactSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatfor
 	return out
 }
 
+/* found existing non-generated mapping function "AIPlatformBatchPredictionJobObservedState_FromProto", skipping
+func AIPlatformBatchPredictionJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BatchPredictionJob) *krm.AIPlatformBatchPredictionJobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformBatchPredictionJobObservedState{}
+	// MISSING: Name
+	out.ModelVersionID = direct.LazyPtr(in.GetModelVersionId())
+	out.OutputInfo = BatchPredictionJob_OutputInfoObservedState_FromProto(mapCtx, in.GetOutputInfo())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	out.PartialFailures = direct.Slice_FromProto(mapCtx, in.PartialFailures, common.Status_FromProto)
+	out.ResourcesConsumed = ResourcesConsumedObservedState_FromProto(mapCtx, in.GetResourcesConsumed())
+	out.CompletionStats = CompletionStatsObservedState_FromProto(mapCtx, in.GetCompletionStats())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AIPlatformBatchPredictionJobObservedState_ToProto", skipping
+func AIPlatformBatchPredictionJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformBatchPredictionJobObservedState) *pb.BatchPredictionJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BatchPredictionJob{}
+	// MISSING: Name
+	out.ModelVersionId = direct.ValueOf(in.ModelVersionID)
+	out.OutputInfo = BatchPredictionJob_OutputInfoObservedState_ToProto(mapCtx, in.OutputInfo)
+	out.State = direct.Enum_ToProto[pb.JobState](mapCtx, in.State)
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
+	out.PartialFailures = direct.Slice_ToProto(mapCtx, in.PartialFailures, common.Status_ToProto)
+	out.ResourcesConsumed = ResourcesConsumedObservedState_ToProto(mapCtx, in.ResourcesConsumed)
+	out.CompletionStats = CompletionStatsObservedState_ToProto(mapCtx, in.CompletionStats)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AIPlatformBatchPredictionJobSpec_FromProto", skipping
+func AIPlatformBatchPredictionJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.BatchPredictionJob) *krm.AIPlatformBatchPredictionJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformBatchPredictionJobSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Model = direct.LazyPtr(in.GetModel())
+	out.UnmanagedContainerModel = UnmanagedContainerModel_FromProto(mapCtx, in.GetUnmanagedContainerModel())
+	out.InputConfig = BatchPredictionJob_InputConfig_FromProto(mapCtx, in.GetInputConfig())
+	out.InstanceConfig = BatchPredictionJob_InstanceConfig_FromProto(mapCtx, in.GetInstanceConfig())
+	out.ModelParameters = Value_FromProto(mapCtx, in.GetModelParameters())
+	out.OutputConfig = BatchPredictionJob_OutputConfig_FromProto(mapCtx, in.GetOutputConfig())
+	out.DedicatedResources = BatchDedicatedResources_FromProto(mapCtx, in.GetDedicatedResources())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.ManualBatchTuningParameters = ManualBatchTuningParameters_FromProto(mapCtx, in.GetManualBatchTuningParameters())
+	out.GenerateExplanation = direct.LazyPtr(in.GetGenerateExplanation())
+	out.ExplanationSpec = ExplanationSpecWithRequired_FromProto(mapCtx, in.GetExplanationSpec())
+	out.Labels = in.Labels
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	out.DisableContainerLogging = direct.LazyPtr(in.GetDisableContainerLogging())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AIPlatformBatchPredictionJobSpec_ToProto", skipping
+func AIPlatformBatchPredictionJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformBatchPredictionJobSpec) *pb.BatchPredictionJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BatchPredictionJob{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Model = direct.ValueOf(in.Model)
+	out.UnmanagedContainerModel = UnmanagedContainerModel_ToProto(mapCtx, in.UnmanagedContainerModel)
+	out.InputConfig = BatchPredictionJob_InputConfig_ToProto(mapCtx, in.InputConfig)
+	out.InstanceConfig = BatchPredictionJob_InstanceConfig_ToProto(mapCtx, in.InstanceConfig)
+	out.ModelParameters = Value_ToProto(mapCtx, in.ModelParameters)
+	out.OutputConfig = BatchPredictionJob_OutputConfig_ToProto(mapCtx, in.OutputConfig)
+	out.DedicatedResources = BatchDedicatedResources_ToProto(mapCtx, in.DedicatedResources)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	out.ManualBatchTuningParameters = ManualBatchTuningParameters_ToProto(mapCtx, in.ManualBatchTuningParameters)
+	out.GenerateExplanation = direct.ValueOf(in.GenerateExplanation)
+	out.ExplanationSpec = ExplanationSpecWithRequired_ToProto(mapCtx, in.ExplanationSpec)
+	out.Labels = in.Labels
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	out.DisableContainerLogging = direct.ValueOf(in.DisableContainerLogging)
+	return out
+}
+*/
+
 func AIPlatformCachedContentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CachedContent) *krm.AIPlatformCachedContentObservedState {
 	if in == nil {
 		return nil
@@ -1460,6 +1560,122 @@ func BatchDedicatedResources_ToProto(mapCtx *direct.MapContext, in *krm.BatchDed
 }
 */
 
+func BatchPredictionJob_InputConfig_FromProto(mapCtx *direct.MapContext, in *pb.BatchPredictionJob_InputConfig) *krm.BatchPredictionJob_InputConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BatchPredictionJob_InputConfig{}
+	out.GCSSource = GCSSourceWithRequired_FromProto(mapCtx, in.GetGcsSource())
+	out.BigquerySource = BigQuerySourceWithRequired_FromProto(mapCtx, in.GetBigquerySource())
+	out.InstancesFormat = direct.LazyPtr(in.GetInstancesFormat())
+	return out
+}
+
+func BatchPredictionJob_InputConfig_ToProto(mapCtx *direct.MapContext, in *krm.BatchPredictionJob_InputConfig) *pb.BatchPredictionJob_InputConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BatchPredictionJob_InputConfig{}
+	if oneof := GCSSourceWithRequired_ToProto(mapCtx, in.GCSSource); oneof != nil {
+		out.Source = &pb.BatchPredictionJob_InputConfig_GcsSource{GcsSource: oneof}
+	}
+	if oneof := BigQuerySourceWithRequired_ToProto(mapCtx, in.BigquerySource); oneof != nil {
+		out.Source = &pb.BatchPredictionJob_InputConfig_BigquerySource{BigquerySource: oneof}
+	}
+	out.InstancesFormat = direct.ValueOf(in.InstancesFormat)
+	return out
+}
+
+func BatchPredictionJob_InstanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.BatchPredictionJob_InstanceConfig) *krm.BatchPredictionJob_InstanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BatchPredictionJob_InstanceConfig{}
+	out.InstanceType = direct.LazyPtr(in.GetInstanceType())
+	out.KeyField = direct.LazyPtr(in.GetKeyField())
+	out.IncludedFields = in.IncludedFields
+	out.ExcludedFields = in.ExcludedFields
+	return out
+}
+
+func BatchPredictionJob_InstanceConfig_ToProto(mapCtx *direct.MapContext, in *krm.BatchPredictionJob_InstanceConfig) *pb.BatchPredictionJob_InstanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BatchPredictionJob_InstanceConfig{}
+	out.InstanceType = direct.ValueOf(in.InstanceType)
+	out.KeyField = direct.ValueOf(in.KeyField)
+	out.IncludedFields = in.IncludedFields
+	out.ExcludedFields = in.ExcludedFields
+	return out
+}
+
+func BatchPredictionJob_OutputConfig_FromProto(mapCtx *direct.MapContext, in *pb.BatchPredictionJob_OutputConfig) *krm.BatchPredictionJob_OutputConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BatchPredictionJob_OutputConfig{}
+	out.GCSDestination = GCSDestinationWithRequired_FromProto(mapCtx, in.GetGcsDestination())
+	out.BigqueryDestination = BigQueryDestination_FromProto(mapCtx, in.GetBigqueryDestination())
+	out.PredictionsFormat = direct.LazyPtr(in.GetPredictionsFormat())
+	return out
+}
+
+func BatchPredictionJob_OutputConfig_ToProto(mapCtx *direct.MapContext, in *krm.BatchPredictionJob_OutputConfig) *pb.BatchPredictionJob_OutputConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BatchPredictionJob_OutputConfig{}
+	if oneof := GCSDestinationWithRequired_ToProto(mapCtx, in.GCSDestination); oneof != nil {
+		out.Destination = &pb.BatchPredictionJob_OutputConfig_GcsDestination{GcsDestination: oneof}
+	}
+	if oneof := BigQueryDestination_ToProto(mapCtx, in.BigqueryDestination); oneof != nil {
+		out.Destination = &pb.BatchPredictionJob_OutputConfig_BigqueryDestination{BigqueryDestination: oneof}
+	}
+	out.PredictionsFormat = direct.ValueOf(in.PredictionsFormat)
+	return out
+}
+
+func BatchPredictionJob_OutputInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BatchPredictionJob_OutputInfo) *krm.BatchPredictionJob_OutputInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BatchPredictionJob_OutputInfoObservedState{}
+	out.GCSOutputDirectory = direct.LazyPtr(in.GetGcsOutputDirectory())
+	out.BigqueryOutputDataset = direct.LazyPtr(in.GetBigqueryOutputDataset())
+	out.BigqueryOutputTable = direct.LazyPtr(in.GetBigqueryOutputTable())
+	return out
+}
+
+func BatchPredictionJob_OutputInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BatchPredictionJob_OutputInfoObservedState) *pb.BatchPredictionJob_OutputInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BatchPredictionJob_OutputInfo{}
+	if oneof := BatchPredictionJob_OutputInfoObservedState_GcsOutputDirectory_ToProto(mapCtx, in.GCSOutputDirectory); oneof != nil {
+		out.OutputLocation = oneof
+	}
+	if oneof := BatchPredictionJob_OutputInfoObservedState_BigqueryOutputDataset_ToProto(mapCtx, in.BigqueryOutputDataset); oneof != nil {
+		out.OutputLocation = oneof
+	}
+	out.BigqueryOutputTable = direct.ValueOf(in.BigqueryOutputTable)
+	return out
+}
+
+func BatchPredictionJob_OutputInfoObservedState_GcsOutputDirectory_ToProto(mapCtx *direct.MapContext, in *string) *pb.BatchPredictionJob_OutputInfo_GcsOutputDirectory {
+	if in == nil {
+		return nil
+	}
+	return &pb.BatchPredictionJob_OutputInfo_GcsOutputDirectory{GcsOutputDirectory: *in}
+}
+
+func BatchPredictionJob_OutputInfoObservedState_BigqueryOutputDataset_ToProto(mapCtx *direct.MapContext, in *string) *pb.BatchPredictionJob_OutputInfo_BigqueryOutputDataset {
+	if in == nil {
+		return nil
+	}
+	return &pb.BatchPredictionJob_OutputInfo_BigqueryOutputDataset{BigqueryOutputDataset: *in}
+}
+
 func BigQueryDestination_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDestination) *krm.BigQueryDestination {
 	if in == nil {
 		return nil
@@ -1488,6 +1704,24 @@ func BigQuerySource_FromProto(mapCtx *direct.MapContext, in *pb.BigQuerySource) 
 }
 
 func BigQuerySource_ToProto(mapCtx *direct.MapContext, in *krm.BigQuerySource) *pb.BigQuerySource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BigQuerySource{}
+	out.InputUri = direct.ValueOf(in.InputURI)
+	return out
+}
+
+func BigQuerySourceWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.BigQuerySource) *krm.BigQuerySourceWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQuerySourceWithRequired{}
+	out.InputURI = direct.LazyPtr(in.GetInputUri())
+	return out
+}
+
+func BigQuerySourceWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.BigQuerySourceWithRequired) *pb.BigQuerySource {
 	if in == nil {
 		return nil
 	}
@@ -1609,6 +1843,30 @@ func ColabImageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ColabIma
 	out := &pb.ColabImage{}
 	// MISSING: ReleaseName
 	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+
+func CompletionStatsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CompletionStats) *krm.CompletionStatsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CompletionStatsObservedState{}
+	out.SuccessfulCount = direct.LazyPtr(in.GetSuccessfulCount())
+	out.FailedCount = direct.LazyPtr(in.GetFailedCount())
+	out.IncompleteCount = direct.LazyPtr(in.GetIncompleteCount())
+	out.SuccessfulForecastPointCount = direct.LazyPtr(in.GetSuccessfulForecastPointCount())
+	return out
+}
+
+func CompletionStatsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CompletionStatsObservedState) *pb.CompletionStats {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CompletionStats{}
+	out.SuccessfulCount = direct.ValueOf(in.SuccessfulCount)
+	out.FailedCount = direct.ValueOf(in.FailedCount)
+	out.IncompleteCount = direct.ValueOf(in.IncompleteCount)
+	out.SuccessfulForecastPointCount = direct.ValueOf(in.SuccessfulForecastPointCount)
 	return out
 }
 
@@ -2343,7 +2601,7 @@ func ExplanationSpec_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationSpec)
 }
 
 /* found existing non-generated mapping function "ExplanationSpecWithRequired_FromProto", skipping
-func ExplanationSpecWithRequired_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ExplanationSpec) *krm.ExplanationSpecWithRequired {
+func ExplanationSpecWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationSpec) *krm.ExplanationSpecWithRequired {
 	if in == nil {
 		return nil
 	}
@@ -2355,11 +2613,11 @@ func ExplanationSpecWithRequired_FromProto(mapCtx *direct.MapContext, in *aiplat
 */
 
 /* found existing non-generated mapping function "ExplanationSpecWithRequired_ToProto", skipping
-func ExplanationSpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationSpecWithRequired) *aiplatformpb.ExplanationSpec {
+func ExplanationSpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationSpecWithRequired) *pb.ExplanationSpec {
 	if in == nil {
 		return nil
 	}
-	out := &aiplatformpb.ExplanationSpec{}
+	out := &pb.ExplanationSpec{}
 	out.Parameters = ExplanationParameters_ToProto(mapCtx, in.Parameters)
 	out.Metadata = ExplanationMetadata_ToProto(mapCtx, in.Metadata)
 	return out
@@ -2891,7 +3149,7 @@ func GCSSource_FromProto(mapCtx *direct.MapContext, in *pb.GcsSource) *krm.GCSSo
 		return nil
 	}
 	out := &krm.GCSSource{}
-	out.Uris = in.Uris
+	out.URIs = in.Uris
 	return out
 }
 
@@ -2900,7 +3158,25 @@ func GCSSource_ToProto(mapCtx *direct.MapContext, in *krm.GCSSource) *pb.GcsSour
 		return nil
 	}
 	out := &pb.GcsSource{}
-	out.Uris = in.Uris
+	out.Uris = in.URIs
+	return out
+}
+
+func GCSSourceWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.GcsSource) *krm.GCSSourceWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GCSSourceWithRequired{}
+	out.URIs = in.Uris
+	return out
+}
+
+func GCSSourceWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.GCSSourceWithRequired) *pb.GcsSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GcsSource{}
+	out.Uris = in.URIs
 	return out
 }
 
@@ -3260,6 +3536,24 @@ func MachineSpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.MachineS
 	return out
 }
 
+func ManualBatchTuningParameters_FromProto(mapCtx *direct.MapContext, in *pb.ManualBatchTuningParameters) *krm.ManualBatchTuningParameters {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ManualBatchTuningParameters{}
+	out.BatchSize = direct.LazyPtr(in.GetBatchSize())
+	return out
+}
+
+func ManualBatchTuningParameters_ToProto(mapCtx *direct.MapContext, in *krm.ManualBatchTuningParameters) *pb.ManualBatchTuningParameters {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ManualBatchTuningParameters{}
+	out.BatchSize = direct.ValueOf(in.BatchSize)
+	return out
+}
+
 func MeasurementObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Measurement) *krm.MeasurementObservedState {
 	if in == nil {
 		return nil
@@ -3333,6 +3627,50 @@ func ModelContainerSpec_ToProto(mapCtx *direct.MapContext, in *krm.ModelContaine
 	out.Command = in.Command
 	out.Args = in.Args
 	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVar_ToProto)
+	out.Ports = direct.Slice_ToProto(mapCtx, in.Ports, Port_ToProto)
+	out.PredictRoute = direct.ValueOf(in.PredictRoute)
+	out.HealthRoute = direct.ValueOf(in.HealthRoute)
+	out.InvokeRoutePrefix = direct.ValueOf(in.InvokeRoutePrefix)
+	out.GrpcPorts = direct.Slice_ToProto(mapCtx, in.GrpcPorts, Port_ToProto)
+	out.DeploymentTimeout = direct.StringDuration_ToProto(mapCtx, in.DeploymentTimeout)
+	out.SharedMemorySizeMb = direct.ValueOf(in.SharedMemorySizeMb)
+	out.StartupProbe = Probe_ToProto(mapCtx, in.StartupProbe)
+	out.HealthProbe = Probe_ToProto(mapCtx, in.HealthProbe)
+	out.LivenessProbe = Probe_ToProto(mapCtx, in.LivenessProbe)
+	return out
+}
+
+func ModelContainerSpecWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.ModelContainerSpec) *krm.ModelContainerSpecWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelContainerSpecWithRequired{}
+	out.ImageURI = direct.LazyPtr(in.GetImageUri())
+	out.Command = in.Command
+	out.Args = in.Args
+	out.Env = direct.Slice_FromProto(mapCtx, in.Env, EnvVarWithRequired_FromProto)
+	out.Ports = direct.Slice_FromProto(mapCtx, in.Ports, Port_FromProto)
+	out.PredictRoute = direct.LazyPtr(in.GetPredictRoute())
+	out.HealthRoute = direct.LazyPtr(in.GetHealthRoute())
+	out.InvokeRoutePrefix = direct.LazyPtr(in.GetInvokeRoutePrefix())
+	out.GrpcPorts = direct.Slice_FromProto(mapCtx, in.GrpcPorts, Port_FromProto)
+	out.DeploymentTimeout = direct.StringDuration_FromProto(mapCtx, in.GetDeploymentTimeout())
+	out.SharedMemorySizeMb = direct.LazyPtr(in.GetSharedMemorySizeMb())
+	out.StartupProbe = Probe_FromProto(mapCtx, in.GetStartupProbe())
+	out.HealthProbe = Probe_FromProto(mapCtx, in.GetHealthProbe())
+	out.LivenessProbe = Probe_FromProto(mapCtx, in.GetLivenessProbe())
+	return out
+}
+
+func ModelContainerSpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.ModelContainerSpecWithRequired) *pb.ModelContainerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ModelContainerSpec{}
+	out.ImageUri = direct.ValueOf(in.ImageURI)
+	out.Command = in.Command
+	out.Args = in.Args
+	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVarWithRequired_ToProto)
 	out.Ports = direct.Slice_ToProto(mapCtx, in.Ports, Port_ToProto)
 	out.PredictRoute = direct.ValueOf(in.PredictRoute)
 	out.HealthRoute = direct.ValueOf(in.HealthRoute)
@@ -6132,6 +6470,24 @@ func ResourceRuntimeSpec_ToProto(mapCtx *direct.MapContext, in *krm.ResourceRunt
 	return out
 }
 
+func ResourcesConsumedObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResourcesConsumed) *krm.ResourcesConsumedObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourcesConsumedObservedState{}
+	out.ReplicaHours = direct.LazyPtr(in.GetReplicaHours())
+	return out
+}
+
+func ResourcesConsumedObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResourcesConsumedObservedState) *pb.ResourcesConsumed {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcesConsumed{}
+	out.ReplicaHours = direct.ValueOf(in.ReplicaHours)
+	return out
+}
+
 func Retrieval_FromProto(mapCtx *direct.MapContext, in *pb.Retrieval) *krm.Retrieval {
 	if in == nil {
 		return nil
@@ -7615,6 +7971,28 @@ func URLContext_ToProto(mapCtx *direct.MapContext, in *krm.URLContext) *pb.UrlCo
 		return nil
 	}
 	out := &pb.UrlContext{}
+	return out
+}
+
+func UnmanagedContainerModel_FromProto(mapCtx *direct.MapContext, in *pb.UnmanagedContainerModel) *krm.UnmanagedContainerModel {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UnmanagedContainerModel{}
+	out.ArtifactURI = direct.LazyPtr(in.GetArtifactUri())
+	out.PredictSchemata = PredictSchemata_FromProto(mapCtx, in.GetPredictSchemata())
+	out.ContainerSpec = ModelContainerSpecWithRequired_FromProto(mapCtx, in.GetContainerSpec())
+	return out
+}
+
+func UnmanagedContainerModel_ToProto(mapCtx *direct.MapContext, in *krm.UnmanagedContainerModel) *pb.UnmanagedContainerModel {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UnmanagedContainerModel{}
+	out.ArtifactUri = direct.ValueOf(in.ArtifactURI)
+	out.PredictSchemata = PredictSchemata_ToProto(mapCtx, in.PredictSchemata)
+	out.ContainerSpec = ModelContainerSpecWithRequired_ToProto(mapCtx, in.ContainerSpec)
 	return out
 }
 
