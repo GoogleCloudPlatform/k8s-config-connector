@@ -21,8 +21,10 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"testing"
 	"time"
@@ -110,6 +112,29 @@ func runAutoRESTProbe(ctx context.Context, t *testing.T, h *create.Harness, fixt
 		}
 		respBytes, _ := io.ReadAll(resp.Body)
 		resp.Body.Close()
+
+		if resp.StatusCode != http.StatusOK {
+			// Some services (e.g. Model Armor templates) require regional endpoints
+			// ({service}.{location}.rep.googleapis.com) for resource inspection, while
+			// the protobuf default_host points to {service}.googleapis.com which answers 403.
+			if fallbackURL := regionalEndpointFallbackURL(u); fallbackURL != "" {
+				fbReq, fbErr := http.NewRequestWithContext(ctx, "GET", fallbackURL, nil)
+				if fbErr == nil {
+					if project.ProjectID != "" {
+						fbReq.Header.Set("X-Goog-User-Project", project.ProjectID)
+					}
+					if fbResp, fbDoErr := probeClient.Do(fbReq); fbDoErr == nil {
+						fbBytes, _ := io.ReadAll(fbResp.Body)
+						fbResp.Body.Close()
+						if fbResp.StatusCode == http.StatusOK {
+							resp = fbResp
+							respBytes = fbBytes
+							u = fallbackURL
+						}
+					}
+				}
+			}
+		}
 
 		if resp.StatusCode != http.StatusOK {
 			continue
@@ -286,6 +311,31 @@ func shouldProbeURL(u string) bool {
 		}
 	}
 	return true
+}
+
+var locationInPathRegex = regexp.MustCompile(`/locations/([^/]+)/`)
+
+// regionalEndpointFallbackURL derives a regional endpoint URL ({service}.{location}.rep.googleapis.com)
+// for URLs using {service}.googleapis.com with a non-global location in their path.
+func regionalEndpointFallbackURL(rawURL string) string {
+	parsed, err := url.Parse(rawURL)
+	if err != nil {
+		return ""
+	}
+	parts := strings.Split(parsed.Host, ".")
+	if len(parts) != 3 || parts[1] != "googleapis" || parts[2] != "com" {
+		return ""
+	}
+	matches := locationInPathRegex.FindStringSubmatch(parsed.Path)
+	if len(matches) < 2 {
+		return ""
+	}
+	loc := matches[1]
+	if loc == "" || loc == "global" {
+		return ""
+	}
+	parsed.Host = fmt.Sprintf("%s.%s.rep.googleapis.com", parts[0], loc)
+	return parsed.String()
 }
 
 func emitCloudLoggingAuditMarker(ctx context.Context, t *testing.T, client *http.Client, project testgcp.GCPProject, fixture resourcefixture.ResourceFixture, primaryResource *unstructured.Unstructured, urls []string, traceIds []string) {

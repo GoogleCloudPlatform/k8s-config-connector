@@ -37,7 +37,8 @@ spec:
   filterConfig:
     piAndJailbreakFilterSettings:
       filterEnforcement: ENABLED
-      confidenceLevel: MEDIUM_AND_ABOVE
+      # Keep confidenceLevel at LOW_AND_ABOVE to conform with project/organization floor settings
+      confidenceLevel: LOW_AND_ABOVE
     maliciousURIFilterSettings:
       filterEnforcement: ENABLED
     sdpSettings:

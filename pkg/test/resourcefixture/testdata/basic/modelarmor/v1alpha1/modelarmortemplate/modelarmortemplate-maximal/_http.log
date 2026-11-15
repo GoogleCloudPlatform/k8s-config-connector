@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.modelarmor.v1.ModelArmor/GetTemplate
 
 {
@@ -111,6 +112,7 @@ OK
 
 ---
 
+# Phase: UPDATE
 GRPC /google.cloud.modelarmor.v1.ModelArmor/GetTemplate
 
 {
@@ -179,7 +181,7 @@ GRPC /google.cloud.modelarmor.v1.ModelArmor/UpdateTemplate
         "filterEnforcement": "ENABLED"
       },
       "piAndJailbreakFilterSettings": {
-        "confidenceLevel": "MEDIUM_AND_ABOVE",
+        "confidenceLevel": "LOW_AND_ABOVE",
         "filterEnforcement": "ENABLED"
       },
       "raiSettings": {
@@ -219,7 +221,7 @@ GRPC /google.cloud.modelarmor.v1.ModelArmor/UpdateTemplate
       }
     }
   },
-  "updateMask": "filterConfig,labels,templateMetadata"
+  "updateMask": "labels,templateMetadata"
 }
 
 OK
@@ -231,7 +233,7 @@ OK
       "filterEnforcement": "ENABLED"
     },
     "piAndJailbreakFilterSettings": {
-      "confidenceLevel": "MEDIUM_AND_ABOVE",
+      "confidenceLevel": "LOW_AND_ABOVE",
       "filterEnforcement": "ENABLED"
     },
     "raiSettings": {
@@ -286,7 +288,67 @@ OK
       "filterEnforcement": "ENABLED"
     },
     "piAndJailbreakFilterSettings": {
-      "confidenceLevel": "MEDIUM_AND_ABOVE",
+      "confidenceLevel": "LOW_AND_ABOVE",
+      "filterEnforcement": "ENABLED"
+    },
+    "raiSettings": {
+      "raiFilters": [
+        {
+          "confidenceLevel": "LOW_AND_ABOVE",
+          "filterType": "HATE_SPEECH"
+        },
+        {
+          "confidenceLevel": "LOW_AND_ABOVE",
+          "filterType": "HARASSMENT"
+        }
+      ]
+    },
+    "sdpSettings": {
+      "basicConfig": {
+        "filterEnforcement": "ENABLED"
+      }
+    }
+  },
+  "labels": {
+    "foo": "updated-bar",
+    "new-key": "new-value"
+  },
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}",
+  "templateMetadata": {
+    "customLlmResponseSafetyErrorCode": 456,
+    "customLlmResponseSafetyErrorMessage": "Blocked response",
+    "customPromptSafetyErrorCode": 789,
+    "customPromptSafetyErrorMessage": "Blocked prompt updated",
+    "enforcementType": "INSPECT_AND_BLOCK",
+    "ignorePartialInvocationFailures": true,
+    "logSanitizeOperations": true,
+    "logTemplateOperations": true,
+    "multiLanguageDetection": {
+      "enableMultiLanguageDetection": true
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GRPC /google.cloud.modelarmor.v1.ModelArmor/GetTemplate
+
+{
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "filterConfig": {
+    "maliciousUriFilterSettings": {
+      "filterEnforcement": "ENABLED"
+    },
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": "LOW_AND_ABOVE",
       "filterEnforcement": "ENABLED"
     },
     "raiSettings": {
@@ -345,7 +407,7 @@ OK
       "filterEnforcement": "ENABLED"
     },
     "piAndJailbreakFilterSettings": {
-      "confidenceLevel": "MEDIUM_AND_ABOVE",
+      "confidenceLevel": "LOW_AND_ABOVE",
       "filterEnforcement": "ENABLED"
     },
     "raiSettings": {

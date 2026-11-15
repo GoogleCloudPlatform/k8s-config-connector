@@ -255,7 +255,6 @@ BLOCKED_KINDS=(
     "MarketingPlatformAdminAnalyticsAccountLink"
     "MigrationCenterImportJob"
     "MigrationCenterReportConfig"
-    "ModelArmorTemplate"
     "NetappQuotaRule"
     "NetappReplication"
     "NetworkConnectivityDestination"

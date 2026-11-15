@@ -122,6 +122,38 @@ func TestShouldProbeURL(t *testing.T) {
 	}
 }
 
+func TestRegionalEndpointFallbackURL(t *testing.T) {
+	tests := []struct {
+		url  string
+		want string
+	}{
+		{
+			url:  "https://modelarmor.googleapis.com/v1/projects/my-proj/locations/us-central1/templates/my-template",
+			want: "https://modelarmor.us-central1.rep.googleapis.com/v1/projects/my-proj/locations/us-central1/templates/my-template",
+		},
+		{
+			url:  "https://modelarmor.googleapis.com/v1/projects/my-proj/locations/global/floorSetting",
+			want: "",
+		},
+		{
+			url:  "https://modelarmor.us-central1.rep.googleapis.com/v1/projects/my-proj/locations/us-central1/templates/my-template",
+			want: "",
+		},
+		{
+			url:  "https://bigtableadmin.googleapis.com/v2/projects/my-proj/instances/my-inst",
+			want: "",
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.url, func(t *testing.T) {
+			if got := regionalEndpointFallbackURL(tc.url); got != tc.want {
+				t.Errorf("regionalEndpointFallbackURL(%q) = %q, want %q", tc.url, got, tc.want)
+			}
+		})
+	}
+}
+
 func TestGRPCEventToRESTProbeURL(t *testing.T) {
 	tests := []struct {
 		name    string
