@@ -899,6 +899,159 @@ service RegionHealthAggregationPolicies {
 EOF
 fi
 
+# Patch compute v1 compute.proto to include HealthSource and RegionHealthSources (which exists in apiv1/computepb) if missing
+if ! grep -q "message HealthSource " google/cloud/compute/v1/compute.proto; then
+cat >> google/cloud/compute/v1/compute.proto <<EOF
+
+// The HealthSource message
+message HealthSource {
+  enum SourceType {
+    UNDEFINED_SOURCE_TYPE = 0;
+    BACKEND_SERVICE = 285792202;
+  }
+  optional string creation_timestamp = 30525366;
+  optional string description = 422937596;
+  optional string fingerprint = 234678500;
+  optional string health_aggregation_policy = 240314354;
+  optional uint64 id = 3355;
+  optional string kind = 3292052;
+  optional string name = 3373707;
+  optional string region = 138946292;
+  optional string self_link = 456214797;
+  optional string self_link_with_id = 44520962;
+  optional string source_type = 452245726;
+  repeated string sources = 125606840;
+}
+
+message DeleteRegionHealthSourceRequest {
+  string health_source = 376521566 [(google.api.field_behavior) = REQUIRED];
+  string project = 227560217 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "project"
+  ];
+  string region = 138946292 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "region"
+  ];
+  optional string request_id = 37109963;
+}
+
+message GetRegionHealthSourceRequest {
+  string health_source = 376521566 [(google.api.field_behavior) = REQUIRED];
+  string project = 227560217 [(google.api.field_behavior) = REQUIRED];
+  string region = 138946292 [(google.api.field_behavior) = REQUIRED];
+}
+
+message InsertRegionHealthSourceRequest {
+  HealthSource health_source_resource = 357735375 [(google.api.field_behavior) = REQUIRED];
+  string project = 227560217 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "project"
+  ];
+  string region = 138946292 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "region"
+  ];
+  optional string request_id = 37109963;
+}
+
+message PatchRegionHealthSourceRequest {
+  string health_source = 376521566 [(google.api.field_behavior) = REQUIRED];
+  HealthSource health_source_resource = 357735375 [(google.api.field_behavior) = REQUIRED];
+  string project = 227560217 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "project"
+  ];
+  string region = 138946292 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "region"
+  ];
+  optional string request_id = 37109963;
+}
+
+message ListRegionHealthSourcesRequest {
+  optional string filter = 336120696;
+  optional uint32 max_results = 54715419;
+  optional string order_by = 160562920;
+  optional string page_token = 19994697;
+  string project = 227560217 [(google.api.field_behavior) = REQUIRED];
+  string region = 138946292 [(google.api.field_behavior) = REQUIRED];
+  optional bool return_partial_success = 517198390;
+}
+
+message HealthSourceList {
+  optional string id = 3355;
+  repeated HealthSource items = 100526016;
+  optional string kind = 3292052;
+  optional string next_page_token = 79797525;
+  optional string self_link = 456214797;
+  optional Warning warning = 50704284;
+}
+
+message TestIamPermissionsRegionHealthSourceRequest {
+  string project = 227560217 [(google.api.field_behavior) = REQUIRED];
+  string region = 138946292 [(google.api.field_behavior) = REQUIRED];
+  string resource = 195806222 [(google.api.field_behavior) = REQUIRED];
+  TestPermissionsRequest test_permissions_request_resource = 439214758 [(google.api.field_behavior) = REQUIRED];
+}
+
+service RegionHealthSources {
+  option (google.api.default_host) = "compute.googleapis.com";
+  option (google.api.oauth_scopes) =
+    "https://www.googleapis.com/auth/compute,"
+    "https://www.googleapis.com/auth/cloud-platform";
+
+  rpc Delete(DeleteRegionHealthSourceRequest) returns (Operation) {
+    option (google.api.http) = {
+      delete: "/compute/v1/projects/{project}/regions/{region}/healthSources/{health_source}"
+    };
+    option (google.api.method_signature) = "project,region,health_source";
+    option (google.cloud.operation_service) = "RegionOperations";
+  }
+
+  rpc Get(GetRegionHealthSourceRequest) returns (HealthSource) {
+    option (google.api.http) = {
+      get: "/compute/v1/projects/{project}/regions/{region}/healthSources/{health_source}"
+    };
+    option (google.api.method_signature) = "project,region,health_source";
+  }
+
+  rpc Insert(InsertRegionHealthSourceRequest) returns (Operation) {
+    option (google.api.http) = {
+      body: "health_source_resource"
+      post: "/compute/v1/projects/{project}/regions/{region}/healthSources"
+    };
+    option (google.api.method_signature) = "project,region,health_source_resource";
+    option (google.cloud.operation_service) = "RegionOperations";
+  }
+
+  rpc List(ListRegionHealthSourcesRequest) returns (HealthSourceList) {
+    option (google.api.http) = {
+      get: "/compute/v1/projects/{project}/regions/{region}/healthSources"
+    };
+    option (google.api.method_signature) = "project,region";
+  }
+
+  rpc Patch(PatchRegionHealthSourceRequest) returns (Operation) {
+    option (google.api.http) = {
+      body: "health_source_resource"
+      patch: "/compute/v1/projects/{project}/regions/{region}/healthSources/{health_source}"
+    };
+    option (google.api.method_signature) = "project,region,health_source,health_source_resource";
+    option (google.cloud.operation_service) = "RegionOperations";
+  }
+
+  rpc TestIamPermissions(TestIamPermissionsRegionHealthSourceRequest) returns (TestPermissionsResponse) {
+    option (google.api.http) = {
+      body: "test_permissions_request_resource"
+      post: "/compute/v1/projects/{project}/regions/{region}/healthSources/{resource}/testIamPermissions"
+    };
+    option (google.api.method_signature) = "project,region,resource,test_permissions_request_resource";
+  }
+}
+EOF
+fi
+
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"

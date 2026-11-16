@@ -485,3 +485,21 @@
   - Verified `./dev/ci/presubmits/tests-e2e-fixtures-suite compute` passes all 196 tests.
   - Authentic real-GCP baseline logs (`_http.log`, `_audit_probe.log`) remain untouched.
 
+### [2026-11-16] Greenfield Step 1a: Prepopulate ComputeHealthSource
+- **Context**: Prepopulating direct KRM types, IdentityV2, reference, CRD, and `judgement_queue.yaml` for `ComputeHealthSource` (issue #15831).
+- **Proto & Service Details**:
+  - `HealthSource` is a regional resource under `projects/{project}/regions/{region}/healthSources/{healthSource}` managed via the `RegionHealthSources` service in Google Cloud Compute API v1.
+  - The resource is present in `cloud.google.com/go/compute/apiv1/computepb` (`HealthSource`, `RegionHealthSourcesClient`), but was missing from the pinned `apis/git.versions` commit (`1765b559c4`).
+  - Following the established pattern for Compute resources (e.g. `HealthAggregationPolicy`, `VmExtensionPolicy`, `CrossSiteNetwork`), patched `dev/tools/controllerbuilder/generate-proto.sh` to include `HealthSource` messages and `RegionHealthSources` service in `google/cloud/compute/v1/compute.proto`.
+- **Implementation**:
+  1. Configured dedicated `generate-types` (with `--prepopulate-resource`) and `generate-identity` commands for `ComputeHealthSource:HealthSource` in `apis/compute/generate.sh`.
+  2. Executed `./apis/compute/generate.sh` to scaffold `computehealthsource_types.go`, `computehealthsource_identity.generated.go`, `computehealthsource_reference.generated.go`, `computehealthsource_identity_generated_test.go`, and CRD manifests.
+  3. Added `ComputeHealthSource` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha`.
+  5. Kept all review entries in `apis/compute/judgement_queue.yaml` with `status: open` for Step 1b triage.
+- **Verification**:
+  - Identity conformance tests (`TestComputeHealthSourceIdentity_Conformance`) pass cleanly.
+  - All apichecks tests pass (`tests/apichecks/...`).
+  - CAIS identity tests (`pkg/gcpurls` and `pkg/cli/powertools/cais`) pass cleanly.
+  - Generation is idempotent. Package build (`apis/compute/...` and `pkg/controller/direct/compute/...`) succeeds.
+
