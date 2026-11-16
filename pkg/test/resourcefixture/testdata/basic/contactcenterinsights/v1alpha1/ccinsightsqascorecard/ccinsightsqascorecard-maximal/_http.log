@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -74,12 +75,12 @@ X-Xss-Protection: 0
   "description": "This is a scorecard created to test maximal configuration ${uniqueId}",
   "displayName": "Scorecard Maximal ${uniqueId}",
   "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/qascorecard-maximal-${uniqueId}",
-  "source": 1,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
+# Phase: UPDATE
 PATCH https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -106,7 +107,6 @@ X-Xss-Protection: 0
   "description": "This is a scorecard created to test maximal configuration updated ${uniqueId}",
   "displayName": "Scorecard Maximal Updated ${uniqueId}",
   "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/qascorecard-maximal-${uniqueId}",
-  "source": 1,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -132,12 +132,12 @@ X-Xss-Protection: 0
   "description": "This is a scorecard created to test maximal configuration updated ${uniqueId}",
   "displayName": "Scorecard Maximal Updated ${uniqueId}",
   "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/qascorecard-maximal-${uniqueId}",
-  "source": 1,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
+# Phase: DELETE
 DELETE https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}

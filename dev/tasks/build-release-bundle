@@ -131,7 +131,6 @@ BLOCKED_KINDS=(
     "CCInsightsConversation"
     "CCInsightsIssueModel"
     "CCInsightsQaQuestion"
-    "CCInsightsQAScorecard"
     "CCInsightsView"
     "CertificateManagerTrustConfig"
     "CesAgent"
