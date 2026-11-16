@@ -761,6 +761,9 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(rc, "successThreshold")
 			delete(rc, "timeout")
 		}
+		if _, hasVersionURL := v["versionUrl"]; hasVersionURL {
+			delete(v, "diskUsageBytes")
+		}
 		if _, hasDeployment := v["deployment"]; hasDeployment {
 			delete(v, "inboundServices")
 			if v["runtime"] == "custom" {

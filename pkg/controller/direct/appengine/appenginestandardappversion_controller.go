@@ -30,6 +30,7 @@ import (
 	pb "cloud.google.com/go/appengine/apiv1/appenginepb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/appengine/v1alpha1"
@@ -153,18 +154,10 @@ func (a *standardAppVersionAdapter) Find(ctx context.Context) (bool, error) {
 func (a *standardAppVersionAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating AppEngineStandardAppVersion", "name", a.id.String())
-	mapCtx := &direct.MapContext{}
 
-	desiredPb := AppEngineStandardAppVersionSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	desiredPb.Id = a.id.Version
-
-	req := &pb.CreateVersionRequest{
-		Parent:  a.id.ParentString(),
-		Version: desiredPb,
+	req, err := a.newCreateVersionRequest()
+	if err != nil {
+		return err
 	}
 
 	op, err := a.gcpClient.CreateVersion(ctx, req)
@@ -177,19 +170,50 @@ func (a *standardAppVersionAdapter) Create(ctx context.Context, createOp *direct
 		return fmt.Errorf("waiting for AppEngineStandardAppVersion creation %s: %w", a.id.String(), err)
 	}
 
-	latest := created
+	log.V(2).Info("successfully created AppEngineStandardAppVersion", "name", a.id.String())
+	return a.refreshAndUpdateStatus(ctx, createOp, created)
+}
+
+func (a *standardAppVersionAdapter) newCreateVersionRequest() (*pb.CreateVersionRequest, error) {
+	mapCtx := &direct.MapContext{}
+	desiredPb := AppEngineStandardAppVersionSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	desiredPb.Id = a.id.Version
+	return &pb.CreateVersionRequest{
+		Parent:  a.id.ParentString(),
+		Version: desiredPb,
+	}, nil
+}
+
+func (a *standardAppVersionAdapter) refreshAndUpdateStatus(ctx context.Context, op directbase.Operation, fromLRO *pb.Version) error {
+	log := klog.FromContext(ctx)
+	latest := fromLRO
 	getReq := &pb.GetVersionRequest{
 		Name: a.id.String(),
 		View: pb.VersionView_FULL,
 	}
 	if v, err := a.gcpClient.GetVersion(ctx, getReq); err != nil {
-		log.V(2).Info("getting AppEngineStandardAppVersion after creation failed; falling back to op.Wait result", "name", a.id.String(), "err", err)
+		log.V(2).Info("getting AppEngineStandardAppVersion failed; falling back to op.Wait result", "name", a.id.String(), "err", err)
 	} else {
 		latest = v
 	}
+	return a.updateStatus(ctx, op, latest)
+}
 
-	log.V(2).Info("successfully created AppEngineStandardAppVersion", "name", a.id.String())
-	return a.updateStatus(ctx, createOp, latest)
+func (a *standardAppVersionAdapter) diffNormalizer() func(context.Context, *pb.Version) error {
+	if len(a.desired.Spec.Handlers) == 0 {
+		return normalizeStandardAppVersionForDiff
+	}
+	return func(ctx context.Context, p *pb.Version) error {
+		if err := normalizeStandardAppVersionForDiff(ctx, p); err != nil {
+			return err
+		}
+		p.Handlers = normalizeHandlersForDiff(p.Handlers)
+		return nil
+	}
 }
 
 func normalizeStandardAppVersionForDiff(ctx context.Context, p *pb.Version) error {
@@ -197,8 +221,10 @@ func normalizeStandardAppVersionForDiff(ctx context.Context, p *pb.Version) erro
 	// Clear entrypoint to prevent spurious diffs against the unreadable field.
 	p.Entrypoint = nil
 
-	// Deployment file sha1_sum is computed and returned by the server, but omitted in KRM spec.
+	// Deployment.zip is write-only (never returned by GET), and deployment.files[*].sha1_sum
+	// is computed by the server and omitted in the KRM spec.
 	if p.Deployment != nil {
+		p.Deployment.Zip = nil
 		for _, f := range p.Deployment.Files {
 			if f != nil {
 				f.Sha1Sum = ""
@@ -208,6 +234,140 @@ func normalizeStandardAppVersionForDiff(ctx context.Context, p *pb.Version) erro
 	return nil
 }
 
+func normalizeHandlersForDiff(handlers []*pb.UrlMap) []*pb.UrlMap {
+	var out []*pb.UrlMap
+	for _, h := range handlers {
+		if h == nil {
+			continue
+		}
+		if h.Login == pb.LoginRequirement_LOGIN_UNSPECIFIED {
+			h.Login = pb.LoginRequirement_LOGIN_OPTIONAL
+		}
+		if h.SecurityLevel == pb.SecurityLevel_SECURE_UNSPECIFIED {
+			h.SecurityLevel = pb.SecurityLevel_SECURE_OPTIONAL
+		}
+		if h.AuthFailAction == pb.AuthFailAction_AUTH_FAIL_ACTION_UNSPECIFIED {
+			h.AuthFailAction = pb.AuthFailAction_AUTH_FAIL_ACTION_REDIRECT
+		}
+		if sf := h.GetStaticFiles(); sf != nil && sf.Expiration != nil && sf.Expiration.Seconds == 0 && sf.Expiration.Nanos == 0 {
+			sf.Expiration = nil
+		}
+		out = append(out, h)
+	}
+	for len(out) > 0 && isRuntimeDefaultHandler(out[len(out)-1]) {
+		out = out[:len(out)-1]
+	}
+	if len(out) == 0 {
+		return nil
+	}
+	return out
+}
+
+func isRuntimeDefaultHandler(h *pb.UrlMap) bool {
+	if h == nil {
+		return false
+	}
+	return h.GetUrlRegex() == ".*" &&
+		h.GetScript() != nil &&
+		h.GetScript().GetScriptPath() == "auto" &&
+		h.GetLogin() == pb.LoginRequirement_LOGIN_OPTIONAL &&
+		h.GetSecurityLevel() == pb.SecurityLevel_SECURE_OPTIONAL &&
+		h.GetAuthFailAction() == pb.AuthFailAction_AUTH_FAIL_ACTION_REDIRECT &&
+		h.GetRedirectHttpResponseCode() == pb.UrlMap_REDIRECT_HTTP_RESPONSE_CODE_UNSPECIFIED
+}
+
+type standardScalingType string
+
+const (
+	standardScalingUnspecified standardScalingType = ""
+	standardScalingAutomatic   standardScalingType = "automatic"
+	standardScalingBasic       standardScalingType = "basic"
+	standardScalingManual      standardScalingType = "manual"
+)
+
+func (a *standardAppVersionAdapter) scalingTypeChange() (actual, desired standardScalingType, changed bool) {
+	actual = scalingTypeOfVersion(a.actual)
+	desired = scalingTypeOfSpec(&a.desired.Spec)
+	changed = desired != standardScalingUnspecified && desired != actual
+	return actual, desired, changed
+}
+
+// scalingTypeOfSpec returns the scaling type configured on the unmerged spec using
+// the same precedence as AppEngineStandardAppVersionSpec_v1alpha1_ToProto
+// (manual > basic > automatic).
+func scalingTypeOfSpec(spec *krm.AppEngineStandardAppVersionSpec) standardScalingType {
+	if spec == nil {
+		return standardScalingUnspecified
+	}
+	if spec.ManualScaling != nil {
+		return standardScalingManual
+	}
+	if spec.BasicScaling != nil {
+		return standardScalingBasic
+	}
+	if spec.AutomaticScaling != nil {
+		return standardScalingAutomatic
+	}
+	return standardScalingUnspecified
+}
+
+func scalingTypeOfVersion(v *pb.Version) standardScalingType {
+	if v != nil {
+		if v.GetManualScaling() != nil {
+			return standardScalingManual
+		}
+		if v.GetBasicScaling() != nil {
+			return standardScalingBasic
+		}
+	}
+	return standardScalingAutomatic
+}
+
+// standardPatchableUpdatePaths are the update_mask paths App Engine's UpdateVersion accepts
+// for a Standard version that the KRM spec can express (see the rpc UpdateVersion comment in
+// google/appengine/v1/appengine.proto). App Engine rejects the whole request with
+// INVALID_ARGUMENT if any other path is present.
+var standardPatchableUpdatePaths = sets.New(
+	"instance_class",
+	"automatic_scaling.min_idle_instances",
+	"automatic_scaling.max_idle_instances",
+	"automatic_scaling.standard_scheduler_settings.min_instances",
+	"automatic_scaling.standard_scheduler_settings.max_instances",
+	"automatic_scaling.standard_scheduler_settings.target_cpu_utilization",
+	"automatic_scaling.standard_scheduler_settings.target_throughput_utilization",
+	"manual_scaling.instances",
+)
+
+type standardUpdateStrategy int
+
+const (
+	standardUpdateNone standardUpdateStrategy = iota
+	standardUpdatePatch
+	standardUpdateRedeploy
+)
+
+func chooseStandardUpdateStrategy(changedPaths []string, scalingTypeChanged bool) (standardUpdateStrategy, []string) {
+	if scalingTypeChanged {
+		return standardUpdateRedeploy, []string{"scaling type"}
+	}
+	if len(changedPaths) == 0 {
+		return standardUpdateNone, nil
+	}
+	var reasons []string
+	for _, p := range changedPaths {
+		if !standardPatchableUpdatePaths.Has(p) {
+			reasons = append(reasons, p)
+		}
+	}
+	if len(reasons) > 0 {
+		return standardUpdateRedeploy, reasons
+	}
+	return standardUpdatePatch, nil
+}
+
+// Update reconciles an existing version. App Engine's UpdateVersion accepts only a few
+// update_mask paths, so any other change redeploys the version: CreateVersion with the
+// same version id, which App Engine treats as an upsert.
 func (a *standardAppVersionAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating AppEngineStandardAppVersion", "name", a.id.String())
@@ -218,21 +378,35 @@ func (a *standardAppVersionAdapter) Update(ctx context.Context, updateOp *direct
 		a.actual,
 		AppEngineStandardAppVersionSpec_v1alpha1_FromProto,
 		AppEngineStandardAppVersionSpec_v1alpha1_ToProto,
-		normalizeStandardAppVersionForDiff,
+		a.diffNormalizer(),
 		true, // fineGrained
 	)
 	if err != nil {
 		return err
 	}
 
-	if diffRes.Empty() {
+	actualScaling, desiredScaling, scalingChanged := a.scalingTypeChange()
+	strategy, redeployReasons := chooseStandardUpdateStrategy(diffRes.FieldMask.GetPaths(), scalingChanged)
+	if strategy == standardUpdateNone {
 		log.V(2).Info("no diff detected for AppEngineStandardAppVersion", "name", a.id.String())
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	if scalingChanged {
+		diffRes.Diff.AddField("scaling", string(actualScaling), string(desiredScaling))
+	}
 	diffRes.Diff.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffRes.Diff)
 
+	if strategy == standardUpdatePatch {
+		return a.patch(ctx, updateOp, diffRes)
+	}
+	log.V(2).Info("redeploying AppEngineStandardAppVersion with CreateVersion", "name", a.id.String(), "reasons", redeployReasons)
+	return a.redeploy(ctx, updateOp)
+}
+
+func (a *standardAppVersionAdapter) patch(ctx context.Context, updateOp *directbase.UpdateOperation, diffRes *common.SpecDiffResult[*pb.Version]) error {
+	log := klog.FromContext(ctx)
 	req := &pb.UpdateVersionRequest{
 		Name:       a.id.String(),
 		Version:    diffRes.MergedDesired,
@@ -249,19 +423,29 @@ func (a *standardAppVersionAdapter) Update(ctx context.Context, updateOp *direct
 		return fmt.Errorf("waiting for AppEngineStandardAppVersion update %s: %w", a.id.String(), err)
 	}
 
-	latest := updated
-	getReq := &pb.GetVersionRequest{
-		Name: a.id.String(),
-		View: pb.VersionView_FULL,
-	}
-	if v, err := a.gcpClient.GetVersion(ctx, getReq); err != nil {
-		log.V(2).Info("getting AppEngineStandardAppVersion after update failed; falling back to op.Wait result", "name", a.id.String(), "err", err)
-	} else {
-		latest = v
+	log.V(2).Info("successfully updated AppEngineStandardAppVersion", "name", a.id.String())
+	return a.refreshAndUpdateStatus(ctx, updateOp, updated)
+}
+
+func (a *standardAppVersionAdapter) redeploy(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	log := klog.FromContext(ctx)
+	req, err := a.newCreateVersionRequest()
+	if err != nil {
+		return err
 	}
 
-	log.V(2).Info("successfully updated AppEngineStandardAppVersion", "name", a.id.String())
-	return a.updateStatus(ctx, updateOp, latest)
+	op, err := a.gcpClient.CreateVersion(ctx, req)
+	if err != nil {
+		return fmt.Errorf("redeploying AppEngineStandardAppVersion %s: %w", a.id.String(), err)
+	}
+
+	deployed, err := op.Wait(ctx)
+	if err != nil {
+		return fmt.Errorf("waiting for AppEngineStandardAppVersion redeploy %s: %w", a.id.String(), err)
+	}
+
+	log.V(2).Info("successfully redeployed AppEngineStandardAppVersion", "name", a.id.String())
+	return a.refreshAndUpdateStatus(ctx, updateOp, deployed)
 }
 
 func (a *standardAppVersionAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {

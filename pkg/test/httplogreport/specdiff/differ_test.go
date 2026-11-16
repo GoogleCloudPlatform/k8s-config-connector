@@ -25,12 +25,13 @@ import (
 
 func TestValuesCompatible(t *testing.T) {
 	tests := []struct {
-		name        string
-		foundVal    any
-		expectedVal any
-		createVal   any
-		diffPath    string
-		want        bool
+		name                  string
+		foundVal              any
+		expectedVal           any
+		createVal             any
+		diffPath              string
+		allowTrailingAppended bool
+		want                  bool
 	}{
 		{
 			name:        "mismatched integers 150 vs 200",
@@ -98,17 +99,147 @@ func TestValuesCompatible(t *testing.T) {
 			diffPath: "spec.columnLayout.columns",
 			want:     true,
 		},
+		{
+			name: "named slice in KRM vs keyed map in GCP JSON (deployment.files)",
+			foundVal: map[string]any{
+				"main.py":   map[string]any{"sourceUrl": "https://example.com/1", "sha1Sum": "abc"},
+				"extra.txt": map[string]any{"sourceUrl": "https://example.com/2", "sha1Sum": "def"},
+			},
+			expectedVal: []any{
+				map[string]any{"name": "main.py", "sourceUrl": "https://example.com/1"},
+				map[string]any{"name": "extra.txt", "sourceUrl": "https://example.com/2"},
+			},
+			createVal: []any{
+				map[string]any{"name": "main.py", "sourceUrl": "https://example.com/1"},
+			},
+			diffPath: "spec.deployment.files",
+			want:     true,
+		},
+		{
+			name: "named slice missing new file in GCP JSON (deployment.files)",
+			foundVal: map[string]any{
+				"main.py": map[string]any{"sourceUrl": "https://example.com/1", "sha1Sum": "abc"},
+			},
+			expectedVal: []any{
+				map[string]any{"name": "main.py", "sourceUrl": "https://example.com/1"},
+				map[string]any{"name": "extra.txt", "sourceUrl": "https://example.com/2"},
+			},
+			createVal: []any{
+				map[string]any{"name": "main.py", "sourceUrl": "https://example.com/1"},
+			},
+			diffPath: "spec.deployment.files",
+			want:     false,
+		},
+		{
+			name: "named slice swap with leaked removed file in GCP JSON (deployment.files)",
+			foundVal: map[string]any{
+				"main.py":     map[string]any{"sourceUrl": "https://example.com/1", "sha1Sum": "abc"},
+				"obsolete.py": map[string]any{"sourceUrl": "https://example.com/old", "sha1Sum": "old"},
+				"extra.txt":   map[string]any{"sourceUrl": "https://example.com/2", "sha1Sum": "def"},
+			},
+			expectedVal: []any{
+				map[string]any{"name": "main.py", "sourceUrl": "https://example.com/1"},
+				map[string]any{"name": "extra.txt", "sourceUrl": "https://example.com/2"},
+			},
+			createVal: []any{
+				map[string]any{"name": "main.py", "sourceUrl": "https://example.com/1"},
+				map[string]any{"name": "obsolete.py", "sourceUrl": "https://example.com/old"},
+			},
+			diffPath: "spec.deployment.files",
+			want:     false,
+		},
+		{
+			name: "additive field inside slice element with trailing server-default element",
+			foundVal: []any{
+				map[string]any{"urlRegex": "/api/.*", "redirectHttpResponseCode": float64(1), "securityLevel": float64(3)},
+				map[string]any{"urlRegex": ".*", "securityLevel": float64(2)},
+			},
+			expectedVal: []any{
+				map[string]any{"urlRegex": "/api/.*", "redirectHttpResponseCode": "REDIRECT_HTTP_RESPONSE_CODE_301", "securityLevel": "SECURE_ALWAYS"},
+			},
+			createVal: []any{
+				map[string]any{"urlRegex": "/api/.*", "securityLevel": "SECURE_ALWAYS"},
+			},
+			diffPath:              "spec.handlers",
+			allowTrailingAppended: true,
+			want:                  true,
+		},
+		{
+			name: "trailing element tolerance disabled on outbound requests",
+			foundVal: []any{
+				map[string]any{"urlRegex": "/api/.*", "redirectHttpResponseCode": float64(1), "securityLevel": float64(3)},
+				map[string]any{"urlRegex": ".*", "securityLevel": float64(2)},
+			},
+			expectedVal: []any{
+				map[string]any{"urlRegex": "/api/.*", "redirectHttpResponseCode": "REDIRECT_HTTP_RESPONSE_CODE_301", "securityLevel": "SECURE_ALWAYS"},
+			},
+			createVal: []any{
+				map[string]any{"urlRegex": "/api/.*", "securityLevel": "SECURE_ALWAYS"},
+			},
+			diffPath:              "spec.handlers",
+			allowTrailingAppended: false,
+			want:                  false,
+		},
+		{
+			name: "dropped additive field inside slice element with trailing default",
+			foundVal: []any{
+				map[string]any{"urlRegex": "/api/.*", "securityLevel": float64(3)},
+				map[string]any{"urlRegex": ".*", "securityLevel": float64(2)},
+			},
+			expectedVal: []any{
+				map[string]any{"urlRegex": "/api/.*", "redirectHttpResponseCode": "REDIRECT_HTTP_RESPONSE_CODE_301", "securityLevel": "SECURE_ALWAYS"},
+			},
+			createVal: []any{
+				map[string]any{"urlRegex": "/api/.*", "securityLevel": "SECURE_ALWAYS"},
+			},
+			diffPath:              "spec.handlers",
+			allowTrailingAppended: true,
+			want:                  false,
+		},
+		{
+			name: "append bug leaking replaced create slice element into tail",
+			foundVal: []any{
+				map[string]any{"urlRegex": "/v2/.*", "login": float64(1)},
+				map[string]any{"urlRegex": "/v1/.*", "login": float64(1)},
+			},
+			expectedVal: []any{
+				map[string]any{"urlRegex": "/v2/.*"},
+			},
+			createVal: []any{
+				map[string]any{"urlRegex": "/v1/.*"},
+			},
+			diffPath:              "spec.handlers",
+			allowTrailingAppended: true,
+			want:                  false,
+		},
+		{
+			name: "shrinking slice with trailing server-default element passes when removed item absent from tail",
+			foundVal: []any{
+				map[string]any{"urlRegex": "/v1/.*", "login": float64(1)},
+				map[string]any{"urlRegex": ".*", "login": float64(1)},
+			},
+			expectedVal: []any{
+				map[string]any{"urlRegex": "/v1/.*"},
+			},
+			createVal: []any{
+				map[string]any{"urlRegex": "/v1/.*"},
+				map[string]any{"urlRegex": "/old/.*"},
+			},
+			diffPath:              "spec.handlers",
+			allowTrailingAppended: true,
+			want:                  true,
+		},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			// Act
-			got := valuesCompatible(tc.foundVal, tc.expectedVal, tc.createVal, tc.diffPath)
+			got := valuesCompatible(tc.foundVal, tc.expectedVal, tc.createVal, tc.diffPath, tc.allowTrailingAppended)
 
 			// Assert
 			if got != tc.want {
-				t.Errorf("valuesCompatible(%v, %v, %v, %q) = %v, want %v",
-					tc.foundVal, tc.expectedVal, tc.createVal, tc.diffPath, got, tc.want)
+				t.Errorf("valuesCompatible(%v, %v, %v, %q, %v) = %v, want %v",
+					tc.foundVal, tc.expectedVal, tc.createVal, tc.diffPath, tc.allowTrailingAppended, got, tc.want)
 			}
 		})
 	}

@@ -232,7 +232,7 @@ func requestMatchesDiffItem(ce *classifier.ClassifiedEntry, body map[string]any,
 			if item.UpdateVal == nil {
 				return foundVal == nil
 			}
-			if valuesCompatible(foundVal, item.UpdateVal, item.CreateVal, item.Path) {
+			if valuesCompatible(foundVal, item.UpdateVal, item.CreateVal, item.Path, false) {
 				return true
 			}
 		} else if isZeroOrEmptyValue(item.UpdateVal) {
@@ -331,7 +331,7 @@ func responseBodiesMatchDiffItem(bodies []map[string]any, item Item) (bool, stri
 				foundIncompatibleAtPath = true
 				continue
 			}
-			if valuesCompatible(foundVal, item.UpdateVal, item.CreateVal, item.Path) {
+			if valuesCompatible(foundVal, item.UpdateVal, item.CreateVal, item.Path, true) {
 				return true, "Yes"
 			}
 			foundIncompatibleAtPath = true
@@ -415,7 +415,7 @@ func lookupNormalizedSegments(curr any, segments []string) (any, bool) {
 	return nil, false
 }
 
-func valuesCompatible(foundVal, expectedVal, createVal any, diffPath string) bool {
+func valuesCompatible(foundVal, expectedVal, createVal any, diffPath string, allowTrailingAppended bool) bool {
 	if ValuesMatch(foundVal, expectedVal) {
 		return true
 	}
@@ -425,8 +425,36 @@ func valuesCompatible(foundVal, expectedVal, createVal any, diffPath string) boo
 	if createVal != nil && ValuesMatch(foundVal, createVal) {
 		return false
 	}
-	if jsonContainsExpected(foundVal, expectedVal) && (createVal == nil || !jsonContainsExpected(foundVal, createVal)) {
+	if aMap, aOk := foundVal.(map[string]any); aOk {
+		if eMap, ok := sliceOfNamedMapsToKeyedMap(expectedVal); ok {
+			var cMap any = createVal
+			if cm, ok := sliceOfNamedMapsToKeyedMap(createVal); ok {
+				cMap = cm
+			}
+			return valuesCompatible(aMap, eMap, cMap, diffPath, allowTrailingAppended)
+		}
+		if eMap, eOk := expectedVal.(map[string]any); eOk {
+			cMap, _ := createVal.(map[string]any)
+			if hasLeakedRemovedMapKey(aMap, eMap, cMap) {
+				return false
+			}
+		}
+	}
+	if jsonContainsExpected(foundVal, expectedVal) &&
+		(createVal == nil || !jsonContainsExpected(foundVal, createVal) || !jsonContainsExpected(createVal, expectedVal)) {
 		return true
+	}
+	if allowTrailingAppended {
+		if aSlice, aOk := foundVal.([]any); aOk {
+			if eSlice, eOk := expectedVal.([]any); eOk && len(aSlice) > len(eSlice) {
+				cSlice, _ := createVal.([]any)
+				if jsonContainsExpected(aSlice[:len(eSlice)], eSlice) &&
+					!hasLeakedRemovedSliceElement(aSlice[len(eSlice):], eSlice, cSlice) &&
+					(createVal == nil || !jsonContainsExpected(aSlice[:len(eSlice)], createVal) || !jsonContainsExpected(createVal, eSlice)) {
+					return true
+				}
+			}
+		}
 	}
 	// Allow proto enum integer encoding vs string enum name
 	if isNumericValue(foundVal) && isEnumLikeString(expectedVal) {
@@ -450,6 +478,83 @@ func valuesCompatible(foundVal, expectedVal, createVal any, diffPath string) boo
 			return true
 		}
 		return false
+	}
+	return false
+}
+
+func sliceOfNamedMapsToKeyedMap(v any) (map[string]any, bool) {
+	slice, ok := v.([]any)
+	if !ok || len(slice) == 0 {
+		return nil, false
+	}
+	out := make(map[string]any, len(slice))
+	for _, elem := range slice {
+		m, ok := elem.(map[string]any)
+		if !ok {
+			return nil, false
+		}
+		name, ok := m["name"].(string)
+		if !ok || name == "" {
+			return nil, false
+		}
+		if _, dup := out[name]; dup {
+			return nil, false
+		}
+		rest := make(map[string]any, len(m))
+		for k, val := range m {
+			if k == "name" {
+				continue
+			}
+			rest[k] = val
+		}
+		out[name] = rest
+	}
+	return out, true
+}
+
+func hasLeakedRemovedMapKey(actual, expected, created map[string]any) bool {
+	if len(created) == 0 {
+		return false
+	}
+	actualNorm := make(map[string]struct{}, len(actual))
+	for k := range actual {
+		actualNorm[normalizeKey(k)] = struct{}{}
+	}
+	expectedNorm := make(map[string]struct{}, len(expected))
+	for k := range expected {
+		expectedNorm[normalizeKey(k)] = struct{}{}
+	}
+	for k := range created {
+		nk := normalizeKey(k)
+		if _, inExpected := expectedNorm[nk]; !inExpected {
+			if _, stillInActual := actualNorm[nk]; stillInActual {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func hasLeakedRemovedSliceElement(tail, expected, created []any) bool {
+	if len(created) == 0 || len(tail) == 0 {
+		return false
+	}
+	for _, cElem := range created {
+		inExpected := false
+		for _, eElem := range expected {
+			if jsonContainsExpected(eElem, cElem) && jsonContainsExpected(cElem, eElem) {
+				inExpected = true
+				break
+			}
+		}
+		if inExpected {
+			continue
+		}
+		for _, tElem := range tail {
+			if jsonContainsExpected(tElem, cElem) {
+				return true
+			}
+		}
 	}
 	return false
 }

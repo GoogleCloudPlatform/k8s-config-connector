@@ -1,6 +1,8 @@
 # Phase: CREATE
 GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=apps%2F${projectId}%2Fservices%2Fdefault%2Fversions%2Fv${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -24,6 +26,8 @@ X-Xss-Protection: 0
 
 POST https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=apps%2F${projectId}%2Fservices%2Fdefault
 
 {
   "deployment": {
@@ -56,7 +60,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
     "insertTime": "2024-04-01T12:34:56.123456Z",
@@ -69,8 +72,61 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=apps%2F${projectId}%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "insertTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.appengine.v1.Versions.CreateVersion",
+    "target": "apps/${projectId}/services/default/versions/v${uniqueId}",
+    "user": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "apps/${projectId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.appengine.v1.Version",
+    "betaSettings": {
+      "minor_version_id_ccfe": "1234567890123456789",
+      "no_appserver_affinity": "true",
+      "use_deployment_manager": "true"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "env": "flexible",
+    "id": "000000000000000000000",
+    "manualScaling": {
+      "instances": 1
+    },
+    "name": "apps/${projectId}/services/default/versions/v${uniqueId}",
+    "network": {},
+    "runtime": "custom",
+    "serviceAccount": "${projectId}@appspot.gserviceaccount.com",
+    "servingStatus": "SERVING",
+    "threadsafe": true,
+    "versionUrl": "https://v${uniqueId}-dot-${projectId}.uc.r.appspot.com"
+  }
+}
+
+---
+
 GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=apps%2F${projectId}%2Fservices%2Fdefault%2Fversions%2Fv${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -120,6 +176,8 @@ X-Xss-Protection: 0
 # Phase: UPDATE
 POST https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=apps%2F${projectId}%2Fservices%2Fdefault
 
 {
   "deployment": {
@@ -152,7 +210,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
     "insertTime": "2024-04-01T12:34:56.123456Z",
@@ -165,8 +222,61 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=apps%2F${projectId}%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "insertTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.appengine.v1.Versions.CreateVersion",
+    "target": "apps/${projectId}/services/default/versions/v${uniqueId}",
+    "user": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "apps/${projectId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.appengine.v1.Version",
+    "betaSettings": {
+      "minor_version_id_ccfe": "1234567890123456789",
+      "no_appserver_affinity": "true",
+      "use_deployment_manager": "true"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "env": "flexible",
+    "id": "000000000000000000000",
+    "manualScaling": {
+      "instances": 2
+    },
+    "name": "apps/${projectId}/services/default/versions/v${uniqueId}",
+    "network": {},
+    "runtime": "custom",
+    "serviceAccount": "${projectId}@appspot.gserviceaccount.com",
+    "servingStatus": "SERVING",
+    "threadsafe": true,
+    "versionUrl": "https://v${uniqueId}-dot-${projectId}.uc.r.appspot.com"
+  }
+}
+
+---
+
 GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=apps%2F${projectId}%2Fservices%2Fdefault%2Fversions%2Fv${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -216,6 +326,36 @@ X-Xss-Protection: 0
 # Phase: DELETE
 DELETE https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=apps%2F${projectId}%2Fservices%2Fdefault%2Fversions%2Fv${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "insertTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.appengine.v1.Versions.DeleteVersion",
+    "target": "apps/${projectId}/services/default/versions/v${uniqueId}",
+    "user": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "apps/${projectId}/operations/${operationID}"
+}
+
+---
+
+GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=apps%2F${projectId}%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -231,10 +371,14 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "endTime": "2024-04-01T12:34:56.123456Z",
     "insertTime": "2024-04-01T12:34:56.123456Z",
     "method": "google.appengine.v1.Versions.DeleteVersion",
     "target": "apps/${projectId}/services/default/versions/v${uniqueId}",
     "user": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
   },
-  "name": "apps/${projectId}/operations/${operationID}"
+  "name": "apps/${projectId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
 }

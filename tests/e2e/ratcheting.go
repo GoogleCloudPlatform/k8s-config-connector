@@ -75,11 +75,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 		// for deployment.0.container.0.image (GCP resolves image tags to digests @sha256:...).
 		// Consequently, during re-reconciliation, Terraform detects a diff on `deployment.0.container.0.image` and triggers an update.
 		return false
-	case schema.GroupKind{Group: "appengine.cnrm.cloud.google.com", Kind: "AppEngineStandardAppVersion"}:
-		// The legacy Terraform provider for google_app_engine_standard_app_version does not read back
-		// or persist `deployment` into state during Read() (it is missing flattenAppEngineStandardAppVersionDeployment).
-		// Consequently, during re-reconciliation, Terraform detects a diff on `deployment.0.files` and triggers an update.
-		return false
 	case schema.GroupKind{Group: "apphub.cnrm.cloud.google.com", Kind: "AppHubApplication"}:
 	case schema.GroupKind{Group: "apphub.cnrm.cloud.google.com", Kind: "AppHubDiscoveredService"}:
 	case schema.GroupKind{Group: "apphub.cnrm.cloud.google.com", Kind: "AppHubDiscoveredWorkload"}:

@@ -1,0 +1,527 @@
+# Phase: CREATE
+GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=apps%2F${projectId}%2Fservices%2Fdefault%2Fversions%2Fv${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/applications/${projectId}/services/default/versions/v${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=apps%2F${projectId}%2Fservices%2Fdefault
+
+{
+  "deployment": {
+    "files": {
+      "main.py": {
+        "sourceUrl": "https://storage.googleapis.com/staging.${projectId}.appspot.com/42bc88044284cd927a03d76e4d67e1c03bbc5fe2"
+      },
+      "requirements.txt": {
+        "sourceUrl": "https://storage.googleapis.com/staging.${projectId}.appspot.com/235a38433f47948ecaca1d1beca8bdb5b8f73b83"
+      }
+    }
+  },
+  "entrypoint": {
+    "shell": "gunicorn -b :$PORT main:app"
+  },
+  "envVariables": {
+    "PORT": "8080",
+    "STAGE": "create"
+  },
+  "handlers": [
+    {
+      "script": {
+        "scriptPath": "auto"
+      },
+      "securityLevel": 3,
+      "urlRegex": "/api/.*"
+    },
+    {
+      "script": {
+        "scriptPath": "auto"
+      },
+      "urlRegex": ".*"
+    }
+  ],
+  "id": "000000000000000000000",
+  "inboundServices": [
+    9
+  ],
+  "instanceClass": "B2",
+  "manualScaling": {
+    "instances": 1
+  },
+  "runtime": "python311",
+  "serviceAccount": "${projectId}@appspot.gserviceaccount.com",
+  "threadsafe": true
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "insertTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.appengine.v1.Versions.CreateVersion",
+    "target": "apps/${projectId}/services/default/versions/v${uniqueId}",
+    "user": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "apps/${projectId}/operations/${operationID}"
+}
+
+---
+
+GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=apps%2F${projectId}%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "insertTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.appengine.v1.Versions.CreateVersion",
+    "target": "apps/${projectId}/services/default/versions/v${uniqueId}",
+    "user": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "apps/${projectId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.appengine.v1.Version",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "diskUsageBytes": "2978869",
+    "env": "standard",
+    "id": "000000000000000000000",
+    "inboundServices": [
+      "INBOUND_SERVICE_WARMUP"
+    ],
+    "instanceClass": "B2",
+    "manualScaling": {
+      "instances": 1
+    },
+    "name": "apps/${projectId}/services/default/versions/v${uniqueId}",
+    "network": {},
+    "runtime": "python311",
+    "runtimeChannel": "default",
+    "serviceAccount": "${projectId}@appspot.gserviceaccount.com",
+    "servingStatus": "SERVING",
+    "threadsafe": true,
+    "versionUrl": "https://v${uniqueId}-dot-${projectId}.uc.r.appspot.com"
+  }
+}
+
+---
+
+GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=apps%2F${projectId}%2Fservices%2Fdefault%2Fversions%2Fv${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "createdBy": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+  "deployment": {
+    "files": {
+      "main.py": {
+        "sha1Sum": "42bc88044284cd927a03d76e4d67e1c03bbc5fe2",
+        "sourceUrl": "https://storage.googleapis.com/staging.${projectId}.appspot.com/42bc88044284cd927a03d76e4d67e1c03bbc5fe2"
+      },
+      "requirements.txt": {
+        "sha1Sum": "235a38433f47948ecaca1d1beca8bdb5b8f73b83",
+        "sourceUrl": "https://storage.googleapis.com/staging.${projectId}.appspot.com/235a38433f47948ecaca1d1beca8bdb5b8f73b83"
+      }
+    }
+  },
+  "diskUsageBytes": "2978869",
+  "env": "standard",
+  "envVariables": {
+    "PORT": "8080",
+    "STAGE": "create"
+  },
+  "handlers": [
+    {
+      "authFailAction": 1,
+      "login": 1,
+      "script": {
+        "scriptPath": "auto"
+      },
+      "securityLevel": 3,
+      "urlRegex": "/api/.*"
+    },
+    {
+      "authFailAction": 1,
+      "login": 1,
+      "script": {
+        "scriptPath": "auto"
+      },
+      "securityLevel": 2,
+      "urlRegex": ".*"
+    },
+    {
+      "login": 1,
+      "script": {
+        "scriptPath": "auto"
+      },
+      "securityLevel": 2,
+      "urlRegex": ".*"
+    }
+  ],
+  "id": "000000000000000000000",
+  "inboundServices": [
+    9
+  ],
+  "instanceClass": "B2",
+  "manualScaling": {
+    "instances": 1
+  },
+  "name": "apps/${projectId}/services/default/versions/v${uniqueId}",
+  "network": {},
+  "runtime": "python311",
+  "runtimeChannel": "default",
+  "serviceAccount": "${projectId}@appspot.gserviceaccount.com",
+  "servingStatus": 1,
+  "threadsafe": true,
+  "versionUrl": "https://v${uniqueId}-dot-${projectId}.uc.r.appspot.com"
+}
+
+---
+
+# Phase: UPDATE
+POST https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=apps%2F${projectId}%2Fservices%2Fdefault
+
+{
+  "automaticScaling": {
+    "maxConcurrentRequests": 20,
+    "standardSchedulerSettings": {
+      "maxInstances": 2,
+      "targetCpuUtilization": 0.6
+    }
+  },
+  "deployment": {
+    "files": {
+      "extra.txt": {
+        "sourceUrl": "https://storage.googleapis.com/staging.${projectId}.appspot.com/9a8b23898ec6c1fb392b96eb4486ace3616ee192"
+      },
+      "main.py": {
+        "sourceUrl": "https://storage.googleapis.com/staging.${projectId}.appspot.com/42bc88044284cd927a03d76e4d67e1c03bbc5fe2"
+      },
+      "requirements.txt": {
+        "sourceUrl": "https://storage.googleapis.com/staging.${projectId}.appspot.com/235a38433f47948ecaca1d1beca8bdb5b8f73b83"
+      }
+    }
+  },
+  "entrypoint": {
+    "shell": "gunicorn -b :$PORT --workers 2 main:app"
+  },
+  "envVariables": {
+    "PORT": "8080",
+    "STAGE": "update"
+  },
+  "handlers": [
+    {
+      "redirectHttpResponseCode": 1,
+      "script": {
+        "scriptPath": "auto"
+      },
+      "securityLevel": 3,
+      "urlRegex": "/api/.*"
+    },
+    {
+      "script": {
+        "scriptPath": "auto"
+      },
+      "urlRegex": ".*"
+    }
+  ],
+  "id": "000000000000000000000",
+  "inboundServices": [
+    9
+  ],
+  "instanceClass": "F2",
+  "runtime": "python311",
+  "serviceAccount": "${projectId}@appspot.gserviceaccount.com",
+  "threadsafe": true
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "insertTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.appengine.v1.Versions.CreateVersion",
+    "target": "apps/${projectId}/services/default/versions/v${uniqueId}",
+    "user": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "apps/${projectId}/operations/${operationID}"
+}
+
+---
+
+GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=apps%2F${projectId}%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "insertTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.appengine.v1.Versions.CreateVersion",
+    "target": "apps/${projectId}/services/default/versions/v${uniqueId}",
+    "user": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "apps/${projectId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.appengine.v1.Version",
+    "automaticScaling": {
+      "maxConcurrentRequests": 20,
+      "standardSchedulerSettings": {
+        "maxInstances": 2,
+        "targetCpuUtilization": 0.6
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "diskUsageBytes": "2978869",
+    "env": "standard",
+    "id": "000000000000000000000",
+    "inboundServices": [
+      "INBOUND_SERVICE_WARMUP"
+    ],
+    "instanceClass": "F2",
+    "name": "apps/${projectId}/services/default/versions/v${uniqueId}",
+    "network": {},
+    "runtime": "python311",
+    "runtimeChannel": "default",
+    "serviceAccount": "${projectId}@appspot.gserviceaccount.com",
+    "servingStatus": "SERVING",
+    "threadsafe": true,
+    "versionUrl": "https://v${uniqueId}-dot-${projectId}.uc.r.appspot.com"
+  }
+}
+
+---
+
+GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=apps%2F${projectId}%2Fservices%2Fdefault%2Fversions%2Fv${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "automaticScaling": {
+    "maxConcurrentRequests": 20,
+    "standardSchedulerSettings": {
+      "maxInstances": 2,
+      "targetCpuUtilization": 0.6
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "createdBy": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+  "deployment": {
+    "files": {
+      "extra.txt": {
+        "sha1Sum": "9a8b23898ec6c1fb392b96eb4486ace3616ee192",
+        "sourceUrl": "https://storage.googleapis.com/staging.${projectId}.appspot.com/9a8b23898ec6c1fb392b96eb4486ace3616ee192"
+      },
+      "main.py": {
+        "sha1Sum": "42bc88044284cd927a03d76e4d67e1c03bbc5fe2",
+        "sourceUrl": "https://storage.googleapis.com/staging.${projectId}.appspot.com/42bc88044284cd927a03d76e4d67e1c03bbc5fe2"
+      },
+      "requirements.txt": {
+        "sha1Sum": "235a38433f47948ecaca1d1beca8bdb5b8f73b83",
+        "sourceUrl": "https://storage.googleapis.com/staging.${projectId}.appspot.com/235a38433f47948ecaca1d1beca8bdb5b8f73b83"
+      }
+    }
+  },
+  "diskUsageBytes": "2978869",
+  "env": "standard",
+  "envVariables": {
+    "PORT": "8080",
+    "STAGE": "update"
+  },
+  "handlers": [
+    {
+      "authFailAction": 1,
+      "login": 1,
+      "redirectHttpResponseCode": 1,
+      "script": {
+        "scriptPath": "auto"
+      },
+      "securityLevel": 3,
+      "urlRegex": "/api/.*"
+    },
+    {
+      "authFailAction": 1,
+      "login": 1,
+      "script": {
+        "scriptPath": "auto"
+      },
+      "securityLevel": 2,
+      "urlRegex": ".*"
+    },
+    {
+      "login": 1,
+      "script": {
+        "scriptPath": "auto"
+      },
+      "securityLevel": 2,
+      "urlRegex": ".*"
+    }
+  ],
+  "id": "000000000000000000000",
+  "inboundServices": [
+    9
+  ],
+  "instanceClass": "F2",
+  "name": "apps/${projectId}/services/default/versions/v${uniqueId}",
+  "network": {},
+  "runtime": "python311",
+  "runtimeChannel": "default",
+  "serviceAccount": "${projectId}@appspot.gserviceaccount.com",
+  "servingStatus": 1,
+  "threadsafe": true,
+  "versionUrl": "https://v${uniqueId}-dot-${projectId}.uc.r.appspot.com"
+}
+
+---
+
+# Phase: DELETE
+DELETE https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=apps%2F${projectId}%2Fservices%2Fdefault%2Fversions%2Fv${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "insertTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.appengine.v1.Versions.DeleteVersion",
+    "target": "apps/${projectId}/services/default/versions/v${uniqueId}",
+    "user": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "apps/${projectId}/operations/${operationID}"
+}
+
+---
+
+GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=apps%2F${projectId}%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "insertTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.appengine.v1.Versions.DeleteVersion",
+    "target": "apps/${projectId}/services/default/versions/v${uniqueId}",
+    "user": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "apps/${projectId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

@@ -21,6 +21,8 @@ import (
 	"context"
 	"crypto/sha256"
 	"fmt"
+	"slices"
+	"sort"
 	"strings"
 	"time"
 
@@ -70,6 +72,35 @@ func (n *versionName) String() string {
 	return fmt.Sprintf("apps/%s/services/%s/versions/%s", n.App, n.Service, n.Version)
 }
 
+func versionForReadView(v *pb.Version, view pb.VersionView) *pb.Version {
+	result := proto.Clone(v).(*pb.Version)
+	result.Entrypoint = nil
+	if result.Deployment != nil {
+		result.Deployment.Zip = nil
+	}
+	if view != pb.VersionView_FULL {
+		result.Handlers = nil
+		result.ErrorHandlers = nil
+		result.Libraries = nil
+		result.ApiConfig = nil
+		result.EnvVariables = nil
+		result.BuildEnvVariables = nil
+		result.DefaultExpiration = nil
+		result.HealthCheck = nil
+		result.ReadinessCheck = nil
+		result.LivenessCheck = nil
+		result.NobuildFilesRegex = ""
+		result.Deployment = nil
+	}
+	return result
+}
+
+func versionForOperationResponse(v *pb.Version) *pb.Version {
+	result := versionForReadView(v, pb.VersionView_BASIC)
+	result.CreatedBy = ""
+	return result
+}
+
 func (s *versionsServer) GetVersion(ctx context.Context, req *pb.GetVersionRequest) (*pb.Version, error) {
 	name, err := s.parseVersionName(req.GetName())
 	if err != nil {
@@ -85,24 +116,7 @@ func (s *versionsServer) GetVersion(ctx context.Context, req *pb.GetVersionReque
 		return nil, err
 	}
 
-	result := proto.Clone(obj).(*pb.Version)
-	result.Entrypoint = nil
-	if req.GetView() != pb.VersionView_FULL {
-		result.Handlers = nil
-		result.ErrorHandlers = nil
-		result.Libraries = nil
-		result.ApiConfig = nil
-		result.EnvVariables = nil
-		result.BuildEnvVariables = nil
-		result.DefaultExpiration = nil
-		result.HealthCheck = nil
-		result.ReadinessCheck = nil
-		result.LivenessCheck = nil
-		result.NobuildFilesRegex = ""
-		result.Deployment = nil
-	}
-
-	return result, nil
+	return versionForReadView(obj, req.GetView()), nil
 }
 
 func (s *versionsServer) CreateVersion(ctx context.Context, req *pb.CreateVersionRequest) (*longrunningpb.Operation, error) {
@@ -130,9 +144,6 @@ func (s *versionsServer) CreateVersion(ctx context.Context, req *pb.CreateVersio
 
 	existing := &pb.Version{}
 	if err := s.storage.Get(ctx, fqn, existing); err == nil {
-		if len(req.GetVersion().GetHandlers()) > 0 && len(existing.GetHandlers()) > 0 {
-			obj.Handlers = append(existing.GetHandlers(), obj.GetHandlers()...)
-		}
 		if err := s.storage.Update(ctx, fqn, obj); err != nil {
 			return nil, err
 		}
@@ -149,14 +160,178 @@ func (s *versionsServer) CreateVersion(ctx context.Context, req *pb.CreateVersio
 		Target:     fqn,
 	}
 	opPrefix := fmt.Sprintf("apps/%s", parent.App)
-	return s.operations.StartLROWithDone(ctx, opPrefix, opMetadata, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, opPrefix, opMetadata, func() (proto.Message, error) {
 		opMetadata.EndTime = timestamppb.New(now)
-		return proto.Clone(obj), nil
+		return versionForOperationResponse(obj), nil
 	})
+}
+
+// toProtoFieldPath converts a camelCase or snake_case field path ("envVariables")
+// to proto snake_case ("env_variables").
+func toProtoFieldPath(p string) string {
+	var b strings.Builder
+	for _, r := range p {
+		if r >= 'A' && r <= 'Z' {
+			b.WriteByte('_')
+			b.WriteRune(r - 'A' + 'a')
+		} else {
+			b.WriteRune(r)
+		}
+	}
+	return b.String()
+}
+
+// updateVersionAllowedPaths are the update_mask paths App Engine's UpdateVersion accepts
+// (Standard and Flexible, per the public App Engine Admin API reference), sorted as in
+// App Engine's error message.
+var updateVersionAllowedPaths = []string{
+	"automatic_scaling.cool_down_period_sec",
+	"automatic_scaling.cpu_utilization.target_utilization",
+	"automatic_scaling.max_idle_instances",
+	"automatic_scaling.max_total_instances",
+	"automatic_scaling.min_idle_instances",
+	"automatic_scaling.min_total_instances",
+	"automatic_scaling.standard_scheduler_settings.max_instances",
+	"automatic_scaling.standard_scheduler_settings.min_instances",
+	"automatic_scaling.standard_scheduler_settings.target_cpu_utilization",
+	"automatic_scaling.standard_scheduler_settings.target_throughput_utilization",
+	"instance_class",
+	"manual_scaling.instances",
+	"serving_status",
+}
+
+// validateUpdateVersionMask mirrors App Engine's update_mask validation for UpdateVersion.
+func validateUpdateVersionMask(rawPaths []string) ([]string, error) {
+	if len(rawPaths) == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "At least one field must be specified for this operation.")
+	}
+	allowed := make(map[string]bool, len(updateVersionAllowedPaths))
+	for _, p := range updateVersionAllowedPaths {
+		allowed[p] = true
+	}
+	snakePaths := make([]string, len(rawPaths))
+	hasDisallowed := false
+	for i, p := range rawPaths {
+		sp := toProtoFieldPath(p)
+		snakePaths[i] = sp
+		if !allowed[sp] {
+			hasDisallowed = true
+		}
+	}
+	if hasDisallowed {
+		got := slices.Clone(snakePaths)
+		sort.Strings(got)
+		return nil, status.Errorf(codes.InvalidArgument,
+			"This operation is only supported on the following field(s): [%s], but got field(s): [%s] from the update request.",
+			strings.Join(updateVersionAllowedPaths, ", "), strings.Join(got, ", "))
+	}
+	return snakePaths, nil
+}
+
+// validateUpdateVersionRequest mirrors App Engine's per-field UpdateVersion checks for
+// Standard and Flexible versions.
+func validateUpdateVersionRequest(existing, patch *pb.Version, paths []string) error {
+	isFlex := existing.GetEnv() == "flexible" || existing.GetEnv() == "flex" || existing.GetVm()
+	isManual := existing.GetManualScaling() != nil
+	isBasic := !isManual && existing.GetBasicScaling() != nil
+	isAutomatic := !isManual && !isBasic
+
+	for _, p := range paths {
+		switch p {
+		case "automatic_scaling.cool_down_period_sec",
+			"automatic_scaling.cpu_utilization.target_utilization",
+			"automatic_scaling.max_total_instances",
+			"automatic_scaling.min_total_instances":
+			if !isFlex {
+				return status.Errorf(codes.FailedPrecondition, "This request contained fields not supported on this version")
+			}
+		case "automatic_scaling.min_idle_instances",
+			"automatic_scaling.max_idle_instances":
+			if !isAutomatic {
+				return status.Errorf(codes.FailedPrecondition, "You cannot change the scaling type of a version after deployment.")
+			}
+		case "automatic_scaling.standard_scheduler_settings.max_instances",
+			"automatic_scaling.standard_scheduler_settings.min_instances",
+			"automatic_scaling.standard_scheduler_settings.target_cpu_utilization",
+			"automatic_scaling.standard_scheduler_settings.target_throughput_utilization":
+			if isFlex {
+				return status.Errorf(codes.FailedPrecondition, "This request contained fields not supported on this version")
+			}
+		case "manual_scaling.instances":
+			if !isManual {
+				return status.Errorf(codes.FailedPrecondition, "You cannot change the scaling type of a version after deployment.")
+			}
+		case "instance_class":
+			if cls := patch.GetInstanceClass(); cls != "" {
+				if isAutomatic && !strings.HasPrefix(cls, "F") {
+					return status.Errorf(codes.InvalidArgument, "Instance class for automatic scaling versions must be set to one of the F_ instance classes")
+				}
+				if !isAutomatic && !strings.HasPrefix(cls, "B") {
+					return status.Errorf(codes.InvalidArgument, "Instance class for basic or manual scaled versions must be set to one of the B_ instance classes")
+				}
+			}
+		case "serving_status":
+			if isAutomatic && !isFlex {
+				return status.Errorf(codes.InvalidArgument, "serving status cannot be changed for Automatic Scaling versions")
+			}
+		}
+	}
+	return nil
+}
+
+func ensureAutomaticScaling(v *pb.Version) *pb.AutomaticScaling {
+	if v.GetAutomaticScaling() == nil {
+		v.Scaling = &pb.Version_AutomaticScaling{AutomaticScaling: &pb.AutomaticScaling{}}
+	}
+	return v.GetAutomaticScaling()
+}
+
+func ensureStandardSchedulerSettings(v *pb.Version) *pb.StandardSchedulerSettings {
+	as := ensureAutomaticScaling(v)
+	if as.StandardSchedulerSettings == nil {
+		as.StandardSchedulerSettings = &pb.StandardSchedulerSettings{}
+	}
+	return as.StandardSchedulerSettings
+}
+
+func applyUpdateVersionMask(updated, patch *pb.Version, paths []string) error {
+	for _, p := range paths {
+		switch p {
+		case "instance_class":
+			updated.InstanceClass = patch.GetInstanceClass()
+		case "serving_status":
+			updated.ServingStatus = patch.GetServingStatus()
+		case "manual_scaling.instances":
+			if updated.GetManualScaling() == nil {
+				updated.Scaling = &pb.Version_ManualScaling{ManualScaling: &pb.ManualScaling{}}
+			}
+			updated.GetManualScaling().Instances = patch.GetManualScaling().GetInstances()
+		case "automatic_scaling.min_idle_instances":
+			ensureAutomaticScaling(updated).MinIdleInstances = patch.GetAutomaticScaling().GetMinIdleInstances()
+		case "automatic_scaling.max_idle_instances":
+			ensureAutomaticScaling(updated).MaxIdleInstances = patch.GetAutomaticScaling().GetMaxIdleInstances()
+		case "automatic_scaling.standard_scheduler_settings.max_instances":
+			ensureStandardSchedulerSettings(updated).MaxInstances = patch.GetAutomaticScaling().GetStandardSchedulerSettings().GetMaxInstances()
+		case "automatic_scaling.standard_scheduler_settings.min_instances":
+			ensureStandardSchedulerSettings(updated).MinInstances = patch.GetAutomaticScaling().GetStandardSchedulerSettings().GetMinInstances()
+		case "automatic_scaling.standard_scheduler_settings.target_cpu_utilization":
+			ensureStandardSchedulerSettings(updated).TargetCpuUtilization = patch.GetAutomaticScaling().GetStandardSchedulerSettings().GetTargetCpuUtilization()
+		case "automatic_scaling.standard_scheduler_settings.target_throughput_utilization":
+			ensureStandardSchedulerSettings(updated).TargetThroughputUtilization = patch.GetAutomaticScaling().GetStandardSchedulerSettings().GetTargetThroughputUtilization()
+		default:
+			return status.Errorf(codes.Unimplemented, "update_mask path %q is not implemented in mockappengine", p)
+		}
+	}
+	return nil
 }
 
 func (s *versionsServer) UpdateVersion(ctx context.Context, req *pb.UpdateVersionRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseVersionName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	paths, err := validateUpdateVersionMask(req.GetUpdateMask().GetPaths())
 	if err != nil {
 		return nil, err
 	}
@@ -167,51 +342,13 @@ func (s *versionsServer) UpdateVersion(ctx context.Context, req *pb.UpdateVersio
 		return nil, err
 	}
 
-	updated := proto.Clone(existing).(*pb.Version)
-	updateObj := req.GetVersion()
-
-	if updateObj.GetInstanceClass() != "" {
-		updated.InstanceClass = updateObj.GetInstanceClass()
+	if err := validateUpdateVersionRequest(existing, req.GetVersion(), paths); err != nil {
+		return nil, err
 	}
-	if updateObj.GetAutomaticScaling() != nil {
-		if updated.GetAutomaticScaling() == nil {
-			updated.Scaling = &pb.Version_AutomaticScaling{AutomaticScaling: &pb.AutomaticScaling{}}
-		}
-		as := updated.GetAutomaticScaling()
-		inAs := updateObj.GetAutomaticScaling()
-		if inAs.GetMaxConcurrentRequests() != 0 {
-			as.MaxConcurrentRequests = inAs.GetMaxConcurrentRequests()
-		}
-		if inAs.GetMaxIdleInstances() != 0 {
-			as.MaxIdleInstances = inAs.GetMaxIdleInstances()
-		}
-		if inAs.GetMinIdleInstances() != 0 {
-			as.MinIdleInstances = inAs.GetMinIdleInstances()
-		}
-		if inAs.GetMaxPendingLatency() != nil {
-			as.MaxPendingLatency = inAs.GetMaxPendingLatency()
-		}
-		if inAs.GetMinPendingLatency() != nil {
-			as.MinPendingLatency = inAs.GetMinPendingLatency()
-		}
-		if inAs.GetStandardSchedulerSettings() != nil {
-			if as.StandardSchedulerSettings == nil {
-				as.StandardSchedulerSettings = &pb.StandardSchedulerSettings{}
-			}
-			inSched := inAs.GetStandardSchedulerSettings()
-			if inSched.GetMaxInstances() != 0 {
-				as.StandardSchedulerSettings.MaxInstances = inSched.GetMaxInstances()
-			}
-			if inSched.GetMinInstances() != 0 {
-				as.StandardSchedulerSettings.MinInstances = inSched.GetMinInstances()
-			}
-			if inSched.GetTargetCpuUtilization() != 0 {
-				as.StandardSchedulerSettings.TargetCpuUtilization = inSched.GetTargetCpuUtilization()
-			}
-			if inSched.GetTargetThroughputUtilization() != 0 {
-				as.StandardSchedulerSettings.TargetThroughputUtilization = inSched.GetTargetThroughputUtilization()
-			}
-		}
+
+	updated := proto.Clone(existing).(*pb.Version)
+	if err := applyUpdateVersionMask(updated, req.GetVersion(), paths); err != nil {
+		return nil, err
 	}
 
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
@@ -226,9 +363,9 @@ func (s *versionsServer) UpdateVersion(ctx context.Context, req *pb.UpdateVersio
 		Target:     fqn,
 	}
 	opPrefix := fmt.Sprintf("apps/%s", name.App)
-	return s.operations.StartLROWithDone(ctx, opPrefix, opMetadata, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, opPrefix, opMetadata, func() (proto.Message, error) {
 		opMetadata.EndTime = timestamppb.New(now)
-		return proto.Clone(updated), nil
+		return versionForOperationResponse(updated), nil
 	})
 }
 
@@ -252,7 +389,7 @@ func (s *versionsServer) DeleteVersion(ctx context.Context, req *pb.DeleteVersio
 		Target:     fqn,
 	}
 	opPrefix := fmt.Sprintf("apps/%s", name.App)
-	return s.operations.StartLROWithDone(ctx, opPrefix, opMetadata, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, opPrefix, opMetadata, func() (proto.Message, error) {
 		opMetadata.EndTime = timestamppb.New(now)
 		return &emptypb.Empty{}, nil
 	})
@@ -269,23 +406,7 @@ func (s *versionsServer) ListVersions(ctx context.Context, req *pb.ListVersionsR
 	if err := s.storage.List(ctx, kind, storage.ListOptions{}, func(obj proto.Message) error {
 		version := obj.(*pb.Version)
 		if strings.HasPrefix(version.GetName(), fmt.Sprintf("apps/%s/services/%s/versions/", parent.App, parent.Service)) {
-			v := proto.Clone(version).(*pb.Version)
-			v.Entrypoint = nil
-			if req.GetView() != pb.VersionView_FULL {
-				v.Handlers = nil
-				v.ErrorHandlers = nil
-				v.Libraries = nil
-				v.ApiConfig = nil
-				v.EnvVariables = nil
-				v.BuildEnvVariables = nil
-				v.DefaultExpiration = nil
-				v.HealthCheck = nil
-				v.ReadinessCheck = nil
-				v.LivenessCheck = nil
-				v.NobuildFilesRegex = ""
-				v.Deployment = nil
-			}
-			response.Versions = append(response.Versions, v)
+			response.Versions = append(response.Versions, versionForReadView(version, req.GetView()))
 		}
 		return nil
 	}); err != nil {
@@ -376,25 +497,33 @@ func (s *MockService) populateDefaultsForVersion(parent *versionParent, name *ve
 		}
 	}
 	if obj.Env == "standard" {
-		if len(obj.Handlers) == 0 {
-			obj.Handlers = []*pb.UrlMap{
-				{
-					Login:         pb.LoginRequirement_LOGIN_OPTIONAL,
-					SecurityLevel: pb.SecurityLevel_SECURE_OPTIONAL,
-					UrlRegex:      ".*",
-					HandlerType: &pb.UrlMap_Script{
-						Script: &pb.ScriptHandler{
-							ScriptPath: "auto",
-						},
-					},
+		// Real App Engine appends the default URL map only when the runtime defines one
+		// (2nd-gen runtimes). The mock appends for all Standard runtimes; fixtures use python311.
+		defaultHandler := &pb.UrlMap{
+			Login:         pb.LoginRequirement_LOGIN_OPTIONAL,
+			SecurityLevel: pb.SecurityLevel_SECURE_OPTIONAL,
+			UrlRegex:      ".*",
+			HandlerType: &pb.UrlMap_Script{
+				Script: &pb.ScriptHandler{
+					ScriptPath: "auto",
 				},
-			}
+			},
+		}
+		if len(obj.Handlers) == 0 {
+			obj.Handlers = []*pb.UrlMap{defaultHandler}
 		} else {
 			for _, h := range obj.Handlers {
+				if h.Login == pb.LoginRequirement_LOGIN_UNSPECIFIED {
+					h.Login = pb.LoginRequirement_LOGIN_OPTIONAL
+				}
+				if h.SecurityLevel == pb.SecurityLevel_SECURE_UNSPECIFIED {
+					h.SecurityLevel = pb.SecurityLevel_SECURE_OPTIONAL
+				}
 				if h.AuthFailAction == pb.AuthFailAction_AUTH_FAIL_ACTION_UNSPECIFIED {
 					h.AuthFailAction = pb.AuthFailAction_AUTH_FAIL_ACTION_REDIRECT
 				}
 			}
+			obj.Handlers = append(obj.Handlers, defaultHandler)
 		}
 	} else {
 		for _, h := range obj.Handlers {
