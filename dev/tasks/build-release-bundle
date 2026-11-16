@@ -164,7 +164,6 @@ BLOCKED_KINDS=(
     "ComputeLicense"
     "ComputeNotificationEndpoint"
     "ComputePublicAdvertisedPrefix"
-    "ConnectorsConnection"
     "ContactCenterInsightsConversation"
     "ContentWarehouseDocument"
     "ContentWarehouseRuleSet"
