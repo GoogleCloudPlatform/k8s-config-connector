@@ -191,7 +191,6 @@ BLOCKED_KINDS=(
     "DataplexEnvironment"
     "DataplexMetadataFeed"
     "DataplexPartition"
-    "DevConnectAccountConnector"
     "DevConnectConnection"
     "DevConnectInsightsConfig"
     "DeveloperConnectGitRepositoryLink"
