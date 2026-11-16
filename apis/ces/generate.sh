@@ -43,7 +43,8 @@ ${CONTROLLERBUILDER} generate-types \
   --prepopulate-resource \
   --resource CESApp:App \
   --resource CesAgent:Agent \
-  --resource CESDeployment:Deployment
+  --resource CESDeployment:Deployment \
+  --resource CESTool:Tool
 
 ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${PROTO_OUT} \
@@ -51,7 +52,8 @@ ${CONTROLLERBUILDER} generate-identity \
   --api-version ces.cnrm.cloud.google.com/v1alpha1 \
   --resource CESApp:App \
   --resource CesAgent:Agent \
-  --resource CESDeployment:Deployment
+  --resource CESDeployment:Deployment \
+  --resource CESTool:Tool
 
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \
