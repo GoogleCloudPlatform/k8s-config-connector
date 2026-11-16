@@ -25,6 +25,7 @@ import (
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/appengine/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -135,6 +136,7 @@ func (a *AuthorizedCertificateAdapter) Find(ctx context.Context) (bool, error) {
 
 	req := &appenginepb.GetAuthorizedCertificateRequest{
 		Name: a.id.String(),
+		View: appenginepb.AuthorizedCertificateView_FULL_CERTIFICATE,
 	}
 	authorizedcertificatepb, err := a.gcpClient.GetAuthorizedCertificate(ctx, req)
 	if err != nil {
@@ -242,13 +244,14 @@ func (a *AuthorizedCertificateAdapter) Export(ctx context.Context) (*unstructure
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+	obj.Spec.ProjectRef = &refsv1beta1.ProjectRef{External: a.id.App}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u.Object = uObj
-	u.SetName(a.id.String())
+	u.SetName(a.id.AuthorizedCertificate)
 	u.SetGroupVersionKind(krm.AppEngineAuthorizedCertificateGVK)
 
 	return u, nil
