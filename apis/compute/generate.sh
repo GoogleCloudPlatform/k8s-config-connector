@@ -29,16 +29,10 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
-# We must compile Compute using a newer googleapis pin than the global default in apis/git.versions to include RolloutPlan.
-PROTO_SHA="7e7f1e9533723bcf3821e681e564b27f92fd46f5"
-PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
-
-./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT} "$@"
+./generate-proto.sh "$@"
 
 # --- v1alpha1 ---
 ${CONTROLLERBUILDER} generate-types \
-  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource \
@@ -49,7 +43,6 @@ ${CONTROLLERBUILDER} generate-types \
   --include-skipped-output
 
 ${CONTROLLERBUILDER} generate-types \
-  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeNetworkEdgeSecurityService:NetworkEdgeSecurityService \
@@ -75,7 +68,6 @@ ${CONTROLLERBUILDER} generate-types \
   --include-skipped-output
 
 ${CONTROLLERBUILDER} generate-identity \
-  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeHealthCheckService:HealthCheckService \
@@ -84,7 +76,6 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource ComputeInterconnectGroup:InterconnectGroup
 
 ${CONTROLLERBUILDER} generate-identity \
-  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeCrossSiteNetwork:CrossSiteNetwork \
@@ -93,42 +84,23 @@ ${CONTROLLERBUILDER} generate-identity \
 rm -f ${REPO_ROOT}/apis/compute/v1alpha1/computeregionautoscaler_types.go
 
 ${CONTROLLERBUILDER} generate-identity \
-  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeVMExtensionPolicy:VmExtensionPolicy \
   --pattern ComputeVMExtensionPolicy=projects/{project}/zones/{zone}/vmExtensionPolicies/{vmextensionpolicy}
 
 ${CONTROLLERBUILDER} generate-identity \
-  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeNotificationEndpoint:NotificationEndpoint
 
 ${CONTROLLERBUILDER} generate-identity \
-  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeGlobalVMExtensionPolicy:GlobalVmExtensionPolicy \
   --pattern ComputeGlobalVMExtensionPolicy=projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}
 
 ${CONTROLLERBUILDER} generate-types \
-  --proto-source-path ${PROTO_OUT} \
-  --service google.cloud.compute.v1 \
-  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
-  --resource ComputeRolloutPlan:RolloutPlan \
-  --include-skipped-output \
-  --prepopulate-resource
-
-${CONTROLLERBUILDER} generate-identity \
-  --proto-source-path ${PROTO_OUT} \
-  --service google.cloud.compute.v1 \
-  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
-  --resource ComputeRolloutPlan:RolloutPlan \
-  --pattern ComputeRolloutPlan="projects/{project}/global/rolloutPlans/{rolloutPlan}"
-
-${CONTROLLERBUILDER} generate-types \
-  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
@@ -136,7 +108,6 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeStoragePool:StoragePool
 
 ${CONTROLLERBUILDER} generate-identity \
-  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeStoragePool:StoragePool \
@@ -153,9 +124,21 @@ ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeHealthSource:HealthSource
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeRolloutPlan:RolloutPlan \
+  --include-skipped-output \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeRolloutPlan:RolloutPlan \
+  --pattern ComputeRolloutPlan="projects/{project}/global/rolloutPlans/{rolloutPlan}"
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
-  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1beta1 \
   --resource ComputeBackendService:BackendService \
@@ -209,7 +192,6 @@ ${CONTROLLERBUILDER} generate-types \
   --include-skipped-output
 
 ${CONTROLLERBUILDER} generate-mapper \
-  --proto-source-path ${PROTO_OUT} \
   --multiversion \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1beta1 \
@@ -227,9 +209,7 @@ ${CONTROLLERBUILDER} generate-mapper \
   --skip-proto GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus
 
 cd ${REPO_ROOT}
-if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
-  dev/tasks/generate-crds
-fi
+dev/tasks/generate-crds
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/compute" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/compute/

@@ -8166,26 +8166,6 @@ func (in *StoragePoolResourceStatus) DeepCopyInto(out *StoragePoolResourceStatus
 		*out = new(int64)
 		**out = **in
 	}
-	if in.ExapoolMaxReadIops != nil {
-		in, out := &in.ExapoolMaxReadIops, &out.ExapoolMaxReadIops
-		*out = new(int64)
-		**out = **in
-	}
-	if in.ExapoolMaxReadThroughput != nil {
-		in, out := &in.ExapoolMaxReadThroughput, &out.ExapoolMaxReadThroughput
-		*out = new(int64)
-		**out = **in
-	}
-	if in.ExapoolMaxWriteIops != nil {
-		in, out := &in.ExapoolMaxWriteIops, &out.ExapoolMaxWriteIops
-		*out = new(int64)
-		**out = **in
-	}
-	if in.ExapoolMaxWriteThroughput != nil {
-		in, out := &in.ExapoolMaxWriteThroughput, &out.ExapoolMaxWriteThroughput
-		*out = new(int64)
-		**out = **in
-	}
 	if in.LastResizeTimestamp != nil {
 		in, out := &in.LastResizeTimestamp, &out.LastResizeTimestamp
 		*out = new(string)

@@ -114,12 +114,6 @@ entries:
     note: removed spec.location because resource is global; added +required to projectRef
   - kind: ComputeGlobalVMExtensionPolicy
     group: compute.cnrm.cloud.google.com
-    field: .spec.rolloutOperation.rolloutInput.name
-    reason: possible-reference-by-description
-    detail: field description references projects//locations/global/rolloutPlans/
-    status: open
-  - kind: ComputeGlobalVMExtensionPolicy
-    group: compute.cnrm.cloud.google.com
     field: .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus
     reason: message-map-derived
     detail: derived as map[string]GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus from proto google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus; verify Go type and mapping
