@@ -412,7 +412,7 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				}
 				// Allow CancelCustomJob, CancelHyperparameterTuningJob, and CreateModelMonitor to have fewer calls in mock because
 				// in real GCP eventual consistency or asynchronous operations require variable polling/retry iterations.
-				if method == "GRPC" && (strings.HasSuffix(path, "/CancelCustomJob") || strings.HasSuffix(path, "/CancelHyperparameterTuningJob") || strings.HasSuffix(path, "/CreateModelMonitor")) && len(mockEvs) < len(realEvs) {
+				if method == "GRPC" && (strings.HasSuffix(path, "/CancelCustomJob") || strings.HasSuffix(path, "/CancelHyperparameterTuningJob") || strings.HasSuffix(path, "/CreateModelMonitor") || strings.HasSuffix(path, "/CancelBatchPredictionJob")) && len(mockEvs) < len(realEvs) {
 					allowed = true
 				}
 				if !allowed {

@@ -382,3 +382,22 @@
   5. **Judgement Queue Triaged**: Triaged all 36 entries for `AIPlatformBatchPredictionJob` in `apis/aiplatform/judgement_queue.yaml` (editing parent, docs link, modelRef, serviceAccountRef, datasetRef; accepting non-representable URIs and shared structs; deferring well-known proto types).
 - **Impact**: `AIPlatformBatchPredictionJob` KRM types, identity, references, CRD, and mapper functions are fully finalized, verified with 100% passing tests across `apichecks` and service unit tests.
 
+### [2026-11-16] Greenfield Step 2: Implementing Direct Controller, Fuzzer, and E2E Fixtures for AIPlatformBatchPredictionJob
+- **Context**: Implementing Greenfield Step 2 direct controller, fuzzer, and real GCP E2E fixtures for `AIPlatformBatchPredictionJob` under `aiplatform.cnrm.cloud.google.com/v1alpha1` (Issue #15817).
+- **Implementation & Learnings**:
+  1. **Deterministic Controller & Fuzzer Generation**:
+     - Ran `controllerbuilder generate-controller` and `generate-fuzzer` with `--prepopulate-resource` for `AIPlatformBatchPredictionJob:BatchPredictionJob`.
+     - Generated `pkg/controller/direct/aiplatform/aiplatformbatchpredictionjob_controller.go` and `aiplatformbatchpredictionjob_fuzzer.generated.go`.
+     - Static configuration updated in `pkg/controller/resourceconfig/static_config.go` via `generate_static_config.py`.
+  2. **Job Deletion Cancellation Requirement**:
+     - In GCP Vertex AI, `BatchPredictionJob` cannot be deleted if it is in an active/non-terminal state (e.g. `JOB_STATE_PENDING` or `JOB_STATE_RUNNING`), returning `FAILED_PRECONDITION: The Job ... is in state "PENDING", and cannot be deleted. Please cancel it or wait for its completion before trying deleting it again.`
+     - Updated `BatchPredictionJobAdapter.Delete` to inspect the job state via `GetBatchPredictionJob`. If non-terminal, it initiates `CancelBatchPredictionJob` and requeues until the job transitions to a terminal state (`JOB_STATE_SUCCEEDED`, `JOB_STATE_FAILED`, or `JOB_STATE_CANCELLED`), matching the pattern used in `HyperparameterTuningJob` and `CustomJob`.
+  3. **E2E Fixtures & Real GCP Verification**:
+     - Created `aiplatformbatchpredictionjob-minimal` and `aiplatformbatchpredictionjob-maximal` under `pkg/test/resourcefixture/testdata/basic/aiplatform/v1alpha1/aiplatformbatchpredictionjob/`.
+     - Both fixtures declare a `StorageBucket` dependency for GCS input and output destinations, and specify unmanaged container models (`tf2-cpu.2-8:latest`) with dedicated resources (`n1-standard-4`).
+     - Recorded golden HTTP logs against real GCP (`cnrm-barni-4`) using `./hack/record-gcp`. Both minimal and maximal fixtures passed all 7/7 automated lifecycle checks cleanly.
+  4. **Fuzzing & Linters**:
+     - Verified 200-seed round-trip fuzzer via `FOCUS=AIPlatformBatchPredictionJob go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`.
+     - Passed `apichecks` (`TestCRDFieldPresenceInTestsForAlpha`, `TestGenerateScripts`, `TestDirectResourceFileNaming`), `resourcefixture` tests, and `make fmt`.
+- **Impact**: AIPlatformBatchPredictionJob direct controller, fuzzer, and real GCP E2E fixtures are fully implemented and verified against real GCP APIs.
+

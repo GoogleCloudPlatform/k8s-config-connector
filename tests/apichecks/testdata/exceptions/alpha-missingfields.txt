@@ -22,16 +22,11 @@
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.machineSpec.acceleratorCount" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.machineSpec.acceleratorType" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.machineSpec.gpuPartitionSize" is not set in unstructured objects
-[missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.machineSpec.machineType" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.machineSpec.reservationAffinity.key" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.machineSpec.reservationAffinity.reservationAffinityType" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.machineSpec.reservationAffinity.values[]" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.machineSpec.tpuTopology" is not set in unstructured objects
-[missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.maxReplicaCount" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.spot" is not set in unstructured objects
-[missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.startingReplicaCount" is not set in unstructured objects
-[missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.disableContainerLogging" is not set in unstructured objects
-[missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.metadata.featureAttributionsSchemaURI" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.metadata.inputs" is not set in unstructured objects
@@ -63,15 +58,11 @@
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.xraiAttribution.stepCount" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.generateExplanation" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputConfig.bigquerySource.inputURI" is not set in unstructured objects
-[missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputConfig.gcsSource.uris[]" is not set in unstructured objects
-[missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputConfig.instancesFormat" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputConfig.vertexMultimodalDatasetSource.datasetRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceConfig.excludedFields[]" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceConfig.includedFields[]" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceConfig.instanceType" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceConfig.keyField" is not set in unstructured objects
-[missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manualBatchTuningParameters.batchSize" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelParameters.boolValue" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelParameters.nullValue" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelParameters.numberValue" is not set in unstructured objects
@@ -79,11 +70,8 @@
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelParameters.structValue" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputConfig.bigqueryDestination.outputURI" is not set in unstructured objects
-[missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputConfig.gcsDestination.outputURIPrefix" is not set in unstructured objects
-[missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputConfig.predictionsFormat" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputConfig.vertexMultimodalDatasetDestination.bigqueryDestination.outputURI" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputConfig.vertexMultimodalDatasetDestination.displayName" is not set in unstructured objects
-[missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.unmanagedContainerModel.artifactURI" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.unmanagedContainerModel.containerSpec.args[]" is not set in unstructured objects
@@ -109,7 +97,6 @@
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.unmanagedContainerModel.containerSpec.healthProbe.tcpSocket.port" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.unmanagedContainerModel.containerSpec.healthProbe.timeoutSeconds" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.unmanagedContainerModel.containerSpec.healthRoute" is not set in unstructured objects
-[missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.unmanagedContainerModel.containerSpec.imageURI" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.unmanagedContainerModel.containerSpec.invokeRoutePrefix" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.unmanagedContainerModel.containerSpec.livenessProbe.exec.command[]" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.unmanagedContainerModel.containerSpec.livenessProbe.failureThreshold" is not set in unstructured objects
