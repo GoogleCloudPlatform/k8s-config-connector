@@ -715,6 +715,11 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "state")
 		}
 
+		// DataplexEntity compatibility bigquery field normalization due to async background scan in real GCP
+		if comp, ok := v["compatibility"].(map[string]interface{}); ok {
+			delete(comp, "bigquery")
+		}
+
 		// Cloud Resource Manager Project fields to normalize alignment differences
 		if _, ok := v["projectId"]; ok {
 			delete(v, "displayName")

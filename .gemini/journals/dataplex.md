@@ -202,4 +202,19 @@
   5. Updated `alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks -run TestCRDFieldPresenceInTestsForAlpha`.
 - **Impact**: All unit tests, conformance tests, and apichecks pass cleanly, adhering strictly to Greenfield Step 1b and single-parent standards.
 
+### [2026-11-16] Implement Greenfield DataplexPartition Controller, Fixtures, and Fuzzer
+- **Context**: Greenfield Step 2 implementation for DataplexPartition (direct controller, E2E fixtures, and fuzzer) under issue #15809.
+- **Problem**:
+  1. `obj.Spec.Location` in `DataplexPartition` represents the entity data storage location URI (e.g. `gs://bucket/data/...`), not the GCP region/location. The controller generator defaulted `m.client(ctx, direct.ValueOf(obj.Spec.Location))`. The client must instead be initialized using `id.Location` (extracted from the parent `DataplexEntity` reference).
+  2. GCP Dataplex API does not support an `UpdatePartition` RPC (partitions are immutable). The controller must verify `report.HasDiff()` and return an error if mutable fields are changed, or call `setStatus(u, actual)` when unchanged.
+  3. Parent `DataplexEntity` in dependencies must define `partitionFields` in its schema (e.g. `name: dt`, `type: DATE`) for GCP Dataplex API to accept partition creation.
+- **Solution**:
+  1. Updated `dataplexpartition_controller.go` to use `id.Location` for `m.client`, implemented `AdapterForURL` for export support, and implemented `setStatus` helper for status updates.
+  2. Registered `DataplexPartition` controller in `pkg/controller/resourceconfig/static_config.go`.
+  3. Created `dataplexpartition-minimal` and `dataplexpartition-maximal` E2E test suites with `DataplexLake`, `DataplexZone`, `StorageBucket`, `DataplexAsset`, and `DataplexEntity` (with `partitionFields`) dependencies. Omitted `update.yaml` as the resource is immutable and has no Update RPC.
+  4. Recorded authentic golden HTTP logs and objects against real GCP (`cnrm-barni-4`) using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`.
+  5. Cleared `DataplexPartition` entries from `alpha-missingfields.txt` via `TestCRDFieldPresenceInTestsForAlpha`.
+- **Impact**: Full Greenfield direct controller coverage and verified golden test fixtures for DataplexPartition with 7/7 HTTP lifecycle checks passing.
+
+
 

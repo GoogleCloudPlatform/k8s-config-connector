@@ -304,6 +304,60 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 						}
 					}
 				}
+				if extRef, ok, _ := unstructured.NestedString(u.Object, "status", "externalRef"); !ok || extRef == "" {
+					entityID, _, _ := unstructured.NestedString(u.Object, "spec", "id")
+					if entityID == "" {
+						entityID, _, _ = unstructured.NestedString(u.Object, "spec", "resourceID")
+					}
+					if entityID == "" {
+						entityID = u.GetName()
+					}
+					if parentExt, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "external"); parentExt != "" {
+						extRef = fmt.Sprintf("%s/entities/%s", strings.TrimSuffix(parentExt, "/"), entityID)
+						_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+					} else if parentName, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "name"); parentName != "" {
+						projectID := annotations["cnrm.cloud.google.com/project-id"]
+						location := "us-central1"
+						lakeName := ""
+						for _, other := range kccObjs {
+							if other.GetKind() == "DataplexZone" && other.GetName() == parentName {
+								if lake, _, _ := unstructured.NestedString(other.Object, "spec", "lakeRef", "name"); lake != "" {
+									lakeName = lake
+								}
+								break
+							}
+						}
+						if lakeName != "" {
+							for _, other := range kccObjs {
+								if other.GetKind() == "DataplexLake" && other.GetName() == lakeName {
+									if loc, _, _ := unstructured.NestedString(other.Object, "spec", "location"); loc != "" {
+										location = loc
+									}
+									if proj, _, _ := unstructured.NestedString(other.Object, "spec", "projectRef", "external"); proj != "" {
+										projectID = proj
+									}
+									break
+								}
+							}
+							extRef = fmt.Sprintf("projects/%s/locations/%s/lakes/%s/zones/%s/entities/%s", projectID, location, lakeName, parentName, entityID)
+							_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+						}
+					}
+				}
+			}
+
+			// Inject status.externalRef for DataplexPartition to simulate a reconciled partition in static unit tests.
+			if u.GetKind() == "DataplexPartition" && u.GroupVersionKind().Group == "dataplex.cnrm.cloud.google.com" {
+				goldens, _ := filepath.Glob(filepath.Join(dir, "_generated_object_*.golden.yaml"))
+				for _, gPath := range goldens {
+					for _, gu := range parseFixtureYAML(t, gPath, gcpProject) {
+						if gu.GetKind() == u.GetKind() && gu.GetName() == u.GetName() {
+							if extRef, ok, _ := unstructured.NestedString(gu.Object, "status", "externalRef"); ok && extRef != "" {
+								_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+							}
+						}
+					}
+				}
 			}
 
 			// Inject status.name and status.externalRef for TagsTagValue to simulate a reconciled tag value in static unit tests.
