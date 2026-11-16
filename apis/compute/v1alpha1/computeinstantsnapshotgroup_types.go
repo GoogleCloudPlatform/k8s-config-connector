@@ -38,7 +38,7 @@ type ComputeInstantSnapshotGroupSpec struct {
 
 	// Location represents the geographical location of the ComputeInstantSnapshotGroup. Specify a region name or a zone name. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)
 	// +required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// The ComputeInstantSnapshotGroup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -83,7 +83,7 @@ type ComputeInstantSnapshotGroupObservedState struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.kind
 	Kind *string `json:"kind,omitempty"`
 
-	// Output only. [Output Only] URL of the region where the instant snapshot group resides.
+	// Output only. [Output Only] URL of the region where the instant snapshot group resides. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.
 	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.region
 	Region *string `json:"region,omitempty"`
 
@@ -103,7 +103,7 @@ type ComputeInstantSnapshotGroupObservedState struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.status
 	Status *string `json:"status,omitempty"`
 
-	// Output only. [Output Only] URL of the zone where the instant snapshot group resides.
+	// Output only. [Output Only] URL of the zone where the instant snapshot group resides. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.
 	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.zone
 	Zone *string `json:"zone,omitempty"`
 }

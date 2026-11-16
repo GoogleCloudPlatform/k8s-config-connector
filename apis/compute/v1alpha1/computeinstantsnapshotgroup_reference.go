@@ -59,6 +59,8 @@ func (r *ComputeInstantSnapshotGroupRef) GetExternal() string {
 
 func (r *ComputeInstantSnapshotGroupRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ComputeInstantSnapshotGroupRef) ValidateExternal(ref string) error {

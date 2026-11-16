@@ -1057,6 +1057,9 @@ if ! grep -q "message InstantSnapshotGroup " google/cloud/compute/v1/compute.pro
 cat >> google/cloud/compute/v1/compute.proto <<EOF
 
 // Represents an InstantSnapshotGroup resource.
+//
+// An instant snapshot group is a set of instant snapshots that represents a
+// point in time state of a consistency group.
 message InstantSnapshotGroup {
   enum Status {
     UNDEFINED_STATUS = 0;
@@ -1081,9 +1084,17 @@ message InstantSnapshotGroup {
   optional string kind = 3292052;
 
   // Identifier. Name of the resource; provided by the client when the resource is created.
+  // The name must be 1-63 characters long, and comply with RFC1035.
+  // Specifically, the name must be 1-63 characters long and match the regular
+  // expression \`[a-z]([-a-z0-9]*[a-z0-9])?\` which means the first
+  // character must be a lowercase letter, and all following characters must be
+  // a dash, lowercase letter, or digit, except the last character, which cannot
+  // be a dash.
   optional string name = 3373707;
 
   // Output only. [Output Only] URL of the region where the instant snapshot group resides.
+  // You must specify this field as part of the HTTP request URL. It is
+  // not settable as a field in the request body.
   optional string region = 138946292;
 
   optional InstantSnapshotGroupResourceStatus resource_status = 249429315;
@@ -1100,15 +1111,27 @@ message InstantSnapshotGroup {
   optional string status = 181260274;
 
   // Output only. [Output Only] URL of the zone where the instant snapshot group resides.
+  // You must specify this field as part of the HTTP request URL. It is
+  // not settable as a field in the request body.
   optional string zone = 3744684;
 }
 
 message InstantSnapshotGroupParameters {
+  // The source instant snapshot group used to create disks. You can provide
+  // this as a partial or full URL to the resource. For example, the following
+  // are valid values:
+  //
+  //   - https://www.googleapis.com/compute/v1/projects/project/zones/zone/instantSnapshotGroups/instantSnapshotGroup
+  //   - projects/project/zones/zone/instantSnapshotGroups/instantSnapshotGroup
+  //   - zones/zone/instantSnapshotGroups/instantSnapshotGroup
   optional string source_instant_snapshot_group = 525991686;
 }
 
 message InstantSnapshotGroupResourceStatus {
+  // Output only. [Output Only]
   optional string consistency_membership_resolution_time = 346675870;
+
+  // Output only. [Output Only]
   optional InstantSnapshotGroupSourceInfo source_info = 451907154;
 }
 
@@ -1288,9 +1311,6 @@ service RegionInstantSnapshotGroups {
     };
     option (google.api.method_signature) = "project,region";
   }
-}
-EOF
-fi
 }
 EOF
 fi

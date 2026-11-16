@@ -17,8 +17,35 @@ package v1alpha1
 import (
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/google/go-cmp/cmp"
 )
+
+func TestComputeInstantSnapshotGroupIdentity_Conformance(t *testing.T) {
+	identity.AssertConformance(t, identity.ConformanceCase[ComputeInstantSnapshotGroupIdentity]{
+		SampleExternal: "projects/my-project/zones/us-central1-a/instantSnapshotGroups/my-isg",
+		WantHost:       "compute.googleapis.com",
+		WantParent:     "projects/my-project/zones/us-central1-a",
+		WantIdentity: &ComputeInstantSnapshotGroupIdentity{
+			Project:              "my-project",
+			Zone:                 "us-central1-a",
+			InstantSnapshotGroup: "my-isg",
+		},
+		Ref: &ComputeInstantSnapshotGroupRef{},
+	})
+
+	identity.AssertConformance(t, identity.ConformanceCase[ComputeInstantSnapshotGroupIdentity]{
+		SampleExternal: "projects/my-project/regions/us-central1/instantSnapshotGroups/my-isg",
+		WantHost:       "compute.googleapis.com",
+		WantParent:     "projects/my-project/regions/us-central1",
+		WantIdentity: &ComputeInstantSnapshotGroupIdentity{
+			Project:              "my-project",
+			Region:               "us-central1",
+			InstantSnapshotGroup: "my-isg",
+		},
+		Ref: &ComputeInstantSnapshotGroupRef{},
+	})
+}
 
 func TestComputeInstantSnapshotGroupIdentity_FromExternal(t *testing.T) {
 	tests := []struct {

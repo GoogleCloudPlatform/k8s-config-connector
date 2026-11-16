@@ -1339,10 +1339,18 @@ type InstantSnapshotGroup struct {
 	Kind *string `json:"kind,omitempty"`
 
 	// Identifier. Name of the resource; provided by the client when the resource is created.
+	//  The name must be 1-63 characters long, and comply with RFC1035.
+	//  Specifically, the name must be 1-63 characters long and match the regular
+	//  expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first
+	//  character must be a lowercase letter, and all following characters must be
+	//  a dash, lowercase letter, or digit, except the last character, which cannot
+	//  be a dash.
 	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.name
 	Name *string `json:"name,omitempty"`
 
 	// Output only. [Output Only] URL of the region where the instant snapshot group resides.
+	//  You must specify this field as part of the HTTP request URL. It is
+	//  not settable as a field in the request body.
 	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.region
 	Region *string `json:"region,omitempty"`
 
@@ -1365,6 +1373,8 @@ type InstantSnapshotGroup struct {
 	Status *string `json:"status,omitempty"`
 
 	// Output only. [Output Only] URL of the zone where the instant snapshot group resides.
+	//  You must specify this field as part of the HTTP request URL. It is
+	//  not settable as a field in the request body.
 	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.zone
 	Zone *string `json:"zone,omitempty"`
 }
@@ -1372,9 +1382,11 @@ type InstantSnapshotGroup struct {
 
 // +kcc:proto=google.cloud.compute.v1.InstantSnapshotGroupResourceStatus
 type InstantSnapshotGroupResourceStatus struct {
+	// Output only. [Output Only]
 	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroupResourceStatus.consistency_membership_resolution_time
 	ConsistencyMembershipResolutionTime *string `json:"consistencyMembershipResolutionTime,omitempty"`
 
+	// Output only. [Output Only]
 	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroupResourceStatus.source_info
 	SourceInfo *InstantSnapshotGroupSourceInfo `json:"sourceInfo,omitempty"`
 }
