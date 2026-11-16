@@ -24,13 +24,13 @@
 package ftp
 
 import (
+	pb "cloud.google.com/go/ftp/apiv1/ftppb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/ftp/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	ftppb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/ftp/pb"
 )
 
-func ExternalServerConfig_FromProto(mapCtx *direct.MapContext, in *ftppb.ExternalServerConfig) *krm.ExternalServerConfig {
+func ExternalServerConfig_FromProto(mapCtx *direct.MapContext, in *pb.ExternalServerConfig) *krm.ExternalServerConfig {
 	if in == nil {
 		return nil
 	}
@@ -39,18 +39,16 @@ func ExternalServerConfig_FromProto(mapCtx *direct.MapContext, in *ftppb.Externa
 	out.AllowedCIDRBlocks = in.AllowedCidrBlocks
 	return out
 }
-
-func ExternalServerConfig_ToProto(mapCtx *direct.MapContext, in *krm.ExternalServerConfig) *ftppb.ExternalServerConfig {
+func ExternalServerConfig_ToProto(mapCtx *direct.MapContext, in *krm.ExternalServerConfig) *pb.ExternalServerConfig {
 	if in == nil {
 		return nil
 	}
-	out := &ftppb.ExternalServerConfig{}
+	out := &pb.ExternalServerConfig{}
 	// MISSING: IPAddress
 	out.AllowedCidrBlocks = in.AllowedCIDRBlocks
 	return out
 }
-
-func ExternalServerConfigObservedState_FromProto(mapCtx *direct.MapContext, in *ftppb.ExternalServerConfig) *krm.ExternalServerConfigObservedState {
+func ExternalServerConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExternalServerConfig) *krm.ExternalServerConfigObservedState {
 	if in == nil {
 		return nil
 	}
@@ -59,18 +57,16 @@ func ExternalServerConfigObservedState_FromProto(mapCtx *direct.MapContext, in *
 	// MISSING: AllowedCIDRBlocks
 	return out
 }
-
-func ExternalServerConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExternalServerConfigObservedState) *ftppb.ExternalServerConfig {
+func ExternalServerConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExternalServerConfigObservedState) *pb.ExternalServerConfig {
 	if in == nil {
 		return nil
 	}
-	out := &ftppb.ExternalServerConfig{}
+	out := &pb.ExternalServerConfig{}
 	out.IpAddress = direct.ValueOf(in.IPAddress)
 	// MISSING: AllowedCIDRBlocks
 	return out
 }
-
-func FTPServerObservedState_FromProto(mapCtx *direct.MapContext, in *ftppb.Server) *krm.FTPServerObservedState {
+func FTPServerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Server) *krm.FTPServerObservedState {
 	if in == nil {
 		return nil
 	}
@@ -86,29 +82,27 @@ func FTPServerObservedState_FromProto(mapCtx *direct.MapContext, in *ftppb.Serve
 	out.ServiceAgent = direct.LazyPtr(in.GetServiceAgent())
 	return out
 }
-
-func FTPServerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FTPServerObservedState) *ftppb.Server {
+func FTPServerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FTPServerObservedState) *pb.Server {
 	if in == nil {
 		return nil
 	}
-	out := &ftppb.Server{}
+	out := &pb.Server{}
 	if oneof := ExternalServerConfigObservedState_ToProto(mapCtx, in.ExternalConfig); oneof != nil {
-		out.AccessConfig = &ftppb.Server_ExternalConfig{ExternalConfig: oneof}
+		out.AccessConfig = &pb.Server_ExternalConfig{ExternalConfig: oneof}
 	}
 	if oneof := InternalServerConfigObservedState_ToProto(mapCtx, in.InternalConfig); oneof != nil {
-		out.AccessConfig = &ftppb.Server_InternalConfig{InternalConfig: oneof}
+		out.AccessConfig = &pb.Server_InternalConfig{InternalConfig: oneof}
 	}
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: Labels
-	out.State = direct.Enum_ToProto[ftppb.Server_State](mapCtx, in.State)
+	out.State = direct.Enum_ToProto[pb.Server_State](mapCtx, in.State)
 	out.GoogleManagedServerCredential = ServerCredentialObservedState_ToProto(mapCtx, in.GoogleManagedServerCredential)
 	out.ServiceAgent = direct.ValueOf(in.ServiceAgent)
 	return out
 }
-
-func FTPServerSpec_FromProto(mapCtx *direct.MapContext, in *ftppb.Server) *krm.FTPServerSpec {
+func FTPServerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Server) *krm.FTPServerSpec {
 	if in == nil {
 		return nil
 	}
@@ -121,26 +115,24 @@ func FTPServerSpec_FromProto(mapCtx *direct.MapContext, in *ftppb.Server) *krm.F
 	out.AccessType = direct.Enum_FromProto(mapCtx, in.GetAccessType())
 	return out
 }
-
-func FTPServerSpec_ToProto(mapCtx *direct.MapContext, in *krm.FTPServerSpec) *ftppb.Server {
+func FTPServerSpec_ToProto(mapCtx *direct.MapContext, in *krm.FTPServerSpec) *pb.Server {
 	if in == nil {
 		return nil
 	}
-	out := &ftppb.Server{}
+	out := &pb.Server{}
 	if oneof := ExternalServerConfig_ToProto(mapCtx, in.ExternalConfig); oneof != nil {
-		out.AccessConfig = &ftppb.Server_ExternalConfig{ExternalConfig: oneof}
+		out.AccessConfig = &pb.Server_ExternalConfig{ExternalConfig: oneof}
 	}
 	if oneof := InternalServerConfig_ToProto(mapCtx, in.InternalConfig); oneof != nil {
-		out.AccessConfig = &ftppb.Server_InternalConfig{InternalConfig: oneof}
+		out.AccessConfig = &pb.Server_InternalConfig{InternalConfig: oneof}
 	}
 	// MISSING: Name
 	// MISSING: Labels
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.AccessType = direct.Enum_ToProto[ftppb.Server_AccessType](mapCtx, in.AccessType)
+	out.AccessType = direct.Enum_ToProto[pb.Server_AccessType](mapCtx, in.AccessType)
 	return out
 }
-
-func InternalServerConfig_FromProto(mapCtx *direct.MapContext, in *ftppb.InternalServerConfig) *krm.InternalServerConfig {
+func InternalServerConfig_FromProto(mapCtx *direct.MapContext, in *pb.InternalServerConfig) *krm.InternalServerConfig {
 	if in == nil {
 		return nil
 	}
@@ -151,20 +143,18 @@ func InternalServerConfig_FromProto(mapCtx *direct.MapContext, in *ftppb.Interna
 	// MISSING: PSCEndpoints
 	return out
 }
-
-func InternalServerConfig_ToProto(mapCtx *direct.MapContext, in *krm.InternalServerConfig) *ftppb.InternalServerConfig {
+func InternalServerConfig_ToProto(mapCtx *direct.MapContext, in *krm.InternalServerConfig) *pb.InternalServerConfig {
 	if in == nil {
 		return nil
 	}
-	out := &ftppb.InternalServerConfig{}
+	out := &pb.InternalServerConfig{}
 	// MISSING: ServiceAttachment
 	out.ConsumerAcceptList = direct.Slice_ToProto(mapCtx, in.ConsumerAcceptList, InternalServerConfig_AllowedConsumer_ToProto)
 	out.ConsumerRejectList = direct.Slice_ToProto(mapCtx, in.ConsumerRejectList, InternalServerConfig_DeniedConsumer_ToProto)
 	// MISSING: PSCEndpoints
 	return out
 }
-
-func InternalServerConfigObservedState_FromProto(mapCtx *direct.MapContext, in *ftppb.InternalServerConfig) *krm.InternalServerConfigObservedState {
+func InternalServerConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InternalServerConfig) *krm.InternalServerConfigObservedState {
 	if in == nil {
 		return nil
 	}
@@ -175,20 +165,18 @@ func InternalServerConfigObservedState_FromProto(mapCtx *direct.MapContext, in *
 	out.PSCEndpoints = direct.Slice_FromProto(mapCtx, in.PscEndpoints, InternalServerConfig_PSCEndpointObservedState_FromProto)
 	return out
 }
-
-func InternalServerConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InternalServerConfigObservedState) *ftppb.InternalServerConfig {
+func InternalServerConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InternalServerConfigObservedState) *pb.InternalServerConfig {
 	if in == nil {
 		return nil
 	}
-	out := &ftppb.InternalServerConfig{}
+	out := &pb.InternalServerConfig{}
 	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
 	// MISSING: ConsumerAcceptList
 	// MISSING: ConsumerRejectList
 	out.PscEndpoints = direct.Slice_ToProto(mapCtx, in.PSCEndpoints, InternalServerConfig_PSCEndpointObservedState_ToProto)
 	return out
 }
-
-func InternalServerConfig_AllowedConsumer_FromProto(mapCtx *direct.MapContext, in *ftppb.InternalServerConfig_AllowedConsumer) *krm.InternalServerConfig_AllowedConsumer {
+func InternalServerConfig_AllowedConsumer_FromProto(mapCtx *direct.MapContext, in *pb.InternalServerConfig_AllowedConsumer) *krm.InternalServerConfig_AllowedConsumer {
 	if in == nil {
 		return nil
 	}
@@ -200,28 +188,22 @@ func InternalServerConfig_AllowedConsumer_FromProto(mapCtx *direct.MapContext, i
 	return out
 }
 
-/* found existing non-generated mapping function "InternalServerConfig_AllowedConsumer_ToProto", skipping
-func InternalServerConfig_AllowedConsumer_ToProto(mapCtx *direct.MapContext, in *krm.InternalServerConfig_AllowedConsumer) *ftppb.InternalServerConfig_AllowedConsumer {
-	if in == nil {
-		return nil
+/*
+found existing non-generated mapping function "InternalServerConfig_AllowedConsumer_ToProto", skipping
+
+	func InternalServerConfig_AllowedConsumer_ToProto(mapCtx *direct.MapContext, in *krm.InternalServerConfig_AllowedConsumer) *pb.InternalServerConfig_AllowedConsumer {
+		if in == nil {
+			return nil
+		}
+		out := &pb.InternalServerConfig_AllowedConsumer{}
+		if in.ProjectRef != nil {
+			out.Project = in.ProjectRef.External
+		}
+		out.ConnectionLimit = direct.ValueOf(in.ConnectionLimit)
+		return out
 	}
-	out := &ftppb.InternalServerConfig_AllowedConsumer{}
-	if in.ProjectRef != nil {
-		out.Project = in.ProjectRef.External
-	}
-	out.ConnectionLimit = direct.ValueOf(in.ConnectionLimit)
-	return out
-}
 */
-
-func InternalServerConfig_AllowedConsumer_Project_ToProto(mapCtx *direct.MapContext, in *string) *ftppb.InternalServerConfig_AllowedConsumer_Project {
-	if in == nil {
-		return nil
-	}
-	return &ftppb.InternalServerConfig_AllowedConsumer_Project{Project: *in}
-}
-
-func InternalServerConfig_DeniedConsumer_FromProto(mapCtx *direct.MapContext, in *ftppb.InternalServerConfig_DeniedConsumer) *krm.InternalServerConfig_DeniedConsumer {
+func InternalServerConfig_DeniedConsumer_FromProto(mapCtx *direct.MapContext, in *pb.InternalServerConfig_DeniedConsumer) *krm.InternalServerConfig_DeniedConsumer {
 	if in == nil {
 		return nil
 	}
@@ -232,27 +214,21 @@ func InternalServerConfig_DeniedConsumer_FromProto(mapCtx *direct.MapContext, in
 	return out
 }
 
-/* found existing non-generated mapping function "InternalServerConfig_DeniedConsumer_ToProto", skipping
-func InternalServerConfig_DeniedConsumer_ToProto(mapCtx *direct.MapContext, in *krm.InternalServerConfig_DeniedConsumer) *ftppb.InternalServerConfig_DeniedConsumer {
-	if in == nil {
-		return nil
+/*
+found existing non-generated mapping function "InternalServerConfig_DeniedConsumer_ToProto", skipping
+
+	func InternalServerConfig_DeniedConsumer_ToProto(mapCtx *direct.MapContext, in *krm.InternalServerConfig_DeniedConsumer) *pb.InternalServerConfig_DeniedConsumer {
+		if in == nil {
+			return nil
+		}
+		out := &pb.InternalServerConfig_DeniedConsumer{}
+		if in.ProjectRef != nil {
+			out.Project = in.ProjectRef.External
+		}
+		return out
 	}
-	out := &ftppb.InternalServerConfig_DeniedConsumer{}
-	if in.ProjectRef != nil {
-		out.Project = in.ProjectRef.External
-	}
-	return out
-}
 */
-
-func InternalServerConfig_DeniedConsumer_Project_ToProto(mapCtx *direct.MapContext, in *string) *ftppb.InternalServerConfig_DeniedConsumer_Project {
-	if in == nil {
-		return nil
-	}
-	return &ftppb.InternalServerConfig_DeniedConsumer_Project{Project: *in}
-}
-
-func InternalServerConfig_PSCEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *ftppb.InternalServerConfig_PscEndpoint) *krm.InternalServerConfig_PSCEndpointObservedState {
+func InternalServerConfig_PSCEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InternalServerConfig_PscEndpoint) *krm.InternalServerConfig_PSCEndpointObservedState {
 	if in == nil {
 		return nil
 	}
@@ -262,19 +238,17 @@ func InternalServerConfig_PSCEndpointObservedState_FromProto(mapCtx *direct.MapC
 	out.Status = direct.LazyPtr(in.GetStatus())
 	return out
 }
-
-func InternalServerConfig_PSCEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InternalServerConfig_PSCEndpointObservedState) *ftppb.InternalServerConfig_PscEndpoint {
+func InternalServerConfig_PSCEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InternalServerConfig_PSCEndpointObservedState) *pb.InternalServerConfig_PscEndpoint {
 	if in == nil {
 		return nil
 	}
-	out := &ftppb.InternalServerConfig_PscEndpoint{}
+	out := &pb.InternalServerConfig_PscEndpoint{}
 	out.Endpoint = direct.ValueOf(in.Endpoint)
 	out.Network = direct.ValueOf(in.Network)
 	out.Status = direct.ValueOf(in.Status)
 	return out
 }
-
-func ServerCredentialObservedState_FromProto(mapCtx *direct.MapContext, in *ftppb.ServerCredential) *krm.ServerCredentialObservedState {
+func ServerCredentialObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServerCredential) *krm.ServerCredentialObservedState {
 	if in == nil {
 		return nil
 	}
@@ -283,12 +257,11 @@ func ServerCredentialObservedState_FromProto(mapCtx *direct.MapContext, in *ftpp
 	out.AsymmetricAlgorithm = direct.LazyPtr(in.GetAsymmetricAlgorithm())
 	return out
 }
-
-func ServerCredentialObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServerCredentialObservedState) *ftppb.ServerCredential {
+func ServerCredentialObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServerCredentialObservedState) *pb.ServerCredential {
 	if in == nil {
 		return nil
 	}
-	out := &ftppb.ServerCredential{}
+	out := &pb.ServerCredential{}
 	out.Fingerprint = direct.ValueOf(in.Fingerprint)
 	out.AsymmetricAlgorithm = direct.ValueOf(in.AsymmetricAlgorithm)
 	return out

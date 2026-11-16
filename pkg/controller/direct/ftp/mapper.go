@@ -15,9 +15,9 @@
 package ftp
 
 import (
+	ftppb "cloud.google.com/go/ftp/apiv1/ftppb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/ftp/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	ftppb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/ftp/pb"
 )
 
 func InternalServerConfig_AllowedConsumer_ToProto(mapCtx *direct.MapContext, in *krm.InternalServerConfig_AllowedConsumer) *ftppb.InternalServerConfig_AllowedConsumer {

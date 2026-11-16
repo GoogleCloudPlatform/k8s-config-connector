@@ -10,7 +10,7 @@
   2. Registered `ftp` API (`Cloud FTP API`) with prefix `FTP` in `dev/tools/controllerbuilder/serviceprefixes/service-prefixes.yaml`.
   3. Created `apis/ftp/generate.sh` configuring `generate-types`, `generate-identity`, and `generate-mapper` with `--prepopulate-resource`.
   4. Added `FTPServer` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
-  5. Generated Go protobuf files for `ftp` v1 into `pkg/controller/direct/ftp/pb` and mapped the package in `dev/tools/controllerbuilder/pkg/codegen/mappergenerator.go` to keep `go.mod` untouched and avoid transitive dependency conflicts.
+  5. Added `cloud.google.com/go/ftp v0.3.1` to `go.mod` with pinned `replace` directives for `google.golang.org/api`, `genproto`, and `protobuf` to prevent transitive dependency drift. Mappers import `cloud.google.com/go/ftp/apiv1/ftppb` directly.
   6. Regenerated channel manifests via `dev/tasks/generate-channels` and operator golden tests via `WRITE_GOLDEN_OUTPUT=1 go test ./operator/pkg/controllers/configconnector/...`.
   7. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` for the new `ftpservers.ftp.cnrm.cloud.google.com` CRD.
 - **Impact**: Enables Greenfield Step 1a for `FTPServer` with verified conformance tests and passing `apichecks`.
