@@ -1052,6 +1052,269 @@ service RegionHealthSources {
 EOF
 fi
 
+# Patch compute v1 compute.proto to include InstantSnapshotGroup (which exists in apiv1/computepb) if missing
+if ! grep -q "message InstantSnapshotGroup " google/cloud/compute/v1/compute.proto; then
+cat >> google/cloud/compute/v1/compute.proto <<EOF
+
+// Represents an InstantSnapshotGroup resource.
+//
+// An instant snapshot group is a set of instant snapshots that represents a
+// point in time state of a consistency group.
+message InstantSnapshotGroup {
+  enum Status {
+    UNDEFINED_STATUS = 0;
+    CREATING = 455564985;
+    DELETING = 528602024;
+    FAILED = 455706685;
+    INVALID = 530283991;
+    READY = 77848963;
+    UNKNOWN = 433141802;
+  }
+
+  // Output only. [Output Only] Creation timestamp in RFC3339 text format.
+  optional string creation_timestamp = 30525366;
+
+  // Optional. An optional description of this resource. Provide this property when you create the resource.
+  optional string description = 422937596;
+
+  // Output only. [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+  optional uint64 id = 3355;
+
+  // Output only. [Output Only] Type of the resource. Always compute#instantSnapshotGroup for InstantSnapshotGroup resources.
+  optional string kind = 3292052;
+
+  // Identifier. Name of the resource; provided by the client when the resource is created.
+  // The name must be 1-63 characters long, and comply with RFC1035.
+  // Specifically, the name must be 1-63 characters long and match the regular
+  // expression \`[a-z]([-a-z0-9]*[a-z0-9])?\` which means the first
+  // character must be a lowercase letter, and all following characters must be
+  // a dash, lowercase letter, or digit, except the last character, which cannot
+  // be a dash.
+  optional string name = 3373707;
+
+  // Output only. [Output Only] URL of the region where the instant snapshot group resides.
+  // You must specify this field as part of the HTTP request URL. It is
+  // not settable as a field in the request body.
+  optional string region = 138946292;
+
+  optional InstantSnapshotGroupResourceStatus resource_status = 249429315;
+
+  // Output only. [Output Only] Server-defined URL for the resource.
+  optional string self_link = 456214797;
+
+  // Output only. [Output Only] Server-defined URL for this resource's resource id.
+  optional string self_link_with_id = 44520962;
+
+  optional string source_consistency_group = 531359348;
+
+  // Output only. [Output Only] Check the Status enum for the list of possible values.
+  optional string status = 181260274;
+
+  // Output only. [Output Only] URL of the zone where the instant snapshot group resides.
+  // You must specify this field as part of the HTTP request URL. It is
+  // not settable as a field in the request body.
+  optional string zone = 3744684;
+}
+
+message InstantSnapshotGroupParameters {
+  // The source instant snapshot group used to create disks. You can provide
+  // this as a partial or full URL to the resource. For example, the following
+  // are valid values:
+  //
+  //   - https://www.googleapis.com/compute/v1/projects/project/zones/zone/instantSnapshotGroups/instantSnapshotGroup
+  //   - projects/project/zones/zone/instantSnapshotGroups/instantSnapshotGroup
+  //   - zones/zone/instantSnapshotGroups/instantSnapshotGroup
+  optional string source_instant_snapshot_group = 525991686;
+}
+
+message InstantSnapshotGroupResourceStatus {
+  // Output only. [Output Only]
+  optional string consistency_membership_resolution_time = 346675870;
+
+  // Output only. [Output Only]
+  optional InstantSnapshotGroupSourceInfo source_info = 451907154;
+}
+
+message InstantSnapshotGroupSourceInfo {
+  optional string consistency_group = 508183960;
+  optional string consistency_group_id = 85599522;
+}
+
+message ListInstantSnapshotGroups {
+  optional string etag = 3123477;
+  optional string id = 3355;
+  repeated InstantSnapshotGroup items = 100526016;
+  optional string kind = 3292052;
+  optional string next_page_token = 79797525;
+  optional string self_link = 456214797;
+  repeated string unreachables = 243372063;
+  optional Warning warning = 50704284;
+}
+
+message DeleteInstantSnapshotGroupRequest {
+  string instant_snapshot_group = 223180386 [(google.api.field_behavior) = REQUIRED];
+  string project = 227560217 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "project"
+  ];
+  optional string request_id = 37109963;
+  string zone = 3744684 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "zone"
+  ];
+}
+
+message GetInstantSnapshotGroupRequest {
+  string instant_snapshot_group = 223180386 [(google.api.field_behavior) = REQUIRED];
+  string project = 227560217 [(google.api.field_behavior) = REQUIRED];
+  string zone = 3744684 [(google.api.field_behavior) = REQUIRED];
+}
+
+message InsertInstantSnapshotGroupRequest {
+  InstantSnapshotGroup instant_snapshot_group_resource = 145067339 [(google.api.field_behavior) = REQUIRED];
+  string project = 227560217 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "project"
+  ];
+  optional string request_id = 37109963;
+  optional string source_consistency_group = 531359348;
+  string zone = 3744684 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "zone"
+  ];
+}
+
+message ListInstantSnapshotGroupsRequest {
+  optional string filter = 336120696;
+  optional uint32 max_results = 54715419;
+  optional string order_by = 160562920;
+  optional string page_token = 19994697;
+  string project = 227560217 [(google.api.field_behavior) = REQUIRED];
+  optional bool return_partial_success = 517198390;
+  string zone = 3744684 [(google.api.field_behavior) = REQUIRED];
+}
+
+service InstantSnapshotGroups {
+  option (google.api.default_host) = "compute.googleapis.com";
+  option (google.api.oauth_scopes) =
+    "https://www.googleapis.com/auth/compute,"
+    "https://www.googleapis.com/auth/cloud-platform";
+
+  rpc Delete(DeleteInstantSnapshotGroupRequest) returns (Operation) {
+    option (google.api.http) = {
+      delete: "/compute/v1/projects/{project}/zones/{zone}/instantSnapshotGroups/{instant_snapshot_group}"
+    };
+    option (google.api.method_signature) = "project,zone,instant_snapshot_group";
+    option (google.cloud.operation_service) = "ZoneOperations";
+  }
+
+  rpc Get(GetInstantSnapshotGroupRequest) returns (InstantSnapshotGroup) {
+    option (google.api.http) = {
+      get: "/compute/v1/projects/{project}/zones/{zone}/instantSnapshotGroups/{instant_snapshot_group}"
+    };
+    option (google.api.method_signature) = "project,zone,instant_snapshot_group";
+  }
+
+  rpc Insert(InsertInstantSnapshotGroupRequest) returns (Operation) {
+    option (google.api.http) = {
+      body: "instant_snapshot_group_resource"
+      post: "/compute/v1/projects/{project}/zones/{zone}/instantSnapshotGroups"
+    };
+    option (google.api.method_signature) = "project,zone,instant_snapshot_group_resource";
+    option (google.cloud.operation_service) = "ZoneOperations";
+  }
+
+  rpc List(ListInstantSnapshotGroupsRequest) returns (ListInstantSnapshotGroups) {
+    option (google.api.http) = {
+      get: "/compute/v1/projects/{project}/zones/{zone}/instantSnapshotGroups"
+    };
+    option (google.api.method_signature) = "project,zone";
+  }
+}
+
+message DeleteRegionInstantSnapshotGroupRequest {
+  string instant_snapshot_group = 223180386 [(google.api.field_behavior) = REQUIRED];
+  string project = 227560217 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "project"
+  ];
+  string region = 138946292 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "region"
+  ];
+  optional string request_id = 37109963;
+}
+
+message GetRegionInstantSnapshotGroupRequest {
+  string instant_snapshot_group = 223180386 [(google.api.field_behavior) = REQUIRED];
+  string project = 227560217 [(google.api.field_behavior) = REQUIRED];
+  string region = 138946292 [(google.api.field_behavior) = REQUIRED];
+}
+
+message InsertRegionInstantSnapshotGroupRequest {
+  InstantSnapshotGroup instant_snapshot_group_resource = 145067339 [(google.api.field_behavior) = REQUIRED];
+  string project = 227560217 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "project"
+  ];
+  string region = 138946292 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "region"
+  ];
+  optional string request_id = 37109963;
+  optional string source_consistency_group = 531359348;
+}
+
+message ListRegionInstantSnapshotGroupsRequest {
+  optional string filter = 336120696;
+  optional uint32 max_results = 54715419;
+  optional string order_by = 160562920;
+  optional string page_token = 19994697;
+  string project = 227560217 [(google.api.field_behavior) = REQUIRED];
+  string region = 138946292 [(google.api.field_behavior) = REQUIRED];
+  optional bool return_partial_success = 517198390;
+}
+
+service RegionInstantSnapshotGroups {
+  option (google.api.default_host) = "compute.googleapis.com";
+  option (google.api.oauth_scopes) =
+    "https://www.googleapis.com/auth/compute,"
+    "https://www.googleapis.com/auth/cloud-platform";
+
+  rpc Delete(DeleteRegionInstantSnapshotGroupRequest) returns (Operation) {
+    option (google.api.http) = {
+      delete: "/compute/v1/projects/{project}/regions/{region}/instantSnapshotGroups/{instant_snapshot_group}"
+    };
+    option (google.api.method_signature) = "project,region,instant_snapshot_group";
+    option (google.cloud.operation_service) = "RegionOperations";
+  }
+
+  rpc Get(GetRegionInstantSnapshotGroupRequest) returns (InstantSnapshotGroup) {
+    option (google.api.http) = {
+      get: "/compute/v1/projects/{project}/regions/{region}/instantSnapshotGroups/{instant_snapshot_group}"
+    };
+    option (google.api.method_signature) = "project,region,instant_snapshot_group";
+  }
+
+  rpc Insert(InsertRegionInstantSnapshotGroupRequest) returns (Operation) {
+    option (google.api.http) = {
+      body: "instant_snapshot_group_resource"
+      post: "/compute/v1/projects/{project}/regions/{region}/instantSnapshotGroups"
+    };
+    option (google.api.method_signature) = "project,region,instant_snapshot_group_resource";
+    option (google.cloud.operation_service) = "RegionOperations";
+  }
+
+  rpc List(ListRegionInstantSnapshotGroupsRequest) returns (ListInstantSnapshotGroups) {
+    option (google.api.http) = {
+      get: "/compute/v1/projects/{project}/regions/{region}/instantSnapshotGroups"
+    };
+    option (google.api.method_signature) = "project,region";
+  }
+}
+EOF
+fi
+
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"

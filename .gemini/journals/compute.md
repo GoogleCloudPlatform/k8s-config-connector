@@ -523,3 +523,32 @@
   - CAIS identity tests (`pkg/gcpurls` and `pkg/cli/powertools/cais`) pass cleanly.
   - Generation is idempotent. Package build (`apis/compute/...` and `pkg/controller/direct/compute/...`) succeeds.
 
+### [2026-11-16] Greenfield: Prepopulate types, identity, and judgement queue for ComputeInstantSnapshotGroup
+- **Context**: Greenfield implementation of `ComputeInstantSnapshotGroup` under `compute.cnrm.cloud.google.com/v1alpha1` (issue #15803) following Greenfield Step 1a (`prepopulate/SKILL.md`).
+- **Proto & Services**: `InstantSnapshotGroup` is a GA resource under Google Cloud Compute Engine v1 (and present in `cloud.google.com/go/compute/apiv1/computepb`), but was not present in the pinned googleapis commit in `.build/third_party/googleapis`. Following existing precedents in `dev/tools/controllerbuilder/generate-proto.sh` (e.g. `CrossSiteNetwork`, `GlobalVmExtensionPolicy`, `HealthAggregationPolicy`), patched `google/cloud/compute/v1/compute.proto` to include `InstantSnapshotGroup` messages and `InstantSnapshotGroups` / `RegionInstantSnapshotGroups` services.
+- **Prepopulation**:
+  1. Configured `apis/compute/generate.sh` with `generate-types --prepopulate-resource` and `generate-identity` for `ComputeInstantSnapshotGroup:InstantSnapshotGroup`.
+  2. Scaffolded `apis/compute/v1alpha1/computeinstantsnapshotgroup_types.go`, `types.generated.go`, and updated deepcopy implementations.
+  3. Generated deterministic `IdentityV2` and `refs.Ref` implementations along with conformance test `TestComputeInstantSnapshotGroupIdentity_Conformance`.
+  4. Added `ComputeInstantSnapshotGroup` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  5. Recorded review items in `apis/compute/judgement_queue.yaml` with status `open` for Step 1b triage.
+  6. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via golden test runner.
+- **Verification**: All unit tests in `apis/compute/v1alpha1`, `pkg/gcpurls`, and `tests/apichecks` pass cleanly.
+
+### [2026-11-16] Greenfield: Triage judgement queue and finalize direct KRM types and identity for ComputeInstantSnapshotGroup
+- **Context**: Triaged and finalized direct KRM types, identity, and references for `ComputeInstantSnapshotGroup` (issue #15820) following Greenfield Step 1b (`judgement/SKILL.md`).
+- **Judgement Queue Resolutions & Learnings**:
+  1. `untriaged-bulk-generation`: Resolved after triaging all fields, omissions, references, and KRM conventions.
+  2. `identity-multi-pattern`: `InstantSnapshotGroup` can be created either for a zone or for a region in GCP Compute Engine (`projects/{project}/zones/{zone}/instantSnapshotGroups/{instantSnapshotGroup}` or `projects/{project}/regions/{region}/instantSnapshotGroups/{instantSnapshotGroup}`). Promoted `ComputeInstantSnapshotGroupIdentity` to a handwritten implementation supporting both zonal and regional templates (`ZonalComputeInstantSnapshotGroupIdentityFormat` and `RegionalComputeInstantSnapshotGroupIdentityFormat`) matching `ComputeInstantSnapshot` and `ComputeDisk` conventions. Removed `ComputeInstantSnapshotGroup` from `generate-identity` in `apis/compute/generate.sh`.
+  3. `verify-resource-docs-link`: Corrected resource documentation link to `https://cloud.google.com/compute/docs/reference/rest/v1/instantSnapshotGroups` and removed guess annotations.
+  4. `location-parent-unknown`: Verified `InstantSnapshotGroup` can be zonal or regional. Kept `spec.location` as a required string (`Location string`) representing the zone or region name matching `ComputeDisk` and `ComputeInstantSnapshot` patterns.
+  5. `location-or-parent-ref` and `well-known-output-only-pattern-in-comment` for `region` and `zone`: Proto comments indicate `region` and `zone` are output-only URLs. Removed them from `ComputeInstantSnapshotGroupSpec` and moved to `ComputeInstantSnapshotGroupObservedState.region` and `ComputeInstantSnapshotGroupObservedState.zone`.
+  6. `possible-reference-by-name` on `resourceStatus.sourceInfo.consistencyGroupID`: Marked `not-applicable` because `resourceStatus` is output-only server-set state. Moved `resourceStatus` from `ComputeInstantSnapshotGroupSpec` to `ComputeInstantSnapshotGroupObservedState.resourceStatus`.
+  7. `possible-status-field-in-spec` and `well-known-output-only-pattern-in-comment` on `status`: Confirmed `status` is output-only enum in proto. Removed from Spec and moved to `ComputeInstantSnapshotGroupObservedState.status`.
+  8. `server-set-field-placed` on `creationTimestamp`, `id`, `kind`, `selfLink`, and `selfLinkWithId`: Confirmed server-generated output-only fields; verified placement in `ComputeInstantSnapshotGroupObservedState` and removed guess markers.
+  9. `source_consistency_group`: Modeled as typed reference `SourceConsistencyGroupRef *computev1beta1.ComputeResourcePolicyRef` with `// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.source_consistency_group`. `generate-mapper` automatically maps to/from the proto string field.
+- **Verification**:
+  - Re-ran `./apis/compute/generate.sh` and verified CRD generation, mappers, deepcopy code.
+  - Implemented unit tests in `computeinstantsnapshotgroup_identity_test.go` covering zonal and regional identity parsing, parent string formatting, and URLs.
+  - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+  - All unit tests (`apis/compute/...`), conformance identity tests, CAIS golden tests (`pkg/cli/powertools/cais/...`), and API checks (`tests/apichecks/...`) pass cleanly.

@@ -3240,6 +3240,64 @@ found existing non-generated mapping function "ComputeInstanceStatus_v1beta1_ToP
 		return out
 	}
 */
+func ComputeInstantSnapshotGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstantSnapshotGroup) *krmcomputev1alpha1.ComputeInstantSnapshotGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeInstantSnapshotGroupObservedState{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ID = in.Id
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.Region = in.Region
+	out.ResourceStatus = InstantSnapshotGroupResourceStatus_v1alpha1_FromProto(mapCtx, in.GetResourceStatus())
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithID = in.SelfLinkWithId
+	out.Status = in.Status
+	out.Zone = in.Zone
+	return out
+}
+func ComputeInstantSnapshotGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInstantSnapshotGroupObservedState) *pb.InstantSnapshotGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstantSnapshotGroup{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Id = in.ID
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.Region = in.Region
+	out.ResourceStatus = InstantSnapshotGroupResourceStatus_v1alpha1_ToProto(mapCtx, in.ResourceStatus)
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithId = in.SelfLinkWithID
+	out.Status = in.Status
+	out.Zone = in.Zone
+	return out
+}
+func ComputeInstantSnapshotGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstantSnapshotGroup) *krmcomputev1alpha1.ComputeInstantSnapshotGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeInstantSnapshotGroupSpec{}
+	out.Description = in.Description
+	// MISSING: Name
+	if in.GetSourceConsistencyGroup() != "" {
+		out.SourceConsistencyGroupRef = &krmcomputev1beta1.ComputeResourcePolicyRef{External: in.GetSourceConsistencyGroup()}
+	}
+	return out
+}
+func ComputeInstantSnapshotGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInstantSnapshotGroupSpec) *pb.InstantSnapshotGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstantSnapshotGroup{}
+	out.Description = in.Description
+	// MISSING: Name
+	if in.SourceConsistencyGroupRef != nil {
+		out.SourceConsistencyGroup = &in.SourceConsistencyGroupRef.External
+	}
+	return out
+}
 func ComputeInstantSnapshotObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstantSnapshot) *krmcomputev1alpha1.ComputeInstantSnapshotObservedState {
 	if in == nil {
 		return nil
@@ -7630,6 +7688,42 @@ found existing non-generated mapping function "InstanceGroupNamedPort_v1beta1_To
 		return out
 	}
 */
+func InstantSnapshotGroupResourceStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstantSnapshotGroupResourceStatus) *krmcomputev1alpha1.InstantSnapshotGroupResourceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InstantSnapshotGroupResourceStatus{}
+	out.ConsistencyMembershipResolutionTime = in.ConsistencyMembershipResolutionTime
+	out.SourceInfo = InstantSnapshotGroupSourceInfo_v1alpha1_FromProto(mapCtx, in.GetSourceInfo())
+	return out
+}
+func InstantSnapshotGroupResourceStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InstantSnapshotGroupResourceStatus) *pb.InstantSnapshotGroupResourceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstantSnapshotGroupResourceStatus{}
+	out.ConsistencyMembershipResolutionTime = in.ConsistencyMembershipResolutionTime
+	out.SourceInfo = InstantSnapshotGroupSourceInfo_v1alpha1_ToProto(mapCtx, in.SourceInfo)
+	return out
+}
+func InstantSnapshotGroupSourceInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstantSnapshotGroupSourceInfo) *krmcomputev1alpha1.InstantSnapshotGroupSourceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InstantSnapshotGroupSourceInfo{}
+	out.ConsistencyGroup = in.ConsistencyGroup
+	out.ConsistencyGroupID = in.ConsistencyGroupId
+	return out
+}
+func InstantSnapshotGroupSourceInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InstantSnapshotGroupSourceInfo) *pb.InstantSnapshotGroupSourceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstantSnapshotGroupSourceInfo{}
+	out.ConsistencyGroup = in.ConsistencyGroup
+	out.ConsistencyGroupId = in.ConsistencyGroupID
+	return out
+}
 func InstantSnapshotResourceStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstantSnapshotResourceStatus) *krmcomputev1alpha1.InstantSnapshotResourceStatus {
 	if in == nil {
 		return nil

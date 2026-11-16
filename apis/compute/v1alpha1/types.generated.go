@@ -42,6 +42,7 @@
 // resource: ComputeInterconnectAttachmentGroup:InterconnectAttachmentGroup
 // resource: ComputeStoragePool:StoragePool
 // resource: ComputeHealthSource:HealthSource
+// resource: ComputeInstantSnapshotGroup:InstantSnapshotGroup
 
 package v1alpha1
 
@@ -1316,6 +1317,88 @@ type InstantSnapshot struct {
 	Zone *string `json:"zone,omitempty"`
 }
 */
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.InstantSnapshotGroup", skipping
+
+// +kcc:proto=google.cloud.compute.v1.InstantSnapshotGroup
+type InstantSnapshotGroup struct {
+	// Output only. [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// Optional. An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.description
+	Description *string `json:"description,omitempty"`
+
+	// Output only. [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Output only. [Output Only] Type of the resource. Always compute#instantSnapshotGroup for InstantSnapshotGroup resources.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Identifier. Name of the resource; provided by the client when the resource is created.
+	//  The name must be 1-63 characters long, and comply with RFC1035.
+	//  Specifically, the name must be 1-63 characters long and match the regular
+	//  expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first
+	//  character must be a lowercase letter, and all following characters must be
+	//  a dash, lowercase letter, or digit, except the last character, which cannot
+	//  be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. [Output Only] URL of the region where the instant snapshot group resides.
+	//  You must specify this field as part of the HTTP request URL. It is
+	//  not settable as a field in the request body.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.region
+	Region *string `json:"region,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.resource_status
+	ResourceStatus *InstantSnapshotGroupResourceStatus `json:"resourceStatus,omitempty"`
+
+	// Output only. [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Output only. [Output Only] Server-defined URL for this resource's resource id.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.source_consistency_group
+	SourceConsistencyGroup *string `json:"sourceConsistencyGroup,omitempty"`
+
+	// Output only. [Output Only] Check the Status enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.status
+	Status *string `json:"status,omitempty"`
+
+	// Output only. [Output Only] URL of the zone where the instant snapshot group resides.
+	//  You must specify this field as part of the HTTP request URL. It is
+	//  not settable as a field in the request body.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.zone
+	Zone *string `json:"zone,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.compute.v1.InstantSnapshotGroupResourceStatus
+type InstantSnapshotGroupResourceStatus struct {
+	// Output only. [Output Only]
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroupResourceStatus.consistency_membership_resolution_time
+	ConsistencyMembershipResolutionTime *string `json:"consistencyMembershipResolutionTime,omitempty"`
+
+	// Output only. [Output Only]
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroupResourceStatus.source_info
+	SourceInfo *InstantSnapshotGroupSourceInfo `json:"sourceInfo,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InstantSnapshotGroupSourceInfo
+type InstantSnapshotGroupSourceInfo struct {
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroupSourceInfo.consistency_group
+	ConsistencyGroup *string `json:"consistencyGroup,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroupSourceInfo.consistency_group_id
+	ConsistencyGroupID *string `json:"consistencyGroupID,omitempty"`
+}
 
 // +kcc:proto=google.cloud.compute.v1.InstantSnapshotResourceStatus
 type InstantSnapshotResourceStatus struct {
@@ -4124,6 +4207,32 @@ type HealthSourceObservedState struct {
 	SelfLink *string `json:"selfLink,omitempty"`
 
 	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.InstantSnapshotGroup", skipping
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.InstantSnapshotGroup
+type InstantSnapshotGroupObservedState struct {
+	// Output only. [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// Output only. [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Output only. [Output Only] Type of the resource. Always compute#instantSnapshotGroup for InstantSnapshotGroup resources.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Output only. [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Output only. [Output Only] Server-defined URL for this resource's resource id.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotGroup.self_link_with_id
 	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
 }
 */
