@@ -1,0 +1,263 @@
+# Phase: CREATE
+GRPC /google.cloud.clouddms.v1.DataMigrationService/GetConversionWorkspace
+
+{
+  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-min-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-min-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/CreateConversionWorkspace
+
+{
+  "conversionWorkspace": {
+    "destination": {
+      "engine": "POSTGRESQL",
+      "version": "14"
+    },
+    "source": {
+      "engine": "ORACLE",
+      "version": "11"
+    }
+  },
+  "conversionWorkspaceId": "db-mw-min-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-min-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-min-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.ConversionWorkspace",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "destination": {
+      "engine": "POSTGRESQL",
+      "version": "14"
+    },
+    "displayName": "db-mw-min-${uniqueId}",
+    "globalSettings": {
+      "has_apply": "false",
+      "has_apply_success": "false",
+      "has_convert": "false",
+      "has_convert_success": "false",
+      "has_dry_run": "false",
+      "has_dry_run_success": "false",
+      "has_ora2pg": "false",
+      "has_ora2pg_success": "false",
+      "has_rules": "ConditionalColumnSetValueRule: 3, ConvertRowIdToColumnRule: 1",
+      "has_seed": "false",
+      "has_seed_success": "false",
+      "needs_conversion_for_issues": "false"
+    },
+    "latestCommitId": "37d8f659",
+    "latestCommitTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-min-${uniqueId}",
+    "source": {
+      "engine": "ORACLE",
+      "version": "11"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/GetConversionWorkspace
+
+{
+  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-min-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destination": {
+    "engine": "POSTGRESQL",
+    "version": "14"
+  },
+  "displayName": "db-mw-min-${uniqueId}",
+  "globalSettings": {
+    "has_apply": "false",
+    "has_apply_success": "false",
+    "has_convert": "false",
+    "has_convert_success": "false",
+    "has_dry_run": "false",
+    "has_dry_run_success": "false",
+    "has_ora2pg": "false",
+    "has_ora2pg_success": "false",
+    "has_rules": "ConditionalColumnSetValueRule: 3, ConvertRowIdToColumnRule: 1",
+    "has_seed": "false",
+    "has_seed_success": "false",
+    "needs_conversion_for_issues": "false"
+  },
+  "latestCommitId": "37d8f659",
+  "latestCommitTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-min-${uniqueId}",
+  "source": {
+    "engine": "ORACLE",
+    "version": "11"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GRPC /google.cloud.clouddms.v1.DataMigrationService/GetConversionWorkspace
+
+{
+  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-min-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destination": {
+    "engine": "POSTGRESQL",
+    "version": "14"
+  },
+  "displayName": "db-mw-min-${uniqueId}",
+  "globalSettings": {
+    "has_apply": "false",
+    "has_apply_success": "false",
+    "has_convert": "false",
+    "has_convert_success": "false",
+    "has_dry_run": "false",
+    "has_dry_run_success": "false",
+    "has_ora2pg": "false",
+    "has_ora2pg_success": "false",
+    "has_rules": "ConditionalColumnSetValueRule: 3, ConvertRowIdToColumnRule: 1",
+    "has_seed": "false",
+    "has_seed_success": "false",
+    "needs_conversion_for_issues": "false"
+  },
+  "latestCommitId": "37d8f659",
+  "latestCommitTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-min-${uniqueId}",
+  "source": {
+    "engine": "ORACLE",
+    "version": "11"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/GetConversionWorkspace
+
+{
+  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-min-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destination": {
+    "engine": "POSTGRESQL",
+    "version": "14"
+  },
+  "displayName": "db-mw-min-${uniqueId}",
+  "globalSettings": {
+    "has_apply": "false",
+    "has_apply_success": "false",
+    "has_convert": "false",
+    "has_convert_success": "false",
+    "has_dry_run": "false",
+    "has_dry_run_success": "false",
+    "has_ora2pg": "false",
+    "has_ora2pg_success": "false",
+    "has_rules": "ConditionalColumnSetValueRule: 3, ConvertRowIdToColumnRule: 1",
+    "has_seed": "false",
+    "has_seed_success": "false",
+    "needs_conversion_for_issues": "false"
+  },
+  "latestCommitId": "37d8f659",
+  "latestCommitTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-min-${uniqueId}",
+  "source": {
+    "engine": "ORACLE",
+    "version": "11"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/DeleteConversionWorkspace
+
+{
+  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-min-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-min-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-min-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
