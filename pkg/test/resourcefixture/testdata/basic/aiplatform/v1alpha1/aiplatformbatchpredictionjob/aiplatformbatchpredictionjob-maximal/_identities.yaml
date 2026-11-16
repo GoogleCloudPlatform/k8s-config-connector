@@ -1,0 +1,12 @@
+- caisURL: //storage.googleapis.com/projects/${projectId}/buckets/bpj-max-dep-${uniqueId}
+  group: storage.cnrm.cloud.google.com
+  kind: StorageBucket
+  name: bpj-max-dep-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //aiplatform.googleapis.com/projects/${projectId}/locations/us-central1/batchPredictionJobs/8871658410525851648
+  group: aiplatform.cnrm.cloud.google.com
+  kind: AIPlatformBatchPredictionJob
+  name: bpj-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
