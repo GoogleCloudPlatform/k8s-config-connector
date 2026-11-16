@@ -3,7 +3,7 @@
 ## New Alpha Resources (Direct Reconciler):
 
 *   `AIPlatformCustomJob`
-    *   Manage [Vertex AI custom jobs](https://cloud.google.com/vertex-ai/docs/training/create-custom-jobs) to run custom machine learning training workloads.
+    *   Manage [Vertex AI custom jobs](https://cloud.google.com/vertex-ai/docs/training/create-custom-job) to run custom machine learning training workloads.
 
 *   `AIPlatformFeatureView`
     *   Manage [Vertex AI Feature Store feature views](https://cloud.google.com/vertex-ai/docs/featurestore/latest/overview) to define a read-only projection of features.
@@ -12,13 +12,13 @@
     *   Manage [BigQuery Analytics Hub query templates](https://cloud.google.com/bigquery/docs/analytics-hub-introduction) to share reusable SQL queries across data exchanges.
 
 *   `ComposerUserWorkloadsConfigMap`
-    *   Manage [Cloud Composer user workloads ConfigMaps](https://cloud.google.com/composer/docs/composer-2/manage-environments) to supply configuration data to Airflow tasks.
+    *   Manage [Cloud Composer user workloads ConfigMaps](https://cloud.google.com/composer/docs) to supply configuration data to Airflow tasks.
 
 *   `ComposerUserWorkloadsSecret`
-    *   Manage [Cloud Composer user workloads Secrets](https://cloud.google.com/composer/docs/composer-2/manage-environments) to pass sensitive data to Airflow tasks.
+    *   Manage [Cloud Composer user workloads Secrets](https://cloud.google.com/composer/docs) to pass sensitive data to Airflow tasks.
 
 *   `ConfigDeliveryRelease`
-    *   Manage [Config Delivery releases](https://cloud.google.com/config-delivery/docs) to represent a specific version of configuration for deployment.
+    *   Manage [Config Delivery releases](https://cloud.google.com/kubernetes-engine/enterprise/config-sync/docs/concepts/fleet-packages) to represent a specific version of configuration for deployment.
 
 *   `DataplexEntry`
     *   Manage [Dataplex entries](https://cloud.google.com/dataplex/docs) to represent cataloged metadata items in Dataplex Universal Catalog.
@@ -44,7 +44,7 @@
 *   [`ComputeManagedSSLCertificate`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computemanagedsslcertificate)
     *   Added support for `status.observedState.managed.status` and `status.observedState.managed.domainStatus` fields in direct controller.
 
-*   [`DiscoveryEngineDataStore`](https://cloud.google.com/config-connector/docs/reference/resource-docs/discoveryengine/discoveryenginedatastore)
+*   `DiscoveryEngineDataStore`
     *   Added support for `spec.skipDefaultSchemaCreation` field.
 
 *   [`SQLInstance`](https://cloud.google.com/config-connector/docs/reference/resource-docs/sql/sqlinstance)
@@ -63,12 +63,12 @@ support (and we list some of the issues that this fixes):
 
 The following resources now use the direct reconciler by default:
 
-*   [`APIKeysKey`](https://cloud.google.com/config-connector/docs/reference/resource-docs/apikeys/apikeyskey)
-*   [`BigQueryReservationCapacityCommitment`](https://cloud.google.com/config-connector/docs/reference/resource-docs/bigqueryreservation/bigqueryreservationcapacitycommitment)
-*   [`ComputeAutoscaler`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computeautoscaler)
-*   [`ComputeBackendServiceSignedURLKey`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computebackendservicesignedurlkey)
-*   [`ComputeDiskResourcePolicyAttachment`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computediskresourcepolicyattachment)
-*   [`DNSResponsePolicy`](https://cloud.google.com/config-connector/docs/reference/resource-docs/dns/dnsresponsepolicy)
+*   `APIKeysKey`
+*   `BigQueryReservationCapacityCommitment`
+*   `ComputeAutoscaler`
+*   `ComputeBackendServiceSignedURLKey`
+*   `ComputeDiskResourcePolicyAttachment`
+*   `DNSResponsePolicy`
 *   `FirebaseHostingSite`
 *   `OSLoginSSHPublicKey`
 
