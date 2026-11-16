@@ -16,7 +16,7 @@ spec:
   resourceBundleSelector:
     resourceBundle:
       resourceBundleRef:
-        external: projects/${projectId}/locations/us-central1/resourceBundles/my-bundle
+        name: cdrbundle-${uniqueId}
       tag: v1.0.0
   rolloutStrategy:
     rolling:
