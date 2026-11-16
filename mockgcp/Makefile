@@ -143,6 +143,7 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/vision/v1/*.proto \
 		./third_party/googleapis/google/cloud/developerconnect/v1/*.proto \
 		./apis/google/cloud/vectorsearch/v1/*.proto \
+		./apis/google/cloud/observability/v1/*.proto \
 		./third_party/googleapis/google/cloud/contactcenterinsights/v1/*.proto \
 		./third_party/googleapis/google/cloud/configdelivery/v1/*.proto \
 		./third_party/googleapis/google/cloud/saasplatform/saasservicemgmt/v1beta1/*.proto \
