@@ -1,0 +1,1488 @@
+# Phase: CREATE
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/groups/${groupID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fgroups%2F${groupID}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Group \"projects/${projectId}/locations/us-central1/groups/migrationcentergroup-maximal-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Group \"projects/${projectId}/locations/us-central1/groups/migrationcentergroup-maximal-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/groups?%24alt=json%3Benum-encoding%3Dint&groupId=${groupID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "description": "Maximal group description",
+  "displayName": "Maximal Group"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/groups/migrationcentergroup-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/groups/migrationcentergroup-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.Group",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Maximal group description",
+    "displayName": "Maximal Group",
+    "name": "projects/${projectId}/locations/us-central1/groups/migrationcentergroup-maximal-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FpreferenceSets%2Fmigrationcenterpreferenceset-maximal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/preferenceSets?%24alt=json%3Benum-encoding%3Dint&preferenceSetId=migrationcenterpreferenceset-maximal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "description": "Maximal preference set description",
+  "displayName": "Maximal Preference Set"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.PreferenceSet",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Maximal preference set description",
+    "displayName": "Maximal Preference Set",
+    "name": "projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FpreferenceSets%2Fmigrationcenterpreferenceset-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal preference set description",
+  "displayName": "Maximal Preference Set",
+  "name": "projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FreportConfigs%2Fmigrationcenterreportconfig-maximal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/reportConfigs?%24alt=json%3Benum-encoding%3Dint&reportConfigId=migrationcenterreportconfig-maximal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "description": "Maximal report config description",
+  "displayName": "Maximal Report Config",
+  "groupPreferencesetAssignments": [
+    {
+      "group": "projects/${projectId}/locations/us-central1/groups/migrationcentergroup-maximal-${uniqueId}",
+      "preferenceSet": "projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}"
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.ReportConfig",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Maximal report config description",
+    "displayName": "Maximal Report Config",
+    "groupPreferencesetAssignments": [
+      {
+        "group": "projects/${projectNumber}/locations/us-central1/groups/migrationcentergroup-maximal-${uniqueId}",
+        "preferenceSet": "projects/${projectNumber}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}"
+      }
+    ],
+    "name": "projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}/reports/migrationcenterreport-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FreportConfigs%2Fmigrationcenterreportconfig-maximal-${uniqueId}%2Freports%2Fmigrationcenterreport-maximal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}/reports/migrationcenterreport-maximal-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}/reports?%24alt=json%3Benum-encoding%3Dint&reportId=migrationcenterreport-maximal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2FreportConfigs%2Fmigrationcenterreportconfig-maximal-${uniqueId}
+
+{
+  "description": "Maximal report description",
+  "displayName": "Maximal Report",
+  "type": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}/reports/migrationcenterreport-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}/reports/migrationcenterreport-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.Report",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Maximal report description",
+    "displayName": "Maximal Report",
+    "name": "projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}/reports/migrationcenterreport-maximal-${uniqueId}",
+    "state": "SUCCEEDED",
+    "summary": {
+      "allAssetsStats": {
+        "coreCountHistogram": {
+          "buckets": [
+            {
+              "upperBound": "2"
+            },
+            {
+              "lowerBound": "2",
+              "upperBound": "4"
+            },
+            {
+              "lowerBound": "4",
+              "upperBound": "16"
+            },
+            {
+              "lowerBound": "16",
+              "upperBound": "32"
+            },
+            {
+              "lowerBound": "32",
+              "upperBound": "9223372036854775807"
+            }
+          ]
+        },
+        "memoryBytesHistogram": {
+          "buckets": [
+            {
+              "upperBound": "4294967296"
+            },
+            {
+              "lowerBound": "4294967296",
+              "upperBound": "17179869184"
+            },
+            {
+              "lowerBound": "17179869184",
+              "upperBound": "68719476736"
+            },
+            {
+              "lowerBound": "68719476736",
+              "upperBound": "137438953472"
+            },
+            {
+              "lowerBound": "137438953472",
+              "upperBound": "9223372036854775807"
+            }
+          ]
+        },
+        "storageBytesHistogram": {
+          "buckets": [
+            {
+              "upperBound": "107374182400"
+            },
+            {
+              "lowerBound": "107374182400",
+              "upperBound": "268435456000"
+            },
+            {
+              "lowerBound": "268435456000",
+              "upperBound": "536870912000"
+            },
+            {
+              "lowerBound": "536870912000",
+              "upperBound": "1073741824000"
+            },
+            {
+              "lowerBound": "1073741824000",
+              "upperBound": "9223372036854775807"
+            }
+          ]
+        }
+      },
+      "groupFindings": [
+        {
+          "assetAggregateStats": {
+            "coreCountHistogram": {
+              "buckets": [
+                {
+                  "upperBound": "2"
+                },
+                {
+                  "lowerBound": "2",
+                  "upperBound": "4"
+                },
+                {
+                  "lowerBound": "4",
+                  "upperBound": "16"
+                },
+                {
+                  "lowerBound": "16",
+                  "upperBound": "32"
+                },
+                {
+                  "lowerBound": "32",
+                  "upperBound": "9223372036854775807"
+                }
+              ]
+            },
+            "memoryBytesHistogram": {
+              "buckets": [
+                {
+                  "upperBound": "4294967296"
+                },
+                {
+                  "lowerBound": "4294967296",
+                  "upperBound": "17179869184"
+                },
+                {
+                  "lowerBound": "17179869184",
+                  "upperBound": "68719476736"
+                },
+                {
+                  "lowerBound": "68719476736",
+                  "upperBound": "137438953472"
+                },
+                {
+                  "lowerBound": "137438953472",
+                  "upperBound": "9223372036854775807"
+                }
+              ]
+            },
+            "storageBytesHistogram": {
+              "buckets": [
+                {
+                  "upperBound": "107374182400"
+                },
+                {
+                  "lowerBound": "107374182400",
+                  "upperBound": "268435456000"
+                },
+                {
+                  "lowerBound": "268435456000",
+                  "upperBound": "536870912000"
+                },
+                {
+                  "lowerBound": "536870912000",
+                  "upperBound": "1073741824000"
+                },
+                {
+                  "lowerBound": "1073741824000",
+                  "upperBound": "9223372036854775807"
+                }
+              ]
+            }
+          },
+          "description": "Maximal group description",
+          "displayName": "Maximal Group",
+          "preferenceSetFindings": [
+            {
+              "computeEngineFinding": {
+                "allocatedRegions": [
+                  "us-central1"
+                ]
+              },
+              "description": "Maximal preference set description",
+              "displayName": "Maximal Preference Set",
+              "machinePreferences": {
+                "commitmentPlan": "COMMITMENT_PLAN_THREE_YEARS",
+                "computeEnginePreferences": {
+                  "licenseType": "LICENSE_TYPE_DEFAULT",
+                  "machinePreferences": {
+                    "allowedMachineSeries": [
+                      {
+                        "code": "C2"
+                      },
+                      {
+                        "code": "C2D"
+                      },
+                      {
+                        "code": "E2"
+                      },
+                      {
+                        "code": "M1"
+                      },
+                      {
+                        "code": "M2"
+                      },
+                      {
+                        "code": "N1"
+                      },
+                      {
+                        "code": "N2"
+                      },
+                      {
+                        "code": "N2D"
+                      },
+                      {
+                        "code": "T2D"
+                      },
+                      {
+                        "code": "T2A"
+                      },
+                      {
+                        "code": "C3"
+                      },
+                      {
+                        "code": "M3"
+                      },
+                      {
+                        "code": "N4"
+                      },
+                      {
+                        "code": "C3D"
+                      },
+                      {
+                        "code": "C4"
+                      },
+                      {
+                        "code": "C4A"
+                      },
+                      {
+                        "code": "C4D"
+                      },
+                      {
+                        "code": "M4"
+                      },
+                      {
+                        "code": "N4D"
+                      },
+                      {
+                        "code": "N4A"
+                      }
+                    ]
+                  }
+                },
+                "regionPreferences": {
+                  "preferredRegions": [
+                    "us-central1"
+                  ]
+                },
+                "sizingOptimizationStrategy": "SIZING_OPTIMIZATION_STRATEGY_MODERATE",
+                "soleTenancyPreferences": {
+                  "commitmentPlan": "COMMITMENT_3_YEAR",
+                  "cpuOvercommitRatio": 2,
+                  "hostMaintenancePolicy": "HOST_MAINTENANCE_POLICY_MIGRATE_WITHIN_NODE_GROUP",
+                  "nodeTypes": [
+                    {
+                      "nodeName": "c2-node-60-240"
+                    },
+                    {
+                      "nodeName": "m1-node-160-3844"
+                    },
+                    {
+                      "nodeName": "m1-node-96-1433"
+                    },
+                    {
+                      "nodeName": "m2-node-416-11776"
+                    },
+                    {
+                      "nodeName": "m3-node-128-1952"
+                    },
+                    {
+                      "nodeName": "m3-node-128-3904"
+                    },
+                    {
+                      "nodeName": "n1-node-96-624"
+                    },
+                    {
+                      "nodeName": "n2-node-128-864"
+                    },
+                    {
+                      "nodeName": "n2-node-80-640"
+                    },
+                    {
+                      "nodeName": "n2d-node-224-896"
+                    },
+                    {
+                      "nodeName": "c3-node-176-1408"
+                    },
+                    {
+                      "nodeName": "c3-node-176-352"
+                    },
+                    {
+                      "nodeName": "c3-node-176-704"
+                    },
+                    {
+                      "nodeName": "c3d-node-360-1440"
+                    },
+                    {
+                      "nodeName": "c3d-node-360-2880"
+                    },
+                    {
+                      "nodeName": "c3d-node-360-708"
+                    },
+                    {
+                      "nodeName": "c4-node-192-1488"
+                    },
+                    {
+                      "nodeName": "c4-node-192-384"
+                    },
+                    {
+                      "nodeName": "c4-node-192-720"
+                    },
+                    {
+                      "nodeName": "c4a-node-72-144"
+                    },
+                    {
+                      "nodeName": "c4a-node-72-288"
+                    },
+                    {
+                      "nodeName": "c4a-node-72-576"
+                    },
+                    {
+                      "nodeName": "m2-node-416-8832"
+                    },
+                    {
+                      "nodeName": "m4-node-224-2976"
+                    },
+                    {
+                      "nodeName": "m4-node-224-5952"
+                    },
+                    {
+                      "nodeName": "n2d-node-224-1792"
+                    },
+                    {
+                      "nodeName": "n4-node-224-1372"
+                    },
+                    {
+                      "nodeName": "n4a-node-96-624"
+                    }
+                  ]
+                },
+                "targetProduct": "COMPUTE_MIGRATION_TARGET_PRODUCT_COMPUTE_ENGINE",
+                "vmwareEnginePreferences": {
+                  "commitmentPlan": "COMMITMENT_3_YEAR_MONTHLY_PAYMENTS",
+                  "cpuOvercommitRatio": 4,
+                  "memoryOvercommitRatio": 1,
+                  "storageDeduplicationCompressionRatio": 1.7
+                }
+              },
+              "monthlyCostCompute": {
+                "currencyCode": "USD"
+              },
+              "monthlyCostNetworkEgress": {
+                "currencyCode": "USD"
+              },
+              "monthlyCostOsLicense": {
+                "currencyCode": "USD"
+              },
+              "monthlyCostOther": {
+                "currencyCode": "USD"
+              },
+              "monthlyCostStorage": {
+                "currencyCode": "USD"
+              },
+              "monthlyCostTotal": {
+                "currencyCode": "USD"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "type": "TOTAL_COST_OF_OWNERSHIP",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+# Phase: DELETE
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}/reports/migrationcenterreport-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FreportConfigs%2Fmigrationcenterreportconfig-maximal-${uniqueId}%2Freports%2Fmigrationcenterreport-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal report description",
+  "displayName": "Maximal Report",
+  "name": "projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}/reports/migrationcenterreport-maximal-${uniqueId}",
+  "state": 2,
+  "summary": {
+    "allAssetsStats": {
+      "coreCountHistogram": {
+        "buckets": [
+          {
+            "upperBound": "2"
+          },
+          {
+            "lowerBound": "2",
+            "upperBound": "4"
+          },
+          {
+            "lowerBound": "4",
+            "upperBound": "16"
+          },
+          {
+            "lowerBound": "16",
+            "upperBound": "32"
+          },
+          {
+            "lowerBound": "32",
+            "upperBound": "9223372036854775807"
+          }
+        ]
+      },
+      "memoryBytesHistogram": {
+        "buckets": [
+          {
+            "upperBound": "4294967296"
+          },
+          {
+            "lowerBound": "4294967296",
+            "upperBound": "17179869184"
+          },
+          {
+            "lowerBound": "17179869184",
+            "upperBound": "68719476736"
+          },
+          {
+            "lowerBound": "68719476736",
+            "upperBound": "137438953472"
+          },
+          {
+            "lowerBound": "137438953472",
+            "upperBound": "9223372036854775807"
+          }
+        ]
+      },
+      "storageBytesHistogram": {
+        "buckets": [
+          {
+            "upperBound": "107374182400"
+          },
+          {
+            "lowerBound": "107374182400",
+            "upperBound": "268435456000"
+          },
+          {
+            "lowerBound": "268435456000",
+            "upperBound": "536870912000"
+          },
+          {
+            "lowerBound": "536870912000",
+            "upperBound": "1073741824000"
+          },
+          {
+            "lowerBound": "1073741824000",
+            "upperBound": "9223372036854775807"
+          }
+        ]
+      }
+    },
+    "groupFindings": [
+      {
+        "assetAggregateStats": {
+          "coreCountHistogram": {
+            "buckets": [
+              {
+                "upperBound": "2"
+              },
+              {
+                "lowerBound": "2",
+                "upperBound": "4"
+              },
+              {
+                "lowerBound": "4",
+                "upperBound": "16"
+              },
+              {
+                "lowerBound": "16",
+                "upperBound": "32"
+              },
+              {
+                "lowerBound": "32",
+                "upperBound": "9223372036854775807"
+              }
+            ]
+          },
+          "memoryBytesHistogram": {
+            "buckets": [
+              {
+                "upperBound": "4294967296"
+              },
+              {
+                "lowerBound": "4294967296",
+                "upperBound": "17179869184"
+              },
+              {
+                "lowerBound": "17179869184",
+                "upperBound": "68719476736"
+              },
+              {
+                "lowerBound": "68719476736",
+                "upperBound": "137438953472"
+              },
+              {
+                "lowerBound": "137438953472",
+                "upperBound": "9223372036854775807"
+              }
+            ]
+          },
+          "storageBytesHistogram": {
+            "buckets": [
+              {
+                "upperBound": "107374182400"
+              },
+              {
+                "lowerBound": "107374182400",
+                "upperBound": "268435456000"
+              },
+              {
+                "lowerBound": "268435456000",
+                "upperBound": "536870912000"
+              },
+              {
+                "lowerBound": "536870912000",
+                "upperBound": "1073741824000"
+              },
+              {
+                "lowerBound": "1073741824000",
+                "upperBound": "9223372036854775807"
+              }
+            ]
+          }
+        },
+        "description": "Maximal group description",
+        "displayName": "Maximal Group",
+        "preferenceSetFindings": [
+          {
+            "computeEngineFinding": {
+              "allocatedRegions": [
+                "us-central1"
+              ]
+            },
+            "description": "Maximal preference set description",
+            "displayName": "Maximal Preference Set",
+            "machinePreferences": {
+              "commitmentPlan": 3,
+              "computeEnginePreferences": {
+                "licenseType": 1,
+                "machinePreferences": {
+                  "allowedMachineSeries": [
+                    {
+                      "code": "C2"
+                    },
+                    {
+                      "code": "C2D"
+                    },
+                    {
+                      "code": "E2"
+                    },
+                    {
+                      "code": "M1"
+                    },
+                    {
+                      "code": "M2"
+                    },
+                    {
+                      "code": "N1"
+                    },
+                    {
+                      "code": "N2"
+                    },
+                    {
+                      "code": "N2D"
+                    },
+                    {
+                      "code": "T2D"
+                    },
+                    {
+                      "code": "T2A"
+                    },
+                    {
+                      "code": "C3"
+                    },
+                    {
+                      "code": "M3"
+                    },
+                    {
+                      "code": "N4"
+                    },
+                    {
+                      "code": "C3D"
+                    },
+                    {
+                      "code": "C4"
+                    },
+                    {
+                      "code": "C4A"
+                    },
+                    {
+                      "code": "C4D"
+                    },
+                    {
+                      "code": "M4"
+                    },
+                    {
+                      "code": "N4D"
+                    },
+                    {
+                      "code": "N4A"
+                    }
+                  ]
+                }
+              },
+              "regionPreferences": {
+                "preferredRegions": [
+                  "us-central1"
+                ]
+              },
+              "sizingOptimizationStrategy": 2,
+              "soleTenancyPreferences": {
+                "commitmentPlan": 3,
+                "cpuOvercommitRatio": 2,
+                "hostMaintenancePolicy": 3,
+                "nodeTypes": [
+                  {
+                    "nodeName": "c2-node-60-240"
+                  },
+                  {
+                    "nodeName": "m1-node-160-3844"
+                  },
+                  {
+                    "nodeName": "m1-node-96-1433"
+                  },
+                  {
+                    "nodeName": "m2-node-416-11776"
+                  },
+                  {
+                    "nodeName": "m3-node-128-1952"
+                  },
+                  {
+                    "nodeName": "m3-node-128-3904"
+                  },
+                  {
+                    "nodeName": "n1-node-96-624"
+                  },
+                  {
+                    "nodeName": "n2-node-128-864"
+                  },
+                  {
+                    "nodeName": "n2-node-80-640"
+                  },
+                  {
+                    "nodeName": "n2d-node-224-896"
+                  },
+                  {
+                    "nodeName": "c3-node-176-1408"
+                  },
+                  {
+                    "nodeName": "c3-node-176-352"
+                  },
+                  {
+                    "nodeName": "c3-node-176-704"
+                  },
+                  {
+                    "nodeName": "c3d-node-360-1440"
+                  },
+                  {
+                    "nodeName": "c3d-node-360-2880"
+                  },
+                  {
+                    "nodeName": "c3d-node-360-708"
+                  },
+                  {
+                    "nodeName": "c4-node-192-1488"
+                  },
+                  {
+                    "nodeName": "c4-node-192-384"
+                  },
+                  {
+                    "nodeName": "c4-node-192-720"
+                  },
+                  {
+                    "nodeName": "c4a-node-72-144"
+                  },
+                  {
+                    "nodeName": "c4a-node-72-288"
+                  },
+                  {
+                    "nodeName": "c4a-node-72-576"
+                  },
+                  {
+                    "nodeName": "m2-node-416-8832"
+                  },
+                  {
+                    "nodeName": "m4-node-224-2976"
+                  },
+                  {
+                    "nodeName": "m4-node-224-5952"
+                  },
+                  {
+                    "nodeName": "n2d-node-224-1792"
+                  },
+                  {
+                    "nodeName": "n4-node-224-1372"
+                  },
+                  {
+                    "nodeName": "n4a-node-96-624"
+                  }
+                ]
+              },
+              "targetProduct": 1,
+              "vmwareEnginePreferences": {
+                "commitmentPlan": 3,
+                "cpuOvercommitRatio": 4,
+                "memoryOvercommitRatio": 1,
+                "storageDeduplicationCompressionRatio": 1.7
+              }
+            },
+            "monthlyCostCompute": {
+              "currencyCode": "USD"
+            },
+            "monthlyCostNetworkEgress": {
+              "currencyCode": "USD"
+            },
+            "monthlyCostOsLicense": {
+              "currencyCode": "USD"
+            },
+            "monthlyCostOther": {
+              "currencyCode": "USD"
+            },
+            "monthlyCostStorage": {
+              "currencyCode": "USD"
+            },
+            "monthlyCostTotal": {
+              "currencyCode": "USD"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}/reports/migrationcenterreport-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FreportConfigs%2Fmigrationcenterreportconfig-maximal-${uniqueId}%2Freports%2Fmigrationcenterreport-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}/reports/migrationcenterreport-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}/reports/migrationcenterreport-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FreportConfigs%2Fmigrationcenterreportconfig-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal report config description",
+  "displayName": "Maximal Report Config",
+  "groupPreferencesetAssignments": [
+    {
+      "group": "projects/${projectId}/locations/us-central1/groups/migrationcentergroup-maximal-${uniqueId}",
+      "preferenceSet": "projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}"
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FreportConfigs%2Fmigrationcenterreportconfig-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FpreferenceSets%2Fmigrationcenterpreferenceset-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal preference set description",
+  "displayName": "Maximal Preference Set",
+  "name": "projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FpreferenceSets%2Fmigrationcenterpreferenceset-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/groups/${groupID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fgroups%2F${groupID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal group description",
+  "displayName": "Maximal Group",
+  "name": "projects/${projectId}/locations/us-central1/groups/migrationcentergroup-maximal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/groups/${groupID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fgroups%2F${groupID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/groups/migrationcentergroup-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/groups/migrationcentergroup-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
