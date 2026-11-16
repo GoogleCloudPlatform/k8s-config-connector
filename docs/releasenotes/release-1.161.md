@@ -41,6 +41,9 @@
     *   Added support for `spec.schedulingPolicy` field.
     *   Added support for `spec.reservationGroupRef` field.
 
+*   [`ComputeManagedSSLCertificate`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computemanagedsslcertificate)
+    *   Added support for `status.observedState.managed.status` and `status.observedState.managed.domainStatus` fields in direct controller.
+
 *   [`DiscoveryEngineDataStore`](https://cloud.google.com/config-connector/docs/reference/resource-docs/discoveryengine/discoveryenginedatastore)
     *   Added support for `spec.skipDefaultSchemaCreation` field.
 
@@ -77,9 +80,6 @@ The following resources now use the direct reconciler by default:
 *   **IAM Policy Member Support for LoggingLogView**: Support `IAMPolicyMember` for `LoggingLogView`.
 
 ## Bug Fixes:
-
-*   [`ComputeManagedSSLCertificate`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computemanagedsslcertificate)
-    *   Support `status.observedState.managed.status` and `status.observedState.managed.domainStatus` fields in direct controller.
 
 *   [`ComputeReservation`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computereservation)
     *   Fixed an issue where the `ComputeReservation` direct controller failed reconciliation when optional immutable fields (such as `description` or `minCpuPlatform`) were set in GCP but omitted from the CR `spec`.
