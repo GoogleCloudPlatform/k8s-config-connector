@@ -45,6 +45,10 @@ func (i *ClusterIdentity) ParentString() string {
 	return i.parent.String()
 }
 
+func (i *BigtableClusterIdentity) ID() string {
+	return i.Cluster
+}
+
 // New builds a ClusterIdentity from the Config Connector Cluster object.
 func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *BigtableCluster) (*ClusterIdentity, error) {
 	// Resolve parent

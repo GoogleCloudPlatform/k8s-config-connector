@@ -1,0 +1,39 @@
+apiVersion: bigtable.cnrm.cloud.google.com/v1alpha1
+kind: BigtableCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: btcluster-max-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  clusterConfig:
+    clusterAutoscalingConfig:
+      autoscalingLimits:
+        maxServeNodes: 4
+        minServeNodes: 1
+      autoscalingTargets:
+        cpuUtilizationPercent: 70
+        storageUtilizationGiBPerNode: 2560
+  defaultStorageType: SSD
+  instanceRef:
+    name: btinst-max-${uniqueId}
+  location: projects/${projectId}/locations/us-central1-c
+  nodeScalingFactor: NODE_SCALING_FACTOR_1X
+  resourceID: btcluster-max-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/instances/btinst-max-${uniqueId}/clusters/btcluster-max-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    state: READY

@@ -1,0 +1,13 @@
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/bigtableinstance-${uniqueId}/clusters/bigtablecluster-${uniqueId}
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "defaultStorageType": "SSD",
+  "location": "projects/${projectId}/locations/us-central1-b",
+  "name": "projects/${projectId}/instances/bigtableinstance-${uniqueId}/clusters/bigtablecluster-${uniqueId}",
+  "serveNodes": 2,
+  "state": "READY"
+}

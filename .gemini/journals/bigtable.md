@@ -16,3 +16,14 @@
   - Resolved `location-or-parent-ref` and `authoritative-proto-reference` for `.spec.location` by keeping it as a plain string: Bigtable clusters are zonal while their parent instance is not, and `locations.googleapis.com/Location` is not a KCC-managed resource.
   - Resolved `required-not-enforced` on autoscaling fields by keeping them optional in KRM to support clusters configured with static `serveNodes`.
 
+### [2026-11-16] BigtableCluster Greenfield Direct Controller Implementation
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `BigtableCluster` under Greenfield Step 2.
+- **Observations**:
+  - `BigtableInstanceAdminClient` from `cloud.google.com/go/bigtable/admin/apiv2` is a gRPC-only client (`m.config.GRPCClientOptions()`); GAPIC REST client does not exist for Bigtable Admin API.
+  - Updating a cluster in Bigtable Admin API must use `PartialUpdateCluster` with `*adminpb.PartialUpdateClusterRequest` (`Cluster` and `UpdateMask`) rather than `UpdateCluster`. `UpdateCluster` does not accept a FieldMask and does not support updating `cluster_config.cluster_autoscaling_config`.
+  - `CreateCluster` and `PartialUpdateCluster` return Long-Running Operations (`*CreateClusterOperation` and `*PartialUpdateClusterOperation`) whose `Wait(ctx)` returns `*adminpb.Cluster`. `DeleteCluster` is synchronous and returns an immediate error.
+  - Bigtable requires each cluster within an instance to be located in a distinct zone (e.g., primary cluster in `us-central1-a`, secondary in `us-central1-b`).
+  - Implemented `ID() string` on `*BigtableClusterIdentity` in `apis/bigtable/v1alpha1/bigtablecluster_identity.go` to cleanly expose the cluster ID string for `CreateClusterRequest`.
+  - Re-reconciliation testing was enabled by removing `BigtableCluster` from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. Both minimal (updating `serveNodes`) and maximal (updating `clusterConfig` autoscaling limits and targets) fixtures passed all 7/7 automated validation checks against real GCP.
+
+
