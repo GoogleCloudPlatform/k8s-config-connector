@@ -32,6 +32,7 @@ require (
 	cloud.google.com/go/bigtable v1.58.0
 	cloud.google.com/go/billing v1.26.0
 	cloud.google.com/go/certificatemanager v1.14.0
+	cloud.google.com/go/ces v1.0.0
 	cloud.google.com/go/cloudbuild v1.30.0
 	cloud.google.com/go/clouddms v1.13.0
 	cloud.google.com/go/cloudquotas v1.11.0
@@ -42,7 +43,7 @@ require (
 	cloud.google.com/go/datacatalog v1.32.0
 	cloud.google.com/go/dataform v1.0.0
 	cloud.google.com/go/dataplex v1.36.0
-	cloud.google.com/go/dataproc/v2 v2.26.0
+	cloud.google.com/go/dataproc/v2 v2.27.0
 	cloud.google.com/go/datastream v1.20.0
 	cloud.google.com/go/deploy v1.32.0
 	cloud.google.com/go/developerconnect v1.1.0
@@ -88,7 +89,7 @@ require (
 	cloud.google.com/go/saasplatform v0.9.0
 	cloud.google.com/go/secretmanager v1.20.0
 	cloud.google.com/go/securesourcemanager v1.4.1
-	cloud.google.com/go/securitycenter v1.47.0
+	cloud.google.com/go/securitycenter v1.48.0
 	cloud.google.com/go/securitycentermanagement v1.6.0
 	cloud.google.com/go/speech v1.35.0
 	cloud.google.com/go/storage v1.62.3
@@ -110,10 +111,10 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2
 	golang.org/x/crypto v0.59.0
 	golang.org/x/oauth2 v0.37.0
-	google.golang.org/api v0.304.0
-	google.golang.org/genproto v0.0.0-20261012220534-4341edf3f941
-	google.golang.org/genproto/googleapis/api v0.0.0-20261012220534-4341edf3f941
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20261012220534-4341edf3f941
+	google.golang.org/api v0.307.0
+	google.golang.org/genproto v0.0.0-20261019180522-ce908d29299b
+	google.golang.org/genproto/googleapis/api v0.0.0-20261019180522-ce908d29299b
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20261019180522-ce908d29299b
 	google.golang.org/grpc v1.84.0
 	google.golang.org/protobuf v1.36.12
 	k8s.io/api v0.33.10
@@ -130,7 +131,6 @@ require (
 	cloud.google.com/go/auth v0.24.1-0.20261001053825-dbc26066f70a // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.3.0 // indirect
 	cloud.google.com/go/compute/metadata v0.10.0 // indirect
-	cloud.google.com/go/grafeas v0.5.0 // indirect
 	cloud.google.com/go/pubsub/v2 v2.5.1 // indirect
 	cloud.google.com/go/resourcemanager v1.15.0 // indirect
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0 // indirect
