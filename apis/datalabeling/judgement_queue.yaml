@@ -1,0 +1,5 @@
+entries:
+  - kind: DataLabelingAnnotationSpecSet
+    group: datalabeling.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    status: open
