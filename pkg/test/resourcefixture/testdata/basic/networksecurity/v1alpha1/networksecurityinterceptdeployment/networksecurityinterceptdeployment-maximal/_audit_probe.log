@@ -9,6 +9,10 @@ X-Gfe-Server: ESF
   "description": "Updated description for maximal intercept deployment",
   "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/shared-fr",
   "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/shared-dg",
+  "labels": {
+    "key-one": "value-one",
+    "key-two": "value-two"
+  },
   "name": "projects/${projectId}/locations/us-central1-a/interceptDeployments/interceptdep-max-${uniqueId}",
   "reconciling": false,
   "state": 1,
