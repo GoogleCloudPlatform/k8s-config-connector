@@ -41,6 +41,7 @@
 // resource: ComputeInterconnectGroup:InterconnectGroup
 // resource: ComputeInterconnectAttachmentGroup:InterconnectAttachmentGroup
 // resource: ComputeStoragePool:StoragePool
+// resource: ComputeHealthSource:HealthSource
 
 package v1alpha1
 
@@ -1075,6 +1076,48 @@ type HealthCheckService struct {
 	// [Output Only] Server-defined URL for the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HealthSource", skipping
+
+// +kcc:proto=google.cloud.compute.v1.HealthSource
+type HealthSource struct {
+	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.description
+	Description *string `json:"description,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.health_aggregation_policy
+	HealthAggregationPolicy *string `json:"healthAggregationPolicy,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.name
+	Name *string `json:"name,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.region
+	Region *string `json:"region,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.source_type
+	SourceType *string `json:"sourceType,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.sources
+	Sources []string `json:"sources,omitempty"`
 }
 */
 
@@ -4061,6 +4104,27 @@ type CrossSiteNetworkObservedState struct {
 	// Output only. [Output Only] Server-defined URL for the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HealthSource", skipping
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.HealthSource
+type HealthSourceObservedState struct {
+	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
 }
 */
 

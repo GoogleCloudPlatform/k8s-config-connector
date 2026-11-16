@@ -2503,37 +2503,93 @@ func ComputeHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 }
 */
 
-/* found existing non-generated mapping function "ComputeHealthCheckSpec_v1beta1_ToProto", skipping
-func ComputeHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeHealthCheckSpec) *pb.HealthCheck {
+/*
+found existing non-generated mapping function "ComputeHealthCheckSpec_v1beta1_ToProto", skipping
+
+	func ComputeHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeHealthCheckSpec) *pb.HealthCheck {
+		if in == nil {
+			return nil
+		}
+		out := &pb.HealthCheck{}
+		out.CheckIntervalSec = in.CheckIntervalSec
+		// MISSING: CreationTimestamp
+		out.Description = in.Description
+		// MISSING: GrpcHealthCheck
+		// (near miss): "GrpcHealthCheck" vs "GRPCHealthCheck"
+		out.HealthyThreshold = in.HealthyThreshold
+		// MISSING: Http2HealthCheck
+		// (near miss): "Http2HealthCheck" vs "HTTP2HealthCheck"
+		out.HttpHealthCheck = HealthCheckHTTPHealthCheck_v1beta1_ToProto(mapCtx, in.HTTPHealthCheck)
+		out.HttpsHealthCheck = HealthCheckHTTPSHealthCheck_v1beta1_ToProto(mapCtx, in.HTTPSHealthCheck)
+		// MISSING: ID
+		// MISSING: Kind
+		out.LogConfig = HealthCheckLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
+		// MISSING: Name
+		// MISSING: Region
+		// MISSING: SelfLink
+		out.SourceRegions = in.SourceRegions
+		out.SslHealthCheck = HealthCheckSSLHealthCheck_v1beta1_ToProto(mapCtx, in.SSLHealthCheck)
+		out.TcpHealthCheck = HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx, in.TCPHealthCheck)
+		out.TimeoutSec = in.TimeoutSec
+		// MISSING: Type
+		out.UnhealthyThreshold = in.UnhealthyThreshold
+		return out
+	}
+*/
+func ComputeHealthSourceObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.HealthSource) *krmcomputev1alpha1.ComputeHealthSourceObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.HealthCheck{}
-	out.CheckIntervalSec = in.CheckIntervalSec
-	// MISSING: CreationTimestamp
-	out.Description = in.Description
-	// MISSING: GrpcHealthCheck
-	// (near miss): "GrpcHealthCheck" vs "GRPCHealthCheck"
-	out.HealthyThreshold = in.HealthyThreshold
-	// MISSING: Http2HealthCheck
-	// (near miss): "Http2HealthCheck" vs "HTTP2HealthCheck"
-	out.HttpHealthCheck = HealthCheckHTTPHealthCheck_v1beta1_ToProto(mapCtx, in.HTTPHealthCheck)
-	out.HttpsHealthCheck = HealthCheckHTTPSHealthCheck_v1beta1_ToProto(mapCtx, in.HTTPSHealthCheck)
-	// MISSING: ID
-	// MISSING: Kind
-	out.LogConfig = HealthCheckLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
+	out := &krmcomputev1alpha1.ComputeHealthSourceObservedState{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ID = in.Id
+	out.Kind = in.Kind
 	// MISSING: Name
-	// MISSING: Region
-	// MISSING: SelfLink
-	out.SourceRegions = in.SourceRegions
-	out.SslHealthCheck = HealthCheckSSLHealthCheck_v1beta1_ToProto(mapCtx, in.SSLHealthCheck)
-	out.TcpHealthCheck = HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx, in.TCPHealthCheck)
-	out.TimeoutSec = in.TimeoutSec
-	// MISSING: Type
-	out.UnhealthyThreshold = in.UnhealthyThreshold
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithID = in.SelfLinkWithId
 	return out
 }
-*/
+func ComputeHealthSourceObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeHealthSourceObservedState) *pb.HealthSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HealthSource{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Id = in.ID
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithId = in.SelfLinkWithID
+	return out
+}
+func ComputeHealthSourceSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.HealthSource) *krmcomputev1alpha1.ComputeHealthSourceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeHealthSourceSpec{}
+	out.Description = in.Description
+	out.Fingerprint = in.Fingerprint
+	out.HealthAggregationPolicy = in.HealthAggregationPolicy
+	// MISSING: Name
+	out.Region = in.Region
+	out.SourceType = in.SourceType
+	out.Sources = in.Sources
+	return out
+}
+func ComputeHealthSourceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeHealthSourceSpec) *pb.HealthSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HealthSource{}
+	out.Description = in.Description
+	out.Fingerprint = in.Fingerprint
+	out.HealthAggregationPolicy = in.HealthAggregationPolicy
+	// MISSING: Name
+	out.Region = in.Region
+	out.SourceType = in.SourceType
+	out.Sources = in.Sources
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeImageSpec_v1beta1_FromProto", skipping
 func ComputeImageSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Image) *krmcomputev1beta1.ComputeImageSpec {
