@@ -87,6 +87,7 @@ BLOCKED_KINDS=(
     "AIPlatformCachedContent"
     "AIPlatformHyperparameterTuningJob"
     "AIPlatformModelDeploymentMonitoringJob"
+    "AIPlatformModelMonitor"
     "AIPlatformNotebookRuntimeTemplate"
     "AIPlatformOnlineEvaluator"
     "AIPlatformRAGCorpus"
