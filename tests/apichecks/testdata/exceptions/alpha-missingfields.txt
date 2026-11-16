@@ -1662,22 +1662,6 @@
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.variableDeclarations[].description" is not set in unstructured objects
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.variableDeclarations[].name" is not set in unstructured objects
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.variableDeclarations[].schema" is not set in unstructured objects
-[missing_field] crd=cesdeployments.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.appVersionRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=cesdeployments.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.channelProfile.channelType" is not set in unstructured objects
-[missing_field] crd=cesdeployments.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.channelProfile.disableBargeInControl" is not set in unstructured objects
-[missing_field] crd=cesdeployments.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.channelProfile.disableDtmf" is not set in unstructured objects
-[missing_field] crd=cesdeployments.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.channelProfile.noiseSuppressionLevel" is not set in unstructured objects
-[missing_field] crd=cesdeployments.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.channelProfile.personaProperty.persona" is not set in unstructured objects
-[missing_field] crd=cesdeployments.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.channelProfile.profileID" is not set in unstructured objects
-[missing_field] crd=cesdeployments.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.channelProfile.webWidgetConfig.modality" is not set in unstructured objects
-[missing_field] crd=cesdeployments.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.channelProfile.webWidgetConfig.securitySettings.allowedOrigins[]" is not set in unstructured objects
-[missing_field] crd=cesdeployments.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.channelProfile.webWidgetConfig.securitySettings.enableOriginCheck" is not set in unstructured objects
-[missing_field] crd=cesdeployments.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.channelProfile.webWidgetConfig.securitySettings.enablePublicAccess" is not set in unstructured objects
-[missing_field] crd=cesdeployments.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.channelProfile.webWidgetConfig.securitySettings.enableRecaptcha" is not set in unstructured objects
-[missing_field] crd=cesdeployments.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.channelProfile.webWidgetConfig.theme" is not set in unstructured objects
-[missing_field] crd=cesdeployments.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.channelProfile.webWidgetConfig.webWidgetTitle" is not set in unstructured objects
-[missing_field] crd=cesdeployments.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=cesdeployments.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=chronicledataaccesslabels.chronicle.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=chronicledataaccesslabels.chronicle.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=chronicledataaccesslabels.chronicle.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set

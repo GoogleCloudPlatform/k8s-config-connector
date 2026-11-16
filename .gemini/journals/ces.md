@@ -57,6 +57,26 @@
   4. Resolved all open `CESDeployment` entries in `apis/ces/judgement_queue.yaml`.
   5. Regenerated CRDs, mappers, deepcopy methods, and updated `alpha-missingfields.txt` and `naming_violations.txt` exceptions.
 
+### [2026-11-16] Direct Controller, Fuzzer, and E2E Fixtures for CESDeployment
+- **Context**: Implementing Greenfield Step 2 direct controller, fuzzer, and recording real-GCP E2E fixtures for `CESDeployment` (`ces.cnrm.cloud.google.com/v1alpha1`).
+- **Learnings & Service Behaviors**:
+  1. **Resource ID Constraints**: Deployment ID in `projects/{project}/locations/{location}/apps/{app}/deployments/{deployment}` must match regular expression `[a-zA-Z0-9][a-zA-Z0-9-_]{4,35}` (5 to 36 characters). Using default `${metadata.name}` with `${uniqueId}` (e.g. `cesdeployment-minimal-${uniqueId}`, 38 chars) exceeds this limit and fails with HTTP 400. Setting explicit `spec.resourceID` (such as `cesdep-min-${uniqueId}` and `cesdep-max-${uniqueId}`) satisfies the length constraint.
+  2. **Synchronous REST CRUD**: Unlike `CESApp` where creation and deletion are LROs, `CESDeployment` CRUD operations (`CreateDeployment`, `UpdateDeployment`, `GetDeployment`, `DeleteDeployment`) are synchronous REST calls returning `*cespb.Deployment` or `*emptypb.Empty` directly without LRO handling.
+  3. **Draft App Version**: `spec.appVersionRef` points to `projects/{project}/locations/{location}/apps/{app}/versions/{version}`, and `versions/-` targets the draft app version.
+  4. **Field Mutability**: `displayName` and `channelProfile` (and its subfields `personaProperty`, `disableDtmf`, `disableBargeInControl`, `noiseSuppressionLevel`, and `webWidgetConfig`) update cleanly in-place via `UpdateDeployment` with field mask.
+  5. **Audit Probe & E2E Validation**: Golden HTTP logs and audit probes were recorded against real GCP project `cnrm-barni-4` for `cesdeployment-minimal` and `cesdeployment-maximal`, with all 7/7 automated lifecycle checks passing cleanly.
+
+### [2026-11-16] MockGCP Implementation and Alignment for CESDeployment
+- **Context**: Implementing Greenfield Step 3 MockGCP service and aligning golden logs for `CESDeployment` (`ces.cnrm.cloud.google.com/v1alpha1`).
+- **Learnings & Service Behaviors**:
+  1. **Parent Validation**: Validated parent `projects/{project}/locations/{location}/apps/{app}` in `CreateDeployment` and returned `codes.NotFound` if parent app does not exist.
+  2. **Etag Omission on GET/CREATE**: In real GCP, `CreateDeployment` and `GetDeployment` do not include an `etag` in their JSON responses (left empty string, omitted in proto3 serialization), whereas `UpdateDeployment` returns an `etag`. In MockGCP, `Etag` is left empty in `GetDeployment` and `CreateDeployment` and populated on `UpdateDeployment` (normalized to `abcdef0123A=`).
+  3. **Synchronous CRUD**: Implemented `GetDeployment`, `CreateDeployment`, `UpdateDeployment`, `DeleteDeployment`, and `ListDeployments` in `mockces/deployment.go` returning `*cespb.Deployment` or `*emptypb.Empty` directly.
+  4. **Test Harness GroupKind**: Enabled `schema.GroupKind{Group: "ces.cnrm.cloud.google.com", Kind: "CESDeployment"}` in `config/tests/samples/create/harness.go`.
+  5. **Alignment & CI**: Verified `TestGoldenLogAlignment/ces/v1alpha1/cesdeployment` and `./dev/ci/presubmits/tests-e2e-fixtures-suite ces` with 100% passing results and zero diff.
+
+
+
 
 
 
