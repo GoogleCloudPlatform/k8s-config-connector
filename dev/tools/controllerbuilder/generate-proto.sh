@@ -114,8 +114,9 @@ cp ${REPO_ROOT}/mockgcp/apis/google/cloud/config/v1/config.proto google/cloud/co
 mkdir -p google/cloud/dataplex/v1
 cp ${REPO_ROOT}/mockgcp/apis/google/cloud/dataplex/v1/catalog.proto google/cloud/dataplex/v1/catalog.proto
 
-# Overwrite backupdr protos with the updated version that has RestoreVerificationPlan
+# Overwrite backupdr protos with the updated version that has AutoProtectionPolicy and RestoreVerificationPlan
 mkdir -p google/cloud/backupdr/v1
+cp ${REPO_ROOT}/mockgcp/apis/google/cloud/backupdr/v1/autoprotectionpolicy.proto google/cloud/backupdr/v1/autoprotectionpolicy.proto
 cp ${REPO_ROOT}/mockgcp/apis/google/cloud/backupdr/v1/backupdr.proto google/cloud/backupdr/v1/backupdr.proto
 cp ${REPO_ROOT}/mockgcp/apis/google/cloud/backupdr/v1/restore_verification_plan.proto google/cloud/backupdr/v1/restore_verification_plan.proto
 

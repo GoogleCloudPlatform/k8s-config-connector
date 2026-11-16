@@ -20,3 +20,15 @@
   5. Added `BackupDRRestoreVerificationPlan` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
   6. Verified all unit tests and `apichecks` pass, updating `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 - **Impact**: Establishes initial scaffolding and judgement queue for `BackupDRRestoreVerificationPlan` ready for Step 1b triage.
+
+### [2026-11-12] BackupDRAutoProtectionPolicy Proto Overlay, Prepopulation, and Judgement Queue
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for `BackupDRAutoProtectionPolicy` under `apis/backupdr/v1alpha1`.
+- **Problem**: The pinned googleapis commit in `apis/git.versions` does not contain `AutoProtectionPolicy`, which was added upstream in `google/cloud/backupdr/v1/autoprotectionpolicy.proto` and `backupdr.proto`.
+- **Solution**:
+  1. Created a proto overlay `mockgcp/apis/google/cloud/backupdr/v1/autoprotectionpolicy.proto` and `mockgcp/apis/google/cloud/backupdr/v1/backupdr.proto` that preserves the pinned base for existing BackupDR resources while adding `AutoProtectionPolicy`, its RPCs, and its request/response messages.
+  2. Registered the overlay in `dev/tools/controllerbuilder/generate-proto.sh` and in `kccProtoOverrides` in `dev/tools/controllerbuilder/pkg/sourcelinks/sourcelinks.go`.
+  3. Configured `generate-mapper` in `apis/backupdr/generate.sh` with `--skip-proto` for `AutoProtectionPolicy` and its nested messages so mapper generation succeeds without requiring an upgrade to `cloud.google.com/go/backupdr` or any `replace` directives in `go.mod`.
+  4. Added `BackupDRAutoProtectionPolicy` to `dev/tasks/build-release-bundle` `BLOCKED_KINDS` list in alphabetical order.
+  5. Added `generate-types` with `--prepopulate-resource`, `generate-identity`, and updated `generate-mapper` in `apis/backupdr/generate.sh`.
+  6. Updated `alpha-missingfields.txt` and `spec_dislike_etag.txt` in `tests/apichecks/testdata/exceptions/`.
+- **Impact**: Enables clean mechanical scaffolding of `BackupDRAutoProtectionPolicy` with types, IdentityV2, and judgement queue open for Step 1b triage without polluting `go.mod` or risking dependency drift.
