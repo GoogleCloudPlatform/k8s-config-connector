@@ -45,7 +45,7 @@ func (n *preferenceSetName) String() string {
 func (s *MockService) parsePreferenceSetName(name string) (*preferenceSetName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "preferenceSets" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
 		if err != nil {
 			return nil, err
 		}

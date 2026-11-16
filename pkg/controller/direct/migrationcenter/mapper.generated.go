@@ -689,6 +689,8 @@ func ReportSummary_HistogramChartData_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Buckets = direct.Slice_ToProto(mapCtx, in.Buckets, ReportSummary_HistogramChartData_Bucket_ToProto)
 	return out
 }
+
+/* found existing non-generated mapping function "ReportSummary_HistogramChartData_Bucket_FromProto", skipping
 func ReportSummary_HistogramChartData_Bucket_FromProto(mapCtx *direct.MapContext, in *pb.ReportSummary_HistogramChartData_Bucket) *krm.ReportSummary_HistogramChartData_Bucket {
 	if in == nil {
 		return nil
@@ -699,16 +701,22 @@ func ReportSummary_HistogramChartData_Bucket_FromProto(mapCtx *direct.MapContext
 	out.Count = direct.LazyPtr(in.GetCount())
 	return out
 }
-func ReportSummary_HistogramChartData_Bucket_ToProto(mapCtx *direct.MapContext, in *krm.ReportSummary_HistogramChartData_Bucket) *pb.ReportSummary_HistogramChartData_Bucket {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ReportSummary_HistogramChartData_Bucket_ToProto", skipping
+
+	func ReportSummary_HistogramChartData_Bucket_ToProto(mapCtx *direct.MapContext, in *krm.ReportSummary_HistogramChartData_Bucket) *pb.ReportSummary_HistogramChartData_Bucket {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ReportSummary_HistogramChartData_Bucket{}
+		out.LowerBound = direct.ValueOf(in.LowerBound)
+		out.UpperBound = direct.ValueOf(in.UpperBound)
+		out.Count = direct.ValueOf(in.Count)
+		return out
 	}
-	out := &pb.ReportSummary_HistogramChartData_Bucket{}
-	out.LowerBound = direct.ValueOf(in.LowerBound)
-	out.UpperBound = direct.ValueOf(in.UpperBound)
-	out.Count = direct.ValueOf(in.Count)
-	return out
-}
+*/
 func ReportSummary_MachineSeriesAllocation_FromProto(mapCtx *direct.MapContext, in *pb.ReportSummary_MachineSeriesAllocation) *krm.ReportSummary_MachineSeriesAllocation {
 	if in == nil {
 		return nil

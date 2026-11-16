@@ -1,0 +1,184 @@
+apiVersion: migrationcenter.cnrm.cloud.google.com/v1alpha1
+kind: MigrationCenterReport
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: migrationcenterreport-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Maximal report description
+  displayName: Maximal Report
+  parentRef:
+    name: migrationcenterreportconfig-maximal-${uniqueId}
+  resourceID: migrationcenterreport-maximal-${uniqueId}
+  type: TOTAL_COST_OF_OWNERSHIP
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/reportConfigs/migrationcenterreportconfig-maximal-${uniqueId}/reports/migrationcenterreport-maximal-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    state: SUCCEEDED
+    summary:
+      allAssetsStats:
+        coreCountHistogram:
+          buckets:
+          - upperBound: 2
+          - lowerBound: 2
+            upperBound: 4
+          - lowerBound: 4
+            upperBound: 16
+          - lowerBound: 16
+            upperBound: 32
+          - lowerBound: 32
+        memoryBytesHistogram:
+          buckets:
+          - upperBound: 4294967296
+          - lowerBound: 4294967296
+            upperBound: 17179869184
+          - lowerBound: 17179869184
+            upperBound: 68719476736
+          - lowerBound: 68719476736
+            upperBound: 137438953472
+          - lowerBound: 137438953472
+        storageBytesHistogram:
+          buckets:
+          - upperBound: 107374182400
+          - lowerBound: 107374182400
+            upperBound: 268435456000
+          - lowerBound: 268435456000
+            upperBound: 536870912000
+          - lowerBound: 536870912000
+            upperBound: 1073741824000
+          - lowerBound: 1073741824000
+      groupFindings:
+      - assetAggregateStats:
+          coreCountHistogram:
+            buckets:
+            - upperBound: 2
+            - lowerBound: 2
+              upperBound: 4
+            - lowerBound: 4
+              upperBound: 16
+            - lowerBound: 16
+              upperBound: 32
+            - lowerBound: 32
+          memoryBytesHistogram:
+            buckets:
+            - upperBound: 4294967296
+            - lowerBound: 4294967296
+              upperBound: 17179869184
+            - lowerBound: 17179869184
+              upperBound: 68719476736
+            - lowerBound: 68719476736
+              upperBound: 137438953472
+            - lowerBound: 137438953472
+          storageBytesHistogram:
+            buckets:
+            - upperBound: 107374182400
+            - lowerBound: 107374182400
+              upperBound: 268435456000
+            - lowerBound: 268435456000
+              upperBound: 536870912000
+            - lowerBound: 536870912000
+              upperBound: 1073741824000
+            - lowerBound: 1073741824000
+        description: Maximal group description
+        displayName: Maximal Group
+        preferenceSetFindings:
+        - computeEngineFinding:
+            allocatedRegions:
+            - us-central1
+          description: Maximal preference set description
+          displayName: Maximal Preference Set
+          machinePreferences:
+            commitmentPlan: COMMITMENT_PLAN_THREE_YEARS
+            computeEnginePreferences:
+              licenseType: LICENSE_TYPE_DEFAULT
+              machinePreferences:
+                allowedMachineSeries:
+                - code: C2
+                - code: C2D
+                - code: E2
+                - code: M1
+                - code: M2
+                - code: N1
+                - code: N2
+                - code: N2D
+                - code: T2D
+                - code: T2A
+                - code: C3
+                - code: M3
+                - code: N4
+                - code: C3D
+                - code: C4
+                - code: C4A
+                - code: C4D
+                - code: M4
+                - code: N4D
+                - code: N4A
+            regionPreferences:
+              preferredRegions:
+              - us-central1
+            sizingOptimizationStrategy: SIZING_OPTIMIZATION_STRATEGY_MODERATE
+            soleTenancyPreferences:
+              commitmentPlan: COMMITMENT_3_YEAR
+              cpuOvercommitRatio: 2
+              hostMaintenancePolicy: HOST_MAINTENANCE_POLICY_MIGRATE_WITHIN_NODE_GROUP
+              nodeTypes:
+              - nodeName: c2-node-60-240
+              - nodeName: m1-node-160-3844
+              - nodeName: m1-node-96-1433
+              - nodeName: m2-node-416-11776
+              - nodeName: m3-node-128-1952
+              - nodeName: m3-node-128-3904
+              - nodeName: n1-node-96-624
+              - nodeName: n2-node-128-864
+              - nodeName: n2-node-80-640
+              - nodeName: n2d-node-224-896
+              - nodeName: c3-node-176-1408
+              - nodeName: c3-node-176-352
+              - nodeName: c3-node-176-704
+              - nodeName: c3d-node-360-1440
+              - nodeName: c3d-node-360-2880
+              - nodeName: c3d-node-360-708
+              - nodeName: c4-node-192-1488
+              - nodeName: c4-node-192-384
+              - nodeName: c4-node-192-720
+              - nodeName: c4a-node-72-144
+              - nodeName: c4a-node-72-288
+              - nodeName: c4a-node-72-576
+              - nodeName: m2-node-416-8832
+              - nodeName: m4-node-224-2976
+              - nodeName: m4-node-224-5952
+              - nodeName: n2d-node-224-1792
+              - nodeName: n4-node-224-1372
+              - nodeName: n4a-node-96-624
+            targetProduct: COMPUTE_MIGRATION_TARGET_PRODUCT_COMPUTE_ENGINE
+            vmwareEnginePreferences:
+              commitmentPlan: COMMITMENT_3_YEAR_MONTHLY_PAYMENTS
+              cpuOvercommitRatio: 4
+              memoryOvercommitRatio: 1
+              storageDeduplicationCompressionRatio: 1.7
+          monthlyCostCompute:
+            currencyCode: USD
+          monthlyCostNetworkEgress:
+            currencyCode: USD
+          monthlyCostOSLicense:
+            currencyCode: USD
+          monthlyCostOther:
+            currencyCode: USD
+          monthlyCostStorage:
+            currencyCode: USD
+          monthlyCostTotal:
+            currencyCode: USD
+    updateTime: "1970-01-01T00:00:00Z"

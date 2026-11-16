@@ -1,0 +1,11 @@
+apiVersion: migrationcenter.cnrm.cloud.google.com/v1alpha1
+kind: MigrationCenterReport
+metadata:
+  name: migrationcenterreport-maximal-${uniqueId}
+spec:
+  parentRef:
+    name: migrationcenterreportconfig-maximal-${uniqueId}
+  resourceID: migrationcenterreport-maximal-${uniqueId}
+  displayName: Maximal Report
+  description: Maximal report description
+  type: TOTAL_COST_OF_OWNERSHIP
