@@ -38,6 +38,25 @@
   2. **LRO Behavior**: `CreateApp` and `DeleteApp` return Long-Running Operations (LROs), handled via `op.Wait(ctx)`. `UpdateApp` is synchronous and returns `*cespb.App`.
   3. **Language Code Normalization**: The CES API automatically normalizes short language codes like `en` or `es` to full BCP-47 tags (`en-US`, `es-ES`). Fixture YAMLs should declare canonical BCP-47 tags in `languageSettings` to avoid spurious diffs.
   4. **VariableDeclarations Schema**: `App_VariableDeclaration.Schema` is an OpenAPI 3.0 recursive schema object with `type Schema struct {}` in KRM (`Schemaless` and `PreserveUnknownFields`). Since `Schema_ToProto` in `mapper.go` is stubbed and `schema.type` is required by GCP when variable declarations are present, `variableDeclarations` is omitted from maximal fixtures until full schema serialization is implemented.
-  5. **Audit Probe & E2E Validation**: Golden HTTP logs and audit probes were recorded against real GCP project `cnrm-barni-4` for `cesapp-minimal` and `cesapp-maximal`, with all 7/7 automated lifecycle checks passing cleanly.
+  5. Audit Probe & E2E Validation: Golden HTTP logs and audit probes were recorded against real GCP project `cnrm-barni-4` for `cesapp-minimal` and `cesapp-maximal`, with all 7/7 automated lifecycle checks passing cleanly.
+
+  ### [2026-11-15] Prepopulating CESDeployment
+  - **Context**: Prepopulating direct KRM types, identity, reference, and judgement queue for `CESDeployment` using `google.cloud.ces.v1` and `--prepopulate-resource`.
+  - **Learnings & Observations**:
+  1. `Deployment` in `google.cloud.ces.v1` maps cleanly to `CESDeployment`.
+  2. Identity pattern follows `projects/{project}/locations/{location}/apps/{app}/deployments/{deployment}`, with parent app resource `projects/{project}/locations/{location}/apps/{app}`.
+  3. Generated `cesdeployment_identity.generated.go`, `cesdeployment_reference.generated.go`, and conformance tests cleanly.
+  4. Updated `dev/tasks/build-release-bundle` with `CESDeployment` in `BLOCKED_KINDS` and updated `alpha-missingfields.txt` and `kind_name_violations.txt`.
+
+### [2026-11-15] Triaging Judgement Queue and Finalizing CESDeployment Direct Types
+- **Context**: Triaging `apis/ces/judgement_queue.yaml` entries and finalizing direct KRM types and identity for `CESDeployment` (`ces.cnrm.cloud.google.com/v1alpha1`).
+- **Decisions**:
+  1. Replaced separate `projectRef` and `location` fields on `CESDeploymentSpec` with required immutable `parentRef *CESAppRef` following `go/kcc-oneparent` and Case B of `PARENT_AND_IDENTITY.md`.
+  2. Converted GCP reference `appVersion` (`ces.googleapis.com/AppVersion`) to `appVersionRef *CesAppVersionRef`, backed by external-only `CesAppVersionIdentity` and `CesAppVersionRef` in `apis/ces/v1alpha1/cesappversion_identity.go` and `apis/ces/v1alpha1/cesappversion_reference.go`.
+  3. Resolved `channelProfile.profileID` as `not-applicable` because it is an inline profile identifier rather than an external GCP resource reference.
+  4. Resolved all open `CESDeployment` entries in `apis/ces/judgement_queue.yaml`.
+  5. Regenerated CRDs, mappers, deepcopy methods, and updated `alpha-missingfields.txt` and `naming_violations.txt` exceptions.
+
+
 
 

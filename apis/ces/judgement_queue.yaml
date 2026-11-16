@@ -212,6 +212,52 @@ entries:
     status: resolved
     resolution: edited
     note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
+  - kind: CESDeployment
+    group: ces.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: triaged CESDeployment types, parentRef (*CESAppRef), appVersionRef (*CesAppVersionRef), and channelProfile
+  - kind: CESDeployment
+    group: ces.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/apps/{app}/deployments/{deployment}" contains ancestor segment(s) apps/{app} with no matching reference or field on CESDeploymentSpec
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*CESAppRef); removed ProjectRef and Location
+  - kind: CESDeployment
+    group: ces.cnrm.cloud.google.com
+    field: .spec.appRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to CESAppRef, read from the apps segment of projects/{project}/locations/{location}/apps/{app}/deployments/{deployment}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*CESAppRef); removed ProjectRef and Location
+  - kind: CESDeployment
+    group: ces.cnrm.cloud.google.com
+    field: .spec.appVersion
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/AppVersion (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: converted to AppVersionRef (*CesAppVersionRef) with external-only CesAppVersionRef
+  - kind: CESDeployment
+    group: ces.cnrm.cloud.google.com
+    field: .spec.channelProfile.profileID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: resolved
+    resolution: not-applicable
+    note: user-specified identifier for the inline channel profile, not a reference to another GCP resource
+  - kind: CESDeployment
+    group: ces.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/apps/{app}, which already names the location; a reference to it could replace location and the root reference
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*CESAppRef); removed ProjectRef and Location
   - kind: CesAgent
     group: ces.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

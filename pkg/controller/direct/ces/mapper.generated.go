@@ -367,6 +367,54 @@ func CESAppSpec_ToProto(mapCtx *direct.MapContext, in *krm.CESAppSpec) *pb.App {
 	out.Locked = direct.ValueOf(in.Locked)
 	return out
 }
+func CESDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Deployment) *krm.CESDeploymentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CESDeploymentObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func CESDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CESDeploymentObservedState) *pb.Deployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Deployment{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
+func CESDeploymentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Deployment) *krm.CESDeploymentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CESDeploymentSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	if in.GetAppVersion() != "" {
+		out.AppVersionRef = &krm.CesAppVersionRef{External: in.GetAppVersion()}
+	}
+	out.ChannelProfile = ChannelProfile_FromProto(mapCtx, in.GetChannelProfile())
+	return out
+}
+func CESDeploymentSpec_ToProto(mapCtx *direct.MapContext, in *krm.CESDeploymentSpec) *pb.Deployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Deployment{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	if in.AppVersionRef != nil {
+		out.AppVersion = in.AppVersionRef.External
+	}
+	out.ChannelProfile = ChannelProfile_ToProto(mapCtx, in.ChannelProfile)
+	return out
+}
 func Callback_FromProto(mapCtx *direct.MapContext, in *pb.Callback) *krm.Callback {
 	if in == nil {
 		return nil
