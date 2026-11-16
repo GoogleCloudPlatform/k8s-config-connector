@@ -6,3 +6,5 @@ pkg/clients/generated/** linguist-generated=true
 **/go.sum linguist-generated=true
 
 config/crds/resources/** linguist-generated=true
+
+hack/tools/greenfield/manageability_list.json linguist-generated=true

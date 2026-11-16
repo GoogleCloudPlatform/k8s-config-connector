@@ -337,30 +337,48 @@ def get_layer(patterns, ops):
 SERVICE_PREFIXES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                     "..", "..", "..", "dev", "tools", "controllerbuilder", "serviceprefixes")
 
-def load_service_prefixes():
-    """Returns {"prefixes": {api: servicePrefix}, "acronyms": {word: replacement}}.
+def load_service_prefixes(prefixes_dir=SERVICE_PREFIXES_DIR):
+    """Returns {"prefixes": {api: servicePrefix}, "acronyms": {word: replacement}, "entries": [...]}.
 
     Prefixes come from service-prefixes.yaml (approved) and
     service-prefix-pending.yaml (proposed); acronyms from acronyms.yaml. These
     files have a fixed, hand-maintained layout, so they are parsed line by line
     to avoid a PyYAML dependency.
+
+    "entries" has every API entry in file order, approved first, as
+    {"api", "prefix", "packages", "pending"}; "packages" is its protoPackages.
+    "prefixes" keeps the first prefix listed for an api.
     """
     prefixes = {}
+    entries = []
     for name in ("service-prefixes.yaml", "service-prefix-pending.yaml"):
-        api = None
-        with open(os.path.join(SERVICE_PREFIXES_DIR, name), 'r') as f:
+        entry = None
+        in_packages = False
+        with open(os.path.join(prefixes_dir, name), 'r') as f:
             for line in f:
                 m = re.match(r'^  - api:\s*(\S+)\s*$', line)
                 if m:
-                    api = m.group(1)
+                    entry = {"api": m.group(1), "prefix": "", "packages": [],
+                             "pending": name == "service-prefix-pending.yaml"}
+                    entries.append(entry)
+                    in_packages = False
+                    continue
+                if not entry:
                     continue
                 m = re.match(r'^    servicePrefix:\s*(\S+)\s*$', line)
-                if m and api:
-                    prefixes.setdefault(api, m.group(1))
+                if m:
+                    entry["prefix"] = entry["prefix"] or m.group(1)
+                    prefixes.setdefault(entry["api"], m.group(1))
+                if re.match(r'^    \w+:', line):
+                    in_packages = bool(re.match(r'^    protoPackages:\s*$', line))
+                    continue
+                m = re.match(r'^      - (\S+)\s*$', line)
+                if m and in_packages:
+                    entry["packages"].append(m.group(1))
 
     acronyms = {}
     in_acronyms = False
-    with open(os.path.join(SERVICE_PREFIXES_DIR, "acronyms.yaml"), 'r') as f:
+    with open(os.path.join(prefixes_dir, "acronyms.yaml"), 'r') as f:
         for line in f:
             if line.startswith("acronyms:"):
                 in_acronyms = True
@@ -369,7 +387,7 @@ def load_service_prefixes():
             if in_acronyms and m:
                 acronyms[m.group(1)] = m.group(2)
 
-    return {"prefixes": prefixes, "acronyms": acronyms}
+    return {"prefixes": prefixes, "acronyms": acronyms, "entries": entries}
 
 def load_deprecated_services():
     deprecated_file = os.path.join(os.path.dirname(__file__), "deprecated_services.json")
@@ -767,9 +785,12 @@ GOOGLEAPIS_GITHUB = "https://github.com/googleapis/googleapis/blob/%s/%s"
 GREENFIELD_REL = "hack/tools/greenfield"
 ND_REL = "dev/tools/controllerbuilder/pkg/commands/generatetypes/nondeclarative.go"
 DEP_REL = "dev/tools/controllerbuilder/pkg/commands/generatetypes/deprecated.go"
+SERVICE_PREFIXES_REL = "dev/tools/controllerbuilder/serviceprefixes"
 # Mirrors isNonGAProto in dev/tools/controllerbuilder/pkg/commands/generatetypes/generatetypescommand.go.
 NONGA_SEGMENT_RE = re.compile(r"(?i)^v[0-9]+[a-z0-9]*(alpha|beta)[a-z0-9]*$")
 VERSION_SEGMENT_RE = re.compile(r"^v\d+[a-z0-9]*$")
+# One word of a PascalCase name: Api, Hub, URL, V2. Mirrors pascalWordRe in tests/apichecks/kind_name_violations_test.go.
+PASCAL_WORD_RE = re.compile(r"[A-Z]+[a-z0-9]*|[a-z0-9]+")
 PB_TYPE_STRING = 9
 PB_TYPE_MESSAGE = 11
 
@@ -1182,6 +1203,14 @@ def _norm(s):
     return re.sub(r"[^a-z0-9]", "", s.lower())
 
 
+def apply_acronyms(name, acronyms):
+    """Replaces each whole word of a PascalCase name that is a key of acronyms: UrlMap gives URLMap.
+
+    Mirrors applyAcronyms in tests/apichecks/kind_name_violations_test.go. Words match whole, so Apis is left alone.
+    """
+    return PASCAL_WORD_RE.sub(lambda m: acronyms.get(m.group(0), m.group(0)), name)
+
+
 def _family(pkg):
     return ".".join(seg for seg in pkg.split(".") if not VERSION_SEGMENT_RE.match(seg))
 
@@ -1341,10 +1370,42 @@ class ManageabilityClassifier:
             for item in json.loads(_read_text(path)):
                 self.cp_keys.add(("res", item.get("resource", "").lower()))
                 self.cp_keys.add(("kind", _norm(item.get("kind", ""))))
-        path = self._config_path("services_acronyms.json")
-        acronyms = json.loads(_read_text(path)) if path else {}
-        self.kind_prefixes = acronyms.get("prefixes", {})
-        self.kind_acronyms = acronyms.get("acronyms", {})
+        self._load_kind_naming()
+
+    def _load_kind_naming(self):
+        """Loads the service prefixes and acronyms that Kind names are built from (SERVICE_PREFIXES_REL).
+
+        They come from the analyzed KCC tree. A tree from before those files existed uses the ones in this
+        script's checkout, which is recorded in config_fallbacks.
+        """
+        self.prefix_by_pkg, self.prefix_by_family, self.prefix_by_api, self.kind_acronyms = {}, {}, {}, {}
+        self.kind_naming = {"source": "", "approved_prefixes": 0, "pending_prefixes": 0, "acronyms": 0}
+        files = ("service-prefixes.yaml", "service-prefix-pending.yaml", "acronyms.yaml")
+        prefixes_dir = os.path.join(self.kcc_dir, SERVICE_PREFIXES_REL)
+        if not all(os.path.exists(os.path.join(prefixes_dir, f)) for f in files):
+            prefixes_dir = SERVICE_PREFIXES_DIR
+            if not all(os.path.exists(os.path.join(prefixes_dir, f)) for f in files):
+                print("[WARN] %s not found; Kind names are guessed from the API names" % SERVICE_PREFIXES_REL)
+                return
+            self.config_fallbacks.append(SERVICE_PREFIXES_REL)
+        naming = load_service_prefixes(prefixes_dir)
+        entries = [e for e in naming["entries"] if e["prefix"]]
+        if len(entries) != len(naming["entries"]):
+            print("[WARN] no servicePrefix could be read in %s for: %s" % (
+                SERVICE_PREFIXES_REL, ", ".join(e["api"] for e in naming["entries"] if not e["prefix"])))
+        families = defaultdict(list)
+        for i, e in enumerate(entries):
+            self.prefix_by_api.setdefault(e["api"], e)
+            for pkg in e["packages"]:
+                self.prefix_by_pkg.setdefault(pkg, e)
+                if i not in families[_family(pkg)]:
+                    families[_family(pkg)].append(i)
+        self.prefix_by_family = {fam: entries[ids[0]] for fam, ids in families.items() if len(ids) == 1}
+        self.kind_acronyms = naming["acronyms"]
+        self.kind_naming = {"source": SERVICE_PREFIXES_REL,
+                            "approved_prefixes": sum(1 for e in entries if not e["pending"]),
+                            "pending_prefixes": sum(1 for e in entries if e["pending"]),
+                            "acronyms": len(self.kind_acronyms)}
 
     def _config_path(self, fname):
         path = os.path.join(self.kcc_dir, GREENFIELD_REL, fname)
@@ -1356,13 +1417,43 @@ class ManageabilityClassifier:
             return path
         return None
 
-    def _predicted_kind(self, service, name):
-        """Same as get_predicted_kcc_kind, but with services_acronyms.json from the analyzed KCC tree."""
-        prefix = self.kind_prefixes.get(service) or "".join(p.capitalize() for p in re.split(r"[-_]", service))
-        kind = prefix + name[len(prefix):] if name.lower().startswith(prefix.lower()) else prefix + name
-        for old, new in self.kind_acronyms.items():
-            kind = re.sub(r"%s([A-Z]|$)" % old, r"%s\1" % new, kind)
-        return kind
+    def _service_prefix(self, service, pkg):
+        """Returns (service prefix, "approved" | "pending" | "unlisted") for a resource of an API.
+
+        The API is the one whose protoPackages lists the proto package, as in TestKindNamesFollowServicePrefixes
+        (tests/apichecks). A package no generate.sh uses yet is matched without its version, then by API name.
+        An API in neither service-prefix file is "unlisted": its prefix is a guess from the API name.
+        """
+        entry = (self.prefix_by_pkg.get(pkg) or self.prefix_by_family.get(_family(pkg))
+                 or self.prefix_by_api.get(service))
+        if not entry:
+            return "".join(p.capitalize() for p in re.split(r"[-_]", service)), "unlisted"
+        return entry["prefix"], "pending" if entry["pending"] else "approved"
+
+    def _predicted_kind(self, service, pkg, name):
+        """The Kind a new resource gets: <service prefix><proto message>, with the acronyms applied to the message.
+
+        sqladmin + BackupRun gives SQLAdminBackupRun. This is the name TestKindNamesFollowServicePrefixes expects.
+        """
+        return self._service_prefix(service, pkg)[0] + apply_acronyms(name, self.kind_acronyms)
+
+    def _kind_without_repeat(self, prefix, name):
+        """Returns the Kind that says repeated words once, or "" if <prefix><message> repeats nothing.
+
+        A message can start with the words its service prefix ends with: CloudBuild + BuildTrigger gives
+        CloudBuildBuildTrigger, and CloudBuildTrigger says them once. Using that Kind needs a knownKindNames
+        entry in tests/apichecks/kind_name_violations_test.go.
+        """
+        words = PASCAL_WORD_RE.findall(name)
+        for n in range(len(words), 0, -1):
+            start = len(prefix) - len("".join(words[:n]))
+            if start < 0 or prefix[start:].lower() != "".join(words[:n]).lower():
+                continue
+            # The repeated words must start at a word of the prefix: at Hub in APIHub, but not at NS in DNS.
+            if start == 0 or (prefix[start].isupper() and (not prefix[start - 1].isupper()
+                                                           or prefix[start + 1:start + 2].islower())):
+                return prefix + apply_acronyms("".join(words[n:]), self.kind_acronyms)
+        return ""
 
     def _load_patterns(self, fname, key):
         path = self._config_path(fname)
@@ -1654,7 +1745,7 @@ class ManageabilityClassifier:
                 variants.update([canon] + aliases)
         names = {_norm(name), _norm(_canonical_for_matching(name))}
         prefixes = [_norm(v) for v in variants] + ["gcp", "google", "cloud", "bigquery", "api", "vertexai"]
-        predicted = _norm(self._predicted_kind(service, _canonical_for_matching(name)))
+        predicted = _norm(self._predicted_kind(service, pkg, _canonical_for_matching(name)))
         out = set()
         for g in (v for v in variants if v in self.kcc_groups):
             for kind in self.kcc_groups[g]:
@@ -1747,7 +1838,8 @@ class ManageabilityClassifier:
         collection = _collection_of(patterns[0]) if patterns else ""
         if not collection and R["plural"]:
             collection = R["plural"]
-        predicted = self._predicted_kind(service, name)
+        prefix, prefix_status = self._service_prefix(service, pkg)
+        predicted = self._predicted_kind(service, pkg, name)
         api_group, api_family = api_group_of(pkg)
         rec = {"id": R["id"], "resource_type": R["type"], "service": service, "api_group": api_group,
                "api_family": api_family, "api_area": ".".join(pkg.split(".")[:2]),
@@ -1776,6 +1868,12 @@ class ManageabilityClassifier:
         v1beta1 = sorted(k for k in kinds if "v1beta1" in self.crd[k]["versions"])
         if not kinds:
             rec["kcc_status"], rec["kind"], rec["kcc_link"] = STATUS_NET_NEW, predicted, ""
+            # The Kind is only a suggestion here: say when it can't be used as it is.
+            if prefix_status != "approved":
+                flags.append("kind-prefix:" + prefix_status)
+            once = self._kind_without_repeat(prefix, name)
+            if once:
+                flags.append("kind-name:repeats-prefix(%s)" % once)
         else:
             controllers = {self.kind_controller(k) for k in kinds}
             rec["kcc_status"] = (STATUS_V1BETA1 if v1beta1 else STATUS_DIRECT if "direct" in controllers else
@@ -2021,7 +2119,8 @@ def run_manageability(googleapis_sha, proto_root, googleapis_repo, kcc_dir, kcc_
     # No timestamps or local paths: the JSON only depends on the inputs it records here.
     meta = {"schema_version": 1, "googleapis_sha": full_sha, "kcc_ref": kcc_ref,
             "googleapis_pins": [{"sha": sha, "used_by": users} for sha, users, _ in pins],
-            "skipped_googleapis_pins": skipped, "config_fallbacks": sorted(set(classifier.config_fallbacks))}
+            "skipped_googleapis_pins": skipped, "config_fallbacks": sorted(set(classifier.config_fallbacks)),
+            "kind_naming": classifier.kind_naming}
     json_path, csv_path = write_manageability_outputs(records, out_dir, meta)
     print_manageability_summary(records, k)
     print("\n[SAVED] Manageability list written to %s and %s" % (json_path, csv_path))
