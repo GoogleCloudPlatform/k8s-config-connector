@@ -270,7 +270,6 @@ BLOCKED_KINDS=(
     "NotebookRuntime"
     "NotebooksRuntime"
     "NotebooksSchedule"
-    "ObservabilityTraceScope"
     "OracleDatabaseAutonomousDatabase"
     "OracleDatabaseCloudExadataInfrastructure"
     "OracleDatabaseCloudVMCluster"
