@@ -8,6 +8,5 @@ X-Gfe-Server: scaffolding on HTTPServer2
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Scorecard Minimal ${uniqueId}",
   "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/qascorecard-minimal-${uniqueId}",
-  "source": 1,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }

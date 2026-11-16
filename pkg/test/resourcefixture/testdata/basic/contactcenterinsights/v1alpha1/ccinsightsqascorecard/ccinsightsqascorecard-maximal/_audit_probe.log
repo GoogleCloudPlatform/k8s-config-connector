@@ -9,6 +9,5 @@ X-Gfe-Server: scaffolding on HTTPServer2
   "description": "This is a scorecard created to test maximal configuration updated ${uniqueId}",
   "displayName": "Scorecard Maximal Updated ${uniqueId}",
   "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/qascorecard-maximal-${uniqueId}",
-  "source": 1,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
