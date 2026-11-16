@@ -6,7 +6,7 @@
   - Proto path: `google/cloud/ftp/v1/service.proto` (and `google/cloud/ftp/v1/ftp_v1.yaml`)
   - Go client library: `cloud.google.com/go/ftp/apiv1/ftppb`
 - **Actions & Configurations**:
-  1. Proto availability: The pinned googleapis SHA in `apis/git.versions` predated `google/cloud/ftp/v1`. Added `service.proto` and `ftp_v1.yaml` to `mockgcp/apis/google/cloud/ftp/v1/`, copied them in `dev/tools/controllerbuilder/generate-proto.sh`, and registered the proto in `kccProtoOverrides` in `dev/tools/controllerbuilder/pkg/sourcelinks/sourcelinks.go`.
+  1. Proto availability: Pinned googleapis commit `befe6dc01ccbe4fc0292c5966efca2ad1fafc2e6` directly in `apis/ftp/generate.sh` which contains `google/cloud/ftp/v1/service.proto` and `ftp_v1.yaml`.
   2. Registered `ftp` API (`Cloud FTP API`) with prefix `FTP` in `dev/tools/controllerbuilder/serviceprefixes/service-prefixes.yaml`.
   3. Created `apis/ftp/generate.sh` configuring `generate-types`, `generate-identity`, and `generate-mapper` with `--prepopulate-resource`.
   4. Added `FTPServer` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.

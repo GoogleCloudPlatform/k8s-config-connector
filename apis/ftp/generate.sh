@@ -29,9 +29,15 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
+
+# Pin a googleapis SHA that contains the google.cloud.ftp service definition
+PROTO_SHA="befe6dc01ccbe4fc0292c5966efca2ad1fafc2e6"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.ftp.v1 \
   --api-version ftp.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
@@ -39,11 +45,13 @@ ${CONTROLLERBUILDER} generate-types \
   --prepopulate-resource
 
 ${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.ftp.v1 \
   --api-version ftp.cnrm.cloud.google.com/v1alpha1 \
   --resource FTPServer:Server
 
 ${CONTROLLERBUILDER} generate-mapper \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.ftp.v1 \
   --api-version ftp.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
