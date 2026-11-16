@@ -1652,7 +1652,7 @@
 [missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.action.generativeAnswer.prompt" is not set in unstructured objects
 [missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.action.respondImmediately.responses[].disabled" is not set in unstructured objects
 [missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.action.respondImmediately.responses[].text" is not set in unstructured objects
-[missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.action.transferAgent.agent" is not set in unstructured objects
+[missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.action.transferAgent.agentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.codeCallback.afterAgentCallback.description" is not set in unstructured objects
 [missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.codeCallback.afterAgentCallback.disabled" is not set in unstructured objects
 [missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.codeCallback.afterAgentCallback.proactiveExecutionEnabled" is not set in unstructured objects
@@ -1677,7 +1677,6 @@
 [missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.enabled" is not set in unstructured objects
-[missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
 [missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.llmPolicy.allowShortUtterance" is not set in unstructured objects
 [missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.llmPolicy.failOpen" is not set in unstructured objects
 [missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.llmPolicy.maxConversationMessages" is not set in unstructured objects
@@ -1694,10 +1693,9 @@
 [missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.llmPromptSecurity.customPolicy.prompt" is not set in unstructured objects
 [missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.llmPromptSecurity.defaultSettings" is not set in unstructured objects
 [missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.llmPromptSecurity.failOpen" is not set in unstructured objects
-[missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelSafety.safetySettings[].category" is not set in unstructured objects
 [missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelSafety.safetySettings[].threshold" is not set in unstructured objects
-[missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.agentTool.description" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.agentTool.name" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.agentTool.rootAgent" is not set in unstructured objects

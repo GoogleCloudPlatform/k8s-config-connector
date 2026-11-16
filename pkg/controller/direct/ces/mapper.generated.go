@@ -564,6 +564,7 @@ func CESGuardrailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Guard
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
 }
 func CESGuardrailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CESGuardrailObservedState) *pb.Guardrail {
@@ -577,6 +578,7 @@ func CESGuardrailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CESGua
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
 func CESGuardrailSpec_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail) *krm.CESGuardrailSpec {
@@ -594,7 +596,6 @@ func CESGuardrailSpec_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail) *kr
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Enabled = direct.LazyPtr(in.GetEnabled())
 	out.Action = TriggerAction_FromProto(mapCtx, in.GetAction())
-	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
 }
 func CESGuardrailSpec_ToProto(mapCtx *direct.MapContext, in *krm.CESGuardrailSpec) *pb.Guardrail {
@@ -622,7 +623,6 @@ func CESGuardrailSpec_ToProto(mapCtx *direct.MapContext, in *krm.CESGuardrailSpe
 	out.Description = direct.ValueOf(in.Description)
 	out.Enabled = direct.ValueOf(in.Enabled)
 	out.Action = TriggerAction_ToProto(mapCtx, in.Action)
-	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
 func CESToolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Tool) *krm.CESToolObservedState {
@@ -2456,7 +2456,9 @@ func TriggerAction_TransferAgent_FromProto(mapCtx *direct.MapContext, in *pb.Tri
 		return nil
 	}
 	out := &krm.TriggerAction_TransferAgent{}
-	out.Agent = direct.LazyPtr(in.GetAgent())
+	if in.GetAgent() != "" {
+		out.AgentRef = &krm.CesAgentRef{External: in.GetAgent()}
+	}
 	return out
 }
 func TriggerAction_TransferAgent_ToProto(mapCtx *direct.MapContext, in *krm.TriggerAction_TransferAgent) *pb.TriggerAction_TransferAgent {
@@ -2464,7 +2466,9 @@ func TriggerAction_TransferAgent_ToProto(mapCtx *direct.MapContext, in *krm.Trig
 		return nil
 	}
 	out := &pb.TriggerAction_TransferAgent{}
-	out.Agent = direct.ValueOf(in.Agent)
+	if in.AgentRef != nil {
+		out.Agent = in.AgentRef.External
+	}
 	return out
 }
 func WidgetTool_FromProto(mapCtx *direct.MapContext, in *pb.WidgetTool) *krm.WidgetTool {

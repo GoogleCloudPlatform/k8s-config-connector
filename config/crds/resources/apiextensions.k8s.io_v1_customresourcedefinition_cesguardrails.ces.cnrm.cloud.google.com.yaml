@@ -102,13 +102,38 @@ spec:
                     description: Optional. Transfer the conversation to a different
                       agent.
                     properties:
-                      agent:
+                      agentRef:
                         description: 'Required. The name of the agent to transfer
                           the conversation to. The agent must be in the same app as
                           the current agent. Format: `projects/{project}/locations/{location}/apps/{app}/agents/{agent}`'
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed CesAgent
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/apps/{{appID}}/agents/{{agentID}}".
+                            type: string
+                          name:
+                            description: The name of a CesAgent resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a CesAgent resource.
+                            type: string
+                        type: object
                     required:
-                    - agent
+                    - agentRef
                     type: object
                 type: object
               codeCallback:
@@ -281,11 +306,6 @@ spec:
               enabled:
                 description: Optional. Whether the guardrail is enabled.
                 type: boolean
-              etag:
-                description: Etag used to ensure the object hasn't changed during
-                  a read-modify-write operation. If the etag is empty, the update
-                  will overwrite any concurrent changes.
-                type: string
               llmPolicy:
                 description: Optional. Guardrail that blocks the conversation if the
                   LLM response is considered violating the policy based on the LLM
@@ -408,9 +428,6 @@ spec:
                        of the policy's 'fail_open' configuration.
                     type: boolean
                 type: object
-              location:
-                description: The location of this resource.
-                type: string
               modelSafety:
                 description: Optional. Guardrail that blocks the conversation if the
                   LLM response is considered unsafe based on the model safety settings.
@@ -433,8 +450,8 @@ spec:
                 required:
                 - safetySettings
                 type: object
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The CESApp this CESGuardrail is created under.
                 oneOf:
                 - not:
                     required:
@@ -451,28 +468,26 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed CESApp resource.
+                      Should be in the format "projects/{{projectID}}/locations/{{location}}/apps/{{appID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a CESApp resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a CESApp resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The CESGuardrail name. If not given, the metadata.name
                   will be used.
                 type: string
             required:
             - displayName
-            - location
-            - projectRef
+            - parentRef
             type: object
           status:
             description: CESGuardrailStatus defines the config connector machine state
@@ -521,6 +536,11 @@ spec:
                 properties:
                   createTime:
                     description: Output only. Timestamp when the guardrail was created.
+                    type: string
+                  etag:
+                    description: Output only. Etag used to ensure the object hasn't
+                      changed during a read-modify-write operation. If the etag is
+                      empty, the update will overwrite any concurrent changes.
                     type: string
                   llmPromptSecurity:
                     description: Optional. Guardrail that blocks the conversation

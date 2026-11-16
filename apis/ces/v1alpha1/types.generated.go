@@ -1408,16 +1408,6 @@ type TriggerAction_Response struct {
 	Disabled *bool `json:"disabled,omitempty"`
 }
 
-// +kcc:proto=google.cloud.ces.v1.TriggerAction.TransferAgent
-type TriggerAction_TransferAgent struct {
-	// Required. The name of the agent to transfer the conversation to. The
-	//  agent must be in the same app as the current agent. Format:
-	//  `projects/{project}/locations/{location}/apps/{app}/agents/{agent}`
-	// +kcc:proto:field=google.cloud.ces.v1.TriggerAction.TransferAgent.agent
-	// +required
-	Agent *string `json:"agent,omitempty"`
-}
-
 // +kcc:proto=google.cloud.ces.v1.WidgetTool
 type WidgetTool struct {
 	// Optional. The input parameters of the widget tool.

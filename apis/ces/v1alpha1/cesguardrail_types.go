@@ -20,26 +20,30 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var CESGuardrailGVK = GroupVersion.WithKind("CESGuardrail")
 
+// +kcc:proto=google.cloud.ces.v1.TriggerAction.TransferAgent
+type TriggerAction_TransferAgent struct {
+	// Required. The name of the agent to transfer the conversation to. The
+	//  agent must be in the same app as the current agent. Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/agents/{agent}`
+	// +kcc:proto:field=google.cloud.ces.v1.TriggerAction.TransferAgent.agent
+	// +required
+	AgentRef *CesAgentRef `json:"agentRef,omitempty"`
+}
+
 // CESGuardrailSpec defines the desired state of CESGuardrail
 // +kcc:spec:proto=google.cloud.ces.v1.Guardrail
 // +kcc:required-from-proto
 type CESGuardrailSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/apps/{app} this resource belongs to.
-	// +kcc:guess
-	// AppRef *CESAppRef `json:"appRef,omitempty"`
+	// The CESApp this CESGuardrail is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *CESAppRef `json:"parentRef"`
 
 	// The CESGuardrail name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -84,12 +88,6 @@ type CESGuardrailSpec struct {
 	// Optional. Action to take when the guardrail is triggered.
 	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.action
 	Action *TriggerAction `json:"action,omitempty"`
-
-	// Etag used to ensure the object hasn't changed during a read-modify-write
-	//  operation. If the etag is empty, the update will overwrite any concurrent
-	//  changes.
-	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.etag
-	Etag *string `json:"etag,omitempty"`
 }
 
 // CESGuardrailStatus defines the config connector machine state of CESGuardrail
@@ -123,6 +121,12 @@ type CESGuardrailObservedState struct {
 	// Output only. Timestamp when the guardrail was last updated.
 	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Etag used to ensure the object hasn't changed during a
+	//  read-modify-write operation. If the etag is empty, the update will
+	//  overwrite any concurrent changes.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.etag
+	Etag *string `json:"etag,omitempty"`
 }
 
 // +genclient

@@ -86,6 +86,15 @@
   6. Added `cesguardrails.ces.cnrm.cloud.google.com` to `knownInvalidCRDs` in `tests/apichecks/crds_test.go` due to empty oneof option `spec.llmPromptSecurity.defaultSettings` (GCP proto pattern where `DefaultSecuritySettings` contains only output-only fields).
   7. Added `CESGuardrail` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` and synchronized golden exception files (`alpha-missingfields.txt`, `spec_dislike_etag.txt`, `kind_name_violations.txt`, and resolved entries in `naming_violations.txt`).
 
+### [2026-11-16] Triaging Judgement Queue and Finalizing CESGuardrail Direct Types
+- **Context**: Triaging `apis/ces/judgement_queue.yaml` entries and finalizing direct KRM types and identity for `CESGuardrail` (`ces.cnrm.cloud.google.com/v1alpha1`).
+- **Decisions**:
+  1. Replaced separate `projectRef` and `location` fields on `CESGuardrailSpec` with required immutable `parentRef *CESAppRef` following `go/kcc-oneparent` and Case B of `PARENT_AND_IDENTITY.md`.
+  2. Moved `etag` from `CESGuardrailSpec` to `CESGuardrailObservedState` per `etag-in-spec` standards, and updated `spec_dislike_etag.txt`.
+  3. Converted GCP reference `.spec.action.transferAgent.agent` (`ces.googleapis.com/Agent`) to `agentRef *CesAgentRef` inside `TriggerAction_TransferAgent`, moved `TriggerAction_TransferAgent` from `types.generated.go` to `cesguardrail_types.go`, and verified automatic proto mapper generation.
+  4. Resolved all 6 open `CESGuardrail` entries in `apis/ces/judgement_queue.yaml`.
+  5. Regenerated CRDs, mappers, deepcopy implementations, and updated `alpha-missingfields.txt` and `spec_dislike_etag.txt` testdata exceptions.
+
 
 
 
