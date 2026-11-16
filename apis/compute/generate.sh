@@ -72,7 +72,6 @@ ${CONTROLLERBUILDER} generate-identity \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeHealthCheckService:HealthCheckService \
   --resource ComputeHealthAggregationPolicy:HealthAggregationPolicy \
-  --resource ComputeInstantSnapshotGroup:InstantSnapshotGroup \
   --resource ComputeInterconnectAttachmentGroup:InterconnectAttachmentGroup \
   --resource ComputeInterconnectGroup:InterconnectGroup
 

@@ -3249,8 +3249,12 @@ func ComputeInstantSnapshotGroupObservedState_v1alpha1_FromProto(mapCtx *direct.
 	out.ID = in.Id
 	out.Kind = in.Kind
 	// MISSING: Name
+	out.Region = in.Region
+	out.ResourceStatus = InstantSnapshotGroupResourceStatus_v1alpha1_FromProto(mapCtx, in.GetResourceStatus())
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithID = in.SelfLinkWithId
+	out.Status = in.Status
+	out.Zone = in.Zone
 	return out
 }
 func ComputeInstantSnapshotGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInstantSnapshotGroupObservedState) *pb.InstantSnapshotGroup {
@@ -3262,8 +3266,12 @@ func ComputeInstantSnapshotGroupObservedState_v1alpha1_ToProto(mapCtx *direct.Ma
 	out.Id = in.ID
 	out.Kind = in.Kind
 	// MISSING: Name
+	out.Region = in.Region
+	out.ResourceStatus = InstantSnapshotGroupResourceStatus_v1alpha1_ToProto(mapCtx, in.ResourceStatus)
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithId = in.SelfLinkWithID
+	out.Status = in.Status
+	out.Zone = in.Zone
 	return out
 }
 func ComputeInstantSnapshotGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstantSnapshotGroup) *krmcomputev1alpha1.ComputeInstantSnapshotGroupSpec {
@@ -3273,11 +3281,9 @@ func ComputeInstantSnapshotGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContex
 	out := &krmcomputev1alpha1.ComputeInstantSnapshotGroupSpec{}
 	out.Description = in.Description
 	// MISSING: Name
-	out.Region = in.Region
-	out.ResourceStatus = InstantSnapshotGroupResourceStatus_v1alpha1_FromProto(mapCtx, in.GetResourceStatus())
-	out.SourceConsistencyGroup = in.SourceConsistencyGroup
-	out.Status = in.Status
-	out.Zone = in.Zone
+	if in.GetSourceConsistencyGroup() != "" {
+		out.SourceConsistencyGroupRef = &krmcomputev1beta1.ComputeResourcePolicyRef{External: in.GetSourceConsistencyGroup()}
+	}
 	return out
 }
 func ComputeInstantSnapshotGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInstantSnapshotGroupSpec) *pb.InstantSnapshotGroup {
@@ -3287,11 +3293,9 @@ func ComputeInstantSnapshotGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext,
 	out := &pb.InstantSnapshotGroup{}
 	out.Description = in.Description
 	// MISSING: Name
-	out.Region = in.Region
-	out.ResourceStatus = InstantSnapshotGroupResourceStatus_v1alpha1_ToProto(mapCtx, in.ResourceStatus)
-	out.SourceConsistencyGroup = in.SourceConsistencyGroup
-	out.Status = in.Status
-	out.Zone = in.Zone
+	if in.SourceConsistencyGroupRef != nil {
+		out.SourceConsistencyGroup = &in.SourceConsistencyGroupRef.External
+	}
 	return out
 }
 func ComputeInstantSnapshotObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstantSnapshot) *krmcomputev1alpha1.ComputeInstantSnapshotObservedState {

@@ -68,7 +68,9 @@ spec:
                   this property when you create the resource.
                 type: string
               location:
-                description: The location of this resource.
+                description: 'Location represents the geographical location of the
+                  ComputeInstantSnapshotGroup. Specify a region name or a zone name.
+                  Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
                 type: string
               projectRef:
                 description: The project that this resource belongs to.
@@ -102,36 +104,39 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
-              region:
-                description: Output only. [Output Only] URL of the region where the
-                  instant snapshot group resides.
-                type: string
               resourceID:
                 description: The ComputeInstantSnapshotGroup name. If not given, the
                   metadata.name will be used.
                 type: string
-              resourceStatus:
+              sourceConsistencyGroupRef:
+                description: A reference to the ComputeResourcePolicy that defines
+                  the consistency group of disks.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
                 properties:
-                  consistencyMembershipResolutionTime:
+                  external:
+                    description: A reference to an externally managed ComputeResourcePolicy
+                      resource. Should be in the format "projects/{project}/regions/{region}/resourcePolicies/{resourcePolicy}".
                     type: string
-                  sourceInfo:
-                    properties:
-                      consistencyGroup:
-                        type: string
-                      consistencyGroupID:
-                        type: string
-                    type: object
+                  name:
+                    description: The name of a ComputeResourcePolicy resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ComputeResourcePolicy resource.
+                    type: string
                 type: object
-              sourceConsistencyGroup:
-                type: string
-              status:
-                description: Output only. [Output Only] Check the Status enum for
-                  the list of possible values.
-                type: string
-              zone:
-                description: Output only. [Output Only] URL of the zone where the
-                  instant snapshot group resides.
-                type: string
             required:
             - location
             - projectRef
@@ -196,6 +201,24 @@ spec:
                       Always compute#instantSnapshotGroup for InstantSnapshotGroup
                       resources.
                     type: string
+                  region:
+                    description: Output only. [Output Only] URL of the region where
+                      the instant snapshot group resides.
+                    type: string
+                  resourceStatus:
+                    description: Output only. [Output Only] Status information for
+                      the instant snapshot group resource.
+                    properties:
+                      consistencyMembershipResolutionTime:
+                        type: string
+                      sourceInfo:
+                        properties:
+                          consistencyGroup:
+                            type: string
+                          consistencyGroupID:
+                            type: string
+                        type: object
+                    type: object
                   selfLink:
                     description: Output only. [Output Only] Server-defined URL for
                       the resource.
@@ -203,6 +226,14 @@ spec:
                   selfLinkWithID:
                     description: Output only. [Output Only] Server-defined URL for
                       this resource's resource id.
+                    type: string
+                  status:
+                    description: Output only. [Output Only] Check the Status enum
+                      for the list of possible values.
+                    type: string
+                  zone:
+                    description: Output only. [Output Only] URL of the zone where
+                      the instant snapshot group resides.
                     type: string
                 type: object
             type: object

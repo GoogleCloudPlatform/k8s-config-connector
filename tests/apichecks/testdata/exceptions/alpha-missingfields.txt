@@ -2306,13 +2306,7 @@
 [missing_field] crd=computeinstantsnapshotgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computeinstantsnapshotgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=computeinstantsnapshotgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=computeinstantsnapshotgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.region" is not set in unstructured objects
-[missing_field] crd=computeinstantsnapshotgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceStatus.consistencyMembershipResolutionTime" is not set in unstructured objects
-[missing_field] crd=computeinstantsnapshotgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceStatus.sourceInfo.consistencyGroup" is not set in unstructured objects
-[missing_field] crd=computeinstantsnapshotgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceStatus.sourceInfo.consistencyGroupID" is not set in unstructured objects
-[missing_field] crd=computeinstantsnapshotgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceConsistencyGroup" is not set in unstructured objects
-[missing_field] crd=computeinstantsnapshotgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status" is not set in unstructured objects
-[missing_field] crd=computeinstantsnapshotgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.zone" is not set in unstructured objects
+[missing_field] crd=computeinstantsnapshotgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceConsistencyGroupRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeinterconnectattachmentgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.attachments" is not set in unstructured objects
 [missing_field] crd=computeinterconnectattachmentgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.interconnectGroupRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeinterconnectgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.interconnects" is not set in unstructured objects

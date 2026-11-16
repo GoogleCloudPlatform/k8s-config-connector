@@ -2317,6 +2317,16 @@ func (in *ComputeInstantSnapshotGroupObservedState) DeepCopyInto(out *ComputeIns
 		*out = new(string)
 		**out = **in
 	}
+	if in.Region != nil {
+		in, out := &in.Region, &out.Region
+		*out = new(string)
+		**out = **in
+	}
+	if in.ResourceStatus != nil {
+		in, out := &in.ResourceStatus, &out.ResourceStatus
+		*out = new(InstantSnapshotGroupResourceStatus)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.SelfLink != nil {
 		in, out := &in.SelfLink, &out.SelfLink
 		*out = new(string)
@@ -2324,6 +2334,16 @@ func (in *ComputeInstantSnapshotGroupObservedState) DeepCopyInto(out *ComputeIns
 	}
 	if in.SelfLinkWithID != nil {
 		in, out := &in.SelfLinkWithID, &out.SelfLinkWithID
+		*out = new(string)
+		**out = **in
+	}
+	if in.Status != nil {
+		in, out := &in.Status, &out.Status
+		*out = new(string)
+		**out = **in
+	}
+	if in.Zone != nil {
+		in, out := &in.Zone, &out.Zone
 		*out = new(string)
 		**out = **in
 	}
@@ -2362,11 +2382,6 @@ func (in *ComputeInstantSnapshotGroupSpec) DeepCopyInto(out *ComputeInstantSnaps
 		*out = new(v1beta1.ProjectRef)
 		**out = **in
 	}
-	if in.Location != nil {
-		in, out := &in.Location, &out.Location
-		*out = new(string)
-		**out = **in
-	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
@@ -2377,29 +2392,9 @@ func (in *ComputeInstantSnapshotGroupSpec) DeepCopyInto(out *ComputeInstantSnaps
 		*out = new(string)
 		**out = **in
 	}
-	if in.Region != nil {
-		in, out := &in.Region, &out.Region
-		*out = new(string)
-		**out = **in
-	}
-	if in.ResourceStatus != nil {
-		in, out := &in.ResourceStatus, &out.ResourceStatus
-		*out = new(InstantSnapshotGroupResourceStatus)
-		(*in).DeepCopyInto(*out)
-	}
-	if in.SourceConsistencyGroup != nil {
-		in, out := &in.SourceConsistencyGroup, &out.SourceConsistencyGroup
-		*out = new(string)
-		**out = **in
-	}
-	if in.Status != nil {
-		in, out := &in.Status, &out.Status
-		*out = new(string)
-		**out = **in
-	}
-	if in.Zone != nil {
-		in, out := &in.Zone, &out.Zone
-		*out = new(string)
+	if in.SourceConsistencyGroupRef != nil {
+		in, out := &in.SourceConsistencyGroupRef, &out.SourceConsistencyGroupRef
+		*out = new(computev1beta1.ComputeResourcePolicyRef)
 		**out = **in
 	}
 }
