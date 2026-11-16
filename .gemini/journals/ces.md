@@ -66,6 +66,16 @@
   4. **Field Mutability**: `displayName` and `channelProfile` (and its subfields `personaProperty`, `disableDtmf`, `disableBargeInControl`, `noiseSuppressionLevel`, and `webWidgetConfig`) update cleanly in-place via `UpdateDeployment` with field mask.
   5. **Audit Probe & E2E Validation**: Golden HTTP logs and audit probes were recorded against real GCP project `cnrm-barni-4` for `cesdeployment-minimal` and `cesdeployment-maximal`, with all 7/7 automated lifecycle checks passing cleanly.
 
+### [2026-11-16] MockGCP Implementation and Alignment for CESDeployment
+- **Context**: Implementing Greenfield Step 3 MockGCP service and aligning golden logs for `CESDeployment` (`ces.cnrm.cloud.google.com/v1alpha1`).
+- **Learnings & Service Behaviors**:
+  1. **Parent Validation**: Validated parent `projects/{project}/locations/{location}/apps/{app}` in `CreateDeployment` and returned `codes.NotFound` if parent app does not exist.
+  2. **Etag Omission on GET/CREATE**: In real GCP, `CreateDeployment` and `GetDeployment` do not include an `etag` in their JSON responses (left empty string, omitted in proto3 serialization), whereas `UpdateDeployment` returns an `etag`. In MockGCP, `Etag` is left empty in `GetDeployment` and `CreateDeployment` and populated on `UpdateDeployment` (normalized to `abcdef0123A=`).
+  3. **Synchronous CRUD**: Implemented `GetDeployment`, `CreateDeployment`, `UpdateDeployment`, `DeleteDeployment`, and `ListDeployments` in `mockces/deployment.go` returning `*cespb.Deployment` or `*emptypb.Empty` directly.
+  4. **Test Harness GroupKind**: Enabled `schema.GroupKind{Group: "ces.cnrm.cloud.google.com", Kind: "CESDeployment"}` in `config/tests/samples/create/harness.go`.
+  5. **Alignment & CI**: Verified `TestGoldenLogAlignment/ces/v1alpha1/cesdeployment` and `./dev/ci/presubmits/tests-e2e-fixtures-suite ces` with 100% passing results and zero diff.
+
+
 
 
 
