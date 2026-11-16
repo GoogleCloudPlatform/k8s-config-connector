@@ -158,7 +158,6 @@ BLOCKED_KINDS=(
     "ComputeHealthCheckService"
     "ComputeHealthSource"
     "ComputeNotificationEndpoint"
-    "ConfigDeliveryFleetPackage"
     "ConnectorsConnection"
     "ContactCenterInsightsConversation"
     "ContentWarehouseDocument"
