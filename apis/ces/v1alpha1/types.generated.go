@@ -22,6 +22,7 @@
 // resource: CESDeployment:Deployment
 // resource: CESTool:Tool
 // resource: CESGuardrail:Guardrail
+// resource: CESToolset:Toolset
 
 package v1alpha1
 
@@ -344,6 +345,34 @@ type CodeBlock struct {
 	// +kcc:proto:field=google.cloud.ces.v1.CodeBlock.python_code
 	// +required
 	PythonCode *string `json:"pythonCode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1.ConnectorToolset
+type ConnectorToolset struct {
+	// Required. The full resource name of the referenced Integration Connectors
+	//  Connection.
+	//  Format:
+	//  `projects/{project}/locations/{location}/connections/{connection}`
+	// +kcc:proto:field=google.cloud.ces.v1.ConnectorToolset.connection
+	// +required
+	Connection *string `json:"connection,omitempty"`
+
+	// Optional. Configures how authentication is handled in Integration
+	//  Connectors. By default, an admin authentication is passed in the
+	//  Integration Connectors API requests. You can override it with a different
+	//  end-user authentication config.
+	//  **Note**: The Connection must have authentication override enabled in
+	//  order to specify an EUC configuration here - otherwise, the Toolset
+	//  creation will fail. See:
+	//  https://cloud.google.com/application-integration/docs/configure-connectors-task#configure-authentication-override
+	// +kcc:proto:field=google.cloud.ces.v1.ConnectorToolset.auth_config
+	AuthConfig *EndUserAuthConfig `json:"authConfig,omitempty"`
+
+	// Required. The list of connector actions/entity operations to generate tools
+	//  for.
+	// +kcc:proto:field=google.cloud.ces.v1.ConnectorToolset.connector_actions
+	// +required
+	ConnectorActions []Action `json:"connectorActions,omitempty"`
 }
 
 // +kcc:proto=google.cloud.ces.v1.DataStore.ConnectorConfig
@@ -923,6 +952,44 @@ type McpTool struct {
 	CustomHeaders map[string]string `json:"customHeaders,omitempty"`
 }
 
+// +kcc:proto=google.cloud.ces.v1.McpToolset
+type McpToolset struct {
+	// Required. The address of the MCP server, for example,
+	//  "https://example.com/mcp/". If the server is built with the MCP SDK, the
+	//  url should be suffixed with
+	//  "/mcp/". Only Streamable HTTP transport based servers are supported. See
+	//  https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http
+	//  for more details.
+	// +kcc:proto:field=google.cloud.ces.v1.McpToolset.server_address
+	// +required
+	ServerAddress *string `json:"serverAddress,omitempty"`
+
+	// Optional. Authentication information required to access tools and execute a
+	//  tool against the MCP server. For bearer token authentication, the token
+	//  applies only to tool execution, not to listing tools. This requires that
+	//  tools can be listed without authentication.
+	// +kcc:proto:field=google.cloud.ces.v1.McpToolset.api_authentication
+	APIAuthentication *APIAuthentication `json:"apiAuthentication,omitempty"`
+
+	// Optional. Service Directory configuration for VPC-SC, used to resolve
+	//  service names within a perimeter.
+	// +kcc:proto:field=google.cloud.ces.v1.McpToolset.service_directory_config
+	ServiceDirectoryConfig *ServiceDirectoryConfig `json:"serviceDirectoryConfig,omitempty"`
+
+	// Optional. The TLS configuration. Includes the custom server certificates
+	//  that the client should trust.
+	// +kcc:proto:field=google.cloud.ces.v1.McpToolset.tls_config
+	TLSConfig *TLSConfig `json:"tlsConfig,omitempty"`
+
+	// Optional. The custom headers to send in the request to the MCP server. The
+	//  values must be in the format `$context.variables.<name_of_variable>` and
+	//  can be set in the session variables. See
+	//  https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/tool/open-api#openapi-injection
+	//  for more details.
+	// +kcc:proto:field=google.cloud.ces.v1.McpToolset.custom_headers
+	CustomHeaders map[string]string `json:"customHeaders,omitempty"`
+}
+
 // +kcc:proto=google.cloud.ces.v1.MetricAnalysisSettings
 type MetricAnalysisSettings struct {
 	// Optional. Whether to collect conversation data for llm analysis metrics. If
@@ -990,6 +1057,40 @@ type OpenAPITool struct {
 	//  schema has the $env_var placeholder, it will replace the placeholder in the
 	//  schema.
 	// +kcc:proto:field=google.cloud.ces.v1.OpenApiTool.url
+	URL *string `json:"url,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1.OpenApiToolset
+type OpenAPIToolset struct {
+	// Required. The OpenAPI schema of the toolset.
+	// +kcc:proto:field=google.cloud.ces.v1.OpenApiToolset.open_api_schema
+	// +required
+	OpenAPISchema *string `json:"openAPISchema,omitempty"`
+
+	// Optional. Authentication information required by the API.
+	// +kcc:proto:field=google.cloud.ces.v1.OpenApiToolset.api_authentication
+	APIAuthentication *APIAuthentication `json:"apiAuthentication,omitempty"`
+
+	// Optional. The TLS configuration. Includes the custom server certificates
+	// +kcc:proto:field=google.cloud.ces.v1.OpenApiToolset.tls_config
+	TLSConfig *TLSConfig `json:"tlsConfig,omitempty"`
+
+	// Optional. Service Directory configuration.
+	// +kcc:proto:field=google.cloud.ces.v1.OpenApiToolset.service_directory_config
+	ServiceDirectoryConfig *ServiceDirectoryConfig `json:"serviceDirectoryConfig,omitempty"`
+
+	// Optional. If true, the agent will ignore unknown fields in the API response
+	//  for all operations defined in the OpenAPI schema.
+	// +kcc:proto:field=google.cloud.ces.v1.OpenApiToolset.ignore_unknown_fields
+	IgnoreUnknownFields *bool `json:"ignoreUnknownFields,omitempty"`
+
+	// Optional. The server URL of the Open API schema.
+	//  This field is only set in toolsets in the environment dependencies during
+	//  the export process if the schema contains a server url. During the import
+	//  process, if this url is present in the environment dependencies and the
+	//  schema has the $env_var placeholder, it will replace the placeholder in the
+	//  schema.
+	// +kcc:proto:field=google.cloud.ces.v1.OpenApiToolset.url
 	URL *string `json:"url,omitempty"`
 }
 

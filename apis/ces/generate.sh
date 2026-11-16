@@ -45,7 +45,8 @@ ${CONTROLLERBUILDER} generate-types \
   --resource CesAgent:Agent \
   --resource CESDeployment:Deployment \
   --resource CESTool:Tool \
-  --resource CESGuardrail:Guardrail
+  --resource CESGuardrail:Guardrail \
+  --resource CESToolset:Toolset
 
 ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${PROTO_OUT} \
@@ -55,7 +56,8 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource CesAgent:Agent \
   --resource CESDeployment:Deployment \
   --resource CESTool:Tool \
-  --resource CESGuardrail:Guardrail
+  --resource CESGuardrail:Guardrail \
+  --resource CESToolset:Toolset
 
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \
