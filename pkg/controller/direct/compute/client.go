@@ -31,6 +31,7 @@
 // proto.service: google.cloud.compute.v1.NodeTemplates
 // proto.service: google.cloud.compute.v1.Firewalls
 // proto.service: google.cloud.compute.v1.Projects
+// proto.service: google.cloud.compute.v1.CrossSiteNetworks
 
 package compute
 
@@ -539,6 +540,18 @@ func (m *gcpClient) newMachineImagesClient(ctx context.Context) (*compute.Machin
 	client, err := compute.NewMachineImagesRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building compute MachineImages client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newCrossSiteNetworksClient(ctx context.Context) (*compute.CrossSiteNetworksClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewCrossSiteNetworksRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute CrossSiteNetworks client: %w", err)
 	}
 	return client, err
 }
