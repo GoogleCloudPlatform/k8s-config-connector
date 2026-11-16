@@ -161,6 +161,7 @@ BLOCKED_KINDS=(
     "ComputeCrossSiteNetwork"
     "ComputeHealthCheckService"
     "ComputeHealthSource"
+    "ComputeInstantSnapshotGroup"
     "ComputeNotificationEndpoint"
     "ConfigDeliveryFleetPackage"
     "ConnectorsConnection"

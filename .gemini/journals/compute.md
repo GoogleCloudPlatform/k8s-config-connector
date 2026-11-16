@@ -503,3 +503,15 @@
   - CAIS identity tests (`pkg/gcpurls` and `pkg/cli/powertools/cais`) pass cleanly.
   - Generation is idempotent. Package build (`apis/compute/...` and `pkg/controller/direct/compute/...`) succeeds.
 
+### [2026-11-16] Greenfield: Prepopulate types, identity, and judgement queue for ComputeInstantSnapshotGroup
+- **Context**: Greenfield implementation of `ComputeInstantSnapshotGroup` under `compute.cnrm.cloud.google.com/v1alpha1` (issue #15803) following Greenfield Step 1a (`prepopulate/SKILL.md`).
+- **Proto & Services**: `InstantSnapshotGroup` is a GA resource under Google Cloud Compute Engine v1 (and present in `cloud.google.com/go/compute/apiv1/computepb`), but was not present in the pinned googleapis commit in `.build/third_party/googleapis`. Following existing precedents in `dev/tools/controllerbuilder/generate-proto.sh` (e.g. `CrossSiteNetwork`, `GlobalVmExtensionPolicy`, `HealthAggregationPolicy`), patched `google/cloud/compute/v1/compute.proto` to include `InstantSnapshotGroup` messages and `InstantSnapshotGroups` / `RegionInstantSnapshotGroups` services.
+- **Prepopulation**:
+  1. Configured `apis/compute/generate.sh` with `generate-types --prepopulate-resource` and `generate-identity` for `ComputeInstantSnapshotGroup:InstantSnapshotGroup`.
+  2. Scaffolded `apis/compute/v1alpha1/computeinstantsnapshotgroup_types.go`, `types.generated.go`, and updated deepcopy implementations.
+  3. Generated deterministic `IdentityV2` and `refs.Ref` implementations along with conformance test `TestComputeInstantSnapshotGroupIdentity_Conformance`.
+  4. Added `ComputeInstantSnapshotGroup` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  5. Recorded review items in `apis/compute/judgement_queue.yaml` with status `open` for Step 1b triage.
+  6. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via golden test runner.
+- **Verification**: All unit tests in `apis/compute/v1alpha1`, `pkg/gcpurls`, and `tests/apichecks` pass cleanly.
+
