@@ -170,7 +170,6 @@ BLOCKED_KINDS=(
     "ContentWarehouseRuleSet"
     "ContentWarehouseSynonymSet"
     "DatabaseMigrationConnectionProfile"
-    "DatabaseMigrationConversionWorkspace"
     "DatabaseMigrationJob"
     "DatabaseMigrationMigrationJob"
     "DatabaseMigrationPrivateConnection"
