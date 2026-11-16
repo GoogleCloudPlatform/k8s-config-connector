@@ -221,6 +221,7 @@ BLOCKED_KINDS=(
     "FinancialServicesInstance"
     "FinancialServicesModel"
     "FinancialServicesPredictionResult"
+    "FTPServer"
     "GDCHardwareManagementHardware"
     "GeminiDataAnalyticsConversation"
     "GKEBackupBackupChannel"
