@@ -38,8 +38,8 @@ cloud.google.com/go/auth v0.24.1-0.20261001053825-dbc26066f70a h1:jW1ZLFy9oa5ai8
 cloud.google.com/go/auth v0.24.1-0.20261001053825-dbc26066f70a/go.mod h1:1dmBXa9xfBvBr39ZnDUDkaaA91ccq9CcqENDgJA4d7c=
 cloud.google.com/go/auth/oauth2adapt v0.3.0 h1:FY8oSZpCYoUNv6QxVODuMjQz4IlSOVeiQtZ08vLPz88=
 cloud.google.com/go/auth/oauth2adapt v0.3.0/go.mod h1:7+2uCm7++XFO+/lN06c2HXpDXb/NMNn2/UwyBPbTnkk=
-cloud.google.com/go/backupdr v1.6.0 h1:Li555lIgwiURa9RjqZi1ry1pPOGzpE5pmI98szXyGAc=
-cloud.google.com/go/backupdr v1.6.0/go.mod h1:uX5Du+agaVKsrcm7qSWn1S/dN5sogKXlEH/JS5j4868=
+cloud.google.com/go/backupdr v1.20.0 h1:DarV1vWZje5mhYxqhvURsBJF5fJ5esDF0uAz5asWbgQ=
+cloud.google.com/go/backupdr v1.20.0/go.mod h1:3fyV4aw2NaHPWdtvRhLXRPpif3kNMbNekZ2ZqZTkKC8=
 cloud.google.com/go/batch v1.19.0 h1:i4xCFKCvzfkSldUPYWL+DgBpKVTC3N8DSK6E9rFSbqQ=
 cloud.google.com/go/batch v1.19.0/go.mod h1:dpWfhLmLQZqsTBAFYjZA3pS04fCY5ttTenZcWmSeILw=
 cloud.google.com/go/beyondcorp v1.7.0 h1:SHAZlC51z6ZO/OZZABnrI/Yk/z3GkhBREQC7qtgTo2I=
