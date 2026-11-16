@@ -3163,6 +3163,30 @@ func DataplexMetadataJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.Dataplex
 	return out
 }
 
+func DataplexPartitionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Partition) *krm.DataplexPartitionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexPartitionSpec{}
+	// MISSING: Name
+	out.Values = in.Values
+	out.Location = direct.LazyPtr(in.GetLocation())
+	// MISSING: Etag
+	return out
+}
+
+func DataplexPartitionSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexPartitionSpec) *pb.Partition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Partition{}
+	// MISSING: Name
+	out.Values = in.Values
+	out.Location = direct.ValueOf(in.Location)
+	// MISSING: Etag
+	return out
+}
+
 func DataplexTaskSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.DataplexTaskSpec {
 	if in == nil {
 		return nil

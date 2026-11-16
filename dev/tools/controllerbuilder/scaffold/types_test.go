@@ -471,3 +471,31 @@ func TestAddTypeFilePluralizesShortName(t *testing.T) {
 		})
 	}
 }
+
+func TestApplyParentFieldsSuppressesDuplicateFields(t *testing.T) {
+	scaffolder := &APIScaffolder{
+		BaseDir:   t.TempDir(),
+		GoPackage: "dataplex/v1alpha1",
+		Group:     "dataplex.cnrm.cloud.google.com",
+		Version:   "v1alpha1",
+	}
+
+	cArgs := &apis.APIArgs{
+		ResourcePattern: "projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/entities/{entity}/partitions/{partition}",
+		SpecFields: "\t// +kcc:proto:field=google.cloud.dataplex.v1.Partition.location\n" +
+			"\tLocation *string `json:\"location,omitempty\"`\n",
+	}
+	prepopulated := &PrepopulateResult{
+		SpecFields: cArgs.SpecFields,
+	}
+
+	scaffolder.applyParentFields(cArgs, prepopulated)
+
+	if cArgs.LocationField != "" {
+		t.Errorf("expected LocationField to be empty when Location already in SpecFields, got: %q", cArgs.LocationField)
+	}
+	if cArgs.RootRefField == "" {
+		t.Errorf("expected RootRefField to be populated, got empty")
+	}
+}
+

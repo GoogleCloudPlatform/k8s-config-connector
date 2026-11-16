@@ -39,6 +39,7 @@
 // resource: DataplexContent:Content
 // resource: DataplexEnvironment:Environment
 // resource: DataplexGlossary:Glossary
+// resource: DataplexPartition:Partition
 
 package v1alpha1
 

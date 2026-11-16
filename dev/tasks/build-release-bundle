@@ -190,6 +190,7 @@ BLOCKED_KINDS=(
     "DataplexEntryLink"
     "DataplexEnvironment"
     "DataplexMetadataFeed"
+    "DataplexPartition"
     "DevConnectAccountConnector"
     "DevConnectConnection"
     "DevConnectInsightsConfig"
