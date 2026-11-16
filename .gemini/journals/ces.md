@@ -87,4 +87,30 @@
   3. **Empty Oneof Handling**: `ServiceAgentIDTokenAuthConfig` is a parameterless message representing an empty option in the `auth_config` oneof. Added `cestools.ces.cnrm.cloud.google.com` to `knownInvalidCRDs` in `tests/apichecks/crds_test.go` per KCC guidelines.
   4. **Pre-existing Hand-written References**: Pre-existing `CesToolRef` and `CesToolIdentity` stubs in `apis/ces/v1alpha1/` (added earlier for `DialogflowCompanionAgent`) are retained for backwards compatibility, resolving the temporary entries in `testdata/exceptions/naming_violations.txt`.
 
+### [2026-11-16] Triaging Judgement Queue and Finalizing CESTool Direct Types
+- **Context**: Triaging `apis/ces/judgement_queue.yaml` entries and finalizing direct KRM types and identity for `CESTool` (`ces.cnrm.cloud.google.com/v1alpha1`).
+- **Decisions**:
+  1. **Single Parent**: Replaced `projectRef` and `location` fields on `CESToolSpec` with required immutable `parentRef *CESAppRef` following `go/kcc-oneparent` and Case B of `PARENT_AND_IDENTITY.md`.
+  2. **Converted References**:
+     - `spec.agentTool.rootAgent` -> `rootAgentRef *CesAgentRef` (`apis/ces/v1alpha1`)
+     - `spec.connectorTool.connection` -> `connectionRef *connectorsv1alpha1.ConnectorsConnectionRef` (`apis/connectors/v1alpha1`)
+     - `spec.dataStoreTool.boostSpecs[].dataStores` -> `dataStoreRefs []discoveryenginev1alpha1.DiscoveryEngineDataStoreRef` (`apis/discoveryengine/v1alpha1`)
+     - `spec.dataStoreTool.dataStoreSource.dataStore.name` -> `dataStoreRef *discoveryenginev1alpha1.DiscoveryEngineDataStoreRef` (`apis/discoveryengine/v1alpha1`)
+     - `spec.dataStoreTool.engineSource.dataStoreSources[].dataStore.name` -> `dataStoreRef *discoveryenginev1alpha1.DiscoveryEngineDataStoreRef` (`apis/discoveryengine/v1alpha1`)
+     - `spec.dataStoreTool.engineSource.engine` -> `engineRef *discoveryenginev1alpha1.DiscoveryEngineEngineRef` (`apis/discoveryengine/v1alpha1`)
+     - `spec.fileSearchTool.fileCorpus` -> `fileCorpusRef *aiplatformv1alpha1.AIPlatformRAGCorpusRef` (`apis/aiplatform/v1alpha1`)
+     - `spec.mcpTool.apiAuthentication.apiKeyConfig.apiKeySecretVersion` and `spec.openAPITool.apiAuthentication.apiKeyConfig.apiKeySecretVersion` -> `apiKeySecretVersionRef *refsv1beta1.SecretManagerSecretVersionRef` (`apis/refs/v1beta1`)
+     - `spec.mcpTool.apiAuthentication.oauthConfig.clientSecretVersion` and `spec.openAPITool.apiAuthentication.oauthConfig.clientSecretVersion` -> `clientSecretVersionRef *refsv1beta1.SecretManagerSecretVersionRef` (`apis/refs/v1beta1`)
+     - `spec.mcpTool.apiAuthentication.serviceAccountAuthConfig.serviceAccount` and `spec.openAPITool.apiAuthentication.serviceAccountAuthConfig.serviceAccount` -> `serviceAccountRef *refsv1beta1.IAMServiceAccountRef` (`apis/refs/v1beta1`)
+     - `spec.mcpTool.serviceDirectoryConfig.service` and `spec.openAPITool.serviceDirectoryConfig.service` -> `serviceRef *servicedirectoryv1beta1.ServiceDirectoryServiceRef` (`apis/servicedirectory/v1beta1`)
+  3. **Deferred and Non-GCP Fields**:
+     - `spec.connectorTool.action.connectionActionID` and `spec.connectorTool.action.entityOperation.entityID`: marked `not-applicable` as they are connector-specific entity/action IDs, not GCP resources.
+     - `spec.mcpTool.apiAuthentication.oauthConfig.clientID` and `spec.openAPITool.apiAuthentication.oauthConfig.clientID`: marked `not-applicable` as they are third-party OAuth provider client IDs.
+     - `spec.widgetTool.dataMapping.sourceToolName`: marked `deferred` and recorded in `tests/apichecks/testdata/exceptions/refs_deferred.txt` as `dialogflow.googleapis.com/Tool` has no KCC resource yet.
+  4. **Etag & Deprecated Fields**:
+     - Moved `etag` from `CESToolSpec` to `CESToolObservedState` and removed the entry from `tests/apichecks/testdata/exceptions/spec_dislike_etag.txt`.
+     - Removed unshared deprecated field `pythonScript` from `WidgetTool_DataMapping`.
+  5. **Resolved Judgement Queue**: All 41 `CESTool` entries in `apis/ces/judgement_queue.yaml` are triaged and resolved.
+
+
 

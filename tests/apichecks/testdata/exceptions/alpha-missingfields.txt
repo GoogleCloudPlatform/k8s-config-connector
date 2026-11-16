@@ -1651,7 +1651,7 @@
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.variableDeclarations[].schema" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.agentTool.description" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.agentTool.name" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.agentTool.rootAgent" is not set in unstructured objects
+[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.agentTool.rootAgentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.clientFunction.description" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.clientFunction.name" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.clientFunction.parameters" is not set in unstructured objects
@@ -1665,10 +1665,10 @@
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorTool.authConfig.oauth2JwtBearerConfig.clientKey" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorTool.authConfig.oauth2JwtBearerConfig.issuer" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorTool.authConfig.oauth2JwtBearerConfig.subject" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorTool.connection" is not set in unstructured objects
+[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorTool.connectionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorTool.description" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorTool.name" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.boostSpecs[].dataStores[]" is not set in unstructured objects
+[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.boostSpecs[].dataStoreRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.boostSpecs[].spec[].conditionBoostSpecs[].boost" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.boostSpecs[].spec[].conditionBoostSpecs[].boostControlSpec.attributeType" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.boostSpecs[].spec[].conditionBoostSpecs[].boostControlSpec.controlPoints[].attributeValue" is not set in unstructured objects
@@ -1676,12 +1676,12 @@
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.boostSpecs[].spec[].conditionBoostSpecs[].boostControlSpec.fieldName" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.boostSpecs[].spec[].conditionBoostSpecs[].boostControlSpec.interpolationType" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.boostSpecs[].spec[].conditionBoostSpecs[].condition" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.dataStoreSource.dataStore.name" is not set in unstructured objects
+[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.dataStoreSource.dataStore.dataStoreRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.dataStoreSource.filter" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.description" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.engineSource.dataStoreSources[].dataStore.name" is not set in unstructured objects
+[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.engineSource.dataStoreSources[].dataStore.dataStoreRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.engineSource.dataStoreSources[].filter" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.engineSource.engine" is not set in unstructured objects
+[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.engineSource.engineRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.engineSource.filter" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.filterParameterBehavior" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.modalityConfigs[].groundingConfig.disabled" is not set in unstructured objects
@@ -1696,11 +1696,10 @@
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.modalityConfigs[].summarizationConfig.modelSettings.temperature" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.modalityConfigs[].summarizationConfig.prompt" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.name" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionType" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.fileSearchTool.corpusType" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.fileSearchTool.description" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.fileSearchTool.fileCorpus" is not set in unstructured objects
+[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.fileSearchTool.fileCorpusRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.fileSearchTool.name" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.googleSearchTool.contextURLs[]" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.googleSearchTool.description" is not set in unstructured objects
@@ -1709,18 +1708,17 @@
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.googleSearchTool.preferredDomains[]" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.googleSearchTool.promptConfig.textPrompt" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.googleSearchTool.promptConfig.voicePrompt" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.apiAuthentication.apiKeyConfig.apiKeySecretVersion" is not set in unstructured objects
+[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.apiAuthentication.apiKeyConfig.apiKeySecretVersionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.apiAuthentication.apiKeyConfig.keyName" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.apiAuthentication.apiKeyConfig.requestLocation" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.apiAuthentication.bearerTokenConfig.token" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.apiAuthentication.oauthConfig.clientID" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.apiAuthentication.oauthConfig.clientSecretVersion" is not set in unstructured objects
+[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.apiAuthentication.oauthConfig.clientSecretVersionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.apiAuthentication.oauthConfig.oauthGrantType" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.apiAuthentication.oauthConfig.scopes[]" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.apiAuthentication.oauthConfig.tokenEndpoint" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.apiAuthentication.serviceAccountAuthConfig.scopes[]" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.apiAuthentication.serviceAccountAuthConfig.serviceAccount" is not set in unstructured objects
+[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.apiAuthentication.serviceAccountAuthConfig.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.apiAuthentication.serviceAgentIDTokenAuthConfig" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.customHeaders" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.description" is not set in unstructured objects
@@ -1728,30 +1726,30 @@
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.name" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.outputSchema" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.serverAddress" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.serviceDirectoryConfig.service" is not set in unstructured objects
+[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.serviceDirectoryConfig.serviceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.tlsConfig.caCerts[].cert" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.tlsConfig.caCerts[].displayName" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.apiAuthentication.apiKeyConfig.apiKeySecretVersion" is not set in unstructured objects
+[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.apiAuthentication.apiKeyConfig.apiKeySecretVersionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.apiAuthentication.apiKeyConfig.keyName" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.apiAuthentication.apiKeyConfig.requestLocation" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.apiAuthentication.bearerTokenConfig.token" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.apiAuthentication.oauthConfig.clientID" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.apiAuthentication.oauthConfig.clientSecretVersion" is not set in unstructured objects
+[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.apiAuthentication.oauthConfig.clientSecretVersionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.apiAuthentication.oauthConfig.oauthGrantType" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.apiAuthentication.oauthConfig.scopes[]" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.apiAuthentication.oauthConfig.tokenEndpoint" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.apiAuthentication.serviceAccountAuthConfig.scopes[]" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.apiAuthentication.serviceAccountAuthConfig.serviceAccount" is not set in unstructured objects
+[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.apiAuthentication.serviceAccountAuthConfig.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.apiAuthentication.serviceAgentIDTokenAuthConfig" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.description" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.ignoreUnknownFields" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.name" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.openAPISchema" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.serviceDirectoryConfig.service" is not set in unstructured objects
+[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.serviceDirectoryConfig.serviceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.tlsConfig.caCerts[].cert" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.tlsConfig.caCerts[].displayName" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.url" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.pythonFunction.name" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.pythonFunction.pythonCode" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.systemTool.name" is not set in unstructured objects
@@ -1761,7 +1759,6 @@
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.widgetTool.dataMapping.mode" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.widgetTool.dataMapping.pythonFunction.name" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.widgetTool.dataMapping.pythonFunction.pythonCode" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.widgetTool.dataMapping.pythonScript" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.widgetTool.dataMapping.sourceToolName" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.widgetTool.description" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.widgetTool.name" is not set in unstructured objects

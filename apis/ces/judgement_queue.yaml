@@ -262,246 +262,328 @@ entries:
     group: ces.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: accepted
+    note: triaged all CESTool fields; converted references, modelled parentRef, moved isolated structs, and moved etag to observedState
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/apps/{app}/tools/{tool}" contains ancestor segment(s) apps/{app} with no matching reference or field on CESToolSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*CESAppRef); removed ProjectRef and Location
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.agentTool.rootAgent
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to ces.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to RootAgentRef (*CesAgentRef)
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.appRef
     reason: parent-ref-guessed
     detail: emitted as a reference to CESAppRef, read from the apps segment of projects/{project}/locations/{location}/apps/{app}/tools/{tool}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*CESAppRef); removed ProjectRef and Location
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.clientFunction.parameters.default
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: edited
+    note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.clientFunction.parameters.defs
     reason: message-map-derived
     detail: derived as map[string]Schema from proto google.cloud.ces.v1.Schema; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: edited
+    note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.clientFunction.parameters.properties
     reason: message-map-derived
     detail: derived as map[string]Schema from proto google.cloud.ces.v1.Schema; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: edited
+    note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.clientFunction.response.default
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: edited
+    note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.clientFunction.response.defs
     reason: message-map-derived
     detail: derived as map[string]Schema from proto google.cloud.ces.v1.Schema; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: edited
+    note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.clientFunction.response.properties
     reason: message-map-derived
     detail: derived as map[string]Schema from proto google.cloud.ces.v1.Schema; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: edited
+    note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.connectorTool.action.connectionActionID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: user-specified identifier in third-party connector/integration, not a GCP resource reference
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.connectorTool.action.entityOperation.entityID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: user-specified identifier in third-party connector/integration, not a GCP resource reference
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.connectorTool.connection
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project}/locations/{location}/connections/{connection}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to ConnectionRef (*connectorsv1alpha1.ConnectorsConnectionRef)
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.dataStoreTool.boostSpecs[].dataStores
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to DataStoreRefs ([]discoveryenginev1alpha1.DiscoveryEngineDataStoreRef)
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.dataStoreTool.dataStoreSource.dataStore.name
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to DataStoreRef (*discoveryenginev1alpha1.DiscoveryEngineDataStoreRef)
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.dataStoreTool.engineSource.dataStoreSources[].dataStore.name
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to DataStoreRef (*discoveryenginev1alpha1.DiscoveryEngineDataStoreRef)
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.dataStoreTool.engineSource.engine
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project}/locations/{location}/collections/{collection}/engines/{engine}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to EngineRef (*discoveryenginev1alpha1.DiscoveryEngineEngineRef)
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.etag
     reason: etag-in-spec
     detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
-    status: open
+    status: resolved
+    resolution: edited
+    note: moved etag from spec to observedState
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.fileSearchTool.fileCorpus
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project}/locations/{location}/ragCorpora/{rag_corpus}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to FileCorpusRef (*aiplatformv1alpha1.AIPlatformRAGCorpusRef)
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/apps/{app}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*CESAppRef); removed ProjectRef and Location
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.mcpTool.apiAuthentication.apiKeyConfig.apiKeySecretVersion
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to secretmanager.googleapis.com/SecretVersion (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to APIKeySecretVersionRef (*refsv1beta1.SecretManagerSecretVersionRef)
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.mcpTool.apiAuthentication.oauthConfig.clientID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: client ID issued by external OAuth provider, not a GCP resource reference
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.mcpTool.apiAuthentication.oauthConfig.clientSecretVersion
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to secretmanager.googleapis.com/SecretVersion (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to ClientSecretVersionRef (*refsv1beta1.SecretManagerSecretVersionRef)
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.mcpTool.apiAuthentication.serviceAccountAuthConfig.serviceAccount
     reason: possible-reference-by-description
     detail: the field name ends in serviceAccount
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to ServiceAccountRef (*refsv1beta1.IAMServiceAccountRef)
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.mcpTool.inputSchema.default
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: edited
+    note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.mcpTool.inputSchema.defs
     reason: message-map-derived
     detail: derived as map[string]Schema from proto google.cloud.ces.v1.Schema; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: edited
+    note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.mcpTool.inputSchema.properties
     reason: message-map-derived
     detail: derived as map[string]Schema from proto google.cloud.ces.v1.Schema; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: edited
+    note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.mcpTool.outputSchema.default
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: edited
+    note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.mcpTool.outputSchema.defs
     reason: message-map-derived
     detail: derived as map[string]Schema from proto google.cloud.ces.v1.Schema; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: edited
+    note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.mcpTool.outputSchema.properties
     reason: message-map-derived
     detail: derived as map[string]Schema from proto google.cloud.ces.v1.Schema; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: edited
+    note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.mcpTool.serviceDirectoryConfig.service
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to servicedirectory.googleapis.com/Service (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to ServiceRef (*servicedirectoryv1beta1.ServiceDirectoryServiceRef)
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.openAPITool.apiAuthentication.apiKeyConfig.apiKeySecretVersion
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to secretmanager.googleapis.com/SecretVersion (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to APIKeySecretVersionRef (*refsv1beta1.SecretManagerSecretVersionRef)
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.openAPITool.apiAuthentication.oauthConfig.clientID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: client ID issued by external OAuth provider, not a GCP resource reference
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.openAPITool.apiAuthentication.oauthConfig.clientSecretVersion
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to secretmanager.googleapis.com/SecretVersion (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to ClientSecretVersionRef (*refsv1beta1.SecretManagerSecretVersionRef)
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.openAPITool.apiAuthentication.serviceAccountAuthConfig.serviceAccount
     reason: possible-reference-by-description
     detail: the field name ends in serviceAccount
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to ServiceAccountRef (*refsv1beta1.IAMServiceAccountRef)
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.openAPITool.serviceDirectoryConfig.service
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to servicedirectory.googleapis.com/Service (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to ServiceRef (*servicedirectoryv1beta1.ServiceDirectoryServiceRef)
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.widgetTool.dataMapping.pythonScript
     reason: deprecated-field
     detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
-    status: open
+    status: resolved
+    resolution: edited
+    note: removed unshared deprecated field pythonScript
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.widgetTool.dataMapping.sourceToolName
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project}/locations/{location}/agents/{agent}/tools/{tool}"
-    status: open
+    status: resolved
+    resolution: deferred
+    note: target resource dialogflow.googleapis.com/Tool has no KCC resource or Ref type yet; recorded in refs_deferred.txt
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.widgetTool.parameters.default
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: edited
+    note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.widgetTool.parameters.defs
     reason: message-map-derived
     detail: derived as map[string]Schema from proto google.cloud.ces.v1.Schema; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: edited
+    note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
   - kind: CESTool
     group: ces.cnrm.cloud.google.com
     field: .spec.widgetTool.parameters.properties
     reason: message-map-derived
     detail: derived as map[string]Schema from proto google.cloud.ces.v1.Schema; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: edited
+    note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
   - kind: CesAgent
     group: ces.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
