@@ -2545,6 +2545,7 @@ func ComputeHealthSourceObservedState_v1alpha1_FromProto(mapCtx *direct.MapConte
 	out.ID = in.Id
 	out.Kind = in.Kind
 	// MISSING: Name
+	out.Region = in.Region
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithID = in.SelfLinkWithId
 	return out
@@ -2558,6 +2559,7 @@ func ComputeHealthSourceObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext
 	out.Id = in.ID
 	out.Kind = in.Kind
 	// MISSING: Name
+	out.Region = in.Region
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithId = in.SelfLinkWithID
 	return out
@@ -2569,11 +2571,12 @@ func ComputeHealthSourceSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *p
 	out := &krmcomputev1alpha1.ComputeHealthSourceSpec{}
 	out.Description = in.Description
 	out.Fingerprint = in.Fingerprint
-	out.HealthAggregationPolicy = in.HealthAggregationPolicy
+	if in.GetHealthAggregationPolicy() != "" {
+		out.HealthAggregationPolicyRef = &krmcomputev1alpha1.ComputeHealthAggregationPolicyRef{External: in.GetHealthAggregationPolicy()}
+	}
 	// MISSING: Name
-	out.Region = in.Region
 	out.SourceType = in.SourceType
-	out.Sources = in.Sources
+	out.Sources = ComputeHealthSourceSpec_Sources_FromProto(mapCtx, in.Sources)
 	return out
 }
 func ComputeHealthSourceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeHealthSourceSpec) *pb.HealthSource {
@@ -2583,11 +2586,12 @@ func ComputeHealthSourceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	out := &pb.HealthSource{}
 	out.Description = in.Description
 	out.Fingerprint = in.Fingerprint
-	out.HealthAggregationPolicy = in.HealthAggregationPolicy
+	if in.HealthAggregationPolicyRef != nil {
+		out.HealthAggregationPolicy = &in.HealthAggregationPolicyRef.External
+	}
 	// MISSING: Name
-	out.Region = in.Region
 	out.SourceType = in.SourceType
-	out.Sources = in.Sources
+	out.Sources = ComputeHealthSourceSpec_Sources_ToProto(mapCtx, in.Sources)
 	return out
 }
 
