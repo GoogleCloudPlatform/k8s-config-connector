@@ -17,19 +17,30 @@ package ha
 import (
 	"fmt"
 	"strings"
+
+	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 )
 
 // gkeClusterInfo holds the GCP project, location, and cluster name parsed from a GKE context.
 type gkeClusterInfo struct {
 	contextName string
-	identity    string
 	project     string
 	location    string
 	clusterName string
 }
 
+// gkeCluster returns the GKE cluster reference used as the cluster's identity in the
+// multi-cluster lease election (spec.experiments.multiClusterLease.gkeCluster).
+func (i gkeClusterInfo) gkeCluster() operatorv1beta1.GKECluster {
+	return operatorv1beta1.GKECluster{
+		Project:  i.project,
+		Location: i.location,
+		Name:     i.clusterName,
+	}
+}
+
 // parseGKEContext parses a standard gcloud kubeconfig context name of the form
-// "gke_<project>_<location>_<cluster-name>" and derives its DNS-1123 cluster identity.
+// "gke_<project>_<location>_<cluster-name>".
 //
 // TODO: Support custom kubeconfig context names that do not follow the default
 // gcloud "gke_<project>_<location>_<cluster>" naming convention (e.g. by inspecting the
@@ -44,14 +55,8 @@ func parseGKEContext(contextName string) (gkeClusterInfo, error) {
 		)
 	}
 
-	identity, err := sanitizeClusterIdentity(trimmed)
-	if err != nil {
-		return gkeClusterInfo{}, err
-	}
-
 	return gkeClusterInfo{
 		contextName: trimmed,
-		identity:    identity,
 		project:     parts[1],
 		location:    parts[2],
 		clusterName: parts[3],

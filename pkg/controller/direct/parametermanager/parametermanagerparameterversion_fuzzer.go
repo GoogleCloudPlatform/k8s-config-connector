@@ -41,6 +41,8 @@ func parameterVersionFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".kms_key_version") // Output Only
 
 	f.Unimplemented_NotYetTriaged(".name") // Not required as it same as status.externalRef
+	f.Unimplemented_NotYetTriaged(".checksum_source")
+	f.Unimplemented_NotYetTriaged(".payload.data_crc32c")
 
 	return f
 }

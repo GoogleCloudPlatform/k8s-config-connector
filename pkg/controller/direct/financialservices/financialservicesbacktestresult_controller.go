@@ -68,6 +68,10 @@ func (m *modelBacktestResult) AdapterForObject(ctx context.Context, op *directba
 	}
 	id := i.(*krm.FinancialServicesBacktestResultIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get financialservices GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {

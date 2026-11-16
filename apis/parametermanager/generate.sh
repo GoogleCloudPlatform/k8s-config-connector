@@ -29,19 +29,44 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
+
+# Pin a googleapis SHA that contains the Template definition
+PROTO_SHA="4fabd6e4b356307d319b55a86a3f200e9c52b594"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+if [[ -z "${SKIP_GENERATE_PROTOS:-}" ]]; then
+  ./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+fi
 
 # Generate the KCC type structs from the GCP proto definitions
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.parametermanager.v1 \
   --api-version parametermanager.cnrm.cloud.google.com/v1alpha1  \
   --resource ParameterManagerParameter:Parameter \
-  --resource ParameterManagerParameterVersion:ParameterVersion
+  --resource ParameterManagerParameterVersion:ParameterVersion \
+  --proto-source-path ${PROTO_OUT}
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.parametermanager.v1 \
+  --api-version parametermanager.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource \
+  --resource ParameterManagerTemplate:Template \
+  --proto-source-path ${PROTO_OUT}
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.parametermanager.v1 \
+  --api-version parametermanager.cnrm.cloud.google.com/v1alpha1 \
+  --resource ParameterManagerTemplate:Template \
+  --proto-source-path ${PROTO_OUT}
 
 # Generate the mapper functions that convert between the KCC structs and the GCP proto structs
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.parametermanager.v1 \
-  --api-version parametermanager.cnrm.cloud.google.com/v1alpha1
+  --api-version parametermanager.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource \
+  --proto-source-path ${PROTO_OUT}
 
 # Change back to the repo root
 cd ${REPO_ROOT}
@@ -49,7 +74,9 @@ cd ${REPO_ROOT}
 # Generate the CRD YAML from the type structs
 
 # Format the generated Go code
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/parametermanager" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/parametermanager/

@@ -1,0 +1,12 @@
+- caisURL: //networksecurity.googleapis.com/projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}
+  group: networksecurity.cnrm.cloud.google.com
+  kind: NetworkSecurityGatewaySecurityPolicy
+  name: gsp-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //networksecurity.googleapis.com/projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}/rules/gsprule-min-${uniqueId}
+  group: networksecurity.cnrm.cloud.google.com
+  kind: NetworkSecurityGatewaySecurityPolicyRule
+  name: gsprule-min-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -194,7 +195,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
         "mode": "REQUIRED",
         "name": "id",
         "policyTags": {},
-        "type": "STRING"
+        "type": "TIMESTAMP"
       }
     ]
   },
@@ -238,7 +239,7 @@ X-Xss-Protection: 0
       {
         "mode": "REQUIRED",
         "name": "id",
-        "type": "STRING"
+        "type": "TIMESTAMP"
       }
     ]
   },
@@ -289,7 +290,7 @@ X-Xss-Protection: 0
       {
         "mode": "REQUIRED",
         "name": "id",
-        "type": "STRING"
+        "type": "TIMESTAMP"
       }
     ]
   },
@@ -467,6 +468,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: UPDATE
 PATCH https://dataplex.googleapis.com/v1/projects/${projectId}/locations/us-central1/dataScans/dataplexdatascan-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -609,6 +611,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: DELETE
 DELETE https://dataplex.googleapis.com/v1/projects/${projectId}/locations/us-central1/dataScans/dataplexdatascan-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -709,7 +712,7 @@ X-Xss-Protection: 0
       {
         "mode": "REQUIRED",
         "name": "id",
-        "type": "STRING"
+        "type": "TIMESTAMP"
       }
     ]
   },

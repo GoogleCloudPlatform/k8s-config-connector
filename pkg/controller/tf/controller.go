@@ -183,7 +183,7 @@ func (r *Reconciler) DoReconcile(ctx context.Context, req reconcile.Request) (re
 	u := &unstructured.Unstructured{}
 	u.SetGroupVersionKind(r.schemaRef.GVK)
 
-	if err := r.Get(ctx, req.NamespacedName, u); err != nil {
+	if err := k8s.FetchUnstructured(ctx, r.Client, req.NamespacedName, u); err != nil {
 		if apierrors.IsNotFound(err) {
 			r.logger.V(2).Info("resource not found in API server; finishing reconcile", "resource", req.NamespacedName)
 			return reconcile.Result{}, nil

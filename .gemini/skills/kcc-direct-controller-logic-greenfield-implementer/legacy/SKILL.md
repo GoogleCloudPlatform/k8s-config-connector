@@ -36,7 +36,7 @@ Use this legacy guide **only** when iterating on an in-flight PR that already ha
         1. **GAPIC REST Client (`NewFooRESTClient`)**: Primary preference.
         2. **GAPIC gRPC Client (`NewFooClient`)**: Try with `m.config.GRPCClientOptions()` if the REST constructor is missing or fails during live GCP testing.
         3. **Raw Protobuf gRPC (`pb.NewFooClient(conn)`)**: Only fall back if no GAPIC Go client library exists.
-    - **Diff Comparison & Structured Diff**: Prefer `common.CompareGreenfieldSpec(ctx, a.desired, actual, krm.<Kind>Spec_FromProto)` or `tags.DiffForTopLevelFields`.
+    - **Diff Comparison & Structured Diff**: Prefer `common.CompareGreenfieldSpec(ctx, a.desired, actual, krm.<Kind>Spec_FromProto)` or `tags.DiffForTopLevelFields`. Never use `reflect.DeepEqual` on protobuf messages, and never compare raw `a.actual` (or its sub-messages) directly against `desiredPb` with `proto.Equal` if `a.actual` contains output-only or unmapped (`// MISSING:` in `*_ToProto`) fields; mask `actual` via `*_FromProto` -> `*_ToProto` or strip output-only fields on a `proto.Clone` first (see the `kcc-direct-proto-comparison` skill).
     - **Reconciling Empty or Incomplete LRO Responses**: Always perform a GET operation (`Get<Resource>`) immediately after a Create or Update LRO completes to fetch the fully-populated resource before calling `updateStatus`.
     - **Structured Reporting & updateStatus**: In `Update`, report diffs via `structuredreporting.ReportDiff(ctx, report)` and always call `updateStatus` at the end of both `Create` and `Update`.
     - **Delete Idempotency Check**: In `Delete`, check `direct.IsNotFound(err)` and return `false, nil` (or `true, nil` if already deleted) appropriately.

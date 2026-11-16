@@ -8,10 +8,10 @@ X-Gfe-Server: ESF
   "capacity": 100,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "An updated description for minimal address group",
-  "labels": {
-    "cnrm-test": "true"
-  },
   "name": "projects/${projectId}/locations/global/addressGroups/addressgroup-min-${uniqueId}",
+  "purpose": [
+    1
+  ],
   "type": 1,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }

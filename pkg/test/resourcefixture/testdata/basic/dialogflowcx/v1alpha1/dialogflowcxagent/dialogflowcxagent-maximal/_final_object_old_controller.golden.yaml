@@ -1,0 +1,40 @@
+apiVersion: dialogflowcx.cnrm.cloud.google.com/v1alpha1
+kind: DialogflowCXAgent
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: dialogflowcxagent-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  avatarUri: https://storage.cloud.google.com/dialogflow-test-host-image/cloud-logo.png
+  defaultLanguageCode: en
+  description: Updated test agent for Dialogflow CX
+  displayName: agent-max-${uniqueId}-updated
+  enableSpellCorrection: true
+  enableStackdriverLogging: true
+  location: global
+  projectRef:
+    external: ${projectId}
+  resourceID: 55e317ec-6752-43b2-bb5c-98b81f5178dc
+  speechToTextSettings:
+    enableSpeechAdaptation: true
+  supportedLanguageCodes:
+  - es
+  timeZone: America/Los_Angeles
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  name: 55e317ec-6752-43b2-bb5c-98b81f5178dc
+  observedGeneration: 3
+  startFlow: projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc/flows/00000000-0000-0000-0000-000000000000

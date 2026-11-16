@@ -80,6 +80,10 @@ func IsControllerManagerStatefulSet(item *manifest.Object) bool {
 
 func (r *Reconciler) applyMultiClusterLeaderElection(ctx context.Context, lease *corev1beta1.MultiClusterLeaseSpec, obj *manifest.Objects) error {
 	log := log.FromContext(ctx)
+	identity, err := lease.CandidateIdentity()
+	if err != nil {
+		return fmt.Errorf("invalid multi-cluster lease configuration: %w", err)
+	}
 	for _, item := range obj.Items {
 		if !IsControllerManagerStatefulSet(item) {
 			continue
@@ -116,7 +120,7 @@ func (r *Reconciler) applyMultiClusterLeaderElection(ctx context.Context, lease 
 		}
 		annotations["cnrm.cloud.google.com/lease-name"] = lease.LeaseName
 		annotations["cnrm.cloud.google.com/lease-namespace"] = lease.Namespace
-		annotations["cnrm.cloud.google.com/lease-identity"] = lease.ClusterCandidateIdentity
+		annotations["cnrm.cloud.google.com/lease-identity"] = identity
 
 		if err := unstructured.SetNestedStringMap(u.Object, annotations, "spec", "template", "metadata", "annotations"); err != nil {
 			return fmt.Errorf("failed to set pod template annotations: %w", err)

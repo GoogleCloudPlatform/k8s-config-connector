@@ -63,28 +63,68 @@ spec:
             description: FinancialServicesPredictionResultSpec defines the desired
               state of FinancialServicesPredictionResult
             properties:
-              dataset:
-                description: 'Required. The resource name of the Dataset to do predictions
-                  on Format: `/projects/{project_num}/locations/{location}/instances/{instance}/dataset/{dataset_id}`'
-                type: string
+              datasetRef:
+                description: Required. The Dataset to do predictions on.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed FinancialServicesDataset
+                      resource. Should be in the format "projects/{{projectNumID}}/locations/{{location}}/instances/{{instanceID}}/datasets/{{datasetID}}".
+                    type: string
+                  name:
+                    description: The name of a FinancialServicesDataset resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a FinancialServicesDataset resource.
+                    type: string
+                type: object
               endTime:
                 description: Required. Specifies the latest time from which data is
                   used to generate features for predictions.  This time should be
                   no later than the end of the [date_range][google.cloud.financialservices.v1.Dataset.date_range]
                   of the dataset.
                 type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: Labels
+              modelRef:
+                description: Required. The Model to use to make predictions.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed FinancialServicesModel
+                      resource. Should be in the format "projects/{{projectNumID}}/locations/{{location}}/instances/{{instanceID}}/models/{{modelID}}".
+                    type: string
+                  name:
+                    description: The name of a FinancialServicesModel resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a FinancialServicesModel resource.
+                    type: string
                 type: object
-              location:
-                description: The location of this resource.
-                type: string
-              model:
-                description: 'Required. The resource name of the Model to use to use
-                  to make predictions Format: `/projects/{project_num}/locations/{location}/instances/{instance}/models/{model}`'
-                type: string
               outputs:
                 description: Required. Where to write the output of the predictions.
                 properties:
@@ -128,14 +168,9 @@ spec:
                 required:
                 - predictionDestination
                 type: object
-              predictionPeriods:
-                description: The number of consecutive months to produce predictions
-                  for, ending with the last full month prior to [end_time][google.cloud.financialservices.v1.PredictionResult.end_time]
-                  according to the dataset's timezone.
-                format: int32
-                type: integer
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The FinancialServicesInstance this FinancialServicesPredictionResult
+                  is created under.
                 oneOf:
                 - not:
                     required:
@@ -152,31 +187,35 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed FinancialServicesInstance
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instance}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a FinancialServicesInstance resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a FinancialServicesInstance resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
+              predictionPeriods:
+                description: The number of consecutive months to produce predictions
+                  for, ending with the last full month prior to [end_time][google.cloud.financialservices.v1.PredictionResult.end_time]
+                  according to the dataset's timezone.
+                format: int32
+                type: integer
               resourceID:
                 description: The FinancialServicesPredictionResult name. If not given,
                   the metadata.name will be used.
                 type: string
             required:
-            - dataset
+            - datasetRef
             - endTime
-            - location
-            - model
+            - modelRef
             - outputs
-            - projectRef
+            - parentRef
             type: object
           status:
             description: FinancialServicesPredictionResultStatus defines the config

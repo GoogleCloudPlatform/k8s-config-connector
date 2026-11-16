@@ -399,7 +399,6 @@ type CurationConfig_CustomCuration struct {
 	// Required. The unique name of the curation resource. This will be the name
 	//  of the curation resource in the format:
 	//  `projects/{project}/locations/{location}/curations/{curation}`
-	// +kcc:guess=possible-reference target=APIHubCuration
 	// +kcc:proto:field=google.cloud.apihub.v1.CurationConfig.CustomCuration.curation
 	// +required
 	Curation *string `json:"curation,omitempty"`

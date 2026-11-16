@@ -95,6 +95,18 @@ func TestClassify(t *testing.T) {
 			wantVerdict: NotAReference,
 		},
 		{
+			name:        "a preferred location is a coordinate",
+			fieldPath:   ".spec.stretchedClusterConfig.preferredLocation",
+			desc:        "Specify the resource name of a zone: `projects/{project}/locations/europe-west3-a`",
+			wantVerdict: NotAReference,
+		},
+		{
+			name:        "a secondary location is a coordinate",
+			fieldPath:   ".spec.stretchedClusterConfig.secondaryLocation",
+			desc:        "Specify the resource name of a zone: `projects/{project}/locations/europe-west3-b`",
+			wantVerdict: NotAReference,
+		},
+		{
 			name:        "an accelerator type is a catalogue entry",
 			fieldPath:   ".spec.acceleratorType",
 			desc:        "Format: projects/{project}/zones/{zone}/acceleratorTypes/{type}",

@@ -14,16 +14,13 @@
 
 // API sources for LiveStreamDVRSession, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/video/livestream/v1/resources.proto
-// +kcc:guess=source-link reason=verify-service-docs-link
-// +kcc:source:service-docs=
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=
+// +kcc:source:service-docs=https://cloud.google.com/livestream/docs/reference/rest
+// +kcc:source:resource-docs=https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels.dvrSessions
 
 package v1alpha1
 
 import (
 	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -34,21 +31,13 @@ var LiveStreamDVRSessionGVK = GroupVersion.WithKind("LiveStreamDVRSession")
 // +kcc:spec:proto=google.cloud.video.livestream.v1.DvrSession
 // +kcc:required-from-proto
 type LiveStreamDVRSessionSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/channels/{channel} this resource belongs to.
-	// +kcc:guess
-	// ChannelRef *LiveStreamChannelRef `json:"channelRef,omitempty"`
+	// The LiveStreamChannel that this LiveStreamDVRSession belongs to.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *LiveStreamChannelRef `json:"parentRef"`
 
 	// The LiveStreamDVRSession name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// Optional. User-defined key/value metadata.
-	// +kcc:proto:field=google.cloud.video.livestream.v1.DvrSession.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
 	// Required. A list of DVR manifests. Currently only one DVR manifest is
 	//  allowed.

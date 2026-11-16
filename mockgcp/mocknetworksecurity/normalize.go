@@ -15,6 +15,8 @@
 package mocknetworksecurity
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
@@ -26,6 +28,21 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".response.pairingKey.expireTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+
+	if strings.Contains(url, "gatewaySecurityPolicies") && strings.Contains(url, "rules") {
+		// applicationMatcher and tlsInspectionEnabled are zero-values ("" and false) in real GCP
+		// which proto3 JSON marshaling omits.
+		cleanRule := func(m map[string]any) {
+			if v, ok := m["applicationMatcher"].(string); ok && v == "" {
+				delete(m, "applicationMatcher")
+			}
+			if v, ok := m["tlsInspectionEnabled"].(bool); ok && !v {
+				delete(m, "tlsInspectionEnabled")
+			}
+		}
+		replacements.TransformObject("", cleanRule)
+		replacements.TransformObject(".response", cleanRule)
+	}
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

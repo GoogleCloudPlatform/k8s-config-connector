@@ -36,6 +36,9 @@ func computeFingerprint(obj proto.Message) string {
 }
 
 func labelsFingerprint(labels map[string]string) string {
+	if len(labels) == 0 {
+		return "42WmSpB8rSM="
+	}
 	b, err := json.Marshal(labels)
 	if err != nil {
 		panic(fmt.Sprintf("converting to json: %v", err))

@@ -1,0 +1,30 @@
+apiVersion: saasservicemgmt.cnrm.cloud.google.com/v1alpha1
+kind: SaaSServiceMgmtUnitKind
+metadata:
+  name: saasservicemgmtunitkind-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  saasRef:
+    external: projects/${projectId}/locations/us-central1/saas/kcc-test-saas
+  dependencies:
+    - alias: dep1
+      unitKindRef:
+        name: saasservicemgmtunitkind-dep-${uniqueId}
+  inputVariableMappings:
+    - variable: inputVar1
+      to:
+        dependency: dep1
+        inputVariable: depInputVar1
+        ignoreForLookup: true
+  outputVariableMappings:
+    - variable: outputVar1
+      from:
+        dependency: dep1
+        outputVariable: depOutputVar1
+  labels:
+    env: prod
+    team: alpha
+  annotations:
+    description: updated maximal unit kind test

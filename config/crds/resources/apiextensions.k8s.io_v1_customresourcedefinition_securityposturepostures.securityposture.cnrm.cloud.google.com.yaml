@@ -72,19 +72,6 @@ spec:
               description:
                 description: Optional. User provided description of the posture.
                 type: string
-              etag:
-                description: |-
-                  Optional. An opaque tag indicating the current version of the Posture, used
-                   for concurrency control. When the `Posture` is returned from either a
-                   `GetPosture` or a `ListPostures` request, this `etag` indicates the version
-                   of the current `Posture` to use when executing a read-modify-write loop.
-
-                   When the `Posture` is used in a `UpdatePosture` method, use the `etag`
-                   value that was returned from a `GetPosture` request as part of a
-                   read-modify-write loop for concurrency control. Not setting the `etag` in a
-                   `UpdatePosture` request will result in an unconditional write of the
-                   `Posture`.
-                type: string
               location:
                 description: The location of this resource.
                 type: string
@@ -236,6 +223,47 @@ spec:
 
                                            The max length of the condition is 1000 characters.
                                         type: string
+                                      customConstraintRef:
+                                        description: |-
+                                          Immutable. Name of the constraint. This is unique within the organization.
+                                           Format of the name should be
+
+                                           -
+                                           `organizations/{organization_id}/customConstraints/{custom_constraint_id}`
+
+                                           Example: `organizations/123/customConstraints/custom.createOnlyE2TypeVms`
+
+                                           The max length is 70 characters and the minimum length is 1. Note that the
+                                           prefix `organizations/{organization_id}/customConstraints/` is not counted.
+                                        oneOf:
+                                        - not:
+                                            required:
+                                            - external
+                                          required:
+                                          - name
+                                        - not:
+                                            anyOf:
+                                            - required:
+                                              - name
+                                            - required:
+                                              - namespace
+                                          required:
+                                          - external
+                                        properties:
+                                          external:
+                                            description: A reference to an externally
+                                              managed OrgPolicyCustomConstraint resource.
+                                              Should be in the format "organizations/{{organizationID}}/customConstraints/{{customconstraintID}}".
+                                            type: string
+                                          name:
+                                            description: The name of an OrgPolicyCustomConstraint
+                                              resource.
+                                            type: string
+                                          namespace:
+                                            description: The namespace of an OrgPolicyCustomConstraint
+                                              resource.
+                                            type: string
+                                        type: object
                                       description:
                                         description: Detailed information about this
                                           custom policy constraint. The max length
@@ -252,19 +280,6 @@ spec:
                                         items:
                                           type: string
                                         type: array
-                                      name:
-                                        description: |-
-                                          Immutable. Name of the constraint. This is unique within the organization.
-                                           Format of the name should be
-
-                                           -
-                                           `organizations/{organization_id}/customConstraints/{custom_constraint_id}`
-
-                                           Example: `organizations/123/customConstraints/custom.createOnlyE2TypeVms`
-
-                                           The max length is 70 characters and the minimum length is 1. Note that the
-                                           prefix `organizations/{organization_id}/customConstraints/` is not counted.
-                                        type: string
                                       resourceTypes:
                                         description: |-
                                           Immutable. The resource instance type on which this policy applies. Format
@@ -603,6 +618,10 @@ spec:
                 properties:
                   createTime:
                     description: Output only. The timestamp that the posture was created.
+                    type: string
+                  etag:
+                    description: Optional. An opaque tag indicating the current version
+                      of the Posture.
                     type: string
                   policySets:
                     description: Required. List of Policy sets.

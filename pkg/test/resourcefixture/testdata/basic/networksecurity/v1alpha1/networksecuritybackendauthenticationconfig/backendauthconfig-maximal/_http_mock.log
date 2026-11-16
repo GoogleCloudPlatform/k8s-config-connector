@@ -1,31 +1,52 @@
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
+# Phase: CREATE
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackendAuthenticationConfigs%2Fbackendauth-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}"
+  "error": {
+    "code": 404,
+    "message": "BackendAuthenticationConfig \"projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
 }
-
-error: rpc error: code = NotFound desc = BackendAuthenticationConfig "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}" not found
-
-{}
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/CreateBackendAuthenticationConfig
+POST https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/backendAuthenticationConfigs?%24alt=json%3Benum-encoding%3Dint&backendAuthenticationConfigId=backendauth-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
-  "backendAuthenticationConfig": {
-    "description": "Original description of backend auth config",
-    "labels": {
-      "foo": "bar"
-    },
-    "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
-    "wellKnownRoots": "PUBLIC_ROOTS"
+  "description": "Original description of backend auth config",
+  "labels": {
+    "foo": "bar"
   },
-  "backendAuthenticationConfigId": "backendauth-max-${uniqueId}",
-  "parent": "projects/${projectId}/locations/us-central1"
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
+  "wellKnownRoots": 2
 }
 
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -39,13 +60,20 @@ OK
 
 ---
 
-GRPC /google.longrunning.Operations/GetOperation
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackendAuthenticationConfigs%2Fbackendauth-max-${uniqueId}%2Foperations%2F${operationID}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}/operations/${operationID}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -72,35 +100,20 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackendAuthenticationConfigs%2Fbackendauth-max-${uniqueId}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Original description of backend auth config",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "bar"
-  },
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "wellKnownRoots": "PUBLIC_ROOTS"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
-
-{
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -111,27 +124,36 @@ OK
   },
   "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
-  "wellKnownRoots": "PUBLIC_ROOTS"
+  "wellKnownRoots": 2
 }
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/UpdateBackendAuthenticationConfig
+# Phase: UPDATE
+PATCH https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: backend_authentication_config.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackendAuthenticationConfigs%2Fbackendauth-max-${uniqueId}
 
 {
-  "backendAuthenticationConfig": {
-    "description": "Updated description of backend auth config",
-    "labels": {
-      "foo": "baz",
-      "new-key": "new-val"
-    },
-    "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
-    "wellKnownRoots": "NONE"
+  "description": "Updated description of backend auth config",
+  "labels": {
+    "foo": "baz",
+    "new-key": "new-val"
   },
-  "updateMask": "description,labels,wellKnownRoots"
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
+  "wellKnownRoots": 2
 }
 
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -145,13 +167,20 @@ OK
 
 ---
 
-GRPC /google.longrunning.Operations/GetOperation
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackendAuthenticationConfigs%2Fbackendauth-max-${uniqueId}%2Foperations%2F${operationID}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}/operations/${operationID}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -173,42 +202,26 @@ OK
     },
     "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z",
-    "wellKnownRoots": "NONE"
+    "wellKnownRoots": "PUBLIC_ROOTS"
   }
 }
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackendAuthenticationConfigs%2Fbackendauth-max-${uniqueId}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description of backend auth config",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "baz",
-    "new-key": "new-val"
-  },
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "wellKnownRoots": "NONE"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
-
-{
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -220,41 +233,26 @@ OK
   },
   "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
-  "wellKnownRoots": "NONE"
+  "wellKnownRoots": 2
 }
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
+# Phase: DELETE
+DELETE https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackendAuthenticationConfigs%2Fbackendauth-max-${uniqueId}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description of backend auth config",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "baz",
-    "new-key": "new-val"
-  },
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "wellKnownRoots": "NONE"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/DeleteBackendAuthenticationConfig
-
-{
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -268,13 +266,20 @@ OK
 
 ---
 
-GRPC /google.longrunning.Operations/GetOperation
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackendAuthenticationConfigs%2Fbackendauth-max-${uniqueId}%2Foperations%2F${operationID}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}/operations/${operationID}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -296,6 +301,6 @@ OK
     },
     "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z",
-    "wellKnownRoots": "NONE"
+    "wellKnownRoots": "PUBLIC_ROOTS"
   }
 }

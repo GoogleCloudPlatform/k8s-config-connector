@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ package dataplex
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -67,8 +68,12 @@ func (m *modelEntity) AdapterForObject(ctx context.Context, op *directbase.Adapt
 	}
 	id := i.(*krm.DataplexEntityIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get dataplex GCP client
-	gcpClient, err := m.client(ctx, direct.ValueOf(obj.Spec.Location))
+	gcpClient, err := m.client(ctx, id.Location)
 	if err != nil {
 		return nil, err
 	}
@@ -80,8 +85,21 @@ func (m *modelEntity) AdapterForObject(ctx context.Context, op *directbase.Adapt
 }
 
 func (m *modelEntity) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	if !strings.HasPrefix(url, "//dataplex.googleapis.com/") {
+		return nil, nil
+	}
+	id := &krm.DataplexEntityIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		return nil, nil
+	}
+	gcpClient, err := m.client(ctx, id.Location)
+	if err != nil {
+		return nil, err
+	}
+	return &EntityAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 func (m *modelEntity) client(ctx context.Context, location string) (*gcp.MetadataClient, error) {
 	var opts []option.ClientOption
@@ -121,6 +139,7 @@ func (a *EntityAdapter) Find(ctx context.Context) (bool, error) {
 
 	req := &dataplexpb.GetEntityRequest{
 		Name: a.id.String(),
+		View: dataplexpb.GetEntityRequest_FULL,
 	}
 	entitypb, err := a.gcpClient.GetEntity(ctx, req)
 	if err != nil {
@@ -193,6 +212,7 @@ func (a *EntityAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 		report.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, report)
 		resource.Name = a.id.String()
+		resource.Etag = a.actual.Etag
 		req := &dataplexpb.UpdateEntityRequest{
 			Entity: resource,
 		}
@@ -243,8 +263,30 @@ func (a *EntityAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteO
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Entity", "name", a.id)
 
+	etag := ""
+	if a.actual != nil {
+		etag = a.actual.Etag
+	}
+	if etag == "" {
+		req := &dataplexpb.GetEntityRequest{
+			Name: a.id.String(),
+			View: dataplexpb.GetEntityRequest_BASIC,
+		}
+		actual, err := a.gcpClient.GetEntity(ctx, req)
+		if err != nil {
+			if direct.IsNotFound(err) {
+				// Return success if not found (assume it was already deleted).
+				log.V(2).Info("skipping delete for non-existent Entity, assuming it was already deleted", "name", a.id)
+				return true, nil
+			}
+			return false, fmt.Errorf("getting Entity %q: %w", a.id, err)
+		}
+		etag = actual.Etag
+	}
+
 	req := &dataplexpb.DeleteEntityRequest{
 		Name: a.id.String(),
+		Etag: etag,
 	}
 	err := a.gcpClient.DeleteEntity(ctx, req)
 	if err != nil {

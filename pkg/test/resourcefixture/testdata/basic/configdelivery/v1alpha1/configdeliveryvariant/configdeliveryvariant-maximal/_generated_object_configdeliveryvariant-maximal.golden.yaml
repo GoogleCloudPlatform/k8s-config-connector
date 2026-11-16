@@ -1,0 +1,45 @@
+apiVersion: configdelivery.cnrm.cloud.google.com/v1alpha1
+kind: ConfigdeliveryVariant
+metadata:
+  annotations:
+    cnrm.cloud.google.com/mutable-but-unreadable-fields-hash: 77c2bfc6f4ddc9e20f02bdea7eeabe21ded8f98925c6660a84728c22035c3582
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: cd-variant-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  parentRef:
+    name: v1-0-0
+  resourceID: cd-variant-${uniqueId}
+  resources:
+  - |
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: test-cm-1-updated
+  - |
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: test-cm-2-updated
+  - |
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: test-cm-3
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/resourceBundles/cd-bundle-${uniqueId}/releases/v1-0-0/variants/cd-variant-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"

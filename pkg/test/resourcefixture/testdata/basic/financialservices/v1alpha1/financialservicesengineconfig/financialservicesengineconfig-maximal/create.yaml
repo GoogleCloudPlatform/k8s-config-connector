@@ -1,0 +1,13 @@
+apiVersion: financialservices.cnrm.cloud.google.com/v1alpha1
+kind: FinancialServicesEngineConfig
+metadata:
+  name: financialservicesengineconfig-${uniqueId}
+spec:
+  parentRef:
+    name: financialservicesinstance-${uniqueId}
+  resourceID: financialservicesengineconfig-${uniqueId}
+  engineVersion: projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/engineVersions/aml-retail-v001
+  hyperparameterSourceType: INHERITED
+  hyperparameterSource:
+    sourceEngineConfigRef:
+      external: projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/engineConfigs/source-engineconfig-${uniqueId}

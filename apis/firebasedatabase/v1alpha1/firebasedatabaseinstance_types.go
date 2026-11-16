@@ -1,0 +1,115 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1alpha1
+
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+var FirebaseDatabaseInstanceGVK = GroupVersion.WithKind("FirebaseDatabaseInstance")
+
+type FirebaseDatabaseInstanceSpec struct {
+	/* The intended database state. */
+	// +optional
+	DesiredState *string `json:"desiredState,omitempty"`
+
+	/* The project that this resource belongs to. */
+	// +required
+	ProjectRef refs.ProjectRef `json:"projectRef"`
+
+	/* Immutable. A reference to the region where the Firebase Realtime database resides.
+	Check all [available regions](https://firebase.google.com/docs/projects/locations#rtdb-locations). */
+	// +required
+	Region string `json:"region"`
+
+	/* Immutable. Optional. The instanceId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Immutable. The database type.
+	Each project can create one default Firebase Realtime Database, which cannot be deleted once created.
+	Creating user Databases is only available for projects on the Blaze plan.
+	Projects can be upgraded using the Cloud Billing API https://cloud.google.com/billing/reference/rest/v1/projects/updateBillingInfo. Default value: "USER_DATABASE" Possible values: ["DEFAULT_DATABASE", "USER_DATABASE"]. */
+	// +optional
+	Type *string `json:"type,omitempty"`
+}
+
+type FirebaseDatabaseInstanceStatus struct {
+	/* Conditions represent the latest available observation of the
+	   resource's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+
+	/* A unique specifier for the FirebaseDatabaseInstance resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* The database URL in the form of https://{instance-id}.firebaseio.com for us-central1 instances
+	or https://{instance-id}.{region}.firebasedatabase.app in other regions. */
+	// +optional
+	DatabaseUrl *string `json:"databaseUrl,omitempty"`
+
+	/* The fully-qualified resource name of the Firebase Realtime Database, in the
+	format: projects/PROJECT_NUMBER/locations/REGION_IDENTIFIER/instances/INSTANCE_ID
+	PROJECT_NUMBER: The Firebase project's ['ProjectNumber'](https://firebase.google.com/docs/reference/firebase-management/rest/v1beta1/projects#FirebaseProject.FIELDS.project_number)
+	Learn more about using project identifiers in Google's [AIP 2510 standard](https://google.aip.dev/cloud/2510). */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* The current database state. Set desired_state to :DISABLED to disable the database and :ACTIVE to reenable the database. */
+	// +optional
+	State *string `json:"state,omitempty"`
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpfirebasedatabaseinstance;gcpfirebasedatabaseinstances
+// +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
+// +kubebuilder:printcolumn:name="Ready",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].reason",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",type="date",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",description="The last transition time for the value in 'Status'"
+
+// FirebaseDatabaseInstance is the Schema for the firebasedatabase API
+// +k8s:openapi-gen=true
+type FirebaseDatabaseInstance struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	Spec   FirebaseDatabaseInstanceSpec   `json:"spec"`
+	Status FirebaseDatabaseInstanceStatus `json:"status,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// FirebaseDatabaseInstanceList contains a list of FirebaseDatabaseInstance
+type FirebaseDatabaseInstanceList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []FirebaseDatabaseInstance `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&FirebaseDatabaseInstance{}, &FirebaseDatabaseInstanceList{})
+}

@@ -36,6 +36,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbilling"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbillingbudgets"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcertificatemanager"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockces"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockclouddeploy"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockclouddms"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudids"
@@ -59,6 +60,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdevicestreaming"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdialogflow"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdiscoveryengine"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdlp"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdns"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdocumentai"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgecontainer"
@@ -115,6 +117,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvision"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvisionai"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvmmigration"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockwebsecurityscanner"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkflowexecution"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkloadmanager"
 )

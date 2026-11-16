@@ -68,26 +68,9 @@ spec:
                   for training.  End_time should be no later than the end of the date_range
                   of the dataset.
                 type: string
-              engineConfig:
-                description: 'Required. The resource name of the EngineConfig the
-                  model training will be based on. Format: `/projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engineConfig}`'
-                type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: Labels
-                type: object
-              location:
-                description: The location of this resource.
-                type: string
-              primaryDataset:
-                description: 'Required. The resource name of the Primary Dataset used
-                  in this model training. For information about how primary and auxiliary
-                  datasets are used, refer to the engine version''s documentation.  Format:
-                  `/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}`'
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              engineConfigRef:
+                description: Required. The EngineConfig the model training will be
+                  based on.
                 oneOf:
                 - not:
                     required:
@@ -104,18 +87,75 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed FinancialServicesEngineConfig
+                      resource. Should be in the format "projects/{{projectNumID}}/locations/{{location}}/instances/{{instanceID}}/engineConfigs/{{engineConfigID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a FinancialServicesEngineConfig resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a FinancialServicesEngineConfig
+                      resource.
+                    type: string
+                type: object
+              parentRef:
+                description: The FinancialServicesInstance this FinancialServicesModel
+                  is created under.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed FinancialServicesInstance
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instance}}".
+                    type: string
+                  name:
+                    description: The name of a FinancialServicesInstance resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a FinancialServicesInstance resource.
+                    type: string
+                type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
+              primaryDatasetRef:
+                description: Required. The Primary Dataset used in this model training.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed FinancialServicesDataset
+                      resource. Should be in the format "projects/{{projectNumID}}/locations/{{location}}/instances/{{instanceID}}/datasets/{{datasetID}}".
+                    type: string
+                  name:
+                    description: The name of a FinancialServicesDataset resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a FinancialServicesDataset resource.
                     type: string
                 type: object
               resourceID:
@@ -124,10 +164,9 @@ spec:
                 type: string
             required:
             - endTime
-            - engineConfig
-            - location
-            - primaryDataset
-            - projectRef
+            - engineConfigRef
+            - parentRef
+            - primaryDatasetRef
             type: object
           status:
             description: FinancialServicesModelStatus defines the config connector

@@ -17,8 +17,10 @@ package kccmanager
 import (
 	"context"
 	"fmt"
+	"reflect"
 	"strings"
 
+	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -42,6 +44,10 @@ type SyncerIntegration struct {
 	leaseNN         types.NamespacedName
 	replicationMode string
 	watchNamespaces []string
+	// cluster is the GKE cluster that this Config Connector runs in.
+	cluster *operatorv1beta1.GKECluster
+	// leaderEndpointType is the control plane endpoint used to reach the leader's cluster.
+	leaderEndpointType string
 }
 
 func (si *SyncerIntegration) getDesiredRules(namespaces []string) []interface{} {
@@ -230,37 +236,61 @@ func (si *SyncerIntegration) getNamespacesForSyncer(syncerName string) []string 
 	return nil
 }
 
-func (si *SyncerIntegration) EnsurePullingFromLeader(ctx context.Context, leaderIdentity string) error {
+// EnsurePullingFromLeader points this cluster's KRMSyncers at the leader's GKE cluster and
+// resumes them.
+func (si *SyncerIntegration) EnsurePullingFromLeader(ctx context.Context, leader *operatorv1beta1.GKECluster) error {
 	if si == nil || si.client == nil || si.apiReader == nil {
 		return fmt.Errorf("syncer integration or client not initialized")
 	}
-
-	if leaderIdentity == "" {
-		return nil
+	if leader == nil {
+		return fmt.Errorf("the leader's GKE cluster is not set")
 	}
 
 	for _, syncerNN := range si.getDesiredSyncers() {
-		if err := si.reconcileSyncer(ctx, syncerNN, leaderIdentity, false); err != nil {
+		if err := si.reconcileSyncer(ctx, syncerNN, leader, false); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
+// EnsureSuspended suspends this cluster's KRMSyncers because this cluster is the leader. Their
+// remote is set to this cluster's own GKE cluster, so that on every cluster the KRMSyncers name
+// the current leader and are suspended exactly when that leader is this cluster.
 func (si *SyncerIntegration) EnsureSuspended(ctx context.Context) error {
 	if si == nil || si.client == nil || si.apiReader == nil {
 		return fmt.Errorf("syncer integration or client not initialized")
 	}
+	if si.cluster == nil {
+		return fmt.Errorf("this cluster's GKE cluster is not set")
+	}
 
 	for _, syncerNN := range si.getDesiredSyncers() {
-		if err := si.reconcileSyncer(ctx, syncerNN, "", true); err != nil {
+		if err := si.reconcileSyncer(ctx, syncerNN, si.cluster, true); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func (si *SyncerIntegration) reconcileSyncer(ctx context.Context, name types.NamespacedName, leaderIdentity string, suspend bool) error {
+// desiredRemote returns spec.remote for a KRMSyncer that pulls from the given GKE cluster. The
+// endpoint is always set, so that the CRD default doesn't show up as a difference.
+func (si *SyncerIntegration) desiredRemote(cluster *operatorv1beta1.GKECluster) map[string]interface{} {
+	endpoint := si.leaderEndpointType
+	if endpoint == "" {
+		endpoint = operatorv1beta1.LeaderEndpointTypeDefault
+	}
+	return map[string]interface{}{
+		"gkeCluster": map[string]interface{}{
+			"project":  cluster.Project,
+			"location": cluster.Location,
+			"name":     cluster.Name,
+			"endpoint": endpoint,
+		},
+	}
+}
+
+func (si *SyncerIntegration) reconcileSyncer(ctx context.Context, name types.NamespacedName, remoteCluster *operatorv1beta1.GKECluster, suspend bool) error {
 	syncer := &unstructured.Unstructured{}
 	syncer.SetGroupVersionKind(KRMSyncerGVK)
 
@@ -277,6 +307,7 @@ func (si *SyncerIntegration) reconcileSyncer(ctx context.Context, name types.Nam
 
 	namespaces := si.getNamespacesForSyncer(name.Name)
 	rules := si.getDesiredRules(namespaces)
+	remote := si.desiredRemote(remoteCluster)
 
 	if isCreate {
 		syncerToCreate := &unstructured.Unstructured{}
@@ -284,11 +315,7 @@ func (si *SyncerIntegration) reconcileSyncer(ctx context.Context, name types.Nam
 		syncerToCreate.SetName(name.Name)
 		syncerToCreate.SetNamespace(name.Namespace)
 
-		dest := leaderIdentity
-		if dest == "" {
-			dest = "dummy-secret"
-		}
-		_ = unstructured.SetNestedField(syncerToCreate.Object, dest, "spec", "remote", "clusterConfig", "kubeConfigSecretRef", "name")
+		_ = unstructured.SetNestedMap(syncerToCreate.Object, remote, "spec", "remote")
 		_ = unstructured.SetNestedField(syncerToCreate.Object, "pull", "spec", "mode")
 		_ = unstructured.SetNestedField(syncerToCreate.Object, suspend, "spec", "suspend")
 		_ = unstructured.SetNestedSlice(syncerToCreate.Object, rules, "spec", "rules")
@@ -296,28 +323,19 @@ func (si *SyncerIntegration) reconcileSyncer(ctx context.Context, name types.Nam
 		if err := si.client.Create(ctx, syncerToCreate); err != nil {
 			return fmt.Errorf("error creating KRMSyncer %s: %w", name, err)
 		}
-		klog.Infof("successfully created KRMSyncer %s (suspend=%v, dest=%s)", name, suspend, dest)
+		klog.Infof("successfully created KRMSyncer %s (suspend=%v, remote=%s)", name, suspend, remoteCluster.ResourceName())
 		return nil
 	}
 
 	changed := false
 
-	if suspend {
-		dest, _, _ := unstructured.NestedString(syncer.Object, "spec", "remote", "clusterConfig", "kubeConfigSecretRef", "name")
-		if dest != "dummy-secret" {
-			if err := unstructured.SetNestedField(syncer.Object, "dummy-secret", "spec", "remote", "clusterConfig", "kubeConfigSecretRef", "name"); err != nil {
-				return fmt.Errorf("error setting remote kubeconfig name: %w", err)
-			}
-			changed = true
+	// Replace spec.remote as a whole, so that nothing from an older remote type is left behind.
+	existingRemote, _, _ := unstructured.NestedMap(syncer.Object, "spec", "remote")
+	if !reflect.DeepEqual(existingRemote, remote) {
+		if err := unstructured.SetNestedMap(syncer.Object, remote, "spec", "remote"); err != nil {
+			return fmt.Errorf("error setting remote: %w", err)
 		}
-	} else if leaderIdentity != "" {
-		dest, _, _ := unstructured.NestedString(syncer.Object, "spec", "remote", "clusterConfig", "kubeConfigSecretRef", "name")
-		if dest != leaderIdentity {
-			if err := unstructured.SetNestedField(syncer.Object, leaderIdentity, "spec", "remote", "clusterConfig", "kubeConfigSecretRef", "name"); err != nil {
-				return fmt.Errorf("error setting remote kubeconfig name: %w", err)
-			}
-			changed = true
-		}
+		changed = true
 	}
 
 	mode, _, _ := unstructured.NestedString(syncer.Object, "spec", "mode")
@@ -357,12 +375,7 @@ func (si *SyncerIntegration) reconcileSyncer(ctx context.Context, name types.Nam
 			return err
 		}
 
-		dest := leaderIdentity
-		if suspend {
-			dest = "dummy-secret"
-		}
-		_ = unstructured.SetNestedField(syncerToUpdate.Object, dest, "spec", "remote", "clusterConfig", "kubeConfigSecretRef", "name")
-
+		_ = unstructured.SetNestedMap(syncerToUpdate.Object, remote, "spec", "remote")
 		_ = unstructured.SetNestedField(syncerToUpdate.Object, "pull", "spec", "mode")
 		_ = unstructured.SetNestedField(syncerToUpdate.Object, suspend, "spec", "suspend")
 		_ = unstructured.SetNestedSlice(syncerToUpdate.Object, rules, "spec", "rules")
@@ -375,6 +388,6 @@ func (si *SyncerIntegration) reconcileSyncer(ctx context.Context, name types.Nam
 		return fmt.Errorf("error updating KRMSyncer %s: %w", name, err)
 	}
 
-	klog.Infof("successfully updated KRMSyncer %s (suspend=%v)", name, suspend)
+	klog.Infof("successfully updated KRMSyncer %s (suspend=%v, remote=%s)", name, suspend, remoteCluster.ResourceName())
 	return nil
 }

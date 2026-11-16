@@ -1,0 +1,35 @@
+apiVersion: managedkafka.cnrm.cloud.google.com/v1alpha1
+kind: ManagedKafkaConnector
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: managedkafkaconnector-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  configs:
+    connector.class: org.apache.kafka.connect.mirror.MirrorHeartbeatConnector
+    heartbeats.topic.replication.factor: "1"
+    source.cluster.alias: source
+    source.cluster.bootstrap.servers: localhost:9092
+    target.cluster.alias: target
+    target.cluster.bootstrap.servers: localhost:9092
+  parentRef:
+    name: connectcluster-${uniqueId}
+  resourceID: managedkafkaconnector-${uniqueId}
+  taskRestartPolicy:
+    maximumBackoff: 3600s
+    minimumBackoff: 120s
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}/connectors/managedkafkaconnector-${uniqueId}
+  observedGeneration: 2
+  observedState: {}

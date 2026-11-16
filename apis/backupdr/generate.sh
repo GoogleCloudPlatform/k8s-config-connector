@@ -38,6 +38,19 @@ ${CONTROLLERBUILDER} generate-types \
     --include-skipped-output \
     --resource BackupDRManagementServer:ManagementServer
 
+${CONTROLLERBUILDER} generate-types \
+    --service google.cloud.backupdr.v1 \
+    --api-version backupdr.cnrm.cloud.google.com/v1alpha1 \
+    --include-skipped-output \
+    --resource BackupDRRestoreVerificationPlan:RestoreVerificationPlan \
+    --prepopulate-resource \
+    --allow-non-declarative
+
+${CONTROLLERBUILDER} generate-identity \
+    --service google.cloud.backupdr.v1 \
+    --api-version backupdr.cnrm.cloud.google.com/v1alpha1 \
+    --resource BackupDRRestoreVerificationPlan:RestoreVerificationPlan
+
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.backupdr.v1 \
@@ -53,7 +66,9 @@ ${CONTROLLERBUILDER} generate-mapper \
     --multiversion \
     --service google.cloud.backupdr.v1 \
     --api-version backupdr.cnrm.cloud.google.com/v1beta1 \
-    --include-skipped-output
+    --include-skipped-output \
+    --prepopulate-resource \
+    --skip-proto RestoreVerificationPlan,RestoreVerificationCleanupRule
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

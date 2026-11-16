@@ -276,9 +276,6 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 				if os.Getenv("SKIP_ALL") != "" {
 					t.Skip("SKIP_ALL is set")
 				}
-				if fixture.GVK.Group == "ces.cnrm.cloud.google.com" && fixture.GVK.Kind == "CESApp" {
-					t.Skip("skipping CESApp as the controller is not implemented yet")
-				}
 				if os.Getenv("E2E_PARALLEL") == "true" {
 					t.Parallel()
 				}
@@ -771,7 +768,8 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 							isReadOnly = true
 						case "POST":
 							if strings.Contains(event.Request.URL, "/listNetworkEndpoints") ||
-								strings.Contains(event.Request.URL, "/listPerInstanceConfigs") {
+								strings.Contains(event.Request.URL, "/listPerInstanceConfigs") ||
+								strings.Contains(event.Request.URL, ":getIamPolicy") {
 								isReadOnly = true
 							}
 						case "GRPC":

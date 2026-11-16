@@ -43,7 +43,6 @@ func financialServicesEngineConfigFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".engine_version")
 	f.SpecField(".hyperparameter_source.source_engine_config")
 	f.SpecField(".hyperparameter_source_type")
-	f.SpecField(".labels")
 	f.SpecField(".performance_target")
 	f.SpecField(".tuning")
 
@@ -56,6 +55,7 @@ func financialServicesEngineConfigFuzzer() fuzztesting.KRMFuzzer {
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	return f
 }

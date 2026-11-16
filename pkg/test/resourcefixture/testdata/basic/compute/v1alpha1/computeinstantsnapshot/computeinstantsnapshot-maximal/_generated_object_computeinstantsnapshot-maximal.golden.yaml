@@ -1,0 +1,42 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha1
+kind: ComputeInstantSnapshot
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: ${instantSnapshotID}
+  namespace: ${uniqueId}
+spec:
+  description: Maximal test for ComputeInstantSnapshot
+  location: us-central1-a
+  projectRef:
+    external: ${projectId}
+  resourceID: ${instantSnapshotID}
+  sourceDiskRef:
+    name: ${diskID}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/zones/us-central1-a/instantSnapshots/${instantSnapshotID}
+  observedGeneration: 1
+  observedState:
+    creationTimestamp: "1970-01-01T00:00:00Z"
+    diskSizeGB: 10
+    id: 1111111111111111
+    kind: compute#instantSnapshot
+    labelFingerprint: 42WmSpB8rSM=
+    resourceStatus:
+      storageSizeBytes: 0
+    satisfiesPzi: true
+    selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instantSnapshots/${instantSnapshotID}
+    selfLinkWithID: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instantSnapshots/${instantSnapshotID}
+    sourceDiskID: ${diskID}
+    status: READY
+    zone: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a

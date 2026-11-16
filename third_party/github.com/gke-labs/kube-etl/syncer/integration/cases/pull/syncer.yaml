@@ -1,0 +1,19 @@
+apiVersion: syncer.gkelabs.io/v1alpha1
+kind: KRMSyncer
+metadata:
+  name: pull-syncer
+  namespace: default
+spec:
+  mode: pull
+  remote:
+    gkeCluster:
+      project: test-project
+      location: us-central1
+      name: cluster-b
+  rules:
+  - group: e2e.gkelabs.io
+    version: v1alpha1
+    kind: TestCRD
+    syncFields:
+    - spec
+    - status

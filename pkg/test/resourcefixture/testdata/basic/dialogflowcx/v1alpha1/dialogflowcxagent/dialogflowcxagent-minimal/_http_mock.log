@@ -1,0 +1,132 @@
+# Phase: CREATE
+POST https://global-dialogflow.googleapis.com:443/v3/projects/${projectId}/locations/global/agents?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+{
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "timeZone": "America/New_York"
+}
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75",
+  "startFlow": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+# Phase: UPDATE
+GET https://global-dialogflow.googleapis.com:443/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75",
+  "startFlow": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+PATCH https://global-dialogflow.googleapis.com:443/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CtimeZone
+Content-Type: application/json
+
+{
+  "defaultLanguageCode": "en",
+  "description": "Updated minimal agent description",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75",
+  "timeZone": "America/Chicago"
+}
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "description": "Updated minimal agent description",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75",
+  "startFlow": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/Chicago"
+}
+
+---
+
+# Phase: DELETE
+GET https://global-dialogflow.googleapis.com:443/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "description": "Updated minimal agent description",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75",
+  "startFlow": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/Chicago"
+}
+
+---
+
+DELETE https://global-dialogflow.googleapis.com:443/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

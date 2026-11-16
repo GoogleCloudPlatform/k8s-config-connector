@@ -143,16 +143,8 @@ spec:
               displayName:
                 description: Optional. User friendly display name.
                 type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. User defined labels for the asset.
-                type: object
-              location:
-                description: The location of this resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The DataplexZone this DataplexAsset is created under.
                 oneOf:
                 - not:
                     required:
@@ -169,20 +161,19 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed DataplexZone
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/lakes/{{lake}}/zones/{{zone}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a DataplexZone resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a DataplexZone resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The DataplexAsset name. If not given, the metadata.name
                   will be used.
@@ -191,25 +182,79 @@ spec:
                 description: Required. Specification of the resource that is referenced
                   by this asset.
                 properties:
-                  name:
-                    description: 'Immutable. Relative name of the cloud resource that
-                      contains the data that is being managed within a lake. For example:
-                      `projects/{project_number}/buckets/{bucket_id}` `projects/{project_number}/datasets/{dataset_id}`'
-                    type: string
+                  bigQueryDatasetRef:
+                    description: Reference to a BigQuery dataset resource.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally-managed BigQueryDataset
+                          resource. Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}".
+                        type: string
+                      name:
+                        description: The name of a BigQueryDataset resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a BigQueryDataset resource.
+                        type: string
+                    type: object
                   readAccessMode:
                     description: Optional. Determines how read permissions are handled
                       for each asset and their associated tables. Only available to
                       storage buckets assets.
                     type: string
+                  storageBucketRef:
+                    description: Reference to a Cloud Storage bucket resource.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed StorageBucket
+                          resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".
+                        type: string
+                      name:
+                        description: The name of a StorageBucket resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a StorageBucket resource.
+                        type: string
+                    type: object
                   type:
                     description: Required. Immutable. Type of resource.
                     type: string
                 required:
                 - type
                 type: object
+                x-kubernetes-validations:
+                - message: exactly one of storageBucketRef or bigQueryDatasetRef must
+                    be specified
+                  rule: has(self.storageBucketRef) != has(self.bigQueryDatasetRef)
             required:
-            - location
-            - projectRef
+            - parentRef
             - resourceSpec
             type: object
           status:

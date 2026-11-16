@@ -116,11 +116,17 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 			if obj["creationTimestamp"] != nil {
 				obj["creationTimestamp"] = mockgcpregistry.PlaceholderTimestamp
 			}
+			if obj["updateTimestamp"] != nil {
+				obj["updateTimestamp"] = mockgcpregistry.PlaceholderTimestamp
+			}
 			if obj["expireTime"] != nil {
 				obj["expireTime"] = mockgcpregistry.PlaceholderTimestamp
 			}
 			if obj["labelFingerprint"] != nil {
 				obj["labelFingerprint"] = PlaceholderFingerprint
+			}
+			if obj["etag"] != nil {
+				obj["etag"] = PlaceholderFingerprint
 			}
 			if obj["address"] != nil {
 				obj["address"] = "8.8.8.8"

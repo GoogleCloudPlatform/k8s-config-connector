@@ -62,25 +62,35 @@ entries:
     group: configdelivery.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: finalized types, parentRef to ConfigDeliveryRelease, removed top-level labels
   - kind: ConfigdeliveryVariant
     group: configdelivery.cnrm.cloud.google.com
     reason: identity-not-in-cai
     detail: template "//configdelivery.googleapis.com/projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}/variants/{variant}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
-    status: open
+    status: resolved
+    resolution: accepted
+    note: verified template against proto google.api.resource pattern
   - kind: ConfigdeliveryVariant
     group: configdelivery.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}/variants/{variant}" contains ancestor segment(s) resourceBundles/{resource_bundle}, releases/{release} with no matching reference or field on ConfigdeliveryVariantSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*ConfigDeliveryReleaseRef); removed ProjectRef and Location
   - kind: ConfigdeliveryVariant
     group: configdelivery.cnrm.cloud.google.com
     reason: parent-ref-not-modelled
     detail: the parent is projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}, and no ReleaseRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*ConfigDeliveryReleaseRef); removed ProjectRef and Location
   - kind: ConfigdeliveryVariant
     group: configdelivery.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*ConfigDeliveryReleaseRef); removed ProjectRef and Location

@@ -42,7 +42,6 @@ func liveStreamDVRSessionFuzzer() fuzztesting.KRMFuzzer {
 	// Spec fields
 	f.SpecField(".dvr_manifests[].manifest_key")
 	f.SpecField(".dvr_windows")
-	f.SpecField(".labels")
 
 	// Status fields
 	f.StatusField(".create_time")
@@ -53,6 +52,7 @@ func liveStreamDVRSessionFuzzer() fuzztesting.KRMFuzzer {
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	// Unimplemented / Not Yet Triaged fields
 	f.Unimplemented_NotYetTriaged(".error.details")

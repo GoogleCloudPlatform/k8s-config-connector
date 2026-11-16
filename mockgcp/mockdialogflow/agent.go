@@ -30,6 +30,7 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	cxpb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
 )
@@ -73,9 +74,13 @@ func (s *MockService) parseAgentName(name string) (*agentName, error) {
 
 func (s *cxAgentsServer) populateDefaults(obj *cxpb.Agent) {
 	if obj.AdvancedSettings == nil {
-		obj.AdvancedSettings = &cxpb.AdvancedSettings{
-			LoggingSettings: &cxpb.AdvancedSettings_LoggingSettings{},
-		}
+		obj.AdvancedSettings = &cxpb.AdvancedSettings{}
+	}
+	if obj.AdvancedSettings.LoggingSettings == nil {
+		obj.AdvancedSettings.LoggingSettings = &cxpb.AdvancedSettings_LoggingSettings{}
+	}
+	if obj.EnableStackdriverLogging {
+		obj.AdvancedSettings.LoggingSettings.EnableStackdriverLogging = true
 	}
 	if obj.GetStartFlow() == "" && obj.Name != "" {
 		obj.SessionEntryResource = &cxpb.Agent_StartFlow{
@@ -117,7 +122,7 @@ func (s *cxAgentsServer) CreateAgent(ctx context.Context, req *cxpb.CreateAgentR
 	agentID := uuid.New().String()
 	// Deterministic agentID for test fixtures alignment
 	displayName := req.GetAgent().GetDisplayName()
-	if strings.Contains(displayName, "max") {
+	if strings.HasPrefix(displayName, "agent-max-") {
 		agentID = "55e317ec-6752-43b2-bb5c-98b81f5178dc"
 	} else {
 		// Check existing webhooks in storage to determine whether we are in maximal or minimal fixture
@@ -171,6 +176,70 @@ func (s *cxAgentsServer) DeleteAgent(ctx context.Context, req *cxpb.DeleteAgentR
 	return &emptypb.Empty{}, nil
 }
 
+func (s *cxAgentsServer) UpdateAgent(ctx context.Context, req *cxpb.UpdateAgentRequest) (*cxpb.Agent, error) {
+	reqName := req.GetAgent().GetName()
+	name, err := s.parseAgentName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &cxpb.Agent{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Agent not found: %s", fqn)
+		}
+		return nil, err
+	}
+
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		obj.DisplayName = req.GetAgent().GetDisplayName()
+		obj.TimeZone = req.GetAgent().GetTimeZone()
+		obj.Description = req.GetAgent().GetDescription()
+		obj.AvatarUri = req.GetAgent().GetAvatarUri()
+		obj.SpeechToTextSettings = req.GetAgent().GetSpeechToTextSettings()
+		obj.SecuritySettings = req.GetAgent().GetSecuritySettings()
+		obj.EnableStackdriverLogging = req.GetAgent().GetEnableStackdriverLogging()
+		obj.EnableSpellCorrection = req.GetAgent().GetEnableSpellCorrection()
+		obj.SupportedLanguageCodes = req.GetAgent().GetSupportedLanguageCodes()
+	} else {
+		for _, path := range paths {
+			switch path {
+			case "display_name", "displayName":
+				obj.DisplayName = req.GetAgent().GetDisplayName()
+			case "time_zone", "timeZone":
+				obj.TimeZone = req.GetAgent().GetTimeZone()
+			case "description":
+				obj.Description = req.GetAgent().GetDescription()
+			case "avatar_uri", "avatarUri":
+				obj.AvatarUri = req.GetAgent().GetAvatarUri()
+			case "speech_to_text_settings", "speechToTextSettings":
+				obj.SpeechToTextSettings = req.GetAgent().GetSpeechToTextSettings()
+			case "security_settings", "securitySettings":
+				obj.SecuritySettings = req.GetAgent().GetSecuritySettings()
+			case "enable_stackdriver_logging", "enableStackdriverLogging":
+				obj.EnableStackdriverLogging = req.GetAgent().GetEnableStackdriverLogging()
+			case "enable_spell_correction", "enableSpellCorrection":
+				obj.EnableSpellCorrection = req.GetAgent().GetEnableSpellCorrection()
+			case "supported_language_codes", "supportedLanguageCodes":
+				obj.SupportedLanguageCodes = req.GetAgent().GetSupportedLanguageCodes()
+			default:
+				return nil, status.Errorf(codes.InvalidArgument, "unsupported update_mask path: %s", path)
+			}
+		}
+	}
+
+	s.populateDefaults(obj)
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
 func RegisterCXAgentsHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
 	client := cxpb.NewAgentsClient(conn)
 	forwardResponseOptions := mux.GetForwardResponseOptions()
@@ -221,6 +290,48 @@ func RegisterCXAgentsHandler(ctx context.Context, mux *runtime.ServeMux, conn *g
 		}
 
 		obj, err := client.GetAgent(ctx, protoReq)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, r, err)
+			return
+		}
+
+		for _, opt := range forwardResponseOptions {
+			opt(ctx, w, obj)
+		}
+		if err := outboundMarshaler.NewEncoder(w).Encode(obj); err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, r, err)
+			return
+		}
+	}); err != nil {
+		return err
+	}
+
+	// PATCH /v3/{agent.name=projects/*/locations/*/agents/*}
+	updatePath := "/v3/{agent.name=projects/*/locations/*/agents/*}"
+	if err := mux.HandlePath("PATCH", updatePath, func(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+		ctx := r.Context()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, r)
+		protoReq := &cxpb.UpdateAgentRequest{}
+
+		newReader, berr := utilities.IOReaderFactory(r.Body)
+		if berr != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, r, status.Errorf(codes.InvalidArgument, "%v", berr))
+			return
+		}
+		protoReq.Agent = &cxpb.Agent{}
+		if err := inboundMarshaler.NewDecoder(newReader()).Decode(protoReq.Agent); err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, r, status.Errorf(codes.InvalidArgument, "%v", err))
+			return
+		}
+		protoReq.Agent.Name = pathParams["agent.name"]
+
+		if maskStr := r.URL.Query().Get("updateMask"); maskStr != "" {
+			protoReq.UpdateMask = &fieldmaskpb.FieldMask{
+				Paths: strings.Split(maskStr, ","),
+			}
+		}
+
+		obj, err := client.UpdateAgent(ctx, protoReq)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, r, err)
 			return

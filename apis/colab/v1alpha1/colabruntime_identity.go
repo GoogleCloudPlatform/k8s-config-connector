@@ -17,11 +17,29 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+var (
+	_ identity.IdentityV2 = &NotebookRuntimeIdentity{}
+	_ identity.Resource   = &ColabRuntime{}
+)
+
+// +k8s:deepcopy-gen=false
+type notebookRuntimeURL struct {
+	ProjectID         string
+	Location          string
+	NotebookRuntimeID string
+}
+
+var NotebookRuntimeIdentityFormat = gcpurls.Template[notebookRuntimeURL](
+	"aiplatform.googleapis.com",
+	"projects/{projectID}/locations/{location}/notebookRuntimes/{notebookRuntimeID}",
 )
 
 // NotebookRuntimeIdentity is the identity of a ColabRuntime.
@@ -31,7 +49,25 @@ type NotebookRuntimeIdentity struct {
 }
 
 func (i *NotebookRuntimeIdentity) String() string {
-	return i.parent.String() + "/notebookRuntimes/" + i.id
+	return NotebookRuntimeIdentityFormat.ToString(notebookRuntimeURL{
+		ProjectID:         i.parent.ProjectID,
+		Location:          i.parent.Location,
+		NotebookRuntimeID: i.id,
+	})
+}
+
+func (i *NotebookRuntimeIdentity) FromExternal(ref string) error {
+	parent, resourceID, err := ParseNotebookRuntimeExternal(ref)
+	if err != nil {
+		return err
+	}
+	i.parent = parent
+	i.id = resourceID
+	return nil
+}
+
+func (i *NotebookRuntimeIdentity) Host() string {
+	return NotebookRuntimeIdentityFormat.Host()
 }
 
 func (i *NotebookRuntimeIdentity) ID() string {
@@ -49,6 +85,11 @@ type NotebookRuntimeParent struct {
 
 func (p *NotebookRuntimeParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
+}
+
+// GetIdentity builds a NotebookRuntimeIdentity from the ColabRuntime object.
+func (obj *ColabRuntime) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	return NewNotebookRuntimeIdentity(ctx, reader, obj)
 }
 
 // New builds a NotebookRuntimeIdentity from the Config Connector NotebookRuntime object.
@@ -72,6 +113,14 @@ func NewNotebookRuntimeIdentity(ctx context.Context, reader client.Reader, obj *
 	}
 	if resourceID == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	if err := NotebookRuntimeIdentityFormat.Validate(notebookRuntimeURL{
+		ProjectID:         projectID,
+		Location:          location,
+		NotebookRuntimeID: resourceID,
+	}); err != nil {
+		return nil, err
 	}
 
 	// Use approved External
@@ -103,14 +152,17 @@ func NewNotebookRuntimeIdentity(ctx context.Context, reader client.Reader, obj *
 }
 
 func ParseNotebookRuntimeExternal(external string) (parent *NotebookRuntimeParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "notebookRuntimes" {
+	parsed, match, err := NotebookRuntimeIdentityFormat.Parse(external)
+	if err != nil {
+		return nil, "", fmt.Errorf("format of ColabRuntime external=%q was not known (use projects/{{projectID}}/locations/{{location}}/notebookRuntimes/{{notebookruntimeID}}): %w", external, err)
+	}
+	if !match {
 		return nil, "", fmt.Errorf("format of ColabRuntime external=%q was not known (use projects/{{projectID}}/locations/{{location}}/notebookRuntimes/{{notebookruntimeID}})", external)
 	}
 	parent = &NotebookRuntimeParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		ProjectID: parsed.ProjectID,
+		Location:  parsed.Location,
 	}
-	resourceID = tokens[5]
+	resourceID = parsed.NotebookRuntimeID
 	return parent, resourceID, nil
 }

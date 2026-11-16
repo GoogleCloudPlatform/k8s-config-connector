@@ -62,6 +62,9 @@ func (m *modelConnector) AdapterForObject(ctx context.Context, op *directbase.Ad
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
 	i, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
@@ -179,13 +182,25 @@ func (a *ConnectorAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Connector", "name", a.id)
 
+	normalize := func(ctx context.Context, pb *managedkafkapb.Connector) error {
+		if pb == nil {
+			return nil
+		}
+		// Kafka Connect automatically injects "name" = connector ID into the configs map.
+		// If not explicitly configured in desired spec, remove it from comparison so it does not trigger a false diff.
+		if a.desired.Spec.Configs == nil || a.desired.Spec.Configs["name"] == "" {
+			delete(pb.Configs, "name")
+		}
+		return nil
+	}
+
 	resource, report, updateMask, err := common.CompareGreenfieldSpec(
 		ctx,
 		&a.desired.Spec,
 		a.actual,
 		ManagedKafkaConnectorSpec_v1alpha1_FromProto,
 		ManagedKafkaConnectorSpec_v1alpha1_ToProto,
-		nil,
+		normalize,
 	)
 	if err != nil {
 		return err
@@ -231,6 +246,10 @@ func (a *ConnectorAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+	obj.Spec.ParentRef = &krm.ManagedKafkaConnectClusterRef{
+		External: a.id.ParentString(),
+	}
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.Connector)
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

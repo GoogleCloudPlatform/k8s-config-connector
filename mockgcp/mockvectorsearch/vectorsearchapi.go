@@ -161,6 +161,203 @@ func (s *VectorSearchServer) DeleteCollection(ctx context.Context, req *pb.Delet
 	})
 }
 
+func (s *VectorSearchServer) GetIndex(ctx context.Context, req *pb.GetIndexRequest) (*pb.Index, error) {
+	name, err := s.parseIndexName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.Index{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *VectorSearchServer) CreateIndex(ctx context.Context, req *pb.CreateIndexRequest) (*longrunning.Operation, error) {
+	reqName := req.Parent + "/indexes/" + req.IndexId
+	name, err := s.parseIndexName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := proto.Clone(req.Index).(*pb.Index)
+	obj.Name = fqn
+
+	s.populateIndexDefaults(obj)
+
+	now := timestamppb.Now()
+	obj.CreateTime = now
+	obj.UpdateTime = now
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	metadata := s.constructOperationMetadata(fqn, "create")
+	return s.operations.StartLRO(ctx, name.ParentString(), metadata, func() (proto.Message, error) {
+		result := proto.Clone(obj).(*pb.Index)
+		metadata.EndTime = timestamppb.Now()
+		return result, nil
+	})
+}
+
+func (s *VectorSearchServer) UpdateIndex(ctx context.Context, req *pb.UpdateIndexRequest) (*longrunning.Operation, error) {
+	reqName := req.GetIndex().GetName()
+	name, err := s.parseIndexName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.Index{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) > 0 {
+		for _, path := range paths {
+			switch path {
+			case "display_name", "displayName":
+				obj.DisplayName = req.GetIndex().GetDisplayName()
+			case "description":
+				obj.Description = req.GetIndex().GetDescription()
+			case "dedicated_infrastructure", "dedicatedInfrastructure":
+				if req.GetIndex().GetDedicatedInfrastructure() != nil {
+					obj.InfraType = &pb.Index_DedicatedInfrastructure{
+						DedicatedInfrastructure: req.GetIndex().GetDedicatedInfrastructure(),
+					}
+				}
+			case "dense_scann", "denseScann":
+				if req.GetIndex().GetDenseScann() != nil {
+					obj.IndexType = &pb.Index_DenseScann{
+						DenseScann: req.GetIndex().GetDenseScann(),
+					}
+				}
+			case "distance_metric", "distanceMetric":
+				obj.DistanceMetric = req.GetIndex().GetDistanceMetric()
+			case "index_field", "indexField":
+				obj.IndexField = req.GetIndex().GetIndexField()
+			case "filter_fields", "filterFields":
+				obj.FilterFields = req.GetIndex().GetFilterFields()
+			case "store_fields", "storeFields":
+				obj.StoreFields = req.GetIndex().GetStoreFields()
+			}
+		}
+	} else {
+		obj.DisplayName = req.GetIndex().GetDisplayName()
+		obj.Description = req.GetIndex().GetDescription()
+		if req.GetIndex().GetDedicatedInfrastructure() != nil {
+			obj.InfraType = &pb.Index_DedicatedInfrastructure{
+				DedicatedInfrastructure: req.GetIndex().GetDedicatedInfrastructure(),
+			}
+		}
+		if req.GetIndex().GetDenseScann() != nil {
+			obj.IndexType = &pb.Index_DenseScann{
+				DenseScann: req.GetIndex().GetDenseScann(),
+			}
+		}
+		obj.DistanceMetric = req.GetIndex().GetDistanceMetric()
+		obj.IndexField = req.GetIndex().GetIndexField()
+		obj.FilterFields = req.GetIndex().GetFilterFields()
+		obj.StoreFields = req.GetIndex().GetStoreFields()
+	}
+
+	s.populateIndexDefaults(obj)
+	obj.UpdateTime = timestamppb.Now()
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	metadata := s.constructOperationMetadata(fqn, "update")
+	return s.operations.StartLRO(ctx, name.ParentString(), metadata, func() (proto.Message, error) {
+		result := proto.Clone(obj).(*pb.Index)
+		metadata.EndTime = timestamppb.Now()
+		return result, nil
+	})
+}
+
+func (s *VectorSearchServer) DeleteIndex(ctx context.Context, req *pb.DeleteIndexRequest) (*longrunning.Operation, error) {
+	name, err := s.parseIndexName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.Index{}
+	if err := s.storage.Delete(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	metadata := s.constructOperationMetadata(fqn, "delete")
+	return s.operations.StartLRO(ctx, name.ParentString(), metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.Now()
+		return &emptypb.Empty{}, nil
+	})
+}
+
+func (s *VectorSearchServer) populateIndexDefaults(obj *pb.Index) {
+	if obj.GetDedicatedInfrastructure() == nil {
+		mode := pb.DedicatedInfrastructure_PERFORMANCE_OPTIMIZED
+		obj.InfraType = &pb.Index_DedicatedInfrastructure{
+			DedicatedInfrastructure: &pb.DedicatedInfrastructure{
+				Mode: &mode,
+				AutoscalingSpec: &pb.DedicatedInfrastructure_AutoscalingSpec{
+					MinReplicaCount: 2,
+					MaxReplicaCount: 2,
+				},
+			},
+		}
+	} else {
+		infra := obj.GetDedicatedInfrastructure()
+		if infra.Mode == nil {
+			mode := pb.DedicatedInfrastructure_PERFORMANCE_OPTIMIZED
+			infra.Mode = &mode
+		}
+		if infra.AutoscalingSpec == nil {
+			infra.AutoscalingSpec = &pb.DedicatedInfrastructure_AutoscalingSpec{
+				MinReplicaCount: 2,
+				MaxReplicaCount: 2,
+			}
+		} else {
+			if infra.AutoscalingSpec.MinReplicaCount == 0 {
+				infra.AutoscalingSpec.MinReplicaCount = 2
+			}
+			if infra.AutoscalingSpec.MaxReplicaCount == 0 {
+				infra.AutoscalingSpec.MaxReplicaCount = 2
+			}
+		}
+	}
+
+	if obj.DistanceMetric == pb.DistanceMetric_DISTANCE_METRIC_UNSPECIFIED {
+		obj.DistanceMetric = pb.DistanceMetric_DOT_PRODUCT
+	}
+
+	if obj.IndexType == nil {
+		obj.IndexType = &pb.Index_DenseScann{
+			DenseScann: &pb.DenseScannIndex{},
+		}
+	}
+}
+
 func (s *MockService) constructOperationMetadata(target string, verb string) *pb.OperationMetadata {
 	return &pb.OperationMetadata{
 		CreateTime: timestamppb.Now(),

@@ -58,7 +58,6 @@ func FeatureView_BigtableMetadataObservedState_ToProto(mapCtx *direct.MapContext
 	out.ReadAppProfile = direct.ValueOf(in.ReadAppProfile)
 	return out
 }
-
 func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.Schema {
 	if in == nil {
 		return nil

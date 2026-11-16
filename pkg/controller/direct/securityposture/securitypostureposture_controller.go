@@ -68,6 +68,10 @@ func (m *modelPosture) AdapterForObject(ctx context.Context, op *directbase.Adap
 	}
 	id := i.(*krm.SecurityposturePostureIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get securityposture GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {

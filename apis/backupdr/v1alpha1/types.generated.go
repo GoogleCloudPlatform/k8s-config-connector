@@ -18,6 +18,7 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.backupdr.v1
 // resource: BackupDRManagementServer:ManagementServer
+// resource: BackupDRRestoreVerificationPlan:RestoreVerificationPlan
 
 package v1alpha1
 
@@ -75,6 +76,63 @@ type NetworkConfig struct {
 	//  this version, only PRIVATE_SERVICE_ACCESS is supported.
 	// +kcc:proto:field=google.cloud.backupdr.v1.NetworkConfig.peering_mode
 	PeeringMode *string `json:"peeringMode,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.backupdr.v1.RestoreVerificationCleanupRule
+type RestoreVerificationCleanupRule struct {
+	// Optional. Duration after restore finishes when cleanup triggers.
+	//  Delay must be non-negative and at most 30 days (2592000 seconds).
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationCleanupRule.cleanup_delay
+	CleanupDelay *string `json:"cleanupDelay,omitempty"`
+
+	// Optional. If set to true, the restored resource will not be cleaned up.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationCleanupRule.skip_cleanup
+	SkipCleanup *bool `json:"skipCleanup,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.backupdr.v1.RestoreVerificationPlan", skipping
+
+// +kcc:proto=google.cloud.backupdr.v1.RestoreVerificationPlan
+type RestoreVerificationPlan struct {
+
+	// Optional. The description of the `RestoreVerificationPlan` resource.
+	//
+	//  The description allows for additional details about
+	//  `RestoreVerificationPlan` and its use cases to be provided. An example
+	//  description is the following: "This is a restore verification plan that
+	//  performs a daily verification and cleans up the resources immediately
+	//  after." The description must be at most 2048 characters.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. User-defined labels.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Required. Describes the schedule on which the restore verification will be
+	//  executed.
+	//
+	//  The schedule is specified as a
+	//  [Crontab](https://en.wikipedia.org/wiki/Cron#Overview) string.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.schedule
+	Schedule *string `json:"schedule,omitempty"`
+
+	// Optional. Specifies the time zone to be used in interpreting
+	//  [schedule][google.cloud.backupdr.v1.RestoreVerificationPlan.schedule].
+	//  The value of this field must be a time zone name from the [tz
+	//  database](https://en.wikipedia.org/wiki/Tz_database), like
+	//  "America/New_York" or "UTC". Defaults to `UTC` if not specified.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.time_zone
+	TimeZone *string `json:"timeZone,omitempty"`
+
+	// Optional. The cleanup rule to apply if the restore verification succeeds.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.success_cleanup_rule
+	SuccessCleanupRule *RestoreVerificationCleanupRule `json:"successCleanupRule,omitempty"`
+
+	// Optional. The cleanup rule to apply if the restore verification fails.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.failure_cleanup_rule
+	FailureCleanupRule *RestoreVerificationCleanupRule `json:"failureCleanupRule,omitempty"`
 }
 */
 
@@ -159,6 +217,32 @@ type ManagementURIObservedState struct {
 	// Output only. The ManagementServer AGM/RD API URL.
 	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementURI.api
 	API *string `json:"api,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.backupdr.v1.RestoreVerificationPlan", skipping
+
+// +kcc:observedstate:proto=google.cloud.backupdr.v1.RestoreVerificationPlan
+type RestoreVerificationPlanObservedState struct {
+	// Output only. Identifier. The resource name of the
+	//  `RestoreVerificationPlan`.
+	//
+	//  Format:
+	//  `projects/{project}/locations/{location}/restoreVerificationPlans/{restoreVerificationPlan}`
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. When the `RestoreVerificationPlan` was created.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. When the `RestoreVerificationPlan` was last updated.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The `State` for the `RestoreVerificationPlan`.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.state
+	State *string `json:"state,omitempty"`
 }
 */
 

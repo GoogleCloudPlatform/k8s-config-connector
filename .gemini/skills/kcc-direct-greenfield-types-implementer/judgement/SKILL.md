@@ -109,11 +109,20 @@ You **must** also apply the baseline KRM standards in:
        ```
 3. Confirm `<Kind>` is present in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` (sorted alphabetically; if missing, add it—do **not** remove `<Kind>` from `BLOCKED_KINDS` during Step 2, as the pipeline's final Release step removes it).
 4. If `go.mod` was updated, run `go mod tidy && (cd mockgcp && go mod tidy)` (or `make ensure`) so `validate-ensure` passes.
-5. Run verification tests (including `TestCRDBackwardCompatibility`, `TestHandWrittenProtoStructAnnotationsAndNaming`, `TestGenerateScripts`, `TestDirectResourceFileNaming`, and `TestRegisteredTemplatesMatchCAI`):
+5. Re-record the golden exception lists Step 1 wrote for `<Kind>`. Step 2 changes the CRD's fields (e.g. `spec.projectRef` + `spec.location` replaced by a `spec.parentRef`), so entries recorded in Step 1 go stale, and `TestCRDFieldPresenceInTestsForAlpha` (`tests/apichecks/testdata/exceptions/alpha-missingfields.txt`) fails in CI. Do this before step 6, which checks the re-recorded lists:
    ```bash
-   go test -v ./tests/apichecks/... -run "TestMissingRefs|TestJudgementQueue|TestSourceLinks|TestCRDObjectTypes|TestCRDBackwardCompatibility|TestHandWrittenProtoStructAnnotationsAndNaming|TestGenerateScripts|TestDirectResourceFileNaming"
+   WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...
+   git diff --stat tests/apichecks/testdata/
+   ```
+   - Keep only the changes to `<Kind>`'s own lines (its CRD, e.g. `<kind_plural>.<service>.cnrm.cloud.google.com`). Revert a file that changed only for other CRDs with `git checkout -- <file>`; in a file that changed for both, edit the other CRDs' lines back so only `<Kind>`'s differ.
+   - **Never** keep changes to `missingrefs.txt` or `multi_version_crd_diff/` (fix the types instead; see above).
+   - Keep `naming_violations.txt` changes only for external-only `<targetkind>_identity.go` / `<targetkind>_reference.go` files created per `references/PARENT_AND_IDENTITY.md` or `references/REFERENCES_AND_NESTED_STRUCTS.md`; revert any other change to it.
+   - Re-run `go test ./tests/apichecks/...` without `WRITE_GOLDEN_OUTPUT` to confirm it passes, and commit the updated lists with the rest of the step.
+6. Run verification tests (including `TestCRDBackwardCompatibility`, `TestHandWrittenProtoStructAnnotationsAndNaming`, `TestGenerateScripts`, `TestDirectResourceFileNaming`, `TestCRDFieldPresenceInTestsForAlpha`, and `TestRegisteredTemplatesMatchCAI`):
+   ```bash
+   go test -v ./tests/apichecks/... -run "TestMissingRefs|TestJudgementQueue|TestSourceLinks|TestCRDObjectTypes|TestCRDBackwardCompatibility|TestHandWrittenProtoStructAnnotationsAndNaming|TestGenerateScripts|TestDirectResourceFileNaming|TestCRDFieldPresenceInTestsForAlpha"
    go test -v ./pkg/gcpurls/... ./pkg/test/resourcefixture/... -run "TestRegisteredTemplatesMatchCAI|TestVerifyLabelsTestCasesExist"
    go test -v ./apis/<service>/... ./pkg/controller/direct/<service>/...
    ```
-6. Record any service-specific proto or reference quirks in `.gemini/journals/<service>.md`.
+7. Record any service-specific proto or reference quirks in `.gemini/journals/<service>.md`.
 

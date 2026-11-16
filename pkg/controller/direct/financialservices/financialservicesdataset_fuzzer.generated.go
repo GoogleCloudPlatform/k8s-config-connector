@@ -41,7 +41,6 @@ func financialServicesDatasetFuzzer() fuzztesting.KRMFuzzer {
 
 	// Spec fields
 	f.SpecField(".date_range")
-	f.SpecField(".labels")
 	f.SpecField(".table_specs")
 	f.SpecField(".time_zone")
 
@@ -52,6 +51,7 @@ func financialServicesDatasetFuzzer() fuzztesting.KRMFuzzer {
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	return f
 }

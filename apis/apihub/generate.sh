@@ -73,6 +73,7 @@ ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.apihub.v1 \
   --api-version apihub.cnrm.cloud.google.com/v1alpha1 \
+  --resource APIHubPlugin:Plugin \
   --resource ApihubSpec:Spec \
   --resource APIHubPluginInstance:PluginInstance \
   --resource APIHubVersion:Version

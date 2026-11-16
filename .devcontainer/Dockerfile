@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.26.10
+FROM golang:1.26.11
 
 RUN apt-get update && apt-get install --yes git make curl

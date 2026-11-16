@@ -21,6 +21,549 @@
 # file does not have.
 
 entries:
+  - kind: AIPlatformArtifact
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: triaged all findings; updated parentRef to *vertexaiv1beta1.MetadataStoreRef, moved etag to observedState, removed spec.labels, fixed docs link, and verified identity/references.
+  - kind: AIPlatformArtifact
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/metadataStores/{metadata_store}/artifacts/{artifact}" contains ancestor segment(s) metadataStores/{metadata_store} with no matching reference or field on AIPlatformArtifactSpec
+    status: resolved
+    resolution: edited
+    note: resolved by modelling spec.parentRef (*vertexaiv1beta1.MetadataStoreRef) per single-parent rule.
+  - kind: AIPlatformArtifact
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
+    status: resolved
+    resolution: accepted
+    note: CreateArtifactRequest supports client-specified artifact_id; implements IdentityV2.
+  - kind: AIPlatformArtifact
+    group: aiplatform.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/metadataStores/{metadata_store}, and no MetadataStoreRef type exists to point at; add the parent resource first, then model this as a reference
+    status: resolved
+    resolution: edited
+    note: modelled spec.parentRef (*vertexaiv1beta1.MetadataStoreRef) reusing existing MetadataStoreRef in apis/vertexai/v1beta1 per single-parent rule.
+  - kind: AIPlatformArtifact
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.metadataStores.artifacts: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.metadataStores.artifacts, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.metadataStores.artifacts'
+    status: resolved
+    resolution: edited
+    note: updated resource-docs link to valid cloud.google.com URL and removed +kcc:guess tag.
+  - kind: AIPlatformArtifact
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: resolved
+    resolution: edited
+    note: moved etag from spec to observedState.
+  - kind: AIPlatformArtifact
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/metadataStores/{metadata_store}, which already names the location; a reference to it could replace location and the root reference
+    status: resolved
+    resolution: edited
+    note: replaced projectRef and location with required spec.parentRef (*vertexaiv1beta1.MetadataStoreRef) per single-parent rule.
+  - kind: AIPlatformArtifact
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.state
+    reason: possible-status-field-in-spec
+    detail: state was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState
+    status: resolved
+    resolution: accepted
+    note: user-configurable state managed by clients per proto comment; retained in spec.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: triaged all findings; updated parentRef to inlined *parent.ProjectAndLocationRef, fixed docs link, and verified identity/references.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: generated AIPlatformCachedContentIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
+    status: resolved
+    resolution: accepted
+    note: CreateCachedContentRequest has no cached_content_id parameter; server generates the ID.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.cachedContents: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.cachedContents, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.cachedContents'
+    status: resolved
+    resolution: edited
+    note: updated resource-docs link to valid cloud.google.com URL and removed +kcc:guess tag.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.contents[].parts
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.contents[].parts[].codeExecutionResult.outcome
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.contents[].parts[].executableCode.code
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.contents[].parts[].executableCode.language
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.contents[].parts[].fileData.fileURI
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.contents[].parts[].fileData.mimeType
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.contents[].parts[].functionResponse.name
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.contents[].parts[].functionResponse.response
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.contents[].parts[].inlineData.data
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.contents[].parts[].inlineData.mimeType
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyName
+    reason: possible-reference-by-name
+    detail: KMSCryptoKeyRef
+    status: resolved
+    resolution: accepted
+    note: already modeled as KmsKeyRef *kmsv1beta1.KMSCryptoKeyRef on EncryptionSpec.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformModelMonitor, AIPlatformNotebookRuntimeTemplate, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformCachedContent only, give AIPlatformCachedContent its own copy of EncryptionSpec. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: resolved
+    resolution: edited
+    note: replaced projectRef and location with inlined *parent.ProjectAndLocationRef.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.model
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{PROJECT}/locations/{LOCATION}/publishers/google/models/{MODEL}"
+    status: resolved
+    resolution: edited
+    note: converted to modelRef (*AIPlatformModelRef).
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.model
+    reason: possible-reference-by-sibling
+    detail: the name matches AIPlatformModel, a resource this service declares; confirm whether it should be a reference
+    status: resolved
+    resolution: edited
+    note: converted to modelRef (*AIPlatformModelRef).
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.systemInstruction.parts
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.systemInstruction.parts[].codeExecutionResult.outcome
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.systemInstruction.parts[].executableCode.code
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.systemInstruction.parts[].executableCode.language
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.systemInstruction.parts[].fileData.fileURI
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.systemInstruction.parts[].fileData.mimeType
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.systemInstruction.parts[].functionResponse.name
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.systemInstruction.parts[].functionResponse.response
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.systemInstruction.parts[].inlineData.data
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.systemInstruction.parts[].inlineData.mimeType
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].functionDeclarations[].parameters.additionalProperties
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: generated wrapper Value is standard KRM representation in direct controllers
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].functionDeclarations[].parameters.default
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: generated wrapper Value is standard KRM representation in direct controllers
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].functionDeclarations[].parameters.defs
+    reason: message-map-derived
+    detail: derived as map[string]Schema from proto google.cloud.aiplatform.v1.Schema; verify Go type and mapping
+    status: resolved
+    resolution: accepted
+    note: derived map[string]Schema compiles cleanly.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].functionDeclarations[].parameters.example
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: generated wrapper Value is standard KRM representation in direct controllers
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].functionDeclarations[].parameters.properties
+    reason: message-map-derived
+    detail: derived as map[string]Schema from proto google.cloud.aiplatform.v1.Schema; verify Go type and mapping
+    status: resolved
+    resolution: accepted
+    note: derived map[string]Schema compiles cleanly.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].functionDeclarations[].parametersJsonSchema
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: generated wrapper Value is standard KRM representation in direct controllers
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].functionDeclarations[].response.additionalProperties
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: generated wrapper Value is standard KRM representation in direct controllers
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].functionDeclarations[].response.default
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: generated wrapper Value is standard KRM representation in direct controllers
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].functionDeclarations[].response.defs
+    reason: message-map-derived
+    detail: derived as map[string]Schema from proto google.cloud.aiplatform.v1.Schema; verify Go type and mapping
+    status: resolved
+    resolution: accepted
+    note: derived map[string]Schema compiles cleanly.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].functionDeclarations[].response.example
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: generated wrapper Value is standard KRM representation in direct controllers
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].functionDeclarations[].response.properties
+    reason: message-map-derived
+    detail: derived as map[string]Schema from proto google.cloud.aiplatform.v1.Schema; verify Go type and mapping
+    status: resolved
+    resolution: accepted
+    note: derived map[string]Schema compiles cleanly.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].functionDeclarations[].responseJsonSchema
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: generated wrapper Value is standard KRM representation in direct controllers
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].retrieval.disableAttribution
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: resolved
+    resolution: edited
+    note: removed deprecated field.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].retrieval.vertexAiSearch.dataStoreSpecs[].dataStore
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}"
+    status: resolved
+    resolution: edited
+    note: converted to dataStoreRef (*discoveryenginev1alpha1.DiscoveryEngineDataStoreRef).
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].retrieval.vertexAiSearch.datastore
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}"
+    status: resolved
+    resolution: edited
+    note: converted to datastoreRef (*discoveryenginev1alpha1.DiscoveryEngineDataStoreRef).
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].retrieval.vertexAiSearch.engine
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/collections/{collection}/engines/{engine}"
+    status: resolved
+    resolution: edited
+    note: converted to engineRef (*discoveryenginev1alpha1.DiscoveryEngineEngineRef).
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].retrieval.vertexRagStore.ragResources[].ragCorpus
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to aiplatform.googleapis.com/RagCorpus (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: converted to ragCorpusRef (*AIPlatformRAGCorpusRef).
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].retrieval.vertexRagStore.ragResources[].ragFileIDs
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: resolved
+    resolution: accepted
+    note: ragFileIDs is a string slice of file IDs; kept as-is.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].retrieval.vertexRagStore.similarityTopK
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: resolved
+    resolution: edited
+    note: removed deprecated field.
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].retrieval.vertexRagStore.vectorDistanceThreshold
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: resolved
+    resolution: edited
+    note: removed deprecated field.
+  - kind: AIPlatformContext
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: triaged all findings; modelled parentRef as *MetadataStoreRef, moved etag to observedState, removed top-level labels, and fixed documentation link.
+  - kind: AIPlatformContext
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/metadataStores/{metadata_store}/contexts/{context}" contains ancestor segment(s) metadataStores/{metadata_store} with no matching reference or field on AIPlatformContextSpec
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*vertexaiv1beta1.MetadataStoreRef) per the single-parent rule; removed projectRef and location.
+  - kind: AIPlatformContext
+    group: aiplatform.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/metadataStores/{metadata_store}, and no MetadataStoreRef type exists to point at; add the parent resource first, then model this as a reference
+    status: resolved
+    resolution: edited
+    note: reused existing vertexaiv1beta1.MetadataStoreRef and modelled spec.parentRef (*vertexaiv1beta1.MetadataStoreRef) per the single-parent rule; removed projectRef and location.
+  - kind: AIPlatformContext
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.metadataStores.contexts: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.metadataStores.contexts, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.metadataStores.contexts'
+    status: resolved
+    resolution: edited
+    note: updated to valid cloud.google.com documentation URL and removed guess annotation.
+  - kind: AIPlatformContext
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: resolved
+    resolution: edited
+    note: removed etag from spec and added to observedState.
+  - kind: AIPlatformContext
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/metadataStores/{metadata_store}, which already names the location; a reference to it could replace location and the root reference
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*vertexaiv1beta1.MetadataStoreRef) per the single-parent rule; removed projectRef and location.
+  - kind: AIPlatformExecution
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: triaged all findings; modelled parentRef as *vertexaiv1beta1.MetadataStoreRef, moved etag to observedState, removed top-level labels, verified client-managed state, and fixed documentation link.
+  - kind: AIPlatformExecution
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/metadataStores/{metadata_store}/executions/{execution}" contains ancestor segment(s) metadataStores/{metadata_store} with no matching reference or field on AIPlatformExecutionSpec
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*vertexaiv1beta1.MetadataStoreRef) per the single-parent rule; removed projectRef and location.
+  - kind: AIPlatformExecution
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
+    status: resolved
+    resolution: accepted
+    note: CreateExecutionRequest has execution_id allowing client-specified ID, so IdentityV2 is appropriate.
+  - kind: AIPlatformExecution
+    group: aiplatform.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/metadataStores/{metadata_store}, and no MetadataStoreRef type exists to point at; add the parent resource first, then model this as a reference
+    status: resolved
+    resolution: edited
+    note: reused existing MetadataStoreRef from vertexai v1beta1 and modelled spec.parentRef (*vertexaiv1beta1.MetadataStoreRef) per the single-parent rule; removed projectRef and location.
+  - kind: AIPlatformExecution
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.metadataStores.executions: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.metadataStores.executions, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.metadataStores.executions'
+    status: resolved
+    resolution: edited
+    note: updated resource doc URL to valid cloud.google.com page and removed guess annotation.
+  - kind: AIPlatformExecution
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: resolved
+    resolution: edited
+    note: removed from spec and moved to observedState.
+  - kind: AIPlatformExecution
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/metadataStores/{metadata_store}, which already names the location; a reference to it could replace location and the root reference
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*vertexaiv1beta1.MetadataStoreRef); removed projectRef and location.
+  - kind: AIPlatformExecution
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.state
+    reason: possible-status-field-in-spec
+    detail: state was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState
+    status: resolved
+    resolution: accepted
+    note: state is client-managed and user-configurable per proto documentation.
   - kind: AIPlatformFeatureView
     group: aiplatform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
@@ -101,477 +644,762 @@ entries:
     group: aiplatform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged all references, parent/location, and KRM conventions
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: generated AIPlatformHyperparameterTuningJobIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed server-generated ID; CreateHyperparameterTuningJobRequest has no id parameter and name is OUTPUT_ONLY
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: 'none of these loaded as a page ending in /v1/projects.locations.hyperparameterTuningJobs: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.hyperparameterTuningJobs, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.hyperparameterTuningJobs'
-    status: open
+    status: resolved
+    resolution: edited
+    note: updated resource-docs link to cloud.google.com and removed guess marker
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.encryptionSpec.kmsKeyName
     reason: possible-reference-by-name
     detail: KMSCryptoKeyRef
-    status: open
+    status: resolved
+    resolution: accepted
+    note: already modeled as KmsKeyRef (*kmsv1beta1.KMSCryptoKeyRef) in shared EncryptionSpec
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.encryptionSpec.kmsKeyRef
     reason: required-not-enforced
-    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCustomJob, AIPlatformModel, AIPlatformModelMonitor, AIPlatformNotebookRuntimeTemplate, AIPlatformPersistentResource, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAIPipelineJob, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of EncryptionSpec. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCachedContent, AIPlatformCustomJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformModelMonitor, AIPlatformNotebookRuntimeTemplate, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of EncryptionSpec. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional to match existing shared EncryptionSpec across aiplatform resources
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.studySpec.metrics[].metricID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: user-defined metric identifier within the study spec, not a GCP resource reference
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.studySpec.parameters[].conditionalParameterSpecs[].parentCategoricalValues.values
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. StudySpec_ParameterSpec_ConditionalParameterSpec in vertexaistudy_types.go is also used by VertexAIStudy. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of StudySpec_ParameterSpec_ConditionalParameterSpec whose ParentCategoricalValues field holds StudySpec_ParameterSpec_ConditionalParameterSpec_CategoricalValueConditionWithRequired, and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: edited
+    note: enforced via StudySpec_ParameterSpec_ConditionalParameterSpecWithRequired referencing StudySpec_ParameterSpec_ConditionalParameterSpec_CategoricalValueConditionWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.studySpec.parameters[].conditionalParameterSpecs[].parentDiscreteValues.values
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. StudySpec_ParameterSpec_ConditionalParameterSpec in vertexaistudy_types.go is also used by VertexAIStudy. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of StudySpec_ParameterSpec_ConditionalParameterSpec whose ParentDiscreteValues field holds StudySpec_ParameterSpec_ConditionalParameterSpec_DiscreteValueConditionWithRequired, and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: edited
+    note: enforced via StudySpec_ParameterSpec_ConditionalParameterSpecWithRequired referencing StudySpec_ParameterSpec_ConditionalParameterSpec_DiscreteValueConditionWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.studySpec.parameters[].conditionalParameterSpecs[].parentIntValues.values
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. StudySpec_ParameterSpec_ConditionalParameterSpec in vertexaistudy_types.go is also used by VertexAIStudy. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of StudySpec_ParameterSpec_ConditionalParameterSpec whose ParentIntValues field holds StudySpec_ParameterSpec_ConditionalParameterSpec_IntValueConditionWithRequired, and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: edited
+    note: enforced via StudySpec_ParameterSpec_ConditionalParameterSpecWithRequired referencing StudySpec_ParameterSpec_ConditionalParameterSpec_IntValueConditionWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.studySpec.parameters[].parameterID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: user-defined parameter identifier within the study spec, not a GCP resource reference
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.studySpec.studyStoppingConfig.maxNumTrials
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Int32Value, which was generated as struct Int32Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: generated wrapper Int32Value is standard KRM representation in direct controllers
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.studySpec.studyStoppingConfig.maxNumTrialsNoProgress
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Int32Value, which was generated as struct Int32Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: generated wrapper Int32Value is standard KRM representation in direct controllers
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.studySpec.studyStoppingConfig.minNumTrials
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Int32Value, which was generated as struct Int32Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: generated wrapper Int32Value is standard KRM representation in direct controllers
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.baseOutputDirectory.outputURIPrefix
     reason: reference-not-representable
     detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: GCS URI string, not directly representable as KCC reference today
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.baseOutputDirectory.outputURIPrefix
     reason: required-not-enforced
-    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of CustomJobSpec whose BaseOutputDirectory field holds GCSDestinationWithRequired, and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change CustomJobSpec.BaseOutputDirectory in aiplatformhyperparametertuningjob_types.go from GCSDestination to GCSDestinationWithRequired and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired referencing GCSDestinationWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.experiment
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to aiplatform.googleapis.com/Context (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: accepted
+    note: already modeled as ExperimentRef (*VertexAIExperimentRef) in shared CustomJobSpec in aiplatformcustomjob_types.go
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.experimentRun
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to aiplatform.googleapis.com/Context (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: accepted
+    note: already modeled as ExperimentRunRef (*VertexAIExperimentRunRef) in shared CustomJobSpec in aiplatformcustomjob_types.go
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.models
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to aiplatform.googleapis.com/Model (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modeled as ModelRefs ([]AIPlatformModelRef) in CustomJobSpec
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.network
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to compute.googleapis.com/Network (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modeled as NetworkRef (*computev1beta1.ComputeNetworkRef) in CustomJobSpec
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.persistentResourceID
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to aiplatform.googleapis.com/PersistentResource (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modeled as PersistentResourceRef (*AIPlatformPersistentResourceRef) in CustomJobSpec
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.protectedArtifactLocationID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: GCP location string (e.g. us-central1) for protected artifact storage, not a resource reference
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.pscInterfaceConfig.dnsPeeringConfigs[].domain
     reason: required-not-enforced
-    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in vertexaipipelinejob_types.go is also used by AIPlatformCustomJob, AIPlatformPersistentResource, AIPlatformReasoningEngine, VertexAIPipelineJob. +required on DNSPeeringConfig.Domain would apply there too. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of DNSPeeringConfig. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in aiplatformpipelinejob_types.go is also used by AIPlatformCustomJob, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformReasoningEngine. +required on DNSPeeringConfig.Domain would apply there too. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of DNSPeeringConfig. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired and PSCInterfaceConfigWithRequired referencing DNSPeeringConfigWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.pscInterfaceConfig.dnsPeeringConfigs[].targetNetworkRef
     reason: required-not-enforced
-    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in vertexaipipelinejob_types.go is also used by AIPlatformCustomJob, AIPlatformPersistentResource, AIPlatformReasoningEngine, VertexAIPipelineJob. +required on DNSPeeringConfig.TargetNetworkRef would apply there too. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of DNSPeeringConfig. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in aiplatformpipelinejob_types.go is also used by AIPlatformCustomJob, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformReasoningEngine. +required on DNSPeeringConfig.TargetNetworkRef would apply there too. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of DNSPeeringConfig. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired and PSCInterfaceConfigWithRequired referencing DNSPeeringConfigWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.pscInterfaceConfig.dnsPeeringConfigs[].targetProjectRef
     reason: required-not-enforced
-    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in vertexaipipelinejob_types.go is also used by AIPlatformCustomJob, AIPlatformPersistentResource, AIPlatformReasoningEngine, VertexAIPipelineJob. +required on DNSPeeringConfig.TargetProjectRef would apply there too. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of DNSPeeringConfig. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in aiplatformpipelinejob_types.go is also used by AIPlatformCustomJob, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformReasoningEngine. +required on DNSPeeringConfig.TargetProjectRef would apply there too. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of DNSPeeringConfig. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired and PSCInterfaceConfigWithRequired referencing DNSPeeringConfigWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.pscInterfaceConfig.networkAttachment
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to compute.googleapis.com/NetworkAttachment (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: accepted
+    note: already modeled as NetworkAttachmentRef (*computev1alpha1.ComputeNetworkAttachmentRef) in shared PSCInterfaceConfig
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.serviceAccount
     reason: possible-reference-by-description
     detail: the field name ends in serviceAccount
-    status: open
+    status: resolved
+    resolution: edited
+    note: modeled as ServiceAccountRef (*refsv1beta1.IAMServiceAccountRef) in CustomJobSpec
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.tensorboard
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to aiplatform.googleapis.com/Tensorboard (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: accepted
+    note: already modeled as TensorboardRef (*vertexaiv1alpha1.VertexAITensorboardRef) in shared CustomJobSpec in aiplatformcustomjob_types.go
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. +required on CustomJobSpec.WorkerPoolSpecs would apply there too. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of CustomJobSpec. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: edited
+    note: enforced on CustomJobSpecWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs[].containerSpec.env[].name
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: edited
+    note: enforced via EnvVarWithRequired on ContainerSpecWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs[].containerSpec.env[].value
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: edited
+    note: enforced via EnvVarWithRequired on ContainerSpecWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs[].containerSpec.imageURI
     reason: reference-not-representable
     detail: 'container-image-uri-not-a-storage-object: names another resource, but KCC cannot express it as a reference today, so it stays a string'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: container image URI, not a KCC resource reference
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs[].containerSpec.imageURI
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: edited
+    note: enforced on ContainerSpecWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs[].lustreMounts[].filesystem
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: edited
+    note: enforced on LustreMountWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs[].lustreMounts[].instanceIP
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: edited
+    note: enforced on LustreMountWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs[].lustreMounts[].mountPoint
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: edited
+    note: enforced on LustreMountWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs[].lustreMounts[].volumeHandle
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: edited
+    note: enforced on LustreMountWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs[].machineSpec.reservationAffinity.reservationAffinityType
     reason: required-not-enforced
-    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change CustomJobSpec.WorkerPoolSpecs in aiplatformhyperparametertuningjob_types.go from WorkerPoolSpec to WorkerPoolSpecWithRequired and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced on ReservationAffinityWithRequired via CustomJobSpecWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs[].machineSpec.reservationAffinity.values
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to compute.googleapis.com/Reservation (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: accepted
+    note: shared ReservationAffinity struct across aiplatform/compute/vertexai resources uses string values for reservation affinity
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs[].nfsMounts[].mountPoint
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: edited
+    note: enforced on NfsMountWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs[].nfsMounts[].path
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: edited
+    note: enforced on NfsMountWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs[].nfsMounts[].server
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: edited
+    note: enforced on NfsMountWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs[].pythonPackageSpec.executorImageURI
     reason: reference-not-representable
     detail: 'container-image-uri-not-a-storage-object: names another resource, but KCC cannot express it as a reference today, so it stays a string'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: executor container image URI, not a KCC resource reference
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs[].pythonPackageSpec.executorImageURI
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. PythonPackageSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. +required on PythonPackageSpec.ExecutorImageURI would apply there too. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of PythonPackageSpec. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: edited
+    note: enforced on PythonPackageSpecWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs[].pythonPackageSpec.packageURIs
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. PythonPackageSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. +required on PythonPackageSpec.PackageURIs would apply there too. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of PythonPackageSpec. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: edited
+    note: enforced on PythonPackageSpecWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs[].pythonPackageSpec.pythonModule
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. PythonPackageSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. +required on PythonPackageSpec.PythonModule would apply there too. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of PythonPackageSpec. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: edited
+    note: enforced on PythonPackageSpecWithRequired
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .status.observedState.trials[].parameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: generated wrapper Value is standard KRM representation in direct controllers
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: accepted
+    note: triaged spec, parent, references, and identity.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: 'none of these loaded as a page ending in /v1beta1/projects.locations.modelMonitors: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1beta1/projects.locations.modelMonitors, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1beta1/projects.locations.modelMonitors'
-    status: open
+    status: resolved
+    resolution: edited
+    note: updated doc link to cloud.google.com/vertex-ai/docs/reference/rest/v1beta1/projects.locations.modelMonitors and removed guess annotation.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.encryptionSpec.kmsKeyName
     reason: possible-reference-by-name
     detail: KMSCryptoKeyRef
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to KmsKeyRef (*kmsv1beta1.KMSCryptoKeyRef) via shared EncryptionSpec.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.encryptionSpec.kmsKeyRef
     reason: required-not-enforced
-    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformNotebookRuntimeTemplate, AIPlatformPersistentResource, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAIPipelineJob, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformModelMonitor only, give AIPlatformModelMonitor its own copy of EncryptionSpec. AIPlatformModelMonitor is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCachedContent, AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformNotebookRuntimeTemplate, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformModelMonitor only, give AIPlatformModelMonitor its own copy of EncryptionSpec. AIPlatformModelMonitor is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept kmsKeyRef optional to avoid breaking existing resources sharing EncryptionSpec.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.metadata.featureAttributionsSchemaURI
     reason: reference-not-representable
     detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: GCS URI is not representable as a typed reference today; remains string.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.metadata.inputs
     reason: message-map-derived
     detail: derived as map[string]ExplanationMetadata_InputMetadata from proto google.cloud.aiplatform.v1beta1.ExplanationMetadata.InputMetadata; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: accepted
+    note: verified map[string]ExplanationMetadata_InputMetadata representation.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.metadata.inputs
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationMetadata in aiplatformmodel_types.go is also used by AIPlatformModel, VertexAITrainingPipeline. +required on ExplanationMetadata.Inputs would apply there too. To enforce it for AIPlatformModelMonitor only, give AIPlatformModelMonitor its own copy of ExplanationMetadata. AIPlatformModelMonitor is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept inputs optional to maintain shared ExplanationMetadata consistency.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.metadata.inputs.KEY.encodedBaselines
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: deferred
+    note: deferred well-known proto type resolution pending team-wide conventions.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.metadata.inputs.KEY.inputBaselines
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: deferred
+    note: deferred well-known proto type resolution pending team-wide conventions.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.metadata.outputs
     reason: message-map-derived
     detail: derived as map[string]ExplanationMetadata_OutputMetadata from proto google.cloud.aiplatform.v1beta1.ExplanationMetadata.OutputMetadata; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: accepted
+    note: verified map[string]ExplanationMetadata_OutputMetadata representation.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.metadata.outputs
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationMetadata in aiplatformmodel_types.go is also used by AIPlatformModel, VertexAITrainingPipeline. +required on ExplanationMetadata.Outputs would apply there too. To enforce it for AIPlatformModelMonitor only, give AIPlatformModelMonitor its own copy of ExplanationMetadata. AIPlatformModelMonitor is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept outputs optional to maintain shared ExplanationMetadata consistency.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.metadata.outputs.KEY.indexDisplayNameMapping
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: deferred
+    note: deferred well-known proto type resolution pending team-wide conventions.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.parameters.examples.exampleGCSSource.gcsSource.uris
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformModel, VertexAITrainingPipeline. To enforce it for AIPlatformModelMonitor only, give AIPlatformModelMonitor its own copy of ExplanationParameters whose Examples field holds ExamplesWithRequired, and run generate.sh again. AIPlatformModelMonitor is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept uris optional to maintain shared ExplanationParameters consistency.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.parameters.examples.gcsSource.uris
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformModel, VertexAITrainingPipeline. To enforce it for AIPlatformModelMonitor only, give AIPlatformModelMonitor its own copy of ExplanationParameters whose Examples field holds ExamplesWithRequired, and run generate.sh again. AIPlatformModelMonitor is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept uris optional to maintain shared ExplanationParameters consistency.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.parameters.examples.nearestNeighborSearchConfig
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: deferred
+    note: deferred well-known proto type resolution pending team-wide conventions.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.parameters.integratedGradientsAttribution.stepCount
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformModel, VertexAITrainingPipeline. To enforce it for AIPlatformModelMonitor only, give AIPlatformModelMonitor its own copy of ExplanationParameters whose IntegratedGradientsAttribution field holds IntegratedGradientsAttributionWithRequired, and run generate.sh again. AIPlatformModelMonitor is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept stepCount optional to maintain shared ExplanationParameters consistency.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.parameters.outputIndices
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.ListValue, which was generated as struct ListValue; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: deferred
+    note: deferred well-known proto type resolution pending team-wide conventions.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.parameters.sampledShapleyAttribution.pathCount
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformModel, VertexAITrainingPipeline. To enforce it for AIPlatformModelMonitor only, give AIPlatformModelMonitor its own copy of ExplanationParameters whose SampledShapleyAttribution field holds SampledShapleyAttributionWithRequired, and run generate.sh again. AIPlatformModelMonitor is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept pathCount optional to maintain shared ExplanationParameters consistency.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.explanationSpec.parameters.xraiAttribution.stepCount
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformModel, VertexAITrainingPipeline. To enforce it for AIPlatformModelMonitor only, give AIPlatformModelMonitor its own copy of ExplanationParameters whose XraiAttribution field holds XraiAttributionWithRequired, and run generate.sh again. AIPlatformModelMonitor is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept stepCount optional to maintain shared ExplanationParameters consistency.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced projectRef and location with inlined *parent.ProjectAndLocationRef.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.modelMonitoringTarget.vertexModel.model
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to aiplatform.googleapis.com/Model (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to ModelRef (*AIPlatformModelRef).
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.modelMonitoringTarget.vertexModel.modelVersionID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: model version ID is an alphanumeric version identifier within the model, not a separate GCP resource reference.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.notificationSpec.notificationChannelConfigs[].notificationChannel
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/<project_id_or_number>/notificationChannels/<channel_id>"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to NotificationChannelRef (*monitoringv1beta1.MonitoringNotificationChannelRef).
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.outputSpec.gcsBaseDirectory.outputURIPrefix
     reason: reference-not-representable
     detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: GCS URI prefix is not representable as a reference today; remains string.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tabularObjective.featureAttributionSpec.batchExplanationDedicatedResources.machineSpec.reservationAffinity.reservationAffinityType
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformModelMonitorSpec.TabularObjective in aiplatformmodelmonitor_types.go from ModelMonitoringObjectiveSpec_TabularObjective to ModelMonitoringObjectiveSpec_TabularObjectiveWithRequired and run generate.sh again. AIPlatformModelMonitor is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept reservationAffinityType optional to avoid breaking existing resources sharing TabularObjective.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tabularObjective.featureAttributionSpec.batchExplanationDedicatedResources.machineSpec.reservationAffinity.values
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to compute.googleapis.com/Reservation (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to ValueRefs ([]computev1beta1.ComputeReservationRef).
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tabularObjective.featureAttributionSpec.featureAlertConditions
     reason: message-map-derived
     detail: derived as map[string]ModelMonitoringAlertCondition from proto google.cloud.aiplatform.v1beta1.ModelMonitoringAlertCondition; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: accepted
+    note: verified map[string]ModelMonitoringAlertCondition representation.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tabularObjective.featureDriftSpec.featureAlertConditions
     reason: message-map-derived
     detail: derived as map[string]ModelMonitoringAlertCondition from proto google.cloud.aiplatform.v1beta1.ModelMonitoringAlertCondition; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: accepted
+    note: verified map[string]ModelMonitoringAlertCondition representation.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tabularObjective.predictionOutputDriftSpec.featureAlertConditions
     reason: message-map-derived
     detail: derived as map[string]ModelMonitoringAlertCondition from proto google.cloud.aiplatform.v1beta1.ModelMonitoringAlertCondition; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: accepted
+    note: verified map[string]ModelMonitoringAlertCondition representation.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trainingDataset.batchPredictionOutput.batchPredictionJob
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to aiplatform.googleapis.com/BatchPredictionJob (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to BatchPredictionJobRef (*AIPlatformBatchPredictionJobRef).
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trainingDataset.columnizedDataset.bigquerySource.tableURI
     reason: reference-not-representable
     detail: 'bq-scheme-not-a-gcp-resource-name: names another resource, but KCC cannot express it as a reference today, so it stays a string'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: BigQuery table URI is not a standard GCP resource name format KCC can express as a reference today; remains string.
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trainingDataset.columnizedDataset.vertexDataset
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to aiplatform.googleapis.com/Dataset (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to VertexDatasetRef (*vertexaiv1beta1.VertexAIDatasetRef).
   - kind: AIPlatformModelMonitor
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trainingDataset.vertexEndpointLogs.endpoints
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to aiplatform.googleapis.com/Endpoint (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to EndpointRefs ([]vertexaiv1beta1.VertexAIEndpointRef).
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: triaged all findings; updated parentRef to inlined *parent.ProjectAndLocationRef, verified docs link, updated NotebookRuntimeTemplateRef, ScheduleRef, ServiceAccountRef.
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
+    status: resolved
+    resolution: accepted
+    note: CreateNotebookExecutionJobRequest has notebook_execution_job_id field, and client-specified ID is supported via ResourceID; AIPlatformNotebookExecutionJobIdentity correctly implements IdentityV2.
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.notebookExecutionJobs: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.notebookExecutionJobs, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.notebookExecutionJobs'
+    status: resolved
+    resolution: edited
+    note: verified https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.notebookExecutionJobs loads with 200 OK.
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.customEnvironmentSpec.machineSpec.reservationAffinity.values
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to compute.googleapis.com/Reservation (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: accepted
+    note: shared struct MachineSpec/ReservationAffinity across aiplatform/compute/vertexai resources uses string values for reservation affinity.
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.customEnvironmentSpec.networkSpec.network
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to compute.googleapis.com/Network (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: accepted
+    note: already modeled as NetworkRef (*computev1beta1.ComputeNetworkRef) on NetworkSpec.
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.customEnvironmentSpec.networkSpec.subnetwork
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to compute.googleapis.com/Subnetwork (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: accepted
+    note: already modeled as SubnetworkRef (*computev1beta1.ComputeSubnetworkRef) on NetworkSpec.
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.dataformRepositorySource.dataformRepositoryResourceName
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project_id}/locations/{location}/repositories/{repository_id}"
+    status: resolved
+    resolution: accepted
+    note: already modeled as DataformRepositoryRef (*dataformv1beta1.DataformRepositoryRef) on NotebookExecutionJob_DataformRepositorySource.
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyName
+    reason: possible-reference-by-name
+    detail: KMSCryptoKeyRef
+    status: resolved
+    resolution: accepted
+    note: already modeled as KmsKeyRef (*kmsv1beta1.KMSCryptoKeyRef) on shared EncryptionSpec.
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCachedContent, AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformModelMonitor, AIPlatformNotebookRuntimeTemplate, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformNotebookExecutionJob only, give AIPlatformNotebookExecutionJob its own copy of EncryptionSpec. AIPlatformNotebookExecutionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: keeping shared EncryptionSpec optional to avoid diverging from other aiplatform resources and breaking existing configurations.
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.gcsNotebookSource
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: retained in refs_not_representable.txt exception list.
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.gcsNotebookSource.uri
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: retained in refs_not_representable.txt exception list.
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.gcsOutputURI
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: retained in refs_not_representable.txt exception list.
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: resolved
+    resolution: edited
+    note: inlined *parent.ProjectAndLocationRef in AIPlatformNotebookExecutionJobSpec.
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.notebookRuntimeTemplateResourceName
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to aiplatform.googleapis.com/NotebookRuntimeTemplate (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: modeled as NotebookRuntimeTemplateRef (*AIPlatformNotebookRuntimeTemplateRef).
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.scheduleResourceName
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to aiplatform.googleapis.com/Schedule (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: modeled as ScheduleRef (*AIPlatformScheduleRef).
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.serviceAccount
+    reason: possible-reference-by-description
+    detail: the field name ends in serviceAccount
+    status: resolved
+    resolution: edited
+    note: modeled as ServiceAccountRef (*refsv1beta1.IAMServiceAccountRef).
   - kind: AIPlatformNotebookRuntimeTemplate
     group: aiplatform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
@@ -592,7 +1420,7 @@ entries:
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.encryptionSpec.kmsKeyRef
     reason: required-not-enforced
-    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelMonitor, AIPlatformPersistentResource, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAIPipelineJob, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformNotebookRuntimeTemplate only, give AIPlatformNotebookRuntimeTemplate its own copy of EncryptionSpec. AIPlatformNotebookRuntimeTemplate is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCachedContent, AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformModelMonitor, AIPlatformNotebookExecutionJob, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformNotebookRuntimeTemplate only, give AIPlatformNotebookRuntimeTemplate its own copy of EncryptionSpec. AIPlatformNotebookRuntimeTemplate is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: open
   - kind: AIPlatformNotebookRuntimeTemplate
     group: aiplatform.cnrm.cloud.google.com
@@ -642,6 +1470,84 @@ entries:
     reason: reference-not-representable
     detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
     status: open
+  - kind: AIPlatformRAGCorpus
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: accepted
+    note: Triaged AIPlatformRAGCorpus types, identity, reference, and mappers.
+  - kind: AIPlatformRAGCorpus
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: generated AIPlatformRAGCorpusIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
+    status: resolved
+    resolution: accepted
+    note: AIPlatformRAGCorpus uses ServerGeneratedIdentity because the Create RPC has no client-provided resource ID parameter.
+  - kind: AIPlatformRAGCorpus
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyName
+    reason: possible-reference-by-name
+    detail: KMSCryptoKeyRef
+    status: resolved
+    resolution: accepted
+    note: EncryptionSpec uses KmsKeyRef *kmsv1beta1.KMSCryptoKeyRef.
+  - kind: AIPlatformRAGCorpus
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelMonitor, AIPlatformNotebookRuntimeTemplate, AIPlatformPersistentResource, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, AIPlatformPipelineJob, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformRAGCorpus only, give AIPlatformRAGCorpus its own copy of EncryptionSpec. AIPlatformRAGCorpus is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: EncryptionSpec is optional, so KmsKeyRef remains optional.
+  - kind: AIPlatformRAGCorpus
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: resolved
+    resolution: accepted
+    note: ProjectRef and Location are kept in Spec per standard KCC CRD conventions.
+  - kind: AIPlatformRAGCorpus
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.vectorDbConfig.apiAuth.apiKeyConfig.apiKeySecretVersion
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to secretmanager.googleapis.com/SecretVersion (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: Converted apiKeySecretVersion to apiKeySecretVersionRef (*refsv1beta1.SecretManagerSecretVersionRef).
+  - kind: AIPlatformRAGCorpus
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.vectorDbConfig.ragEmbeddingModelConfig.vertexPredictionEndpoint.endpoint
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to aiplatform.googleapis.com/Endpoint (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: Converted endpoint to endpointRef (*vertexaiv1beta1.VertexAIEndpointRef).
+  - kind: AIPlatformRAGCorpus
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.vectorDbConfig.vertexVectorSearch.index
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/indexes/{index}"
+    status: resolved
+    resolution: edited
+    note: Converted index to indexRef (*vertexaiv1beta1.VertexAIIndexRef).
+  - kind: AIPlatformRAGCorpus
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.vectorDbConfig.vertexVectorSearch.indexEndpoint
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/indexEndpoints/{index_endpoint}"
+    status: resolved
+    resolution: edited
+    note: Converted indexEndpoint to indexEndpointRef (*AIPlatformIndexEndpointRef).
+  - kind: AIPlatformRAGCorpus
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.vertexAiSearchConfig.servingConfig
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/servingConfigs/{serving_config}"
+    status: resolved
+    resolution: edited
+    note: Converted servingConfig to servingConfigRef (*discoveryenginev1alpha1.DiscoveryEngineServingConfigRef).
   - kind: VertexAISchedule
     group: aiplatform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

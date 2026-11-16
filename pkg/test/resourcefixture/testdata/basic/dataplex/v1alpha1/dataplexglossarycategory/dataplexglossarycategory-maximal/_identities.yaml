@@ -1,0 +1,12 @@
+- caisURL: //dataplex.googleapis.com/projects/${projectId}/locations/us-central1/glossaries/dataplexglossary-dep-max-${uniqueId}
+  group: dataplex.cnrm.cloud.google.com
+  kind: DataplexGlossary
+  name: dataplexglossary-dep-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //dataplex.googleapis.com/projects/${projectId}/locations/us-central1/glossaries/dataplexglossary-dep-max-${uniqueId}/categories/dpgc-max-${uniqueId}
+  group: dataplex.cnrm.cloud.google.com
+  kind: DataplexGlossaryCategory
+  name: dataplexglossarycategory-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

@@ -1,0 +1,6 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/zones/us-central1-a/storagePools/computestoragepool-minimal-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeStoragePool
+  name: computestoragepool-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

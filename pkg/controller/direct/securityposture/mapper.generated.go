@@ -166,7 +166,7 @@ func CustomConstraint_FromProto(mapCtx *direct.MapContext, in *pb.CustomConstrai
 		return nil
 	}
 	out := &krm.CustomConstraint{}
-	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Name
 	out.ResourceTypes = in.ResourceTypes
 	out.MethodTypes = direct.EnumSlice_FromProto(mapCtx, in.MethodTypes)
 	out.Condition = direct.LazyPtr(in.GetCondition())
@@ -181,7 +181,7 @@ func CustomConstraint_ToProto(mapCtx *direct.MapContext, in *krm.CustomConstrain
 		return nil
 	}
 	out := &pb.CustomConstraint{}
-	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Name
 	out.ResourceTypes = in.ResourceTypes
 	out.MethodTypes = direct.EnumSlice_ToProto[pb.CustomConstraint_MethodType](mapCtx, in.MethodTypes)
 	out.Condition = direct.ValueOf(in.Condition)
@@ -575,6 +575,7 @@ func SecurityposturePostureObservedState_FromProto(mapCtx *direct.MapContext, in
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.PolicySets = direct.Slice_FromProto(mapCtx, in.PolicySets, PolicySetObservedState_FromProto)
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.Reconciling = direct.LazyPtr(in.GetReconciling())
 	return out
 }
@@ -588,6 +589,7 @@ func SecurityposturePostureObservedState_ToProto(mapCtx *direct.MapContext, in *
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.PolicySets = direct.Slice_ToProto(mapCtx, in.PolicySets, PolicySetObservedState_ToProto)
+	out.Etag = direct.ValueOf(in.Etag)
 	out.Reconciling = direct.ValueOf(in.Reconciling)
 	return out
 }
@@ -600,7 +602,6 @@ func SecurityposturePostureSpec_FromProto(mapCtx *direct.MapContext, in *pb.Post
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.PolicySets = direct.Slice_FromProto(mapCtx, in.PolicySets, PolicySet_FromProto)
-	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.Annotations = in.Annotations
 	return out
 }
@@ -613,7 +614,6 @@ func SecurityposturePostureSpec_ToProto(mapCtx *direct.MapContext, in *krm.Secur
 	out.State = direct.Enum_ToProto[pb.Posture_State](mapCtx, in.State)
 	out.Description = direct.ValueOf(in.Description)
 	out.PolicySets = direct.Slice_ToProto(mapCtx, in.PolicySets, PolicySet_ToProto)
-	out.Etag = direct.ValueOf(in.Etag)
 	out.Annotations = in.Annotations
 	return out
 }

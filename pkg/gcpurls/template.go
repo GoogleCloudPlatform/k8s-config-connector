@@ -51,6 +51,7 @@ func register(t RegisteredTemplate) {
 type FieldMeta struct {
 	segment    string
 	fieldIndex []int
+	isLocation bool
 }
 
 // URLTemplate handles parsing and formatting of URLs based on a template.
@@ -58,6 +59,66 @@ type URLTemplate[T any] struct {
 	host     string
 	template string
 	fields   []FieldMeta
+}
+
+func isLocationFieldKey(key string) bool {
+	switch key {
+	case "location", "locationsid", "locationid", "region", "regionsid", "regionid", "zone", "zonesid", "zoneid":
+		return true
+	default:
+		return false
+	}
+}
+
+func isLocationCollectionSegment(seg string) bool {
+	switch seg {
+	case "locations", "regions", "zones":
+		return true
+	default:
+		return false
+	}
+}
+
+// IsValidSegment reports whether s is a safe, non-empty URL path segment with no
+// path-traversal dot segments, URL query/fragment/path delimiters, or control/whitespace characters.
+func IsValidSegment(s string) bool {
+	if s == "" || s == "." || s == ".." {
+		return false
+	}
+	for i := 0; i < len(s); i++ {
+		c := s[i]
+		if c <= 0x20 || c == 0x7f || c == '/' || c == '\\' || c == '?' || c == '#' {
+			return false
+		}
+	}
+	return true
+}
+
+// IsValidLocation reports whether s is a valid GCP location, region, or zone identifier
+// (non-empty, containing only ASCII letters, digits, and hyphens, and starting/ending with an alphanumeric character).
+func IsValidLocation(s string) bool {
+	if s == "" {
+		return false
+	}
+	for i := 0; i < len(s); i++ {
+		c := s[i]
+		isAlphaNum := (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9')
+		if !isAlphaNum && c != '-' {
+			return false
+		}
+		if (i == 0 || i == len(s)-1) && c == '-' {
+			return false
+		}
+	}
+	return true
+}
+
+// ValidateLocation returns an error if location is not a valid GCP location identifier.
+func ValidateLocation(location string) error {
+	if !IsValidLocation(location) {
+		return fmt.Errorf("invalid location %q", location)
+	}
+	return nil
 }
 
 // Template creates a new URLTemplate for the given host and template string.
@@ -85,6 +146,7 @@ func Template[T any](host, template string) *URLTemplate[T] {
 				panic(fmt.Sprintf("field %q not found in struct %T", key, zero))
 			}
 			fields[i].fieldIndex = path
+			fields[i].isLocation = isLocationFieldKey(key) || (i > 0 && isLocationCollectionSegment(segments[i-1]))
 		} else {
 			fields[i].fieldIndex = []int{-1}
 		}
@@ -102,16 +164,21 @@ func Template[T any](host, template string) *URLTemplate[T] {
 // Parse parses a URL string into the struct T.
 // It returns the parsed struct, a boolean indicating if the URL matched the template, and an error if parsing failed.
 func (t *URLTemplate[T]) Parse(s string) (*T, bool, error) {
+	hasAuthority := strings.HasPrefix(s, "https://") || strings.HasPrefix(s, "http://") || strings.HasPrefix(s, "//")
+
 	// Strip optional scheme
 	s = strings.TrimPrefix(s, "https:")
 	s = strings.TrimPrefix(s, "http:")
 	s = strings.TrimPrefix(s, "//")
 
 	// Check and strip host
-	if t.host != "" {
-		if strings.HasPrefix(s, t.host+"/") {
-			s = strings.TrimPrefix(s, t.host)
+	if hasAuthority {
+		if t.host == "" || !strings.HasPrefix(s, t.host+"/") {
+			return nil, false, nil
 		}
+		s = strings.TrimPrefix(s, t.host)
+	} else if t.host != "" && strings.HasPrefix(s, t.host+"/") {
+		s = strings.TrimPrefix(s, t.host)
 	}
 
 	s = strings.Trim(s, "/")
@@ -129,7 +196,10 @@ func (t *URLTemplate[T]) Parse(s string) (*T, bool, error) {
 		fieldIdx := t.fields[i].fieldIndex[0]
 		if fieldIdx != -1 {
 			// Variable
-			if part == "" {
+			if !IsValidSegment(part) {
+				return nil, false, nil
+			}
+			if t.fields[i].isLocation && !IsValidLocation(part) {
 				return nil, false, nil
 			}
 			f := val.Field(fieldIdx)
@@ -171,6 +241,25 @@ func (t *URLTemplate[T]) Host() string {
 	return t.host
 }
 
+// Validate checks that all variable fields of v are valid URL path segments
+// (and valid GCP locations for location/region/zone fields).
+func (t *URLTemplate[T]) Validate(v T) error {
+	val := reflect.ValueOf(v)
+	for _, field := range t.fields {
+		if field.fieldIndex[0] == -1 {
+			continue
+		}
+		part := val.FieldByIndex(field.fieldIndex).String()
+		if !IsValidSegment(part) {
+			return fmt.Errorf("invalid value %q for segment %s", part, field.segment)
+		}
+		if field.isLocation && !IsValidLocation(part) {
+			return fmt.Errorf("invalid location %q for segment %s", part, field.segment)
+		}
+	}
+	return nil
+}
+
 // ToString formats the struct T into a URL string.
 func (t *URLTemplate[T]) ToString(v T) string {
 	var parts []string
@@ -180,7 +269,7 @@ func (t *URLTemplate[T]) ToString(v T) string {
 		segment := field.segment
 		fieldIdx := field.fieldIndex[0]
 		if fieldIdx != -1 {
-			f := val.Field(fieldIdx)
+			f := val.FieldByIndex(field.fieldIndex)
 			parts = append(parts, f.String())
 		} else {
 			parts = append(parts, segment)

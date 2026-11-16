@@ -166,6 +166,12 @@ func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme
 	}
 
 	if leaseSpec != nil {
+		// This cluster's identity in the election is the resource name of its GKE cluster.
+		identity, err := leaseSpec.CandidateIdentity()
+		if err != nil {
+			return nil, nil, false, fmt.Errorf("invalid multi-cluster lease configuration: %w", err)
+		}
+
 		// Create a new client for the lock to ensure it uses the correct configuration
 		c, err := crclient.New(restConfig, crclient.Options{Scheme: scheme})
 		if err != nil {
@@ -176,7 +182,7 @@ func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme
 			c,
 			leaseSpec.LeaseName,
 			leaseSpec.Namespace,
-			leaseSpec.ClusterCandidateIdentity,
+			identity,
 			15*time.Second,
 		)
 		return &leaderelection.LeaderElectionConfig{
@@ -281,10 +287,23 @@ func (m *leaderElectionManager) Start(ctx context.Context) error {
 				return
 			}
 
-			// Retry up to 5 times with a 2-second delay to handle transient API issues
+			// The leader's identity is the resource name of its GKE cluster. If it can't be
+			// mapped to a cluster, this cluster can't sync from the leader at all, so exit
+			// rather than keep running with syncers that point at the wrong cluster.
+			leader, err := operatorv1beta1.ParseGKEClusterResourceName(identity)
+			if err != nil {
+				m.fatal("cannot sync from leader %q: %v", identity, err)
+				return
+			}
+
+			// Retry up to 5 times with a 2-second delay to handle transient API issues.
+			// TODO: Consider exiting when every attempt fails, as OnStartedLeading does. The
+			// syncers are only updated when the leader changes, so after a transient failure
+			// (API server unavailable, throttling, timeouts, conflicts) they keep pulling from
+			// the previous leader until the next leader change.
 			retries := 5
 			for i := 0; i < retries; i++ {
-				if err := m.syncerInteg.EnsurePullingFromLeader(updateCtx, identity); err != nil {
+				if err := m.syncerInteg.EnsurePullingFromLeader(updateCtx, leader); err != nil {
 					klog.Errorf("error ensuring syncer is pulling from leader %s (attempt %d/%d): %v", identity, i+1, retries, err)
 					time.Sleep(2 * time.Second)
 				} else {
@@ -478,8 +497,10 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 						Namespace: mclConfig.Namespace,
 						Name:      mclConfig.LeaseName,
 					},
-					replicationMode: mode,
-					watchNamespaces: watchNamespaces,
+					replicationMode:    mode,
+					watchNamespaces:    watchNamespaces,
+					cluster:            mclConfig.GKECluster,
+					leaderEndpointType: mclConfig.LeaderEndpointType,
 				}
 			}
 		}

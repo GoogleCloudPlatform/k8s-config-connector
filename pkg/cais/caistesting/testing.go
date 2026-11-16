@@ -15,6 +15,7 @@
 package caistesting
 
 import (
+	"regexp"
 	"strings"
 
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
@@ -136,6 +137,15 @@ func NormalizeDynamicIDs(s string) string {
 				lines[i] = "  caisURL: unknown"
 			}
 		}
+		// Normalize AIPlatformHyperparameterTuningJob IDs: locations/.../hyperparameterTuningJobs/<hyperparameterTuningJobId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/hyperparameterTuningJobs/"); idx != -1 {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
 		// Normalize StorageInsightsReportConfig UUIDs: locations/.../reportConfigs/<reportConfigId>
 		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
 		if idx := strings.Index(line, "/reportConfigs/"); idx != -1 {
@@ -200,6 +210,15 @@ func NormalizeDynamicIDs(s string) string {
 			start := idx + len("/customJobs/")
 			lines[i] = line[:start] + "${customJobID}"
 			lines[i] = strings.Replace(lines[i], "projects/${projectNumber}/locations/", "projects/${projectId}/locations/", 1)
+		}
+		// Normalize AIPlatformModelDeploymentMonitoringJob IDs: locations/.../modelDeploymentMonitoringJobs/<id>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/modelDeploymentMonitoringJobs/"); idx != -1 {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
 		}
 		// Normalize AIPlatformSpecialistPool specialistPools IDs: locations/.../specialistPools/<specialistPoolId>
 		if idx := strings.Index(line, "/specialistPools/"); idx != -1 {
@@ -298,6 +317,18 @@ func NormalizeDynamicIDs(s string) string {
 			}
 			lines[i] = strings.Replace(lines[i], "projects/${projectNumber}/styleConfigs/", "projects/${projectId}/styleConfigs/", 1)
 		}
+		// Normalize DialogflowCXAgent IDs: locations/.../agents/<agentId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/agents/"); idx != -1 && strings.Contains(line, "dialogflow") {
+			remainder := line[idx+len("/agents/"):]
+			if !strings.Contains(remainder, "/") {
+				if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+					lines[i] = "- caisURL: unknown"
+				} else {
+					lines[i] = "  caisURL: unknown"
+				}
+			}
+		}
 		// Normalize DialogflowWebhook IDs: locations/.../agents/.../webhooks/<webhookId>
 		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
 		if idx := strings.Index(line, "/webhooks/"); idx != -1 && strings.Contains(line, "dialogflow") {
@@ -306,6 +337,29 @@ func NormalizeDynamicIDs(s string) string {
 			} else {
 				lines[i] = "  caisURL: unknown"
 			}
+		}
+		// Normalize DialogflowPlaybook IDs: locations/.../agents/.../playbooks/<playbookId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/playbooks/"); idx != -1 && strings.Contains(line, "dialogflow") {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
+		// Normalize AIPlatformCachedContent IDs: locations/.../cachedContents/<cachedContentId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/cachedContents/"); idx != -1 && strings.Contains(line, "aiplatform") {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
+		// Normalize TagHolds parent TagValue ID: tagValues/<tagValueID>/tagHolds/<tagHoldID>
+		if strings.Contains(line, "/tagValues/") && strings.Contains(line, "/tagHolds/") {
+			re := regexp.MustCompile(`/tagValues/\d+/tagHolds/`)
+			lines[i] = re.ReplaceAllString(line, "/tagValues/$${tagValueID}/tagHolds/")
 		}
 	}
 	return strings.Join(lines, "\n")

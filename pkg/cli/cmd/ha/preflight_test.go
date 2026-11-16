@@ -16,6 +16,7 @@ package ha
 
 import (
 	"context"
+	"errors"
 	"strings"
 	"testing"
 
@@ -79,6 +80,30 @@ func TestFetchClusterHAStateToleratesMissingHACRDs(t *testing.T) {
 	}
 }
 
+func TestFetchClusterHAStateTypedErrors(t *testing.T) {
+	t.Run("ConfigConnector not found", func(t *testing.T) {
+		handle := newFakeClusterHandle(t, "cluster-a")
+
+		_, err := fetchClusterHAState(context.Background(), handle)
+
+		var notFound *configConnectorNotFoundError
+		if !errors.As(err, &notFound) {
+			t.Fatalf("expected a configConnectorNotFoundError, got %v", err)
+		}
+	})
+
+	t.Run("multiClusterLease not configured", func(t *testing.T) {
+		handle := newFakeClusterHandle(t, "cluster-a", &operatorv1beta1.ConfigConnector{ObjectMeta: metav1.ObjectMeta{Name: configConnectorResourceName}})
+
+		_, err := fetchClusterHAState(context.Background(), handle)
+
+		var notConfigured *multiClusterLeaseNotConfiguredError
+		if !errors.As(err, &notConfigured) {
+			t.Fatalf("expected a multiClusterLeaseNotConfiguredError, got %v", err)
+		}
+	})
+}
+
 func TestFetchAllClusterHAStatesErrors(t *testing.T) {
 	tests := []struct {
 		name              string
@@ -102,7 +127,7 @@ func TestFetchAllClusterHAStatesErrors(t *testing.T) {
 					newFakeClusterHandle(t, "cluster-a", newConfigConnectorWithMCL("", "", "")),
 				}
 			},
-			wantErrSubstrings: []string{"leaseName", "namespace", "clusterCandidateIdentity"},
+			wantErrSubstrings: []string{"leaseName", "namespace", "gkeCluster"},
 		},
 	}
 
@@ -144,27 +169,31 @@ func TestValidateMultiClusterLeaseConfigsErrors(t *testing.T) {
 		wantErrSubstrings []string
 	}{
 		{
-			name: "mismatched leaseName, namespace, and duplicate identity include per-cluster values and remediation",
+			name: "mismatched leaseName, namespace, and duplicate gkeCluster include per-cluster values and remediation",
 			states: []*clusterHAState{
-				{contextName: "cluster-a", configConnector: newConfigConnectorWithMCL("kcc-lease-1", "cnrm-system", "shared-id")},
-				{contextName: "cluster-b", configConnector: newConfigConnectorWithMCL("kcc-lease-2", "other-ns", "shared-id")},
+				{contextName: "cluster-a", configConnector: newConfigConnectorWithMCL("kcc-lease-1", "cnrm-system", "shared")},
+				{contextName: "cluster-b", configConnector: newConfigConnectorWithMCL("kcc-lease-2", "other-ns", "shared")},
 			},
 			wantErrSubstrings: []string{
 				`mismatched leaseName across clusters (cluster-a="kcc-lease-1", cluster-b="kcc-lease-2")`,
 				`mismatched lease namespace across clusters (cluster-a="cnrm-system", cluster-b="other-ns")`,
-				`duplicate clusterCandidateIdentity across clusters (identity "shared-id" shared by [cluster-a, cluster-b])`,
+				`duplicate gkeCluster across clusters (identity "projects/test-project/locations/us-central1/clusters/shared" shared by [cluster-a, cluster-b])`,
 				`leases/<namespace>/<leaseName>`,
 			},
 		},
 		{
-			name: "invalid DNS-1123 clusterCandidateIdentity fails validation",
+			name: "deprecated clusterCandidateIdentity fails validation",
 			states: []*clusterHAState{
-				{contextName: "cluster-a", configConnector: newConfigConnectorWithMCL("kcc-lease", "cnrm-system", "invalid_identity_with_underscore")},
-				{contextName: "cluster-b", configConnector: newConfigConnectorWithMCL("kcc-lease", "cnrm-system", "cluster-b-id")},
+				{contextName: "cluster-a", configConnector: func() *operatorv1beta1.ConfigConnector {
+					cc := newConfigConnectorWithMCL("kcc-lease", "cnrm-system", "cluster-a")
+					cc.Spec.Experiments.MultiClusterLease.ClusterCandidateIdentity = "cluster-a-id"
+					return cc
+				}()},
+				{contextName: "cluster-b", configConnector: newConfigConnectorWithMCL("kcc-lease", "cnrm-system", "cluster-b")},
 			},
 			wantErrSubstrings: []string{
-				`invalid spec.experiments.multiClusterLease.clusterCandidateIdentity "invalid_identity_with_underscore"`,
-				`must be a valid DNS-1123 subdomain`,
+				`cluster "cluster-a"`,
+				`clusterCandidateIdentity is no longer supported`,
 			},
 		},
 		{
@@ -207,7 +236,13 @@ func newFakeClusterHandle(t *testing.T, contextName string, objs ...runtime.Obje
 	}
 }
 
-func newConfigConnectorWithMCL(leaseName, namespace, identity string) *operatorv1beta1.ConfigConnector {
+// newConfigConnectorWithMCL returns a ConfigConnector whose MultiClusterLease runs in the GKE
+// cluster clusterName. An empty clusterName leaves gkeCluster unset.
+func newConfigConnectorWithMCL(leaseName, namespace, clusterName string) *operatorv1beta1.ConfigConnector {
+	var gkeCluster *operatorv1beta1.GKECluster
+	if clusterName != "" {
+		gkeCluster = &operatorv1beta1.GKECluster{Project: "test-project", Location: "us-central1", Name: clusterName}
+	}
 	return &operatorv1beta1.ConfigConnector{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: configConnectorResourceName,
@@ -215,10 +250,10 @@ func newConfigConnectorWithMCL(leaseName, namespace, identity string) *operatorv
 		Spec: operatorv1beta1.ConfigConnectorSpec{
 			Experiments: &operatorv1beta1.CCExperiments{
 				MultiClusterLease: &operatorv1beta1.MultiClusterLeaseSpec{
-					LeaseName:                leaseName,
-					Namespace:                namespace,
-					ClusterCandidateIdentity: identity,
-					ResourceReplicationMode:  "Status",
+					LeaseName:               leaseName,
+					Namespace:               namespace,
+					GKECluster:              gkeCluster,
+					ResourceReplicationMode: "Status",
 				},
 			},
 		},

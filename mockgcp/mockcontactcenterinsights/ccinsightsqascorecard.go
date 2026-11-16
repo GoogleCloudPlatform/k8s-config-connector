@@ -24,6 +24,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "cloud.google.com/go/contactcenterinsights/apiv1/contactcenterinsightspb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type ContactCenterInsightsServer struct {
@@ -67,6 +68,25 @@ func (s *ContactCenterInsightsServer) CreateQaScorecard(ctx context.Context, req
 	obj.UpdateTime = now
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	// When a QaScorecard is created, GCP automatically creates an initial revision in state EDITABLE.
+	initialRevID := "16702347239979751940"
+	initialRevFQN := fqn + "/revisions/" + initialRevID
+	initialRev := &pb.QaScorecardRevision{
+		Name: initialRevFQN,
+		Snapshot: &pb.QaScorecard{
+			Name:        fqn,
+			DisplayName: obj.DisplayName,
+			CreateTime:  now,
+			UpdateTime:  now,
+		},
+		CreateTime:   now,
+		AlternateIds: []string{"latest"},
+		State:        pb.QaScorecardRevision_EDITABLE,
+	}
+	if err := s.storage.Create(ctx, initialRevFQN, initialRev); err != nil {
 		return nil, err
 	}
 
@@ -116,6 +136,20 @@ func (s *ContactCenterInsightsServer) DeleteQaScorecard(ctx context.Context, req
 			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
+	}
+
+	// Delete any revisions under this scorecard
+	var revNames []string
+	findOptions := storage.ListOptions{
+		Prefix: fqn + "/revisions/",
+	}
+	_ = s.storage.List(ctx, (&pb.QaScorecardRevision{}).ProtoReflect().Descriptor(), findOptions, func(o proto.Message) error {
+		rev := o.(*pb.QaScorecardRevision)
+		revNames = append(revNames, rev.Name)
+		return nil
+	})
+	for _, revName := range revNames {
+		_ = s.storage.Delete(ctx, revName, &pb.QaScorecardRevision{})
 	}
 
 	return &emptypb.Empty{}, nil

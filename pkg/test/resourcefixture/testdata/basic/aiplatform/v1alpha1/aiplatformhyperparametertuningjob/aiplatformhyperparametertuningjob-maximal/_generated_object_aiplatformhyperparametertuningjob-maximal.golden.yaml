@@ -1,0 +1,71 @@
+apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
+kind: AIPlatformHyperparameterTuningJob
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: hptjob-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: maximal-hptjob-${uniqueId}
+  labels:
+    env: test
+    team: aiplatform
+  location: us-central1
+  maxFailedTrialCount: 1
+  maxTrialCount: 2
+  parallelTrialCount: 1
+  projectRef:
+    external: ${projectId}
+  studySpec:
+    algorithm: RANDOM_SEARCH
+    medianAutomatedStoppingSpec:
+      useElapsedDuration: true
+    metrics:
+    - goal: MAXIMIZE
+      metricID: accuracy
+    parameters:
+    - doubleValueSpec:
+        maxValue: 0.01
+        minValue: 0.0001
+      parameterID: learning_rate
+      scaleType: UNIT_LOG_SCALE
+    - integerValueSpec:
+        maxValue: 5
+        minValue: 1
+      parameterID: num_layers
+      scaleType: UNIT_LINEAR_SCALE
+    - categoricalValueSpec:
+        values:
+        - adam
+        - sgd
+      parameterID: optimizer
+  trialJobSpec:
+    serviceAccountRef:
+      name: hptjob-sa-${uniqueId}
+    workerPoolSpecs:
+    - containerSpec:
+        command:
+        - sh
+        - -c
+        - echo maximal test
+        imageURI: alpine:latest
+      machineSpec:
+        machineType: n1-standard-4
+      replicaCount: 1
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    state: JOB_STATE_PENDING
+    updateTime: "1970-01-01T00:00:00Z"

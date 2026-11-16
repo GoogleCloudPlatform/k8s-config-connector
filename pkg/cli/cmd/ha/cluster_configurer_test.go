@@ -69,13 +69,14 @@ func TestClusterConfigurerApplySkipsConfigConnectorUpdateOnManifestError(t *test
 
 func TestClusterConfigurerApplyPreservesExistingMultiClusterLeaseFields(t *testing.T) {
 	const kccImage = "gcr.io/gke-release/cnrm/controller:1.158.0"
+	existingGKECluster := operatorv1beta1.GKECluster{Project: "custom-proj", Location: "us-west1", Name: "custom-cluster"}
 	existingCC := newBaseConfigConnector()
 	existingCC.Spec.Experiments = &operatorv1beta1.CCExperiments{
 		MultiClusterLease: &operatorv1beta1.MultiClusterLeaseSpec{
-			LeaseName:                "old-lease",
-			Namespace:                "old-ns",
-			ClusterCandidateIdentity: "custom-identity-a",
-			ResourceReplicationMode:  "Full",
+			LeaseName:               "old-lease",
+			Namespace:               "old-ns",
+			GKECluster:              &existingGKECluster,
+			ResourceReplicationMode: "Full",
 		},
 	}
 	handle := newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", existingCC, newManagerStatefulSet(kccImage))
@@ -97,8 +98,46 @@ func TestClusterConfigurerApplyPreservesExistingMultiClusterLeaseFields(t *testi
 	if gotMCL.LeaseName != "kcc-multicluster-lease" || gotMCL.Namespace != "cnrm-system" {
 		t.Fatalf("got lease %s/%s, want cnrm-system/kcc-multicluster-lease", gotMCL.Namespace, gotMCL.LeaseName)
 	}
-	if gotMCL.ClusterCandidateIdentity != "custom-identity-a" || gotMCL.ResourceReplicationMode != "Full" {
-		t.Fatalf("expected existing identity and replication mode to be preserved, got %+v", gotMCL)
+	if gotMCL.GKECluster == nil || *gotMCL.GKECluster != existingGKECluster || gotMCL.ResourceReplicationMode != "Full" {
+		t.Fatalf("expected existing gkeCluster and replication mode to be preserved, got %+v", gotMCL)
+	}
+}
+
+func TestClusterConfigurerApplyReplacesDeprecatedClusterCandidateIdentity(t *testing.T) {
+	const kccImage = "gcr.io/gke-release/cnrm/controller:1.158.0"
+	existingCC := newBaseConfigConnector()
+	existingCC.Spec.Experiments = &operatorv1beta1.CCExperiments{
+		MultiClusterLease: &operatorv1beta1.MultiClusterLeaseSpec{
+			LeaseName:                "kcc-multicluster-lease",
+			Namespace:                "cnrm-system",
+			ClusterCandidateIdentity: "legacy-identity-a",
+		},
+	}
+	handle := newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", existingCC, newManagerStatefulSet(kccImage))
+	cfg, err := newClusterConfigurer(context.Background(), handle, "kcc-multicluster-lease", "cnrm-system", "my-ha-bucket")
+	if err != nil {
+		t.Fatalf("newClusterConfigurer failed: %v", err)
+	}
+
+	err = cfg.apply(context.Background(), nil, false)
+
+	if err != nil {
+		t.Fatalf("apply failed: %v", err)
+	}
+	cc, fetchErr := fetchConfigConnector(context.Background(), handle)
+	if fetchErr != nil {
+		t.Fatalf("fetchConfigConnector failed: %v", fetchErr)
+	}
+	gotMCL := cc.Spec.Experiments.MultiClusterLease
+	if gotMCL.ClusterCandidateIdentity != "" {
+		t.Fatalf("expected deprecated clusterCandidateIdentity to be cleared, got %q", gotMCL.ClusterCandidateIdentity)
+	}
+	identity, err := gotMCL.CandidateIdentity()
+	if err != nil {
+		t.Fatalf("CandidateIdentity() failed: %v", err)
+	}
+	if want := "projects/proj-a/locations/us-central1/clusters/cluster-a"; identity != want {
+		t.Fatalf("got identity %q, want %q", identity, want)
 	}
 }
 

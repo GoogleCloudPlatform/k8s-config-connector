@@ -1,0 +1,20 @@
+apiVersion: financialservices.cnrm.cloud.google.com/v1alpha1
+kind: FinancialServicesDataset
+metadata:
+  name: financialservicesdataset-${uniqueId}
+spec:
+  parentRef:
+    name: financialservicesinstance-${uniqueId}
+  resourceID: financialservicesdataset-${uniqueId}
+  dateRange:
+    startTime: "2023-01-01T00:00:00Z"
+    endTime: "2023-12-31T00:00:00Z"
+  tableSpecs:
+    party: "bq://${projectId}.aml_dataset_${uniqueId}.party"
+    account_party_link: "bq://${projectId}.aml_dataset_${uniqueId}.account_party_link"
+    transaction: "bq://${projectId}.aml_dataset_${uniqueId}.transaction"
+    risk_case_event: "bq://${projectId}.aml_dataset_${uniqueId}.risk_case_event"
+    party_supplementary_data: "bq://${projectId}.aml_dataset_${uniqueId}.party_supplementary_data"
+  timeZone:
+    id: "America/New_York"
+    version: "2019a"

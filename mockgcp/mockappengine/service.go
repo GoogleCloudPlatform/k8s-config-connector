@@ -57,6 +57,7 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
+	pb.RegisterDomainMappingsServer(grpcServer, &domainMappingsServer{MockService: s})
 	pb.RegisterFirewallServer(grpcServer, &firewallServer{MockService: s})
 	pb.RegisterServicesServer(grpcServer, &servicesServer{MockService: s})
 	pb.RegisterVersionsServer(grpcServer, &versionsServer{MockService: s})
@@ -68,6 +69,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, fmt.Errorf("error building appengine httptogrpc mux: %w", err)
 	}
 
+	grpcMux.AddService(pb.NewDomainMappingsClient(conn))
 	grpcMux.AddService(pb.NewFirewallClient(conn))
 	grpcMux.AddService(pb.NewServicesClient(conn))
 	grpcMux.AddService(pb.NewVersionsClient(conn))

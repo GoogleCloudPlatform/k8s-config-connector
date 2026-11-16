@@ -52,3 +52,40 @@ func (s *MockService) parseCollectionName(name string) (*collectionName, error) 
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
 }
+
+type indexName struct {
+	Project        *projects.ProjectData
+	Location       string
+	CollectionName string
+	IndexName      string
+}
+
+func (n *indexName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/collections/" + n.CollectionName + "/indexes/" + n.IndexName
+}
+
+func (n *indexName) ParentString() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/collections/" + n.CollectionName
+}
+
+// parseIndexName parses a string into an indexName.
+// The expected form is projects/<projectID>/locations/<location>/collections/<collectionName>/indexes/<indexName>
+func (s *MockService) parseIndexName(name string) (*indexName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "collections" && tokens[6] == "indexes" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &indexName{
+			Project:        project,
+			Location:       tokens[3],
+			CollectionName: tokens[5],
+			IndexName:      tokens[7],
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}

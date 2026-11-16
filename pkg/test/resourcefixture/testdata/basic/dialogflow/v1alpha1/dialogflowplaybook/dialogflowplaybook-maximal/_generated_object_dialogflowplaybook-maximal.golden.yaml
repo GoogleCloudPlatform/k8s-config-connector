@@ -1,0 +1,43 @@
+apiVersion: dialogflow.cnrm.cloud.google.com/v1alpha1
+kind: DialogflowPlaybook
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: dialogflowplaybook-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: Updated Maximal Playbook ${uniqueId}
+  goal: Updated goal for maximal playbook test
+  inputParameterDefinitions:
+  - description: ID of the customer account
+    name: account_id
+    typeSchema:
+      inlineSchema:
+        type: STRING
+  instruction:
+    guidelines: Always be polite and professional to the customer.
+    steps:
+    - text: Ask customer for account number.
+  outputParameterDefinitions:
+  - description: Summary of resolution
+    name: resolution_summary
+    typeSchema:
+      inlineSchema:
+        type: STRING
+  parentRef:
+    name: dialogflowcxagent-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/playbooks/d580659b-61e7-44d6-b518-90f2a32a8fb4
+  observedGeneration: 2
+  observedState:
+    tokenCount: 34

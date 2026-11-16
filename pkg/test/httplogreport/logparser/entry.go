@@ -117,7 +117,8 @@ func (e *Entry) IsDelete() bool {
 	uPath := strings.ToLower(e.CleanURLPath())
 	if e.Request.Method == "POST" {
 		if strings.HasSuffix(uPath, ":delete") || strings.HasSuffix(uPath, ":destroy") ||
-			strings.HasSuffix(uPath, ":cancel") || strings.HasSuffix(uPath, ":drop") {
+			strings.HasSuffix(uPath, ":cancel") || strings.HasSuffix(uPath, ":drop") ||
+			strings.HasSuffix(uPath, "/delete") {
 			return true
 		}
 	}

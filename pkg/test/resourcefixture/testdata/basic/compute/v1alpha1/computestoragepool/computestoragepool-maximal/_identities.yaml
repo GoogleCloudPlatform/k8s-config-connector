@@ -1,0 +1,6 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/zones/us-east4-a/storagePools/computestoragepool-maximal-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeStoragePool
+  name: computestoragepool-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

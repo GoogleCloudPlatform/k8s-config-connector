@@ -63,7 +63,7 @@ var BasicDiff = func(fieldName protoreflect.Name, a, b proto.Message) (bool, err
 	switch aField.Kind() {
 	case protoreflect.MessageKind:
 		if aField.IsList() || aField.IsMap() {
-			if !aVal.Equal(bVal) {
+			if !equalListOrMapIgnoringNonComparedFields(aField, aVal, bVal) {
 				diff = true
 			}
 		} else {
@@ -91,6 +91,53 @@ var BasicDiff = func(fieldName protoreflect.Name, a, b proto.Message) (bool, err
 		return false, fmt.Errorf("change to immutable field %s", fieldName)
 	}
 	return diff, nil
+}
+
+// equalListOrMapIgnoringNonComparedFields compares list or map fields while stripping
+// OUTPUT_ONLY and INPUT_ONLY sub-fields from message elements.
+func equalListOrMapIgnoringNonComparedFields(fd protoreflect.FieldDescriptor, aVal, bVal protoreflect.Value) bool {
+	if fd.IsList() && fd.Kind() == protoreflect.MessageKind {
+		aList := aVal.List()
+		bList := bVal.List()
+		if aList.Len() != bList.Len() {
+			return false
+		}
+		for i := 0; i < aList.Len(); i++ {
+			aElem := proto.Clone(aList.Get(i).Message().Interface())
+			bElem := proto.Clone(bList.Get(i).Message().Interface())
+			clearNonComparedProtoFields(aElem.ProtoReflect())
+			clearNonComparedProtoFields(bElem.ProtoReflect())
+			if !proto.Equal(aElem, bElem) {
+				return false
+			}
+		}
+		return true
+	}
+	if fd.IsMap() && fd.MapValue().Kind() == protoreflect.MessageKind {
+		aMap := aVal.Map()
+		bMap := bVal.Map()
+		if aMap.Len() != bMap.Len() {
+			return false
+		}
+		equal := true
+		aMap.Range(func(k protoreflect.MapKey, aElemVal protoreflect.Value) bool {
+			if !bMap.Has(k) {
+				equal = false
+				return false
+			}
+			aElem := proto.Clone(aElemVal.Message().Interface())
+			bElem := proto.Clone(bMap.Get(k).Message().Interface())
+			clearNonComparedProtoFields(aElem.ProtoReflect())
+			clearNonComparedProtoFields(bElem.ProtoReflect())
+			if !proto.Equal(aElem, bElem) {
+				equal = false
+				return false
+			}
+			return true
+		})
+		return equal
+	}
+	return aVal.Equal(bVal)
 }
 
 func CompareProtoMessage(a, b proto.Message, compareDiff CompareDiff) (sets.Set[string], error) {

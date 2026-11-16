@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // +tool:mockgcp-support
-// proto.service:
+// proto.service: google.cloud.netapp.v1.NetApp
 // proto.message: google.cloud.netapp.v1.BackupVault
 
 package mocknetapp
@@ -28,6 +28,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "cloud.google.com/go/netapp/apiv1/netapppb"
@@ -45,6 +46,9 @@ func (s *backupVaultsService) GetBackupVault(ctx context.Context, req *pb.GetBac
 
 	obj := &pb.BackupVault{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -66,12 +70,22 @@ func (s *backupVaultsService) CreateBackupVault(ctx context.Context, req *pb.Cre
 	obj.CreateTime = timestamppb.New(now)
 	obj.State = pb.BackupVault_READY
 
+	s.populateDefaultsForBackupVault(obj)
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	metadata := &pb.OperationMetadata{}
-	return s.operations.StartLRO(ctx, req.GetParent(), metadata, func() (proto.Message, error) {
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	metadata := &pb.OperationMetadata{
+		CreateTime:            timestamppb.New(now),
+		Target:                fqn,
+		Verb:                  "create",
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
+	}
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.Now()
 		return obj, nil
 	})
 }
@@ -97,11 +111,20 @@ func (s *backupVaultsService) UpdateBackupVault(ctx context.Context, req *pb.Upd
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	metadata := &pb.OperationMetadata{}
-	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	metadata := &pb.OperationMetadata{
+		CreateTime:            timestamppb.Now(),
+		Target:                fqn,
+		Verb:                  "update",
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
+	}
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.Now()
 		return obj, nil
 	})
 }
+
 func (s *backupVaultsService) DeleteBackupVault(ctx context.Context, req *pb.DeleteBackupVaultRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseBackupVaultName(req.GetName())
 	if err != nil {
@@ -115,8 +138,27 @@ func (s *backupVaultsService) DeleteBackupVault(ctx context.Context, req *pb.Del
 	if err != nil {
 		return &longrunningpb.Operation{}, err
 	}
-	metadata := &pb.OperationMetadata{}
-	return s.operations.DoneLRO(ctx, name.String(), metadata, &pb.BackupVault{})
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	metadata := &pb.OperationMetadata{
+		CreateTime:            timestamppb.Now(),
+		Target:                fqn,
+		Verb:                  "delete",
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
+	}
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.Now()
+		return &emptypb.Empty{}, nil
+	})
+}
+
+func (s *backupVaultsService) populateDefaultsForBackupVault(obj *pb.BackupVault) {
+	if obj.BackupVaultType == pb.BackupVault_BACKUP_VAULT_TYPE_UNSPECIFIED {
+		obj.BackupVaultType = pb.BackupVault_IN_REGION
+	}
+	if obj.BackupRetentionPolicy == nil {
+		obj.BackupRetentionPolicy = &pb.BackupVault_BackupRetentionPolicy{}
+	}
 }
 
 type backupVaultName struct {

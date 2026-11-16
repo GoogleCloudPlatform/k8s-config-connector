@@ -15,13 +15,14 @@
 // API sources for AIPlatformModelMonitor, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/e7513c828b8db536fa12fc5493d541f323aedf90/google/cloud/aiplatform/v1beta1/model_monitor.proto
 // +kcc:source:service-docs=https://cloud.google.com/vertex-ai/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1beta1/projects.locations.modelMonitors
+// +kcc:source:resource-docs=https://cloud.google.com/vertex-ai/docs/reference/rest/v1beta1/projects.locations.modelMonitors
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
+	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,14 +33,11 @@ var AIPlatformModelMonitorGVK = GroupVersion.WithKind("AIPlatformModelMonitor")
 // +kcc:spec:proto=google.cloud.aiplatform.v1beta1.ModelMonitor
 // +kcc:required-from-proto
 type AIPlatformModelMonitorSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The AIPlatformModelMonitor name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Optional default tabular model monitoring objective.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitor.tabular_objective
 	TabularObjective *ModelMonitoringObjectiveSpec_TabularObjective `json:"tabularObjective,omitempty"`
@@ -93,6 +91,87 @@ type AIPlatformModelMonitorSpec struct {
 	//  ModelMonitor will be secured by this key.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitor.encryption_spec
 	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitor.ModelMonitoringTarget
+type ModelMonitor_ModelMonitoringTarget struct {
+	// Model in Vertex AI Model Registry.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitor.ModelMonitoringTarget.vertex_model
+	VertexModel *ModelMonitor_ModelMonitoringTarget_VertexModelSource `json:"vertexModel,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitor.ModelMonitoringTarget.VertexModelSource
+type ModelMonitor_ModelMonitoringTarget_VertexModelSource struct {
+	// Model resource name. Format:
+	//  projects/{project}/locations/{location}/models/{model}.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitor.ModelMonitoringTarget.VertexModelSource.model
+	ModelRef *AIPlatformModelRef `json:"modelRef,omitempty"`
+
+	// Model version id.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitor.ModelMonitoringTarget.VertexModelSource.model_version_id
+	ModelVersionID *string `json:"modelVersionID,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec
+type ModelMonitoringNotificationSpec struct {
+	// Email alert config.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.email_config
+	EmailConfig *ModelMonitoringNotificationSpec_EmailConfig `json:"emailConfig,omitempty"`
+
+	// Dump the anomalies to Cloud Logging.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.enable_cloud_logging
+	EnableCloudLogging *bool `json:"enableCloudLogging,omitempty"`
+
+	// Notification channel config.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.notification_channel_configs
+	NotificationChannelConfigs []ModelMonitoringNotificationSpec_NotificationChannelConfig `json:"notificationChannelConfigs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.EmailConfig
+type ModelMonitoringNotificationSpec_EmailConfig struct {
+	// The email addresses to send the alerts.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.EmailConfig.user_emails
+	UserEmails []string `json:"userEmails,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.NotificationChannelConfig
+type ModelMonitoringNotificationSpec_NotificationChannelConfig struct {
+	// Resource names of the NotificationChannels.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.NotificationChannelConfig.notification_channel
+	NotificationChannelRef *monitoringv1beta1.MonitoringNotificationChannelRef `json:"notificationChannelRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset
+type ModelMonitoringInput_ModelMonitoringDataset struct {
+	// Resource name of the Vertex AI managed dataset.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.vertex_dataset
+	VertexDatasetRef *vertexaiv1beta1.VertexAIDatasetRef `json:"vertexDatasetRef,omitempty"`
+
+	// Google Cloud Storage data source.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.gcs_source
+	GCSSource *ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGCSSource `json:"gcsSource,omitempty"`
+
+	// BigQuery data source.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.bigquery_source
+	BigquerySource *ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource `json:"bigquerySource,omitempty"`
+
+	// The timestamp field. Usually for serving data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.timestamp_field
+	TimestampField *string `json:"timestampField,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.VertexEndpointLogs
+type ModelMonitoringInput_VertexEndpointLogs struct {
+	// List of endpoint resource names.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.VertexEndpointLogs.endpoints
+	EndpointRefs []vertexaiv1beta1.VertexAIEndpointRef `json:"endpointRefs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.BatchPredictionOutput
+type ModelMonitoringInput_BatchPredictionOutput struct {
+	// Vertex AI Batch prediction Job resource name.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.BatchPredictionOutput.batch_prediction_job
+	BatchPredictionJobRef *AIPlatformBatchPredictionJobRef `json:"batchPredictionJobRef,omitempty"`
 }
 
 // AIPlatformModelMonitorStatus defines the config connector machine state of AIPlatformModelMonitor

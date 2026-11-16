@@ -34,9 +34,12 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --allow-non-declarative \
   --resource DialogflowKnowledgeBase:KnowledgeBase \
   --resource DialogflowGenerator:Generator \
-  --resource DialogflowConversationDataset:ConversationDataset
+  --resource DialogflowConversationDataset:ConversationDataset \
+  --resource DialogflowAgent:Agent \
+  --resource DialogflowEntityType:EntityType
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.cx.v3 \
@@ -54,20 +57,49 @@ mv ${REPO_ROOT}/apis/dialogflow/v1alpha1/types.generated.go ${REPO_ROOT}/apis/di
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --allow-non-declarative \
   --resource DialogflowKnowledgeBase:KnowledgeBase \
   --resource DialogflowGenerator:Generator \
-  --resource DialogflowConversationDataset:ConversationDataset
+  --resource DialogflowConversationDataset:ConversationDataset \
+  --resource DialogflowAgent:Agent \
+  --resource DialogflowEntityType:EntityType
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.dialogflow.v2 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --resource DialogflowEntityType:EntityType
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.dialogflow.v2 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --resource DialogflowAgent:Agent \
+  --pattern DialogflowAgent=projects/{project}/agent
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource \
-  --resource DialogflowConversationModel:ConversationModel
+  --resource DialogflowConversationModel:ConversationModel \
+  --resource DialogflowConversationProfile:ConversationProfile
 
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
-  --resource DialogflowConversationModel:ConversationModel
+  --resource DialogflowConversationModel:ConversationModel \
+  --resource DialogflowConversationProfile:ConversationProfile
+
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.dialogflow.v2 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource DialogflowCompanionAgent:CompanionAgent
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.dialogflow.v2 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --resource DialogflowCompanionAgent:CompanionAgent
 
 ${CONTROLLERBUILDER} generate-types \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
@@ -107,6 +139,7 @@ sed -i 's/package dialogflow/package siptrunk/g' "${REPO_ROOT}/pkg/controller/di
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --skip-proto Agent,EntityType,Entity \
   --output-dir "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator"
 mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/mapper.generated.go" || true
 rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow/" || true
@@ -115,6 +148,7 @@ sed -i 's/package dialogflow/package generator/g' "${REPO_ROOT}/pkg/controller/d
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --skip-proto Agent,EntityType,Entity \
   --output-dir "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset"
 mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/mapper.generated.go" || true
 rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow/" || true

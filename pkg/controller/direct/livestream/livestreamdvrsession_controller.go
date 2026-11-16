@@ -68,6 +68,10 @@ func (m *modelDvrSession) AdapterForObject(ctx context.Context, op *directbase.A
 	}
 	id := i.(*krm.LiveStreamDVRSessionIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get livestream GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {

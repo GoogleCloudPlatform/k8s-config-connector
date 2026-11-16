@@ -1,0 +1,17 @@
+apiVersion: kcc.cnrm.cloud.google.com/v1alpha1
+kind: KCCResource
+metadata:
+  name: test-pull-glob
+  namespace: default
+spec:
+  foo: "initial-value"
+  resourceID: "generated-id"
+---
+apiVersion: fake.cnrm.cloud.google.com/v1beta1
+kind: FakeObject
+metadata:
+  name: glob-test
+  namespace: default
+spec:
+  foo: "initial-value"
+  resourceID: "generated-id"

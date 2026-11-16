@@ -29,9 +29,18 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
+./generate-proto.sh "$@"
 
 # --- v1alpha1 ---
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource ComputeCrossSiteNetwork:CrossSiteNetwork \
+  --resource ComputeInterconnectAttachmentGroup:InterconnectAttachmentGroup \
+  --resource ComputeInterconnectGroup:InterconnectGroup \
+  --include-skipped-output
+
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
@@ -49,10 +58,59 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeNetworkEndpoint:NetworkEndpoint \
   --resource ComputeMachineImage:MachineImage \
   --resource ComputeRegionSSLPolicy:SslPolicy \
+  --resource ComputeInstantSnapshot:InstantSnapshot \
+  --resource ComputeHealthCheckService:HealthCheckService \
+  --resource ComputeVMExtensionPolicy:VmExtensionPolicy \
+  --resource ComputeNotificationEndpoint:NotificationEndpoint \
+  --resource ComputeHealthAggregationPolicy:HealthAggregationPolicy \
+  --resource ComputeGlobalVMExtensionPolicy:GlobalVmExtensionPolicy \
   --include-skipped-output
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeHealthCheckService:HealthCheckService \
+  --resource ComputeHealthAggregationPolicy:HealthAggregationPolicy \
+  --resource ComputeInterconnectAttachmentGroup:InterconnectAttachmentGroup \
+  --resource ComputeInterconnectGroup:InterconnectGroup
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeCrossSiteNetwork:CrossSiteNetwork \
+  --pattern ComputeCrossSiteNetwork="projects/{project}/global/crossSiteNetworks/{crossSiteNetwork}"
 
 rm -f ${REPO_ROOT}/apis/compute/v1alpha1/computeregionautoscaler_types.go
 
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeVMExtensionPolicy:VmExtensionPolicy \
+  --pattern ComputeVMExtensionPolicy=projects/{project}/zones/{zone}/vmExtensionPolicies/{vmextensionpolicy}
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeNotificationEndpoint:NotificationEndpoint
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeGlobalVMExtensionPolicy:GlobalVmExtensionPolicy \
+  --pattern ComputeGlobalVMExtensionPolicy=projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource \
+  --resource ComputeStoragePool:StoragePool
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeStoragePool:StoragePool \
+  --pattern ComputeStoragePool=projects/{project}/zones/{zone}/storagePools/{storagePool}
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.compute.v1 \
@@ -97,7 +155,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeTargetInstance:TargetInstance \
   --resource ComputeTargetPool:TargetPool \
   --resource ComputeTargetSSLProxy:TargetSslProxy \
-  --resource ComputeTargetTcpProxy:TargetTcpProxy \
+  --resource ComputeTargetTCPProxy:TargetTcpProxy \
   --resource ComputeTargetVPNGateway:TargetVpnGateway \
   --resource ComputeURLMap:UrlMap \
   --resource ComputeVPNGateway:VpnGateway \
@@ -111,7 +169,18 @@ ${CONTROLLERBUILDER} generate-mapper \
   --multiversion \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output
+  --include-skipped-output \
+  --prepopulate-resource \
+  --skip-proto GlobalVmExtensionPolicy \
+  --skip-proto GlobalVmExtensionPolicyExtensionPolicy \
+  --skip-proto GlobalVmExtensionPolicyInstanceSelector \
+  --skip-proto GlobalVmExtensionPolicyLabelSelector \
+  --skip-proto GlobalVmExtensionPolicyList \
+  --skip-proto GlobalVmExtensionPolicyRolloutOperation \
+  --skip-proto GlobalVmExtensionPolicyRolloutOperationRolloutInput \
+  --skip-proto GlobalVmExtensionPolicyRolloutOperationRolloutStatus \
+  --skip-proto GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata \
+  --skip-proto GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

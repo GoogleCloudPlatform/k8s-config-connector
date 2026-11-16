@@ -68,10 +68,30 @@ spec:
                     description: 'Immutable. The Dataplex entity that represents the
                       data source (e.g. BigQuery table) for DataScan, of the form:
                       `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}`.'
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
                     properties:
                       external:
-                        description: A reference to an externally managed Dataplex
-                          Entity. Should be of the format `projects/{projectID}/locations/{location}/lakes/{lakeID}/zones/{zoneID}/entities/{entityID}`.
+                        description: A reference to an externally managed DataplexEntity
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/lakes/{{lakeID}}/zones/{{zone}}/entities/{{entityID}}".
+                        type: string
+                      name:
+                        description: The name of a DataplexEntity resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a DataplexEntity resource.
                         type: string
                     type: object
                   resource:

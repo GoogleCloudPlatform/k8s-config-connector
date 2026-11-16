@@ -1,0 +1,4129 @@
+# Phase: CREATE
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "accountId": "sa-${uniqueId}",
+  "serviceAccount": {
+    "displayName": "Config Deployment SA"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Config Deployment SA",
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Config Deployment SA",
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Config Deployment SA",
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a1b1a0da12
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": true
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": []
+  },
+  "location": "us-central1",
+  "name": "${projectId}-bucket-${uniqueId}",
+  "storageClass": "STANDARD"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a1b1a0dd09
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "${projectId}-bucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a1b1a0dd2b
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "${projectId}-bucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments?%24alt=json%3Benum-encoding%3Dint&deploymentId=configdeployment-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "annotations": {
+    "note": "initial"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "importExistingResources": false,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "test",
+    "managed-by-cnrm": "true"
+  },
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "my_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "main",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "bar"
+      }
+    }
+  },
+  "tfVersionConstraint": "=1.3.10",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "SUCCEEDED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.Deployment",
+    "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "errorCode": "REVISION_FAILED",
+    "labels": {
+      "cnrm-test": "true",
+      "env": "test",
+      "managed-by-cnrm": "true"
+    },
+    "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-0",
+    "lockState": "UNLOCKED",
+    "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "providerConfig": {},
+    "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+    "state": "FAILED",
+    "stateDetail": "Revision failed: Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+    "terraformBlueprint": {
+      "externalValues": {
+        "ext_var": {
+          "deploymentSource": {
+            "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+            "outputName": "my_output"
+          }
+        }
+      },
+      "gitSource": {
+        "directory": "scripts",
+        "ref": "main",
+        "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+      },
+      "inputValues": {
+        "foo": {
+          "inputValue": "bar"
+        }
+      }
+    },
+    "tfVersion": "1.3.10",
+    "tfVersionConstraint": "=1.3.10",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+  }
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "initial"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "errorCode": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "test",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-0",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Revision failed: Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "my_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "main",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "bar"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+# Phase: UPDATE
+PATCH https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=annotations%2Clabels%2CterraformBlueprint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: deployment.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "importExistingResources": false,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersionConstraint": "=1.3.10",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "SUCCEEDED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.Deployment",
+    "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "errorCode": "REVISION_FAILED",
+    "labels": {
+      "cnrm-test": "true",
+      "env": "staging",
+      "managed-by-cnrm": "true"
+    },
+    "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+    "lockState": "UNLOCKED",
+    "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "providerConfig": {},
+    "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+    "state": "FAILED",
+    "stateDetail": "Revision failed: Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+    "terraformBlueprint": {
+      "externalValues": {
+        "ext_var": {
+          "deploymentSource": {
+            "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+            "outputName": "updated_output"
+          }
+        }
+      },
+      "gitSource": {
+        "directory": "scripts",
+        "ref": "v1.0.0",
+        "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+      },
+      "inputValues": {
+        "foo": {
+          "inputValue": "updated"
+        }
+      }
+    },
+    "tfVersion": "1.3.10",
+    "tfVersionConstraint": "=1.3.10",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+  }
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "errorCode": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Revision failed: Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+# Phase: DELETE
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a1b1a72fda
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "${projectId}-bucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Config Deployment SA",
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a1b1b14c12
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "${projectId}-bucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Config Deployment SA",
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a1b1b84c29
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "${projectId}-bucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deleteLogs": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/logs",
+  "deleteResults": {
+    "artifacts": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/artifacts",
+    "content": "gs://${projectId}-bucket-${uniqueId}/artifacts/configdeployment-${uniqueId}/delete_results/content"
+  },
+  "errorCode": 10,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fconfigdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentMetadata": {
+      "step": "FAILED"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Config Deployment SA",
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a1b1bcb266
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "${projectId}-bucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a1b1bcb2bb
+
+{
+  "kind": "storage#objects"
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+204 No Content
+Content-Type: application/json
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a1b1bcb482
+
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Config Deployment SA",
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

@@ -25,21 +25,29 @@ entries:
     group: networksecurity.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged fields against proto; modelled parentRef (*NetworkSecurityGatewaySecurityPolicyRef)
   - kind: NetworkSecurityGatewaySecurityPolicyRule
     group: networksecurity.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/gatewaySecurityPolicies/{gateway_security_policy}/rules/{rule}" contains ancestor segment(s) gatewaySecurityPolicies/{gateway_security_policy} with no matching reference or field on NetworkSecurityGatewaySecurityPolicyRuleSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*NetworkSecurityGatewaySecurityPolicyRef); removed ProjectRef and Location
   - kind: NetworkSecurityGatewaySecurityPolicyRule
     group: networksecurity.cnrm.cloud.google.com
     field: .spec.gatewaySecurityPolicyRef
     reason: parent-ref-guessed
     detail: emitted as a reference to NetworkSecurityGatewaySecurityPolicyRef, read from the gatewaySecurityPolicies segment of projects/{project}/locations/{location}/gatewaySecurityPolicies/{gateway_security_policy}/rules/{rule}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*NetworkSecurityGatewaySecurityPolicyRef); removed ProjectRef and Location
   - kind: NetworkSecurityGatewaySecurityPolicyRule
     group: networksecurity.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/gatewaySecurityPolicies/{gateway_security_policy}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*NetworkSecurityGatewaySecurityPolicyRef); removed ProjectRef and Location

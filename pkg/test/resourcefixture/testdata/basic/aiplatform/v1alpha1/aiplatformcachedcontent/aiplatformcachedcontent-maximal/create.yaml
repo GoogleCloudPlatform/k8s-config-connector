@@ -1,0 +1,238 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
+kind: AIPlatformCachedContent
+metadata:
+  name: aiplatformcachedcontent-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: asia-northeast1
+  displayName: cachedcontent-${uniqueId}
+  modelRef:
+    external: projects/${projectId}/locations/asia-northeast1/publishers/google/models/gemini-3.5-flash
+  ttl: 300s
+  systemInstruction:
+    role: system
+    parts:
+    - text: You are a helpful assistant.
+  contents:
+  - role: user
+    parts:
+    - text: |
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+        Config Connector manages Google Cloud Platform resources through declarative Kubernetes custom resources. Declarative infrastructure management ensures state consistency and reconciliation across environments.
+
+  toolConfig:
+    functionCallingConfig:
+      mode: AUTO

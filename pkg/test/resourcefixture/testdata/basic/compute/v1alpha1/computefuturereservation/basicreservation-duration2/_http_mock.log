@@ -47,7 +47,7 @@ X-Goog-Request-Params: project=${projectId}&zone=us-central1-a
     "duration": {
       "seconds": "86400"
     },
-    "startTime": "2026-11-10T00:00:00Z"
+    "startTime": "2036-11-10T00:00:00Z"
   }
 }
 
@@ -151,8 +151,8 @@ X-Xss-Protection: 0
     "procurementStatus": "DRAFTING"
   },
   "timeWindow": {
-    "endTime": "2026-11-11T00:00:00Z",
-    "startTime": "2026-11-10T00:00:00Z"
+    "endTime": "2036-11-11T00:00:00Z",
+    "startTime": "2036-11-10T00:00:00Z"
   },
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
@@ -180,7 +180,7 @@ X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&future_reservatio
     "duration": {
       "seconds": "86400"
     },
-    "startTime": "2026-11-10T00:00:00Z"
+    "startTime": "2036-11-10T00:00:00Z"
   }
 }
 
@@ -262,7 +262,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "autoCreatedReservationsDeleteTime": "2026-11-11T00:00:01Z",
+  "autoCreatedReservationsDeleteTime": "2036-11-11T00:00:01Z",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "",
   "id": "000000000000000000000",
@@ -286,8 +286,8 @@ X-Xss-Protection: 0
     "procurementStatus": "DRAFTING"
   },
   "timeWindow": {
-    "endTime": "2026-11-11T00:00:00Z",
-    "startTime": "2026-11-10T00:00:00Z"
+    "endTime": "2036-11-11T00:00:00Z",
+    "startTime": "2036-11-10T00:00:00Z"
   },
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }

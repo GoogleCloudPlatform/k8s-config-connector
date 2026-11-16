@@ -42,7 +42,6 @@ func dataplexGlossaryTermFuzzer() fuzztesting.KRMFuzzer {
 	// Spec fields
 	f.SpecField(".description")
 	f.SpecField(".display_name")
-	f.SpecField(".labels")
 	f.SpecField(".parent")
 
 	// Status fields
@@ -52,6 +51,7 @@ func dataplexGlossaryTermFuzzer() fuzztesting.KRMFuzzer {
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	return f
 }

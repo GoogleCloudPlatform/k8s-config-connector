@@ -27,10 +27,54 @@ import (
 
 var (
 	_ identity.IdentityV2 = &AIPlatformModelIdentity{}
+	_ identity.IdentityV2 = &AIPlatformPublisherModelIdentity{}
 	_ identity.Resource   = &AIPlatformModel{}
 )
 
 var AIPlatformModelIdentityFormat = gcpurls.Template[AIPlatformModelIdentity]("aiplatform.googleapis.com", "projects/{project}/locations/{location}/models/{model}")
+
+var (
+	AIPlatformPublisherModelIdentityFormat       = gcpurls.Template[AIPlatformPublisherModelIdentity]("aiplatform.googleapis.com", "projects/{project}/locations/{location}/publishers/{publisher}/models/{model}")
+	AIPlatformGlobalPublisherModelIdentityFormat = gcpurls.Template[AIPlatformPublisherModelIdentity]("aiplatform.googleapis.com", "publishers/{publisher}/models/{model}")
+)
+
+// +k8s:deepcopy-gen=false
+type AIPlatformPublisherModelIdentity struct {
+	Project   string
+	Location  string
+	Publisher string
+	Model     string
+}
+
+func (i *AIPlatformPublisherModelIdentity) String() string {
+	if i.Project != "" && i.Location != "" {
+		return AIPlatformPublisherModelIdentityFormat.ToString(*i)
+	}
+	return AIPlatformGlobalPublisherModelIdentityFormat.ToString(*i)
+}
+
+func (i *AIPlatformPublisherModelIdentity) ParentString() string {
+	if i.Project != "" && i.Location != "" {
+		return "projects/" + i.Project + "/locations/" + i.Location
+	}
+	return ""
+}
+
+func (i *AIPlatformPublisherModelIdentity) FromExternal(ref string) error {
+	if parsed, match, err := AIPlatformPublisherModelIdentityFormat.Parse(ref); err == nil && match {
+		*i = *parsed
+		return nil
+	}
+	if parsed, match, err := AIPlatformGlobalPublisherModelIdentityFormat.Parse(ref); err == nil && match {
+		*i = *parsed
+		return nil
+	}
+	return fmt.Errorf("format of AIPlatformPublisherModel external=%q was not known (use %s or %s)", ref, AIPlatformPublisherModelIdentityFormat.CanonicalForm(), AIPlatformGlobalPublisherModelIdentityFormat.CanonicalForm())
+}
+
+func (i *AIPlatformPublisherModelIdentity) Host() string {
+	return AIPlatformPublisherModelIdentityFormat.Host()
+}
 
 // +k8s:deepcopy-gen=false
 type AIPlatformModelIdentity struct {

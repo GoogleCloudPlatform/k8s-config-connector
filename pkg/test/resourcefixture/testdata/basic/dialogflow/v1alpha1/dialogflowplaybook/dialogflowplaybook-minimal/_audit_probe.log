@@ -1,0 +1,32 @@
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/0fcb0d3c-0b35-498f-a20e-439663db7672?alt=json
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/0fcb0d3c-0b35-498f-a20e-439663db7672",
+  "startFlow": "projects/${projectId}/locations/global/agents/0fcb0d3c-0b35-498f-a20e-439663db7672/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/0fcb0d3c-0b35-498f-a20e-439663db7672/playbooks/b8b4ad63-0cff-4d94-885f-f0b6d0eb348f?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "displayName": "Updated Playbook ${uniqueId}",
+  "goal": "Updated goal for minimal playbook test",
+  "instruction": {},
+  "name": "projects/${projectId}/locations/global/agents/0fcb0d3c-0b35-498f-a20e-439663db7672/playbooks/b8b4ad63-0cff-4d94-885f-f0b6d0eb348f",
+  "tokenCount": "8"
+}

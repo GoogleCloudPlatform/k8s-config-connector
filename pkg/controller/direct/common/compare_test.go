@@ -1305,3 +1305,57 @@ func TestSpecDiffResult_RemovePathWithPrefix(t *testing.T) {
 		}
 	})
 }
+
+func TestCompareProtoMessage_IgnoresOutputOnlyInRepeatedMessages(t *testing.T) {
+	desired := &pb.Instance{
+		FileShares: []*pb.FileShareConfig{
+			{
+				Name:       "vol1",
+				CapacityGb: 1024,
+				NfsExportOptions: []*pb.NfsExportOptions{
+					{
+						IpRanges:   []string{"10.0.0.0/24"},
+						AccessMode: pb.NfsExportOptions_READ_WRITE,
+					},
+				},
+			},
+		},
+		Networks: []*pb.NetworkConfig{
+			{
+				Network: "default",
+				Modes:   []pb.NetworkConfig_AddressMode{pb.NetworkConfig_MODE_IPV4},
+			},
+		},
+	}
+
+	// IpAddresses on NetworkConfig is annotated OUTPUT_ONLY in filestore.proto.
+	actual := &pb.Instance{
+		FileShares: []*pb.FileShareConfig{
+			{
+				Name:       "vol1",
+				CapacityGb: 1024,
+				NfsExportOptions: []*pb.NfsExportOptions{
+					{
+						IpRanges:   []string{"10.0.0.0/24"},
+						AccessMode: pb.NfsExportOptions_READ_WRITE,
+					},
+				},
+			},
+		},
+		Networks: []*pb.NetworkConfig{
+			{
+				Network:     "default",
+				Modes:       []pb.NetworkConfig_AddressMode{pb.NetworkConfig_MODE_IPV4},
+				IpAddresses: []string{"10.128.0.2"},
+			},
+		},
+	}
+
+	paths, err := CompareProtoMessage(desired, actual, BasicDiff)
+	if err != nil {
+		t.Fatalf("CompareProtoMessage() unexpected error: %v", err)
+	}
+	if len(paths) != 0 {
+		t.Errorf("CompareProtoMessage() returned unexpected diff paths for OUTPUT_ONLY field in repeated message: %v", paths)
+	}
+}

@@ -1,0 +1,13 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityGatewaySecurityPolicyRule
+metadata:
+  name: gsprule-max-${uniqueId}
+spec:
+  parentRef:
+    name: gsp-${uniqueId}
+  basicProfile: DENY
+  enabled: true
+  priority: 200
+  sessionMatcher: host() == 'test.com'
+  applicationMatcher: request.headers['user-agent'].contains('Chrome')
+  description: Initial description

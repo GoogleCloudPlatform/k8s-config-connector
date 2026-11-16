@@ -24,3 +24,10 @@
 - **Solution**: Implemented `apihubexternalapi_controller.go` and `apihubexternalapi_fuzzer.go` under package `apihubexternalapi` and registered it in `register.go` and `static_config.go` maps.
 - **Impact**: Provides full lifecycle reconciliation, validation, round-trip fuzzing, and live GCP golden recording/verification for `APIHubExternalAPI`.
 
+### 2026-11-05 Greenfield Types and Identity Finalization for APIHubPluginInstance
+- **Context**: Triaged `judgement_queue.yaml` and finalized KRM types and identity for APIHubPluginInstance.
+- **Problem**: APIHubPluginInstance is a child resource under `projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}`. Initial scaffolding had separate `projectRef` and `location`, and lacked `APIHubPluginRef`.
+- **Solution**: Generated `APIHubPluginRef` and added `APIHubPlugin:Plugin` to `apis/apihub/generate.sh`. Modeled parent as required immutable `spec.parentRef` (`*APIHubPluginRef`). Triaged all `judgement_queue.yaml` entries.
+- **Impact**: Clean identity resolution conforming to `IdentityV2` and `refs.Ref`, passing all apichecks and unit tests.
+
+

@@ -29,5 +29,26 @@
   3. Verified that `hack/compare-mock`, `TestGoldenLogAlignment`, and `./dev/ci/presubmits/tests-e2e-fixtures-suite configdelivery` pass cleanly with zero discrepancies.
 - **Impact**: Full behavioral alignment and hermetic testing support for `ConfigDeliveryRelease`.
 
+### [2026-11-07] Triage Judgement Queue and Finalize Types for ConfigdeliveryVariant
+- **Context**: Triaging judgement queue and finalizing direct KRM types and identity for `ConfigdeliveryVariant` ([Issue 15210](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/15210)).
+- **Observations**:
+  1. `Variant` is a child resource under `Release` (`projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}/variants/{variant}`). Modelled parent as required immutable `spec.parentRef` (`*ConfigDeliveryReleaseRef`) with CEL rule `self == oldSelf` per `go/kcc-oneparent` Case B.
+  2. Removed `spec.projectRef` and `spec.location`, as ancestor project, location, and resourceBundle are resolved via the parent `ConfigDeliveryReleaseRef`.
+  3. Removed top-level `spec.labels` as labels are reconciled via `metadata.labels`.
+  4. Regenerated CRD, deepcopy code, identity, and mappers via `apis/configdelivery/generate.sh`, and updated pre-generated controller and fuzzer in lockstep.
+- **Impact**: Clean direct KRM types, identity, controller, and fuzzer for `ConfigdeliveryVariant`.
+
+### [2026-11-07] Implementing ConfigdeliveryVariant Direct Controller and E2E Fixtures
+- **Context**: Implementing Greenfield direct controller, E2E fixtures, and fuzzer for `ConfigdeliveryVariant` ([Issue 15218](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/15218)).
+- **Observations**:
+  1. `ConfigDeliveryRelease` requires the GCP label `configdelivery-skip-creating-variant-resources: "false"` when created with `lifecycle: DRAFT`, allowing child `Variant` resources to be created and managed under that release. Without that label, `Release` creation with `DRAFT` is rejected by GCP.
+  2. `ConfigDeliveryRelease` controller was updated to support `metadata.labels` via `label.NewGCPLabelsFromK8sLabels` and `common.CompareGreenfieldSpecAndLabels`.
+  3. The `Variant` GCP GET endpoint does not return `resources` in GET responses (it is write-only in GETs though mutable via PATCH with updateMask=resources). Implemented MBUR (mutable-but-unreadable) tracking with `SetMBUR` and `CompareMBUR` on `resources` hash in the `Variant` adapter.
+  4. In `ConfigdeliveryVariant` controller, ensured `resource.Name` and `resource.Labels` are populated on creation and update.
+  5. Both minimal and maximal fixtures were recorded against real GCP (`cnrm-barni-4`) and pass all 7 automated lifecycle validation checks.
+- **Impact**: Fully working and verified direct controller and golden test fixtures for `ConfigdeliveryVariant`.
+
+
+
 
 

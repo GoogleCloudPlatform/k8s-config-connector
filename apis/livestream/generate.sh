@@ -36,12 +36,7 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version livestream.cnrm.cloud.google.com/v1alpha1 \
   --resource LiveStreamAsset:Asset \
   --resource LiveStreamChannel:Channel \
-  --resource LiveStreamInput:Input
-
-${CONTROLLERBUILDER} generate-types \
-  --service google.cloud.video.livestream.v1 \
-  --api-version livestream.cnrm.cloud.google.com/v1alpha1 \
-  --prepopulate-resource \
+  --resource LiveStreamInput:Input \
   --resource LiveStreamDVRSession:DvrSession
 
 ${CONTROLLERBUILDER} generate-identity \
@@ -51,8 +46,7 @@ ${CONTROLLERBUILDER} generate-identity \
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.video.livestream.v1 \
-  --api-version livestream.cnrm.cloud.google.com/v1alpha1 \
-  --prepopulate-resource
+  --api-version livestream.cnrm.cloud.google.com/v1alpha1
 
 
 cd ${REPO_ROOT}

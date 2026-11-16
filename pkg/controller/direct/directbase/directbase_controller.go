@@ -236,7 +236,7 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 
 	obj := &unstructured.Unstructured{}
 	obj.SetGroupVersionKind(r.gvk)
-	if err := r.Get(ctx, request.NamespacedName, obj); err != nil {
+	if err := k8s.FetchUnstructured(ctx, r.Client, request.NamespacedName, obj); err != nil {
 		if apierrors.IsNotFound(err) {
 			r.rateLimiter.Forget(request.NamespacedName)
 			// Object not found, return.  Created objects are automatically garbage collected.

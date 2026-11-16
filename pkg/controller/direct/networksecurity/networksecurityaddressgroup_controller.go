@@ -153,9 +153,15 @@ func (a *addressGroupAdapter) Create(ctx context.Context, createOp *directbase.C
 		return fmt.Errorf("creating networksecurity address group %s: %w", a.id.String(), err)
 	}
 
-	actual, err := op.Wait(ctx)
+	_, err = op.Wait(ctx)
 	if err != nil {
 		return fmt.Errorf("networksecurity address group %s waiting for creation: %w", a.id.String(), err)
+	}
+
+	// Fetch fully-populated resource after creation since LRO response omits fields like labels
+	actual, err := a.gcpClient.GetAddressGroup(ctx, &pb.GetAddressGroupRequest{Name: a.id.String()})
+	if err != nil {
+		return fmt.Errorf("getting networksecurity address group %s after creation: %w", a.id.String(), err)
 	}
 
 	log.V(2).Info("successfully created networksecurity address group", "name", a.id.String())
@@ -193,9 +199,15 @@ func (a *addressGroupAdapter) Update(ctx context.Context, updateOp *directbase.U
 	if err != nil {
 		return fmt.Errorf("updating networksecurity address group %s: %w", a.id, err)
 	}
-	latest, err := op.Wait(ctx)
+	_, err = op.Wait(ctx)
 	if err != nil {
 		return fmt.Errorf("networksecurity address group %s waiting update: %w", a.id, err)
+	}
+
+	// Fetch fully-populated resource after update since LRO response omits fields like labels
+	latest, err := a.gcpClient.GetAddressGroup(ctx, &pb.GetAddressGroupRequest{Name: a.id.String()})
+	if err != nil {
+		return fmt.Errorf("getting networksecurity address group %s after update: %w", a.id.String(), err)
 	}
 
 	log.V(2).Info("successfully updated networksecurity address group", "name", a.id)

@@ -29,8 +29,10 @@ import (
 
 // manifestBuilder constructs and renders the Kubernetes manifests required for multi-cluster HA on a single cluster.
 type manifestBuilder struct {
-	contextName     string
-	clusterIdentity string
+	contextName string
+	// gkeCluster is the GKE cluster this Config Connector runs in; its resource name is the
+	// cluster's identity in the multi-cluster election.
+	gkeCluster      operatorv1beta1.GKECluster
 	project         string
 	controllerImage string
 	leaseName       string
@@ -47,10 +49,10 @@ type controllerComponent struct {
 	container          corev1.Container
 }
 
-func newManifestBuilder(contextName, clusterIdentity, project, controllerImage, leaseName, leaseNamespace, bucket string) *manifestBuilder {
+func newManifestBuilder(contextName string, gkeCluster operatorv1beta1.GKECluster, project, controllerImage, leaseName, leaseNamespace, bucket string) *manifestBuilder {
 	return &manifestBuilder{
 		contextName:     contextName,
-		clusterIdentity: clusterIdentity,
+		gkeCluster:      gkeCluster,
 		project:         project,
 		controllerImage: controllerImage,
 		leaseName:       leaseName,
@@ -250,8 +252,12 @@ func (b *manifestBuilder) configureMultiClusterLease(spec *operatorv1beta1.Confi
 	mcl := spec.Experiments.MultiClusterLease
 	mcl.LeaseName = b.leaseName
 	mcl.Namespace = b.leaseNamespace
-	if mcl.ClusterCandidateIdentity == "" {
-		mcl.ClusterCandidateIdentity = b.clusterIdentity
+	// clusterCandidateIdentity is deprecated and rejected by the ConfigConnector CRD; the
+	// cluster's identity is now derived from gkeCluster.
+	mcl.ClusterCandidateIdentity = ""
+	if mcl.GKECluster == nil {
+		gkeCluster := b.gkeCluster
+		mcl.GKECluster = &gkeCluster
 	}
 	if mcl.ResourceReplicationMode == "" {
 		mcl.ResourceReplicationMode = defaultReplicationMode

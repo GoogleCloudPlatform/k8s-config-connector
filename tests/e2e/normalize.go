@@ -102,12 +102,16 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.gcpID"] = "000000000000000000000"
 	visitor.replacePaths[".status.managedZoneId"] = "1234567890"
 	visitor.replacePaths[".status.creationTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.creationTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.lastModifiedTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.lastModifiedTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.createTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.createTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.lastUsedTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.endTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.updateTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.nextRunTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.nextScheduleTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.pairingKey.expireTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.updateTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.expireTime"] = mockgcpregistry.PlaceholderTimestamp
@@ -116,6 +120,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.etag"] = "abcdef123456"
 	visitor.replacePaths[".status.observedState.terminalCondition.lastTransitionTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.creationTimestamp"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.updateTimestamp"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.oauth2ClientID"] = "888888888888888888888"
 	visitor.replacePaths[".status.observedState.deleteLockExpireTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.resources[].resourceID"] = int64(12345678)
@@ -399,6 +404,9 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		visitor.replacePaths[".status.observedState.userID"] = "0000000000000000000"
 		visitor.removePaths.Insert(".status.observedState.state") // data transfer run state, which depends on timing
 	}
+	if u.GetKind() == "DataformFolder" {
+		visitor.removePaths.Insert(".status.observedState.internalMetadata")
+	}
 	// Specific to AIPlatformSchedule
 	if u.GetKind() == "AIPlatformSchedule" {
 		visitor.replacePaths[".spec.startTime"] = mockgcpregistry.PlaceholderTime
@@ -406,6 +414,10 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	}
 	if u.GetKind() == "DocumentAIProcessorVersion" {
 		visitor.replacePaths[".status.observedState.create_time"] = mockgcpregistry.PlaceholderTime
+	}
+	if u.GetKind() == "ComputeGlobalVMExtensionPolicy" {
+		// rolloutOperation contains dynamic rollout timestamps and timing-dependent async zone rollout states in real GCP.
+		visitor.removePaths.Insert(".status.observedState.rolloutOperation")
 	}
 
 	// Specific to Datacatalog
@@ -1653,6 +1665,9 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	{
 		visitor.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
 		visitor.ReplacePath(".nextRunTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".nextScheduleTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.nextScheduleTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.response.nextScheduleTime", mockgcpregistry.PlaceholderTimestamp)
 		visitor.ReplacePath(".expirationTime", "2024-09-01T12:34:56.123456Z")
 		visitor.ReplacePath(".schedules[].createTime", mockgcpregistry.PlaceholderTimestamp)
 		visitor.ReplacePath(".schedules[].nextRunTime", mockgcpregistry.PlaceholderTimestamp)

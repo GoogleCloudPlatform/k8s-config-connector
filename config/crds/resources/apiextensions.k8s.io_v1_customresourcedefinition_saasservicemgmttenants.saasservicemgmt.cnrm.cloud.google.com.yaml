@@ -116,10 +116,30 @@ spec:
                 description: Required. Immutable. A reference to the Saas that defines
                   the product (managed service) that the producer wants to manage
                   with SaaS Runtime.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
                 properties:
                   external:
                     description: A reference to an externally managed SaaSServiceMgmtSaaS
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/saas/{{saas}}".
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/saas/{{saasID}}".
+                    type: string
+                  name:
+                    description: The name of a SaaSServiceMgmtSaaS resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a SaaSServiceMgmtSaaS resource.
                     type: string
                 type: object
                 x-kubernetes-validations:

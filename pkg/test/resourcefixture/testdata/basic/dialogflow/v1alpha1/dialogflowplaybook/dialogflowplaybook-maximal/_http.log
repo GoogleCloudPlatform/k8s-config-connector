@@ -1,0 +1,420 @@
+# Phase: CREATE
+POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "timeZone": "America/New_York"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd",
+  "startFlow": "projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd",
+  "startFlow": "projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+POST https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd/playbooks?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Ff0d571ee-0884-4fb5-a84d-c3e0d4494ccd
+
+{
+  "displayName": "Maximal Playbook ${uniqueId}",
+  "goal": "Help users with maximal playbook test",
+  "inputParameterDefinitions": [
+    {
+      "description": "ID of the customer account",
+      "name": "account_id",
+      "typeSchema": {
+        "inlineSchema": {
+          "type": 1
+        }
+      }
+    }
+  ],
+  "instruction": {
+    "guidelines": "Always be polite and helpful to the customer.",
+    "steps": [
+      {
+        "text": "Ask customer for account number."
+      }
+    ]
+  },
+  "outputParameterDefinitions": [
+    {
+      "description": "Summary of resolution",
+      "name": "resolution_summary",
+      "typeSchema": {
+        "inlineSchema": {
+          "type": 1
+        }
+      }
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Maximal Playbook ${uniqueId}",
+  "goal": "Help users with maximal playbook test",
+  "inputParameterDefinitions": [
+    {
+      "description": "ID of the customer account",
+      "name": "account_id",
+      "typeSchema": {
+        "inlineSchema": {
+          "type": 1
+        }
+      }
+    }
+  ],
+  "instruction": {
+    "guidelines": "Always be polite and helpful to the customer.",
+    "steps": [
+      {
+        "text": "Ask customer for account number."
+      }
+    ]
+  },
+  "name": "projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd/playbooks/d580659b-61e7-44d6-b518-90f2a32a8fb4",
+  "outputParameterDefinitions": [
+    {
+      "description": "Summary of resolution",
+      "name": "resolution_summary",
+      "typeSchema": {
+        "inlineSchema": {
+          "type": 1
+        }
+      }
+    }
+  ],
+  "tokenCount": "25"
+}
+
+---
+
+# Phase: UPDATE
+GET https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd/playbooks/d580659b-61e7-44d6-b518-90f2a32a8fb4?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Ff0d571ee-0884-4fb5-a84d-c3e0d4494ccd%2Fplaybooks%2Fd580659b-61e7-44d6-b518-90f2a32a8fb4
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Maximal Playbook ${uniqueId}",
+  "goal": "Help users with maximal playbook test",
+  "inputParameterDefinitions": [
+    {
+      "description": "ID of the customer account",
+      "name": "account_id",
+      "typeSchema": {
+        "inlineSchema": {
+          "type": 1
+        }
+      }
+    }
+  ],
+  "instruction": {
+    "guidelines": "Always be polite and helpful to the customer.",
+    "steps": [
+      {
+        "text": "Ask customer for account number."
+      }
+    ]
+  },
+  "name": "projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd/playbooks/d580659b-61e7-44d6-b518-90f2a32a8fb4",
+  "outputParameterDefinitions": [
+    {
+      "description": "Summary of resolution",
+      "name": "resolution_summary",
+      "typeSchema": {
+        "inlineSchema": {
+          "type": 1
+        }
+      }
+    }
+  ],
+  "tokenCount": "25"
+}
+
+---
+
+PATCH https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd/playbooks/d580659b-61e7-44d6-b518-90f2a32a8fb4?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2Cgoal%2Cinstruction
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: playbook.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Ff0d571ee-0884-4fb5-a84d-c3e0d4494ccd%2Fplaybooks%2Fd580659b-61e7-44d6-b518-90f2a32a8fb4
+
+{
+  "displayName": "Updated Maximal Playbook ${uniqueId}",
+  "goal": "Updated goal for maximal playbook test",
+  "inputParameterDefinitions": [
+    {
+      "description": "ID of the customer account",
+      "name": "account_id",
+      "typeSchema": {
+        "inlineSchema": {
+          "type": 1
+        }
+      }
+    }
+  ],
+  "instruction": {
+    "guidelines": "Always be polite and professional to the customer.",
+    "steps": [
+      {
+        "text": "Ask customer for account number."
+      }
+    ]
+  },
+  "name": "projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd/playbooks/d580659b-61e7-44d6-b518-90f2a32a8fb4",
+  "outputParameterDefinitions": [
+    {
+      "description": "Summary of resolution",
+      "name": "resolution_summary",
+      "typeSchema": {
+        "inlineSchema": {
+          "type": 1
+        }
+      }
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Updated Maximal Playbook ${uniqueId}",
+  "goal": "Updated goal for maximal playbook test",
+  "inputParameterDefinitions": [
+    {
+      "description": "ID of the customer account",
+      "name": "account_id",
+      "typeSchema": {
+        "inlineSchema": {
+          "type": 1
+        }
+      }
+    }
+  ],
+  "instruction": {
+    "guidelines": "Always be polite and professional to the customer.",
+    "steps": [
+      {
+        "text": "Ask customer for account number."
+      },
+      {
+        "text": "Ask customer for account number."
+      }
+    ]
+  },
+  "name": "projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd/playbooks/d580659b-61e7-44d6-b518-90f2a32a8fb4",
+  "outputParameterDefinitions": [
+    {
+      "description": "Summary of resolution",
+      "name": "resolution_summary",
+      "typeSchema": {
+        "inlineSchema": {
+          "type": 1
+        }
+      }
+    }
+  ],
+  "tokenCount": "34"
+}
+
+---
+
+# Phase: DELETE
+GET https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd/playbooks/d580659b-61e7-44d6-b518-90f2a32a8fb4?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Ff0d571ee-0884-4fb5-a84d-c3e0d4494ccd%2Fplaybooks%2Fd580659b-61e7-44d6-b518-90f2a32a8fb4
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Updated Maximal Playbook ${uniqueId}",
+  "goal": "Updated goal for maximal playbook test",
+  "inputParameterDefinitions": [
+    {
+      "description": "ID of the customer account",
+      "name": "account_id",
+      "typeSchema": {
+        "inlineSchema": {
+          "type": 1
+        }
+      }
+    }
+  ],
+  "instruction": {
+    "guidelines": "Always be polite and professional to the customer.",
+    "steps": [
+      {
+        "text": "Ask customer for account number."
+      },
+      {
+        "text": "Ask customer for account number."
+      },
+      {
+        "text": "Ask customer for account number."
+      }
+    ]
+  },
+  "name": "projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd/playbooks/d580659b-61e7-44d6-b518-90f2a32a8fb4",
+  "outputParameterDefinitions": [
+    {
+      "description": "Summary of resolution",
+      "name": "resolution_summary",
+      "typeSchema": {
+        "inlineSchema": {
+          "type": 1
+        }
+      }
+    }
+  ],
+  "tokenCount": "42"
+}
+
+---
+
+DELETE https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd/playbooks/d580659b-61e7-44d6-b518-90f2a32a8fb4?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Ff0d571ee-0884-4fb5-a84d-c3e0d4494ccd%2Fplaybooks%2Fd580659b-61e7-44d6-b518-90f2a32a8fb4
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd",
+  "startFlow": "projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

@@ -15,13 +15,23 @@
 package mockfinancialservices
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "financialservices.googleapis.com") {
+		return
+	}
+	replacements.ReplacePath(".hyperparameterSourceType", 1)
+	replacements.ReplacePath(".response.hyperparameterSourceType", 1)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(event.URL(), "financialservices.googleapis.com") {
+		return
+	}
 }

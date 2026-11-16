@@ -33,10 +33,10 @@ func netAppBackupVaultFuzzer() fuzztesting.KRMFuzzer {
 		BackupVaultObservedState_FromProto, BackupVaultObservedState_ToProto,
 	)
 
-	f.SpecFields.Insert(".description")
+	f.SpecField(".description")
 
-	f.StatusFields.Insert(".state")
-	f.StatusFields.Insert(".create_time")
+	f.StatusField(".state")
+	f.StatusField(".create_time")
 
 	f.IdentityField(".name")
 

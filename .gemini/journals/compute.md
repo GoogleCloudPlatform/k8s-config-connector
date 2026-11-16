@@ -58,3 +58,397 @@
   5. Validated against real GCP and MockGCP with recorded test fixtures and golden comparisons.
 - **Impact**: Provides a robust, idiomatic direct controller for `ComputeManagedSSLCertificate` with zero-write re-reconciliation and clean immutability enforcement.
 
+### [2026-11-10] Greenfield: Prepopulate types, identity, and judgement queue for ComputeCrossSiteNetwork
+- **Context**: Greenfield implementation of `ComputeCrossSiteNetwork` (issue #15355).
+- **Proto & Service**: `CrossSiteNetwork` is a GA resource under Google Cloud Compute Engine v1 (and present in `cloud.google.com/go/compute/apiv1/computepb`), but was not present in the pinned googleapis SHA in `.build/third_party/googleapis`. Following the existing pattern in `dev/tools/controllerbuilder/generate-proto.sh` (e.g. `SecurityPolicyAssociation`), we patched `google/cloud/compute/v1/compute.proto` to include `CrossSiteNetwork` message and service definitions, keeping the pinned commit intact.
+- **Prepopulation**: Ran `generate-types --prepopulate-resource` and `generate-identity` with pattern `projects/{project}/global/crossSiteNetworks/{crossSiteNetwork}`.
+- **Release Bundle**: Added `ComputeCrossSiteNetwork` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+- **Validation**: Added entry to `alpha-missingfields.txt` via golden test runner. All tests in `apis/compute/...`, `tests/apichecks/...`, and `dev/tasks/build-release-bundle` passed cleanly.
+
+### [2026-11-11] Greenfield Prepopulate of ComputeInstantSnapshot
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for Greenfield resource `ComputeInstantSnapshot` (issue #15354).
+- **Problem**: When configuring `apis/compute/generate.sh`, passing `--prepopulate-resource` to the existing multi-resource `generate-types` command enabled `--emit-message-maps`, causing `AutoscalingPolicy` to be un-commented in `apis/compute/v1alpha1/types.generated.go`. This triggered a compilation conflict in `mapper.generated.go` because a handwritten `FixedOrPercent_v1alpha1_FromProto` had a mismatched return type.
+- **Solution**:
+  1. Kept the existing multi-resource `generate-types` invocation untouched without `--prepopulate-resource`.
+  2. Added a separate, dedicated `generate-types` invocation with `--prepopulate-resource` and `generate-identity` strictly for `ComputeInstantSnapshot`.
+  3. Added `--prepopulate-resource` to `generate-mapper` (alongside `--multiversion`), which correctly emits inline message map conversions without compiler collisions.
+  4. Added `ComputeInstantSnapshot` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  5. Added non-idiomatic proto comment exception to `tests/apichecks/testdata/exceptions/comments.txt` and updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+- **Impact**: Complies with Greenfield Step 1 review standards by enabling `--prepopulate-resource` on `generate-mapper` while safely isolating `--prepopulate-resource` in `generate-types` for newly scaffolded resources in shared services.
+
+### [2026-11-11] Greenfield Judgement Queue Triage for ComputeInstantSnapshot
+- **Context**: Triaging `judgement_queue.yaml` and finalizing direct KRM types, identity, and references for `ComputeInstantSnapshot` (issue #15378).
+- **Findings**:
+  1. `ComputeInstantSnapshot` can be created either for a zonal disk or a regional disk. In GCP CAIS, it has two name formats: `//compute.googleapis.com/projects/{project}/zones/{zone}/instantSnapshots/{name}` and `//compute.googleapis.com/projects/{project}/regions/{region}/instantSnapshots/{name}`.
+  2. Because `controllerbuilder generate-identity` only generates a single template pattern and cannot express dual zonal and regional templates for a resource, `ComputeInstantSnapshotIdentity` was promoted to handwritten `computeinstantsnapshot_identity.go`, mirroring `ComputeDisk` (`ZonalComputeInstantSnapshotIdentityFormat` and `RegionalComputeInstantSnapshotIdentityFormat`).
+  3. `SourceDisk` is a reference to a `ComputeDisk` and was converted to `SourceDiskRef *computev1beta1.ComputeDiskRef` with `json:"sourceDiskRef,omitempty"` and `// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshot.source_disk`.
+  4. Top-level `Labels` and output-only fields (`architecture`, `diskSizeGB`, `labelFingerprint`, `region`, `resourceStatus`, `satisfiesPzi`, `satisfiesPzs`, `sourceDiskID`, `status`, `zone`) were moved to `ComputeInstantSnapshotObservedState` or omitted from Spec.
+  5. In `apis/compute/generate.sh`, removed the isolated prepopulation block and added `ComputeInstantSnapshot:InstantSnapshot` to the main `generate-types` invocation without `--prepopulate-resource`.
+- **Impact**: Cleanly resolved all 24 entries in `apis/compute/judgement_queue.yaml`. All unit tests, CAIS golden tests, and API checks pass.
+
+### [2026-11-11] Greenfield Controller, Fuzzer, and E2E Fixtures for ComputeInstantSnapshot
+- **Context**: Implementing the direct controller, fuzzer, and real-GCP recorded E2E fixtures for `ComputeInstantSnapshot` (issue #15386).
+- **Findings**:
+  1. `InstantSnapshots` in Compute Engine are regional or zonal and require separate clients: `compute.InstantSnapshotsClient` and `compute.RegionInstantSnapshotsClient`. Added `newInstantSnapshotsClient` and `newRegionInstantSnapshotsClient` in `pkg/controller/direct/compute/client.go`.
+  2. Instant snapshots in GCP are immutable (no update or patch method exists on the client). In `Update`, `common.CompareGreenfieldSpec` checks for changes and returns a clear error if modified.
+  3. When `SourceDisk` is returned from GCP `Get`, it has the full URL format (`https://www.googleapis.com/...`), while `SourceDiskRef` on KRM objects or resolved by `NormalizeGreenfieldReferences` uses the relative format (`projects/...`). A normalization hook was supplied to `CompareGreenfieldSpec` to strip the compute URL prefix, preventing false diffs during re-reconciliation.
+  4. Fuzzer round-trip testing (`FOCUS=ComputeInstantSnapshot`) required marking unmapped proto fields (`.params`, `.source_instant_snapshot_group`, `.source_instant_snapshot_group_id`) as `f.Unimplemented_NotYetTriaged`.
+  5. Minimal and maximal fixtures were created and recorded against real GCP with `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`. Both minimal and maximal fixtures passed all 7 automated validation checks.
+- **Impact**: Clean direct controller and fuzzer implementation for `ComputeInstantSnapshot` verified end-to-end against real GCP.
+
+### [2026-11-11] MockGCP Implementation and Alignment for ComputeInstantSnapshot
+- **Context**: Implementing MockGCP service handlers and aligning mock golden logs with authentic real GCP traffic for `ComputeInstantSnapshot` (issue #15421).
+- **Implementation**:
+  1. Implemented `InstantSnapshotsV1` (zonal) and `RegionInstantSnapshotsV1` (regional) in `mockgcp/mockcompute/instantsnapshotsv1.go`, handling Get, Insert, Delete, and SetLabels.
+  2. Registered both gRPC servers and HTTP mux handlers in `mockgcp/mockcompute/service.go`.
+  3. Added `ComputeInstantSnapshot` to supported GroupKinds for MockGCP testing in `config/tests/samples/create/harness.go`.
+  4. Updated empty labels fingerprint in `mockgcp/mockcompute/utils.go` to return standard Compute Engine constant `42WmSpB8rSM=` when no labels are specified.
+  5. Populated `SatisfiesPzi: true` on instant snapshots to match real GCP behavior observed in KRM status objects.
+  6. Automatically populated source disk metadata (`SourceDiskId`, `DiskSizeGb`) from mock storage when available, defaulting to standard 10GB pd size.
+  7. Ran `hack/compare-mock` and verified 0 diff in golden objects, generated `_http_mock.log` files, and verified clean pass of `TestGoldenLogAlignment` and `./dev/ci/presubmits/tests-e2e-fixtures-suite compute`.
+- **Impact**: Provides hermetic MockGCP simulation for both zonal and regional instant snapshots with zero diff against authentic real GCP golden logs.
+
+### [2026-11-11] Greenfield Prepopulate of ComputeHealthCheckService
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for Greenfield resource `ComputeHealthCheckService` (issue #15400).
+- **Implementation**:
+  1. Configured dedicated `generate-types` and `generate-identity` commands for `ComputeHealthCheckService:HealthCheckService` in `apis/compute/generate.sh` using `--prepopulate-resource`.
+  2. Executed `./apis/compute/generate.sh`, which automatically generated `computehealthcheckservice_types.go`, `computehealthcheckservice_identity.generated.go`, `computehealthcheckservice_reference.generated.go`, `computehealthcheckservice_identity_generated_test.go`, and CRD manifests.
+  3. Added `ComputeHealthCheckService` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. Added `computehealthcheckservices.compute.cnrm.cloud.google.com` entries to `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+- **Impact**: Prepopulation completed mechanically with all queue entries left open for Step 1b triage. Idempotency verified and all tests pass.
+
+### [2026-11-11] Greenfield Judgement Queue Triage for ComputeHealthCheckService
+- **Context**: Triaging `apis/compute/judgement_queue.yaml` and finalizing direct KRM types, identity, and references for `ComputeHealthCheckService` (issue #15418).
+- **Findings & Resolutions**:
+  1. `ComputeHealthCheckService` is a regional resource under `projects/{project}/regions/{region}/healthCheckServices/{healthcheckservice}`. In `computehealthcheckservice_types.go`, `spec.location` was made a required string (`Location string`) representing the region name, matching standard Compute conventions.
+  2. `spec.region` was confirmed as output-only per proto comments ("It is not settable as a field in the request body") and moved to `ComputeHealthCheckServiceObservedState.Region`.
+  3. Verified documentation link and updated `+kcc:source:resource-docs` to `https://cloud.google.com/compute/docs/reference/rest/v1/regionHealthCheckServices`, removing guess annotations.
+  4. Server-set fields (`creationTimestamp`, `id`, `kind`, `selfLink`) were confirmed output-only and retained in `ComputeHealthCheckServiceObservedState` with guess markers removed.
+  5. Deterministic identity and reference generation via `controllerbuilder generate-identity` were retained in `apis/compute/generate.sh`, while `ComputeHealthCheckService:HealthCheckService` was moved into the primary `generate-types` invocation.
+  6. Modeled `spec.healthChecks` and `spec.networkEndpointGroups` as typed KCC references (`HealthCheckRefs []*computev1beta1.ComputeHealthCheckRef` and `NetworkEndpointGroupRefs []*computev1beta1.ComputeNetworkEndpointGroupRef`) referencing existing KCC resources `ComputeHealthCheck` and `ComputeNetworkEndpointGroup`.
+  7. Resolved all 9 entries in `apis/compute/judgement_queue.yaml` for `ComputeHealthCheckService`.
+- **Impact**: Cleanly resolved the entire judgement queue for `ComputeHealthCheckService`. CRDs and mapper bindings updated, and all unit tests and API checks pass.
+
+### [2026-11-11] Greenfield Prepopulate of ComputeVMExtensionPolicy
+- **Context**: Prepopulating direct KRM types, IdentityV2, reference, and `judgement_queue.yaml` for `ComputeVMExtensionPolicy` under `apis/compute/v1alpha1/` (issue #15353).
+- **Proto & Service Details**: `VmExtensionPolicy` and `ZoneVmExtensionPolicies` service exist in `cloud.google.com/go/compute/apiv1/computepb` and newer googleapis revisions, but are missing from the pinned googleapis commit (1765b559c4). Following the established pattern for Compute (e.g. `SecurityPolicyAssociation`), patched `dev/tools/controllerbuilder/generate-proto.sh` to inject `VmExtensionPolicy` and `ZoneVmExtensionPolicies` into `google/cloud/compute/v1/compute.proto`.
+- **Implementation**:
+  1. Configured `apis/compute/generate.sh` with `generate-types` (including `ComputeVMExtensionPolicy`), `generate-identity`, and `--prepopulate-resource` on `generate-mapper`, and added manual mapper helpers in `pkg/controller/direct/compute/computevmextensionpolicy_mapper.go` for `ExtensionPolicies` map conversion.
+  2. Registered `ComputeVMExtensionPolicy` in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  3. Generated types, CRD, and `apis/compute/judgement_queue.yaml` with open triage findings.
+  4. Verified conformance tests and updated golden exceptions in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+
+### [2026-11-11] Greenfield Judgement Queue Triage for ComputeVMExtensionPolicy
+- **Context**: Triaging `judgement_queue.yaml` and finalizing direct KRM types, identity, and references for `ComputeVMExtensionPolicy` (issue #15399).
+- **Findings & Resolutions**:
+  1. **Pattern & Service Hierarchy**: `ComputeVMExtensionPolicy` is managed via the `ZoneVmExtensionPolicies` REST API under `projects/{project}/zones/{zone}/vmExtensionPolicies/{vmextensionpolicy}`. Locked in this pattern in `apis/compute/generate.sh` via `--pattern ComputeVMExtensionPolicy=projects/{project}/zones/{zone}/vmExtensionPolicies/{vmextensionpolicy}` and resolved `identity-multi-pattern`.
+  2. **Location**: Retained `spec.location` as a required string representing the zone name (`location-parent-unknown`), matching Compute conventions (e.g. `ComputeInstantSnapshot`).
+  3. **Documentation**: Updated `+kcc:source:resource-docs=` to `https://cloud.google.com/compute/docs/reference/rest/v1/zoneVmExtensionPolicies` and removed `// +kcc:guess=source-link reason=verify-resource-docs-link`, resolving `verify-resource-docs-link`.
+  4. **Output-Only Fields**: `globalResourceLink`, `managedByGlobal`, `state`, and `updateTimestamp` were identified as output-only per proto comments and moved from `ComputeVMExtensionPolicySpec` to `ComputeVMExtensionPolicyObservedState`. Removed resolved `// +kcc:guess=placement` comments.
+  5. Custom Mappers: Implemented `ComputeVMExtensionPolicySpec_v1alpha1_FromProto` and `ComputeVMExtensionPolicySpec_v1alpha1_ToProto` in `pkg/controller/direct/compute/computevmextensionpolicy_mapper.go` so `generate-mapper` avoids attempting to map the moved output-only fields to Spec.
+  6. Testing: Added unit tests in `computevmextensionpolicy_identity_test.go` covering `FromExternal`, `ParentString`, `GetIdentity` (including status drift detection), and `ComputeVMExtensionPolicyRef.ValidateExternal`/`Normalize`. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` for the removed Spec fields.
+
+### [2026-11-13] Greenfield Prepopulate of ComputeGlobalVMExtensionPolicy
+- **Context**: Prepopulating direct KRM types, IdentityV2, reference, and `judgement_queue.yaml` for `ComputeGlobalVMExtensionPolicy` under `apis/compute/v1alpha1/` (issue #15534).
+- **Proto & Service Details**: `GlobalVmExtensionPolicy` and `GlobalVmExtensionPolicies` service exist in the Compute v1 Discovery document (`projects/{project}/global/vmExtensionPolicies/{globalVmExtensionPolicy}`), but were missing from the pinned googleapis commit (1765b559c4). Following the established pattern for Compute (e.g. `SecurityPolicyAssociation`, `VmExtensionPolicy`), patched `dev/tools/controllerbuilder/generate-proto.sh` to inject `GlobalVmExtensionPolicy` messages and `GlobalVmExtensionPolicies` service into `google/cloud/compute/v1/compute.proto`.
+- **Implementation**:
+  1. Added `GlobalVmExtensionPolicy` definitions to `dev/tools/controllerbuilder/generate-proto.sh`.
+  2. Registered `ComputeGlobalVMExtensionPolicy` in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  3. Configured `apis/compute/generate.sh` with dedicated `generate-types --prepopulate-resource` and `generate-identity` for `ComputeGlobalVMExtensionPolicy:GlobalVmExtensionPolicy`.
+  4. Added `--skip-proto` for `GlobalVmExtensionPolicy` messages to `generate-mapper` in `apis/compute/generate.sh` to prevent undefined symbol compilation errors against the currently pinned `cloud.google.com/go/compute` client library version (`v1.63.0`) which has not yet exposed Go SDK types for global VM extension policies.
+  5. Scaffolded `apis/compute/v1alpha1/computeglobalvmextensionpolicy_types.go`, generated identity, reference, deepcopy, CRD, and `judgement_queue.yaml` with open triage findings.
+  6. Verified compilation of `apis/compute/...` and `pkg/controller/direct/compute/...`, conformance tests, and updated golden exceptions in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+
+### [2026-11-13] Greenfield Judgement Queue Triage for ComputeGlobalVMExtensionPolicy
+- **Context**: Triaged `judgement_queue.yaml` and finalized direct KRM types, identity, and references for `ComputeGlobalVMExtensionPolicy` (issue #15558).
+- **Findings & Resolutions**:
+  1. **Pattern & Service Hierarchy**: `ComputeGlobalVMExtensionPolicy` is managed via the `GlobalVmExtensionPolicies` REST API under `projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}`. Locked in this pattern in `apis/compute/generate.sh` via `--pattern ComputeGlobalVMExtensionPolicy=projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}` and resolved `identity-multi-pattern`.
+  2. **Location**: Removed `spec.location` because `ComputeGlobalVMExtensionPolicy` is global and has no location/region/zone segment (`location-parent-unknown`). Made `spec.projectRef` required with `// +required`.
+  3. **Documentation**: Updated `+kcc:source:resource-docs=` to `https://cloud.google.com/compute/docs/reference/rest/v1/globalVmExtensionPolicies` and removed `// +kcc:guess=source-link reason=verify-resource-docs-link`, resolving `verify-resource-docs-link`.
+  4. **Output-Only Fields & RolloutOperation Structs**:
+     - `scopedResourceStatus` and `updateTimestamp` were identified as output-only per proto comments and moved from `ComputeGlobalVMExtensionPolicySpec` to `ComputeGlobalVMExtensionPolicyObservedState`.
+     - `GlobalVmExtensionPolicyRolloutOperation` was split into desired state (`GlobalVMExtensionPolicyRolloutOperation` containing only user-configurable `rolloutInput`) and observed state (`GlobalVMExtensionPolicyRolloutOperationObservedState` containing output-only `rolloutStatus`).
+     - Moved `GlobalVMExtensionPolicyRolloutOperation*` structs to `computeglobalvmextensionpolicy_types.go` to preserve `map[string]...` in `LocationRolloutStatus` without requiring repo-wide `--emit-message-maps`.
+  5. **Triage Queue**: Resolved all 27 entries for `ComputeGlobalVMExtensionPolicy` in `apis/compute/judgement_queue.yaml`.
+  6. **Testing**: Added unit tests in `computeglobalvmextensionpolicy_identity_test.go` covering `FromExternal`, `ParentString`, `GetIdentity` (including status drift detection), and `ComputeGlobalVMExtensionPolicyRef.ValidateExternal`/`Normalize`. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` for the removed Spec fields.
+
+
+
+
+### [2026-11-13] Greenfield Prepopulate of ComputeNotificationEndpoint
+- **Context**: Prepopulating direct KRM types, identity, reference, and `judgement_queue.yaml` for Greenfield resource `ComputeNotificationEndpoint` under `apis/compute/v1alpha1/` (issue #15537).
+- **Implementation**:
+  1. Configured dedicated `generate-types` and `generate-identity` commands for `ComputeNotificationEndpoint:NotificationEndpoint` in `apis/compute/generate.sh` using `--prepopulate-resource` and `--include-skipped-output`.
+  2. Executed `./apis/compute/generate.sh`, which automatically generated `computenotificationendpoint_types.go`, `computenotificationendpoint_identity.generated.go`, `computenotificationendpoint_reference.generated.go`, `computenotificationendpoint_identity_generated_test.go`, and CRD manifests.
+  3. Added `ComputeNotificationEndpoint` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` with entries for `computenotificationendpoints.compute.cnrm.cloud.google.com`.
+  5. Kept all entries in `apis/compute/judgement_queue.yaml` with `status: open` for Step 1b triage.
+- **Impact**: Prepopulation completed mechanically with all queue entries left open for Step 1b triage. Generation is idempotent and all unit tests and API checks pass cleanly.
+
+### [2026-11-13] Greenfield Judgement Queue Triage for ComputeNotificationEndpoint
+- **Context**: Triaging `apis/compute/judgement_queue.yaml` and finalizing direct KRM types, identity, and references for `ComputeNotificationEndpoint` (issue #15557).
+- **Findings & Resolutions**:
+  1. **Pattern & Service Hierarchy**: `ComputeNotificationEndpoint` is a regional resource under `projects/{project}/regions/{region}/notificationEndpoints/{notificationendpoint}`, managed via `RegionNotificationEndpoints`.
+  2. **Location & Parent**: Modeled parentage using `spec.projectRef` (`*refsv1beta1.ProjectRef`) and `spec.location` (`Location string`) as required fields, matching established Compute conventions.
+  3. **Documentation**: Updated `+kcc:source:resource-docs=` to `https://cloud.google.com/compute/docs/reference/rest/v1/regionNotificationEndpoints` and removed `// +kcc:guess=source-link reason=verify-resource-docs-link`, resolving `verify-resource-docs-link`.
+  4. **Output-Only Fields**: `region` is confirmed output-only per proto comments ("It is not settable as a field in the request body") and moved from `ComputeNotificationEndpointSpec` to `ComputeNotificationEndpointObservedState`. Server-set fields (`creationTimestamp`, `id`, `kind`, `selfLink`) were confirmed output-only in `ObservedState`, and all guess placement annotations were removed.
+  5. **Script & Mapper Alignment**: In `apis/compute/generate.sh`, removed the isolated prepopulation block and added `ComputeNotificationEndpoint:NotificationEndpoint` to the primary `generate-types` invocation without `--prepopulate-resource`. Mapper bindings regenerated cleanly.
+  6. **Testing**: Added comprehensive unit tests in `computenotificationendpoint_identity_test.go` covering `FromExternal`, `ParentString`, `GetIdentity` (including status drift detection), and `ComputeNotificationEndpointRef.ValidateExternal`/`Normalize`. Re-recorded golden exceptions in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+- **Impact**: Cleanly resolved all 9 entries in `apis/compute/judgement_queue.yaml`. All unit tests, API checks, and linters pass cleanly.
+
+### [2026-11-12] Greenfield: Prepopulate direct KRM types, identity, and judgement queue for ComputeHealthAggregationPolicy
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for `ComputeHealthAggregationPolicy` (issue #15466).
+- **Proto & Service**:
+  - `HealthAggregationPolicy` is defined in Google Cloud Compute API v1 (`google/cloud/compute/v1/compute.proto`), and managed via the `RegionHealthAggregationPolicies` service (`projects/{project}/regions/{region}/healthAggregationPolicies/{healthAggregationPolicy}`).
+  - Pinned `apis/git.versions` (`1765b559c4`) predates the inclusion of `HealthAggregationPolicy` in `compute.proto` (which was merged upstream in revision 20261026). Similar to `SecurityPolicyAssociation`, patched `dev/tools/controllerbuilder/generate-proto.sh` to include `HealthAggregationPolicy` and `RegionHealthAggregationPolicies` during proto compilation.
+- **Scaffolding**:
+  - Ran `generate-types` with `--prepopulate-resource` for `ComputeHealthAggregationPolicy:HealthAggregationPolicy` and `generate-identity`.
+  - Added `ComputeHealthAggregationPolicy` to `apis/compute/generate.sh` and added to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Regenerated CRDs and updated test exception for alpha missing fields (`tests/apichecks/testdata/exceptions/alpha-missingfields.txt`).
+- **Verification**:
+  - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.
+
+### [2026-11-12] Greenfield: Triage judgement queue and finalize direct KRM types and identity for ComputeHealthAggregationPolicy
+- **Context**: Triaged and finalized direct KRM types, identity, and references for `ComputeHealthAggregationPolicy` (issue #15482) following Greenfield Step 1b (`judgement/SKILL.md`).
+- **Judgement Queue Resolutions & Learnings**:
+  1. `untriaged-bulk-generation`: Accepted after validating fields, conventions, references, and omissions.
+  2. `verify-resource-docs-link`: Corrected resource documentation URL to `https://cloud.google.com/compute/docs/reference/rest/v1/regionHealthAggregationPolicies`.
+  3. `location-parent-unknown`: Verified `HealthAggregationPolicy` is a regional resource located under `projects/{project}/regions/{region}/healthAggregationPolicies/{healthAggregationPolicy}`. Kept `spec.location` as a required string representing the region, matching Compute service conventions (`ComputeNetworkAttachment`, `ComputeHealthCheckService`).
+  4. `location-or-parent-ref` for `spec.region`: The proto field `region` is an output-only URL string populated by GCP server. Removed `spec.region` and moved to `status.observedState.region`.
+  5. `server-set-field-placed` for `creationTimestamp`, `id`, `kind`, `selfLink`, and `selfLinkWithId`: Confirmed server-generated output-only fields; verified their placement under `status.observedState`.
+  6. Incorporated `ComputeHealthAggregationPolicy:HealthAggregationPolicy` into the primary `generate-types` and `generate-identity` commands in `apis/compute/generate.sh`.
+  7. Regenerated types, CRDs, mappers, deepcopy code, and updated `alpha-missingfields.txt`.
+- **Verification**:
+  - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.
+
+### [2026-11-13] Greenfield Controller, Fuzzer, and E2E Fixtures for ComputeVMExtensionPolicy
+- **Context**: Implementing direct controller, fuzzer, and real-GCP recorded E2E fixtures for `ComputeVMExtensionPolicy` (issue #15517).
+- **Findings & Implementation**:
+  1. **Client**: Utilized GAPIC REST client `gcp.NewZoneVmExtensionPoliciesRESTClient(ctx, opts...)` matching the `ZoneVmExtensionPolicies` service in GCP Compute Engine API v1.
+  2. **Controller Logic**: Implemented `VmExtensionPolicyAdapter` satisfying all 5 canonical Greenfield controller standards:
+     - REST client options configured via `m.config.RESTClientOptions()`.
+     - `common.NormalizeGreenfieldReferences(ctx, reader, obj, nil)` called first in `AdapterForObject`.
+     - `ComputeVMExtensionPolicyIdentity` (`obj.GetIdentity`) used to obtain `project`, `zone`, and `vmextensionpolicy` name.
+     - `common.CompareGreenfieldSpec` with `structuredreporting.ReportDiff` for change detection in `Update`.
+     - `setStatus` called on all reconciliation paths, including no-op updates.
+  3. **RPC Lifecycle**: Handled `Insert` (POST), `Get` (GET), `Update` (PATCH), and `Delete` (DELETE) operations, awaiting the resulting Compute `ZoneOperations` LROs via `op.Wait(ctx)`.
+  4. **Fuzzer**: Autogenerated `computevmextensionpolicy_fuzzer.generated.go` via `controllerbuilder generate-fuzzer --prepopulate-resource`. Verified round-trip fidelity with `FOCUS=ComputeVMExtensionPolicy go test ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`.
+  5. **E2E Golden Testing**: Authored minimal and maximal test fixtures with valid versions (`2.57.0` and `2.58.0`) and configurations for `ops-agent`. Successfully executed and recorded golden HTTP traffic against real GCP (`RECORD_AUDIT_PROBE=1 ./hack/record-gcp`), verifying V1-V7 validation checks, zero-diff re-reconciliation, and clean deletion.
+
+### [2026-11-13] MockGCP Implementation and Alignment for ComputeVMExtensionPolicy
+- **Context**: Implementing MockGCP service handlers and aligning mock golden logs with authentic real GCP traffic for `ComputeVMExtensionPolicy` (issue #15556).
+- **Findings & Implementation**:
+  1. **Mock Service**: Implemented `ZoneVmExtensionPoliciesV1` in `mockgcp/mockcompute/computevmextensionpolicies.go`, handling `Get`, `Insert`, `Update`, and `Delete` requests using the GAPIC computepb types (`cloud.google.com/go/compute/apiv1/computepb`), backing them with mock storage and zonal LROs (`startZonalLRO`).
+  2. **HTTP Routing**: Registered routes (`GET`, `POST`, `PATCH`, `DELETE`) for `/compute/v1/projects/{project}/zones/{zone}/vmExtensionPolicies` in `mockgcp/mockcompute/service.go` using `runtime.ForwardResponseMessage` to ensure correct HTTP response header and payload formatting.
+  3. **Harness Support**: Added `ComputeVMExtensionPolicy` to the mock supported kinds in `config/tests/samples/create/harness.go`.
+  4. **Normalization**: Configured normalization in `mockgcp/mockcompute/normalize.go` and `tests/e2e/normalize.go` for `updateTimestamp` (`mockgcpregistry.PlaceholderTimestamp` / `mockgcpregistry.PlaceholderTime`) matching server timestamps.
+  5. **Validation**: Ran `hack/compare-mock` for minimal and maximal fixtures; both passed with zero diff in golden objects and mock HTTP logs (`_http_mock.log`), and verified `./dev/ci/presubmits/tests-e2e-fixtures-suite compute` succeeded.
+
+### [2026-11-13] Greenfield Prepopulate of ComputeInterconnectGroup
+- **Context**: Prepopulating direct KRM types, IdentityV2, reference, and `judgement_queue.yaml` for Greenfield resource `ComputeInterconnectGroup` under `apis/compute/v1alpha1/` (issue #15613).
+- **Proto & Service Details**: `InterconnectGroup` is defined in Google Cloud Compute API v1 (`google/cloud/compute/v1/compute.proto`), and managed via the `InterconnectGroups` service (`projects/{project}/global/interconnectGroups/{interconnectgroup}`).
+- **Implementation**:
+  1. Configured `apis/compute/generate.sh` with `generate-types` (adding `ComputeInterconnectGroup:InterconnectGroup` with `--prepopulate-resource`) and `generate-identity`.
+  2. Executed `./apis/compute/generate.sh`, automatically generating `computeinterconnectgroup_types.go`, `computeinterconnectgroup_identity.generated.go`, `computeinterconnectgroup_reference.generated.go`, `computeinterconnectgroup_identity_generated_test.go`, and CRD manifests.
+  3. Added `ComputeInterconnectGroup` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. Added `computeinterconnectgroups.compute.cnrm.cloud.google.com` entries to `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+  5. Recorded review items in `apis/compute/judgement_queue.yaml` with `status: open` for Step 1b triage.
+- **Verification**:
+  - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.
+
+### [2026-11-14] Greenfield: Triage judgement queue and finalize direct KRM types and identity for ComputeInterconnectGroup
+- **Context**: Triaged and finalized direct KRM types, identity, and references for `ComputeInterconnectGroup` (issue #15621) following Greenfield Step 1b (`judgement/SKILL.md`).
+- **Judgement Queue Resolutions & Learnings**:
+  1. `untriaged-bulk-generation`: Resolved after triaging all fields, omissions, references, and KRM conventions.
+  2. `verify-resource-docs-link`: Corrected resource documentation link to `https://cloud.google.com/compute/docs/reference/rest/v1/interconnectGroups`.
+  3. `location-parent-unknown`: Verified `InterconnectGroup` is a global resource parented by project (`projects/{project}/global/interconnectGroups/{interconnectgroup}`). Removed `spec.location` and kept `spec.projectRef` (`// +required`).
+  4. `possible-reference-by-sibling` on `.spec.interconnects.KEY.interconnect`: Converted to `InterconnectRef *ComputeInterconnectRef` in `InterconnectGroupInterconnect` (moved to `computeinterconnectgroup_types.go`). `generate-mapper` generates conversion to/from proto string field.
+  5. `message-map-derived` on `.spec.interconnects`: Accepted; accurately models proto `map<string, InterconnectGroupInterconnect>`.
+  6. `well-known-output-only-pattern-in-comment` on `configured` and `physicalStructure`: Proto comments mark `InterconnectGroupConfigured` and `InterconnectGroupPhysicalStructure` as output-only. Moved `Configured *InterconnectGroupConfigured` and `PhysicalStructure *InterconnectGroupPhysicalStructure` from `ComputeInterconnectGroupSpec` to `ComputeInterconnectGroupObservedState`. Marked corresponding `possible-reference-by-sibling` and `location-or-parent-ref` on their nested fields as `not-applicable` because status fields do not use KRM references.
+  7. `server-set-field-placed` on `creationTimestamp`, `etag`, `id`, `kind`, and `selfLink`: Confirmed server-generated output-only fields; verified placement in `ComputeInterconnectGroupObservedState` and removed `+kcc:guess` comments.
+- **Verification**:
+  - Re-ran `./apis/compute/generate.sh` and verified CRD generation, mappers, deepcopy code.
+  - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.
+
+### [2026-11-14] Greenfield Step 1a: Prepopulate ComputeStoragePool
+- **Context**: Prepopulating direct KRM types, IdentityV2, reference, CRD, and `judgement_queue.yaml` for `ComputeStoragePool` (issue #15640).
+- **Findings & Implementation**:
+  1. **Proto & Pattern**: Compute StoragePool message is in `google.cloud.compute.v1` (`StoragePool`). Due to compute proto RPC HTTP bindings lacking `{name=...}` assignment patterns, `--pattern ComputeStoragePool=projects/{project}/zones/{zone}/storagePools/{storagePool}` was provided to `generate-identity` in `apis/compute/generate.sh` to resolve pattern ambiguity.
+  2. **Generation**: Added `--prepopulate-resource` block for `ComputeStoragePool:StoragePool` and `generate-identity` in `apis/compute/generate.sh`. Ran script to generate KRM types (`computestoragepool_types.go`), IdentityV2 (`computestoragepool_identity.generated.go`), reference (`computestoragepool_reference.generated.go`), CRD (`apiextensions.k8s.io_v1_customresourcedefinition_computestoragepools.compute.cnrm.cloud.google.com.yaml`), and mapper stubs.
+  3. **Release Bundle & Apichecks**: Added `ComputeStoragePool` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...`.
+  4. **Validation**: Verified `apis/compute/generate.sh` idempotency, `TestComputeStoragePoolIdentity_Conformance`, apichecks, cais tests, and full package builds with zero errors.
+
+### [2026-11-14] Greenfield Step 1b: Triage judgement queue and finalize direct KRM types and identity for ComputeStoragePool
+- **Context**: Triaged and finalized direct KRM types, identity, and references for `ComputeStoragePool` (issue #15652) following Greenfield Step 1b (`judgement/SKILL.md`).
+- **Judgement Queue Resolutions & Learnings**:
+  1. `untriaged-bulk-generation`: Resolved after triaging all spec and status fields, omissions, docs link, output-only fields, and KRM conventions.
+  2. `verify-resource-docs-link`: Verified and updated `+kcc:source:resource-docs` link to `https://cloud.google.com/compute/docs/reference/rest/v1/storagePools`.
+  3. `location-parent-unknown`: Verified `StoragePool` is a zonal resource parented by project and zone (`projects/{project}/zones/{zone}/storagePools/{storagePool}`). Kept `spec.projectRef` (`*refsv1beta1.ProjectRef` with `// +required`) and `spec.location` (`string` with `// +required`, representing the zone name) matching Compute conventions.
+  4. `location-or-parent-ref` and `well-known-output-only-pattern-in-comment` on `zone`: In the proto, `StoragePool.zone` is explicitly output-only (`[Output Only] URL of the zone where the storage pool resides...`). Removed `zone` from Spec and moved to `ComputeStoragePoolObservedState.zone`; zone location on creation is specified via `spec.location`.
+  5. `possible-status-field-in-spec` and `well-known-output-only-pattern-in-comment` on `state`, `status`, and `resource_status`: Proto comments mark `state`, `status`, and `resource_status` (and all nested fields in `StoragePoolResourceStatus`) as output-only. Moved them from `ComputeStoragePoolSpec` to `ComputeStoragePoolObservedState`.
+  6. Top-level `labels` and `label_fingerprint`: Removed top-level `labels` from `ComputeStoragePoolSpec` (reconciled via `metadata.labels`); moved `label_fingerprint` to `ComputeStoragePoolObservedState`.
+  7. `server-set-field-placed` on `creationTimestamp`, `id`, `kind`, `selfLink`, and `selfLinkWithID`: Confirmed output-only server-set fields and removed guess markers.
+  8. Implemented unit tests in `computestoragepool_identity_test.go` covering identity parsing, parent string formatting, spec identity resolution, and drift detection.
+- **Verification**:
+  - Re-ran `./apis/compute/generate.sh` and verified CRD generation, mappers, deepcopy code.
+  - Re-recorded `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+  - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.
+
+### [2026-11-14] Greenfield Prepopulate of ComputeInterconnectAttachmentGroup
+- **Context**: Prepopulating direct KRM types, IdentityV2, reference, and `judgement_queue.yaml` for Greenfield resource `ComputeInterconnectAttachmentGroup` under `apis/compute/v1alpha1/` (issue #15656).
+- **Proto & Service Details**: `InterconnectAttachmentGroup` is defined in Google Cloud Compute API v1 (`google/cloud/compute/v1/compute.proto`), and managed via the `InterconnectAttachmentGroups` service (`projects/{project}/global/interconnectAttachmentGroups/{interconnectattachmentgroup}`).
+- **Implementation**:
+  1. Added allowlist URL exception to `pkg/gcpurls/registry_test.go` for `//compute.googleapis.com/projects/{}/global/interconnectAttachmentGroups/{}`.
+  2. Added `ComputeInterconnectAttachmentGroup:InterconnectAttachmentGroup` to `generate-types` and `generate-identity` in `apis/compute/generate.sh`.
+  3. Added `ComputeInterconnectAttachmentGroup` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. Executed `./apis/compute/generate.sh`, automatically generating `computeinterconnectattachmentgroup_types.go`, `computeinterconnectattachmentgroup_identity.generated.go`, `computeinterconnectattachmentgroup_reference.generated.go`, `computeinterconnectattachmentgroup_identity_generated_test.go`, and CRD manifests.
+  5. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` with entries for `computeinterconnectattachmentgroups.compute.cnrm.cloud.google.com`.
+  6. Kept all entries in `apis/compute/judgement_queue.yaml` with `status: open` for Step 1b triage.
+- **Verification**:
+  - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.
+
+### [2026-11-14] Greenfield: Triage judgement queue and finalize direct KRM types and identity for ComputeInterconnectAttachmentGroup
+- **Context**: Triaged and finalized direct KRM types, identity, and references for `ComputeInterconnectAttachmentGroup` (issue #15665) following Greenfield Step 1b (`judgement/SKILL.md`).
+- **Judgement Queue Resolutions & Learnings**:
+  1. `untriaged-bulk-generation`: Resolved after triaging all fields, omissions, references, and KRM conventions.
+  2. `verify-resource-docs-link`: Corrected resource documentation link to `https://cloud.google.com/compute/docs/reference/rest/v1/interconnectAttachmentGroups`.
+  3. `location-parent-unknown`: Verified `InterconnectAttachmentGroup` is a global resource parented by project (`projects/{project}/global/interconnectAttachmentGroups/{interconnectattachmentgroup}`). Removed `spec.location` and kept `spec.projectRef` (`// +required`).
+  4. `possible-reference-by-sibling` on `.spec.interconnectGroup`: Converted to `InterconnectGroupRef *ComputeInterconnectGroupRef` in `ComputeInterconnectAttachmentGroupSpec`. `generate-mapper` automatically maps to/from proto string field.
+  5. `message-map-derived` on `.spec.attachments`: Accepted; accurately models proto `map<string, InterconnectAttachmentGroupAttachment>`. Moved `InterconnectAttachmentGroupAttachment` to `computeinterconnectattachmentgroup_types.go` and converted `attachment` to `AttachmentRef *computev1beta1.ComputeInterconnectAttachmentRef`. `generate-mapper` automatically generates bidirectional conversion between `*computev1beta1.ComputeInterconnectAttachmentRef` and proto string field `attachment`.
+  6. `well-known-output-only-pattern-in-comment` on `configured` and `logicalStructure`: Proto comments mark `InterconnectAttachmentGroupConfigured` and `InterconnectAttachmentGroupLogicalStructure` as output-only. Moved `Configured *InterconnectAttachmentGroupConfigured` and `LogicalStructure *InterconnectAttachmentGroupLogicalStructure` from `ComputeInterconnectAttachmentGroupSpec` to `ComputeInterconnectAttachmentGroupObservedState`. Marked corresponding `location-or-parent-ref` on nested fields as `not-applicable` because status fields do not use KRM references.
+  7. `server-set-field-placed` on `creationTimestamp`, `etag`, `id`, `kind`, and `selfLink`: Confirmed server-generated output-only fields; verified placement in `ComputeInterconnectAttachmentGroupObservedState` and removed `+kcc:guess` comments.
+- **Verification**:
+  - Re-ran `./apis/compute/generate.sh` and verified CRD generation, mappers, deepcopy code.
+  - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+  - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.
+
+### [2026-11-14] Greenfield: Direct Controller, Fuzzer, and E2E Fixtures for ComputeInterconnectGroup
+- **Context**: Implementing direct controller, round-trip fuzzer, and authentic E2E test fixtures for Greenfield resource `ComputeInterconnectGroup` under `compute.cnrm.cloud.google.com/v1alpha1` (issue #15644).
+- **Controller & Fuzzer Implementation**:
+  1. Generated initial scaffolding via `controllerbuilder generate-controller` and `controllerbuilder generate-fuzzer --prepopulate-resource`.
+  2. Implemented `InterconnectGroupAdapter` using GAPIC REST client `gcp.NewInterconnectGroupsRESTClient(ctx, opts...)` from `cloud.google.com/go/compute/apiv1`.
+  3. Integrated Greenfield standards:
+     - `common.NormalizeGreenfieldReferences(ctx, reader, obj, nil)` called first in `AdapterForObject`.
+     - `ComputeInterconnectGroupIdentity` (`obj.GetIdentity`) used to obtain `project` and `interconnectgroup` name.
+     - `common.CompareGreenfieldSpec` with `structuredreporting.ReportDiff` for change detection in `Update`.
+     - Formatted `UpdateMask` as comma-separated string (`strings.Join(updateMask.Paths, ",")`) matching Compute Engine API conventions.
+     - Awaiting Compute Engine global operations LROs via `op.Wait(ctx)` after `Insert`, `Patch`, and `Delete`.
+     - `setStatus` called on all reconciliation paths, including no-op updates.
+  4. Autogenerated `computeinterconnectgroup_fuzzer.generated.go`. Verified 100% round-trip fidelity with `FOCUS=ComputeInterconnectGroup go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`.
+- **E2E Golden Testing**:
+  1. Authored `computeinterconnectgroup-minimal` and `computeinterconnectgroup-maximal` fixtures exercising `create.yaml` and `update.yaml` (`NO_SLA` -> `PRODUCTION_NON_CRITICAL` and updating `description`).
+  2. Recorded authentic golden logs against real GCP project `cnrm-barni-4` using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`.
+  3. Both fixtures passed all 7/7 automated validation checks (`V1`-`V7`), verified zero-diff re-reconciliation, and deleted cleanly.
+  4. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha`.
+
+### [2026-11-14] Greenfield: MockGCP and Alignment for ComputeInterconnectGroup
+- **Context**: Implementing MockGCP and aligning golden HTTP logs for `ComputeInterconnectGroup` under `compute.cnrm.cloud.google.com/v1alpha1` (issue #15663) following Greenfield Step 3 (`kcc-direct-mockgcp-implementer/SKILL.md`).
+- **Implementation & Alignment**:
+  1. Implemented `InterconnectGroupsV1` mock service under `mockgcp/mockcompute/interconnectgroupsv1.go` providing CRUD operations (`Get`, `Insert`, `Patch`, `Delete`, `List`) backed by MockGCP storage and `startGlobalLRO`.
+  2. Registered `InterconnectGroupsV1` in `MockService.Register` (gRPC) and `MockService.NewHTTPMux` (HTTP gateway) in `mockgcp/mockcompute/service.go`.
+  3. Added `ComputeInterconnectGroup` to supported mock GCP GroupKinds in `config/tests/samples/create/harness.go`.
+  4. Handled default population and dynamic behavior:
+    - Set default `description: ""` when not provided.
+    - Set `kind: "compute#InterconnectGroup"`.
+    - Populated `physicalStructure: {}`.
+    - Populated `configured.topologyCapability` dynamically based on `intent.topologyCapability`: when `NO_SLA` returns `supportedSla: "NO_SLA"`; when requiring SLAs (e.g. `PRODUCTION_NON_CRITICAL`) without interconnects, includes `intendedCapabilityBlockers` of type `NO_INTERCONNECTS`.
+    - Handled update masks in `Patch` (`description`, `intent`, `interconnects`).
+  5. Normalized `etag` to `PlaceholderFingerprint` in `cleanComputeResource` (`mockgcp/mockcompute/normalize.go`).
+- **Verification**:
+  - `hack/compare-mock "fixtures/computeinterconnectgroup"` passed cleanly with zero errors.
+  - `go test -v ./pkg/test/resourcefixture -run 'TestGoldenLogAlignment/compute/v1alpha1/computeinterconnectgroup'` passed with zero diffs across both minimal and maximal fixtures.
+  - `./dev/ci/presubmits/tests-e2e-fixtures-suite compute` passed (192/192 tests pass).
+  - Authentic real-GCP baseline logs (`_http.log`, `_audit_probe.log`) remain untouched.
+
+### [2026-11-14] Greenfield Controller, Fuzzer, and E2E Fixtures for ComputeGlobalVMExtensionPolicy
+- **Context**: Implementing direct controller, fuzzer, and real-GCP recorded E2E fixtures for `ComputeGlobalVMExtensionPolicy` (issue #15617).
+- **Findings & Implementation**:
+  1. **Client**: Upgraded `cloud.google.com/go/compute` from `v1.63.0` to `v1.64.0` in `go.mod` and `mockgcp/go.mod` to access `GlobalVmExtensionPoliciesClient` (`gcp.NewGlobalVmExtensionPoliciesRESTClient(ctx, opts...)`).
+  2. **Controller Logic**: Implemented `GlobalVmExtensionPolicyAdapter` satisfying all 5 canonical Greenfield controller standards:
+     - Configured REST client options via `m.config.RESTClientOptions()`.
+     - Called `common.NormalizeGreenfieldReferences(ctx, reader, obj, nil)` first in `AdapterForObject`.
+     - Obtained identity via `obj.GetIdentity` (`ComputeGlobalVMExtensionPolicyIdentity`).
+     - Defaulted `rolloutOperation.rolloutInput.predefinedRolloutPlan` to `FAST_ROLLOUT` on `Create` and `Update` if unspecified, preventing Compute Engine 503 Internal Error caused by missing rollout plan on global policies.
+     - Implemented `Delete` by passing `predefinedRolloutPlan: "FAST_ROLLOUT"` in the request body to `/delete` POST RPC as required by Compute Engine API for GlobalVmExtensionPolicies.
+     - Registered `ComputeGlobalVMExtensionPolicy` in `pkg/controller/resourceconfig/static_config.go` with `ReconcilerTypeDirect`.
+  3. **Httplogreport Validator**: Updated `pkg/test/httplogreport/logparser/entry.go` `IsDelete()` to recognize Compute Engine's `POST .../delete` endpoint pattern as a valid deletion RPC for V4 Delete checks.
+  4. **Fuzzer & Mappers**: Implemented mappers in `computeglobalvmextensionpolicy_mapper.go` and generated `computeglobalvmextensionpolicy_fuzzer.generated.go`. Verified with `FOCUS=ComputeGlobalVMExtensionPolicy go test -v ./pkg/fuzztesting/fuzztests/ -run TestFocusedMappers`.
+  5. **E2E Golden Testing**: Authored minimal and maximal test fixtures with `ops-agent` extensions and recorded authentic golden logs against real GCP using `./hack/record-gcp`. Passed all V1-V7 checks, steady-state re-reconciliation, and deletion. Verified all compute fixtures with `./dev/ci/presubmits/tests-e2e-fixtures-suite compute`.
+
+### [2026-11-14] Greenfield MockGCP and Alignment for ComputeGlobalVMExtensionPolicy
+- **Context**: Implementing Phase 3 (MockGCP and Alignment) for `ComputeGlobalVMExtensionPolicy` (issue #15657).
+- **Findings & Implementation**:
+  1. **Mock Service**: Implemented `GlobalVmExtensionPoliciesV1` in `mockgcp/mockcompute/globalvmextensionpoliciesv1.go` with `Get`, `Insert`, `Update`, and `Delete` endpoints, and registered it on `runtime.ServeMux` in `mockgcp/mockcompute/service.go`.
+  2. **URL Routing**: Handled GET, POST, and PATCH under `/compute/v1/projects/{project}/global/vmExtensionPolicies`, as well as Compute Engine's custom `POST /delete` action (`/compute/v1/projects/{project}/global/vmExtensionPolicies/{global_vm_extension_policy}/delete`).
+  3. **Rollout Operation Simulation**: Populated `rolloutOperation` with initial location rollout statuses (`LOCATION_ROLLOUT_STATE_NOT_STARTED`) across all Compute Engine global rollout zones, and maintained `previousRollout` state (`STATE_CANCELLED`) on updates to match GCP's rollout lifecycle.
+  4. **Normalizers & Golden Log Alignment**:
+     - Normalized `.status.observedState.rolloutOperation` in `tests/e2e/normalize.go` and `delete(v, "rolloutOperation")` in `golden_alignment_test.go` to eliminate non-deterministic diffs caused by dynamic rollout timestamps and asynchronous background rollout progress across 129 GCP zones during real GCP runs.
+     - Enabled `ComputeGlobalVMExtensionPolicy` in `config/tests/samples/create/harness.go`.
+- **Verification**:
+  - Ran `hack/compare-mock` for both minimal and maximal fixtures; generated `_http_mock.log` files with zero diffs and passed re-reconciliation and deletion steps.
+  - Verified `TestGoldenLogAlignment` and `TestRealHTTPLogsDoNotContainMockGCP` pass cleanly.
+  - Verified `./dev/ci/presubmits/tests-e2e-fixtures-suite compute` passes all 192 fixtures.
+
+### [2026-11-14] Greenfield Step 2: Direct controller, E2E fixtures, and fuzzer for ComputeStoragePool
+- **Context**: Greenfield implementation of direct controller, round-trip fuzzer, and real-GCP recorded E2E fixtures for `ComputeStoragePool` (`compute.cnrm.cloud.google.com/v1alpha1`, issue #15668).
+- **Client & Reconciliation**:
+  1. `ComputeStoragePool` is a zonal resource interacted with using GAPIC client `compute.StoragePoolsClient` (`compute.NewStoragePoolsRESTClient`).
+  2. Implemented `StoragePoolAdapter` handling `Find`, `Create` (`gcpClient.Insert`), `Update` (`gcpClient.Update`), `Delete` (`gcpClient.Delete`), and `Export`.
+  3. Registered `ComputeStoragePool` in `pkg/controller/resourceconfig/static_config.go` with `DefaultController: k8s.ReconcilerTypeDirect`.
+  4. Normalized `storagePoolType` in `CompareGreenfieldSpec` to relative type name to avoid spurious diffs between user-specified short/project forms and GCP's returned absolute URLs.
+  5. Implemented `qualifyStoragePoolType` on `Create` so short names like `hyperdisk-balanced` are automatically fully qualified to `projects/{project}/zones/{zone}/storagePoolTypes/{type}`.
+- **GCP API Invariants & Test Fixtures**:
+  1. `StoragePools` API requires provisioned IOPS to be an exact multiple of 10,000 for `hyperdisk-balanced`.
+  2. `description` is create-only in GCP Compute Engine `StoragePools` (the API ignores `description` on `update`, so `update.yaml` keeps the initial description).
+  3. Storage pool creation has strict hourly operation limits per zone on GCP (`RESOURCE_OPERATION_RATE_EXCEEDED`). Zonal distribution across fixtures (`us-central1-a` for minimal, `us-east4-a` for maximal) prevented hitting creation limits.
+- **Verification**:
+  1. Fuzzer round-trip test (`FOCUS=ComputeStoragePool`) passes with 200 seeds.
+  2. Real GCP golden logs (`_http.log`, `_generated_object_*.golden.yaml`, `_identities.yaml`) recorded with `RECORD_AUDIT_PROBE=1 ./hack/record-gcp` for both `computestoragepool-minimal` and `computestoragepool-maximal`. Both fixtures passed all 7 automated validation checks (V1-V7) including re-reconciliation.
+  3. Re-recorded `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`, removing all 9 exception entries for `computestoragepools`.
+
+### [2026-11-14] Greenfield Step 3: MockGCP Implementation and Alignment for ComputeStoragePool
+- **Context**: Implementing MockGCP service emulation and test log alignment for `ComputeStoragePool` (`compute.cnrm.cloud.google.com/v1alpha1`, issue #15684) following Greenfield Step 3 (`kcc-direct-mockgcp-implementer/SKILL.md`).
+- **Mock Service Implementation**:
+  1. Added `StoragePoolsV1` under `mockgcp/mockcompute/storagepoolsv1.go` implementing `Get`, `Insert`, `Update`, `Delete`, and `List` on `pb.UnimplementedStoragePoolsServer`.
+  2. Handled standard GCP Compute response defaults on create/read (`kind: "compute#storagePool"`, `state: "READY"`, `capacityProvisioningType: "ADVANCED"`, `performanceProvisioningType: "ADVANCED"`, `description: ""`, self-links, and nested `status` with `maxTotalProvisionedDiskCapacityGb = poolProvisionedCapacityGb * 10`).
+  3. Qualified `storagePoolType` to absolute self-link URL matching real GCP behavior.
+  4. Registered `pb.RegisterStoragePoolsServer` and `pb.RegisterStoragePoolsHandler` in `mockgcp/mockcompute/service.go`.
+  5. Added `ComputeStoragePool` to allowed mock kinds in `config/tests/samples/create/harness.go`.
+- **Verification**:
+  1. Generated `_http_mock.log` for both `computestoragepool-minimal` and `computestoragepool-maximal`.
+  2. Verified 0 diffs against authentic real-GCP golden logs via `TestGoldenLogAlignment/compute/v1alpha1/computestoragepool` and `hack/compare-mock`.
+  3. Ran `./dev/ci/presubmits/tests-e2e-fixtures-suite compute` with 192/192 tests passing.
+
+### [2026-11-14] Greenfield Controller, Fuzzer, and E2E Fixtures for ComputeInterconnectAttachmentGroup
+- **Context**: Implementing direct controller, fuzzer, and real-GCP recorded E2E fixtures for `ComputeInterconnectAttachmentGroup` (issue #15678).
+- **Findings & Implementation**:
+  1. **Client & API Semantics**: GCP Compute Engine API v1 exposes `InterconnectAttachmentGroups` via `InterconnectAttachmentGroupsClient` (`gcp.NewInterconnectAttachmentGroupsRESTClient(ctx, opts...)`). Handled `Insert` (POST), `Get` (GET), `Patch` (PATCH with `updateMask`), and `Delete` (DELETE) operations, awaiting Compute global operations LROs via `op.Wait(ctx)`.
+  2. **Controller Logic**: Implemented `InterconnectAttachmentGroupAdapter` satisfying all Greenfield direct controller standards:
+     - Configured REST client options via `m.config.RESTClientOptions()`.
+     - Called `common.NormalizeGreenfieldReferences(ctx, reader, obj, nil)` in `AdapterForObject`.
+     - Used `ComputeInterconnectAttachmentGroupIdentity` (`obj.GetIdentity`) to resolve project and interconnect attachment group name.
+     - In `Update`, used `common.CompareGreenfieldSpec` with `mergedDesiredProto`, formatted `UpdateMask` as comma-separated paths, and reported diffs via `structuredreporting.ReportDiff`.
+     - Ensured `setStatus` is called on all paths including no-op updates.
+  3. **Fuzzer**: Autogenerated `computeinterconnectattachmentgroup_fuzzer.generated.go` via `controllerbuilder generate-fuzzer --prepopulate-resource`. Verified round-trip fidelity with `FOCUS=ComputeInterconnectAttachmentGroup go test ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`.
+  4. **E2E Golden Testing**: Authored minimal and maximal test fixtures with valid availability SLAs (`NO_SLA` in minimal, `PRODUCTION_CRITICAL` updated to `PRODUCTION_NON_CRITICAL` in maximal). Successfully executed and recorded golden HTTP traffic against real GCP (`RECORD_AUDIT_PROBE=1 ./hack/record-gcp`), verifying V1-V7 validation checks, zero-diff re-reconciliation, and clean deletion.
+  5. **Static Config & Exceptions**: Registered direct controller in `pkg/controller/resourceconfig/static_config.go` and updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`. All unit tests, API checks, and E2E tests pass cleanly.
+
+### [2026-11-14] Greenfield MockGCP and Alignment for ComputeInterconnectAttachmentGroup
+- **Context**: Implementing Phase 3 (MockGCP and Alignment) for `ComputeInterconnectAttachmentGroup` (issue #15701).
+- **Findings & Implementation**:
+  1. **Mock Service**: Implemented `InterconnectAttachmentGroupsV1` in `mockgcp/mockcompute/interconnectattachmentgroupsv1.go` supporting `Get`, `Insert`, `Patch`, `Delete`, and `List` operations using GAPIC computepb types and global LRO emulation (`startGlobalLRO`).
+  2. **Service Registration**: Registered `InterconnectAttachmentGroupsServer` on gRPC server and `InterconnectAttachmentGroupsHandler` on `runtime.ServeMux` in `mockgcp/mockcompute/service.go`.
+  3. **Sample Harness**: Added `ComputeInterconnectAttachmentGroup` to supported mock resources in `config/tests/samples/create/harness.go`.
+  4. **Dynamic Behavior & Defaults**:
+     - Defaulted `description: ""` when not provided.
+     - Set `kind: "compute#interconnectAttachmentGroup"`.
+     - Populated `logicalStructure: {}`.
+     - Dynamically populated `configured.availabilitySla`: when `intent.availabilitySla` is `NO_SLA` (or unset), sets `effectiveSla: "NO_SLA"` without blockers; when requiring SLAs (e.g. `PRODUCTION_CRITICAL` or `PRODUCTION_NON_CRITICAL`) without attachments, sets `effectiveSla: "NO_SLA"` and includes `intendedSlaBlockers` with `NO_ATTACHMENTS` blocker type, documentation link, and explanation.
+     - Supported field paths in `Patch` with `updateMask` (`description`, `intent`, `attachments`, `interconnectGroup`).
+     - Etag computation via `computeFingerprint(obj)`.
+- **Verification**:
+  - Ran `hack/compare-mock "fixtures/computeinterconnectattachmentgroup"` for both minimal and maximal fixtures; generated `_http_mock.log` files with zero diffs against authentic real GCP golden logs.
+  - Verified `TestGoldenLogAlignment` passes with zero errors for both fixtures.
+  - Verified `./dev/ci/presubmits/tests-e2e-fixtures-suite compute` passes all 196 tests.
+  - Authentic real-GCP baseline logs (`_http.log`, `_audit_probe.log`) remain untouched.
+

@@ -266,7 +266,7 @@ func (m *mockRoundTripper) roundTripIAMPolicy(req *http.Request) (*http.Response
 	case "getIamPolicy":
 		if req.Method == "GET" || req.Method == "POST" {
 			resourcePath := req.URL.Host + requestPath
-			return m.iamPolicies.serveGetIAMPolicy(resourcePath)
+			return m.iamPolicies.serveGetIAMPolicy(req.Context(), resourcePath)
 		} else {
 			response := &http.Response{
 				StatusCode: http.StatusMethodNotAllowed,
@@ -279,7 +279,7 @@ func (m *mockRoundTripper) roundTripIAMPolicy(req *http.Request) (*http.Response
 	case "setIamPolicy":
 		if req.Method == "POST" {
 			resourcePath := req.URL.Host + requestPath
-			return m.iamPolicies.serveSetIAMPolicy(resourcePath, req)
+			return m.iamPolicies.serveSetIAMPolicy(req.Context(), resourcePath, req)
 		} else {
 			response := &http.Response{
 				StatusCode: http.StatusMethodNotAllowed,

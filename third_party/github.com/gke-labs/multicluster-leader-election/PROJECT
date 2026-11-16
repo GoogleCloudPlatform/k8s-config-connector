@@ -1,0 +1,7 @@
+domain: multicluster.cloud.google.com
+repo: github.com/gke-labs/multicluster-leader-election
+resources:
+- group: multicluster.core.cnrm.cloud.google.com
+  kind: MultiClusterLease
+  version: v1alpha1
+version: "2"

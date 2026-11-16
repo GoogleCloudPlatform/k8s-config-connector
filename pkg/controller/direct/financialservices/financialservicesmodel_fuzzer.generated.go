@@ -42,7 +42,6 @@ func financialServicesModelFuzzer() fuzztesting.KRMFuzzer {
 	// Spec fields
 	f.SpecField(".end_time")
 	f.SpecField(".engine_config")
-	f.SpecField(".labels")
 	f.SpecField(".primary_dataset")
 
 	// Status fields
@@ -54,6 +53,7 @@ func financialServicesModelFuzzer() fuzztesting.KRMFuzzer {
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	return f
 }

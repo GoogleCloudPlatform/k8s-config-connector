@@ -17,6 +17,7 @@ kind: AppEngineDomainMapping
 metadata:
   name: appenginedomainmapping-${uniqueId}
 spec:
+  project: ${projectId}
   resourceID: appenginedomainmapping${uniqueId}
   sslSettings:
     sslManagementType: AUTOMATIC

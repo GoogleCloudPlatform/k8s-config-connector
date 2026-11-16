@@ -1,4 +1,4 @@
-GET https://storage.googleapis.com/storage/v1/b/vertexai-schedmax-bucket-${uniqueId}?alt=json&prettyPrint=false
+GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
@@ -43,7 +43,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "rule": []
   },
   "location": "us-central1",
-  "name": "vertexai-schedmax-bucket-${uniqueId}",
+  "name": "bucket-${uniqueId}",
   "softDeletePolicy": {
     "retentionDurationSeconds": "604800"
   },
@@ -79,10 +79,10 @@ X-Goog-Gcs-Base-Ts: 1a18e703c6a
   "location": "US-CENTRAL1",
   "locationType": "region",
   "metageneration": "1",
-  "name": "vertexai-schedmax-bucket-${uniqueId}",
+  "name": "bucket-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "satisfiesPZI": true,
-  "selfLink": "https://www.googleapis.com/storage/v1/b/vertexai-schedmax-bucket-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
     "retentionDurationSeconds": "604800"
@@ -94,7 +94,7 @@ X-Goog-Gcs-Base-Ts: 1a18e703c6a
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/vertexai-schedmax-bucket-${uniqueId}?alt=json&prettyPrint=false
+GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -125,10 +125,10 @@ X-Goog-Gcs-Base-Ts: 1a18e703ca1
   "location": "US-CENTRAL1",
   "locationType": "region",
   "metageneration": "1",
-  "name": "vertexai-schedmax-bucket-${uniqueId}",
+  "name": "bucket-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "satisfiesPZI": true,
-  "selfLink": "https://www.googleapis.com/storage/v1/b/vertexai-schedmax-bucket-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
     "retentionDurationSeconds": "604800"
@@ -196,7 +196,7 @@ GRPC /google.cloud.aiplatform.v1.ScheduleService/CreateSchedule
         },
         "runtimeConfig": {
           "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
-          "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
+          "gcsOutputDirectory": "gs://bucket-${uniqueId}"
         }
       }
     },
@@ -263,7 +263,7 @@ OK
       },
       "runtimeConfig": {
         "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
-        "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
+        "gcsOutputDirectory": "gs://bucket-${uniqueId}"
       }
     }
   },
@@ -342,7 +342,7 @@ OK
       },
       "runtimeConfig": {
         "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
-        "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
+        "gcsOutputDirectory": "gs://bucket-${uniqueId}"
       }
     }
   },
@@ -417,7 +417,7 @@ GRPC /google.cloud.aiplatform.v1.ScheduleService/UpdateSchedule
         },
         "runtimeConfig": {
           "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
-          "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
+          "gcsOutputDirectory": "gs://bucket-${uniqueId}"
         }
       }
     },
@@ -487,7 +487,7 @@ OK
       },
       "runtimeConfig": {
         "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
-        "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
+        "gcsOutputDirectory": "gs://bucket-${uniqueId}"
       }
     }
   },
@@ -567,7 +567,7 @@ OK
       },
       "runtimeConfig": {
         "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
-        "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
+        "gcsOutputDirectory": "gs://bucket-${uniqueId}"
       }
     }
   },
@@ -647,7 +647,7 @@ OK
       },
       "runtimeConfig": {
         "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
-        "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
+        "gcsOutputDirectory": "gs://bucket-${uniqueId}"
       }
     }
   },
@@ -727,7 +727,7 @@ OK
       },
       "runtimeConfig": {
         "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
-        "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
+        "gcsOutputDirectory": "gs://bucket-${uniqueId}"
       }
     }
   },
@@ -771,7 +771,7 @@ OK
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/vertexai-schedmax-bucket-${uniqueId}?alt=json&prettyPrint=false
+GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -802,10 +802,10 @@ X-Goog-Gcs-Base-Ts: 1a18e705652
   "location": "US-CENTRAL1",
   "locationType": "region",
   "metageneration": "1",
-  "name": "vertexai-schedmax-bucket-${uniqueId}",
+  "name": "bucket-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "satisfiesPZI": true,
-  "selfLink": "https://www.googleapis.com/storage/v1/b/vertexai-schedmax-bucket-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
     "retentionDurationSeconds": "604800"
@@ -817,7 +817,7 @@ X-Goog-Gcs-Base-Ts: 1a18e705652
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/vertexai-schedmax-bucket-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -833,7 +833,7 @@ X-Goog-Gcs-Base-Ts: 1a18e70567c
 
 ---
 
-DELETE https://storage.googleapis.com/storage/v1/b/vertexai-schedmax-bucket-${uniqueId}?alt=json&prettyPrint=false
+DELETE https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content

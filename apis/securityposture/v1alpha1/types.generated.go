@@ -108,55 +108,6 @@ type CustomConfig_ResourceSelector struct {
 	ResourceTypes []string `json:"resourceTypes,omitempty"`
 }
 
-// +kcc:proto=google.cloud.securityposture.v1.CustomConstraint
-type CustomConstraint struct {
-	// Immutable. Name of the constraint. This is unique within the organization.
-	//  Format of the name should be
-	//
-	//  -
-	//  `organizations/{organization_id}/customConstraints/{custom_constraint_id}`
-	//
-	//  Example: `organizations/123/customConstraints/custom.createOnlyE2TypeVms`
-	//
-	//  The max length is 70 characters and the minimum length is 1. Note that the
-	//  prefix `organizations/{organization_id}/customConstraints/` is not counted.
-	// +kcc:proto:field=google.cloud.securityposture.v1.CustomConstraint.name
-	Name *string `json:"name,omitempty"`
-
-	// Immutable. The resource instance type on which this policy applies. Format
-	//  will be of the form : `<canonical service name>/<type>` Example:
-	//
-	//   - `compute.googleapis.com/Instance`.
-	// +kcc:proto:field=google.cloud.securityposture.v1.CustomConstraint.resource_types
-	ResourceTypes []string `json:"resourceTypes,omitempty"`
-
-	// All the operations being applied for this constraint.
-	// +kcc:proto:field=google.cloud.securityposture.v1.CustomConstraint.method_types
-	MethodTypes []string `json:"methodTypes,omitempty"`
-
-	// Org policy condition/expression. For example:
-	//  `resource.instanceName.matches("[production|test]_.*_(\d)+")` or,
-	//  `resource.management.auto_upgrade == true`
-	//
-	//  The max length of the condition is 1000 characters.
-	// +kcc:proto:field=google.cloud.securityposture.v1.CustomConstraint.condition
-	Condition *string `json:"condition,omitempty"`
-
-	// Allow or deny type.
-	// +kcc:proto:field=google.cloud.securityposture.v1.CustomConstraint.action_type
-	ActionType *string `json:"actionType,omitempty"`
-
-	// One line display name for the UI.
-	//  The max length of the display_name is 200 characters.
-	// +kcc:proto:field=google.cloud.securityposture.v1.CustomConstraint.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Detailed information about this custom policy constraint.
-	//  The max length of the description is 2000 characters.
-	// +kcc:proto:field=google.cloud.securityposture.v1.CustomConstraint.description
-	Description *string `json:"description,omitempty"`
-}
-
 // +kcc:proto=google.cloud.securityposture.v1.OrgPolicyConstraint
 type OrgPolicyConstraint struct {
 	// Required. Org Policy Canned Constraint id.

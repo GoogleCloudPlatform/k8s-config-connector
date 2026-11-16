@@ -34,6 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -182,7 +183,7 @@ func (a *apiQuotaPreferenceAdapter) Update(ctx context.Context, updateOp *direct
 
 	paths := []string{}
 	// Only quota_config, justification, contact_email are updatable.
-	if desired.Spec.QuotaConfig != nil && !reflect.DeepEqual(resource.QuotaConfig, a.actual.QuotaConfig) {
+	if desired.Spec.QuotaConfig != nil && !quotaConfigEqual(mapCtx, resource.GetQuotaConfig(), a.actual.GetQuotaConfig()) {
 		report.AddField("quota_config", a.actual.QuotaConfig, resource.QuotaConfig)
 		paths = append(paths, "quota_config")
 	}
@@ -271,4 +272,17 @@ func (a *apiQuotaPreferenceAdapter) Delete(ctx context.Context, deleteOp *direct
 	log := klog.FromContext(ctx)
 	log.Info("delete operation is not supported for QuotaPreference, treating as no-op", "name", a.id.String())
 	return false, nil // Indicate that deletion is not supported and should not be retried.
+}
+
+// quotaConfigEqual compares desired and actual QuotaConfig protos while ignoring
+// output-only fields (granted_value, state_detail, trace_id, request_origin) populated on actual.
+func quotaConfigEqual(mapCtx *direct.MapContext, desired, actual *pb.QuotaConfig) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if desired == nil || actual == nil {
+		return false
+	}
+	maskedActual := QuotaConfig_ToProto(mapCtx, QuotaConfig_FromProto(mapCtx, actual))
+	return proto.Equal(desired, maskedActual)
 }

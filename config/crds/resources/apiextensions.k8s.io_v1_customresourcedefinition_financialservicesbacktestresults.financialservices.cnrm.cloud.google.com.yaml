@@ -69,28 +69,100 @@ spec:
                   to the dataset's timezone.
                 format: int32
                 type: integer
-              dataset:
-                description: 'Required. The resource name of the Dataset to backtest
-                  on Format: `/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}`'
-                type: string
+              datasetRef:
+                description: Required. The Dataset to backtest on.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed FinancialServicesDataset
+                      resource. Should be in the format "projects/{{projectNumID}}/locations/{{location}}/instances/{{instanceID}}/datasets/{{datasetID}}".
+                    type: string
+                  name:
+                    description: The name of a FinancialServicesDataset resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a FinancialServicesDataset resource.
+                    type: string
+                type: object
               endTime:
                 description: Required. End_time specifies the latest time from which
                   labels are used and from which data is used to generate features
                   for backtesting.  End_time should be no later than the end of the
                   date_range of the primary dataset.
                 type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: Labels
+              modelRef:
+                description: Required. The Model to use or to backtest.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed FinancialServicesModel
+                      resource. Should be in the format "projects/{{projectNumID}}/locations/{{location}}/instances/{{instanceID}}/models/{{modelID}}".
+                    type: string
+                  name:
+                    description: The name of a FinancialServicesModel resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a FinancialServicesModel resource.
+                    type: string
                 type: object
-              location:
-                description: The location of this resource.
-                type: string
-              model:
-                description: 'Required. The resource name of the Model to use or to
-                  backtest. Format: `/projects/{project_num}/locations/{location}/instances/{instance}/models/{model}`'
-                type: string
+              parentRef:
+                description: The FinancialServicesInstance this FinancialServicesBacktestResult
+                  is created under.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed FinancialServicesInstance
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instance}}".
+                    type: string
+                  name:
+                    description: The name of a FinancialServicesInstance resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a FinancialServicesInstance resource.
+                    type: string
+                type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               performanceTarget:
                 description: Required. PerformanceTarget gives information on how
                   the test will be evaluated.
@@ -108,49 +180,16 @@ spec:
                 required:
                 - partyInvestigationsPerPeriodHint
                 type: object
-              projectRef:
-                description: The project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
-                type: object
               resourceID:
                 description: The FinancialServicesBacktestResult name. If not given,
                   the metadata.name will be used.
                 type: string
             required:
-            - dataset
+            - datasetRef
             - endTime
-            - location
-            - model
+            - modelRef
+            - parentRef
             - performanceTarget
-            - projectRef
             type: object
           status:
             description: FinancialServicesBacktestResultStatus defines the config

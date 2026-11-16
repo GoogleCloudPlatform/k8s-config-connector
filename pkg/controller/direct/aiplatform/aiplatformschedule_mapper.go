@@ -30,7 +30,7 @@ func CreatePipelineJobRequestObservedState_FromProto(mapCtx *direct.MapContext, 
 		return nil
 	}
 	out := &krm.CreatePipelineJobRequestObservedState{}
-	out.PipelineJob = VertexAIPipelineJobObservedState_FromProto(mapCtx, in.GetPipelineJob())
+	out.PipelineJob = AIPlatformPipelineJobObservedState_FromProto(mapCtx, in.GetPipelineJob())
 	return out
 }
 
@@ -39,7 +39,7 @@ func CreatePipelineJobRequestObservedState_ToProto(mapCtx *direct.MapContext, in
 		return nil
 	}
 	out := &pb.CreatePipelineJobRequest{}
-	out.PipelineJob = VertexAIPipelineJobObservedState_ToProto(mapCtx, in.PipelineJob)
+	out.PipelineJob = AIPlatformPipelineJobObservedState_ToProto(mapCtx, in.PipelineJob)
 	return out
 }
 
@@ -138,11 +138,11 @@ func ExecutionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Execution
 }
 
 func PipelineJob_FromProto(mapCtx *direct.MapContext, in *pb.PipelineJob) *krm.PipelineJob {
-	return VertexAIPipelineJobSpec_FromProto(mapCtx, in)
+	return AIPlatformPipelineJobSpec_FromProto(mapCtx, in)
 }
 
 func PipelineJob_ToProto(mapCtx *direct.MapContext, in *krm.PipelineJob) *pb.PipelineJob {
-	return VertexAIPipelineJobSpec_ToProto(mapCtx, in)
+	return AIPlatformPipelineJobSpec_ToProto(mapCtx, in)
 }
 
 func Schedule_RunResponse_FromProto(mapCtx *direct.MapContext, in *pb.Schedule_RunResponse) *krm.Schedule_RunResponse {

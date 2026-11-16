@@ -20,9 +20,12 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+var _ identity.Identity = &MetadataStoreIdentity{}
 
 // MetadataStoreIdentity is the identity of a VertexAIMetadataStore.
 type MetadataStoreIdentity struct {
@@ -32,6 +35,16 @@ type MetadataStoreIdentity struct {
 
 func (i *MetadataStoreIdentity) String() string {
 	return i.parent.String() + "/metadataStores/" + i.id
+}
+
+func (i *MetadataStoreIdentity) FromExternal(ref string) error {
+	parent, id, err := ParseMetadataStoreExternal(ref)
+	if err != nil {
+		return err
+	}
+	i.parent = parent
+	i.id = id
+	return nil
 }
 
 func (i *MetadataStoreIdentity) ID() string {

@@ -41,6 +41,7 @@
 [refs] crd=computetargethttpsproxies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sslCertificates[].external" should be a reference
 [refs] crd=computetargetsslproxies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sslCertificates[].external" should be a reference
 [refs] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.googleServiceAccount" should be a reference
+[refs] crd=configconnectors.core.cnrm.cloud.google.com version=v1beta1: field ".spec.experiments.multiClusterLease.gkeCluster" should be a reference
 [refs] crd=configconnectors.core.cnrm.cloud.google.com version=v1beta1: field ".spec.googleServiceAccount" should be a reference
 [refs] crd=containeranalysisnotes.containeranalysis.cnrm.cloud.google.com version=v1beta1: field ".spec.relatedNoteNames[].external" should be a reference
 [refs] crd=containerattachedclusters.containerattached.cnrm.cloud.google.com version=v1beta1: field ".spec.fleet.membership" should be a reference

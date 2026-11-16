@@ -535,3 +535,84 @@ func Test_MergeClusterConfigsFromLiveState(t *testing.T) {
 		})
 	}
 }
+
+func Test_ResolvePSCDefaultsForComputeForwardingRule(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name     string
+		input    map[string]interface{}
+		expected map[string]interface{}
+	}{
+		{
+			name: "sets load_balancing_scheme to empty string when target is serviceAttachment and scheme omitted",
+			input: map[string]interface{}{
+				"name":   "psc-fr",
+				"target": "https://www.googleapis.com/compute/v1/projects/my-proj/regions/us-central1/serviceAttachments/my-sa",
+			},
+			expected: map[string]interface{}{
+				"name":                  "psc-fr",
+				"target":                "https://www.googleapis.com/compute/v1/projects/my-proj/regions/us-central1/serviceAttachments/my-sa",
+				"load_balancing_scheme": "",
+			},
+		},
+		{
+			name: "sets load_balancing_scheme to empty string when target is all-apis and scheme omitted",
+			input: map[string]interface{}{
+				"name":   "psc-google-apis",
+				"target": "all-apis",
+			},
+			expected: map[string]interface{}{
+				"name":                  "psc-google-apis",
+				"target":                "all-apis",
+				"load_balancing_scheme": "",
+			},
+		},
+		{
+			name: "sets load_balancing_scheme to empty string when target is vpc-sc and scheme omitted",
+			input: map[string]interface{}{
+				"name":   "psc-vpc-sc",
+				"target": "vpc-sc",
+			},
+			expected: map[string]interface{}{
+				"name":                  "psc-vpc-sc",
+				"target":                "vpc-sc",
+				"load_balancing_scheme": "",
+			},
+		},
+		{
+			name: "preserves explicit load_balancing_scheme when specified",
+			input: map[string]interface{}{
+				"name":                  "explicit-fr",
+				"target":                "https://www.googleapis.com/compute/v1/projects/my-proj/regions/us-central1/serviceAttachments/my-sa",
+				"load_balancing_scheme": "EXTERNAL",
+			},
+			expected: map[string]interface{}{
+				"name":                  "explicit-fr",
+				"target":                "https://www.googleapis.com/compute/v1/projects/my-proj/regions/us-central1/serviceAttachments/my-sa",
+				"load_balancing_scheme": "EXTERNAL",
+			},
+		},
+		{
+			name: "does not modify non-PSC target",
+			input: map[string]interface{}{
+				"name":   "standard-fr",
+				"target": "https://www.googleapis.com/compute/v1/projects/my-proj/regions/us-central1/targetPools/my-tp",
+			},
+			expected: map[string]interface{}{
+				"name":   "standard-fr",
+				"target": "https://www.googleapis.com/compute/v1/projects/my-proj/regions/us-central1/targetPools/my-tp",
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			got := ResolvePSCDefaultsForComputeForwardingRule(tc.input)
+			if !reflect.DeepEqual(got, tc.expected) {
+				t.Fatalf("unexpected diff (-want +got):\n%s", cmp.Diff(tc.expected, got))
+			}
+		})
+	}
+}

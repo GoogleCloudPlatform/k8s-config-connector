@@ -1,0 +1,532 @@
+# Phase: CREATE
+GET https://dlp.googleapis.com/v2/projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcontentPolicies%2Fdlpcontentpolicy-maximal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "ContentPolicy with name projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-maximal-${uniqueId} not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dlp.googleapis.com/v2/projects/${projectId}/locations/global/contentPolicies?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "contentPolicy": {
+    "defaultAction": {
+      "returnVerdict": 1
+    },
+    "displayName": "Maximal DLP Content Policy",
+    "failedToScanSupportedFileType": {
+      "returnVerdict": 1
+    },
+    "inputTooLarge": {
+      "returnVerdict": 1
+    },
+    "inspectConfig": {
+      "includeQuote": true,
+      "infoTypes": [
+        {
+          "name": "EMAIL_ADDRESS"
+        },
+        {
+          "name": "PHONE_NUMBER"
+        }
+      ],
+      "limits": {
+        "maxFindingsPerItem": 10
+      },
+      "minLikelihood": 3
+    },
+    "rules": [
+      {
+        "action": {
+          "returnVerdict": 2
+        },
+        "conditions": [
+          {
+            "infoTypeCondition": {
+              "infoTypes": {
+                "infoTypeNames": [
+                  "EMAIL_ADDRESS"
+                ]
+              },
+              "minCount": "1"
+            }
+          }
+        ]
+      },
+      {
+        "action": {
+          "returnVerdict": 1
+        },
+        "conditions": [
+          {
+            "infoTypeCondition": {
+              "infoTypes": {
+                "infoTypeNames": [
+                  "PHONE_NUMBER"
+                ]
+              },
+              "minCount": "5"
+            }
+          }
+        ]
+      }
+    ],
+    "unsupportedFileType": {
+      "returnVerdict": 1
+    }
+  },
+  "contentPolicyId": "dlpcontentpolicy-maximal-${uniqueId}",
+  "parent": "projects/${projectId}/locations/global"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultAction": {
+    "returnVerdict": 1
+  },
+  "displayName": "Maximal DLP Content Policy",
+  "failedToScanSupportedFileType": {
+    "returnVerdict": 1
+  },
+  "inputTooLarge": {
+    "returnVerdict": 1
+  },
+  "inspectConfig": {
+    "includeQuote": true,
+    "infoTypes": [
+      {
+        "name": "EMAIL_ADDRESS"
+      },
+      {
+        "name": "PHONE_NUMBER"
+      }
+    ],
+    "limits": {
+      "maxFindingsPerItem": 10
+    },
+    "minLikelihood": 3
+  },
+  "name": "projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-maximal-${uniqueId}",
+  "rules": [
+    {
+      "action": {
+        "returnVerdict": 2
+      },
+      "conditions": [
+        {
+          "infoTypeCondition": {
+            "infoTypes": {
+              "infoTypeNames": [
+                "EMAIL_ADDRESS"
+              ]
+            },
+            "minCount": "1"
+          }
+        }
+      ]
+    },
+    {
+      "action": {
+        "returnVerdict": 1
+      },
+      "conditions": [
+        {
+          "infoTypeCondition": {
+            "infoTypes": {
+              "infoTypeNames": [
+                "PHONE_NUMBER"
+              ]
+            },
+            "minCount": "5"
+          }
+        }
+      ]
+    }
+  ],
+  "unsupportedFileType": {
+    "returnVerdict": 1
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: UPDATE
+GET https://dlp.googleapis.com/v2/projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcontentPolicies%2Fdlpcontentpolicy-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultAction": {
+    "returnVerdict": 1
+  },
+  "displayName": "Maximal DLP Content Policy",
+  "failedToScanSupportedFileType": {
+    "returnVerdict": 1
+  },
+  "inputTooLarge": {
+    "returnVerdict": 1
+  },
+  "inspectConfig": {
+    "includeQuote": true,
+    "infoTypes": [
+      {
+        "name": "EMAIL_ADDRESS"
+      },
+      {
+        "name": "PHONE_NUMBER"
+      }
+    ],
+    "limits": {
+      "maxFindingsPerItem": 10
+    },
+    "minLikelihood": 3
+  },
+  "name": "projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-maximal-${uniqueId}",
+  "rules": [
+    {
+      "action": {
+        "returnVerdict": 2
+      },
+      "conditions": [
+        {
+          "infoTypeCondition": {
+            "infoTypes": {
+              "infoTypeNames": [
+                "EMAIL_ADDRESS"
+              ]
+            },
+            "minCount": "1"
+          }
+        }
+      ]
+    },
+    {
+      "action": {
+        "returnVerdict": 1
+      },
+      "conditions": [
+        {
+          "infoTypeCondition": {
+            "infoTypes": {
+              "infoTypeNames": [
+                "PHONE_NUMBER"
+              ]
+            },
+            "minCount": "5"
+          }
+        }
+      ]
+    }
+  ],
+  "unsupportedFileType": {
+    "returnVerdict": 1
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://dlp.googleapis.com/v2/projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcontentPolicies%2Fdlpcontentpolicy-maximal-${uniqueId}
+
+{
+  "contentPolicy": {
+    "defaultAction": {
+      "returnVerdict": 2
+    },
+    "displayName": "Maximal DLP Content Policy Updated",
+    "failedToScanSupportedFileType": {
+      "returnVerdict": 2
+    },
+    "inputTooLarge": {
+      "returnVerdict": 2
+    },
+    "inspectConfig": {
+      "infoTypes": [
+        {
+          "name": "EMAIL_ADDRESS"
+        },
+        {
+          "name": "PHONE_NUMBER"
+        }
+      ],
+      "limits": {
+        "maxFindingsPerItem": 20
+      },
+      "minLikelihood": 4
+    },
+    "name": "projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-maximal-${uniqueId}",
+    "rules": [
+      {
+        "action": {
+          "returnVerdict": 2
+        },
+        "conditions": [
+          {
+            "infoTypeCondition": {
+              "infoTypes": {
+                "infoTypeNames": [
+                  "EMAIL_ADDRESS"
+                ]
+              },
+              "minCount": "1"
+            }
+          }
+        ]
+      },
+      {
+        "action": {
+          "returnVerdict": 1
+        },
+        "conditions": [
+          {
+            "infoTypeCondition": {
+              "infoTypes": {
+                "infoTypeNames": [
+                  "PHONE_NUMBER"
+                ]
+              },
+              "minCount": "5"
+            }
+          }
+        ]
+      }
+    ],
+    "unsupportedFileType": {
+      "returnVerdict": 2
+    }
+  },
+  "name": "projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-maximal-${uniqueId}",
+  "updateMask": "defaultAction,displayName,failedToScanSupportedFileType,inputTooLarge,inspectConfig,unsupportedFileType"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultAction": {
+    "returnVerdict": 2
+  },
+  "displayName": "Maximal DLP Content Policy Updated",
+  "failedToScanSupportedFileType": {
+    "returnVerdict": 2
+  },
+  "inputTooLarge": {
+    "returnVerdict": 2
+  },
+  "inspectConfig": {
+    "infoTypes": [
+      {
+        "name": "EMAIL_ADDRESS"
+      },
+      {
+        "name": "PHONE_NUMBER"
+      }
+    ],
+    "limits": {
+      "maxFindingsPerItem": 20
+    },
+    "minLikelihood": 4
+  },
+  "name": "projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-maximal-${uniqueId}",
+  "rules": [
+    {
+      "action": {
+        "returnVerdict": 2
+      },
+      "conditions": [
+        {
+          "infoTypeCondition": {
+            "infoTypes": {
+              "infoTypeNames": [
+                "EMAIL_ADDRESS"
+              ]
+            },
+            "minCount": "1"
+          }
+        }
+      ]
+    },
+    {
+      "action": {
+        "returnVerdict": 1
+      },
+      "conditions": [
+        {
+          "infoTypeCondition": {
+            "infoTypes": {
+              "infoTypeNames": [
+                "PHONE_NUMBER"
+              ]
+            },
+            "minCount": "5"
+          }
+        }
+      ]
+    }
+  ],
+  "unsupportedFileType": {
+    "returnVerdict": 2
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GET https://dlp.googleapis.com/v2/projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcontentPolicies%2Fdlpcontentpolicy-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultAction": {
+    "returnVerdict": 2
+  },
+  "displayName": "Maximal DLP Content Policy Updated",
+  "failedToScanSupportedFileType": {
+    "returnVerdict": 2
+  },
+  "inputTooLarge": {
+    "returnVerdict": 2
+  },
+  "inspectConfig": {
+    "infoTypes": [
+      {
+        "name": "EMAIL_ADDRESS"
+      },
+      {
+        "name": "PHONE_NUMBER"
+      }
+    ],
+    "limits": {
+      "maxFindingsPerItem": 20
+    },
+    "minLikelihood": 4
+  },
+  "name": "projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-maximal-${uniqueId}",
+  "rules": [
+    {
+      "action": {
+        "returnVerdict": 2
+      },
+      "conditions": [
+        {
+          "infoTypeCondition": {
+            "infoTypes": {
+              "infoTypeNames": [
+                "EMAIL_ADDRESS"
+              ]
+            },
+            "minCount": "1"
+          }
+        }
+      ]
+    },
+    {
+      "action": {
+        "returnVerdict": 1
+      },
+      "conditions": [
+        {
+          "infoTypeCondition": {
+            "infoTypes": {
+              "infoTypeNames": [
+                "PHONE_NUMBER"
+              ]
+            },
+            "minCount": "5"
+          }
+        }
+      ]
+    }
+  ],
+  "unsupportedFileType": {
+    "returnVerdict": 2
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://dlp.googleapis.com/v2/projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcontentPolicies%2Fdlpcontentpolicy-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

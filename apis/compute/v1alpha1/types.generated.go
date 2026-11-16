@@ -31,22 +31,18 @@
 // resource: ComputeNetworkEndpoint:NetworkEndpoint
 // resource: ComputeMachineImage:MachineImage
 // resource: ComputeRegionSSLPolicy:SslPolicy
+// resource: ComputeInstantSnapshot:InstantSnapshot
+// resource: ComputeHealthCheckService:HealthCheckService
+// resource: ComputeVMExtensionPolicy:VmExtensionPolicy
+// resource: ComputeNotificationEndpoint:NotificationEndpoint
+// resource: ComputeHealthAggregationPolicy:HealthAggregationPolicy
+// resource: ComputeGlobalVMExtensionPolicy:GlobalVmExtensionPolicy
+// resource: ComputeCrossSiteNetwork:CrossSiteNetwork
+// resource: ComputeInterconnectGroup:InterconnectGroup
+// resource: ComputeInterconnectAttachmentGroup:InterconnectAttachmentGroup
+// resource: ComputeStoragePool:StoragePool
 
 package v1alpha1
-
-/* found existing non-generated go type "AcceleratorConfig", skipping
-
-// +kcc:proto=google.cloud.compute.v1.AcceleratorConfig
-type AcceleratorConfig struct {
-	// The number of the guest accelerator cards exposed to this instance.
-	// +kcc:proto:field=google.cloud.compute.v1.AcceleratorConfig.accelerator_count
-	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
-
-	// Full or partial URL of the accelerator type resource to attach to this instance. For example: projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100 If you are creating an instance template, specify only the accelerator name. See GPUs on Compute Engine for a full list of accelerator types.
-	// +kcc:proto:field=google.cloud.compute.v1.AcceleratorConfig.accelerator_type
-	AcceleratorType *string `json:"acceleratorType,omitempty"`
-}
-*/
 
 /* unreachable type AccessConfig
 // +kcc:proto=google.cloud.compute.v1.AccessConfig
@@ -365,7 +361,6 @@ type Autoscaler struct {
 }
 */
 
-/* unreachable type AutoscalerStatusDetails
 // +kcc:proto=google.cloud.compute.v1.AutoscalerStatusDetails
 type AutoscalerStatusDetails struct {
 	// The status message.
@@ -377,7 +372,6 @@ type AutoscalerStatusDetails struct {
 	// +kcc:proto:field=google.cloud.compute.v1.AutoscalerStatusDetails.type
 	Type *string `json:"type,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.AutoscalingPolicy", skipping
 
@@ -530,6 +524,36 @@ type ConfidentialInstanceConfig struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.CrossSiteNetwork", skipping
+
+// +kcc:proto=google.cloud.compute.v1.CrossSiteNetwork
+type CrossSiteNetwork struct {
+	// Output only. [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of the cross-site network.
+	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.description
+	Description *string `json:"description,omitempty"`
+
+	// Output only. [Output Only] The unique identifier for the resource type. The server generates this identifier.
+	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Output only. [Output Only] Type of the resource. Always compute#crossSiteNetwork for cross-site networks.
+	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created.
+	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.CustomerEncryptionKey", skipping
 
 // +kcc:proto=google.cloud.compute.v1.CustomerEncryptionKey
@@ -566,20 +590,6 @@ type Data struct {
 	// [Output Only] A warning data value corresponding to the key.
 	// +kcc:proto:field=google.cloud.compute.v1.Data.value
 	Value *string `json:"value,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "Duration", skipping
-
-// +kcc:proto=google.cloud.compute.v1.Duration
-type Duration struct {
-	// Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 `seconds` field and a positive `nanos` field. Must be from 0 to 999,999,999 inclusive.
-	// +kcc:proto:field=google.cloud.compute.v1.Duration.nanos
-	Nanos *int32 `json:"nanos,omitempty"`
-
-	// Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive. Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years
-	// +kcc:proto:field=google.cloud.compute.v1.Duration.seconds
-	Seconds *int64 `json:"seconds,omitempty"`
 }
 */
 
@@ -797,6 +807,170 @@ type FixedOrPercent struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.GlobalVmExtensionPolicy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicy
+type GlobalVMExtensionPolicy struct {
+	// Output only. [Output Only] Creation timestamp inRFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+
+	// Output only. [Output Only] The unique identifier for the resource. This identifier is
+	//  defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Optional. Selectors to target VMs for this policy.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.instance_selectors
+	InstanceSelectors []GlobalVMExtensionPolicyInstanceSelector `json:"instanceSelectors,omitempty"`
+
+	// Output only. [Output Only] Type of the resource. Alwayscompute#globalVmExtensionPolicy.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Priority of this policy.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.priority
+	Priority *int32 `json:"priority,omitempty"`
+
+	// Required. The rollout strategy and status.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.rollout_operation
+	RolloutOperation *GlobalVMExtensionPolicyRolloutOperation `json:"rolloutOperation,omitempty"`
+
+	// Output only. [Output Only] The scoped resource status. It's only for tracking the
+	//  purging status of the policy.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.scoped_resource_status
+	ScopedResourceStatus *string `json:"scopedResourceStatus,omitempty"`
+
+	// Output only. [Output Only] Server-defined fully-qualified URL for this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Output only. [Output Only] Server-defined URL for this resource's resource id.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+
+	// Output only. [Output Only] Update timestamp inRFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.update_timestamp
+	UpdateTimestamp *string `json:"updateTimestamp,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyExtensionPolicy
+type GlobalVMExtensionPolicyExtensionPolicy struct {
+	// Optional. The specific version of the extension to install. If not set, the latest
+	//  version is used.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyExtensionPolicy.pinned_version
+	PinnedVersion *string `json:"pinnedVersion,omitempty"`
+
+	// Optional. String-based configuration data for the extension.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyExtensionPolicy.string_config
+	StringConfig *string `json:"stringConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyInstanceSelector
+type GlobalVMExtensionPolicyInstanceSelector struct {
+	// Optional. LabelSelector selects VMs based on their labels.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyInstanceSelector.label_selector
+	LabelSelector *GlobalVMExtensionPolicyLabelSelector `json:"labelSelector,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyLabelSelector
+type GlobalVMExtensionPolicyLabelSelector struct {
+	// Optional. A map of key-value pairs representing VM labels.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyLabelSelector.inclusion_labels
+	InclusionLabels map[string]string `json:"inclusionLabels,omitempty"`
+}
+
+/* found existing non-generated go type "GlobalVMExtensionPolicyRolloutOperation", skipping
+
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperation
+type GlobalVMExtensionPolicyRolloutOperation struct {
+	// Required. The rollout input which defines the rollout plan.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperation.rollout_input
+	RolloutInput *GlobalVMExtensionPolicyRolloutOperationRolloutInput `json:"rolloutInput,omitempty"`
+
+	// Output only. [Output Only] The rollout status of the policy.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperation.rollout_status
+	RolloutStatus *GlobalVMExtensionPolicyRolloutOperationRolloutStatus `json:"rolloutStatus,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutInput
+type GlobalVMExtensionPolicyRolloutOperationRolloutInput struct {
+	// Optional. Specifies the behavior of the rollout if a conflict is detected.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutInput.conflict_behavior
+	ConflictBehavior *string `json:"conflictBehavior,omitempty"`
+
+	// Optional. The name of the rollout plan.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutInput.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Specifies the predefined rollout plan for the policy.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutInput.predefined_rollout_plan
+	PredefinedRolloutPlan *string `json:"predefinedRolloutPlan,omitempty"`
+
+	// Optional. The UUID that identifies a policy rollout retry attempt.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutInput.retry_uuid
+	RetryUuid *string `json:"retryUuid,omitempty"`
+}
+
+/* found existing non-generated go type "GlobalVMExtensionPolicyRolloutOperationRolloutStatus", skipping
+
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatus
+type GlobalVMExtensionPolicyRolloutOperationRolloutStatus struct {
+	// Output only. [Output Only] The current rollouts for the latest version of the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatus.current_rollouts
+	CurrentRollouts []GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata `json:"currentRollouts,omitempty"`
+
+	// Output only. [Output Only] The last completed rollout resource.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatus.previous_rollout
+	PreviousRollout *GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata `json:"previousRollout,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata", skipping
+
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata
+type GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata struct {
+
+	// TODO: unsupported map type with key string and value message
+
+
+	// Output only. [Output Only] The name of the rollout.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata.rollout
+	Rollout *string `json:"rollout,omitempty"`
+
+	// Output only. [Output Only] The name of the rollout plan.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata.rollout_plan
+	RolloutPlan *string `json:"rolloutPlan,omitempty"`
+
+	// Output only. [Output Only] The overall state of the rollout.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata.state
+	State *string `json:"state,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus", skipping
+
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus
+type GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus struct {
+	// Output only. [Output Only] The state of the location rollout.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus.state
+	State *string `json:"state,omitempty"`
+}
+*/
+
 /* unreachable type GuestOSFeature
 // +kcc:proto=google.cloud.compute.v1.GuestOsFeature
 type GuestOSFeature struct {
@@ -804,6 +978,103 @@ type GuestOSFeature struct {
 	//  Check the Type enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.GuestOsFeature.type
 	Type *string `json:"type,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HealthAggregationPolicy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.HealthAggregationPolicy
+type HealthAggregationPolicy struct {
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.healthy_percent_threshold
+	HealthyPercentThreshold *uint32 `json:"healthyPercentThreshold,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.min_healthy_threshold
+	MinHealthyThreshold *uint32 `json:"minHealthyThreshold,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.policy_type
+	PolicyType *string `json:"policyType,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.region
+	Region *string `json:"region,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HealthCheckService", skipping
+
+// +kcc:proto=google.cloud.compute.v1.HealthCheckService
+type HealthCheckService struct {
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.description
+	Description *string `json:"description,omitempty"`
+
+	// Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. This field will be ignored when inserting a HealthCheckService. An up-to-date fingerprint must be provided in order to patch/update the HealthCheckService; Otherwise, the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve the HealthCheckService.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// A list of URLs to the HealthCheck resources. Must have at least one HealthCheck, and not more than 10 for regional HealthCheckService, and not more than 1 for global HealthCheckService. HealthCheck resources must have portSpecification=USE_SERVING_PORT or portSpecification=USE_FIXED_PORT. For regional HealthCheckService, the HealthCheck must be regional and in the same region. For global HealthCheckService, HealthCheck must be global. Mix of regional and global HealthChecks is not supported. Multiple regional HealthChecks must belong to the same region. Regional HealthChecks must belong to the same region as zones of NetworkEndpointGroups. For global HealthCheckService using global INTERNET_IP_PORT NetworkEndpointGroups, the global HealthChecks must specify sourceRegions, and HealthChecks that specify sourceRegions can only be used with global INTERNET_IP_PORT NetworkEndpointGroups.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.health_checks
+	HealthChecks []string `json:"healthChecks,omitempty"`
+
+	// Optional. Policy for how the results from multiple health checks for the same endpoint are aggregated. Defaults to NO_AGGREGATION if unspecified. - NO_AGGREGATION. An EndpointHealth message is returned for each pair in the health check service. - AND. If any health check of an endpoint reports UNHEALTHY, then UNHEALTHY is the HealthState of the endpoint. If all health checks report HEALTHY, the HealthState of the endpoint is HEALTHY. . This is only allowed with regional HealthCheckService.
+	//  Check the HealthStatusAggregationPolicy enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.health_status_aggregation_policy
+	HealthStatusAggregationPolicy *string `json:"healthStatusAggregationPolicy,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output only] Type of the resource. Always compute#healthCheckServicefor health check services.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Name of the resource. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.name
+	Name *string `json:"name,omitempty"`
+
+	// A list of URLs to the NetworkEndpointGroup resources. Must not have more than 100. For regional HealthCheckService, NEGs must be in zones in the region of the HealthCheckService. For global HealthCheckServices, the NetworkEndpointGroups must be global INTERNET_IP_PORT.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.network_endpoint_groups
+	NetworkEndpointGroups []string `json:"networkEndpointGroups,omitempty"`
+
+	// A list of URLs to the NotificationEndpoint resources. Must not have more than 10. A list of endpoints for receiving notifications of change in health status. For regional HealthCheckService, NotificationEndpoint must be regional and in the same region. For global HealthCheckService, NotificationEndpoint must be global.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.notification_endpoints
+	NotificationEndpoints []string `json:"notificationEndpoints,omitempty"`
+
+	// [Output Only] URL of the region where the health check service resides. This field is not applicable to global health check services. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
 }
 */
 
@@ -918,6 +1189,97 @@ type InstanceProperties struct {
 	Tags *Tags `json:"tags,omitempty"`
 }
 */
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.InstantSnapshot", skipping
+
+// +kcc:proto=google.cloud.compute.v1.InstantSnapshot
+type InstantSnapshot struct {
+	// [Output Only] The architecture of the instant snapshot. Valid values are ARM64 or X86_64.
+	//  Check the Architecture enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshot.architecture
+	Architecture *string `json:"architecture,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshot.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshot.description
+	Description *string `json:"description,omitempty"`
+
+	// [Output Only] Size of the source disk, specified in GB.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshot.disk_size_gb
+	DiskSizeGB *int64 `json:"diskSizeGB,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshot.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#instantSnapshot for InstantSnapshot resources.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshot.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// A fingerprint for the labels being applied to this InstantSnapshot, which is essentially a hash of the labels set used for optimistic locking. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update labels. You must always provide an up-to-date fingerprint hash in order to update or change labels, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve a InstantSnapshot.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshot.label_fingerprint
+	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
+
+	// Labels to apply to this InstantSnapshot. These can be later modified by the setLabels method. Label values may be empty.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshot.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Name of the resource; provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshot.name
+	Name *string `json:"name,omitempty"`
+
+	// [Output Only] URL of the region where the instant snapshot resides. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshot.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output Only] Status information for the instant snapshot resource.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshot.resource_status
+	ResourceStatus *InstantSnapshotResourceStatus `json:"resourceStatus,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshot.satisfies_pzi
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+
+	// [Output Only] Reserved for future use.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshot.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshot.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// [Output Only] Server-defined URL for this resource's resource id.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshot.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+
+	// URL of the source disk used to create this instant snapshot. Note that the source disk must be in the same zone/region as the instant snapshot to be created. This can be a full or valid partial URL. For example, the following are valid values: - https://www.googleapis.com/compute/v1/projects/project/zones/zone /disks/disk - https://www.googleapis.com/compute/v1/projects/project/regions/region /disks/disk - projects/project/zones/zone/disks/disk - projects/project/regions/region/disks/disk - zones/zone/disks/disk - regions/region/disks/disk
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshot.source_disk
+	SourceDisk *string `json:"sourceDisk,omitempty"`
+
+	// [Output Only] The ID value of the disk used to create this InstantSnapshot. This value may be used to determine whether the InstantSnapshot was taken from the current or a previous instance of a given disk name.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshot.source_disk_id
+	SourceDiskID *string `json:"sourceDiskID,omitempty"`
+
+	// [Output Only] The status of the instantSnapshot. This can be CREATING, DELETING, FAILED, or READY.
+	//  Check the Status enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshot.status
+	Status *string `json:"status,omitempty"`
+
+	// [Output Only] URL of the zone where the instant snapshot resides. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshot.zone
+	Zone *string `json:"zone,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.compute.v1.InstantSnapshotResourceStatus
+type InstantSnapshotResourceStatus struct {
+	// [Output Only] The storage size of this instant snapshot.
+	// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshotResourceStatus.storage_size_bytes
+	StorageSizeBytes *int64 `json:"storageSizeBytes,omitempty"`
+}
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.Interconnect", skipping
 
@@ -1111,6 +1473,167 @@ type InterconnectApplicationAwareInterconnectStrictPriorityPolicy struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.InterconnectAttachmentGroup", skipping
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroup
+type InterconnectAttachmentGroup struct {
+	// Attachments in the AttachmentGroup. Keys are arbitrary user-specified strings. Users are encouraged, but not required, to use their preferred format for resource links as keys. Note that there are add-members and remove-members methods in gcloud. The size of this map is limited by an "Attachments per group" quota.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.attachments
+	Attachments map[string]InterconnectAttachmentGroupAttachment `json:"attachments,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.configured
+	Configured *InterconnectAttachmentGroupConfigured `json:"configured,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.description
+	Description *string `json:"description,omitempty"`
+
+	// Opaque system-generated token that uniquely identifies the configuration. If provided when patching a configuration in update mode, the provided token must match the current token or the update is rejected. This provides a reliable means of doing read-modify-write (optimistic locking) as described by AIP 154.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// [Output Only] The unique identifier for the resource type. The server generates this identifier.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.intent
+	Intent *InterconnectAttachmentGroupIntent `json:"intent,omitempty"`
+
+	// The URL of an InterconnectGroup that groups these Attachments' Interconnects. Customers do not need to set this unless directed by Google Support.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.interconnect_group
+	InterconnectGroup *string `json:"interconnectGroup,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#interconnectAttachmentGroup.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.logical_structure
+	LogicalStructure *InterconnectAttachmentGroupLogicalStructure `json:"logicalStructure,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.name
+	Name *string `json:"name,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "InterconnectAttachmentGroupAttachment", skipping
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupAttachment
+type InterconnectAttachmentGroupAttachment struct {
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupAttachment.attachment
+	Attachment *string `json:"attachment,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupConfigured
+type InterconnectAttachmentGroupConfigured struct {
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupConfigured.availability_sla
+	AvailabilitySla *InterconnectAttachmentGroupConfiguredAvailabilitySla `json:"availabilitySla,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLA
+type InterconnectAttachmentGroupConfiguredAvailabilitySla struct {
+	// Check the EffectiveSla enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLA.effective_sla
+	EffectiveSla *string `json:"effectiveSla,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLA.intended_sla_blockers
+	IntendedSlaBlockers []InterconnectAttachmentGroupConfiguredAvailabilitySlaIntendedSlaBlockers `json:"intendedSlaBlockers,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers
+type InterconnectAttachmentGroupConfiguredAvailabilitySlaIntendedSlaBlockers struct {
+	// [Output Only] URLs of any particular Attachments to explain this blocker in more detail.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers.attachments
+	Attachments []string `json:"attachments,omitempty"`
+
+	// Check the BlockerType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers.blocker_type
+	BlockerType *string `json:"blockerType,omitempty"`
+
+	// [Output Only] The url of Google Cloud public documentation explaining this requirement. This is set for every type of requirement.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers.documentation_link
+	DocumentationLink *string `json:"documentationLink,omitempty"`
+
+	// [Output Only] A human-readable explanation of this requirement and why it's not met. This is set for every type of requirement.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers.explanation
+	Explanation *string `json:"explanation,omitempty"`
+
+	// [Output Only] Metros used to explain this blocker in more detail. These are three-letter lowercase strings like "iad". This will be set for some blockers (like NO_ATTACHMENTS_IN_METRO_AND_ZONE) but does not apply to others.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers.metros
+	Metros []string `json:"metros,omitempty"`
+
+	// [Output Only] Regions used to explain this blocker in more detail. These are region names formatted like "us-central1". This will be set for some blockers (like INCOMPATIBLE_REGIONS) but does not apply to others.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers.regions
+	Regions []string `json:"regions,omitempty"`
+
+	// [Output Only] Zones used to explain this blocker in more detail. Format is "zone1" and/or "zone2". This will be set for some blockers (like MISSING_ZONE) but does not apply to others.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers.zones
+	Zones []string `json:"zones,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupIntent
+type InterconnectAttachmentGroupIntent struct {
+	// Check the AvailabilitySla enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupIntent.availability_sla
+	AvailabilitySla *string `json:"availabilitySla,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructure
+type InterconnectAttachmentGroupLogicalStructure struct {
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructure.regions
+	Regions []InterconnectAttachmentGroupLogicalStructureRegion `json:"regions,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegion
+type InterconnectAttachmentGroupLogicalStructureRegion struct {
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegion.metros
+	Metros []InterconnectAttachmentGroupLogicalStructureRegionMetro `json:"metros,omitempty"`
+
+	// [Output Only] The name of a region, like "us-central1".
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegion.region
+	Region *string `json:"region,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegionMetro
+type InterconnectAttachmentGroupLogicalStructureRegionMetro struct {
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegionMetro.facilities
+	Facilities []InterconnectAttachmentGroupLogicalStructureRegionMetroFacility `json:"facilities,omitempty"`
+
+	// [Output Only] The name of the metro, as a three-letter lowercase string like "iad". This is the first component of the location of an Interconnect.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegionMetro.metro
+	Metro *string `json:"metro,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacility
+type InterconnectAttachmentGroupLogicalStructureRegionMetroFacility struct {
+	// [Output Only] The name of a facility, like "iad-1234".
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacility.facility
+	Facility *string `json:"facility,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacility.zones
+	Zones []InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone `json:"zones,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone
+type InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone struct {
+	// [Output Only] URLs of Attachments in the given zone, to the given region, on Interconnects in the given facility and metro. Every Attachment in the AG has such an entry.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone.attachments
+	Attachments []string `json:"attachments,omitempty"`
+
+	// [Output Only] The name of a zone, either "zone1" or "zone2".
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone.zone
+	Zone *string `json:"zone,omitempty"`
+}
+
 /* found existing non-generated go type "InterconnectCircuitInfo", skipping
 
 // +kcc:proto=google.cloud.compute.v1.InterconnectCircuitInfo
@@ -1128,6 +1651,154 @@ type InterconnectCircuitInfo struct {
 	GoogleDemarcID *string `json:"googleDemarcID,omitempty"`
 }
 */
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.InterconnectGroup", skipping
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectGroup
+type InterconnectGroup struct {
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.configured
+	Configured *InterconnectGroupConfigured `json:"configured,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.description
+	Description *string `json:"description,omitempty"`
+
+	// Opaque system-generated token that uniquely identifies the configuration. If provided when patching a configuration in update mode, the provided token must match the current token or the update is rejected. This provides a reliable means of doing read-modify-write (optimistic locking) as described by API 154.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// [Output Only] The unique identifier for the resource type. The server generates this identifier.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.intent
+	Intent *InterconnectGroupIntent `json:"intent,omitempty"`
+
+	// Interconnects in the InterconnectGroup. Keys are arbitrary user-specified strings. Users are encouraged, but not required, to use their preferred format for resource links as keys. Note that there are add-members and remove-members methods in gcloud. The size of this map is limited by an "Interconnects per group" quota.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.interconnects
+	Interconnects map[string]InterconnectGroupInterconnect `json:"interconnects,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#InterconnectGroup
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.name
+	Name *string `json:"name,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.physical_structure
+	PhysicalStructure *InterconnectGroupPhysicalStructure `json:"physicalStructure,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectGroupConfigured
+type InterconnectGroupConfigured struct {
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupConfigured.topology_capability
+	TopologyCapability *InterconnectGroupConfiguredTopologyCapability `json:"topologyCapability,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapability
+type InterconnectGroupConfiguredTopologyCapability struct {
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapability.intended_capability_blockers
+	IntendedCapabilityBlockers []InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers `json:"intendedCapabilityBlockers,omitempty"`
+
+	// Check the SupportedSla enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapability.supported_sla
+	SupportedSla *string `json:"supportedSla,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers
+type InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers struct {
+	// Check the BlockerType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers.blocker_type
+	BlockerType *string `json:"blockerType,omitempty"`
+
+	// [Output Only] The url of Google Cloud public documentation explaining this requirement. This is set for every type of requirement.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers.documentation_link
+	DocumentationLink *string `json:"documentationLink,omitempty"`
+
+	// [Output Only] A human-readable explanation of this requirement and why it's not met. This is set for every type of requirement.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers.explanation
+	Explanation *string `json:"explanation,omitempty"`
+
+	// [Output Only] Facilities used to explain this blocker in more detail. Like physicalStructure.metros.facilities.facility, this is a numeric string like "5467".
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers.facilities
+	Facilities []string `json:"facilities,omitempty"`
+
+	// [Output Only] Interconnects used to explain this blocker in more detail.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers.interconnects
+	Interconnects []string `json:"interconnects,omitempty"`
+
+	// [Output Only] Metros used to explain this blocker in more detail. These are three-letter lowercase strings like "iad". A blocker like INCOMPATIBLE_METROS will specify the problematic metros in this field.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers.metros
+	Metros []string `json:"metros,omitempty"`
+
+	// [Output Only] Zones used to explain this blocker in more detail. Zone names are "zone1" and/or "zone2".
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers.zones
+	Zones []string `json:"zones,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectGroupIntent
+type InterconnectGroupIntent struct {
+	// Check the TopologyCapability enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupIntent.topology_capability
+	TopologyCapability *string `json:"topologyCapability,omitempty"`
+}
+
+/* found existing non-generated go type "InterconnectGroupInterconnect", skipping
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectGroupInterconnect
+type InterconnectGroupInterconnect struct {
+	// The URL of an Interconnect in this group. All Interconnects in the group are unique.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupInterconnect.interconnect
+	Interconnect *string `json:"interconnect,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectGroupPhysicalStructure
+type InterconnectGroupPhysicalStructure struct {
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupPhysicalStructure.metros
+	Metros []InterconnectGroupPhysicalStructureMetros `json:"metros,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectGroupPhysicalStructureMetros
+type InterconnectGroupPhysicalStructureMetros struct {
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupPhysicalStructureMetros.facilities
+	Facilities []InterconnectGroupPhysicalStructureMetrosFacilities `json:"facilities,omitempty"`
+
+	// [Output Only] The name of the metro, as a three-letter lowercase string like "iad". This is the first component of the location of Interconnects underneath this.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupPhysicalStructureMetros.metro
+	Metro *string `json:"metro,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectGroupPhysicalStructureMetrosFacilities
+type InterconnectGroupPhysicalStructureMetrosFacilities struct {
+	// [Output Only] The ID of this facility, as a numeric string like "5467". This is the third component of the location of Interconnects in this facility.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupPhysicalStructureMetrosFacilities.facility
+	Facility *string `json:"facility,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupPhysicalStructureMetrosFacilities.zones
+	Zones []InterconnectGroupPhysicalStructureMetrosFacilitiesZones `json:"zones,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectGroupPhysicalStructureMetrosFacilitiesZones
+type InterconnectGroupPhysicalStructureMetrosFacilitiesZones struct {
+	// [Output Only] URLs of Interconnects in this redundancy group in the given metro, facility, and zone.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupPhysicalStructureMetrosFacilitiesZones.interconnects
+	Interconnects []string `json:"interconnects,omitempty"`
+
+	// [Output Only] The name of the zone, either "zone1" or "zone2". This is the second component of the location of Interconnects in this facility.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupPhysicalStructureMetrosFacilitiesZones.zone
+	Zone *string `json:"zone,omitempty"`
+}
 
 /* found existing non-generated go type "InterconnectMacsec", skipping
 
@@ -1577,6 +2248,67 @@ type NetworkPerformanceConfig struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.NotificationEndpoint", skipping
+
+// +kcc:proto=google.cloud.compute.v1.NotificationEndpoint
+type NotificationEndpoint struct {
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.NotificationEndpoint.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.NotificationEndpoint.description
+	Description *string `json:"description,omitempty"`
+
+	// Settings of the gRPC notification endpoint including the endpoint URL and the retry duration.
+	// +kcc:proto:field=google.cloud.compute.v1.NotificationEndpoint.grpc_settings
+	GrpcSettings *NotificationEndpointGrpcSettings `json:"grpcSettings,omitempty"`
+
+	// [Output Only] A unique identifier for this resource type. The server generates this identifier.
+	// +kcc:proto:field=google.cloud.compute.v1.NotificationEndpoint.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#notificationEndpoint for notification endpoints.
+	// +kcc:proto:field=google.cloud.compute.v1.NotificationEndpoint.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.NotificationEndpoint.name
+	Name *string `json:"name,omitempty"`
+
+	// [Output Only] URL of the region where the notification endpoint resides. This field applies only to the regional resource. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.
+	// +kcc:proto:field=google.cloud.compute.v1.NotificationEndpoint.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.NotificationEndpoint.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.compute.v1.NotificationEndpointGrpcSettings
+type NotificationEndpointGrpcSettings struct {
+	// Optional. If specified, this field is used to set the authority header by the sender of notifications. See https://tools.ietf.org/html/rfc7540#section-8.1.2.3
+	// +kcc:proto:field=google.cloud.compute.v1.NotificationEndpointGrpcSettings.authority
+	Authority *string `json:"authority,omitempty"`
+
+	// Endpoint to which gRPC notifications are sent. This must be a valid gRPCLB DNS name.
+	// +kcc:proto:field=google.cloud.compute.v1.NotificationEndpointGrpcSettings.endpoint
+	Endpoint *string `json:"endpoint,omitempty"`
+
+	// Optional. If specified, this field is used to populate the "name" field in gRPC requests.
+	// +kcc:proto:field=google.cloud.compute.v1.NotificationEndpointGrpcSettings.payload_name
+	PayloadName *string `json:"payloadName,omitempty"`
+
+	// Optional. This field is used to configure how often to send a full update of all non-healthy backends. If unspecified, full updates are not sent. If specified, must be in the range between 600 seconds to 3600 seconds. Nanos are disallowed. Can only be set for regional notification endpoints.
+	// +kcc:proto:field=google.cloud.compute.v1.NotificationEndpointGrpcSettings.resend_interval
+	ResendInterval *Duration `json:"resendInterval,omitempty"`
+
+	// How much time (in seconds) is spent attempting notification retries until a successful response is received. Default is 30s. Limit is 20m (1200s). Must be a positive number.
+	// +kcc:proto:field=google.cloud.compute.v1.NotificationEndpointGrpcSettings.retry_duration_sec
+	RetryDurationSec *uint32 `json:"retryDurationSec,omitempty"`
+}
+
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.PerInstanceConfig", skipping
 
 // +kcc:proto=google.cloud.compute.v1.PerInstanceConfig
@@ -1780,7 +2512,6 @@ type SavedDisk struct {
 }
 */
 
-/* unreachable type ScalingScheduleStatus
 // +kcc:proto=google.cloud.compute.v1.ScalingScheduleStatus
 type ScalingScheduleStatus struct {
 	// [Output Only] The last time the scaling schedule became active. Note: this is a timestamp when a schedule actually became active, not when it was planned to do so. The timestamp is in RFC3339 text format.
@@ -1796,7 +2527,6 @@ type ScalingScheduleStatus struct {
 	// +kcc:proto:field=google.cloud.compute.v1.ScalingScheduleStatus.state
 	State *string `json:"state,omitempty"`
 }
-*/
 
 /* unreachable type Scheduling
 // +kcc:proto=google.cloud.compute.v1.Scheduling
@@ -2634,6 +3364,134 @@ type SSLPolicy struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.StoragePool", skipping
+
+// +kcc:proto=google.cloud.compute.v1.StoragePool
+type StoragePool struct {
+	// Provisioning type of the byte capacity of the pool.
+	//  Check the CapacityProvisioningType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.capacity_provisioning_type
+	CapacityProvisioningType *string `json:"capacityProvisioningType,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.description
+	Description *string `json:"description,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#storagePool for storage pools.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// A fingerprint for the labels being applied to this storage pool, which is essentially a hash of the labels set used for optimistic locking. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update labels. You must always provide an up-to-date fingerprint hash in order to update or change labels, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve a storage pool.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.label_fingerprint
+	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
+
+	// Labels to apply to this storage pool. These can be later modified by the setLabels method.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.name
+	Name *string `json:"name,omitempty"`
+
+	// Provisioning type of the performance-related parameters of the pool, such as throughput and IOPS.
+	//  Check the PerformanceProvisioningType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.performance_provisioning_type
+	PerformanceProvisioningType *string `json:"performanceProvisioningType,omitempty"`
+
+	// Size of the storage pool in GiB. For more information about the size limits, see https://cloud.google.com/compute/docs/disks/storage-pools.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.pool_provisioned_capacity_gb
+	PoolProvisionedCapacityGB *int64 `json:"poolProvisionedCapacityGB,omitempty"`
+
+	// Provisioned IOPS of the storage pool. Only relevant if the storage pool type is hyperdisk-balanced.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.pool_provisioned_iops
+	PoolProvisionedIops *int64 `json:"poolProvisionedIops,omitempty"`
+
+	// Provisioned throughput of the storage pool in MiB/s. Only relevant if the storage pool type is hyperdisk-balanced or hyperdisk-throughput.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.pool_provisioned_throughput
+	PoolProvisionedThroughput *int64 `json:"poolProvisionedThroughput,omitempty"`
+
+	// [Output Only] Status information for the storage pool resource.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.resource_status
+	ResourceStatus *StoragePoolResourceStatus `json:"resourceStatus,omitempty"`
+
+	// [Output Only] Server-defined fully-qualified URL for this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// [Output Only] Server-defined URL for this resource's resource id.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+
+	// [Output Only] The status of storage pool creation. - CREATING: Storage pool is provisioning. storagePool. - FAILED: Storage pool creation failed. - READY: Storage pool is ready for use. - DELETING: Storage pool is deleting.
+	//  Check the State enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.state
+	State *string `json:"state,omitempty"`
+
+	// [Output Only] Status information for the storage pool resource.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.status
+	Status *StoragePoolResourceStatus `json:"status,omitempty"`
+
+	// Type of the storage pool.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.storage_pool_type
+	StoragePoolType *string `json:"storagePoolType,omitempty"`
+
+	// [Output Only] URL of the zone where the storage pool resides. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.zone
+	Zone *string `json:"zone,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.compute.v1.StoragePoolResourceStatus
+type StoragePoolResourceStatus struct {
+	// [Output Only] Number of disks used.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePoolResourceStatus.disk_count
+	DiskCount *int64 `json:"diskCount,omitempty"`
+
+	// [Output Only] Timestamp of the last successful resize in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePoolResourceStatus.last_resize_timestamp
+	LastResizeTimestamp *string `json:"lastResizeTimestamp,omitempty"`
+
+	// [Output Only] Maximum allowed aggregate disk size in GiB.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePoolResourceStatus.max_total_provisioned_disk_capacity_gb
+	MaxTotalProvisionedDiskCapacityGB *int64 `json:"maxTotalProvisionedDiskCapacityGB,omitempty"`
+
+	// [Output Only] Space used by data stored in disks within the storage pool (in bytes). This will reflect the total number of bytes written to the disks in the pool, in contrast to the capacity of those disks.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePoolResourceStatus.pool_used_capacity_bytes
+	PoolUsedCapacityBytes *int64 `json:"poolUsedCapacityBytes,omitempty"`
+
+	// [Output Only] Sum of all the disks' provisioned IOPS, minus some amount that is allowed per disk that is not counted towards pool's IOPS capacity. For more information, see https://cloud.google.com/compute/docs/disks/storage-pools.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePoolResourceStatus.pool_used_iops
+	PoolUsedIops *int64 `json:"poolUsedIops,omitempty"`
+
+	// [Output Only] Sum of all the disks' provisioned throughput in MiB/s.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePoolResourceStatus.pool_used_throughput
+	PoolUsedThroughput *int64 `json:"poolUsedThroughput,omitempty"`
+
+	// [Output Only] Amount of data written into the pool, before it is compacted.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePoolResourceStatus.pool_user_written_bytes
+	PoolUserWrittenBytes *int64 `json:"poolUserWrittenBytes,omitempty"`
+
+	// [Output Only] Sum of all the disks' provisioned capacity (in GiB) in this storage pool. A disk's provisioned capacity is the same as its total capacity.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePoolResourceStatus.total_provisioned_disk_capacity_gb
+	TotalProvisionedDiskCapacityGB *int64 `json:"totalProvisionedDiskCapacityGB,omitempty"`
+
+	// [Output Only] Sum of all the disks' provisioned IOPS.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePoolResourceStatus.total_provisioned_disk_iops
+	TotalProvisionedDiskIops *int64 `json:"totalProvisionedDiskIops,omitempty"`
+
+	// [Output Only] Sum of all the disks' provisioned throughput in MiB/s, minus some amount that is allowed per disk that is not counted towards pool's throughput capacity.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePoolResourceStatus.total_provisioned_disk_throughput
+	TotalProvisionedDiskThroughput *int64 `json:"totalProvisionedDiskThroughput,omitempty"`
+}
+
 /* unreachable type Tags
 // +kcc:proto=google.cloud.compute.v1.Tags
 type Tags struct {
@@ -2646,6 +3504,95 @@ type Tags struct {
 	Items []string `json:"items,omitempty"`
 }
 */
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.VmExtensionPolicy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.VmExtensionPolicy
+type VMExtensionPolicy struct {
+	// Output only. [Output Only] Creation timestamp inRFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+
+	// Optional. Output only. [Output Only] Link to the global policy that manages this zone policy, if
+	//  applicable.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.global_resource_link
+	GlobalResourceLink *string `json:"globalResourceLink,omitempty"`
+
+	// Output only. [Output Only] The unique identifier for the resource. This identifier is
+	//  defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Optional. Selectors to target VMs for this policy.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.instance_selectors
+	InstanceSelectors []VMExtensionPolicyInstanceSelector `json:"instanceSelectors,omitempty"`
+
+	// Output only. [Output Only] Type of the resource. Alwayscompute#vmExtensionPolicy.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Optional. Output only. [Output Only] Indicates if this policy is managed by a global policy.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.managed_by_global
+	ManagedByGlobal *bool `json:"managedByGlobal,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Priority of this policy.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.priority
+	Priority *int32 `json:"priority,omitempty"`
+
+	// Output only. [Output Only] Server-defined fully-qualified URL for this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Output only. [Output Only] Server-defined URL for this resource's resource id.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+
+	// Optional. Output only. [Output Only] Current state of the policy: ACTIVE or DELETING.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. [Output Only] Update timestamp inRFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.update_timestamp
+	UpdateTimestamp *string `json:"updateTimestamp,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.compute.v1.VmExtensionPolicyExtensionPolicy
+type VMExtensionPolicyExtensionPolicy struct {
+	// Optional. The specific version of the extension to install. If not set, the latest
+	//  version is used.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicyExtensionPolicy.pinned_version
+	PinnedVersion *string `json:"pinnedVersion,omitempty"`
+
+	// Optional. String-based configuration data for the extension.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicyExtensionPolicy.string_config
+	StringConfig *string `json:"stringConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.VmExtensionPolicyInstanceSelector
+type VMExtensionPolicyInstanceSelector struct {
+	// Optional. LabelSelector selects VMs based on their labels.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicyInstanceSelector.label_selector
+	LabelSelector *VMExtensionPolicyLabelSelector `json:"labelSelector,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.VmExtensionPolicyLabelSelector
+type VMExtensionPolicyLabelSelector struct {
+	// Optional. A map of key-value pairs representing VM labels.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicyLabelSelector.inclusion_labels
+	InclusionLabels map[string]string `json:"inclusionLabels,omitempty"`
+}
 
 /* unreachable type Warnings
 // +kcc:proto=google.cloud.compute.v1.Warnings
@@ -3092,5 +4039,105 @@ type ShareSettingsProjectConfig struct {
 	// The project ID, should be same as the key of this project config in the parent map.
 	// +kcc:proto:field=google.cloud.compute.v1beta.ShareSettingsProjectConfig.project_id
 	ProjectID *string `json:"projectID,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.CrossSiteNetwork", skipping
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.CrossSiteNetwork
+type CrossSiteNetworkObservedState struct {
+	// Output only. [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// Output only. [Output Only] The unique identifier for the resource type. The server generates this identifier.
+	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Output only. [Output Only] Type of the resource. Always compute#crossSiteNetwork for cross-site networks.
+	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Output only. [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.InterconnectAttachmentGroup", skipping
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.InterconnectAttachmentGroup
+type InterconnectAttachmentGroupObservedState struct {
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// Opaque system-generated token that uniquely identifies the configuration. If provided when patching a configuration in update mode, the provided token must match the current token or the update is rejected. This provides a reliable means of doing read-modify-write (optimistic locking) as described by AIP 154.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// [Output Only] The unique identifier for the resource type. The server generates this identifier.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#interconnectAttachmentGroup.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentGroup.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.InterconnectGroup", skipping
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.InterconnectGroup
+type InterconnectGroupObservedState struct {
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// Opaque system-generated token that uniquely identifies the configuration. If provided when patching a configuration in update mode, the provided token must match the current token or the update is rejected. This provides a reliable means of doing read-modify-write (optimistic locking) as described by API 154.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// [Output Only] The unique identifier for the resource type. The server generates this identifier.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#InterconnectGroup
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.StoragePool", skipping
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.StoragePool
+type StoragePoolObservedState struct {
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#storagePool for storage pools.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// [Output Only] Server-defined fully-qualified URL for this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// [Output Only] Server-defined URL for this resource's resource id.
+	// +kcc:proto:field=google.cloud.compute.v1.StoragePool.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
 }
 */

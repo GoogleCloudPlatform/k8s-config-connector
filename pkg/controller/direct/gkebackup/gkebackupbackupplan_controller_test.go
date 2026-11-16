@@ -17,11 +17,14 @@ package gkebackup
 import (
 	"context"
 	"testing"
+	"time"
 
+	gkebackuppb "cloud.google.com/go/gkebackup/apiv1/gkebackuppb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkebackup/v1alpha1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -154,4 +157,54 @@ func TestGKEBackupBackupPlan_NormalizeReferences(t *testing.T) {
 			t.Errorf("protoObj GcpKmsEncryptionKey = %q, want empty", protoObj.GetBackupConfig().GetEncryptionKey().GetGcpKmsEncryptionKey())
 		}
 	})
+}
+
+func TestBackupSchedulesEqual(t *testing.T) {
+	nextBackup := timestamppb.New(time.Now().Add(time.Hour))
+
+	tests := []struct {
+		name    string
+		desired *gkebackuppb.BackupPlan_Schedule
+		actual  *gkebackuppb.BackupPlan_Schedule
+		want    bool
+	}{
+		{
+			name:    "both nil",
+			desired: nil,
+			actual:  nil,
+			want:    true,
+		},
+		{
+			name: "equal when actual has output-only NextScheduledBackupTime",
+			desired: &gkebackuppb.BackupPlan_Schedule{
+				CronSchedule: "0 2 * * *",
+				Paused:       false,
+			},
+			actual: &gkebackuppb.BackupPlan_Schedule{
+				CronSchedule:            "0 2 * * *",
+				Paused:                  false,
+				NextScheduledBackupTime: nextBackup,
+			},
+			want: true,
+		},
+		{
+			name: "not equal when cron schedule differs",
+			desired: &gkebackuppb.BackupPlan_Schedule{
+				CronSchedule: "0 3 * * *",
+			},
+			actual: &gkebackuppb.BackupPlan_Schedule{
+				CronSchedule:            "0 2 * * *",
+				NextScheduledBackupTime: nextBackup,
+			},
+			want: false,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := backupSchedulesEqual(tc.desired, tc.actual); got != tc.want {
+				t.Errorf("backupSchedulesEqual() = %v, want %v", got, tc.want)
+			}
+		})
+	}
 }

@@ -1,0 +1,201 @@
+# Phase: CREATE
+GET https://appengine.googleapis.com/v1/apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "domainMapping \"apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://appengine.googleapis.com/v1/apps/${projectId}/domainMappings?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "id": "000000000000000000000",
+  "sslSettings": {
+    "sslManagementType": "AUTOMATIC"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "insertTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.appengine.v1.DomainMappings.CreateDomainMapping",
+    "target": "apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}",
+    "user": "user@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "apps/${projectId}/operations/${operationID}"
+}
+
+---
+
+GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "insertTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.appengine.v1.DomainMappings.CreateDomainMapping",
+    "target": "apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}",
+    "user": "user@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "apps/${projectId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.appengine.v1.DomainMapping",
+    "id": "000000000000000000000",
+    "name": "apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}",
+    "resourceRecords": [
+      {
+        "name": "appenginedomainmapping${uniqueId}",
+        "rrdata": "ghs.googlehosted.com.",
+        "type": "CNAME"
+      }
+    ],
+    "sslSettings": {
+      "sslManagementType": "AUTOMATIC"
+    }
+  }
+}
+
+---
+
+GET https://appengine.googleapis.com/v1/apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "name": "apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}",
+  "resourceRecords": [
+    {
+      "name": "appenginedomainmapping${uniqueId}",
+      "rrdata": "ghs.googlehosted.com.",
+      "type": "CNAME"
+    }
+  ],
+  "sslSettings": {
+    "sslManagementType": "AUTOMATIC"
+  }
+}
+
+---
+
+# Phase: DELETE
+DELETE https://appengine.googleapis.com/v1/apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "insertTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.appengine.v1.DomainMappings.DeleteDomainMapping",
+    "target": "apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}",
+    "user": "user@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "apps/${projectId}/operations/${operationID}"
+}
+
+---
+
+GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "insertTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.appengine.v1.DomainMappings.DeleteDomainMapping",
+    "target": "apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}",
+    "user": "user@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "apps/${projectId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.appengine.v1.DomainMapping",
+    "id": "000000000000000000000",
+    "name": "apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}",
+    "resourceRecords": [
+      {
+        "name": "appenginedomainmapping${uniqueId}",
+        "rrdata": "ghs.googlehosted.com.",
+        "type": "CNAME"
+      }
+    ],
+    "sslSettings": {
+      "sslManagementType": "AUTOMATIC"
+    }
+  }
+}

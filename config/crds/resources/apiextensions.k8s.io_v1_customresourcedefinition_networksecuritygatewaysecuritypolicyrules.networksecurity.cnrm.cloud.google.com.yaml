@@ -77,16 +77,9 @@ spec:
               enabled:
                 description: Required. Whether the rule is enforced.
                 type: boolean
-              location:
-                description: The location of this resource.
-                type: string
-              priority:
-                description: Required. Priority of the rule. Lower number corresponds
-                  to higher precedence.
-                format: int32
-                type: integer
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The NetworkSecurityGatewaySecurityPolicy this NetworkSecurityGatewaySecurityPolicyRule
+                  is created under.
                 oneOf:
                 - not:
                     required:
@@ -103,20 +96,26 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed NetworkSecurityGatewaySecurityPolicy
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/gatewaySecurityPolicies/{{gatewaySecurityPolicy}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a NetworkSecurityGatewaySecurityPolicy
+                      resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a NetworkSecurityGatewaySecurityPolicy
+                      resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
+              priority:
+                description: Required. Priority of the rule. Lower number corresponds
+                  to higher precedence.
+                format: int32
+                type: integer
               resourceID:
                 description: The NetworkSecurityGatewaySecurityPolicyRule name. If
                   not given, the metadata.name will be used.
@@ -132,9 +131,8 @@ spec:
             required:
             - basicProfile
             - enabled
-            - location
+            - parentRef
             - priority
-            - projectRef
             - sessionMatcher
             type: object
           status:

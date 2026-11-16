@@ -153,6 +153,22 @@ func FromMapping_ToProto(mapCtx *direct.MapContext, in *krm.FromMapping) *pb.Fro
 	out.OutputVariable = direct.ValueOf(in.OutputVariable)
 	return out
 }
+func Location_FromProto(mapCtx *direct.MapContext, in *pb.Location) *krm.Location {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Location{}
+	out.Name = direct.LazyPtr(in.GetName())
+	return out
+}
+func Location_ToProto(mapCtx *direct.MapContext, in *krm.Location) *pb.Location {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Location{}
+	out.Name = direct.ValueOf(in.Name)
+	return out
+}
 func Release_ReleaseRequirements_FromProto(mapCtx *direct.MapContext, in *pb.Release_ReleaseRequirements) *krm.Release_ReleaseRequirements {
 	if in == nil {
 		return nil
@@ -357,6 +373,56 @@ func SaaSServiceMgmtRolloutSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaaSS
 		out.RolloutKind = in.RolloutKindRef.External
 	}
 	out.Control = RolloutControl_ToProto(mapCtx, in.Control)
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func SaaSServiceMgmtSaaSObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Saas) *krm.SaaSServiceMgmtSaaSObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtSaaSObservedState{}
+	// MISSING: Name
+	// MISSING: Labels
+	// MISSING: Annotations
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func SaaSServiceMgmtSaaSObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtSaaSObservedState) *pb.Saas {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Saas{}
+	// MISSING: Name
+	// MISSING: Labels
+	// MISSING: Annotations
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func SaaSServiceMgmtSaaSSpec_FromProto(mapCtx *direct.MapContext, in *pb.Saas) *krm.SaaSServiceMgmtSaaSSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtSaaSSpec{}
+	// MISSING: Name
+	out.Locations = direct.Slice_FromProto(mapCtx, in.Locations, Location_FromProto)
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func SaaSServiceMgmtSaaSSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtSaaSSpec) *pb.Saas {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Saas{}
+	// MISSING: Name
+	out.Locations = direct.Slice_ToProto(mapCtx, in.Locations, Location_ToProto)
 	// MISSING: Labels
 	// MISSING: Annotations
 	return out

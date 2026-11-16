@@ -29,7 +29,6 @@ func TestParseGKEContext(t *testing.T) {
 	}
 	want := gkeClusterInfo{
 		contextName: "gke_my-project_us-central1_cluster-a",
-		identity:    "gke-my-project-us-central1-cluster-a",
 		project:     "my-project",
 		location:    "us-central1",
 		clusterName: "cluster-a",

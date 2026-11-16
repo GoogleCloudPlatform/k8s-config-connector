@@ -24,6 +24,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -80,35 +81,19 @@ func getIdentityFromDataplexAssetSpec(ctx context.Context, reader client.Reader,
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	if obj.Spec.ParentRef == nil {
+		return nil, fmt.Errorf("spec.parentRef is required")
 	}
-
-	location, err := refs.GetLocation(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location: %w", err)
+	parentRef := *obj.Spec.ParentRef
+	if err := parentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, fmt.Errorf("resolving spec.parentRef: %w", err)
 	}
-
-	// +kcc:guess reason=identity-root-unknown
-	lake := ""
-	if lake == "" {
-		return nil, fmt.Errorf("cannot resolve lake for DataplexAsset")
+	parsed := &DataplexAssetIdentity{}
+	if err := parsed.FromExternal(strings.TrimSuffix(parentRef.GetExternal(), "/") + "/assets" + "/" + resourceID); err != nil {
+		return nil, fmt.Errorf("parsing spec.parentRef external=%q: %w", parentRef.GetExternal(), err)
 	}
-
-	// +kcc:guess reason=identity-root-unknown
-	zone := ""
-	if zone == "" {
-		return nil, fmt.Errorf("cannot resolve zone for DataplexAsset")
-	}
-
-	return &DataplexAssetIdentity{
-		Project:  projectID,
-		Location: location,
-		Lake:     lake,
-		Zone:     zone,
-		Asset:    resourceID,
-	}, nil
+	parsed.Asset = resourceID
+	return parsed, nil
 }
 
 func (obj *DataplexAsset) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {

@@ -43,7 +43,6 @@ func dataplexAssetFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".description")
 	f.SpecField(".discovery_spec")
 	f.SpecField(".display_name")
-	f.SpecField(".labels")
 	f.SpecField(".resource_spec")
 
 	// Status fields
@@ -57,9 +56,22 @@ func dataplexAssetFuzzer() fuzztesting.KRMFuzzer {
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	// Unimplemented / Not Yet Triaged fields
 	f.Unimplemented_NotYetTriaged(".discovery_spec.schedule")
+
+	f.FilterSpec = func(in *pb.Asset) {
+		if in.ResourceSpec != nil && in.ResourceSpec.Name != "" {
+			switch in.ResourceSpec.Type {
+			case pb.Asset_ResourceSpec_BIGQUERY_DATASET:
+				in.ResourceSpec.Name = "projects/p/datasets/" + in.ResourceSpec.Name
+			default:
+				in.ResourceSpec.Type = pb.Asset_ResourceSpec_STORAGE_BUCKET
+				in.ResourceSpec.Name = "projects/p/buckets/" + in.ResourceSpec.Name
+			}
+		}
+	}
 
 	return f
 }

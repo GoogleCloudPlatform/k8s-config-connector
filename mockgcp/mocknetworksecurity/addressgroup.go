@@ -43,6 +43,9 @@ func (s *AddressGroupServer) CreateAddressGroup(ctx context.Context, req *pbv1.C
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())
+	if len(obj.Purpose) == 0 {
+		obj.Purpose = []pbv1.AddressGroup_Purpose{pbv1.AddressGroup_DEFAULT}
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err

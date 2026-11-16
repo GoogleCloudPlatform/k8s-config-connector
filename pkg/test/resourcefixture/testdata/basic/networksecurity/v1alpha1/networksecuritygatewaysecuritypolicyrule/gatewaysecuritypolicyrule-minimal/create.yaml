@@ -1,0 +1,11 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityGatewaySecurityPolicyRule
+metadata:
+  name: gsprule-min-${uniqueId}
+spec:
+  parentRef:
+    name: gsp-${uniqueId}
+  basicProfile: ALLOW
+  enabled: true
+  priority: 100
+  sessionMatcher: host() == 'example.com'

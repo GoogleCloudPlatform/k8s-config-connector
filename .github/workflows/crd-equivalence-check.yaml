@@ -23,7 +23,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, labeled, unlabeled]
   push:
-    branches: ["master", "release-*"]
+    branches: ["release-*"]
     paths:
       - 'config/crds/resources/**'
   merge_group:

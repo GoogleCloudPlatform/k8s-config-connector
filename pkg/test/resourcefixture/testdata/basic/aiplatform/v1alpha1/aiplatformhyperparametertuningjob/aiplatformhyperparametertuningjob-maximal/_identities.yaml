@@ -1,0 +1,12 @@
+- caisURL: //iam.googleapis.com/projects/${projectId}/serviceAccounts/hptjob-sa-${uniqueId}
+  group: iam.cnrm.cloud.google.com
+  kind: IAMServiceAccount
+  name: hptjob-sa-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: aiplatform.cnrm.cloud.google.com
+  kind: AIPlatformHyperparameterTuningJob
+  name: hptjob-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

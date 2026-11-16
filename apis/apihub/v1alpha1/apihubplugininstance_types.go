@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,11 +30,10 @@ var APIHubPluginInstanceGVK = GroupVersion.WithKind("APIHubPluginInstance")
 // +kcc:spec:proto=google.cloud.apihub.v1.PluginInstance
 // +kcc:required-from-proto
 type APIHubPluginInstanceSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// The APIHubPlugin that this APIHubPluginInstance belongs to.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *APIHubPluginRef `json:"parentRef"`
 
 	// The APIHubPluginInstance name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

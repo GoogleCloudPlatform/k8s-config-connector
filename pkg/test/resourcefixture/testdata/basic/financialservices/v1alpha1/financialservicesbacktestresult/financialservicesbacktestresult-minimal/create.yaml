@@ -1,0 +1,14 @@
+apiVersion: financialservices.cnrm.cloud.google.com/v1alpha1
+kind: FinancialServicesBacktestResult
+metadata:
+  name: financialservicesbacktestresult-${uniqueId}
+spec:
+  parentRef:
+    name: financialservicesinstance-${uniqueId}
+  datasetRef:
+    external: projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/datasets/financialservicesdataset-${uniqueId}
+  modelRef:
+    external: projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/models/financialservicesmodel-${uniqueId}
+  endTime: "2025-01-01T00:00:00Z"
+  performanceTarget:
+    partyInvestigationsPerPeriodHint: 100

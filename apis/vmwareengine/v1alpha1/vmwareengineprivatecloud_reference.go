@@ -22,11 +22,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var _ refsv1beta1.ExternalNormalizer = &PrivateCloudRef{}
+var _ refsv1beta1.Ref = &PrivateCloudRef{}
 
 // PrivateCloudRef is a reference to a VMwareEnginePrivateCloud.
 type PrivateCloudRef struct {
@@ -39,6 +41,43 @@ type PrivateCloudRef struct {
 
 	// The namespace of a VMwareEnginePrivateCloud resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func (r *PrivateCloudRef) GetGVK() schema.GroupVersionKind {
+	return VMwareEnginePrivateCloudGVK
+}
+
+func (r *PrivateCloudRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *PrivateCloudRef) GetExternal() string {
+	return r.External
+}
+
+func (r *PrivateCloudRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *PrivateCloudRef) ValidateExternal(ref string) error {
+	if _, _, err := ParsePrivateCloudExternal(ref); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *PrivateCloudRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	external, err := r.NormalizedExternal(ctx, reader, defaultNamespace)
+	if err != nil {
+		return err
+	}
+	r.SetExternal(external)
+	return nil
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on VMwareEnginePrivateCloud.

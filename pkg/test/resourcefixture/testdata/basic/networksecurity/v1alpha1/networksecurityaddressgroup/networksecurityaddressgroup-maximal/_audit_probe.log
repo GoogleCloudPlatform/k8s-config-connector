@@ -13,7 +13,7 @@ X-Gfe-Server: ESF
     "10.0.1.0/24"
   ],
   "labels": {
-    "cnrm-test": "true"
+    "foo": "baz"
   },
   "name": "projects/${projectId}/locations/global/addressGroups/addressgroup-max-${uniqueId}",
   "purpose": [

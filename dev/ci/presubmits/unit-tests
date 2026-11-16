@@ -40,7 +40,14 @@ unset VALIDATE_URLS
 SHARD_SPEC="${1:-${SHARD_SPEC:-}}"
 
 # Get all unit test packages excluding the operator, E2E tests, and preview CLI tests
-ALL_PACKAGES=$(go list ./... | grep -v "/operator" | grep -v "tests/e2e" | grep -v "pkg/cli/preview")
+# UNIT_TEST_PATTERNS (space-separated go package patterns) scopes the run; it is
+# set by dev/tasks/plan-tests for changes that only affect some services.
+# shellcheck disable=SC2086
+ALL_PACKAGES=$(go list ${UNIT_TEST_PATTERNS:-./...} | grep -v "/operator" | grep -v "tests/e2e" | grep -v "pkg/cli/preview" || true)
+if [[ -z "${ALL_PACKAGES}" ]]; then
+  echo "No unit test packages selected (UNIT_TEST_PATTERNS='${UNIT_TEST_PATTERNS:-}')."
+  exit 0
+fi
 
 if [[ "${SHARD_SPEC}" =~ ([0-9]+)-of-([0-9]+)$ ]]; then
   SHARD_NUM="${BASH_REMATCH[1]}"

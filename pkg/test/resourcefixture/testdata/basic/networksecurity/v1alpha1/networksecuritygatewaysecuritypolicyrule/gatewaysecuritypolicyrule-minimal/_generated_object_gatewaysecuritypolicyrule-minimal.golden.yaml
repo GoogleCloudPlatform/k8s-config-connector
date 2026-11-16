@@ -1,0 +1,30 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityGatewaySecurityPolicyRule
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: gsprule-min-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  basicProfile: ALLOW
+  enabled: true
+  parentRef:
+    name: gsp-${uniqueId}
+  priority: 101
+  sessionMatcher: host() == 'example.com'
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}/rules/gsprule-min-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"

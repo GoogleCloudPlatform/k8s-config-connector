@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/global/addressGroups/addressgroup-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -30,9 +31,6 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
 
 {
   "capacity": 100,
-  "labels": {
-    "cnrm-test": "true"
-  },
   "type": 1
 }
 
@@ -47,10 +45,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/addressGroups/addressgroup-min-${uniqueId}",
     "verb": "create"
   },
@@ -81,6 +81,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/addressGroups/addressgroup-min-${uniqueId}",
     "verb": "create"
   },
@@ -89,10 +90,10 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.AddressGroup",
     "capacity": 100,
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "labels": {
-      "cnrm-test": "true"
-    },
     "name": "projects/${projectId}/locations/global/addressGroups/addressgroup-min-${uniqueId}",
+    "purpose": [
+      "DEFAULT"
+    ],
     "type": "IPV4",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -118,16 +119,17 @@ X-Xss-Protection: 0
 {
   "capacity": 100,
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true"
-  },
   "name": "projects/${projectId}/locations/global/addressGroups/addressgroup-min-${uniqueId}",
+  "purpose": [
+    1
+  ],
   "type": 1,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
+# Phase: UPDATE
 PATCH https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/global/addressGroups/addressgroup-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -136,9 +138,6 @@ X-Goog-Request-Params: address_group.name=projects%2F${projectId}%2Flocations%2F
 {
   "capacity": 100,
   "description": "An updated description for minimal address group",
-  "labels": {
-    "cnrm-test": "true"
-  },
   "name": "projects/${projectId}/locations/global/addressGroups/addressgroup-min-${uniqueId}",
   "type": 1
 }
@@ -154,10 +153,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/addressGroups/addressgroup-min-${uniqueId}",
     "verb": "update"
   },
@@ -188,6 +189,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/addressGroups/addressgroup-min-${uniqueId}",
     "verb": "update"
   },
@@ -197,10 +199,10 @@ X-Xss-Protection: 0
     "capacity": 100,
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "An updated description for minimal address group",
-    "labels": {
-      "cnrm-test": "true"
-    },
     "name": "projects/${projectId}/locations/global/addressGroups/addressgroup-min-${uniqueId}",
+    "purpose": [
+      "DEFAULT"
+    ],
     "type": "IPV4",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -227,16 +229,17 @@ X-Xss-Protection: 0
   "capacity": 100,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "An updated description for minimal address group",
-  "labels": {
-    "cnrm-test": "true"
-  },
   "name": "projects/${projectId}/locations/global/addressGroups/addressgroup-min-${uniqueId}",
+  "purpose": [
+    1
+  ],
   "type": 1,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
+# Phase: DELETE
 DELETE https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/global/addressGroups/addressgroup-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -253,10 +256,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/addressGroups/addressgroup-min-${uniqueId}",
     "verb": "delete"
   },
@@ -287,6 +292,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/addressGroups/addressgroup-min-${uniqueId}",
     "verb": "delete"
   },

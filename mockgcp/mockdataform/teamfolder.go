@@ -31,13 +31,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-// TeamFolderV1 implements the mock service for TeamFolder.
-type TeamFolderV1 struct {
-	*MockService
-	gw_v1.UnimplementedDataformServer
-}
-
-func (r *TeamFolderV1) GetTeamFolder(ctx context.Context, request *gw_v1.GetTeamFolderRequest) (*gw_v1.TeamFolder, error) {
+func (r *DataformV1) GetTeamFolder(ctx context.Context, request *gw_v1.GetTeamFolderRequest) (*gw_v1.TeamFolder, error) {
 	name, err := r.parseDataformTeamFolder(request.Name)
 	if err != nil {
 		return nil, err
@@ -55,7 +49,7 @@ func (r *TeamFolderV1) GetTeamFolder(ctx context.Context, request *gw_v1.GetTeam
 	return obj, nil
 }
 
-func (r *TeamFolderV1) CreateTeamFolder(ctx context.Context, request *gw_v1.CreateTeamFolderRequest) (*gw_v1.TeamFolder, error) {
+func (r *DataformV1) CreateTeamFolder(ctx context.Context, request *gw_v1.CreateTeamFolderRequest) (*gw_v1.TeamFolder, error) {
 	name, err := r.parseDataformTeamFolder(request.TeamFolder.Name)
 	if err != nil {
 		return nil, err
@@ -81,7 +75,7 @@ func (r *TeamFolderV1) CreateTeamFolder(ctx context.Context, request *gw_v1.Crea
 	return obj, nil
 }
 
-func (r *TeamFolderV1) UpdateTeamFolder(ctx context.Context, request *gw_v1.UpdateTeamFolderRequest) (*gw_v1.TeamFolder, error) {
+func (r *DataformV1) UpdateTeamFolder(ctx context.Context, request *gw_v1.UpdateTeamFolderRequest) (*gw_v1.TeamFolder, error) {
 	name, err := r.parseDataformTeamFolder(request.TeamFolder.Name)
 	if err != nil {
 		return nil, err
@@ -114,7 +108,7 @@ func (r *TeamFolderV1) UpdateTeamFolder(ctx context.Context, request *gw_v1.Upda
 	return obj, nil
 }
 
-func (r *TeamFolderV1) DeleteTeamFolder(ctx context.Context, request *gw_v1.DeleteTeamFolderRequest) (*empty.Empty, error) {
+func (r *DataformV1) DeleteTeamFolder(ctx context.Context, request *gw_v1.DeleteTeamFolderRequest) (*empty.Empty, error) {
 	name, err := r.parseDataformTeamFolder(request.Name)
 	if err != nil {
 		return nil, err

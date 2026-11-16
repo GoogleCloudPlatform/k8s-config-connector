@@ -34,6 +34,12 @@
 - **Solution**: Hand-coded the direct controller and fuzzer following KCC standard practices and verified complete fuzzer field mapping coverage with the targeted test framework (`FOCUS=DataplexDataTaxonomy go test ./pkg/fuzztesting/fuzztests/ -v -run=TestFocusedMappers`). Updated API field presence exceptions golden file.
 - **Impact**: Highlights potential GCP service-side limitations or quirks for the `DataTaxonomy` API in test projects, requiring the direct controller logic and schema mappings to be carefully designed and tested offline/via fuzzer when live API execution is obstructed by service-side Internal errors.
 
+### [2026-09-17] Implement DataplexGlossary Greenfield Controller
+- **Context**: Implementing the Greenfield direct controller, E2E fixtures, and fuzzer for `DataplexGlossary` under `v1alpha1`.
+- **Problem**: The `Glossary` resource proto definitions are missing from the repository's pinned `googleapis` version. Running `dev/tasks/update-gcp-dependencies` to update googleapis globally broke other service code generator scripts (like `apigeeregistry`).
+- **Solution**: Decoupled and customized the `generate-proto.sh` invocation inside `apis/dataplex/generate.sh` by passing a specific newer `googleapis` SHA containing the `Glossary` protobuf definitions. Upgraded the `cloud.google.com/go/dataplex` client library in KCC's root and mockgcp `go.mod` to version `v1.36.0` to compile matching mappers and types.
+- **Impact**: Provides a robust, non-intrusive pattern to fetch newer Google API definitions for specific resources without causing repository-wide dependency drift or breaking other generation/presubmit scripts.
+
 ### [2026-09-23] Implement Direct KRM Types and Identity for DataplexDataProduct
 - **Context**: Implementing KRM types and IdentityV2 for `DataplexDataProduct` under `v1alpha1`.
 - **Problem**: `DataplexDataProduct` contains a map field `access_groups` which in protobuf translates to a nested map type (`map<string, AccessGroup>`). The default KCC `controllerbuilder generate-types` tool does not support direct generation of protobuf maps with message/struct values, reporting them as unreachable or unsupported. Furthermore, the Go client library for Dataplex in KCC was pinned to an older version (`v1.34.0`) that lacked the newly added `DataProduct` proto types entirely, leading to compilation issues.
@@ -103,4 +109,71 @@
   3. Recorded authentic golden HTTP traffic and objects against real GCP (`cnrm-barni-4`) using `./hack/record-gcp`.
   4. Verified all 7 HTTP log validation checks pass (`TestCommittedHTTPLogReports/dataplexdataasset`), unit tests pass, and focused fuzzer passes.
 - **Impact**: Full Greenfield direct controller coverage and verified golden test fixtures for DataplexDataAsset.
+
+### [2026-11-06] Triage Judgement Queue and Finalize Direct KRM Types for DataplexAsset
+- **Context**: Triaging judgement queue and finalizing KRM types, identity, and references for `DataplexAsset` under `v1alpha1` (#15187).
+- **Problem**:
+  1. `DataplexAsset` is a child resource under `DataplexZone` (`projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/assets/{asset}`). Initial bulk scaffolding used separate `projectRef` and `location` fields rather than `parentRef *ZoneRef`.
+  2. `spec.labels` was in `DataplexAssetSpec`, which conflicts with KRM conventions where top-level labels are managed via `metadata.labels`.
+  3. `spec.resourceSpec.name` is a polymorphic relative resource name (can be a Cloud Storage bucket `projects/{project_number}/buckets/{bucket_id}` or BigQuery dataset `projects/{project_number}/datasets/{dataset_id}`), which cannot be represented as a single typed KCC reference. It triggered `TestMissingRefs` in `tests/apichecks`.
+- **Solution**:
+  1. Replaced `projectRef` and `location` with `parentRef *ZoneRef` marked `+required` and immutable via CEL (`self == oldSelf`).
+  2. Removed `labels` from `DataplexAssetSpec`.
+  3. Added `[refs] crd=dataplexassets.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceSpec.name" reason=polymorphic relative resource name (Storage bucket or BigQuery dataset) cannot be represented as a single typed reference` to `tests/apichecks/testdata/exceptions/refs_deferred.txt`.
+  4. Triaged all 5 judgement queue entries in `apis/dataplex/judgement_queue.yaml` to `status: resolved`.
+  5. Regenerated types, identity, CRDs, controller, and fuzzer; updated `alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1`.
+- **Impact**: All unit tests, conformance tests, apichecks, and focused fuzzer tests (`FOCUS=DataplexAsset`) pass cleanly.
+
+### [2026-11-06] Triage Judgement Queue and Finalize Direct KRM Types for DataplexGlossaryTerm
+- **Context**: Triaging judgement queue and finalizing KRM types, identity, and references for `DataplexGlossaryTerm` under `v1alpha1` (#15153).
+- **Problem**:
+  1. `DataplexGlossaryTerm` is a child resource under `DataplexGlossary` (`projects/{project}/locations/{location}/glossaries/{glossary}/terms/{glossary_term}`).
+  2. While `DataplexGlossary` existed, it lacked a `DataplexGlossaryRef` reference definition, causing `parent-ref-not-modelled` and `identity-root-unknown`.
+  3. Prepopulation generated `projectRef`, `location`, proto-level `parent`, and top-level `labels` on `DataplexGlossaryTermSpec`.
+- **Solution**:
+  1. Created `DataplexGlossaryRef` in `apis/dataplex/v1alpha1/dataplexglossary_reference.go` matching `DataplexGlossaryGVK` and `GlossaryIdentity`.
+  2. Replaced `projectRef`, `location`, and proto `parent` with `parentRef *DataplexGlossaryRef` (`+required`, immutable via `self == oldSelf` CEL rule) on `DataplexGlossaryTermSpec`.
+  3. Removed `labels` from `DataplexGlossaryTermSpec` as labels are reconciled via `metadata.labels`.
+  4. Regenerated CRDs and identity via `apis/dataplex/generate.sh`, and updated pre-existing controller and fuzzer via one-shot `generate-controller` and `generate-fuzzer` with pinned `PROTO_SHA`.
+  5. Resolved all 6 judgement queue entries for `DataplexGlossaryTerm`.
+- **Impact**: Conforms to Greenfield single-parent and reference conventions, cleanly passing all conformance, apichecks, and focused fuzzer tests (`FOCUS=DataplexGlossaryTerm`).
+
+### [2026-11-06] Finalize Direct KRM Types and Identity for DataplexGlossaryCategory
+- **Context**: Triaging judgement queue and finalizing KRM types, identity, and references for `DataplexGlossaryCategory` under `v1alpha1` (#15154).
+- **Problem**: `DataplexGlossaryCategory` is a child resource of `DataplexGlossary` (`projects/{project}/locations/{location}/glossaries/{glossary}/categories/{glossary_category}`). It was prepopulated with `projectRef`, `location`, `labels`, and a proto `parent` string field in `spec`. In addition, `DataplexGlossary` lacked a `DataplexGlossaryRef` definition and `DataplexGlossaryIdentity` alias, producing `parent-ref-not-modelled` and `identity-root-unknown`.
+- **Solution**:
+  1. Implemented `DataplexGlossaryRef` in `apis/dataplex/v1alpha1/dataplexglossary_reference.go`, registered it with `refs.Register`, and aliased `type DataplexGlossaryIdentity = GlossaryIdentity` in `dataplexglossary_identity.go`.
+  2. Replaced `projectRef`, `location`, `labels`, and `parent` on `DataplexGlossaryCategorySpec` with a required, immutable `parentRef *DataplexGlossaryRef` (`+kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"`).
+  3. Re-ran `generate.sh` and one-shot `generate-controller` and `generate-fuzzer` to regenerate identity, mappers, CRD, and controller/fuzzer against the pinned Dataplex protobuf descriptor.
+  4. Resolved all 6 judgement queue entries for `DataplexGlossaryCategory` in `apis/dataplex/judgement_queue.yaml`.
+  5. Updated CAIS golden files and alpha-missingfields exception entries.
+- **Impact**: Conforms to Greenfield single-parent conventions, passes all apichecks, unit tests, and round-trip fuzz tests (`FOCUS=DataplexGlossaryCategory`).
+
+### [2026-11-14] Finalize Direct KRM Types and Identity for DataplexEntity
+- **Context**: Triaging judgement queue and finalizing KRM types, identity, and references for `DataplexEntity` under `v1alpha1` (#15695).
+- **Problem**: `DataplexEntity` is a child resource of `DataplexZone` (`projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/entities/{entity}`). It was prepopulated with `projectRef`, `location`, raw string `asset`, and `etag` in `spec`. In addition, `DataplexEntityRef` was previously defined in `dataplexdatascan_types.go` without `Name` or `Namespace`, blocking `generate-identity` from generating standard reference struct boilerplate.
+- **Solution**:
+  1. Replaced `projectRef` and `location` with required, immutable `parentRef *ZoneRef` (`+kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"`).
+  2. Converted raw string `asset` to `assetRef *DataplexAssetRef`.
+  3. Removed `etag` from `spec` and added to `observedState`.
+  4. Removed redundant `DataplexEntityRef` definition from `dataplexdatascan_types.go`, allowing `generate-identity` to generate standard `DataplexEntityRef` with `External`, `Name`, and `Namespace`.
+  5. Triaged all 7 entries for `DataplexEntity` in `apis/dataplex/judgement_queue.yaml`.
+  6. Regenerated CRD, mapper, controller, and fuzzer using `generate.sh` and one-shot `controllerbuilder generate-controller` / `generate-fuzzer`.
+- **Impact**: Conforms to Greenfield Step 1b conventions, passes all apichecks, unit tests, and round-trip fuzz tests (`FOCUS=DataplexEntity`).
+
+### [2026-11-15] Implement Greenfield DataplexEntity Controller, Fixtures, and Fuzzer
+- **Context**: Greenfield Step 2 implementation for DataplexEntity (direct controller, E2E fixtures, and fuzzer) under issue #15706.
+- **Problem**:
+  1. `GetEntityRequest` defaults to `View: BASIC`, which omits the schema in GCP responses. In `Find`, `View: dataplexpb.GetEntityRequest_FULL` must be explicitly requested so `actual.Schema` is returned and compared correctly.
+  2. `UpdateEntityRequest` and `DeleteEntityRequest` require `Etag` to be supplied; in `Update`, `resource.Etag = a.actual.Etag` must be set, and in `Delete`, `a.actual.Etag` (or fetching via `GetEntityRequest_BASIC` if `a.actual == nil`) must be passed.
+  3. `Entity.asset` in the GCP Dataplex API expects the short Asset ID (e.g. `dataplexasset-...`), not the full resource path (`projects/.../assets/...`). However, KCC reference normalization populates `spec.assetRef.external` with the full external path. In `dataplexentity_mapper.go`, `DataplexEntitySpec_ToProto` extracts `id.Asset` from `in.AssetRef.External` if it is a full path, and `DataplexEntitySpec_FromProto` reconstructs the full path when `in.GetName()` is present. For fuzzer tests where `in.GetName()` is empty, `in.GetAsset()` roundtrips cleanly.
+  4. GCP Dataplex CSV format `headerRows` only accepts 0 or 1; values > 1 result in `400 Bad Request` ("The header row must be 0 or 1").
+- **Solution**:
+  1. Updated `dataplexentity_controller.go` to use `View: dataplexpb.GetEntityRequest_FULL` in `Find`, supply `resource.Etag` in `Update`, and retrieve/pass `Etag` in `Delete`.
+  2. Isolated `DataplexEntitySpec_FromProto` and `DataplexEntitySpec_ToProto` in `pkg/controller/direct/dataplex/dataplexentity_mapper.go` with bidirectional asset reference mapping.
+  3. Created `dataplexentity-minimal` and `dataplexentity-maximal` E2E test suites with `DataplexLake`, `DataplexZone`, `StorageBucket`, and `DataplexAsset` dependencies.
+  4. Recorded authentic golden HTTP traffic and objects against real GCP (`cnrm-barni-4`) using `./hack/record-gcp`.
+  5. Verified all 7 HTTP log validation checks pass (`TestCommittedHTTPLogReports/dataplexentity`), unit tests pass, and focused fuzzer passes.
+- **Impact**: Full Greenfield direct controller coverage and verified golden test fixtures for DataplexEntity.
+
 

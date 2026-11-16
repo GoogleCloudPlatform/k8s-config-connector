@@ -177,7 +177,8 @@ func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request recon
 	defer r.RecordReconcileMetrics(ctx, iamv1beta1.IAMPartialPolicyGVK, request.Namespace, request.Name, startTime, &err)
 
 	policy := &iamv1beta1.IAMPartialPolicy{}
-	if err := r.Get(context.TODO(), request.NamespacedName, policy); err != nil {
+	policy.SetGroupVersionKind(iamv1beta1.IAMPartialPolicyGVK)
+	if err := k8s.FetchObject(ctx, r.Client, request.NamespacedName, policy); err != nil {
 		if apierrors.IsNotFound(err) {
 			// Object not found, return.  Created objects are automatically garbage collected.
 			// For additional cleanup logic use finalizers.
@@ -187,7 +188,7 @@ func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request recon
 		return reconcile.Result{}, err
 	}
 	// r.Get() overrides the TypeMeta to empty value, so need to configure it
-	// after r.Get().
+	// after r.Get() in case of fallback.
 	policy.SetGroupVersionKind(iamv1beta1.IAMPartialPolicyGVK)
 	if err := r.handleDefaults(ctx, policy); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error handling default values for IAM partial policy '%v': %w", k8s.GetNamespacedName(policy), err)

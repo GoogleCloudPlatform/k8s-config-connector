@@ -30,30 +30,25 @@ fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-# Pin a googleapis SHA that contains the google.cloud.ces.v1beta service definition
+# Pin a googleapis SHA that contains the google.cloud.ces service definition
 PROTO_SHA="1526e545e9d26f23b9c5d0f04af17297def8d045"
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 
 ./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-types \
-  --service google.cloud.ces.v1beta \
-  --api-version ces.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output \
-  --resource CESApp:App \
-  --proto-source-path ${PROTO_OUT}
-
-${CONTROLLERBUILDER} generate-types \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.ces.v1 \
   --api-version ces.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource \
+  --resource CESApp:App \
   --resource CesAgent:Agent
 
 ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.ces.v1 \
   --api-version ces.cnrm.cloud.google.com/v1alpha1 \
+  --resource CESApp:App \
   --resource CesAgent:Agent
 
 ${CONTROLLERBUILDER} generate-mapper \

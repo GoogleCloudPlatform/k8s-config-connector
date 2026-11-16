@@ -35,7 +35,6 @@ ${CONTROLLERBUILDER} generate-types \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
   --service google.cloud.aiplatform.v1beta1 \
   --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
-  --allow-non-ga-proto \
   --prepopulate-resource \
   --resource AIPlatformModelMonitor:ModelMonitor
 
@@ -45,8 +44,9 @@ ${CONTROLLERBUILDER} generate-types \
   --resource AIPlatformPersistentResource:PersistentResource \
   --resource AIPlatformSpecialistPool:SpecialistPool \
   --resource AIPlatformModel:Model \
+  --resource AIPlatformModelDeploymentMonitoringJob:ModelDeploymentMonitoringJob \
   --resource VertexAIFeatureOnlineStore:FeatureOnlineStore \
-  --resource VertexAIPipelineJob:PipelineJob \
+  --resource AIPlatformPipelineJob:PipelineJob \
   --resource VertexAITuningJob:TuningJob \
   --resource VertexAIStudy:Study \
   --resource VertexAITrainingPipeline:TrainingPipeline \
@@ -60,9 +60,15 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource \
   --allow-non-declarative \
+  --resource AIPlatformArtifact:Artifact \
+  --resource AIPlatformCachedContent:CachedContent \
+  --resource AIPlatformContext:Context \
+  --resource AIPlatformExecution:Execution \
   --resource AIPlatformFeatureView:FeatureView \
   --resource AIPlatformHyperparameterTuningJob:HyperparameterTuningJob \
-  --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate
+  --resource AIPlatformNotebookExecutionJob:NotebookExecutionJob \
+  --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate \
+  --resource AIPlatformRAGCorpus:RagCorpus
 
 ${CONTROLLERBUILDER} generate-types \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
@@ -74,10 +80,16 @@ ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
   --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1 \
   --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
+  --resource AIPlatformArtifact:Artifact \
+  --resource AIPlatformCachedContent:CachedContent \
+  --resource AIPlatformContext:Context \
+  --resource AIPlatformExecution:Execution \
   --resource AIPlatformFeatureView:FeatureView \
   --resource AIPlatformHyperparameterTuningJob:HyperparameterTuningJob \
+  --resource AIPlatformNotebookExecutionJob:NotebookExecutionJob \
   --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate \
-  --resource AIPlatformOnlineEvaluator:OnlineEvaluator
+  --resource AIPlatformOnlineEvaluator:OnlineEvaluator \
+  --resource AIPlatformRAGCorpus:RagCorpus
 
 ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
@@ -86,7 +98,7 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource AIPlatformModelMonitor:ModelMonitor
 
 ${CONTROLLERBUILDER} generate-mapper \
-  --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1 \
+  --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1,google.type \
   --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --prepopulate-resource

@@ -24,6 +24,7 @@ import (
 
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1alpha1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/commerceproducer/v1alpha1"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflowcx/v1alpha1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/filestore/v1beta1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/healthcare/v1alpha1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
@@ -61,6 +62,10 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 	// NOTE ON "WRONG" PATTERNS / MISMATCHES:
 	// If Cloud Asset Inventory added support for an asset, and we had given it a different "url template":
 	ignoredTemplates := map[string]bool{
+
+		// AIPlatform
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/publishers/{}/models/{}": true,
+		"//aiplatform.googleapis.com/publishers/{}/models/{}":                          true,
 
 		// AlloyDB
 
@@ -108,6 +113,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//compute.googleapis.com/locations/global/securityPolicies/{}/associations/{}":   true,
 		"//compute.googleapis.com/locations/global/securityPolicies/{}/rules/{}":          true,
 		"//compute.googleapis.com/projects/{}/global/backendServices/{}/signedUrlKeys/{}": true,
+		"//compute.googleapis.com/projects/{}/global/interconnectAttachmentGroups/{}":     true,
 		"//compute.googleapis.com/projects/{}/regions/{}/instanceGroupManagers/{}/{}":     true,
 		"//compute.googleapis.com/projects/{}/zones/{}/disks/{}/{}":                       true,
 		"//compute.googleapis.com/regions/{}/publicDelegatedPrefixes/{}":                  true,

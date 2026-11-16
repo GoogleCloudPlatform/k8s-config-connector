@@ -1,0 +1,6 @@
+- caisURL: //aiplatform.googleapis.com/projects/${projectId}/locations/asia-northeast1/cachedContents/8477354496920387584
+  group: aiplatform.cnrm.cloud.google.com
+  kind: AIPlatformCachedContent
+  name: aiplatformcachedcontent-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

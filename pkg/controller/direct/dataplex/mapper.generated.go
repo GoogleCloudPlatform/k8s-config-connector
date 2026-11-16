@@ -363,28 +363,6 @@ func Asset_DiscoveryStatus_Stats_ToProto(mapCtx *direct.MapContext, in *krm.Asse
 	return out
 }
 
-func Asset_ResourceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Asset_ResourceSpec) *krm.Asset_ResourceSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Asset_ResourceSpec{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.ReadAccessMode = direct.Enum_FromProto(mapCtx, in.GetReadAccessMode())
-	return out
-}
-
-func Asset_ResourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Asset_ResourceSpec) *pb.Asset_ResourceSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Asset_ResourceSpec{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Type = direct.Enum_ToProto[pb.Asset_ResourceSpec_Type](mapCtx, in.Type)
-	out.ReadAccessMode = direct.Enum_ToProto[pb.Asset_ResourceSpec_AccessMode](mapCtx, in.ReadAccessMode)
-	return out
-}
-
 func Asset_ResourceStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Asset_ResourceStatus) *krm.Asset_ResourceStatusObservedState {
 	if in == nil {
 		return nil
@@ -731,6 +709,24 @@ func DataDiscoverySpec_StorageConfig_JsonOptions_ToProto(mapCtx *direct.MapConte
 	return out
 }
 
+func DataDiscoverySpec_StorageConfig_UnstructuredDataOptions_FromProto(mapCtx *direct.MapContext, in *pb.DataDiscoverySpec_StorageConfig_UnstructuredDataOptions) *krm.DataDiscoverySpec_StorageConfig_UnstructuredDataOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataDiscoverySpec_StorageConfig_UnstructuredDataOptions{}
+	out.SemanticInferenceEnabled = direct.LazyPtr(in.GetSemanticInferenceEnabled())
+	return out
+}
+
+func DataDiscoverySpec_StorageConfig_UnstructuredDataOptions_ToProto(mapCtx *direct.MapContext, in *krm.DataDiscoverySpec_StorageConfig_UnstructuredDataOptions) *pb.DataDiscoverySpec_StorageConfig_UnstructuredDataOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataDiscoverySpec_StorageConfig_UnstructuredDataOptions{}
+	out.SemanticInferenceEnabled = direct.ValueOf(in.SemanticInferenceEnabled)
+	return out
+}
+
 func DataProduct_AccessApprovalConfig_FromProto(mapCtx *direct.MapContext, in *pb.DataProduct_AccessApprovalConfig) *krm.DataProduct_AccessApprovalConfig {
 	if in == nil {
 		return nil
@@ -864,6 +860,24 @@ func DataProfileResult_Profile_ToProto(mapCtx *direct.MapContext, in *krm.DataPr
 	return out
 }
 
+func DataProfileResult_ProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult_Profile) *krm.DataProfileResult_ProfileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataProfileResult_ProfileObservedState{}
+	out.Fields = direct.Slice_FromProto(mapCtx, in.Fields, DataProfileResult_Profile_FieldObservedState_FromProto)
+	return out
+}
+
+func DataProfileResult_ProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileResult_ProfileObservedState) *pb.DataProfileResult_Profile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataProfileResult_Profile{}
+	out.Fields = direct.Slice_ToProto(mapCtx, in.Fields, DataProfileResult_Profile_FieldObservedState_ToProto)
+	return out
+}
+
 func DataProfileResult_Profile_Field_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult_Profile_Field) *krm.DataProfileResult_Profile_Field {
 	if in == nil {
 		return nil
@@ -885,6 +899,30 @@ func DataProfileResult_Profile_Field_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.Type = direct.ValueOf(in.Type)
 	out.Mode = direct.ValueOf(in.Mode)
 	out.Profile = DataProfileResult_Profile_Field_ProfileInfo_ToProto(mapCtx, in.Profile)
+	return out
+}
+
+func DataProfileResult_Profile_FieldObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult_Profile_Field) *krm.DataProfileResult_Profile_FieldObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataProfileResult_Profile_FieldObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Type = direct.LazyPtr(in.GetType())
+	out.Mode = direct.LazyPtr(in.GetMode())
+	out.Profile = DataProfileResult_Profile_Field_ProfileInfoObservedState_FromProto(mapCtx, in.GetProfile())
+	return out
+}
+
+func DataProfileResult_Profile_FieldObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileResult_Profile_FieldObservedState) *pb.DataProfileResult_Profile_Field {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataProfileResult_Profile_Field{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Type = direct.ValueOf(in.Type)
+	out.Mode = direct.ValueOf(in.Mode)
+	out.Profile = DataProfileResult_Profile_Field_ProfileInfoObservedState_ToProto(mapCtx, in.Profile)
 	return out
 }
 
@@ -922,6 +960,40 @@ func DataProfileResult_Profile_Field_ProfileInfo_ToProto(mapCtx *direct.MapConte
 	return out
 }
 
+func DataProfileResult_Profile_Field_ProfileInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult_Profile_Field_ProfileInfo) *krm.DataProfileResult_Profile_Field_ProfileInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataProfileResult_Profile_Field_ProfileInfoObservedState{}
+	out.NullRatio = direct.LazyPtr(in.GetNullRatio())
+	out.DistinctRatio = direct.LazyPtr(in.GetDistinctRatio())
+	out.TopNValues = direct.Slice_FromProto(mapCtx, in.TopNValues, DataProfileResult_Profile_Field_ProfileInfo_TopNValueObservedState_FromProto)
+	out.StringProfile = DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfoObservedState_FromProto(mapCtx, in.GetStringProfile())
+	out.IntegerProfile = DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfoObservedState_FromProto(mapCtx, in.GetIntegerProfile())
+	out.DoubleProfile = DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfoObservedState_FromProto(mapCtx, in.GetDoubleProfile())
+	return out
+}
+
+func DataProfileResult_Profile_Field_ProfileInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileResult_Profile_Field_ProfileInfoObservedState) *pb.DataProfileResult_Profile_Field_ProfileInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataProfileResult_Profile_Field_ProfileInfo{}
+	out.NullRatio = direct.ValueOf(in.NullRatio)
+	out.DistinctRatio = direct.ValueOf(in.DistinctRatio)
+	out.TopNValues = direct.Slice_ToProto(mapCtx, in.TopNValues, DataProfileResult_Profile_Field_ProfileInfo_TopNValueObservedState_ToProto)
+	if oneof := DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfoObservedState_ToProto(mapCtx, in.StringProfile); oneof != nil {
+		out.FieldInfo = &pb.DataProfileResult_Profile_Field_ProfileInfo_StringProfile{StringProfile: oneof}
+	}
+	if oneof := DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfoObservedState_ToProto(mapCtx, in.IntegerProfile); oneof != nil {
+		out.FieldInfo = &pb.DataProfileResult_Profile_Field_ProfileInfo_IntegerProfile{IntegerProfile: oneof}
+	}
+	if oneof := DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfoObservedState_ToProto(mapCtx, in.DoubleProfile); oneof != nil {
+		out.FieldInfo = &pb.DataProfileResult_Profile_Field_ProfileInfo_DoubleProfile{DoubleProfile: oneof}
+	}
+	return out
+}
+
 func DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo) *krm.DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo {
 	if in == nil {
 		return nil
@@ -936,6 +1008,32 @@ func DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo_FromProto(mapCt
 }
 
 func DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo) *pb.DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo{}
+	out.Average = direct.ValueOf(in.Average)
+	out.StandardDeviation = direct.ValueOf(in.StandardDeviation)
+	out.Min = direct.ValueOf(in.Min)
+	out.Quartiles = in.Quartiles
+	out.Max = direct.ValueOf(in.Max)
+	return out
+}
+
+func DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo) *krm.DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfoObservedState{}
+	out.Average = direct.LazyPtr(in.GetAverage())
+	out.StandardDeviation = direct.LazyPtr(in.GetStandardDeviation())
+	out.Min = direct.LazyPtr(in.GetMin())
+	out.Quartiles = in.Quartiles
+	out.Max = direct.LazyPtr(in.GetMax())
+	return out
+}
+
+func DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfoObservedState) *pb.DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo {
 	if in == nil {
 		return nil
 	}
@@ -974,6 +1072,32 @@ func DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfo_ToProto(mapCtx
 	return out
 }
 
+func DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfo) *krm.DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfoObservedState{}
+	out.Average = direct.LazyPtr(in.GetAverage())
+	out.StandardDeviation = direct.LazyPtr(in.GetStandardDeviation())
+	out.Min = direct.LazyPtr(in.GetMin())
+	out.Quartiles = in.Quartiles
+	out.Max = direct.LazyPtr(in.GetMax())
+	return out
+}
+
+func DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfoObservedState) *pb.DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfo{}
+	out.Average = direct.ValueOf(in.Average)
+	out.StandardDeviation = direct.ValueOf(in.StandardDeviation)
+	out.Min = direct.ValueOf(in.Min)
+	out.Quartiles = in.Quartiles
+	out.Max = direct.ValueOf(in.Max)
+	return out
+}
+
 func DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfo_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfo) *krm.DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfo {
 	if in == nil {
 		return nil
@@ -996,6 +1120,28 @@ func DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfo_ToProto(mapCtx 
 	return out
 }
 
+func DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfo) *krm.DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfoObservedState{}
+	out.MinLength = direct.LazyPtr(in.GetMinLength())
+	out.MaxLength = direct.LazyPtr(in.GetMaxLength())
+	out.AverageLength = direct.LazyPtr(in.GetAverageLength())
+	return out
+}
+
+func DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfoObservedState) *pb.DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfo{}
+	out.MinLength = direct.ValueOf(in.MinLength)
+	out.MaxLength = direct.ValueOf(in.MaxLength)
+	out.AverageLength = direct.ValueOf(in.AverageLength)
+	return out
+}
+
 func DataProfileResult_Profile_Field_ProfileInfo_TopNValue_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult_Profile_Field_ProfileInfo_TopNValue) *krm.DataProfileResult_Profile_Field_ProfileInfo_TopNValue {
 	if in == nil {
 		return nil
@@ -1008,6 +1154,28 @@ func DataProfileResult_Profile_Field_ProfileInfo_TopNValue_FromProto(mapCtx *dir
 }
 
 func DataProfileResult_Profile_Field_ProfileInfo_TopNValue_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileResult_Profile_Field_ProfileInfo_TopNValue) *pb.DataProfileResult_Profile_Field_ProfileInfo_TopNValue {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataProfileResult_Profile_Field_ProfileInfo_TopNValue{}
+	out.Value = direct.ValueOf(in.Value)
+	out.Count = direct.ValueOf(in.Count)
+	out.Ratio = direct.ValueOf(in.Ratio)
+	return out
+}
+
+func DataProfileResult_Profile_Field_ProfileInfo_TopNValueObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult_Profile_Field_ProfileInfo_TopNValue) *krm.DataProfileResult_Profile_Field_ProfileInfo_TopNValueObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataProfileResult_Profile_Field_ProfileInfo_TopNValueObservedState{}
+	out.Value = direct.LazyPtr(in.GetValue())
+	out.Count = direct.LazyPtr(in.GetCount())
+	out.Ratio = direct.LazyPtr(in.GetRatio())
+	return out
+}
+
+func DataProfileResult_Profile_Field_ProfileInfo_TopNValueObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileResult_Profile_Field_ProfileInfo_TopNValueObservedState) *pb.DataProfileResult_Profile_Field_ProfileInfo_TopNValue {
 	if in == nil {
 		return nil
 	}
@@ -1188,6 +1356,30 @@ func DataQualityResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.D
 	return out
 }
 
+func DataQualityResult_AnomalyDetectionGeneratedAssetsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityResult_AnomalyDetectionGeneratedAssets) *krm.DataQualityResult_AnomalyDetectionGeneratedAssetsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataQualityResult_AnomalyDetectionGeneratedAssetsObservedState{}
+	out.ResultTable = direct.LazyPtr(in.GetResultTable())
+	out.DataIntermediateTable = direct.LazyPtr(in.GetDataIntermediateTable())
+	out.FreshnessIntermediateTable = direct.LazyPtr(in.GetFreshnessIntermediateTable())
+	out.VolumeIntermediateTable = direct.LazyPtr(in.GetVolumeIntermediateTable())
+	return out
+}
+
+func DataQualityResult_AnomalyDetectionGeneratedAssetsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityResult_AnomalyDetectionGeneratedAssetsObservedState) *pb.DataQualityResult_AnomalyDetectionGeneratedAssets {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataQualityResult_AnomalyDetectionGeneratedAssets{}
+	out.ResultTable = direct.ValueOf(in.ResultTable)
+	out.DataIntermediateTable = direct.ValueOf(in.DataIntermediateTable)
+	out.FreshnessIntermediateTable = direct.ValueOf(in.FreshnessIntermediateTable)
+	out.VolumeIntermediateTable = direct.ValueOf(in.VolumeIntermediateTable)
+	return out
+}
+
 func DataQualityResult_PostScanActionsResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityResult_PostScanActionsResult) *krm.DataQualityResult_PostScanActionsResultObservedState {
 	if in == nil {
 		return nil
@@ -1311,6 +1503,26 @@ func DataQualityRuleResultObservedState_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: FailingRowsQuery
 	// MISSING: AssertionRowCount
 	// MISSING: DebugQueriesResultSets
+	return out
+}
+
+func DataQualityRule_DebugQuery_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityRule_DebugQuery) *krm.DataQualityRule_DebugQuery {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataQualityRule_DebugQuery{}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.SQLStatement = direct.LazyPtr(in.GetSqlStatement())
+	return out
+}
+
+func DataQualityRule_DebugQuery_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityRule_DebugQuery) *pb.DataQualityRule_DebugQuery {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataQualityRule_DebugQuery{}
+	out.Description = direct.ValueOf(in.Description)
+	out.SqlStatement = direct.ValueOf(in.SQLStatement)
 	return out
 }
 
@@ -1467,6 +1679,30 @@ func DataQualityRule_TableConditionExpectation_ToProto(mapCtx *direct.MapContext
 	}
 	out := &pb.DataQualityRule_TableConditionExpectation{}
 	out.SqlExpression = direct.ValueOf(in.SQLExpression)
+	return out
+}
+
+func DataQualityRule_TemplateReference_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityRule_TemplateReference) *krm.DataQualityRule_TemplateReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataQualityRule_TemplateReference{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Values
+	// MISSING: ResolvedSQL
+	// MISSING: RuleTemplate
+	return out
+}
+
+func DataQualityRule_TemplateReference_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityRule_TemplateReference) *pb.DataQualityRule_TemplateReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataQualityRule_TemplateReference{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Values
+	// MISSING: ResolvedSQL
+	// MISSING: RuleTemplate
 	return out
 }
 
@@ -1650,6 +1886,24 @@ func DataQualitySpec_PostScanActions_ScoreThresholdTrigger_ToProto(mapCtx *direc
 	return out
 }
 
+func DataScanCatalogPublishingStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataScanCatalogPublishingStatus) *krm.DataScanCatalogPublishingStatusObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataScanCatalogPublishingStatusObservedState{}
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+
+func DataScanCatalogPublishingStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataScanCatalogPublishingStatusObservedState) *pb.DataScanCatalogPublishingStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataScanCatalogPublishingStatus{}
+	out.State = direct.Enum_ToProto[pb.DataScanCatalogPublishingStatus_State](mapCtx, in.State)
+	return out
+}
+
 func DataScan_ExecutionSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataScan_ExecutionSpec) *krm.DataScan_ExecutionSpec {
 	if in == nil {
 		return nil
@@ -1779,6 +2033,7 @@ func DataplexAssetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Asse
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.ResourceStatus = Asset_ResourceStatusObservedState_FromProto(mapCtx, in.GetResourceStatus())
 	out.SecurityStatus = Asset_SecurityStatus_FromProto(mapCtx, in.GetSecurityStatus())
@@ -1795,6 +2050,7 @@ func DataplexAssetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Datap
 	out.Uid = direct.ValueOf(in.Uid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
 	out.ResourceStatus = Asset_ResourceStatusObservedState_ToProto(mapCtx, in.ResourceStatus)
 	out.SecurityStatus = Asset_SecurityStatus_ToProto(mapCtx, in.SecurityStatus)
@@ -1809,7 +2065,7 @@ func DataplexAssetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Asset) *krm.D
 	out := &krm.DataplexAssetSpec{}
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.ResourceSpec = Asset_ResourceSpec_FromProto(mapCtx, in.GetResourceSpec())
 	out.DiscoverySpec = Asset_DiscoverySpec_FromProto(mapCtx, in.GetDiscoverySpec())
@@ -1823,7 +2079,7 @@ func DataplexAssetSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexAssetS
 	out := &pb.Asset{}
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.Description = direct.ValueOf(in.Description)
 	out.ResourceSpec = Asset_ResourceSpec_ToProto(mapCtx, in.ResourceSpec)
 	out.DiscoverySpec = Asset_DiscoverySpec_ToProto(mapCtx, in.DiscoverySpec)
@@ -2283,6 +2539,7 @@ func DataplexEntityObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Ent
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.CatalogEntry = direct.LazyPtr(in.GetCatalogEntry())
 	out.Format = StorageFormatObservedState_FromProto(mapCtx, in.GetFormat())
 	out.Compatibility = Entity_CompatibilityStatusObservedState_FromProto(mapCtx, in.GetCompatibility())
@@ -2299,51 +2556,12 @@ func DataplexEntityObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Data
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
 	out.CatalogEntry = direct.ValueOf(in.CatalogEntry)
 	out.Format = StorageFormatObservedState_ToProto(mapCtx, in.Format)
 	out.Compatibility = Entity_CompatibilityStatusObservedState_ToProto(mapCtx, in.Compatibility)
 	out.Access = StorageAccessObservedState_ToProto(mapCtx, in.Access)
 	out.Uid = direct.ValueOf(in.Uid)
-	return out
-}
-
-func DataplexEntitySpec_FromProto(mapCtx *direct.MapContext, in *pb.Entity) *krm.DataplexEntitySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataplexEntitySpec{}
-	// MISSING: Name
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.ID = direct.LazyPtr(in.GetId())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.Asset = direct.LazyPtr(in.GetAsset())
-	out.DataPath = direct.LazyPtr(in.GetDataPath())
-	out.DataPathPattern = direct.LazyPtr(in.GetDataPathPattern())
-	out.System = direct.Enum_FromProto(mapCtx, in.GetSystem())
-	out.Format = StorageFormat_FromProto(mapCtx, in.GetFormat())
-	out.Schema = Schema_FromProto(mapCtx, in.GetSchema())
-	return out
-}
-
-func DataplexEntitySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntitySpec) *pb.Entity {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Entity{}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.Id = direct.ValueOf(in.ID)
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Type = direct.Enum_ToProto[pb.Entity_Type](mapCtx, in.Type)
-	out.Asset = direct.ValueOf(in.Asset)
-	out.DataPath = direct.ValueOf(in.DataPath)
-	out.DataPathPattern = direct.ValueOf(in.DataPathPattern)
-	out.System = direct.Enum_ToProto[pb.StorageSystem](mapCtx, in.System)
-	out.Format = StorageFormat_ToProto(mapCtx, in.Format)
-	out.Schema = Schema_ToProto(mapCtx, in.Schema)
 	return out
 }
 
@@ -2638,6 +2856,7 @@ func DataplexGlossaryCategoryObservedState_FromProto(mapCtx *direct.MapContext, 
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	return out
 }
 
@@ -2650,6 +2869,7 @@ func DataplexGlossaryCategoryObservedState_ToProto(mapCtx *direct.MapContext, in
 	out.Uid = direct.ValueOf(in.Uid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	return out
 }
 
@@ -2661,8 +2881,10 @@ func DataplexGlossaryCategorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Gl
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Labels = in.Labels
-	out.Parent = direct.LazyPtr(in.GetParent())
+	// MISSING: Labels
+	if in.GetParent() != "" {
+		out.ParentRef = &krm.DataplexGlossaryRef{External: in.GetParent()}
+	}
 	return out
 }
 
@@ -2674,8 +2896,10 @@ func DataplexGlossaryCategorySpec_ToProto(mapCtx *direct.MapContext, in *krm.Dat
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
-	out.Parent = direct.ValueOf(in.Parent)
+	// MISSING: Labels
+	if in.ParentRef != nil {
+		out.Parent = in.ParentRef.External
+	}
 	return out
 }
 
@@ -2744,6 +2968,7 @@ func DataplexGlossaryTermObservedState_FromProto(mapCtx *direct.MapContext, in *
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	return out
 }
 
@@ -2756,6 +2981,7 @@ func DataplexGlossaryTermObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Uid = direct.ValueOf(in.Uid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	return out
 }
 
@@ -2767,8 +2993,10 @@ func DataplexGlossaryTermSpec_FromProto(mapCtx *direct.MapContext, in *pb.Glossa
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Labels = in.Labels
-	out.Parent = direct.LazyPtr(in.GetParent())
+	// MISSING: Labels
+	if in.GetParent() != "" {
+		out.ParentRef = &krm.DataplexGlossaryRef{External: in.GetParent()}
+	}
 	return out
 }
 
@@ -2780,8 +3008,10 @@ func DataplexGlossaryTermSpec_ToProto(mapCtx *direct.MapContext, in *krm.Dataple
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
-	out.Parent = direct.ValueOf(in.Parent)
+	// MISSING: Labels
+	if in.ParentRef != nil {
+		out.Parent = in.ParentRef.External
+	}
 	return out
 }
 
@@ -3851,6 +4081,26 @@ func ScannedData_ToProto(mapCtx *direct.MapContext, in *krm.ScannedData) *pb.Sca
 	return out
 }
 
+func ScannedDataObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ScannedData) *krm.ScannedDataObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ScannedDataObservedState{}
+	out.IncrementalField = ScannedData_IncrementalFieldObservedState_FromProto(mapCtx, in.GetIncrementalField())
+	return out
+}
+
+func ScannedDataObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ScannedDataObservedState) *pb.ScannedData {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ScannedData{}
+	if oneof := ScannedData_IncrementalFieldObservedState_ToProto(mapCtx, in.IncrementalField); oneof != nil {
+		out.DataRange = &pb.ScannedData_IncrementalField_{IncrementalField: oneof}
+	}
+	return out
+}
+
 func ScannedData_IncrementalField_FromProto(mapCtx *direct.MapContext, in *pb.ScannedData_IncrementalField) *krm.ScannedData_IncrementalField {
 	if in == nil {
 		return nil
@@ -3863,6 +4113,28 @@ func ScannedData_IncrementalField_FromProto(mapCtx *direct.MapContext, in *pb.Sc
 }
 
 func ScannedData_IncrementalField_ToProto(mapCtx *direct.MapContext, in *krm.ScannedData_IncrementalField) *pb.ScannedData_IncrementalField {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ScannedData_IncrementalField{}
+	out.Field = direct.ValueOf(in.Field)
+	out.Start = direct.ValueOf(in.Start)
+	out.End = direct.ValueOf(in.End)
+	return out
+}
+
+func ScannedData_IncrementalFieldObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ScannedData_IncrementalField) *krm.ScannedData_IncrementalFieldObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ScannedData_IncrementalFieldObservedState{}
+	out.Field = direct.LazyPtr(in.GetField())
+	out.Start = direct.LazyPtr(in.GetStart())
+	out.End = direct.LazyPtr(in.GetEnd())
+	return out
+}
+
+func ScannedData_IncrementalFieldObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ScannedData_IncrementalFieldObservedState) *pb.ScannedData_IncrementalField {
 	if in == nil {
 		return nil
 	}
@@ -4454,6 +4726,24 @@ func Trigger_OnDemand_ToProto(mapCtx *direct.MapContext, in *krm.Trigger_OnDeman
 		return nil
 	}
 	out := &pb.Trigger_OnDemand{}
+	return out
+}
+
+func Trigger_OneTime_FromProto(mapCtx *direct.MapContext, in *pb.Trigger_OneTime) *krm.Trigger_OneTime {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Trigger_OneTime{}
+	out.TTLAfterScanCompletion = direct.StringDuration_FromProto(mapCtx, in.GetTtlAfterScanCompletion())
+	return out
+}
+
+func Trigger_OneTime_ToProto(mapCtx *direct.MapContext, in *krm.Trigger_OneTime) *pb.Trigger_OneTime {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Trigger_OneTime{}
+	out.TtlAfterScanCompletion = direct.StringDuration_ToProto(mapCtx, in.TTLAfterScanCompletion)
 	return out
 }
 

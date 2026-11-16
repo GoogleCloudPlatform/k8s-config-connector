@@ -20,8 +20,11 @@ import (
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/colab/v1alpha1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -148,4 +151,58 @@ func TestColabRuntimeTemplate_NormalizeReferences(t *testing.T) {
 			t.Errorf("protoObj = %v, want nil", protoObj)
 		}
 	})
+}
+
+func TestColabRuntimeTemplate_RejectsInvalidLocation(t *testing.T) {
+	ctx := context.Background()
+	model := &runtimeTemplateModel{config: config.ControllerConfig{}}
+
+	maliciousLocations := []string{
+		"127.0.0.1:34567/?",
+		"127.0.0.1:34567?",
+		"attacker.com/?",
+		"attacker.com?",
+		"attacker.com#",
+		"user@attacker.com?",
+		"..",
+		"",
+	}
+
+	for _, loc := range maliciousLocations {
+		t.Run("client/"+loc, func(t *testing.T) {
+			if _, err := model.client(ctx, "test-project", loc); err == nil {
+				t.Errorf("runtimeTemplateModel.client(ctx, \"test-project\", %q) succeeded unexpectedly, want error", loc)
+			}
+		})
+
+		t.Run("AdapterForObject/"+loc, func(t *testing.T) {
+			obj := &krm.ColabRuntimeTemplate{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "test-template",
+					Namespace: "default",
+				},
+				Spec: krm.ColabRuntimeTemplateSpec{
+					RuntimeTemplate_Parent: krm.RuntimeTemplate_Parent{
+						ProjectRef: &refs.ProjectRef{
+							External: "test-project",
+						},
+						Location: loc,
+					},
+				},
+			}
+			uMap, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+			if err != nil {
+				t.Fatalf("ToUnstructured failed: %v", err)
+			}
+			u := &unstructured.Unstructured{Object: uMap}
+			u.SetGroupVersionKind(krm.ColabRuntimeTemplateGVK)
+
+			op := &directbase.AdapterForObjectOperation{
+				Object: u,
+			}
+			if _, err := model.AdapterForObject(ctx, op); err == nil {
+				t.Errorf("runtimeTemplateModel.AdapterForObject with location=%q succeeded unexpectedly, want error", loc)
+			}
+		})
+	}
 }

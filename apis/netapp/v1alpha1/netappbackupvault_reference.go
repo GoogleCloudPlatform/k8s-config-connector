@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,22 +16,20 @@ package v1alpha1
 
 import (
 	"context"
-	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &BackupVaultRef{}
+var _ refs.Ref = &BackupVaultRef{}
 
 // BackupVaultRef is a reference to a NetAppBackupVault.
 type BackupVaultRef struct {
 	// A reference to an externally managed NetAppBackupVault resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backupvaults/{{backupvaultID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backupVaults/{{backupvaultID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a NetAppBackupVault resource.
@@ -41,42 +39,54 @@ type BackupVaultRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
+func init() {
+	refs.Register(&BackupVaultRef{})
+}
+
+func (r *BackupVaultRef) GetGVK() schema.GroupVersionKind {
+	return NetAppBackupVaultGVK
+}
+
+func (r *BackupVaultRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *BackupVaultRef) GetExternal() string {
+	return r.External
+}
+
+func (r *BackupVaultRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *BackupVaultRef) ValidateExternal(ref string) error {
+	id := &BackupVaultIdentity{}
+	return id.FromExternal(ref)
+}
+
+func (r *BackupVaultRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &BackupVaultIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *BackupVaultRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return refs.Normalize(ctx, reader, r, defaultNamespace)
+}
+
 // NormalizedExternal provision the "External" value for other resource that depends on NetAppBackupVault.
 // If the "External" is given in the other resource's spec.NetAppBackupVaultRef, the given value will be used.
 // Otherwise, the "Name" and "Namespace" will be used to query the actual NetAppBackupVault object from the cluster.
 func (r *BackupVaultRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", NetAppBackupVaultGVK.Kind)
+	if err := r.Normalize(ctx, reader, otherNamespace); err != nil {
+		return "", err
 	}
-	// From given External
-	if r.External != "" {
-		if _, _, err := ParseBackupVaultExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
-
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
-	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(NetAppBackupVaultGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", NetAppBackupVaultGVK, key, err)
-	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = actualExternalRef
 	return r.External, nil
 }

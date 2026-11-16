@@ -1,0 +1,14 @@
+6d5
+<     cnrm.cloud.google.com/state-into-spec: absent
+10c9
+<   generation: 3
+---
+>   generation: 2
+22d20
+<   resourceID: 9ff582e4-9e01-416e-b373-418b2e4f4e75
+30a29
+>   externalRef: projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75
+32c31
+<   observedGeneration: 3
+---
+>   observedGeneration: 2

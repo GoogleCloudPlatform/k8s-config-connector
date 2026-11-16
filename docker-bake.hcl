@@ -13,7 +13,7 @@
 // limitations under the License.
 
 group "default" {
-  targets = ["manager", "recorder", "webhook", "deletiondefender", "unmanageddetector", "config-connector", "operator"]
+  targets = ["manager", "recorder", "webhook", "deletiondefender", "unmanageddetector", "config-connector", "operator", "multiclusterlease", "krmsyncer"]
 }
 
 variable "IMAGE_PREFIX" {
@@ -30,6 +30,17 @@ variable "GKE_DISTROLESS_IMG" {
 
 variable "PLATFORM" {
   default = "linux/amd64"
+}
+
+// The upstream versions that the forks in third_party/github.com/gke-labs were copied
+// from, recorded as labels on the multiclusterlease and krmsyncer images.
+// dev/tasks/build-images reads them from go.mod.
+variable "MULTICLUSTERLEASE_VERSION" {
+  default = ""
+}
+
+variable "KRMSYNCER_VERSION" {
+  default = ""
 }
 
 target "builder" {
@@ -128,5 +139,36 @@ target "operator" {
   tags       = ["${IMAGE_PREFIX}operator:${IMAGE_TAG}"]
   args = {
     GKE_DISTROLESS_IMG = "${GKE_DISTROLESS_IMG}"
+  }
+}
+
+// The MultiClusterLease controller and the KRM syncer, for multi-cluster leader election.
+target "multiclusterlease" {
+  dockerfile = "build/multiclusterlease/Dockerfile"
+  context    = "."
+  platforms  = split(",", PLATFORM)
+  tags       = ["${IMAGE_PREFIX}multiclusterlease:${IMAGE_TAG}"]
+  contexts = {
+    "builder:${IMAGE_TAG}" = "target:builder"
+  }
+  args = {
+    BUILDER_IMG = "builder:${IMAGE_TAG}"
+    GKE_DISTROLESS_IMG = "${GKE_DISTROLESS_IMG}"
+    UPSTREAM_VERSION = "${MULTICLUSTERLEASE_VERSION}"
+  }
+}
+
+target "krmsyncer" {
+  dockerfile = "build/krmsyncer/Dockerfile"
+  context    = "."
+  platforms  = split(",", PLATFORM)
+  tags       = ["${IMAGE_PREFIX}krmsyncer:${IMAGE_TAG}"]
+  contexts = {
+    "builder:${IMAGE_TAG}" = "target:builder"
+  }
+  args = {
+    BUILDER_IMG = "builder:${IMAGE_TAG}"
+    GKE_DISTROLESS_IMG = "${GKE_DISTROLESS_IMG}"
+    UPSTREAM_VERSION = "${KRMSYNCER_VERSION}"
   }
 }

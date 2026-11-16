@@ -30,6 +30,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/configdelivery/apiv1"
@@ -158,6 +159,7 @@ func (a *ReleaseAdapter) Create(ctx context.Context, createOp *directbase.Create
 		return mapCtx.Err()
 	}
 	resource.Name = a.id.String()
+	resource.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetLabels())
 
 	req := &configdeliverypb.CreateReleaseRequest{
 		Parent:    a.id.ParentString(),
@@ -188,10 +190,12 @@ func (a *ReleaseAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Release", "name", a.id)
 
-	resource, report, updateMask, err := common.CompareGreenfieldSpec(
+	resource, report, updateMask, err := common.CompareGreenfieldSpecAndLabels(
 		ctx,
+		updateOp.GetUnstructured(),
 		&a.desired.Spec,
 		a.actual,
+		"labels",
 		ConfigDeliveryReleaseSpec_FromProto,
 		ConfigDeliveryReleaseSpec_ToProto,
 		nil,

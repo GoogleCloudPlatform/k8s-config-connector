@@ -1,0 +1,49 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/computedisk-${uniqueId}?alt=json
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#disk",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "computedisk-${uniqueId}",
+  "physicalBlockSizeBytes": "4096",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/computedisk-${uniqueId}",
+  "status": "READY",
+  "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-balanced",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instantSnapshots/computeinstantsnapshot-${uniqueId}
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal test for ComputeInstantSnapshot",
+  "diskSizeGb": "10",
+  "id": "000000000000000000000",
+  "kind": "compute#instantSnapshot",
+  "labelFingerprint": "abcdef0123A=",
+  "name": "computeinstantsnapshot-${uniqueId}",
+  "resourceStatus": {
+    "storageSizeBytes": "0"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instantSnapshots/computeinstantsnapshot-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instantSnapshots/5516884098873406988",
+  "sourceDisk": "projects/${projectId}/zones/us-central1-a/disks/computedisk-${uniqueId}",
+  "sourceDiskId": "1081450095026222648",
+  "status": "READY",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}

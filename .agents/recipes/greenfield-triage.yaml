@@ -1,0 +1,115 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# greenfield-triage: checks whether a greenfield Kind can be implemented
+# now, before (or while) its issue graph works on it, and says so on the
+# issue: ready - labelled overseer/graph, which starts its graph - or not
+# - labelled overseer/stop, with each blocker and
+# what clears it, or what a person must check when the agent could not
+# tell.
+#
+# The checks, the decision and the report format live in the skill
+# .gemini/skills/kcc-greenfield-triage/SKILL.md (with why each check is
+# there), so triage can be run by hand too and kept current in one place.
+#
+# Run by the greenfield-triage watch rule (.agents/watch/) on a
+# workflow/greenfield issue labelled overseer/triage. The agent changes
+# nothing and posts nothing: it writes a Triage, which the rule applies
+# (apply: [comment, label]).
+name: greenfield-triage
+label: Greenfield triage
+on: [issue]
+as: coder
+
+context: |
+  You are a triage assistant for Config Connector (KCC) greenfield work:
+  adding a new GCP resource kind to KCC as a direct resource, step by step
+  (prepopulate, types-judgement, controller, mockgcp, mockgcp-alignment,
+  release). You check whether the kind can be implemented now, and why not
+  if it cannot.
+
+  You must not change anything: do NOT modify or create files (but the
+  result file you are asked to write), do NOT run git write operations,
+  do NOT post anything to GitHub (no comments, labels or assignments), and
+  do NOT create, change or delete cloud resources.
+
+  The repository is already cloned in the current directory.
+
+start:
+  steps:
+    - uses: setup-git
+    - uses: setup-repo
+    - run: sleep 5 # lib.sh's HACK: avoid git lock issues
+    - uses: checkout-default-branch
+    - uses: configure-engine
+
+    - ask: |
+        Check whether the greenfield kind of this issue can be implemented
+        now. Do not write the result yet.
+
+        <issue_url>{{ .Inputs.issue_url }}</issue_url>
+        <issue_number>{{ .Inputs.issue_number }}</issue_number>
+        <issue_title>{{ .Inputs.issue_title }}</issue_title>
+        <issue_body>
+        {{ .Inputs.issue_body }}
+        </issue_body>
+
+        Use .gemini/skills/kcc-greenfield-triage/SKILL.md to triage it:
+        follow its checks and decide ready, blocked or unsure. The issue
+        number is {{ .Inputs.issue_number }}; the test project is
+        "{{ .Inputs.gcp_project }}" (none when empty).
+
+        Summarise what you found in a few lines.
+
+    - ask: |
+        Now write the result to the file {{ output "triage-output.yaml" }},
+        as YAML in EXACTLY this structure, with nothing else in the file:
+
+        triage:
+          labels: []        # [overseer/graph] when ready; [overseer/stop] when blocked or unsure
+          priority: ""      # leave empty
+          duplicates: []    # leave empty
+          assessment: ""    # the comment for the issue, in Markdown (see below)
+
+        The assessment is the report the skill's "Report" section
+        describes: the one-line outcome, a bullet per check with what you
+        found and how, then "To unblock:" when blocked or "To check:" when
+        unsure. Use no other labels than those above.
+
+        Write the whole file with your file tool (if it refuses the path,
+        with the shell), replacing anything in it. Then say in a line or two
+        that it is written.
+      expects: triage-output.yaml
+
+outputs:
+  - triage-output.yaml
+
+task-output:
+  kind: Triage
+  from: triage-output.yaml
+  preview: spec.assessment
+  # The comment is a result, not a request: /overseer-ignore keeps the
+  # overseer from acting on it.
+  comment:
+    prefix: /overseer-ignore
+    heading: "**Greenfield triage**"
+  actions:
+    - verb: edit
+      field: spec
+      format: yaml
+    - verb: comment
+      label: Post assessment
+    - verb: label
+      label: Add the label
+    - verb: reject

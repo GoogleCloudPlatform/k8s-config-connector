@@ -24,12 +24,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"reflect"
 
 	api "cloud.google.com/go/datacatalog/apiv1"
 	pb "cloud.google.com/go/datacatalog/apiv1/datacatalogpb"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -257,7 +257,7 @@ func (a *tagAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 
 	// Check if only mutable fields ('fields') have changed.
 	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(desiredProto.Fields, a.actual.Fields) {
+	if !tagFieldsEqual(desiredProto.Fields, a.actual.Fields) {
 		report.AddField("fields", a.actual.Fields, desiredProto.Fields)
 		updateMask.Paths = append(updateMask.Paths, "fields")
 	}
@@ -381,4 +381,31 @@ func (a *tagAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOper
 	log.V(2).Info("successfully deleted datacatalog tag", "name", tagName)
 
 	return true, nil
+}
+
+// tagFieldsEqual compares desired and actual TagField maps while ignoring
+// output-only fields (display_name and order) populated by the Data Catalog API.
+func tagFieldsEqual(desired, actual map[string]*pb.TagField) bool {
+	if len(desired) != len(actual) {
+		return false
+	}
+	for k, dVal := range desired {
+		aVal, ok := actual[k]
+		if !ok {
+			return false
+		}
+		if dVal == nil && aVal == nil {
+			continue
+		}
+		if dVal == nil || aVal == nil {
+			return false
+		}
+		aCopy := proto.Clone(aVal).(*pb.TagField)
+		aCopy.DisplayName = ""
+		aCopy.Order = 0
+		if !proto.Equal(dVal, aCopy) {
+			return false
+		}
+	}
+	return true
 }

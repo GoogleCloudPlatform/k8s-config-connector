@@ -39,7 +39,9 @@ The `ConfigConnector` resource defines the cluster-wide operational mode and def
 | `stateIntoSpec` | `enum` | Cluster-wide default for the `state-into-spec` behavior (`Absent` or `Merge`). Overridden by `ConfigConnectorContext` in namespaced mode. |
 | `experiments.multiClusterLease.leaseName` | `string` | The name of the `MultiClusterLease` object that Config Connector will create. |
 | `experiments.multiClusterLease.namespace` | `string` | The namespace where the `MultiClusterLease` object will be created. |
-| `experiments.multiClusterLease.clusterCandidateIdentity` | `string` | **Required.** Unique identity for the cluster in multi-cluster leader election. |
+| `experiments.multiClusterLease.gkeCluster` | `object` | **Required.** The GKE cluster that this Config Connector runs in (`project`, `location`, `name`). Its resource name, `projects/<project>/locations/<location>/clusters/<name>`, is the cluster's identity in multi-cluster leader election, so it must be unique across the clusters. Standby clusters sync resources from the leader's cluster. |
+| `experiments.multiClusterLease.leaderEndpointType` | `enum` | The control plane endpoint that this cluster uses to reach the leader's cluster when syncing resources: `Default` (default), `DNS` or `PrivateIP`. |
+| `experiments.multiClusterLease.clusterCandidateIdentity` | `string` | **Deprecated.** Rejected when set; use `gkeCluster` instead. It will be removed in a future release. |
 
 ## ConfigConnectorContext (Namespace-specific)
 

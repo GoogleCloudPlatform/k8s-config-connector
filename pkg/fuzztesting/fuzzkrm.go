@@ -18,6 +18,8 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"regexp"
+	"runtime"
 	"strconv"
 	"strings"
 	"testing"
@@ -34,8 +36,15 @@ import (
 
 type FuzzFn func(t *testing.T, seed int64)
 
+// registeredFuzzFn is a fuzz function plus the direct controller service
+// (pkg/controller/direct/<service>) that registered it.
+type registeredFuzzFn struct {
+	fn      FuzzFn
+	service string
+}
+
 var (
-	fuzzers                  []FuzzFn
+	fuzzers                  []registeredFuzzFn
 	registeredFuzzers        []any
 	registeredNoProtoFuzzers []any
 )
@@ -52,11 +61,64 @@ func RegisterKRMSpecFuzzer(fuzzer KRMFuzzer) {
 }
 
 func RegisterFuzzer(fuzzer FuzzFn) {
-	fuzzers = append(fuzzers, fuzzer)
+	fuzzers = append(fuzzers, registeredFuzzFn{fn: fuzzer, service: callerService()})
+}
+
+var directServiceRegex = regexp.MustCompile(`/pkg/controller/direct/([a-z0-9]+)[./]`)
+
+// callerService returns the pkg/controller/direct/<service> package that is
+// registering a fuzzer, or "" if the registration comes from elsewhere.
+func callerService() string {
+	pcs := make([]uintptr, 16)
+	n := runtime.Callers(3, pcs)
+	frames := runtime.CallersFrames(pcs[:n])
+	for {
+		frame, more := frames.Next()
+		if m := directServiceRegex.FindStringSubmatch(frame.Function); m != nil {
+			return m[1]
+		}
+		if !more {
+			return ""
+		}
+	}
+}
+
+// fuzzersForServices filters fuzzers to the comma-separated services in
+// FUZZ_SERVICES (all fuzzers when unset).
+func fuzzersForServices() []FuzzFn {
+	wanted := map[string]bool{}
+	for _, s := range strings.Split(os.Getenv("FUZZ_SERVICES"), ",") {
+		if s = strings.TrimSpace(s); s != "" {
+			wanted[s] = true
+		}
+	}
+	var out []FuzzFn
+	for _, f := range fuzzers {
+		if len(wanted) == 0 || wanted[f.service] {
+			out = append(out, f.fn)
+		}
+	}
+	return out
+}
+
+// FuzzerCountsByService returns the number of registered fuzz functions per
+// direct controller service ("" for fuzzers registered outside
+// pkg/controller/direct/<service>).
+func FuzzerCountsByService() map[string]int {
+	counts := map[string]int{}
+	for _, f := range fuzzers {
+		counts[f.service]++
+	}
+	return counts
 }
 
 func ChooseFuzzer(n int64) FuzzFn {
-	all := fuzzers
+	all := fuzzersForServices()
+	if len(all) == 0 {
+		return func(t *testing.T, seed int64) {
+			t.Skipf("no fuzzers registered for FUZZ_SERVICES=%q", os.Getenv("FUZZ_SERVICES"))
+		}
+	}
 	totalShards := os.Getenv("FUZZ_TOTAL_SHARDS")
 	shardIdxStr := os.Getenv("FUZZ_SHARD_INDEX")
 	if totalShards != "" && shardIdxStr != "" {

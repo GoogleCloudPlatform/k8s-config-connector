@@ -99,12 +99,18 @@ func Classify(fieldPath, desc string) (Verdict, string) {
 	// accelerator type. These are taxonomy values rather than managed objects.
 	// The plural forms are excluded too: a field naming a set of zones is no
 	// more a reference than one naming a single zone.
+	leaf := fieldPath
+	if i := strings.LastIndex(leaf, "."); i >= 0 {
+		leaf = leaf[i+1:]
+	}
+	leaf = strings.TrimSuffix(leaf, "[]")
+	lowerLeaf := strings.ToLower(leaf)
 	switch {
-	case strings.HasSuffix(fieldPath, ".zone"), strings.HasSuffix(fieldPath, ".zones"),
-		strings.HasSuffix(fieldPath, ".region"), strings.HasSuffix(fieldPath, ".regions"),
-		strings.HasSuffix(fieldPath, ".location"), strings.HasSuffix(fieldPath, ".locations"),
-		strings.HasSuffix(fieldPath, ".machineType"),
-		strings.HasSuffix(fieldPath, ".acceleratorType"):
+	case strings.HasSuffix(lowerLeaf, "zone"), strings.HasSuffix(lowerLeaf, "zones"),
+		strings.HasSuffix(lowerLeaf, "region"), strings.HasSuffix(lowerLeaf, "regions"),
+		strings.HasSuffix(lowerLeaf, "location"), strings.HasSuffix(lowerLeaf, "locations"),
+		strings.HasSuffix(lowerLeaf, "machinetype"),
+		strings.HasSuffix(lowerLeaf, "acceleratortype"):
 		return NotAReference, ""
 	}
 	return IsReference, ""

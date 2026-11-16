@@ -24,6 +24,7 @@
 // resource: CCInsightsQAScorecard:QaScorecard
 // resource: CCInsightsAnalysisRule:AnalysisRule
 // resource: CCInsightsQaQuestion:QaQuestion
+// resource: CCInsightsQAScorecardRevision:QaScorecardRevision
 
 package v1alpha1
 
@@ -1144,7 +1145,7 @@ type QaQuestion_TuningMetadata struct {
 	TuningError *string `json:"tuningError,omitempty"`
 }
 
-/* found existing non-generated go type with proto tag "google.cloud.contactcenterinsights.v1.QaScorecard", skipping
+/* found existing non-generated go type "QaScorecard", skipping
 
 // +kcc:proto=google.cloud.contactcenterinsights.v1.QaScorecard
 type QaScorecard struct {
@@ -1254,6 +1255,22 @@ type QaScorecardResult_ScoreSource struct {
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecardResult.ScoreSource.qa_tag_results
 	QaTagResults []QaScorecardResult_QaTagResult `json:"qaTagResults,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.contactcenterinsights.v1.QaScorecardRevision", skipping
+
+// +kcc:proto=google.cloud.contactcenterinsights.v1.QaScorecardRevision
+type QaScorecardRevision struct {
+	// Identifier. The name of the scorecard revision.
+	//  Format:
+	//  projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}/revisions/{revision}
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecardRevision.name
+	Name *string `json:"name,omitempty"`
+
+	// The snapshot of the scorecard at the time of this revision's creation.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecardRevision.snapshot
+	Snapshot *QaScorecard `json:"snapshot,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.contactcenterinsights.v1.RuntimeAnnotation
 type RuntimeAnnotation struct {
@@ -1724,7 +1741,7 @@ type QaQuestion_MetricsObservedState struct {
 	Accuracy *float64 `json:"accuracy,omitempty"`
 }
 
-/* found existing non-generated go type with proto tag "google.cloud.contactcenterinsights.v1.QaScorecard", skipping
+/* found existing non-generated go type "QaScorecardObservedState", skipping
 
 // +kcc:observedstate:proto=google.cloud.contactcenterinsights.v1.QaScorecard
 type QaScorecardObservedState struct {
@@ -1789,6 +1806,30 @@ type QaScorecardResultObservedState struct {
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecardResult.score_sources
 	ScoreSources []QaScorecardResult_ScoreSource `json:"scoreSources,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.contactcenterinsights.v1.QaScorecardRevision", skipping
+
+// +kcc:observedstate:proto=google.cloud.contactcenterinsights.v1.QaScorecardRevision
+type QaScorecardRevisionObservedState struct {
+	// The snapshot of the scorecard at the time of this revision's creation.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecardRevision.snapshot
+	Snapshot *QaScorecardObservedState `json:"snapshot,omitempty"`
+
+	// Output only. The timestamp that the revision was created.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecardRevision.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Alternative IDs for this revision of the scorecard, e.g.,
+	//  `latest`.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecardRevision.alternate_ids
+	AlternateIDs []string `json:"alternateIDs,omitempty"`
+
+	// Output only. State of the scorecard revision, indicating whether it's ready
+	//  to be used in analysis.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecardRevision.state
+	State *string `json:"state,omitempty"`
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.contactcenterinsights.v1.View", skipping
 

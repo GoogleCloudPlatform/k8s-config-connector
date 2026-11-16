@@ -16,22 +16,28 @@ package mockgcp
 
 import (
 	"bytes"
+	"context"
 	"crypto/md5"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 
 	"cloud.google.com/go/iam/apiv1/iampb"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/v2"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/protobuf/proto"
 )
 
 type mockIAMPolicies struct {
+	storage  storage.Storage
 	policies map[string]*iampb.Policy
 }
 
-func newMockIAMPolicies() *mockIAMPolicies {
+func newMockIAMPolicies(storage storage.Storage) *mockIAMPolicies {
 	return &mockIAMPolicies{
+		storage:  storage,
 		policies: make(map[string]*iampb.Policy),
 	}
 }
@@ -60,24 +66,39 @@ func (m *mockIAMPolicies) buildResponse(obj any) (*http.Response, error) {
 	return w, nil
 }
 
-func (m *mockIAMPolicies) getIAMPolicy(resourcePath string) (*iampb.Policy, error) {
+func (m *mockIAMPolicies) getIAMPolicy(ctx context.Context, resourcePath string) (*iampb.Policy, error) {
 	policy := m.policies[resourcePath]
 	if policy == nil {
 		policy = &iampb.Policy{}
+		if m.storage != nil && strings.HasPrefix(resourcePath, "bigquery.googleapis.com/bigquery/v2/projects/") && strings.Contains(resourcePath, "/rowAccessPolicies/") {
+			fqn := strings.TrimPrefix(resourcePath, "bigquery.googleapis.com/bigquery/v2/")
+			rap := &pb.RowAccessPolicy{}
+			if err := m.storage.Get(ctx, fqn, rap); err == nil {
+				if len(rap.Grantees) > 0 {
+					policy.Version = 1
+					policy.Bindings = []*iampb.Binding{
+						{
+							Role:    "roles/bigquery.filteredDataViewer",
+							Members: rap.Grantees,
+						},
+					}
+				}
+			}
+		}
 		policy.Etag = computeEtag(policy)
 	}
 	return policy, nil
 }
 
-func (m *mockIAMPolicies) serveGetIAMPolicy(resourcePath string) (*http.Response, error) {
-	policy, err := m.getIAMPolicy(resourcePath)
+func (m *mockIAMPolicies) serveGetIAMPolicy(ctx context.Context, resourcePath string) (*http.Response, error) {
+	policy, err := m.getIAMPolicy(ctx, resourcePath)
 	if err != nil {
 		return nil, err
 	}
 	return m.buildResponse(policy)
 }
 
-func (m *mockIAMPolicies) serveSetIAMPolicy(resourcePath string, httpRequest *http.Request) (*http.Response, error) {
+func (m *mockIAMPolicies) serveSetIAMPolicy(ctx context.Context, resourcePath string, httpRequest *http.Request) (*http.Response, error) {
 	request := &iampb.SetIamPolicyRequest{}
 
 	requestBytes, err := io.ReadAll(httpRequest.Body)
@@ -88,7 +109,7 @@ func (m *mockIAMPolicies) serveSetIAMPolicy(resourcePath string, httpRequest *ht
 		return nil, err
 	}
 
-	oldPolicy, err := m.getIAMPolicy(resourcePath)
+	oldPolicy, err := m.getIAMPolicy(ctx, resourcePath)
 	if err != nil {
 		return nil, err
 	}

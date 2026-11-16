@@ -13,10 +13,20 @@
 # limitations under the License.
 
 name: 'Greenfield Resource Workflow'
-description: 'Track the Greenfield implementation of a new resource'
+description: 'Track the Greenfield implementation of a new resource (kcc-greenfield issue graph)'
 title: 'ai:feat: KCC support for <Kind>'
-labels: ['greenfield', 'overseer', 'workflow/greenfield']
+labels: ['greenfield', 'overseer', 'overseer/graph']
 body:
+- type: 'markdown'
+  attributes:
+    value: |
+      This issue is the parent of the [kcc-greenfield](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/.agents/graphs/kcc-greenfield.yaml) issue graph.
+      The graph reconciler opens one sub-issue per step, in order, as the previous one closes, and closes this issue after the last step.
+
+      Replace `<Kind>` in the title and in the `factory-graph` block below with the CamelCase KCC Kind (for example `SpannerInstanceConfig`).
+
+      For fewer PRs, add `grouped: true` to the block: consecutive steps then share one pull request, split at the steps marked `group-gate` in the graph.
+      To pause the graph, add the `overseer/stop` label to this issue.
 - id: 'workflow-desc'
   type: 'textarea'
   attributes:
@@ -24,6 +34,10 @@ body:
     value: |
       This issue is to track the Greenfield implementation of <Kind>.
 
-      Workflow: https://raw.githubusercontent.com/GoogleCloudPlatform/k8s-config-connector/master/.agents/workflows/kcc-greenfield.txt
+      ```factory-graph
+      graph: kcc-greenfield
+      params:
+        kind: <Kind>
+      ```
   validations:
     required: true

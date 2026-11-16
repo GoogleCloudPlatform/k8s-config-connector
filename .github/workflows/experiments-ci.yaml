@@ -25,7 +25,7 @@ on:
     paths:
       - 'experiments/**'
   push:
-    branches: ["master", "release-*"]
+    branches: ["release-*"]
     paths:
       - 'experiments/**'
   merge_group:

@@ -55,47 +55,6 @@ type BigQueryDestination struct {
 	WriteDisposition *string `json:"writeDisposition,omitempty"`
 }
 
-// +kcc:proto=google.cloud.financialservices.v1.EngineConfig.HyperparameterSource
-type EngineConfig_HyperparameterSource struct {
-	// Required. The resource name of the source EngineConfig whose outputs are
-	//  used. Format:
-	//  `/projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engine_config}`
-	// +kcc:proto:field=google.cloud.financialservices.v1.EngineConfig.HyperparameterSource.source_engine_config
-	// +required
-	SourceEngineConfig *string `json:"sourceEngineConfig,omitempty"`
-}
-
-// +kcc:proto=google.cloud.financialservices.v1.EngineConfig.PerformanceTarget
-type EngineConfig_PerformanceTarget struct {
-	// Required. A number that gives the tuner a hint on the number of parties
-	//  from this data that will be investigated per period (monthly). This is
-	//  used to control how the model is evaluated. For example, when trying AML
-	//  AI for the first time, we recommend setting this to the number of parties
-	//  investigated in an average month, based on alerts from your existing
-	//  automated alerting system.
-	// +kcc:proto:field=google.cloud.financialservices.v1.EngineConfig.PerformanceTarget.party_investigations_per_period_hint
-	// +required
-	PartyInvestigationsPerPeriodHint *int64 `json:"partyInvestigationsPerPeriodHint,omitempty"`
-}
-
-// +kcc:proto=google.cloud.financialservices.v1.EngineConfig.Tuning
-type EngineConfig_Tuning struct {
-	// Required. The resource name of the Primary Dataset used in this model
-	//  tuning. For information about how primary and auxiliary datasets are
-	//  used, refer to the engine version's documentation.  Format:
-	//  `/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}`
-	// +kcc:proto:field=google.cloud.financialservices.v1.EngineConfig.Tuning.primary_dataset
-	// +required
-	PrimaryDataset *string `json:"primaryDataset,omitempty"`
-
-	// Required. End_time specifies the latest time from which labels are used
-	//  and from which data is used to generate features for tuning.  End_time
-	//  should be no later than the end of the date_range of the dataset.
-	// +kcc:proto:field=google.cloud.financialservices.v1.EngineConfig.Tuning.end_time
-	// +required
-	EndTime *string `json:"endTime,omitempty"`
-}
-
 // +kcc:proto=google.cloud.financialservices.v1.PredictionResult.Outputs
 type PredictionResult_Outputs struct {
 	// Required. The location to output the predictions.

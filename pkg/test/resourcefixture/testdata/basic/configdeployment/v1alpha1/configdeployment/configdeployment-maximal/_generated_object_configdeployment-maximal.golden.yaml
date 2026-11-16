@@ -1,0 +1,66 @@
+apiVersion: configdeployment.cnrm.cloud.google.com/v1alpha1
+kind: ConfigDeployment
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+    env: staging
+  name: configdeployment-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  annotations:
+    note: updated
+  artifactsLocation:
+    bucketRef:
+      external: projects/${projectId}/buckets/${projectId}-bucket-${uniqueId}
+    folder: artifacts
+  importExistingResources: false
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  providerConfig:
+    sourceType: PROVIDER_SOURCE_UNSPECIFIED
+  quotaValidation: QUOTA_VALIDATION_UNSPECIFIED
+  serviceAccountRef:
+    external: projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com
+  terraformBlueprint:
+    externalValues:
+      ext_var:
+        deploymentSource:
+          deploymentRef:
+            external: projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}
+          outputName: updated_output
+    gitSource:
+      directory: scripts
+      ref: v1.0.0
+      repo: https://github.com/GoogleCloudPlatform/k8s-config-connector.git
+    inputValues:
+      foo:
+        inputValue:
+          stringValue: updated
+  tfVersionConstraint: =1.3.10
+  workerPoolRef:
+    external: projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    errorCode: REVISION_FAILED
+    latestRevision: projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1
+    lockState: UNLOCKED
+    state: FAILED
+    stateDetail: 'Revision failed: Failed to import values from an external source:
+      Invalid resource state for "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}":
+      the provided deployment doesn''t exist'
+    tfVersion: 1.3.10
+    updateTime: "1970-01-01T00:00:00Z"

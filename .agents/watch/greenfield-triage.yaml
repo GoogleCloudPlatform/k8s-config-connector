@@ -1,0 +1,58 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# greenfield-triage: a workflow/greenfield issue labelled overseer/triage is
+# checked for what would block its implementation (API access and
+# allowlisting, quota, a parent or dependency not in KCC, a non-standard
+# lifecycle, the state on master: the greenfield-triage recipe), and the
+# result is commented on it: overseer/stop is added when it is blocked or
+# when the agent could not tell (the comment says what a person must
+# check); when it is ready, overseer/graph is added, which starts its
+# graph. Once the triage
+# is posted, overseer/triage comes off and overseer/triaged goes on (it
+# stays, to show the issue was triaged); adding overseer/triage again
+# triages again.
+#
+# The trigger label (overseer) comes off too. A fan-out labels each child it
+# starts overseer and counts it in flight while it has the label; once
+# triaged, a ready child is its graph's parent (the graph does not need
+# overseer, and fix leaves a graph's parent alone) and a blocked one waits
+# under overseer/stop, so neither should hold a slot of the fan-out's
+# window. The fan-out does not label a child it started again.
+#
+# To triage a stopped issue again, once its blocker is cleared: take
+# overseer/stop off and add overseer/triage (the overseer skips an issue
+# labelled overseer/stop), or add overseer/graph to start it straight away.
+#
+# Order 3: before factory's issue rules (workflow-missing is 5), so a
+# triage asked for runs before anything else takes the issue. The
+# overseer's gates skip an issue labelled overseer/stop. Needs a factory
+# whose rules take a list under apply (gke-labs/gemini-for-kubernetes-development#2240).
+name: greenfield-triage
+description: Check whether a greenfield kind can be implemented now, and comment and label it
+on: issue
+order: 3
+when:
+  labels:
+    all: [overseer/triage, workflow/greenfield]
+run:
+  recipe: greenfield-triage
+  apply: [comment, label]
+  on-success:
+    unlabel: [overseer/triage, "{{trigger}}"]
+    label: [overseer/triaged]
+policy:
+  cooldown:
+    success: 1h
+    failure: 1h

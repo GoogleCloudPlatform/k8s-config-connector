@@ -1,0 +1,12 @@
+apiVersion: saasservicemgmt.cnrm.cloud.google.com/v1alpha1
+kind: SaaSServiceMgmtUnitKind
+metadata:
+  name: saasservicemgmtunitkind-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  saasRef:
+    external: projects/${projectId}/locations/us-central1/saas/kcc-test-saas
+  labels:
+    env: test

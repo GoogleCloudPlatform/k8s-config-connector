@@ -78,4 +78,26 @@
   4. Regenerated aligned `_http_mock.log` for `networksecurityinterceptdeploymentgroup-maximal`.
 - **Impact**: Aligns MockGCP behavior with Real GCP golden logs and ensures test fixtures and `TestGoldenLogAlignment` pass with zero discrepancies.
 
+### [2026-11-05] Greenfield Step 1b: Triage judgement queue and finalize KRM types for NetworkSecurityGatewaySecurityPolicyRule
+- **Context**: Triaging judgement queue and finalizing KRM types, identity, and references for `NetworkSecurityGatewaySecurityPolicyRule` under `networksecurity.cnrm.cloud.google.com/v1alpha1` (Issue #15035).
+- **Problem**: `NetworkSecurityGatewaySecurityPolicyRule` is a child resource under `projects/{project}/locations/{location}/gatewaySecurityPolicies/{gateway_security_policy}/rules/{rule}`. Initial bulk generation prepopulated separate `projectRef`, `location`, and a guessed `gatewaySecurityPolicyRef` field in `Spec`, leaving open judgement items for `untriaged-bulk-generation`, `identity-root-unknown`, `parent-ref-guessed`, and `location-or-parent-ref`.
+- **Solution**:
+  1. Followed Case B of `PARENT_AND_IDENTITY.md` to model the parent hierarchy as a single required, immutable `spec.parentRef` (`*NetworkSecurityGatewaySecurityPolicyRef`). Removed `projectRef`, `location`, and commented-out `gatewaySecurityPolicyRef`.
+  2. Regenerated identity via `apis/networksecurity/generate.sh`, which automatically implemented `IdentityV2` using `parentRef.GetExternal()` and resolved the identity root.
+  3. Regenerated controller and fuzzer using `generate-controller --prepopulate-resource` and `generate-fuzzer --prepopulate-resource`.
+  4. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` using `WRITE_GOLDEN_OUTPUT=1`.
+  5. Resolved all entries in `apis/networksecurity/judgement_queue.yaml` with status `resolved`.
+- **Impact**: Establishes correct parent-child relationship for `NetworkSecurityGatewaySecurityPolicyRule` referencing `NetworkSecurityGatewaySecurityPolicy`, with clean round-trip fuzzing and passing API checks.
+
+### [2026-11-06] Greenfield Step 2: Direct controller, E2E fixtures, and fuzzer for NetworkSecurityGatewaySecurityPolicyRule
+- **Context**: Greenfield Step 2 implementation for `NetworkSecurityGatewaySecurityPolicyRule` (Issue #15074).
+- **Details**:
+  1. Ran `controllerbuilder generate-controller` and `generate-fuzzer` to refresh direct controller and round-trip fuzzer for `NetworkSecurityGatewaySecurityPolicyRule`.
+  2. Created minimal (`gatewaysecuritypolicyrule-minimal`) and maximal (`gatewaysecuritypolicyrule-maximal`) E2E test fixtures under `pkg/test/resourcefixture/testdata/basic/networksecurity/v1alpha1/networksecuritygatewaysecuritypolicyrule/`.
+  3. Successfully recorded golden files against real GCP using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`. Passed 7/7 validation checks for both minimal and maximal fixtures.
+  4. Tested focused round-trip fuzzer (`TestFocusedMappers`) and API checks (`TestGenerateScripts`, `TestDirectResourceFileNaming`).
+- **Impact**: Enables direct reconciliation and golden-file tested lifecycle for `NetworkSecurityGatewaySecurityPolicyRule`.
+
+
+
 

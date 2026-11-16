@@ -186,7 +186,7 @@ func (a *backupPlanAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		report.AddField("description", a.actual.GetDescription(), resource.GetDescription())
 		paths = append(paths, "description")
 	}
-	if desired.Spec.RetentionPolicy != nil && !reflect.DeepEqual(resource.GetRetentionPolicy(), a.actual.GetRetentionPolicy()) {
+	if desired.Spec.RetentionPolicy != nil && !proto.Equal(resource.GetRetentionPolicy(), a.actual.GetRetentionPolicy()) {
 		report.AddField("retention_policy", a.actual.GetRetentionPolicy(), resource.GetRetentionPolicy())
 		paths = append(paths, "retention_policy")
 	}
@@ -194,7 +194,7 @@ func (a *backupPlanAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		report.AddField("labels", a.actual.GetLabels(), resource.GetLabels())
 		paths = append(paths, "labels")
 	}
-	if desired.Spec.BackupSchedule != nil && !reflect.DeepEqual(resource.GetBackupSchedule(), a.actual.GetBackupSchedule()) {
+	if desired.Spec.BackupSchedule != nil && !backupSchedulesEqual(resource.GetBackupSchedule(), a.actual.GetBackupSchedule()) {
 		report.AddField("backup_schedule", a.actual.GetBackupSchedule(), resource.GetBackupSchedule())
 		paths = append(paths, "backup_schedule")
 	}
@@ -341,6 +341,20 @@ func backupConfigsEqual(a, b *gkebackuppb.BackupPlan_BackupConfig) bool {
 	}
 
 	return true
+}
+
+// backupSchedulesEqual compares desired and actual BackupPlan_Schedule protos while ignoring
+// the output-only NextScheduledBackupTime field populated by the GKE Backup API.
+func backupSchedulesEqual(desired, actual *gkebackuppb.BackupPlan_Schedule) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if desired == nil || actual == nil {
+		return false
+	}
+	actualCopy := proto.Clone(actual).(*gkebackuppb.BackupPlan_Schedule)
+	actualCopy.NextScheduledBackupTime = nil
+	return proto.Equal(desired, actualCopy)
 }
 
 func (a *backupPlanAdapter) normalizeReferenceFields(ctx context.Context) error {

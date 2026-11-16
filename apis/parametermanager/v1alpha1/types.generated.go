@@ -19,12 +19,46 @@
 // proto.service: google.cloud.parametermanager.v1
 // resource: ParameterManagerParameter:Parameter
 // resource: ParameterManagerParameterVersion:ParameterVersion
+// resource: ParameterManagerTemplate:Template
 
 package v1alpha1
+
+/* found existing non-generated go type with proto tag "google.cloud.parametermanager.v1.Template", skipping
+
+// +kcc:proto=google.cloud.parametermanager.v1.Template
+type Template struct {
+	// Identifier. The resource name of the Template in the format
+	//  `projects/* /locations/* /templates/*`.
+	// +kcc:proto:field=google.cloud.parametermanager.v1.Template.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Labels as key value pairs
+	// +kcc:proto:field=google.cloud.parametermanager.v1.Template.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Specifies the format of a Template.
+	// +kcc:proto:field=google.cloud.parametermanager.v1.Template.format
+	Format *string `json:"format,omitempty"`
+}
+*/
 
 /* unreachable type ResourcePolicyMember
 // +kcc:proto=google.iam.v1.ResourcePolicyMember
 type ResourcePolicyMember struct {
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.parametermanager.v1.Template", skipping
+
+// +kcc:observedstate:proto=google.cloud.parametermanager.v1.Template
+type TemplateObservedState struct {
+	// Output only. Create time stamp
+	// +kcc:proto:field=google.cloud.parametermanager.v1.Template.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Update time stamp
+	// +kcc:proto:field=google.cloud.parametermanager.v1.Template.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
 

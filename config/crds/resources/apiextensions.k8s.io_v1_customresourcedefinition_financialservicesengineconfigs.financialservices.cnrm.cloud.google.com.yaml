@@ -70,26 +70,76 @@ spec:
               hyperparameterSource:
                 description: Optional. Configuration of hyperparameters source EngineConfig.
                 properties:
-                  sourceEngineConfig:
+                  sourceEngineConfigRef:
                     description: 'Required. The resource name of the source EngineConfig
                       whose outputs are used. Format: `/projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engine_config}`'
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed FinancialServicesEngineConfig
+                          resource. Should be in the format "projects/{{projectNumID}}/locations/{{location}}/instances/{{instanceID}}/engineConfigs/{{engineConfigID}}".
+                        type: string
+                      name:
+                        description: The name of a FinancialServicesEngineConfig resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a FinancialServicesEngineConfig
+                          resource.
+                        type: string
+                    type: object
                 required:
-                - sourceEngineConfig
+                - sourceEngineConfigRef
                 type: object
               hyperparameterSourceType:
                 description: Optional. The origin of hyperparameters for the created
                   EngineConfig. The default is `TUNING`. In this case, the hyperparameters
                   are selected as a result of a tuning run.
                 type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: Labels
+              parentRef:
+                description: The FinancialServicesInstance this FinancialServicesEngineConfig
+                  is created under.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed FinancialServicesInstance
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instance}}".
+                    type: string
+                  name:
+                    description: The name of a FinancialServicesInstance resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a FinancialServicesInstance resource.
+                    type: string
                 type: object
-              location:
-                description: The location of this resource.
-                type: string
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               performanceTarget:
                 description: Optional. PerformanceTarget gives information on how
                   the tuning and training will be evaluated. This field is required
@@ -109,38 +159,6 @@ spec:
                 required:
                 - partyInvestigationsPerPeriodHint
                 type: object
-              projectRef:
-                description: The project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
-                type: object
               resourceID:
                 description: The FinancialServicesEngineConfig name. If not given,
                   the metadata.name will be used.
@@ -156,20 +174,44 @@ spec:
                       features for tuning.  End_time should be no later than the end
                       of the date_range of the dataset.
                     type: string
-                  primaryDataset:
+                  primaryDatasetRef:
                     description: 'Required. The resource name of the Primary Dataset
                       used in this model tuning. For information about how primary
                       and auxiliary datasets are used, refer to the engine version''s
                       documentation.  Format: `/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}`'
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed FinancialServicesDataset
+                          resource. Should be in the format "projects/{{projectNumID}}/locations/{{location}}/instances/{{instanceID}}/datasets/{{datasetID}}".
+                        type: string
+                      name:
+                        description: The name of a FinancialServicesDataset resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a FinancialServicesDataset resource.
+                        type: string
+                    type: object
                 required:
                 - endTime
-                - primaryDataset
+                - primaryDatasetRef
                 type: object
             required:
             - engineVersion
-            - location
-            - projectRef
+            - parentRef
             type: object
           status:
             description: FinancialServicesEngineConfigStatus defines the config connector

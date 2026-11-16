@@ -39,6 +39,8 @@ type GlossaryIdentity struct {
 	Glossary string
 }
 
+type DataplexGlossaryIdentity = GlossaryIdentity
+
 func (i *GlossaryIdentity) String() string {
 	return GlossaryIdentityFormat.ToString(*i)
 }
@@ -54,6 +56,10 @@ func (i *GlossaryIdentity) FromExternal(ref string) error {
 
 	*i = *parsed
 	return nil
+}
+
+func (i *GlossaryIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
 }
 
 func (i *GlossaryIdentity) Host() string {

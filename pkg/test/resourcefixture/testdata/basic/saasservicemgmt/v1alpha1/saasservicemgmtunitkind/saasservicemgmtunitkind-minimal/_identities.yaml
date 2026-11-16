@@ -1,0 +1,6 @@
+- caisURL: //saasservicemgmt.googleapis.com/projects/${projectId}/locations/us-central1/unitKinds/saasservicemgmtunitkind-${uniqueId}
+  group: saasservicemgmt.cnrm.cloud.google.com
+  kind: SaaSServiceMgmtUnitKind
+  name: saasservicemgmtunitkind-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

@@ -57,14 +57,11 @@ var realGCPSkipFixtures = map[string]bool{
 	"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-maximal": true,
 	"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-minimal": true,
 	// Tags acquire and project tag key tests have environment-dependent real GCP payloads
-	"tags/v1beta1/tagstagkey/tagkeyacquire":        true,
-	"tags/v1beta1/tagstagvalue/tagvalueacquire":    true,
-	"tags/v1beta1/tagstagkey/tagkeyprojectautogen": true,
-	// NetworkSecurity BackendAuthenticationConfig requires invitation-only early access allowlist.
-	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-maximal": true,
-	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-minimal": true,
-	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect":                                     true,
-	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect-direct":                              true,
+	"tags/v1beta1/tagstagkey/tagkeyacquire":                            true,
+	"tags/v1beta1/tagstagvalue/tagvalueacquire":                        true,
+	"tags/v1beta1/tagstagkey/tagkeyprojectautogen":                     true,
+	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect":        true,
+	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect-direct": true,
 }
 
 func TestGoldenLogAlignment(t *testing.T) {
@@ -361,6 +358,43 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				mockEvs = filteredMock
 			}
 
+			// Filter out failed transient error responses on DELETE when a successful 2xx response is present
+			if method == "DELETE" {
+				has2xxReal := false
+				for _, ev := range realEvs {
+					if strings.HasPrefix(ev.Status, "2") {
+						has2xxReal = true
+						break
+					}
+				}
+				if has2xxReal {
+					var filteredReal []httpEvent
+					for _, ev := range realEvs {
+						if strings.HasPrefix(ev.Status, "2") {
+							filteredReal = append(filteredReal, ev)
+						}
+					}
+					realEvs = filteredReal
+				}
+
+				has2xxMock := false
+				for _, ev := range mockEvs {
+					if strings.HasPrefix(ev.Status, "2") {
+						has2xxMock = true
+						break
+					}
+				}
+				if has2xxMock {
+					var filteredMock []httpEvent
+					for _, ev := range mockEvs {
+						if strings.HasPrefix(ev.Status, "2") {
+							filteredMock = append(filteredMock, ev)
+						}
+					}
+					mockEvs = filteredMock
+				}
+			}
+
 			if len(realEvs) != len(mockEvs) {
 				allowed := false
 				if method == "DELETE" && len(mockEvs) < len(realEvs) {
@@ -376,9 +410,9 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				if method == "POST" && strings.Contains(path, ":generateServiceIdentity") && len(mockEvs) < len(realEvs) {
 					allowed = true
 				}
-				// Allow CancelCustomJob to have fewer calls in mock because job cancellation
+				// Allow CancelCustomJob and CancelHyperparameterTuningJob to have fewer calls in mock because job cancellation
 				// in real GCP is an asynchronous operation requiring variable polling iterations.
-				if method == "GRPC" && strings.HasSuffix(path, "/CancelCustomJob") && len(mockEvs) < len(realEvs) {
+				if method == "GRPC" && (strings.HasSuffix(path, "/CancelCustomJob") || strings.HasSuffix(path, "/CancelHyperparameterTuningJob")) && len(mockEvs) < len(realEvs) {
 					allowed = true
 				}
 				if !allowed {
@@ -516,6 +550,7 @@ func cleanURL(u string) string {
 	u = regexp.MustCompile(`/instanceGroupManagers/gke-.*-grp`).ReplaceAllString(u, "/instanceGroupManagers/gke-containercluster-normalized-grp")
 	u = regexp.MustCompile(`/contacts/[0-9]+`).ReplaceAllString(u, "/contacts/${contactID}")
 	u = regexp.MustCompile(`/agents/[0-9a-fA-F-]+`).ReplaceAllString(u, "/agents/${agentID}")
+	u = regexp.MustCompile(`/revisions/[0-9]+`).ReplaceAllString(u, "/revisions/${qaScorecardRevisionID}")
 	return u
 }
 
@@ -609,6 +644,8 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "createTime")
 		delete(v, "creationTime")
 		delete(v, "updateTime")
+		delete(v, "updateTimestamp")
+		delete(v, "rolloutOperation")
 		delete(v, "activationUpdateTime")
 		delete(v, "revisionCreateTime")
 		delete(v, "uid")
@@ -624,6 +661,10 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "labels")
 		delete(v, "instanceCreateTime")
 		delete(v, "activityDataRetentionPeriodDays")
+		// WebSecurityScanner targetPlatforms is returned by real GCP (e.g. [1] for App Engine) but not in v1 proto
+		delete(v, "targetPlatforms")
+		// CESApp: retentionWindow is returned by real GCP but not in cespb.ConversationLoggingSettings
+		delete(v, "retentionWindow")
 		if qm, ok := v["qualityMetadata"].(map[string]interface{}); ok {
 			if agentInfo, ok := qm["agentInfo"].([]interface{}); ok {
 				for _, a := range agentInfo {
@@ -632,6 +673,24 @@ func normalizeRepresentation(obj interface{}) interface{} {
 						delete(agent, "teams")
 					}
 				}
+			}
+		}
+
+		// DialogflowCX Playbook specific fields: tokenCount is dynamically calculated by the LLM tokenizer,
+		// and instruction.steps are appended across updates on real GCP.
+		if _, ok := v["goal"]; ok {
+			delete(v, "tokenCount")
+			if inst, ok := v["instruction"].(map[string]interface{}); ok {
+				delete(inst, "steps")
+			}
+		}
+
+		// Normalize DialogflowCXAgent fields between TF and Direct controller mock/real logs:
+		// Direct controller passes the full proto object to UpdateAgent, which includes defaultLanguageCode and name.
+		if _, hasDefaultLanguage := v["defaultLanguageCode"]; hasDefaultLanguage {
+			if _, hasStartFlow := v["startFlow"]; !hasStartFlow {
+				delete(v, "defaultLanguageCode")
+				delete(v, "name")
 			}
 		}
 
@@ -650,6 +709,11 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "connectorVersionLaunchStage")
 		delete(v, "host")
 		delete(v, "tlsServiceDirectory")
+
+		// ManagedKafkaConnector state field normalization due to async state transitions in real GCP
+		if _, ok := v["taskRestartPolicy"]; ok {
+			delete(v, "state")
+		}
 
 		// Cloud Resource Manager Project fields to normalize alignment differences
 		if _, ok := v["projectId"]; ok {
@@ -1016,6 +1080,12 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		}
 		if desc, ok := v["description"].(string); ok && desc == "" {
 			delete(v, "description")
+		}
+		if am, ok := v["applicationMatcher"].(string); ok && am == "" {
+			delete(v, "applicationMatcher")
+		}
+		if tie, ok := v["tlsInspectionEnabled"].(bool); ok && !tie {
+			delete(v, "tlsInspectionEnabled")
 		}
 		if preview, ok := v["preview"].(bool); ok && !preview {
 			delete(v, "preview")
@@ -1426,6 +1496,9 @@ func isDependencyEvent(ev httpEvent, depKinds map[string]string, primaryKind str
 		trimmedSuffix := strings.TrimPrefix(suffix, "/")
 		if strings.Contains(trimmedSuffix, "/") {
 			if kind == "KMSCryptoKey" && strings.HasPrefix(trimmedSuffix, "cryptoKeyVersions/") && primaryKind != "KMSCryptoKeyVersion" {
+				return true
+			}
+			if kind == "StorageBucket" && strings.HasPrefix(trimmedSuffix, "o/") {
 				return true
 			}
 			continue

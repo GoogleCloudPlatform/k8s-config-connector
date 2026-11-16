@@ -17,6 +17,7 @@ Please respect the following review criteria and invariants when reviewing PRs f
 
 ## 3. Proto Diffs and Field Masks
 *   Verify that `common.CompareBrownfieldSpec` or appropriate diffing logic is used to correctly identify differences between the desired KRM state and the actual GCP state, particularly handling default values returned by the server.
+*   **No Unmasked `a.actual` Comparisons:** Verify that the controller does NOT compare raw `a.actual` (or its sub-messages/maps/slices) directly against `desiredPb` via `proto.Equal` or `reflect.DeepEqual` when `a.actual` contains output-only or unmapped (`// MISSING:` in `*_ToProto`) fields (e.g., `etag`, `update_time`), which causes infinite update loops. See `kcc-direct-proto-comparison`.
 *   Verify that the resulting diff paths are used to populate an `UpdateMask` (e.g. `&fieldmaskpb.FieldMask{Paths: sets.List(paths)}`) in the `Update` operation if required by the API.
 
 ## 4. Structured Reporting

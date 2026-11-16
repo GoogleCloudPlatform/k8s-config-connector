@@ -135,6 +135,19 @@ service VectorSearchService {
     };
   }
 
+  // Updates a single Index.
+  rpc UpdateIndex(UpdateIndexRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{index.name=projects/*/locations/*/collections/*/indexes/*}"
+      body: "index"
+    };
+    option (google.api.method_signature) = "index,update_mask";
+    option (google.longrunning.operation_info) = {
+      response_type: "Index"
+      metadata_type: "OperationMetadata"
+    };
+  }
+
   // Deletes a single Index.
   rpc DeleteIndex(DeleteIndexRequest) returns (google.longrunning.Operation) {
     option (google.api.http) = {
@@ -704,4 +717,17 @@ message DenseScannIndex {
   // Optional. Feature norm type.
   FeatureNormType feature_norm_type = 2
       [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Message for updating an Index.
+message UpdateIndexRequest {
+  // Required. The resource being updated.
+  Index index = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // Optional. Specifies the fields to be overwritten in the Index resource by
+  // the update.
+  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. An optional request ID to identify requests.
+  string request_id = 3 [(google.api.field_behavior) = OPTIONAL];
 }
