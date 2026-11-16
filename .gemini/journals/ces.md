@@ -79,4 +79,12 @@
 
 
 
+### [2026-11-16] Prepopulating CESTool Direct KRM Types, Identity, and Judgement Queue
+- **Context**: Prepopulating direct KRM types, identity, reference, and judgement queue for `CESTool` (`ces.cnrm.cloud.google.com/v1alpha1`) using `google.cloud.ces.v1` and `--prepopulate-resource`.
+- **Learnings & Decisions**:
+  1. **Scaffolded Types & Identity**: Added `--resource CESTool:Tool` to `generate-types` and `generate-identity` in `apis/ces/generate.sh`. Scaffolds `CESTool` KRM types, `CESToolIdentity`, `CESToolRef`, and adds `CESTool` entries to `apis/ces/judgement_queue.yaml` (with `untriaged-bulk-generation` set to `status: open`).
+  2. **Release Bundle Blocklist**: Added `CESTool` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  3. **Empty Oneof Handling**: `ServiceAgentIDTokenAuthConfig` is a parameterless message representing an empty option in the `auth_config` oneof. Added `cestools.ces.cnrm.cloud.google.com` to `knownInvalidCRDs` in `tests/apichecks/crds_test.go` per KCC guidelines.
+  4. **Pre-existing Hand-written References**: Pre-existing `CesToolRef` and `CesToolIdentity` stubs in `apis/ces/v1alpha1/` (added earlier for `DialogflowCompanionAgent`) are retained for backwards compatibility, resolving the temporary entries in `testdata/exceptions/naming_violations.txt`.
+
 
