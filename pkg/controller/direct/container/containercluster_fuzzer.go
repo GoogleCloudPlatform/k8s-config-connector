@@ -275,6 +275,8 @@ func containerClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".tpu_ipv4_cidr_block")
 	f.Unimplemented_NotYetTriaged(".user_managed_keys_config")
 	f.Unimplemented_NotYetTriaged(".zone")
+	f.Unimplemented_NotYetTriaged(".rollback_safe_upgrade")
+	f.Unimplemented_NotYetTriaged(".current_emulated_version")
 
 	// Unmapped / Unimplemented Status fields (specifically)
 	f.Unimplemented_NotYetTriaged(".addons_config")

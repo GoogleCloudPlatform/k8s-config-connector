@@ -51,6 +51,7 @@ func dnsPolicyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Unimplemented_NotYetTriaged(".Kind")
 	f.Unimplemented_NotYetTriaged(".Ipv6Address")
 	f.Unimplemented_NotYetTriaged(".AlternativeNameServerConfig.Kind")
+	f.Unimplemented_NotYetTriaged(".AlternativeNameServerConfig.OutboundEndpoints")
 	f.Unimplemented_NotYetTriaged(".AlternativeNameServerConfig.TargetNameServers[].Kind")
 	f.Unimplemented_NotYetTriaged(".AlternativeNameServerConfig.TargetNameServers[].Ipv6Address")
 	f.Unimplemented_NotYetTriaged(".Networks[].Kind")

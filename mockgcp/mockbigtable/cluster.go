@@ -31,8 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 
 	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
-	"cloud.google.com/go/bigtable/admin/apiv2/adminpb"
-	pb "google.golang.org/genproto/googleapis/bigtable/admin/v2"
+	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 )
 
 func (s *instanceAdminServer) GetCluster(ctx context.Context, req *pb.GetClusterRequest) (*pb.Cluster, error) {
@@ -142,7 +141,7 @@ func (s *instanceAdminServer) CreateCluster(ctx context.Context, req *pb.CreateC
 		lroMetadata.FinishTime = timestamppb.New(time.Now())
 
 		returnObj := proto.CloneOf(obj)
-		returnObj.NodeScalingFactor = adminpb.Cluster_NODE_SCALING_FACTOR_UNSPECIFIED // For some reason, not populated here
+		returnObj.NodeScalingFactor = pb.Cluster_NODE_SCALING_FACTOR_UNSPECIFIED // For some reason, not populated here
 		return returnObj, nil
 	})
 }

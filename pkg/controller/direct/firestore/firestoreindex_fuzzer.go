@@ -19,8 +19,8 @@
 package firestore
 
 import (
+	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
-	pb "google.golang.org/genproto/googleapis/firestore/admin/v1"
 )
 
 func init() {
