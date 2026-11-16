@@ -47,3 +47,23 @@ func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.Schema {
 	}
 	return &krm.Schema{}
 }
+
+func TriggerAction_Response_FromProto(mapCtx *direct.MapContext, in *pb.TriggerAction_Response) *krm.TriggerAction_Response {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TriggerAction_Response{}
+	out.Text = direct.LazyPtr(in.GetText())
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	return out
+}
+
+func TriggerAction_Response_ToProto(mapCtx *direct.MapContext, in *krm.TriggerAction_Response) *pb.TriggerAction_Response {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TriggerAction_Response{}
+	out.Text = direct.ValueOf(in.Text)
+	out.Disabled = direct.ValueOf(in.Disabled)
+	return out
+}

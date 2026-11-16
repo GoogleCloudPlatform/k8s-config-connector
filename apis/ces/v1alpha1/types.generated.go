@@ -21,6 +21,7 @@
 // resource: CesAgent:Agent
 // resource: CESDeployment:Deployment
 // resource: CESTool:Tool
+// resource: CESGuardrail:Guardrail
 
 package v1alpha1
 
@@ -863,6 +864,158 @@ type GoogleSearchTool_PromptConfig struct {
 	VoicePrompt *string `json:"voicePrompt,omitempty"`
 }
 
+// +kcc:proto=google.cloud.ces.v1.Guardrail.CodeCallback
+type Guardrail_CodeCallback struct {
+	// Optional. The callback to execute before the agent is called.
+	//  Each callback function is expected to return a structure (e.g., a dict or
+	//  object) containing at least:
+	//    - 'decision': Either 'OK' or 'TRIGGER'.
+	//    - 'reason': A string explaining the decision.
+	//  A 'TRIGGER' decision may halt further processing.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.CodeCallback.before_agent_callback
+	BeforeAgentCallback *Callback `json:"beforeAgentCallback,omitempty"`
+
+	// Optional. The callback to execute after the agent is called.
+	//  Each callback function is expected to return a structure (e.g., a dict or
+	//  object) containing at least:
+	//    - 'decision': Either 'OK' or 'TRIGGER'.
+	//    - 'reason': A string explaining the decision.
+	//  A 'TRIGGER' decision may halt further processing.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.CodeCallback.after_agent_callback
+	AfterAgentCallback *Callback `json:"afterAgentCallback,omitempty"`
+
+	// Optional. The callback to execute before the model is called. If there
+	//  are multiple calls to the model, the callback will be executed multiple
+	//  times. Each callback function is expected to return a structure (e.g., a
+	//  dict or object) containing at least:
+	//    - 'decision': Either 'OK' or 'TRIGGER'.
+	//    - 'reason': A string explaining the decision.
+	//  A 'TRIGGER' decision may halt further processing.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.CodeCallback.before_model_callback
+	BeforeModelCallback *Callback `json:"beforeModelCallback,omitempty"`
+
+	// Optional. The callback to execute after the model is called. If there are
+	//  multiple calls to the model, the callback will be executed multiple
+	//  times. Each callback function is expected to return a structure (e.g., a
+	//  dict or object) containing at least:
+	//    - 'decision': Either 'OK' or 'TRIGGER'.
+	//    - 'reason': A string explaining the decision.
+	//  A 'TRIGGER' decision may halt further processing.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.CodeCallback.after_model_callback
+	AfterModelCallback *Callback `json:"afterModelCallback,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1.Guardrail.ContentFilter
+type Guardrail_ContentFilter struct {
+	// Optional. List of banned phrases. Applies to both user inputs and agent
+	//  responses.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.ContentFilter.banned_contents
+	BannedContents []string `json:"bannedContents,omitempty"`
+
+	// Optional. List of banned phrases. Applies only to user inputs.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.ContentFilter.banned_contents_in_user_input
+	BannedContentsInUserInput []string `json:"bannedContentsInUserInput,omitempty"`
+
+	// Optional. List of banned phrases. Applies only to agent responses.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.ContentFilter.banned_contents_in_agent_response
+	BannedContentsInAgentResponse []string `json:"bannedContentsInAgentResponse,omitempty"`
+
+	// Required. Match type for the content filter.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.ContentFilter.match_type
+	// +required
+	MatchType *string `json:"matchType,omitempty"`
+
+	// Optional. If true, diacritics are ignored during matching.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.ContentFilter.disregard_diacritics
+	DisregardDiacritics *bool `json:"disregardDiacritics,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1.Guardrail.LlmPolicy
+type Guardrail_LlmPolicy struct {
+	// Optional. When checking this policy, consider the last 'n' messages in
+	//  the conversation. When not set a default value of 10 will be used.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.LlmPolicy.max_conversation_messages
+	MaxConversationMessages *int32 `json:"maxConversationMessages,omitempty"`
+
+	// Optional. Model settings.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.LlmPolicy.model_settings
+	ModelSettings *ModelSettings `json:"modelSettings,omitempty"`
+
+	// Required. Policy prompt.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.LlmPolicy.prompt
+	// +required
+	Prompt *string `json:"prompt,omitempty"`
+
+	// Required. Defines when to apply the policy check during the conversation.
+	//  If set to `POLICY_SCOPE_UNSPECIFIED`, the policy will be applied to the
+	//  user input. When applying the policy to the agent response, additional
+	//  latency will be introduced before the agent can respond.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.LlmPolicy.policy_scope
+	// +required
+	PolicyScope *string `json:"policyScope,omitempty"`
+
+	// Optional. If an error occurs during the policy check, fail open and do
+	//  not trigger the guardrail.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.LlmPolicy.fail_open
+	FailOpen *bool `json:"failOpen,omitempty"`
+
+	// Optional. By default, the LLM policy check is bypassed for short
+	//  utterances. Enabling this setting applies the policy check to all
+	//  utterances, including those that would normally be skipped.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.LlmPolicy.allow_short_utterance
+	AllowShortUtterance *bool `json:"allowShortUtterance,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1.Guardrail.LlmPromptSecurity
+type Guardrail_LlmPromptSecurity struct {
+	// Optional. Use the system's predefined default security settings.
+	//  To select this mode, include an empty 'default_settings' message
+	//  in the request. The 'default_prompt_template' field within
+	//  will be populated by the server in the response.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.LlmPromptSecurity.default_settings
+	DefaultSettings *Guardrail_LlmPromptSecurity_DefaultSecuritySettings `json:"defaultSettings,omitempty"`
+
+	// Optional. Use a user-defined LlmPolicy to configure the security
+	//  guardrail.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.LlmPromptSecurity.custom_policy
+	CustomPolicy *Guardrail_LlmPolicy `json:"customPolicy,omitempty"`
+
+	// Optional. Determines the behavior when the guardrail encounters an LLM
+	//  error.
+	//  - If true: the guardrail is bypassed.
+	//  - If false (default): the guardrail triggers/blocks.
+	//
+	//  Note: If a custom policy is provided, this field is ignored in favor
+	//  of the policy's 'fail_open' configuration.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.LlmPromptSecurity.fail_open
+	FailOpen *bool `json:"failOpen,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1.Guardrail.LlmPromptSecurity.DefaultSecuritySettings
+type Guardrail_LlmPromptSecurity_DefaultSecuritySettings struct {
+}
+
+// +kcc:proto=google.cloud.ces.v1.Guardrail.ModelSafety
+type Guardrail_ModelSafety struct {
+	// Required. List of safety settings.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.ModelSafety.safety_settings
+	// +required
+	SafetySettings []Guardrail_ModelSafety_SafetySetting `json:"safetySettings,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1.Guardrail.ModelSafety.SafetySetting
+type Guardrail_ModelSafety_SafetySetting struct {
+	// Required. The harm category.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.ModelSafety.SafetySetting.category
+	// +required
+	Category *string `json:"category,omitempty"`
+
+	// Required. The harm block threshold.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.ModelSafety.SafetySetting.threshold
+	// +required
+	Threshold *string `json:"threshold,omitempty"`
+}
+
 // +kcc:proto=google.cloud.ces.v1.McpTool
 type McpTool struct {
 	// Required. The name of the MCP tool.
@@ -1210,6 +1363,61 @@ type TransferRule_DisablePlannerTransfer struct {
 	ExpressionCondition *ExpressionCondition `json:"expressionCondition,omitempty"`
 }
 
+// +kcc:proto=google.cloud.ces.v1.TriggerAction
+type TriggerAction struct {
+	// Optional. Immediately respond with a preconfigured response.
+	// +kcc:proto:field=google.cloud.ces.v1.TriggerAction.respond_immediately
+	RespondImmediately *TriggerAction_RespondImmediately `json:"respondImmediately,omitempty"`
+
+	// Optional. Transfer the conversation to a different agent.
+	// +kcc:proto:field=google.cloud.ces.v1.TriggerAction.transfer_agent
+	TransferAgent *TriggerAction_TransferAgent `json:"transferAgent,omitempty"`
+
+	// Optional. Respond with a generative answer.
+	// +kcc:proto:field=google.cloud.ces.v1.TriggerAction.generative_answer
+	GenerativeAnswer *TriggerAction_GenerativeAnswer `json:"generativeAnswer,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1.TriggerAction.GenerativeAnswer
+type TriggerAction_GenerativeAnswer struct {
+	// Required. The prompt to use for the generative answer.
+	// +kcc:proto:field=google.cloud.ces.v1.TriggerAction.GenerativeAnswer.prompt
+	// +required
+	Prompt *string `json:"prompt,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1.TriggerAction.RespondImmediately
+type TriggerAction_RespondImmediately struct {
+	// Required. The canned responses for the agent to choose from. The response
+	//  is chosen randomly.
+	// +kcc:proto:field=google.cloud.ces.v1.TriggerAction.RespondImmediately.responses
+	// +required
+	Responses []TriggerAction_Response `json:"responses,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1.TriggerAction.Response
+type TriggerAction_Response struct {
+	// Required. Text for the agent to respond with.
+	// +kcc:proto:field=google.cloud.ces.v1.TriggerAction.Response.text
+	// +required
+	Text *string `json:"text,omitempty"`
+
+	// Optional. Whether the response is disabled. Disabled responses are not
+	//  used by the agent.
+	// +kcc:proto:field=google.cloud.ces.v1.TriggerAction.Response.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1.TriggerAction.TransferAgent
+type TriggerAction_TransferAgent struct {
+	// Required. The name of the agent to transfer the conversation to. The
+	//  agent must be in the same app as the current agent. Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/agents/{agent}`
+	// +kcc:proto:field=google.cloud.ces.v1.TriggerAction.TransferAgent.agent
+	// +required
+	Agent *string `json:"agent,omitempty"`
+}
+
 // +kcc:proto=google.cloud.ces.v1.WidgetTool
 type WidgetTool struct {
 	// Optional. The input parameters of the widget tool.
@@ -1376,6 +1584,25 @@ type DataStoreTool_EngineSourceObservedState struct {
 	//  Engine.
 	// +kcc:proto:field=google.cloud.ces.v1.DataStoreTool.EngineSource.data_store_sources
 	DataStoreSources []DataStoreTool_DataStoreSourceObservedState `json:"dataStoreSources,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1.Guardrail.LlmPromptSecurity
+type Guardrail_LlmPromptSecurityObservedState struct {
+	// Optional. Use the system's predefined default security settings.
+	//  To select this mode, include an empty 'default_settings' message
+	//  in the request. The 'default_prompt_template' field within
+	//  will be populated by the server in the response.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.LlmPromptSecurity.default_settings
+	DefaultSettings *Guardrail_LlmPromptSecurity_DefaultSecuritySettingsObservedState `json:"defaultSettings,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1.Guardrail.LlmPromptSecurity.DefaultSecuritySettings
+type Guardrail_LlmPromptSecurity_DefaultSecuritySettingsObservedState struct {
+	// Output only. The default prompt template used by the system.
+	//  This field is for display purposes to show the user what prompt
+	//  the system uses by default. It is OUTPUT_ONLY.
+	// +kcc:proto:field=google.cloud.ces.v1.Guardrail.LlmPromptSecurity.DefaultSecuritySettings.default_prompt_template
+	DefaultPromptTemplate *string `json:"defaultPromptTemplate,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.ces.v1.PythonFunction
