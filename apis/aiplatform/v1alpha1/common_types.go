@@ -509,3 +509,33 @@ type VoiceConfig struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.VoiceConfig.replicated_voice_config
 	ReplicatedVoiceConfig *ReplicatedVoiceConfig `json:"replicatedVoiceConfig,omitempty"`
 }
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.BatchDedicatedResources
+type BatchDedicatedResources struct {
+	// Required. Immutable. The specification of a single machine.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BatchDedicatedResources.machine_spec
+	// +required
+	MachineSpec *MachineSpec `json:"machineSpec,omitempty"`
+
+	// Immutable. The number of machine replicas used at the start of the batch
+	//  operation. If not set, Vertex AI decides starting number, not greater than
+	//  [max_replica_count][google.cloud.aiplatform.v1beta1.BatchDedicatedResources.max_replica_count]
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BatchDedicatedResources.starting_replica_count
+	StartingReplicaCount *int32 `json:"startingReplicaCount,omitempty"`
+
+	// Immutable. The maximum number of machine replicas the batch operation may
+	//  be scaled to. The default value is 10.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BatchDedicatedResources.max_replica_count
+	MaxReplicaCount *int32 `json:"maxReplicaCount,omitempty"`
+
+	// Optional. Immutable. If set, use DWS resource to schedule the deployment
+	//  workload. reference:
+	//  (https://cloud.google.com/blog/products/compute/introducing-dynamic-workload-scheduler)
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BatchDedicatedResources.flex_start
+	FlexStart *FlexStart `json:"flexStart,omitempty"`
+
+	// Optional. If true, schedule the deployment workload on [spot
+	//  VMs](https://cloud.google.com/kubernetes-engine/docs/concepts/spot-vms).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BatchDedicatedResources.spot
+	Spot *bool `json:"spot,omitempty"`
+}

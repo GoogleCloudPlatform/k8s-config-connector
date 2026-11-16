@@ -61,6 +61,7 @@ ${CONTROLLERBUILDER} generate-types \
   --prepopulate-resource \
   --allow-non-declarative \
   --resource AIPlatformArtifact:Artifact \
+  --resource AIPlatformBatchPredictionJob:BatchPredictionJob \
   --resource AIPlatformCachedContent:CachedContent \
   --resource AIPlatformContext:Context \
   --resource AIPlatformExecution:Execution \
@@ -81,6 +82,7 @@ ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1 \
   --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
   --resource AIPlatformArtifact:Artifact \
+  --resource AIPlatformBatchPredictionJob:BatchPredictionJob \
   --resource AIPlatformCachedContent:CachedContent \
   --resource AIPlatformContext:Context \
   --resource AIPlatformExecution:Execution \

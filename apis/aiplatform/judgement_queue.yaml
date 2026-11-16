@@ -80,6 +80,291 @@ entries:
     status: resolved
     resolution: accepted
     note: user-configurable state managed by clients per proto comment; retained in spec.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: triaged all findings; updated parent to inlined *parent.ProjectAndLocationRef, removed top-level labels, verified identity/references, and resolved modelRef, serviceAccountRef, and datasetRef.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: generated AIPlatformBatchPredictionJobIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
+    status: resolved
+    resolution: accepted
+    note: confirmed resource ID is server-generated; CreateBatchPredictionJobRequest has no ID parameter and BatchPredictionJob.name is output-only.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.batchPredictionJobs: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.batchPredictionJobs, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.batchPredictionJobs'
+    status: resolved
+    resolution: edited
+    note: updated to valid cloud.google.com documentation URL and removed guess annotation.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.dedicatedResources.machineSpec.reservationAffinity.reservationAffinityType
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. BatchDedicatedResources in common_types.go is also used by AIPlatformModelMonitor. To enforce it for AIPlatformBatchPredictionJob only, give AIPlatformBatchPredictionJob its own copy of BatchDedicatedResources whose MachineSpec field holds MachineSpecWithRequired, and run generate.sh again. AIPlatformBatchPredictionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: retained existing shared BatchDedicatedResources to preserve schema compatibility with AIPlatformModelMonitor.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.dedicatedResources.machineSpec.reservationAffinity.values
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to compute.googleapis.com/Reservation (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: accepted
+    note: shared ReservationAffinity struct across aiplatform/compute/vertexai resources uses string values for reservation affinity.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyName
+    reason: possible-reference-by-name
+    detail: KMSCryptoKeyRef
+    status: resolved
+    resolution: accepted
+    note: already modeled as KmsKeyRef (*kmsv1beta1.KMSCryptoKeyRef) in shared EncryptionSpec.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCachedContent, AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformModelMonitor, AIPlatformNotebookExecutionJob, AIPlatformNotebookRuntimeTemplate, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformBatchPredictionJob only, give AIPlatformBatchPredictionJob its own copy of EncryptionSpec. AIPlatformBatchPredictionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in shared EncryptionSpec to avoid breaking existing resources.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.metadata.featureAttributionsSchemaURI
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: GCS URI is not representable as a reference today; remains string.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.metadata.inputs
+    reason: message-map-derived
+    detail: derived as map[string]ExplanationMetadata_InputMetadata from proto google.cloud.aiplatform.v1.ExplanationMetadata.InputMetadata; verify Go type and mapping
+    status: resolved
+    resolution: accepted
+    note: derived map[string]ExplanationMetadata_InputMetadata compiles cleanly.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.metadata.inputs
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationMetadata in aiplatformmodel_types.go is also used by AIPlatformModel, AIPlatformModelMonitor, VertexAITrainingPipeline. +required on ExplanationMetadata.Inputs would apply there too. To enforce it for AIPlatformBatchPredictionJob only, give AIPlatformBatchPredictionJob its own copy of ExplanationMetadata. AIPlatformBatchPredictionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept inputs optional to maintain shared ExplanationMetadata consistency.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.metadata.inputs.KEY.encodedBaselines
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: deferred
+    note: deferred well-known proto type resolution pending team-wide conventions.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.metadata.inputs.KEY.inputBaselines
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: deferred
+    note: deferred well-known proto type resolution pending team-wide conventions.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.metadata.outputs
+    reason: message-map-derived
+    detail: derived as map[string]ExplanationMetadata_OutputMetadata from proto google.cloud.aiplatform.v1.ExplanationMetadata.OutputMetadata; verify Go type and mapping
+    status: resolved
+    resolution: accepted
+    note: derived map[string]ExplanationMetadata_OutputMetadata compiles cleanly.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.metadata.outputs
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationMetadata in aiplatformmodel_types.go is also used by AIPlatformModel, AIPlatformModelMonitor, VertexAITrainingPipeline. +required on ExplanationMetadata.Outputs would apply there too. To enforce it for AIPlatformBatchPredictionJob only, give AIPlatformBatchPredictionJob its own copy of ExplanationMetadata. AIPlatformBatchPredictionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept outputs optional to maintain shared ExplanationMetadata consistency.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.metadata.outputs.KEY.indexDisplayNameMapping
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: deferred
+    note: deferred well-known proto type resolution pending team-wide conventions.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.parameters.examples.exampleGCSSource.gcsSource.uris
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformModel, AIPlatformModelMonitor, VertexAITrainingPipeline. To enforce it for AIPlatformBatchPredictionJob only, give AIPlatformBatchPredictionJob its own copy of ExplanationParameters whose Examples field holds ExamplesWithRequired, and run generate.sh again. AIPlatformBatchPredictionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept uris optional to maintain shared ExplanationParameters consistency.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.parameters.examples.nearestNeighborSearchConfig
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: deferred
+    note: deferred well-known proto type resolution pending team-wide conventions.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.parameters.integratedGradientsAttribution.stepCount
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformModel, AIPlatformModelMonitor, VertexAITrainingPipeline. To enforce it for AIPlatformBatchPredictionJob only, give AIPlatformBatchPredictionJob its own copy of ExplanationParameters whose IntegratedGradientsAttribution field holds IntegratedGradientsAttributionWithRequired, and run generate.sh again. AIPlatformBatchPredictionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: not-applicable
+    note: field sits inside oneof variant integratedGradientsAttribution; kept optional in shared ExplanationParameters.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.parameters.outputIndices
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.ListValue, which was generated as struct ListValue; confirm KRM representation
+    status: resolved
+    resolution: deferred
+    note: deferred well-known proto type resolution pending team-wide conventions.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.parameters.sampledShapleyAttribution.pathCount
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformModel, AIPlatformModelMonitor, VertexAITrainingPipeline. To enforce it for AIPlatformBatchPredictionJob only, give AIPlatformBatchPredictionJob its own copy of ExplanationParameters whose SampledShapleyAttribution field holds SampledShapleyAttributionWithRequired, and run generate.sh again. AIPlatformBatchPredictionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: not-applicable
+    note: field sits inside oneof variant sampledShapleyAttribution; kept optional in shared ExplanationParameters.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.parameters.xraiAttribution.stepCount
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformModel, AIPlatformModelMonitor, VertexAITrainingPipeline. To enforce it for AIPlatformBatchPredictionJob only, give AIPlatformBatchPredictionJob its own copy of ExplanationParameters whose XraiAttribution field holds XraiAttributionWithRequired, and run generate.sh again. AIPlatformBatchPredictionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: not-applicable
+    note: field sits inside oneof variant xraiAttribution; kept optional in shared ExplanationParameters.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputConfig.bigquerySource.inputURI
+    reason: reference-not-representable
+    detail: 'bq-scheme-not-a-gcp-resource-name: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: BigQuery URI is not representable as a reference today; remains string.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputConfig.vertexMultimodalDatasetSource.datasetName
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to aiplatform.googleapis.com/Dataset (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: converted to DatasetRef (*vertexaiv1beta1.VertexAIDatasetRef).
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.model
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to aiplatform.googleapis.com/Model (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: converted to ModelRef (*AIPlatformModelRef).
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelParameters
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: deferred
+    note: deferred well-known proto type resolution pending team-wide conventions.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.outputConfig.bigqueryDestination.outputURI
+    reason: reference-not-representable
+    detail: 'bq-scheme-not-a-gcp-resource-name: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: BigQuery URI is not representable as a reference today; remains string.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.outputConfig.bigqueryDestination.outputURI
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformBatchPredictionJobSpec.OutputConfig in aiplatformbatchpredictionjob_types.go from BatchPredictionJob_OutputConfig to BatchPredictionJob_OutputConfigWithRequired and run generate.sh again. AIPlatformBatchPredictionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: not-applicable
+    note: field sits inside oneof variant bigqueryDestination; kept optional in KRM oneof pattern.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.outputConfig.gcsDestination.outputURIPrefix
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: GCS URI prefix is not representable as a reference today; remains string.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.outputConfig.vertexMultimodalDatasetDestination.bigqueryDestination.outputURI
+    reason: reference-not-representable
+    detail: 'bq-scheme-not-a-gcp-resource-name: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: BigQuery URI is not representable as a reference today; remains string.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.outputConfig.vertexMultimodalDatasetDestination.bigqueryDestination.outputURI
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformBatchPredictionJobSpec.OutputConfig in aiplatformbatchpredictionjob_types.go from BatchPredictionJob_OutputConfig to BatchPredictionJob_OutputConfigWithRequired and run generate.sh again. AIPlatformBatchPredictionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: not-applicable
+    note: field sits inside oneof variant bigqueryDestination; kept optional in KRM oneof pattern.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.serviceAccount
+    reason: possible-reference-by-description
+    detail: the field name ends in serviceAccount
+    status: resolved
+    resolution: edited
+    note: converted to ServiceAccountRef (*refsv1beta1.IAMServiceAccountRef).
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.unmanagedContainerModel.containerSpec.imageURI
+    reason: reference-not-representable
+    detail: 'container-image-uri-not-a-storage-object: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: container image URI is not a KCC resource reference; remains string.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.unmanagedContainerModel.predictSchemata.instanceSchemaURI
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: GCS URI is not representable as a reference today; remains string.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.unmanagedContainerModel.predictSchemata.parametersSchemaURI
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: GCS URI is not representable as a reference today; remains string.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.unmanagedContainerModel.predictSchemata.predictionSchemaURI
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: GCS URI is not representable as a reference today; remains string.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
@@ -1420,7 +1705,7 @@ entries:
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.encryptionSpec.kmsKeyRef
     reason: required-not-enforced
-    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCachedContent, AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformModelMonitor, AIPlatformNotebookExecutionJob, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformNotebookRuntimeTemplate only, give AIPlatformNotebookRuntimeTemplate its own copy of EncryptionSpec. AIPlatformNotebookRuntimeTemplate is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformBatchPredictionJob, AIPlatformCachedContent, AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformModelMonitor, AIPlatformNotebookExecutionJob, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformNotebookRuntimeTemplate only, give AIPlatformNotebookRuntimeTemplate its own copy of EncryptionSpec. AIPlatformNotebookRuntimeTemplate is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: open
   - kind: AIPlatformNotebookRuntimeTemplate
     group: aiplatform.cnrm.cloud.google.com
