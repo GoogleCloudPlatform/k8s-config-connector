@@ -78,6 +78,7 @@ require (
 	cloud.google.com/go/networksecurity v0.17.0
 	cloud.google.com/go/networkservices v0.6.0
 	cloud.google.com/go/notebooks v1.17.0
+	cloud.google.com/go/observability v0.1.1
 	cloud.google.com/go/orgpolicy v1.20.0
 	cloud.google.com/go/osconfig v1.21.0
 	cloud.google.com/go/oslogin v1.18.0

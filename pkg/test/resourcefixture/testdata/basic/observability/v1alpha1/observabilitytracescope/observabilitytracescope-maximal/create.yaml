@@ -15,12 +15,11 @@
 apiVersion: observability.cnrm.cloud.google.com/v1alpha1
 kind: ObservabilityTraceScope
 metadata:
-  name: observabilitytracescope-max-${uniqueId}
+  name: tracescope-max-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
   location: global
-  resourceID: tracescope-max-${uniqueId}
   description: "Initial description for observabilitytracescope-maximal"
   resourceNameRefs:
     - external: projects/${projectId}

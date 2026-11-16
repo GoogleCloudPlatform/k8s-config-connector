@@ -1,10 +1,10 @@
 # HTTP Lifecycle Report: `observabilitytracescope-maximal`
 
 - **Primary Resource:** `ObservabilityTraceScope` (`observability.cnrm.cloud.google.com/v1alpha1`)
-- **Resource Name:** `observabilitytracescope-max-${uniqueId} (resourceID: tracescope-max-${uniqueId})`
+- **Resource Name:** `tracescope-max-${uniqueId}`
 - **Source Log:** `_http.log` (6 total HTTP entries, 0 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:44185dd0bfcc973c`
+- **Integrity Hash:** `sha256:2bcbc98a98fb4470`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 

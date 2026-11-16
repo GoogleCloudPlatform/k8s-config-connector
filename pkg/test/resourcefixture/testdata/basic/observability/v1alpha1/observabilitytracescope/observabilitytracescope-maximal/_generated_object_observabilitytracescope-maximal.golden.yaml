@@ -7,14 +7,13 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-  name: observabilitytracescope-max-${uniqueId}
+  name: tracescope-max-${uniqueId}
   namespace: ${uniqueId}
 spec:
   description: Updated description for observabilitytracescope-maximal
   location: global
   projectRef:
     external: ${projectId}
-  resourceID: tracescope-max-${uniqueId}
   resourceNameRefs:
   - external: projects/${projectId}
 status:
