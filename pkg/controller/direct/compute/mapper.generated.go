@@ -29,6 +29,7 @@ import (
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmnetworkconnectivitynetworkconnectivityrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/networkconnectivityrefs"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -5234,26 +5235,78 @@ func ComputeResourcePolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 }
 */
 
-/* found existing non-generated mapping function "ComputeResourcePolicySpec_v1beta1_ToProto", skipping
-func ComputeResourcePolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeResourcePolicySpec) *pb.ResourcePolicy {
+/*
+found existing non-generated mapping function "ComputeResourcePolicySpec_v1beta1_ToProto", skipping
+
+	func ComputeResourcePolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeResourcePolicySpec) *pb.ResourcePolicy {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ResourcePolicy{}
+		out.Description = in.Description
+		out.DiskConsistencyGroupPolicy = ResourcePolicyDiskConsistencyGroupPolicy_v1beta1_ToProto(mapCtx, in.DiskConsistencyGroupPolicy)
+		out.GroupPlacementPolicy = ResourcePolicyGroupPlacementPolicy_v1beta1_ToProto(mapCtx, in.GroupPlacementPolicy)
+		out.InstanceSchedulePolicy = ResourcePolicyInstanceSchedulePolicy_v1beta1_ToProto(mapCtx, in.InstanceSchedulePolicy)
+		// MISSING: Kind
+		// MISSING: Name
+		out.Region = in.Region
+		// MISSING: ResourceStatus
+		// MISSING: SelfLink
+		out.SnapshotSchedulePolicy = ResourcePolicySnapshotSchedulePolicy_v1beta1_ToProto(mapCtx, in.SnapshotSchedulePolicy)
+		// MISSING: WorkloadPolicy
+		return out
+	}
+*/
+func ComputeRolloutPlanObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlan) *krmcomputev1alpha1.ComputeRolloutPlanObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ResourcePolicy{}
-	out.Description = in.Description
-	out.DiskConsistencyGroupPolicy = ResourcePolicyDiskConsistencyGroupPolicy_v1beta1_ToProto(mapCtx, in.DiskConsistencyGroupPolicy)
-	out.GroupPlacementPolicy = ResourcePolicyGroupPlacementPolicy_v1beta1_ToProto(mapCtx, in.GroupPlacementPolicy)
-	out.InstanceSchedulePolicy = ResourcePolicyInstanceSchedulePolicy_v1beta1_ToProto(mapCtx, in.InstanceSchedulePolicy)
-	// MISSING: Kind
+	out := &krmcomputev1alpha1.ComputeRolloutPlanObservedState{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ID = in.Id
+	out.Kind = in.Kind
 	// MISSING: Name
-	out.Region = in.Region
-	// MISSING: ResourceStatus
-	// MISSING: SelfLink
-	out.SnapshotSchedulePolicy = ResourcePolicySnapshotSchedulePolicy_v1beta1_ToProto(mapCtx, in.SnapshotSchedulePolicy)
-	// MISSING: WorkloadPolicy
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithID = in.SelfLinkWithId
+	out.Waves = direct.Slice_FromProto(mapCtx, in.Waves, RolloutPlanWaveObservedState_v1alpha1_FromProto)
 	return out
 }
-*/
+func ComputeRolloutPlanObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeRolloutPlanObservedState) *pb.RolloutPlan {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutPlan{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Id = in.ID
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithId = in.SelfLinkWithID
+	out.Waves = direct.Slice_ToProto(mapCtx, in.Waves, RolloutPlanWaveObservedState_v1alpha1_ToProto)
+	return out
+}
+func ComputeRolloutPlanSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlan) *krmcomputev1alpha1.ComputeRolloutPlanSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeRolloutPlanSpec{}
+	out.Description = in.Description
+	out.LocationScope = in.LocationScope
+	// MISSING: Name
+	out.Waves = direct.Slice_FromProto(mapCtx, in.Waves, RolloutPlanWave_v1alpha1_FromProto)
+	return out
+}
+func ComputeRolloutPlanSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeRolloutPlanSpec) *pb.RolloutPlan {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutPlan{}
+	out.Description = in.Description
+	out.LocationScope = in.LocationScope
+	// MISSING: Name
+	out.Waves = direct.Slice_ToProto(mapCtx, in.Waves, RolloutPlanWave_v1alpha1_ToProto)
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeRouteSpec_v1beta1_FromProto", skipping
 func ComputeRouteSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Route) *krmcomputev1beta1.ComputeRouteSpec {
@@ -9245,19 +9298,213 @@ func ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_FromProto(ma
 }
 */
 
-/* found existing non-generated mapping function "ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto", skipping
-func ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ResourcePolicySnapshotSchedulePolicySnapshotProperties) *pb.ResourcePolicySnapshotSchedulePolicySnapshotProperties {
+/*
+found existing non-generated mapping function "ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto", skipping
+
+	func ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ResourcePolicySnapshotSchedulePolicySnapshotProperties) *pb.ResourcePolicySnapshotSchedulePolicySnapshotProperties {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ResourcePolicySnapshotSchedulePolicySnapshotProperties{}
+		out.ChainName = in.ChainName
+		out.GuestFlush = in.GuestFlush
+		out.Labels = in.Labels
+		out.StorageLocations = in.StorageLocations
+		return out
+	}
+*/
+func RolloutPlanWave_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlanWave) *krmcomputev1alpha1.RolloutPlanWave {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ResourcePolicySnapshotSchedulePolicySnapshotProperties{}
-	out.ChainName = in.ChainName
-	out.GuestFlush = in.GuestFlush
-	out.Labels = in.Labels
-	out.StorageLocations = in.StorageLocations
+	out := &krmcomputev1alpha1.RolloutPlanWave{}
+	out.DisplayName = in.DisplayName
+	// MISSING: Number
+	out.OrchestrationOptions = RolloutPlanWaveOrchestrationOptions_v1alpha1_FromProto(mapCtx, in.GetOrchestrationOptions())
+	out.Selectors = direct.Slice_FromProto(mapCtx, in.Selectors, RolloutPlanWaveSelector_v1alpha1_FromProto)
+	out.Validation = RolloutPlanWaveValidation_v1alpha1_FromProto(mapCtx, in.GetValidation())
 	return out
 }
-*/
+func RolloutPlanWave_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RolloutPlanWave) *pb.RolloutPlanWave {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutPlanWave{}
+	out.DisplayName = in.DisplayName
+	// MISSING: Number
+	out.OrchestrationOptions = RolloutPlanWaveOrchestrationOptions_v1alpha1_ToProto(mapCtx, in.OrchestrationOptions)
+	out.Selectors = direct.Slice_ToProto(mapCtx, in.Selectors, RolloutPlanWaveSelector_v1alpha1_ToProto)
+	out.Validation = RolloutPlanWaveValidation_v1alpha1_ToProto(mapCtx, in.Validation)
+	return out
+}
+func RolloutPlanWaveObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlanWave) *krmcomputev1alpha1.RolloutPlanWaveObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RolloutPlanWaveObservedState{}
+	// MISSING: DisplayName
+	out.Number = in.Number
+	// MISSING: OrchestrationOptions
+	// MISSING: Selectors
+	// MISSING: Validation
+	return out
+}
+func RolloutPlanWaveObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RolloutPlanWaveObservedState) *pb.RolloutPlanWave {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutPlanWave{}
+	// MISSING: DisplayName
+	out.Number = in.Number
+	// MISSING: OrchestrationOptions
+	// MISSING: Selectors
+	// MISSING: Validation
+	return out
+}
+func RolloutPlanWaveOrchestrationOptions_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlanWaveOrchestrationOptions) *krmcomputev1alpha1.RolloutPlanWaveOrchestrationOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RolloutPlanWaveOrchestrationOptions{}
+	out.Delays = direct.Slice_FromProto(mapCtx, in.Delays, RolloutPlanWaveOrchestrationOptionsDelay_v1alpha1_FromProto)
+	out.MaxConcurrentLocations = in.MaxConcurrentLocations
+	out.MaxConcurrentResourcesPerLocation = in.MaxConcurrentResourcesPerLocation
+	return out
+}
+func RolloutPlanWaveOrchestrationOptions_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RolloutPlanWaveOrchestrationOptions) *pb.RolloutPlanWaveOrchestrationOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutPlanWaveOrchestrationOptions{}
+	out.Delays = direct.Slice_ToProto(mapCtx, in.Delays, RolloutPlanWaveOrchestrationOptionsDelay_v1alpha1_ToProto)
+	out.MaxConcurrentLocations = in.MaxConcurrentLocations
+	out.MaxConcurrentResourcesPerLocation = in.MaxConcurrentResourcesPerLocation
+	return out
+}
+func RolloutPlanWaveOrchestrationOptionsDelay_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlanWaveOrchestrationOptionsDelay) *krmcomputev1alpha1.RolloutPlanWaveOrchestrationOptionsDelay {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RolloutPlanWaveOrchestrationOptionsDelay{}
+	out.Delimiter = in.Delimiter
+	out.Duration = in.Duration
+	out.Type = in.Type
+	return out
+}
+func RolloutPlanWaveOrchestrationOptionsDelay_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RolloutPlanWaveOrchestrationOptionsDelay) *pb.RolloutPlanWaveOrchestrationOptionsDelay {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutPlanWaveOrchestrationOptionsDelay{}
+	out.Delimiter = in.Delimiter
+	out.Duration = in.Duration
+	out.Type = in.Type
+	return out
+}
+func RolloutPlanWaveSelector_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlanWaveSelector) *krmcomputev1alpha1.RolloutPlanWaveSelector {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RolloutPlanWaveSelector{}
+	out.LocationSelector = RolloutPlanWaveSelectorLocationSelector_v1alpha1_FromProto(mapCtx, in.GetLocationSelector())
+	out.ResourceHierarchySelector = RolloutPlanWaveSelectorResourceHierarchySelector_v1alpha1_FromProto(mapCtx, in.GetResourceHierarchySelector())
+	return out
+}
+func RolloutPlanWaveSelector_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RolloutPlanWaveSelector) *pb.RolloutPlanWaveSelector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutPlanWaveSelector{}
+	out.LocationSelector = RolloutPlanWaveSelectorLocationSelector_v1alpha1_ToProto(mapCtx, in.LocationSelector)
+	out.ResourceHierarchySelector = RolloutPlanWaveSelectorResourceHierarchySelector_v1alpha1_ToProto(mapCtx, in.ResourceHierarchySelector)
+	return out
+}
+func RolloutPlanWaveSelectorLocationSelector_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlanWaveSelectorLocationSelector) *krmcomputev1alpha1.RolloutPlanWaveSelectorLocationSelector {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RolloutPlanWaveSelectorLocationSelector{}
+	out.IncludedLocations = in.IncludedLocations
+	return out
+}
+func RolloutPlanWaveSelectorLocationSelector_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RolloutPlanWaveSelectorLocationSelector) *pb.RolloutPlanWaveSelectorLocationSelector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutPlanWaveSelectorLocationSelector{}
+	out.IncludedLocations = in.IncludedLocations
+	return out
+}
+func RolloutPlanWaveSelectorResourceHierarchySelector_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlanWaveSelectorResourceHierarchySelector) *krmcomputev1alpha1.RolloutPlanWaveSelectorResourceHierarchySelector {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RolloutPlanWaveSelectorResourceHierarchySelector{}
+
+	if v := in.GetIncludedFolders(); len(v) != 0 {
+		for i := range v {
+			out.IncludedFolderRefs = append(out.IncludedFolderRefs, refsv1beta1.FolderRef{External: v[i]})
+		}
+	}
+
+	if v := in.GetIncludedOrganizations(); len(v) != 0 {
+		for i := range v {
+			out.IncludedOrganizationRefs = append(out.IncludedOrganizationRefs, refsv1beta1.OrganizationRef{External: v[i]})
+		}
+	}
+
+	if v := in.GetIncludedProjects(); len(v) != 0 {
+		for i := range v {
+			out.IncludedProjectRefs = append(out.IncludedProjectRefs, refsv1beta1.ProjectRef{External: v[i]})
+		}
+	}
+
+	return out
+}
+func RolloutPlanWaveSelectorResourceHierarchySelector_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RolloutPlanWaveSelectorResourceHierarchySelector) *pb.RolloutPlanWaveSelectorResourceHierarchySelector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutPlanWaveSelectorResourceHierarchySelector{}
+
+	if v := in.IncludedFolderRefs; len(v) != 0 {
+		for i := range v {
+			out.IncludedFolders = append(out.IncludedFolders, v[i].External)
+		}
+	}
+
+	if v := in.IncludedOrganizationRefs; len(v) != 0 {
+		for i := range v {
+			out.IncludedOrganizations = append(out.IncludedOrganizations, v[i].External)
+		}
+	}
+
+	if v := in.IncludedProjectRefs; len(v) != 0 {
+		for i := range v {
+			out.IncludedProjects = append(out.IncludedProjects, v[i].External)
+		}
+	}
+
+	return out
+}
+func RolloutPlanWaveValidation_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlanWaveValidation) *krmcomputev1alpha1.RolloutPlanWaveValidation {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RolloutPlanWaveValidation{}
+	out.TimeBasedValidationMetadata = RolloutPlanWaveValidationTimeBasedValidationMetadata_v1alpha1_FromProto(mapCtx, in.GetTimeBasedValidationMetadata())
+	out.Type = in.Type
+	return out
+}
+func RolloutPlanWaveValidation_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RolloutPlanWaveValidation) *pb.RolloutPlanWaveValidation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutPlanWaveValidation{}
+	out.TimeBasedValidationMetadata = RolloutPlanWaveValidationTimeBasedValidationMetadata_v1alpha1_ToProto(mapCtx, in.TimeBasedValidationMetadata)
+	out.Type = in.Type
+	return out
+}
 
 /* found existing non-generated mapping function "RouterAdvertisedIPRange_v1beta1_FromProto", skipping
 func RouterAdvertisedIPRange_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterAdvertisedIpRange) *krmcomputev1beta1.RouterAdvertisedIPRange {

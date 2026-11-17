@@ -124,6 +124,19 @@ ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeHealthSource:HealthSource
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeRolloutPlan:RolloutPlan \
+  --include-skipped-output \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeRolloutPlan:RolloutPlan \
+  --pattern ComputeRolloutPlan="projects/{project}/global/rolloutPlans/{rolloutPlan}"
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.compute.v1 \

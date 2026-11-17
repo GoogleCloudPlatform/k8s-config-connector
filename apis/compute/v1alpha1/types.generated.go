@@ -43,6 +43,7 @@
 // resource: ComputeStoragePool:StoragePool
 // resource: ComputeHealthSource:HealthSource
 // resource: ComputeInstantSnapshotGroup:InstantSnapshotGroup
+// resource: ComputeRolloutPlan:RolloutPlan
 
 package v1alpha1
 
@@ -2538,6 +2539,195 @@ type ReservationAffinity struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.RolloutPlan", skipping
+
+// +kcc:proto=google.cloud.compute.v1.RolloutPlan
+type RolloutPlan struct {
+	// Output only. [Output Only] Creation timestamp inRFC3339
+	//  text format.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlan.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you
+	//  create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlan.description
+	Description *string `json:"description,omitempty"`
+
+	// Output only. [Output Only] The unique identifier for the resource. This identifier is
+	//  defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlan.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Output only. [Output Only] Type of the resource. Always compute#rolloutPlan
+	//  for rolloutPlans.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlan.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// The location scope of the rollout plan. If not specified, the location
+	//  scope is considered as ZONAL.
+	//  Check the LocationScope enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlan.location_scope
+	LocationScope *string `json:"locationScope,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created.
+	//  The name must be 1-63 characters long, and comply withRFC1035.
+	//  Specifically, the name must be 1-63 characters long and match the regular
+	//  expression `[a-z]([-a-z0-9]*[a-z0-9])?`
+	//  which means the first character must be a lowercase letter, and all
+	//  following characters must be a dash, lowercase letter, or digit, except
+	//  the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlan.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. [Output Only] Server-defined fully-qualified URL for this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlan.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Output only. [Output Only] Server-defined URL for this resource's resource id.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlan.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+
+	// Required. The waves included in this rollout plan.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlan.waves
+	Waves []RolloutPlanWave `json:"waves,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "RolloutPlanWave", skipping
+
+// +kcc:proto=google.cloud.compute.v1.RolloutPlanWave
+type RolloutPlanWave struct {
+	// Optional. The display name of this wave of the rollout plan.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWave.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Output only. The wave number.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWave.number
+	Number *int64 `json:"number,omitempty"`
+
+	// Optional. The orchestration options for this wave.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWave.orchestration_options
+	OrchestrationOptions *RolloutPlanWaveOrchestrationOptions `json:"orchestrationOptions,omitempty"`
+
+	// Required. The selectors for this wave. There is a logical AND between each selector
+	//  defined in a wave, so a resource must satisfy the criteria of *all* the
+	//  specified selectors to be in scope for the wave.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWave.selectors
+	Selectors []RolloutPlanWaveSelector `json:"selectors,omitempty"`
+
+	// Required. The validation to be performed at the end of this wave.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWave.validation
+	Validation *RolloutPlanWaveValidation `json:"validation,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.compute.v1.RolloutPlanWaveOrchestrationOptions
+type RolloutPlanWaveOrchestrationOptions struct {
+	// Optional. Delays, if any, to be added between batches of projects. We allow
+	//  multiple Delays to be specified, letting users set separate delays
+	//  between batches of projects corresponding to different locations and
+	//  batches of projects corresponding to the same location.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWaveOrchestrationOptions.delays
+	Delays []RolloutPlanWaveOrchestrationOptionsDelay `json:"delays,omitempty"`
+
+	// Optional. Maximum number of locations to be orchestrated in parallel.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWaveOrchestrationOptions.max_concurrent_locations
+	MaxConcurrentLocations *int64 `json:"maxConcurrentLocations,omitempty"`
+
+	// Optional. Maximum number of resources to be orchestrated per location in
+	//  parallel.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWaveOrchestrationOptions.max_concurrent_resources_per_location
+	MaxConcurrentResourcesPerLocation *int64 `json:"maxConcurrentResourcesPerLocation,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.RolloutPlanWaveOrchestrationOptionsDelay
+type RolloutPlanWaveOrchestrationOptionsDelay struct {
+	// Optional. Controls whether the delay should only be added between batches of
+	//  projects corresponding to different locations, or also between
+	//  batches of projects corresponding to the same location.
+	//
+	//  Must be set to DELIMITER_UNSPECIFIED if no delay is to be added.
+	//  Check the Delimiter enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWaveOrchestrationOptionsDelay.delimiter
+	Delimiter *string `json:"delimiter,omitempty"`
+
+	// Optional. The duration of the delay, if any, to be added between batches of
+	//  projects. A zero duration corresponds to no delay.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWaveOrchestrationOptionsDelay.duration
+	Duration *string `json:"duration,omitempty"`
+
+	// Optional. Controls whether the specified duration is to be added at the end of
+	//  each batch, or if the total processing time for each batch will be
+	//  padded if needed to meet the specified duration.
+	//
+	//  Must be set to TYPE_UNSPECIFIED if no delay is to be added.
+	//  Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWaveOrchestrationOptionsDelay.type
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.RolloutPlanWaveSelector
+type RolloutPlanWaveSelector struct {
+	// Optional. Roll out to resources by Cloud locations.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWaveSelector.location_selector
+	LocationSelector *RolloutPlanWaveSelectorLocationSelector `json:"locationSelector,omitempty"`
+
+	// Optional. Roll out to resources by Cloud Resource Manager resource hierarchy.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWaveSelector.resource_hierarchy_selector
+	ResourceHierarchySelector *RolloutPlanWaveSelectorResourceHierarchySelector `json:"resourceHierarchySelector,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.RolloutPlanWaveSelectorLocationSelector
+type RolloutPlanWaveSelectorLocationSelector struct {
+	// Optional. Example: "us-central1-a"
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWaveSelectorLocationSelector.included_locations
+	IncludedLocations []string `json:"includedLocations,omitempty"`
+}
+
+/* found existing non-generated go type "RolloutPlanWaveSelectorResourceHierarchySelector", skipping
+
+// +kcc:proto=google.cloud.compute.v1.RolloutPlanWaveSelectorResourceHierarchySelector
+type RolloutPlanWaveSelectorResourceHierarchySelector struct {
+	// Optional. Format: "folders/{folder_id}"
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWaveSelectorResourceHierarchySelector.included_folders
+	IncludedFolders []string `json:"includedFolders,omitempty"`
+
+	// Optional. Format: "organizations/{organization_id}"
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWaveSelectorResourceHierarchySelector.included_organizations
+	IncludedOrganizations []string `json:"includedOrganizations,omitempty"`
+
+	// Optional. Format: "projects/{project_id}"
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWaveSelectorResourceHierarchySelector.included_projects
+	IncludedProjects []string `json:"includedProjects,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.compute.v1.RolloutPlanWaveValidation
+type RolloutPlanWaveValidation struct {
+	// Optional. Metadata required if type = "time".
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWaveValidation.time_based_validation_metadata
+	TimeBasedValidationMetadata *RolloutPlanWaveValidationTimeBasedValidationMetadata `json:"timeBasedValidationMetadata,omitempty"`
+
+	// Required. The type of the validation. If a type of validation is associated with
+	//  a metadata object, the appropriate metadata field mapping to the
+	//  validation type must be provided in the validation message. Possible
+	//  values are in quotes below alongside an explanation:
+	//    "manual": The system waits for an end-user approval API before
+	//      progressing to the next wave.
+	//    "time": The system waits for a user specified duration before
+	//      progressing to the next wave. TimeBasedValidation must be provided.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWaveValidation.type
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.RolloutPlanWaveValidationTimeBasedValidationMetadata
+type RolloutPlanWaveValidationTimeBasedValidationMetadata struct {
+	// Optional. The duration that the system waits in between waves. This wait starts
+	//  after all changes in the wave are rolled out.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlanWaveValidationTimeBasedValidationMetadata.wait_duration
+	WaitDuration *string `json:"waitDuration,omitempty"`
+}
+
 /* unreachable type SavedAttachedDisk
 // +kcc:proto=google.cloud.compute.v1.SavedAttachedDisk
 type SavedAttachedDisk struct {
@@ -4286,6 +4476,35 @@ type InterconnectGroupObservedState struct {
 	// [Output Only] Server-defined URL for the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.RolloutPlan", skipping
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.RolloutPlan
+type RolloutPlanObservedState struct {
+	// Output only. [Output Only] Creation timestamp inRFC3339
+	//  text format.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlan.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// Output only. [Output Only] The unique identifier for the resource. This identifier is
+	//  defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlan.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Output only. [Output Only] Type of the resource. Always compute#rolloutPlan
+	//  for rolloutPlans.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlan.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Output only. [Output Only] Server-defined fully-qualified URL for this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlan.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Output only. [Output Only] Server-defined URL for this resource's resource id.
+	// +kcc:proto:field=google.cloud.compute.v1.RolloutPlan.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
 }
 */
 

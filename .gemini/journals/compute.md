@@ -566,3 +566,30 @@
   - Re-ran `./apis/compute/generate.sh` and verified CRD generation, mappers, deepcopy code.
   - Re-recorded `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
   - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.
+
+### [2026-11-14] Greenfield: Prepopulate direct KRM types, identity, and judgement queue for ComputeRolloutPlan
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for `ComputeRolloutPlan` (issue #15642) following Greenfield Step 1a (`prepopulate/SKILL.md`).
+- **Proto & Client Upgrade**:
+  - `RolloutPlan` is defined in Google Cloud Compute API v1 (`google/cloud/compute/v1/compute.proto`) and managed via the `RolloutPlans` service with global scope `projects/{project}/global/rolloutPlans/{rolloutPlan}`.
+  - Appended `RolloutPlan` messages and service definitions copied verbatim from `google/cloud/compute/v1/compute.proto` (commit `7e7f1e9533723bcf3821e681e564b27f92fd46f5`) to `dev/tools/controllerbuilder/generate-proto.sh`, following the established `HealthSource` pattern.
+- **Scaffolding & Mapper Fix**:
+  - Configured `apis/compute/generate.sh` with `generate-types --prepopulate-resource` and `generate-identity` using `--pattern ComputeRolloutPlan="projects/{project}/global/rolloutPlans/{rolloutPlan}"`.
+  - Created `pkg/controller/direct/compute/computerolloutplan_mapper.go` with minimal hand-written mapper functions for `RolloutPlanWaveValidationTimeBasedValidationMetadata` which was skipped by `generate-mapper` due to its `*Metadata` suffix.
+  - Added `ComputeRolloutPlan` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+- **Verification**:
+  - Identity conformance tests (`TestComputeRolloutPlanIdentity_Conformance`), unit tests (`apis/compute/...`, `pkg/controller/direct/compute/...`), CRD generation, and API checks (`tests/apichecks/...`) all pass cleanly.
+
+### [2026-11-14] Greenfield: Triage judgement queue and finalize direct KRM types and identity for ComputeRolloutPlan
+- **Context**: Triaged and finalized direct KRM types, identity, and references for `ComputeRolloutPlan` (issue #15677) following Greenfield Step 1b (`judgement/SKILL.md`).
+- **Judgement Queue Resolutions & Learnings**:
+  1. `untriaged-bulk-generation`: Resolved after triaging all fields, omissions, references, and KRM conventions.
+  2. `identity-multi-pattern` & `identity-root-unknown`: Verified `RolloutPlan` is a global resource parented by project (`projects/{project}/global/rolloutPlans/{rolloutPlan}`) in compute v1. Marked `spec.projectRef` as required (`// +required`) and removed `spec.location`.
+  3. `verify-resource-docs-link`: Corrected resource documentation link to `https://cloud.google.com/compute/docs/reference/rest/v1/rolloutPlans`.
+  4. `location-parent-unknown`: Dropped `spec.location` as `ComputeRolloutPlan` is a global resource parented by project.
+  5. `possible-reference-by-description` on `.spec.waves[].selectors[].resourceHierarchySelector` fields: Moved `RolloutPlanWaveSelectorResourceHierarchySelector` to `computerolloutplan_types.go` and converted `includedFolders`, `includedOrganizations`, and `includedProjects` to `IncludedFolderRefs []refsv1beta1.FolderRef`, `IncludedOrganizationRefs []refsv1beta1.OrganizationRef`, and `IncludedProjectRefs []refsv1beta1.ProjectRef`. `controllerbuilder generate-mapper` automatically maps these slice references to/from proto string slices via `.External`.
+  6. `well-known-output-only-pattern-in-comment` on `waves[].number`: In proto, `number` is marked `Output only. The wave number.` Moved `RolloutPlanWave` to `computerolloutplan_types.go` without `number` in Spec, created `RolloutPlanWaveObservedState` containing `number`, and added `Waves []RolloutPlanWaveObservedState` under `ComputeRolloutPlanObservedState`. `generate-mapper` automatically generates `RolloutPlanWaveObservedState_v1alpha1_FromProto`.
+  7. `server-set-field-placed` on `creationTimestamp`, `id`, `kind`, `selfLink`, and `selfLinkWithID`: Confirmed server-generated output-only fields; verified placement in `ComputeRolloutPlanObservedState` and removed `+kcc:guess` comments.
+- **Verification**:
+  - Re-ran `./apis/compute/generate.sh` and verified CRD generation, mappers, deepcopy code.
+  - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+  - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.

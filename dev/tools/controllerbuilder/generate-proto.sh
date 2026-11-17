@@ -1316,6 +1316,487 @@ EOF
 fi
 
 
+# Patch compute v1 compute.proto to include RolloutPlan and RolloutPlans if missing
+if ! grep -q "message RolloutPlan " google/cloud/compute/v1/compute.proto; then
+cat >> google/cloud/compute/v1/compute.proto <<'EOF'
+
+// A request message for RolloutPlans.Delete. See the method description for details.
+message DeleteRolloutPlanRequest {
+  // Project ID for this request.
+  string project = 227560217 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "project"
+  ];
+
+  // An optional request ID to identify requests. Specify a unique request ID so
+  // that if you must retry your request, the server will know to ignore the
+  // request if it has already been completed.
+  //
+  // For example, consider a situation where you make an initial request and
+  // the request times out. If you make the request again with the same
+  // request ID, the server can check if original operation with the same
+  // request ID was received, and if so, will ignore the second request. This
+  // prevents clients from accidentally creating duplicate commitments.
+  //
+  // The request ID must be
+  // a valid UUID with the exception that zero UUID is not supported
+  // (00000000-0000-0000-0000-000000000000).
+  optional string request_id = 37109963;
+
+  // Name of the RolloutPlan resource to delete.
+  string rollout_plan = 459057399 [(google.api.field_behavior) = REQUIRED];
+
+}
+
+// A request message for RolloutPlans.Get. See the method description for details.
+message GetRolloutPlanRequest {
+  // Project ID for this request.
+  string project = 227560217 [(google.api.field_behavior) = REQUIRED];
+
+  // Name of the persistent rollout plan to return.
+  string rollout_plan = 459057399 [(google.api.field_behavior) = REQUIRED];
+
+}
+
+// A request message for RolloutPlans.Insert. See the method description for details.
+message InsertRolloutPlanRequest {
+  // Project ID for this request.
+  string project = 227560217 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "project"
+  ];
+
+  // An optional request ID to identify requests. Specify a unique request ID so
+  // that if you must retry your request, the server will know to ignore the
+  // request if it has already been completed.
+  //
+  // For example, consider a situation where you make an initial request and
+  // the request times out. If you make the request again with the same
+  // request ID, the server can check if original operation with the same
+  // request ID was received, and if so, will ignore the second request. This
+  // prevents clients from accidentally creating duplicate commitments.
+  //
+  // The request ID must be
+  // a valid UUID with the exception that zero UUID is not supported
+  // (00000000-0000-0000-0000-000000000000).
+  optional string request_id = 37109963;
+
+  // The body resource for this request
+  RolloutPlan rollout_plan_resource = 38629974 [(google.api.field_behavior) = REQUIRED];
+
+}
+
+// A request message for RolloutPlans.List. See the method description for details.
+message ListRolloutPlansRequest {
+  // A filter expression that filters resources listed in the response. Most
+  // Compute resources support two types of filter expressions:
+  // expressions that support regular expressions and expressions that follow
+  // API improvement proposal AIP-160.
+  // These two types of filter expressions cannot be mixed in one request.
+  //
+  // If you want to use AIP-160, your expression must specify the field name, an
+  // operator, and the value that you want to use for filtering. The value
+  // must be a string, a number, or a boolean. The operator
+  // must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`.
+  //
+  // For example, if you are filtering Compute Engine instances, you can
+  // exclude instances named `example-instance` by specifying
+  // `name != example-instance`.
+  //
+  // The `:*` comparison can be used to test whether a key has been defined.
+  // For example, to find all objects with `owner` label use:
+  // ```
+  // labels.owner:*
+  // ```
+  //
+  // You can also filter nested fields. For example, you could specify
+  // `scheduling.automaticRestart = false` to include instances only
+  // if they are not scheduled for automatic restarts. You can use filtering
+  // on nested fields to filter based onresource labels.
+  //
+  // To filter on multiple expressions, provide each separate expression within
+  // parentheses. For example:
+  // ```
+  // (scheduling.automaticRestart = true)
+  // (cpuPlatform = "Intel Skylake")
+  // ```
+  // By default, each expression is an `AND` expression. However, you
+  // can include `AND` and `OR` expressions explicitly.
+  // For example:
+  // ```
+  // (cpuPlatform = "Intel Skylake") OR
+  // (cpuPlatform = "Intel Broadwell") AND
+  // (scheduling.automaticRestart = true)
+  // ```
+  //
+  // If you want to use a regular expression, use the `eq` (equal) or `ne`
+  // (not equal) operator against a single un-parenthesized expression with or
+  // without quotes or against multiple parenthesized expressions. Examples:
+  //
+  // `fieldname eq unquoted literal`
+  // `fieldname eq 'single quoted literal'`
+  // `fieldname eq "double quoted literal"`
+  // `(fieldname1 eq literal) (fieldname2 ne "literal")`
+  //
+  // The literal value is interpreted as a regular expression using GoogleRE2 library syntax.
+  // The literal value must match the entire field.
+  //
+  // For example, to filter for instances that do not end with name "instance",
+  // you would use `name ne .*instance`.
+  //
+  // You cannot combine constraints on multiple fields using regular
+  // expressions.
+  optional string filter = 336120696;
+
+  // The maximum number of results per page that should be returned.
+  // If the number of available results is larger than `maxResults`,
+  // Compute Engine returns a `nextPageToken` that can be used to get
+  // the next page of results in subsequent list requests. Acceptable values are
+  // `0` to `500`, inclusive. (Default: `500`)
+  optional uint32 max_results = 54715419;
+
+  // Sorts list results by a certain order. By default, results
+  // are returned in alphanumerical order based on the resource name.
+  //
+  // You can also sort results in descending order based on the creation
+  // timestamp using `orderBy="creationTimestamp desc"`. This sorts
+  // results based on the `creationTimestamp` field in
+  // reverse chronological order (newest result first). Use this to sort
+  // resources like operations so that the newest operation is returned first.
+  //
+  // Currently, only sorting by `name` or
+  // `creationTimestamp desc` is supported.
+  optional string order_by = 160562920;
+
+  // Specifies a page token to use. Set `pageToken` to the
+  // `nextPageToken` returned by a previous list request to get
+  // the next page of results.
+  optional string page_token = 19994697;
+
+  // Project ID for this request.
+  string project = 227560217 [(google.api.field_behavior) = REQUIRED];
+
+  // Opt-in for partial success behavior which provides partial results in case
+  // of failure. The default value is false.
+  //
+  // For example, when partial success behavior is enabled, aggregatedList for a
+  // single zone scope either returns all resources in the zone or no resources,
+  // with an error code.
+  optional bool return_partial_success = 517198390;
+
+}
+
+// RolloutPlan resource.
+//
+// A RolloutPlan is the customer-defined strategy to divide a large-scale change
+// into smaller increments, referred to as "waves". Each wave targets a specific
+// portion of the overall affected area and defines criteria that must be met
+// before progressing to the subsequent wave.
+message RolloutPlan {
+  // The location scope of the rollout plan. If not specified, the location
+  // scope is considered as ZONAL.
+  enum LocationScope {
+    // A value indicating that the enum field is not set.
+    UNDEFINED_LOCATION_SCOPE = 0;
+
+    // Unspecified value. Considered as ZONAL.
+    LOCATION_SCOPE_UNSPECIFIED = 416410498;
+
+    // Regional scope.
+    REGIONAL = 92288543;
+
+    // Zonal scope.
+    ZONAL = 85547428;
+
+  }
+
+  // Output only. [Output Only] Creation timestamp inRFC3339
+  // text format.
+  optional string creation_timestamp = 30525366;
+
+  // An optional description of this resource. Provide this property when you
+  // create the resource.
+  optional string description = 422937596;
+
+  // Output only. [Output Only] The unique identifier for the resource. This identifier is
+  // defined by the server.
+  optional uint64 id = 3355;
+
+  // Output only. [Output Only] Type of the resource. Always compute#rolloutPlan
+  // for rolloutPlans.
+  optional string kind = 3292052;
+
+  // The location scope of the rollout plan. If not specified, the location
+  // scope is considered as ZONAL.
+  // Check the LocationScope enum for the list of possible values.
+  optional string location_scope = 138667338;
+
+  // Name of the resource. Provided by the client when the resource is created.
+  // The name must be 1-63 characters long, and comply withRFC1035.
+  // Specifically, the name must be 1-63 characters long and match the regular
+  // expression `[a-z]([-a-z0-9]*[a-z0-9])?`
+  // which means the first character must be a lowercase letter, and all
+  // following characters must be a dash, lowercase letter, or digit, except
+  // the last character, which cannot be a dash.
+  optional string name = 3373707;
+
+  // Output only. [Output Only] Server-defined fully-qualified URL for this resource.
+  optional string self_link = 456214797;
+
+  // Output only. [Output Only] Server-defined URL for this resource's resource id.
+  optional string self_link_with_id = 44520962;
+
+  // Required. The waves included in this rollout plan.
+  repeated RolloutPlanWave waves = 112905370;
+
+}
+
+// A single wave in a rollout plan.
+message RolloutPlanWave {
+  // Optional. The display name of this wave of the rollout plan.
+  optional string display_name = 4473832;
+
+  // Output only. The wave number.
+  optional int64 number = 39377737;
+
+  // Optional. The orchestration options for this wave.
+  optional RolloutPlanWaveOrchestrationOptions orchestration_options = 93218464;
+
+  // Required. The selectors for this wave. There is a logical AND between each selector
+  // defined in a wave, so a resource must satisfy the criteria of *all* the
+  // specified selectors to be in scope for the wave.
+  repeated RolloutPlanWaveSelector selectors = 431523956;
+
+  // Required. The validation to be performed at the end of this wave.
+  optional RolloutPlanWaveValidation validation = 493308025;
+
+}
+
+// Options to control the pace of orchestration of a wave. These options are
+// required only if the resource being rolled out follows the Orchestrated
+// pattern.
+message RolloutPlanWaveOrchestrationOptions {
+  // Optional. Delays, if any, to be added between batches of projects. We allow
+  // multiple Delays to be specified, letting users set separate delays
+  // between batches of projects corresponding to different locations and
+  // batches of projects corresponding to the same location.
+  repeated RolloutPlanWaveOrchestrationOptionsDelay delays = 275150672;
+
+  // Optional. Maximum number of locations to be orchestrated in parallel.
+  optional int64 max_concurrent_locations = 493763281;
+
+  // Optional. Maximum number of resources to be orchestrated per location in
+  // parallel.
+  optional int64 max_concurrent_resources_per_location = 178401246;
+
+}
+
+// Options to control the delay, if any, between batches of projects.
+message RolloutPlanWaveOrchestrationOptionsDelay {
+  // Optional. Controls whether the delay should only be added between batches of
+  // projects corresponding to different locations, or also between
+  // batches of projects corresponding to the same location.
+  //
+  // Must be set to DELIMITER_UNSPECIFIED if no delay is to be added.
+  enum Delimiter {
+    // A value indicating that the enum field is not set.
+    UNDEFINED_DELIMITER = 0;
+
+    // The delay will also be added between batches of projects
+    // corresponding to the same location.
+    DELIMITER_BATCH = 253390530;
+
+    // The delay will only be added between batches of projects
+    // corresponding to different locations.
+    DELIMITER_LOCATION = 189398797;
+
+    // No delay will be added between batches of projects. Processing will
+    // continue with the next batch as soon as the previous batch of LROs
+    // is done.
+    DELIMITER_UNSPECIFIED = 372199615;
+
+  }
+
+  // Optional. Controls whether the specified duration is to be added at the end of
+  // each batch, or if the total processing time for each batch will be
+  // padded if needed to meet the specified duration.
+  //
+  // Must be set to TYPE_UNSPECIFIED if no delay is to be added.
+  enum Type {
+    // A value indicating that the enum field is not set.
+    UNDEFINED_TYPE = 0;
+
+    // The total processing time for each batch of projects will be padded
+    // if needed to meet the specified delay duration.
+    TYPE_MINIMUM = 234909673;
+
+    // The specified delay will directly be added after each batch of
+    // projects as specified by the delimiter.
+    TYPE_OFFSET = 165747000;
+
+    // No delay will be added between batches of projects. Processing will
+    // continue with the next batch as soon as the previous batch of LROs
+    // is done.
+    TYPE_UNSPECIFIED = 437714322;
+
+  }
+
+  // Optional. Controls whether the delay should only be added between batches of
+  // projects corresponding to different locations, or also between
+  // batches of projects corresponding to the same location.
+  //
+  // Must be set to DELIMITER_UNSPECIFIED if no delay is to be added.
+  // Check the Delimiter enum for the list of possible values.
+  optional string delimiter = 286352903;
+
+  // Optional. The duration of the delay, if any, to be added between batches of
+  // projects. A zero duration corresponds to no delay.
+  optional string duration = 155471252;
+
+  // Optional. Controls whether the specified duration is to be added at the end of
+  // each batch, or if the total processing time for each batch will be
+  // padded if needed to meet the specified duration.
+  //
+  // Must be set to TYPE_UNSPECIFIED if no delay is to be added.
+  // Check the Type enum for the list of possible values.
+  optional string type = 3575610;
+
+}
+
+// A selector which specifies what resource(s) are included in a given wave.
+message RolloutPlanWaveSelector {
+  // Optional. Roll out to resources by Cloud locations.
+  optional RolloutPlanWaveSelectorLocationSelector location_selector = 422273321;
+
+  // Optional. Roll out to resources by Cloud Resource Manager resource hierarchy.
+  optional RolloutPlanWaveSelectorResourceHierarchySelector resource_hierarchy_selector = 66779770;
+
+}
+
+// Roll out to resources by location.
+message RolloutPlanWaveSelectorLocationSelector {
+  // Optional. Example: "us-central1-a"
+  repeated string included_locations = 78239643;
+
+}
+
+// Roll out to resources by Cloud Resource Manager resource hierarchy
+// nodes such as projects, folders, orgs.
+message RolloutPlanWaveSelectorResourceHierarchySelector {
+  // Optional. Format: "folders/{folder_id}"
+  repeated string included_folders = 372825410;
+
+  // Optional. Format: "organizations/{organization_id}"
+  repeated string included_organizations = 318362461;
+
+  // Optional. Format: "projects/{project_id}"
+  repeated string included_projects = 64232605;
+
+}
+
+// The validation to be performed before progressing to the next wave.
+message RolloutPlanWaveValidation {
+  // Optional. Metadata required if type = "time".
+  optional RolloutPlanWaveValidationTimeBasedValidationMetadata time_based_validation_metadata = 69499575;
+
+  // Required. The type of the validation. If a type of validation is associated with
+  // a metadata object, the appropriate metadata field mapping to the
+  // validation type must be provided in the validation message. Possible
+  // values are in quotes below alongside an explanation:
+  //   "manual": The system waits for an end-user approval API before
+  //     progressing to the next wave.
+  //   "time": The system waits for a user specified duration before
+  //     progressing to the next wave. TimeBasedValidation must be provided.
+  optional string type = 3575610;
+
+}
+
+// Metadata required if type = "time".
+message RolloutPlanWaveValidationTimeBasedValidationMetadata {
+  // Optional. The duration that the system waits in between waves. This wait starts
+  // after all changes in the wave are rolled out.
+  optional string wait_duration = 452313374;
+
+}
+
+// Contains a list of RolloutPlan resources.
+message RolloutPlansListResponse {
+  optional string etag = 3123477;
+
+  // [Output Only] Unique identifier for the resource; defined by the server.
+  optional string id = 3355;
+
+  // A list of RolloutPlan resources.
+  repeated RolloutPlan items = 100526016;
+
+  // [Output Only] This token allows you to get the next page of results for
+  // list requests. If the number of results is larger thanmaxResults, use the nextPageToken as a value for
+  // the query parameter pageToken in the next list request.
+  // Subsequent list requests will have their own nextPageToken to
+  // continue paging through the results.
+  optional string next_page_token = 79797525;
+
+  // Output only. [Output Only] Server-defined URL for this resource.
+  optional string self_link = 456214797;
+
+  // Output only. [Output Only] Unreachable resources.
+  // end_interface: MixerListResponseWithEtagBuilder
+  repeated string unreachables = 243372063;
+
+  // [Output Only] Informational warning message.
+  optional Warning warning = 50704284;
+
+}
+
+// The RolloutPlans API.
+service RolloutPlans {
+  option (google.api.default_host) =
+    "compute.googleapis.com";
+
+  option (google.api.oauth_scopes) =
+    "https://www.googleapis.com/auth/compute,"
+    "https://www.googleapis.com/auth/cloud-platform";
+
+  // Deletes a RolloutPlan.
+  rpc Delete(DeleteRolloutPlanRequest) returns (Operation) {
+    option (google.api.http) = {
+      delete: "/compute/v1/projects/{project}/global/rolloutPlans/{rollout_plan}"
+    };
+    option (google.api.method_signature) = "project,rollout_plan";
+    option (google.cloud.operation_service) = "GlobalOperations";
+  }
+
+  // Gets details of a single project-scoped RolloutPlan.
+  rpc Get(GetRolloutPlanRequest) returns (RolloutPlan) {
+    option (google.api.http) = {
+      get: "/compute/v1/projects/{project}/global/rolloutPlans/{rollout_plan}"
+    };
+    option (google.api.method_signature) = "project,rollout_plan";
+  }
+
+  // Creates a new RolloutPlan in a given project and location.
+  rpc Insert(InsertRolloutPlanRequest) returns (Operation) {
+    option (google.api.http) = {
+      body: "rollout_plan_resource"
+      post: "/compute/v1/projects/{project}/global/rolloutPlans"
+    };
+    option (google.api.method_signature) = "project,rollout_plan_resource";
+    option (google.cloud.operation_service) = "GlobalOperations";
+  }
+
+  // Lists RolloutPlans in a given project and location.
+  rpc List(ListRolloutPlansRequest) returns (RolloutPlansListResponse) {
+    option (google.api.http) = {
+      get: "/compute/v1/projects/{project}/global/rolloutPlans"
+    };
+    option (google.api.method_signature) = "project";
+  }
+
+}
+EOF
+fi
+
+
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"
 else

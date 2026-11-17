@@ -160,6 +160,7 @@ BLOCKED_KINDS=(
     "ComputeHealthSource"
     "ComputeInstantSnapshotGroup"
     "ComputeNotificationEndpoint"
+    "ComputeRolloutPlan"
     "ConfigDeliveryFleetPackage"
     "ConnectorsConnection"
     "ContactCenterInsightsConversation"
