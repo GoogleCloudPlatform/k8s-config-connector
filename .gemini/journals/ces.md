@@ -159,4 +159,12 @@
   3. **Release Bundle Blocked Kinds**: Added `"CESToolset"` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
 - **Impact**: All unit tests in `apis/ces/...` and `tests/apichecks` pass cleanly with fully idempotent code generation.
 
+### [2026-11-17] Direct Controller, Fuzzer, and E2E Fixtures for CESTool
+- **Context**: Implementing Greenfield Step 2 direct controller, fuzzer, and recording real-GCP E2E fixtures for `CESTool` (`ces.cnrm.cloud.google.com/v1alpha1`).
+- **Learnings & Service Behaviors**:
+  1. **Synchronous REST CRUD**: Similar to `CESDeployment`, `CESTool` CRUD operations (`CreateTool`, `UpdateTool`, `GetTool`, `DeleteTool`) in `ces.googleapis.com/v1` are synchronous REST calls returning `*cespb.Tool` or `*emptypb.Empty` directly without LRO handling.
+  2. **Tool Types**: `Tool.tool_type` is a protobuf `oneof`. `GoogleSearchTool` provides a self-contained tool configuration without external GCP resource dependencies, supporting `name`, `description`, `contextURLs`, and `preferredDomains`.
+  3. **Common Tool Fields**: Top-level `executionType` (`SYNCHRONOUS`) and `toolFakeConfig` (`enableFakeMode`, `codeBlock.pythonCode`) are supported on Tool and mutable in-place via `UpdateTool` with `updateMask: googleSearchTool, toolFakeConfig`.
+  4. **Audit Probe & E2E Validation**: Golden HTTP logs and audit probes were recorded against real GCP project `cnrm-barni-4` for `cestool-minimal` and `cestool-maximal`, with all 7/7 automated lifecycle checks passing cleanly.
+
 
