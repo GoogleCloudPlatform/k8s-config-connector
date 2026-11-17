@@ -17,6 +17,7 @@ package dclcontroller
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"strings"
 	"sync"
 	"time"
@@ -40,6 +41,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/livestate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leasable"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leaser"
@@ -92,7 +94,9 @@ type Reconciler struct {
 	// DCL related fields
 	schema    *openapi.Schema
 	dclConfig *mmdcl.Config
-	converter *conversion.Converter
+	// dclHTTPClient is dclConfig's HTTP client.
+	dclHTTPClient *http.Client
+	converter     *conversion.Converter
 	// TF related fields
 	serviceMappingLoader *servicemappingloader.ServiceMappingLoader
 	// Fields used for triggering reconciliations when dependencies are ready
@@ -104,7 +108,7 @@ type Reconciler struct {
 }
 
 func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, converter *conversion.Converter,
-	dclConfig *mmdcl.Config, serviceMappingLoader *servicemappingloader.ServiceMappingLoader, defaulters []k8s.Defaulter, jitterGenerator jitter.Generator) (k8s.SchemaReferenceUpdater, error) {
+	dclConfig *mmdcl.Config, dclHTTPClient *http.Client, serviceMappingLoader *servicemappingloader.ServiceMappingLoader, defaulters []k8s.Defaulter, jitterGenerator jitter.Generator) (k8s.SchemaReferenceUpdater, error) {
 	if jitterGenerator == nil {
 		return nil, fmt.Errorf("jitter generator not initialized")
 	}
@@ -114,7 +118,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, conve
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(kind))
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
-	r, err := NewReconciler(mgr, crd, converter, dclConfig, serviceMappingLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jitterGenerator)
+	r, err := NewReconciler(mgr, crd, converter, dclConfig, dclHTTPClient, serviceMappingLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jitterGenerator)
 	if err != nil {
 		return nil, err
 	}
@@ -138,7 +142,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, conve
 	return r, nil
 }
 
-func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, converter *conversion.Converter, dclConfig *mmdcl.Config, serviceMappingLoader *servicemappingloader.ServiceMappingLoader, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted, defaulters []k8s.Defaulter, jitterGenerator jitter.Generator) (*Reconciler, error) {
+func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, converter *conversion.Converter, dclConfig *mmdcl.Config, dclHTTPClient *http.Client, serviceMappingLoader *servicemappingloader.ServiceMappingLoader, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted, defaulters []k8s.Defaulter, jitterGenerator jitter.Generator) (*Reconciler, error) {
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(crd.Spec.Names.Kind))
 	gvk := schema.GroupVersionKind{
 		Group:   crd.Spec.Group,
@@ -169,6 +173,7 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 		schema:                     dclSchema,
 		logger:                     logger.WithName(controllerName).WithValues("controllerType", "dcl"),
 		dclConfig:                  dclclientconfig.CopyAndModifyForKind(dclConfig, gvk.Kind),
+		dclHTTPClient:              dclHTTPClient,
 		converter:                  converter,
 		serviceMappingLoader:       serviceMappingLoader,
 		immediateReconcileRequests: immediateReconcileRequests,
@@ -210,6 +215,10 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if skip {
 		r.logger.V(2).Info("Skipping reconcile as nothing has changed and 0 reconcile period is set", "resource", req.NamespacedName)
 		return reconcile.Result{}, nil
+	}
+	ctx, err = identity.ForObject(ctx, identity.Target{GroupKind: r.schemaRef.GVK.GroupKind(), Object: u})
+	if err != nil {
+		return reconcile.Result{}, err
 	}
 	u, err = k8s.TriggerManagedFieldsMetadata(ctx, r.Client, u)
 	if err != nil {
@@ -280,6 +289,13 @@ func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource) (requeue 
 	defer execution.RecoverWithInternalError(&err)
 
 	dclConfig := r.dclConfig
+	// The DCL makes some calls without ctx; they need this object's credentials too.
+	if creds, ok := identity.CredentialsFromContext(ctx); ok {
+		if r.dclHTTPClient == nil {
+			return false, fmt.Errorf("no DCL HTTP client for the GCP credentials of %v", resource.GetNamespacedName())
+		}
+		dclConfig = dclclientconfig.ForCredentials(dclConfig, r.dclHTTPClient, creds)
+	}
 	if !resource.GetDeletionTimestamp().IsZero() {
 		return r.finalizeResourceDeletion(ctx, resource, dclConfig)
 	}
@@ -631,7 +647,7 @@ func (r *Reconciler) finalizeResourceDeletion(ctx context.Context, resource *dcl
 	}
 
 	// check if the underlying resource exists
-	liveLite, err := livestate.FetchLiveState(ctx, resource, r.dclConfig, r.converter, r.serviceMappingLoader, r.Client)
+	liveLite, err := livestate.FetchLiveState(ctx, resource, dclConfig, r.converter, r.serviceMappingLoader, r.Client)
 	if err != nil {
 		return false, r.HandleDeleteFailed(ctx, &resource.Resource, fmt.Errorf("error fetching live state: %w", err))
 	}

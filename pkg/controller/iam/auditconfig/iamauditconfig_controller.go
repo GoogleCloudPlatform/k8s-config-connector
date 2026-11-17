@@ -36,6 +36,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -173,6 +174,10 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 	// r.Get() overrides the TypeMeta to empty value, so need to configure it
 	// after r.Get().
 	auditConfig.SetGroupVersionKind(iamv1beta1.IAMAuditConfigGVK)
+	ctx, err = identity.ForObject(ctx, identity.Target{GroupKind: iamv1beta1.IAMAuditConfigGVK.GroupKind(), Object: &auditConfig})
+	if err != nil {
+		return reconcile.Result{}, err
+	}
 	uObj := &unstructured.Unstructured{}
 	uObj.SetNamespace(auditConfig.GetNamespace())
 	uObj.SetName(auditConfig.GetName())

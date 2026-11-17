@@ -17,6 +17,7 @@ package registration
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"os"
 	"sync"
 	"time"
@@ -225,6 +226,7 @@ func newReconcileRegistration(mgr manager.Manager, rd *controller.Deps, regFunc 
 		provider:                   rd.TFProvider,
 		smLoader:                   rd.TFLoader,
 		dclConfig:                  rd.DCLConfig,
+		dclHTTPClient:              rd.DCLHTTPClient,
 		dclConverter:               rd.DCLConverter,
 		mgr:                        mgr,
 		controllers:                make(map[string]map[string]controllerContext),
@@ -247,6 +249,7 @@ type ReconcileRegistration struct {
 	provider          *tfschema.Provider
 	smLoader          *servicemappingloader.ServiceMappingLoader
 	dclConfig         *dcl.Config
+	dclHTTPClient     *http.Client
 	dclConverter      *conversion.Converter
 	mgr               manager.Manager
 	controllers       map[string]map[string]controllerContext
@@ -433,7 +436,7 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, cr
 						return nil, fmt.Errorf("error creating new terraform reconciler: %w", err)
 					}
 				case k8s.ReconcilerTypeDCL:
-					reconcilers.DCL, err = dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, nil, nil, r.defaulters, r.jitterGenerator)
+					reconcilers.DCL, err = dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.dclHTTPClient, r.smLoader, nil, nil, r.defaulters, r.jitterGenerator)
 					if err != nil {
 						return nil, fmt.Errorf("error creating new dcl reconciler: %w", err)
 					}

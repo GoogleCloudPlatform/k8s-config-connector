@@ -141,7 +141,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log.V(2).Info("getting BigQueryTable", "name", a.id.String())
 	parent := a.id.Parent()
 	getCall := a.gcpService.Get(parent.Project, parent.Dataset, a.id.ID())
-	table, err := getCall.Do()
+	table, err := getCall.Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -167,14 +167,14 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		schemaBack := table.Schema
 		table.Schema = nil
 		log.V(2).Info("Creating BigQuery without schema", "name", table.TableReference.TableId)
-		res, err := a.gcpService.Insert(parent.Project, parent.Dataset, table).Do()
+		res, err := a.gcpService.Insert(parent.Project, parent.Dataset, table).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("error creating Table %s: %w", a.id.ID(), err)
 		}
 		log.V(2).Info("successfully created Table", "name", res.Id)
 		table.Schema = schemaBack
 		log.V(2).Info("Updating BigQuery Table back with schema", "name", res.TableReference.TableId)
-		res, err = a.gcpService.Update(parent.Project, parent.Dataset, res.TableReference.TableId, table).Do()
+		res, err = a.gcpService.Update(parent.Project, parent.Dataset, res.TableReference.TableId, table).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("error updating Table during CREATE table with both schema and view specified %s: %w", a.id.ID(), err)
 		}
@@ -184,7 +184,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		}
 	} else {
 		insertCall := a.gcpService.Insert(parent.Project, parent.Dataset, table)
-		created, err := insertCall.Do()
+		created, err := insertCall.Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("error creating Table %s: %w", a.id.ID(), err)
 		}
@@ -255,14 +255,14 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	if len(a.unmanagedFields) > 0 {
 		// Make PATCH call without unmanaged fields to avoid accidental override.
-		res, err := a.gcpService.Patch(parent.Project, parent.Dataset, a.id.ID(), table).Do()
+		res, err := a.gcpService.Patch(parent.Project, parent.Dataset, a.id.ID(), table).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("error patching Table %s: %w", a.id.ID(), err)
 		}
 		return a.UpdateStatusForUpdate(ctx, updateOp, res)
 	}
 	// If not unmanaged field is specify, we use PUT to keep backward compatibility with TF controller.
-	res, err := a.gcpService.Update(parent.Project, parent.Dataset, a.id.ID(), table).Do()
+	res, err := a.gcpService.Update(parent.Project, parent.Dataset, a.id.ID(), table).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("error updating Table %s: %w", a.id.ID(), err)
 	}
@@ -356,7 +356,7 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Table", "name", a.id.String())
 	parent := a.id.Parent()
-	if err := a.gcpService.Delete(parent.Project, parent.Dataset, a.id.ID()).Do(); err != nil {
+	if err := a.gcpService.Delete(parent.Project, parent.Dataset, a.id.ID()).Context(ctx).Do(); err != nil {
 		if direct.IsNotFound(err) {
 			log.V(2).Info("skipping delete for non-existent BigQuery Table, assuming it was already deleted", "name", a.id.String())
 			return true, nil

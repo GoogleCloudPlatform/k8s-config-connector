@@ -37,6 +37,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpwatch"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
@@ -190,6 +191,10 @@ func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request recon
 	// r.Get() overrides the TypeMeta to empty value, so need to configure it
 	// after r.Get() in case of fallback.
 	policy.SetGroupVersionKind(iamv1beta1.IAMPartialPolicyGVK)
+	ctx, err = identity.ForObject(ctx, identity.Target{GroupKind: iamv1beta1.IAMPartialPolicyGVK.GroupKind(), Object: policy})
+	if err != nil {
+		return reconcile.Result{}, err
+	}
 	if err := r.handleDefaults(ctx, policy); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error handling default values for IAM partial policy '%v': %w", k8s.GetNamespacedName(policy), err)
 	}

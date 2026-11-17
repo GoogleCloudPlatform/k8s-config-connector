@@ -36,6 +36,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -181,6 +182,10 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 	// r.Get() overrides the TypeMeta to empty value, so need to configure it
 	// after r.Get().
 	memberPolicy.SetGroupVersionKind(iamv1beta1.IAMPolicyMemberGVK)
+	ctx, err = identity.ForObject(ctx, identity.Target{GroupKind: iamv1beta1.IAMPolicyMemberGVK.GroupKind(), Object: &memberPolicy})
+	if err != nil {
+		return reconcile.Result{}, err
+	}
 	if err := r.handleDefaults(ctx, &memberPolicy); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error handling default values for IAM policy member '%v': %w", k8s.GetNamespacedName(&memberPolicy), err)
 	}
