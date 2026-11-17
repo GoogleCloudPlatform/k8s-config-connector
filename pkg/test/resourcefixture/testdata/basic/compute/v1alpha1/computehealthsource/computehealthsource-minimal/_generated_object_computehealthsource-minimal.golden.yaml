@@ -1,0 +1,37 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha1
+kind: ComputeHealthSource
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: ${healthSourceID}
+  namespace: ${uniqueId}
+spec:
+  description: Updated description for minimal health source
+  healthAggregationPolicyRef:
+    name: ${healthAggregationPolicyID}
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  sourceType: BACKEND_SERVICE
+  sources:
+  - name: ${backendServiceID}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/regions/us-central1/healthSources/${healthSourceID}
+  observedGeneration: 2
+  observedState:
+    creationTimestamp: "1970-01-01T00:00:00Z"
+    id: 1111111111111111
+    kind: compute#healthSource
+    region: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1
+    selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthSources/${healthSourceID}
+    selfLinkWithID: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthSources/${healthSourceID}

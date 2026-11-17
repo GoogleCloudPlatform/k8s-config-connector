@@ -24,6 +24,8 @@ pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeglobalvmextensio
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeglobalvmextensionpolicy/computeglobalvmextensionpolicy-minimal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computehealthaggregationpolicy/computehealthaggregationpolicy-maximal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computehealthaggregationpolicy/computehealthaggregationpolicy-minimal
+pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computehealthsource/computehealthsource-maximal
+pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computehealthsource/computehealthsource-minimal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinstantsnapshot/computeinstantsnapshot-maximal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinstantsnapshot/computeinstantsnapshot-minimal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinstantsnapshotgroup/computeinstantsnapshotgroup-maximal
