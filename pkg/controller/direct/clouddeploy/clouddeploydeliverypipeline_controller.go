@@ -248,7 +248,10 @@ func (a *DeliveryPipelineAdapter) Delete(ctx context.Context, deleteOp *directba
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting DeliveryPipeline", "name", a.id)
 
-	req := &clouddeploypb.DeleteDeliveryPipelineRequest{Name: a.id.String()}
+	req := &clouddeploypb.DeleteDeliveryPipelineRequest{
+		Name:  a.id.String(),
+		Force: true,
+	}
 	op, err := a.gcpClient.DeleteDeliveryPipeline(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {

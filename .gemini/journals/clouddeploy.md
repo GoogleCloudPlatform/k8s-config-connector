@@ -17,3 +17,13 @@
   5. Updated resource documentation URL to `https://cloud.google.com/deploy/docs/reference/rest/v1/projects.locations.deliveryPipelines.releases`.
   6. Resolved `skaffoldConfigURI` as `reference-not-representable` (GCS archive path decomposable into bucket + path, remains string) and accepted `message-map-derived` fields.
   7. Regenerated types, identity, deepcopy, mapper, and CRD via `./apis/clouddeploy/generate.sh`, updated exceptions, and added unit tests in `clouddeployrelease_identity_test.go`.
+
+### [2026-11-17] Direct Controller, Fuzzer, and E2E Fixtures for CloudDeployRelease
+- **Context**: Implemented direct controller, fuzzer, minimal/maximal E2E fixtures, and recorded golden logs against real GCP for `CloudDeployRelease` following Greenfield Step 2.
+- **Learnings & Observations**:
+  1. `Release` has no `UpdateRelease` or `DeleteRelease` RPC in GCP Cloud Deploy API. The resource is immutable, and deletion removes the KRM finalizer without deleting the GCP resource. Configured fixtures with `cnrm.cloud.google.com/deletion-policy: "abandon"`.
+  2. Added `CloudDeployRelease` to `IsNonDeletable()` in `pkg/test/httplogreport/fixture/loader.go`.
+  3. Deleting `CloudDeployDeliveryPipeline` when a `Release` child resource exists in GCP requires `Force: true` in `DeleteDeliveryPipelineRequest`. Updated `DeliveryPipelineAdapter.Delete` to set `Force: true`.
+  4. Real GCP `Release` responses return additional condition fields (`dockerVersionSupportedCondition`, `helmVersionSupportedCondition`, etc.) and `toolVersions` absent from the vendored proto schema in `.build/googleapis.pb`. Added `google.cloud.deploy.v1.Release` to `protovalidate.go`'s `unmarshalDynamicJSON` unknown field allowlist.
+  5. `CreateRelease` requires a valid Skaffold archive (`skaffoldConfigUri`) during server-side validation; tests reference `gs://${projectId}-clouddeploy-test-bucket-2026/source.tar.gz`.
+
