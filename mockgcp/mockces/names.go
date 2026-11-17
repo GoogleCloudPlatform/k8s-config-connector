@@ -129,6 +129,34 @@ func (s *MockService) parseGuardrailName(name string) (*guardrailName, error) {
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
 
+type toolName struct {
+	Project  *projects.ProjectData
+	Location string
+	AppID    string
+	ToolID   string
+}
+
+func (n *toolName) String() string {
+	return fmt.Sprintf("projects/%s/locations/%s/apps/%s/tools/%s", n.Project.ID, n.Location, n.AppID, n.ToolID)
+}
+
+func (s *MockService) parseToolName(name string) (*toolName, error) {
+	tokens := strings.Split(name, "/")
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "apps" && tokens[6] == "tools" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+		return &toolName{
+			Project:  project,
+			Location: tokens[3],
+			AppID:    tokens[5],
+			ToolID:   tokens[7],
+		}, nil
+	}
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
 type toolsetName struct {
 	Project   *projects.ProjectData
 	Location  string
