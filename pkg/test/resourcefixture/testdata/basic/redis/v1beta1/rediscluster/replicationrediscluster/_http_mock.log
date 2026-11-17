@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -840,6 +841,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: UPDATE
 GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -946,6 +948,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
 
 {
+  "authorizationMode": 2,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 1
+  },
   "crossClusterReplicationConfig": {
     "clusterRole": 2,
     "secondaryClusters": [
@@ -957,13 +963,15 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
   "deletionProtectionEnabled": false,
   "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
-  "pscConfigs": [
-    {
-      "network": "projects/${projectId}/global/networks/${networkID}"
-    }
-  ],
+  "persistenceConfig": {
+    "mode": 1
+  },
   "replicaCount": 1,
-  "shardCount": 3
+  "shardCount": 3,
+  "transitEncryptionMode": 1,
+  "zoneDistributionConfig": {
+    "mode": 1
+  }
 }
 
 200 OK
@@ -1104,6 +1112,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: DELETE
 GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
