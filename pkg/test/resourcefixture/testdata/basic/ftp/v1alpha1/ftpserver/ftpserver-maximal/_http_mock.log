@@ -1,0 +1,369 @@
+# Phase: CREATE
+GET https://ftp.googleapis.com/v1/projects/${projectId}/locations/us-west1/servers/ftpmax-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=SERVER_VIEW_FULL
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Fservers%2Fftpmax-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-west1/servers/ftpmax-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://ftp.googleapis.com/v1/projects/${projectId}/locations/us-west1/servers?%24alt=json%3Benum-encoding%3Dint&serverId=ftpmax-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west1
+
+{
+  "accessType": 2,
+  "displayName": "ftpmax-${uniqueId}",
+  "internalConfig": {
+    "consumerAcceptList": [
+      {
+        "connectionLimit": "10",
+        "project": "projects/${projectId}"
+      }
+    ],
+    "consumerRejectList": [
+      {
+        "project": "projects/1234567890"
+      }
+    ]
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test-label": "ftpserver-${uniqueId}"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.ftp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-west1/servers/ftpmax-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GET https://ftp.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.ftp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-west1/servers/ftpmax-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.ftp.v1.Server",
+    "accessType": "INTERNAL",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "ftpmax-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-west1/servers/ftpmax-${uniqueId}",
+    "serviceAgent": "p-${projectNumber}-341656619438@gcp-sa-ftp.iam.gserviceaccount.com",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://ftp.googleapis.com/v1/projects/${projectId}/locations/us-west1/servers/ftpmax-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=SERVER_VIEW_FULL
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Fservers%2Fftpmax-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "accessType": 2,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "ftpmax-${uniqueId}",
+  "googleManagedServerCredential": {
+    "asymmetricAlgorithm": "ED25519",
+    "fingerprint": "SHA256:WIFsa2XnMVG2h4DnH0s1dzkpB6ImjgNtX3Lej16cRAk"
+  },
+  "internalConfig": {
+    "consumerAcceptList": [
+      {
+        "connectionLimit": "10",
+        "project": "projects/${projectId}"
+      }
+    ],
+    "consumerRejectList": [
+      {
+        "project": "projects/1234567890"
+      }
+    ],
+    "serviceAttachment": "projects/occae7b529fb8d693p-tp/regions/us-west1/serviceAttachments/ftpmax-${uniqueId}-psc-service-attachment"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test-label": "ftpserver-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-west1/servers/ftpmax-${uniqueId}",
+  "serviceAgent": "p-${projectNumber}-341656619438@gcp-sa-ftp.iam.gserviceaccount.com",
+  "state": 3,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: UPDATE
+PATCH https://ftp.googleapis.com/v1/projects/${projectId}/locations/us-west1/servers/ftpmax-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2CinternalConfig%2Clabels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: server.name=projects%2F${projectId}%2Flocations%2Fus-west1%2Fservers%2Fftpmax-${uniqueId}
+
+{
+  "accessType": 2,
+  "displayName": "ftpmax-upd-${uniqueId}",
+  "internalConfig": {
+    "consumerAcceptList": [
+      {
+        "connectionLimit": "20",
+        "project": "projects/${projectId}"
+      }
+    ],
+    "consumerRejectList": [
+      {
+        "project": "projects/1234567890"
+      }
+    ]
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test-label": "ftpserver-upd-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-west1/servers/ftpmax-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.ftp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-west1/servers/ftpmax-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GET https://ftp.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.ftp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-west1/servers/ftpmax-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.ftp.v1.Server",
+    "accessType": "INTERNAL",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "ftpmax-upd-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-west1/servers/ftpmax-${uniqueId}",
+    "serviceAgent": "p-${projectNumber}-341656619438@gcp-sa-ftp.iam.gserviceaccount.com",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://ftp.googleapis.com/v1/projects/${projectId}/locations/us-west1/servers/ftpmax-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=SERVER_VIEW_FULL
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Fservers%2Fftpmax-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "accessType": 2,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "ftpmax-upd-${uniqueId}",
+  "googleManagedServerCredential": {
+    "asymmetricAlgorithm": "ED25519",
+    "fingerprint": "SHA256:WIFsa2XnMVG2h4DnH0s1dzkpB6ImjgNtX3Lej16cRAk"
+  },
+  "internalConfig": {
+    "consumerAcceptList": [
+      {
+        "connectionLimit": "20",
+        "project": "projects/${projectId}"
+      }
+    ],
+    "consumerRejectList": [
+      {
+        "project": "projects/1234567890"
+      }
+    ],
+    "serviceAttachment": "projects/occae7b529fb8d693p-tp/regions/us-west1/serviceAttachments/ftpmax-${uniqueId}-psc-service-attachment"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test-label": "ftpserver-upd-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-west1/servers/ftpmax-${uniqueId}",
+  "serviceAgent": "p-${projectNumber}-341656619438@gcp-sa-ftp.iam.gserviceaccount.com",
+  "state": 3,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+DELETE https://ftp.googleapis.com/v1/projects/${projectId}/locations/us-west1/servers/ftpmax-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Fservers%2Fftpmax-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.ftp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-west1/servers/ftpmax-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GET https://ftp.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.ftp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-west1/servers/ftpmax-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
