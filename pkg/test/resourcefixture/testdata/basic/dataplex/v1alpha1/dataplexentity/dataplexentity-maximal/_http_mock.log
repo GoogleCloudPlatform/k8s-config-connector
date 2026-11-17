@@ -395,7 +395,10 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.dataplex.v1.Asset",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "discoveryStatus": {},
+    "discoveryStatus": {
+      "state": "DISABLED",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
     "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/zones/dataplexzone-${uniqueId}/assets/dataplexasset-${uniqueId}",
     "resourceSpec": {
       "name": "dataplexbucket-${uniqueId}",
@@ -403,10 +406,12 @@ X-Xss-Protection: 0
       "type": "STORAGE_BUCKET"
     },
     "resourceStatus": {
-      "state": "READY"
+      "state": "READY",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
     },
     "securityStatus": {
-      "state": "READY"
+      "state": "READY",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
     },
     "state": "ACTIVE",
     "uid": "111111111111111111111",
@@ -802,7 +807,10 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "discoveryStatus": {},
+  "discoveryStatus": {
+    "state": 5,
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
   "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/zones/dataplexzone-${uniqueId}/assets/dataplexasset-${uniqueId}",
   "resourceSpec": {
     "name": "dataplexbucket-${uniqueId}",
@@ -810,10 +818,12 @@ X-Xss-Protection: 0
     "type": 1
   },
   "resourceStatus": {
-    "state": 1
+    "state": 1,
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   },
   "securityStatus": {
-    "state": 1
+    "state": 1,
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   },
   "state": 1,
   "uid": "111111111111111111111",

@@ -1,0 +1,62 @@
+apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1
+kind: DataplexAsset
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: dataplexasset-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Updated description for maximal asset
+  discoverySpec:
+    csvOptions:
+      delimiter: '|'
+      disableTypeInference: true
+      encoding: UTF-8
+      headerRows: 2
+    enabled: true
+    excludePatterns:
+    - tmp2/*
+    includePatterns:
+    - data2/*
+    jsonOptions:
+      disableTypeInference: true
+      encoding: UTF-8
+    schedule: 0 2 * * *
+  displayName: Updated Maximal Asset ${uniqueId}
+  parentRef:
+    name: dpzone-max-${uniqueId}
+  resourceSpec:
+    readAccessMode: DIRECT
+    storageBucketRef:
+      name: dpasset-max-${uniqueId}
+    type: STORAGE_BUCKET
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/lakes/dplake-max-${uniqueId}/zones/dpzone-max-${uniqueId}/assets/dataplexasset-maximal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    discoveryStatus:
+      lastRunTime: "2024-04-01T12:34:56.123456Z"
+      state: IN_PROGRESS
+      updateTime: "2024-04-01T12:34:56.123456Z"
+    resourceStatus:
+      state: READY
+      updateTime: "2024-04-01T12:34:56.123456Z"
+    securityStatus:
+      state: READY
+      updateTime: "2024-04-01T12:34:56.123456Z"
+    state: ACTIVE
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
