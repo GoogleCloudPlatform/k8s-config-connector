@@ -69,10 +69,7 @@ func getIdentityFromDeviceStreamingSessionSpec(ctx context.Context, reader clien
 		return nil, fmt.Errorf("cannot resolve project: %w", err)
 	}
 
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
-	}
+	resourceID := common.ValueOf(obj.(*DeviceStreamingSession).Spec.ResourceID)
 
 	identity := &DeviceStreamingSessionIdentity{
 		Project:       projectID,
@@ -96,6 +93,13 @@ func (obj *DeviceStreamingSession) GetIdentity(ctx context.Context, reader clien
 			return nil, err
 		}
 
+		if specIdentity.DeviceSession == "" {
+			if statusIdentity.Project != specIdentity.Project {
+				return nil, fmt.Errorf("cannot change DeviceStreamingSession parent project (old=%q, new=%q)", statusIdentity.Project, specIdentity.Project)
+			}
+			return statusIdentity, nil
+		}
+
 		if statusIdentity.String() != specIdentity.String() {
 			return nil, fmt.Errorf("cannot change DeviceStreamingSession identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
@@ -109,11 +113,11 @@ func (c *DeviceStreamingSession) ExternalIdentifier() *string {
 	if c.Status.ExternalRef != nil {
 		return c.Status.ExternalRef
 	}
-	id := c.GetName()
+	id := ""
 	if c.Spec.ResourceID != nil {
 		id = *c.Spec.ResourceID
 	}
-	if c.Spec.ProjectRef != nil && c.Spec.ProjectRef.External != "" {
+	if id != "" && c.Spec.ProjectRef != nil && c.Spec.ProjectRef.External != "" {
 		s := "projects/" + c.Spec.ProjectRef.External + "/deviceSessions/" + id
 		return &s
 	}

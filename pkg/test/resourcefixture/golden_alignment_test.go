@@ -33,8 +33,6 @@ import (
 )
 
 var mockGCPSkipFixtures = map[string]bool{
-	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-maximal": true,
-	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-minimal": true,
 	// TODO(https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/12388): Align outdated ComposerEnvironment mock logs with real GCP
 	"composer/v1beta1/composerenvironment/composerenvironmentwithkms":         true,
 	"composer/v1beta1/composerenvironment/composerenvironmentwithrefs":        true,
@@ -549,6 +547,7 @@ func cleanURL(u string) string {
 	}
 	u = regexp.MustCompile(`/instanceGroupManagers/gke-.*-grp`).ReplaceAllString(u, "/instanceGroupManagers/gke-containercluster-normalized-grp")
 	u = regexp.MustCompile(`/contacts/[0-9]+`).ReplaceAllString(u, "/contacts/${contactID}")
+	u = regexp.MustCompile(`/deviceSessions/session-[a-z0-9]+`).ReplaceAllLiteralString(u, "/deviceSessions/session-${uniqueId}")
 	u = regexp.MustCompile(`/agents/[0-9a-fA-F-]+`).ReplaceAllString(u, "/agents/${agentID}")
 	u = regexp.MustCompile(`/revisions/[0-9]+`).ReplaceAllString(u, "/revisions/${qaScorecardRevisionID}")
 	u = regexp.MustCompile(`/teamFolders/[0-9a-fA-F-]+`).ReplaceAllString(u, "/teamFolders/2ba614be-5147-410a-ad89-bab4ff528497")
@@ -1226,6 +1225,10 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if strings.Contains(v, "/contacts/") {
 			re := regexp.MustCompile(`/contacts/[0-9]+`)
 			v = re.ReplaceAllString(v, "/contacts/${contactID}")
+		}
+		if strings.Contains(v, "/deviceSessions/") {
+			re := regexp.MustCompile(`/deviceSessions/session-[a-z0-9]+`)
+			v = re.ReplaceAllLiteralString(v, "/deviceSessions/session-${uniqueId}")
 		}
 		if strings.Contains(v, "/forwardingRules/") {
 			re := regexp.MustCompile(`/forwardingRules/[^/]+`)

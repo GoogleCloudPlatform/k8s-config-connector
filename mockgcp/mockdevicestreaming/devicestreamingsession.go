@@ -61,7 +61,7 @@ func (s *DirectAccessV1) CreateDeviceSession(ctx context.Context, req *pb.Create
 	obj := proto.CloneOf(req.DeviceSession)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.Now()
-	obj.State = pb.DeviceSession_REQUESTED // Match real GCP status state
+	obj.State = pb.DeviceSession_REQUESTED // Match real GCP status state (1: REQUESTED on create)
 
 	// Resolve TTL to ExpireTime and clear TTL to match real GCP behavior (GCP only stores/returns expireTime)
 	duration := 15 * time.Minute // Default duration is 15 minutes
@@ -94,6 +94,13 @@ func (s *DirectAccessV1) GetDeviceSession(ctx context.Context, req *pb.GetDevice
 			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
+	}
+
+	if session.State == pb.DeviceSession_REQUESTED {
+		session.State = pb.DeviceSession_SessionState(2)
+		if err := s.storage.Update(ctx, fqn, &session); err != nil {
+			return nil, err
+		}
 	}
 
 	return &session, nil
