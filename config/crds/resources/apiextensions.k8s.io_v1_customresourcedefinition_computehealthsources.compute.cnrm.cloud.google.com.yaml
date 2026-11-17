@@ -66,10 +66,40 @@ spec:
                 type: string
               fingerprint:
                 type: string
-              healthAggregationPolicy:
-                type: string
+              healthAggregationPolicyRef:
+                description: ComputeHealthAggregationPolicyRef is a reference to a
+                  GCP ComputeHealthAggregationPolicy resource.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed ComputeHealthAggregationPolicy
+                      resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/healthAggregationPolicies/{{healthaggregationpolicyID}}".
+                    type: string
+                  name:
+                    description: The name of a ComputeHealthAggregationPolicy resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ComputeHealthAggregationPolicy
+                      resource.
+                    type: string
+                type: object
               location:
-                description: The location of this resource.
+                description: 'Location represents the geographical location of the
+                  ComputeHealthSource. Specify a region name. Reference: GCP definition
+                  of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
                 type: string
               projectRef:
                 description: The project that this resource belongs to.
@@ -103,8 +133,6 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
-              region:
-                type: string
               resourceID:
                 description: The ComputeHealthSource name. If not given, the metadata.name
                   will be used.
@@ -113,7 +141,33 @@ spec:
                 type: string
               sources:
                 items:
-                  type: string
+                  description: ComputeBackendServiceRef is a reference to a ComputeBackendService.
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                    required:
+                    - external
+                  properties:
+                    external:
+                      description: The value of an externally managed ComputeBackendService
+                        resource.
+                      type: string
+                    name:
+                      description: The name of a ComputeBackendService resource.
+                      type: string
+                    namespace:
+                      description: The namespace of a ComputeBackendService resource.
+                      type: string
+                  type: object
                 type: array
             required:
             - location
@@ -171,6 +225,8 @@ spec:
                     format: int64
                     type: integer
                   kind:
+                    type: string
+                  region:
                     type: string
                   selfLink:
                     type: string

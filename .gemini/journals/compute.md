@@ -552,3 +552,17 @@
   - Implemented unit tests in `computeinstantsnapshotgroup_identity_test.go` covering zonal and regional identity parsing, parent string formatting, and URLs.
   - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
   - All unit tests (`apis/compute/...`), conformance identity tests, CAIS golden tests (`pkg/cli/powertools/cais/...`), and API checks (`tests/apichecks/...`) pass cleanly.
+
+### [2026-11-16] Greenfield Step 1b: Triage judgement queue and finalize direct KRM types and identity for ComputeHealthSource
+- **Context**: Triaged and finalized direct KRM types, identity, and references for `ComputeHealthSource` (issue #15853) following Greenfield Step 1b (`judgement/SKILL.md`).
+- **Judgement Queue Resolutions & Learnings**:
+  1. `untriaged-bulk-generation`: Resolved after triaging all spec and status fields, omissions, docs link, output-only fields, and KRM conventions.
+  2. `verify-resource-docs-link`: Verified and updated `+kcc:source:resource-docs` link to `https://cloud.google.com/compute/docs/reference/rest/v1/regionHealthSources`.
+  3. `location-parent-unknown`: Verified `HealthSource` is a regional resource under `projects/{project}/regions/{region}/healthSources/{healthSource}`. Kept `spec.projectRef` (`*refsv1beta1.ProjectRef` with `// +required`) and `spec.location` (`string` with `// +required`, representing region name) matching Compute conventions (`ComputeHealthCheckService`, `ComputeHealthAggregationPolicy`).
+  4. `location-or-parent-ref` on `spec.region`: The proto field `region` is an output-only URL string set by GCP server. Removed `spec.region` from `ComputeHealthSourceSpec` and moved it to `ComputeHealthSourceObservedState.Region`.
+  5. `possible-reference-by-sibling` on `.spec.healthAggregationPolicy`: Converted `HealthAggregationPolicy *string` to `HealthAggregationPolicyRef *ComputeHealthAggregationPolicyRef` in `ComputeHealthSourceSpec`. `generate-mapper` automatically maps to/from proto string field.
+  6. `server-set-field-placed` on `creationTimestamp`, `id`, `kind`, `selfLink`, and `selfLinkWithID`: Confirmed output-only server-set fields and removed guess placement annotations.
+- **Verification**:
+  - Re-ran `./apis/compute/generate.sh` and verified CRD generation, mappers, deepcopy code.
+  - Re-recorded `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+  - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.

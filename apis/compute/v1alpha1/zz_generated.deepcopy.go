@@ -2081,6 +2081,11 @@ func (in *ComputeHealthSourceObservedState) DeepCopyInto(out *ComputeHealthSourc
 		*out = new(string)
 		**out = **in
 	}
+	if in.Region != nil {
+		in, out := &in.Region, &out.Region
+		*out = new(string)
+		**out = **in
+	}
 	if in.SelfLink != nil {
 		in, out := &in.SelfLink, &out.SelfLink
 		*out = new(string)
@@ -2126,11 +2131,6 @@ func (in *ComputeHealthSourceSpec) DeepCopyInto(out *ComputeHealthSourceSpec) {
 		*out = new(v1beta1.ProjectRef)
 		**out = **in
 	}
-	if in.Location != nil {
-		in, out := &in.Location, &out.Location
-		*out = new(string)
-		**out = **in
-	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
@@ -2146,14 +2146,9 @@ func (in *ComputeHealthSourceSpec) DeepCopyInto(out *ComputeHealthSourceSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.HealthAggregationPolicy != nil {
-		in, out := &in.HealthAggregationPolicy, &out.HealthAggregationPolicy
-		*out = new(string)
-		**out = **in
-	}
-	if in.Region != nil {
-		in, out := &in.Region, &out.Region
-		*out = new(string)
+	if in.HealthAggregationPolicyRef != nil {
+		in, out := &in.HealthAggregationPolicyRef, &out.HealthAggregationPolicyRef
+		*out = new(ComputeHealthAggregationPolicyRef)
 		**out = **in
 	}
 	if in.SourceType != nil {
@@ -2163,7 +2158,7 @@ func (in *ComputeHealthSourceSpec) DeepCopyInto(out *ComputeHealthSourceSpec) {
 	}
 	if in.Sources != nil {
 		in, out := &in.Sources, &out.Sources
-		*out = make([]string, len(*in))
+		*out = make([]computev1beta1.ComputeBackendServiceRef, len(*in))
 		copy(*out, *in)
 	}
 }

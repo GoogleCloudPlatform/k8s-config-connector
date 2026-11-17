@@ -15,12 +15,12 @@
 // API sources for ComputeHealthSource, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/compute/v1/compute.proto
 // +kcc:source:service-docs=https://developers.google.com/compute/docs/reference/latest/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/compute/docs/reference/rest
+// +kcc:source:resource-docs=https://cloud.google.com/compute/docs/reference/rest/v1/regionHealthSources
 
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -33,31 +33,30 @@ var ComputeHealthSourceGVK = GroupVersion.WithKind("ComputeHealthSource")
 // +kcc:required-from-proto
 type ComputeHealthSourceSpec struct {
 	// The project that this resource belongs to.
+	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
-	// The location of this resource.
-	Location *string `json:"location"`
+	// Location represents the geographical location of the ComputeHealthSource. Specify a region name. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)
+	// +required
+	Location string `json:"location"`
 
 	// The ComputeHealthSource name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.description
 	Description *string `json:"description,omitempty"`
 
 	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.fingerprint
 	Fingerprint *string `json:"fingerprint,omitempty"`
 
-	// +kcc:guess=possible-reference target=ComputeHealthAggregationPolicy
 	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.health_aggregation_policy
-	HealthAggregationPolicy *string `json:"healthAggregationPolicy,omitempty"`
-
-	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.region
-	Region *string `json:"region,omitempty"`
+	HealthAggregationPolicyRef *ComputeHealthAggregationPolicyRef `json:"healthAggregationPolicyRef,omitempty"`
 
 	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.source_type
 	SourceType *string `json:"sourceType,omitempty"`
 
 	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.sources
-	Sources []string `json:"sources,omitempty"`
+	Sources []computev1beta1.ComputeBackendServiceRef `json:"sources,omitempty"`
 }
 
 // ComputeHealthSourceStatus defines the config connector machine state of ComputeHealthSource
@@ -79,23 +78,21 @@ type ComputeHealthSourceStatus struct {
 // ComputeHealthSourceObservedState is the state of the ComputeHealthSource resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.compute.v1.HealthSource
 type ComputeHealthSourceObservedState struct {
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.creation_timestamp
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.id
 	ID *uint64 `json:"id,omitempty"`
 
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.kind
 	Kind *string `json:"kind,omitempty"`
 
-	// +kcc:guess=placement reason=no-field-behavior-on-message
+	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.region
+	Region *string `json:"region,omitempty"`
+
 	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
 
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.HealthSource.self_link_with_id
 	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
 }
