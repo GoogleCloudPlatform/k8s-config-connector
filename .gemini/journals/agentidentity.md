@@ -17,3 +17,16 @@
   - **OAuth Credentials**: Resolved `clientID` and `clientSecret` under `threeLeggedOauth` and `twoLeggedOauth` as `not-applicable`; these represent external identity provider client identifiers/secrets, not GCP resource references or Secret Manager secret versions.
   - **Workload IDs**: Triaged `spec.workloadIDs` as `not-applicable` in judgement queue and deferred in `tests/apichecks/testdata/exceptions/refs_deferred.txt`; the field accepts IAM principal strings in `principal://` URI format rather than direct KCC resource references.
   - **Documentation Links**: Removed unverified REST doc URL guess annotation as no public REST reference page currently exists for `projects.locations.authProviders`.
+
+### [2026-11-17] AgentIdentityAuthProvider Controller, Fuzzer & E2E Fixtures
+- **Context**: Implementing Greenfield Step 2 direct controller, round-trip fuzzer, and E2E fixtures for `AgentIdentityAuthProvider`.
+- **Implementation & Controller Decisions**:
+  - Generated direct controller and fuzzer via `controllerbuilder generate-controller` and `generate-fuzzer` with `--prepopulate-resource`.
+  - **Labels Handling**: Although `AuthProvider` proto includes `labels map<string, string>`, real GCP `AgentIdentity` does not store or return labels (returns empty map on GET). Used `common.CompareGreenfieldSpec` rather than `CompareGreenfieldSpecAndLabels` to prevent infinite re-reconciliation loops from spurious label differences.
+  - **Input-Only Secret Fields in Update**: GCP `UpdateAuthProvider` requires that input-only secret fields (`apiKey.apiKey`, `threeLeggedOauth.clientSecret`, `twoLeggedOauth.clientSecret`) are only provided in the payload if their paths are explicitly included in `update_mask` (otherwise failing with HTTP 400). In `Update()`, unmasked secret fields are cleared to empty string before calling `UpdateAuthProvider`.
+  - **Fixtures**: Implemented three fixtures covering all supported auth provider configurations:
+    - `agentidentityauthprovider-minimal`: Basic API key auth provider with minimal required fields.
+    - `agentidentityauthprovider-maximal`: 3-legged OAuth auth provider exercising `allowedScopes`, `blockedScopes`, `description`, `workloadIDs`, and `threeLeggedOauth` parameters (transitioning `enablePkce` from `false` to `true`).
+    - `agentidentityauthprovider-twoleggedoauth`: 2-legged OAuth auth provider exercising `twoLeggedOauth` parameters.
+  - **Golden Testing**: Recorded all three fixtures against real GCP (`cnrm-barni-4`) with valid `_audit_probe.log` entries and 7/7 validation checks passing.
+

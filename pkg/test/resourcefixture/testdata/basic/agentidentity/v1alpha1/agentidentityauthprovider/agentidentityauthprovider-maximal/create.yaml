@@ -1,0 +1,24 @@
+apiVersion: agentidentity.cnrm.cloud.google.com/v1alpha1
+kind: AgentIdentityAuthProvider
+metadata:
+  name: authprovider-max-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
+  resourceID: authprovider-max-${uniqueId}
+  description: Initial description for maximal auth provider
+  allowedScopes:
+    - https://www.googleapis.com/auth/userinfo.email
+  blockedScopes:
+    - https://www.googleapis.com/auth/userinfo.profile
+  workloadIDs:
+    - principal://agents.global.org-123456789.system.id.goog/resources/aiplatform/projects/12345/locations/us-central1/reasoningEngines/12345
+  authProviderTypeParams:
+    threeLeggedOauth:
+      authorizationURL: https://auth.example.com/authorize
+      clientID: example-client-id
+      clientSecret: example-client-secret
+      defaultContinueURI: https://example.com/continue
+      enablePkce: false
+      tokenURL: https://auth.example.com/oauth/token

@@ -1,0 +1,6 @@
+- caisURL: //agentidentity.googleapis.com/projects/${projectId}/locations/us-central1/authProviders/authprovider-2lo-${uniqueId}
+  group: agentidentity.cnrm.cloud.google.com
+  kind: AgentIdentityAuthProvider
+  name: authprovider-2lo-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
