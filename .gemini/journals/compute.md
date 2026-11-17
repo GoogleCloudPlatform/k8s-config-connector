@@ -649,3 +649,13 @@
   - Synchronized `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
   - Verified all tests in `apis/compute/...`, `pkg/controller/direct/compute/...`, `tests/apichecks/...`, `pkg/gcpurls/...`, and `pkg/test/resourcefixture/...` pass cleanly.
 
+### [2026-11-17] Greenfield Step 2: Implement direct controller, E2E fixtures, and fuzzer for ComputeHealthSource
+- **Context**: Implemented direct controller, round-trip KRM fuzzer, and real-GCP recorded E2E fixtures for `ComputeHealthSource` (issue #15888) following Greenfield Step 2 (`generated/SKILL.md`).
+- **Implementation & Learnings**:
+  1. Generated direct controller and round-trip fuzzer with one-shot `controllerbuilder generate-controller` and `generate-fuzzer --prepopulate-resource`.
+  2. The Compute Engine API uses `RegionHealthSourcesClient` (`gcp.NewRegionHealthSourcesRESTClient`) with operations `Get`, `Insert`, `Patch`, and `Delete`.
+  3. `AdapterForObject` calls `common.NormalizeGreenfieldReferences` first, followed by `obj.GetIdentity`.
+  4. In `Update`, used `common.CompareGreenfieldSpec` with `canonicalizeComputeURL` and `canonicalizeComputeURLs` to normalize URL references (`refs.TrimComputeURIPrefix`), and passed `resource.Fingerprint = a.actual.Fingerprint` for optimistic locking required by Compute API `Patch`.
+  5. Tested and verified round-trip fuzzer (`FOCUS=ComputeHealthSource go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`) for both Spec and Status across 200 seeds.
+  6. Created minimal and maximal E2E fixtures with dependencies `ComputeHealthCheck`, `ComputeBackendService` (internal passthrough TCP load balancing), and `ComputeHealthAggregationPolicy`. Tested in-place updates mutating `description` and updating `healthAggregationPolicyRef`.
+  7. Recorded golden files against live GCP (`cnrm-barni-4`) with `RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/computehealthsource"`. Both `computehealthsource-minimal` and `computehealthsource-maximal` passed all 7/7 automated HTTP lifecycle validation checks (`_http_report.md`).
