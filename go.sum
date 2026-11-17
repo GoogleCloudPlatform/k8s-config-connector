@@ -76,6 +76,8 @@ cloud.google.com/go/accesscontextmanager v1.8.4/go.mod h1:ParU+WbMpD34s5JFEnGAnP
 cloud.google.com/go/accesscontextmanager v1.8.5/go.mod h1:TInEhcZ7V9jptGNqN3EzZ5XMhT6ijWxTGjzyETwmL0Q=
 cloud.google.com/go/accesscontextmanager v1.14.0 h1:50ofyZiGo2yL3Wt1gZ0j0QnD9y3YrhhcwX0N08uS6KY=
 cloud.google.com/go/accesscontextmanager v1.14.0/go.mod h1:VO15iVnsM0FO9Dt8hSFPgkuHRZjq6LEYZq1szJ27U2k=
+cloud.google.com/go/agentidentity v0.1.0 h1:RTNCl8dWJ7Qq/4OnEtylJW7WL3lm52UVOvhQdLdNIuA=
+cloud.google.com/go/agentidentity v0.1.0/go.mod h1:4/xsASGtjLWhFXrXyNouP1ESwNR4KkoTyS18R9yhK7o=
 cloud.google.com/go/agentregistry v0.2.0 h1:TojVrdZWDwezkyYgYYUaCcXtrNHiJXancjMjEMb5774=
 cloud.google.com/go/agentregistry v0.2.0/go.mod h1:YK8O9KmUZH5CbRHUQ9oXv95g4m2YvtmsNxH+sdCv+5A=
 cloud.google.com/go/aiplatform v1.22.0/go.mod h1:ig5Nct50bZlzV6NvKaTwmplLLddFx0YReh9WfTO5jKw=
