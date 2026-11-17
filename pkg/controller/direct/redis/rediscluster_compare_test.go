@@ -16,54 +16,22 @@ package redis
 
 import (
 	"context"
+	"slices"
 	"testing"
 
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1beta1"
 )
 
-func TestCompareRedisCluster_UnsetClusterEndpointsDoesNotClearLiveEndpoints(t *testing.T) {
-	ctx := context.Background()
-	actual := redisClusterWithUserCreatedPSC()
-
-	// spec.clusterEndpoints omitted: ToProto leaves the repeated field empty.
-	desired := &pb.Cluster{}
-
-	diffs, err := compareRedisCluster(ctx, actual, desired)
+// An unset spec.clusterEndpoints must not be compared: otherwise the update mask
+// would include cluster_endpoints and delete user-created PSC connections.
+func TestCompareRedisCluster_UnsetClusterEndpointsIsNotCompared(t *testing.T) {
+	res, err := compareRedisCluster(context.Background(), &krm.RedisClusterSpec{}, redisClusterWithUserCreatedPSC())
 	if err != nil {
 		t.Fatalf("compareRedisCluster() unexpected error: %v", err)
 	}
-	if hasDiffField(diffs, "cluster_endpoints") {
-		t.Fatalf("unset spec.clusterEndpoints must not diff cluster_endpoints (that update deletes user-created PSC connections); fields: %v", diffFieldIDs(diffs))
-	}
-}
-
-func TestCompareRedisCluster_ExplicitClusterEndpointsStillDiff(t *testing.T) {
-	ctx := context.Background()
-	actual := redisClusterWithUserCreatedPSC()
-	desired := &pb.Cluster{
-		ClusterEndpoints: []*pb.ClusterEndpoint{
-			{
-				Connections: []*pb.ConnectionDetail{
-					{
-						Connection: &pb.ConnectionDetail_PscAutoConnection{
-							PscAutoConnection: &pb.PscAutoConnection{
-								ProjectId: "other-project",
-								Network:   "projects/other-project/global/networks/other",
-							},
-						},
-					},
-				},
-			},
-		},
-	}
-
-	diffs, err := compareRedisCluster(ctx, actual, desired)
-	if err != nil {
-		t.Fatalf("compareRedisCluster() unexpected error: %v", err)
-	}
-	if !hasDiffField(diffs, "cluster_endpoints") {
-		t.Fatalf("an explicit spec.clusterEndpoints that differs from the live cluster must still diff cluster_endpoints; fields: %v", diffFieldIDs(diffs))
+	if slices.Contains(res.FieldMask.GetPaths(), "cluster_endpoints") {
+		t.Fatalf("unset spec.clusterEndpoints must not diff cluster_endpoints; paths: %v", res.FieldMask.GetPaths())
 	}
 }
 
@@ -100,27 +68,4 @@ func redisClusterWithUserCreatedPSC() *pb.Cluster {
 			},
 		},
 	}
-}
-
-func hasDiffField(diff *structuredreporting.Diff, id string) bool {
-	if diff == nil {
-		return false
-	}
-	for _, field := range diff.Fields {
-		if field.ID == id {
-			return true
-		}
-	}
-	return false
-}
-
-func diffFieldIDs(diff *structuredreporting.Diff) []string {
-	if diff == nil {
-		return nil
-	}
-	ids := make([]string, 0, len(diff.Fields))
-	for _, field := range diff.Fields {
-		ids = append(ids, field.ID)
-	}
-	return ids
 }
