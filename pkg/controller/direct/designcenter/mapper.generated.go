@@ -38,6 +38,7 @@ func DesignCenterSpaceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: EnableGcpSharedTemplates
 	return out
 }
 func DesignCenterSpaceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DesignCenterSpaceObservedState) *pb.Space {
@@ -48,6 +49,7 @@ func DesignCenterSpaceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.D
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: EnableGcpSharedTemplates
 	return out
 }
 func DesignCenterSpaceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Space) *krm.DesignCenterSpaceSpec {
@@ -58,7 +60,8 @@ func DesignCenterSpaceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Space) *k
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.EnableGcpSharedTemplates = in.EnableGcpSharedTemplates
+	// MISSING: EnableGcpSharedTemplates
+	// (near miss): "EnableGcpSharedTemplates" vs "EnableGCPSharedTemplates"
 	if in.GetGcsBucket() != "" {
 		out.GCSBucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetGcsBucket()}
 	}
@@ -73,7 +76,8 @@ func DesignCenterSpaceSpec_ToProto(mapCtx *direct.MapContext, in *krm.DesignCent
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
-	out.EnableGcpSharedTemplates = in.EnableGcpSharedTemplates
+	// MISSING: EnableGcpSharedTemplates
+	// (near miss): "EnableGcpSharedTemplates" vs "EnableGCPSharedTemplates"
 	if in.GCSBucketRef != nil {
 		out.GcsBucket = in.GCSBucketRef.External
 	}

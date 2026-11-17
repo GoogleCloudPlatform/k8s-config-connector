@@ -147,8 +147,8 @@ func (in *DesignCenterSpaceSpec) DeepCopyInto(out *DesignCenterSpaceSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.EnableGcpSharedTemplates != nil {
-		in, out := &in.EnableGcpSharedTemplates, &out.EnableGcpSharedTemplates
+	if in.EnableGCPSharedTemplates != nil {
+		in, out := &in.EnableGCPSharedTemplates, &out.EnableGCPSharedTemplates
 		*out = new(bool)
 		**out = **in
 	}

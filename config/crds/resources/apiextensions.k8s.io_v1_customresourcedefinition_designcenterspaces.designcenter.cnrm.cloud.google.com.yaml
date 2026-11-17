@@ -67,7 +67,7 @@ spec:
               displayName:
                 description: Optional. Display name for the space.
                 type: string
-              enableGcpSharedTemplates:
+              enableGCPSharedTemplates:
                 description: Optional. Flag to enable Google opinionated shared templates.
                 type: boolean
               gcsBucketRef:

@@ -46,7 +46,7 @@ type DesignCenterSpaceSpec struct {
 
 	// Optional. Flag to enable Google opinionated shared templates.
 	// +kcc:proto:field=google.cloud.designcenter.v1.Space.enable_gcp_shared_templates
-	EnableGcpSharedTemplates *bool `json:"enableGcpSharedTemplates,omitempty"`
+	EnableGCPSharedTemplates *bool `json:"enableGCPSharedTemplates,omitempty"`
 
 	// Optional. An existing Google Cloud Storage bucket that you want to use
 	//  instead of creating a new bucket during Application Design Center setup. If
