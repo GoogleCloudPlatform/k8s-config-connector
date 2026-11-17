@@ -1,0 +1,45 @@
+apiVersion: ces.cnrm.cloud.google.com/v1alpha1
+kind: CESGuardrail
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: cesguardrail-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  action:
+    respondImmediately:
+      responses:
+      - disabled: true
+        text: Updated blocked content response.
+  contentFilter:
+    bannedContents:
+    - banned_general_updated
+    bannedContentsInAgentResponse:
+    - banned_agent_updated
+    bannedContentsInUserInput:
+    - banned_user_updated
+    disregardDiacritics: false
+    matchType: SIMPLE_STRING_MATCH
+  description: Updated maximal CESGuardrail for testing
+  displayName: cesguardrail-max-updated-${uniqueId}
+  enabled: false
+  parentRef:
+    name: cesapp-${uniqueId}
+  resourceID: cesguardrail-max-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us/apps/cesapp-${uniqueId}/guardrails/cesguardrail-max-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    etag: abcdef123456
+    updateTime: "1970-01-01T00:00:00Z"

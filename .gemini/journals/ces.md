@@ -95,6 +95,15 @@
   4. Resolved all 6 open `CESGuardrail` entries in `apis/ces/judgement_queue.yaml`.
   5. Regenerated CRDs, mappers, deepcopy implementations, and updated `alpha-missingfields.txt` and `spec_dislike_etag.txt` testdata exceptions.
 
+### [2026-11-17] Direct Controller, Fuzzer, and E2E Fixtures for CESGuardrail
+- **Context**: Implementing Greenfield Step 2 direct controller, fuzzer, and recording real-GCP E2E fixtures for `CESGuardrail` (`ces.cnrm.cloud.google.com/v1alpha1`).
+- **Learnings & Service Behaviors**:
+  1. **Synchronous REST CRUD**: Similar to `CESDeployment`, `CESGuardrail` CRUD operations (`CreateGuardrail`, `UpdateGuardrail`, `GetGuardrail`, `DeleteGuardrail`) are synchronous REST calls returning `*cespb.Guardrail` or `*emptypb.Empty` directly without LRO handling.
+  2. **Oneof Structure**: `GuardrailType` is a proto oneof (`content_filter`, `llm_prompt_security`, `llm_policy`, `model_safety`, `code_callback`), and `Action` in `TriggerAction` is also a oneof (`respond_immediately`, `transfer_agent`, `generative_answer`). E2E fixtures test `contentFilter` with `respondImmediately` actions.
+  3. **Field Mutability**: `displayName`, `description`, `enabled`, `action.respondImmediately.responses`, and `contentFilter` (including `matchType`, `disregardDiacritics`, `bannedContents`, `bannedContentsInUserInput`, and `bannedContentsInAgentResponse`) update in-place cleanly via `UpdateGuardrail` with field mask.
+  4. **Audit Probe & E2E Validation**: Golden HTTP logs and audit probes were recorded against real GCP project `cnrm-barni-4` for `cesguardrail-minimal` and `cesguardrail-maximal`, with all 7/7 automated lifecycle checks passing cleanly.
+
+
 
 
 

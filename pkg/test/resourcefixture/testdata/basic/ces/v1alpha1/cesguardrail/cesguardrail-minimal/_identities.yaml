@@ -1,0 +1,12 @@
+- caisURL: //ces.googleapis.com/projects/${projectId}/locations/us/apps/cesapp-${uniqueId}
+  group: ces.cnrm.cloud.google.com
+  kind: CESApp
+  name: cesapp-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //ces.googleapis.com/projects/${projectId}/locations/us/apps/cesapp-${uniqueId}/guardrails/cesguardrail-minimal-${uniqueId}
+  group: ces.cnrm.cloud.google.com
+  kind: CESGuardrail
+  name: cesguardrail-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
