@@ -1716,16 +1716,11 @@
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.modalityConfigs[].summarizationConfig.modelSettings.temperature" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.modalityConfigs[].summarizationConfig.prompt" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreTool.name" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionType" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.fileSearchTool.corpusType" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.fileSearchTool.description" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.fileSearchTool.fileCorpusRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.fileSearchTool.name" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.googleSearchTool.contextURLs[]" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.googleSearchTool.description" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.googleSearchTool.excludeDomains[]" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.googleSearchTool.name" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.googleSearchTool.preferredDomains[]" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.googleSearchTool.promptConfig.textPrompt" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.googleSearchTool.promptConfig.voicePrompt" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpTool.apiAuthentication.apiKeyConfig.apiKeySecretVersionRef" is not set; neither 'external' nor 'name' are set
@@ -1769,12 +1764,9 @@
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.tlsConfig.caCerts[].cert" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.tlsConfig.caCerts[].displayName" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPITool.url" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.pythonFunction.name" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.pythonFunction.pythonCode" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.systemTool.name" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.toolFakeConfig.codeBlock.pythonCode" is not set in unstructured objects
-[missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.toolFakeConfig.enableFakeMode" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.widgetTool.dataMapping.fieldMappings" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.widgetTool.dataMapping.mode" is not set in unstructured objects
 [missing_field] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.widgetTool.dataMapping.pythonFunction.name" is not set in unstructured objects

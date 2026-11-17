@@ -1,0 +1,12 @@
+- caisURL: //ces.googleapis.com/projects/${projectId}/locations/us/apps/cesapp-${uniqueId}
+  group: ces.cnrm.cloud.google.com
+  kind: CESApp
+  name: cesapp-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //ces.googleapis.com/projects/${projectId}/locations/us/apps/cesapp-${uniqueId}/tools/cestool-max-${uniqueId}
+  group: ces.cnrm.cloud.google.com
+  kind: CESTool
+  name: cestool-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
