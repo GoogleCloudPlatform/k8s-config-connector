@@ -1122,6 +1122,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"transcoderjobs.transcoder.cnrm.cloud.google.com":                               true, // spec.config.elementaryStreams[].videoStream.vp9.sdr is an empty object
 		"aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com":                       true, // GCP known pattern: Empty oneof option (spec.indexConfig.bruteForceConfig)
 		"cesagents.ces.cnrm.cloud.google.com":                                           true, // GCP known pattern: Empty oneof option (spec.llmAgent)
+		"cesguardrails.ces.cnrm.cloud.google.com":                                       true, // GCP known pattern: Empty oneof option (spec.llmPromptSecurity.defaultSettings)
 		"cloudchannelchannelpartnerrepricingconfigs.cloudchannel.cnrm.cloud.google.com": true, // GCP known pattern: Empty oneof option (spec.repricingConfig.channelPartnerGranularity)
 		"cloudchannelcustomerrepricingconfigs.cloudchannel.cnrm.cloud.google.com":       true, // GCP known pattern: Empty oneof option (spec.repricingConfig.channelPartnerGranularity)
 		"datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com":           true, // GCP known pattern: Empty oneof option (spec.oracle.staticServiceIPConnectivity)

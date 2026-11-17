@@ -567,6 +567,76 @@ func CESDeploymentSpec_ToProto(mapCtx *direct.MapContext, in *krm.CESDeploymentS
 	out.ChannelProfile = ChannelProfile_ToProto(mapCtx, in.ChannelProfile)
 	return out
 }
+func CESGuardrailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail) *krm.CESGuardrailObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CESGuardrailObservedState{}
+	out.LlmPromptSecurity = Guardrail_LlmPromptSecurityObservedState_FromProto(mapCtx, in.GetLlmPromptSecurity())
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func CESGuardrailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CESGuardrailObservedState) *pb.Guardrail {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail{}
+	if oneof := Guardrail_LlmPromptSecurityObservedState_ToProto(mapCtx, in.LlmPromptSecurity); oneof != nil {
+		out.GuardrailType = &pb.Guardrail_LlmPromptSecurity_{LlmPromptSecurity: oneof}
+	}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
+func CESGuardrailSpec_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail) *krm.CESGuardrailSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CESGuardrailSpec{}
+	out.ContentFilter = Guardrail_ContentFilter_FromProto(mapCtx, in.GetContentFilter())
+	out.LlmPromptSecurity = Guardrail_LlmPromptSecurity_FromProto(mapCtx, in.GetLlmPromptSecurity())
+	out.LlmPolicy = Guardrail_LlmPolicy_FromProto(mapCtx, in.GetLlmPolicy())
+	out.ModelSafety = Guardrail_ModelSafety_FromProto(mapCtx, in.GetModelSafety())
+	out.CodeCallback = Guardrail_CodeCallback_FromProto(mapCtx, in.GetCodeCallback())
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.Action = TriggerAction_FromProto(mapCtx, in.GetAction())
+	return out
+}
+func CESGuardrailSpec_ToProto(mapCtx *direct.MapContext, in *krm.CESGuardrailSpec) *pb.Guardrail {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail{}
+	if oneof := Guardrail_ContentFilter_ToProto(mapCtx, in.ContentFilter); oneof != nil {
+		out.GuardrailType = &pb.Guardrail_ContentFilter_{ContentFilter: oneof}
+	}
+	if oneof := Guardrail_LlmPromptSecurity_ToProto(mapCtx, in.LlmPromptSecurity); oneof != nil {
+		out.GuardrailType = &pb.Guardrail_LlmPromptSecurity_{LlmPromptSecurity: oneof}
+	}
+	if oneof := Guardrail_LlmPolicy_ToProto(mapCtx, in.LlmPolicy); oneof != nil {
+		out.GuardrailType = &pb.Guardrail_LlmPolicy_{LlmPolicy: oneof}
+	}
+	if oneof := Guardrail_ModelSafety_ToProto(mapCtx, in.ModelSafety); oneof != nil {
+		out.GuardrailType = &pb.Guardrail_ModelSafety_{ModelSafety: oneof}
+	}
+	if oneof := Guardrail_CodeCallback_ToProto(mapCtx, in.CodeCallback); oneof != nil {
+		out.GuardrailType = &pb.Guardrail_CodeCallback_{CodeCallback: oneof}
+	}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Enabled = direct.ValueOf(in.Enabled)
+	out.Action = TriggerAction_ToProto(mapCtx, in.Action)
+	return out
+}
 func CESToolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Tool) *krm.CESToolObservedState {
 	if in == nil {
 		return nil
@@ -1659,6 +1729,190 @@ func GoogleSearchTool_PromptConfig_ToProto(mapCtx *direct.MapContext, in *krm.Go
 	out.VoicePrompt = direct.ValueOf(in.VoicePrompt)
 	return out
 }
+func Guardrail_CodeCallback_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail_CodeCallback) *krm.Guardrail_CodeCallback {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Guardrail_CodeCallback{}
+	out.BeforeAgentCallback = Callback_FromProto(mapCtx, in.GetBeforeAgentCallback())
+	out.AfterAgentCallback = Callback_FromProto(mapCtx, in.GetAfterAgentCallback())
+	out.BeforeModelCallback = Callback_FromProto(mapCtx, in.GetBeforeModelCallback())
+	out.AfterModelCallback = Callback_FromProto(mapCtx, in.GetAfterModelCallback())
+	return out
+}
+func Guardrail_CodeCallback_ToProto(mapCtx *direct.MapContext, in *krm.Guardrail_CodeCallback) *pb.Guardrail_CodeCallback {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail_CodeCallback{}
+	out.BeforeAgentCallback = Callback_ToProto(mapCtx, in.BeforeAgentCallback)
+	out.AfterAgentCallback = Callback_ToProto(mapCtx, in.AfterAgentCallback)
+	out.BeforeModelCallback = Callback_ToProto(mapCtx, in.BeforeModelCallback)
+	out.AfterModelCallback = Callback_ToProto(mapCtx, in.AfterModelCallback)
+	return out
+}
+func Guardrail_ContentFilter_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail_ContentFilter) *krm.Guardrail_ContentFilter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Guardrail_ContentFilter{}
+	out.BannedContents = in.BannedContents
+	out.BannedContentsInUserInput = in.BannedContentsInUserInput
+	out.BannedContentsInAgentResponse = in.BannedContentsInAgentResponse
+	out.MatchType = direct.Enum_FromProto(mapCtx, in.GetMatchType())
+	out.DisregardDiacritics = direct.LazyPtr(in.GetDisregardDiacritics())
+	return out
+}
+func Guardrail_ContentFilter_ToProto(mapCtx *direct.MapContext, in *krm.Guardrail_ContentFilter) *pb.Guardrail_ContentFilter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail_ContentFilter{}
+	out.BannedContents = in.BannedContents
+	out.BannedContentsInUserInput = in.BannedContentsInUserInput
+	out.BannedContentsInAgentResponse = in.BannedContentsInAgentResponse
+	out.MatchType = direct.Enum_ToProto[pb.Guardrail_ContentFilter_MatchType](mapCtx, in.MatchType)
+	out.DisregardDiacritics = direct.ValueOf(in.DisregardDiacritics)
+	return out
+}
+func Guardrail_LlmPolicy_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail_LlmPolicy) *krm.Guardrail_LlmPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Guardrail_LlmPolicy{}
+	out.MaxConversationMessages = direct.LazyPtr(in.GetMaxConversationMessages())
+	out.ModelSettings = ModelSettings_FromProto(mapCtx, in.GetModelSettings())
+	out.Prompt = direct.LazyPtr(in.GetPrompt())
+	out.PolicyScope = direct.Enum_FromProto(mapCtx, in.GetPolicyScope())
+	out.FailOpen = direct.LazyPtr(in.GetFailOpen())
+	out.AllowShortUtterance = direct.LazyPtr(in.GetAllowShortUtterance())
+	return out
+}
+func Guardrail_LlmPolicy_ToProto(mapCtx *direct.MapContext, in *krm.Guardrail_LlmPolicy) *pb.Guardrail_LlmPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail_LlmPolicy{}
+	out.MaxConversationMessages = direct.ValueOf(in.MaxConversationMessages)
+	out.ModelSettings = ModelSettings_ToProto(mapCtx, in.ModelSettings)
+	out.Prompt = direct.ValueOf(in.Prompt)
+	out.PolicyScope = direct.Enum_ToProto[pb.Guardrail_LlmPolicy_PolicyScope](mapCtx, in.PolicyScope)
+	out.FailOpen = direct.ValueOf(in.FailOpen)
+	out.AllowShortUtterance = direct.ValueOf(in.AllowShortUtterance)
+	return out
+}
+func Guardrail_LlmPromptSecurity_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail_LlmPromptSecurity) *krm.Guardrail_LlmPromptSecurity {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Guardrail_LlmPromptSecurity{}
+	out.DefaultSettings = Guardrail_LlmPromptSecurity_DefaultSecuritySettings_FromProto(mapCtx, in.GetDefaultSettings())
+	out.CustomPolicy = Guardrail_LlmPolicy_FromProto(mapCtx, in.GetCustomPolicy())
+	out.FailOpen = direct.LazyPtr(in.GetFailOpen())
+	return out
+}
+func Guardrail_LlmPromptSecurity_ToProto(mapCtx *direct.MapContext, in *krm.Guardrail_LlmPromptSecurity) *pb.Guardrail_LlmPromptSecurity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail_LlmPromptSecurity{}
+	if oneof := Guardrail_LlmPromptSecurity_DefaultSecuritySettings_ToProto(mapCtx, in.DefaultSettings); oneof != nil {
+		out.SecurityConfig = &pb.Guardrail_LlmPromptSecurity_DefaultSettings{DefaultSettings: oneof}
+	}
+	if oneof := Guardrail_LlmPolicy_ToProto(mapCtx, in.CustomPolicy); oneof != nil {
+		out.SecurityConfig = &pb.Guardrail_LlmPromptSecurity_CustomPolicy{CustomPolicy: oneof}
+	}
+	out.FailOpen = direct.ValueOf(in.FailOpen)
+	return out
+}
+func Guardrail_LlmPromptSecurityObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail_LlmPromptSecurity) *krm.Guardrail_LlmPromptSecurityObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Guardrail_LlmPromptSecurityObservedState{}
+	out.DefaultSettings = Guardrail_LlmPromptSecurity_DefaultSecuritySettingsObservedState_FromProto(mapCtx, in.GetDefaultSettings())
+	// MISSING: CustomPolicy
+	// MISSING: FailOpen
+	return out
+}
+func Guardrail_LlmPromptSecurityObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Guardrail_LlmPromptSecurityObservedState) *pb.Guardrail_LlmPromptSecurity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail_LlmPromptSecurity{}
+	if oneof := Guardrail_LlmPromptSecurity_DefaultSecuritySettingsObservedState_ToProto(mapCtx, in.DefaultSettings); oneof != nil {
+		out.SecurityConfig = &pb.Guardrail_LlmPromptSecurity_DefaultSettings{DefaultSettings: oneof}
+	}
+	// MISSING: CustomPolicy
+	// MISSING: FailOpen
+	return out
+}
+func Guardrail_LlmPromptSecurity_DefaultSecuritySettings_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail_LlmPromptSecurity_DefaultSecuritySettings) *krm.Guardrail_LlmPromptSecurity_DefaultSecuritySettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Guardrail_LlmPromptSecurity_DefaultSecuritySettings{}
+	// MISSING: DefaultPromptTemplate
+	return out
+}
+func Guardrail_LlmPromptSecurity_DefaultSecuritySettings_ToProto(mapCtx *direct.MapContext, in *krm.Guardrail_LlmPromptSecurity_DefaultSecuritySettings) *pb.Guardrail_LlmPromptSecurity_DefaultSecuritySettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail_LlmPromptSecurity_DefaultSecuritySettings{}
+	// MISSING: DefaultPromptTemplate
+	return out
+}
+func Guardrail_LlmPromptSecurity_DefaultSecuritySettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail_LlmPromptSecurity_DefaultSecuritySettings) *krm.Guardrail_LlmPromptSecurity_DefaultSecuritySettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Guardrail_LlmPromptSecurity_DefaultSecuritySettingsObservedState{}
+	out.DefaultPromptTemplate = direct.LazyPtr(in.GetDefaultPromptTemplate())
+	return out
+}
+func Guardrail_LlmPromptSecurity_DefaultSecuritySettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Guardrail_LlmPromptSecurity_DefaultSecuritySettingsObservedState) *pb.Guardrail_LlmPromptSecurity_DefaultSecuritySettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail_LlmPromptSecurity_DefaultSecuritySettings{}
+	out.DefaultPromptTemplate = direct.ValueOf(in.DefaultPromptTemplate)
+	return out
+}
+func Guardrail_ModelSafety_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail_ModelSafety) *krm.Guardrail_ModelSafety {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Guardrail_ModelSafety{}
+	out.SafetySettings = direct.Slice_FromProto(mapCtx, in.SafetySettings, Guardrail_ModelSafety_SafetySetting_FromProto)
+	return out
+}
+func Guardrail_ModelSafety_ToProto(mapCtx *direct.MapContext, in *krm.Guardrail_ModelSafety) *pb.Guardrail_ModelSafety {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail_ModelSafety{}
+	out.SafetySettings = direct.Slice_ToProto(mapCtx, in.SafetySettings, Guardrail_ModelSafety_SafetySetting_ToProto)
+	return out
+}
+func Guardrail_ModelSafety_SafetySetting_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail_ModelSafety_SafetySetting) *krm.Guardrail_ModelSafety_SafetySetting {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Guardrail_ModelSafety_SafetySetting{}
+	out.Category = direct.Enum_FromProto(mapCtx, in.GetCategory())
+	out.Threshold = direct.Enum_FromProto(mapCtx, in.GetThreshold())
+	return out
+}
+func Guardrail_ModelSafety_SafetySetting_ToProto(mapCtx *direct.MapContext, in *krm.Guardrail_ModelSafety_SafetySetting) *pb.Guardrail_ModelSafety_SafetySetting {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail_ModelSafety_SafetySetting{}
+	out.Category = direct.Enum_ToProto[pb.Guardrail_ModelSafety_HarmCategory](mapCtx, in.Category)
+	out.Threshold = direct.Enum_ToProto[pb.Guardrail_ModelSafety_HarmBlockThreshold](mapCtx, in.Threshold)
+	return out
+}
 func LanguageSettings_FromProto(mapCtx *direct.MapContext, in *pb.LanguageSettings) *krm.LanguageSettings {
 	if in == nil {
 		return nil
@@ -2159,6 +2413,84 @@ func TransferRule_DisablePlannerTransfer_ToProto(mapCtx *direct.MapContext, in *
 	}
 	out := &pb.TransferRule_DisablePlannerTransfer{}
 	out.ExpressionCondition = ExpressionCondition_ToProto(mapCtx, in.ExpressionCondition)
+	return out
+}
+func TriggerAction_FromProto(mapCtx *direct.MapContext, in *pb.TriggerAction) *krm.TriggerAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TriggerAction{}
+	out.RespondImmediately = TriggerAction_RespondImmediately_FromProto(mapCtx, in.GetRespondImmediately())
+	out.TransferAgent = TriggerAction_TransferAgent_FromProto(mapCtx, in.GetTransferAgent())
+	out.GenerativeAnswer = TriggerAction_GenerativeAnswer_FromProto(mapCtx, in.GetGenerativeAnswer())
+	return out
+}
+func TriggerAction_ToProto(mapCtx *direct.MapContext, in *krm.TriggerAction) *pb.TriggerAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TriggerAction{}
+	if oneof := TriggerAction_RespondImmediately_ToProto(mapCtx, in.RespondImmediately); oneof != nil {
+		out.Action = &pb.TriggerAction_RespondImmediately_{RespondImmediately: oneof}
+	}
+	if oneof := TriggerAction_TransferAgent_ToProto(mapCtx, in.TransferAgent); oneof != nil {
+		out.Action = &pb.TriggerAction_TransferAgent_{TransferAgent: oneof}
+	}
+	if oneof := TriggerAction_GenerativeAnswer_ToProto(mapCtx, in.GenerativeAnswer); oneof != nil {
+		out.Action = &pb.TriggerAction_GenerativeAnswer_{GenerativeAnswer: oneof}
+	}
+	return out
+}
+func TriggerAction_GenerativeAnswer_FromProto(mapCtx *direct.MapContext, in *pb.TriggerAction_GenerativeAnswer) *krm.TriggerAction_GenerativeAnswer {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TriggerAction_GenerativeAnswer{}
+	out.Prompt = direct.LazyPtr(in.GetPrompt())
+	return out
+}
+func TriggerAction_GenerativeAnswer_ToProto(mapCtx *direct.MapContext, in *krm.TriggerAction_GenerativeAnswer) *pb.TriggerAction_GenerativeAnswer {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TriggerAction_GenerativeAnswer{}
+	out.Prompt = direct.ValueOf(in.Prompt)
+	return out
+}
+func TriggerAction_RespondImmediately_FromProto(mapCtx *direct.MapContext, in *pb.TriggerAction_RespondImmediately) *krm.TriggerAction_RespondImmediately {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TriggerAction_RespondImmediately{}
+	out.Responses = direct.Slice_FromProto(mapCtx, in.Responses, TriggerAction_Response_FromProto)
+	return out
+}
+func TriggerAction_RespondImmediately_ToProto(mapCtx *direct.MapContext, in *krm.TriggerAction_RespondImmediately) *pb.TriggerAction_RespondImmediately {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TriggerAction_RespondImmediately{}
+	out.Responses = direct.Slice_ToProto(mapCtx, in.Responses, TriggerAction_Response_ToProto)
+	return out
+}
+func TriggerAction_TransferAgent_FromProto(mapCtx *direct.MapContext, in *pb.TriggerAction_TransferAgent) *krm.TriggerAction_TransferAgent {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TriggerAction_TransferAgent{}
+	if in.GetAgent() != "" {
+		out.AgentRef = &krm.CesAgentRef{External: in.GetAgent()}
+	}
+	return out
+}
+func TriggerAction_TransferAgent_ToProto(mapCtx *direct.MapContext, in *krm.TriggerAction_TransferAgent) *pb.TriggerAction_TransferAgent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TriggerAction_TransferAgent{}
+	if in.AgentRef != nil {
+		out.Agent = in.AgentRef.External
+	}
 	return out
 }
 func WidgetTool_FromProto(mapCtx *direct.MapContext, in *pb.WidgetTool) *krm.WidgetTool {

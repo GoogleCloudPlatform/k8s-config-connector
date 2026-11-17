@@ -6,6 +6,7 @@
 [kind-name-violation] kind=CCInsightsQaQuestion api=contactcenterinsights message=QaQuestion: expected kind name is CCInsightsQAQuestion
 [kind-name-violation] kind=CESApp api=ces message=App: the service prefix of API ces (CES) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=CESDeployment api=ces message=Deployment: the service prefix of API ces (CES) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=CESGuardrail api=ces message=Guardrail: the service prefix of API ces (CES) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=CESTool api=ces message=Tool: the service prefix of API ces (CES) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=CesAgent api=ces message=Agent: the service prefix of API ces (CES) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=CloudBatchResourceAllowance api=batch message=ResourceAllowance: expected kind name is BatchResourceAllowance
