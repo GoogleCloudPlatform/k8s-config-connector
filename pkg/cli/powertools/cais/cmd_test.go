@@ -388,6 +388,23 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 			}
 
+			// Inject status.name and status.externalRef for FirebaseDatabaseInstance to simulate a reconciled database instance in static unit tests.
+			if u.GetKind() == "FirebaseDatabaseInstance" && u.GroupVersionKind().Group == "firebasedatabase.cnrm.cloud.google.com" {
+				goldens, _ := filepath.Glob(filepath.Join(dir, "_generated_object_*.golden.yaml"))
+				for _, gPath := range goldens {
+					for _, gu := range parseFixtureYAML(t, gPath, gcpProject) {
+						if gu.GetKind() == u.GetKind() && gu.GetName() == u.GetName() {
+							if name, ok, _ := unstructured.NestedString(gu.Object, "status", "name"); ok && name != "" {
+								_ = unstructured.SetNestedField(u.Object, name, "status", "name")
+							}
+							if extRef, ok, _ := unstructured.NestedString(gu.Object, "status", "externalRef"); ok && extRef != "" {
+								_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+							}
+						}
+					}
+				}
+			}
+
 			// Inject status.name and status.externalRef for TagsTagValue to simulate a reconciled tag value in static unit tests.
 			if u.GetKind() == "TagsTagValue" && u.GroupVersionKind().Group == "tags.cnrm.cloud.google.com" {
 				tagValueID := "${tagValueID}"

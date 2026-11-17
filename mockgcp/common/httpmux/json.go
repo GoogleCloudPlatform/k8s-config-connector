@@ -55,6 +55,13 @@ func (r *protoResolver) FindMessageByURL(url string) (protoreflect.MessageType, 
 			return mt, nil
 		}
 	}
+	if suffix, ok := strings.CutPrefix(url, "type.googleapis.com/google.firebase.service.v1beta1."); ok {
+		s := "type.googleapis.com/mockgcp.cloud.firebase.v1beta1." + suffix
+		mt, err := protoregistry.GlobalTypes.FindMessageByURL(s)
+		if err == nil {
+			return mt, nil
+		}
+	}
 	if suffix, ok := strings.CutPrefix(url, "type.googleapis.com/google."); ok {
 		s := "type.googleapis.com/mockgcp." + suffix
 		mt, err := protoregistry.GlobalTypes.FindMessageByURL(s)
@@ -72,6 +79,10 @@ func (r *protoResolver) remapName(name protoreflect.FullName) protoreflect.FullN
 	// Remap names with a prefix of "google."" to be "mockgcp.", so we can find them.
 
 	s := string(name)
+	if strings.HasPrefix(s, "google.firebase.service.v1beta1.") {
+		s = "mockgcp.cloud.firebase.v1beta1." + strings.TrimPrefix(s, "google.firebase.service.v1beta1.")
+		return protoreflect.FullName(s)
+	}
 	if strings.HasPrefix(s, "google.") {
 		s = "mockgcp." + strings.TrimPrefix(s, "google.")
 		return protoreflect.FullName(s)

@@ -1,4 +1,4 @@
-- caisURL: //firebasedatabase.googleapis.com/projects/${projectId}/locations/us-central1/instances/rtdb${uniqueId}
+- caisURL: //firebasedatabase.googleapis.com/projects/${projectNumber}/locations/us-central1/instances/rtdb${uniqueId}
   group: firebasedatabase.cnrm.cloud.google.com
   kind: FirebaseDatabaseInstance
   name: firebasedatabaseinstance-${uniqueId}

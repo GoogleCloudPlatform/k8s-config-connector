@@ -1,4 +1,4 @@
-- caisURL: //firebase.googleapis.com/projects/${projectId}/androidApps/1:${projectNumber}:android:e0ec16c940d75f1d8b7d90
+- caisURL: //firebase.googleapis.com/projects/${projectId}/androidApps/1:${projectNumber}:android:bf037510fa95112ea65be0
   group: firebase.cnrm.cloud.google.com
   kind: FirebaseAndroidApp
   name: firebaseandroidapp-${uniqueId}

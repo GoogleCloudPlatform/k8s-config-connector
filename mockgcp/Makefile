@@ -56,6 +56,7 @@ gen-proto-no-fixup:
 		./apis/mockgcp/cloud/healthcare/v1/*.proto \
 		./apis/mockgcp/cloud/firebase/v1beta1/*.proto \
 		./apis/mockgcp/cloud/firebasehosting/v1beta1/*.proto \
+		./apis/mockgcp/cloud/firebasedatabase/v1beta/*.proto \
 		./apis/mockgcp/cloud/ids/v1/*.proto \
 		./apis/mockgcp/cloud/networkconnectivity/v1/*.proto \
 		./apis/mockgcp/cloud/servicenetworking/v1/*.proto \
@@ -205,5 +206,10 @@ generate-protos-from-openapi:
 	mkdir -p apis/google/cloud/dns/v1/
 	# DNS sadly uses a bespoke operation type
 	cd tools/gapic; go run . --proto-version=2 --proto-package google.cloud.dns.v1 --normalize-lro=false ../../temp/dns-api.json > ../../apis/google/cloud/dns/v1/service.proto
+
+	wget -O temp/firebasedatabase-v1beta.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/firebasedatabase/v1beta/firebasedatabase-api.json
+	mkdir -p apis/mockgcp/cloud/firebasedatabase/v1beta/
+	cd tools/gapic; go run . --proto-version=2 --proto-package mockgcp.cloud.firebasedatabase.v1beta ../../temp/firebasedatabase-v1beta.json > ../../apis/mockgcp/cloud/firebasedatabase/v1beta/service.proto
+	sed -i 's#cloud.google.com/go/firebasedatabase/apiv1beta/firebasedatabasepb;firebasedatabasepb#github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/firebasedatabase/v1beta;firebasedatabasepb#g' apis/mockgcp/cloud/firebasedatabase/v1beta/service.proto
 
 	rm -r temp
