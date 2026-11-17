@@ -70,10 +70,35 @@ spec:
                   name:
                     description: Required. The name of the agent tool.
                     type: string
-                  rootAgent:
+                  rootAgentRef:
                     description: 'Optional. The resource name of the root agent that
                       is the entry point of the tool. Format: `projects/{project}/locations/{location}/agents/{agent}`'
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed CesAgent
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/apps/{{appID}}/agents/{{agentID}}".
+                        type: string
+                      name:
+                        description: The name of a CesAgent resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a CesAgent resource.
+                        type: string
+                    type: object
                 required:
                 - name
                 type: object
@@ -176,10 +201,35 @@ spec:
                         - subject
                         type: object
                     type: object
-                  connection:
+                  connectionRef:
                     description: 'Required. The full resource name of the referenced
                       Integration Connectors Connection. Format: `projects/{project}/locations/{location}/connections/{connection}`'
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed ConnectorsConnection
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/connections/{{connection}}".
+                        type: string
+                      name:
+                        description: The name of a ConnectorsConnection resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a ConnectorsConnection resource.
+                        type: string
+                    type: object
                   description:
                     description: Optional. The description of the tool that can be
                       used by the Agent to decide whether to call this ConnectorTool.
@@ -190,7 +240,7 @@ spec:
                     type: string
                 required:
                 - action
-                - connection
+                - connectionRef
                 type: object
               dataStoreTool:
                 description: Optional. The data store tool.
@@ -199,12 +249,42 @@ spec:
                     description: Optional. Boost specification to boost certain documents.
                     items:
                       properties:
-                        dataStores:
+                        dataStoreRefs:
                           description: Required. The Data Store where the boosting
                             configuration is applied. Full resource name of DataStore,
                             such as projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}.
                           items:
-                            type: string
+                            description: DiscoveryEngineDataStoreRef is a reference
+                              to a DiscoveryEngineDataStore.
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: A reference to an externally managed
+                                  DiscoveryEngineDataStore resource. Should be in
+                                  the format "projects/{{projectID}}/locations/{{location}}/datastores/{{datastoreID}}".
+                                type: string
+                              name:
+                                description: The name of a DiscoveryEngineDataStore
+                                  resource.
+                                type: string
+                              namespace:
+                                description: The namespace of a DiscoveryEngineDataStore
+                                  resource.
+                                type: string
+                            type: object
                           type: array
                         spec:
                           description: Required. A list of boosting specifications.
@@ -297,7 +377,7 @@ spec:
                             type: object
                           type: array
                       required:
-                      - dataStores
+                      - dataStoreRefs
                       - spec
                       type: object
                     type: array
@@ -307,12 +387,40 @@ spec:
                       dataStore:
                         description: Optional. The data store.
                         properties:
-                          name:
+                          dataStoreRef:
                             description: 'Required. Full resource name of the DataStore.
                               Format: `projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}`'
-                            type: string
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: A reference to an externally managed
+                                  DiscoveryEngineDataStore resource. Should be in
+                                  the format "projects/{{projectID}}/locations/{{location}}/datastores/{{datastoreID}}".
+                                type: string
+                              name:
+                                description: The name of a DiscoveryEngineDataStore
+                                  resource.
+                                type: string
+                              namespace:
+                                description: The namespace of a DiscoveryEngineDataStore
+                                  resource.
+                                type: string
+                            type: object
                         required:
-                        - name
+                        - dataStoreRef
                         type: object
                       filter:
                         description: 'Optional. Filter specification for the DataStore.
@@ -335,12 +443,40 @@ spec:
                             dataStore:
                               description: Optional. The data store.
                               properties:
-                                name:
+                                dataStoreRef:
                                   description: 'Required. Full resource name of the
                                     DataStore. Format: `projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}`'
-                                  type: string
+                                  oneOf:
+                                  - not:
+                                      required:
+                                      - external
+                                    required:
+                                    - name
+                                  - not:
+                                      anyOf:
+                                      - required:
+                                        - name
+                                      - required:
+                                        - namespace
+                                    required:
+                                    - external
+                                  properties:
+                                    external:
+                                      description: A reference to an externally managed
+                                        DiscoveryEngineDataStore resource. Should
+                                        be in the format "projects/{{projectID}}/locations/{{location}}/datastores/{{datastoreID}}".
+                                      type: string
+                                    name:
+                                      description: The name of a DiscoveryEngineDataStore
+                                        resource.
+                                      type: string
+                                    namespace:
+                                      description: The namespace of a DiscoveryEngineDataStore
+                                        resource.
+                                      type: string
+                                  type: object
                               required:
-                              - name
+                              - dataStoreRef
                               type: object
                             filter:
                               description: 'Optional. Filter specification for the
@@ -348,17 +484,43 @@ spec:
                               type: string
                           type: object
                         type: array
-                      engine:
+                      engineRef:
                         description: 'Required. Full resource name of the Engine.
                           Format: `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}`'
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed DiscoveryEngineEngine
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/engines/{{engineID}}".
+                            type: string
+                          name:
+                            description: The name of a DiscoveryEngineEngine resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a DiscoveryEngineEngine
+                              resource.
+                            type: string
+                        type: object
                       filter:
                         description: 'Optional. A filter applied to the search across
                           the Engine. Not relevant and not used if ''data_store_sources''
                           is provided. See: https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata'
                         type: string
                     required:
-                    - engine
+                    - engineRef
                     type: object
                   filterParameterBehavior:
                     description: Optional. The filter parameter behavior.
@@ -456,11 +618,6 @@ spec:
                 required:
                 - name
                 type: object
-              etag:
-                description: Etag used to ensure the object hasn't changed during
-                  a read-modify-write operation. If the etag is empty, the update
-                  will overwrite any concurrent changes.
-                type: string
               executionType:
                 description: Optional. The execution type of the tool.
                 type: string
@@ -473,10 +630,35 @@ spec:
                   description:
                     description: Optional. The tool description.
                     type: string
-                  fileCorpus:
+                  fileCorpusRef:
                     description: 'Optional. The corpus where files are stored. Format:
                       projects/{project}/locations/{location}/ragCorpora/{rag_corpus}'
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed AIPlatformRAGCorpus
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/ragCorpora/{{ragCorpusID}}".
+                        type: string
+                      name:
+                        description: The name of a AIPlatformRAGCorpus resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a AIPlatformRAGCorpus resource.
+                        type: string
+                    type: object
                   name:
                     description: Required. The tool name.
                     type: string
@@ -531,9 +713,6 @@ spec:
                 required:
                 - name
                 type: object
-              location:
-                description: The location of this resource.
-                type: string
               mcpTool:
                 description: Optional. The MCP tool. An MCP tool cannot be created
                   or updated directly and is managed by the MCP toolset.
@@ -547,7 +726,7 @@ spec:
                       apiKeyConfig:
                         description: Optional. Config for API key auth.
                         properties:
-                          apiKeySecretVersion:
+                          apiKeySecretVersionRef:
                             description: |-
                               Required. The name of the SecretManager secret version resource storing the
                                API key. Format: `projects/{project}/secrets/{secret}/versions/{version}`
@@ -555,7 +734,33 @@ spec:
                                Note: You should grant `roles/secretmanager.secretAccessor` role to the CES
                                service agent
                                `service-<PROJECT-NUMBER>@gcp-sa-ces.iam.gserviceaccount.com`.
-                            type: string
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: ' If provided must be in the format `projects/*/secrets/*/versions/*`.'
+                                type: string
+                              name:
+                                description: The `name` field of a `SecretManagerSecretVersion`
+                                  resource.
+                                type: string
+                              namespace:
+                                description: The `metadata.namespace` field of a `SecretManagerSecretVersion`
+                                  resource.
+                                type: string
+                            type: object
                           keyName:
                             description: Required. The parameter name or the header
                               name of the API key. E.g., If the API request is "https://example.com/act?X-Api-Key=<API
@@ -565,7 +770,7 @@ spec:
                             description: Required. Key location in the request.
                             type: string
                         required:
-                        - apiKeySecretVersion
+                        - apiKeySecretVersionRef
                         - keyName
                         - requestLocation
                         type: object
@@ -585,7 +790,7 @@ spec:
                           clientID:
                             description: Required. The client ID from the OAuth provider.
                             type: string
-                          clientSecretVersion:
+                          clientSecretVersionRef:
                             description: |-
                               Required. The name of the SecretManager secret version resource storing the
                                client secret.
@@ -594,7 +799,33 @@ spec:
                                Note: You should grant `roles/secretmanager.secretAccessor` role to the CES
                                service agent
                                `service-<PROJECT-NUMBER>@gcp-sa-ces.iam.gserviceaccount.com`.
-                            type: string
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: ' If provided must be in the format `projects/*/secrets/*/versions/*`.'
+                                type: string
+                              name:
+                                description: The `name` field of a `SecretManagerSecretVersion`
+                                  resource.
+                                type: string
+                              namespace:
+                                description: The `metadata.namespace` field of a `SecretManagerSecretVersion`
+                                  resource.
+                                type: string
+                            type: object
                           oauthGrantType:
                             description: Required. OAuth grant types.
                             type: string
@@ -609,7 +840,7 @@ spec:
                             type: string
                         required:
                         - clientID
-                        - clientSecretVersion
+                        - clientSecretVersionRef
                         - oauthGrantType
                         - tokenEndpoint
                         type: object
@@ -623,7 +854,7 @@ spec:
                             items:
                               type: string
                             type: array
-                          serviceAccount:
+                          serviceAccountRef:
                             description: |-
                               Required. The email address of the service account used for authentication.
                                CES uses this service account to exchange an access token and the access
@@ -633,9 +864,35 @@ spec:
                                `roles/iam.serviceAccountTokenCreator` role granted to the
                                CES service agent
                                `service-<PROJECT-NUMBER>@gcp-sa-ces.iam.gserviceaccount.com`.
-                            type: string
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: The `email` field of an `IAMServiceAccount`
+                                  resource.
+                                type: string
+                              name:
+                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                type: string
+                              namespace:
+                                description: 'Namespace of the referent. More info:
+                                  https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                type: string
+                            type: object
                         required:
-                        - serviceAccount
+                        - serviceAccountRef
                         type: object
                       serviceAgentIDTokenAuthConfig:
                         description: Optional. Config for ID token auth generated
@@ -678,14 +935,40 @@ spec:
                     description: Optional. Service Directory configuration for VPC-SC,
                       used to resolve service names within a perimeter.
                     properties:
-                      service:
+                      serviceRef:
                         description: 'Required. The name of [Service Directory](https://cloud.google.com/service-directory)
                           service. Format: `projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}`.
                           Location of the service directory must be the same as the
                           location of the app.'
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed ServiceDirectoryService
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/namespaces/{{namespaceID}}/services/{{serviceID}}".
+                            type: string
+                          name:
+                            description: The name of a ServiceDirectoryService resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a ServiceDirectoryService
+                              resource.
+                            type: string
+                        type: object
                     required:
-                    - service
+                    - serviceRef
                     type: object
                   tlsConfig:
                     description: Optional. The TLS configuration. Includes the custom
@@ -740,7 +1023,7 @@ spec:
                       apiKeyConfig:
                         description: Optional. Config for API key auth.
                         properties:
-                          apiKeySecretVersion:
+                          apiKeySecretVersionRef:
                             description: |-
                               Required. The name of the SecretManager secret version resource storing the
                                API key. Format: `projects/{project}/secrets/{secret}/versions/{version}`
@@ -748,7 +1031,33 @@ spec:
                                Note: You should grant `roles/secretmanager.secretAccessor` role to the CES
                                service agent
                                `service-<PROJECT-NUMBER>@gcp-sa-ces.iam.gserviceaccount.com`.
-                            type: string
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: ' If provided must be in the format `projects/*/secrets/*/versions/*`.'
+                                type: string
+                              name:
+                                description: The `name` field of a `SecretManagerSecretVersion`
+                                  resource.
+                                type: string
+                              namespace:
+                                description: The `metadata.namespace` field of a `SecretManagerSecretVersion`
+                                  resource.
+                                type: string
+                            type: object
                           keyName:
                             description: Required. The parameter name or the header
                               name of the API key. E.g., If the API request is "https://example.com/act?X-Api-Key=<API
@@ -758,7 +1067,7 @@ spec:
                             description: Required. Key location in the request.
                             type: string
                         required:
-                        - apiKeySecretVersion
+                        - apiKeySecretVersionRef
                         - keyName
                         - requestLocation
                         type: object
@@ -778,7 +1087,7 @@ spec:
                           clientID:
                             description: Required. The client ID from the OAuth provider.
                             type: string
-                          clientSecretVersion:
+                          clientSecretVersionRef:
                             description: |-
                               Required. The name of the SecretManager secret version resource storing the
                                client secret.
@@ -787,7 +1096,33 @@ spec:
                                Note: You should grant `roles/secretmanager.secretAccessor` role to the CES
                                service agent
                                `service-<PROJECT-NUMBER>@gcp-sa-ces.iam.gserviceaccount.com`.
-                            type: string
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: ' If provided must be in the format `projects/*/secrets/*/versions/*`.'
+                                type: string
+                              name:
+                                description: The `name` field of a `SecretManagerSecretVersion`
+                                  resource.
+                                type: string
+                              namespace:
+                                description: The `metadata.namespace` field of a `SecretManagerSecretVersion`
+                                  resource.
+                                type: string
+                            type: object
                           oauthGrantType:
                             description: Required. OAuth grant types.
                             type: string
@@ -802,7 +1137,7 @@ spec:
                             type: string
                         required:
                         - clientID
-                        - clientSecretVersion
+                        - clientSecretVersionRef
                         - oauthGrantType
                         - tokenEndpoint
                         type: object
@@ -816,7 +1151,7 @@ spec:
                             items:
                               type: string
                             type: array
-                          serviceAccount:
+                          serviceAccountRef:
                             description: |-
                               Required. The email address of the service account used for authentication.
                                CES uses this service account to exchange an access token and the access
@@ -826,9 +1161,35 @@ spec:
                                `roles/iam.serviceAccountTokenCreator` role granted to the
                                CES service agent
                                `service-<PROJECT-NUMBER>@gcp-sa-ces.iam.gserviceaccount.com`.
-                            type: string
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: The `email` field of an `IAMServiceAccount`
+                                  resource.
+                                type: string
+                              name:
+                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                type: string
+                              namespace:
+                                description: 'Namespace of the referent. More info:
+                                  https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                type: string
+                            type: object
                         required:
-                        - serviceAccount
+                        - serviceAccountRef
                         type: object
                       serviceAgentIDTokenAuthConfig:
                         description: Optional. Config for ID token auth generated
@@ -855,14 +1216,40 @@ spec:
                   serviceDirectoryConfig:
                     description: Optional. Service Directory configuration.
                     properties:
-                      service:
+                      serviceRef:
                         description: 'Required. The name of [Service Directory](https://cloud.google.com/service-directory)
                           service. Format: `projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}`.
                           Location of the service directory must be the same as the
                           location of the app.'
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed ServiceDirectoryService
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/namespaces/{{namespaceID}}/services/{{serviceID}}".
+                            type: string
+                          name:
+                            description: The name of a ServiceDirectoryService resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a ServiceDirectoryService
+                              resource.
+                            type: string
+                        type: object
                     required:
-                    - service
+                    - serviceRef
                     type: object
                   tlsConfig:
                     description: Optional. The TLS configuration. Includes the custom
@@ -914,8 +1301,8 @@ spec:
                 required:
                 - openAPISchema
                 type: object
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The CESApp this CESTool is created under.
                 oneOf:
                 - not:
                     required:
@@ -932,20 +1319,19 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed CESApp resource.
+                      Should be in the format "projects/{{projectID}}/locations/{{location}}/apps/{{appID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a CESApp resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a CESApp resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               pythonFunction:
                 description: Optional. The python function tool.
                 properties:
@@ -1029,9 +1415,6 @@ spec:
                               the tool.
                             type: string
                         type: object
-                      pythonScript:
-                        description: 'Deprecated: Use `python_function` instead.'
-                        type: string
                       sourceToolName:
                         description: 'Optional. The resource name of the tool that
                           provides the data for the widget (e.g., a search tool or
@@ -1059,8 +1442,7 @@ spec:
                 - name
                 type: object
             required:
-            - location
-            - projectRef
+            - parentRef
             type: object
           status:
             description: CESToolStatus defines the config connector machine state
@@ -1213,6 +1595,10 @@ spec:
                     description: Output only. The display name of the tool, derived
                       based on the tool's type. For example, display name of a [ClientFunction][Tool.ClientFunction]
                       is derived from its `name` property.
+                    type: string
+                  etag:
+                    description: Etag used to ensure the object hasn't changed during
+                      a read-modify-write operation.
                     type: string
                   generatedSummary:
                     description: Output only. If the tool is generated by the LLM

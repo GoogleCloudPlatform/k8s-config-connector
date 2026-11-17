@@ -25,9 +25,13 @@ package ces
 
 import (
 	pb "cloud.google.com/go/ces/apiv1/cespb"
+	krmaiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/ces/v1alpha1"
+	krmconnectorsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/connectors/v1alpha1"
+	krmdiscoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 	krmdlpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dlp/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmservicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -71,7 +75,9 @@ func APIKeyConfig_FromProto(mapCtx *direct.MapContext, in *pb.ApiKeyConfig) *krm
 	}
 	out := &krm.APIKeyConfig{}
 	out.KeyName = direct.LazyPtr(in.GetKeyName())
-	out.APIKeySecretVersion = direct.LazyPtr(in.GetApiKeySecretVersion())
+	if in.GetApiKeySecretVersion() != "" {
+		out.APIKeySecretVersionRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetApiKeySecretVersion()}
+	}
 	out.RequestLocation = direct.Enum_FromProto(mapCtx, in.GetRequestLocation())
 	return out
 }
@@ -81,7 +87,9 @@ func APIKeyConfig_ToProto(mapCtx *direct.MapContext, in *krm.APIKeyConfig) *pb.A
 	}
 	out := &pb.ApiKeyConfig{}
 	out.KeyName = direct.ValueOf(in.KeyName)
-	out.ApiKeySecretVersion = direct.ValueOf(in.APIKeySecretVersion)
+	if in.APIKeySecretVersionRef != nil {
+		out.ApiKeySecretVersion = in.APIKeySecretVersionRef.External
+	}
 	out.RequestLocation = direct.Enum_ToProto[pb.ApiKeyConfig_RequestLocation](mapCtx, in.RequestLocation)
 	return out
 }
@@ -142,7 +150,9 @@ func AgentTool_FromProto(mapCtx *direct.MapContext, in *pb.AgentTool) *krm.Agent
 	out := &krm.AgentTool{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.RootAgent = direct.LazyPtr(in.GetRootAgent())
+	if in.GetRootAgent() != "" {
+		out.RootAgentRef = &krm.CesAgentRef{External: in.GetRootAgent()}
+	}
 	return out
 }
 func AgentTool_ToProto(mapCtx *direct.MapContext, in *krm.AgentTool) *pb.AgentTool {
@@ -152,7 +162,9 @@ func AgentTool_ToProto(mapCtx *direct.MapContext, in *krm.AgentTool) *pb.AgentTo
 	out := &pb.AgentTool{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Description = direct.ValueOf(in.Description)
-	out.RootAgent = direct.ValueOf(in.RootAgent)
+	if in.RootAgentRef != nil {
+		out.RootAgent = in.RootAgentRef.External
+	}
 	return out
 }
 func Agent_AgentToolset_FromProto(mapCtx *direct.MapContext, in *pb.Agent_AgentToolset) *krm.Agent_AgentToolset {
@@ -568,6 +580,7 @@ func CESToolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Tool) *krm
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.GeneratedSummary = direct.LazyPtr(in.GetGeneratedSummary())
 	return out
 }
@@ -592,6 +605,7 @@ func CESToolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CESToolObse
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
 	out.GeneratedSummary = direct.ValueOf(in.GeneratedSummary)
 	return out
 }
@@ -613,7 +627,6 @@ func CESToolSpec_FromProto(mapCtx *direct.MapContext, in *pb.Tool) *krm.CESToolS
 	out.WidgetTool = WidgetTool_FromProto(mapCtx, in.GetWidgetTool())
 	// MISSING: Name
 	out.ExecutionType = direct.Enum_FromProto(mapCtx, in.GetExecutionType())
-	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.ToolFakeConfig = ToolFakeConfig_FromProto(mapCtx, in.GetToolFakeConfig())
 	return out
 }
@@ -657,7 +670,6 @@ func CESToolSpec_ToProto(mapCtx *direct.MapContext, in *krm.CESToolSpec) *pb.Too
 	}
 	// MISSING: Name
 	out.ExecutionType = direct.Enum_ToProto[pb.ExecutionType](mapCtx, in.ExecutionType)
-	out.Etag = direct.ValueOf(in.Etag)
 	out.ToolFakeConfig = ToolFakeConfig_ToProto(mapCtx, in.ToolFakeConfig)
 	return out
 }
@@ -944,7 +956,9 @@ func ConnectorTool_FromProto(mapCtx *direct.MapContext, in *pb.ConnectorTool) *k
 		return nil
 	}
 	out := &krm.ConnectorTool{}
-	out.Connection = direct.LazyPtr(in.GetConnection())
+	if in.GetConnection() != "" {
+		out.ConnectionRef = &krmconnectorsv1alpha1.ConnectorsConnectionRef{External: in.GetConnection()}
+	}
 	out.Action = Action_FromProto(mapCtx, in.GetAction())
 	out.AuthConfig = EndUserAuthConfig_FromProto(mapCtx, in.GetAuthConfig())
 	out.Name = direct.LazyPtr(in.GetName())
@@ -956,7 +970,9 @@ func ConnectorTool_ToProto(mapCtx *direct.MapContext, in *krm.ConnectorTool) *pb
 		return nil
 	}
 	out := &pb.ConnectorTool{}
-	out.Connection = direct.ValueOf(in.Connection)
+	if in.ConnectionRef != nil {
+		out.Connection = in.ConnectionRef.External
+	}
 	out.Action = Action_ToProto(mapCtx, in.Action)
 	out.AuthConfig = EndUserAuthConfig_ToProto(mapCtx, in.AuthConfig)
 	out.Name = direct.ValueOf(in.Name)
@@ -977,32 +993,6 @@ func ConversationLoggingSettings_ToProto(mapCtx *direct.MapContext, in *krm.Conv
 	}
 	out := &pb.ConversationLoggingSettings{}
 	out.DisableConversationLogging = direct.ValueOf(in.DisableConversationLogging)
-	return out
-}
-func DataStore_FromProto(mapCtx *direct.MapContext, in *pb.DataStore) *krm.DataStore {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataStore{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: Type
-	// MISSING: DocumentProcessingMode
-	// MISSING: DisplayName
-	// MISSING: CreateTime
-	// MISSING: ConnectorConfig
-	return out
-}
-func DataStore_ToProto(mapCtx *direct.MapContext, in *krm.DataStore) *pb.DataStore {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataStore{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: Type
-	// MISSING: DocumentProcessingMode
-	// MISSING: DisplayName
-	// MISSING: CreateTime
-	// MISSING: ConnectorConfig
 	return out
 }
 func DataStoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataStore) *krm.DataStoreObservedState {
@@ -1210,7 +1200,13 @@ func DataStoreTool_BoostSpecs_FromProto(mapCtx *direct.MapContext, in *pb.DataSt
 		return nil
 	}
 	out := &krm.DataStoreTool_BoostSpecs{}
-	out.DataStores = in.DataStores
+
+	if v := in.GetDataStores(); len(v) != 0 {
+		for i := range v {
+			out.DataStoreRefs = append(out.DataStoreRefs, krmdiscoveryenginev1alpha1.DiscoveryEngineDataStoreRef{External: v[i]})
+		}
+	}
+
 	out.Spec = direct.Slice_FromProto(mapCtx, in.Spec, DataStoreTool_BoostSpec_FromProto)
 	return out
 }
@@ -1219,7 +1215,13 @@ func DataStoreTool_BoostSpecs_ToProto(mapCtx *direct.MapContext, in *krm.DataSto
 		return nil
 	}
 	out := &pb.DataStoreTool_BoostSpecs{}
-	out.DataStores = in.DataStores
+
+	if v := in.DataStoreRefs; len(v) != 0 {
+		for i := range v {
+			out.DataStores = append(out.DataStores, v[i].External)
+		}
+	}
+
 	out.Spec = direct.Slice_ToProto(mapCtx, in.Spec, DataStoreTool_BoostSpec_ToProto)
 	return out
 }
@@ -1264,7 +1266,9 @@ func DataStoreTool_EngineSource_FromProto(mapCtx *direct.MapContext, in *pb.Data
 		return nil
 	}
 	out := &krm.DataStoreTool_EngineSource{}
-	out.Engine = direct.LazyPtr(in.GetEngine())
+	if in.GetEngine() != "" {
+		out.EngineRef = &krmdiscoveryenginev1alpha1.DiscoveryEngineEngineRef{External: in.GetEngine()}
+	}
 	out.DataStoreSources = direct.Slice_FromProto(mapCtx, in.DataStoreSources, DataStoreTool_DataStoreSource_FromProto)
 	out.Filter = direct.LazyPtr(in.GetFilter())
 	return out
@@ -1274,7 +1278,9 @@ func DataStoreTool_EngineSource_ToProto(mapCtx *direct.MapContext, in *krm.DataS
 		return nil
 	}
 	out := &pb.DataStoreTool_EngineSource{}
-	out.Engine = direct.ValueOf(in.Engine)
+	if in.EngineRef != nil {
+		out.Engine = in.EngineRef.External
+	}
 	out.DataStoreSources = direct.Slice_ToProto(mapCtx, in.DataStoreSources, DataStoreTool_DataStoreSource_ToProto)
 	out.Filter = direct.ValueOf(in.Filter)
 	return out
@@ -1591,7 +1597,9 @@ func FileSearchTool_FromProto(mapCtx *direct.MapContext, in *pb.FileSearchTool) 
 	out.CorpusType = direct.Enum_FromProto(mapCtx, in.GetCorpusType())
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.FileCorpus = direct.LazyPtr(in.GetFileCorpus())
+	if in.GetFileCorpus() != "" {
+		out.FileCorpusRef = &krmaiplatformv1alpha1.AIPlatformRAGCorpusRef{External: in.GetFileCorpus()}
+	}
 	return out
 }
 func FileSearchTool_ToProto(mapCtx *direct.MapContext, in *krm.FileSearchTool) *pb.FileSearchTool {
@@ -1602,7 +1610,9 @@ func FileSearchTool_ToProto(mapCtx *direct.MapContext, in *krm.FileSearchTool) *
 	out.CorpusType = direct.Enum_ToProto[pb.FileSearchTool_CorpusType](mapCtx, in.CorpusType)
 	out.Name = direct.ValueOf(in.Name)
 	out.Description = direct.ValueOf(in.Description)
-	out.FileCorpus = direct.ValueOf(in.FileCorpus)
+	if in.FileCorpusRef != nil {
+		out.FileCorpus = in.FileCorpusRef.External
+	}
 	return out
 }
 func GoogleSearchTool_FromProto(mapCtx *direct.MapContext, in *pb.GoogleSearchTool) *krm.GoogleSearchTool {
@@ -1772,7 +1782,9 @@ func OAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.OAuthConfig) *krm.O
 	out := &krm.OAuthConfig{}
 	out.OauthGrantType = direct.Enum_FromProto(mapCtx, in.GetOauthGrantType())
 	out.ClientID = direct.LazyPtr(in.GetClientId())
-	out.ClientSecretVersion = direct.LazyPtr(in.GetClientSecretVersion())
+	if in.GetClientSecretVersion() != "" {
+		out.ClientSecretVersionRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetClientSecretVersion()}
+	}
 	out.TokenEndpoint = direct.LazyPtr(in.GetTokenEndpoint())
 	out.Scopes = in.Scopes
 	return out
@@ -1784,7 +1796,9 @@ func OAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.OAuthConfig) *pb.OAu
 	out := &pb.OAuthConfig{}
 	out.OauthGrantType = direct.Enum_ToProto[pb.OAuthConfig_OauthGrantType](mapCtx, in.OauthGrantType)
 	out.ClientId = direct.ValueOf(in.ClientID)
-	out.ClientSecretVersion = direct.ValueOf(in.ClientSecretVersion)
+	if in.ClientSecretVersionRef != nil {
+		out.ClientSecretVersion = in.ClientSecretVersionRef.External
+	}
 	out.TokenEndpoint = direct.ValueOf(in.TokenEndpoint)
 	out.Scopes = in.Scopes
 	return out
@@ -1908,7 +1922,9 @@ func ServiceAccountAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.Servic
 		return nil
 	}
 	out := &krm.ServiceAccountAuthConfig{}
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
 	out.Scopes = in.Scopes
 	return out
 }
@@ -1917,7 +1933,9 @@ func ServiceAccountAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.Service
 		return nil
 	}
 	out := &pb.ServiceAccountAuthConfig{}
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
 	out.Scopes = in.Scopes
 	return out
 }
@@ -1940,7 +1958,9 @@ func ServiceDirectoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.ServiceD
 		return nil
 	}
 	out := &krm.ServiceDirectoryConfig{}
-	out.Service = direct.LazyPtr(in.GetService())
+	if in.GetService() != "" {
+		out.ServiceRef = &krmservicedirectoryv1beta1.ServiceDirectoryServiceRef{External: in.GetService()}
+	}
 	return out
 }
 func ServiceDirectoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.ServiceDirectoryConfig) *pb.ServiceDirectoryConfig {
@@ -1948,7 +1968,9 @@ func ServiceDirectoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.ServiceDi
 		return nil
 	}
 	out := &pb.ServiceDirectoryConfig{}
-	out.Service = direct.ValueOf(in.Service)
+	if in.ServiceRef != nil {
+		out.Service = in.ServiceRef.External
+	}
 	return out
 }
 func SynthesizeSpeechConfig_FromProto(mapCtx *direct.MapContext, in *pb.SynthesizeSpeechConfig) *krm.SynthesizeSpeechConfig {
@@ -2204,7 +2226,7 @@ func WidgetTool_DataMapping_FromProto(mapCtx *direct.MapContext, in *pb.WidgetTo
 	out.FieldMappings = in.FieldMappings
 	out.PythonFunction = PythonFunction_FromProto(mapCtx, in.GetPythonFunction())
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
-	out.PythonScript = direct.LazyPtr(in.GetPythonScript())
+	// MISSING: PythonScript
 	return out
 }
 func WidgetTool_DataMapping_ToProto(mapCtx *direct.MapContext, in *krm.WidgetTool_DataMapping) *pb.WidgetTool_DataMapping {
@@ -2216,7 +2238,7 @@ func WidgetTool_DataMapping_ToProto(mapCtx *direct.MapContext, in *krm.WidgetToo
 	out.FieldMappings = in.FieldMappings
 	out.PythonFunction = PythonFunction_ToProto(mapCtx, in.PythonFunction)
 	out.Mode = direct.Enum_ToProto[pb.WidgetTool_DataMapping_Mode](mapCtx, in.Mode)
-	out.PythonScript = direct.ValueOf(in.PythonScript)
+	// MISSING: PythonScript
 	return out
 }
 func WidgetTool_DataMappingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WidgetTool_DataMapping) *krm.WidgetTool_DataMappingObservedState {
