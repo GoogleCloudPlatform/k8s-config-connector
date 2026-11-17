@@ -124,6 +124,8 @@ cloud.google.com/go/financialservices v1.2.0 h1:tGTgQMValhZHvSA71gU11jxZyfigVeRj
 cloud.google.com/go/financialservices v1.2.0/go.mod h1:TKfAxHfpo1lQ1d+sQ0lKb/4lkduWgDT76psIdOT5kyQ=
 cloud.google.com/go/firestore v1.22.0 h1:avooeboIq37vKXobrbPUFhFBxS/c3FqmWoX0xs8dO6E=
 cloud.google.com/go/firestore v1.22.0/go.mod h1:PaM4i7i7ruALSKmlpHXXZaPObcZw0W7ie5UOPr72iTU=
+cloud.google.com/go/ftp v0.3.1 h1:Wjiw9KBu1fmsG66Eq823ZYC8F8UpB+B+ttmZno5Wdgk=
+cloud.google.com/go/ftp v0.3.1/go.mod h1:E4P0HBVnmbTGe2ksJu5tk8f/PUhLbO81LYW2f9F9xbY=
 cloud.google.com/go/geminidataanalytics v1.3.0 h1:YZWLabHpHD2NXFOBp/VslLH9IsTkaeFPGFYHcGWJdqM=
 cloud.google.com/go/geminidataanalytics v1.3.0/go.mod h1:IW2F6GCTSJFhvwZ0cNZrzvtKgJzdDsPQAptX8OMdvoU=
 cloud.google.com/go/gkebackup v1.13.0 h1:QyeJc4XPqV0hzoAcAQIi8YMveT8eRI21oOK16qKItJo=

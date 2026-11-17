@@ -70,6 +70,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfirebase"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfirebasehosting"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfirestore"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockftp"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgeminidataanalytics"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkemulticloud"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockhealthcare"

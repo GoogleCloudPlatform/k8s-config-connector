@@ -123,6 +123,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/firebasedatabase"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/firebasehosting"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/firestore"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/ftp"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/geminidataanalytics"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/gkebackup"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/gkehub"
