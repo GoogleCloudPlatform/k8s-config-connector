@@ -15,13 +15,13 @@
 // API sources for FTPUser, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/befe6dc01ccbe4fc0292c5966efca2ad1fafc2e6/google/cloud/ftp/v1/service.proto
 // +kcc:source:service-docs=https://docs.cloud.google.com/cloud-ftp
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/cloud-ftp/docs/reference/rest/v1/projects.locations.servers.users
+// +kcc:source:resource-docs=https://cloud.google.com/cloud-ftp/docs/reference/rest/v1/projects.locations.servers.users
 
 package v1alpha1
 
 import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,26 +32,18 @@ var FTPUserGVK = GroupVersion.WithKind("FTPUser")
 // +kcc:spec:proto=google.cloud.ftp.v1.User
 // +kcc:required-from-proto
 type FTPUserSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/servers/{server} this resource belongs to.
-	// +kcc:guess
-	// ServerRef *FTPServerRef `json:"serverRef,omitempty"`
+	// The FTPServer this FTPUser is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *FTPServerRef `json:"parentRef"`
 
 	// The FTPUser name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// Optional. Labels as key value pairs
-	// +kcc:proto:field=google.cloud.ftp.v1.User.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
 	// Required. Service account in customer project attached to this SFTP User.
 	// +kcc:proto:field=google.cloud.ftp.v1.User.customer_service_account
 	// +required
-	CustomerServiceAccount *string `json:"customerServiceAccount,omitempty"`
+	CustomerServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"customerServiceAccountRef,omitempty"`
 
 	// Required. User credential for the user.
 	//  The maximum number of user credentials is 10.
@@ -64,6 +56,28 @@ type FTPUserSpec struct {
 	// +kcc:proto:field=google.cloud.ftp.v1.User.storage_directory_mappings
 	// +required
 	StorageDirectoryMappings []StorageDirectoryMapping `json:"storageDirectoryMappings,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ftp.v1.StorageDirectoryMapping
+type StorageDirectoryMapping struct {
+	// Required. Cloud Storage bucket reference.
+	// +kcc:proto:field=google.cloud.ftp.v1.StorageDirectoryMapping.bucket
+	// +required
+	BucketRef *storagev1beta1.StorageBucketRef `json:"bucketRef,omitempty"`
+
+	// Optional. Prefix inside the bucket.
+	// +kcc:proto:field=google.cloud.ftp.v1.StorageDirectoryMapping.bucket_prefix
+	BucketPrefix *string `json:"bucketPrefix,omitempty"`
+
+	// Required. Directory where the user lands in the SFTP server.
+	// +kcc:proto:field=google.cloud.ftp.v1.StorageDirectoryMapping.directory
+	// +required
+	Directory *string `json:"directory,omitempty"`
+
+	// Required. Permission to the bucket.
+	// +kcc:proto:field=google.cloud.ftp.v1.StorageDirectoryMapping.permission
+	// +required
+	Permission *string `json:"permission,omitempty"`
 }
 
 // FTPUserStatus defines the config connector machine state of FTPUser

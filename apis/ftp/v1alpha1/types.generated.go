@@ -126,11 +126,12 @@ type ServerCredential struct {
 }
 */
 
+/* found existing non-generated go type "StorageDirectoryMapping", skipping
+
 // +kcc:proto=google.cloud.ftp.v1.StorageDirectoryMapping
 type StorageDirectoryMapping struct {
 	// Required. Name of the bucket.
 	// +kcc:proto:field=google.cloud.ftp.v1.StorageDirectoryMapping.bucket
-	// +required
 	Bucket *string `json:"bucket,omitempty"`
 
 	// Optional. Prefix inside the bucket.
@@ -139,14 +140,13 @@ type StorageDirectoryMapping struct {
 
 	// Required. Directory where the user lands in the SFTP server.
 	// +kcc:proto:field=google.cloud.ftp.v1.StorageDirectoryMapping.directory
-	// +required
 	Directory *string `json:"directory,omitempty"`
 
 	// Required. Permission to the bucket.
 	// +kcc:proto:field=google.cloud.ftp.v1.StorageDirectoryMapping.permission
-	// +required
 	Permission *string `json:"permission,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.ftp.v1.User", skipping
 

@@ -27,6 +27,7 @@ import (
 	pb "cloud.google.com/go/ftp/apiv1/ftppb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/ftp/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmstoragev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -140,6 +141,7 @@ func FTPUserObservedState_FromProto(mapCtx *direct.MapContext, in *pb.User) *krm
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	out.Username = direct.LazyPtr(in.GetUsername())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
@@ -152,6 +154,7 @@ func FTPUserObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FTPUserObse
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	out.Username = direct.ValueOf(in.Username)
 	out.State = direct.Enum_ToProto[pb.User_State](mapCtx, in.State)
 	return out
@@ -162,8 +165,10 @@ func FTPUserSpec_FromProto(mapCtx *direct.MapContext, in *pb.User) *krm.FTPUserS
 	}
 	out := &krm.FTPUserSpec{}
 	// MISSING: Name
-	out.Labels = in.Labels
-	out.CustomerServiceAccount = direct.LazyPtr(in.GetCustomerServiceAccount())
+	// MISSING: Labels
+	if in.GetCustomerServiceAccount() != "" {
+		out.CustomerServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetCustomerServiceAccount()}
+	}
 	out.UserCredentials = direct.Slice_FromProto(mapCtx, in.UserCredentials, UserCredential_FromProto)
 	out.StorageDirectoryMappings = direct.Slice_FromProto(mapCtx, in.StorageDirectoryMappings, StorageDirectoryMapping_FromProto)
 	return out
@@ -174,8 +179,10 @@ func FTPUserSpec_ToProto(mapCtx *direct.MapContext, in *krm.FTPUserSpec) *pb.Use
 	}
 	out := &pb.User{}
 	// MISSING: Name
-	out.Labels = in.Labels
-	out.CustomerServiceAccount = direct.ValueOf(in.CustomerServiceAccount)
+	// MISSING: Labels
+	if in.CustomerServiceAccountRef != nil {
+		out.CustomerServiceAccount = in.CustomerServiceAccountRef.External
+	}
 	out.UserCredentials = direct.Slice_ToProto(mapCtx, in.UserCredentials, UserCredential_ToProto)
 	out.StorageDirectoryMappings = direct.Slice_ToProto(mapCtx, in.StorageDirectoryMappings, StorageDirectoryMapping_ToProto)
 	return out
@@ -319,7 +326,9 @@ func StorageDirectoryMapping_FromProto(mapCtx *direct.MapContext, in *pb.Storage
 		return nil
 	}
 	out := &krm.StorageDirectoryMapping{}
-	out.Bucket = direct.LazyPtr(in.GetBucket())
+	if in.GetBucket() != "" {
+		out.BucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetBucket()}
+	}
 	out.BucketPrefix = direct.LazyPtr(in.GetBucketPrefix())
 	out.Directory = direct.LazyPtr(in.GetDirectory())
 	out.Permission = direct.Enum_FromProto(mapCtx, in.GetPermission())
@@ -330,7 +339,9 @@ func StorageDirectoryMapping_ToProto(mapCtx *direct.MapContext, in *krm.StorageD
 		return nil
 	}
 	out := &pb.StorageDirectoryMapping{}
-	out.Bucket = direct.ValueOf(in.Bucket)
+	if in.BucketRef != nil {
+		out.Bucket = in.BucketRef.External
+	}
 	out.BucketPrefix = direct.ValueOf(in.BucketPrefix)
 	out.Directory = direct.ValueOf(in.Directory)
 	out.Permission = direct.Enum_ToProto[pb.StorageDirectoryMapping_Permission](mapCtx, in.Permission)

@@ -61,20 +61,9 @@ spec:
           spec:
             description: FTPUserSpec defines the desired state of FTPUser
             properties:
-              customerServiceAccount:
+              customerServiceAccountRef:
                 description: Required. Service account in customer project attached
                   to this SFTP User.
-                type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. Labels as key value pairs
-                type: object
-              location:
-                description: The location of this resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -91,20 +80,46 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: The `email` field of an `IAMServiceAccount` resource.
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
+              parentRef:
+                description: The FTPServer this FTPUser is created under.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed FTPServer resource.
+                      Should be in the format "projects/{{projectID}}/locations/{{location}}/servers/{{serverID}}".
+                    type: string
+                  name:
+                    description: The name of a FTPServer resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a FTPServer resource.
+                    type: string
+                type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The FTPUser name. If not given, the metadata.name will
                   be used.
@@ -114,12 +129,37 @@ spec:
                   where the user will land in the SFTP server.
                 items:
                   properties:
-                    bucket:
-                      description: Required. Name of the bucket.
-                      type: string
                     bucketPrefix:
                       description: Optional. Prefix inside the bucket.
                       type: string
+                    bucketRef:
+                      description: Required. Cloud Storage bucket reference.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed StorageBucket
+                            resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".
+                          type: string
+                        name:
+                          description: The name of a StorageBucket resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a StorageBucket resource.
+                          type: string
+                      type: object
                     directory:
                       description: Required. Directory where the user lands in the
                         SFTP server.
@@ -128,7 +168,7 @@ spec:
                       description: Required. Permission to the bucket.
                       type: string
                   required:
-                  - bucket
+                  - bucketRef
                   - directory
                   - permission
                   type: object
@@ -154,9 +194,8 @@ spec:
                   type: object
                 type: array
             required:
-            - customerServiceAccount
-            - location
-            - projectRef
+            - customerServiceAccountRef
+            - parentRef
             - storageDirectoryMappings
             - userCredentials
             type: object
