@@ -132,6 +132,54 @@ func FTPServerSpec_ToProto(mapCtx *direct.MapContext, in *krm.FTPServerSpec) *pb
 	out.AccessType = direct.Enum_ToProto[pb.Server_AccessType](mapCtx, in.AccessType)
 	return out
 }
+func FTPUserObservedState_FromProto(mapCtx *direct.MapContext, in *pb.User) *krm.FTPUserObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FTPUserObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Username = direct.LazyPtr(in.GetUsername())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func FTPUserObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FTPUserObservedState) *pb.User {
+	if in == nil {
+		return nil
+	}
+	out := &pb.User{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Username = direct.ValueOf(in.Username)
+	out.State = direct.Enum_ToProto[pb.User_State](mapCtx, in.State)
+	return out
+}
+func FTPUserSpec_FromProto(mapCtx *direct.MapContext, in *pb.User) *krm.FTPUserSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FTPUserSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.CustomerServiceAccount = direct.LazyPtr(in.GetCustomerServiceAccount())
+	out.UserCredentials = direct.Slice_FromProto(mapCtx, in.UserCredentials, UserCredential_FromProto)
+	out.StorageDirectoryMappings = direct.Slice_FromProto(mapCtx, in.StorageDirectoryMappings, StorageDirectoryMapping_FromProto)
+	return out
+}
+func FTPUserSpec_ToProto(mapCtx *direct.MapContext, in *krm.FTPUserSpec) *pb.User {
+	if in == nil {
+		return nil
+	}
+	out := &pb.User{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.CustomerServiceAccount = direct.ValueOf(in.CustomerServiceAccount)
+	out.UserCredentials = direct.Slice_ToProto(mapCtx, in.UserCredentials, UserCredential_ToProto)
+	out.StorageDirectoryMappings = direct.Slice_ToProto(mapCtx, in.StorageDirectoryMappings, StorageDirectoryMapping_ToProto)
+	return out
+}
 func InternalServerConfig_FromProto(mapCtx *direct.MapContext, in *pb.InternalServerConfig) *krm.InternalServerConfig {
 	if in == nil {
 		return nil
@@ -264,5 +312,47 @@ func ServerCredentialObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Se
 	out := &pb.ServerCredential{}
 	out.Fingerprint = direct.ValueOf(in.Fingerprint)
 	out.AsymmetricAlgorithm = direct.ValueOf(in.AsymmetricAlgorithm)
+	return out
+}
+func StorageDirectoryMapping_FromProto(mapCtx *direct.MapContext, in *pb.StorageDirectoryMapping) *krm.StorageDirectoryMapping {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageDirectoryMapping{}
+	out.Bucket = direct.LazyPtr(in.GetBucket())
+	out.BucketPrefix = direct.LazyPtr(in.GetBucketPrefix())
+	out.Directory = direct.LazyPtr(in.GetDirectory())
+	out.Permission = direct.Enum_FromProto(mapCtx, in.GetPermission())
+	return out
+}
+func StorageDirectoryMapping_ToProto(mapCtx *direct.MapContext, in *krm.StorageDirectoryMapping) *pb.StorageDirectoryMapping {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StorageDirectoryMapping{}
+	out.Bucket = direct.ValueOf(in.Bucket)
+	out.BucketPrefix = direct.ValueOf(in.BucketPrefix)
+	out.Directory = direct.ValueOf(in.Directory)
+	out.Permission = direct.Enum_ToProto[pb.StorageDirectoryMapping_Permission](mapCtx, in.Permission)
+	return out
+}
+func UserCredential_FromProto(mapCtx *direct.MapContext, in *pb.UserCredential) *krm.UserCredential {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UserCredential{}
+	out.CredentialName = direct.LazyPtr(in.GetCredentialName())
+	out.CredentialType = direct.Enum_FromProto(mapCtx, in.GetCredentialType())
+	out.SSHPublicKeyBody = direct.LazyPtr(in.GetSshPublicKeyBody())
+	return out
+}
+func UserCredential_ToProto(mapCtx *direct.MapContext, in *krm.UserCredential) *pb.UserCredential {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UserCredential{}
+	out.CredentialName = direct.ValueOf(in.CredentialName)
+	out.CredentialType = direct.Enum_ToProto[pb.UserCredential_Type](mapCtx, in.CredentialType)
+	out.SshPublicKeyBody = direct.ValueOf(in.SSHPublicKeyBody)
 	return out
 }

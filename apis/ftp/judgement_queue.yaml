@@ -59,3 +59,36 @@ entries:
     status: resolved
     resolution: edited
     note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef
+  - kind: FTPUser
+    group: ftp.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: FTPUser
+    group: ftp.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/servers/{server}/users/{user}" contains ancestor segment(s) servers/{server} with no matching reference or field on FTPUserSpec
+    status: open
+  - kind: FTPUser
+    group: ftp.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.servers.users: https://docs.cloud.google.com/cloud-ftp/docs/reference/rest/v1/projects.locations.servers.users'
+    status: open
+  - kind: FTPUser
+    group: ftp.cnrm.cloud.google.com
+    field: .spec.customerServiceAccount
+    reason: possible-reference-by-description
+    detail: the field name ends in serviceAccount
+    status: open
+  - kind: FTPUser
+    group: ftp.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/servers/{server}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: FTPUser
+    group: ftp.cnrm.cloud.google.com
+    field: .spec.serverRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to FTPServerRef, read from the servers segment of projects/{project}/locations/{location}/servers/{server}/users/{user}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open

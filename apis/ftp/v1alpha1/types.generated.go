@@ -18,6 +18,7 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.ftp.v1
 // resource: FTPServer:Server
+// resource: FTPUser:User
 
 package v1alpha1
 
@@ -125,6 +126,75 @@ type ServerCredential struct {
 }
 */
 
+// +kcc:proto=google.cloud.ftp.v1.StorageDirectoryMapping
+type StorageDirectoryMapping struct {
+	// Required. Name of the bucket.
+	// +kcc:proto:field=google.cloud.ftp.v1.StorageDirectoryMapping.bucket
+	// +required
+	Bucket *string `json:"bucket,omitempty"`
+
+	// Optional. Prefix inside the bucket.
+	// +kcc:proto:field=google.cloud.ftp.v1.StorageDirectoryMapping.bucket_prefix
+	BucketPrefix *string `json:"bucketPrefix,omitempty"`
+
+	// Required. Directory where the user lands in the SFTP server.
+	// +kcc:proto:field=google.cloud.ftp.v1.StorageDirectoryMapping.directory
+	// +required
+	Directory *string `json:"directory,omitempty"`
+
+	// Required. Permission to the bucket.
+	// +kcc:proto:field=google.cloud.ftp.v1.StorageDirectoryMapping.permission
+	// +required
+	Permission *string `json:"permission,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.ftp.v1.User", skipping
+
+// +kcc:proto=google.cloud.ftp.v1.User
+type User struct {
+	// Identifier. User-friendly name via which User will be identified.
+	//  projects/{project}/locations/{location}/servers/{server}/users/{user}
+	// +kcc:proto:field=google.cloud.ftp.v1.User.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Labels as key value pairs
+	// +kcc:proto:field=google.cloud.ftp.v1.User.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Required. Service account in customer project attached to this SFTP User.
+	// +kcc:proto:field=google.cloud.ftp.v1.User.customer_service_account
+	CustomerServiceAccount *string `json:"customerServiceAccount,omitempty"`
+
+	// Required. User credential for the user.
+	//  The maximum number of user credentials is 10.
+	// +kcc:proto:field=google.cloud.ftp.v1.User.user_credentials
+	UserCredentials []UserCredential `json:"userCredentials,omitempty"`
+
+	// Required. Mapping of Cloud Storage buckets to directories where the user
+	//  will land in the SFTP server.
+	// +kcc:proto:field=google.cloud.ftp.v1.User.storage_directory_mappings
+	StorageDirectoryMappings []StorageDirectoryMapping `json:"storageDirectoryMappings,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.ftp.v1.UserCredential
+type UserCredential struct {
+	// Required. Name of the user credential.
+	// +kcc:proto:field=google.cloud.ftp.v1.UserCredential.credential_name
+	// +required
+	CredentialName *string `json:"credentialName,omitempty"`
+
+	// Required. Type of credential.
+	// +kcc:proto:field=google.cloud.ftp.v1.UserCredential.credential_type
+	// +required
+	CredentialType *string `json:"credentialType,omitempty"`
+
+	// Optional. SSH public key body in OpenSSH format.
+	//  Example: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQ..."
+	// +kcc:proto:field=google.cloud.ftp.v1.UserCredential.ssh_public_key_body
+	SSHPublicKeyBody *string `json:"sshPublicKeyBody,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.ftp.v1.ExternalServerConfig
 type ExternalServerConfigObservedState struct {
 	// Output only. IP address of the LB via which clients will connect.
@@ -211,3 +281,25 @@ type ServerCredentialObservedState struct {
 	// +kcc:proto:field=google.cloud.ftp.v1.ServerCredential.asymmetric_algorithm
 	AsymmetricAlgorithm *string `json:"asymmetricAlgorithm,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.ftp.v1.User", skipping
+
+// +kcc:observedstate:proto=google.cloud.ftp.v1.User
+type UserObservedState struct {
+	// Output only. [Output only] Create time stamp
+	// +kcc:proto:field=google.cloud.ftp.v1.User.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. [Output only] Update time stamp
+	// +kcc:proto:field=google.cloud.ftp.v1.User.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. [Output only] The username of the user.
+	// +kcc:proto:field=google.cloud.ftp.v1.User.username
+	Username *string `json:"username,omitempty"`
+
+	// Output only. Tracks user creation.
+	// +kcc:proto:field=google.cloud.ftp.v1.User.state
+	State *string `json:"state,omitempty"`
+}
+*/
