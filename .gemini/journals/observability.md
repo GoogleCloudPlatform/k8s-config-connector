@@ -16,3 +16,13 @@
   2. Converted `resourceNames []string` to `resourceNameRefs []refsv1beta1.ProjectRef` with `json:"resourceNameRefs,omitempty"`, reflecting the proto's `resource_reference` to `projects/*`.
   3. Regenerated CRD and mappers via `./apis/observability/generate.sh`, verifying that mapper generator correctly pairs `ResourceNameRefs` with proto `resource_names`.
   4. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` for `observabilitytracescopes` and verified all apichecks pass cleanly.
+
+### [2026-11-16] ObservabilityTraceScope Direct Controller and E2E Fixtures
+- **Context**: Generated direct controller, round-trip fuzzer, and recorded minimal/maximal E2E fixtures against real GCP for `ObservabilityTraceScope`.
+- **Learnings & Decisions**:
+  1. Added `cloud.google.com/go/observability` client library dependency and synchronized `go.mod` and `mockgcp/go.mod`.
+  2. Generated controller and fuzzer via `controllerbuilder generate-controller` and `generate-fuzzer` with `--prepopulate-resource`.
+  3. Registered model in `pkg/controller/resourceconfig/static_config.go` and verified 200-seed round-trip fuzzer passed cleanly.
+  4. Created minimal and maximal E2E fixtures with `location: global`, `resourceNameRefs`, and mutable `description`.
+  5. Recorded golden HTTP logs against real GCP (`cnrm-barni-4`) using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`. Both minimal and maximal fixtures passed all 7/7 lifecycle validation checks.
+  6. Removed `ObservabilityTraceScope` from `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` as all spec fields are now covered by test fixtures.

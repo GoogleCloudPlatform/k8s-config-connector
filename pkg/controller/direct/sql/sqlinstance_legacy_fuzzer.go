@@ -236,11 +236,13 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Unimplemented_NotYetTriaged(".RootPassword")
 	f.Unimplemented_NotYetTriaged(".GeminiConfig")
 	f.Unimplemented_NotYetTriaged(".IncludeReplicasForMajorVersionUpgrade")
+	f.Unimplemented_NotYetTriaged(".SkipPrecheck")
 	f.Unimplemented_NotYetTriaged(".ServerResponse")
 	f.Unimplemented_NotYetTriaged(".SatisfiesPzi")
 	f.Unimplemented_NotYetTriaged(".SqlNetworkArchitecture")
 	f.Unimplemented_NotYetTriaged(".SwitchTransactionLogsToCloudStorageEnabled")
 	f.Unimplemented_NotYetTriaged(".Tags")
+	f.Unimplemented_NotYetTriaged(".DatabaseCenterIntegration")
 	f.Unimplemented_NotYetTriaged(".DatabaseCenterIntegrationEnabled")
 	f.Unimplemented_NotYetTriaged(".DeploymentInfo")
 

@@ -24,13 +24,13 @@
 package observability
 
 import (
+	pb "cloud.google.com/go/observability/apiv1/observabilitypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/observability/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	observabilitypb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/observability/pb"
 )
 
-func ObservabilityTraceScopeObservedState_FromProto(mapCtx *direct.MapContext, in *observabilitypb.TraceScope) *krm.ObservabilityTraceScopeObservedState {
+func ObservabilityTraceScopeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TraceScope) *krm.ObservabilityTraceScopeObservedState {
 	if in == nil {
 		return nil
 	}
@@ -41,18 +41,18 @@ func ObservabilityTraceScopeObservedState_FromProto(mapCtx *direct.MapContext, i
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
-func ObservabilityTraceScopeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ObservabilityTraceScopeObservedState) *observabilitypb.TraceScope {
+func ObservabilityTraceScopeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ObservabilityTraceScopeObservedState) *pb.TraceScope {
 	if in == nil {
 		return nil
 	}
-	out := &observabilitypb.TraceScope{}
+	out := &pb.TraceScope{}
 	// MISSING: Name
 	// MISSING: ResourceNames
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
-func ObservabilityTraceScopeSpec_FromProto(mapCtx *direct.MapContext, in *observabilitypb.TraceScope) *krm.ObservabilityTraceScopeSpec {
+func ObservabilityTraceScopeSpec_FromProto(mapCtx *direct.MapContext, in *pb.TraceScope) *krm.ObservabilityTraceScopeSpec {
 	if in == nil {
 		return nil
 	}
@@ -68,11 +68,11 @@ func ObservabilityTraceScopeSpec_FromProto(mapCtx *direct.MapContext, in *observ
 	out.Description = direct.LazyPtr(in.GetDescription())
 	return out
 }
-func ObservabilityTraceScopeSpec_ToProto(mapCtx *direct.MapContext, in *krm.ObservabilityTraceScopeSpec) *observabilitypb.TraceScope {
+func ObservabilityTraceScopeSpec_ToProto(mapCtx *direct.MapContext, in *krm.ObservabilityTraceScopeSpec) *pb.TraceScope {
 	if in == nil {
 		return nil
 	}
-	out := &observabilitypb.TraceScope{}
+	out := &pb.TraceScope{}
 	// MISSING: Name
 
 	if v := in.ResourceNameRefs; len(v) != 0 {

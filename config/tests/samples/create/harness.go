@@ -1667,6 +1667,8 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 
 			case schema.GroupKind{Group: "websecurityscanner.cnrm.cloud.google.com", Kind: "WebSecurityScannerScanConfig"}:
 
+			case schema.GroupKind{Group: "observability.cnrm.cloud.google.com", Kind: "ObservabilityTraceScope"}:
+
 			default:
 				t.Skipf("gk %v not suppported by mock gcp %v; skipping", gvk.GroupKind(), testKey)
 			}

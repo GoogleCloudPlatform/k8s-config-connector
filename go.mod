@@ -49,7 +49,7 @@ require (
 	cloud.google.com/go/dataform v1.0.0
 	cloud.google.com/go/datalabeling v0.14.0
 	cloud.google.com/go/dataplex v1.36.0
-	cloud.google.com/go/dataproc/v2 v2.26.0
+	cloud.google.com/go/dataproc/v2 v2.27.0
 	cloud.google.com/go/datastream v1.20.0
 	cloud.google.com/go/deploy v1.32.0
 	cloud.google.com/go/developerconnect v1.1.0
@@ -89,6 +89,7 @@ require (
 	cloud.google.com/go/networksecurity v0.17.0
 	cloud.google.com/go/networkservices v0.6.0
 	cloud.google.com/go/notebooks v1.17.0
+	cloud.google.com/go/observability v0.1.1
 	cloud.google.com/go/oracledatabase v1.5.0
 	cloud.google.com/go/orchestration v1.16.0
 	cloud.google.com/go/orgpolicy v1.20.0
@@ -108,7 +109,7 @@ require (
 	cloud.google.com/go/secretmanager v1.20.0
 	cloud.google.com/go/securesourcemanager v1.4.1
 	cloud.google.com/go/security v1.24.0
-	cloud.google.com/go/securitycenter v1.47.0
+	cloud.google.com/go/securitycenter v1.48.0
 	cloud.google.com/go/securitycentermanagement v1.6.0
 	cloud.google.com/go/servicedirectory v1.18.0
 	cloud.google.com/go/spanner v1.96.1
@@ -170,11 +171,11 @@ require (
 	golang.org/x/oauth2 v0.37.0
 	golang.org/x/sync v0.25.0
 	golang.org/x/time v0.16.0
-	google.golang.org/api v0.304.0
-	google.golang.org/genproto v0.0.0-20261012220534-4341edf3f941
-	google.golang.org/genproto/googleapis/api v0.0.0-20261012220534-4341edf3f941
+	google.golang.org/api v0.307.0
+	google.golang.org/genproto v0.0.0-20261019180522-ce908d29299b
+	google.golang.org/genproto/googleapis/api v0.0.0-20261019180522-ce908d29299b
 	google.golang.org/genproto/googleapis/api/serviceusage v0.0.0-20250519155744-55703ea1f237
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20261012220534-4341edf3f941
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20261019180522-ce908d29299b
 	google.golang.org/grpc v1.84.0
 	google.golang.org/protobuf v1.36.12
 	gopkg.in/dnaeon/go-vcr.v3 v3.2.0

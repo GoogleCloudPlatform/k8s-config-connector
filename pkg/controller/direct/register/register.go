@@ -156,6 +156,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/networksecurity/mirroringendpointgroup"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/networkservices"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/notebooks"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/observability"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/oracledatabase"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/orgpolicy"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/osconfig"
