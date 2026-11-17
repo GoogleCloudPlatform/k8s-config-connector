@@ -1281,8 +1281,7 @@ func protoNameForOneOf(field protoreflect.FieldDescriptor) string {
 }
 
 func protoNameForField(protoField protoreflect.FieldDescriptor) string {
-	s := strings.Title(protoField.JSONName())
-	return s
+	return ToGoFieldName(protoField.Name())
 }
 
 func ToGoFieldName(name protoreflect.Name) string {

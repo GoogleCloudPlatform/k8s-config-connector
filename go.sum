@@ -274,6 +274,8 @@ cloud.google.com/go/beyondcorp v1.0.3/go.mod h1:HcBvnEd7eYr+HGDd5ZbuVmBYX019C6CE
 cloud.google.com/go/beyondcorp v1.0.4/go.mod h1:Gx8/Rk2MxrvWfn4WIhHIG1NV7IBfg14pTKv1+EArVcc=
 cloud.google.com/go/beyondcorp v1.7.0 h1:SHAZlC51z6ZO/OZZABnrI/Yk/z3GkhBREQC7qtgTo2I=
 cloud.google.com/go/beyondcorp v1.7.0/go.mod h1:vujdO0wfsBV2y1egrJxGtwKZr5P5V6bIHKWp1phWHBY=
+cloud.google.com/go/biglake v1.6.1 h1:kSbVNs0zdRw8Yh/jjQaK7tgYejBsp5e4FAXhQJvrKhk=
+cloud.google.com/go/biglake v1.6.1/go.mod h1:XEpcZc6Pwpqa+DgPK15FZQB6vdHciVxInWZNB71Ua0o=
 cloud.google.com/go/bigquery v1.0.1/go.mod h1:i/xbL2UlR5RvWAURpBYZTtm/cXjCha9lbfbpx4poX+o=
 cloud.google.com/go/bigquery v1.3.0/go.mod h1:PjpwJnslEMmckchkHFfq+HTD2DmtT67aNFKH1/VBDHE=
 cloud.google.com/go/bigquery v1.4.0/go.mod h1:S8dzgnTigyfTmLBfrtrhyYhwRxG72rYxvftPBK2Dvzc=

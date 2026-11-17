@@ -110,6 +110,10 @@ git reset --hard ${GOOGLEAPI_VERSION}
 mkdir -p google/cloud/config/v1
 cp ${REPO_ROOT}/mockgcp/apis/google/cloud/config/v1/config.proto google/cloud/config/v1/config.proto
 
+# Overwrite biglake protos with the updated version that has IcebergCatalog
+mkdir -p google/cloud/biglake/v1
+cp ${REPO_ROOT}/mockgcp/apis/google/cloud/biglake/v1/* google/cloud/biglake/v1/
+
 # Overwrite catalog.proto with the updated version that has MetadataFeed
 mkdir -p google/cloud/dataplex/v1
 cp ${REPO_ROOT}/mockgcp/apis/google/cloud/dataplex/v1/catalog.proto google/cloud/dataplex/v1/catalog.proto

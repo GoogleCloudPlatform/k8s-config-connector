@@ -1,0 +1,84 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: BigLakeIcebergCatalog
+    group: bigquerybiglake.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: BigLakeIcebergCatalog
+    group: bigquerybiglake.cnrm.cloud.google.com
+    reason: identity-multi-pattern
+    detail: proto message google.cloud.biglake.v1.IcebergCatalog declares 2 resource name patterns (projects/{project}/catalogs/{catalog}, projects/{projectsid}/locations/{locationsid}/catalogs/{catalogsid}); generated identity uses "projects/{projectsid}/locations/{locationsid}/catalogs/{catalogsid}" (pass --pattern BigLakeIcebergCatalog=<pattern> to override)
+    status: open
+  - kind: BigLakeIcebergCatalog
+    group: bigquerybiglake.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//biglake.googleapis.com/projects/{project}/catalogs/{catalog}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: BigLakeIcebergCatalog
+    group: bigquerybiglake.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{projectsid}/locations/{locationsid}/catalogs/{catalogsid}" contains ancestor segment(s) locations/{locationsid} with no matching reference or field on BigLakeIcebergCatalogSpec
+    status: open
+  - kind: BigLakeIcebergCatalog
+    group: bigquerybiglake.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.catalogs: https://docs.cloud.google.com/products/lakehouse/docs/reference/rest/v1/projects.catalogs, https://docs.cloud.google.com/bigquery/docs/reference/rest/v1/projects.catalogs'
+    status: open
+  - kind: BigLakeIcebergCatalog
+    group: bigquerybiglake.cnrm.cloud.google.com
+    field: .spec.defaultLocation
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: BigLakeIcebergCatalog
+    group: bigquerybiglake.cnrm.cloud.google.com
+    field: .spec.federatedCatalogOptions.secretName
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to secretmanager.googleapis.com/Secret (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: BigLakeIcebergCatalog
+    group: bigquerybiglake.cnrm.cloud.google.com
+    field: .spec.federatedCatalogOptions.serviceDirectoryName
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to servicedirectory.googleapis.com/Service (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: BigLakeIcebergCatalog
+    group: bigquerybiglake.cnrm.cloud.google.com
+    field: .spec.federatedCatalogOptions.unityCatalogInfo.servicePrincipalApplicationID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: BigLakeIcebergCatalog
+    group: bigquerybiglake.cnrm.cloud.google.com
+    field: .spec.restrictedLocationsConfig.restrictedLocations
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: BigLakeIcebergCatalog
+    group: bigquerybiglake.cnrm.cloud.google.com
+    field: .status.observedState.defaultLocation
+    reason: possible-output-only-pattern-in-comment
+    detail: 'proto comment mentions output only but doesn''t start with "Output only." or "[Output Only]", and there is no field_behavior annotation, so it was generated into the Spec at .spec.defaultLocation. The comment may be a typo, apply only some of the time, or mean something else. Move the field to .status.observedState.defaultLocation if it is confirmed output only. Proto comment: Optional. The default storage location for the catalog, e.g., `gs://my-bucket`. For Google Cloud Storage bucket catalogs, this is output only. For BigLake catalogs, this field must be provided and point to a Google Cloud Storage bucket or a path within that bucket. This path serves as the base directory for constructing the full path to a table''s data and metadata directories when a location is not specified at the namespace or table level. The full path is formed by appending the namespace and table identifiers to the default location.'
+    status: open

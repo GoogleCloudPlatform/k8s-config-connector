@@ -161,6 +161,7 @@ services:
     servicePrefix: BigLake
     protoPackages:
       - google.cloud.bigquery.biglake.v1
+      - google.cloud.biglake.v1
   - api: bigquery
     title: BigQuery API
     servicePrefix: BigQuery

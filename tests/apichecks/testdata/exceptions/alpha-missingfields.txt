@@ -1440,6 +1440,25 @@
 [missing_field] crd=beyondcorpclientconnectorservices.beyondcorp.cnrm.cloud.google.com version=v1alpha1: field ".spec.ingress.config.transportProtocol" is not set in unstructured objects
 [missing_field] crd=beyondcorpclientconnectorservices.beyondcorp.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=beyondcorpclientconnectorservices.beyondcorp.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.catalogType" is not set in unstructured objects
+[missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.credentialMode" is not set in unstructured objects
+[missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultLocation" is not set in unstructured objects
+[missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.federatedCatalogOptions.glueCatalogInfo.awsRegion" is not set in unstructured objects
+[missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.federatedCatalogOptions.glueCatalogInfo.awsRoleArn" is not set in unstructured objects
+[missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.federatedCatalogOptions.glueCatalogInfo.warehouse" is not set in unstructured objects
+[missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.federatedCatalogOptions.refreshOptions.refreshSchedule.refreshInterval" is not set in unstructured objects
+[missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.federatedCatalogOptions.refreshOptions.refreshScope.namespaceFilters[]" is not set in unstructured objects
+[missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.federatedCatalogOptions.secretName" is not set in unstructured objects
+[missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.federatedCatalogOptions.serviceDirectoryName" is not set in unstructured objects
+[missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.federatedCatalogOptions.snowflakeCatalogInfo.accountIdentifier" is not set in unstructured objects
+[missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.federatedCatalogOptions.snowflakeCatalogInfo.snowflakeRole" is not set in unstructured objects
+[missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.federatedCatalogOptions.snowflakeCatalogInfo.warehouse" is not set in unstructured objects
+[missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.federatedCatalogOptions.unityCatalogInfo.catalogName" is not set in unstructured objects
+[missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.federatedCatalogOptions.unityCatalogInfo.instanceName" is not set in unstructured objects
+[missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.federatedCatalogOptions.unityCatalogInfo.servicePrincipalApplicationID" is not set in unstructured objects
+[missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.restrictedLocationsConfig.restrictedLocations[]" is not set in unstructured objects
 [missing_field] crd=bigqueryanalyticshubquerytemplates.bigqueryanalyticshub.cnrm.cloud.google.com version=v1alpha1: field ".spec.proposer" is not set in unstructured objects
 [missing_field] crd=bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataMaskingPolicy.predefinedExpression" is not set in unstructured objects
 [missing_field] crd=bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataPolicyID" is not set in unstructured objects

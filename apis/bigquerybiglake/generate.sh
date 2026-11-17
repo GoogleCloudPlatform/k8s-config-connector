@@ -40,6 +40,19 @@ ${CONTROLLERBUILDER} generate-types \
     --resource BigLakeCatalog:Catalog \
     --resource BigLakeDatabase:Database
 
+${CONTROLLERBUILDER} generate-types \
+    --service google.cloud.biglake.v1 \
+    --api-version "bigquerybiglake.cnrm.cloud.google.com/v1alpha1" \
+    --include-skipped-output \
+    --resource BigLakeIcebergCatalog:IcebergCatalog \
+    --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+    --service google.cloud.biglake.v1 \
+    --api-version "bigquerybiglake.cnrm.cloud.google.com/v1alpha1" \
+    --resource BigLakeIcebergCatalog:IcebergCatalog \
+    --pattern BigLakeIcebergCatalog=projects/{project}/catalogs/{catalog}
+
 # --- v1beta1 ---
 
 ${CONTROLLERBUILDER} generate-types \
@@ -49,8 +62,9 @@ ${CONTROLLERBUILDER} generate-types \
 
 ${CONTROLLERBUILDER} generate-mapper \
     --multiversion \
-    --service google.cloud.bigquery.biglake.v1 \
-    --api-version "bigquerybiglake.cnrm.cloud.google.com/v1beta1"
+    --service google.cloud.bigquery.biglake.v1,google.cloud.biglake.v1 \
+    --api-version "bigquerybiglake.cnrm.cloud.google.com/v1beta1" \
+    --prepopulate-resource
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
