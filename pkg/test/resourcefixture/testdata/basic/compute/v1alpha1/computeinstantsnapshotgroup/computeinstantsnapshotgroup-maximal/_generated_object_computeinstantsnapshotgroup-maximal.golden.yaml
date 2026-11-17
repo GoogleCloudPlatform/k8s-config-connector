@@ -1,0 +1,41 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha1
+kind: ComputeInstantSnapshotGroup
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: ${instantSnapshotGroupID}
+  namespace: ${uniqueId}
+spec:
+  description: Maximal test for ComputeInstantSnapshotGroup
+  location: us-central1-a
+  projectRef:
+    external: ${projectId}
+  resourceID: ${instantSnapshotGroupID}
+  sourceConsistencyGroupRef:
+    name: ${resourcePolicyID}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/zones/us-central1-a/instantSnapshotGroups/${instantSnapshotGroupID}
+  observedGeneration: 1
+  observedState:
+    creationTimestamp: "1970-01-01T00:00:00Z"
+    id: 1111111111111111
+    kind: compute#instantSnapshotGroup
+    resourceStatus:
+      consistencyMembershipResolutionTime: "1970-01-01T00:00:00Z"
+      sourceInfo:
+        consistencyGroup: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/resourcePolicies/${resourcePolicyID}
+        consistencyGroupID: ${resourcePolicyID}
+    selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instantSnapshotGroups/${instantSnapshotGroupID}
+    selfLinkWithID: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instantSnapshotGroups/${instantSnapshotGroupID}
+    status: READY
+    zone: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a

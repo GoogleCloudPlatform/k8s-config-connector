@@ -408,6 +408,12 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err := RegisterGlobalVmExtensionPoliciesHandler(ctx, mux.ServeMux, &GlobalVmExtensionPoliciesV1{MockService: s}); err != nil {
 		return nil, err
 	}
+	if err := RegisterInstantSnapshotGroupsHandler(ctx, mux.ServeMux, &InstantSnapshotGroupsV1{MockService: s}); err != nil {
+		return nil, err
+	}
+	if err := RegisterRegionInstantSnapshotGroupsHandler(ctx, mux.ServeMux, &RegionInstantSnapshotGroupsV1{MockService: s}); err != nil {
+		return nil, err
+	}
 
 	// Returns slightly non-standard errors
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {

@@ -158,7 +158,6 @@ BLOCKED_KINDS=(
     "CloudTasksQueue"
     "ComputeHealthCheckService"
     "ComputeHealthSource"
-    "ComputeInstantSnapshotGroup"
     "ComputeNotificationEndpoint"
     "ComputeRolloutPlan"
     "ConfigDeliveryFleetPackage"
