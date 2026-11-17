@@ -1,0 +1,79 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "DialogflowCXAgent/dialogflowcxagent-${uniqueId}",
+    "fields": [
+      {
+        "id": "avatar_uri",
+        "old": "",
+        "new": "https://storage.cloud.google.com/dialogflow-test-host-image/cloud-logo.png"
+      },
+      {
+        "id": "default_language_code",
+        "old": "",
+        "new": "en"
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "A test agent for Dialogflow CX"
+      },
+      {
+        "id": "display_name",
+        "old": "",
+        "new": "agent-max-${uniqueId}"
+      },
+      {
+        "id": "enable_spell_correction",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "enable_stackdriver_logging",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "location",
+        "old": "",
+        "new": "global"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "start_flow",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "supported_language_codes.#",
+        "old": "",
+        "new": "2"
+      },
+      {
+        "id": "supported_language_codes.0",
+        "old": "",
+        "new": "fr"
+      },
+      {
+        "id": "supported_language_codes.1",
+        "old": "",
+        "new": "de"
+      },
+      {
+        "id": "time_zone",
+        "old": "",
+        "new": "America/New_York"
+      }
+    ]
+  }
+]
