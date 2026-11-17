@@ -22,7 +22,10 @@
 # merge-release (and overseer/auto-merge) merges it.
 #
 # Not a PR that also carries the controller's work (step/controller): its
-# controller step's assessment stands (assess-controller-step).
+# controller step's assessment stands (assess-controller-step). Nor one that
+# carries the types-judgement step's (step/types-judgement, a grouped graph
+# with no gate): assess-types-judgement grades that one, so a PR is never
+# graded twice.
 name: assess-release-step
 description: Grade a greenfield release PR without a controller step of its own on the Kind's real-GCP evidence
 on: pr
@@ -31,7 +34,7 @@ when:
   author: pool
   labels:
     all: [step/release, greenfield]
-    none: [step/controller]
+    none: [step/controller, step/types-judgement]
   mergeable: true
   checks: green
   feedback: none
