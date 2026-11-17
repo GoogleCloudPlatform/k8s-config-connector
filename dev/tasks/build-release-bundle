@@ -122,7 +122,6 @@ BLOCKED_KINDS=(
     "BigQueryDataTransferTransferConfig"
     "BigQueryMigrationMigrationWorkflow"
     "BigQueryMigrationWorkflow"
-    "BigtableCluster"
     "BinaryAuthorizationPlatformPolicy"
     "BlockchainNodeEngineBlockchainNode"
     "CCInsightsConversation"
