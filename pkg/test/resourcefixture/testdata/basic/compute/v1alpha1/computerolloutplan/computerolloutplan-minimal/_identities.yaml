@@ -1,0 +1,6 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/rolloutPlans/computerolloutplan-minimal-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeRolloutPlan
+  name: computerolloutplan-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

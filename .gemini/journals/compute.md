@@ -627,3 +627,25 @@
   - Re-ran `./apis/compute/generate.sh` and verified CRD generation, mappers, deepcopy code.
   - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
   - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.
+
+### [2026-11-17] Greenfield: Implement direct controller, E2E fixtures, and fuzzer for ComputeRolloutPlan
+- **Context**: Implementing the direct controller, round-trip fuzzer, and real-GCP recorded E2E fixtures for `ComputeRolloutPlan` under `compute.cnrm.cloud.google.com/v1alpha1` (issue #15893) following Greenfield Step 2 (`generated/SKILL.md`).
+- **Direct Controller (`pkg/controller/direct/compute/computerolloutplan_controller.go`)**:
+  - Implemented `RolloutPlanAdapter` using GAPIC REST client `compute.NewRolloutPlansRESTClient`.
+  - Implemented `AdapterForURL` for export support.
+  - Implemented immutability enforcement in `Update`: GCP Compute Engine RolloutPlans are immutable (no update or patch RPC exists on the `RolloutPlansClient`). Any spec drift detected by `common.CompareGreenfieldSpec` surfaces exact diffs via `structuredreporting.ReportDiff` and returns an error explaining immutability; steady-state re-reconciliation calls `setStatus` with zero mutations.
+  - Handled `Create`, `Find`, `Get`, and `Delete`, waiting on LROs via `op.Wait(ctx)`.
+- **Round-Trip Fuzzer (`pkg/controller/direct/compute/computerolloutplan_fuzzer.generated.go`)**:
+  - Generated via one-shot `controllerbuilder generate-fuzzer --prepopulate-resource`.
+  - Verified 100% round-trip fidelity with `FOCUS=ComputeRolloutPlan go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`.
+- **Static Configuration (`pkg/controller/resourceconfig/static_config.go`)**:
+  - Registered `ComputeRolloutPlan` with `DefaultController: k8s.ReconcilerTypeDirect`.
+- **E2E Golden Testing**:
+  - Created `computerolloutplan-minimal` and `computerolloutplan-maximal` fixtures under `pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computerolloutplan/`.
+  - Recorded authentic golden logs against real GCP project `cnrm-barni-4` using `hack/record-gcp`. Both minimal and maximal fixtures passed all 7 automated lifecycle validation checks (V1–V7).
+  - Omitted `update.yaml` as `ComputeRolloutPlan` is immutable on GCP.
+  - Note on `resourceHierarchySelector.includedProjects`: Real GCP requires project numbers (`projects/{projectNumber}`) in `includedProjects`. Using `external: projects/${projectNumber}` in the test fixture resolved format validation errors.
+- **Exceptions & Presubmit Checks**:
+  - Synchronized `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+  - Verified all tests in `apis/compute/...`, `pkg/controller/direct/compute/...`, `tests/apichecks/...`, `pkg/gcpurls/...`, and `pkg/test/resourcefixture/...` pass cleanly.
+

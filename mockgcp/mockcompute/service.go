@@ -414,6 +414,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err := RegisterRegionInstantSnapshotGroupsHandler(ctx, mux.ServeMux, &RegionInstantSnapshotGroupsV1{MockService: s}); err != nil {
 		return nil, err
 	}
+	if err := RegisterGlobalRolloutPlansHandler(ctx, mux.ServeMux, &GlobalRolloutPlansV1{MockService: s}); err != nil {
+		return nil, err
+	}
 
 	// Returns slightly non-standard errors
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
