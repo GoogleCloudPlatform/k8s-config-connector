@@ -31,7 +31,7 @@ status:
     id: 1111111111111111
     kind: compute#instantSnapshotGroup
     resourceStatus:
-      consistencyMembershipResolutionTime: "2026-11-16T23:39:06.904075Z"
+      consistencyMembershipResolutionTime: "1970-01-01T00:00:00Z"
       sourceInfo:
         consistencyGroup: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/resourcePolicies/${resourcePolicyID}
         consistencyGroupID: ${resourcePolicyID}

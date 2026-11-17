@@ -4,7 +4,7 @@
 - **Resource Name:** `computeinstantsnapshotgroup-${uniqueId}`
 - **Source Log:** `_http.log` (20 total HTTP entries, 14 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:efb8c48c9299fc74`
+- **Integrity Hash:** `sha256:f6f21712feb41231`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 

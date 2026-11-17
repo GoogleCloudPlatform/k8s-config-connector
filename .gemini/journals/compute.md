@@ -1,5 +1,22 @@
 # Compute Service Journals
 
+### [2026-11-17] MockGCP Implementation and Alignment for ComputeInstantSnapshotGroup
+- **Context**: Implementing MockGCP service and log alignment for `ComputeInstantSnapshotGroup` (issue #15890) following Greenfield Step 3 & Step 4 (`.gemini/skills/kcc-direct-mockgcp-implementer/SKILL.md`).
+- **Findings & Implementation**:
+  1. **Direct computepb HTTP Mux Routing**: Similar to `computevmextensionpolicies.go`, `InstantSnapshotGroup` services are served directly via `mux.HandlePath` using `cloud.google.com/go/compute/apiv1/computepb` types and `*pb.Operation` LROs for both zonal (`InstantSnapshotGroupsV1`) and regional (`RegionInstantSnapshotGroupsV1`) scopes.
+  2. **Field Population & Operations**:
+     - `Insert` populates `Id`, `Kind`, `CreationTimestamp`, `SelfLink`, `SelfLinkWithId`, `Status: READY`, and scope link (`Zone` or `Region`).
+     - `SourceConsistencyGroup` is canonicalized to full self link URL, and `ResourceStatus` is populated with `ConsistencyMembershipResolutionTime` and `SourceInfo` (`ConsistencyGroup` URL and `ConsistencyGroupId` policy ID).
+     - Standard zonal/regional LRO operations are started via `startZonalLRO` / `startRegionalLRO` setting `TargetId` and `TargetLink`, enabling automatic placeholder replacement (`${instantSnapshotGroupID}`).
+  3. **Normalization & Alignment**:
+     - Normalized `consistencyMembershipResolutionTime` in `mockgcp/mockcompute/normalize.go` and `tests/e2e/normalize.go` (`replacePaths`).
+     - Ignored `consistencyMembershipResolutionTime` during JSON comparison in `pkg/test/resourcefixture/golden_alignment_test.go` (`normalizeRepresentation`).
+  4. **Verification**:
+     - Removed skip by allowlisting `ComputeInstantSnapshotGroup` in `config/tests/samples/create/harness.go`.
+     - Regenerated `_http_mock.log` and updated golden object files using `./hack/compare-mock`.
+     - Verified `TestGoldenLogAlignment` and `TestRealHTTPLogsDoNotContainMockGCP` pass cleanly with zero errors.
+     - Presubmit `./dev/ci/presubmits/tests-e2e-fixtures-suite compute` passed all 204 tests in parallel.
+
 ### [2026-11-16] Greenfield Controller, Fuzzer, and E2E Fixtures for ComputeInstantSnapshotGroup
 - **Context**: Implementing direct controller, fuzzer, and real-GCP recorded E2E fixtures for `ComputeInstantSnapshotGroup` (issue #15866) following Greenfield Step 2 (`generated/SKILL.md`).
 - **Findings & Implementation**:
