@@ -28,7 +28,7 @@
   3. A temporary external-only stub `GeminiDataAnalyticsDataAgentRef` was previously defined in `geminidataanalyticsconversation_types.go`.
 - **Solution**:
   1. Pinned `PROTO_SHA="e7513c828b8db536fa12fc5493d541f323aedf90"` in `apis/geminidataanalytics/generate.sh` to generate from GA proto `google.cloud.geminidataanalytics.v1` for `DataAgent` while keeping `v1beta` for `Conversation`.
-  2. Extracted `Field` to `apis/geminidataanalytics/v1alpha1/field.go` with `// +kubebuilder:validation:items:XPreserveUnknownFields` and `// +kubebuilder:validation:items:Type=object` annotations so OpenAPI v3 schema validates cleanly.
+  2. Defined `Field` struct in `apis/geminidataanalytics/v1alpha1/geminidataanalyticsdataagent_types.go`, commenting out recursive `Subfields []Field` for now with a TODO comment.
   3. Removed the temporary `GeminiDataAnalyticsDataAgentRef` from `geminidataanalyticsconversation_types.go` so `generate-identity` generates the canonical `GeminiDataAnalyticsDataAgentRef` with `External`, `Name`, and `Namespace`.
   4. Added `GeminiDataAnalyticsDataAgent` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
   5. Updated `generate-mapper` invocation in `apis/geminidataanalytics/generate.sh` to include both `--service google.cloud.geminidataanalytics.v1,google.cloud.geminidataanalytics.v1beta` and `--prepopulate-resource`. Upgraded `cloud.google.com/go/geminidataanalytics` to `v1.6.0` in root and mockgcp `go.mod` so mappers for `GeminiDataAnalyticsDataAgent` compile against `apiv1/geminidataanalyticspb` while preserving repository dependencies (such as `google.golang.org/api` and `protobuf`). Marked newly added `.title` field as untriaged in `geminidataanalyticsconversation_fuzzer.go`.

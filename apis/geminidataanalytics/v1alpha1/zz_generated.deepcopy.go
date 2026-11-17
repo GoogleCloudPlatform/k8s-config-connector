@@ -870,13 +870,6 @@ func (in *Field) DeepCopyInto(out *Field) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.Subfields != nil {
-		in, out := &in.Subfields, &out.Subfields
-		*out = make([]Field, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
-	}
 	if in.Category != nil {
 		in, out := &in.Category, &out.Category
 		*out = new(string)

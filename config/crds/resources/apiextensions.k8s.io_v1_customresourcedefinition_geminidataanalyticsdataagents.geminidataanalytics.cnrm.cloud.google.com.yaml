@@ -158,13 +158,6 @@ spec:
                             name:
                               description: Optional. The name of the field.
                               type: string
-                            subfields:
-                              description: Optional. Recursive property for nested
-                                schema structures.
-                              items:
-                                type: object
-                                x-kubernetes-preserve-unknown-fields: true
-                              type: array
                             synonyms:
                               description: 'Optional. A list of alternative names
                                 or synonyms that can be used to refer to this field.
@@ -330,13 +323,6 @@ spec:
                                                 description: Optional. The name of
                                                   the field.
                                                 type: string
-                                              subfields:
-                                                description: Optional. Recursive property
-                                                  for nested schema structures.
-                                                items:
-                                                  type: object
-                                                  x-kubernetes-preserve-unknown-fields: true
-                                                type: array
                                               synonyms:
                                                 description: 'Optional. A list of
                                                   alternative names or synonyms that
@@ -496,13 +482,6 @@ spec:
                                                 description: Optional. The name of
                                                   the field.
                                                 type: string
-                                              subfields:
-                                                description: Optional. Recursive property
-                                                  for nested schema structures.
-                                                items:
-                                                  type: object
-                                                  x-kubernetes-preserve-unknown-fields: true
-                                                type: array
                                               synonyms:
                                                 description: 'Optional. A list of
                                                   alternative names or synonyms that
@@ -1073,13 +1052,6 @@ spec:
                                                 description: Optional. The name of
                                                   the field.
                                                 type: string
-                                              subfields:
-                                                description: Optional. Recursive property
-                                                  for nested schema structures.
-                                                items:
-                                                  type: object
-                                                  x-kubernetes-preserve-unknown-fields: true
-                                                type: array
                                               synonyms:
                                                 description: 'Optional. A list of
                                                   alternative names or synonyms that
@@ -1239,13 +1211,6 @@ spec:
                                                 description: Optional. The name of
                                                   the field.
                                                 type: string
-                                              subfields:
-                                                description: Optional. Recursive property
-                                                  for nested schema structures.
-                                                items:
-                                                  type: object
-                                                  x-kubernetes-preserve-unknown-fields: true
-                                                type: array
                                               synonyms:
                                                 description: 'Optional. A list of
                                                   alternative names or synonyms that
@@ -1942,13 +1907,6 @@ spec:
                                                     description: Optional. The name
                                                       of the field.
                                                     type: string
-                                                  subfields:
-                                                    description: Optional. Recursive
-                                                      property for nested schema structures.
-                                                    items:
-                                                      type: object
-                                                      x-kubernetes-preserve-unknown-fields: true
-                                                    type: array
                                                   synonyms:
                                                     description: 'Optional. A list
                                                       of alternative names or synonyms
@@ -2113,13 +2071,6 @@ spec:
                                                     description: Optional. The name
                                                       of the field.
                                                     type: string
-                                                  subfields:
-                                                    description: Optional. Recursive
-                                                      property for nested schema structures.
-                                                    items:
-                                                      type: object
-                                                      x-kubernetes-preserve-unknown-fields: true
-                                                    type: array
                                                   synonyms:
                                                     description: 'Optional. A list
                                                       of alternative names or synonyms

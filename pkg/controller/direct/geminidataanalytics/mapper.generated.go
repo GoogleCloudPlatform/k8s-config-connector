@@ -581,7 +581,7 @@ func Field_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.Field)
 	out.Synonyms = in.Synonyms
 	out.Tags = in.Tags
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Subfields = direct.Slice_FromProto(mapCtx, in.Subfields, Field_FromProto)
+	// MISSING: Subfields
 	out.Category = direct.LazyPtr(in.GetCategory())
 	out.ValueFormat = direct.LazyPtr(in.GetValueFormat())
 	return out
@@ -598,7 +598,7 @@ func Field_ToProto(mapCtx *direct.MapContext, in *krm.Field) *geminidataanalytic
 	out.Synonyms = in.Synonyms
 	out.Tags = in.Tags
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Subfields = direct.Slice_ToProto(mapCtx, in.Subfields, Field_ToProto)
+	// MISSING: Subfields
 	out.Category = direct.ValueOf(in.Category)
 	out.ValueFormat = direct.ValueOf(in.ValueFormat)
 	return out
