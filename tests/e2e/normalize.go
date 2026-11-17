@@ -1772,6 +1772,9 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		if strings.Contains(requestURL, "securesourcemanager.googleapis.com") && strings.Contains(requestURL, "/repositories") {
 			removeKeysFromMap(obj, []string{"scanConfig"})
 		}
+		if strings.Contains(requestURL, "ftp.googleapis.com") {
+			removeKeysFromMap(obj, []string{"satisfiesPzi", "satisfiesPzs"})
+		}
 		// Deprecated: try to move these into mockgcp normalizers
 		if err := visitor.visitMap(obj, ""); err != nil {
 			t.Fatalf("error normalizing response: %v", err)

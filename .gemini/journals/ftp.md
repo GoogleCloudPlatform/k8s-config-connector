@@ -25,3 +25,14 @@
   5. Resolved all 5 entries in `apis/ftp/judgement_queue.yaml`.
   6. Regenerated types, CRDs, and updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 - **Impact**: Completes Greenfield Step 1b for `FTPServer` with passing unit tests and apichecks.
+
+### [2026-11-17] FTPServer Direct Greenfield Controller & E2E Fixtures
+- **Context**: Implementing direct controller, round-trip fuzzer, and minimal/maximal E2E fixtures for `FTPServer` under `ftp.cnrm.cloud.google.com/v1alpha1`.
+- **Learnings & API Specifics**:
+  1. `ServerView`: Cloud FTP uses `ServerView` enum on `GetServer`. Default view is `SERVER_VIEW_BASIC` (excludes `external_config`, `internal_config`, and `google_managed_server_credential`). Controller explicitly requests `SERVER_VIEW_FULL` in `Find`, and re-fetches the server with `SERVER_VIEW_FULL` post-LRO in `Create` and `Update` so full state is observed.
+  2. Supported locations: `ftp.googleapis.com` is available in regions such as `us-west1` (not `us-central1`).
+  3. Resource name length: GCP enforces maximum 30 characters on `server_id` (`[a-z]([-a-z0-9]*[a-z0-9])?`). Fixture names shortened to `ftpmin-${uniqueId}` and `ftpmax-${uniqueId}` to ensure names fit well within the 30-char limit.
+  4. Response fields: Real GCP returns `satisfiesPzi` / `satisfiesPzs`, which are omitted via `tests/e2e/normalize.go` for `ftp.googleapis.com` responses.
+  5. Validation: `pkg/test/httplogreport/specdiff/differ.go` was updated to simplify reference values (e.g. `projectRef`) when comparing nested map structures in slices.
+- **Impact**: Full direct controller implementation, 200-seed round-trip fuzzer, and real GCP recorded minimal and maximal fixtures with 100% CRD field coverage (all missing field exceptions cleared).
+

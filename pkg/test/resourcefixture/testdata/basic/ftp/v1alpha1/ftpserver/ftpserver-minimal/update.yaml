@@ -1,0 +1,14 @@
+apiVersion: ftp.cnrm.cloud.google.com/v1alpha1
+kind: FTPServer
+metadata:
+  name: ftpmin-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-west1
+  accessType: EXTERNAL
+  displayName: ftpmin-upd-${uniqueId}
+  externalConfig:
+    allowedCIDRBlocks:
+    - "10.0.0.0/8"
+    - "192.168.0.0/16"

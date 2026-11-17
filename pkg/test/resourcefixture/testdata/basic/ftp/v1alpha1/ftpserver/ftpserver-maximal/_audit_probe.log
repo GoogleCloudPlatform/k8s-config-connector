@@ -1,0 +1,38 @@
+GET https://ftp.googleapis.com/v1/projects/${projectId}/locations/us-west1/servers/ftpmax-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=SERVER_VIEW_FULL
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "accessType": 2,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "ftpmax-upd-${uniqueId}",
+  "googleManagedServerCredential": {
+    "asymmetricAlgorithm": "ED25519",
+    "fingerprint": "SHA256:WIFsa2XnMVG2h4DnH0s1dzkpB6ImjgNtX3Lej16cRAk"
+  },
+  "internalConfig": {
+    "consumerAcceptList": [
+      {
+        "connectionLimit": "20",
+        "project": "projects/${projectId}"
+      }
+    ],
+    "consumerRejectList": [
+      {
+        "project": "projects/1234567890"
+      }
+    ],
+    "serviceAttachment": "projects/occae7b529fb8d693p-tp/regions/us-west1/serviceAttachments/ftpmax-${uniqueId}-psc-service-attachment"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test-label": "ftpserver-upd-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-west1/servers/ftpmax-${uniqueId}",
+  "serviceAgent": "p-${projectNumber}-341656619438@gcp-sa-ftp.iam.gserviceaccount.com",
+  "state": 3,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
