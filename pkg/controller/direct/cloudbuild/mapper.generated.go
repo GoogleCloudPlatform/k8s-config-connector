@@ -180,6 +180,7 @@ func Artifacts_ArtifactObjectsObservedState_v1alpha1_ToProto(mapCtx *direct.MapC
 	return out
 }
 
+/* found existing non-generated mapping function "Artifacts_GoModule_v1alpha1_FromProto", skipping
 func Artifacts_GoModule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Artifacts_GoModule) *krmcloudbuildv1alpha1.Artifacts_GoModule {
 	if in == nil {
 		return nil
@@ -193,7 +194,9 @@ func Artifacts_GoModule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Art
 	out.ModuleVersion = direct.LazyPtr(in.GetModuleVersion())
 	return out
 }
+*/
 
+/* found existing non-generated mapping function "Artifacts_GoModule_v1alpha1_ToProto", skipping
 func Artifacts_GoModule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Artifacts_GoModule) *pb.Artifacts_GoModule {
 	if in == nil {
 		return nil
@@ -207,6 +210,7 @@ func Artifacts_GoModule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloud
 	out.ModuleVersion = direct.ValueOf(in.ModuleVersion)
 	return out
 }
+*/
 
 func Artifacts_MavenArtifact_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Artifacts_MavenArtifact) *krmcloudbuildv1alpha1.Artifacts_MavenArtifact {
 	if in == nil {
@@ -606,6 +610,7 @@ func Build_FailureInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudb
 	return out
 }
 
+/* found existing non-generated mapping function "Build_RepoSource_v1alpha1_FromProto", skipping
 func Build_RepoSource_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RepoSource) *krmcloudbuildv1alpha1.Build_RepoSource {
 	if in == nil {
 		return nil
@@ -621,7 +626,9 @@ func Build_RepoSource_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RepoS
 	out.Substitutions = in.Substitutions
 	return out
 }
+*/
 
+/* found existing non-generated mapping function "Build_RepoSource_v1alpha1_ToProto", skipping
 func Build_RepoSource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Build_RepoSource) *pb.RepoSource {
 	if in == nil {
 		return nil
@@ -643,6 +650,7 @@ func Build_RepoSource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbu
 	out.Substitutions = in.Substitutions
 	return out
 }
+*/
 
 func Build_RepoSource_BranchName_ToProto(mapCtx *direct.MapContext, in *string) *pb.RepoSource_BranchName {
 	if in == nil {
@@ -1264,6 +1272,7 @@ func Dependency_GitSourceRepository_v1alpha1_FromProto(mapCtx *direct.MapContext
 	return out
 }
 
+/* found existing non-generated mapping function "Dependency_GitSourceRepository_v1alpha1_ToProto", skipping
 func Dependency_GitSourceRepository_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Dependency_GitSourceRepository) *pb.Dependency_GitSourceRepository {
 	if in == nil {
 		return nil
@@ -1273,10 +1282,11 @@ func Dependency_GitSourceRepository_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 		out.Repotype = oneof
 	}
 	if in.DeveloperConnectRef != nil {
-		out.Repotype = &pb.Dependency_GitSourceRepository_DeveloperConnect{DeveloperConnect: in.DeveloperConnectRef.External}
+		out.DeveloperConnect = in.DeveloperConnectRef.External
 	}
 	return out
 }
+*/
 
 func Dependency_GitSourceRepository_Url_ToProto(mapCtx *direct.MapContext, in *string) *pb.Dependency_GitSourceRepository_Url {
 	if in == nil {
@@ -1328,6 +1338,7 @@ func GitConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1al
 	return out
 }
 
+/* found existing non-generated mapping function "GitConfig_HTTPConfig_v1alpha1_FromProto", skipping
 func GitConfig_HTTPConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GitConfig_HttpConfig) *krmcloudbuildv1alpha1.GitConfig_HTTPConfig {
 	if in == nil {
 		return nil
@@ -1336,7 +1347,9 @@ func GitConfig_HTTPConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.G
 	// MISSING: ProxySecretVersionName
 	return out
 }
+*/
 
+/* found existing non-generated mapping function "GitConfig_HTTPConfig_v1alpha1_ToProto", skipping
 func GitConfig_HTTPConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.GitConfig_HTTPConfig) *pb.GitConfig_HttpConfig {
 	if in == nil {
 		return nil
@@ -1345,6 +1358,7 @@ func GitConfig_HTTPConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclo
 	// MISSING: ProxySecretVersionName
 	return out
 }
+*/
 
 func GitHubConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb.GitHubConfig) *krmcloudbuildv1alpha1.GitHubConfig {
 	if in == nil {
@@ -1592,6 +1606,7 @@ func Hash_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1beta1.Ha
 	return out
 }
 
+/* found existing non-generated mapping function "InlineSecret_v1alpha1_FromProto", skipping
 func InlineSecret_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InlineSecret) *krmcloudbuildv1alpha1.InlineSecret {
 	if in == nil {
 		return nil
@@ -1601,7 +1616,9 @@ func InlineSecret_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InlineSec
 	// MISSING: EnvMap
 	return out
 }
+*/
 
+/* found existing non-generated mapping function "InlineSecret_v1alpha1_ToProto", skipping
 func InlineSecret_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.InlineSecret) *pb.InlineSecret {
 	if in == nil {
 		return nil
@@ -1611,6 +1628,7 @@ func InlineSecret_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv
 	// MISSING: EnvMap
 	return out
 }
+*/
 
 func InstallationStateObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb.InstallationState) *krmcloudbuildv1alpha1.InstallationStateObservedState {
 	if in == nil {
@@ -1907,6 +1925,7 @@ func ResultsObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclo
 	return out
 }
 
+/* found existing non-generated mapping function "Secret_v1alpha1_FromProto", skipping
 func Secret_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Secret) *krmcloudbuildv1alpha1.Secret {
 	if in == nil {
 		return nil
@@ -1916,7 +1935,9 @@ func Secret_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Secret) *krmclo
 	// MISSING: SecretEnv
 	return out
 }
+*/
 
+/* found existing non-generated mapping function "Secret_v1alpha1_ToProto", skipping
 func Secret_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Secret) *pb.Secret {
 	if in == nil {
 		return nil
@@ -1926,7 +1947,9 @@ func Secret_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha
 	// MISSING: SecretEnv
 	return out
 }
+*/
 
+/* found existing non-generated mapping function "SecretManagerSecret_v1alpha1_FromProto", skipping
 func SecretManagerSecret_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecretManagerSecret) *krmcloudbuildv1alpha1.SecretManagerSecret {
 	if in == nil {
 		return nil
@@ -1936,7 +1959,9 @@ func SecretManagerSecret_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Se
 	out.Env = direct.LazyPtr(in.GetEnv())
 	return out
 }
+*/
 
+/* found existing non-generated mapping function "SecretManagerSecret_v1alpha1_ToProto", skipping
 func SecretManagerSecret_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.SecretManagerSecret) *pb.SecretManagerSecret {
 	if in == nil {
 		return nil
@@ -1946,6 +1971,7 @@ func SecretManagerSecret_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclou
 	out.Env = direct.ValueOf(in.Env)
 	return out
 }
+*/
 
 func Secrets_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Secrets) *krmcloudbuildv1alpha1.Secrets {
 	if in == nil {

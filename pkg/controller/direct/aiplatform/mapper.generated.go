@@ -963,7 +963,7 @@ func AIPlatformNotebookExecutionJobSpec_ToProto(mapCtx *direct.MapContext, in *k
 		out.ExecutionIdentity = oneof
 	}
 	if in.ServiceAccountRef != nil {
-		out.ExecutionIdentity = &pb.NotebookExecutionJob_ServiceAccount{ServiceAccount: in.ServiceAccountRef.External}
+		out.ServiceAccount = in.ServiceAccountRef.External
 	}
 	if oneof := NotebookExecutionJob_WorkbenchRuntime_ToProto(mapCtx, in.WorkbenchRuntime); oneof != nil {
 		out.RuntimeEnvironment = &pb.NotebookExecutionJob_WorkbenchRuntime_{WorkbenchRuntime: oneof}
@@ -4002,7 +4002,7 @@ func ModelMonitoringInput_ModelMonitoringDataset_ToProto(mapCtx *direct.MapConte
 	}
 	out := &aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset{}
 	if in.VertexDatasetRef != nil {
-		out.DataLocation = &aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_VertexDataset{VertexDataset: in.VertexDatasetRef.External}
+		out.VertexDataset = in.VertexDatasetRef.External
 	}
 	if oneof := ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGCSSource_ToProto(mapCtx, in.GCSSource); oneof != nil {
 		out.DataLocation = &aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_GcsSource{GcsSource: oneof}
@@ -4317,7 +4317,7 @@ func ModelMonitoringObjectiveConfig_TrainingDataset_ToProto(mapCtx *direct.MapCo
 	}
 	out := &pb.ModelMonitoringObjectiveConfig_TrainingDataset{}
 	if in.DatasetRef != nil {
-		out.DataSource = &pb.ModelMonitoringObjectiveConfig_TrainingDataset_Dataset{Dataset: in.DatasetRef.External}
+		out.Dataset = in.DatasetRef.External
 	}
 	if oneof := GCSSource_ToProto(mapCtx, in.GCSSource); oneof != nil {
 		out.DataSource = &pb.ModelMonitoringObjectiveConfig_TrainingDataset_GcsSource{GcsSource: oneof}
@@ -4813,13 +4813,13 @@ func NotebookExecutionJob_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExe
 		out.EnvironmentSpec = &pb.NotebookExecutionJob_CustomEnvironmentSpec_{CustomEnvironmentSpec: oneof}
 	}
 	if in.GCSOutputURIRef != nil {
-		out.ExecutionSink = &pb.NotebookExecutionJob_GcsOutputUri{GcsOutputUri: in.GCSOutputURIRef.External}
+		out.GcsOutputUri = in.GCSOutputURIRef.External
 	}
 	if oneof := NotebookExecutionJob_ExecutionUser_ToProto(mapCtx, in.ExecutionUser); oneof != nil {
 		out.ExecutionIdentity = oneof
 	}
 	if in.ServiceAccountRef != nil {
-		out.ExecutionIdentity = &pb.NotebookExecutionJob_ServiceAccount{ServiceAccount: in.ServiceAccountRef.External}
+		out.ServiceAccount = in.ServiceAccountRef.External
 	}
 	if oneof := NotebookExecutionJob_WorkbenchRuntime_ToProto(mapCtx, in.WorkbenchRuntime); oneof != nil {
 		out.RuntimeEnvironment = &pb.NotebookExecutionJob_WorkbenchRuntime_{WorkbenchRuntime: oneof}

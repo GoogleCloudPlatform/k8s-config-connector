@@ -785,11 +785,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				// Support refs
 				if krmFieldRef := goFields[krmFieldName+"Ref"]; krmFieldRef != nil {
 					fmt.Fprintf(out, "\tif in.%s != nil {\n", krmFieldRef.Name)
-					if oneof := protoField.ContainingOneof(); oneof != nil && !protoField.HasOptionalKeyword() {
-						oneofType := fmt.Sprintf("%s_%s", pbTypeName, protoFieldName)
-						oneofFieldName := ToGoFieldName(oneof.Name())
-						fmt.Fprintf(out, "\t\tout.%s = &%s.%s{%s: in.%s.External}\n", oneofFieldName, pbTypeGoImport, oneofType, protoFieldName, krmFieldRef.Name)
-					} else if usesPointersInProtoBinding(msg) {
+					// KRM External field in string, but proto might be a pointer if it's optional/proto2
+					if usesPointersInProtoBinding(msg) {
 						fmt.Fprintf(out, "\t\tout.%s = &in.%s.External\n", protoFieldName, krmFieldRef.Name)
 					} else {
 						fmt.Fprintf(out, "\t\tout.%s = in.%s.External\n", protoFieldName, krmFieldRef.Name)
