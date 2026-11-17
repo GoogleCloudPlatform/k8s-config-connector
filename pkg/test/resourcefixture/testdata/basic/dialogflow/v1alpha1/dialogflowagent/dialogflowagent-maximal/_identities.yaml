@@ -1,0 +1,6 @@
+- caisURL: //dialogflow.googleapis.com/projects/${projectId}/agent
+  group: dialogflow.cnrm.cloud.google.com
+  kind: DialogflowAgent
+  name: dialogflowagent-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
