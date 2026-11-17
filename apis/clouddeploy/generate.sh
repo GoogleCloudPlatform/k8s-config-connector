@@ -40,7 +40,18 @@ ${CONTROLLERBUILDER} generate-types \
   --resource CloudDeployTarget:Target \
   --resource CloudDeployAutomation:Automation
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.deploy.v1 \
+  --api-version clouddeploy.cnrm.cloud.google.com/v1alpha1 \
+  --resource CloudDeployRelease:Release \
+  --include-skipped-output \
+  --allow-non-declarative \
+  --prepopulate-resource
 
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.deploy.v1 \
+  --api-version clouddeploy.cnrm.cloud.google.com/v1alpha1 \
+  --resource CloudDeployRelease:Release
 
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
@@ -51,7 +62,9 @@ ${CONTROLLERBUILDER} generate-types \
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.deploy.v1 \
   --api-version "clouddeploy.cnrm.cloud.google.com/v1beta1" \
-  --multiversion
+  --multiversion \
+  --include-skipped-output \
+  --prepopulate-resource
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
