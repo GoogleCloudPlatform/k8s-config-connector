@@ -431,9 +431,6 @@ X-Xss-Protection: 0
                     "httpRoute": "my-http-route",
                     "podSelectorLabel": "app=my-app",
                     "routeDestinations": {
-                      "destinationIds": [
-                        "dest1"
-                      ],
                       "propagateService": true
                     },
                     "routeUpdateWaitTime": "60s",

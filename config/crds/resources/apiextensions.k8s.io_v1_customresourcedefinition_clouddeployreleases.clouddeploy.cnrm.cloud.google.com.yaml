@@ -792,12 +792,93 @@ spec:
                     type: string
                   targetArtifacts:
                     additionalProperties:
+                      description: TargetArtifactObservedState represents the output-only
+                        artifacts produced for a target during render.
+                      properties:
+                        artifactURI:
+                          description: Output only. URI of a directory containing
+                            the artifacts. All paths are relative to this location.
+                          type: string
+                        manifestPath:
+                          description: Output only. File path of the rendered manifest
+                            relative to the URI.
+                          type: string
+                        phaseArtifacts:
+                          additionalProperties:
+                            description: TargetArtifact_PhaseArtifactObservedState
+                              contains paths to artifacts for a phase.
+                            properties:
+                              jobManifestsPath:
+                                description: Output only. File path of the resolved
+                                  job manifests relative to the URI.
+                                type: string
+                              manifestPath:
+                                description: Output only. File path of the rendered
+                                  manifest relative to the URI.
+                                type: string
+                              skaffoldConfigPath:
+                                description: Output only. File path of the resolved
+                                  Skaffold configuration relative to the URI.
+                                type: string
+                            type: object
+                          description: Output only. Map from the phase ID to the phase
+                            artifacts for the phase.
+                          type: object
+                        skaffoldConfigPath:
+                          description: Output only. File path of the resolved Skaffold
+                            configuration relative to the URI.
+                          type: string
                       type: object
                     description: Output only. Map from target ID to the target artifacts
                       created during the render operation.
                     type: object
                   targetRenders:
                     additionalProperties:
+                      description: TargetRenderObservedState contains details of rendering
+                        for a single target.
+                      properties:
+                        failureCause:
+                          description: Output only. Reason this render failed.
+                          type: string
+                        failureMessage:
+                          description: Output only. Additional information about the
+                            render failure, if available.
+                          type: string
+                        metadata:
+                          description: Output only. Metadata related to the `Release`
+                            render for this Target.
+                          properties:
+                            cloudRun:
+                              description: Output only. Metadata associated with rendering
+                                for Cloud Run.
+                              properties:
+                                service:
+                                  description: Output only. The name of the Cloud
+                                    Run Service in the rendered manifest. Format is
+                                    `projects/{project}/locations/{location}/services/{service}`.
+                                  type: string
+                              type: object
+                            custom:
+                              description: Output only. Custom metadata provided by
+                                user-defined render operation.
+                              properties:
+                                values:
+                                  additionalProperties:
+                                    type: string
+                                  description: Output only. Key-value pairs provided
+                                    by the user-defined operation.
+                                  type: object
+                              type: object
+                          type: object
+                        renderingBuild:
+                          description: Output only. The resource name of the Cloud
+                            Build `Build` object that is used to render the manifest
+                            for this target. Format is `projects/{project}/locations/{location}/builds/{build}`.
+                          type: string
+                        renderingState:
+                          description: Output only. Current state of the render operation
+                            for this Target.
+                          type: string
                       type: object
                     description: Output only. Map from target ID to details of the
                       render operation for that target.
@@ -806,143 +887,72 @@ spec:
                     description: Output only. Snapshot of the targets taken at release
                       creation time.
                     items:
+                      description: TargetSnapshotObservedState models the target snapshot
+                        in Release status using string identifiers rather than KRM
+                        references, matching GCP API responses.
                       properties:
                         annotations:
                           additionalProperties:
                             type: string
-                          description: Optional. User annotations. These attributes
-                            can only be set and used by the user, and not by Cloud
-                            Deploy. See https://google.aip.dev/128#annotations for
-                            more details such as format and size limitations.
+                          description: Optional. User annotations.
                           type: object
                         anthosCluster:
                           description: Optional. Information specifying an Anthos
                             Cluster.
                           properties:
-                            membershipRef:
+                            membership:
                               description: Optional. Membership of the GKE Hub-registered
-                                cluster to which to apply the Skaffold configuration.
-                                Format is `projects/{project}/locations/{location}/memberships/{membership_name}`.
-                              oneOf:
-                              - not:
-                                  required:
-                                  - external
-                                required:
-                                - name
-                              - not:
-                                  anyOf:
-                                  - required:
-                                    - name
-                                  - required:
-                                    - namespace
-                                required:
-                                - external
-                              properties:
-                                external:
-                                  description: 'The name of the membership. Allowed
-                                    value: The Google Cloud resource name of a `GKEHubMembership`
-                                    resource (format: `projects/{{project}}/locations/{{location}}/memberships/{{name}}`).'
-                                  type: string
-                                name:
-                                  description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                                  type: string
-                                namespace:
-                                  description: 'Namespace of the referent. More info:
-                                    https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                                  type: string
-                              type: object
+                                cluster. Format is `projects/{project}/locations/{location}/memberships/{membership_name}`.
+                              type: string
                           type: object
                         associatedEntities:
                           additionalProperties:
+                            description: AssociatedEntitiesObservedState models associated
+                              entities in status.
                             properties:
                               anthosClusters:
                                 description: Optional. Information specifying Anthos
                                   clusters as associated entities.
                                 items:
+                                  description: AnthosClusterObservedState models an
+                                    Anthos cluster snapshot in status with a plain
+                                    membership string.
                                   properties:
-                                    membershipRef:
+                                    membership:
                                       description: Optional. Membership of the GKE
-                                        Hub-registered cluster to which to apply the
-                                        Skaffold configuration. Format is `projects/{project}/locations/{location}/memberships/{membership_name}`.
-                                      properties:
-                                        external:
-                                          description: 'The name of the membership.
-                                            Allowed value: The Google Cloud resource
-                                            name of a `GKEHubMembership` resource
-                                            (format: `projects/{{project}}/locations/{{location}}/memberships/{{name}}`).'
-                                          type: string
-                                        name:
-                                          description: 'Name of the referent. More
-                                            info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                                          type: string
-                                        namespace:
-                                          description: 'Namespace of the referent.
-                                            More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                                          type: string
-                                      type: object
+                                        Hub-registered cluster. Format is `projects/{project}/locations/{location}/memberships/{membership_name}`.
+                                      type: string
                                   type: object
                                 type: array
                               gkeClusters:
                                 description: Optional. Information specifying GKE
                                   clusters as associated entities.
                                 items:
+                                  description: GkeClusterObservedState models a GKE
+                                    cluster snapshot in status with a plain cluster
+                                    string.
                                   properties:
-                                    clusterRef:
+                                    cluster:
                                       description: Optional. Information specifying
                                         a GKE Cluster. Format is `projects/{project_id}/locations/{location_id}/clusters/{cluster_id}`.
-                                      properties:
-                                        external:
-                                          description: 'The GKE cluster. Valid formats:
-                                            `projects/{projectID}/locations/{location}/clusters/{clusterID}`
-                                            `projects/{projectID}/zones/{zone}/clusters/{clusterID}`'
-                                          type: string
-                                        name:
-                                          description: 'Name of the project resource.
-                                            More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                                            */'
-                                          type: string
-                                        namespace:
-                                          description: 'Namespace of the project resource.
-                                            More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-                                            */'
-                                          type: string
-                                      type: object
+                                      type: string
                                     dnsEndpoint:
                                       description: Optional. If set, the cluster will
-                                        be accessed using the DNS endpoint. Note that
-                                        both `dns_endpoint` and `internal_ip` cannot
-                                        be set to true.
+                                        be accessed using the DNS endpoint.
                                       type: boolean
                                     internalIP:
-                                      description: |-
-                                        Optional. If true, `cluster` is accessed using the private IP address of
-                                         the control plane endpoint. Otherwise, the default IP address of the
-                                         control plane endpoint is used. The default IP address is the private IP
-                                         address for clusters with private control-plane endpoints and the public IP
-                                         address otherwise.
-
-                                         Only specify this option when `cluster` is a [private GKE
-                                         cluster](https://cloud.google.com/kubernetes-engine/docs/concepts/private-cluster-concept).
-                                         Note that `internal_ip` and `dns_endpoint` cannot both be set to true.
+                                      description: Optional. If true, cluster is accessed
+                                        using private IP.
                                       type: boolean
                                     proxyURL:
                                       description: Optional. If set, used to configure
-                                        a [proxy](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/#proxy)
-                                        to the Kubernetes server.
+                                        a proxy to the Kubernetes server.
                                       type: string
                                   type: object
                                 type: array
                             type: object
-                          description: 'Optional. Map of entity IDs to their associated
-                            entities. Associated entities allows specifying places
-                            other than the deployment target for specific features.
-                            For example, the Gateway API canary can be configured
-                            to deploy the HTTPRoute to a different cluster(s) than
-                            the deployment cluster using associated entities. An entity
-                            ID must consist of lower-case letters, numbers, and hyphens,
-                            start with a letter and end with a letter or a number,
-                            and have a max length of 63 characters. In other words,
-                            it must match the following regex: `^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$`.'
+                          description: Optional. Map of entity IDs to their associated
+                            entities.
                           type: object
                         createTime:
                           description: Output only. Time at which the `Target` was
@@ -951,37 +961,10 @@ spec:
                         customTarget:
                           description: Optional. Information specifying a Custom Target.
                           properties:
-                            customTargetTypeRef:
+                            customTargetType:
                               description: Required. The name of the CustomTargetType.
-                              oneOf:
-                              - not:
-                                  required:
-                                  - external
-                                required:
-                                - name
-                              - not:
-                                  anyOf:
-                                  - required:
-                                    - name
-                                  - required:
-                                    - namespace
-                                required:
-                                - external
-                              properties:
-                                external:
-                                  description: A reference to an externally managed
-                                    CloudDeployCustomTargetType resource. Should be
-                                    in the format "projects/{{projectID}}/locations/{{location}}/customtargettypes/{{customtargettypeID}}".
-                                  type: string
-                                name:
-                                  description: The name of a CloudDeployCustomTargetType
-                                    resource.
-                                  type: string
-                                namespace:
-                                  description: The namespace of a CloudDeployCustomTargetType
-                                    resource.
-                                  type: string
-                              type: object
+                                Format must be `projects/{project}/locations/{location}/customTargetTypes/{custom_target_type}`.
+                              type: string
                           type: object
                         deployParameters:
                           additionalProperties:
@@ -995,189 +978,55 @@ spec:
                           type: string
                         etag:
                           description: Optional. This checksum is computed by the
-                            server based on the value of other fields, and may be
-                            sent on update and delete requests to ensure the client
-                            has an up-to-date value before proceeding.
+                            server based on the value of other fields.
                           type: string
                         executionConfigs:
                           description: Optional. Configurations for all execution
-                            that relates to this `Target`. Each `ExecutionEnvironmentUsage`
-                            value may only be used in a single configuration; using
-                            the same value multiple times is an error. When one or
-                            more configurations are specified, they must include the
-                            `RENDER` and `DEPLOY` `ExecutionEnvironmentUsage` values.
-                            When no configurations are specified, execution will use
-                            the default specified in `DefaultPool`.
+                            that relates to this `Target`.
                           items:
+                            description: ExecutionConfigObservedState models execution
+                              configuration in status with plain string references.
                             properties:
                               artifactStorage:
                                 description: Optional. Cloud Storage location in which
-                                  to store execution outputs. This can either be a
-                                  bucket ("gs://my-bucket") or a path within a bucket
-                                  ("gs://my-bucket/my-dir"). If unspecified, a default
-                                  bucket located in the same region will be used.
+                                  to store execution outputs.
                                 type: string
                               defaultPool:
                                 description: Optional. Use default Cloud Build pool.
                                 properties:
                                   artifactStorage:
                                     description: Optional. Cloud Storage location
-                                      where execution outputs should be stored. This
-                                      can either be a bucket ("gs://my-bucket") or
-                                      a path within a bucket ("gs://my-bucket/my-dir").
-                                      If unspecified, a default bucket located in
-                                      the same region will be used.
+                                      where execution outputs should be stored.
                                     type: string
-                                  serviceAccountRef:
+                                  serviceAccount:
                                     description: Optional. Google service account
-                                      to use for execution. If unspecified, the project
-                                      execution service account (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com)
-                                      will be used.
-                                    oneOf:
-                                    - not:
-                                        required:
-                                        - external
-                                      required:
-                                      - name
-                                    - not:
-                                        anyOf:
-                                        - required:
-                                          - name
-                                        - required:
-                                          - namespace
-                                      required:
-                                      - external
-                                    properties:
-                                      external:
-                                        description: The `email` field of an `IAMServiceAccount`
-                                          resource.
-                                        type: string
-                                      name:
-                                        description: 'Name of the referent. More info:
-                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                                        type: string
-                                      namespace:
-                                        description: 'Namespace of the referent. More
-                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                                        type: string
-                                    type: object
+                                      to use for execution.
+                                    type: string
                                 type: object
                               executionTimeout:
                                 description: Optional. Execution timeout for a Cloud
-                                  Build Execution. This must be between 10m and 24h
-                                  in seconds format. If unspecified, a default timeout
-                                  of 1h is used.
+                                  Build Execution.
                                 type: string
                               privatePool:
                                 description: Optional. Use private Cloud Build pool.
                                 properties:
                                   artifactStorage:
                                     description: Optional. Cloud Storage location
-                                      where execution outputs should be stored. This
-                                      can either be a bucket ("gs://my-bucket") or
-                                      a path within a bucket ("gs://my-bucket/my-dir").
-                                      If unspecified, a default bucket located in
-                                      the same region will be used.
+                                      where execution outputs should be stored.
                                     type: string
-                                  serviceAccountRef:
+                                  serviceAccount:
                                     description: Optional. Google service account
-                                      to use for execution. If unspecified, the project
-                                      execution service account (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com)
-                                      will be used.
-                                    oneOf:
-                                    - not:
-                                        required:
-                                        - external
-                                      required:
-                                      - name
-                                    - not:
-                                        anyOf:
-                                        - required:
-                                          - name
-                                        - required:
-                                          - namespace
-                                      required:
-                                      - external
-                                    properties:
-                                      external:
-                                        description: The `email` field of an `IAMServiceAccount`
-                                          resource.
-                                        type: string
-                                      name:
-                                        description: 'Name of the referent. More info:
-                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                                        type: string
-                                      namespace:
-                                        description: 'Namespace of the referent. More
-                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                                        type: string
-                                    type: object
-                                  workerPoolRef:
+                                      to use for execution.
+                                    type: string
+                                  workerPool:
                                     description: Required. Resource name of the Cloud
-                                      Build worker pool to use. The format is `projects/{project}/locations/{location}/workerPools/{pool}`.
-                                    oneOf:
-                                    - not:
-                                        required:
-                                        - external
-                                      required:
-                                      - name
-                                    - not:
-                                        anyOf:
-                                        - required:
-                                          - name
-                                        - required:
-                                          - namespace
-                                      required:
-                                      - external
-                                    properties:
-                                      external:
-                                        description: A reference to an externally
-                                          managed CloudBuildWorkerPool resource. Should
-                                          be in the format "projects/{{projectID}}/locations/{{location}}/workerPools/{{workerPoolID}}".
-                                        type: string
-                                      name:
-                                        description: The name of a CloudBuildWorkerPool
-                                          resource.
-                                        type: string
-                                      namespace:
-                                        description: The namespace of a CloudBuildWorkerPool
-                                          resource.
-                                        type: string
-                                    type: object
+                                      Build worker pool to use.
+                                    type: string
                                 type: object
-                              serviceAccountRef:
+                              serviceAccount:
                                 description: Optional. Google service account to use
-                                  for execution. If unspecified, the project execution
-                                  service account (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com)
-                                  is used.
-                                oneOf:
-                                - not:
-                                    required:
-                                    - external
-                                  required:
-                                  - name
-                                - not:
-                                    anyOf:
-                                    - required:
-                                      - name
-                                    - required:
-                                      - namespace
-                                  required:
-                                  - external
-                                properties:
-                                  external:
-                                    description: The `email` field of an `IAMServiceAccount`
-                                      resource.
-                                    type: string
-                                  name:
-                                    description: 'Name of the referent. More info:
-                                      https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                                    type: string
-                                  namespace:
-                                    description: 'Namespace of the referent. More
-                                      info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                                    type: string
-                                type: object
+                                  for execution.
+                                type: string
                               usages:
                                 description: Required. Usages when this configuration
                                   should be applied.
@@ -1186,161 +1035,51 @@ spec:
                                 type: array
                               verbose:
                                 description: Optional. If true, additional logging
-                                  will be enabled when running builds in this execution
-                                  environment.
+                                  will be enabled.
                                 type: boolean
-                              workerPoolRef:
-                                description: Optional. The resource name of the `WorkerPool`,
-                                  with the format `projects/{project}/locations/{location}/workerPools/{worker_pool}`.
-                                  If this optional field is unspecified, the default
-                                  Cloud Build pool will be used.
-                                oneOf:
-                                - not:
-                                    required:
-                                    - external
-                                  required:
-                                  - name
-                                - not:
-                                    anyOf:
-                                    - required:
-                                      - name
-                                    - required:
-                                      - namespace
-                                  required:
-                                  - external
-                                properties:
-                                  external:
-                                    description: A reference to an externally managed
-                                      CloudBuildWorkerPool resource. Should be in
-                                      the format "projects/{{projectID}}/locations/{{location}}/workerPools/{{workerPoolID}}".
-                                    type: string
-                                  name:
-                                    description: The name of a CloudBuildWorkerPool
-                                      resource.
-                                    type: string
-                                  namespace:
-                                    description: The namespace of a CloudBuildWorkerPool
-                                      resource.
-                                    type: string
-                                type: object
+                              workerPool:
+                                description: Optional. The resource name of the `WorkerPool`.
+                                type: string
                             type: object
                           type: array
                         gke:
                           description: Optional. Information specifying a GKE Cluster.
                           properties:
-                            clusterRef:
+                            cluster:
                               description: Optional. Information specifying a GKE
                                 Cluster. Format is `projects/{project_id}/locations/{location_id}/clusters/{cluster_id}`.
-                              oneOf:
-                              - not:
-                                  required:
-                                  - external
-                                required:
-                                - name
-                              - not:
-                                  anyOf:
-                                  - required:
-                                    - name
-                                  - required:
-                                    - namespace
-                                required:
-                                - external
-                              properties:
-                                external:
-                                  description: 'The GKE cluster. Valid formats: `projects/{projectID}/locations/{location}/clusters/{clusterID}`
-                                    `projects/{projectID}/zones/{zone}/clusters/{clusterID}`'
-                                  type: string
-                                name:
-                                  description: 'Name of the project resource. More
-                                    info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                                    */'
-                                  type: string
-                                namespace:
-                                  description: 'Namespace of the project resource.
-                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-                                    */'
-                                  type: string
-                              type: object
+                              type: string
                             dnsEndpoint:
                               description: Optional. If set, the cluster will be accessed
-                                using the DNS endpoint. Note that both `dns_endpoint`
-                                and `internal_ip` cannot be set to true.
+                                using the DNS endpoint.
                               type: boolean
                             internalIP:
-                              description: |-
-                                Optional. If true, `cluster` is accessed using the private IP address of
-                                 the control plane endpoint. Otherwise, the default IP address of the
-                                 control plane endpoint is used. The default IP address is the private IP
-                                 address for clusters with private control-plane endpoints and the public IP
-                                 address otherwise.
-
-                                 Only specify this option when `cluster` is a [private GKE
-                                 cluster](https://cloud.google.com/kubernetes-engine/docs/concepts/private-cluster-concept).
-                                 Note that `internal_ip` and `dns_endpoint` cannot both be set to true.
+                              description: Optional. If true, cluster is accessed
+                                using private IP.
                               type: boolean
                             proxyURL:
-                              description: Optional. If set, used to configure a [proxy](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/#proxy)
+                              description: Optional. If set, used to configure a proxy
                                 to the Kubernetes server.
                               type: string
                           type: object
                         labels:
                           additionalProperties:
                             type: string
-                          description: |-
-                            Optional. Labels are attributes that can be set and used by both the
-                             user and by Cloud Deploy. Labels must meet the following constraints:
-
-                             * Keys and values can contain only lowercase letters, numeric characters,
-                             underscores, and dashes.
-                             * All characters must use UTF-8 encoding, and international characters are
-                             allowed.
-                             * Keys must start with a lowercase letter or international character.
-                             * Each resource is limited to a maximum of 64 labels.
-
-                             Both keys and values are additionally constrained to be <= 128 bytes.
+                          description: Optional. Labels are attributes that can be
+                            set and used by both the user and by Cloud Deploy.
                           type: object
                         multiTarget:
                           description: Optional. Information specifying a multiTarget.
                           properties:
-                            targetRefs:
+                            targetIDs:
                               description: Required. The target_ids of this multiTarget.
                               items:
-                                description: CloudDeployTargetRef is a reference to
-                                  a CloudDeployTarget.
-                                oneOf:
-                                - not:
-                                    required:
-                                    - external
-                                  required:
-                                  - name
-                                - not:
-                                    anyOf:
-                                    - required:
-                                      - name
-                                    - required:
-                                      - namespace
-                                  required:
-                                  - external
-                                properties:
-                                  external:
-                                    description: A reference to an externally managed
-                                      CloudDeployTarget resource. Should be in the
-                                      format "projects/{{projectID}}/locations/{{location}}/targets/{{targetID}}".
-                                    type: string
-                                  name:
-                                    description: The name of a CloudDeployTarget resource.
-                                    type: string
-                                  namespace:
-                                    description: The namespace of a CloudDeployTarget
-                                      resource.
-                                    type: string
-                                type: object
+                                type: string
                               type: array
                           type: object
                         name:
                           description: Identifier. Name of the `Target`. Format is
                             `projects/{project}/locations/{location}/targets/{target}`.
-                            The `target` component must match `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`
                           type: string
                         requireApproval:
                           description: Optional. Whether or not the `Target` requires

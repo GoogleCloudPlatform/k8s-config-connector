@@ -66,7 +66,7 @@ entries:
     detail: derived as map[string]TargetArtifact from proto google.cloud.deploy.v1.TargetArtifact; verify Go type and mapping
     status: resolved
     resolution: accepted
-    note: verified Go type and mapping
+    note: mapped to map[string]TargetArtifactObservedState representing output-only fields
   - kind: CloudDeployRelease
     group: clouddeploy.cnrm.cloud.google.com
     field: .status.observedState.targetRenders
@@ -74,7 +74,7 @@ entries:
     detail: derived as map[string]Release_TargetRender from proto google.cloud.deploy.v1.Release.TargetRender; verify Go type and mapping
     status: resolved
     resolution: accepted
-    note: verified Go type and mapping
+    note: mapped to map[string]TargetRenderObservedState representing output-only fields
   - kind: CloudDeployRelease
     group: clouddeploy.cnrm.cloud.google.com
     field: .status.observedState.targetSnapshots[].associatedEntities
@@ -82,4 +82,4 @@ entries:
     detail: derived as map[string]AssociatedEntities from proto google.cloud.deploy.v1.AssociatedEntities; verify Go type and mapping
     status: resolved
     resolution: accepted
-    note: verified Go type and mapping
+    note: mapped to map[string]AssociatedEntitiesObservedState with string references
