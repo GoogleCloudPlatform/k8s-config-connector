@@ -115,7 +115,7 @@ func InstanceFileShares_ToProto(mapCtx *direct.MapContext, in *krm.InstanceFileS
 	// MISSING: CapacityGB
 	// (near miss): "CapacityGB" vs "CapacityGb"
 	if in.SourceBackupRef != nil {
-		out.SourceBackup = in.SourceBackupRef.External
+		out.Source = &pb.FileShareConfig_SourceBackup{SourceBackup: in.SourceBackupRef.External}
 	}
 	out.NfsExportOptions = direct.Slice_ToProto(mapCtx, in.NfsExportOptions, InstanceNfsExportOptions_ToProto)
 	return out

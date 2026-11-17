@@ -15,13 +15,18 @@
 // API sources for CloudBuildBuild, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/devtools/cloudbuild/v1/cloudbuild.proto
 // +kcc:source:service-docs=https://cloud.google.com/cloud-build/docs/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/cloud-build/docs/reference/rest/v1/projects.builds
+// +kcc:source:resource-docs=https://cloud.google.com/build/docs/api/reference/rest/v1/projects.locations.builds
 
 package v1alpha1
 
 import (
+	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	developerconnectv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/developerconnect/v1alpha1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,14 +37,14 @@ var CloudBuildBuildGVK = GroupVersion.WithKind("CloudBuildBuild")
 // +kcc:spec:proto=google.devtools.cloudbuild.v1.Build
 // +kcc:required-from-proto
 type CloudBuildBuildSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
-	// The CloudBuildBuild name. If not given, the metadata.name will be used.
+	// Immutable. Optional. The server-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// The location of the source files to build.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.source
-	Source *Source `json:"source,omitempty"`
+	Source *Build_Source `json:"source,omitempty"`
 
 	// Required. The operations to be performed on the workspace.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.steps
@@ -86,7 +91,7 @@ type CloudBuildBuildSpec struct {
 	//  Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
 	//  Logs file names will be of the format `${logs_bucket}/log-${build_id}.txt`.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.logs_bucket
-	LogsBucket *string `json:"logsBucket,omitempty"`
+	LogsBucketRef *storagev1beta1.StorageBucketRef `json:"logsBucketRef,omitempty"`
 
 	// Special options for this build.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.options
@@ -112,7 +117,7 @@ type CloudBuildBuildSpec struct {
 	//  Must be of the format `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
 	//  ACCOUNT can be email address or uniqueId of the service account.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.service_account
-	ServiceAccount *string `json:"serviceAccount,omitempty"`
+	ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 
 	// Secrets and secret environment variables.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.available_secrets
@@ -126,6 +131,305 @@ type CloudBuildBuildSpec struct {
 	//  executing user steps.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.dependencies
 	Dependencies []Dependency `json:"dependencies,omitempty"`
+}
+
+// +kcc:proto=google.devtools.cloudbuild.v1.Artifacts.GoModule
+type Artifacts_GoModule struct {
+	// Optional. Location of the Artifact Registry repository. i.e. us-east1
+	//  Defaults to the build’s location.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Artifacts.GoModule.repository_location
+	RepositoryLocation *string `json:"repositoryLocation,omitempty"`
+
+	// Optional. Name of the Artifact Registry repository.
+	//  e.g. my-go-repo
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Artifacts.GoModule.repository_name
+	RepositoryName *string `json:"repositoryName,omitempty"`
+
+	// Optional. Project ID of the Artifact Registry repository.
+	//  Defaults to the build project.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Artifacts.GoModule.repository_project_id
+	RepositoryProjectRef *refsv1beta1.ProjectRef `json:"repositoryProjectRef,omitempty"`
+
+	// Optional. Source path of the go.mod file in the build's workspace. If not
+	//  specified, this will default to the current directory.
+	//  e.g. ~/code/go/mypackage
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Artifacts.GoModule.source_path
+	SourcePath *string `json:"sourcePath,omitempty"`
+
+	// Optional. The Go module's "module path".
+	//  e.g. example.com/foo/v2
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Artifacts.GoModule.module_path
+	ModulePath *string `json:"modulePath,omitempty"`
+
+	// Optional. The Go module's semantic version in the form vX.Y.Z. e.g.
+	//  v0.1.1 Pre-release identifiers can also be added by appending a dash and
+	//  dot separated ASCII alphanumeric characters and hyphens.
+	//  e.g. v0.2.3-alpha.x.12m.5
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Artifacts.GoModule.module_version
+	ModuleVersion *string `json:"moduleVersion,omitempty"`
+}
+
+// +kcc:proto=google.devtools.cloudbuild.v1.BuildOptions
+type BuildOptions struct {
+	// Requested hash for SourceProvenance.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildOptions.source_provenance_hash
+	SourceProvenanceHash []string `json:"sourceProvenanceHash,omitempty"`
+
+	// Requested verifiability options.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildOptions.requested_verify_option
+	RequestedVerifyOption *string `json:"requestedVerifyOption,omitempty"`
+
+	// Compute Engine machine type on which to run the build.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildOptions.machine_type
+	MachineType *string `json:"machineType,omitempty"`
+
+	// Requested disk size for the VM that runs the build. Note that this is *NOT*
+	//  "disk free"; some of the space will be used by the operating system and
+	//  build utilities. Also note that this is the minimum disk size that will be
+	//  allocated for the build (see until_waste).
+	//  Disk size is specified in GB.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildOptions.disk_size_gb
+	DiskSizeGB *int64 `json:"diskSizeGB,omitempty"`
+
+	// Option to specify behavior when there is an error in the substitution checks.
+	//
+	//  NOTE: this is always set to ALLOW_LOOSE for builds.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildOptions.substitution_option
+	SubstitutionOption *string `json:"substitutionOption,omitempty"`
+
+	// Option to specify whether default substitutions should be replaced with
+	//  a regex-based dynamic substitutions, and whether dynamic substitutions
+	//  should be evaluated.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildOptions.dynamic_substitutions
+	DynamicSubstitutions *bool `json:"dynamicSubstitutions,omitempty"`
+
+	// Option to specify whether reserved substitutions should be automapped.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildOptions.automap_substitutions
+	AutomapSubstitutions *bool `json:"automapSubstitutions,omitempty"`
+
+	// Option to define build log streaming behavior to Google Cloud
+	//  Storage.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildOptions.log_streaming_option
+	LogStreamingOption *string `json:"logStreamingOption,omitempty"`
+
+	// Optional. Specification for execution on a `WorkerPool`.
+	//
+	//  See [running builds in a private
+	//  pool](https://cloud.google.com/build/docs/private-pools/run-builds-in-private-pool)
+	//  for more information.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildOptions.pool
+	Pool *BuildOptions_PoolOption `json:"pool,omitempty"`
+
+	// Option to specify the logging mode, which determines if and where build
+	//  logs are stored.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildOptions.logging
+	Logging *string `json:"logging,omitempty"`
+
+	// A list of global environment variable definitions that will exist for all
+	//  build steps in this build. If a variable is defined in both this field and
+	//  in a `BuildStep`, the value in `BuildStep` will be used.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildOptions.env
+	Env []string `json:"env,omitempty"`
+
+	// A list of global environment variables, which are encrypted using a Cloud
+	//  Key Management Service crypto key. These values must be specified in the
+	//  build's `Secret`. These variables will be available to all build steps
+	//  in this build.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildOptions.secret_env
+	SecretEnv []string `json:"secretEnv,omitempty"`
+
+	// Global list of volumes to mount for ALL build steps
+	//
+	//  Each volume is created as an empty volume prior to starting the build
+	//  process. Upon completion of the build, volumes and their contents are
+	//  discarded. Global volume names was be unique among all volumes.
+	//
+	//  In addition, a volume will also be created for each normal build step
+	//  under `/workspace` to serve as the common workspace for all steps.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildOptions.volumes
+	Volumes []Volume `json:"volumes,omitempty"`
+
+	// Optional. Option to specify how default logs buckets are localized.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildOptions.default_logs_bucket_behavior
+	DefaultLogsBucketBehavior *string `json:"defaultLogsBucketBehavior,omitempty"`
+
+	// Optional. Option to specify whether structured logging is enabled.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildOptions.enable_structured_logging
+	EnableStructuredLogging *bool `json:"enableStructuredLogging,omitempty"`
+}
+
+// +kcc:proto=google.devtools.cloudbuild.v1.BuildOptions.PoolOption
+type BuildOptions_PoolOption struct {
+	// The WorkerPool resource to execute the build on.
+	//  You must have `cloudbuild.workerpools.use` on the project hosting the
+	//  WorkerPool.
+	//
+	//  Format projects/{project}/locations/{location}/workerPools/{workerPool}
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildOptions.PoolOption.name
+	NameRef *cloudbuildv1beta1.CloudBuildWorkerPoolRef `json:"nameRef,omitempty"`
+}
+
+// +kcc:proto=google.devtools.cloudbuild.v1.Dependency.GitSourceRepository
+type Dependency_GitSourceRepository struct {
+	// Location of the Git repository.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Dependency.GitSourceRepository.url
+	URL *string `json:"url,omitempty"`
+
+	// The Developer Connect Git repository link or the url that matches a
+	//  repository link in the current project, formatted as
+	//  `projects/*/locations/*/connections/*/gitRepositoryLink/*`
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Dependency.GitSourceRepository.developer_connect
+	DeveloperConnectRef *developerconnectv1alpha1.DeveloperConnectGitRepositoryLinkRef `json:"developerConnectRef,omitempty"`
+}
+
+// +kcc:proto=google.devtools.cloudbuild.v1.GitConfig.HttpConfig
+type GitConfig_HTTPConfig struct {
+	// SecretVersion resource of the HTTP proxy URL. The expected format is
+	//  `projects/{project}/secrets/{secret}/versions/{version}`.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.GitConfig.HttpConfig.proxy_secret_version_name
+	ProxySecretVersionRef *secretmanagerv1beta1.SecretManagerSecretVersionRef `json:"proxySecretVersionRef,omitempty"`
+}
+
+// +kcc:proto=google.devtools.cloudbuild.v1.InlineSecret
+type InlineSecret struct {
+	// Resource name of Cloud KMS crypto key to decrypt the encrypted value.
+	//  In format: projects/*/locations/*/keyRings/*/cryptoKeys/*
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.InlineSecret.kms_key_name
+	KMSKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+}
+
+// +kcc:proto=google.devtools.cloudbuild.v1.Source
+type Build_Source struct {
+	// If provided, get the source from this location in Cloud Storage.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Source.storage_source
+	StorageSource *Build_StorageSource `json:"storageSource,omitempty"`
+
+	// If provided, get the source from this location in a Cloud Source
+	//  Repository.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Source.repo_source
+	RepoSource *Build_RepoSource `json:"repoSource,omitempty"`
+
+	// If provided, get the source from this location in a Cloud Storage
+	//  manifest.
+	//
+	//  This feature is in Preview.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Source.storage_source_manifest
+	StorageSourceManifest *Build_StorageSourceManifest `json:"storageSourceManifest,omitempty"`
+
+	// If provided, get the source from this Git repository.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Source.git_source
+	GitSource *GitSource `json:"gitSource,omitempty"`
+}
+
+// +kcc:proto=google.devtools.cloudbuild.v1.RepoSource
+type Build_RepoSource struct {
+	// Optional. ID of the project that owns the Cloud Source Repository. If
+	//  omitted, the project ID requesting the build is assumed.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.project_id
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	// Required. Name of the Cloud Source Repository.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.repo_name
+	RepoName *string `json:"repoName,omitempty"`
+
+	// Regex matching branches to build.
+	//
+	//  The syntax of the regular expressions accepted is the syntax accepted by
+	//  RE2 and described at https://github.com/google/re2/wiki/Syntax
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.branch_name
+	BranchName *string `json:"branchName,omitempty"`
+
+	// Regex matching tags to build.
+	//
+	//  The syntax of the regular expressions accepted is the syntax accepted by
+	//  RE2 and described at https://github.com/google/re2/wiki/Syntax
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.tag_name
+	TagName *string `json:"tagName,omitempty"`
+
+	// Explicit commit SHA to build.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.commit_sha
+	CommitSha *string `json:"commitSha,omitempty"`
+
+	// Optional. Directory, relative to the source root, in which to run the build.
+	//
+	//  This must be a relative path. If a step's `dir` is specified and is an
+	//  absolute path, this value is ignored for that step's execution.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.dir
+	Dir *string `json:"dir,omitempty"`
+
+	// Optional. Only trigger a build if the revision regex does NOT match the
+	//  revision regex.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.invert_regex
+	InvertRegex *bool `json:"invertRegex,omitempty"`
+
+	// Optional. Substitutions to use in a triggered build.
+	//  Should only be used with RunBuildTrigger
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.substitutions
+	Substitutions map[string]string `json:"substitutions,omitempty"`
+}
+
+// +kcc:proto=google.devtools.cloudbuild.v1.Secret
+type Secret struct {
+	// Cloud KMS key name to use to decrypt these envs.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Secret.kms_key_name
+	KMSKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+}
+
+// +kcc:proto=google.devtools.cloudbuild.v1.SecretManagerSecret
+type SecretManagerSecret struct {
+	// Resource name of the SecretVersion. In format:
+	//  projects/*/secrets/*/versions/*
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.SecretManagerSecret.version_name
+	VersionRef *secretmanagerv1beta1.SecretManagerSecretVersionRef `json:"versionRef,omitempty"`
+
+	// Environment variable name to associate with the secret. Secret environment
+	//  variables must be unique across all of a build's secrets, and must be used
+	//  by at least one build step.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.SecretManagerSecret.env
+	Env *string `json:"env,omitempty"`
+}
+
+// +kcc:proto=google.devtools.cloudbuild.v1.StorageSource
+type Build_StorageSource struct {
+	// Cloud Storage bucket.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.StorageSource.bucket
+	BucketRef *storagev1beta1.StorageBucketRef `json:"bucketRef,omitempty"`
+
+	// Cloud Storage object containing the source.
+	//
+	//  This object must be a gzipped archive file (`.tar.gz`) containing source to
+	//  build.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.StorageSource.object
+	Object *string `json:"object,omitempty"`
+
+	// Cloud Storage generation for the object. If the generation is
+	//  omitted, the latest generation will be used.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.StorageSource.generation
+	Generation *int64 `json:"generation,omitempty"`
+
+	// Optional. Option to specify the source code source,
+	//  currently used for Source-to-Image Builds.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.StorageSource.source_fetcher
+	SourceFetcher *string `json:"sourceFetcher,omitempty"`
+}
+
+// +kcc:proto=google.devtools.cloudbuild.v1.StorageSourceManifest
+type Build_StorageSourceManifest struct {
+	// Cloud Storage bucket.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.StorageSourceManifest.bucket
+	BucketRef *storagev1beta1.StorageBucketRef `json:"bucketRef,omitempty"`
+
+	// Cloud Storage object containing the source.
+	//
+	//  This object must be a gzipped archive file (`.tar.gz`) containing source to
+	//  build.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.StorageSourceManifest.object
+	Object *string `json:"object,omitempty"`
+
+	// Cloud Storage generation for the object. If the generation is
+	//  omitted, the latest generation will be used.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.StorageSourceManifest.generation
+	Generation *int64 `json:"generation,omitempty"`
 }
 
 // CloudBuildBuildStatus defines the config connector machine state of CloudBuildBuild

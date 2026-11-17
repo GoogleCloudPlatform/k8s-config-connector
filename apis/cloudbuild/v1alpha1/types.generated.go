@@ -136,6 +136,8 @@ type Artifacts_ArtifactObjects struct {
 	Paths []string `json:"paths,omitempty"`
 }
 
+/* found existing non-generated go type "Artifacts_GoModule", skipping
+
 // +kcc:proto=google.devtools.cloudbuild.v1.Artifacts.GoModule
 type Artifacts_GoModule struct {
 	// Optional. Artifact Registry repository name.
@@ -174,6 +176,7 @@ type Artifacts_GoModule struct {
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Artifacts.GoModule.module_version
 	ModuleVersion *string `json:"moduleVersion,omitempty"`
 }
+*/
 
 // +kcc:proto=google.devtools.cloudbuild.v1.Artifacts.MavenArtifact
 type Artifacts_MavenArtifact struct {
@@ -368,6 +371,8 @@ type BuildApproval struct {
 }
 */
 
+/* found existing non-generated go type "BuildOptions", skipping
+
 // +kcc:proto=google.devtools.cloudbuild.v1.BuildOptions
 type BuildOptions struct {
 	// Requested hash for SourceProvenance.
@@ -472,6 +477,9 @@ type BuildOptions struct {
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildOptions.enable_structured_logging
 	EnableStructuredLogging *bool `json:"enableStructuredLogging,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "BuildOptions_PoolOption", skipping
 
 // +kcc:proto=google.devtools.cloudbuild.v1.BuildOptions.PoolOption
 type BuildOptions_PoolOption struct {
@@ -483,6 +491,7 @@ type BuildOptions_PoolOption struct {
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildOptions.PoolOption.name
 	Name *string `json:"name,omitempty"`
 }
+*/
 
 // +kcc:proto=google.devtools.cloudbuild.v1.BuildStep
 type BuildStep struct {
@@ -656,6 +665,8 @@ type Dependency_GitSourceDependency struct {
 	DestPath *string `json:"destPath,omitempty"`
 }
 
+/* found existing non-generated go type "Dependency_GitSourceRepository", skipping
+
 // +kcc:proto=google.devtools.cloudbuild.v1.Dependency.GitSourceRepository
 type Dependency_GitSourceRepository struct {
 	// Location of the Git repository.
@@ -664,10 +675,11 @@ type Dependency_GitSourceRepository struct {
 
 	// The Developer Connect Git repository link or the url that matches a
 	//  repository link in the current project, formatted as
-	//  `projects/*/locations/*/connections/*/gitRepositoryLink/*`
+	//  `projects/* /locations/* /connections/* /gitRepositoryLink/*`
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Dependency.GitSourceRepository.developer_connect
 	DeveloperConnect *string `json:"developerConnect,omitempty"`
 }
+*/
 
 // +kcc:proto=google.devtools.cloudbuild.v1.FileHashes
 type FileHashes struct {
@@ -683,6 +695,8 @@ type GitConfig struct {
 	HTTP *GitConfig_HTTPConfig `json:"http,omitempty"`
 }
 
+/* found existing non-generated go type "GitConfig_HTTPConfig", skipping
+
 // +kcc:proto=google.devtools.cloudbuild.v1.GitConfig.HttpConfig
 type GitConfig_HTTPConfig struct {
 	// SecretVersion resource of the HTTP proxy URL. The Service Account used in
@@ -693,6 +707,7 @@ type GitConfig_HTTPConfig struct {
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.GitConfig.HttpConfig.proxy_secret_version_name
 	ProxySecretVersionName *string `json:"proxySecretVersionName,omitempty"`
 }
+*/
 
 // +kcc:proto=google.devtools.cloudbuild.v1.GitSource
 type GitSource struct {
@@ -734,16 +749,19 @@ type Hash struct {
 	Value []byte `json:"value,omitempty"`
 }
 
+/* found existing non-generated go type "InlineSecret", skipping
+
 // +kcc:proto=google.devtools.cloudbuild.v1.InlineSecret
 type InlineSecret struct {
 	// Resource name of Cloud KMS crypto key to decrypt the encrypted value.
-	//  In format: projects/*/locations/*/keyRings/*/cryptoKeys/*
+	//  In format: projects/* /locations/* /keyRings/* /cryptoKeys/*
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.InlineSecret.kms_key_name
 	KMSKeyName *string `json:"kmsKeyName,omitempty"`
 
 	// TODO: envMap: unsupported map type with key string and value bytes
 
 }
+*/
 
 // +kcc:proto=google.devtools.cloudbuild.v1.RepoSource
 type RepoSource struct {
@@ -847,6 +865,8 @@ type Results struct {
 }
 */
 
+/* found existing non-generated go type "Secret", skipping
+
 // +kcc:proto=google.devtools.cloudbuild.v1.Secret
 type Secret struct {
 	// Cloud KMS key name to use to decrypt these envs.
@@ -856,11 +876,14 @@ type Secret struct {
 	// TODO: secretEnv: unsupported map type with key string and value bytes
 
 }
+*/
+
+/* found existing non-generated go type "SecretManagerSecret", skipping
 
 // +kcc:proto=google.devtools.cloudbuild.v1.SecretManagerSecret
 type SecretManagerSecret struct {
 	// Resource name of the SecretVersion. In format:
-	//  projects/*/secrets/*/versions/*
+	//  projects/* /secrets/* /versions/*
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.SecretManagerSecret.version_name
 	VersionName *string `json:"versionName,omitempty"`
 
@@ -870,6 +893,7 @@ type SecretManagerSecret struct {
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.SecretManagerSecret.env
 	Env *string `json:"env,omitempty"`
 }
+*/
 
 // +kcc:proto=google.devtools.cloudbuild.v1.Secrets
 type Secrets struct {

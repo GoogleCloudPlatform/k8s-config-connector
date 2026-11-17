@@ -1890,7 +1890,7 @@
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifacts.goModules[].moduleVersion" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifacts.goModules[].repositoryLocation" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifacts.goModules[].repositoryName" is not set in unstructured objects
-[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifacts.goModules[].repositoryProjectID" is not set in unstructured objects
+[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifacts.goModules[].repositoryProjectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifacts.goModules[].sourcePath" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifacts.images[]" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifacts.mavenArtifacts[].artifactID" is not set in unstructured objects
@@ -1904,19 +1904,20 @@
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifacts.objects.paths[]" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifacts.pythonPackages[].paths[]" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifacts.pythonPackages[].repository" is not set in unstructured objects
-[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.availableSecrets.inline[].kmsKeyName" is not set in unstructured objects
+[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.availableSecrets.inline[].kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.availableSecrets.secretManager[].env" is not set in unstructured objects
-[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.availableSecrets.secretManager[].versionName" is not set in unstructured objects
+[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.availableSecrets.secretManager[].versionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.dependencies[].empty" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.dependencies[].gitSource.depth" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.dependencies[].gitSource.destPath" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.dependencies[].gitSource.recurseSubmodules" is not set in unstructured objects
-[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.dependencies[].gitSource.repository.developerConnect" is not set in unstructured objects
+[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.dependencies[].gitSource.repository.developerConnectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.dependencies[].gitSource.repository.url" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.dependencies[].gitSource.revision" is not set in unstructured objects
-[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitConfig.http.proxySecretVersionName" is not set in unstructured objects
+[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitConfig.http.proxySecretVersionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.images[]" is not set in unstructured objects
-[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.logsBucket" is not set in unstructured objects
+[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.logsBucketRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.options.automapSubstitutions" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.options.defaultLogsBucketBehavior" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.options.diskSizeGB" is not set in unstructured objects
@@ -1926,18 +1927,17 @@
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.options.logStreamingOption" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.options.logging" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.options.machineType" is not set in unstructured objects
-[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.options.pool.name" is not set in unstructured objects
+[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.options.pool.nameRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.options.requestedVerifyOption" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.options.secretEnv[]" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.options.sourceProvenanceHash[]" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.options.substitutionOption" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.options.volumes[].name" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.options.volumes[].path" is not set in unstructured objects
-[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.options.workerPool" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.queueTTL" is not set in unstructured objects
-[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.secrets[].kmsKeyName" is not set in unstructured objects
-[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccount" is not set in unstructured objects
+[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.secrets[].kmsKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.gitSource.dir" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.gitSource.revision" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.gitSource.url" is not set in unstructured objects
@@ -1945,15 +1945,15 @@
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.repoSource.commitSha" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.repoSource.dir" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.repoSource.invertRegex" is not set in unstructured objects
-[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.repoSource.projectID" is not set in unstructured objects
+[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.repoSource.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.repoSource.repoName" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.repoSource.substitutions" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.repoSource.tagName" is not set in unstructured objects
-[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.storageSource.bucket" is not set in unstructured objects
+[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.storageSource.bucketRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.storageSource.generation" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.storageSource.object" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.storageSource.sourceFetcher" is not set in unstructured objects
-[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.storageSourceManifest.bucket" is not set in unstructured objects
+[missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.storageSourceManifest.bucketRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.storageSourceManifest.generation" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.storageSourceManifest.object" is not set in unstructured objects
 [missing_field] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.steps[].allowExitCodes[]" is not set in unstructured objects

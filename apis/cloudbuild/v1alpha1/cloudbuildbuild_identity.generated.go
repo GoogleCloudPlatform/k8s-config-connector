@@ -33,8 +33,8 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &CloudBuildBuildIdentity{}
-	_ identity.Resource   = &CloudBuildBuild{}
+	_ identity.ServerGeneratedIdentity = &CloudBuildBuildIdentity{}
+	_ identity.Resource                = &CloudBuildBuild{}
 )
 
 var CloudBuildBuildIdentityFormat = gcpurls.Template[CloudBuildBuildIdentity]("cloudbuild.googleapis.com", "projects/{project}/locations/{location}/builds/{build}")
@@ -45,6 +45,10 @@ type CloudBuildBuildIdentity struct {
 	Project  string
 	Location string
 	Build    string
+}
+
+func (i *CloudBuildBuildIdentity) HasIdentitySpecified() bool {
+	return i.Build != ""
 }
 
 func (i *CloudBuildBuildIdentity) String() string {
@@ -73,10 +77,7 @@ func (i *CloudBuildBuildIdentity) ParentString() string {
 }
 
 func getIdentityFromCloudBuildBuildSpec(ctx context.Context, reader client.Reader, obj *CloudBuildBuild) (*CloudBuildBuildIdentity, error) {
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
-	}
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
 	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
@@ -107,6 +108,10 @@ func (obj *CloudBuildBuild) GetIdentity(ctx context.Context, reader client.Reade
 		statusIdentity := &CloudBuildBuildIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
+		}
+
+		if specIdentity.Build == "" {
+			specIdentity.Build = statusIdentity.Build
 		}
 
 		if statusIdentity.String() != specIdentity.String() {

@@ -520,13 +520,13 @@ found existing non-generated mapping function "Pipeline_Destination_ToProto", sk
 			out.DestinationDescriptor = &pb.Pipeline_Destination_HttpEndpoint_{HttpEndpoint: oneof}
 		}
 		if in.WorkflowRef != nil {
-			out.Workflow = in.WorkflowRef.External
+			out.DestinationDescriptor = &pb.Pipeline_Destination_Workflow{Workflow: in.WorkflowRef.External}
 		}
 		if in.MessageBusRef != nil {
-			out.MessageBus = in.MessageBusRef.External
+			out.DestinationDescriptor = &pb.Pipeline_Destination_MessageBus{MessageBus: in.MessageBusRef.External}
 		}
 		if in.TopicRef != nil {
-			out.Topic = in.TopicRef.External
+			out.DestinationDescriptor = &pb.Pipeline_Destination_Topic{Topic: in.TopicRef.External}
 		}
 		out.AuthenticationConfig = Pipeline_Destination_AuthenticationConfig_ToProto(mapCtx, in.AuthenticationConfig)
 		out.OutputPayloadFormat = Pipeline_MessagePayloadFormat_ToProto(mapCtx, in.OutputPayloadFormat)

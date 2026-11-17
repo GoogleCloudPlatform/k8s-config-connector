@@ -197,7 +197,7 @@ found existing non-generated mapping function "InternalServerConfig_AllowedConsu
 		}
 		out := &pb.InternalServerConfig_AllowedConsumer{}
 		if in.ProjectRef != nil {
-			out.Project = in.ProjectRef.External
+			out.ConsumerType = &pb.InternalServerConfig_AllowedConsumer_Project{Project: in.ProjectRef.External}
 		}
 		out.ConnectionLimit = direct.ValueOf(in.ConnectionLimit)
 		return out
@@ -223,7 +223,7 @@ found existing non-generated mapping function "InternalServerConfig_DeniedConsum
 		}
 		out := &pb.InternalServerConfig_DeniedConsumer{}
 		if in.ProjectRef != nil {
-			out.Project = in.ProjectRef.External
+			out.ConsumerType = &pb.InternalServerConfig_DeniedConsumer_Project{Project: in.ProjectRef.External}
 		}
 		return out
 	}

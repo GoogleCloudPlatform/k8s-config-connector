@@ -29,9 +29,10 @@ import (
 
 func TestCloudBuildBuildIdentity_Conformance(t *testing.T) {
 	identity.AssertConformance(t, identity.ConformanceCase[CloudBuildBuildIdentity]{
-		SampleExternal: "projects/my-project/locations/us-central1/builds/my-build",
-		WantHost:       "cloudbuild.googleapis.com",
-		WantParent:     "projects/my-project/locations/us-central1",
+		SampleExternal:        "projects/my-project/locations/us-central1/builds/my-build",
+		WantHost:              "cloudbuild.googleapis.com",
+		WantParent:            "projects/my-project/locations/us-central1",
+		ExpectServerGenerated: true,
 		WantIdentity: &CloudBuildBuildIdentity{
 			Project:  "my-project",
 			Location: "us-central1",

@@ -29,8 +29,10 @@ import (
 	cloudbuildpb "cloud.google.com/go/cloudbuild/apiv2/cloudbuildpb"
 	krmcloudbuildv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1alpha1"
 	krmcloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
+	krmdeveloperconnectv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/developerconnect/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krmservicedirectoryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1alpha1"
+	krmstoragev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -42,6 +44,7 @@ func ApprovalConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Approva
 	out.ApprovalRequired = direct.LazyPtr(in.GetApprovalRequired())
 	return out
 }
+
 func ApprovalConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.ApprovalConfig) *pb.ApprovalConfig {
 	if in == nil {
 		return nil
@@ -50,6 +53,7 @@ func ApprovalConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuil
 	out.ApprovalRequired = direct.ValueOf(in.ApprovalRequired)
 	return out
 }
+
 func ApprovalResultObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ApprovalResult) *krmcloudbuildv1alpha1.ApprovalResultObservedState {
 	if in == nil {
 		return nil
@@ -62,6 +66,7 @@ func ApprovalResultObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, i
 	out.URL = direct.LazyPtr(in.GetUrl())
 	return out
 }
+
 func ApprovalResultObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.ApprovalResultObservedState) *pb.ApprovalResult {
 	if in == nil {
 		return nil
@@ -74,6 +79,7 @@ func ApprovalResultObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	out.Url = direct.ValueOf(in.URL)
 	return out
 }
+
 func Artifacts_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Artifacts) *krmcloudbuildv1alpha1.Artifacts {
 	if in == nil {
 		return nil
@@ -87,6 +93,7 @@ func Artifacts_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Artifacts) *
 	out.NpmPackages = direct.Slice_FromProto(mapCtx, in.NpmPackages, Artifacts_NpmPackage_v1alpha1_FromProto)
 	return out
 }
+
 func Artifacts_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Artifacts) *pb.Artifacts {
 	if in == nil {
 		return nil
@@ -100,6 +107,7 @@ func Artifacts_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1al
 	out.NpmPackages = direct.Slice_ToProto(mapCtx, in.NpmPackages, Artifacts_NpmPackage_v1alpha1_ToProto)
 	return out
 }
+
 func ArtifactsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Artifacts) *krmcloudbuildv1alpha1.ArtifactsObservedState {
 	if in == nil {
 		return nil
@@ -113,6 +121,7 @@ func ArtifactsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb
 	// MISSING: NpmPackages
 	return out
 }
+
 func ArtifactsObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.ArtifactsObservedState) *pb.Artifacts {
 	if in == nil {
 		return nil
@@ -126,6 +135,7 @@ func ArtifactsObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmc
 	// MISSING: NpmPackages
 	return out
 }
+
 func Artifacts_ArtifactObjects_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Artifacts_ArtifactObjects) *krmcloudbuildv1alpha1.Artifacts_ArtifactObjects {
 	if in == nil {
 		return nil
@@ -136,6 +146,7 @@ func Artifacts_ArtifactObjects_v1alpha1_FromProto(mapCtx *direct.MapContext, in 
 	// MISSING: Timing
 	return out
 }
+
 func Artifacts_ArtifactObjects_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Artifacts_ArtifactObjects) *pb.Artifacts_ArtifactObjects {
 	if in == nil {
 		return nil
@@ -146,6 +157,7 @@ func Artifacts_ArtifactObjects_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: Timing
 	return out
 }
+
 func Artifacts_ArtifactObjectsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Artifacts_ArtifactObjects) *krmcloudbuildv1alpha1.Artifacts_ArtifactObjectsObservedState {
 	if in == nil {
 		return nil
@@ -156,6 +168,7 @@ func Artifacts_ArtifactObjectsObservedState_v1alpha1_FromProto(mapCtx *direct.Ma
 	out.Timing = TimeSpan_v1alpha1_FromProto(mapCtx, in.GetTiming())
 	return out
 }
+
 func Artifacts_ArtifactObjectsObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Artifacts_ArtifactObjectsObservedState) *pb.Artifacts_ArtifactObjects {
 	if in == nil {
 		return nil
@@ -166,6 +179,7 @@ func Artifacts_ArtifactObjectsObservedState_v1alpha1_ToProto(mapCtx *direct.MapC
 	out.Timing = TimeSpan_v1alpha1_ToProto(mapCtx, in.Timing)
 	return out
 }
+
 func Artifacts_GoModule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Artifacts_GoModule) *krmcloudbuildv1alpha1.Artifacts_GoModule {
 	if in == nil {
 		return nil
@@ -173,12 +187,13 @@ func Artifacts_GoModule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Art
 	out := &krmcloudbuildv1alpha1.Artifacts_GoModule{}
 	out.RepositoryName = direct.LazyPtr(in.GetRepositoryName())
 	out.RepositoryLocation = direct.LazyPtr(in.GetRepositoryLocation())
-	out.RepositoryProjectID = direct.LazyPtr(in.GetRepositoryProjectId())
+	// MISSING: RepositoryProjectID
 	out.SourcePath = direct.LazyPtr(in.GetSourcePath())
 	out.ModulePath = direct.LazyPtr(in.GetModulePath())
 	out.ModuleVersion = direct.LazyPtr(in.GetModuleVersion())
 	return out
 }
+
 func Artifacts_GoModule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Artifacts_GoModule) *pb.Artifacts_GoModule {
 	if in == nil {
 		return nil
@@ -186,12 +201,13 @@ func Artifacts_GoModule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloud
 	out := &pb.Artifacts_GoModule{}
 	out.RepositoryName = direct.ValueOf(in.RepositoryName)
 	out.RepositoryLocation = direct.ValueOf(in.RepositoryLocation)
-	out.RepositoryProjectId = direct.ValueOf(in.RepositoryProjectID)
+	// MISSING: RepositoryProjectID
 	out.SourcePath = direct.ValueOf(in.SourcePath)
 	out.ModulePath = direct.ValueOf(in.ModulePath)
 	out.ModuleVersion = direct.ValueOf(in.ModuleVersion)
 	return out
 }
+
 func Artifacts_MavenArtifact_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Artifacts_MavenArtifact) *krmcloudbuildv1alpha1.Artifacts_MavenArtifact {
 	if in == nil {
 		return nil
@@ -204,6 +220,7 @@ func Artifacts_MavenArtifact_v1alpha1_FromProto(mapCtx *direct.MapContext, in *p
 	out.Version = direct.LazyPtr(in.GetVersion())
 	return out
 }
+
 func Artifacts_MavenArtifact_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Artifacts_MavenArtifact) *pb.Artifacts_MavenArtifact {
 	if in == nil {
 		return nil
@@ -216,6 +233,7 @@ func Artifacts_MavenArtifact_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Version = direct.ValueOf(in.Version)
 	return out
 }
+
 func Artifacts_NpmPackage_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Artifacts_NpmPackage) *krmcloudbuildv1alpha1.Artifacts_NpmPackage {
 	if in == nil {
 		return nil
@@ -225,6 +243,7 @@ func Artifacts_NpmPackage_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.A
 	out.PackagePath = direct.LazyPtr(in.GetPackagePath())
 	return out
 }
+
 func Artifacts_NpmPackage_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Artifacts_NpmPackage) *pb.Artifacts_NpmPackage {
 	if in == nil {
 		return nil
@@ -234,6 +253,7 @@ func Artifacts_NpmPackage_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclo
 	out.PackagePath = direct.ValueOf(in.PackagePath)
 	return out
 }
+
 func Artifacts_PythonPackage_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Artifacts_PythonPackage) *krmcloudbuildv1alpha1.Artifacts_PythonPackage {
 	if in == nil {
 		return nil
@@ -243,6 +263,7 @@ func Artifacts_PythonPackage_v1alpha1_FromProto(mapCtx *direct.MapContext, in *p
 	out.Paths = in.Paths
 	return out
 }
+
 func Artifacts_PythonPackage_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Artifacts_PythonPackage) *pb.Artifacts_PythonPackage {
 	if in == nil {
 		return nil
@@ -252,6 +273,7 @@ func Artifacts_PythonPackage_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Paths = in.Paths
 	return out
 }
+
 func BitbucketCloudConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb.BitbucketCloudConfig) *krmcloudbuildv1alpha1.BitbucketCloudConfig {
 	if in == nil {
 		return nil
@@ -265,6 +287,7 @@ func BitbucketCloudConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *clou
 	out.AuthorizerCredential = UserCredential_v1alpha1_FromProto(mapCtx, in.GetAuthorizerCredential())
 	return out
 }
+
 func BitbucketCloudConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.BitbucketCloudConfig) *cloudbuildpb.BitbucketCloudConfig {
 	if in == nil {
 		return nil
@@ -278,6 +301,7 @@ func BitbucketCloudConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclo
 	out.AuthorizerCredential = UserCredential_v1alpha1_ToProto(mapCtx, in.AuthorizerCredential)
 	return out
 }
+
 func BitbucketCloudConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb.BitbucketCloudConfig) *krmcloudbuildv1alpha1.BitbucketCloudConfigObservedState {
 	if in == nil {
 		return nil
@@ -289,6 +313,7 @@ func BitbucketCloudConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapCont
 	out.AuthorizerCredential = UserCredentialObservedState_v1alpha1_FromProto(mapCtx, in.GetAuthorizerCredential())
 	return out
 }
+
 func BitbucketCloudConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.BitbucketCloudConfigObservedState) *cloudbuildpb.BitbucketCloudConfig {
 	if in == nil {
 		return nil
@@ -300,6 +325,7 @@ func BitbucketCloudConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContex
 	out.AuthorizerCredential = UserCredentialObservedState_v1alpha1_ToProto(mapCtx, in.AuthorizerCredential)
 	return out
 }
+
 func BitbucketDataCenterConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb.BitbucketDataCenterConfig) *krmcloudbuildv1alpha1.BitbucketDataCenterConfig {
 	if in == nil {
 		return nil
@@ -316,6 +342,7 @@ func BitbucketDataCenterConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in 
 	// MISSING: ServerVersion
 	return out
 }
+
 func BitbucketDataCenterConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.BitbucketDataCenterConfig) *cloudbuildpb.BitbucketDataCenterConfig {
 	if in == nil {
 		return nil
@@ -332,6 +359,7 @@ func BitbucketDataCenterConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: ServerVersion
 	return out
 }
+
 func BitbucketDataCenterConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb.BitbucketDataCenterConfig) *krmcloudbuildv1alpha1.BitbucketDataCenterConfigObservedState {
 	if in == nil {
 		return nil
@@ -346,6 +374,7 @@ func BitbucketDataCenterConfigObservedState_v1alpha1_FromProto(mapCtx *direct.Ma
 	out.ServerVersion = direct.LazyPtr(in.GetServerVersion())
 	return out
 }
+
 func BitbucketDataCenterConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.BitbucketDataCenterConfigObservedState) *cloudbuildpb.BitbucketDataCenterConfig {
 	if in == nil {
 		return nil
@@ -360,6 +389,7 @@ func BitbucketDataCenterConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapC
 	out.ServerVersion = direct.ValueOf(in.ServerVersion)
 	return out
 }
+
 func BuildApprovalObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BuildApproval) *krmcloudbuildv1alpha1.BuildApprovalObservedState {
 	if in == nil {
 		return nil
@@ -370,6 +400,7 @@ func BuildApprovalObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 	out.Result = ApprovalResultObservedState_v1alpha1_FromProto(mapCtx, in.GetResult())
 	return out
 }
+
 func BuildApprovalObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.BuildApprovalObservedState) *pb.BuildApproval {
 	if in == nil {
 		return nil
@@ -380,6 +411,7 @@ func BuildApprovalObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	out.Result = ApprovalResultObservedState_v1alpha1_ToProto(mapCtx, in.Result)
 	return out
 }
+
 func BuildOptions_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BuildOptions) *krmcloudbuildv1alpha1.BuildOptions {
 	if in == nil {
 		return nil
@@ -393,7 +425,7 @@ func BuildOptions_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BuildOpti
 	out.DynamicSubstitutions = direct.LazyPtr(in.GetDynamicSubstitutions())
 	out.AutomapSubstitutions = direct.LazyPtr(in.GetAutomapSubstitutions())
 	out.LogStreamingOption = direct.Enum_FromProto(mapCtx, in.GetLogStreamingOption())
-	out.WorkerPool = direct.LazyPtr(in.GetWorkerPool())
+	// MISSING: WorkerPool
 	out.Pool = BuildOptions_PoolOption_v1alpha1_FromProto(mapCtx, in.GetPool())
 	out.Logging = direct.Enum_FromProto(mapCtx, in.GetLogging())
 	out.Env = in.Env
@@ -403,6 +435,7 @@ func BuildOptions_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BuildOpti
 	out.EnableStructuredLogging = direct.LazyPtr(in.GetEnableStructuredLogging())
 	return out
 }
+
 func BuildOptions_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.BuildOptions) *pb.BuildOptions {
 	if in == nil {
 		return nil
@@ -416,7 +449,7 @@ func BuildOptions_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv
 	out.DynamicSubstitutions = direct.ValueOf(in.DynamicSubstitutions)
 	out.AutomapSubstitutions = direct.ValueOf(in.AutomapSubstitutions)
 	out.LogStreamingOption = direct.Enum_ToProto[pb.BuildOptions_LogStreamingOption](mapCtx, in.LogStreamingOption)
-	out.WorkerPool = direct.ValueOf(in.WorkerPool)
+	// MISSING: WorkerPool
 	out.Pool = BuildOptions_PoolOption_v1alpha1_ToProto(mapCtx, in.Pool)
 	out.Logging = direct.Enum_ToProto[pb.BuildOptions_LoggingMode](mapCtx, in.Logging)
 	out.Env = in.Env
@@ -426,22 +459,29 @@ func BuildOptions_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv
 	out.EnableStructuredLogging = direct.ValueOf(in.EnableStructuredLogging)
 	return out
 }
+
 func BuildOptions_PoolOption_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BuildOptions_PoolOption) *krmcloudbuildv1alpha1.BuildOptions_PoolOption {
 	if in == nil {
 		return nil
 	}
 	out := &krmcloudbuildv1alpha1.BuildOptions_PoolOption{}
-	out.Name = direct.LazyPtr(in.GetName())
+	if in.GetName() != "" {
+		out.NameRef = &krmcloudbuildv1beta1.CloudBuildWorkerPoolRef{External: in.GetName()}
+	}
 	return out
 }
+
 func BuildOptions_PoolOption_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.BuildOptions_PoolOption) *pb.BuildOptions_PoolOption {
 	if in == nil {
 		return nil
 	}
 	out := &pb.BuildOptions_PoolOption{}
-	out.Name = direct.ValueOf(in.Name)
+	if in.NameRef != nil {
+		out.Name = in.NameRef.External
+	}
 	return out
 }
+
 func BuildStep_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BuildStep) *krmcloudbuildv1alpha1.BuildStep {
 	if in == nil {
 		return nil
@@ -467,6 +507,7 @@ func BuildStep_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BuildStep) *
 	out.AutomapSubstitutions = in.AutomapSubstitutions
 	return out
 }
+
 func BuildStep_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.BuildStep) *pb.BuildStep {
 	if in == nil {
 		return nil
@@ -492,6 +533,7 @@ func BuildStep_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1al
 	out.AutomapSubstitutions = in.AutomapSubstitutions
 	return out
 }
+
 func BuildStepObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BuildStep) *krmcloudbuildv1alpha1.BuildStepObservedState {
 	if in == nil {
 		return nil
@@ -517,6 +559,7 @@ func BuildStepObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb
 	// MISSING: AutomapSubstitutions
 	return out
 }
+
 func BuildStepObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.BuildStepObservedState) *pb.BuildStep {
 	if in == nil {
 		return nil
@@ -542,6 +585,7 @@ func BuildStepObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmc
 	// MISSING: AutomapSubstitutions
 	return out
 }
+
 func Build_FailureInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Build_FailureInfo) *krmcloudbuildv1alpha1.Build_FailureInfo {
 	if in == nil {
 		return nil
@@ -551,6 +595,7 @@ func Build_FailureInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Buil
 	out.Detail = direct.LazyPtr(in.GetDetail())
 	return out
 }
+
 func Build_FailureInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Build_FailureInfo) *pb.Build_FailureInfo {
 	if in == nil {
 		return nil
@@ -560,6 +605,152 @@ func Build_FailureInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudb
 	out.Detail = direct.ValueOf(in.Detail)
 	return out
 }
+
+func Build_RepoSource_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RepoSource) *krmcloudbuildv1alpha1.Build_RepoSource {
+	if in == nil {
+		return nil
+	}
+	out := &krmcloudbuildv1alpha1.Build_RepoSource{}
+	// MISSING: ProjectID
+	out.RepoName = direct.LazyPtr(in.GetRepoName())
+	out.BranchName = direct.LazyPtr(in.GetBranchName())
+	out.TagName = direct.LazyPtr(in.GetTagName())
+	out.CommitSha = direct.LazyPtr(in.GetCommitSha())
+	out.Dir = direct.LazyPtr(in.GetDir())
+	out.InvertRegex = direct.LazyPtr(in.GetInvertRegex())
+	out.Substitutions = in.Substitutions
+	return out
+}
+
+func Build_RepoSource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Build_RepoSource) *pb.RepoSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RepoSource{}
+	// MISSING: ProjectID
+	out.RepoName = direct.ValueOf(in.RepoName)
+	if oneof := Build_RepoSource_BranchName_ToProto(mapCtx, in.BranchName); oneof != nil {
+		out.Revision = oneof
+	}
+	if oneof := Build_RepoSource_TagName_ToProto(mapCtx, in.TagName); oneof != nil {
+		out.Revision = oneof
+	}
+	if oneof := Build_RepoSource_CommitSha_ToProto(mapCtx, in.CommitSha); oneof != nil {
+		out.Revision = oneof
+	}
+	out.Dir = direct.ValueOf(in.Dir)
+	out.InvertRegex = direct.ValueOf(in.InvertRegex)
+	out.Substitutions = in.Substitutions
+	return out
+}
+
+func Build_RepoSource_BranchName_ToProto(mapCtx *direct.MapContext, in *string) *pb.RepoSource_BranchName {
+	if in == nil {
+		return nil
+	}
+	return &pb.RepoSource_BranchName{BranchName: *in}
+}
+
+func Build_RepoSource_TagName_ToProto(mapCtx *direct.MapContext, in *string) *pb.RepoSource_TagName {
+	if in == nil {
+		return nil
+	}
+	return &pb.RepoSource_TagName{TagName: *in}
+}
+
+func Build_RepoSource_CommitSha_ToProto(mapCtx *direct.MapContext, in *string) *pb.RepoSource_CommitSha {
+	if in == nil {
+		return nil
+	}
+	return &pb.RepoSource_CommitSha{CommitSha: *in}
+}
+
+func Build_Source_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Source) *krmcloudbuildv1alpha1.Build_Source {
+	if in == nil {
+		return nil
+	}
+	out := &krmcloudbuildv1alpha1.Build_Source{}
+	out.StorageSource = Build_StorageSource_v1alpha1_FromProto(mapCtx, in.GetStorageSource())
+	out.RepoSource = Build_RepoSource_v1alpha1_FromProto(mapCtx, in.GetRepoSource())
+	out.GitSource = GitSource_v1alpha1_FromProto(mapCtx, in.GetGitSource())
+	out.StorageSourceManifest = Build_StorageSourceManifest_v1alpha1_FromProto(mapCtx, in.GetStorageSourceManifest())
+	return out
+}
+
+func Build_Source_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Build_Source) *pb.Source {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Source{}
+	if oneof := Build_StorageSource_v1alpha1_ToProto(mapCtx, in.StorageSource); oneof != nil {
+		out.Source = &pb.Source_StorageSource{StorageSource: oneof}
+	}
+	if oneof := Build_RepoSource_v1alpha1_ToProto(mapCtx, in.RepoSource); oneof != nil {
+		out.Source = &pb.Source_RepoSource{RepoSource: oneof}
+	}
+	if oneof := GitSource_v1alpha1_ToProto(mapCtx, in.GitSource); oneof != nil {
+		out.Source = &pb.Source_GitSource{GitSource: oneof}
+	}
+	if oneof := Build_StorageSourceManifest_v1alpha1_ToProto(mapCtx, in.StorageSourceManifest); oneof != nil {
+		out.Source = &pb.Source_StorageSourceManifest{StorageSourceManifest: oneof}
+	}
+	return out
+}
+
+func Build_StorageSource_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.StorageSource) *krmcloudbuildv1alpha1.Build_StorageSource {
+	if in == nil {
+		return nil
+	}
+	out := &krmcloudbuildv1alpha1.Build_StorageSource{}
+	if in.GetBucket() != "" {
+		out.BucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetBucket()}
+	}
+	out.Object = direct.LazyPtr(in.GetObject())
+	out.Generation = direct.LazyPtr(in.GetGeneration())
+	out.SourceFetcher = direct.Enum_FromProto(mapCtx, in.GetSourceFetcher())
+	return out
+}
+
+func Build_StorageSource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Build_StorageSource) *pb.StorageSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StorageSource{}
+	if in.BucketRef != nil {
+		out.Bucket = in.BucketRef.External
+	}
+	out.Object = direct.ValueOf(in.Object)
+	out.Generation = direct.ValueOf(in.Generation)
+	out.SourceFetcher = direct.Enum_ToProto[pb.StorageSource_SourceFetcher](mapCtx, in.SourceFetcher)
+	return out
+}
+
+func Build_StorageSourceManifest_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.StorageSourceManifest) *krmcloudbuildv1alpha1.Build_StorageSourceManifest {
+	if in == nil {
+		return nil
+	}
+	out := &krmcloudbuildv1alpha1.Build_StorageSourceManifest{}
+	if in.GetBucket() != "" {
+		out.BucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetBucket()}
+	}
+	out.Object = direct.LazyPtr(in.GetObject())
+	out.Generation = direct.LazyPtr(in.GetGeneration())
+	return out
+}
+
+func Build_StorageSourceManifest_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Build_StorageSourceManifest) *pb.StorageSourceManifest {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StorageSourceManifest{}
+	if in.BucketRef != nil {
+		out.Bucket = in.BucketRef.External
+	}
+	out.Object = direct.ValueOf(in.Object)
+	out.Generation = direct.ValueOf(in.Generation)
+	return out
+}
+
 func Build_Warning_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Build_Warning) *krmcloudbuildv1alpha1.Build_Warning {
 	if in == nil {
 		return nil
@@ -569,6 +760,7 @@ func Build_Warning_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Build_Wa
 	out.Priority = direct.Enum_FromProto(mapCtx, in.GetPriority())
 	return out
 }
+
 func Build_Warning_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Build_Warning) *pb.Build_Warning {
 	if in == nil {
 		return nil
@@ -578,6 +770,7 @@ func Build_Warning_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuild
 	out.Priority = direct.Enum_ToProto[pb.Build_Warning_Priority](mapCtx, in.Priority)
 	return out
 }
+
 func BuiltImageObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BuiltImage) *krmcloudbuildv1alpha1.BuiltImageObservedState {
 	if in == nil {
 		return nil
@@ -588,6 +781,7 @@ func BuiltImageObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *p
 	out.PushTiming = TimeSpan_v1alpha1_FromProto(mapCtx, in.GetPushTiming())
 	return out
 }
+
 func BuiltImageObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.BuiltImageObservedState) *pb.BuiltImage {
 	if in == nil {
 		return nil
@@ -598,6 +792,7 @@ func BuiltImageObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.PushTiming = TimeSpan_v1alpha1_ToProto(mapCtx, in.PushTiming)
 	return out
 }
+
 func CloudBuildBuildObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Build) *krmcloudbuildv1alpha1.CloudBuildBuildObservedState {
 	if in == nil {
 		return nil
@@ -630,6 +825,7 @@ func CloudBuildBuildObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, 
 	out.FailureInfo = Build_FailureInfo_v1alpha1_FromProto(mapCtx, in.GetFailureInfo())
 	return out
 }
+
 func CloudBuildBuildObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.CloudBuildBuildObservedState) *pb.Build {
 	if in == nil {
 		return nil
@@ -660,52 +856,63 @@ func CloudBuildBuildObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	out.FailureInfo = Build_FailureInfo_v1alpha1_ToProto(mapCtx, in.FailureInfo)
 	return out
 }
+
 func CloudBuildBuildSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Build) *krmcloudbuildv1alpha1.CloudBuildBuildSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krmcloudbuildv1alpha1.CloudBuildBuildSpec{}
 	// MISSING: Name
-	out.Source = Source_v1alpha1_FromProto(mapCtx, in.GetSource())
+	out.Source = Build_Source_v1alpha1_FromProto(mapCtx, in.GetSource())
 	out.Steps = direct.Slice_FromProto(mapCtx, in.Steps, BuildStep_v1alpha1_FromProto)
 	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
 	out.Images = in.Images
 	out.QueueTTL = direct.StringDuration_FromProto(mapCtx, in.GetQueueTtl())
 	out.Artifacts = Artifacts_v1alpha1_FromProto(mapCtx, in.GetArtifacts())
-	out.LogsBucket = direct.LazyPtr(in.GetLogsBucket())
+	if in.GetLogsBucket() != "" {
+		out.LogsBucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetLogsBucket()}
+	}
 	out.Options = BuildOptions_v1alpha1_FromProto(mapCtx, in.GetOptions())
 	out.Substitutions = in.Substitutions
 	out.Tags = in.Tags
 	out.Secrets = direct.Slice_FromProto(mapCtx, in.Secrets, Secret_v1alpha1_FromProto)
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
 	out.AvailableSecrets = Secrets_v1alpha1_FromProto(mapCtx, in.GetAvailableSecrets())
 	out.GitConfig = GitConfig_v1alpha1_FromProto(mapCtx, in.GetGitConfig())
 	out.Dependencies = direct.Slice_FromProto(mapCtx, in.Dependencies, Dependency_v1alpha1_FromProto)
 	return out
 }
+
 func CloudBuildBuildSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.CloudBuildBuildSpec) *pb.Build {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Build{}
 	// MISSING: Name
-	out.Source = Source_v1alpha1_ToProto(mapCtx, in.Source)
+	out.Source = Build_Source_v1alpha1_ToProto(mapCtx, in.Source)
 	out.Steps = direct.Slice_ToProto(mapCtx, in.Steps, BuildStep_v1alpha1_ToProto)
 	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
 	out.Images = in.Images
 	out.QueueTtl = direct.StringDuration_ToProto(mapCtx, in.QueueTTL)
 	out.Artifacts = Artifacts_v1alpha1_ToProto(mapCtx, in.Artifacts)
-	out.LogsBucket = direct.ValueOf(in.LogsBucket)
+	if in.LogsBucketRef != nil {
+		out.LogsBucket = in.LogsBucketRef.External
+	}
 	out.Options = BuildOptions_v1alpha1_ToProto(mapCtx, in.Options)
 	out.Substitutions = in.Substitutions
 	out.Tags = in.Tags
 	out.Secrets = direct.Slice_ToProto(mapCtx, in.Secrets, Secret_v1alpha1_ToProto)
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
 	out.AvailableSecrets = Secrets_v1alpha1_ToProto(mapCtx, in.AvailableSecrets)
 	out.GitConfig = GitConfig_v1alpha1_ToProto(mapCtx, in.GitConfig)
 	out.Dependencies = direct.Slice_ToProto(mapCtx, in.Dependencies, Dependency_v1alpha1_ToProto)
 	return out
 }
+
 func CloudBuildConnectionObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb.Connection) *krmcloudbuildv1alpha1.CloudBuildConnectionObservedState {
 	if in == nil {
 		return nil
@@ -724,6 +931,7 @@ func CloudBuildConnectionObservedState_v1alpha1_FromProto(mapCtx *direct.MapCont
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
 }
+
 func CloudBuildConnectionObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.CloudBuildConnectionObservedState) *cloudbuildpb.Connection {
 	if in == nil {
 		return nil
@@ -752,6 +960,7 @@ func CloudBuildConnectionObservedState_v1alpha1_ToProto(mapCtx *direct.MapContex
 	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
+
 func CloudBuildConnectionSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb.Connection) *krmcloudbuildv1alpha1.CloudBuildConnectionSpec {
 	if in == nil {
 		return nil
@@ -767,6 +976,7 @@ func CloudBuildConnectionSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *
 	out.Annotations = in.Annotations
 	return out
 }
+
 func CloudBuildConnectionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.CloudBuildConnectionSpec) *cloudbuildpb.Connection {
 	if in == nil {
 		return nil
@@ -792,6 +1002,7 @@ func CloudBuildConnectionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Annotations = in.Annotations
 	return out
 }
+
 func CloudBuildTriggerObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BuildTrigger) *krmcloudbuildv1beta1.CloudBuildTriggerObservedState {
 	if in == nil {
 		return nil
@@ -822,6 +1033,7 @@ func CloudBuildTriggerObservedState_v1beta1_FromProto(mapCtx *direct.MapContext,
 	// MISSING: RepositoryEventConfig
 	return out
 }
+
 func CloudBuildTriggerObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1beta1.CloudBuildTriggerObservedState) *pb.BuildTrigger {
 	if in == nil {
 		return nil
@@ -852,6 +1064,7 @@ func CloudBuildTriggerObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, i
 	// MISSING: RepositoryEventConfig
 	return out
 }
+
 func CloudBuildTriggerSpec_ApprovalConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BuildTrigger) *krmcloudbuildv1beta1.CloudBuildTriggerSpec_ApprovalConfig {
 	if in == nil {
 		return nil
@@ -881,6 +1094,7 @@ func CloudBuildTriggerSpec_ApprovalConfig_v1beta1_FromProto(mapCtx *direct.MapCo
 	// MISSING: RepositoryEventConfig
 	return out
 }
+
 func CloudBuildTriggerSpec_ApprovalConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1beta1.CloudBuildTriggerSpec_ApprovalConfig) *pb.BuildTrigger {
 	if in == nil {
 		return nil
@@ -910,6 +1124,7 @@ func CloudBuildTriggerSpec_ApprovalConfig_v1beta1_ToProto(mapCtx *direct.MapCont
 	// MISSING: RepositoryEventConfig
 	return out
 }
+
 func CloudBuildWorkerPoolObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPool) *krmcloudbuildv1beta1.CloudBuildWorkerPoolObservedState {
 	if in == nil {
 		return nil
@@ -927,6 +1142,7 @@ func CloudBuildWorkerPoolObservedState_v1beta1_FromProto(mapCtx *direct.MapConte
 	// (near miss): "Etag" vs "ETag"
 	return out
 }
+
 func CloudBuildWorkerPoolObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1beta1.CloudBuildWorkerPoolObservedState) *pb.WorkerPool {
 	if in == nil {
 		return nil
@@ -944,6 +1160,7 @@ func CloudBuildWorkerPoolObservedState_v1beta1_ToProto(mapCtx *direct.MapContext
 	// (near miss): "Etag" vs "ETag"
 	return out
 }
+
 func CloudBuildWorkerPoolSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPool) *krmcloudbuildv1beta1.CloudBuildWorkerPoolSpec {
 	if in == nil {
 		return nil
@@ -960,25 +1177,24 @@ func CloudBuildWorkerPoolSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *p
 	return out
 }
 
-/*
-found existing non-generated mapping function "CloudBuildWorkerPoolSpec_v1beta1_ToProto", skipping
-
-	func CloudBuildWorkerPoolSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1beta1.CloudBuildWorkerPoolSpec) *pb.WorkerPool {
-		if in == nil {
-			return nil
-		}
-		out := &pb.WorkerPool{}
-		// MISSING: Name
-		out.DisplayName = CloudBuildWorkerPoolSpec_DisplayName_ToProto(mapCtx, in.DisplayName)
-		// MISSING: Uid
-		// MISSING: Annotations
-		// MISSING: DeleteTime
-		// MISSING: State
-		// MISSING: PrivatePoolV1Config
-		// MISSING: Etag
-		return out
+/* found existing non-generated mapping function "CloudBuildWorkerPoolSpec_v1beta1_ToProto", skipping
+func CloudBuildWorkerPoolSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1beta1.CloudBuildWorkerPoolSpec) *pb.WorkerPool {
+	if in == nil {
+		return nil
 	}
+	out := &pb.WorkerPool{}
+	// MISSING: Name
+	out.DisplayName = CloudBuildWorkerPoolSpec_DisplayName_ToProto(mapCtx, in.DisplayName)
+	// MISSING: Uid
+	// MISSING: Annotations
+	// MISSING: DeleteTime
+	// MISSING: State
+	// MISSING: PrivatePoolV1Config
+	// MISSING: Etag
+	return out
+}
 */
+
 func Dependency_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Dependency) *krmcloudbuildv1alpha1.Dependency {
 	if in == nil {
 		return nil
@@ -988,6 +1204,7 @@ func Dependency_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Dependency)
 	out.GitSource = Dependency_GitSourceDependency_v1alpha1_FromProto(mapCtx, in.GetGitSource())
 	return out
 }
+
 func Dependency_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Dependency) *pb.Dependency {
 	if in == nil {
 		return nil
@@ -1001,12 +1218,14 @@ func Dependency_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1a
 	}
 	return out
 }
+
 func Dependency_Empty_ToProto(mapCtx *direct.MapContext, in *bool) *pb.Dependency_Empty {
 	if in == nil {
 		return nil
 	}
 	return &pb.Dependency_Empty{Empty: *in}
 }
+
 func Dependency_GitSourceDependency_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Dependency_GitSourceDependency) *krmcloudbuildv1alpha1.Dependency_GitSourceDependency {
 	if in == nil {
 		return nil
@@ -1019,6 +1238,7 @@ func Dependency_GitSourceDependency_v1alpha1_FromProto(mapCtx *direct.MapContext
 	out.DestPath = direct.LazyPtr(in.GetDestPath())
 	return out
 }
+
 func Dependency_GitSourceDependency_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Dependency_GitSourceDependency) *pb.Dependency_GitSourceDependency {
 	if in == nil {
 		return nil
@@ -1031,15 +1251,19 @@ func Dependency_GitSourceDependency_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 	out.DestPath = direct.ValueOf(in.DestPath)
 	return out
 }
+
 func Dependency_GitSourceRepository_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Dependency_GitSourceRepository) *krmcloudbuildv1alpha1.Dependency_GitSourceRepository {
 	if in == nil {
 		return nil
 	}
 	out := &krmcloudbuildv1alpha1.Dependency_GitSourceRepository{}
 	out.URL = direct.LazyPtr(in.GetUrl())
-	out.DeveloperConnect = direct.LazyPtr(in.GetDeveloperConnect())
+	if in.GetDeveloperConnect() != "" {
+		out.DeveloperConnectRef = &krmdeveloperconnectv1alpha1.DeveloperConnectGitRepositoryLinkRef{External: in.GetDeveloperConnect()}
+	}
 	return out
 }
+
 func Dependency_GitSourceRepository_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Dependency_GitSourceRepository) *pb.Dependency_GitSourceRepository {
 	if in == nil {
 		return nil
@@ -1048,23 +1272,26 @@ func Dependency_GitSourceRepository_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 	if oneof := Dependency_GitSourceRepository_Url_ToProto(mapCtx, in.URL); oneof != nil {
 		out.Repotype = oneof
 	}
-	if oneof := Dependency_GitSourceRepository_DeveloperConnect_ToProto(mapCtx, in.DeveloperConnect); oneof != nil {
-		out.Repotype = oneof
+	if in.DeveloperConnectRef != nil {
+		out.Repotype = &pb.Dependency_GitSourceRepository_DeveloperConnect{DeveloperConnect: in.DeveloperConnectRef.External}
 	}
 	return out
 }
+
 func Dependency_GitSourceRepository_Url_ToProto(mapCtx *direct.MapContext, in *string) *pb.Dependency_GitSourceRepository_Url {
 	if in == nil {
 		return nil
 	}
 	return &pb.Dependency_GitSourceRepository_Url{Url: *in}
 }
+
 func Dependency_GitSourceRepository_DeveloperConnect_ToProto(mapCtx *direct.MapContext, in *string) *pb.Dependency_GitSourceRepository_DeveloperConnect {
 	if in == nil {
 		return nil
 	}
 	return &pb.Dependency_GitSourceRepository_DeveloperConnect{DeveloperConnect: *in}
 }
+
 func FileHashes_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FileHashes) *krmcloudbuildv1alpha1.FileHashes {
 	if in == nil {
 		return nil
@@ -1073,6 +1300,7 @@ func FileHashes_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FileHashes)
 	out.FileHash = direct.Slice_FromProto(mapCtx, in.FileHash, Hash_v1alpha1_FromProto)
 	return out
 }
+
 func FileHashes_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.FileHashes) *pb.FileHashes {
 	if in == nil {
 		return nil
@@ -1081,6 +1309,7 @@ func FileHashes_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1a
 	out.FileHash = direct.Slice_ToProto(mapCtx, in.FileHash, Hash_v1alpha1_ToProto)
 	return out
 }
+
 func GitConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GitConfig) *krmcloudbuildv1alpha1.GitConfig {
 	if in == nil {
 		return nil
@@ -1089,6 +1318,7 @@ func GitConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GitConfig) *
 	out.HTTP = GitConfig_HTTPConfig_v1alpha1_FromProto(mapCtx, in.GetHttp())
 	return out
 }
+
 func GitConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.GitConfig) *pb.GitConfig {
 	if in == nil {
 		return nil
@@ -1097,22 +1327,25 @@ func GitConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1al
 	out.Http = GitConfig_HTTPConfig_v1alpha1_ToProto(mapCtx, in.HTTP)
 	return out
 }
+
 func GitConfig_HTTPConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GitConfig_HttpConfig) *krmcloudbuildv1alpha1.GitConfig_HTTPConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krmcloudbuildv1alpha1.GitConfig_HTTPConfig{}
-	out.ProxySecretVersionName = direct.LazyPtr(in.GetProxySecretVersionName())
+	// MISSING: ProxySecretVersionName
 	return out
 }
+
 func GitConfig_HTTPConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.GitConfig_HTTPConfig) *pb.GitConfig_HttpConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.GitConfig_HttpConfig{}
-	out.ProxySecretVersionName = direct.ValueOf(in.ProxySecretVersionName)
+	// MISSING: ProxySecretVersionName
 	return out
 }
+
 func GitHubConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb.GitHubConfig) *krmcloudbuildv1alpha1.GitHubConfig {
 	if in == nil {
 		return nil
@@ -1122,6 +1355,7 @@ func GitHubConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb
 	out.AppInstallationID = direct.LazyPtr(in.GetAppInstallationId())
 	return out
 }
+
 func GitHubConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.GitHubConfig) *cloudbuildpb.GitHubConfig {
 	if in == nil {
 		return nil
@@ -1131,6 +1365,7 @@ func GitHubConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv
 	out.AppInstallationId = direct.ValueOf(in.AppInstallationID)
 	return out
 }
+
 func GitHubConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb.GitHubConfig) *krmcloudbuildv1alpha1.GitHubConfigObservedState {
 	if in == nil {
 		return nil
@@ -1140,6 +1375,7 @@ func GitHubConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in 
 	// MISSING: AppInstallationID
 	return out
 }
+
 func GitHubConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.GitHubConfigObservedState) *cloudbuildpb.GitHubConfig {
 	if in == nil {
 		return nil
@@ -1149,6 +1385,7 @@ func GitHubConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: AppInstallationID
 	return out
 }
+
 func GitHubEnterpriseConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb.GitHubEnterpriseConfig) *krmcloudbuildv1alpha1.GitHubEnterpriseConfig {
 	if in == nil {
 		return nil
@@ -1170,6 +1407,7 @@ func GitHubEnterpriseConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cl
 	// MISSING: ServerVersion
 	return out
 }
+
 func GitHubEnterpriseConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.GitHubEnterpriseConfig) *cloudbuildpb.GitHubEnterpriseConfig {
 	if in == nil {
 		return nil
@@ -1191,6 +1429,7 @@ func GitHubEnterpriseConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmc
 	// MISSING: ServerVersion
 	return out
 }
+
 func GitHubEnterpriseConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb.GitHubEnterpriseConfig) *krmcloudbuildv1alpha1.GitHubEnterpriseConfigObservedState {
 	if in == nil {
 		return nil
@@ -1208,6 +1447,7 @@ func GitHubEnterpriseConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapCo
 	out.ServerVersion = direct.LazyPtr(in.GetServerVersion())
 	return out
 }
+
 func GitHubEnterpriseConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.GitHubEnterpriseConfigObservedState) *cloudbuildpb.GitHubEnterpriseConfig {
 	if in == nil {
 		return nil
@@ -1225,6 +1465,7 @@ func GitHubEnterpriseConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapCont
 	out.ServerVersion = direct.ValueOf(in.ServerVersion)
 	return out
 }
+
 func GitLabConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb.GitLabConfig) *krmcloudbuildv1alpha1.GitLabConfig {
 	if in == nil {
 		return nil
@@ -1241,6 +1482,7 @@ func GitLabConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb
 	// MISSING: ServerVersion
 	return out
 }
+
 func GitLabConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.GitLabConfig) *cloudbuildpb.GitLabConfig {
 	if in == nil {
 		return nil
@@ -1257,6 +1499,7 @@ func GitLabConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv
 	// MISSING: ServerVersion
 	return out
 }
+
 func GitLabConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb.GitLabConfig) *krmcloudbuildv1alpha1.GitLabConfigObservedState {
 	if in == nil {
 		return nil
@@ -1271,6 +1514,7 @@ func GitLabConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in 
 	out.ServerVersion = direct.LazyPtr(in.GetServerVersion())
 	return out
 }
+
 func GitLabConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.GitLabConfigObservedState) *cloudbuildpb.GitLabConfig {
 	if in == nil {
 		return nil
@@ -1285,6 +1529,7 @@ func GitLabConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	out.ServerVersion = direct.ValueOf(in.ServerVersion)
 	return out
 }
+
 func GitSource_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GitSource) *krmcloudbuildv1alpha1.GitSource {
 	if in == nil {
 		return nil
@@ -1295,6 +1540,7 @@ func GitSource_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GitSource) *
 	out.Revision = direct.LazyPtr(in.GetRevision())
 	return out
 }
+
 func GitSource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.GitSource) *pb.GitSource {
 	if in == nil {
 		return nil
@@ -1305,6 +1551,7 @@ func GitSource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1al
 	out.Revision = direct.ValueOf(in.Revision)
 	return out
 }
+
 func Hash_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Hash) *krmcloudbuildv1alpha1.Hash {
 	if in == nil {
 		return nil
@@ -1314,6 +1561,7 @@ func Hash_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Hash) *krmcloudbu
 	out.Value = in.GetValue()
 	return out
 }
+
 func Hash_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Hash) *pb.Hash {
 	if in == nil {
 		return nil
@@ -1323,6 +1571,7 @@ func Hash_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.
 	out.Value = in.Value
 	return out
 }
+
 func Hash_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Hash) *krmcloudbuildv1beta1.Hash {
 	if in == nil {
 		return nil
@@ -1332,6 +1581,7 @@ func Hash_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Hash) *krmcloudbui
 	out.Value = in.GetValue()
 	return out
 }
+
 func Hash_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1beta1.Hash) *pb.Hash {
 	if in == nil {
 		return nil
@@ -1341,24 +1591,27 @@ func Hash_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1beta1.Ha
 	out.Value = in.Value
 	return out
 }
+
 func InlineSecret_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InlineSecret) *krmcloudbuildv1alpha1.InlineSecret {
 	if in == nil {
 		return nil
 	}
 	out := &krmcloudbuildv1alpha1.InlineSecret{}
-	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
+	// MISSING: KMSKeyName
 	// MISSING: EnvMap
 	return out
 }
+
 func InlineSecret_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.InlineSecret) *pb.InlineSecret {
 	if in == nil {
 		return nil
 	}
 	out := &pb.InlineSecret{}
-	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
+	// MISSING: KMSKeyName
 	// MISSING: EnvMap
 	return out
 }
+
 func InstallationStateObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb.InstallationState) *krmcloudbuildv1alpha1.InstallationStateObservedState {
 	if in == nil {
 		return nil
@@ -1369,6 +1622,7 @@ func InstallationStateObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext
 	out.ActionURI = direct.LazyPtr(in.GetActionUri())
 	return out
 }
+
 func InstallationStateObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.InstallationStateObservedState) *cloudbuildpb.InstallationState {
 	if in == nil {
 		return nil
@@ -1379,6 +1633,7 @@ func InstallationStateObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 	out.ActionUri = direct.ValueOf(in.ActionURI)
 	return out
 }
+
 func OAuthCredential_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb.OAuthCredential) *krmcloudbuildv1alpha1.OAuthCredential {
 	if in == nil {
 		return nil
@@ -1390,6 +1645,7 @@ func OAuthCredential_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuil
 	// MISSING: Username
 	return out
 }
+
 func OAuthCredential_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.OAuthCredential) *cloudbuildpb.OAuthCredential {
 	if in == nil {
 		return nil
@@ -1401,6 +1657,7 @@ func OAuthCredential_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbui
 	// MISSING: Username
 	return out
 }
+
 func OAuthCredentialObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb.OAuthCredential) *krmcloudbuildv1alpha1.OAuthCredentialObservedState {
 	if in == nil {
 		return nil
@@ -1410,6 +1667,7 @@ func OAuthCredentialObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, 
 	out.Username = direct.LazyPtr(in.GetUsername())
 	return out
 }
+
 func OAuthCredentialObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.OAuthCredentialObservedState) *cloudbuildpb.OAuthCredential {
 	if in == nil {
 		return nil
@@ -1419,6 +1677,7 @@ func OAuthCredentialObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	out.Username = direct.ValueOf(in.Username)
 	return out
 }
+
 func PrivatePoolV1Config_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PrivatePoolV1Config) *krmcloudbuildv1beta1.PrivatePoolV1Config {
 	if in == nil {
 		return nil
@@ -1429,6 +1688,7 @@ func PrivatePoolV1Config_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Pri
 	// MISSING: PrivateServiceConnect
 	return out
 }
+
 func PrivatePoolV1Config_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1beta1.PrivatePoolV1Config) *pb.PrivatePoolV1Config {
 	if in == nil {
 		return nil
@@ -1455,22 +1715,21 @@ func PrivatePoolV1Config_NetworkConfigSpec_v1beta1_FromProto(mapCtx *direct.MapC
 }
 */
 
-/*
-found existing non-generated mapping function "PrivatePoolV1Config_NetworkConfigSpec_v1beta1_ToProto", skipping
-
-	func PrivatePoolV1Config_NetworkConfigSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1beta1.PrivatePoolV1Config_NetworkConfigSpec) *pb.PrivatePoolV1Config_NetworkConfig {
-		if in == nil {
-			return nil
-		}
-		out := &pb.PrivatePoolV1Config_NetworkConfig{}
-		if in.PeeredNetworkRef != nil {
-			out.PeeredNetwork = in.PeeredNetworkRef.External
-		}
-		out.EgressOption = direct.Enum_ToProto[pb.PrivatePoolV1Config_NetworkConfig_EgressOption](mapCtx, in.EgressOption)
-		out.PeeredNetworkIpRange = direct.ValueOf(in.PeeredNetworkIPRange)
-		return out
+/* found existing non-generated mapping function "PrivatePoolV1Config_NetworkConfigSpec_v1beta1_ToProto", skipping
+func PrivatePoolV1Config_NetworkConfigSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1beta1.PrivatePoolV1Config_NetworkConfigSpec) *pb.PrivatePoolV1Config_NetworkConfig {
+	if in == nil {
+		return nil
 	}
+	out := &pb.PrivatePoolV1Config_NetworkConfig{}
+	if in.PeeredNetworkRef != nil {
+		out.PeeredNetwork = in.PeeredNetworkRef.External
+	}
+	out.EgressOption = direct.Enum_ToProto[pb.PrivatePoolV1Config_NetworkConfig_EgressOption](mapCtx, in.EgressOption)
+	out.PeeredNetworkIpRange = direct.ValueOf(in.PeeredNetworkIPRange)
+	return out
+}
 */
+
 func PrivatePoolV1Config_NetworkConfigStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PrivatePoolV1Config_NetworkConfig) *krmcloudbuildv1beta1.PrivatePoolV1Config_NetworkConfigStatus {
 	if in == nil {
 		return nil
@@ -1481,6 +1740,7 @@ func PrivatePoolV1Config_NetworkConfigStatus_v1beta1_FromProto(mapCtx *direct.Ma
 	out.PeeredNetworkIPRange = direct.LazyPtr(in.GetPeeredNetworkIpRange())
 	return out
 }
+
 func PrivatePoolV1Config_NetworkConfigStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1beta1.PrivatePoolV1Config_NetworkConfigStatus) *pb.PrivatePoolV1Config_NetworkConfig {
 	if in == nil {
 		return nil
@@ -1491,6 +1751,7 @@ func PrivatePoolV1Config_NetworkConfigStatus_v1beta1_ToProto(mapCtx *direct.MapC
 	out.PeeredNetworkIpRange = direct.ValueOf(in.PeeredNetworkIPRange)
 	return out
 }
+
 func PrivatePoolV1Config_WorkerConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PrivatePoolV1Config_WorkerConfig) *krmcloudbuildv1beta1.PrivatePoolV1Config_WorkerConfig {
 	if in == nil {
 		return nil
@@ -1502,6 +1763,7 @@ func PrivatePoolV1Config_WorkerConfig_v1beta1_FromProto(mapCtx *direct.MapContex
 	// MISSING: EnableNestedVirtualization
 	return out
 }
+
 func PrivatePoolV1Config_WorkerConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1beta1.PrivatePoolV1Config_WorkerConfig) *pb.PrivatePoolV1Config_WorkerConfig {
 	if in == nil {
 		return nil
@@ -1513,6 +1775,7 @@ func PrivatePoolV1Config_WorkerConfig_v1beta1_ToProto(mapCtx *direct.MapContext,
 	// MISSING: EnableNestedVirtualization
 	return out
 }
+
 func RepoSource_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RepoSource) *krmcloudbuildv1alpha1.RepoSource {
 	if in == nil {
 		return nil
@@ -1528,6 +1791,7 @@ func RepoSource_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RepoSource)
 	out.Substitutions = in.Substitutions
 	return out
 }
+
 func RepoSource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.RepoSource) *pb.RepoSource {
 	if in == nil {
 		return nil
@@ -1549,24 +1813,28 @@ func RepoSource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1a
 	out.Substitutions = in.Substitutions
 	return out
 }
+
 func RepoSource_BranchName_ToProto(mapCtx *direct.MapContext, in *string) *pb.RepoSource_BranchName {
 	if in == nil {
 		return nil
 	}
 	return &pb.RepoSource_BranchName{BranchName: *in}
 }
+
 func RepoSource_TagName_ToProto(mapCtx *direct.MapContext, in *string) *pb.RepoSource_TagName {
 	if in == nil {
 		return nil
 	}
 	return &pb.RepoSource_TagName{TagName: *in}
 }
+
 func RepoSource_CommitSha_ToProto(mapCtx *direct.MapContext, in *string) *pb.RepoSource_CommitSha {
 	if in == nil {
 		return nil
 	}
 	return &pb.RepoSource_CommitSha{CommitSha: *in}
 }
+
 func Results_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Results) *krmcloudbuildv1beta1.Results {
 	if in == nil {
 		return nil
@@ -1584,6 +1852,7 @@ func Results_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Results) *krmcl
 	// MISSING: NpmPackages
 	return out
 }
+
 func Results_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1beta1.Results) *pb.Results {
 	if in == nil {
 		return nil
@@ -1601,6 +1870,7 @@ func Results_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1beta1
 	// MISSING: NpmPackages
 	return out
 }
+
 func ResultsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Results) *krmcloudbuildv1alpha1.ResultsObservedState {
 	if in == nil {
 		return nil
@@ -1618,6 +1888,7 @@ func ResultsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.R
 	out.NpmPackages = direct.Slice_FromProto(mapCtx, in.NpmPackages, UploadedNpmPackageObservedState_v1alpha1_FromProto)
 	return out
 }
+
 func ResultsObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.ResultsObservedState) *pb.Results {
 	if in == nil {
 		return nil
@@ -1635,42 +1906,47 @@ func ResultsObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclo
 	out.NpmPackages = direct.Slice_ToProto(mapCtx, in.NpmPackages, UploadedNpmPackageObservedState_v1alpha1_ToProto)
 	return out
 }
+
 func Secret_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Secret) *krmcloudbuildv1alpha1.Secret {
 	if in == nil {
 		return nil
 	}
 	out := &krmcloudbuildv1alpha1.Secret{}
-	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
+	// MISSING: KMSKeyName
 	// MISSING: SecretEnv
 	return out
 }
+
 func Secret_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Secret) *pb.Secret {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Secret{}
-	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
+	// MISSING: KMSKeyName
 	// MISSING: SecretEnv
 	return out
 }
+
 func SecretManagerSecret_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecretManagerSecret) *krmcloudbuildv1alpha1.SecretManagerSecret {
 	if in == nil {
 		return nil
 	}
 	out := &krmcloudbuildv1alpha1.SecretManagerSecret{}
-	out.VersionName = direct.LazyPtr(in.GetVersionName())
+	// MISSING: VersionName
 	out.Env = direct.LazyPtr(in.GetEnv())
 	return out
 }
+
 func SecretManagerSecret_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.SecretManagerSecret) *pb.SecretManagerSecret {
 	if in == nil {
 		return nil
 	}
 	out := &pb.SecretManagerSecret{}
-	out.VersionName = direct.ValueOf(in.VersionName)
+	// MISSING: VersionName
 	out.Env = direct.ValueOf(in.Env)
 	return out
 }
+
 func Secrets_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Secrets) *krmcloudbuildv1alpha1.Secrets {
 	if in == nil {
 		return nil
@@ -1680,6 +1956,7 @@ func Secrets_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Secrets) *krmc
 	out.Inline = direct.Slice_FromProto(mapCtx, in.Inline, InlineSecret_v1alpha1_FromProto)
 	return out
 }
+
 func Secrets_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Secrets) *pb.Secrets {
 	if in == nil {
 		return nil
@@ -1689,6 +1966,7 @@ func Secrets_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alph
 	out.Inline = direct.Slice_ToProto(mapCtx, in.Inline, InlineSecret_v1alpha1_ToProto)
 	return out
 }
+
 func ServiceDirectoryConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb.ServiceDirectoryConfig) *krmcloudbuildv1alpha1.ServiceDirectoryConfig {
 	if in == nil {
 		return nil
@@ -1699,6 +1977,7 @@ func ServiceDirectoryConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cl
 	}
 	return out
 }
+
 func ServiceDirectoryConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.ServiceDirectoryConfig) *cloudbuildpb.ServiceDirectoryConfig {
 	if in == nil {
 		return nil
@@ -1709,6 +1988,7 @@ func ServiceDirectoryConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmc
 	}
 	return out
 }
+
 func Source_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Source) *krmcloudbuildv1alpha1.Source {
 	if in == nil {
 		return nil
@@ -1720,6 +2000,7 @@ func Source_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Source) *krmclo
 	out.StorageSourceManifest = StorageSourceManifest_v1alpha1_FromProto(mapCtx, in.GetStorageSourceManifest())
 	return out
 }
+
 func Source_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Source) *pb.Source {
 	if in == nil {
 		return nil
@@ -1739,6 +2020,7 @@ func Source_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha
 	}
 	return out
 }
+
 func SourceProvenanceObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SourceProvenance) *krmcloudbuildv1alpha1.SourceProvenanceObservedState {
 	if in == nil {
 		return nil
@@ -1757,6 +2039,7 @@ func SourceProvenanceObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext,
 	}
 	return out
 }
+
 func SourceProvenanceObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.SourceProvenanceObservedState) *pb.SourceProvenance {
 	if in == nil {
 		return nil
@@ -1773,6 +2056,7 @@ func SourceProvenanceObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 	}
 	return out
 }
+
 func StorageSource_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.StorageSource) *krmcloudbuildv1alpha1.StorageSource {
 	if in == nil {
 		return nil
@@ -1784,6 +2068,7 @@ func StorageSource_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.StorageS
 	out.SourceFetcher = direct.Enum_FromProto(mapCtx, in.GetSourceFetcher())
 	return out
 }
+
 func StorageSource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.StorageSource) *pb.StorageSource {
 	if in == nil {
 		return nil
@@ -1795,6 +2080,7 @@ func StorageSource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuild
 	out.SourceFetcher = direct.Enum_ToProto[pb.StorageSource_SourceFetcher](mapCtx, in.SourceFetcher)
 	return out
 }
+
 func StorageSourceManifest_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.StorageSourceManifest) *krmcloudbuildv1alpha1.StorageSourceManifest {
 	if in == nil {
 		return nil
@@ -1805,6 +2091,7 @@ func StorageSourceManifest_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.Generation = direct.LazyPtr(in.GetGeneration())
 	return out
 }
+
 func StorageSourceManifest_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.StorageSourceManifest) *pb.StorageSourceManifest {
 	if in == nil {
 		return nil
@@ -1815,6 +2102,7 @@ func StorageSourceManifest_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcl
 	out.Generation = direct.ValueOf(in.Generation)
 	return out
 }
+
 func TimeSpan_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TimeSpan) *krmcloudbuildv1alpha1.TimeSpan {
 	if in == nil {
 		return nil
@@ -1824,6 +2112,7 @@ func TimeSpan_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TimeSpan) *kr
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	return out
 }
+
 func TimeSpan_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.TimeSpan) *pb.TimeSpan {
 	if in == nil {
 		return nil
@@ -1833,6 +2122,7 @@ func TimeSpan_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alp
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
 }
+
 func UploadedGoModuleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UploadedGoModule) *krmcloudbuildv1alpha1.UploadedGoModuleObservedState {
 	if in == nil {
 		return nil
@@ -1843,6 +2133,7 @@ func UploadedGoModuleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext,
 	out.PushTiming = TimeSpan_v1alpha1_FromProto(mapCtx, in.GetPushTiming())
 	return out
 }
+
 func UploadedGoModuleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.UploadedGoModuleObservedState) *pb.UploadedGoModule {
 	if in == nil {
 		return nil
@@ -1853,6 +2144,7 @@ func UploadedGoModuleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 	out.PushTiming = TimeSpan_v1alpha1_ToProto(mapCtx, in.PushTiming)
 	return out
 }
+
 func UploadedMavenArtifactObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UploadedMavenArtifact) *krmcloudbuildv1alpha1.UploadedMavenArtifactObservedState {
 	if in == nil {
 		return nil
@@ -1863,6 +2155,7 @@ func UploadedMavenArtifactObservedState_v1alpha1_FromProto(mapCtx *direct.MapCon
 	out.PushTiming = TimeSpan_v1alpha1_FromProto(mapCtx, in.GetPushTiming())
 	return out
 }
+
 func UploadedMavenArtifactObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.UploadedMavenArtifactObservedState) *pb.UploadedMavenArtifact {
 	if in == nil {
 		return nil
@@ -1873,6 +2166,7 @@ func UploadedMavenArtifactObservedState_v1alpha1_ToProto(mapCtx *direct.MapConte
 	out.PushTiming = TimeSpan_v1alpha1_ToProto(mapCtx, in.PushTiming)
 	return out
 }
+
 func UploadedNpmPackageObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UploadedNpmPackage) *krmcloudbuildv1alpha1.UploadedNpmPackageObservedState {
 	if in == nil {
 		return nil
@@ -1883,6 +2177,7 @@ func UploadedNpmPackageObservedState_v1alpha1_FromProto(mapCtx *direct.MapContex
 	out.PushTiming = TimeSpan_v1alpha1_FromProto(mapCtx, in.GetPushTiming())
 	return out
 }
+
 func UploadedNpmPackageObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.UploadedNpmPackageObservedState) *pb.UploadedNpmPackage {
 	if in == nil {
 		return nil
@@ -1893,6 +2188,7 @@ func UploadedNpmPackageObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext,
 	out.PushTiming = TimeSpan_v1alpha1_ToProto(mapCtx, in.PushTiming)
 	return out
 }
+
 func UploadedPythonPackageObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UploadedPythonPackage) *krmcloudbuildv1alpha1.UploadedPythonPackageObservedState {
 	if in == nil {
 		return nil
@@ -1903,6 +2199,7 @@ func UploadedPythonPackageObservedState_v1alpha1_FromProto(mapCtx *direct.MapCon
 	out.PushTiming = TimeSpan_v1alpha1_FromProto(mapCtx, in.GetPushTiming())
 	return out
 }
+
 func UploadedPythonPackageObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.UploadedPythonPackageObservedState) *pb.UploadedPythonPackage {
 	if in == nil {
 		return nil
@@ -1913,6 +2210,7 @@ func UploadedPythonPackageObservedState_v1alpha1_ToProto(mapCtx *direct.MapConte
 	out.PushTiming = TimeSpan_v1alpha1_ToProto(mapCtx, in.PushTiming)
 	return out
 }
+
 func UserCredential_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb.UserCredential) *krmcloudbuildv1alpha1.UserCredential {
 	if in == nil {
 		return nil
@@ -1924,6 +2222,7 @@ func UserCredential_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuild
 	// MISSING: Username
 	return out
 }
+
 func UserCredential_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.UserCredential) *cloudbuildpb.UserCredential {
 	if in == nil {
 		return nil
@@ -1935,6 +2234,7 @@ func UserCredential_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuil
 	// MISSING: Username
 	return out
 }
+
 func UserCredentialObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *cloudbuildpb.UserCredential) *krmcloudbuildv1alpha1.UserCredentialObservedState {
 	if in == nil {
 		return nil
@@ -1944,6 +2244,7 @@ func UserCredentialObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, i
 	out.Username = direct.LazyPtr(in.GetUsername())
 	return out
 }
+
 func UserCredentialObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.UserCredentialObservedState) *cloudbuildpb.UserCredential {
 	if in == nil {
 		return nil
@@ -1953,6 +2254,7 @@ func UserCredentialObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	out.Username = direct.ValueOf(in.Username)
 	return out
 }
+
 func Volume_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krmcloudbuildv1alpha1.Volume {
 	if in == nil {
 		return nil
@@ -1962,6 +2264,7 @@ func Volume_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krmclo
 	out.Path = direct.LazyPtr(in.GetPath())
 	return out
 }
+
 func Volume_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudbuildv1alpha1.Volume) *pb.Volume {
 	if in == nil {
 		return nil

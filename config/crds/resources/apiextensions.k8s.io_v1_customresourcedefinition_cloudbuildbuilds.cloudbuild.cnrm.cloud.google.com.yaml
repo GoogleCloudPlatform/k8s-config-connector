@@ -88,17 +88,42 @@ spec:
                             repository. i.e. us-east1 Defaults to the build’s location.
                           type: string
                         repositoryName:
-                          description: |-
-                            Optional. Artifact Registry repository name.
-
-                             Specified Go modules will be zipped and uploaded to Artifact Registry
-                             with this location as a prefix.
-                             e.g. my-go-repo
+                          description: Optional. Name of the Artifact Registry repository.
+                            e.g. my-go-repo
                           type: string
-                        repositoryProjectID:
+                        repositoryProjectRef:
                           description: Optional. Project ID of the Artifact Registry
                             repository. Defaults to the build project.
-                          type: string
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: The `projectID` field of a project, when
+                                not managed by Config Connector.
+                              type: string
+                            kind:
+                              description: The kind of the Project resource; optional
+                                but must be `Project` if provided.
+                              type: string
+                            name:
+                              description: The `name` field of a `Project` resource.
+                              type: string
+                            namespace:
+                              description: The `namespace` field of a `Project` resource.
+                              type: string
+                          type: object
                         sourcePath:
                           description: Optional. Source path of the go.mod file in
                             the build's workspace. If not specified, this will default
@@ -251,10 +276,35 @@ spec:
                       secret environment variable.
                     items:
                       properties:
-                        kmsKeyName:
+                        kmsKeyRef:
                           description: 'Resource name of Cloud KMS crypto key to decrypt
                             the encrypted value. In format: projects/*/locations/*/keyRings/*/cryptoKeys/*'
-                          type: string
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed KMSCryptoKey
+                                resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".
+                              type: string
+                            name:
+                              description: The name of a KMSCryptoKey resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a KMSCryptoKey resource.
+                              type: string
+                          type: object
                       type: object
                     type: array
                   secretManager:
@@ -268,10 +318,37 @@ spec:
                             across all of a build's secrets, and must be used by at
                             least one build step.
                           type: string
-                        versionName:
+                        versionRef:
                           description: 'Resource name of the SecretVersion. In format:
                             projects/*/secrets/*/versions/*'
-                          type: string
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed SecretManagerSecretVersion
+                                resource. Should be in the format "projects/{{projectID}}/secrets/{{secretID}}/versions/{{versionID}}".
+                              type: string
+                            name:
+                              description: The name of a SecretManagerSecretVersion
+                                resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a SecretManagerSecretVersion
+                                resource.
+                              type: string
+                          type: object
                       type: object
                     type: array
                 type: object
@@ -303,11 +380,39 @@ spec:
                         repository:
                           description: Required. The kind of repo (url or dev connect).
                           properties:
-                            developerConnect:
+                            developerConnectRef:
                               description: The Developer Connect Git repository link
                                 or the url that matches a repository link in the current
                                 project, formatted as `projects/*/locations/*/connections/*/gitRepositoryLink/*`
-                              type: string
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: A reference to an externally managed
+                                    DeveloperConnectGitRepositoryLink resource. Should
+                                    be in the format "projects/{{projectID}}/locations/{{location}}/connections/{{connectionID}}/gitRepositoryLinks/{{gitRepositoryLinkID}}".
+                                  type: string
+                                name:
+                                  description: The name of a DeveloperConnectGitRepositoryLink
+                                    resource.
+                                  type: string
+                                namespace:
+                                  description: The namespace of a DeveloperConnectGitRepositoryLink
+                                    resource.
+                                  type: string
+                              type: object
                             url:
                               description: Location of the Git repository.
                               type: string
@@ -329,13 +434,37 @@ spec:
                   http:
                     description: Configuration for HTTP related git operations.
                     properties:
-                      proxySecretVersionName:
+                      proxySecretVersionRef:
                         description: SecretVersion resource of the HTTP proxy URL.
-                          The Service Account used in the build (either the default
-                          Service Account or user-specified Service Account) should
-                          have `secretmanager.versions.access` permissions on this
-                          secret. The proxy URL should be in format `[protocol://][user[:password]@]proxyhost[:port]`.
-                        type: string
+                          The expected format is `projects/{project}/secrets/{secret}/versions/{version}`.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed SecretManagerSecretVersion
+                              resource. Should be in the format "projects/{{projectID}}/secrets/{{secretID}}/versions/{{versionID}}".
+                            type: string
+                          name:
+                            description: The name of a SecretManagerSecretVersion
+                              resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a SecretManagerSecretVersion
+                              resource.
+                            type: string
+                        type: object
                     type: object
                 type: object
               images:
@@ -353,60 +482,81 @@ spec:
                 items:
                   type: string
                 type: array
-              logsBucket:
+              location:
+                description: The location that this resource belongs to.
+                type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
+              logsBucketRef:
                 description: Cloud Storage bucket where logs should be written (see
                   [Bucket Name Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
                   Logs file names will be of the format `${logs_bucket}/log-${build_id}.txt`.
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed StorageBucket
+                      resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".
+                    type: string
+                  name:
+                    description: The name of a StorageBucket resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a StorageBucket resource.
+                    type: string
+                type: object
               options:
                 description: Special options for this build.
                 properties:
                   automapSubstitutions:
-                    description: Option to include built-in and custom substitutions
-                      as env variables for all build steps.
+                    description: Option to specify whether reserved substitutions
+                      should be automapped.
                     type: boolean
                   defaultLogsBucketBehavior:
                     description: Optional. Option to specify how default logs buckets
-                      are setup.
+                      are localized.
                     type: string
                   diskSizeGB:
                     description: Requested disk size for the VM that runs the build.
                       Note that this is *NOT* "disk free"; some of the space will
                       be used by the operating system and build utilities. Also note
                       that this is the minimum disk size that will be allocated for
-                      the build -- the build may run with a larger disk than requested.
-                      At present, the maximum disk size is 4000GB; builds that request
-                      more than the maximum are rejected with an error.
+                      the build (see until_waste). Disk size is specified in GB.
                     format: int64
                     type: integer
                   dynamicSubstitutions:
-                    description: |-
-                      Option to specify whether or not to apply bash style string
-                       operations to the substitutions.
-
-                       NOTE: this is always enabled for triggered builds and cannot be
-                       overridden in the build configuration file.
+                    description: Option to specify whether default substitutions should
+                      be replaced with a regex-based dynamic substitutions, and whether
+                      dynamic substitutions should be evaluated.
                     type: boolean
                   enableStructuredLogging:
-                    description: |-
-                      Optional. Option to specify whether structured logging is enabled.
-
-                       If true, JSON-formatted logs are parsed as structured logs.
+                    description: Optional. Option to specify whether structured logging
+                      is enabled.
                     type: boolean
                   env:
-                    description: |-
-                      A list of global environment variable definitions that will exist for all
-                       build steps in this build. If a variable is defined in both globally and in
-                       a build step, the variable will use the build step value.
-
-                       The elements are of the form "KEY=VALUE" for the environment variable "KEY"
-                       being given the value "VALUE".
+                    description: A list of global environment variable definitions
+                      that will exist for all build steps in this build. If a variable
+                      is defined in both this field and in a `BuildStep`, the value
+                      in `BuildStep` will be used.
                     items:
                       type: string
                     type: array
                   logStreamingOption:
                     description: Option to define build log streaming behavior to
-                      Cloud Storage.
+                      Google Cloud Storage.
                     type: string
                   logging:
                     description: Option to specify the logging mode, which determines
@@ -423,14 +573,39 @@ spec:
                        pool](https://cloud.google.com/build/docs/private-pools/run-builds-in-private-pool)
                        for more information.
                     properties:
-                      name:
+                      nameRef:
                         description: |-
-                          The `WorkerPool` resource to execute the build on.
+                          The WorkerPool resource to execute the build on.
                            You must have `cloudbuild.workerpools.use` on the project hosting the
                            WorkerPool.
 
-                           Format projects/{project}/locations/{location}/workerPools/{workerPoolId}
-                        type: string
+                           Format projects/{project}/locations/{location}/workerPools/{workerPool}
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed CloudBuildWorkerPool
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/workerPools/{{workerPoolID}}".
+                            type: string
+                          name:
+                            description: The name of a CloudBuildWorkerPool resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a CloudBuildWorkerPool resource.
+                            type: string
+                        type: object
                     type: object
                   requestedVerifyOption:
                     description: Requested verifiability options.
@@ -450,11 +625,9 @@ spec:
                     type: array
                   substitutionOption:
                     description: |-
-                      Option to specify behavior when there is an error in the substitution
-                       checks.
+                      Option to specify behavior when there is an error in the substitution checks.
 
-                       NOTE: this is always set to ALLOW_LOOSE for triggered builds and cannot
-                       be overridden in the build configuration file.
+                       NOTE: this is always set to ALLOW_LOOSE for builds.
                     type: string
                   volumes:
                     description: |-
@@ -462,11 +635,10 @@ spec:
 
                        Each volume is created as an empty volume prior to starting the build
                        process. Upon completion of the build, volumes and their contents are
-                       discarded. Global volume names and paths cannot conflict with the volumes
-                       defined a build step.
+                       discarded. Global volume names was be unique among all volumes.
 
-                       Using a global volume in a build with only one step is not valid as
-                       it is indicative of a build request with an incorrect configuration.
+                       In addition, a volume will also be created for each normal build step
+                       under `/workspace` to serve as the common workspace for all steps.
                     items:
                       properties:
                         name:
@@ -485,12 +657,9 @@ spec:
                           type: string
                       type: object
                     type: array
-                  workerPool:
-                    description: This field deprecated; please use `pool.name` instead.
-                    type: string
                 type: object
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -530,8 +699,9 @@ spec:
                    The TTL starts ticking from create_time.
                 type: string
               resourceID:
-                description: The CloudBuildBuild name. If not given, the metadata.name
-                  will be used.
+                description: Immutable. Optional. The server-generated name of the
+                  resource. Used for acquisition only. Leave unset to create a new
+                  resource.
                 type: string
               secrets:
                 description: 'Secrets to decrypt using Cloud Key Management Service.
@@ -540,16 +710,65 @@ spec:
                   to access secrets from Secret Manager. For instructions, see: https://cloud.google.com/cloud-build/docs/securing-builds/use-secrets'
                 items:
                   properties:
-                    kmsKeyName:
+                    kmsKeyRef:
                       description: Cloud KMS key name to use to decrypt these envs.
-                      type: string
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed KMSCryptoKey
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".
+                          type: string
+                        name:
+                          description: The name of a KMSCryptoKey resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a KMSCryptoKey resource.
+                          type: string
+                      type: object
                   type: object
                 type: array
-              serviceAccount:
+              serviceAccountRef:
                 description: IAM service account whose credentials will be used at
                   build runtime. Must be of the format `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
                   ACCOUNT can be email address or uniqueId of the service account.
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `email` field of an `IAMServiceAccount` resource.
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
               source:
                 description: The location of the source files to build.
                 properties:
@@ -599,28 +818,57 @@ spec:
                         type: string
                       dir:
                         description: |-
-                          Directory, relative to the source root, in which to run the build.
+                          Optional. Directory, relative to the source root, in which to run the build.
 
                            This must be a relative path. If a step's `dir` is specified and is an
                            absolute path, this value is ignored for that step's execution.
                         type: string
                       invertRegex:
-                        description: Only trigger a build if the revision regex does
-                          NOT match the revision regex.
+                        description: Optional. Only trigger a build if the revision
+                          regex does NOT match the revision regex.
                         type: boolean
-                      projectID:
-                        description: ID of the project that owns the Cloud Source
-                          Repository. If omitted, the project ID requesting the build
-                          is assumed.
-                        type: string
+                      projectRef:
+                        description: Optional. ID of the project that owns the Cloud
+                          Source Repository. If omitted, the project ID requesting
+                          the build is assumed.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: The `projectID` field of a project, when
+                              not managed by Config Connector.
+                            type: string
+                          kind:
+                            description: The kind of the Project resource; optional
+                              but must be `Project` if provided.
+                            type: string
+                          name:
+                            description: The `name` field of a `Project` resource.
+                            type: string
+                          namespace:
+                            description: The `namespace` field of a `Project` resource.
+                            type: string
+                        type: object
                       repoName:
-                        description: Name of the Cloud Source Repository.
+                        description: Required. Name of the Cloud Source Repository.
                         type: string
                       substitutions:
                         additionalProperties:
                           type: string
-                        description: Substitutions to use in a triggered build. Should
-                          only be used with RunBuildTrigger
+                        description: Optional. Substitutions to use in a triggered
+                          build. Should only be used with RunBuildTrigger
                         type: object
                       tagName:
                         description: |-
@@ -634,10 +882,34 @@ spec:
                     description: If provided, get the source from this location in
                       Cloud Storage.
                     properties:
-                      bucket:
-                        description: Cloud Storage bucket containing the source (see
-                          [Bucket Name Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
-                        type: string
+                      bucketRef:
+                        description: Cloud Storage bucket.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed StorageBucket
+                              resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".
+                            type: string
+                          name:
+                            description: The name of a StorageBucket resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a StorageBucket resource.
+                            type: string
+                        type: object
                       generation:
                         description: Cloud Storage generation for the object. If the
                           generation is omitted, the latest generation will be used.
@@ -647,22 +919,49 @@ spec:
                         description: |-
                           Cloud Storage object containing the source.
 
-                           This object must be a zipped (`.zip`) or gzipped archive file (`.tar.gz`)
-                           containing source to build.
+                           This object must be a gzipped archive file (`.tar.gz`) containing source to
+                           build.
                         type: string
                       sourceFetcher:
-                        description: Option to specify the tool to fetch the source
-                          file for the build.
+                        description: Optional. Option to specify the source code source,
+                          currently used for Source-to-Image Builds.
                         type: string
                     type: object
                   storageSourceManifest:
-                    description: If provided, get the source from this manifest in
-                      Cloud Storage. This feature is in Preview; see description [here](https://github.com/GoogleCloudPlatform/cloud-builders/tree/master/gcs-fetcher).
+                    description: |-
+                      If provided, get the source from this location in a Cloud Storage
+                       manifest.
+
+                       This feature is in Preview.
                     properties:
-                      bucket:
-                        description: Cloud Storage bucket containing the source manifest
-                          (see [Bucket Name Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
-                        type: string
+                      bucketRef:
+                        description: Cloud Storage bucket.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed StorageBucket
+                              resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".
+                            type: string
+                          name:
+                            description: The name of a StorageBucket resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a StorageBucket resource.
+                            type: string
+                        type: object
                       generation:
                         description: Cloud Storage generation for the object. If the
                           generation is omitted, the latest generation will be used.
@@ -670,9 +969,10 @@ spec:
                         type: integer
                       object:
                         description: |-
-                          Cloud Storage object containing the source manifest.
+                          Cloud Storage object containing the source.
 
-                           This object must be a JSON file.
+                           This object must be a gzipped archive file (`.tar.gz`) containing source to
+                           build.
                         type: string
                     type: object
                 type: object
@@ -844,6 +1144,7 @@ spec:
                    Default time is 60 minutes.
                 type: string
             required:
+            - location
             - projectRef
             type: object
           status:
