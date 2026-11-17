@@ -1,3 +1,16 @@
+### [2026-11-16] Greenfield Step 2: Implement direct controller, E2E fixtures, and fuzzer for BackupDRAutoProtectionPolicy
+- **Context**: Greenfield Step 2 implementation for `BackupDRAutoProtectionPolicy` (Issue #15802).
+- **Details**:
+  1. Upgraded `cloud.google.com/go/backupdr` to `v1.20.0` across `go.mod` and `mockgcp/go.mod` to support `AutoProtectionPolicy` client methods and protobuf types.
+  2. In `pkg/controller/direct/backupdr/backupdrbackupplanassociation_fuzzer.go`, marked new fields introduced in v1.20.0 (`.alloydb_cluster_backup_plan_association_properties` and `.auto_protection_policy_binding`) as untriaged.
+  3. Removed `AutoProtectionPolicy` messages from `--skip-proto` in `apis/backupdr/generate.sh` and regenerated mappers into `pkg/controller/direct/backupdr/mapper.generated.go`.
+  4. Generated direct controller (`backupdrautoprotectionpolicy_controller.go`) and roundtrip fuzzer (`backupdrautoprotectionpolicy_fuzzer.generated.go`).
+  5. Implemented `ObservedState` mapping on `Create` and `Update` from the LRO response.
+  6. Added reference normalization in `Update` via `projectMapper.ReplaceProjectNumberWithIDInLink` for `detail.BackupPlan` to prevent spurious update diffs caused by GCP returning project numbers in resource URLs while KRM spec provides project IDs.
+  7. Created minimal and full E2E fixtures (`backupdrautoprotectionpolicy-minimal` and `backupdrautoprotectionpolicy-full`), recording them against real GCP. Discovered that GCP BackupDR MVP restricts `criteria.matchingConditions[].labelCondition.values` to exactly 1 value per condition.
+  8. Verified all tests pass: `TestFocusedMappers`, `TestDirectResourceFileNaming`, `TestGenerateScripts`, `TestRegisteredTemplatesMatchCAI`, and real GCP E2E validation checks (7/7 passed).
+- **Impact**: Delivers complete direct controller, roundtrip fuzzer, and real GCP verified E2E fixtures for `BackupDRAutoProtectionPolicy`.
+
 ### [2026-11-13] Greenfield Step 1b: Triage judgement queue and finalize direct KRM types and identity for BackupDRRestoreVerificationPlan
 - **Context**: Triaged `apis/backupdr/judgement_queue.yaml` and finalized KRM types and identity for `BackupDRRestoreVerificationPlan` (Issue #15568).
 - **Details**:

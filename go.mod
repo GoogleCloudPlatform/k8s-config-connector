@@ -26,7 +26,7 @@ require (
 	cloud.google.com/go/asset v1.27.0
 	cloud.google.com/go/assuredworkloads v1.18.0
 	cloud.google.com/go/automl v1.20.0
-	cloud.google.com/go/backupdr v1.6.0
+	cloud.google.com/go/backupdr v1.20.0
 	cloud.google.com/go/batch v1.19.0
 	cloud.google.com/go/beyondcorp v1.7.0
 	cloud.google.com/go/bigquery v1.85.0

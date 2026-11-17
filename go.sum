@@ -236,8 +236,8 @@ cloud.google.com/go/automl v1.13.4/go.mod h1:ULqwX/OLZ4hBVfKQaMtxMSTlPx0GqGbWN8u
 cloud.google.com/go/automl v1.13.5/go.mod h1:MDw3vLem3yh+SvmSgeYUmUKqyls6NzSumDm9OJ3xJ1Y=
 cloud.google.com/go/automl v1.20.0 h1:Gh9BlFogtzwSxaEfnx33XD8xJ+z0v33yLQd46/Ka7uM=
 cloud.google.com/go/automl v1.20.0/go.mod h1:OkHxjbVDblDafhwuP8yEkz1xcUJhgcbhbsieCW7GaiI=
-cloud.google.com/go/backupdr v1.6.0 h1:Li555lIgwiURa9RjqZi1ry1pPOGzpE5pmI98szXyGAc=
-cloud.google.com/go/backupdr v1.6.0/go.mod h1:uX5Du+agaVKsrcm7qSWn1S/dN5sogKXlEH/JS5j4868=
+cloud.google.com/go/backupdr v1.20.0 h1:DarV1vWZje5mhYxqhvURsBJF5fJ5esDF0uAz5asWbgQ=
+cloud.google.com/go/backupdr v1.20.0/go.mod h1:3fyV4aw2NaHPWdtvRhLXRPpif3kNMbNekZ2ZqZTkKC8=
 cloud.google.com/go/baremetalsolution v0.3.0/go.mod h1:XOrocE+pvK1xFfleEnShBlNAXf+j5blPPxrhjKgnIFc=
 cloud.google.com/go/baremetalsolution v0.4.0/go.mod h1:BymplhAadOO/eBa7KewQ0Ppg4A4Wplbn+PsFKRLo0uI=
 cloud.google.com/go/baremetalsolution v0.5.0/go.mod h1:dXGxEkmR9BMwxhzBhV0AioD0ULBmuLZI8CdwalUxuss=

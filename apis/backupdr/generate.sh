@@ -76,7 +76,7 @@ ${CONTROLLERBUILDER} generate-mapper \
     --api-version backupdr.cnrm.cloud.google.com/v1beta1 \
     --include-skipped-output \
     --prepopulate-resource \
-    --skip-proto RestoreVerificationPlan,RestoreVerificationCleanupRule,AutoProtectionPolicy,BackupPlanDetail,Criteria,MatchingCondition,PolicyEvaluationSummary,BindingSummary,KeyValuePair
+    --skip-proto RestoreVerificationPlan,RestoreVerificationCleanupRule
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

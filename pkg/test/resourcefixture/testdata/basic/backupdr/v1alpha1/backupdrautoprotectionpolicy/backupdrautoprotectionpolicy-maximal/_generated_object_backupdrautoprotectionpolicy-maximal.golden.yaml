@@ -1,0 +1,40 @@
+apiVersion: backupdr.cnrm.cloud.google.com/v1alpha1
+kind: BackupDRAutoProtectionPolicy
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: backupdrautoprotectionpolicy-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  backupPlanDetails:
+  - backupPlanRef:
+      name: backupdrbackupplan-max-${uniqueId}
+    resourceType: compute.googleapis.com/Instance
+  criteria:
+    matchingConditions:
+    - labelCondition:
+        key: env
+        values:
+        - stage
+  description: Updated auto protection policy maximal test
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/autoProtectionPolicies/backupdrautoprotectionpolicy-maximal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    etag: abcdef123456
+    state: ACTIVE
+    updateTime: "1970-01-01T00:00:00Z"
