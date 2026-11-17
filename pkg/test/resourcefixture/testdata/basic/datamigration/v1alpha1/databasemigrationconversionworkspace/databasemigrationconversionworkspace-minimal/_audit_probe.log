@@ -1,0 +1,37 @@
+GET https://datamigration.googleapis.com/v1/projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-min-${uniqueId}
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destination": {
+    "engine": "POSTGRESQL",
+    "version": "14"
+  },
+  "destinationProvider": "CLOUDSQL",
+  "displayName": "db-mw-min-${uniqueId}",
+  "globalSettings": {
+    "has_apply": "false",
+    "has_apply_success": "false",
+    "has_convert": "false",
+    "has_convert_success": "false",
+    "has_dry_run": "false",
+    "has_dry_run_success": "false",
+    "has_ora2pg": "false",
+    "has_ora2pg_success": "false",
+    "has_rules": "ConditionalColumnSetValueRule: 3, ConvertRowIdToColumnRule: 1",
+    "has_seed": "false",
+    "has_seed_success": "false",
+    "needs_conversion_for_issues": "false"
+  },
+  "latestCommitId": "37d8f659",
+  "latestCommitTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-min-${uniqueId}",
+  "source": {
+    "engine": "ORACLE",
+    "version": "11"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

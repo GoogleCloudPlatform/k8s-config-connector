@@ -8,8 +8,8 @@ spec:
   location: us-central1
   displayName: Maximal Conversion Workspace
   source:
-    engine: MYSQL
-    version: "5.7"
+    engine: ORACLE
+    version: "11"
   destination:
     engine: POSTGRESQL
     version: "14"
