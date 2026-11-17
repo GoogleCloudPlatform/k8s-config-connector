@@ -3,6 +3,7 @@
 [spec_etag] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=chroniclenativedashboards.chronicle.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=chroniclerules.chronicle.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
+[spec_etag] crd=clouddeployreleases.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=cloudsecuritycomplianceframeworkdeployments.cloudsecuritycompliance.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=dataplexdataattributes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=dataplexencryptionconfigs.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag

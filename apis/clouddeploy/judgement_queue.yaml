@@ -1,0 +1,79 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: CloudDeployRelease
+    group: clouddeploy.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: CloudDeployRelease
+    group: clouddeploy.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/releases/{release}" contains ancestor segment(s) deliveryPipelines/{delivery_pipeline} with no matching reference or field on CloudDeployReleaseSpec
+    status: open
+  - kind: CloudDeployRelease
+    group: clouddeploy.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}, and no DeliveryPipelineRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: CloudDeployRelease
+    group: clouddeploy.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.deliveryPipelines.releases: https://docs.cloud.google.com/deploy/docs/reference/rest/v1/projects.locations.deliveryPipelines.releases'
+    status: open
+  - kind: CloudDeployRelease
+    group: clouddeploy.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: open
+  - kind: CloudDeployRelease
+    group: clouddeploy.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: CloudDeployRelease
+    group: clouddeploy.cnrm.cloud.google.com
+    field: .spec.skaffoldConfigURI
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: CloudDeployRelease
+    group: clouddeploy.cnrm.cloud.google.com
+    field: .status.observedState.targetArtifacts
+    reason: message-map-derived
+    detail: derived as map[string]TargetArtifact from proto google.cloud.deploy.v1.TargetArtifact; verify Go type and mapping
+    status: open
+  - kind: CloudDeployRelease
+    group: clouddeploy.cnrm.cloud.google.com
+    field: .status.observedState.targetRenders
+    reason: message-map-derived
+    detail: derived as map[string]Release_TargetRender from proto google.cloud.deploy.v1.Release.TargetRender; verify Go type and mapping
+    status: open
+  - kind: CloudDeployRelease
+    group: clouddeploy.cnrm.cloud.google.com
+    field: .status.observedState.targetSnapshots[].associatedEntities
+    reason: message-map-derived
+    detail: derived as map[string]AssociatedEntities from proto google.cloud.deploy.v1.AssociatedEntities; verify Go type and mapping
+    status: open

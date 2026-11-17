@@ -57,6 +57,7 @@
 [not_representable] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.audioProcessingConfig.ambientSoundConfig.gcsURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.objects.location" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].googleCloudStorage.source" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=clouddeployreleases.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.skaffoldConfigURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=clouddeploytargets.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionConfigs[].artifactStorage" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=clouddeploytargets.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionConfigs[].defaultPool.artifactStorage" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=clouddeploytargets.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionConfigs[].privatePool.artifactStorage" reason=gcs-path-decomposable-as-bucketref-plus-path

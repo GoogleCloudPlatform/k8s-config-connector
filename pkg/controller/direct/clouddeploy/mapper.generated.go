@@ -34,6 +34,49 @@ import (
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
 )
 
+/* found existing non-generated mapping function "AdvanceRolloutRule_v1alpha1_FromProto", skipping
+func AdvanceRolloutRule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AdvanceRolloutRule) *krmclouddeployv1alpha1.AdvanceRolloutRule {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.AdvanceRolloutRule{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.SourcePhases = in.SourcePhases
+	out.Wait = direct.StringDuration_FromProto(mapCtx, in.GetWait())
+	// MISSING: Condition
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AdvanceRolloutRule_v1alpha1_ToProto", skipping
+func AdvanceRolloutRule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.AdvanceRolloutRule) *pb.AdvanceRolloutRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AdvanceRolloutRule{}
+	out.Id = direct.ValueOf(in.ID)
+	out.SourcePhases = in.SourcePhases
+	out.Wait = direct.StringDuration_ToProto(mapCtx, in.Wait)
+	// MISSING: Condition
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "AdvanceRolloutRuleObservedState_v1alpha1_FromProto", skipping
+
+	func AdvanceRolloutRuleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AdvanceRolloutRule) *krmclouddeployv1alpha1.AdvanceRolloutRuleObservedState {
+		if in == nil {
+			return nil
+		}
+		out := &krmclouddeployv1alpha1.AdvanceRolloutRuleObservedState{}
+		// MISSING: ID
+		// MISSING: SourcePhases
+		// MISSING: Wait
+		out.Condition = AutomationRuleCondition_v1alpha1_FromProto(mapCtx, in.GetCondition())
+		return out
+	}
+*/
 func AdvanceRolloutRuleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.AdvanceRolloutRuleObservedState) *pb.AdvanceRolloutRule {
 	if in == nil {
 		return nil
@@ -65,6 +108,102 @@ func AnthosCluster_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeplo
 	}
 	return out
 }
+
+/* found existing non-generated mapping function "AssociatedEntities_v1alpha1_FromProto", skipping
+func AssociatedEntities_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssociatedEntities) *krmclouddeployv1alpha1.AssociatedEntities {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.AssociatedEntities{}
+	out.GKEClusters = direct.Slice_FromProto(mapCtx, in.GkeClusters, GKECluster_v1alpha1_FromProto)
+	out.AnthosClusters = direct.Slice_FromProto(mapCtx, in.AnthosClusters, AnthosCluster_v1alpha1_FromProto)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AssociatedEntities_v1alpha1_ToProto", skipping
+func AssociatedEntities_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.AssociatedEntities) *pb.AssociatedEntities {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AssociatedEntities{}
+	out.GkeClusters = direct.Slice_ToProto(mapCtx, in.GKEClusters, GKECluster_v1alpha1_ToProto)
+	out.AnthosClusters = direct.Slice_ToProto(mapCtx, in.AnthosClusters, AnthosCluster_v1alpha1_ToProto)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AutomationResourceSelector_v1alpha1_FromProto", skipping
+func AutomationResourceSelector_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutomationResourceSelector) *krmclouddeployv1alpha1.AutomationResourceSelector {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.AutomationResourceSelector{}
+	out.Targets = direct.Slice_FromProto(mapCtx, in.Targets, TargetAttribute_v1alpha1_FromProto)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AutomationResourceSelector_v1alpha1_ToProto", skipping
+func AutomationResourceSelector_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.AutomationResourceSelector) *pb.AutomationResourceSelector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutomationResourceSelector{}
+	out.Targets = direct.Slice_ToProto(mapCtx, in.Targets, TargetAttribute_v1alpha1_ToProto)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AutomationRule_v1alpha1_FromProto", skipping
+func AutomationRule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutomationRule) *krmclouddeployv1alpha1.AutomationRule {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.AutomationRule{}
+	out.PromoteReleaseRule = PromoteReleaseRule_v1alpha1_FromProto(mapCtx, in.GetPromoteReleaseRule())
+	out.AdvanceRolloutRule = AdvanceRolloutRule_v1alpha1_FromProto(mapCtx, in.GetAdvanceRolloutRule())
+	out.RepairRolloutRule = RepairRolloutRule_v1alpha1_FromProto(mapCtx, in.GetRepairRolloutRule())
+	out.TimedPromoteReleaseRule = TimedPromoteReleaseRule_v1alpha1_FromProto(mapCtx, in.GetTimedPromoteReleaseRule())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AutomationRule_v1alpha1_ToProto", skipping
+func AutomationRule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.AutomationRule) *pb.AutomationRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutomationRule{}
+	if oneof := PromoteReleaseRule_v1alpha1_ToProto(mapCtx, in.PromoteReleaseRule); oneof != nil {
+		out.Rule = &pb.AutomationRule_PromoteReleaseRule{PromoteReleaseRule: oneof}
+	}
+	if oneof := AdvanceRolloutRule_v1alpha1_ToProto(mapCtx, in.AdvanceRolloutRule); oneof != nil {
+		out.Rule = &pb.AutomationRule_AdvanceRolloutRule{AdvanceRolloutRule: oneof}
+	}
+	if oneof := RepairRolloutRule_v1alpha1_ToProto(mapCtx, in.RepairRolloutRule); oneof != nil {
+		out.Rule = &pb.AutomationRule_RepairRolloutRule{RepairRolloutRule: oneof}
+	}
+	if oneof := TimedPromoteReleaseRule_v1alpha1_ToProto(mapCtx, in.TimedPromoteReleaseRule); oneof != nil {
+		out.Rule = &pb.AutomationRule_TimedPromoteReleaseRule{TimedPromoteReleaseRule: oneof}
+	}
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "AutomationRuleCondition_v1alpha1_FromProto", skipping
+
+	func AutomationRuleCondition_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutomationRuleCondition) *krmclouddeployv1alpha1.AutomationRuleCondition {
+		if in == nil {
+			return nil
+		}
+		out := &krmclouddeployv1alpha1.AutomationRuleCondition{}
+		out.TargetsPresentCondition = TargetsPresentCondition_v1alpha1_FromProto(mapCtx, in.GetTargetsPresentCondition())
+		out.TimedPromoteReleaseCondition = TimedPromoteReleaseCondition_v1alpha1_FromProto(mapCtx, in.GetTimedPromoteReleaseCondition())
+		return out
+	}
+*/
 func AutomationRuleCondition_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.AutomationRuleCondition) *pb.AutomationRuleCondition {
 	if in == nil {
 		return nil
@@ -76,6 +215,22 @@ func AutomationRuleCondition_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	}
 	return out
 }
+
+/*
+found existing non-generated mapping function "AutomationRuleObservedState_v1alpha1_FromProto", skipping
+
+	func AutomationRuleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutomationRule) *krmclouddeployv1alpha1.AutomationRuleObservedState {
+		if in == nil {
+			return nil
+		}
+		out := &krmclouddeployv1alpha1.AutomationRuleObservedState{}
+		out.PromoteReleaseRule = PromoteReleaseRuleObservedState_v1alpha1_FromProto(mapCtx, in.GetPromoteReleaseRule())
+		out.AdvanceRolloutRule = AdvanceRolloutRuleObservedState_v1alpha1_FromProto(mapCtx, in.GetAdvanceRolloutRule())
+		out.RepairRolloutRule = RepairRolloutRuleObservedState_v1alpha1_FromProto(mapCtx, in.GetRepairRolloutRule())
+		out.TimedPromoteReleaseRule = TimedPromoteReleaseRuleObservedState_v1alpha1_FromProto(mapCtx, in.GetTimedPromoteReleaseRule())
+		return out
+	}
+*/
 func AutomationRuleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.AutomationRuleObservedState) *pb.AutomationRule {
 	if in == nil {
 		return nil
@@ -93,6 +248,24 @@ func AutomationRuleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	if oneof := TimedPromoteReleaseRuleObservedState_v1alpha1_ToProto(mapCtx, in.TimedPromoteReleaseRule); oneof != nil {
 		out.Rule = &pb.AutomationRule_TimedPromoteReleaseRule{TimedPromoteReleaseRule: oneof}
 	}
+	return out
+}
+func BuildArtifact_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BuildArtifact) *krmclouddeployv1alpha1.BuildArtifact {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.BuildArtifact{}
+	out.Image = direct.LazyPtr(in.GetImage())
+	out.Tag = direct.LazyPtr(in.GetTag())
+	return out
+}
+func BuildArtifact_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.BuildArtifact) *pb.BuildArtifact {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BuildArtifact{}
+	out.Image = direct.ValueOf(in.Image)
+	out.Tag = direct.ValueOf(in.Tag)
 	return out
 }
 func Canary_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Canary) *krmclouddeployv1beta1.Canary {
@@ -141,6 +314,352 @@ func CanaryDeployment_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddep
 	out.Postdeploy = Postdeploy_v1beta1_ToProto(mapCtx, in.Postdeploy)
 	return out
 }
+func CanaryDeploymentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CanaryDeployment) *krmclouddeployv1alpha1.CanaryDeploymentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.CanaryDeploymentObservedState{}
+	out.Percentages = in.Percentages
+	out.Verify = direct.LazyPtr(in.GetVerify())
+	out.Predeploy = Predeploy_v1alpha1_FromProto(mapCtx, in.GetPredeploy())
+	out.Postdeploy = Postdeploy_v1alpha1_FromProto(mapCtx, in.GetPostdeploy())
+	return out
+}
+func CanaryDeploymentObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.CanaryDeploymentObservedState) *pb.CanaryDeployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CanaryDeployment{}
+	out.Percentages = in.Percentages
+	out.Verify = direct.ValueOf(in.Verify)
+	out.Predeploy = Predeploy_v1alpha1_ToProto(mapCtx, in.Predeploy)
+	out.Postdeploy = Postdeploy_v1alpha1_ToProto(mapCtx, in.Postdeploy)
+	return out
+}
+func CanaryObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Canary) *krmclouddeployv1alpha1.CanaryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.CanaryObservedState{}
+	out.RuntimeConfig = RuntimeConfigObservedState_v1alpha1_FromProto(mapCtx, in.GetRuntimeConfig())
+	out.CanaryDeployment = CanaryDeploymentObservedState_v1alpha1_FromProto(mapCtx, in.GetCanaryDeployment())
+	out.CustomCanaryDeployment = CustomCanaryDeploymentObservedState_v1alpha1_FromProto(mapCtx, in.GetCustomCanaryDeployment())
+	return out
+}
+func CanaryObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.CanaryObservedState) *pb.Canary {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Canary{}
+	out.RuntimeConfig = RuntimeConfigObservedState_v1alpha1_ToProto(mapCtx, in.RuntimeConfig)
+	if oneof := CanaryDeploymentObservedState_v1alpha1_ToProto(mapCtx, in.CanaryDeployment); oneof != nil {
+		out.Mode = &pb.Canary_CanaryDeployment{CanaryDeployment: oneof}
+	}
+	if oneof := CustomCanaryDeploymentObservedState_v1alpha1_ToProto(mapCtx, in.CustomCanaryDeployment); oneof != nil {
+		out.Mode = &pb.Canary_CustomCanaryDeployment{CustomCanaryDeployment: oneof}
+	}
+	return out
+}
+
+/* found existing non-generated mapping function "CloudDeployAutomationObservedState_v1alpha1_FromProto", skipping
+func CloudDeployAutomationObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Automation) *krmclouddeployv1alpha1.CloudDeployAutomationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.CloudDeployAutomationObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, AutomationRuleObservedState_v1alpha1_FromProto)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "CloudDeployAutomationObservedState_v1alpha1_ToProto", skipping
+func CloudDeployAutomationObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.CloudDeployAutomationObservedState) *pb.Automation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Automation{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, AutomationRuleObservedState_v1alpha1_ToProto)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "CloudDeployAutomationSpec_v1alpha1_FromProto", skipping
+func CloudDeployAutomationSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Automation) *krmclouddeployv1alpha1.CloudDeployAutomationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.CloudDeployAutomationSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Annotations = in.Annotations
+	// MISSING: Labels
+	out.Suspended = direct.LazyPtr(in.GetSuspended())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	out.Selector = AutomationResourceSelector_v1alpha1_FromProto(mapCtx, in.GetSelector())
+	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, AutomationRule_v1alpha1_FromProto)
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "CloudDeployAutomationSpec_v1alpha1_ToProto", skipping
+
+	func CloudDeployAutomationSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.CloudDeployAutomationSpec) *pb.Automation {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Automation{}
+		// MISSING: Name
+		out.Description = direct.ValueOf(in.Description)
+		out.Annotations = in.Annotations
+		// MISSING: Labels
+		out.Suspended = direct.ValueOf(in.Suspended)
+		if in.ServiceAccountRef != nil {
+			out.ServiceAccount = in.ServiceAccountRef.External
+		}
+		out.Selector = AutomationResourceSelector_v1alpha1_ToProto(mapCtx, in.Selector)
+		out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, AutomationRule_v1alpha1_ToProto)
+		return out
+	}
+*/
+func CloudDeployReleaseObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Release) *krmclouddeployv1alpha1.CloudDeployReleaseObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.CloudDeployReleaseObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Abandoned = direct.LazyPtr(in.GetAbandoned())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.RenderStartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRenderStartTime())
+	out.RenderEndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRenderEndTime())
+	out.DeliveryPipelineSnapshot = DeliveryPipelineObservedState_v1alpha1_FromProto(mapCtx, in.GetDeliveryPipelineSnapshot())
+	out.TargetSnapshots = direct.Slice_FromProto(mapCtx, in.TargetSnapshots, TargetObservedState_v1alpha1_FromProto)
+	out.CustomTargetTypeSnapshots = direct.Slice_FromProto(mapCtx, in.CustomTargetTypeSnapshots, CustomTargetTypeObservedState_v1alpha1_FromProto)
+	out.RenderState = direct.Enum_FromProto(mapCtx, in.GetRenderState())
+	if in.TargetArtifacts != nil {
+		out.TargetArtifacts = make(map[string]krmclouddeployv1alpha1.TargetArtifact, len(in.TargetArtifacts))
+		for k, v := range in.TargetArtifacts {
+			if c := TargetArtifact_v1alpha1_FromProto(mapCtx, v); c != nil {
+				out.TargetArtifacts[k] = *c
+			}
+		}
+	}
+	if in.TargetRenders != nil {
+		out.TargetRenders = make(map[string]krmclouddeployv1alpha1.Release_TargetRender, len(in.TargetRenders))
+		for k, v := range in.TargetRenders {
+			if c := Release_TargetRender_v1alpha1_FromProto(mapCtx, v); c != nil {
+				out.TargetRenders[k] = *c
+			}
+		}
+	}
+	out.Condition = Release_ReleaseCondition_v1alpha1_FromProto(mapCtx, in.GetCondition())
+	return out
+}
+func CloudDeployReleaseObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.CloudDeployReleaseObservedState) *pb.Release {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Release{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Abandoned = direct.ValueOf(in.Abandoned)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.RenderStartTime = direct.StringTimestamp_ToProto(mapCtx, in.RenderStartTime)
+	out.RenderEndTime = direct.StringTimestamp_ToProto(mapCtx, in.RenderEndTime)
+	out.DeliveryPipelineSnapshot = DeliveryPipelineObservedState_v1alpha1_ToProto(mapCtx, in.DeliveryPipelineSnapshot)
+	out.TargetSnapshots = direct.Slice_ToProto(mapCtx, in.TargetSnapshots, TargetObservedState_v1alpha1_ToProto)
+	out.CustomTargetTypeSnapshots = direct.Slice_ToProto(mapCtx, in.CustomTargetTypeSnapshots, CustomTargetTypeObservedState_v1alpha1_ToProto)
+	out.RenderState = direct.Enum_ToProto[pb.Release_RenderState](mapCtx, in.RenderState)
+	if in.TargetArtifacts != nil {
+		out.TargetArtifacts = make(map[string]*pb.TargetArtifact, len(in.TargetArtifacts))
+		for k, v := range in.TargetArtifacts {
+			out.TargetArtifacts[k] = TargetArtifact_v1alpha1_ToProto(mapCtx, &v)
+		}
+	}
+	if in.TargetRenders != nil {
+		out.TargetRenders = make(map[string]*pb.Release_TargetRender, len(in.TargetRenders))
+		for k, v := range in.TargetRenders {
+			out.TargetRenders[k] = Release_TargetRender_v1alpha1_ToProto(mapCtx, &v)
+		}
+	}
+	out.Condition = Release_ReleaseCondition_v1alpha1_ToProto(mapCtx, in.Condition)
+	return out
+}
+func CloudDeployReleaseSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Release) *krmclouddeployv1alpha1.CloudDeployReleaseSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.CloudDeployReleaseSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Annotations = in.Annotations
+	out.Labels = in.Labels
+	out.SkaffoldConfigURI = direct.LazyPtr(in.GetSkaffoldConfigUri())
+	out.SkaffoldConfigPath = direct.LazyPtr(in.GetSkaffoldConfigPath())
+	out.BuildArtifacts = direct.Slice_FromProto(mapCtx, in.BuildArtifacts, BuildArtifact_v1alpha1_FromProto)
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.SkaffoldVersion = direct.LazyPtr(in.GetSkaffoldVersion())
+	out.DeployParameters = in.DeployParameters
+	return out
+}
+func CloudDeployReleaseSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.CloudDeployReleaseSpec) *pb.Release {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Release{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.Annotations = in.Annotations
+	out.Labels = in.Labels
+	out.SkaffoldConfigUri = direct.ValueOf(in.SkaffoldConfigURI)
+	out.SkaffoldConfigPath = direct.ValueOf(in.SkaffoldConfigPath)
+	out.BuildArtifacts = direct.Slice_ToProto(mapCtx, in.BuildArtifacts, BuildArtifact_v1alpha1_ToProto)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.SkaffoldVersion = direct.ValueOf(in.SkaffoldVersion)
+	out.DeployParameters = in.DeployParameters
+	return out
+}
+
+/* found existing non-generated mapping function "CloudDeployTargetObservedState_v1alpha1_FromProto", skipping
+func CloudDeployTargetObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Target) *krmclouddeployv1alpha1.CloudDeployTargetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.CloudDeployTargetObservedState{}
+	// MISSING: Name
+	out.TargetID = direct.LazyPtr(in.GetTargetId())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: GKE
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "CloudDeployTargetObservedState_v1alpha1_ToProto", skipping
+func CloudDeployTargetObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.CloudDeployTargetObservedState) *pb.Target {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Target{}
+	// MISSING: Name
+	out.TargetId = direct.ValueOf(in.TargetID)
+	out.Uid = direct.ValueOf(in.Uid)
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: GKE
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "CloudDeployTargetSpec_v1alpha1_FromProto", skipping
+func CloudDeployTargetSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Target) *krmclouddeployv1alpha1.CloudDeployTargetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.CloudDeployTargetSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Annotations = in.Annotations
+	// MISSING: Labels
+	out.RequireApproval = direct.LazyPtr(in.GetRequireApproval())
+	// MISSING: GKE
+	// (near miss): "GKE" vs "Gke"
+	out.AnthosCluster = AnthosCluster_v1alpha1_FromProto(mapCtx, in.GetAnthosCluster())
+	out.Run = CloudRunLocation_v1alpha1_FromProto(mapCtx, in.GetRun())
+	out.MultiTarget = MultiTarget_v1alpha1_FromProto(mapCtx, in.GetMultiTarget())
+	out.CustomTarget = CustomTarget_v1alpha1_FromProto(mapCtx, in.GetCustomTarget())
+	if in.AssociatedEntities != nil {
+		out.AssociatedEntities = make(map[string]*krmclouddeployv1alpha1.AssociatedEntities, len(in.AssociatedEntities))
+		for k, v := range in.AssociatedEntities {
+			out.AssociatedEntities[k] = AssociatedEntities_v1alpha1_FromProto(mapCtx, v)
+		}
+	}
+	out.ExecutionConfigs = direct.Slice_FromProto(mapCtx, in.ExecutionConfigs, ExecutionConfig_v1alpha1_FromProto)
+	out.DeployParameters = in.DeployParameters
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "CloudDeployTargetSpec_v1alpha1_ToProto", skipping
+
+	func CloudDeployTargetSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.CloudDeployTargetSpec) *pb.Target {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Target{}
+		// MISSING: Name
+		out.Description = direct.ValueOf(in.Description)
+		out.Annotations = in.Annotations
+		// MISSING: Labels
+		out.RequireApproval = direct.ValueOf(in.RequireApproval)
+		// MISSING: GKE
+		// (near miss): "GKE" vs "Gke"
+		if oneof := AnthosCluster_v1alpha1_ToProto(mapCtx, in.AnthosCluster); oneof != nil {
+			out.DeploymentTarget = &pb.Target_AnthosCluster{AnthosCluster: oneof}
+		}
+		if oneof := CloudRunLocation_v1alpha1_ToProto(mapCtx, in.Run); oneof != nil {
+			out.DeploymentTarget = &pb.Target_Run{Run: oneof}
+		}
+		if oneof := MultiTarget_v1alpha1_ToProto(mapCtx, in.MultiTarget); oneof != nil {
+			out.DeploymentTarget = &pb.Target_MultiTarget{MultiTarget: oneof}
+		}
+		if oneof := CustomTarget_v1alpha1_ToProto(mapCtx, in.CustomTarget); oneof != nil {
+			out.DeploymentTarget = &pb.Target_CustomTarget{CustomTarget: oneof}
+		}
+		if in.AssociatedEntities != nil {
+			out.AssociatedEntities = make(map[string]*pb.AssociatedEntities, len(in.AssociatedEntities))
+			for k, v := range in.AssociatedEntities {
+				out.AssociatedEntities[k] = AssociatedEntities_v1alpha1_ToProto(mapCtx, v)
+			}
+		}
+		out.ExecutionConfigs = direct.Slice_ToProto(mapCtx, in.ExecutionConfigs, ExecutionConfig_v1alpha1_ToProto)
+		out.DeployParameters = in.DeployParameters
+		return out
+	}
+*/
+func CloudRunConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CloudRunConfig) *krmclouddeployv1alpha1.CloudRunConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.CloudRunConfig{}
+	out.AutomaticTrafficControl = direct.LazyPtr(in.GetAutomaticTrafficControl())
+	out.CanaryRevisionTags = in.CanaryRevisionTags
+	out.PriorRevisionTags = in.PriorRevisionTags
+	out.StableRevisionTags = in.StableRevisionTags
+	return out
+}
+func CloudRunConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.CloudRunConfig) *pb.CloudRunConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudRunConfig{}
+	out.AutomaticTrafficControl = direct.ValueOf(in.AutomaticTrafficControl)
+	out.CanaryRevisionTags = in.CanaryRevisionTags
+	out.PriorRevisionTags = in.PriorRevisionTags
+	out.StableRevisionTags = in.StableRevisionTags
+	return out
+}
 func CloudRunConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CloudRunConfig) *krmclouddeployv1beta1.CloudRunConfig {
 	if in == nil {
 		return nil
@@ -179,6 +698,22 @@ func CloudRunLocation_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudde
 	out.Location = direct.ValueOf(in.Location)
 	return out
 }
+func CloudRunLocationObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CloudRunLocation) *krmclouddeployv1alpha1.CloudRunLocationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.CloudRunLocationObservedState{}
+	out.Location = direct.LazyPtr(in.GetLocation())
+	return out
+}
+func CloudRunLocationObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.CloudRunLocationObservedState) *pb.CloudRunLocation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudRunLocation{}
+	out.Location = direct.ValueOf(in.Location)
+	return out
+}
 func CustomCanaryDeployment_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CustomCanaryDeployment) *krmclouddeployv1beta1.CustomCanaryDeployment {
 	if in == nil {
 		return nil
@@ -193,6 +728,22 @@ func CustomCanaryDeployment_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcl
 	}
 	out := &pb.CustomCanaryDeployment{}
 	out.PhaseConfigs = direct.Slice_ToProto(mapCtx, in.PhaseConfigs, CustomCanaryDeployment_PhaseConfig_v1beta1_ToProto)
+	return out
+}
+func CustomCanaryDeploymentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CustomCanaryDeployment) *krmclouddeployv1alpha1.CustomCanaryDeploymentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.CustomCanaryDeploymentObservedState{}
+	out.PhaseConfigs = direct.Slice_FromProto(mapCtx, in.PhaseConfigs, CustomCanaryDeployment_PhaseConfigObservedState_v1alpha1_FromProto)
+	return out
+}
+func CustomCanaryDeploymentObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.CustomCanaryDeploymentObservedState) *pb.CustomCanaryDeployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomCanaryDeployment{}
+	out.PhaseConfigs = direct.Slice_ToProto(mapCtx, in.PhaseConfigs, CustomCanaryDeployment_PhaseConfigObservedState_v1alpha1_ToProto)
 	return out
 }
 func CustomCanaryDeployment_PhaseConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CustomCanaryDeployment_PhaseConfig) *krmclouddeployv1beta1.CustomCanaryDeployment_PhaseConfig {
@@ -219,6 +770,32 @@ func CustomCanaryDeployment_PhaseConfig_v1beta1_ToProto(mapCtx *direct.MapContex
 	out.Verify = direct.ValueOf(in.Verify)
 	out.Predeploy = Predeploy_v1beta1_ToProto(mapCtx, in.Predeploy)
 	out.Postdeploy = Postdeploy_v1beta1_ToProto(mapCtx, in.Postdeploy)
+	return out
+}
+func CustomCanaryDeployment_PhaseConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CustomCanaryDeployment_PhaseConfig) *krmclouddeployv1alpha1.CustomCanaryDeployment_PhaseConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.CustomCanaryDeployment_PhaseConfigObservedState{}
+	out.PhaseID = direct.LazyPtr(in.GetPhaseId())
+	out.Percentage = direct.LazyPtr(in.GetPercentage())
+	out.Profiles = in.Profiles
+	out.Verify = direct.LazyPtr(in.GetVerify())
+	out.Predeploy = Predeploy_v1alpha1_FromProto(mapCtx, in.GetPredeploy())
+	out.Postdeploy = Postdeploy_v1alpha1_FromProto(mapCtx, in.GetPostdeploy())
+	return out
+}
+func CustomCanaryDeployment_PhaseConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.CustomCanaryDeployment_PhaseConfigObservedState) *pb.CustomCanaryDeployment_PhaseConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomCanaryDeployment_PhaseConfig{}
+	out.PhaseId = direct.ValueOf(in.PhaseID)
+	out.Percentage = direct.ValueOf(in.Percentage)
+	out.Profiles = in.Profiles
+	out.Verify = direct.ValueOf(in.Verify)
+	out.Predeploy = Predeploy_v1alpha1_ToProto(mapCtx, in.Predeploy)
+	out.Postdeploy = Postdeploy_v1alpha1_ToProto(mapCtx, in.Postdeploy)
 	return out
 }
 func CustomTarget_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CustomTarget) *krmclouddeployv1alpha1.CustomTarget {
@@ -359,6 +936,44 @@ func DeliveryPipelineAttribute_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	out.Labels = in.Labels
 	return out
 }
+func DeliveryPipelineObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DeliveryPipeline) *krmclouddeployv1alpha1.DeliveryPipelineObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.DeliveryPipelineObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Annotations = in.Annotations
+	out.Labels = in.Labels
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.SerialPipeline = SerialPipelineObservedState_v1alpha1_FromProto(mapCtx, in.GetSerialPipeline())
+	out.Condition = PipelineCondition_v1alpha1_FromProto(mapCtx, in.GetCondition())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Suspended = direct.LazyPtr(in.GetSuspended())
+	return out
+}
+func DeliveryPipelineObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.DeliveryPipelineObservedState) *pb.DeliveryPipeline {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DeliveryPipeline{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Description = direct.ValueOf(in.Description)
+	out.Annotations = in.Annotations
+	out.Labels = in.Labels
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	if oneof := SerialPipelineObservedState_v1alpha1_ToProto(mapCtx, in.SerialPipeline); oneof != nil {
+		out.Pipeline = &pb.DeliveryPipeline_SerialPipeline{SerialPipeline: oneof}
+	}
+	out.Condition = PipelineCondition_v1alpha1_ToProto(mapCtx, in.Condition)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Suspended = direct.ValueOf(in.Suspended)
+	return out
+}
 func DeliveryPipelineObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DeliveryPipeline) *krmclouddeployv1beta1.DeliveryPipelineObservedState {
 	if in == nil {
 		return nil
@@ -392,12 +1007,9 @@ func DeliveryPipelineSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.De
 		return nil
 	}
 	out := &krmclouddeployv1beta1.DeliveryPipelineSpec{}
-	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Annotations = in.Annotations
-	// MISSING: Labels
 	out.SerialPipeline = SerialPipeline_v1beta1_FromProto(mapCtx, in.GetSerialPipeline())
-	// MISSING: Etag
 	out.Suspended = direct.LazyPtr(in.GetSuspended())
 	return out
 }
@@ -406,14 +1018,11 @@ func DeliveryPipelineSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclou
 		return nil
 	}
 	out := &pb.DeliveryPipeline{}
-	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
 	out.Annotations = in.Annotations
-	// MISSING: Labels
 	if oneof := SerialPipeline_v1beta1_ToProto(mapCtx, in.SerialPipeline); oneof != nil {
 		out.Pipeline = &pb.DeliveryPipeline_SerialPipeline{SerialPipeline: oneof}
 	}
-	// MISSING: Etag
 	out.Suspended = direct.ValueOf(in.Suspended)
 	return out
 }
@@ -427,6 +1036,24 @@ func DeployParameters_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Deploy
 	return out
 }
 func DeployParameters_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.DeployParameters) *pb.DeployParameters {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DeployParameters{}
+	out.Values = in.Values
+	out.MatchTargetLabels = in.MatchTargetLabels
+	return out
+}
+func DeployParametersObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DeployParameters) *krmclouddeployv1alpha1.DeployParametersObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.DeployParametersObservedState{}
+	out.Values = in.Values
+	out.MatchTargetLabels = in.MatchTargetLabels
+	return out
+}
+func DeployParametersObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.DeployParametersObservedState) *pb.DeployParameters {
 	if in == nil {
 		return nil
 	}
@@ -551,6 +1178,40 @@ func ExecutionConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddep
 	out.Verbose = direct.ValueOf(in.Verbose)
 	return out
 }
+
+/* found existing non-generated mapping function "GKECluster_v1alpha1_FromProto", skipping
+func GKECluster_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GkeCluster) *krmclouddeployv1alpha1.GKECluster {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.GKECluster{}
+	if in.GetCluster() != "" {
+		out.ClusterRef = &krmcontainerv1beta1.ContainerClusterRef{External: in.GetCluster()}
+	}
+	out.InternalIP = direct.LazyPtr(in.GetInternalIp())
+	out.ProxyURL = direct.LazyPtr(in.GetProxyUrl())
+	out.DNSEndpoint = direct.LazyPtr(in.GetDnsEndpoint())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "GKECluster_v1alpha1_ToProto", skipping
+
+	func GKECluster_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.GKECluster) *pb.GkeCluster {
+		if in == nil {
+			return nil
+		}
+		out := &pb.GkeCluster{}
+		if in.ClusterRef != nil {
+			out.Cluster = in.ClusterRef.External
+		}
+		out.InternalIp = direct.ValueOf(in.InternalIP)
+		out.ProxyUrl = direct.ValueOf(in.ProxyURL)
+		out.DnsEndpoint = direct.ValueOf(in.DNSEndpoint)
+		return out
+	}
+*/
 func KubernetesConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesConfig) *krmclouddeployv1beta1.KubernetesConfig {
 	if in == nil {
 		return nil
@@ -569,6 +1230,28 @@ func KubernetesConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddep
 		out.ServiceDefinition = &pb.KubernetesConfig_GatewayServiceMesh_{GatewayServiceMesh: oneof}
 	}
 	if oneof := KubernetesConfig_ServiceNetworking_v1beta1_ToProto(mapCtx, in.ServiceNetworking); oneof != nil {
+		out.ServiceDefinition = &pb.KubernetesConfig_ServiceNetworking_{ServiceNetworking: oneof}
+	}
+	return out
+}
+func KubernetesConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesConfig) *krmclouddeployv1alpha1.KubernetesConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.KubernetesConfigObservedState{}
+	out.GatewayServiceMesh = KubernetesConfig_GatewayServiceMeshObservedState_v1alpha1_FromProto(mapCtx, in.GetGatewayServiceMesh())
+	out.ServiceNetworking = KubernetesConfig_ServiceNetworkingObservedState_v1alpha1_FromProto(mapCtx, in.GetServiceNetworking())
+	return out
+}
+func KubernetesConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.KubernetesConfigObservedState) *pb.KubernetesConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KubernetesConfig{}
+	if oneof := KubernetesConfig_GatewayServiceMeshObservedState_v1alpha1_ToProto(mapCtx, in.GatewayServiceMesh); oneof != nil {
+		out.ServiceDefinition = &pb.KubernetesConfig_GatewayServiceMesh_{GatewayServiceMesh: oneof}
+	}
+	if oneof := KubernetesConfig_ServiceNetworkingObservedState_v1alpha1_ToProto(mapCtx, in.ServiceNetworking); oneof != nil {
 		out.ServiceDefinition = &pb.KubernetesConfig_ServiceNetworking_{ServiceNetworking: oneof}
 	}
 	return out
@@ -601,13 +1284,40 @@ func KubernetesConfig_GatewayServiceMesh_v1beta1_ToProto(mapCtx *direct.MapConte
 	out.RouteDestinations = KubernetesConfig_GatewayServiceMesh_RouteDestinations_v1beta1_ToProto(mapCtx, in.RouteDestinations)
 	return out
 }
+func KubernetesConfig_GatewayServiceMeshObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesConfig_GatewayServiceMesh) *krmclouddeployv1alpha1.KubernetesConfig_GatewayServiceMeshObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.KubernetesConfig_GatewayServiceMeshObservedState{}
+	out.HTTPRoute = direct.LazyPtr(in.GetHttpRoute())
+	out.Service = direct.LazyPtr(in.GetService())
+	out.Deployment = direct.LazyPtr(in.GetDeployment())
+	out.RouteUpdateWaitTime = direct.StringDuration_FromProto(mapCtx, in.GetRouteUpdateWaitTime())
+	out.StableCutbackDuration = direct.StringDuration_FromProto(mapCtx, in.GetStableCutbackDuration())
+	out.PodSelectorLabel = direct.LazyPtr(in.GetPodSelectorLabel())
+	out.RouteDestinations = KubernetesConfig_GatewayServiceMesh_RouteDestinationsObservedState_v1alpha1_FromProto(mapCtx, in.GetRouteDestinations())
+	return out
+}
+func KubernetesConfig_GatewayServiceMeshObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.KubernetesConfig_GatewayServiceMeshObservedState) *pb.KubernetesConfig_GatewayServiceMesh {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KubernetesConfig_GatewayServiceMesh{}
+	out.HttpRoute = direct.ValueOf(in.HTTPRoute)
+	out.Service = direct.ValueOf(in.Service)
+	out.Deployment = direct.ValueOf(in.Deployment)
+	out.RouteUpdateWaitTime = direct.StringDuration_ToProto(mapCtx, in.RouteUpdateWaitTime)
+	out.StableCutbackDuration = direct.StringDuration_ToProto(mapCtx, in.StableCutbackDuration)
+	out.PodSelectorLabel = direct.ValueOf(in.PodSelectorLabel)
+	out.RouteDestinations = KubernetesConfig_GatewayServiceMesh_RouteDestinationsObservedState_v1alpha1_ToProto(mapCtx, in.RouteDestinations)
+	return out
+}
 func KubernetesConfig_GatewayServiceMesh_RouteDestinations_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesConfig_GatewayServiceMesh_RouteDestinations) *krmclouddeployv1beta1.KubernetesConfig_GatewayServiceMesh_RouteDestinations {
 	if in == nil {
 		return nil
 	}
 	out := &krmclouddeployv1beta1.KubernetesConfig_GatewayServiceMesh_RouteDestinations{}
-	// MISSING: DestinationIds
-	// (near miss): "DestinationIds" vs "DestinationIDs"
+	out.DestinationIDs = in.DestinationIds
 	out.PropagateService = direct.LazyPtr(in.GetPropagateService())
 	return out
 }
@@ -616,8 +1326,25 @@ func KubernetesConfig_GatewayServiceMesh_RouteDestinations_v1beta1_ToProto(mapCt
 		return nil
 	}
 	out := &pb.KubernetesConfig_GatewayServiceMesh_RouteDestinations{}
-	// MISSING: DestinationIds
-	// (near miss): "DestinationIds" vs "DestinationIDs"
+	out.DestinationIds = in.DestinationIDs
+	out.PropagateService = direct.ValueOf(in.PropagateService)
+	return out
+}
+func KubernetesConfig_GatewayServiceMesh_RouteDestinationsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesConfig_GatewayServiceMesh_RouteDestinations) *krmclouddeployv1alpha1.KubernetesConfig_GatewayServiceMesh_RouteDestinationsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.KubernetesConfig_GatewayServiceMesh_RouteDestinationsObservedState{}
+	out.DestinationIDs = in.DestinationIds
+	out.PropagateService = direct.LazyPtr(in.GetPropagateService())
+	return out
+}
+func KubernetesConfig_GatewayServiceMesh_RouteDestinationsObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.KubernetesConfig_GatewayServiceMesh_RouteDestinationsObservedState) *pb.KubernetesConfig_GatewayServiceMesh_RouteDestinations {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KubernetesConfig_GatewayServiceMesh_RouteDestinations{}
+	out.DestinationIds = in.DestinationIDs
 	out.PropagateService = direct.ValueOf(in.PropagateService)
 	return out
 }
@@ -643,6 +1370,52 @@ func KubernetesConfig_ServiceNetworking_v1beta1_ToProto(mapCtx *direct.MapContex
 	out.PodSelectorLabel = direct.ValueOf(in.PodSelectorLabel)
 	return out
 }
+func KubernetesConfig_ServiceNetworkingObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesConfig_ServiceNetworking) *krmclouddeployv1alpha1.KubernetesConfig_ServiceNetworkingObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.KubernetesConfig_ServiceNetworkingObservedState{}
+	out.Service = direct.LazyPtr(in.GetService())
+	out.Deployment = direct.LazyPtr(in.GetDeployment())
+	out.DisablePodOverprovisioning = direct.LazyPtr(in.GetDisablePodOverprovisioning())
+	out.PodSelectorLabel = direct.LazyPtr(in.GetPodSelectorLabel())
+	return out
+}
+func KubernetesConfig_ServiceNetworkingObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.KubernetesConfig_ServiceNetworkingObservedState) *pb.KubernetesConfig_ServiceNetworking {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KubernetesConfig_ServiceNetworking{}
+	out.Service = direct.ValueOf(in.Service)
+	out.Deployment = direct.ValueOf(in.Deployment)
+	out.DisablePodOverprovisioning = direct.ValueOf(in.DisablePodOverprovisioning)
+	out.PodSelectorLabel = direct.ValueOf(in.PodSelectorLabel)
+	return out
+}
+
+/* found existing non-generated mapping function "MultiTarget_v1alpha1_FromProto", skipping
+func MultiTarget_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MultiTarget) *krmclouddeployv1alpha1.MultiTarget {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.MultiTarget{}
+	// MISSING: TargetIds
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "MultiTarget_v1alpha1_ToProto", skipping
+
+	func MultiTarget_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.MultiTarget) *pb.MultiTarget {
+		if in == nil {
+			return nil
+		}
+		out := &pb.MultiTarget{}
+		// MISSING: TargetIds
+		return out
+	}
+*/
 func OneTimeWindow_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.OneTimeWindow) *krmclouddeployv1alpha1.OneTimeWindow {
 	if in == nil {
 		return nil
@@ -665,6 +1438,26 @@ func OneTimeWindow_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeplo
 	out.EndTime = TimeOfDay_v1alpha1_ToProto(mapCtx, in.EndTime)
 	return out
 }
+func PipelineCondition_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PipelineCondition) *krmclouddeployv1alpha1.PipelineCondition {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.PipelineCondition{}
+	out.PipelineReadyCondition = PipelineReadyCondition_v1alpha1_FromProto(mapCtx, in.GetPipelineReadyCondition())
+	out.TargetsPresentCondition = TargetsPresentCondition_v1alpha1_FromProto(mapCtx, in.GetTargetsPresentCondition())
+	out.TargetsTypeCondition = TargetsTypeCondition_v1alpha1_FromProto(mapCtx, in.GetTargetsTypeCondition())
+	return out
+}
+func PipelineCondition_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.PipelineCondition) *pb.PipelineCondition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PipelineCondition{}
+	out.PipelineReadyCondition = PipelineReadyCondition_v1alpha1_ToProto(mapCtx, in.PipelineReadyCondition)
+	out.TargetsPresentCondition = TargetsPresentCondition_v1alpha1_ToProto(mapCtx, in.TargetsPresentCondition)
+	out.TargetsTypeCondition = TargetsTypeCondition_v1alpha1_ToProto(mapCtx, in.TargetsTypeCondition)
+	return out
+}
 func PipelineCondition_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PipelineCondition) *krmclouddeployv1beta1.PipelineCondition {
 	if in == nil {
 		return nil
@@ -683,6 +1476,24 @@ func PipelineCondition_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudde
 	out.PipelineReadyCondition = PipelineReadyCondition_v1beta1_ToProto(mapCtx, in.PipelineReadyCondition)
 	out.TargetsPresentCondition = TargetsPresentCondition_v1beta1_ToProto(mapCtx, in.TargetsPresentCondition)
 	out.TargetsTypeCondition = TargetsTypeCondition_v1beta1_ToProto(mapCtx, in.TargetsTypeCondition)
+	return out
+}
+func PipelineReadyCondition_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PipelineReadyCondition) *krmclouddeployv1alpha1.PipelineReadyCondition {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.PipelineReadyCondition{}
+	out.Status = direct.LazyPtr(in.GetStatus())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func PipelineReadyCondition_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.PipelineReadyCondition) *pb.PipelineReadyCondition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PipelineReadyCondition{}
+	out.Status = direct.ValueOf(in.Status)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
 func PipelineReadyCondition_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PipelineReadyCondition) *krmclouddeployv1beta1.PipelineReadyCondition {
@@ -721,6 +1532,22 @@ func PolicyRule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1
 	}
 	return out
 }
+func Postdeploy_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Postdeploy) *krmclouddeployv1alpha1.Postdeploy {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.Postdeploy{}
+	out.Actions = in.Actions
+	return out
+}
+func Postdeploy_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.Postdeploy) *pb.Postdeploy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Postdeploy{}
+	out.Actions = in.Actions
+	return out
+}
 func Postdeploy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Postdeploy) *krmclouddeployv1beta1.Postdeploy {
 	if in == nil {
 		return nil
@@ -734,6 +1561,22 @@ func Postdeploy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1b
 		return nil
 	}
 	out := &pb.Postdeploy{}
+	out.Actions = in.Actions
+	return out
+}
+func Predeploy_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Predeploy) *krmclouddeployv1alpha1.Predeploy {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.Predeploy{}
+	out.Actions = in.Actions
+	return out
+}
+func Predeploy_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.Predeploy) *pb.Predeploy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Predeploy{}
 	out.Actions = in.Actions
 	return out
 }
@@ -781,6 +1624,53 @@ func PrivatePool_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv
 	out.ArtifactStorage = direct.ValueOf(in.ArtifactStorage)
 	return out
 }
+
+/* found existing non-generated mapping function "PromoteReleaseRule_v1alpha1_FromProto", skipping
+func PromoteReleaseRule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PromoteReleaseRule) *krmclouddeployv1alpha1.PromoteReleaseRule {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.PromoteReleaseRule{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.Wait = direct.StringDuration_FromProto(mapCtx, in.GetWait())
+	// MISSING: DestinationTargetID
+	// MISSING: Condition
+	out.DestinationPhase = direct.LazyPtr(in.GetDestinationPhase())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "PromoteReleaseRule_v1alpha1_ToProto", skipping
+func PromoteReleaseRule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.PromoteReleaseRule) *pb.PromoteReleaseRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PromoteReleaseRule{}
+	out.Id = direct.ValueOf(in.ID)
+	out.Wait = direct.StringDuration_ToProto(mapCtx, in.Wait)
+	// MISSING: DestinationTargetID
+	// MISSING: Condition
+	out.DestinationPhase = direct.ValueOf(in.DestinationPhase)
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "PromoteReleaseRuleObservedState_v1alpha1_FromProto", skipping
+
+	func PromoteReleaseRuleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PromoteReleaseRule) *krmclouddeployv1alpha1.PromoteReleaseRuleObservedState {
+		if in == nil {
+			return nil
+		}
+		out := &krmclouddeployv1alpha1.PromoteReleaseRuleObservedState{}
+		// MISSING: ID
+		// MISSING: Wait
+		// MISSING: DestinationTargetID
+		out.Condition = AutomationRuleCondition_v1alpha1_FromProto(mapCtx, in.GetCondition())
+		// MISSING: DestinationPhase
+		return out
+	}
+*/
 func PromoteReleaseRuleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.PromoteReleaseRuleObservedState) *pb.PromoteReleaseRule {
 	if in == nil {
 		return nil
@@ -793,6 +1683,161 @@ func PromoteReleaseRuleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext,
 	// MISSING: DestinationPhase
 	return out
 }
+func Release_ReleaseCondition_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Release_ReleaseCondition) *krmclouddeployv1alpha1.Release_ReleaseCondition {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.Release_ReleaseCondition{}
+	out.ReleaseReadyCondition = Release_ReleaseReadyCondition_v1alpha1_FromProto(mapCtx, in.GetReleaseReadyCondition())
+	out.SkaffoldSupportedCondition = Release_SkaffoldSupportedCondition_v1alpha1_FromProto(mapCtx, in.GetSkaffoldSupportedCondition())
+	return out
+}
+func Release_ReleaseCondition_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.Release_ReleaseCondition) *pb.Release_ReleaseCondition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Release_ReleaseCondition{}
+	out.ReleaseReadyCondition = Release_ReleaseReadyCondition_v1alpha1_ToProto(mapCtx, in.ReleaseReadyCondition)
+	out.SkaffoldSupportedCondition = Release_SkaffoldSupportedCondition_v1alpha1_ToProto(mapCtx, in.SkaffoldSupportedCondition)
+	return out
+}
+func Release_ReleaseReadyCondition_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Release_ReleaseReadyCondition) *krmclouddeployv1alpha1.Release_ReleaseReadyCondition {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.Release_ReleaseReadyCondition{}
+	out.Status = direct.LazyPtr(in.GetStatus())
+	return out
+}
+func Release_ReleaseReadyCondition_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.Release_ReleaseReadyCondition) *pb.Release_ReleaseReadyCondition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Release_ReleaseReadyCondition{}
+	out.Status = direct.ValueOf(in.Status)
+	return out
+}
+func Release_SkaffoldSupportedCondition_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Release_SkaffoldSupportedCondition) *krmclouddeployv1alpha1.Release_SkaffoldSupportedCondition {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.Release_SkaffoldSupportedCondition{}
+	out.Status = direct.LazyPtr(in.GetStatus())
+	out.SkaffoldSupportState = direct.Enum_FromProto(mapCtx, in.GetSkaffoldSupportState())
+	out.MaintenanceModeTime = direct.StringTimestamp_FromProto(mapCtx, in.GetMaintenanceModeTime())
+	out.SupportExpirationTime = direct.StringTimestamp_FromProto(mapCtx, in.GetSupportExpirationTime())
+	return out
+}
+func Release_SkaffoldSupportedCondition_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.Release_SkaffoldSupportedCondition) *pb.Release_SkaffoldSupportedCondition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Release_SkaffoldSupportedCondition{}
+	out.Status = direct.ValueOf(in.Status)
+	out.SkaffoldSupportState = direct.Enum_ToProto[pb.SkaffoldSupportState](mapCtx, in.SkaffoldSupportState)
+	out.MaintenanceModeTime = direct.StringTimestamp_ToProto(mapCtx, in.MaintenanceModeTime)
+	out.SupportExpirationTime = direct.StringTimestamp_ToProto(mapCtx, in.SupportExpirationTime)
+	return out
+}
+func Release_TargetRender_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Release_TargetRender) *krmclouddeployv1alpha1.Release_TargetRender {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.Release_TargetRender{}
+	// MISSING: RenderingBuild
+	// MISSING: RenderingState
+	// MISSING: Metadata
+	// MISSING: FailureCause
+	// MISSING: FailureMessage
+	return out
+}
+func Release_TargetRender_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.Release_TargetRender) *pb.Release_TargetRender {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Release_TargetRender{}
+	// MISSING: RenderingBuild
+	// MISSING: RenderingState
+	// MISSING: Metadata
+	// MISSING: FailureCause
+	// MISSING: FailureMessage
+	return out
+}
+
+/* found existing non-generated mapping function "RepairPhaseConfig_v1alpha1_FromProto", skipping
+func RepairPhaseConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RepairPhaseConfig) *krmclouddeployv1alpha1.RepairPhaseConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.RepairPhaseConfig{}
+	out.Retry = Retry_v1alpha1_FromProto(mapCtx, in.GetRetry())
+	out.Rollback = Rollback_v1alpha1_FromProto(mapCtx, in.GetRollback())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RepairPhaseConfig_v1alpha1_ToProto", skipping
+func RepairPhaseConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.RepairPhaseConfig) *pb.RepairPhaseConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RepairPhaseConfig{}
+	if oneof := Retry_v1alpha1_ToProto(mapCtx, in.Retry); oneof != nil {
+		out.RepairPhase = &pb.RepairPhaseConfig_Retry{Retry: oneof}
+	}
+	if oneof := Rollback_v1alpha1_ToProto(mapCtx, in.Rollback); oneof != nil {
+		out.RepairPhase = &pb.RepairPhaseConfig_Rollback{Rollback: oneof}
+	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RepairRolloutRule_v1alpha1_FromProto", skipping
+func RepairRolloutRule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RepairRolloutRule) *krmclouddeployv1alpha1.RepairRolloutRule {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.RepairRolloutRule{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.Phases = in.Phases
+	out.Jobs = in.Jobs
+	// MISSING: Condition
+	out.RepairPhases = direct.Slice_FromProto(mapCtx, in.RepairPhases, RepairPhaseConfig_v1alpha1_FromProto)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RepairRolloutRule_v1alpha1_ToProto", skipping
+func RepairRolloutRule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.RepairRolloutRule) *pb.RepairRolloutRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RepairRolloutRule{}
+	out.Id = direct.ValueOf(in.ID)
+	out.Phases = in.Phases
+	out.Jobs = in.Jobs
+	// MISSING: Condition
+	out.RepairPhases = direct.Slice_ToProto(mapCtx, in.RepairPhases, RepairPhaseConfig_v1alpha1_ToProto)
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "RepairRolloutRuleObservedState_v1alpha1_FromProto", skipping
+
+	func RepairRolloutRuleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RepairRolloutRule) *krmclouddeployv1alpha1.RepairRolloutRuleObservedState {
+		if in == nil {
+			return nil
+		}
+		out := &krmclouddeployv1alpha1.RepairRolloutRuleObservedState{}
+		// MISSING: ID
+		// MISSING: Phases
+		// MISSING: Jobs
+		out.Condition = AutomationRuleCondition_v1alpha1_FromProto(mapCtx, in.GetCondition())
+		// MISSING: RepairPhases
+		return out
+	}
+*/
 func RepairRolloutRuleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.RepairRolloutRuleObservedState) *pb.RepairRolloutRule {
 	if in == nil {
 		return nil
@@ -805,6 +1850,58 @@ func RepairRolloutRuleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 	// MISSING: RepairPhases
 	return out
 }
+
+/* found existing non-generated mapping function "Retry_v1alpha1_FromProto", skipping
+func Retry_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Retry) *krmclouddeployv1alpha1.Retry {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.Retry{}
+	out.Attempts = direct.LazyPtr(in.GetAttempts())
+	out.Wait = direct.StringDuration_FromProto(mapCtx, in.GetWait())
+	out.BackoffMode = direct.Enum_FromProto(mapCtx, in.GetBackoffMode())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "Retry_v1alpha1_ToProto", skipping
+func Retry_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.Retry) *pb.Retry {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Retry{}
+	out.Attempts = direct.ValueOf(in.Attempts)
+	out.Wait = direct.StringDuration_ToProto(mapCtx, in.Wait)
+	out.BackoffMode = direct.Enum_ToProto[pb.BackoffMode](mapCtx, in.BackoffMode)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "Rollback_v1alpha1_FromProto", skipping
+func Rollback_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Rollback) *krmclouddeployv1alpha1.Rollback {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.Rollback{}
+	out.DestinationPhase = direct.LazyPtr(in.GetDestinationPhase())
+	out.DisableRollbackIfRolloutPending = direct.LazyPtr(in.GetDisableRollbackIfRolloutPending())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "Rollback_v1alpha1_ToProto", skipping
+
+	func Rollback_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.Rollback) *pb.Rollback {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Rollback{}
+		out.DestinationPhase = direct.ValueOf(in.DestinationPhase)
+		out.DisableRollbackIfRolloutPending = direct.ValueOf(in.DisableRollbackIfRolloutPending)
+		return out
+	}
+*/
 func RolloutRestriction_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutRestriction) *krmclouddeployv1alpha1.RolloutRestriction {
 	if in == nil {
 		return nil
@@ -849,6 +1946,28 @@ func RuntimeConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeploy
 	}
 	return out
 }
+func RuntimeConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeConfig) *krmclouddeployv1alpha1.RuntimeConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.RuntimeConfigObservedState{}
+	out.Kubernetes = KubernetesConfigObservedState_v1alpha1_FromProto(mapCtx, in.GetKubernetes())
+	out.CloudRun = CloudRunConfig_v1alpha1_FromProto(mapCtx, in.GetCloudRun())
+	return out
+}
+func RuntimeConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.RuntimeConfigObservedState) *pb.RuntimeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RuntimeConfig{}
+	if oneof := KubernetesConfigObservedState_v1alpha1_ToProto(mapCtx, in.Kubernetes); oneof != nil {
+		out.RuntimeConfig = &pb.RuntimeConfig_Kubernetes{Kubernetes: oneof}
+	}
+	if oneof := CloudRunConfig_v1alpha1_ToProto(mapCtx, in.CloudRun); oneof != nil {
+		out.RuntimeConfig = &pb.RuntimeConfig_CloudRun{CloudRun: oneof}
+	}
+	return out
+}
 func SerialPipeline_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SerialPipeline) *krmclouddeployv1beta1.SerialPipeline {
 	if in == nil {
 		return nil
@@ -863,6 +1982,22 @@ func SerialPipeline_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeplo
 	}
 	out := &pb.SerialPipeline{}
 	out.Stages = direct.Slice_ToProto(mapCtx, in.Stages, Stage_v1beta1_ToProto)
+	return out
+}
+func SerialPipelineObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SerialPipeline) *krmclouddeployv1alpha1.SerialPipelineObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.SerialPipelineObservedState{}
+	out.Stages = direct.Slice_FromProto(mapCtx, in.Stages, StageObservedState_v1alpha1_FromProto)
+	return out
+}
+func SerialPipelineObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.SerialPipelineObservedState) *pb.SerialPipeline {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SerialPipeline{}
+	out.Stages = direct.Slice_ToProto(mapCtx, in.Stages, StageObservedState_v1alpha1_ToProto)
 	return out
 }
 func SkaffoldModules_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SkaffoldModules) *krmclouddeployv1alpha1.SkaffoldModules {
@@ -977,6 +2112,48 @@ func Stage_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.
 	out.DeployParameters = direct.Slice_ToProto(mapCtx, in.DeployParameters, DeployParameters_v1beta1_ToProto)
 	return out
 }
+func StageObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Stage) *krmclouddeployv1alpha1.StageObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.StageObservedState{}
+	out.TargetID = direct.LazyPtr(in.GetTargetId())
+	out.Profiles = in.Profiles
+	out.Strategy = StrategyObservedState_v1alpha1_FromProto(mapCtx, in.GetStrategy())
+	out.DeployParameters = direct.Slice_FromProto(mapCtx, in.DeployParameters, DeployParametersObservedState_v1alpha1_FromProto)
+	return out
+}
+func StageObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.StageObservedState) *pb.Stage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Stage{}
+	out.TargetId = direct.ValueOf(in.TargetID)
+	out.Profiles = in.Profiles
+	out.Strategy = StrategyObservedState_v1alpha1_ToProto(mapCtx, in.Strategy)
+	out.DeployParameters = direct.Slice_ToProto(mapCtx, in.DeployParameters, DeployParametersObservedState_v1alpha1_ToProto)
+	return out
+}
+func Standard_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Standard) *krmclouddeployv1alpha1.Standard {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.Standard{}
+	out.Verify = direct.LazyPtr(in.GetVerify())
+	out.Predeploy = Predeploy_v1alpha1_FromProto(mapCtx, in.GetPredeploy())
+	out.Postdeploy = Postdeploy_v1alpha1_FromProto(mapCtx, in.GetPostdeploy())
+	return out
+}
+func Standard_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.Standard) *pb.Standard {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Standard{}
+	out.Verify = direct.ValueOf(in.Verify)
+	out.Predeploy = Predeploy_v1alpha1_ToProto(mapCtx, in.Predeploy)
+	out.Postdeploy = Postdeploy_v1alpha1_ToProto(mapCtx, in.Postdeploy)
+	return out
+}
 func Standard_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Standard) *krmclouddeployv1beta1.Standard {
 	if in == nil {
 		return nil
@@ -1019,6 +2196,163 @@ func Strategy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1bet
 	}
 	return out
 }
+func StrategyObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Strategy) *krmclouddeployv1alpha1.StrategyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.StrategyObservedState{}
+	out.Standard = Standard_v1alpha1_FromProto(mapCtx, in.GetStandard())
+	out.Canary = CanaryObservedState_v1alpha1_FromProto(mapCtx, in.GetCanary())
+	return out
+}
+func StrategyObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.StrategyObservedState) *pb.Strategy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Strategy{}
+	if oneof := Standard_v1alpha1_ToProto(mapCtx, in.Standard); oneof != nil {
+		out.DeploymentStrategy = &pb.Strategy_Standard{Standard: oneof}
+	}
+	if oneof := CanaryObservedState_v1alpha1_ToProto(mapCtx, in.Canary); oneof != nil {
+		out.DeploymentStrategy = &pb.Strategy_Canary{Canary: oneof}
+	}
+	return out
+}
+func TargetArtifact_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TargetArtifact) *krmclouddeployv1alpha1.TargetArtifact {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.TargetArtifact{}
+	// MISSING: ArtifactURI
+	// MISSING: SkaffoldConfigPath
+	// MISSING: ManifestPath
+	// MISSING: PhaseArtifacts
+	return out
+}
+func TargetArtifact_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.TargetArtifact) *pb.TargetArtifact {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetArtifact{}
+	// MISSING: ArtifactURI
+	// MISSING: SkaffoldConfigPath
+	// MISSING: ManifestPath
+	// MISSING: PhaseArtifacts
+	return out
+}
+
+/* found existing non-generated mapping function "TargetAttribute_v1alpha1_FromProto", skipping
+func TargetAttribute_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TargetAttribute) *krmclouddeployv1alpha1.TargetAttribute {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.TargetAttribute{}
+	// MISSING: ID
+	out.Labels = in.Labels
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "TargetAttribute_v1alpha1_ToProto", skipping
+
+	func TargetAttribute_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.TargetAttribute) *pb.TargetAttribute {
+		if in == nil {
+			return nil
+		}
+		out := &pb.TargetAttribute{}
+		// MISSING: ID
+		out.Labels = in.Labels
+		return out
+	}
+*/
+func TargetObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Target) *krmclouddeployv1alpha1.TargetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.TargetObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.TargetID = direct.LazyPtr(in.GetTargetId())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Annotations = in.Annotations
+	out.Labels = in.Labels
+	out.RequireApproval = direct.LazyPtr(in.GetRequireApproval())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.GKE = GKECluster_v1alpha1_FromProto(mapCtx, in.GetGke())
+	out.AnthosCluster = AnthosCluster_v1alpha1_FromProto(mapCtx, in.GetAnthosCluster())
+	out.Run = CloudRunLocationObservedState_v1alpha1_FromProto(mapCtx, in.GetRun())
+	out.MultiTarget = MultiTarget_v1alpha1_FromProto(mapCtx, in.GetMultiTarget())
+	out.CustomTarget = CustomTarget_v1alpha1_FromProto(mapCtx, in.GetCustomTarget())
+	if in.AssociatedEntities != nil {
+		out.AssociatedEntities = make(map[string]krmclouddeployv1alpha1.AssociatedEntities, len(in.AssociatedEntities))
+		for k, v := range in.AssociatedEntities {
+			if c := AssociatedEntities_v1alpha1_FromProto(mapCtx, v); c != nil {
+				out.AssociatedEntities[k] = *c
+			}
+		}
+	}
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.ExecutionConfigs = direct.Slice_FromProto(mapCtx, in.ExecutionConfigs, ExecutionConfig_v1alpha1_FromProto)
+	out.DeployParameters = in.DeployParameters
+	return out
+}
+func TargetObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.TargetObservedState) *pb.Target {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Target{}
+	out.Name = direct.ValueOf(in.Name)
+	out.TargetId = direct.ValueOf(in.TargetID)
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Description = direct.ValueOf(in.Description)
+	out.Annotations = in.Annotations
+	out.Labels = in.Labels
+	out.RequireApproval = direct.ValueOf(in.RequireApproval)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	if oneof := GKECluster_v1alpha1_ToProto(mapCtx, in.GKE); oneof != nil {
+		out.DeploymentTarget = &pb.Target_Gke{Gke: oneof}
+	}
+	if oneof := AnthosCluster_v1alpha1_ToProto(mapCtx, in.AnthosCluster); oneof != nil {
+		out.DeploymentTarget = &pb.Target_AnthosCluster{AnthosCluster: oneof}
+	}
+	if oneof := CloudRunLocationObservedState_v1alpha1_ToProto(mapCtx, in.Run); oneof != nil {
+		out.DeploymentTarget = &pb.Target_Run{Run: oneof}
+	}
+	if oneof := MultiTarget_v1alpha1_ToProto(mapCtx, in.MultiTarget); oneof != nil {
+		out.DeploymentTarget = &pb.Target_MultiTarget{MultiTarget: oneof}
+	}
+	if oneof := CustomTarget_v1alpha1_ToProto(mapCtx, in.CustomTarget); oneof != nil {
+		out.DeploymentTarget = &pb.Target_CustomTarget{CustomTarget: oneof}
+	}
+	if in.AssociatedEntities != nil {
+		out.AssociatedEntities = make(map[string]*pb.AssociatedEntities, len(in.AssociatedEntities))
+		for k, v := range in.AssociatedEntities {
+			out.AssociatedEntities[k] = AssociatedEntities_v1alpha1_ToProto(mapCtx, &v)
+		}
+	}
+	out.Etag = direct.ValueOf(in.Etag)
+	out.ExecutionConfigs = direct.Slice_ToProto(mapCtx, in.ExecutionConfigs, ExecutionConfig_v1alpha1_ToProto)
+	out.DeployParameters = in.DeployParameters
+	return out
+}
+
+/*
+found existing non-generated mapping function "TargetsPresentCondition_v1alpha1_FromProto", skipping
+
+	func TargetsPresentCondition_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TargetsPresentCondition) *krmclouddeployv1alpha1.TargetsPresentCondition {
+		if in == nil {
+			return nil
+		}
+		out := &krmclouddeployv1alpha1.TargetsPresentCondition{}
+		out.Status = direct.LazyPtr(in.GetStatus())
+		out.MissingTargets = in.MissingTargets
+		out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+		return out
+	}
+*/
 func TargetsPresentCondition_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.TargetsPresentCondition) *pb.TargetsPresentCondition {
 	if in == nil {
 		return nil
@@ -1047,6 +2381,24 @@ func TargetsPresentCondition_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmc
 	out.Status = direct.ValueOf(in.Status)
 	out.MissingTargets = in.MissingTargets
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func TargetsTypeCondition_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TargetsTypeCondition) *krmclouddeployv1alpha1.TargetsTypeCondition {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.TargetsTypeCondition{}
+	out.Status = direct.LazyPtr(in.GetStatus())
+	out.ErrorDetails = direct.LazyPtr(in.GetErrorDetails())
+	return out
+}
+func TargetsTypeCondition_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.TargetsTypeCondition) *pb.TargetsTypeCondition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetsTypeCondition{}
+	out.Status = direct.ValueOf(in.Status)
+	out.ErrorDetails = direct.ValueOf(in.ErrorDetails)
 	return out
 }
 func TargetsTypeCondition_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetsTypeCondition) *krmclouddeployv1beta1.TargetsTypeCondition {
@@ -1087,6 +2439,20 @@ func TimeWindows_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv
 	out.WeeklyWindows = direct.Slice_ToProto(mapCtx, in.WeeklyWindows, WeeklyWindow_v1alpha1_ToProto)
 	return out
 }
+
+/*
+found existing non-generated mapping function "TimedPromoteReleaseCondition_v1alpha1_FromProto", skipping
+
+	func TimedPromoteReleaseCondition_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TimedPromoteReleaseCondition) *krmclouddeployv1alpha1.TimedPromoteReleaseCondition {
+		if in == nil {
+			return nil
+		}
+		out := &krmclouddeployv1alpha1.TimedPromoteReleaseCondition{}
+		out.NextPromotionTime = direct.StringTimestamp_FromProto(mapCtx, in.GetNextPromotionTime())
+		out.TargetsList = direct.Slice_FromProto(mapCtx, in.TargetsList, TimedPromoteReleaseCondition_Targets_v1alpha1_FromProto)
+		return out
+	}
+*/
 func TimedPromoteReleaseCondition_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.TimedPromoteReleaseCondition) *pb.TimedPromoteReleaseCondition {
 	if in == nil {
 		return nil
@@ -1096,6 +2462,20 @@ func TimedPromoteReleaseCondition_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	out.TargetsList = direct.Slice_ToProto(mapCtx, in.TargetsList, TimedPromoteReleaseCondition_Targets_v1alpha1_ToProto)
 	return out
 }
+
+/*
+found existing non-generated mapping function "TimedPromoteReleaseCondition_Targets_v1alpha1_FromProto", skipping
+
+	func TimedPromoteReleaseCondition_Targets_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TimedPromoteReleaseCondition_Targets) *krmclouddeployv1alpha1.TimedPromoteReleaseCondition_Targets {
+		if in == nil {
+			return nil
+		}
+		out := &krmclouddeployv1alpha1.TimedPromoteReleaseCondition_Targets{}
+		out.SourceTargetID = direct.LazyPtr(in.GetSourceTargetId())
+		out.DestinationTargetID = direct.LazyPtr(in.GetDestinationTargetId())
+		return out
+	}
+*/
 func TimedPromoteReleaseCondition_Targets_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.TimedPromoteReleaseCondition_Targets) *pb.TimedPromoteReleaseCondition_Targets {
 	if in == nil {
 		return nil
@@ -1105,6 +2485,56 @@ func TimedPromoteReleaseCondition_Targets_v1alpha1_ToProto(mapCtx *direct.MapCon
 	out.DestinationTargetId = direct.ValueOf(in.DestinationTargetID)
 	return out
 }
+
+/* found existing non-generated mapping function "TimedPromoteReleaseRule_v1alpha1_FromProto", skipping
+func TimedPromoteReleaseRule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TimedPromoteReleaseRule) *krmclouddeployv1alpha1.TimedPromoteReleaseRule {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.TimedPromoteReleaseRule{}
+	out.ID = direct.LazyPtr(in.GetId())
+	// MISSING: DestinationTargetID
+	out.Schedule = direct.LazyPtr(in.GetSchedule())
+	out.TimeZone = direct.LazyPtr(in.GetTimeZone())
+	// MISSING: Condition
+	out.DestinationPhase = direct.LazyPtr(in.GetDestinationPhase())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "TimedPromoteReleaseRule_v1alpha1_ToProto", skipping
+func TimedPromoteReleaseRule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.TimedPromoteReleaseRule) *pb.TimedPromoteReleaseRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TimedPromoteReleaseRule{}
+	out.Id = direct.ValueOf(in.ID)
+	// MISSING: DestinationTargetID
+	out.Schedule = direct.ValueOf(in.Schedule)
+	out.TimeZone = direct.ValueOf(in.TimeZone)
+	// MISSING: Condition
+	out.DestinationPhase = direct.ValueOf(in.DestinationPhase)
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "TimedPromoteReleaseRuleObservedState_v1alpha1_FromProto", skipping
+
+	func TimedPromoteReleaseRuleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TimedPromoteReleaseRule) *krmclouddeployv1alpha1.TimedPromoteReleaseRuleObservedState {
+		if in == nil {
+			return nil
+		}
+		out := &krmclouddeployv1alpha1.TimedPromoteReleaseRuleObservedState{}
+		// MISSING: ID
+		// MISSING: DestinationTargetID
+		// MISSING: Schedule
+		// MISSING: TimeZone
+		out.Condition = AutomationRuleCondition_v1alpha1_FromProto(mapCtx, in.GetCondition())
+		// MISSING: DestinationPhase
+		return out
+	}
+*/
 func TimedPromoteReleaseRuleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.TimedPromoteReleaseRuleObservedState) *pb.TimedPromoteReleaseRule {
 	if in == nil {
 		return nil
