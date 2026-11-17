@@ -1,0 +1,94 @@
+# Phase: DELETE
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/virtual-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fvirtual-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "format": 1,
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "mode": 2,
+  "name": "projects/${projectId}/locations/us-central1/repositories/virtual-${uniqueId}",
+  "registryUri": "us-central1-docker.pkg.dev/${projectId}/virtual-${uniqueId}",
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "virtualRepositoryConfig": {
+    "upstreamPolicies": [
+      {
+        "id": "upstream",
+        "priority": 1,
+        "repository": "projects/${projectId}/locations/us-central1/repositories/upstream-${uniqueId}"
+      }
+    ]
+  },
+  "vulnerabilityScanningConfig": {
+    "enablementState": 1,
+    "enablementStateReason": "Repository mode VIRTUAL_REPOSITORY is not supported.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/virtual-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fvirtual-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
