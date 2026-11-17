@@ -29,6 +29,19 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
 
+	if strings.Contains(url, "gatewaySecurityPolicies") {
+		cleanPolicy := func(m map[string]any) {
+			if v, ok := m["tlsInspectionPolicy"].(string); ok && v == "" {
+				delete(m, "tlsInspectionPolicy")
+			}
+			if v, ok := m["description"].(string); ok && v == "" {
+				delete(m, "description")
+			}
+		}
+		replacements.TransformObject("", cleanPolicy)
+		replacements.TransformObject(".response", cleanPolicy)
+	}
+
 	if strings.Contains(url, "gatewaySecurityPolicies") && strings.Contains(url, "rules") {
 		// applicationMatcher and tlsInspectionEnabled are zero-values ("" and false) in real GCP
 		// which proto3 JSON marshaling omits.

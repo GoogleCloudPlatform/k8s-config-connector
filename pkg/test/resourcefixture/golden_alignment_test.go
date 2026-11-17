@@ -1093,6 +1093,9 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if tie, ok := v["tlsInspectionEnabled"].(bool); ok && !tie {
 			delete(v, "tlsInspectionEnabled")
 		}
+		if tip, ok := v["tlsInspectionPolicy"].(string); ok && tip == "" {
+			delete(v, "tlsInspectionPolicy")
+		}
 		if preview, ok := v["preview"].(bool); ok && !preview {
 			delete(v, "preview")
 		}
