@@ -55,6 +55,7 @@
 [not_representable] crd=ccinsightsconversations.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataSource.gcsSource.audioURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=ccinsightsconversations.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataSource.gcsSource.transcriptURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.audioProcessingConfig.ambientSoundConfig.gcsURI" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=cloudbuildbuilds.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifacts.objects.location" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.objects.location" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].googleCloudStorage.source" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=clouddeployreleases.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.skaffoldConfigURI" reason=gcs-path-decomposable-as-bucketref-plus-path
