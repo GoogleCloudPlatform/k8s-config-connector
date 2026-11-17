@@ -39,6 +39,12 @@ entries:
     status: open
   - kind: NotebooksRuntime
     group: notebooks.cnrm.cloud.google.com
+    field: .spec.softwareConfig.customGpuDriverPath
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: NotebooksRuntime
+    group: notebooks.cnrm.cloud.google.com
     field: .spec.softwareConfig.postStartupScript
     reason: reference-not-representable
     detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
@@ -52,7 +58,19 @@ entries:
   - kind: NotebooksRuntime
     group: notebooks.cnrm.cloud.google.com
     field: .spec.virtualMachine.virtualMachineConfig.network
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "https://www.googleapis.com/compute/v1/projects/[project_id]/global/networks/default"
+    status: open
+  - kind: NotebooksRuntime
+    group: notebooks.cnrm.cloud.google.com
+    field: .spec.virtualMachine.virtualMachineConfig.network
     reason: possible-reference-by-description-loose
+    status: open
+  - kind: NotebooksRuntime
+    group: notebooks.cnrm.cloud.google.com
+    field: .spec.virtualMachine.virtualMachineConfig.subnet
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "https://www.googleapis.com/compute/v1/projects/[project_id]/regions/us-east1/subnetworks/sub0"
     status: open
   - kind: NotebooksRuntime
     group: notebooks.cnrm.cloud.google.com

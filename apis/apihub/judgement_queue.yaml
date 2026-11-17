@@ -125,6 +125,12 @@ entries:
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.additionalConfig.KEY.secretValue.secretVersion
+    reason: possible-reference-by-description
+    detail: the field name ends in secretVersion
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.additionalConfig.KEY.secretValue.secretVersion
     reason: possible-reference-by-description-loose
     status: resolved
     resolution: not-applicable
@@ -137,6 +143,12 @@ entries:
     status: resolved
     resolution: not-applicable
     note: Secret is a shared nested struct representing Secret Manager version string resource name
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.apiKeyConfig.apiKey.secretVersion
+    reason: possible-reference-by-description
+    detail: the field name ends in secretVersion
+    status: open
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.authConfig.apiKeyConfig.apiKey.secretVersion
@@ -179,6 +191,12 @@ entries:
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.authConfig.oauth2ClientCredentialsConfig.clientSecret.secretVersion
+    reason: possible-reference-by-description
+    detail: the field name ends in secretVersion
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.oauth2ClientCredentialsConfig.clientSecret.secretVersion
     reason: possible-reference-by-description-loose
     status: resolved
     resolution: not-applicable
@@ -194,6 +212,12 @@ entries:
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.authConfig.userPasswordConfig.password.secretVersion
+    reason: possible-reference-by-description
+    detail: the field name ends in secretVersion
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.userPasswordConfig.password.secretVersion
     reason: possible-reference-by-description-loose
     status: resolved
     resolution: not-applicable
@@ -206,6 +230,12 @@ entries:
     status: resolved
     resolution: edited
     note: replaced location and projectRef with required immutable spec.parentRef
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.sourceProjectID
+    reason: possible-reference-by-description
+    detail: the field name is project or ends in projectID
+    status: open
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.sourceProjectID

@@ -188,6 +188,12 @@ entries:
   - kind: VMMigrationTargetProject
     group: vmmigration.cnrm.cloud.google.com
     field: .spec.project
+    reason: possible-reference-by-description
+    detail: the field name is project or ends in projectID
+    status: open
+  - kind: VMMigrationTargetProject
+    group: vmmigration.cnrm.cloud.google.com
+    field: .spec.project
     reason: possible-reference-by-name
     detail: ProjectRef
     status: open

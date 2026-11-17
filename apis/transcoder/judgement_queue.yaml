@@ -36,7 +36,7 @@ entries:
     group: transcoder.cnrm.cloud.google.com
     field: .spec.config.encryptions[].secretManagerKeySource.secretVersion
     reason: possible-reference-by-description
-    detail: the description has the resource-name template "projects/{project}/secrets/{secret_id}/versions/{version_number}"
+    detail: the description has the resource-name template "projects/{project}/secrets/{secret_id}/versions/{version_number}"; the field name ends in secretVersion
     status: open
   - kind: TranscoderJobTemplate
     group: transcoder.cnrm.cloud.google.com
