@@ -410,7 +410,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		visitor.replacePaths[".status.observedState.userID"] = "0000000000000000000"
 		visitor.removePaths.Insert(".status.observedState.state") // data transfer run state, which depends on timing
 	}
-	if u.GetKind() == "DataformFolder" {
+	if u.GetKind() == "DataformFolder" || u.GetKind() == "DataformTeamFolder" {
 		visitor.removePaths.Insert(".status.observedState.internalMetadata")
 	}
 	// Specific to AIPlatformSchedule
@@ -1223,6 +1223,13 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 				if len(parts) > 0 {
 					styleConfigID := parts[len(parts)-1]
 					replacement.PathIDs[styleConfigID] = "${styleConfigId}"
+				}
+			}
+			if u.GetKind() == "DataformTeamFolder" {
+				parts := strings.Split(s, "/")
+				if len(parts) > 0 {
+					teamFolderID := parts[len(parts)-1]
+					replacement.PathIDs[teamFolderID] = "2ba614be-5147-410a-ad89-bab4ff528497"
 				}
 			}
 		}
