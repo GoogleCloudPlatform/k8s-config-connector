@@ -1609,6 +1609,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "hypercomputecluster.cnrm.cloud.google.com", Kind: "HypercomputeClusterCluster"}:
 			case schema.GroupKind{Group: "ces.cnrm.cloud.google.com", Kind: "CESApp"}:
 			case schema.GroupKind{Group: "ces.cnrm.cloud.google.com", Kind: "CESDeployment"}:
+			case schema.GroupKind{Group: "ces.cnrm.cloud.google.com", Kind: "CESGuardrail"}:
 
 			case schema.GroupKind{Group: "vectorsearch.cnrm.cloud.google.com", Kind: "VectorSearchCollection"}:
 			case schema.GroupKind{Group: "vectorsearch.cnrm.cloud.google.com", Kind: "VectorsearchIndex"}:
