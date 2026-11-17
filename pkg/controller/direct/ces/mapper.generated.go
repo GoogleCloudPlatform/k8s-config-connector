@@ -743,6 +743,64 @@ func CESToolSpec_ToProto(mapCtx *direct.MapContext, in *krm.CESToolSpec) *pb.Too
 	out.ToolFakeConfig = ToolFakeConfig_ToProto(mapCtx, in.ToolFakeConfig)
 	return out
 }
+func CESToolsetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Toolset) *krm.CESToolsetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CESToolsetObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func CESToolsetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CESToolsetObservedState) *pb.Toolset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Toolset{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func CESToolsetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Toolset) *krm.CESToolsetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CESToolsetSpec{}
+	out.McpToolset = McpToolset_FromProto(mapCtx, in.GetMcpToolset())
+	out.OpenAPIToolset = OpenAPIToolset_FromProto(mapCtx, in.GetOpenApiToolset())
+	out.ConnectorToolset = ConnectorToolset_FromProto(mapCtx, in.GetConnectorToolset())
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.ExecutionType = direct.Enum_FromProto(mapCtx, in.GetExecutionType())
+	out.ToolFakeConfig = ToolFakeConfig_FromProto(mapCtx, in.GetToolFakeConfig())
+	return out
+}
+func CESToolsetSpec_ToProto(mapCtx *direct.MapContext, in *krm.CESToolsetSpec) *pb.Toolset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Toolset{}
+	if oneof := McpToolset_ToProto(mapCtx, in.McpToolset); oneof != nil {
+		out.ToolsetType = &pb.Toolset_McpToolset{McpToolset: oneof}
+	}
+	if oneof := OpenAPIToolset_ToProto(mapCtx, in.OpenAPIToolset); oneof != nil {
+		out.ToolsetType = &pb.Toolset_OpenApiToolset{OpenApiToolset: oneof}
+	}
+	if oneof := ConnectorToolset_ToProto(mapCtx, in.ConnectorToolset); oneof != nil {
+		out.ToolsetType = &pb.Toolset_ConnectorToolset{ConnectorToolset: oneof}
+	}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.ExecutionType = direct.Enum_ToProto[pb.ExecutionType](mapCtx, in.ExecutionType)
+	out.ToolFakeConfig = ToolFakeConfig_ToProto(mapCtx, in.ToolFakeConfig)
+	return out
+}
 func Callback_FromProto(mapCtx *direct.MapContext, in *pb.Callback) *krm.Callback {
 	if in == nil {
 		return nil
@@ -1047,6 +1105,26 @@ func ConnectorTool_ToProto(mapCtx *direct.MapContext, in *krm.ConnectorTool) *pb
 	out.AuthConfig = EndUserAuthConfig_ToProto(mapCtx, in.AuthConfig)
 	out.Name = direct.ValueOf(in.Name)
 	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func ConnectorToolset_FromProto(mapCtx *direct.MapContext, in *pb.ConnectorToolset) *krm.ConnectorToolset {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConnectorToolset{}
+	out.Connection = direct.LazyPtr(in.GetConnection())
+	out.AuthConfig = EndUserAuthConfig_FromProto(mapCtx, in.GetAuthConfig())
+	out.ConnectorActions = direct.Slice_FromProto(mapCtx, in.ConnectorActions, Action_FromProto)
+	return out
+}
+func ConnectorToolset_ToProto(mapCtx *direct.MapContext, in *krm.ConnectorToolset) *pb.ConnectorToolset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectorToolset{}
+	out.Connection = direct.ValueOf(in.Connection)
+	out.AuthConfig = EndUserAuthConfig_ToProto(mapCtx, in.AuthConfig)
+	out.ConnectorActions = direct.Slice_ToProto(mapCtx, in.ConnectorActions, Action_ToProto)
 	return out
 }
 func ConversationLoggingSettings_FromProto(mapCtx *direct.MapContext, in *pb.ConversationLoggingSettings) *krm.ConversationLoggingSettings {
@@ -1995,6 +2073,30 @@ func McpTool_ToProto(mapCtx *direct.MapContext, in *krm.McpTool) *pb.McpTool {
 	out.CustomHeaders = in.CustomHeaders
 	return out
 }
+func McpToolset_FromProto(mapCtx *direct.MapContext, in *pb.McpToolset) *krm.McpToolset {
+	if in == nil {
+		return nil
+	}
+	out := &krm.McpToolset{}
+	out.ServerAddress = direct.LazyPtr(in.GetServerAddress())
+	out.APIAuthentication = APIAuthentication_FromProto(mapCtx, in.GetApiAuthentication())
+	out.ServiceDirectoryConfig = ServiceDirectoryConfig_FromProto(mapCtx, in.GetServiceDirectoryConfig())
+	out.TLSConfig = TLSConfig_FromProto(mapCtx, in.GetTlsConfig())
+	out.CustomHeaders = in.CustomHeaders
+	return out
+}
+func McpToolset_ToProto(mapCtx *direct.MapContext, in *krm.McpToolset) *pb.McpToolset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.McpToolset{}
+	out.ServerAddress = direct.ValueOf(in.ServerAddress)
+	out.ApiAuthentication = APIAuthentication_ToProto(mapCtx, in.APIAuthentication)
+	out.ServiceDirectoryConfig = ServiceDirectoryConfig_ToProto(mapCtx, in.ServiceDirectoryConfig)
+	out.TlsConfig = TLSConfig_ToProto(mapCtx, in.TLSConfig)
+	out.CustomHeaders = in.CustomHeaders
+	return out
+}
 func MetricAnalysisSettings_FromProto(mapCtx *direct.MapContext, in *pb.MetricAnalysisSettings) *krm.MetricAnalysisSettings {
 	if in == nil {
 		return nil
@@ -2080,6 +2182,32 @@ func OpenAPITool_ToProto(mapCtx *direct.MapContext, in *krm.OpenAPITool) *pb.Ope
 	out.OpenApiSchema = direct.ValueOf(in.OpenAPISchema)
 	out.Name = direct.ValueOf(in.Name)
 	out.Description = direct.ValueOf(in.Description)
+	out.ApiAuthentication = APIAuthentication_ToProto(mapCtx, in.APIAuthentication)
+	out.TlsConfig = TLSConfig_ToProto(mapCtx, in.TLSConfig)
+	out.ServiceDirectoryConfig = ServiceDirectoryConfig_ToProto(mapCtx, in.ServiceDirectoryConfig)
+	out.IgnoreUnknownFields = direct.ValueOf(in.IgnoreUnknownFields)
+	out.Url = direct.ValueOf(in.URL)
+	return out
+}
+func OpenAPIToolset_FromProto(mapCtx *direct.MapContext, in *pb.OpenApiToolset) *krm.OpenAPIToolset {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OpenAPIToolset{}
+	out.OpenAPISchema = direct.LazyPtr(in.GetOpenApiSchema())
+	out.APIAuthentication = APIAuthentication_FromProto(mapCtx, in.GetApiAuthentication())
+	out.TLSConfig = TLSConfig_FromProto(mapCtx, in.GetTlsConfig())
+	out.ServiceDirectoryConfig = ServiceDirectoryConfig_FromProto(mapCtx, in.GetServiceDirectoryConfig())
+	out.IgnoreUnknownFields = direct.LazyPtr(in.GetIgnoreUnknownFields())
+	out.URL = direct.LazyPtr(in.GetUrl())
+	return out
+}
+func OpenAPIToolset_ToProto(mapCtx *direct.MapContext, in *krm.OpenAPIToolset) *pb.OpenApiToolset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OpenApiToolset{}
+	out.OpenApiSchema = direct.ValueOf(in.OpenAPISchema)
 	out.ApiAuthentication = APIAuthentication_ToProto(mapCtx, in.APIAuthentication)
 	out.TlsConfig = TLSConfig_ToProto(mapCtx, in.TLSConfig)
 	out.ServiceDirectoryConfig = ServiceDirectoryConfig_ToProto(mapCtx, in.ServiceDirectoryConfig)

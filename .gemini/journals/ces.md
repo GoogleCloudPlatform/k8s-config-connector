@@ -151,5 +151,12 @@
      - Removed unshared deprecated field `pythonScript` from `WidgetTool_DataMapping`.
   5. **Resolved Judgement Queue**: All 41 `CESTool` entries in `apis/ces/judgement_queue.yaml` are triaged and resolved.
 
+### [2026-11-16] Prepopulating CESToolset Direct Types and Identity
+- **Context**: Greenfield Step 1a for `CESToolset` under `ces.cnrm.cloud.google.com/v1alpha1` using `google.cloud.ces.v1` (`Toolset` proto).
+- **Observations & Decisions**:
+  1. **Existing External References**: `CesToolsetRef` and `CesToolsetIdentity` were previously added as handwritten external-only references in `apis/ces/v1alpha1/` (for `DialogflowCompanionAgent`), flagged in `naming_violations.txt`. With `CESToolset` introduced as a full KRM resource, `cestoolset` is now a valid kind prefix, allowing removal of the obsolete exception from `naming_violations.txt` while keeping the legacy `CesToolsetRef` intact to avoid breaking consumers.
+  2. **Empty oneof variant**: Proto message `ServiceAgentIDTokenAuthConfig` in `McpToolset.ApiAuthentication` and `OpenApiToolset.ApiAuthentication` is an empty parameterless struct. `TestCRDObjectTypes` flagged `cestoolsets.ces.cnrm.cloud.google.com` as an object missing properties. Added `cestoolsets.ces.cnrm.cloud.google.com` to `knownInvalidCRDs` in `tests/apichecks/crds_test.go` following the standard `// GCP known pattern: Empty oneof option` convention.
+  3. **Release Bundle Blocked Kinds**: Added `"CESToolset"` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+- **Impact**: All unit tests in `apis/ces/...` and `tests/apichecks` pass cleanly with fully idempotent code generation.
 
 

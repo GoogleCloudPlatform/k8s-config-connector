@@ -1123,6 +1123,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com":                       true, // GCP known pattern: Empty oneof option (spec.indexConfig.bruteForceConfig)
 		"cesagents.ces.cnrm.cloud.google.com":                                           true, // GCP known pattern: Empty oneof option (spec.llmAgent)
 		"cesguardrails.ces.cnrm.cloud.google.com":                                       true, // GCP known pattern: Empty oneof option (spec.llmPromptSecurity.defaultSettings)
+		"cestoolsets.ces.cnrm.cloud.google.com":                                         true, // GCP known pattern: Empty oneof option (spec.mcpToolset.apiAuthentication.serviceAgentIDTokenAuthConfig)
 		"cloudchannelchannelpartnerrepricingconfigs.cloudchannel.cnrm.cloud.google.com": true, // GCP known pattern: Empty oneof option (spec.repricingConfig.channelPartnerGranularity)
 		"cloudchannelcustomerrepricingconfigs.cloudchannel.cnrm.cloud.google.com":       true, // GCP known pattern: Empty oneof option (spec.repricingConfig.channelPartnerGranularity)
 		"datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com":           true, // GCP known pattern: Empty oneof option (spec.oracle.staticServiceIPConnectivity)
