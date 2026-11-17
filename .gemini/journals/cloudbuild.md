@@ -9,3 +9,11 @@
   2. Used `*InstallationStateObservedState` directly in `CloudBuildConnectionObservedState` within `connection_types.go`.
   3. Added the skipped `*ObservedState` corresponding structs to `connection_types.go` as overriding a base type forces the prune-types script to skip its `ObservedState` generation as well.
 - **Impact**: Future agents implementing resources with nested references should know they need to manually copy the structs to `<kind>_types.go`, override the reference fields with `ref` structs, AND also provide the `ObservedState` structs for those overridden types to ensure everything compiles correctly.
+
+### [2026-11-17] Prepopulate Direct Types, Identity, and Judgement Queue for CloudBuildBuild
+- **Context**: Greenfield Step 1a prepopulation for `CloudBuildBuild:Build` (`cloudbuild.cnrm.cloud.google.com/v1alpha1`).
+- **Learnings & Decisions**:
+  1. `Build` in `google.devtools.cloudbuild.v1` defines `CreateBuild` without `UpdateBuild` (one-shot execution), requiring `--allow-non-declarative` in `controllerbuilder generate-types`.
+  2. `google.devtools.cloudbuild.v1.Build` declares two resource patterns: `projects/{project}/builds/{build}` and `projects/{project}/locations/{location}/builds/{build}`. Following CAI (`cloudassetinventory_names.jsonl`) and modern regional URL conventions, explicitly locked in `--pattern CloudBuildBuild=projects/{project}/locations/{location}/builds/{build}` in `generate-identity`.
+  3. Added `CloudBuildBuild` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. Ran `apis/cloudbuild/generate.sh` and confirmed pure mechanical output and idempotency. Recorded expected untriaged missing fields and non-representable refs in `tests/apichecks` exceptions via golden update.

@@ -1,0 +1,181 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/builds/{build}" contains ancestor segment(s) locations/{location} with no matching reference or field on CloudBuildBuildSpec
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.builds: https://docs.cloud.google.com/cloud-build/docs/reference/rest/v1/projects.builds'
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .spec.artifacts.goModules[].repositoryProjectID
+    reason: possible-reference-by-name
+    detail: ProjectRef
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .spec.artifacts.mavenArtifacts[].artifactID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .spec.artifacts.mavenArtifacts[].groupID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .spec.artifacts.objects.location
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .spec.availableSecrets.inline[].envMap
+    reason: unsupported-field-type
+    detail: unsupported map type with key string and value bytes
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .spec.availableSecrets.inline[].kmsKeyName
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to cloudkms.googleapis.com/CryptoKey (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .spec.availableSecrets.secretManager
+    reason: possible-reference-by-name
+    detail: SecretManagerSecretVersionRef
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .spec.availableSecrets.secretManager[].versionName
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to secretmanager.googleapis.com/SecretVersion (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .spec.dependencies[].gitSource.repository.developerConnect
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to developerconnect.googleapis.com/GitRepositoryLink (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .spec.gitConfig.http.proxySecretVersionName
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to secretmanager.googleapis.com/SecretVersion (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .spec.logsBucket
+    reason: possible-reference-by-description
+    detail: the field name has bucket and the description mentions Cloud Storage
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .spec.options.pool.name
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to cloudbuild.googleapis.com/WorkerPool (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .spec.options.secretEnv
+    reason: possible-reference-by-name
+    detail: SecretManagerSecretVersionRef
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .spec.options.workerPool
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .spec.secrets[].kmsKeyName
+    reason: possible-reference-by-name
+    detail: KMSCryptoKeyRef
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .spec.secrets[].secretEnv
+    reason: unsupported-field-type
+    detail: unsupported map type with key string and value bytes
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .spec.serviceAccount
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to iam.googleapis.com/ServiceAccount (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .spec.source.repoSource.projectID
+    reason: possible-reference-by-name
+    detail: ProjectRef
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .spec.source.storageSource.bucket
+    reason: possible-reference-by-description
+    detail: the field name has bucket and the description mentions Cloud Storage
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .spec.source.storageSourceManifest.bucket
+    reason: possible-reference-by-description
+    detail: the field name has bucket and the description mentions Cloud Storage
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .spec.steps[].secretEnv
+    reason: possible-reference-by-name
+    detail: SecretManagerSecretVersionRef
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .status.observedState.sourceProvenance.fileHashes
+    reason: message-map-derived
+    detail: derived as map[string]FileHashes from proto google.devtools.cloudbuild.v1.FileHashes; verify Go type and mapping
+    status: open
+  - kind: CloudBuildBuild
+    group: cloudbuild.cnrm.cloud.google.com
+    field: .status.observedState.timing
+    reason: message-map-derived
+    detail: derived as map[string]TimeSpan from proto google.devtools.cloudbuild.v1.TimeSpan; verify Go type and mapping
+    status: open
