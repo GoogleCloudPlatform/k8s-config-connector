@@ -18,9 +18,9 @@ metadata:
   name: firebaseandroidapp-${uniqueId}
 spec:
   displayName: Display Name Basic
-  packageName: ""
+  packageName: "android.package.app${uniqueId}"
   projectRef:
-    name: project-${uniqueId}
+    external: "${projectId}"
   sha1Hashes:
   - 2145bdf698b8715039bd0e83f2069bed435ac21c
   sha256Hashes:

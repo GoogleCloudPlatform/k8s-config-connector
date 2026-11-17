@@ -1,6 +1,4 @@
-- caisURL: unknown
-  error: 'cannot parse projectRef in FirebaseAndroidApp ${uniqueId}/firebaseandroidapp-${uniqueId}:
-    referenced Project ${uniqueId}/project-${uniqueId} not found'
+- caisURL: //firebase.googleapis.com/projects/${projectId}/androidApps/1:${projectNumber}:android:e0ec16c940d75f1d8b7d90
   group: firebase.cnrm.cloud.google.com
   kind: FirebaseAndroidApp
   name: firebaseandroidapp-${uniqueId}

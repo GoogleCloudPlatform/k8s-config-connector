@@ -1,0 +1,6 @@
+- caisURL: //firebase.googleapis.com/projects/${projectId}/webApps/1:${projectNumber}:web:d845db9c6118f7948b7d90
+  group: firebase.cnrm.cloud.google.com
+  kind: FirebaseWebApp
+  name: firebasewebapp-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
