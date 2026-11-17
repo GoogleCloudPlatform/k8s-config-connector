@@ -1781,7 +1781,7 @@
 [missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorToolset.authConfig.oauth2JwtBearerConfig.clientKey" is not set in unstructured objects
 [missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorToolset.authConfig.oauth2JwtBearerConfig.issuer" is not set in unstructured objects
 [missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorToolset.authConfig.oauth2JwtBearerConfig.subject" is not set in unstructured objects
-[missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorToolset.connection" is not set in unstructured objects
+[missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorToolset.connectionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorToolset.connectorActions[].connectionActionID" is not set in unstructured objects
 [missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorToolset.connectorActions[].entityOperation.entityID" is not set in unstructured objects
 [missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorToolset.connectorActions[].entityOperation.operation" is not set in unstructured objects
@@ -1789,9 +1789,7 @@
 [missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorToolset.connectorActions[].outputFields[]" is not set in unstructured objects
 [missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
 [missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionType" is not set in unstructured objects
-[missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpToolset.apiAuthentication.apiKeyConfig.apiKeySecretVersionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpToolset.apiAuthentication.apiKeyConfig.keyName" is not set in unstructured objects
 [missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpToolset.apiAuthentication.apiKeyConfig.requestLocation" is not set in unstructured objects
@@ -1827,7 +1825,7 @@
 [missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPIToolset.tlsConfig.caCerts[].cert" is not set in unstructured objects
 [missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPIToolset.tlsConfig.caCerts[].displayName" is not set in unstructured objects
 [missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPIToolset.url" is not set in unstructured objects
-[missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.toolFakeConfig.codeBlock.pythonCode" is not set in unstructured objects
 [missing_field] crd=cestoolsets.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.toolFakeConfig.enableFakeMode" is not set in unstructured objects
 [missing_field] crd=chronicledataaccesslabels.chronicle.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects

@@ -105,10 +105,35 @@ spec:
                         - subject
                         type: object
                     type: object
-                  connection:
+                  connectionRef:
                     description: 'Required. The full resource name of the referenced
                       Integration Connectors Connection. Format: `projects/{project}/locations/{location}/connections/{connection}`'
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed ConnectorsConnection
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/connections/{{connection}}".
+                        type: string
+                      name:
+                        description: The name of a ConnectorsConnection resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a ConnectorsConnection resource.
+                        type: string
+                    type: object
                   connectorActions:
                     description: Required. The list of connector actions/entity operations
                       to generate tools for.
@@ -148,7 +173,7 @@ spec:
                       type: object
                     type: array
                 required:
-                - connection
+                - connectionRef
                 - connectorActions
                 type: object
               description:
@@ -158,16 +183,8 @@ spec:
                 description: Optional. The display name of the toolset. Must be unique
                   within the same app.
                 type: string
-              etag:
-                description: ETag used to ensure the object hasn't changed during
-                  a read-modify-write operation. If the etag is empty, the update
-                  will overwrite any concurrent changes.
-                type: string
               executionType:
                 description: Optional. The execution type of the tools in the toolset.
-                type: string
-              location:
-                description: The location of this resource.
                 type: string
               mcpToolset:
                 description: Optional. A toolset that contains a list of tools that
@@ -732,8 +749,8 @@ spec:
                 required:
                 - openAPISchema
                 type: object
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The CESApp this CESToolset is created under.
                 oneOf:
                 - not:
                     required:
@@ -750,20 +767,19 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed CESApp resource.
+                      Should be in the format "projects/{{projectID}}/locations/{{location}}/apps/{{appID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a CESApp resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a CESApp resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The CESToolset name. If not given, the metadata.name
                   will be used.
@@ -793,8 +809,7 @@ spec:
                     type: boolean
                 type: object
             required:
-            - location
-            - projectRef
+            - parentRef
             type: object
           status:
             description: CESToolsetStatus defines the config connector machine state
@@ -843,6 +858,11 @@ spec:
                 properties:
                   createTime:
                     description: Output only. Timestamp when the toolset was created.
+                    type: string
+                  etag:
+                    description: ETag used to ensure the object hasn't changed during
+                      a read-modify-write operation. If the etag is empty, the update
+                      will overwrite any concurrent changes.
                     type: string
                   updateTime:
                     description: Output only. Timestamp when the toolset was last

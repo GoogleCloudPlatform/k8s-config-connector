@@ -751,6 +751,7 @@ func CESToolsetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Toolset
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
 }
 func CESToolsetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CESToolsetObservedState) *pb.Toolset {
@@ -761,6 +762,7 @@ func CESToolsetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CESTools
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
 func CESToolsetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Toolset) *krm.CESToolsetSpec {
@@ -774,7 +776,6 @@ func CESToolsetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Toolset) *krm.CE
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.ExecutionType = direct.Enum_FromProto(mapCtx, in.GetExecutionType())
 	out.ToolFakeConfig = ToolFakeConfig_FromProto(mapCtx, in.GetToolFakeConfig())
 	return out
@@ -796,7 +797,6 @@ func CESToolsetSpec_ToProto(mapCtx *direct.MapContext, in *krm.CESToolsetSpec) *
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
-	out.Etag = direct.ValueOf(in.Etag)
 	out.ExecutionType = direct.Enum_ToProto[pb.ExecutionType](mapCtx, in.ExecutionType)
 	out.ToolFakeConfig = ToolFakeConfig_ToProto(mapCtx, in.ToolFakeConfig)
 	return out
@@ -1112,7 +1112,9 @@ func ConnectorToolset_FromProto(mapCtx *direct.MapContext, in *pb.ConnectorTools
 		return nil
 	}
 	out := &krm.ConnectorToolset{}
-	out.Connection = direct.LazyPtr(in.GetConnection())
+	if in.GetConnection() != "" {
+		out.ConnectionRef = &krmconnectorsv1alpha1.ConnectorsConnectionRef{External: in.GetConnection()}
+	}
 	out.AuthConfig = EndUserAuthConfig_FromProto(mapCtx, in.GetAuthConfig())
 	out.ConnectorActions = direct.Slice_FromProto(mapCtx, in.ConnectorActions, Action_FromProto)
 	return out
@@ -1122,7 +1124,9 @@ func ConnectorToolset_ToProto(mapCtx *direct.MapContext, in *krm.ConnectorToolse
 		return nil
 	}
 	out := &pb.ConnectorToolset{}
-	out.Connection = direct.ValueOf(in.Connection)
+	if in.ConnectionRef != nil {
+		out.Connection = in.ConnectionRef.External
+	}
 	out.AuthConfig = EndUserAuthConfig_ToProto(mapCtx, in.AuthConfig)
 	out.ConnectorActions = direct.Slice_ToProto(mapCtx, in.ConnectorActions, Action_ToProto)
 	return out
