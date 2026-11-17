@@ -1,0 +1,51 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# assess-release-step: a greenfield release PR whose Kind's controller was
+# merged earlier (the graph's controller step was done outside it, or closed
+# needing no change), so no step/controller PR of this graph carries a grade,
+# is graded on the same real-GCP evidence as a controller step: the
+# assess-controller recipe reads the Kind's fixtures, the Cloud Audit Log
+# entries for the mutations they record, and the audit probe markers, from
+# the base branch's scripts, and labels the PR good, fair or poor. With good,
+# merge-release (and overseer/auto-merge) merges it.
+#
+# Not a PR that also carries the controller's work (step/controller): its
+# controller step's assessment stands (assess-controller-step).
+name: assess-release-step
+description: Grade a greenfield release PR without a controller step of its own on the Kind's real-GCP evidence
+on: pr
+order: 73
+when:
+  author: pool
+  labels:
+    all: [step/release, greenfield]
+    none: [step/controller]
+  mergeable: true
+  checks: green
+  feedback: none
+  any-of:
+    - reviewed-at-head: true
+      changes-requested: false
+    - labels: {all: [overseer/ready-for-human]}
+run:
+  recipe: assess-controller
+  apply: [comment, label]
+  on-start:
+    unlabel: [overseer/assessment/good, overseer/assessment/fair, overseer/assessment/poor]
+policy:
+  dedupe: head
+  cooldown:
+    success: 1h
+    failure: 1h

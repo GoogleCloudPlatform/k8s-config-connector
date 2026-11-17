@@ -1,0 +1,57 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# merge-release: a greenfield release PR without a controller step of its
+# own (step/release, not step/controller - merge-controller merges those),
+# handed to people and graded good by assess-release-step, is merged by the
+# merger once its checks are green, it is mergeable, not a draft, not held,
+# and nobody asked for changes: factory's merge recipe approves it - the
+# review's text carries prow's /lgtm and /approve - and sets auto-merge at
+# the head it checked, which the merge queue takes.
+#
+# Opt-in: only a PR labelled overseer/auto-merge is merged (a graph's parent
+# labelled overseer/auto-merge labels its PRs, pr-labels-from-parent).
+#
+# Retries as merge-controller: a new head ends any wait at once; at the same
+# head the merge is tried again after 20m (a failure) or 30m (the queue
+# dropped it); it gives up after 6 runs at one head.
+name: merge-release
+description: Merge a greenfield release PR without a controller step of its own, opted in and graded good
+on: pr
+order: 82
+when:
+  labels:
+    all: [overseer/auto-merge, step/release, greenfield, overseer/ready-for-human, overseer/assessment/good]
+    none: [step/controller, do-not-merge/hold, overseer/stop]
+  checks: green
+  mergeable: true
+  draft: false
+  changes-requested: false
+run:
+  recipe: merge
+  inputs:
+    message: |
+      /lgtm
+      /approve
+
+      Approved for merge by the overseer: this release PR meets the criteria for approval - assess-release-step graded the Kind's real-GCP evidence good, its checks are green, and it is mergeable.
+policy:
+  cooldown:
+    success: 30m
+    failure: 20m
+    reset-on: [head]
+  give-up:
+    attempts: 6
+    since: [head, pause]
+    comment: Pausing auto-merge after 6 attempts at this head. Take overseer/stop off to let the overseer try again, or merge it by hand.
