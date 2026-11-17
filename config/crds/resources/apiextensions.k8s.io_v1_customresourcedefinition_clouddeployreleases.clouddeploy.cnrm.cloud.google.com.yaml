@@ -93,32 +93,8 @@ spec:
                 description: Optional. Description of the `Release`. Max length is
                   255 characters.
                 type: string
-              etag:
-                description: This checksum is computed by the server based on the
-                  value of other fields, and may be sent on update and delete requests
-                  to ensure the client has an up-to-date value before proceeding.
-                type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: |-
-                  Labels are attributes that can be set and used by both the
-                   user and by Cloud Deploy. Labels must meet the following constraints:
-
-                   * Keys and values can contain only lowercase letters, numeric characters,
-                   underscores, and dashes.
-                   * All characters must use UTF-8 encoding, and international characters are
-                   allowed.
-                   * Keys must start with a lowercase letter or international character.
-                   * Each resource is limited to a maximum of 64 labels.
-
-                   Both keys and values are additionally constrained to be <= 128 bytes.
-                type: object
-              location:
-                description: The location of this resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The DeliveryPipeline this Release is created under.
                 oneOf:
                 - not:
                     required:
@@ -135,20 +111,19 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed DeployDeliveryPipeline
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/deliverypipelines/{{deliverypipelineID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a DeployDeliveryPipeline resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a DeployDeliveryPipeline resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The CloudDeployRelease name. If not given, the metadata.name
                   will be used.
@@ -170,8 +145,7 @@ spec:
                    If unset, the most recent supported Skaffold version will be used.
                 type: string
             required:
-            - location
-            - projectRef
+            - parentRef
             type: object
           status:
             description: CloudDeployReleaseStatus defines the config connector machine
@@ -801,6 +775,12 @@ spec:
                           was updated.
                         type: string
                     type: object
+                  etag:
+                    description: This checksum is computed by the server based on
+                      the value of other fields, and may be sent on update and delete
+                      requests to ensure the client has an up-to-date value before
+                      proceeding.
+                    type: string
                   renderEndTime:
                     description: Output only. Time at which the render completed.
                     type: string

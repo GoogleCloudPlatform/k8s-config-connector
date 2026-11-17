@@ -1074,11 +1074,9 @@ type Target struct {
 type TargetArtifact struct {
 }
 
-/* unreachable type TargetArtifact_PhaseArtifact
 // +kcc:proto=google.cloud.deploy.v1.TargetArtifact.PhaseArtifact
 type TargetArtifact_PhaseArtifact struct {
 }
-*/
 
 /* found existing non-generated go type "TargetsPresentCondition", skipping
 

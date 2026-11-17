@@ -15,13 +15,12 @@
 // API sources for CloudDeployRelease, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/deploy/v1/cloud_deploy.proto
 // +kcc:source:service-docs=https://cloud.google.com/deploy/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/deploy/docs/reference/rest/v1/projects.locations.deliveryPipelines.releases
+// +kcc:source:resource-docs=https://cloud.google.com/deploy/docs/reference/rest/v1/projects.locations.deliveryPipelines.releases
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddeploy/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,14 +31,14 @@ var CloudDeployReleaseGVK = GroupVersion.WithKind("CloudDeployRelease")
 // +kcc:spec:proto=google.cloud.deploy.v1.Release
 // +kcc:required-from-proto
 type CloudDeployReleaseSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// The DeliveryPipeline this Release is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *v1beta1.DeliveryPipelineRef `json:"parentRef"`
 
 	// The CloudDeployRelease name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Optional. Description of the `Release`. Max length is 255 characters.
 	// +kcc:proto:field=google.cloud.deploy.v1.Release.description
 	Description *string `json:"description,omitempty"`
@@ -50,20 +49,6 @@ type CloudDeployReleaseSpec struct {
 	//  size limitations.
 	// +kcc:proto:field=google.cloud.deploy.v1.Release.annotations
 	Annotations map[string]string `json:"annotations,omitempty"`
-
-	// Labels are attributes that can be set and used by both the
-	//  user and by Cloud Deploy. Labels must meet the following constraints:
-	//
-	//  * Keys and values can contain only lowercase letters, numeric characters,
-	//  underscores, and dashes.
-	//  * All characters must use UTF-8 encoding, and international characters are
-	//  allowed.
-	//  * Keys must start with a lowercase letter or international character.
-	//  * Each resource is limited to a maximum of 64 labels.
-	//
-	//  Both keys and values are additionally constrained to be <= 128 bytes.
-	// +kcc:proto:field=google.cloud.deploy.v1.Release.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
 	// Optional. Cloud Storage URI of tar.gz archive containing Skaffold
 	//  configuration.
@@ -77,12 +62,6 @@ type CloudDeployReleaseSpec struct {
 	// Optional. List of artifacts to pass through to Skaffold command.
 	// +kcc:proto:field=google.cloud.deploy.v1.Release.build_artifacts
 	BuildArtifacts []BuildArtifact `json:"buildArtifacts,omitempty"`
-
-	// This checksum is computed by the server based on the value of other
-	//  fields, and may be sent on update and delete requests to ensure the
-	//  client has an up-to-date value before proceeding.
-	// +kcc:proto:field=google.cloud.deploy.v1.Release.etag
-	Etag *string `json:"etag,omitempty"`
 
 	// Optional. The Skaffold version to use when operating on this release, such
 	//  as "1.20.0". Not all versions are valid; Cloud Deploy supports a specific
@@ -167,6 +146,12 @@ type CloudDeployReleaseObservedState struct {
 	// Output only. Information around the state of the Release.
 	// +kcc:proto:field=google.cloud.deploy.v1.Release.condition
 	Condition *Release_ReleaseCondition `json:"condition,omitempty"`
+
+	// This checksum is computed by the server based on the value of other
+	//  fields, and may be sent on update and delete requests to ensure the
+	//  client has an up-to-date value before proceeding.
+	// +kcc:proto:field=google.cloud.deploy.v1.Release.etag
+	Etag *string `json:"etag,omitempty"`
 }
 
 // +genclient
