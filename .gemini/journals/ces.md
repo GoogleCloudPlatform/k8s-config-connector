@@ -103,6 +103,15 @@
   3. **Field Mutability**: `displayName`, `description`, `enabled`, `action.respondImmediately.responses`, and `contentFilter` (including `matchType`, `disregardDiacritics`, `bannedContents`, `bannedContentsInUserInput`, and `bannedContentsInAgentResponse`) update in-place cleanly via `UpdateGuardrail` with field mask.
   4. **Audit Probe & E2E Validation**: Golden HTTP logs and audit probes were recorded against real GCP project `cnrm-barni-4` for `cesguardrail-minimal` and `cesguardrail-maximal`, with all 7/7 automated lifecycle checks passing cleanly.
 
+### [2026-11-17] MockGCP Implementation and Alignment for CESGuardrail
+- **Context**: Implementing Greenfield Step 3 (MockGCP and Alignment) for `CESGuardrail` (`ces.cnrm.cloud.google.com/v1alpha1`).
+- **Learnings & Implementation**:
+  1. **Mock Service**: Added `mockgcp/mockces/guardrail.go` and `guardrailName` in `mockgcp/mockces/names.go`. Implemented synchronous CRUD (`CreateGuardrail`, `GetGuardrail`, `UpdateGuardrail`, `DeleteGuardrail`, `ListGuardrails`) for `AgentServiceV1`.
+  2. **Etag Behavior**: Verified that `CreateGuardrail` returns the created guardrail without an `etag`, while `GetGuardrail` and `UpdateGuardrail` return with `etag`. Storage holds the etag and returns it on read/update, matching real GCP.
+  3. **Error Alignment**: Aligned 404 message to `com.google.apps.framework.request.NotFoundException: Guardrail %s does not exist in the app.` matching real GCP response format.
+  4. **Harness & Verification**: Added `CESGuardrail` to mock-supported GroupKinds in `config/tests/samples/create/harness.go`. Generated `_http_mock.log` for both `cesguardrail-minimal` and `cesguardrail-maximal`, achieving 0 discrepancies for Guardrail requests against real GCP golden logs. Re-reconciliation tests pass without ratcheting exemptions.
+
+
 
 
 
