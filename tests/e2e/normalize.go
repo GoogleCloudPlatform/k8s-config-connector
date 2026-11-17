@@ -1219,6 +1219,13 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 					replacement.PathIDs[styleConfigID] = "${styleConfigId}"
 				}
 			}
+			if u.GetKind() == "VertexAITrainingPipeline" {
+				parts := strings.Split(s, "/")
+				if len(parts) > 0 {
+					trainingPipelineID := parts[len(parts)-1]
+					replacement.PathIDs[trainingPipelineID] = "${trainingPipelineID}"
+				}
+			}
 		}
 		return s
 	})

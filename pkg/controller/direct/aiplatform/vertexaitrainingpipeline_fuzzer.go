@@ -30,19 +30,11 @@ func init() {
 }
 
 func vertexAITrainingPipelineSpec_FromProto(mapCtx *direct.MapContext, in *pb.TrainingPipeline) *krm.VertexAITrainingPipelineSpec {
-	out := VertexAITrainingPipelineSpec_FromProto(mapCtx, in)
-	if out != nil && in.GetParentModel() != "" {
-		out.ModelRef = &krm.AIPlatformModelRef{External: in.GetParentModel()}
-	}
-	return out
+	return VertexAITrainingPipelineSpec_FromProto(mapCtx, in)
 }
 
 func vertexAITrainingPipelineSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAITrainingPipelineSpec) *pb.TrainingPipeline {
-	out := VertexAITrainingPipelineSpec_ToProto(mapCtx, in)
-	if out != nil && in.ModelRef != nil {
-		out.ParentModel = in.ModelRef.External
-	}
-	return out
+	return VertexAITrainingPipelineSpec_ToProto(mapCtx, in)
 }
 
 func vertexAITrainingPipelineFuzzer() fuzztesting.KRMFuzzer {

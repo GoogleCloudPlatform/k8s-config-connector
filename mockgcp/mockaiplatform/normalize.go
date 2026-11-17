@@ -171,4 +171,30 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 			previsitMonitoringJob(value)
 		})
 	}
+
+	if strings.Contains(event.URL(), "PipelineService") || strings.Contains(event.URL(), "trainingPipelines") {
+		previsitTrainingPipeline := func(val string) {
+			if strings.Contains(val, "/trainingPipelines/") {
+				tokens := strings.Split(val, "/")
+				for i := 0; i < len(tokens)-1; i++ {
+					if tokens[i] == "trainingPipelines" {
+						id := tokens[i+1]
+						if idx := strings.Index(id, "?"); idx != -1 {
+							id = id[:idx]
+						}
+						if strings.HasPrefix(id, "tp-") || isNumeric(id) {
+							replacements.ReplaceStringValue(id, "${trainingPipelineID}")
+						}
+					}
+				}
+			}
+		}
+		previsitTrainingPipeline(event.URL())
+		event.VisitRequestStringValues(func(path string, value string) {
+			previsitTrainingPipeline(value)
+		})
+		event.VisitResponseStringValues(func(path string, value string) {
+			previsitTrainingPipeline(value)
+		})
+	}
 }

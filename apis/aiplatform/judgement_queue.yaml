@@ -1838,3 +1838,300 @@ entries:
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; renamed to AIPlatformSchedule
     status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: generated VertexAITrainingPipelineIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.trainingPipelines: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.trainingPipelines, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.trainingPipelines'
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyName
+    reason: possible-reference-by-name
+    detail: KMSCryptoKeyRef
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformBatchPredictionJob, AIPlatformCachedContent, AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformModelMonitor, AIPlatformNotebookExecutionJob, AIPlatformNotebookRuntimeTemplate, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for VertexAITrainingPipeline only, give VertexAITrainingPipeline its own copy of EncryptionSpec. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.annotationSchemaURI
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.bigqueryDestination.outputURI
+    reason: reference-not-representable
+    detail: 'bq-scheme-not-a-gcp-resource-name: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.bigqueryDestination.outputURI
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change VertexAITrainingPipelineSpec.InputDataConfig in vertexaitrainingpipeline_types.go from InputDataConfig to InputDataConfigWithRequired and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.datasetID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.datasetID
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change VertexAITrainingPipelineSpec.InputDataConfig in vertexaitrainingpipeline_types.go from InputDataConfig to InputDataConfigWithRequired and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.filterSplit.testFilter
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change VertexAITrainingPipelineSpec.InputDataConfig in vertexaitrainingpipeline_types.go from InputDataConfig to InputDataConfigWithRequired and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.filterSplit.trainingFilter
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change VertexAITrainingPipelineSpec.InputDataConfig in vertexaitrainingpipeline_types.go from InputDataConfig to InputDataConfigWithRequired and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.filterSplit.validationFilter
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change VertexAITrainingPipelineSpec.InputDataConfig in vertexaitrainingpipeline_types.go from InputDataConfig to InputDataConfigWithRequired and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.gcsDestination.outputURIPrefix
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.gcsDestination.outputURIPrefix
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change VertexAITrainingPipelineSpec.InputDataConfig in vertexaitrainingpipeline_types.go from InputDataConfig to InputDataConfigWithRequired and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.predefinedSplit.key
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change VertexAITrainingPipelineSpec.InputDataConfig in vertexaitrainingpipeline_types.go from InputDataConfig to InputDataConfigWithRequired and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.savedQueryID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.stratifiedSplit.key
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change VertexAITrainingPipelineSpec.InputDataConfig in vertexaitrainingpipeline_types.go from InputDataConfig to InputDataConfigWithRequired and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.timestampSplit.key
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change VertexAITrainingPipelineSpec.InputDataConfig in vertexaitrainingpipeline_types.go from InputDataConfig to InputDataConfigWithRequired and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.baseModelSource.modelGardenSource.versionID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.containerSpec.imageURI
+    reason: reference-not-representable
+    detail: 'container-image-uri-not-a-storage-object: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.defaultCheckpointID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.encryptionSpec.kmsKeyName
+    reason: possible-reference-by-name
+    detail: KMSCryptoKeyRef
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.encryptionSpec.kmsKeyRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformBatchPredictionJob, AIPlatformCachedContent, AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformModelMonitor, AIPlatformNotebookExecutionJob, AIPlatformNotebookRuntimeTemplate, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for VertexAITrainingPipeline only, give VertexAITrainingPipeline its own copy of EncryptionSpec. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.explanationSpec.metadata.featureAttributionsSchemaURI
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.explanationSpec.metadata.inputs
+    reason: message-map-derived
+    detail: derived as map[string]ExplanationMetadata_InputMetadata from proto google.cloud.aiplatform.v1.ExplanationMetadata.InputMetadata; verify Go type and mapping
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.explanationSpec.metadata.inputs
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationMetadata in aiplatformmodel_types.go is also used by AIPlatformBatchPredictionJob, AIPlatformModel, AIPlatformModelMonitor. +required on ExplanationMetadata.Inputs would apply there too. To enforce it for VertexAITrainingPipeline only, give VertexAITrainingPipeline its own copy of ExplanationMetadata. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.explanationSpec.metadata.inputs.KEY.encodedBaselines
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.explanationSpec.metadata.inputs.KEY.inputBaselines
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.explanationSpec.metadata.outputs
+    reason: message-map-derived
+    detail: derived as map[string]ExplanationMetadata_OutputMetadata from proto google.cloud.aiplatform.v1.ExplanationMetadata.OutputMetadata; verify Go type and mapping
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.explanationSpec.metadata.outputs
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationMetadata in aiplatformmodel_types.go is also used by AIPlatformBatchPredictionJob, AIPlatformModel, AIPlatformModelMonitor. +required on ExplanationMetadata.Outputs would apply there too. To enforce it for VertexAITrainingPipeline only, give VertexAITrainingPipeline its own copy of ExplanationMetadata. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.explanationSpec.metadata.outputs.KEY.indexDisplayNameMapping
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.explanationSpec.parameters.examples.exampleGCSSource.gcsSource.uris
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformBatchPredictionJob, AIPlatformModel, AIPlatformModelMonitor. To enforce it for VertexAITrainingPipeline only, give VertexAITrainingPipeline its own copy of ExplanationParameters whose Examples field holds ExamplesWithRequired, and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.explanationSpec.parameters.examples.nearestNeighborSearchConfig
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.explanationSpec.parameters.integratedGradientsAttribution.stepCount
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformBatchPredictionJob, AIPlatformModel, AIPlatformModelMonitor. To enforce it for VertexAITrainingPipeline only, give VertexAITrainingPipeline its own copy of ExplanationParameters whose IntegratedGradientsAttribution field holds IntegratedGradientsAttributionWithRequired, and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.explanationSpec.parameters.outputIndices
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.ListValue, which was generated as struct ListValue; confirm KRM representation
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.explanationSpec.parameters.sampledShapleyAttribution.pathCount
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformBatchPredictionJob, AIPlatformModel, AIPlatformModelMonitor. To enforce it for VertexAITrainingPipeline only, give VertexAITrainingPipeline its own copy of ExplanationParameters whose SampledShapleyAttribution field holds SampledShapleyAttributionWithRequired, and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.explanationSpec.parameters.xraiAttribution.stepCount
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformBatchPredictionJob, AIPlatformModel, AIPlatformModelMonitor. To enforce it for VertexAITrainingPipeline only, give VertexAITrainingPipeline its own copy of ExplanationParameters whose XraiAttribution field holds XraiAttributionWithRequired, and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.metadata
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.metadataSchemaURI
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.pipelineJob
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to aiplatform.googleapis.com/PipelineJob (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.predictSchemata.instanceSchemaURI
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.predictSchemata.parametersSchemaURI
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.predictSchemata.predictionSchemaURI
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.versionAliases
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/models/{model_id}@{version_alias}"
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.trainingTaskDefinition
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.trainingTaskInputs
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .status.observedState.trainingTaskMetadata
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: open

@@ -401,3 +401,20 @@
      - Passed `apichecks` (`TestCRDFieldPresenceInTestsForAlpha`, `TestGenerateScripts`, `TestDirectResourceFileNaming`), `resourcefixture` tests, and `make fmt`.
 - **Impact**: AIPlatformBatchPredictionJob direct controller, fuzzer, and real GCP E2E fixtures are fully implemented and verified against real GCP APIs.
 
+### [2026-11-16] Greenfield Step 1a: Prepopulate Direct KRM Types, Identity, and Judgement Queue for VertexAITrainingPipeline
+- **Context**: Greenfield Step 1a prepopulation for `VertexAITrainingPipeline` under `aiplatform.cnrm.cloud.google.com/v1alpha1` (Issue #15873).
+- **Implementation & Learnings**:
+  1. **Moving to Prepopulated Scaffolding**:
+     - `VertexAITrainingPipeline` was previously in the non-prepopulated `generate-types` block with an earlier manual type and identity implementation.
+     - Removed obsolete manual identity and test stubs (`apis/aiplatform/v1alpha1/vertexaitrainingpipeline_identity.go` and `vertexaitrainingpipeline_identity_test.go`), allowing `controllerbuilder generate-identity` to emit `vertexaitrainingpipeline_identity.generated.go`, `vertexaitrainingpipeline_reference.generated.go`, and conformance test `vertexaitrainingpipeline_identity_generated_test.go`.
+     - Regenerated `vertexaitrainingpipeline_types.go` from scratch using `generate-types --prepopulate-resource --allow-non-declarative`, populating `apis/aiplatform/judgement_queue.yaml` with open review entries.
+  2. **Generator Execution Ordering & Model Struct Handling**:
+     - In `apis/aiplatform/generate.sh`, ensured the prepopulate block runs last among `generate-types` commands so types like `Model` (referenced by `TrainingPipeline.model_to_upload`) are retained in `types.generated.go` without being prematurely pruned by preceding or succeeding non-prepopulated blocks.
+     - Added `pkg/controller/direct/aiplatform/vertexaitrainingpipeline_mapper.go` with `Model_FromProto` and `Model_ToProto` converting between `*pb.Model` (v1) and `*krm.Model`, utilizing unexported `explanationSpecWithRequired_v1_FromProto` and `explanationSpecWithRequired_v1_ToProto` to avoid conflicts with `v1beta1` explanation spec mappers.
+  3. **CRD Validation & Exception Cleanup**:
+     - Removed `vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com` from `knownInvalidCRDs` in `tests/apichecks/crds_test.go` because the generated CRD schema now passes all object type checks.
+     - Updated fixture `pkg/test/resourcefixture/testdata/basic/aiplatform/v1alpha1/vertexaitrainingpipeline/vertexaitrainingpipeline-maximal/create.yaml` to remove top-level `projectRef` and `location` from `modelToUpload`.
+     - Updated `alpha-missingfields.txt` and `spec_dislike_etag.txt` via `WRITE_GOLDEN_OUTPUT=1`.
+- **Impact**: Cleanly scaffolds `VertexAITrainingPipeline` direct KRM types, identity, reference, CRD, and opens untriaged entries in `judgement_queue.yaml` ready for Step 1b.
+
+

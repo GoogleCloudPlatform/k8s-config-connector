@@ -44,9 +44,6 @@ spec:
                             stringValue: "gcr.io/google-samples/hello-app:1.0"
   modelID: "model_${uniqueId}"
   modelToUpload:
-    projectRef:
-      external: ${projectId}
-    location: us-central1
     displayName: "Uploaded Model"
     containerSpec:
       imageURI: "gcr.io/google-samples/hello-app:1.0"

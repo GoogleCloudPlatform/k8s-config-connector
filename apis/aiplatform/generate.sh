@@ -49,10 +49,15 @@ ${CONTROLLERBUILDER} generate-types \
   --resource AIPlatformPipelineJob:PipelineJob \
   --resource VertexAITuningJob:TuningJob \
   --resource VertexAIStudy:Study \
-  --resource VertexAITrainingPipeline:TrainingPipeline \
   --resource AIPlatformSchedule:Schedule \
   --resource AIPlatformReasoningEngine:ReasoningEngine \
   --resource AIPlatformCustomJob:CustomJob
+
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.aiplatform.v1beta1 \
+  --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
+  --resource AIPlatformOnlineEvaluator:OnlineEvaluator
 
 ${CONTROLLERBUILDER} generate-types \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
@@ -69,13 +74,8 @@ ${CONTROLLERBUILDER} generate-types \
   --resource AIPlatformHyperparameterTuningJob:HyperparameterTuningJob \
   --resource AIPlatformNotebookExecutionJob:NotebookExecutionJob \
   --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate \
-  --resource AIPlatformRAGCorpus:RagCorpus
-
-${CONTROLLERBUILDER} generate-types \
-  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
-  --service google.cloud.aiplatform.v1beta1 \
-  --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
-  --resource AIPlatformOnlineEvaluator:OnlineEvaluator
+  --resource AIPlatformRAGCorpus:RagCorpus \
+  --resource VertexAITrainingPipeline:TrainingPipeline
 
 ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
@@ -91,7 +91,8 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource AIPlatformNotebookExecutionJob:NotebookExecutionJob \
   --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate \
   --resource AIPlatformOnlineEvaluator:OnlineEvaluator \
-  --resource AIPlatformRAGCorpus:RagCorpus
+  --resource AIPlatformRAGCorpus:RagCorpus \
+  --resource VertexAITrainingPipeline:TrainingPipeline
 
 ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \

@@ -225,6 +225,15 @@ func NormalizeDynamicIDs(s string) string {
 			start := idx + len("/specialistPools/")
 			lines[i] = line[:start] + "${specialistPoolID}"
 		}
+		// Normalize VertexAITrainingPipeline trainingPipelines IDs: locations/.../trainingPipelines/<trainingPipelineId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/trainingPipelines/"); idx != -1 {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
 		// Normalize Monitoring Notification Channel numeric IDs
 		if idx := strings.Index(line, "/notificationChannels/"); idx != -1 {
 			lines[i] = line[:idx+len("/notificationChannels/")]

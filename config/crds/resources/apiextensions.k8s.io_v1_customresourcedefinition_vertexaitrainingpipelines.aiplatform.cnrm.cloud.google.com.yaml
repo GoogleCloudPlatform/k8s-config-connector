@@ -8,7 +8,6 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
   name: vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com
 spec:
@@ -68,8 +67,13 @@ spec:
                 description: Required. The user-defined name of this TrainingPipeline.
                 type: string
               encryptionSpec:
-                description: Customer-managed encryption key spec for a TrainingPipeline.
-                  If set, this TrainingPipeline will be secured by this key.
+                description: |-
+                  Customer-managed encryption key spec for a TrainingPipeline. If set, this
+                   TrainingPipeline will be secured by this key.
+
+                   Note: Model trained by this TrainingPipeline is also secured by this key if
+                   [model_to_upload][google.cloud.aiplatform.v1.TrainingPipeline.encryption_spec]
+                   is not set separately.
                 properties:
                   kmsKeyRef:
                     description: 'Required. The Cloud KMS resource identifier of the
@@ -106,7 +110,12 @@ spec:
                 type: object
               inputDataConfig:
                 description: Specifies Vertex AI owned input data that may be used
-                  for training the Model.
+                  for training the Model. The TrainingPipeline's [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition]
+                  should make clear whether this config is used and if there are any
+                  special requirements on how it should be filled. If nothing about
+                  this config is mentioned in the [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition],
+                  then it should be assumed that the TrainingPipeline does not depend
+                  on this configuration.
                 properties:
                   annotationSchemaURI:
                     description: |-
@@ -368,47 +377,40 @@ spec:
               labels:
                 additionalProperties:
                   type: string
-                description: The labels with user-defined metadata to organize TrainingPipelines.
+                description: |-
+                  The labels with user-defined metadata to organize TrainingPipelines.
+
+                   Label keys and values can be no longer than 64 characters
+                   (Unicode codepoints), can only contain lowercase letters, numeric
+                   characters, underscores and dashes. International characters are allowed.
+
+                   See https://goo.gl/xmQnxf for more information and examples of labels.
                 type: object
               location:
                 description: The location of this resource.
                 type: string
               modelID:
-                description: Optional. The ID to use for the uploaded Model, which
-                  will become the final component of the model resource name.
+                description: |-
+                  Optional. The ID to use for the uploaded Model, which will become the final
+                   component of the model resource name.
+
+                   This value may be up to 63 characters, and valid characters are
+                   `[a-z0-9_-]`. The first character cannot be a number or hyphen.
                 type: string
-              modelRef:
-                description: Optional. When specify this field, the `model_to_upload`
-                  will not be uploaded as a new model, instead, it will become a new
-                  version of this `parent_model`.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: A reference to an externally managed AIPlatformModel
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/models/{{modelID}}".
-                    type: string
-                  name:
-                    description: The name of an AIPlatformModel resource.
-                    type: string
-                  namespace:
-                    description: The namespace of an AIPlatformModel resource.
-                    type: string
-                type: object
               modelToUpload:
-                description: Describes the Model that may be uploaded by this TrainingPipeline.
+                description: Describes the Model that may be uploaded (via [ModelService.UploadModel][google.cloud.aiplatform.v1.ModelService.UploadModel])
+                  by this TrainingPipeline. The TrainingPipeline's [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition]
+                  should make clear whether this Model description should be populated,
+                  and if there are any special requirements regarding how it should
+                  be filled. If nothing is mentioned in the [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition],
+                  then it should be assumed that this field should not be filled and
+                  the training task either uploads the Model without a need of this
+                  information, or that training task does not support uploading a
+                  Model as part of the pipeline. When the Pipeline's state becomes
+                  `PIPELINE_STATE_SUCCEEDED` and the trained Model had been uploaded
+                  into Vertex AI, then the model_to_upload's resource [name][google.cloud.aiplatform.v1.Model.name]
+                  is populated. The Model is always uploaded into the Project and
+                  Location in which this pipeline is.
                 properties:
                   artifactURI:
                     description: Immutable. The path to the directory containing the
@@ -417,7 +419,7 @@ spec:
                     type: string
                   baseModelSource:
                     description: Optional. User input field to specify the base model
-                      source. Currently it only supports specifying the Model Garden
+                      source. Currently it only supports specifing the Model Garden
                       models and Genie models.
                     properties:
                       genieSource:
@@ -426,6 +428,8 @@ spec:
                           baseModelURI:
                             description: Required. The public base model URI.
                             type: string
+                        required:
+                        - baseModelURI
                         type: object
                       modelGardenSource:
                         description: Source information of Model Garden models.
@@ -442,6 +446,8 @@ spec:
                             description: Optional. The model garden source model version
                               ID.
                             type: string
+                        required:
+                        - publicModelName
                         type: object
                     type: object
                   containerSpec:
@@ -582,6 +588,9 @@ spec:
                                 Escaped references will never be expanded, regardless
                                 of whether the variable exists or not.'
                               type: string
+                          required:
+                          - name
+                          - value
                           type: object
                         type: array
                       grpcPorts:
@@ -1136,6 +1145,8 @@ spec:
                             format: int32
                             type: integer
                         type: object
+                    required:
+                    - imageURI
                     type: object
                   dataStats:
                     description: |-
@@ -1180,6 +1191,9 @@ spec:
                         format: int64
                         type: integer
                     type: object
+                  defaultCheckpointID:
+                    description: The default checkpoint id of a model version.
+                    type: string
                   description:
                     description: The description of the Model.
                     type: string
@@ -1226,6 +1240,10 @@ spec:
                             type: string
                         type: object
                     type: object
+                  etag:
+                    description: Used to perform consistent read-modify-write updates.
+                      If not set, a blind "overwrite" update happens.
+                    type: string
                   explanationSpec:
                     description: |-
                       The default explanation specification for this Model.
@@ -1869,6 +1887,8 @@ spec:
                                 type: integer
                             type: object
                         type: object
+                    required:
+                    - parameters
                     type: object
                   labels:
                     additionalProperties:
@@ -1882,9 +1902,6 @@ spec:
 
                        See https://goo.gl/xmQnxf for more information and examples of labels.
                     type: object
-                  location:
-                    description: Immutable. The location where the model should reside.
-                    type: string
                   metadata:
                     description: Immutable. An additional information about the Model;
                       the schema of the metadata can be found in [metadata_schema][google.cloud.aiplatform.v1.Model.metadata_schema_uri].
@@ -1918,6 +1935,9 @@ spec:
                       and probably different, including the URI scheme, than the one
                       given on input. The output URI will point to a location where
                       the user only has a read access.'
+                    type: string
+                  name:
+                    description: The resource name of the Model.
                     type: string
                   pipelineJob:
                     description: Optional. This field is populated if the model is
@@ -1969,46 +1989,10 @@ spec:
                           where the user only has a read access.'
                         type: string
                     type: object
-                  projectRef:
-                    description: The project that this resource belongs to.
-                    oneOf:
-                    - not:
-                        required:
-                        - external
-                      required:
-                      - name
-                    - not:
-                        anyOf:
-                        - required:
-                          - name
-                        - required:
-                          - namespace
-                      required:
-                      - external
-                    properties:
-                      external:
-                        description: The `projectID` field of a project, when not
-                          managed by Config Connector.
-                        type: string
-                      kind:
-                        description: The kind of the Project resource; optional but
-                          must be `Project` if provided.
-                        type: string
-                      name:
-                        description: The `name` field of a `Project` resource.
-                        type: string
-                      namespace:
-                        description: The `namespace` field of a `Project` resource.
-                        type: string
-                    type: object
-                  resourceID:
-                    description: The AIPlatformModel name. If not given, the metadata.name
-                      will be used.
-                    type: string
                   versionAliases:
                     description: User provided version aliases so that a model version
-                      can be referenced via alias (i.e. `projects/PROJECT/locations/LOCATION/models/MODEL_ID@VERSION_ALIAS`
-                      instead of auto-generated version id (i.e. `projects/PROJECT/locations/LOCATION/models/MODEL_ID@VERSION_ID`).
+                      can be referenced via alias (i.e. `projects/{project}/locations/{location}/models/{model_id}@{version_alias}`
+                      instead of auto-generated version id (i.e. `projects/{project}/locations/{location}/models/{model_id}@{version_id})`.
                       The format is [a-z][a-zA-Z0-9-]{0,126}[a-z0-9] to distinguish
                       from version_id. A default version alias will be created for
                       the first version of the model, and there must be exactly one
@@ -2020,9 +2004,13 @@ spec:
                     description: The description of this version.
                     type: string
                 required:
-                - location
-                - projectRef
+                - displayName
                 type: object
+              parentModel:
+                description: Optional. When specify this field, the `model_to_upload`
+                  will not be uploaded as a new model, instead, it will become a new
+                  version of this `parent_model`.
+                type: string
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
@@ -2060,14 +2048,18 @@ spec:
                   metadata.name will be used.
                 type: string
               trainingTaskDefinition:
-                description: Required. A Google Cloud Storage path to the YAML file
+                description: 'Required. A Google Cloud Storage path to the YAML file
                   that defines the training task which is responsible for producing
                   the model artifact, and may also include additional auxiliary work.
                   The definition files that can be used here are found in gs://google-cloud-aiplatform/schema/trainingjob/definition/.
+                  Note: The URI given on output will be immutable and probably different,
+                  including the URI scheme, than the one given on input. The output
+                  URI will point to a location where the user only has a read access.'
                 type: string
               trainingTaskInputs:
                 description: Required. The training task's parameter(s), as specified
-                  in the trainingTaskDefinition's inputs.
+                  in the [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition]'s
+                  `inputs`.
                 properties:
                   boolValue:
                     description: Represents a boolean value.
@@ -2143,12 +2135,12 @@ spec:
                     type: string
                   endTime:
                     description: 'Output only. Time when the TrainingPipeline entered
-                      any of the following states: PIPELINE_STATE_SUCCEEDED, PIPELINE_STATE_FAILED,
-                      PIPELINE_STATE_CANCELLED.'
+                      any of the following states: `PIPELINE_STATE_SUCCEEDED`, `PIPELINE_STATE_FAILED`,
+                      `PIPELINE_STATE_CANCELLED`.'
                     type: string
                   error:
                     description: Output only. Only populated when the pipeline's state
-                      is PIPELINE_STATE_FAILED or PIPELINE_STATE_CANCELLED.
+                      is `PIPELINE_STATE_FAILED` or `PIPELINE_STATE_CANCELLED`.
                     properties:
                       code:
                         description: The status code, which should be an enum value
@@ -2163,9 +2155,39 @@ spec:
                         type: string
                     type: object
                   modelToUpload:
-                    description: Describes the Model that may be uploaded by this
-                      TrainingPipeline.
+                    description: Describes the Model that may be uploaded (via [ModelService.UploadModel][google.cloud.aiplatform.v1.ModelService.UploadModel])
+                      by this TrainingPipeline. The TrainingPipeline's [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition]
+                      should make clear whether this Model description should be populated,
+                      and if there are any special requirements regarding how it should
+                      be filled. If nothing is mentioned in the [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition],
+                      then it should be assumed that this field should not be filled
+                      and the training task either uploads the Model without a need
+                      of this information, or that training task does not support
+                      uploading a Model as part of the pipeline. When the Pipeline's
+                      state becomes `PIPELINE_STATE_SUCCEEDED` and the trained Model
+                      had been uploaded into Vertex AI, then the model_to_upload's
+                      resource [name][google.cloud.aiplatform.v1.Model.name] is populated.
+                      The Model is always uploaded into the Project and Location in
+                      which this pipeline is.
                     properties:
+                      checkpoints:
+                        description: Optional. Output only. The checkpoints of the
+                          model.
+                        items:
+                          properties:
+                            checkpointID:
+                              description: The ID of the checkpoint.
+                              type: string
+                            epoch:
+                              description: The epoch of the checkpoint.
+                              format: int64
+                              type: integer
+                            step:
+                              description: The step of the checkpoint.
+                              format: int64
+                              type: integer
+                          type: object
+                        type: array
                       createTime:
                         description: Output only. Timestamp when this Model was uploaded
                           into Vertex AI.
@@ -2207,6 +2229,12 @@ spec:
                       originalModelInfo:
                         description: Output only. If this Model is a copy of another
                           Model, this contains info about the original.
+                        properties:
+                          model:
+                            description: 'Output only. The resource name of the Model
+                              this Model is a copy of, including the revision. Format:
+                              `projects/{project}/locations/{location}/models/{model_id}@{version_id}`'
+                            type: string
                         type: object
                       satisfiesPzi:
                         description: Output only. Reserved for future use.
@@ -2235,6 +2263,37 @@ spec:
                           may be exported. If empty, this Model is not available for
                           export.
                         items:
+                          properties:
+                            exportableContents:
+                              description: Output only. The content of this Model
+                                that may be exported.
+                              items:
+                                type: string
+                              type: array
+                            id:
+                              description: |-
+                                Output only. The ID of the export format.
+                                 The possible format IDs are:
+
+                                 * `tflite`
+                                 Used for Android mobile devices.
+
+                                 * `edgetpu-tflite`
+                                 Used for [Edge TPU](https://cloud.google.com/edge-tpu/) devices.
+
+                                 * `tf-saved-model`
+                                 A tensorflow model in SavedModel format.
+
+                                 * `tf-js`
+                                 A [TensorFlow.js](https://www.tensorflow.org/js) model that can be used
+                                 in the browser and in Node.js using JavaScript.
+
+                                 * `core-ml`
+                                 Used for iOS mobile devices.
+
+                                 * `custom-trained`
+                                 A Model that was uploaded or trained by custom code.
+                              type: string
                           type: object
                         type: array
                       supportedInputStorageFormats:
@@ -2352,22 +2411,21 @@ spec:
                           most recently updated.
                         type: string
                     type: object
-                  name:
-                    description: Output only. Resource name of the TrainingPipeline.
-                    type: string
                   startTime:
                     description: Output only. Time when the TrainingPipeline for the
-                      first time entered the PIPELINE_STATE_RUNNING state.
+                      first time entered the `PIPELINE_STATE_RUNNING` state.
                     type: string
                   state:
                     description: Output only. The detailed state of the pipeline.
                     type: string
                   trainingTaskMetadata:
                     description: Output only. The metadata information as specified
-                      in the trainingTaskDefinition's metadata. This metadata is an
-                      auxiliary runtime and final information about the training task.
-                      While the pipeline is running this information is populated
-                      only at a best effort basis.
+                      in the [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition]'s
+                      `metadata`. This metadata is an auxiliary runtime and final
+                      information about the training task. While the pipeline is running
+                      this information is populated only at a best effort basis. Only
+                      present if the pipeline's [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition]
+                      contains `metadata` object.
                     properties:
                       boolValue:
                         description: Represents a boolean value.

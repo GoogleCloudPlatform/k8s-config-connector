@@ -97,11 +97,6 @@ func (m *trainingPipelineModel) AdapterForObject(ctx context.Context, reader *di
 		return nil, fmt.Errorf("mapping spec to proto: %w", mapCtx.Err())
 	}
 
-	// Post-process missing ParentModel field
-	if obj.Spec.ModelRef != nil {
-		desiredpb.ParentModel = obj.Spec.ModelRef.External
-	}
-
 	return &TrainingPipelineAdapter{
 		id:        typedID,
 		gcpClient: gcpClient,
@@ -128,6 +123,10 @@ var _ directbase.Adapter = &TrainingPipelineAdapter{}
 func (a *TrainingPipelineAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting VertexAITrainingPipeline", "name", a.id.String())
+
+	if !a.id.HasIdentitySpecified() {
+		return false, nil
+	}
 
 	req := &pb.GetTrainingPipelineRequest{
 		Name: a.id.String(),
@@ -157,7 +156,9 @@ func (a *TrainingPipelineAdapter) Create(ctx context.Context, createOp *directba
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating VertexAITrainingPipeline", "name", a.id.String())
 
-	a.desiredpb.Name = a.id.String()
+	if a.id.HasIdentitySpecified() {
+		a.desiredpb.Name = a.id.String()
+	}
 
 	req := &pb.CreateTrainingPipelineRequest{
 		Parent:           a.id.ParentString(),
@@ -170,6 +171,12 @@ func (a *TrainingPipelineAdapter) Create(ctx context.Context, createOp *directba
 	}
 
 	log.V(2).Info("successfully created VertexAITrainingPipeline", "name", a.id.String())
+
+	parsedID := &krm.VertexAITrainingPipelineIdentity{}
+	if err := parsedID.FromExternal(created.GetName()); err != nil {
+		return err
+	}
+	a.id.TrainingPipeline = parsedID.TrainingPipeline
 
 	return a.updateStatus(ctx, createOp, created)
 }
@@ -209,11 +216,6 @@ func (a *TrainingPipelineAdapter) Export(ctx context.Context) (*unstructured.Uns
 		return nil, mapCtx.Err()
 	}
 
-	// Post-process missing ParentModel field
-	if a.actual.GetParentModel() != "" {
-		obj.Spec.ModelRef = &krm.AIPlatformModelRef{External: a.actual.GetParentModel()}
-	}
-
 	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.Project}
 	obj.Spec.Location = &a.id.Location
 	obj.Spec.ResourceID = &a.id.TrainingPipeline
@@ -244,6 +246,10 @@ func (a *TrainingPipelineAdapter) Delete(ctx context.Context, deleteOp *directba
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting VertexAITrainingPipeline", "name", a.id.String())
 
+	if !a.id.HasIdentitySpecified() {
+		return true, nil
+	}
+
 	req := &pb.DeleteTrainingPipelineRequest{
 		Name: a.id.String(),
 	}
@@ -272,6 +278,13 @@ func compareTrainingPipeline(ctx context.Context, actual, desired *pb.TrainingPi
 	maskedActual.Name = desired.Name
 	// Since mapper.generated.go doesn't map ParentModel, make sure we copy it manually
 	maskedActual.ParentModel = actual.ParentModel
+	if maskedActual.ModelToUpload != nil {
+		if desired.ModelToUpload != nil {
+			maskedActual.ModelToUpload.Name = desired.ModelToUpload.Name
+		} else {
+			maskedActual.ModelToUpload = nil
+		}
+	}
 
 	clonedDesired := proto.CloneOf(desired)
 
