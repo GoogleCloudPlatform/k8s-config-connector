@@ -159,7 +159,6 @@ BLOCKED_KINDS=(
     "CloudTalentSolutionTenant"
     "CloudTasksQueue"
     "ComputeHealthCheckService"
-    "ComputeHealthSource"
     "ComputeNotificationEndpoint"
     "ConnectorsConnection"
     "ContactCenterInsightsConversation"
