@@ -1,0 +1,65 @@
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultSchemaId": "default_schema",
+  "displayName": "My DataStore for Conversations Maximal",
+  "industryVertical": 1,
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
+  "naturalLanguageQueryUnderstandingConfig": {
+    "mode": 2
+  },
+  "solutionTypes": [
+    2
+  ]
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/engines/engine-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "dataStoreIds": [
+    "datastore-${uniqueId}"
+  ],
+  "displayName": "My Engine for Conversations Maximal",
+  "industryVertical": 1,
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/engines/engine-${uniqueId}",
+  "searchEngineConfig": {
+    "searchAddOns": [
+      1
+    ],
+    "searchTier": 2
+  },
+  "solutionType": 2
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1/projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/conversations/conversation-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "messages": [
+    {
+      "userInput": {
+        "input": "Hello, world!"
+      }
+    }
+  ],
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/conversations/conversation-${uniqueId}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": 2,
+  "userPseudoId": "user-${uniqueId}"
+}
