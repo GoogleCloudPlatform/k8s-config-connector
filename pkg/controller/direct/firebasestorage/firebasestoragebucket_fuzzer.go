@@ -1,0 +1,57 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// +tool:fuzz-gen
+// proto.message: google.firebasestorage.v1beta.Bucket
+// api.group: firebasestorage.cnrm.cloud.google.com
+
+package firebasestorage
+
+import (
+	pb "google.golang.org/api/firebasestorage/v1beta"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+)
+
+func init() {
+	fuzztesting.RegisterKRMFuzzer_NoProto(firebaseStorageBucketFuzzer())
+}
+
+func firebaseStorageBucketFuzzer() fuzztesting.KRMFuzzer_NoProto {
+	f := fuzztesting.NewKRMTypedFuzzer_NoProto(&pb.Bucket{},
+		FirebaseStorageBucketSpec_FromAPI, FirebaseStorageBucketSpec_ToAPI,
+		FirebaseStorageBucketStatus_FromAPI, FirebaseStorageBucketStatus_ToAPI,
+	)
+
+	// Field Comparison & Mapping Status:
+	// KRM FirebaseStorageBucketSpec Fields:
+	// - projectRef: References GCP Project (Standard KCC reference/identity field, not a direct API field)
+	// - resourceID: Resource identity (Standard KCC identity field, not a direct API field)
+	//
+	// KRM FirebaseStorageBucketStatus Fields:
+	// - conditions: Standard KCC Status condition list, not an API field
+	// - externalRef: Standard KCC Status external reference, not an API field
+	// - name maps to .Name
+	// - observedGeneration: Standard KCC Status generation tracking, not an API field
+
+	// Status fields
+	f.StatusField(".Name")
+
+	// JSON bookkeeping fields
+	f.Ignore_JSONBookkeeping(".ForceSendFields")
+	f.Ignore_JSONBookkeeping(".NullFields")
+	f.Ignore_JSONBookkeeping(".ServerResponse")
+
+	return f
+}
