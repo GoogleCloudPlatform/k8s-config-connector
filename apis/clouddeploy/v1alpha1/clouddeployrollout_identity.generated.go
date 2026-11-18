@@ -24,6 +24,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -80,35 +81,19 @@ func getIdentityFromCloudDeployRolloutSpec(ctx context.Context, reader client.Re
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	if obj.Spec.ParentRef == nil {
+		return nil, fmt.Errorf("spec.parentRef is required")
 	}
-
-	location, err := refs.GetLocation(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location: %w", err)
+	parentRef := *obj.Spec.ParentRef
+	if err := parentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, fmt.Errorf("resolving spec.parentRef: %w", err)
 	}
-
-	// +kcc:guess reason=identity-root-unknown
-	deliveryPipeline := ""
-	if deliveryPipeline == "" {
-		return nil, fmt.Errorf("cannot resolve delivery_pipeline for CloudDeployRollout")
+	parsed := &CloudDeployRolloutIdentity{}
+	if err := parsed.FromExternal(strings.TrimSuffix(parentRef.GetExternal(), "/") + "/rollouts" + "/" + resourceID); err != nil {
+		return nil, fmt.Errorf("parsing spec.parentRef external=%q: %w", parentRef.GetExternal(), err)
 	}
-
-	// +kcc:guess reason=identity-root-unknown
-	release := ""
-	if release == "" {
-		return nil, fmt.Errorf("cannot resolve release for CloudDeployRollout")
-	}
-
-	return &CloudDeployRolloutIdentity{
-		Project:          projectID,
-		Location:         location,
-		DeliveryPipeline: deliveryPipeline,
-		Release:          release,
-		Rollout:          resourceID,
-	}, nil
+	parsed.Rollout = resourceID
+	return parsed, nil
 }
 
 func (obj *CloudDeployRollout) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {

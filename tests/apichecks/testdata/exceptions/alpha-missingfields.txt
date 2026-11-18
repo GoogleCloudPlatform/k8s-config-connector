@@ -2256,11 +2256,8 @@
 [missing_field] crd=clouddeployreleases.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.skaffoldVersion" is not set in unstructured objects
 [missing_field] crd=clouddeployrollouts.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
 [missing_field] crd=clouddeployrollouts.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=clouddeployrollouts.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
-[missing_field] crd=clouddeployrollouts.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=clouddeployrollouts.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=clouddeployrollouts.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=clouddeployrollouts.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.targetID" is not set in unstructured objects
+[missing_field] crd=clouddeployrollouts.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=clouddeployrollouts.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.targetRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=clouddeploytargets.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
 [missing_field] crd=clouddeploytargets.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.anthosCluster.membershipRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=clouddeploytargets.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.associatedEntities" is not set in unstructured objects

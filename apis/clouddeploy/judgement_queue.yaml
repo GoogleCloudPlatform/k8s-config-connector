@@ -101,38 +101,52 @@ entries:
     group: clouddeploy.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: accepted
+    note: triaged all entries; finalized types and identity
   - kind: CloudDeployRollout
     group: clouddeploy.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/releases/{release}/rollouts/{rollout}" contains ancestor segment(s) deliveryPipelines/{delivery_pipeline}, releases/{release} with no matching reference or field on CloudDeployRolloutSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled parent as spec.parentRef referencing CloudDeployRelease; implemented identity using ParentRef
   - kind: CloudDeployRollout
     group: clouddeploy.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: 'none of these loaded as a page ending in /v1/projects.locations.deliveryPipelines.releases.rollouts: https://docs.cloud.google.com/deploy/docs/reference/rest/v1/projects.locations.deliveryPipelines.releases.rollouts'
-    status: open
+    status: resolved
+    resolution: edited
+    note: updated resource docs URL to https://cloud.google.com/deploy/docs/reference/rest/v1/projects.locations.deliveryPipelines.releases.rollouts
   - kind: CloudDeployRollout
     group: clouddeploy.cnrm.cloud.google.com
     field: .spec.etag
     reason: etag-in-spec
     detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
-    status: open
+    status: resolved
+    resolution: edited
+    note: removed from spec and moved to status.observedState
   - kind: CloudDeployRollout
     group: clouddeploy.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/releases/{release}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: removed location and projectRef; modelled parent as spec.parentRef
   - kind: CloudDeployRollout
     group: clouddeploy.cnrm.cloud.google.com
     field: .spec.releaseRef
     reason: parent-ref-guessed
     detail: emitted as a reference to CloudDeployReleaseRef, read from the releases segment of projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/releases/{release}/rollouts/{rollout}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled parent as spec.parentRef referencing CloudDeployRelease
   - kind: CloudDeployRollout
     group: clouddeploy.cnrm.cloud.google.com
     field: .spec.targetID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to targetRef (*CloudDeployTargetRef)

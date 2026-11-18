@@ -15,13 +15,11 @@
 // API sources for CloudDeployRollout, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/deploy/v1/cloud_deploy.proto
 // +kcc:source:service-docs=https://cloud.google.com/deploy/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/deploy/docs/reference/rest/v1/projects.locations.deliveryPipelines.releases.rollouts
+// +kcc:source:resource-docs=https://cloud.google.com/deploy/docs/reference/rest/v1/projects.locations.deliveryPipelines.releases.rollouts
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,18 +30,14 @@ var CloudDeployRolloutGVK = GroupVersion.WithKind("CloudDeployRollout")
 // +kcc:spec:proto=google.cloud.deploy.v1.Rollout
 // +kcc:required-from-proto
 type CloudDeployRolloutSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/releases/{release} this resource belongs to.
-	// +kcc:guess
-	// ReleaseRef *CloudDeployReleaseRef `json:"releaseRef,omitempty"`
+	// The Release this Rollout is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *CloudDeployReleaseRef `json:"parentRef"`
 
 	// The CloudDeployRollout name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Optional. Description of the `Rollout` for user purposes. Max length is 255
 	//  characters.
 	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.description
@@ -56,30 +50,10 @@ type CloudDeployRolloutSpec struct {
 	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.annotations
 	Annotations map[string]string `json:"annotations,omitempty"`
 
-	// Labels are attributes that can be set and used by both the
-	//  user and by Cloud Deploy. Labels must meet the following constraints:
-	//
-	//  * Keys and values can contain only lowercase letters, numeric characters,
-	//  underscores, and dashes.
-	//  * All characters must use UTF-8 encoding, and international characters are
-	//  allowed.
-	//  * Keys must start with a lowercase letter or international character.
-	//  * Each resource is limited to a maximum of 64 labels.
-	//
-	//  Both keys and values are additionally constrained to be <= 128 bytes.
-	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// Required. The ID of Target to which this `Rollout` is deploying.
+	// Required. The Target to which this `Rollout` is deploying.
 	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.target_id
 	// +required
-	TargetID *string `json:"targetID,omitempty"`
-
-	// This checksum is computed by the server based on the value of other
-	//  fields, and may be sent on update and delete requests to ensure the
-	//  client has an up-to-date value before proceeding.
-	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.etag
-	Etag *string `json:"etag,omitempty"`
+	TargetRef *CloudDeployTargetRef `json:"targetRef"`
 }
 
 // CloudDeployRolloutStatus defines the config connector machine state of CloudDeployRollout
@@ -174,6 +148,12 @@ type CloudDeployRolloutObservedState struct {
 	// Output only. The AutomationRun actively repairing the rollout.
 	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.active_repair_automation_run
 	ActiveRepairAutomationRun *string `json:"activeRepairAutomationRun,omitempty"`
+
+	// This checksum is computed by the server based on the value of other
+	//  fields, and may be sent on update and delete requests to ensure the
+	//  client has an up-to-date value before proceeding.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.etag
+	Etag *string `json:"etag,omitempty"`
 }
 
 // +genclient

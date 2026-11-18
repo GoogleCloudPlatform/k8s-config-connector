@@ -629,15 +629,18 @@ func CloudDeployRolloutObservedState_v1alpha1_FromProto(mapCtx *direct.MapContex
 	out := &krmclouddeployv1alpha1.CloudDeployRolloutObservedState{}
 	// MISSING: Name
 	out.Uid = direct.LazyPtr(in.GetUid())
+	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.ApproveTime = direct.StringTimestamp_FromProto(mapCtx, in.GetApproveTime())
 	out.EnqueueTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEnqueueTime())
 	out.DeployStartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeployStartTime())
 	out.DeployEndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeployEndTime())
+	// MISSING: TargetID
 	out.ApprovalState = direct.Enum_FromProto(mapCtx, in.GetApprovalState())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.FailureReason = direct.LazyPtr(in.GetFailureReason())
 	out.DeployingBuild = direct.LazyPtr(in.GetDeployingBuild())
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.DeployFailureCause = direct.Enum_FromProto(mapCtx, in.GetDeployFailureCause())
 	out.Phases = direct.Slice_FromProto(mapCtx, in.Phases, PhaseObservedState_v1alpha1_FromProto)
 	out.Metadata = MetadataObservedState_v1alpha1_FromProto(mapCtx, in.GetMetadata())
@@ -655,15 +658,18 @@ func CloudDeployRolloutObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext,
 	out := &pb.Rollout{}
 	// MISSING: Name
 	out.Uid = direct.ValueOf(in.Uid)
+	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.ApproveTime = direct.StringTimestamp_ToProto(mapCtx, in.ApproveTime)
 	out.EnqueueTime = direct.StringTimestamp_ToProto(mapCtx, in.EnqueueTime)
 	out.DeployStartTime = direct.StringTimestamp_ToProto(mapCtx, in.DeployStartTime)
 	out.DeployEndTime = direct.StringTimestamp_ToProto(mapCtx, in.DeployEndTime)
+	// MISSING: TargetID
 	out.ApprovalState = direct.Enum_ToProto[pb.Rollout_ApprovalState](mapCtx, in.ApprovalState)
 	out.State = direct.Enum_ToProto[pb.Rollout_State](mapCtx, in.State)
 	out.FailureReason = direct.ValueOf(in.FailureReason)
 	out.DeployingBuild = direct.ValueOf(in.DeployingBuild)
+	out.Etag = direct.ValueOf(in.Etag)
 	out.DeployFailureCause = direct.Enum_ToProto[pb.Rollout_FailureCause](mapCtx, in.DeployFailureCause)
 	out.Phases = direct.Slice_ToProto(mapCtx, in.Phases, PhaseObservedState_v1alpha1_ToProto)
 	out.Metadata = MetadataObservedState_v1alpha1_ToProto(mapCtx, in.Metadata)
@@ -682,9 +688,8 @@ func CloudDeployRolloutSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Annotations = in.Annotations
-	out.Labels = in.Labels
-	out.TargetID = direct.LazyPtr(in.GetTargetId())
-	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: Labels
+	// MISSING: TargetID
 	return out
 }
 
@@ -696,9 +701,8 @@ func CloudDeployRolloutSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmc
 	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
 	out.Annotations = in.Annotations
-	out.Labels = in.Labels
-	out.TargetId = direct.ValueOf(in.TargetID)
-	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: Labels
+	// MISSING: TargetID
 	return out
 }
 

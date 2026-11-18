@@ -46,4 +46,15 @@
   4. `google.cloud.deploy.v1.Metadata` is skipped by `generatemappercommand` because its message name ends in `Metadata`. Added explicit `MetadataObservedState_v1alpha1_FromProto`, `MetadataObservedState_v1alpha1_ToProto`, `CloudRunMetadataObservedState_v1alpha1_FromProto`, `CloudRunMetadataObservedState_v1alpha1_ToProto`, `AutomationRolloutMetadataObservedState_v1alpha1_FromProto`, and `AutomationRolloutMetadataObservedState_v1alpha1_ToProto` helper functions in `pkg/controller/direct/clouddeploy/mapper.generated.go`.
   5. Added `CloudDeployRollout` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` and synchronized `tests/apichecks/testdata/exceptions/` golden files (`alpha-missingfields.txt`, `spec_dislike_etag.txt`).
 
+### [2026-11-18] Triage Judgement Queue and Finalize Types for CloudDeployRollout
+- **Context**: Triaged `apis/clouddeploy/judgement_queue.yaml` and finalized KRM types, identity, and references for `CloudDeployRollout` following Greenfield Step 1b (`judgement/SKILL.md`).
+- **Learnings & Observations**:
+  1. `CloudDeployRollout` is a child of `CloudDeployRelease`. Modelled the parent relationship as a single required, immutable `spec.parentRef *CloudDeployReleaseRef` per `PARENT_AND_IDENTITY.md` (Case B). Removed `ProjectRef` and `Location` from `CloudDeployRolloutSpec`.
+  2. `controllerbuilder generate-identity` automatically recognizes `spec.parentRef *CloudDeployReleaseRef` and resolves `CloudDeployRolloutIdentity` via parent path suffixing (`strings.TrimSuffix(parentRef.GetExternal(), "/") + "/rollouts/" + resourceID`).
+  3. `targetID` on `CloudDeployRolloutSpec` was triaged from `possible-reference-by-name` to `TargetRef *CloudDeployTargetRef` (`// +required`, `json:"targetRef"`).
+  4. Moved `etag` from `CloudDeployRolloutSpec` to `CloudDeployRolloutObservedState` and removed `CloudDeployRollout` exception from `tests/apichecks/testdata/exceptions/spec_dislike_etag.txt`.
+  5. Updated documentation URL in `clouddeployrollout_types.go` to `https://cloud.google.com/deploy/docs/reference/rest/v1/projects.locations.deliveryPipelines.releases.rollouts`.
+  6. Added unit tests for `CloudDeployRolloutIdentity` and `GetIdentity` in `clouddeployrollout_identity_test.go`.
+
+
 
