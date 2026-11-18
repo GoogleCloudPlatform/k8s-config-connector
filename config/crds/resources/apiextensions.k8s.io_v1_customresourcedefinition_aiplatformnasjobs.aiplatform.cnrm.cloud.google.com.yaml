@@ -103,18 +103,6 @@ spec:
                         type: string
                     type: object
                 type: object
-              labels:
-                additionalProperties:
-                  type: string
-                description: |-
-                  The labels with user-defined metadata to organize NasJobs.
-
-                   Label keys and values can be no longer than 64 characters
-                   (Unicode codepoints), can only contain lowercase letters, numeric
-                   characters, underscores and dashes. International characters are allowed.
-
-                   See https://goo.gl/xmQnxf for more information and examples of labels.
-                type: object
               location:
                 description: The location that this resource belongs to.
                 type: string

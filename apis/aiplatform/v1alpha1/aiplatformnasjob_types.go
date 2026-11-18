@@ -50,16 +50,6 @@ type AIPlatformNasJobSpec struct {
 	// +required
 	NasJobSpec *NasJobSpec `json:"nasJobSpec,omitempty"`
 
-	// The labels with user-defined metadata to organize NasJobs.
-	//
-	//  Label keys and values can be no longer than 64 characters
-	//  (Unicode codepoints), can only contain lowercase letters, numeric
-	//  characters, underscores and dashes. International characters are allowed.
-	//
-	//  See https://goo.gl/xmQnxf for more information and examples of labels.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJob.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
 	// Customer-managed encryption key options for a NasJob.
 	//  If this is set, then all resources created by the NasJob
 	//  will be encrypted with the provided encryption key.

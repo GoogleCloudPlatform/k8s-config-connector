@@ -428,3 +428,4 @@
   3. **Documentation URL**: Verified REST resource documentation URL `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.nasJobs` and removed guess marker comment.
   4. **Judgement Queue**: Triaged all 71 entries for `AIPlatformNasJob` in `apis/aiplatform/judgement_queue.yaml` (editing parentRef, docs link, CustomJobSpecWithRequired fields, ResumeNasJobRef; accepting server-generated identity, deprecated fields, and non-representable strings).
   5. **Verification**: Ran `generate.sh`, `go test -v ./apis/aiplatform/...`, `go test -v ./pkg/cli/powertools/cais/...`, and `dev/tasks/diff-crds`. All tests passed cleanly.
+  6. **Top-Level Labels**: Removed top-level `Labels map[string]string` from `AIPlatformNasJobSpec` so resource labels are managed via KRM `metadata.labels`, avoiding dual reconciliation and satisfying `TestVerifyLabelsTestCasesExist`.

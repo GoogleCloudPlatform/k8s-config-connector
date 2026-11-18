@@ -1566,7 +1566,7 @@ entries:
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
     status: resolved
     resolution: edited
-    note: triaged all entries; updated parentRef to inlined *parent.ProjectAndLocationRef, verified docs link, used CustomJobSpecWithRequired for searchTrialJobSpec and trainTrialJobSpec, converted resumeNasJobID to resumeNasJobRef.
+    note: triaged all entries; updated parentRef to inlined *parent.ProjectAndLocationRef, removed top-level labels, verified docs link, used CustomJobSpecWithRequired for searchTrialJobSpec and trainTrialJobSpec, converted resumeNasJobID to resumeNasJobRef.
   - kind: AIPlatformNasJob
     group: aiplatform.cnrm.cloud.google.com
     reason: identity-server-generated-id

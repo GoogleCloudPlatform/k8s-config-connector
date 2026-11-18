@@ -890,6 +890,7 @@ func AIPlatformNasJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.N
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	// MISSING: Labels
 	// MISSING: EnableRestrictedImageTraining
 	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
 	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
@@ -909,6 +910,7 @@ func AIPlatformNasJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AI
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.Error = direct.Status_ToProto(mapCtx, in.Error)
+	// MISSING: Labels
 	// MISSING: EnableRestrictedImageTraining
 	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
 	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
@@ -923,7 +925,7 @@ func AIPlatformNasJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.NasJob) *k
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.NasJobSpec = NasJobSpec_FromProto(mapCtx, in.GetNasJobSpec())
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
 	// MISSING: EnableRestrictedImageTraining
 	return out
@@ -937,7 +939,7 @@ func AIPlatformNasJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformN
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.NasJobSpec = NasJobSpec_ToProto(mapCtx, in.NasJobSpec)
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
 	// MISSING: EnableRestrictedImageTraining
 	return out
