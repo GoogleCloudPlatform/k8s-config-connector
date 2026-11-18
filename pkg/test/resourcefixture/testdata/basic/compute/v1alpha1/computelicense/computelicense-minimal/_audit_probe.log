@@ -1,0 +1,27 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/licenses/computelicense-minimal-${uniqueId}
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "appendableToDisk": true,
+  "chargesUseFee": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#license",
+  "licenseCode": "8227486501098990469",
+  "minimumRetention": {
+    "nanos": 0,
+    "seconds": "0"
+  },
+  "multiTenantOnly": false,
+  "name": "computelicense-minimal-${uniqueId}",
+  "osLicense": false,
+  "removableFromDisk": false,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/licenses/computelicense-minimal-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/licenses/4437753465306065797",
+  "soleTenantOnly": false,
+  "transferable": true,
+  "updateTimestamp": "2024-04-01T12:34:56.123456Z"
+}

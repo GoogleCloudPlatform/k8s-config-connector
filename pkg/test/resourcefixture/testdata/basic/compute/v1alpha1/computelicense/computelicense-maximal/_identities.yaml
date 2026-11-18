@@ -1,0 +1,6 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/licenses/computelicense-maximal-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeLicense
+  name: computelicense-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

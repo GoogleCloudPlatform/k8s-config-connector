@@ -1,0 +1,6 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/licenses/computelicense-minimal-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeLicense
+  name: computelicense-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
