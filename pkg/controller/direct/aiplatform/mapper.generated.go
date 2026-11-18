@@ -4751,7 +4751,7 @@ func NasJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.NasJobSpec) *krm.Nas
 	}
 	out := &krm.NasJobSpec{}
 	out.MultiTrialAlgorithmSpec = NasJobSpec_MultiTrialAlgorithmSpec_FromProto(mapCtx, in.GetMultiTrialAlgorithmSpec())
-	out.ResumeNasJobID = direct.LazyPtr(in.GetResumeNasJobId())
+	// MISSING: ResumeNasJobID
 	out.SearchSpaceSpec = direct.LazyPtr(in.GetSearchSpaceSpec())
 	return out
 }
@@ -4764,7 +4764,7 @@ func NasJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.NasJobSpec) *pb.NasJo
 	if oneof := NasJobSpec_MultiTrialAlgorithmSpec_ToProto(mapCtx, in.MultiTrialAlgorithmSpec); oneof != nil {
 		out.NasAlgorithmSpec = &pb.NasJobSpec_MultiTrialAlgorithmSpec_{MultiTrialAlgorithmSpec: oneof}
 	}
-	out.ResumeNasJobId = direct.ValueOf(in.ResumeNasJobID)
+	// MISSING: ResumeNasJobID
 	out.SearchSpaceSpec = direct.ValueOf(in.SearchSpaceSpec)
 	return out
 }
@@ -4818,7 +4818,7 @@ func NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec_FromProto(mapCtx *direct
 		return nil
 	}
 	out := &krm.NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec{}
-	out.SearchTrialJobSpec = CustomJobSpec_FromProto(mapCtx, in.GetSearchTrialJobSpec())
+	out.SearchTrialJobSpec = CustomJobSpecWithRequired_FromProto(mapCtx, in.GetSearchTrialJobSpec())
 	out.MaxTrialCount = direct.LazyPtr(in.GetMaxTrialCount())
 	out.MaxParallelTrialCount = direct.LazyPtr(in.GetMaxParallelTrialCount())
 	out.MaxFailedTrialCount = direct.LazyPtr(in.GetMaxFailedTrialCount())
@@ -4830,7 +4830,7 @@ func NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec_ToProto(mapCtx *direct.M
 		return nil
 	}
 	out := &pb.NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec{}
-	out.SearchTrialJobSpec = CustomJobSpec_ToProto(mapCtx, in.SearchTrialJobSpec)
+	out.SearchTrialJobSpec = CustomJobSpecWithRequired_ToProto(mapCtx, in.SearchTrialJobSpec)
 	out.MaxTrialCount = direct.ValueOf(in.MaxTrialCount)
 	out.MaxParallelTrialCount = direct.ValueOf(in.MaxParallelTrialCount)
 	out.MaxFailedTrialCount = direct.ValueOf(in.MaxFailedTrialCount)
@@ -4842,7 +4842,7 @@ func NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec_FromProto(mapCtx *direct.
 		return nil
 	}
 	out := &krm.NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec{}
-	out.TrainTrialJobSpec = CustomJobSpec_FromProto(mapCtx, in.GetTrainTrialJobSpec())
+	out.TrainTrialJobSpec = CustomJobSpecWithRequired_FromProto(mapCtx, in.GetTrainTrialJobSpec())
 	out.MaxParallelTrialCount = direct.LazyPtr(in.GetMaxParallelTrialCount())
 	out.Frequency = direct.LazyPtr(in.GetFrequency())
 	return out
@@ -4853,7 +4853,7 @@ func NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec_ToProto(mapCtx *direct.Ma
 		return nil
 	}
 	out := &pb.NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec{}
-	out.TrainTrialJobSpec = CustomJobSpec_ToProto(mapCtx, in.TrainTrialJobSpec)
+	out.TrainTrialJobSpec = CustomJobSpecWithRequired_ToProto(mapCtx, in.TrainTrialJobSpec)
 	out.MaxParallelTrialCount = direct.ValueOf(in.MaxParallelTrialCount)
 	out.Frequency = direct.ValueOf(in.Frequency)
 	return out

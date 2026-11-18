@@ -417,3 +417,14 @@
 - **Impact**: Initial KRM scaffolding, IdentityV2, and judgement queue entries are successfully set up and verified with clean compilation and passing tests.
 
 
+
+### [2026-11-18] Greenfield Step 1b: Triaging Judgement Queue and Finalizing Direct KRM Types and Identity for AIPlatformNasJob
+- **Context**: Triaging judgement queue and finalizing direct KRM types, identity, and references for `AIPlatformNasJob` under `aiplatform.cnrm.cloud.google.com/v1alpha1` (Issue #16031).
+- **Implementation & Learnings**:
+  1. **Parent & Location Ref**: Replaced separate `ProjectRef` and `Location` fields on `AIPlatformNasJobSpec` with inlined `*parent.ProjectAndLocationRef`.
+  2. **References Modelled**:
+     - `SearchTrialJobSpec` and `TrainTrialJobSpec` inside `NasJobSpec` updated to use `CustomJobSpecWithRequired`, enabling typed references for `PersistentResourceRef`, `ServiceAccountRef`, `NetworkRef`, `ModelRefs`, `TensorboardRef`, `ExperimentRef`, `ExperimentRunRef`, and `PSCInterfaceConfig`.
+     - `ResumeNasJobRef` in `NasJobSpec` converted from `ResumeNasJobID *string` to `*AIPlatformNasJobRef`.
+  3. **Documentation URL**: Verified REST resource documentation URL `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.nasJobs` and removed guess marker comment.
+  4. **Judgement Queue**: Triaged all 71 entries for `AIPlatformNasJob` in `apis/aiplatform/judgement_queue.yaml` (editing parentRef, docs link, CustomJobSpecWithRequired fields, ResumeNasJobRef; accepting server-generated identity, deprecated fields, and non-representable strings).
+  5. **Verification**: Ran `generate.sh`, `go test -v ./apis/aiplatform/...`, `go test -v ./pkg/cli/powertools/cais/...`, and `dev/tasks/diff-crds`. All tests passed cleanly.

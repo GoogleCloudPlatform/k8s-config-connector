@@ -15,14 +15,13 @@
 // API sources for AIPlatformNasJob, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/e7513c828b8db536fa12fc5493d541f323aedf90/google/cloud/aiplatform/v1/nas_job.proto
 // +kcc:source:service-docs=https://cloud.google.com/vertex-ai/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.nasJobs
+// +kcc:source:resource-docs=https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.nasJobs
 
 package v1alpha1
 
 import (
 	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -33,14 +32,12 @@ var AIPlatformNasJobGVK = GroupVersion.WithKind("AIPlatformNasJob")
 // +kcc:spec:proto=google.cloud.aiplatform.v1.NasJob
 // +kcc:required-from-proto
 type AIPlatformNasJobSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// Inlined parent reference for Project and Location
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The AIPlatformNasJob name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Required. The display name of the NasJob.
 	//  The name can be up to 128 characters long and can consist of any UTF-8
 	//  characters.
@@ -68,6 +65,111 @@ type AIPlatformNasJobSpec struct {
 	//  will be encrypted with the provided encryption key.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJob.encryption_spec
 	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NasJobSpec
+type NasJobSpec struct {
+	// The spec of multi-trial algorithms.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.multi_trial_algorithm_spec
+	MultiTrialAlgorithmSpec *NasJobSpec_MultiTrialAlgorithmSpec `json:"multiTrialAlgorithmSpec,omitempty"`
+
+	// The ID of the existing NasJob in the same Project and Location
+	//  which will be used to resume search. search_space_spec and
+	//  nas_algorithm_spec are obtained from previous NasJob hence should not
+	//  provide them again for this NasJob.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.resume_nas_job_id
+	ResumeNasJobRef *AIPlatformNasJobRef `json:"resumeNasJobRef,omitempty"`
+
+	// It defines the search space for Neural Architecture Search (NAS).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.search_space_spec
+	SearchSpaceSpec *string `json:"searchSpaceSpec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec
+type NasJobSpec_MultiTrialAlgorithmSpec struct {
+	// The multi-trial Neural Architecture Search (NAS) algorithm
+	//  type. Defaults to `REINFORCEMENT_LEARNING`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.multi_trial_algorithm
+	MultiTrialAlgorithm *string `json:"multiTrialAlgorithm,omitempty"`
+
+	// Metric specs for the NAS job.
+	//  Validation for this field is done at `multi_trial_algorithm_spec` field.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.metric
+	Metric *NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec `json:"metric,omitempty"`
+
+	// Required. Spec for search trials.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.search_trial_spec
+	// +required
+	SearchTrialSpec *NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec `json:"searchTrialSpec,omitempty"`
+
+	// Spec for train trials. Top N [TrainTrialSpec.max_parallel_trial_count]
+	//  search trials will be trained for every M
+	//  [TrainTrialSpec.frequency] trials searched.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.train_trial_spec
+	TrainTrialSpec *NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec `json:"trainTrialSpec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.MetricSpec
+type NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec struct {
+	// Required. The ID of the metric. Must not contain whitespaces.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.MetricSpec.metric_id
+	// +required
+	MetricID *string `json:"metricID,omitempty"`
+
+	// Required. The optimization goal of the metric.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.MetricSpec.goal
+	// +required
+	Goal *string `json:"goal,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.SearchTrialSpec
+type NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec struct {
+	// Required. The spec of a search trial job. The same spec applies to
+	//  all search trials.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.SearchTrialSpec.search_trial_job_spec
+	// +required
+	SearchTrialJobSpec *CustomJobSpecWithRequired `json:"searchTrialJobSpec,omitempty"`
+
+	// Required. The maximum number of Neural Architecture Search (NAS) trials
+	//  to run.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.SearchTrialSpec.max_trial_count
+	// +required
+	MaxTrialCount *int32 `json:"maxTrialCount,omitempty"`
+
+	// Required. The maximum number of trials to run in parallel.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.SearchTrialSpec.max_parallel_trial_count
+	// +required
+	MaxParallelTrialCount *int32 `json:"maxParallelTrialCount,omitempty"`
+
+	// The number of failed trials that need to be seen before failing
+	//  the NasJob.
+	//
+	//  If set to 0, Vertex AI decides how many trials must fail
+	//  before the whole job fails.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.SearchTrialSpec.max_failed_trial_count
+	MaxFailedTrialCount *int32 `json:"maxFailedTrialCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.TrainTrialSpec
+type NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec struct {
+	// Required. The spec of a train trial job. The same spec applies to
+	//  all train trials.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.TrainTrialSpec.train_trial_job_spec
+	// +required
+	TrainTrialJobSpec *CustomJobSpecWithRequired `json:"trainTrialJobSpec,omitempty"`
+
+	// Required. The maximum number of trials to run in parallel.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.TrainTrialSpec.max_parallel_trial_count
+	// +required
+	MaxParallelTrialCount *int32 `json:"maxParallelTrialCount,omitempty"`
+
+	// Required. Frequency of search trials to start train stage. Top N
+	//  [TrainTrialSpec.max_parallel_trial_count]
+	//  search trials will be trained for every M
+	//  [TrainTrialSpec.frequency] trials searched.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.TrainTrialSpec.frequency
+	// +required
+	Frequency *int32 `json:"frequency,omitempty"`
 }
 
 // AIPlatformNasJobStatus defines the config connector machine state of AIPlatformNasJob
