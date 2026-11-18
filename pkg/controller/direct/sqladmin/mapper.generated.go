@@ -30,24 +30,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func DiskEncryptionConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.DiskEncryptionConfiguration) *krm.DiskEncryptionConfiguration {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DiskEncryptionConfiguration{}
-	// MISSING: KMSKeyName
-	// MISSING: Kind
-	return out
-}
-func DiskEncryptionConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.DiskEncryptionConfiguration) *pb.DiskEncryptionConfiguration {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DiskEncryptionConfiguration{}
-	// MISSING: KMSKeyName
-	// MISSING: Kind
-	return out
-}
 func DiskEncryptionStatus_FromProto(mapCtx *direct.MapContext, in *pb.DiskEncryptionStatus) *krm.DiskEncryptionStatus {
 	if in == nil {
 		return nil

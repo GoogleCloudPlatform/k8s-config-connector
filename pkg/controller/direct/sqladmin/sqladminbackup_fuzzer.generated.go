@@ -42,6 +42,7 @@ func sqlAdminBackupFuzzer() fuzztesting.KRMFuzzer {
 	// Spec fields
 	f.SpecField(".backup_kind")
 	f.SpecField(".description")
+	f.SpecField(".disk_encryption_configuration")
 	f.SpecField(".instance")
 	f.SpecField(".location")
 
@@ -59,7 +60,9 @@ func sqlAdminBackupFuzzer() fuzztesting.KRMFuzzer {
 
 	// Unimplemented / Not Yet Triaged fields
 	f.Unimplemented_NotYetTriaged(".database_version")
-	f.Unimplemented_NotYetTriaged(".disk_encryption_configuration")
+	f.Unimplemented_NotYetTriaged(".disk_encryption_configuration.cmek_source_log_encryption_enforced")
+	f.Unimplemented_NotYetTriaged(".disk_encryption_configuration.confidential_mode")
+	f.Unimplemented_NotYetTriaged(".disk_encryption_configuration.kind")
 	f.Unimplemented_NotYetTriaged(".kind")
 	f.Unimplemented_NotYetTriaged(".max_chargeable_bytes")
 	f.Unimplemented_NotYetTriaged(".self_link")
