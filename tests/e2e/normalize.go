@@ -1711,6 +1711,19 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		visitor.ReplacePath(".metadata.build.timing.FETCHSOURCE.endTime", mockgcpregistry.PlaceholderTimestamp)
 		visitor.ReplacePath(".metadata.build.timing.PUSH.startTime", mockgcpregistry.PlaceholderTimestamp)
 		visitor.ReplacePath(".metadata.build.timing.PUSH.endTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.startTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.finishTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.steps[].pullTiming.startTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.steps[].pullTiming.endTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.steps[].timing.startTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.steps[].timing.endTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.timing.BUILD.startTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.timing.BUILD.endTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.timing.FETCHSOURCE.startTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.timing.FETCHSOURCE.endTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.timing.PUSH.startTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.timing.PUSH.endTime", mockgcpregistry.PlaceholderTimestamp)
 	}
 
 	// ContactCenterInsights

@@ -58,6 +58,11 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterCloudBuildServer(grpcServer, s.v1)
 	pbv2.RegisterRepositoryManagerServer(grpcServer, s.v2)
+
+	// Also register under v1 name so that v1 gRPC clients can call it
+	desc := pb.CloudBuild_ServiceDesc
+	desc.ServiceName = "google.devtools.cloudbuild.v1.CloudBuild"
+	grpcServer.RegisterService(&desc, s.v1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
