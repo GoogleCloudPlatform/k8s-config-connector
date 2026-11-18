@@ -1,0 +1,150 @@
+# Phase: CREATE
+POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "displayName": "webhook-${uniqueId}",
+  "genericWebService": {
+    "requestHeaders": {
+      "X-Custom-Header": "custom-value"
+    },
+    "uri": "https://example.com/webhook"
+  },
+  "timeout": "10s"
+}
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "webhook-${uniqueId}",
+  "genericWebService": {
+    "requestHeaders": {
+      "X-Custom-Header": "custom-value"
+    },
+    "uri": "https://example.com/webhook"
+  },
+  "name": "projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606",
+  "timeout": "10s"
+}
+
+---
+
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "webhook-${uniqueId}",
+  "genericWebService": {
+    "requestHeaders": {
+      "X-Custom-Header": "custom-value"
+    },
+    "uri": "https://example.com/webhook"
+  },
+  "name": "projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606",
+  "timeout": "10s"
+}
+
+---
+
+# Phase: UPDATE
+PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606?alt=json&updateMask=displayName%2Ctimeout%2Cdisabled%2CgenericWebService
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "disabled": true,
+  "displayName": "webhook-updated-${uniqueId}",
+  "genericWebService": {
+    "requestHeaders": {
+      "X-Custom-Header": "custom-value"
+    },
+    "uri": "https://example.com/webhook-updated"
+  },
+  "timeout": "20s"
+}
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "disabled": true,
+  "displayName": "webhook-updated-${uniqueId}",
+  "genericWebService": {
+    "requestHeaders": {
+      "X-Custom-Header": "custom-value"
+    },
+    "uri": "https://example.com/webhook-updated"
+  },
+  "name": "projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606",
+  "timeout": "20s"
+}
+
+---
+
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "disabled": true,
+  "displayName": "webhook-updated-${uniqueId}",
+  "genericWebService": {
+    "requestHeaders": {
+      "X-Custom-Header": "custom-value"
+    },
+    "uri": "https://example.com/webhook-updated"
+  },
+  "name": "projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606",
+  "timeout": "20s"
+}
+
+---
+
+# Phase: DELETE
+DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
