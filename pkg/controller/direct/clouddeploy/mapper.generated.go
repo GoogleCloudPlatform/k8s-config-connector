@@ -34,6 +34,22 @@ import (
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
 )
 
+func AdvanceChildRolloutJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AdvanceChildRolloutJob) *krmclouddeployv1alpha1.AdvanceChildRolloutJob {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.AdvanceChildRolloutJob{}
+	return out
+}
+
+func AdvanceChildRolloutJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.AdvanceChildRolloutJob) *pb.AdvanceChildRolloutJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AdvanceChildRolloutJob{}
+	return out
+}
+
 /* found existing non-generated mapping function "AdvanceRolloutRule_v1alpha1_FromProto", skipping
 func AdvanceRolloutRule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AdvanceRolloutRule) *krmclouddeployv1alpha1.AdvanceRolloutRule {
 	if in == nil {
@@ -408,6 +424,26 @@ func CanaryObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclou
 	return out
 }
 
+func ChildRolloutJobsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ChildRolloutJobs) *krmclouddeployv1alpha1.ChildRolloutJobsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.ChildRolloutJobsObservedState{}
+	out.CreateRolloutJobs = direct.Slice_FromProto(mapCtx, in.CreateRolloutJobs, JobObservedState_v1alpha1_FromProto)
+	out.AdvanceRolloutJobs = direct.Slice_FromProto(mapCtx, in.AdvanceRolloutJobs, JobObservedState_v1alpha1_FromProto)
+	return out
+}
+
+func ChildRolloutJobsObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.ChildRolloutJobsObservedState) *pb.ChildRolloutJobs {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ChildRolloutJobs{}
+	out.CreateRolloutJobs = direct.Slice_ToProto(mapCtx, in.CreateRolloutJobs, JobObservedState_v1alpha1_ToProto)
+	out.AdvanceRolloutJobs = direct.Slice_ToProto(mapCtx, in.AdvanceRolloutJobs, JobObservedState_v1alpha1_ToProto)
+	return out
+}
+
 /* found existing non-generated mapping function "CloudDeployAutomationObservedState_v1alpha1_FromProto", skipping
 func CloudDeployAutomationObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Automation) *krmclouddeployv1alpha1.CloudDeployAutomationObservedState {
 	if in == nil {
@@ -583,6 +619,90 @@ func CloudDeployReleaseSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmc
 	out.BuildArtifacts = direct.Slice_ToProto(mapCtx, in.BuildArtifacts, BuildArtifact_v1alpha1_ToProto)
 	out.SkaffoldVersion = direct.ValueOf(in.SkaffoldVersion)
 	out.DeployParameters = in.DeployParameters
+	return out
+}
+
+func CloudDeployRolloutObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Rollout) *krmclouddeployv1alpha1.CloudDeployRolloutObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.CloudDeployRolloutObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.ApproveTime = direct.StringTimestamp_FromProto(mapCtx, in.GetApproveTime())
+	out.EnqueueTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEnqueueTime())
+	out.DeployStartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeployStartTime())
+	out.DeployEndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeployEndTime())
+	// MISSING: TargetID
+	out.ApprovalState = direct.Enum_FromProto(mapCtx, in.GetApprovalState())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.FailureReason = direct.LazyPtr(in.GetFailureReason())
+	out.DeployingBuild = direct.LazyPtr(in.GetDeployingBuild())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.DeployFailureCause = direct.Enum_FromProto(mapCtx, in.GetDeployFailureCause())
+	out.Phases = direct.Slice_FromProto(mapCtx, in.Phases, PhaseObservedState_v1alpha1_FromProto)
+	out.Metadata = MetadataObservedState_v1alpha1_FromProto(mapCtx, in.GetMetadata())
+	out.ControllerRollout = direct.LazyPtr(in.GetControllerRollout())
+	out.RollbackOfRollout = direct.LazyPtr(in.GetRollbackOfRollout())
+	out.RolledBackByRollouts = in.RolledBackByRollouts
+	out.ActiveRepairAutomationRun = direct.LazyPtr(in.GetActiveRepairAutomationRun())
+	return out
+}
+
+func CloudDeployRolloutObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.CloudDeployRolloutObservedState) *pb.Rollout {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Rollout{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.ApproveTime = direct.StringTimestamp_ToProto(mapCtx, in.ApproveTime)
+	out.EnqueueTime = direct.StringTimestamp_ToProto(mapCtx, in.EnqueueTime)
+	out.DeployStartTime = direct.StringTimestamp_ToProto(mapCtx, in.DeployStartTime)
+	out.DeployEndTime = direct.StringTimestamp_ToProto(mapCtx, in.DeployEndTime)
+	// MISSING: TargetID
+	out.ApprovalState = direct.Enum_ToProto[pb.Rollout_ApprovalState](mapCtx, in.ApprovalState)
+	out.State = direct.Enum_ToProto[pb.Rollout_State](mapCtx, in.State)
+	out.FailureReason = direct.ValueOf(in.FailureReason)
+	out.DeployingBuild = direct.ValueOf(in.DeployingBuild)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.DeployFailureCause = direct.Enum_ToProto[pb.Rollout_FailureCause](mapCtx, in.DeployFailureCause)
+	out.Phases = direct.Slice_ToProto(mapCtx, in.Phases, PhaseObservedState_v1alpha1_ToProto)
+	out.Metadata = MetadataObservedState_v1alpha1_ToProto(mapCtx, in.Metadata)
+	out.ControllerRollout = direct.ValueOf(in.ControllerRollout)
+	out.RollbackOfRollout = direct.ValueOf(in.RollbackOfRollout)
+	out.RolledBackByRollouts = in.RolledBackByRollouts
+	out.ActiveRepairAutomationRun = direct.ValueOf(in.ActiveRepairAutomationRun)
+	return out
+}
+
+func CloudDeployRolloutSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Rollout) *krmclouddeployv1alpha1.CloudDeployRolloutSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.CloudDeployRolloutSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Annotations = in.Annotations
+	// MISSING: Labels
+	// MISSING: TargetID
+	return out
+}
+
+func CloudDeployRolloutSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.CloudDeployRolloutSpec) *pb.Rollout {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Rollout{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.Annotations = in.Annotations
+	// MISSING: Labels
+	// MISSING: TargetID
 	return out
 }
 
@@ -769,6 +889,22 @@ func CloudRunLocationObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 	}
 	out := &pb.CloudRunLocation{}
 	out.Location = direct.ValueOf(in.Location)
+	return out
+}
+
+func CreateChildRolloutJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CreateChildRolloutJob) *krmclouddeployv1alpha1.CreateChildRolloutJob {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.CreateChildRolloutJob{}
+	return out
+}
+
+func CreateChildRolloutJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.CreateChildRolloutJob) *pb.CreateChildRolloutJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CreateChildRolloutJob{}
 	return out
 }
 
@@ -1148,6 +1284,22 @@ func DeliveryPipelineSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclou
 	return out
 }
 
+func DeployJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DeployJob) *krmclouddeployv1alpha1.DeployJob {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.DeployJob{}
+	return out
+}
+
+func DeployJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.DeployJob) *pb.DeployJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DeployJob{}
+	return out
+}
+
 func DeployParameters_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DeployParameters) *krmclouddeployv1beta1.DeployParameters {
 	if in == nil {
 		return nil
@@ -1265,6 +1417,30 @@ func DeployPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudde
 	out.Selectors = direct.Slice_ToProto(mapCtx, in.Selectors, DeployPolicyResourceSelector_v1alpha1_ToProto)
 	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, PolicyRule_v1alpha1_ToProto)
 	// MISSING: Etag
+	return out
+}
+
+func DeploymentJobsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DeploymentJobs) *krmclouddeployv1alpha1.DeploymentJobsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.DeploymentJobsObservedState{}
+	out.PredeployJob = JobObservedState_v1alpha1_FromProto(mapCtx, in.GetPredeployJob())
+	out.DeployJob = JobObservedState_v1alpha1_FromProto(mapCtx, in.GetDeployJob())
+	out.VerifyJob = JobObservedState_v1alpha1_FromProto(mapCtx, in.GetVerifyJob())
+	out.PostdeployJob = JobObservedState_v1alpha1_FromProto(mapCtx, in.GetPostdeployJob())
+	return out
+}
+
+func DeploymentJobsObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.DeploymentJobsObservedState) *pb.DeploymentJobs {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DeploymentJobs{}
+	out.PredeployJob = JobObservedState_v1alpha1_ToProto(mapCtx, in.PredeployJob)
+	out.DeployJob = JobObservedState_v1alpha1_ToProto(mapCtx, in.DeployJob)
+	out.VerifyJob = JobObservedState_v1alpha1_ToProto(mapCtx, in.VerifyJob)
+	out.PostdeployJob = JobObservedState_v1alpha1_ToProto(mapCtx, in.PostdeployJob)
 	return out
 }
 
@@ -1401,6 +1577,54 @@ func GkeClusterObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.InternalIp = direct.ValueOf(in.InternalIP)
 	out.ProxyUrl = direct.ValueOf(in.ProxyURL)
 	out.DnsEndpoint = direct.ValueOf(in.DNSEndpoint)
+	return out
+}
+
+func JobObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krmclouddeployv1alpha1.JobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.JobObservedState{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.SkipMessage = direct.LazyPtr(in.GetSkipMessage())
+	out.JobRun = direct.LazyPtr(in.GetJobRun())
+	out.DeployJob = DeployJob_v1alpha1_FromProto(mapCtx, in.GetDeployJob())
+	out.VerifyJob = VerifyJob_v1alpha1_FromProto(mapCtx, in.GetVerifyJob())
+	out.PredeployJob = PredeployJobObservedState_v1alpha1_FromProto(mapCtx, in.GetPredeployJob())
+	out.PostdeployJob = PostdeployJobObservedState_v1alpha1_FromProto(mapCtx, in.GetPostdeployJob())
+	out.CreateChildRolloutJob = CreateChildRolloutJob_v1alpha1_FromProto(mapCtx, in.GetCreateChildRolloutJob())
+	out.AdvanceChildRolloutJob = AdvanceChildRolloutJob_v1alpha1_FromProto(mapCtx, in.GetAdvanceChildRolloutJob())
+	return out
+}
+
+func JobObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.JobObservedState) *pb.Job {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Job{}
+	out.Id = direct.ValueOf(in.ID)
+	out.State = direct.Enum_ToProto[pb.Job_State](mapCtx, in.State)
+	out.SkipMessage = direct.ValueOf(in.SkipMessage)
+	out.JobRun = direct.ValueOf(in.JobRun)
+	if oneof := DeployJob_v1alpha1_ToProto(mapCtx, in.DeployJob); oneof != nil {
+		out.JobType = &pb.Job_DeployJob{DeployJob: oneof}
+	}
+	if oneof := VerifyJob_v1alpha1_ToProto(mapCtx, in.VerifyJob); oneof != nil {
+		out.JobType = &pb.Job_VerifyJob{VerifyJob: oneof}
+	}
+	if oneof := PredeployJobObservedState_v1alpha1_ToProto(mapCtx, in.PredeployJob); oneof != nil {
+		out.JobType = &pb.Job_PredeployJob{PredeployJob: oneof}
+	}
+	if oneof := PostdeployJobObservedState_v1alpha1_ToProto(mapCtx, in.PostdeployJob); oneof != nil {
+		out.JobType = &pb.Job_PostdeployJob{PostdeployJob: oneof}
+	}
+	if oneof := CreateChildRolloutJob_v1alpha1_ToProto(mapCtx, in.CreateChildRolloutJob); oneof != nil {
+		out.JobType = &pb.Job_CreateChildRolloutJob{CreateChildRolloutJob: oneof}
+	}
+	if oneof := AdvanceChildRolloutJob_v1alpha1_ToProto(mapCtx, in.AdvanceChildRolloutJob); oneof != nil {
+		out.JobType = &pb.Job_AdvanceChildRolloutJob{AdvanceChildRolloutJob: oneof}
+	}
 	return out
 }
 
@@ -1664,6 +1888,36 @@ func OneTimeWindow_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeplo
 	return out
 }
 
+func PhaseObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Phase) *krmclouddeployv1alpha1.PhaseObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.PhaseObservedState{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.SkipMessage = direct.LazyPtr(in.GetSkipMessage())
+	out.DeploymentJobs = DeploymentJobsObservedState_v1alpha1_FromProto(mapCtx, in.GetDeploymentJobs())
+	out.ChildRolloutJobs = ChildRolloutJobsObservedState_v1alpha1_FromProto(mapCtx, in.GetChildRolloutJobs())
+	return out
+}
+
+func PhaseObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.PhaseObservedState) *pb.Phase {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Phase{}
+	out.Id = direct.ValueOf(in.ID)
+	out.State = direct.Enum_ToProto[pb.Phase_State](mapCtx, in.State)
+	out.SkipMessage = direct.ValueOf(in.SkipMessage)
+	if oneof := DeploymentJobsObservedState_v1alpha1_ToProto(mapCtx, in.DeploymentJobs); oneof != nil {
+		out.Jobs = &pb.Phase_DeploymentJobs{DeploymentJobs: oneof}
+	}
+	if oneof := ChildRolloutJobsObservedState_v1alpha1_ToProto(mapCtx, in.ChildRolloutJobs); oneof != nil {
+		out.Jobs = &pb.Phase_ChildRolloutJobs{ChildRolloutJobs: oneof}
+	}
+	return out
+}
+
 func PipelineCondition_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PipelineCondition) *krmclouddeployv1alpha1.PipelineCondition {
 	if in == nil {
 		return nil
@@ -1804,6 +2058,24 @@ func Postdeploy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1b
 	return out
 }
 
+func PostdeployJobObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PostdeployJob) *krmclouddeployv1alpha1.PostdeployJobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.PostdeployJobObservedState{}
+	out.Actions = in.Actions
+	return out
+}
+
+func PostdeployJobObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.PostdeployJobObservedState) *pb.PostdeployJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PostdeployJob{}
+	out.Actions = in.Actions
+	return out
+}
+
 func Predeploy_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Predeploy) *krmclouddeployv1alpha1.Predeploy {
 	if in == nil {
 		return nil
@@ -1836,6 +2108,24 @@ func Predeploy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1be
 		return nil
 	}
 	out := &pb.Predeploy{}
+	out.Actions = in.Actions
+	return out
+}
+
+func PredeployJobObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PredeployJob) *krmclouddeployv1alpha1.PredeployJobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.PredeployJobObservedState{}
+	out.Actions = in.Actions
+	return out
+}
+
+func PredeployJobObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.PredeployJobObservedState) *pb.PredeployJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PredeployJob{}
 	out.Actions = in.Actions
 	return out
 }
@@ -2794,6 +3084,66 @@ func CustomMetadataObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	return out
 }
 
+func CloudRunMetadataObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CloudRunMetadata) *krmclouddeployv1alpha1.CloudRunMetadataObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.CloudRunMetadataObservedState{}
+	out.Service = direct.LazyPtr(in.GetService())
+	return out
+}
+
+func CloudRunMetadataObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.CloudRunMetadataObservedState) *pb.CloudRunMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudRunMetadata{}
+	out.Service = direct.ValueOf(in.Service)
+	return out
+}
+
+func AutomationRolloutMetadataObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutomationRolloutMetadata) *krmclouddeployv1alpha1.AutomationRolloutMetadataObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.AutomationRolloutMetadataObservedState{}
+	out.PromoteAutomationRun = direct.LazyPtr(in.GetPromoteAutomationRun())
+	out.RepairAutomationRuns = in.RepairAutomationRuns
+	return out
+}
+
+func AutomationRolloutMetadataObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.AutomationRolloutMetadataObservedState) *pb.AutomationRolloutMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutomationRolloutMetadata{}
+	out.PromoteAutomationRun = direct.ValueOf(in.PromoteAutomationRun)
+	out.RepairAutomationRuns = in.RepairAutomationRuns
+	return out
+}
+
+func MetadataObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Metadata) *krmclouddeployv1alpha1.MetadataObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.MetadataObservedState{}
+	out.CloudRun = CloudRunMetadataObservedState_v1alpha1_FromProto(mapCtx, in.GetCloudRun())
+	out.Automation = AutomationRolloutMetadataObservedState_v1alpha1_FromProto(mapCtx, in.GetAutomation())
+	out.Custom = CustomMetadataObservedState_v1alpha1_FromProto(mapCtx, in.GetCustom())
+	return out
+}
+
+func MetadataObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.MetadataObservedState) *pb.Metadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Metadata{}
+	out.CloudRun = CloudRunMetadataObservedState_v1alpha1_ToProto(mapCtx, in.CloudRun)
+	out.Automation = AutomationRolloutMetadataObservedState_v1alpha1_ToProto(mapCtx, in.Automation)
+	out.Custom = CustomMetadataObservedState_v1alpha1_ToProto(mapCtx, in.Custom)
+	return out
+}
+
 func TargetRenderObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Release_TargetRender) *krmclouddeployv1alpha1.TargetRenderObservedState {
 	if in == nil {
 		return nil
@@ -3105,6 +3455,22 @@ func TimedPromoteReleaseRuleObservedState_v1alpha1_ToProto(mapCtx *direct.MapCon
 	// MISSING: TimeZone
 	out.Condition = AutomationRuleCondition_v1alpha1_ToProto(mapCtx, in.Condition)
 	// MISSING: DestinationPhase
+	return out
+}
+
+func VerifyJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VerifyJob) *krmclouddeployv1alpha1.VerifyJob {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.VerifyJob{}
+	return out
+}
+
+func VerifyJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.VerifyJob) *pb.VerifyJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VerifyJob{}
 	return out
 }
 

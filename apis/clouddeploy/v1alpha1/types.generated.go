@@ -22,8 +22,37 @@
 // resource: CloudDeployTarget:Target
 // resource: CloudDeployAutomation:Automation
 // resource: CloudDeployRelease:Release
+// resource: CloudDeployRollout:Rollout
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.deploy.v1.AdvanceChildRolloutJob
+type AdvanceChildRolloutJob struct {
+}
+
+/* found existing non-generated go type "AdvanceRolloutRule", skipping
+
+// +kcc:proto=google.cloud.deploy.v1.AdvanceRolloutRule
+type AdvanceRolloutRule struct {
+	// Required. ID of the rule. This id must be unique in the `Automation`
+	//  resource to which this rule belongs. The format is
+	//  `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`.
+	// +kcc:proto:field=google.cloud.deploy.v1.AdvanceRolloutRule.id
+	ID *string `json:"id,omitempty"`
+
+	// Optional. Proceeds only after phase name matched any one in the list.
+	//  This value must consist of lower-case letters, numbers, and hyphens,
+	//  start with a letter and end with a letter or a number, and have a max
+	//  length of 63 characters. In other words, it must match the following
+	//  regex: `^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$`.
+	// +kcc:proto:field=google.cloud.deploy.v1.AdvanceRolloutRule.source_phases
+	SourcePhases []string `json:"sourcePhases,omitempty"`
+
+	// Optional. How long to wait after a rollout is finished.
+	// +kcc:proto:field=google.cloud.deploy.v1.AdvanceRolloutRule.wait
+	Wait *string `json:"wait,omitempty"`
+}
+*/
 
 /* found existing non-generated go type "AnthosCluster", skipping
 
@@ -47,6 +76,131 @@ type AssociatedEntities struct {
 	// +kcc:proto:field=google.cloud.deploy.v1.AssociatedEntities.anthos_clusters
 	AnthosClusters []AnthosCluster `json:"anthosClusters,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.deploy.v1.Automation", skipping
+
+// +kcc:proto=google.cloud.deploy.v1.Automation
+type Automation struct {
+
+	// Optional. Description of the `Automation`. Max length is 255 characters.
+	// +kcc:proto:field=google.cloud.deploy.v1.Automation.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. User annotations. These attributes can only be set and used by
+	//  the user, and not by Cloud Deploy. Annotations must meet the following
+	//  constraints:
+	//
+	//  * Annotations are key/value pairs.
+	//  * Valid annotation keys have two segments: an optional prefix and name,
+	//  separated by a slash (`/`).
+	//  * The name segment is required and must be 63 characters or less,
+	//  beginning and ending with an alphanumeric character (`[a-z0-9A-Z]`) with
+	//  dashes (`-`), underscores (`_`), dots (`.`), and alphanumerics between.
+	//  * The prefix is optional. If specified, the prefix must be a DNS subdomain:
+	//  a series of DNS labels separated by dots(`.`), not longer than 253
+	//  characters in total, followed by a slash (`/`).
+	//
+	//  See
+	//  https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/#syntax-and-character-set
+	//  for more details.
+	// +kcc:proto:field=google.cloud.deploy.v1.Automation.annotations
+	Annotations map[string]string `json:"annotations,omitempty"`
+
+	// Optional. Labels are attributes that can be set and used by both the
+	//  user and by Cloud Deploy. Labels must meet the following constraints:
+	//
+	//  * Keys and values can contain only lowercase letters, numeric characters,
+	//  underscores, and dashes.
+	//  * All characters must use UTF-8 encoding, and international characters are
+	//  allowed.
+	//  * Keys must start with a lowercase letter or international character.
+	//  * Each resource is limited to a maximum of 64 labels.
+	//
+	//  Both keys and values are additionally constrained to be <= 63 characters.
+	// +kcc:proto:field=google.cloud.deploy.v1.Automation.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. The weak etag of the `Automation` resource.
+	//  This checksum is computed by the server based on the value of other
+	//  fields, and may be sent on update and delete requests to ensure the
+	//  client has an up-to-date value before proceeding.
+	// +kcc:proto:field=google.cloud.deploy.v1.Automation.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Optional. When Suspended, automation is deactivated from execution.
+	// +kcc:proto:field=google.cloud.deploy.v1.Automation.suspended
+	Suspended *bool `json:"suspended,omitempty"`
+
+	// Required. Email address of the user-managed IAM service account that
+	//  creates Cloud Deploy release and rollout resources.
+	// +kcc:proto:field=google.cloud.deploy.v1.Automation.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+
+	// Required. Selected resources to which the automation will be applied.
+	// +kcc:proto:field=google.cloud.deploy.v1.Automation.selector
+	Selector *AutomationResourceSelector `json:"selector,omitempty"`
+
+	// Required. List of Automation rules associated with the Automation resource.
+	//  Must have at least one rule and limited to 250 rules per Delivery Pipeline.
+	//  Note: the order of the rules here is not the same as the order of
+	//  execution.
+	// +kcc:proto:field=google.cloud.deploy.v1.Automation.rules
+	Rules []AutomationRule `json:"rules,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "AutomationResourceSelector", skipping
+
+// +kcc:proto=google.cloud.deploy.v1.AutomationResourceSelector
+type AutomationResourceSelector struct {
+	// Optional. Contains attributes about a target.
+	// +kcc:proto:field=google.cloud.deploy.v1.AutomationResourceSelector.targets
+	Targets []TargetAttribute `json:"targets,omitempty"`
+}
+*/
+
+/* unreachable type AutomationRolloutMetadata
+// +kcc:proto=google.cloud.deploy.v1.AutomationRolloutMetadata
+type AutomationRolloutMetadata struct {
+}
+*/
+
+/* found existing non-generated go type "AutomationRule", skipping
+
+// +kcc:proto=google.cloud.deploy.v1.AutomationRule
+type AutomationRule struct {
+	// Optional. `PromoteReleaseRule` will automatically promote a release from
+	//  the current target to a specified target.
+	// +kcc:proto:field=google.cloud.deploy.v1.AutomationRule.promote_release_rule
+	PromoteReleaseRule *PromoteReleaseRule `json:"promoteReleaseRule,omitempty"`
+
+	// Optional. The `AdvanceRolloutRule` will automatically advance a
+	//  successful Rollout.
+	// +kcc:proto:field=google.cloud.deploy.v1.AutomationRule.advance_rollout_rule
+	AdvanceRolloutRule *AdvanceRolloutRule `json:"advanceRolloutRule,omitempty"`
+
+	// Optional. The `RepairRolloutRule` will automatically repair a failed
+	//  rollout.
+	// +kcc:proto:field=google.cloud.deploy.v1.AutomationRule.repair_rollout_rule
+	RepairRolloutRule *RepairRolloutRule `json:"repairRolloutRule,omitempty"`
+
+	// Optional. The `TimedPromoteReleaseRule` will automatically promote a
+	//  release from the current target(s) to the specified target(s) on a
+	//  configured schedule.
+	// +kcc:proto:field=google.cloud.deploy.v1.AutomationRule.timed_promote_release_rule
+	TimedPromoteReleaseRule *TimedPromoteReleaseRule `json:"timedPromoteReleaseRule,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "AutomationRuleCondition", skipping
+
+// +kcc:proto=google.cloud.deploy.v1.AutomationRuleCondition
+type AutomationRuleCondition struct {
+	// Optional. Details around targets enumerated in the rule.
+	// +kcc:proto:field=google.cloud.deploy.v1.AutomationRuleCondition.targets_present_condition
+	TargetsPresentCondition *TargetsPresentCondition `json:"targetsPresentCondition,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.deploy.v1.BuildArtifact
 type BuildArtifact struct {
@@ -110,6 +264,12 @@ type CanaryDeployment struct {
 }
 */
 
+/* unreachable type ChildRolloutJobs
+// +kcc:proto=google.cloud.deploy.v1.ChildRolloutJobs
+type ChildRolloutJobs struct {
+}
+*/
+
 // +kcc:proto=google.cloud.deploy.v1.CloudRunConfig
 type CloudRunConfig struct {
 	// Optional. Whether Cloud Deploy should update the traffic stanza in a Cloud
@@ -143,11 +303,21 @@ type CloudRunLocation struct {
 	Location *string `json:"location,omitempty"`
 }
 
+/* unreachable type CloudRunMetadata
+// +kcc:proto=google.cloud.deploy.v1.CloudRunMetadata
+type CloudRunMetadata struct {
+}
+*/
+
 /* unreachable type CloudRunRenderMetadata
 // +kcc:proto=google.cloud.deploy.v1.CloudRunRenderMetadata
 type CloudRunRenderMetadata struct {
 }
 */
+
+// +kcc:proto=google.cloud.deploy.v1.CreateChildRolloutJob
+type CreateChildRolloutJob struct {
+}
 
 /* unreachable type CustomCanaryDeployment
 // +kcc:proto=google.cloud.deploy.v1.CustomCanaryDeployment
@@ -367,6 +537,10 @@ type DeliveryPipelineAttribute struct {
 	Labels map[string]string `json:"labels,omitempty"`
 }
 
+// +kcc:proto=google.cloud.deploy.v1.DeployJob
+type DeployJob struct {
+}
+
 /* unreachable type DeployParameters
 // +kcc:proto=google.cloud.deploy.v1.DeployParameters
 type DeployParameters struct {
@@ -382,6 +556,74 @@ type DeployParameters struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.deploy.v1.DeployPolicy", skipping
+
+// +kcc:proto=google.cloud.deploy.v1.DeployPolicy
+type DeployPolicy struct {
+
+	// Optional. Description of the `DeployPolicy`. Max length is 255 characters.
+	// +kcc:proto:field=google.cloud.deploy.v1.DeployPolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. User annotations. These attributes can only be set and used by
+	//  the user, and not by Cloud Deploy. Annotations must meet the following
+	//  constraints:
+	//
+	//  * Annotations are key/value pairs.
+	//  * Valid annotation keys have two segments: an optional prefix and name,
+	//  separated by a slash (`/`).
+	//  * The name segment is required and must be 63 characters or less,
+	//  beginning and ending with an alphanumeric character (`[a-z0-9A-Z]`) with
+	//  dashes (`-`), underscores (`_`), dots (`.`), and alphanumerics between.
+	//  * The prefix is optional. If specified, the prefix must be a DNS subdomain:
+	//  a series of DNS labels separated by dots(`.`), not longer than 253
+	//  characters in total, followed by a slash (`/`).
+	//
+	//  See
+	//  https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/#syntax-and-character-set
+	//  for more details.
+	// +kcc:proto:field=google.cloud.deploy.v1.DeployPolicy.annotations
+	Annotations map[string]string `json:"annotations,omitempty"`
+
+	// Labels are attributes that can be set and used by both the
+	//  user and by Cloud Deploy. Labels must meet the following constraints:
+	//
+	//  * Keys and values can contain only lowercase letters, numeric characters,
+	//  underscores, and dashes.
+	//  * All characters must use UTF-8 encoding, and international characters are
+	//  allowed.
+	//  * Keys must start with a lowercase letter or international character.
+	//  * Each resource is limited to a maximum of 64 labels.
+	//
+	//  Both keys and values are additionally constrained to be <= 128 bytes.
+	// +kcc:proto:field=google.cloud.deploy.v1.DeployPolicy.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. When suspended, the policy will not prevent actions from
+	//  occurring, even if the action violates the policy.
+	// +kcc:proto:field=google.cloud.deploy.v1.DeployPolicy.suspended
+	Suspended *bool `json:"suspended,omitempty"`
+
+	// Required. Selected resources to which the policy will be applied. At least
+	//  one selector is required. If one selector matches the resource the policy
+	//  applies. For example, if there are two selectors and the action being
+	//  attempted matches one of them, the policy will apply to that action.
+	// +kcc:proto:field=google.cloud.deploy.v1.DeployPolicy.selectors
+	Selectors []DeployPolicyResourceSelector `json:"selectors,omitempty"`
+
+	// Required. Rules to apply. At least one rule must be present.
+	// +kcc:proto:field=google.cloud.deploy.v1.DeployPolicy.rules
+	Rules []PolicyRule `json:"rules,omitempty"`
+
+	// The weak etag of the `DeployPolicy` resource.
+	//  This checksum is computed by the server based on the value of other
+	//  fields, and may be sent on update and delete requests to ensure the
+	//  client has an up-to-date value before proceeding.
+	// +kcc:proto:field=google.cloud.deploy.v1.DeployPolicy.etag
+	Etag *string `json:"etag,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.deploy.v1.DeployPolicyResourceSelector
 type DeployPolicyResourceSelector struct {
 	// Optional. Contains attributes about a delivery pipeline.
@@ -392,6 +634,12 @@ type DeployPolicyResourceSelector struct {
 	// +kcc:proto:field=google.cloud.deploy.v1.DeployPolicyResourceSelector.target
 	Target *TargetAttribute `json:"target,omitempty"`
 }
+
+/* unreachable type DeploymentJobs
+// +kcc:proto=google.cloud.deploy.v1.DeploymentJobs
+type DeploymentJobs struct {
+}
+*/
 
 /* found existing non-generated go type "ExecutionConfig", skipping
 
@@ -473,6 +721,12 @@ type GKECluster struct {
 	//  that both `dns_endpoint` and `internal_ip` cannot be set to true.
 	// +kcc:proto:field=google.cloud.deploy.v1.GkeCluster.dns_endpoint
 	DNSEndpoint *bool `json:"dnsEndpoint,omitempty"`
+}
+*/
+
+/* unreachable type Job
+// +kcc:proto=google.cloud.deploy.v1.Job
+type Job struct {
 }
 */
 
@@ -579,6 +833,12 @@ type KubernetesConfig_ServiceNetworking struct {
 }
 */
 
+/* unreachable type Metadata
+// +kcc:proto=google.cloud.deploy.v1.Metadata
+type Metadata struct {
+}
+*/
+
 /* found existing non-generated go type "MultiTarget", skipping
 
 // +kcc:proto=google.cloud.deploy.v1.MultiTarget
@@ -607,6 +867,12 @@ type OneTimeWindow struct {
 	// +kcc:proto:field=google.cloud.deploy.v1.OneTimeWindow.end_time
 	EndTime *TimeOfDay `json:"endTime,omitempty"`
 }
+
+/* unreachable type Phase
+// +kcc:proto=google.cloud.deploy.v1.Phase
+type Phase struct {
+}
+*/
 
 // +kcc:proto=google.cloud.deploy.v1.PipelineCondition
 type PipelineCondition struct {
@@ -653,6 +919,12 @@ type Postdeploy struct {
 	Actions []string `json:"actions,omitempty"`
 }
 
+/* unreachable type PostdeployJob
+// +kcc:proto=google.cloud.deploy.v1.PostdeployJob
+type PostdeployJob struct {
+}
+*/
+
 // +kcc:proto=google.cloud.deploy.v1.Predeploy
 type Predeploy struct {
 	// Optional. A sequence of Skaffold custom actions to invoke during execution
@@ -660,6 +932,12 @@ type Predeploy struct {
 	// +kcc:proto:field=google.cloud.deploy.v1.Predeploy.actions
 	Actions []string `json:"actions,omitempty"`
 }
+
+/* unreachable type PredeployJob
+// +kcc:proto=google.cloud.deploy.v1.PredeployJob
+type PredeployJob struct {
+}
+*/
 
 /* found existing non-generated go type "PrivatePool", skipping
 
@@ -682,6 +960,37 @@ type PrivatePool struct {
 	//  If unspecified, a default bucket located in the same region will be used.
 	// +kcc:proto:field=google.cloud.deploy.v1.PrivatePool.artifact_storage
 	ArtifactStorage *string `json:"artifactStorage,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "PromoteReleaseRule", skipping
+
+// +kcc:proto=google.cloud.deploy.v1.PromoteReleaseRule
+type PromoteReleaseRule struct {
+	// Required. ID of the rule. This id must be unique in the `Automation`
+	//  resource to which this rule belongs. The format is
+	//  `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`.
+	// +kcc:proto:field=google.cloud.deploy.v1.PromoteReleaseRule.id
+	ID *string `json:"id,omitempty"`
+
+	// Optional. How long the release need to be paused until being promoted to
+	//  the next target.
+	// +kcc:proto:field=google.cloud.deploy.v1.PromoteReleaseRule.wait
+	Wait *string `json:"wait,omitempty"`
+
+	// Optional. The ID of the stage in the pipeline to which this `Release` is
+	//  deploying. If unspecified, default it to the next stage in the promotion
+	//  flow. The value of this field could be one of the following:
+	//
+	//  * The last segment of a target name
+	//  * "@next", the next target in the promotion sequence
+	// +kcc:proto:field=google.cloud.deploy.v1.PromoteReleaseRule.destination_target_id
+	DestinationTargetID *string `json:"destinationTargetID,omitempty"`
+
+	// Optional. The starting phase of the rollout created by this operation.
+	//  Default to the first phase.
+	// +kcc:proto:field=google.cloud.deploy.v1.PromoteReleaseRule.destination_phase
+	DestinationPhase *string `json:"destinationPhase,omitempty"`
 }
 */
 
@@ -803,6 +1112,140 @@ type Release_TargetRender struct {
 /* unreachable type RenderMetadata
 // +kcc:proto=google.cloud.deploy.v1.RenderMetadata
 type RenderMetadata struct {
+}
+*/
+
+/* found existing non-generated go type "RepairPhaseConfig", skipping
+
+// +kcc:proto=google.cloud.deploy.v1.RepairPhaseConfig
+type RepairPhaseConfig struct {
+	// Optional. Retries a failed job.
+	// +kcc:proto:field=google.cloud.deploy.v1.RepairPhaseConfig.retry
+	Retry *Retry `json:"retry,omitempty"`
+
+	// Optional. Rolls back a `Rollout`.
+	// +kcc:proto:field=google.cloud.deploy.v1.RepairPhaseConfig.rollback
+	Rollback *Rollback `json:"rollback,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "RepairRolloutRule", skipping
+
+// +kcc:proto=google.cloud.deploy.v1.RepairRolloutRule
+type RepairRolloutRule struct {
+	// Required. ID of the rule. This id must be unique in the `Automation`
+	//  resource to which this rule belongs. The format is
+	//  `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`.
+	// +kcc:proto:field=google.cloud.deploy.v1.RepairRolloutRule.id
+	ID *string `json:"id,omitempty"`
+
+	// Optional. Phases within which jobs are subject to automatic repair actions
+	//  on failure. Proceeds only after phase name matched any one in the list, or
+	//  for all phases if unspecified. This value must consist of lower-case
+	//  letters, numbers, and hyphens, start with a letter and end with a letter or
+	//  a number, and have a max length of 63 characters. In other words, it must
+	//  match the following regex: `^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$`.
+	// +kcc:proto:field=google.cloud.deploy.v1.RepairRolloutRule.phases
+	Phases []string `json:"phases,omitempty"`
+
+	// Optional. Jobs to repair. Proceeds only after job name matched any one in
+	//  the list, or for all jobs if unspecified or empty. The phase that includes
+	//  the job must match the phase ID specified in `source_phase`. This value
+	//  must consist of lower-case letters, numbers, and hyphens, start with a
+	//  letter and end with a letter or a number, and have a max length of 63
+	//  characters. In other words, it must match the following regex:
+	//  `^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$`.
+	// +kcc:proto:field=google.cloud.deploy.v1.RepairRolloutRule.jobs
+	Jobs []string `json:"jobs,omitempty"`
+
+	// Required. Defines the types of automatic repair phases for failed jobs.
+	// +kcc:proto:field=google.cloud.deploy.v1.RepairRolloutRule.repair_phases
+	RepairPhases []RepairPhaseConfig `json:"repairPhases,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "Retry", skipping
+
+// +kcc:proto=google.cloud.deploy.v1.Retry
+type Retry struct {
+	// Required. Total number of retries. Retry is skipped if set to 0; The
+	//  minimum value is 1, and the maximum value is 10.
+	// +kcc:proto:field=google.cloud.deploy.v1.Retry.attempts
+	Attempts *int64 `json:"attempts,omitempty"`
+
+	// Optional. How long to wait for the first retry. Default is 0, and the
+	//  maximum value is 14d.
+	// +kcc:proto:field=google.cloud.deploy.v1.Retry.wait
+	Wait *string `json:"wait,omitempty"`
+
+	// Optional. The pattern of how wait time will be increased. Default is
+	//  linear. Backoff mode will be ignored if `wait` is 0.
+	// +kcc:proto:field=google.cloud.deploy.v1.Retry.backoff_mode
+	BackoffMode *string `json:"backoffMode,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "Rollback", skipping
+
+// +kcc:proto=google.cloud.deploy.v1.Rollback
+type Rollback struct {
+	// Optional. The starting phase ID for the `Rollout`. If unspecified, the
+	//  `Rollout` will start in the stable phase.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollback.destination_phase
+	DestinationPhase *string `json:"destinationPhase,omitempty"`
+
+	// Optional. If pending rollout exists on the target, the rollback operation
+	//  will be aborted.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollback.disable_rollback_if_rollout_pending
+	DisableRollbackIfRolloutPending *bool `json:"disableRollbackIfRolloutPending,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.deploy.v1.Rollout", skipping
+
+// +kcc:proto=google.cloud.deploy.v1.Rollout
+type Rollout struct {
+	// Identifier. Name of the `Rollout`. Format is
+	//  `projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}`.
+	//  The `rollout` component must match `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Description of the `Rollout` for user purposes. Max length is 255
+	//  characters.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. User annotations. These attributes can only be set and used by
+	//  the user, and not by Cloud Deploy. See
+	//  https://google.aip.dev/128#annotations for more details such as format and
+	//  size limitations.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.annotations
+	Annotations map[string]string `json:"annotations,omitempty"`
+
+	// Labels are attributes that can be set and used by both the
+	//  user and by Cloud Deploy. Labels must meet the following constraints:
+	//
+	//  * Keys and values can contain only lowercase letters, numeric characters,
+	//  underscores, and dashes.
+	//  * All characters must use UTF-8 encoding, and international characters are
+	//  allowed.
+	//  * Keys must start with a lowercase letter or international character.
+	//  * Each resource is limited to a maximum of 64 labels.
+	//
+	//  Both keys and values are additionally constrained to be <= 128 bytes.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Required. The ID of Target to which this `Rollout` is deploying.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.target_id
+	TargetID *string `json:"targetID,omitempty"`
+
+	// This checksum is computed by the server based on the value of other
+	//  fields, and may be sent on update and delete requests to ensure the
+	//  client has an up-to-date value before proceeding.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.etag
+	Etag *string `json:"etag,omitempty"`
 }
 */
 
@@ -1078,6 +1521,24 @@ type TargetArtifact struct {
 type TargetArtifact_PhaseArtifact struct {
 }
 
+/* found existing non-generated go type "TargetAttribute", skipping
+
+// +kcc:proto=google.cloud.deploy.v1.TargetAttribute
+type TargetAttribute struct {
+	// Optional. ID of the `Target`. The value of this field could be one of the
+	//  following:
+	//
+	//  * The last segment of a target name
+	//  * "*", all targets in a location
+	// +kcc:proto:field=google.cloud.deploy.v1.TargetAttribute.id
+	ID *string `json:"id,omitempty"`
+
+	// Target labels.
+	// +kcc:proto:field=google.cloud.deploy.v1.TargetAttribute.labels
+	Labels map[string]string `json:"labels,omitempty"`
+}
+*/
+
 /* found existing non-generated go type "TargetsPresentCondition", skipping
 
 // +kcc:proto=google.cloud.deploy.v1.TargetsPresentCondition
@@ -1124,6 +1585,67 @@ type TimeWindows struct {
 	// Optional. Recurring weekly windows within which actions are restricted.
 	// +kcc:proto:field=google.cloud.deploy.v1.TimeWindows.weekly_windows
 	WeeklyWindows []WeeklyWindow `json:"weeklyWindows,omitempty"`
+}
+
+/* found existing non-generated go type "TimedPromoteReleaseCondition", skipping
+
+// +kcc:proto=google.cloud.deploy.v1.TimedPromoteReleaseCondition
+type TimedPromoteReleaseCondition struct {
+}
+*/
+
+/* found existing non-generated go type "TimedPromoteReleaseCondition_Targets", skipping
+
+// +kcc:proto=google.cloud.deploy.v1.TimedPromoteReleaseCondition.Targets
+type TimedPromoteReleaseCondition_Targets struct {
+	// Optional. The source target ID.
+	// +kcc:proto:field=google.cloud.deploy.v1.TimedPromoteReleaseCondition.Targets.source_target_id
+	SourceTargetID *string `json:"sourceTargetID,omitempty"`
+
+	// Optional. The destination target ID.
+	// +kcc:proto:field=google.cloud.deploy.v1.TimedPromoteReleaseCondition.Targets.destination_target_id
+	DestinationTargetID *string `json:"destinationTargetID,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "TimedPromoteReleaseRule", skipping
+
+// +kcc:proto=google.cloud.deploy.v1.TimedPromoteReleaseRule
+type TimedPromoteReleaseRule struct {
+	// Required. ID of the rule. This ID must be unique in the `Automation`
+	//  resource to which this rule belongs. The format is
+	//  `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`.
+	// +kcc:proto:field=google.cloud.deploy.v1.TimedPromoteReleaseRule.id
+	ID *string `json:"id,omitempty"`
+
+	// Optional. The ID of the stage in the pipeline to which this `Release` is
+	//  deploying. If unspecified, default it to the next stage in the promotion
+	//  flow. The value of this field could be one of the following:
+	//
+	//  * The last segment of a target name
+	//  * "@next", the next target in the promotion sequence
+	// +kcc:proto:field=google.cloud.deploy.v1.TimedPromoteReleaseRule.destination_target_id
+	DestinationTargetID *string `json:"destinationTargetID,omitempty"`
+
+	// Required. Schedule in crontab format. e.g. "0 9 * * 1" for every Monday at
+	//  9am.
+	// +kcc:proto:field=google.cloud.deploy.v1.TimedPromoteReleaseRule.schedule
+	Schedule *string `json:"schedule,omitempty"`
+
+	// Required. The time zone in IANA format [IANA Time Zone
+	//  Database](https://www.iana.org/time-zones) (e.g. America/New_York).
+	// +kcc:proto:field=google.cloud.deploy.v1.TimedPromoteReleaseRule.time_zone
+	TimeZone *string `json:"timeZone,omitempty"`
+
+	// Optional. The starting phase of the rollout created by this rule. Default
+	//  to the first phase.
+	// +kcc:proto:field=google.cloud.deploy.v1.TimedPromoteReleaseRule.destination_phase
+	DestinationPhase *string `json:"destinationPhase,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.deploy.v1.VerifyJob
+type VerifyJob struct {
 }
 
 // +kcc:proto=google.cloud.deploy.v1.WeeklyWindow
@@ -1186,6 +1708,105 @@ type TimeOfDay struct {
 	Nanos *int32 `json:"nanos,omitempty"`
 }
 
+/* found existing non-generated go type "AdvanceRolloutRuleObservedState", skipping
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.AdvanceRolloutRule
+type AdvanceRolloutRuleObservedState struct {
+	// Output only. Information around the state of the Automation rule.
+	// +kcc:proto:field=google.cloud.deploy.v1.AdvanceRolloutRule.condition
+	Condition *AutomationRuleConditionObservedState `json:"condition,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.deploy.v1.Automation", skipping
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.Automation
+type AutomationObservedState struct {
+	// Output only. Name of the `Automation`. Format is
+	//  `projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/automations/{automation}`.
+	// +kcc:proto:field=google.cloud.deploy.v1.Automation.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. Unique identifier of the `Automation`.
+	// +kcc:proto:field=google.cloud.deploy.v1.Automation.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. Time at which the automation was created.
+	// +kcc:proto:field=google.cloud.deploy.v1.Automation.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Time at which the automation was updated.
+	// +kcc:proto:field=google.cloud.deploy.v1.Automation.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Required. List of Automation rules associated with the Automation resource.
+	//  Must have at least one rule and limited to 250 rules per Delivery Pipeline.
+	//  Note: the order of the rules here is not the same as the order of
+	//  execution.
+	// +kcc:proto:field=google.cloud.deploy.v1.Automation.rules
+	Rules []AutomationRuleObservedState `json:"rules,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.AutomationRolloutMetadata
+type AutomationRolloutMetadataObservedState struct {
+	// Output only. The name of the AutomationRun initiated by a promote release
+	//  rule.
+	// +kcc:proto:field=google.cloud.deploy.v1.AutomationRolloutMetadata.promote_automation_run
+	PromoteAutomationRun *string `json:"promoteAutomationRun,omitempty"`
+
+	// Output only. The names of the AutomationRuns initiated by an advance
+	//  rollout rule.
+	// +kcc:proto:field=google.cloud.deploy.v1.AutomationRolloutMetadata.advance_automation_runs
+	AdvanceAutomationRuns []string `json:"advanceAutomationRuns,omitempty"`
+
+	// Output only. The names of the AutomationRuns initiated by a repair rollout
+	//  rule.
+	// +kcc:proto:field=google.cloud.deploy.v1.AutomationRolloutMetadata.repair_automation_runs
+	RepairAutomationRuns []string `json:"repairAutomationRuns,omitempty"`
+}
+
+/* found existing non-generated go type "AutomationRuleObservedState", skipping
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.AutomationRule
+type AutomationRuleObservedState struct {
+	// Optional. `PromoteReleaseRule` will automatically promote a release from
+	//  the current target to a specified target.
+	// +kcc:proto:field=google.cloud.deploy.v1.AutomationRule.promote_release_rule
+	PromoteReleaseRule *PromoteReleaseRuleObservedState `json:"promoteReleaseRule,omitempty"`
+
+	// Optional. The `AdvanceRolloutRule` will automatically advance a
+	//  successful Rollout.
+	// +kcc:proto:field=google.cloud.deploy.v1.AutomationRule.advance_rollout_rule
+	AdvanceRolloutRule *AdvanceRolloutRuleObservedState `json:"advanceRolloutRule,omitempty"`
+
+	// Optional. The `RepairRolloutRule` will automatically repair a failed
+	//  rollout.
+	// +kcc:proto:field=google.cloud.deploy.v1.AutomationRule.repair_rollout_rule
+	RepairRolloutRule *RepairRolloutRuleObservedState `json:"repairRolloutRule,omitempty"`
+
+	// Optional. The `TimedPromoteReleaseRule` will automatically promote a
+	//  release from the current target(s) to the specified target(s) on a
+	//  configured schedule.
+	// +kcc:proto:field=google.cloud.deploy.v1.AutomationRule.timed_promote_release_rule
+	TimedPromoteReleaseRule *TimedPromoteReleaseRuleObservedState `json:"timedPromoteReleaseRule,omitempty"`
+}
+*/
+
+/* unreachable type AutomationRuleConditionObservedState
+// +kcc:observedstate:proto=google.cloud.deploy.v1.AutomationRuleCondition
+type AutomationRuleConditionObservedState struct {
+	// Optional. Details around targets enumerated in the rule.
+	// +kcc:proto:field=google.cloud.deploy.v1.AutomationRuleCondition.targets_present_condition
+	TargetsPresentCondition *TargetsPresentCondition `json:"targetsPresentCondition,omitempty"`
+
+	// Optional. TimedPromoteReleaseCondition contains rule conditions specific
+	//  to a an Automation with a timed promote release rule defined.
+	// +kcc:proto:field=google.cloud.deploy.v1.AutomationRuleCondition.timed_promote_release_condition
+	TimedPromoteReleaseCondition *TimedPromoteReleaseConditionObservedState `json:"timedPromoteReleaseCondition,omitempty"`
+}
+*/
+
 // +kcc:observedstate:proto=google.cloud.deploy.v1.Canary
 type CanaryObservedState struct {
 	// Optional. Runtime specific configurations for the deployment strategy. The
@@ -1231,12 +1852,47 @@ type CanaryDeploymentObservedState struct {
 	Postdeploy *Postdeploy `json:"postdeploy,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.deploy.v1.ChildRolloutJobs
+type ChildRolloutJobsObservedState struct {
+	// Output only. List of CreateChildRolloutJobs
+	// +kcc:proto:field=google.cloud.deploy.v1.ChildRolloutJobs.create_rollout_jobs
+	CreateRolloutJobs []JobObservedState `json:"createRolloutJobs,omitempty"`
+
+	// Output only. List of AdvanceChildRolloutJobs
+	// +kcc:proto:field=google.cloud.deploy.v1.ChildRolloutJobs.advance_rollout_jobs
+	AdvanceRolloutJobs []JobObservedState `json:"advanceRolloutJobs,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.deploy.v1.CloudRunLocation
 type CloudRunLocationObservedState struct {
 	// Required. The location for the Cloud Run Service. Format must be
 	//  `projects/{project}/locations/{location}`.
 	// +kcc:proto:field=google.cloud.deploy.v1.CloudRunLocation.location
 	Location *string `json:"location,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.CloudRunMetadata
+type CloudRunMetadataObservedState struct {
+	// Output only. The name of the Cloud Run Service that is associated with a
+	//  `Rollout`. Format is
+	//  `projects/{project}/locations/{location}/services/{service}`.
+	// +kcc:proto:field=google.cloud.deploy.v1.CloudRunMetadata.service
+	Service *string `json:"service,omitempty"`
+
+	// Output only. The Cloud Run Service urls that are associated with a
+	//  `Rollout`.
+	// +kcc:proto:field=google.cloud.deploy.v1.CloudRunMetadata.service_urls
+	ServiceURLs []string `json:"serviceURLs,omitempty"`
+
+	// Output only. The Cloud Run Revision id associated with a `Rollout`.
+	// +kcc:proto:field=google.cloud.deploy.v1.CloudRunMetadata.revision
+	Revision *string `json:"revision,omitempty"`
+
+	// Output only. The name of the Cloud Run job that is associated with a
+	//  `Rollout`. Format is
+	//  `projects/{project}/locations/{location}/jobs/{job_name}`.
+	// +kcc:proto:field=google.cloud.deploy.v1.CloudRunMetadata.job
+	Job *string `json:"job,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.deploy.v1.CustomCanaryDeployment
@@ -1282,6 +1938,16 @@ type CustomCanaryDeployment_PhaseConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.deploy.v1.CustomCanaryDeployment.PhaseConfig.postdeploy
 	Postdeploy *Postdeploy `json:"postdeploy,omitempty"`
 }
+
+/* found existing non-generated go type "CustomMetadataObservedState", skipping
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.CustomMetadata
+type CustomMetadataObservedState struct {
+	// Output only. Key-value pairs provided by the user-defined operation.
+	// +kcc:proto:field=google.cloud.deploy.v1.CustomMetadata.values
+	Values map[string]string `json:"values,omitempty"`
+}
+*/
 
 /* unreachable type CustomTargetSkaffoldActionsObservedState
 // +kcc:observedstate:proto=google.cloud.deploy.v1.CustomTargetSkaffoldActions
@@ -1448,6 +2114,94 @@ type DeployParametersObservedState struct {
 	MatchTargetLabels map[string]string `json:"matchTargetLabels,omitempty"`
 }
 
+/* found existing non-generated go type "DeployPolicyObservedState", skipping
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.DeployPolicy
+type DeployPolicyObservedState struct {
+	// Output only. Name of the `DeployPolicy`. Format is
+	//  `projects/{project}/locations/{location}/deployPolicies/{deployPolicy}`.
+	//  The `deployPolicy` component must match `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`
+	// +kcc:proto:field=google.cloud.deploy.v1.DeployPolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. Unique identifier of the `DeployPolicy`.
+	// +kcc:proto:field=google.cloud.deploy.v1.DeployPolicy.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. Time at which the deploy policy was created.
+	// +kcc:proto:field=google.cloud.deploy.v1.DeployPolicy.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Most recent time at which the deploy policy was updated.
+	// +kcc:proto:field=google.cloud.deploy.v1.DeployPolicy.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.DeploymentJobs
+type DeploymentJobsObservedState struct {
+	// Output only. The predeploy Job, which is the first job on the phase.
+	// +kcc:proto:field=google.cloud.deploy.v1.DeploymentJobs.predeploy_job
+	PredeployJob *JobObservedState `json:"predeployJob,omitempty"`
+
+	// Output only. The deploy Job. This is the deploy job in the phase.
+	// +kcc:proto:field=google.cloud.deploy.v1.DeploymentJobs.deploy_job
+	DeployJob *JobObservedState `json:"deployJob,omitempty"`
+
+	// Output only. The verify Job. Runs after a deploy if the deploy succeeds.
+	// +kcc:proto:field=google.cloud.deploy.v1.DeploymentJobs.verify_job
+	VerifyJob *JobObservedState `json:"verifyJob,omitempty"`
+
+	// Output only. The postdeploy Job, which is the last job on the phase.
+	// +kcc:proto:field=google.cloud.deploy.v1.DeploymentJobs.postdeploy_job
+	PostdeployJob *JobObservedState `json:"postdeployJob,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.Job
+type JobObservedState struct {
+	// Output only. The ID of the Job.
+	// +kcc:proto:field=google.cloud.deploy.v1.Job.id
+	ID *string `json:"id,omitempty"`
+
+	// Output only. The current state of the Job.
+	// +kcc:proto:field=google.cloud.deploy.v1.Job.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Additional information on why the Job was skipped, if
+	//  available.
+	// +kcc:proto:field=google.cloud.deploy.v1.Job.skip_message
+	SkipMessage *string `json:"skipMessage,omitempty"`
+
+	// Output only. The name of the `JobRun` responsible for the most recent
+	//  invocation of this Job.
+	// +kcc:proto:field=google.cloud.deploy.v1.Job.job_run
+	JobRun *string `json:"jobRun,omitempty"`
+
+	// Output only. A deploy Job.
+	// +kcc:proto:field=google.cloud.deploy.v1.Job.deploy_job
+	DeployJob *DeployJob `json:"deployJob,omitempty"`
+
+	// Output only. A verify Job.
+	// +kcc:proto:field=google.cloud.deploy.v1.Job.verify_job
+	VerifyJob *VerifyJob `json:"verifyJob,omitempty"`
+
+	// Output only. A predeploy Job.
+	// +kcc:proto:field=google.cloud.deploy.v1.Job.predeploy_job
+	PredeployJob *PredeployJobObservedState `json:"predeployJob,omitempty"`
+
+	// Output only. A postdeploy Job.
+	// +kcc:proto:field=google.cloud.deploy.v1.Job.postdeploy_job
+	PostdeployJob *PostdeployJobObservedState `json:"postdeployJob,omitempty"`
+
+	// Output only. A createChildRollout Job.
+	// +kcc:proto:field=google.cloud.deploy.v1.Job.create_child_rollout_job
+	CreateChildRolloutJob *CreateChildRolloutJob `json:"createChildRolloutJob,omitempty"`
+
+	// Output only. An advanceChildRollout Job.
+	// +kcc:proto:field=google.cloud.deploy.v1.Job.advance_child_rollout_job
+	AdvanceChildRolloutJob *AdvanceChildRolloutJob `json:"advanceChildRolloutJob,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.deploy.v1.KubernetesConfig
 type KubernetesConfigObservedState struct {
 	// Optional. Kubernetes Gateway API service mesh configuration.
@@ -1543,6 +2297,71 @@ type KubernetesConfig_ServiceNetworkingObservedState struct {
 	PodSelectorLabel *string `json:"podSelectorLabel,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.deploy.v1.Metadata
+type MetadataObservedState struct {
+	// Output only. The name of the Cloud Run Service that is associated with a
+	//  `Rollout`.
+	// +kcc:proto:field=google.cloud.deploy.v1.Metadata.cloud_run
+	CloudRun *CloudRunMetadataObservedState `json:"cloudRun,omitempty"`
+
+	// Output only. AutomationRolloutMetadata contains the information about the
+	//  interactions between Automation service and this rollout.
+	// +kcc:proto:field=google.cloud.deploy.v1.Metadata.automation
+	Automation *AutomationRolloutMetadataObservedState `json:"automation,omitempty"`
+
+	// Output only. Custom metadata provided by user-defined `Rollout` operations.
+	// +kcc:proto:field=google.cloud.deploy.v1.Metadata.custom
+	Custom *CustomMetadataObservedState `json:"custom,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.Phase
+type PhaseObservedState struct {
+	// Output only. The ID of the Phase.
+	// +kcc:proto:field=google.cloud.deploy.v1.Phase.id
+	ID *string `json:"id,omitempty"`
+
+	// Output only. Current state of the Phase.
+	// +kcc:proto:field=google.cloud.deploy.v1.Phase.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Additional information on why the Phase was skipped, if
+	//  available.
+	// +kcc:proto:field=google.cloud.deploy.v1.Phase.skip_message
+	SkipMessage *string `json:"skipMessage,omitempty"`
+
+	// Output only. Deployment job composition.
+	// +kcc:proto:field=google.cloud.deploy.v1.Phase.deployment_jobs
+	DeploymentJobs *DeploymentJobsObservedState `json:"deploymentJobs,omitempty"`
+
+	// Output only. ChildRollout job composition.
+	// +kcc:proto:field=google.cloud.deploy.v1.Phase.child_rollout_jobs
+	ChildRolloutJobs *ChildRolloutJobsObservedState `json:"childRolloutJobs,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.PostdeployJob
+type PostdeployJobObservedState struct {
+	// Output only. The custom actions that the postdeploy Job executes.
+	// +kcc:proto:field=google.cloud.deploy.v1.PostdeployJob.actions
+	Actions []string `json:"actions,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.PredeployJob
+type PredeployJobObservedState struct {
+	// Output only. The custom actions that the predeploy Job executes.
+	// +kcc:proto:field=google.cloud.deploy.v1.PredeployJob.actions
+	Actions []string `json:"actions,omitempty"`
+}
+
+/* found existing non-generated go type "PromoteReleaseRuleObservedState", skipping
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.PromoteReleaseRule
+type PromoteReleaseRuleObservedState struct {
+	// Output only. Information around the state of the Automation rule.
+	// +kcc:proto:field=google.cloud.deploy.v1.PromoteReleaseRule.condition
+	Condition *AutomationRuleConditionObservedState `json:"condition,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.deploy.v1.Release", skipping
 
 // +kcc:observedstate:proto=google.cloud.deploy.v1.Release
@@ -1598,6 +2417,96 @@ type ReleaseObservedState struct {
 	// Output only. Information around the state of the Release.
 	// +kcc:proto:field=google.cloud.deploy.v1.Release.condition
 	Condition *Release_ReleaseCondition `json:"condition,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "RepairRolloutRuleObservedState", skipping
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.RepairRolloutRule
+type RepairRolloutRuleObservedState struct {
+	// Output only. Information around the state of the 'Automation' rule.
+	// +kcc:proto:field=google.cloud.deploy.v1.RepairRolloutRule.condition
+	Condition *AutomationRuleConditionObservedState `json:"condition,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.deploy.v1.Rollout", skipping
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.Rollout
+type RolloutObservedState struct {
+	// Output only. Unique identifier of the `Rollout`.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. Time at which the `Rollout` was created.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Time at which the `Rollout` was approved.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.approve_time
+	ApproveTime *string `json:"approveTime,omitempty"`
+
+	// Output only. Time at which the `Rollout` was enqueued.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.enqueue_time
+	EnqueueTime *string `json:"enqueueTime,omitempty"`
+
+	// Output only. Time at which the `Rollout` started deploying.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.deploy_start_time
+	DeployStartTime *string `json:"deployStartTime,omitempty"`
+
+	// Output only. Time at which the `Rollout` finished deploying.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.deploy_end_time
+	DeployEndTime *string `json:"deployEndTime,omitempty"`
+
+	// Output only. Approval state of the `Rollout`.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.approval_state
+	ApprovalState *string `json:"approvalState,omitempty"`
+
+	// Output only. Current state of the `Rollout`.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Additional information about the rollout failure, if
+	//  available.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.failure_reason
+	FailureReason *string `json:"failureReason,omitempty"`
+
+	// Output only. The resource name of the Cloud Build `Build` object that is
+	//  used to deploy the Rollout. Format is
+	//  `projects/{project}/locations/{location}/builds/{build}`.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.deploying_build
+	DeployingBuild *string `json:"deployingBuild,omitempty"`
+
+	// Output only. The reason this rollout failed. This will always be
+	//  unspecified while the rollout is in progress.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.deploy_failure_cause
+	DeployFailureCause *string `json:"deployFailureCause,omitempty"`
+
+	// Output only. The phases that represent the workflows of this `Rollout`.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.phases
+	Phases []PhaseObservedState `json:"phases,omitempty"`
+
+	// Output only. Metadata contains information about the rollout.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.metadata
+	Metadata *MetadataObservedState `json:"metadata,omitempty"`
+
+	// Output only. Name of the `ControllerRollout`. Format is
+	//  `projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}`.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.controller_rollout
+	ControllerRollout *string `json:"controllerRollout,omitempty"`
+
+	// Output only. Name of the `Rollout` that is rolled back by this `Rollout`.
+	//  Empty if this `Rollout` wasn't created as a rollback.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.rollback_of_rollout
+	RollbackOfRollout *string `json:"rollbackOfRollout,omitempty"`
+
+	// Output only. Names of `Rollouts` that rolled back this `Rollout`.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.rolled_back_by_rollouts
+	RolledBackByRollouts []string `json:"rolledBackByRollouts,omitempty"`
+
+	// Output only. The AutomationRun actively repairing the rollout.
+	// +kcc:proto:field=google.cloud.deploy.v1.Rollout.active_repair_automation_run
+	ActiveRepairAutomationRun *string `json:"activeRepairAutomationRun,omitempty"`
 }
 */
 
@@ -1816,3 +2725,26 @@ type TargetObservedState struct {
 	// +kcc:proto:field=google.cloud.deploy.v1.Target.deploy_parameters
 	DeployParameters map[string]string `json:"deployParameters,omitempty"`
 }
+
+/* unreachable type TimedPromoteReleaseConditionObservedState
+// +kcc:observedstate:proto=google.cloud.deploy.v1.TimedPromoteReleaseCondition
+type TimedPromoteReleaseConditionObservedState struct {
+	// Output only. When the next scheduled promotion(s) will occur.
+	// +kcc:proto:field=google.cloud.deploy.v1.TimedPromoteReleaseCondition.next_promotion_time
+	NextPromotionTime *string `json:"nextPromotionTime,omitempty"`
+
+	// Output only. A list of targets involved in the upcoming timed promotion(s).
+	// +kcc:proto:field=google.cloud.deploy.v1.TimedPromoteReleaseCondition.targets_list
+	TargetsList []TimedPromoteReleaseCondition_Targets `json:"targetsList,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "TimedPromoteReleaseRuleObservedState", skipping
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.TimedPromoteReleaseRule
+type TimedPromoteReleaseRuleObservedState struct {
+	// Output only. Information around the state of the Automation rule.
+	// +kcc:proto:field=google.cloud.deploy.v1.TimedPromoteReleaseRule.condition
+	Condition *AutomationRuleConditionObservedState `json:"condition,omitempty"`
+}
+*/
