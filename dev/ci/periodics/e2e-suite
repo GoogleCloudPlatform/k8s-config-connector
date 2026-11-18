@@ -47,6 +47,7 @@ extra_services="${SERVICE}.googleapis.com"
 # or where multiple GCP APIs must be enabled in the test project upfront.
 case "${SERVICE}" in
   "analytics") extra_services="analyticsadmin.googleapis.com" ;;
+  "asset") extra_services="cloudasset.googleapis.com" ;;
   "bigqueryanalyticshub") extra_services="analyticshub.googleapis.com" ;;
   "bigquerybiglake") extra_services="biglake.googleapis.com" ;;
   "certificatemanager") extra_services="certificatemanager.googleapis.com servicedirectory.googleapis.com privateca.googleapis.com" ;;
