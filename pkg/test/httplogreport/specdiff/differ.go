@@ -20,6 +20,7 @@ import (
 	"net/url"
 	"reflect"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 	"unicode"
@@ -147,6 +148,26 @@ func DiffObjects(createObj, updateObj *unstructured.Unstructured) []Item {
 
 	createSpec, _, _ := unstructured.NestedMap(createObj.Object, "spec")
 	updateSpec, _, _ := unstructured.NestedMap(updateObj.Object, "spec")
+	if createSpec != nil && updateSpec != nil {
+		cResID := createSpec["resourceID"]
+		uResID := updateSpec["resourceID"]
+		if isResourceIDEquivalent(cResID, uResID, createObj.GetName(), updateObj.GetName()) {
+			cCopy := make(map[string]any, len(createSpec))
+			for k, v := range createSpec {
+				if k != "resourceID" {
+					cCopy[k] = v
+				}
+			}
+			createSpec = cCopy
+			uCopy := make(map[string]any, len(updateSpec))
+			for k, v := range updateSpec {
+				if k != "resourceID" {
+					uCopy[k] = v
+				}
+			}
+			updateSpec = uCopy
+		}
+	}
 	diffMapsRecursive(createSpec, updateSpec, "spec", &diffs)
 
 	createLabels, _, _ := unstructured.NestedMap(createObj.Object, "metadata", "labels")
@@ -154,6 +175,29 @@ func DiffObjects(createObj, updateObj *unstructured.Unstructured) []Item {
 	diffMapsRecursive(createLabels, updateLabels, "metadata.labels", &diffs)
 
 	return diffs
+}
+
+func isResourceIDEquivalent(cVal, uVal any, cName, uName string) bool {
+	cStr, _ := cVal.(string)
+	uStr, _ := uVal.(string)
+	if cStr == "" {
+		cStr = cName
+	}
+	if uStr == "" {
+		uStr = uName
+	}
+	return cStr != "" && cStr == uStr
+}
+
+func isLabelOrAnnotationPath(path string) bool {
+	return strings.HasPrefix(path, "metadata.labels.") ||
+		strings.HasPrefix(path, "spec.labels.") ||
+		strings.HasPrefix(path, "spec.annotations.") ||
+		strings.HasPrefix(path, "metadata.annotations.")
+}
+
+func isRefKey(k string) bool {
+	return strings.HasSuffix(k, "Ref") || strings.HasSuffix(k, "Refs")
 }
 
 func diffMapsRecursive(cMap, uMap map[string]any, prefix string, out *[]Item) {
@@ -176,7 +220,7 @@ func diffMapsRecursive(cMap, uMap map[string]any, prefix string, out *[]Item) {
 		uVal, uOk := uMap[k]
 
 		if !cOk && uOk {
-			if uSubMap, ok := uVal.(map[string]any); ok && !strings.HasSuffix(k, "Ref") {
+			if uSubMap, ok := uVal.(map[string]any); ok && !isRefKey(k) {
 				diffMapsRecursive(nil, uSubMap, path, out)
 			} else {
 				*out = append(*out, Item{Path: path, CreateVal: nil, UpdateVal: simplifyRefValue(k, uVal)})
@@ -184,7 +228,12 @@ func diffMapsRecursive(cMap, uMap map[string]any, prefix string, out *[]Item) {
 			continue
 		}
 		if cOk && !uOk {
-			if cSubMap, ok := cVal.(map[string]any); ok && !strings.HasSuffix(k, "Ref") {
+			if isLabelOrAnnotationPath(path) {
+				// Removed label or annotation: in KCC/GCP, omitting an existing label/annotation
+				// in update.yaml preserves the existing value and is not treated as a mutation.
+				continue
+			}
+			if cSubMap, ok := cVal.(map[string]any); ok && !isRefKey(k) {
 				diffMapsRecursive(cSubMap, nil, path, out)
 			} else {
 				*out = append(*out, Item{Path: path, CreateVal: simplifyRefValue(k, cVal), UpdateVal: nil})
@@ -192,7 +241,7 @@ func diffMapsRecursive(cMap, uMap map[string]any, prefix string, out *[]Item) {
 			continue
 		}
 
-		if strings.HasSuffix(k, "Ref") {
+		if isRefKey(k) {
 			cRef := simplifyRefValue(k, cVal)
 			uRef := simplifyRefValue(k, uVal)
 			if !ValuesMatch(cRef, uRef) {
@@ -215,18 +264,30 @@ func diffMapsRecursive(cMap, uMap map[string]any, prefix string, out *[]Item) {
 }
 
 func simplifyRefValue(key string, val any) any {
-	if !strings.HasSuffix(key, "Ref") {
+	if !isRefKey(key) {
 		return val
 	}
-	m, ok := val.(map[string]any)
-	if !ok {
-		return val
+	if sList, ok := val.([]any); ok {
+		simplified := make([]any, len(sList))
+		for i, item := range sList {
+			simplified[i] = simplifyRefValue(key, item)
+		}
+		return simplified
 	}
-	if ext, ok := m["external"].(string); ok && ext != "" {
-		return ext
-	}
-	if name, ok := m["name"].(string); ok && name != "" {
-		return name
+	if m, ok := val.(map[string]any); ok {
+		if ext, ok := m["external"].(string); ok && ext != "" {
+			return ext
+		}
+		if name, ok := m["name"].(string); ok && name != "" {
+			return name
+		}
+		if len(m) == 1 {
+			for _, v := range m {
+				if s, ok := v.(string); ok {
+					return s
+				}
+			}
+		}
 	}
 	return val
 }
@@ -290,6 +351,13 @@ func (d *Differ) populateUpdateCoverage(diffs []Item) {
 }
 
 func requestMatchesDiffItem(ce *classifier.ClassifiedEntry, body map[string]any, item Item) bool {
+	if isLabelOrAnnotationPath(item.Path) && item.UpdateVal == nil {
+		return true
+	}
+	if item.Path == "spec.resourceID" {
+		return true
+	}
+
 	hasValueAtPath := false
 	// 1. Check JSON request body
 	if body != nil {
@@ -380,6 +448,12 @@ func collectFinalPhaseResponseBodies(primary []*classifier.ClassifiedEntry, phas
 }
 
 func responseBodiesMatchDiffItem(bodies []map[string]any, item Item) (bool, string) {
+	if isLabelOrAnnotationPath(item.Path) && item.UpdateVal == nil {
+		return true, "Yes"
+	}
+	if item.Path == "spec.resourceID" {
+		return true, "Yes"
+	}
 	if len(bodies) == 0 {
 		if item.SentInUpdateRPC || isZeroOrEmptyValue(item.UpdateVal) {
 			return true, "Yes"
@@ -411,6 +485,9 @@ func responseBodiesMatchDiffItem(bodies []map[string]any, item Item) (bool, stri
 		}
 
 		if !foundIncompatibleAtPath && item.UpdateVal != nil && containsLeafValue(body, item.Path, item.UpdateVal) {
+			return true, "Yes"
+		}
+		if !foundIncompatibleAtPath && item.UpdateVal != nil && containsDistinctValueAnywhere(body, item.UpdateVal) {
 			return true, "Yes"
 		}
 	}
@@ -464,6 +541,15 @@ func findValueForDiffPath(obj map[string]any, diffPath string) (any, bool) {
 			if subMap, ok := v.(map[string]any); ok {
 				if val, found := lookupNormalizedSegments(subMap, segs); found {
 					return val, true
+				}
+			}
+			if subSlice, ok := v.([]any); ok {
+				for _, elem := range subSlice {
+					if elemMap, ok := elem.(map[string]any); ok {
+						if val, found := lookupNormalizedSegments(elemMap, segs); found {
+							return val, true
+						}
+					}
 				}
 			}
 		}
@@ -573,7 +659,11 @@ func valuesCompatible(foundVal, expectedVal, createVal any, diffPath string) boo
 	if createVal != nil && ValuesMatch(foundVal, createVal) {
 		return false
 	}
-	if jsonContainsExpected(foundVal, expectedVal) && (createVal == nil || !jsonContainsExpected(foundVal, createVal)) {
+	if isEnumLikeOrSlice(expectedVal) && isEnumLikeOrSlice(createVal) && !reflect.DeepEqual(expectedVal, createVal) {
+		if jsonContainsExpected(foundVal, expectedVal) {
+			return true
+		}
+	} else if jsonContainsExpected(foundVal, expectedVal) && (createVal == nil || !jsonContainsExpected(foundVal, createVal)) {
 		return true
 	}
 	// Allow proto enum integer encoding vs string enum name
@@ -592,12 +682,34 @@ func valuesCompatible(foundVal, expectedVal, createVal any, diffPath string) boo
 		if len(fStr) > 0 && strings.Trim(fStr, "*") == "" {
 			return true
 		}
+		if isPlaceholder(fStr) || isPlaceholder(eStr) {
+			return true
+		}
 		fl := strings.ToLower(fStr)
 		el := strings.ToLower(eStr)
 		if fl != "" && el != "" && (strings.Contains(fl, el) || strings.Contains(el, fl)) {
 			return true
 		}
 		return false
+	}
+	return false
+}
+
+func isPlaceholder(s string) bool {
+	return strings.HasPrefix(s, "${") && strings.HasSuffix(s, "}") && len(s) > 3 && !strings.Contains(s[2:len(s)-1], " ")
+}
+
+func isEnumLikeOrSlice(v any) bool {
+	if isEnumLikeString(v) {
+		return true
+	}
+	if slice, ok := v.([]any); ok && len(slice) > 0 {
+		for _, elem := range slice {
+			if !isEnumLikeString(elem) {
+				return false
+			}
+		}
+		return true
 	}
 	return false
 }
@@ -897,6 +1009,147 @@ func IsClientSideKRMField(path string) bool {
 	return false
 }
 
+// IsWriteOnlyField returns true if path corresponds to a write-only or secret field
+// (e.g. passwords, secrets, private keys) that GCP APIs do not return in GET responses.
+func IsWriteOnlyField(path string) bool {
+	lower := strings.ToLower(path)
+	segments := strings.Split(lower, ".")
+	for i, seg := range segments {
+		if strings.Contains(seg, "password") {
+			if !strings.Contains(seg, "policy") {
+				return true
+			}
+		}
+		if seg == "secret" || seg == "secretkey" || seg == "clientsecret" || seg == "webhooksecret" {
+			return true
+		}
+		if strings.Contains(seg, "privatekey") || strings.Contains(seg, "private_key") {
+			return true
+		}
+		if seg == "value" && i > 0 {
+			parent := segments[i-1]
+			if strings.Contains(parent, "password") || strings.Contains(parent, "secret") || strings.Contains(parent, "credential") || strings.Contains(parent, "token") {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func parseDuration(v any) (time.Duration, bool) {
+	switch val := v.(type) {
+	case string:
+		val = strings.TrimSpace(val)
+		if val == "" {
+			return 0, false
+		}
+		if d, err := time.ParseDuration(val); err == nil {
+			return d, true
+		}
+		if strings.HasSuffix(val, "s") {
+			secStr := strings.TrimSuffix(val, "s")
+			if f, err := strconv.ParseFloat(secStr, 64); err == nil {
+				return time.Duration(f * float64(time.Second)), true
+			}
+		}
+	}
+	return 0, false
+}
+
+func toFloat(v any) (float64, bool) {
+	switch val := v.(type) {
+	case float64:
+		return val, true
+	case float32:
+		return float64(val), true
+	case int:
+		return float64(val), true
+	case int64:
+		return float64(val), true
+	case int32:
+		return float64(val), true
+	case string:
+		val = strings.TrimSpace(val)
+		if f, err := strconv.ParseFloat(val, 64); err == nil {
+			return f, true
+		}
+	}
+	return 0, false
+}
+
+func areDurationsEqual(a, b any) bool {
+	d1, ok1 := parseDuration(a)
+	d2, ok2 := parseDuration(b)
+	if ok1 && ok2 {
+		return d1 == d2
+	}
+	if ok1 {
+		if f, isNum := toFloat(b); isNum {
+			return d1 == time.Duration(f*float64(time.Second))
+		}
+	}
+	if ok2 {
+		if f, isNum := toFloat(a); isNum {
+			return d2 == time.Duration(f*float64(time.Second))
+		}
+	}
+	return false
+}
+
+func areNumbersEqual(a, b any) bool {
+	f1, ok1 := toFloat(a)
+	f2, ok2 := toFloat(b)
+	if ok1 && ok2 {
+		return f1 == f2
+	}
+	return false
+}
+
+func stripResourcePrefixes(s string) string {
+	s = strings.TrimPrefix(s, "https://")
+	s = strings.TrimPrefix(s, "http://")
+	s = strings.TrimPrefix(s, "//")
+	if slashIdx := strings.Index(s, "/"); slashIdx != -1 && strings.Contains(s[:slashIdx], ".googleapis.com") {
+		s = s[slashIdx+1:]
+	}
+	return strings.TrimPrefix(s, "/")
+}
+
+func isReferenceMatch(expected, actual string) bool {
+	if expected == actual {
+		return true
+	}
+	if expected == "" || actual == "" {
+		return false
+	}
+	cleanExpected := stripResourcePrefixes(expected)
+	cleanActual := stripResourcePrefixes(actual)
+	if cleanExpected == cleanActual {
+		return true
+	}
+	if strings.HasSuffix(cleanActual, "/"+cleanExpected) || strings.HasSuffix(cleanExpected, "/"+cleanActual) {
+		return true
+	}
+	if strings.HasPrefix(cleanActual, cleanExpected+"@") || strings.HasPrefix(cleanExpected, cleanActual+"@") {
+		return true
+	}
+	return false
+}
+
+func areReferencesEqual(a, b any) bool {
+	aStr, aOk := a.(string)
+	bStr, bOk := b.(string)
+	if !aOk || !bOk {
+		return false
+	}
+	if strings.Contains(aStr, "/") || strings.Contains(bStr, "/") ||
+		strings.Contains(aStr, "@") || strings.Contains(bStr, "@") ||
+		strings.Contains(aStr, "${") || strings.Contains(bStr, "${") {
+		return isReferenceMatch(aStr, bStr) || isReferenceMatch(bStr, aStr)
+	}
+	return false
+}
+
 // ValuesMatch returns true if a and b represent equivalent scalar or composite JSON/YAML values.
 func ValuesMatch(a, b any) bool {
 	if a == nil && b == nil {
@@ -913,10 +1166,21 @@ func ValuesMatch(a, b any) bool {
 	if aStr == bStr {
 		return true
 	}
-	if aDur, errA := time.ParseDuration(aStr); errA == nil {
-		if bDur, errB := time.ParseDuration(bStr); errB == nil && aDur == bDur {
-			return true
+	if aStr, aOk := a.(string); aOk {
+		if bStr, bOk := b.(string); bOk {
+			if isPlaceholder(aStr) || isPlaceholder(bStr) {
+				return true
+			}
 		}
+	}
+	if areDurationsEqual(a, b) {
+		return true
+	}
+	if areNumbersEqual(a, b) {
+		return true
+	}
+	if areReferencesEqual(a, b) {
+		return true
 	}
 	aj, err1 := json.Marshal(a)
 	bj, err2 := json.Marshal(b)
@@ -978,6 +1242,15 @@ func jsonValuesEquivalent(a, b any) bool {
 				return false
 			}
 		}
+		return true
+	}
+	if areDurationsEqual(a, b) {
+		return true
+	}
+	if areNumbersEqual(a, b) {
+		return true
+	}
+	if areReferencesEqual(a, b) {
 		return true
 	}
 	return fmt.Sprintf("%v", a) == fmt.Sprintf("%v", b)

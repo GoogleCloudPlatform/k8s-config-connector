@@ -98,6 +98,46 @@ func TestValuesCompatible(t *testing.T) {
 			diffPath: "spec.columnLayout.columns",
 			want:     true,
 		},
+		{
+			name:        "duration equivalence 3600s vs 1h0m0s",
+			foundVal:    "3600s",
+			expectedVal: "1h0m0s",
+			createVal:   "1800s",
+			diffPath:    "spec.maxRequestDuration",
+			want:        true,
+		},
+		{
+			name:        "duration mismatch 1800s vs 1h0m0s",
+			foundVal:    "1800s",
+			expectedVal: "1h0m0s",
+			createVal:   nil,
+			diffPath:    "spec.maxRequestDuration",
+			want:        false,
+		},
+		{
+			name:        "reference name matches GCP resource path",
+			foundVal:    "projects/p/locations/l/keyRings/r/cryptoKeys/key-1",
+			expectedVal: "key-1",
+			createVal:   "key-0",
+			diffPath:    "spec.kmsCryptoKeyRef",
+			want:        true,
+		},
+		{
+			name:        "numeric float string matches integer",
+			foundVal:    float64(2),
+			expectedVal: "2.0",
+			createVal:   "1.0",
+			diffPath:    "spec.boost",
+			want:        true,
+		},
+		{
+			name:        "placeholder matches normalized ID",
+			foundVal:    "${addressID}",
+			expectedVal: "computeaddress1-test",
+			createVal:   "computeaddress0-test",
+			diffPath:    "spec.address",
+			want:        true,
+		},
 	}
 
 	for _, tc := range tests {
@@ -322,6 +362,196 @@ func TestDiffer_Compute(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestIsWriteOnlyField(t *testing.T) {
+	tests := []struct {
+		path string
+		want bool
+	}{
+		{"spec.password.value", true},
+		{"spec.password", true},
+		{"spec.rootPassword", true},
+		{"spec.clientSecret", true},
+		{"spec.privateKey", true},
+		{"spec.sensitiveLabels.password.value", true},
+		{"spec.passwordPolicy.minLen", false},
+		{"spec.displayName", false},
+		{"spec.description", false},
+	}
+	for _, tc := range tests {
+		got := IsWriteOnlyField(tc.path)
+		if got != tc.want {
+			t.Errorf("IsWriteOnlyField(%q) = %v, want %v", tc.path, got, tc.want)
+		}
+	}
+}
+
+func TestValuesMatch_DurationsAndReferences(t *testing.T) {
+	if !ValuesMatch("1h0m0s", "3600s") {
+		t.Errorf("ValuesMatch(1h0m0s, 3600s) = false, want true")
+	}
+	if !ValuesMatch("30m", "1800s") {
+		t.Errorf("ValuesMatch(30m, 1800s) = false, want true")
+	}
+	if ValuesMatch("1800s", "3600s") {
+		t.Errorf("ValuesMatch(1800s, 3600s) = true, want false")
+	}
+	if !ValuesMatch("key-1", "projects/p/locations/l/keyRings/r/cryptoKeys/key-1") {
+		t.Errorf("ValuesMatch short ref and full path = false, want true")
+	}
+	if !ValuesMatch("my-sa", "my-sa@proj.iam.gserviceaccount.com") {
+		t.Errorf("ValuesMatch service account short and email = false, want true")
+	}
+	if !ValuesMatch("2.0", float64(2)) {
+		t.Errorf("ValuesMatch 2.0 and 2 = false, want true")
+	}
+}
+
+func TestDiffObjects_Equivalence(t *testing.T) {
+	createObj := &unstructured.Unstructured{
+		Object: map[string]any{
+			"apiVersion": "privateca.cnrm.cloud.google.com/v1beta1",
+			"kind":       "PrivateCACertificateAuthority",
+			"metadata": map[string]any{
+				"name": "ca-1",
+				"labels": map[string]any{
+					"label-keep":    "val-keep",
+					"label-removed": "val-removed",
+				},
+			},
+			"spec": map[string]any{
+				"description": "ca description",
+			},
+		},
+	}
+	updateObj := &unstructured.Unstructured{
+		Object: map[string]any{
+			"apiVersion": "privateca.cnrm.cloud.google.com/v1beta1",
+			"kind":       "PrivateCACertificateAuthority",
+			"metadata": map[string]any{
+				"name": "ca-1",
+				"labels": map[string]any{
+					"label-keep":  "val-keep",
+					"label-added": "val-added",
+				},
+			},
+			"spec": map[string]any{
+				"resourceID":  "ca-1", // Same as metadata.name
+				"description": "ca description updated",
+			},
+		},
+	}
+
+	diffs := DiffObjects(createObj, updateObj)
+
+	// We expect only metadata.labels.label-added and spec.description to be in diffs.
+	// spec.resourceID (matches metadata.name) and metadata.labels.label-removed should be omitted.
+	for _, d := range diffs {
+		if d.Path == "spec.resourceID" {
+			t.Errorf("unexpected diff for spec.resourceID matching metadata.name: %v", d)
+		}
+		if d.Path == "metadata.labels.label-removed" {
+			t.Errorf("unexpected diff for removed label: %v", d)
+		}
+	}
+
+	expectedPaths := map[string]bool{
+		"metadata.labels.label-added": true,
+		"spec.description":            true,
+	}
+	if len(diffs) != len(expectedPaths) {
+		t.Fatalf("expected %d diffs, got %d: %v", len(expectedPaths), len(diffs), diffs)
+	}
+	for _, d := range diffs {
+		if !expectedPaths[d.Path] {
+			t.Errorf("unexpected diff path: %s", d.Path)
+		}
+	}
+}
+
+func TestDiffObjects_NonReferenceNamedFields(t *testing.T) {
+	createObj := &unstructured.Unstructured{
+		Object: map[string]any{
+			"apiVersion": "ces.cnrm.cloud.google.com/v1alpha1",
+			"kind":       "CESTool",
+			"metadata": map[string]any{
+				"name": "tool-1",
+			},
+			"spec": map[string]any{
+				"googleSearchTool": map[string]any{
+					"name":        "search-tool-1",
+					"description": "Initial description",
+				},
+				"locations": []any{
+					map[string]any{"name": "us-central1"},
+				},
+				"projectRef": map[string]any{
+					"name": "my-project",
+				},
+			},
+		},
+	}
+	updateObj := &unstructured.Unstructured{
+		Object: map[string]any{
+			"apiVersion": "ces.cnrm.cloud.google.com/v1alpha1",
+			"kind":       "CESTool",
+			"metadata": map[string]any{
+				"name": "tool-1",
+			},
+			"spec": map[string]any{
+				"googleSearchTool": map[string]any{
+					"name":        "search-tool-1",
+					"description": "Updated description",
+				},
+				"locations": []any{
+					map[string]any{"name": "us-central1"},
+					map[string]any{"name": "us-east1"},
+				},
+				"projectRef": map[string]any{
+					"name": "my-project-updated",
+				},
+			},
+		},
+	}
+
+	diffs := DiffObjects(createObj, updateObj)
+
+	diffMap := make(map[string]Item)
+	for _, d := range diffs {
+		diffMap[d.Path] = d
+	}
+
+	// 1. Nested field in googleSearchTool should be diffed as spec.googleSearchTool.description
+	if d, ok := diffMap["spec.googleSearchTool.description"]; !ok {
+		t.Errorf("expected diff for spec.googleSearchTool.description, got diffs: %v", diffs)
+	} else {
+		if d.CreateVal != "Initial description" || d.UpdateVal != "Updated description" {
+			t.Errorf("unexpected values for spec.googleSearchTool.description: %+v", d)
+		}
+	}
+
+	// 2. locations slice should preserve full map elements, not be flattened to string slice
+	if d, ok := diffMap["spec.locations"]; !ok {
+		t.Errorf("expected diff for spec.locations, got diffs: %v", diffs)
+	} else {
+		uSlice, ok := d.UpdateVal.([]any)
+		if !ok || len(uSlice) != 2 {
+			t.Fatalf("expected update slice of 2 items, got: %v", d.UpdateVal)
+		}
+		if _, ok := uSlice[0].(map[string]any); !ok {
+			t.Errorf("expected element of spec.locations to remain map[string]any, got: %T (%v)", uSlice[0], uSlice[0])
+		}
+	}
+
+	// 3. projectRef ends with Ref, so it should be simplified to string value
+	if d, ok := diffMap["spec.projectRef"]; !ok {
+		t.Errorf("expected diff for spec.projectRef, got diffs: %v", diffs)
+	} else {
+		if d.CreateVal != "my-project" || d.UpdateVal != "my-project-updated" {
+			t.Errorf("unexpected simplified ref values: %+v", d)
+		}
 	}
 }
 
