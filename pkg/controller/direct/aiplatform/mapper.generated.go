@@ -877,6 +877,72 @@ func AIPlatformModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformMo
 }
 */
 
+func AIPlatformNasJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NasJob) *krm.AIPlatformNasJobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformNasJobObservedState{}
+	// MISSING: Name
+	out.NasJobOutput = NasJobOutputObservedState_FromProto(mapCtx, in.GetNasJobOutput())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	// MISSING: EnableRestrictedImageTraining
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	return out
+}
+
+func AIPlatformNasJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformNasJobObservedState) *pb.NasJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJob{}
+	// MISSING: Name
+	out.NasJobOutput = NasJobOutputObservedState_ToProto(mapCtx, in.NasJobOutput)
+	out.State = direct.Enum_ToProto[pb.JobState](mapCtx, in.State)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
+	// MISSING: EnableRestrictedImageTraining
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	return out
+}
+
+func AIPlatformNasJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.NasJob) *krm.AIPlatformNasJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformNasJobSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.NasJobSpec = NasJobSpec_FromProto(mapCtx, in.GetNasJobSpec())
+	out.Labels = in.Labels
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	// MISSING: EnableRestrictedImageTraining
+	return out
+}
+
+func AIPlatformNasJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformNasJobSpec) *pb.NasJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJob{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.NasJobSpec = NasJobSpec_ToProto(mapCtx, in.NasJobSpec)
+	out.Labels = in.Labels
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	// MISSING: EnableRestrictedImageTraining
+	return out
+}
+
 func AIPlatformNotebookExecutionJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob) *krm.AIPlatformNotebookExecutionJobObservedState {
 	if in == nil {
 		return nil
@@ -4636,6 +4702,186 @@ func Model_OriginalModelInfo_ToProto(mapCtx *direct.MapContext, in *krm.Model_Or
 	}
 	out := &pb.Model_OriginalModelInfo{}
 	// MISSING: Model
+	return out
+}
+
+func NasJobOutputObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NasJobOutput) *krm.NasJobOutputObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NasJobOutputObservedState{}
+	out.MultiTrialJobOutput = NasJobOutput_MultiTrialJobOutputObservedState_FromProto(mapCtx, in.GetMultiTrialJobOutput())
+	return out
+}
+
+func NasJobOutputObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NasJobOutputObservedState) *pb.NasJobOutput {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJobOutput{}
+	if oneof := NasJobOutput_MultiTrialJobOutputObservedState_ToProto(mapCtx, in.MultiTrialJobOutput); oneof != nil {
+		out.Output = &pb.NasJobOutput_MultiTrialJobOutput_{MultiTrialJobOutput: oneof}
+	}
+	return out
+}
+
+func NasJobOutput_MultiTrialJobOutputObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NasJobOutput_MultiTrialJobOutput) *krm.NasJobOutput_MultiTrialJobOutputObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NasJobOutput_MultiTrialJobOutputObservedState{}
+	out.SearchTrials = direct.Slice_FromProto(mapCtx, in.SearchTrials, NasTrialObservedState_FromProto)
+	out.TrainTrials = direct.Slice_FromProto(mapCtx, in.TrainTrials, NasTrialObservedState_FromProto)
+	return out
+}
+
+func NasJobOutput_MultiTrialJobOutputObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NasJobOutput_MultiTrialJobOutputObservedState) *pb.NasJobOutput_MultiTrialJobOutput {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJobOutput_MultiTrialJobOutput{}
+	out.SearchTrials = direct.Slice_ToProto(mapCtx, in.SearchTrials, NasTrialObservedState_ToProto)
+	out.TrainTrials = direct.Slice_ToProto(mapCtx, in.TrainTrials, NasTrialObservedState_ToProto)
+	return out
+}
+
+func NasJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.NasJobSpec) *krm.NasJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NasJobSpec{}
+	out.MultiTrialAlgorithmSpec = NasJobSpec_MultiTrialAlgorithmSpec_FromProto(mapCtx, in.GetMultiTrialAlgorithmSpec())
+	out.ResumeNasJobID = direct.LazyPtr(in.GetResumeNasJobId())
+	out.SearchSpaceSpec = direct.LazyPtr(in.GetSearchSpaceSpec())
+	return out
+}
+
+func NasJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.NasJobSpec) *pb.NasJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJobSpec{}
+	if oneof := NasJobSpec_MultiTrialAlgorithmSpec_ToProto(mapCtx, in.MultiTrialAlgorithmSpec); oneof != nil {
+		out.NasAlgorithmSpec = &pb.NasJobSpec_MultiTrialAlgorithmSpec_{MultiTrialAlgorithmSpec: oneof}
+	}
+	out.ResumeNasJobId = direct.ValueOf(in.ResumeNasJobID)
+	out.SearchSpaceSpec = direct.ValueOf(in.SearchSpaceSpec)
+	return out
+}
+
+func NasJobSpec_MultiTrialAlgorithmSpec_FromProto(mapCtx *direct.MapContext, in *pb.NasJobSpec_MultiTrialAlgorithmSpec) *krm.NasJobSpec_MultiTrialAlgorithmSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NasJobSpec_MultiTrialAlgorithmSpec{}
+	out.MultiTrialAlgorithm = direct.Enum_FromProto(mapCtx, in.GetMultiTrialAlgorithm())
+	out.Metric = NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec_FromProto(mapCtx, in.GetMetric())
+	out.SearchTrialSpec = NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec_FromProto(mapCtx, in.GetSearchTrialSpec())
+	out.TrainTrialSpec = NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec_FromProto(mapCtx, in.GetTrainTrialSpec())
+	return out
+}
+
+func NasJobSpec_MultiTrialAlgorithmSpec_ToProto(mapCtx *direct.MapContext, in *krm.NasJobSpec_MultiTrialAlgorithmSpec) *pb.NasJobSpec_MultiTrialAlgorithmSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJobSpec_MultiTrialAlgorithmSpec{}
+	out.MultiTrialAlgorithm = direct.Enum_ToProto[pb.NasJobSpec_MultiTrialAlgorithmSpec_MultiTrialAlgorithm](mapCtx, in.MultiTrialAlgorithm)
+	out.Metric = NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec_ToProto(mapCtx, in.Metric)
+	out.SearchTrialSpec = NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec_ToProto(mapCtx, in.SearchTrialSpec)
+	out.TrainTrialSpec = NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec_ToProto(mapCtx, in.TrainTrialSpec)
+	return out
+}
+
+func NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec) *krm.NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec{}
+	out.MetricID = direct.LazyPtr(in.GetMetricId())
+	out.Goal = direct.Enum_FromProto(mapCtx, in.GetGoal())
+	return out
+}
+
+func NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec) *pb.NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec{}
+	out.MetricId = direct.ValueOf(in.MetricID)
+	out.Goal = direct.Enum_ToProto[pb.NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec_GoalType](mapCtx, in.Goal)
+	return out
+}
+
+func NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec_FromProto(mapCtx *direct.MapContext, in *pb.NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec) *krm.NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec{}
+	out.SearchTrialJobSpec = CustomJobSpec_FromProto(mapCtx, in.GetSearchTrialJobSpec())
+	out.MaxTrialCount = direct.LazyPtr(in.GetMaxTrialCount())
+	out.MaxParallelTrialCount = direct.LazyPtr(in.GetMaxParallelTrialCount())
+	out.MaxFailedTrialCount = direct.LazyPtr(in.GetMaxFailedTrialCount())
+	return out
+}
+
+func NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec_ToProto(mapCtx *direct.MapContext, in *krm.NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec) *pb.NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec{}
+	out.SearchTrialJobSpec = CustomJobSpec_ToProto(mapCtx, in.SearchTrialJobSpec)
+	out.MaxTrialCount = direct.ValueOf(in.MaxTrialCount)
+	out.MaxParallelTrialCount = direct.ValueOf(in.MaxParallelTrialCount)
+	out.MaxFailedTrialCount = direct.ValueOf(in.MaxFailedTrialCount)
+	return out
+}
+
+func NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec_FromProto(mapCtx *direct.MapContext, in *pb.NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec) *krm.NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec{}
+	out.TrainTrialJobSpec = CustomJobSpec_FromProto(mapCtx, in.GetTrainTrialJobSpec())
+	out.MaxParallelTrialCount = direct.LazyPtr(in.GetMaxParallelTrialCount())
+	out.Frequency = direct.LazyPtr(in.GetFrequency())
+	return out
+}
+
+func NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec_ToProto(mapCtx *direct.MapContext, in *krm.NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec) *pb.NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec{}
+	out.TrainTrialJobSpec = CustomJobSpec_ToProto(mapCtx, in.TrainTrialJobSpec)
+	out.MaxParallelTrialCount = direct.ValueOf(in.MaxParallelTrialCount)
+	out.Frequency = direct.ValueOf(in.Frequency)
+	return out
+}
+
+func NasTrialObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NasTrial) *krm.NasTrialObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NasTrialObservedState{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.FinalMeasurement = MeasurementObservedState_FromProto(mapCtx, in.GetFinalMeasurement())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	return out
+}
+
+func NasTrialObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NasTrialObservedState) *pb.NasTrial {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasTrial{}
+	out.Id = direct.ValueOf(in.ID)
+	out.State = direct.Enum_ToProto[pb.NasTrial_State](mapCtx, in.State)
+	out.FinalMeasurement = MeasurementObservedState_ToProto(mapCtx, in.FinalMeasurement)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
 }
 

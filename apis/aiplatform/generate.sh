@@ -67,6 +67,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource AIPlatformExecution:Execution \
   --resource AIPlatformFeatureView:FeatureView \
   --resource AIPlatformHyperparameterTuningJob:HyperparameterTuningJob \
+  --resource AIPlatformNasJob:NasJob \
   --resource AIPlatformNotebookExecutionJob:NotebookExecutionJob \
   --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate \
   --resource AIPlatformRAGCorpus:RagCorpus
@@ -88,6 +89,7 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource AIPlatformExecution:Execution \
   --resource AIPlatformFeatureView:FeatureView \
   --resource AIPlatformHyperparameterTuningJob:HyperparameterTuningJob \
+  --resource AIPlatformNasJob:NasJob \
   --resource AIPlatformNotebookExecutionJob:NotebookExecutionJob \
   --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate \
   --resource AIPlatformOnlineEvaluator:OnlineEvaluator \

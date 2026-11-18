@@ -44,6 +44,7 @@
 // resource: AIPlatformExecution:Execution
 // resource: AIPlatformNotebookExecutionJob:NotebookExecutionJob
 // resource: AIPlatformBatchPredictionJob:BatchPredictionJob
+// resource: AIPlatformNasJob:NasJob
 
 package v1alpha1
 
@@ -2605,6 +2606,129 @@ type ModelSourceInfo struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ModelSourceInfo.copy
 	Copy *bool `json:"copy,omitempty"`
 }
+
+/* unreachable type NasJobOutput
+// +kcc:proto=google.cloud.aiplatform.v1.NasJobOutput
+type NasJobOutput struct {
+}
+*/
+
+/* unreachable type NasJobOutput_MultiTrialJobOutput
+// +kcc:proto=google.cloud.aiplatform.v1.NasJobOutput.MultiTrialJobOutput
+type NasJobOutput_MultiTrialJobOutput struct {
+}
+*/
+
+// +kcc:proto=google.cloud.aiplatform.v1.NasJobSpec
+type NasJobSpec struct {
+	// The spec of multi-trial algorithms.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.multi_trial_algorithm_spec
+	MultiTrialAlgorithmSpec *NasJobSpec_MultiTrialAlgorithmSpec `json:"multiTrialAlgorithmSpec,omitempty"`
+
+	// The ID of the existing NasJob in the same Project and Location
+	//  which will be used to resume search. search_space_spec and
+	//  nas_algorithm_spec are obtained from previous NasJob hence should not
+	//  provide them again for this NasJob.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.resume_nas_job_id
+	ResumeNasJobID *string `json:"resumeNasJobID,omitempty"`
+
+	// It defines the search space for Neural Architecture Search (NAS).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.search_space_spec
+	SearchSpaceSpec *string `json:"searchSpaceSpec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec
+type NasJobSpec_MultiTrialAlgorithmSpec struct {
+	// The multi-trial Neural Architecture Search (NAS) algorithm
+	//  type. Defaults to `REINFORCEMENT_LEARNING`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.multi_trial_algorithm
+	MultiTrialAlgorithm *string `json:"multiTrialAlgorithm,omitempty"`
+
+	// Metric specs for the NAS job.
+	//  Validation for this field is done at `multi_trial_algorithm_spec` field.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.metric
+	Metric *NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec `json:"metric,omitempty"`
+
+	// Required. Spec for search trials.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.search_trial_spec
+	// +required
+	SearchTrialSpec *NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec `json:"searchTrialSpec,omitempty"`
+
+	// Spec for train trials. Top N [TrainTrialSpec.max_parallel_trial_count]
+	//  search trials will be trained for every M
+	//  [TrainTrialSpec.frequency] trials searched.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.train_trial_spec
+	TrainTrialSpec *NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec `json:"trainTrialSpec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.MetricSpec
+type NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec struct {
+	// Required. The ID of the metric. Must not contain whitespaces.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.MetricSpec.metric_id
+	// +required
+	MetricID *string `json:"metricID,omitempty"`
+
+	// Required. The optimization goal of the metric.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.MetricSpec.goal
+	// +required
+	Goal *string `json:"goal,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.SearchTrialSpec
+type NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec struct {
+	// Required. The spec of a search trial job. The same spec applies to
+	//  all search trials.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.SearchTrialSpec.search_trial_job_spec
+	// +required
+	SearchTrialJobSpec *CustomJobSpec `json:"searchTrialJobSpec,omitempty"`
+
+	// Required. The maximum number of Neural Architecture Search (NAS) trials
+	//  to run.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.SearchTrialSpec.max_trial_count
+	// +required
+	MaxTrialCount *int32 `json:"maxTrialCount,omitempty"`
+
+	// Required. The maximum number of trials to run in parallel.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.SearchTrialSpec.max_parallel_trial_count
+	// +required
+	MaxParallelTrialCount *int32 `json:"maxParallelTrialCount,omitempty"`
+
+	// The number of failed trials that need to be seen before failing
+	//  the NasJob.
+	//
+	//  If set to 0, Vertex AI decides how many trials must fail
+	//  before the whole job fails.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.SearchTrialSpec.max_failed_trial_count
+	MaxFailedTrialCount *int32 `json:"maxFailedTrialCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.TrainTrialSpec
+type NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec struct {
+	// Required. The spec of a train trial job. The same spec applies to
+	//  all train trials.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.TrainTrialSpec.train_trial_job_spec
+	// +required
+	TrainTrialJobSpec *CustomJobSpec `json:"trainTrialJobSpec,omitempty"`
+
+	// Required. The maximum number of trials to run in parallel.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.TrainTrialSpec.max_parallel_trial_count
+	// +required
+	MaxParallelTrialCount *int32 `json:"maxParallelTrialCount,omitempty"`
+
+	// Required. Frequency of search trials to start train stage. Top N
+	//  [TrainTrialSpec.max_parallel_trial_count]
+	//  search trials will be trained for every M
+	//  [TrainTrialSpec.frequency] trials searched.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobSpec.MultiTrialAlgorithmSpec.TrainTrialSpec.frequency
+	// +required
+	Frequency *int32 `json:"frequency,omitempty"`
+}
+
+/* unreachable type NasTrial
+// +kcc:proto=google.cloud.aiplatform.v1.NasTrial
+type NasTrial struct {
+}
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.NfsMount
 type NfsMount struct {
@@ -5529,6 +5653,49 @@ type ModelDeploymentMonitoringBigQueryTableObservedState struct {
 	RequestResponseLoggingSchemaVersion *string `json:"requestResponseLoggingSchemaVersion,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.NasJobOutput
+type NasJobOutputObservedState struct {
+	// Output only. The output of this multi-trial Neural Architecture Search
+	//  (NAS) job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobOutput.multi_trial_job_output
+	MultiTrialJobOutput *NasJobOutput_MultiTrialJobOutputObservedState `json:"multiTrialJobOutput,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.NasJobOutput.MultiTrialJobOutput
+type NasJobOutput_MultiTrialJobOutputObservedState struct {
+	// Output only. List of NasTrials that were started as part of search stage.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobOutput.MultiTrialJobOutput.search_trials
+	SearchTrials []NasTrialObservedState `json:"searchTrials,omitempty"`
+
+	// Output only. List of NasTrials that were started as part of train stage.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobOutput.MultiTrialJobOutput.train_trials
+	TrainTrials []NasTrialObservedState `json:"trainTrials,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.NasTrial
+type NasTrialObservedState struct {
+	// Output only. The identifier of the NasTrial assigned by the service.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasTrial.id
+	ID *string `json:"id,omitempty"`
+
+	// Output only. The detailed state of the NasTrial.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasTrial.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The final measurement containing the objective value.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasTrial.final_measurement
+	FinalMeasurement *MeasurementObservedState `json:"finalMeasurement,omitempty"`
+
+	// Output only. Time when the NasTrial was started.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasTrial.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Output only. Time when the NasTrial's status changed to `SUCCEEDED` or
+	//  `INFEASIBLE`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasTrial.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
 
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.NotebookEucConfig
 type NotebookEUCConfigObservedState struct {
