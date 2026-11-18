@@ -64,6 +64,10 @@ func (s *DesignCenterServer) CreateSpace(ctx context.Context, req *pb.CreateSpac
 		return nil, status.Errorf(codes.InvalidArgument, "spaceId is required")
 	}
 
+	if req.Space == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "space is required")
+	}
+
 	spaceID := req.SpaceId
 	fqn := fmt.Sprintf("%s/spaces/%s", parent.String(), spaceID)
 
