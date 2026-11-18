@@ -26,6 +26,8 @@ This skill guides you through implementing Phase 3 (MockGCP and Alignment) for a
   - Add the relevant proto to the Makefile and run `make gen-proto` if needed.
   - Implement the mock service entrypoint in `mockgcp/mock<service_name>/service.go` and register it in `mockgcp/register.go`.
 - If the mock service already exists, implement the necessary CRUD (Create, Read, Update, Delete) methods for `<ResourceKind>` in `mockgcp/mock<service_name>/<kind_lowercase>.go`.
+- **No Standalone Unit Tests**: Do NOT write unit tests (`*_test.go`) inside `mockgcp/mock<service_name>/`. Mock services are verified through the E2E fixtures runner (`hack/compare-mock`), not isolated unit tests.
+- **Dependency Hygiene**: Check `git diff mockgcp/go.mod` and ensure no unrelated indirect dependencies or `replace` directives are introduced.
 
 ### 2b. Remove from Ratcheting Exclusions (MANDATORY)
 Before running the test cases against real or mock GCP, you **MUST** ensure the target resource is removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This enables the re-reconciliation test step, which is a fundamental use case KCC resources must support.

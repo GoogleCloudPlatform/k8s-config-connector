@@ -72,5 +72,11 @@ The entry's `detail` specifies where the field was generated in Spec (`.spec.<x>
 ## 4. Resolving `required-not-enforced`
 
 Follow the instructions in `detail`:
-- If a hand-written struct holds a generated struct `<Struct>` that has a `<Struct>WithRequired` copy, switch the field type to `<Struct>WithRequired` (isolating the parent struct per Section 1 if the parent struct is shared with a non-strict Kind).
+- **Generated Child Structs Referenced by Hand-written Parent Structs**:
+  When `controllerbuilder generate-types` encounters a hand-written parent struct referencing a generated child struct (`dev/tools/controllerbuilder/pkg/commands/generatetypes/requirednotenforced.go`):
+  - `controllerbuilder` will not mutate hand-written Go files to rewrite types or force `+required`.
+  - By default, `generate-types` emits the unconstrained struct (`<Struct>`). It is wired to generate the `+required` version (`<Struct>WithRequired`) only when explicitly referenced in the hand-written spec.
+  - To enforce required fields on `<Struct>`, switch the field type in the hand-written parent struct from `*<Struct>` to `*<Struct>WithRequired`.
+  - Re-run `./apis/<service>/generate.sh` to emit the `WithRequired` structs, enforce required fields in the CRD, and update the `required-not-enforced` entries in `judgement_queue.yaml` to `resolution: edited`.
+- If a hand-written struct holds a generated struct `<Struct>` that already has a `<Struct>WithRequired` copy, switch the field type to `<Struct>WithRequired` (isolating the parent struct per Section 1 if the parent struct is shared with a non-strict Kind).
 - If a shared struct in `types.generated.go` needs `+required` alongside other edits (such as `*Ref` conversions or output-only field removal), fork it in `<kind>_types.go` per Section 1 (preserving `// +kcc:proto=<full.proto.MessageName>` and keeping `<Struct>` in its Go name) and add `// +required` to the required fields. Mark `resolution: edited`.

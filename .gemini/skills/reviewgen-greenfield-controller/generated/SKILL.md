@@ -37,6 +37,9 @@ Use this review guide when reviewing a **Greenfield Step 2** PR for `<Kind>`. En
 
 ## 4. Real-GCP E2E Fixtures & Ratcheting Opt-In
 *   Verify `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind_lower>/` contains both `<kind_lower>-minimal` and `<kind_lower>-maximal` fixtures with `create.yaml`, `update.yaml` (if mutable), `_http.log`, and `_audit_probe.log` recorded against **real GCP** (never mockgcp).
+*   Verify `update.yaml` is present if the resource has mutable fields, `dependencies.yaml` is present if references exist, and `spec.resourceID` is NOT redundantly specified when matching `metadata.name`.
+*   Verify no standalone unit tests (`*_test.go`) or fuzzer tests (`*_fuzzer_test.go`) were added under `pkg/controller/direct/<service>/`.
+*   Verify `go.mod` and `mockgcp/go.mod` do not contain unrelated dependency bumps or `replace` directives.
 *   Verify no `_http.log`, `_audit_probe.log` or golden file was edited by hand: they come from `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`.
 *   **Parent fields**: for a child resource, `create.yaml` sets `spec.parentRef` to the parent that `dependencies.yaml` creates (or `external` for an external-only reference type); for a top-level resource, `projectRef` plus `location`. `update.yaml` never changes the parent fields. Project, location and ancestor IDs come from the identity, never from the `cnrm.cloud.google.com/project-id` annotation, `refs.ResolveProjectID` or `refs.GetLocation`.
 *   Verify `<Kind>` is not excluded in `ShouldTestRereconiliation` in `tests/e2e/ratcheting.go`.
