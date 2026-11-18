@@ -1,5 +1,19 @@
 # Compute Service Journals
 
+### [2026-11-18] Greenfield: Triage judgement queue and finalize direct KRM types and identity for ComputeLicense
+- **Context**: Triaged `apis/compute/judgement_queue.yaml` entries and finalized direct KRM types and identity for `ComputeLicense` under `compute.cnrm.cloud.google.com/v1alpha1` (issue #16030).
+- **Triage Decisions**:
+  - `untriaged-bulk-generation`: Resolved as `edited`.
+  - `verify-resource-docs-link`: Resolved as `edited`. Updated resource docs link to `https://cloud.google.com/compute/docs/reference/rest/v1/licenses`.
+  - `location-parent-unknown`: Resolved as `edited`. Removed `Location *string` from `ComputeLicenseSpec` and added `// +required` on `ProjectRef`, as `ComputeLicense` is a global resource parented by project (`projects/{project}/global/licenses/{license}`).
+  - `well-known-output-only-pattern-in-comment` (`chargesUseFee`, `licenseCode`, `updateTimestamp`): Resolved as `edited`. Moved from `ComputeLicenseSpec` to `ComputeLicenseObservedState`.
+  - `server-set-field-placed` (`creationTimestamp`, `id`, `kind`, `selfLink`, `selfLinkWithID`): Resolved as `accepted`. Removed `guess=placement` comments and confirmed they are server-set output-only fields in `ComputeLicenseObservedState`.
+- **Regeneration & Verification**:
+  - Ran `./apis/compute/generate.sh` to regenerate CRD, deepcopy functions, and mappers. Verified mapper in `pkg/controller/direct/compute/mapper.generated.go` correctly maps observedState and spec fields.
+  - Re-recorded and verified `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+  - Verified `apis/compute/generate.sh` idempotency (clean diff).
+  - All tests passed: `TestComputeLicenseIdentity_Conformance`, `pkg/gcpurls`, `tests/apichecks/...`, `apis/compute/...`, and `pkg/controller/direct/compute/...`.
+
 ### [2026-11-18] Greenfield: Prepopulate direct KRM types, identity, and judgement queue for ComputeLicense
 - **Context**: Prepopulating direct KRM types, identity, reference, and `judgement_queue.yaml` for Greenfield resource `ComputeLicense` under `apis/compute/v1alpha1/` (issue #16016).
 - **Proto & Pattern**:

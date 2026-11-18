@@ -15,8 +15,7 @@
 // API sources for ComputeLicense, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/compute/v1/compute.proto
 // +kcc:source:service-docs=https://developers.google.com/compute/docs/reference/latest/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/compute/docs/reference/rest
+// +kcc:source:resource-docs=https://cloud.google.com/compute/docs/reference/rest/v1/licenses
 
 package v1alpha1
 
@@ -33,13 +32,12 @@ var ComputeLicenseGVK = GroupVersion.WithKind("ComputeLicense")
 // +kcc:required-from-proto
 type ComputeLicenseSpec struct {
 	// The project that this resource belongs to.
+	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
 
 	// The ComputeLicense name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Specifies licenseCodes of licenses that can replace this license. Note: such replacements are allowed even if removable_from_disk is false.
 	// +kcc:proto:field=google.cloud.compute.v1.License.allowed_replacement_licenses
 	AllowedReplacementLicenses []string `json:"allowedReplacementLicenses,omitempty"`
@@ -48,10 +46,6 @@ type ComputeLicenseSpec struct {
 	// +kcc:proto:field=google.cloud.compute.v1.License.appendable_to_disk
 	AppendableToDisk *bool `json:"appendableToDisk,omitempty"`
 
-	// [Output Only] Deprecated. This field no longer reflects whether a license charges a usage fee.
-	// +kcc:proto:field=google.cloud.compute.v1.License.charges_use_fee
-	ChargesUseFee *bool `json:"chargesUseFee,omitempty"`
-
 	// An optional textual description of the resource; provided by the client when the resource is created.
 	// +kcc:proto:field=google.cloud.compute.v1.License.description
 	Description *string `json:"description,omitempty"`
@@ -59,10 +53,6 @@ type ComputeLicenseSpec struct {
 	// Specifies licenseCodes of licenses that are incompatible with this license. If a license is incompatible with this license, it cannot be attached to the same disk or image.
 	// +kcc:proto:field=google.cloud.compute.v1.License.incompatible_licenses
 	IncompatibleLicenses []string `json:"incompatibleLicenses,omitempty"`
-
-	// [Output Only] The unique code used to attach this license to images, snapshots, and disks.
-	// +kcc:proto:field=google.cloud.compute.v1.License.license_code
-	LicenseCode *uint64 `json:"licenseCode,omitempty"`
 
 	// If set, this license will be unable to be removed or replaced once attached to a disk until the minimum_retention period has passed.
 	// +kcc:proto:field=google.cloud.compute.v1.License.minimum_retention
@@ -95,10 +85,6 @@ type ComputeLicenseSpec struct {
 	// If false, licenses will not be copied from the source resource when creating an image from a disk, disk from snapshot, or snapshot from disk.
 	// +kcc:proto:field=google.cloud.compute.v1.License.transferable
 	Transferable *bool `json:"transferable,omitempty"`
-
-	// [Output Only] Last update timestamp in RFC3339 text format.
-	// +kcc:proto:field=google.cloud.compute.v1.License.update_timestamp
-	UpdateTimestamp *string `json:"updateTimestamp,omitempty"`
 }
 
 // ComputeLicenseStatus defines the config connector machine state of ComputeLicense
@@ -120,30 +106,37 @@ type ComputeLicenseStatus struct {
 // ComputeLicenseObservedState is the state of the ComputeLicense resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.compute.v1.License
 type ComputeLicenseObservedState struct {
+	// [Output Only] Deprecated. This field no longer reflects whether a license charges a usage fee.
+	// +kcc:proto:field=google.cloud.compute.v1.License.charges_use_fee
+	ChargesUseFee *bool `json:"chargesUseFee,omitempty"`
+
 	// [Output Only] Creation timestamp in RFC3339 text format.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.License.creation_timestamp
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
 	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.License.id
 	ID *uint64 `json:"id,omitempty"`
 
 	// [Output Only] Type of resource. Always compute#license for licenses.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.License.kind
 	Kind *string `json:"kind,omitempty"`
 
+	// [Output Only] The unique code used to attach this license to images, snapshots, and disks.
+	// +kcc:proto:field=google.cloud.compute.v1.License.license_code
+	LicenseCode *uint64 `json:"licenseCode,omitempty"`
+
 	// [Output Only] Server-defined URL for the resource.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.License.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
 
 	// [Output Only] Server-defined URL for this resource with the resource id.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.License.self_link_with_id
 	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+
+	// [Output Only] Last update timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.License.update_timestamp
+	UpdateTimestamp *string `json:"updateTimestamp,omitempty"`
 }
 
 // +genclient

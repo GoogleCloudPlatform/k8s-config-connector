@@ -3792,12 +3792,15 @@ func ComputeLicenseObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, i
 		return nil
 	}
 	out := &krmcomputev1alpha1.ComputeLicenseObservedState{}
+	out.ChargesUseFee = in.ChargesUseFee
 	out.CreationTimestamp = in.CreationTimestamp
 	out.ID = in.Id
 	out.Kind = in.Kind
+	out.LicenseCode = in.LicenseCode
 	// MISSING: Name
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithID = in.SelfLinkWithId
+	out.UpdateTimestamp = in.UpdateTimestamp
 	return out
 }
 func ComputeLicenseObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeLicenseObservedState) *pb.License {
@@ -3805,12 +3808,15 @@ func ComputeLicenseObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 		return nil
 	}
 	out := &pb.License{}
+	out.ChargesUseFee = in.ChargesUseFee
 	out.CreationTimestamp = in.CreationTimestamp
 	out.Id = in.ID
 	out.Kind = in.Kind
+	out.LicenseCode = in.LicenseCode
 	// MISSING: Name
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithId = in.SelfLinkWithID
+	out.UpdateTimestamp = in.UpdateTimestamp
 	return out
 }
 func ComputeLicenseSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.License) *krmcomputev1alpha1.ComputeLicenseSpec {
@@ -3820,10 +3826,8 @@ func ComputeLicenseSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Lic
 	out := &krmcomputev1alpha1.ComputeLicenseSpec{}
 	out.AllowedReplacementLicenses = in.AllowedReplacementLicenses
 	out.AppendableToDisk = in.AppendableToDisk
-	out.ChargesUseFee = in.ChargesUseFee
 	out.Description = in.Description
 	out.IncompatibleLicenses = in.IncompatibleLicenses
-	out.LicenseCode = in.LicenseCode
 	out.MinimumRetention = Duration_v1alpha1_FromProto(mapCtx, in.GetMinimumRetention())
 	out.MultiTenantOnly = in.MultiTenantOnly
 	// MISSING: Name
@@ -3833,7 +3837,6 @@ func ComputeLicenseSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Lic
 	out.ResourceRequirements = LicenseResourceRequirements_v1alpha1_FromProto(mapCtx, in.GetResourceRequirements())
 	out.SoleTenantOnly = in.SoleTenantOnly
 	out.Transferable = in.Transferable
-	out.UpdateTimestamp = in.UpdateTimestamp
 	return out
 }
 func ComputeLicenseSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeLicenseSpec) *pb.License {
@@ -3843,10 +3846,8 @@ func ComputeLicenseSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcompu
 	out := &pb.License{}
 	out.AllowedReplacementLicenses = in.AllowedReplacementLicenses
 	out.AppendableToDisk = in.AppendableToDisk
-	out.ChargesUseFee = in.ChargesUseFee
 	out.Description = in.Description
 	out.IncompatibleLicenses = in.IncompatibleLicenses
-	out.LicenseCode = in.LicenseCode
 	out.MinimumRetention = Duration_v1alpha1_ToProto(mapCtx, in.MinimumRetention)
 	out.MultiTenantOnly = in.MultiTenantOnly
 	// MISSING: Name
@@ -3856,7 +3857,6 @@ func ComputeLicenseSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcompu
 	out.ResourceRequirements = LicenseResourceRequirements_v1alpha1_ToProto(mapCtx, in.ResourceRequirements)
 	out.SoleTenantOnly = in.SoleTenantOnly
 	out.Transferable = in.Transferable
-	out.UpdateTimestamp = in.UpdateTimestamp
 	return out
 }
 func ComputeMachineImageSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MachineImage) *krmcomputev1alpha1.ComputeMachineImageSpec {

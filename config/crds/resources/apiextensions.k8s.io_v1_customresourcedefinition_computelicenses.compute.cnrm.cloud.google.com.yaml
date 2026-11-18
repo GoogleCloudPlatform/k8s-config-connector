@@ -72,10 +72,6 @@ spec:
                 description: If true, this license can be appended to an existing
                   disk's set of licenses.
                 type: boolean
-              chargesUseFee:
-                description: '[Output Only] Deprecated. This field no longer reflects
-                  whether a license charges a usage fee.'
-                type: boolean
               description:
                 description: An optional textual description of the resource; provided
                   by the client when the resource is created.
@@ -87,14 +83,6 @@ spec:
                 items:
                   type: string
                 type: array
-              licenseCode:
-                description: '[Output Only] The unique code used to attach this license
-                  to images, snapshots, and disks.'
-                format: int64
-                type: integer
-              location:
-                description: The location of this resource.
-                type: string
               minimumRetention:
                 description: If set, this license will be unable to be removed or
                   replaced once attached to a disk until the minimum_retention period
@@ -194,12 +182,7 @@ spec:
                   resource when creating an image from a disk, disk from snapshot,
                   or snapshot from disk.
                 type: boolean
-              updateTimestamp:
-                description: '[Output Only] Last update timestamp in RFC3339 text
-                  format.'
-                type: string
             required:
-            - location
             - projectRef
             type: object
           status:
@@ -248,6 +231,10 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  chargesUseFee:
+                    description: '[Output Only] Deprecated. This field no longer reflects
+                      whether a license charges a usage fee.'
+                    type: boolean
                   creationTimestamp:
                     description: '[Output Only] Creation timestamp in RFC3339 text
                       format.'
@@ -261,12 +248,21 @@ spec:
                     description: '[Output Only] Type of resource. Always compute#license
                       for licenses.'
                     type: string
+                  licenseCode:
+                    description: '[Output Only] The unique code used to attach this
+                      license to images, snapshots, and disks.'
+                    format: int64
+                    type: integer
                   selfLink:
                     description: '[Output Only] Server-defined URL for the resource.'
                     type: string
                   selfLinkWithID:
                     description: '[Output Only] Server-defined URL for this resource
                       with the resource id.'
+                    type: string
+                  updateTimestamp:
+                    description: '[Output Only] Last update timestamp in RFC3339 text
+                      format.'
                     type: string
                 type: object
             type: object
