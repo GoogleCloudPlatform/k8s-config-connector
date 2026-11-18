@@ -1,5 +1,31 @@
 # Compute Service Journals
 
+### [2026-11-18] Greenfield: Triage judgement queue and finalize direct KRM types and identity for ComputeLicense
+- **Context**: Triaged `apis/compute/judgement_queue.yaml` entries and finalized direct KRM types and identity for `ComputeLicense` under `compute.cnrm.cloud.google.com/v1alpha1` (issue #16030).
+- **Triage Decisions**:
+  - `untriaged-bulk-generation`: Resolved as `edited`.
+  - `verify-resource-docs-link`: Resolved as `edited`. Updated resource docs link to `https://cloud.google.com/compute/docs/reference/rest/v1/licenses`.
+  - `location-parent-unknown`: Resolved as `edited`. Removed `Location *string` from `ComputeLicenseSpec` and added `// +required` on `ProjectRef`, as `ComputeLicense` is a global resource parented by project (`projects/{project}/global/licenses/{license}`).
+  - `well-known-output-only-pattern-in-comment` (`chargesUseFee`, `licenseCode`, `updateTimestamp`): Resolved as `edited`. Moved from `ComputeLicenseSpec` to `ComputeLicenseObservedState`.
+  - `server-set-field-placed` (`creationTimestamp`, `id`, `kind`, `selfLink`, `selfLinkWithID`): Resolved as `accepted`. Removed `guess=placement` comments and confirmed they are server-set output-only fields in `ComputeLicenseObservedState`.
+- **Regeneration & Verification**:
+  - Ran `./apis/compute/generate.sh` to regenerate CRD, deepcopy functions, and mappers. Verified mapper in `pkg/controller/direct/compute/mapper.generated.go` correctly maps observedState and spec fields.
+  - Re-recorded and verified `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+  - Verified `apis/compute/generate.sh` idempotency (clean diff).
+  - All tests passed: `TestComputeLicenseIdentity_Conformance`, `pkg/gcpurls`, `tests/apichecks/...`, `apis/compute/...`, and `pkg/controller/direct/compute/...`.
+
+### [2026-11-18] Greenfield: Prepopulate direct KRM types, identity, and judgement queue for ComputeLicense
+- **Context**: Prepopulating direct KRM types, identity, reference, and `judgement_queue.yaml` for Greenfield resource `ComputeLicense` under `apis/compute/v1alpha1/` (issue #16016).
+- **Proto & Pattern**:
+  - `License` is defined in Google Cloud Compute API v1 (`google/cloud/compute/v1/compute.proto`), and managed via the `Licenses` service (`projects/{project}/global/licenses/{license}`).
+  - Added dedicated `generate-types` with `--prepopulate-resource` and `--include-skipped-output`, and `generate-identity` with pattern `projects/{project}/global/licenses/{license}` to `apis/compute/generate.sh`.
+- **Implementation & Verification**:
+  1. Added `ComputeLicense` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  2. Executed `./apis/compute/generate.sh`, automatically generating `computelicense_types.go`, `computelicense_identity.generated.go`, `computelicense_reference.generated.go`, `computelicense_identity_generated_test.go`, CRD, and open triage entries in `apis/compute/judgement_queue.yaml`.
+  3. Re-running `./apis/compute/generate.sh` confirmed zero diffs (idempotent).
+  4. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+  5. Tested package compilation (`go build ./apis/compute/... ./pkg/controller/direct/compute/...`), identity conformance tests (`TestComputeLicenseIdentity_Conformance`), URL registry tests (`go test ./pkg/gcpurls/...`), and API checks (`tests/apichecks/...`) with all checks passing cleanly.
+
 ### [2026-11-17] MockGCP Implementation and Alignment for ComputeInstantSnapshotGroup
 - **Context**: Implementing MockGCP service and log alignment for `ComputeInstantSnapshotGroup` (issue #15890) following Greenfield Step 3 & Step 4 (`.gemini/skills/kcc-direct-mockgcp-implementer/SKILL.md`).
 - **Findings & Implementation**:
