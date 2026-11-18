@@ -25,6 +25,7 @@ import (
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -270,8 +271,10 @@ func (a *BuildAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refsv1beta1.ProjectRef{External: a.id.Project}
-	obj.Spec.Location = a.id.Location
+	obj.Spec.ProjectAndLocationRef = &parent.ProjectAndLocationRef{
+		ProjectRef: &refsv1beta1.ProjectRef{External: a.id.Project},
+		Location:   a.id.Location,
+	}
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
