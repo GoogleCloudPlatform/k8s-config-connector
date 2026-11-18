@@ -160,6 +160,7 @@ BLOCKED_KINDS=(
     "ComputeCompositeHealthCheck"
     "ComputeHealthCheckService"
     "ComputeInstanceGroupManagerResizeRequest"
+    "ComputeLicense"
     "ComputeNotificationEndpoint"
     "ConnectorsConnection"
     "ContactCenterInsightsConversation"

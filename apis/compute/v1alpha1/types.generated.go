@@ -17,6 +17,10 @@
 // krm.group: compute.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.compute.v1
+// resource: ComputeCrossSiteNetwork:CrossSiteNetwork
+// resource: ComputeInstantSnapshotGroup:InstantSnapshotGroup
+// resource: ComputeInterconnectAttachmentGroup:InterconnectAttachmentGroup
+// resource: ComputeInterconnectGroup:InterconnectGroup
 // resource: ComputeNetworkEdgeSecurityService:NetworkEdgeSecurityService
 // resource: ComputeNetworkAttachment:NetworkAttachment
 // resource: ComputeInterconnect:Interconnect
@@ -37,15 +41,12 @@
 // resource: ComputeNotificationEndpoint:NotificationEndpoint
 // resource: ComputeHealthAggregationPolicy:HealthAggregationPolicy
 // resource: ComputeGlobalVMExtensionPolicy:GlobalVmExtensionPolicy
-// resource: ComputeCrossSiteNetwork:CrossSiteNetwork
-// resource: ComputeInterconnectGroup:InterconnectGroup
-// resource: ComputeInterconnectAttachmentGroup:InterconnectAttachmentGroup
 // resource: ComputeStoragePool:StoragePool
 // resource: ComputeHealthSource:HealthSource
-// resource: ComputeInstantSnapshotGroup:InstantSnapshotGroup
 // resource: ComputeRolloutPlan:RolloutPlan
 // resource: ComputeInstanceGroupManagerResizeRequest:InstanceGroupManagerResizeRequest
 // resource: ComputeCompositeHealthCheck:CompositeHealthCheck
+// resource: ComputeLicense:License
 
 package v1alpha1
 
@@ -2244,6 +2245,107 @@ type Items struct {
 	Value *string `json:"value,omitempty"`
 }
 */
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.License", skipping
+
+// +kcc:proto=google.cloud.compute.v1.License
+type License struct {
+	// Specifies licenseCodes of licenses that can replace this license. Note: such replacements are allowed even if removable_from_disk is false.
+	// +kcc:proto:field=google.cloud.compute.v1.License.allowed_replacement_licenses
+	AllowedReplacementLicenses []string `json:"allowedReplacementLicenses,omitempty"`
+
+	// If true, this license can be appended to an existing disk's set of licenses.
+	// +kcc:proto:field=google.cloud.compute.v1.License.appendable_to_disk
+	AppendableToDisk *bool `json:"appendableToDisk,omitempty"`
+
+	// [Output Only] Deprecated. This field no longer reflects whether a license charges a usage fee.
+	// +kcc:proto:field=google.cloud.compute.v1.License.charges_use_fee
+	ChargesUseFee *bool `json:"chargesUseFee,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.License.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional textual description of the resource; provided by the client when the resource is created.
+	// +kcc:proto:field=google.cloud.compute.v1.License.description
+	Description *string `json:"description,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.License.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Specifies licenseCodes of licenses that are incompatible with this license. If a license is incompatible with this license, it cannot be attached to the same disk or image.
+	// +kcc:proto:field=google.cloud.compute.v1.License.incompatible_licenses
+	IncompatibleLicenses []string `json:"incompatibleLicenses,omitempty"`
+
+	// [Output Only] Type of resource. Always compute#license for licenses.
+	// +kcc:proto:field=google.cloud.compute.v1.License.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// [Output Only] The unique code used to attach this license to images, snapshots, and disks.
+	// +kcc:proto:field=google.cloud.compute.v1.License.license_code
+	LicenseCode *uint64 `json:"licenseCode,omitempty"`
+
+	// If set, this license will be unable to be removed or replaced once attached to a disk until the minimum_retention period has passed.
+	// +kcc:proto:field=google.cloud.compute.v1.License.minimum_retention
+	MinimumRetention *Duration `json:"minimumRetention,omitempty"`
+
+	// If true, this license can only be used on VMs on multi tenant nodes.
+	// +kcc:proto:field=google.cloud.compute.v1.License.multi_tenant_only
+	MultiTenantOnly *bool `json:"multiTenantOnly,omitempty"`
+
+	// Name of the resource. The name must be 1-63 characters long and comply with RFC1035.
+	// +kcc:proto:field=google.cloud.compute.v1.License.name
+	Name *string `json:"name,omitempty"`
+
+	// If true, indicates this is an OS license. Only one OS license can be attached to a disk or image at a time.
+	// +kcc:proto:field=google.cloud.compute.v1.License.os_license
+	OSLicense *bool `json:"osLicense,omitempty"`
+
+	// If true, this license can be removed from a disk's set of licenses, with no replacement license needed.
+	// +kcc:proto:field=google.cloud.compute.v1.License.removable_from_disk
+	RemovableFromDisk *bool `json:"removableFromDisk,omitempty"`
+
+	// Specifies the set of permissible coattached licenseCodes of licenses that satisfy the coattachment requirement of this license. At least one license from the set must be attached to the same disk or image as this license.
+	// +kcc:proto:field=google.cloud.compute.v1.License.required_coattached_licenses
+	RequiredCoattachedLicenses []string `json:"requiredCoattachedLicenses,omitempty"`
+
+	// [Input Only] Deprecated.
+	// +kcc:proto:field=google.cloud.compute.v1.License.resource_requirements
+	ResourceRequirements *LicenseResourceRequirements `json:"resourceRequirements,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.License.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// [Output Only] Server-defined URL for this resource with the resource id.
+	// +kcc:proto:field=google.cloud.compute.v1.License.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+
+	// If true, this license can only be used on VMs on sole tenant nodes.
+	// +kcc:proto:field=google.cloud.compute.v1.License.sole_tenant_only
+	SoleTenantOnly *bool `json:"soleTenantOnly,omitempty"`
+
+	// If false, licenses will not be copied from the source resource when creating an image from a disk, disk from snapshot, or snapshot from disk.
+	// +kcc:proto:field=google.cloud.compute.v1.License.transferable
+	Transferable *bool `json:"transferable,omitempty"`
+
+	// [Output Only] Last update timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.License.update_timestamp
+	UpdateTimestamp *string `json:"updateTimestamp,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.compute.v1.LicenseResourceRequirements
+type LicenseResourceRequirements struct {
+	// [Input Only] Deprecated. This field no longer reflects the minimum number of guest cpus required to use the Instance.
+	// +kcc:proto:field=google.cloud.compute.v1.LicenseResourceRequirements.min_guest_cpu_count
+	MinGuestCPUCount *int32 `json:"minGuestCPUCount,omitempty"`
+
+	// [Input Only] Deprecated. This field no longer reflects the minimum memory required to use the Instance.
+	// +kcc:proto:field=google.cloud.compute.v1.LicenseResourceRequirements.min_memory_mb
+	MinMemoryMb *int32 `json:"minMemoryMb,omitempty"`
+}
 
 // +kcc:proto=google.cloud.compute.v1.LocalizedMessage
 type LocalizedMessage struct {
@@ -4791,6 +4893,32 @@ type InterconnectGroupObservedState struct {
 	// [Output Only] Server-defined URL for the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.License", skipping
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.License
+type LicenseObservedState struct {
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.License.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.License.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of resource. Always compute#license for licenses.
+	// +kcc:proto:field=google.cloud.compute.v1.License.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.License.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// [Output Only] Server-defined URL for this resource with the resource id.
+	// +kcc:proto:field=google.cloud.compute.v1.License.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
 }
 */
 
