@@ -19,8 +19,11 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/changecookies"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	api "google.golang.org/api/sqladmin/v1beta4"
+	"google.golang.org/protobuf/proto"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 )
@@ -469,5 +472,182 @@ func TestToProto_PreservesServerCaFields(t *testing.T) {
 	}
 	if cookie1 == cookie2 {
 		t.Errorf("expected change cookie to differ when serverCaPool and customSubjectAlternativeNames change, got identical cookie %q", cookie1)
+	}
+}
+
+type mockOperation struct {
+	cookieResult bool
+}
+
+func (m *mockOperation) UpdateStatus(ctx context.Context, typedStatus any, readyCondition *v1alpha1.Condition) error {
+	return nil
+}
+func (m *mockOperation) RequestRequeue() {}
+func (m *mockOperation) SetLastModifiedCookie(ctx context.Context, desired, actual proto.Message) error {
+	return nil
+}
+func (m *mockOperation) CompareLastModifiedCookie(desired, actual proto.Message) (bool, error) {
+	return m.cookieResult, nil
+}
+func (m *mockOperation) SetMBUR(ctx context.Context, computeMBUR func() (string, error)) error {
+	return nil
+}
+func (m *mockOperation) CompareMBUR(computeMBUR func() (string, error)) (bool, error) {
+	return false, nil
+}
+
+func TestCompareLastModifiedCookie_DatabaseVersionUnmodeledEnum(t *testing.T) {
+	t.Parallel()
+	ctx := context.Background()
+
+	// 1. Verify that unmodeled database versions (e.g. POSTGRES_UNKNOWN_1 and POSTGRES_UNKNOWN_2)
+	// both unmarshal to SQL_DATABASE_VERSION_UNSPECIFIED (0) in toProto,
+	// demonstrating that changecookies proto hashing alone produces colliding cookies.
+	adapter := &sqlInstanceAdapter{}
+	settings := &api.Settings{
+		Tier: "db-custom-2-7680",
+		BackupConfiguration: &api.BackupConfiguration{
+			Enabled: true,
+		},
+		IpConfiguration:    &api.IpConfiguration{},
+		LocationPreference: &api.LocationPreference{},
+	}
+	unknown1GCP := &api.DatabaseInstance{
+		Name:            "test-instance",
+		DatabaseVersion: "POSTGRES_UNKNOWN_1",
+		Settings:        settings,
+	}
+	unknown2GCP := &api.DatabaseInstance{
+		Name:            "test-instance",
+		DatabaseVersion: "POSTGRES_UNKNOWN_2",
+		Settings:        settings,
+	}
+
+	unknown1Proto, err := adapter.toProto(ctx, unknown1GCP)
+	if err != nil {
+		t.Fatalf("toProto(unknown1) failed: %v", err)
+	}
+	unknown2Proto, err := adapter.toProto(ctx, unknown2GCP)
+	if err != nil {
+		t.Fatalf("toProto(unknown2) failed: %v", err)
+	}
+
+	cookie1, err := changecookies.ComputeChangeCookie(unknown1Proto, unknown1Proto)
+	if err != nil {
+		t.Fatalf("ComputeChangeCookie(unknown1) failed: %v", err)
+	}
+	cookie2, err := changecookies.ComputeChangeCookie(unknown2Proto, unknown1Proto)
+	if err != nil {
+		t.Fatalf("ComputeChangeCookie(unknown2, unknown1) failed: %v", err)
+	}
+	if cookie1 != cookie2 {
+		t.Fatalf("expected colliding cookies due to unmodeled enum, but cookies differed: %q vs %q", cookie1, cookie2)
+	}
+
+	// 2. Verify that adapter.CompareLastModifiedCookie detects the version change
+	// and returns false even when op.CompareLastModifiedCookie returns true.
+	mockOp := &mockOperation{cookieResult: true}
+
+	unknown2Desired := &krm.SQLInstance{
+		Spec: krm.SQLInstanceSpec{
+			DatabaseVersion: direct.LazyPtr("POSTGRES_UNKNOWN_2"),
+			Settings: krm.InstanceSettings{
+				Tier: "db-custom-2-7680",
+			},
+		},
+	}
+	adapter.desired = unknown2Desired
+
+	// When actual is POSTGRES_UNKNOWN_1 and desired is POSTGRES_UNKNOWN_2, CompareLastModifiedCookie must return false.
+	upToDate, err := adapter.CompareLastModifiedCookie(ctx, mockOp, unknown1GCP)
+	if err != nil {
+		t.Fatalf("CompareLastModifiedCookie failed: %v", err)
+	}
+	if upToDate {
+		t.Errorf("expected CompareLastModifiedCookie to return false when databaseVersion differs (POSTGRES_UNKNOWN_1 vs POSTGRES_UNKNOWN_2), got true")
+	}
+
+	// When actual matches desired (POSTGRES_UNKNOWN_2 vs POSTGRES_UNKNOWN_2), CompareLastModifiedCookie must return true.
+	upToDate, err = adapter.CompareLastModifiedCookie(ctx, mockOp, unknown2GCP)
+	if err != nil {
+		t.Fatalf("CompareLastModifiedCookie failed: %v", err)
+	}
+	if !upToDate {
+		t.Errorf("expected CompareLastModifiedCookie to return true when databaseVersion matches, got false")
+	}
+
+	// When actual is POSTGRES_17 and desired is POSTGRES_18, CompareLastModifiedCookie must return false.
+	pg17GCP := &api.DatabaseInstance{
+		Name:            "test-instance",
+		DatabaseVersion: "POSTGRES_17",
+		Settings:        settings,
+	}
+	pg18GCP := &api.DatabaseInstance{
+		Name:            "test-instance",
+		DatabaseVersion: "POSTGRES_18",
+		Settings:        settings,
+	}
+	pg18Desired := &krm.SQLInstance{
+		Spec: krm.SQLInstanceSpec{
+			DatabaseVersion: direct.LazyPtr("POSTGRES_18"),
+			Settings: krm.InstanceSettings{
+				Tier: "db-custom-2-7680",
+			},
+		},
+	}
+	adapter.desired = pg18Desired
+	upToDate, err = adapter.CompareLastModifiedCookie(ctx, mockOp, pg17GCP)
+	if err != nil {
+		t.Fatalf("CompareLastModifiedCookie failed: %v", err)
+	}
+	if upToDate {
+		t.Errorf("expected CompareLastModifiedCookie to return false when databaseVersion differs (POSTGRES_17 vs POSTGRES_18), got true")
+	}
+	upToDate, err = adapter.CompareLastModifiedCookie(ctx, mockOp, pg18GCP)
+	if err != nil {
+		t.Fatalf("CompareLastModifiedCookie failed: %v", err)
+	}
+	if !upToDate {
+		t.Errorf("expected CompareLastModifiedCookie to return true when databaseVersion matches, got false")
+	}
+
+	// When actual is POSTGRES_16 (modeled) and desired is POSTGRES_17 (unmodeled), CompareLastModifiedCookie must return false.
+	pg16GCP := &api.DatabaseInstance{
+		Name:            "test-instance",
+		DatabaseVersion: "POSTGRES_16",
+		Settings:        settings,
+	}
+	pg17Desired := &krm.SQLInstance{
+		Spec: krm.SQLInstanceSpec{
+			DatabaseVersion: direct.LazyPtr("POSTGRES_17"),
+			Settings: krm.InstanceSettings{
+				Tier: "db-custom-2-7680",
+			},
+		},
+	}
+	adapter.desired = pg17Desired
+	upToDate, err = adapter.CompareLastModifiedCookie(ctx, mockOp, pg16GCP)
+	if err != nil {
+		t.Fatalf("CompareLastModifiedCookie failed: %v", err)
+	}
+	if upToDate {
+		t.Errorf("expected CompareLastModifiedCookie to return false when databaseVersion differs (POSTGRES_16 vs POSTGRES_17), got true")
+	}
+
+	// When desired.Spec.DatabaseVersion is nil, CompareLastModifiedCookie should defer to cookie comparison.
+	nilVersionDesired := &krm.SQLInstance{
+		Spec: krm.SQLInstanceSpec{
+			Settings: krm.InstanceSettings{
+				Tier: "db-custom-2-7680",
+			},
+		},
+	}
+	adapter.desired = nilVersionDesired
+	upToDate, err = adapter.CompareLastModifiedCookie(ctx, mockOp, pg18GCP)
+	if err != nil {
+		t.Fatalf("CompareLastModifiedCookie failed: %v", err)
+	}
+	if !upToDate {
+		t.Errorf("expected CompareLastModifiedCookie to return true when databaseVersion is nil and cookie matches, got false")
 	}
 }
