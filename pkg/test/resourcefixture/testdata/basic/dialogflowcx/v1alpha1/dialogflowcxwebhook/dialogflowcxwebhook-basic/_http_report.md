@@ -4,7 +4,7 @@
 - **Resource Name:** `dialogflowcxwebhook-${uniqueId}`
 - **Source Log:** `_http.log` (5 total HTTP entries, 0 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:4583f5c1913ddbe7`
+- **Integrity Hash:** `sha256:c966b9a83d414040`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 
@@ -20,10 +20,10 @@
 | # | Phase | Method / Status | Endpoint | Details / LRO / Mask |
 | :--- | :--- | :--- | :--- | :--- |
 | 1 | `CREATE` | `POST` `200` | `.../locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/`<br>`webhooks` | Created resource |
-| 2 | `CREATE` | `GET` `200` | `.../locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/`<br>`bd72b10f-953f-4543-8f9b-715425c14612` | Post-create read (matches `create.yaml`) |
-| 3 | `UPDATE` | `PATCH` `200` | `.../locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/`<br>`bd72b10f-953f-4543-8f9b-715425c14612` | updateMask: displayName, timeout, disabled, genericWebService |
-| 4 | `UPDATE` | `GET` `200` | `.../locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/`<br>`bd72b10f-953f-4543-8f9b-715425c14612` | Post-update read (matches `update.yaml`) |
-| 5 | `DELETE` | `DELETE` `200` | `.../locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/`<br>`bd72b10f-953f-4543-8f9b-715425c14612` | Deleted resource |
+| 2 | `CREATE` | `GET` `200` | `.../locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/`<br>`4e7a8747-5b5a-45c4-9839-f6da7fe8876b` | Post-create read (matches `create.yaml`) |
+| 3 | `UPDATE` | `PATCH` `200` | `.../locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/`<br>`4e7a8747-5b5a-45c4-9839-f6da7fe8876b` | updateMask: disabled, displayName, genericWebService, timeout |
+| 4 | `DELETE` | `GET` `200` | `.../locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/`<br>`4e7a8747-5b5a-45c4-9839-f6da7fe8876b` | Pre-delete read |
+| 5 | `DELETE` | `DELETE` `200` | `.../locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/`<br>`4e7a8747-5b5a-45c4-9839-f6da7fe8876b` | Deleted resource |
 
 ## 3. Automated Validation Checks
 
