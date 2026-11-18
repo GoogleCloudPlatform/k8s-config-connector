@@ -146,7 +146,6 @@ BLOCKED_KINDS=(
     "CloudchannelCustomer"
     "CloudchannelCustomerRepricingConfig"
     "CloudcontrolspartnerCustomer"
-    "CloudDeployRelease"
     "CloudIdentityDevice"
     "CloudNumberRegistryIpamAdminScope"
     "CloudRunInstance"
