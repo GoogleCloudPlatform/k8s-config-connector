@@ -4015,16 +4015,7 @@
 [missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.ttsConfig.voice.ssmlGender" is not set in unstructured objects
 [missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.ttsConfig.volumeGainDb" is not set in unstructured objects
 [missing_field] crd=dialogflowcxagents.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.securitySettings" is not set in unstructured objects
-[missing_field] crd=dialogflowcxentitytypes.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoExpansionMode" is not set in unstructured objects
-[missing_field] crd=dialogflowcxentitytypes.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=dialogflowcxentitytypes.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.enableFuzzyExtraction" is not set in unstructured objects
-[missing_field] crd=dialogflowcxentitytypes.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.entities[].synonyms[]" is not set in unstructured objects
-[missing_field] crd=dialogflowcxentitytypes.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.entities[].value" is not set in unstructured objects
-[missing_field] crd=dialogflowcxentitytypes.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.excludedPhrases[].value" is not set in unstructured objects
-[missing_field] crd=dialogflowcxentitytypes.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.kind" is not set in unstructured objects
 [missing_field] crd=dialogflowcxentitytypes.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.languageCode" is not set in unstructured objects
-[missing_field] crd=dialogflowcxentitytypes.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.parent" is not set in unstructured objects
-[missing_field] crd=dialogflowcxentitytypes.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.redact" is not set in unstructured objects
 [missing_field] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].event" is not set in unstructured objects
 [missing_field] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].name" is not set in unstructured objects
 [missing_field] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].targetFlow" is not set in unstructured objects

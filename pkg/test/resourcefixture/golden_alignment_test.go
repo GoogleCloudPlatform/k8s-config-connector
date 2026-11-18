@@ -555,6 +555,7 @@ func cleanURL(u string) string {
 	u = regexp.MustCompile(`/generators/[0-9a-fA-F-]+`).ReplaceAllString(u, "/generators/${generatorID}")
 	u = regexp.MustCompile(`/backupRuns/[0-9]+`).ReplaceAllLiteralString(u, "/backupRuns/${backupID}")
 	u = regexp.MustCompile(`/evaluations/[0-9a-zA-Z=_-]+`).ReplaceAllString(u, "/evaluations/${evaluationID}")
+	u = regexp.MustCompile(`/entityTypes/[0-9a-fA-F-]+`).ReplaceAllString(u, "/entityTypes/${entityTypeID}")
 	return u
 }
 
@@ -1449,6 +1450,8 @@ func getPlaceholdersForKind(kind string) []string {
 		return []string{"${agentID}", "${webhookID}"}
 	case "DialogflowCXTool":
 		return []string{"${agentID}", "${toolID}"}
+	case "DialogflowCXEntityType":
+		return []string{"${agentID}", "${entityTypeID}"}
 	}
 	return nil
 }
