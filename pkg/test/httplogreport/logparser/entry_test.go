@@ -96,6 +96,32 @@ func TestEntry_Predicates(t *testing.T) {
 			wantStatusCode:    200,
 		},
 		{
+			name: "POST /removePeering Compute custom delete",
+			entry: &Entry{
+				Request:  HTTPRequest{Method: "POST", URL: "https://compute.googleapis.com/compute/v1/projects/p/global/networks/net-1/removePeering?alt=json"},
+				Response: HTTPResponse{Status: "200 OK", StatusCode: 200},
+			},
+			wantIsMutation:    true,
+			wantIsReadOnly:    false,
+			wantIsDelete:      true,
+			wantIsOpsPoll:     false,
+			wantRespIsSuccess: true,
+			wantStatusCode:    200,
+		},
+		{
+			name: "POST :removePeering custom delete",
+			entry: &Entry{
+				Request:  HTTPRequest{Method: "POST", URL: "https://example.googleapis.com/v1/projects/p/global/networks/net-1:removePeering"},
+				Response: HTTPResponse{Status: "200 OK", StatusCode: 200},
+			},
+			wantIsMutation:    true,
+			wantIsReadOnly:    false,
+			wantIsDelete:      true,
+			wantIsOpsPoll:     false,
+			wantRespIsSuccess: true,
+			wantStatusCode:    200,
+		},
+		{
 			name: "POST :getIamPolicy read-only",
 			entry: &Entry{
 				Request:  HTTPRequest{Method: "POST", URL: "https://example.googleapis.com/v1/projects/p/locations/l/widgets/w1:getIamPolicy"},

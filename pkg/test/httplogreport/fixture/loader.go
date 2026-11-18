@@ -276,13 +276,22 @@ func (d *Data) IsNonDeletable() bool {
 	}
 	switch d.PrimaryCreate.Kind {
 	case "IAMPolicy", "IAMPartialPolicy", "IAMPolicyMember", "IAMAuditConfig",
+		"APIQuotaPreference", "APIQuotaAdjusterSettings",
 		"AppEngineServiceSplitTraffic",
-		"CloudDeployRelease",
-		"ComputeProjectMetadata", "ComputeSharedVPCHostProject", "Service", "ServiceIdentity",
+		"BigQueryJob", "BinaryAuthorizationPolicy",
+		"CloudBuildBuild", "CloudDeployRelease",
+		"ComputeProjectMetadata", "ComputeSharedVPCHostProject",
+		"DataflowFlexTemplateJob", "DataflowJob",
+		"DiscoveryEngineUserStore", "DiscoveryEngineLicenseConfig",
+		"FirestoreField",
+		"IAPSettings",
+		"Service", "ServiceIdentity",
 		"KMSAutokeyConfig", "KMSKeyRing", "KMSCryptoKey", "KMSCryptoKeyVersion", "KMSKeyRingImportJob",
 		"FirebaseProject", "FirebaseWebApp", "FirebaseAndroidApp",
-		"LoggingLogBucket", "Project", "Folder",
-		"CloudBuildBuild":
+		"LoggingLogBucket",
+		"PrivateCACertificate",
+		"Project", "Folder", "ResourceManagerPolicy",
+		"StorageControlFolderIntelligenceConfig":
 		return true
 	}
 	return false

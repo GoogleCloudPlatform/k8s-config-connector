@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/httplogreport/logparser"
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoregistry"
 	"google.golang.org/protobuf/types/descriptorpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
@@ -374,4 +375,29 @@ func writeSyntheticDescriptorSet(t *testing.T) string {
 		t.Fatalf("writing %s: %v", pbPath, err)
 	}
 	return pbPath
+}
+
+func TestValidateTypedBlocks_UnvendoredRealGCPTypeURL(t *testing.T) {
+	reg := &descriptorRegistry{
+		files: new(protoregistry.Files),
+		packages: map[string]bool{
+			"google.cloud.dataplex.v1": true,
+		},
+	}
+
+	var errsAllow []string
+	validateTypedBlocksRecursive(reg, 1, "GET", "response", map[string]any{
+		"@type": "type.googleapis.com/google.cloud.dataplex.v1.DataProduct",
+	}, false, false, &errsAllow)
+	if len(errsAllow) != 0 {
+		t.Errorf("expected allowlisted unvendored @type to pass, got: %v", errsAllow)
+	}
+
+	var errsReject []string
+	validateTypedBlocksRecursive(reg, 1, "GET", "response", map[string]any{
+		"@type": "type.googleapis.com/google.cloud.dataplex.v1.FakeType",
+	}, false, false, &errsReject)
+	if len(errsReject) == 0 {
+		t.Errorf("expected non-allowlisted unknown @type in known package to fail")
+	}
 }

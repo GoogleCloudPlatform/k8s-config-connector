@@ -118,6 +118,7 @@ func (e *Entry) IsDelete() bool {
 	if e.Request.Method == "POST" {
 		if strings.HasSuffix(uPath, ":delete") || strings.HasSuffix(uPath, ":destroy") ||
 			strings.HasSuffix(uPath, ":cancel") || strings.HasSuffix(uPath, ":drop") ||
+			strings.HasSuffix(uPath, "/removepeering") || strings.HasSuffix(uPath, ":removepeering") ||
 			strings.HasSuffix(uPath, "/delete") {
 			return true
 		}
