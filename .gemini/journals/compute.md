@@ -672,3 +672,16 @@
   - Conformance and unit tests passed in `apis/compute/v1alpha1`.
   - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` and verified `tests/apichecks/...` passes.
   - Verified `pkg/cli/powertools/cais/...` passes.
+
+### [2026-11-18] Greenfield Step 1b: Triage Judgement Queue and Finalize Direct KRM Types for ComputeInstanceGroupManagerResizeRequest
+- **Context**: Triaged `apis/compute/judgement_queue.yaml` and finalized direct KRM types, identity, and reference for `ComputeInstanceGroupManagerResizeRequest` under `compute.cnrm.cloud.google.com/v1alpha1` (issue #16029).
+- **Findings & Triage Decisions**:
+  1. **Single Parent Hierarchy**: `InstanceGroupManagerResizeRequest` is a child resource under `InstanceGroupManager`: `projects/{project}/zones/{zone}/instanceGroupManagers/{instanceGroupManager}/resizeRequests/{resizeRequest}`. Following `PARENT_AND_IDENTITY.md` Case B, replaced `ProjectRef` and `Location` with a single required immutable `ParentRef *computev1beta1.ComputeInstanceGroupManagerRef`. Ancestor segments (project, zone, instanceGroupManager) are derived directly from the parent reference.
+  2. **Output-Only Field Placement**: In `google.cloud.compute.v1.InstanceGroupManagerResizeRequest`, `state`, `status`, and `zone` are documented as `[Output only]` in proto comments without `google.api.field_behavior`. Removed them from `ComputeInstanceGroupManagerResizeRequestSpec` and placed them in `ComputeInstanceGroupManagerResizeRequestObservedState`.
+  3. **Documentation Link**: Pointed `+kcc:source:resource-docs` to `https://cloud.google.com/compute/docs/reference/rest/v1/instanceGroupManagerResizeRequests` and removed the guess annotation.
+  4. **Queue Resolution**: All 27 open items in `apis/compute/judgement_queue.yaml` for `ComputeInstanceGroupManagerResizeRequest` are marked resolved with appropriate resolution (`edited` or `accepted`) and technical rationale.
+  5. **Verification**:
+     - `dev/tasks/diff-crds` regenerated CRD cleanly with immutable `parentRef` and without output-only fields in spec.
+     - `apis/compute/v1alpha1` conformance tests pass cleanly.
+     - Golden tests in `tests/apichecks` and `pkg/cli/powertools/cais` pass cleanly.
+
