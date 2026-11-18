@@ -82,6 +82,8 @@ type IcebergCatalog struct {
 }
 */
 
+/* found existing non-generated go type "IcebergCatalog_FederatedCatalogOptions", skipping
+
 // +kcc:proto=google.cloud.biglake.v1.IcebergCatalog.FederatedCatalogOptions
 type IcebergCatalog_FederatedCatalogOptions struct {
 	// Optional. Info specific to a Unity Catalog by Databricks.
@@ -123,6 +125,7 @@ type IcebergCatalog_FederatedCatalogOptions struct {
 	// +kcc:proto:field=google.cloud.biglake.v1.IcebergCatalog.FederatedCatalogOptions.refresh_options
 	RefreshOptions *IcebergCatalog_FederatedCatalogOptions_RefreshOptions `json:"refreshOptions,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.biglake.v1.IcebergCatalog.FederatedCatalogOptions.GlueCatalogInfo
 type IcebergCatalog_FederatedCatalogOptions_GlueCatalogInfo struct {

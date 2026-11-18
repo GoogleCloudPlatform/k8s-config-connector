@@ -15,13 +15,14 @@
 // API sources for BigLakeIcebergCatalog, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/biglake/v1/iceberg_rest_catalog.proto
 // +kcc:source:service-docs=https://cloud.google.com/products/lakehouse
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/products/lakehouse/docs/reference/rest/v1/projects.catalogs
+// +kcc:source:resource-docs=https://cloud.google.com/bigquery/docs/iceberg-rest-catalog-about
 
 package v1alpha1
 
 import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
+	servicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -33,6 +34,7 @@ var BigLakeIcebergCatalogGVK = GroupVersion.WithKind("BigLakeIcebergCatalog")
 // +kcc:required-from-proto
 type BigLakeIcebergCatalogSpec struct {
 	// The project that this resource belongs to.
+	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The BigLakeIcebergCatalog name. If not given, the metadata.name will be used.
@@ -79,6 +81,48 @@ type BigLakeIcebergCatalogSpec struct {
 	// Optional. Configuration options for federated catalogs.
 	// +kcc:proto:field=google.cloud.biglake.v1.IcebergCatalog.federated_catalog_options
 	FederatedCatalogOptions *IcebergCatalog_FederatedCatalogOptions `json:"federatedCatalogOptions,omitempty"`
+}
+
+// +kcc:proto=google.cloud.biglake.v1.IcebergCatalog.FederatedCatalogOptions
+type IcebergCatalog_FederatedCatalogOptions struct {
+	// Optional. Info specific to Unity Catalog by Databricks.
+	// +kcc:proto:field=google.cloud.biglake.v1.IcebergCatalog.FederatedCatalogOptions.unity_catalog_info
+	UnityCatalogInfo *IcebergCatalog_FederatedCatalogOptions_UnityCatalogInfo `json:"unityCatalogInfo,omitempty"`
+
+	// Optional. Info specific to an AWS Glue Catalog.
+	// +kcc:proto:field=google.cloud.biglake.v1.IcebergCatalog.FederatedCatalogOptions.glue_catalog_info
+	GlueCatalogInfo *IcebergCatalog_FederatedCatalogOptions_GlueCatalogInfo `json:"glueCatalogInfo,omitempty"`
+
+	// Optional. Info specific to a Snowflake Catalog.
+	// +kcc:proto:field=google.cloud.biglake.v1.IcebergCatalog.FederatedCatalogOptions.snowflake_catalog_info
+	SnowflakeCatalogInfo *IcebergCatalog_FederatedCatalogOptions_SnowflakeCatalogInfo `json:"snowflakeCatalogInfo,omitempty"`
+
+	// Optional. The secret resource name in Secret Manager, in the format
+	//  `projects/{project_id}/locations/{location}/secrets/{secret_id}` or
+	//  `projects/{project_id}/locations/{location}/secrets/{secret_id}/versions/{version_id}`.
+	//
+	//  The project ID must match the catalog's project and location must match
+	//  the catalog's location.
+	//  If the version is not specified, the latest version will be used.
+	//
+	//  This field is not used when
+	//  [google.cloud.biglake.v1main.IcebergCatalog.FederatedCatalogOptions.UnityCatalogInfo.service_principal_application_id][google.cloud.biglake.v1main.IcebergCatalog.FederatedCatalogOptions.UnityCatalogInfo.service_principal_application_id]
+	//  or
+	//  [google.cloud.biglake.v1main.IcebergCatalog.FederatedCatalogOptions.SnowflakeCatalogInfo.snowflake_role][google.cloud.biglake.v1main.IcebergCatalog.FederatedCatalogOptions.SnowflakeCatalogInfo.snowflake_role]
+	//  is set.
+	// +kcc:proto:field=google.cloud.biglake.v1.IcebergCatalog.FederatedCatalogOptions.secret_name
+	SecretRef *secretmanagerv1beta1.SecretManagerSecretRef `json:"secretRef,omitempty"`
+
+	// Optional. The service directory resource name for routing traffic over a
+	//  private network connection through Cross-Cloud Interconnect, in the
+	//  format
+	//  `projects/{project_id}/locations/{location_id}/namespaces/{namespace_id}/services/{service_id}`.
+	// +kcc:proto:field=google.cloud.biglake.v1.IcebergCatalog.FederatedCatalogOptions.service_directory_name
+	ServiceDirectoryRef *servicedirectoryv1beta1.ServiceDirectoryServiceRef `json:"serviceDirectoryRef,omitempty"`
+
+	// Optional. Refresh configuration.
+	// +kcc:proto:field=google.cloud.biglake.v1.IcebergCatalog.FederatedCatalogOptions.refresh_options
+	RefreshOptions *IcebergCatalog_FederatedCatalogOptions_RefreshOptions `json:"refreshOptions,omitempty"`
 }
 
 // BigLakeIcebergCatalogStatus defines the config connector machine state of BigLakeIcebergCatalog

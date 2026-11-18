@@ -147,7 +147,7 @@ spec:
                             type: array
                         type: object
                     type: object
-                  secretName:
+                  secretRef:
                     description: |-
                       Optional. The secret resource name in Secret Manager, in the format
                        `projects/{project_id}/locations/{location}/secrets/{secret_id}` or
@@ -162,12 +162,62 @@ spec:
                        or
                        [google.cloud.biglake.v1main.IcebergCatalog.FederatedCatalogOptions.SnowflakeCatalogInfo.snowflake_role][google.cloud.biglake.v1main.IcebergCatalog.FederatedCatalogOptions.SnowflakeCatalogInfo.snowflake_role]
                        is set.
-                    type: string
-                  serviceDirectoryName:
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed SecretManagerSecret
+                          resource. Should be in the format "projects/{{projectID}}/secrets/{{secretID}}".
+                        type: string
+                      name:
+                        description: The name of a SecretManagerSecret resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a SecretManagerSecret resource.
+                        type: string
+                    type: object
+                  serviceDirectoryRef:
                     description: Optional. The service directory resource name for
                       routing traffic over a private network connection through Cross-Cloud
                       Interconnect, in the format `projects/{project_id}/locations/{location_id}/namespaces/{namespace_id}/services/{service_id}`.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed ServiceDirectoryService
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/namespaces/{{namespaceID}}/services/{{serviceID}}".
+                        type: string
+                      name:
+                        description: The name of a ServiceDirectoryService resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a ServiceDirectoryService resource.
+                        type: string
+                    type: object
                   snowflakeCatalogInfo:
                     description: Optional. Info specific to a Snowflake Catalog.
                     properties:
@@ -203,7 +253,7 @@ spec:
                     - warehouse
                     type: object
                   unityCatalogInfo:
-                    description: Optional. Info specific to a Unity Catalog by Databricks.
+                    description: Optional. Info specific to Unity Catalog by Databricks.
                     properties:
                       catalogName:
                         description: Required. The catalog name in Unity Catalog.

@@ -21,6 +21,8 @@ package v1alpha1
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
+	servicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -644,14 +646,14 @@ func (in *IcebergCatalog_FederatedCatalogOptions) DeepCopyInto(out *IcebergCatal
 		*out = new(IcebergCatalog_FederatedCatalogOptions_SnowflakeCatalogInfo)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.SecretName != nil {
-		in, out := &in.SecretName, &out.SecretName
-		*out = new(string)
+	if in.SecretRef != nil {
+		in, out := &in.SecretRef, &out.SecretRef
+		*out = new(secretmanagerv1beta1.SecretManagerSecretRef)
 		**out = **in
 	}
-	if in.ServiceDirectoryName != nil {
-		in, out := &in.ServiceDirectoryName, &out.ServiceDirectoryName
-		*out = new(string)
+	if in.ServiceDirectoryRef != nil {
+		in, out := &in.ServiceDirectoryRef, &out.ServiceDirectoryRef
+		*out = new(servicedirectoryv1beta1.ServiceDirectoryServiceRef)
 		**out = **in
 	}
 	if in.RefreshOptions != nil {

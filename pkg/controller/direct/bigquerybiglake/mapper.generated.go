@@ -306,40 +306,6 @@ func HiveTableOptions_StorageDescriptor_v1beta1_ToProto(mapCtx *direct.MapContex
 	out.SerdeInfo = HiveTableOptions_SerDeInfo_v1beta1_ToProto(mapCtx, in.SerdeInfo)
 	return out
 }
-func IcebergCatalog_FederatedCatalogOptions_v1alpha1_FromProto(mapCtx *direct.MapContext, in *biglakepb.IcebergCatalog_FederatedCatalogOptions) *krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions {
-	if in == nil {
-		return nil
-	}
-	out := &krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions{}
-	out.UnityCatalogInfo = IcebergCatalog_FederatedCatalogOptions_UnityCatalogInfo_v1alpha1_FromProto(mapCtx, in.GetUnityCatalogInfo())
-	out.GlueCatalogInfo = IcebergCatalog_FederatedCatalogOptions_GlueCatalogInfo_v1alpha1_FromProto(mapCtx, in.GetGlueCatalogInfo())
-	out.SnowflakeCatalogInfo = IcebergCatalog_FederatedCatalogOptions_SnowflakeCatalogInfo_v1alpha1_FromProto(mapCtx, in.GetSnowflakeCatalogInfo())
-	out.SecretName = in.SecretName
-	out.ServiceDirectoryName = in.ServiceDirectoryName
-	out.RefreshOptions = IcebergCatalog_FederatedCatalogOptions_RefreshOptions_v1alpha1_FromProto(mapCtx, in.GetRefreshOptions())
-	// MISSING: RefreshStatus
-	return out
-}
-func IcebergCatalog_FederatedCatalogOptions_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions) *biglakepb.IcebergCatalog_FederatedCatalogOptions {
-	if in == nil {
-		return nil
-	}
-	out := &biglakepb.IcebergCatalog_FederatedCatalogOptions{}
-	if oneof := IcebergCatalog_FederatedCatalogOptions_UnityCatalogInfo_v1alpha1_ToProto(mapCtx, in.UnityCatalogInfo); oneof != nil {
-		out.RemoteCatalogInfo = &biglakepb.IcebergCatalog_FederatedCatalogOptions_UnityCatalogInfo_{UnityCatalogInfo: oneof}
-	}
-	if oneof := IcebergCatalog_FederatedCatalogOptions_GlueCatalogInfo_v1alpha1_ToProto(mapCtx, in.GlueCatalogInfo); oneof != nil {
-		out.RemoteCatalogInfo = &biglakepb.IcebergCatalog_FederatedCatalogOptions_GlueCatalogInfo_{GlueCatalogInfo: oneof}
-	}
-	if oneof := IcebergCatalog_FederatedCatalogOptions_SnowflakeCatalogInfo_v1alpha1_ToProto(mapCtx, in.SnowflakeCatalogInfo); oneof != nil {
-		out.RemoteCatalogInfo = &biglakepb.IcebergCatalog_FederatedCatalogOptions_SnowflakeCatalogInfo_{SnowflakeCatalogInfo: oneof}
-	}
-	out.SecretName = in.SecretName
-	out.ServiceDirectoryName = in.ServiceDirectoryName
-	out.RefreshOptions = IcebergCatalog_FederatedCatalogOptions_RefreshOptions_v1alpha1_ToProto(mapCtx, in.RefreshOptions)
-	// MISSING: RefreshStatus
-	return out
-}
 func IcebergCatalog_FederatedCatalogOptionsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *biglakepb.IcebergCatalog_FederatedCatalogOptions) *krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptionsObservedState {
 	if in == nil {
 		return nil
