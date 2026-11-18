@@ -1,7 +1,6 @@
 # Phase: CREATE
-POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows?alt=json
+POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "description": "Minimal flow test",
@@ -77,15 +76,15 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c",
   "nluSettings": {
     "classificationThreshold": 0.3,
-    "modelType": "MODEL_TYPE_ADVANCED"
+    "modelType": 3
   }
 }
 
 ---
 
-GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c?alt=json
+# Phase: UPDATE
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Server: ESF
@@ -156,16 +155,14 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c",
   "nluSettings": {
     "classificationThreshold": 0.3,
-    "modelType": "MODEL_TYPE_ADVANCED"
+    "modelType": 3
   }
 }
 
 ---
 
-# Phase: UPDATE
-PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c?alt=json&updateMask=description
+PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c?%24alt=json%3Benum-encoding%3Dint&updateMask=description
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "description": "Updated minimal flow test",
@@ -224,9 +221,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       }
     }
   ],
+  "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c",
   "nluSettings": {
     "classificationThreshold": 0.3,
-    "modelType": "MODEL_TYPE_ADVANCED"
+    "modelType": 3
   }
 }
 
@@ -299,95 +297,93 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c",
   "nluSettings": {
     "classificationThreshold": 0.3,
-    "modelType": "MODEL_TYPE_ADVANCED"
-  }
-}
-
----
-
-GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-200 OK
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "description": "Updated minimal flow test",
-  "displayName": "flow-min-${uniqueId}",
-  "eventHandlers": [
-    {
-      "event": "sys.no-match-default",
-      "name": "d38c5c1f-82fc-4e9f-bca2-297df0c95606",
-      "triggerFulfillment": {
-        "messages": [
-          {
-            "text": {
-              "text": [
-                "I didn't get that. Can you say it again?",
-                "I missed what you said. What was that?",
-                "Sorry, could you say that again?",
-                "Sorry, can you say that again?",
-                "Can you say that again?",
-                "Sorry, I didn't get that. Can you rephrase?",
-                "Sorry, what was that?",
-                "One more time?",
-                "What was that?",
-                "Say that one more time?",
-                "I didn't get that. Can you repeat?",
-                "I missed that, say that again?"
-              ]
-            }
-          }
-        ]
-      }
-    },
-    {
-      "event": "sys.no-input-default",
-      "name": "b28e4932-4e69-4b56-8155-7d5a2545e910",
-      "triggerFulfillment": {
-        "messages": [
-          {
-            "text": {
-              "text": [
-                "I didn't get that. Can you say it again?",
-                "I missed what you said. What was that?",
-                "Sorry, could you say that again?",
-                "Sorry, can you say that again?",
-                "Can you say that again?",
-                "Sorry, I didn't get that. Can you rephrase?",
-                "Sorry, what was that?",
-                "One more time?",
-                "What was that?",
-                "Say that one more time?",
-                "I didn't get that. Can you repeat?",
-                "I missed that, say that again?"
-              ]
-            }
-          }
-        ]
-      }
-    }
-  ],
-  "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c",
-  "nluSettings": {
-    "classificationThreshold": 0.3,
-    "modelType": "MODEL_TYPE_ADVANCED"
+    "modelType": 3
   }
 }
 
 ---
 
 # Phase: DELETE
-DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c?alt=json
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Updated minimal flow test",
+  "displayName": "flow-min-${uniqueId}",
+  "eventHandlers": [
+    {
+      "event": "sys.no-match-default",
+      "name": "d38c5c1f-82fc-4e9f-bca2-297df0c95606",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "event": "sys.no-input-default",
+      "name": "b28e4932-4e69-4b56-8155-7d5a2545e910",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c",
+  "nluSettings": {
+    "classificationThreshold": 0.3,
+    "modelType": 3
+  }
+}
+
+---
+
+DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
 
 200 OK
 Server: ESF

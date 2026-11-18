@@ -1,0 +1,62 @@
+2c2
+< POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows?alt=json
+---
+> POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows?%24alt=json%3Benum-encoding%3Dint
+10,11c10,11
+<     "modelTrainingMode": "MODEL_TRAINING_MODE_MANUAL",
+<     "modelType": "MODEL_TYPE_STANDARD"
+---
+>     "modelTrainingMode": 2,
+>     "modelType": 1
+84,85c84,85
+<     "modelTrainingMode": "MODEL_TRAINING_MODE_MANUAL",
+<     "modelType": "MODEL_TYPE_STANDARD"
+---
+>     "modelTrainingMode": 2,
+>     "modelType": 1
+91c91,92
+< GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/5914a4bc-506a-42fa-9122-5301e29cb157?alt=json
+---
+> # Phase: UPDATE
+> GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/5914a4bc-506a-42fa-9122-5301e29cb157?%24alt=json%3Benum-encoding%3Dint
+163,164c164,165
+<     "modelTrainingMode": "MODEL_TRAINING_MODE_MANUAL",
+<     "modelType": "MODEL_TYPE_STANDARD"
+---
+>     "modelTrainingMode": 2,
+>     "modelType": 1
+170,171c171
+< # Phase: UPDATE
+< PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/5914a4bc-506a-42fa-9122-5301e29cb157?alt=json&updateMask=description%2CnluSettings
+---
+> PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/5914a4bc-506a-42fa-9122-5301e29cb157?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CnluSettings
+230a231
+>   "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/5914a4bc-506a-42fa-9122-5301e29cb157",
+233,234c234,235
+<     "modelTrainingMode": "MODEL_TRAINING_MODE_MANUAL",
+<     "modelType": "MODEL_TYPE_STANDARD"
+---
+>     "modelTrainingMode": 2,
+>     "modelType": 1
+307,308c308,309
+<     "modelTrainingMode": "MODEL_TRAINING_MODE_MANUAL",
+<     "modelType": "MODEL_TYPE_STANDARD"
+---
+>     "modelTrainingMode": 2,
+>     "modelType": 1
+314c315,316
+< GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/5914a4bc-506a-42fa-9122-5301e29cb157?alt=json
+---
+> # Phase: DELETE
+> GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/5914a4bc-506a-42fa-9122-5301e29cb157?%24alt=json%3Benum-encoding%3Dint
+386,387c388,389
+<     "modelTrainingMode": "MODEL_TRAINING_MODE_MANUAL",
+<     "modelType": "MODEL_TYPE_STANDARD"
+---
+>     "modelTrainingMode": 2,
+>     "modelType": 1
+393,394c395
+< # Phase: DELETE
+< DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/5914a4bc-506a-42fa-9122-5301e29cb157?alt=json
+---
+> DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/5914a4bc-506a-42fa-9122-5301e29cb157?%24alt=json%3Benum-encoding%3Dint

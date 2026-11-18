@@ -1,0 +1,46 @@
+2c2
+< POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows?alt=json
+---
+> POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows?%24alt=json%3Benum-encoding%3Dint
+79c79
+<     "modelType": "MODEL_TYPE_ADVANCED"
+---
+>     "modelType": 3
+85c85,86
+< GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c?alt=json
+---
+> # Phase: UPDATE
+> GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c?%24alt=json%3Benum-encoding%3Dint
+157c158
+<     "modelType": "MODEL_TYPE_ADVANCED"
+---
+>     "modelType": 3
+163,164c164
+< # Phase: UPDATE
+< PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c?alt=json&updateMask=description
+---
+> PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c?%24alt=json%3Benum-encoding%3Dint&updateMask=description
+223a224
+>   "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c",
+226c227
+<     "modelType": "MODEL_TYPE_ADVANCED"
+---
+>     "modelType": 3
+299c300
+<     "modelType": "MODEL_TYPE_ADVANCED"
+---
+>     "modelType": 3
+305c306,307
+< GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c?alt=json
+---
+> # Phase: DELETE
+> GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c?%24alt=json%3Benum-encoding%3Dint
+377c379
+<     "modelType": "MODEL_TYPE_ADVANCED"
+---
+>     "modelType": 3
+383,384c385
+< # Phase: DELETE
+< DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c?alt=json
+---
+> DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c?%24alt=json%3Benum-encoding%3Dint
