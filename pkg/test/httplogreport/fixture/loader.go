@@ -281,7 +281,8 @@ func (d *Data) IsNonDeletable() bool {
 		"ComputeProjectMetadata", "ComputeSharedVPCHostProject", "Service", "ServiceIdentity",
 		"KMSAutokeyConfig", "KMSKeyRing", "KMSCryptoKey", "KMSCryptoKeyVersion", "KMSKeyRingImportJob",
 		"FirebaseProject", "FirebaseWebApp", "FirebaseAndroidApp",
-		"LoggingLogBucket", "Project", "Folder":
+		"LoggingLogBucket", "Project", "Folder",
+		"CloudBuildBuild":
 		return true
 	}
 	return false

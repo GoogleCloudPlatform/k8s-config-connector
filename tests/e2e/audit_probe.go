@@ -221,11 +221,29 @@ func grpcEventToRESTProbeURL(e *test.LogEntry) (string, bool) {
 		return "", false
 	}
 	httpRule, _ := proto.GetExtension(md.Options(), annotations.E_Http).(*annotations.HttpRule)
-	if httpRule == nil || httpRule.GetGet() == "" {
+	if httpRule == nil {
 		return "", false
 	}
-	path, ok := expandHTTPPathTemplate(httpRule.GetGet(), e.Request.ParseBody())
-	if !ok {
+	var getPatterns []string
+	if httpRule.GetGet() != "" {
+		getPatterns = append(getPatterns, httpRule.GetGet())
+	}
+	for _, b := range httpRule.GetAdditionalBindings() {
+		if b.GetGet() != "" {
+			getPatterns = append(getPatterns, b.GetGet())
+		}
+	}
+	var path string
+	matched := false
+	reqBody := e.Request.ParseBody()
+	for _, pattern := range getPatterns {
+		if p, m := expandHTTPPathTemplate(pattern, reqBody); m {
+			path = p
+			matched = true
+			break
+		}
+	}
+	if !matched {
 		return "", false
 	}
 	u := "https://" + defaultHost + path

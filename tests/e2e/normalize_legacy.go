@@ -67,6 +67,10 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 			if len(tokens) == 2 && tokens[0] == "operations" {
 				id = strings.TrimPrefix(s, "operations/")
 			}
+			// operation name format: operations/build/{projectId}/{operationId}
+			if len(tokens) == 4 && tokens[0] == "operations" && tokens[1] == "build" {
+				id = tokens[3]
+			}
 			// operation name format: {prefix}/operations/{operationId}
 			if len(tokens) > 2 && tokens[len(tokens)-2] == "operations" {
 				id = tokens[len(tokens)-1]
@@ -87,6 +91,8 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 			// Bigtable uses an unusual operation path: "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-b/operations/${operationID}"
 			case "accessPolicies":
 				// Access Context Manager uses an unusual operation path: "operations/accessPolicies/${accessPolicyId}/delete/${operationID}"
+			case "build":
+				// Cloud Build uses "operations/build/{project}/{id}"
 			default:
 				r.OperationIDs[id] = true
 			}

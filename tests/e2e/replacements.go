@@ -136,6 +136,8 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 		return "${alertPolicyID}"
 	case "billingAccounts":
 		return "${billingAccountID}"
+	case "builds":
+		return "${buildID}"
 	case "conditions":
 		return "${conditionID}"
 	case "exclusions":
@@ -152,8 +154,8 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 	case "uptimeCheckConfigs":
 		return "${uptimeCheckConfigID}"
 	case "operations":
-		if name == "projects" {
-			// This is not an operation ID, it's an unusual prefix used by bigtable
+		if name == "projects" || name == "build" {
+			// This is not an operation ID, it's an unusual prefix used by bigtable / cloudbuild
 			return ""
 		}
 		return "${operationID}"
@@ -223,7 +225,9 @@ func (r *Replacements) ExtractIDsFromLinks(link string) {
 				case "projects":
 					// Bigtable uses an unusual operation path: "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-b/operations/${operationID}"
 				case "accessPolicies":
-				// Access Context Manager uses an unusual operation path: "operations/accessPolicies/${accessPolicyId}/delete/${operationID}"
+					// Access Context Manager uses an unusual operation path: "operations/accessPolicies/${accessPolicyId}/delete/${operationID}"
+				case "build":
+					// Cloud Build uses "operations/build/{project}/{id}"
 				default:
 					r.OperationIDs[item.Name] = true
 				}

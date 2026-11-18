@@ -1,0 +1,72 @@
+apiVersion: cloudbuild.cnrm.cloud.google.com/v1alpha1
+kind: CloudBuildBuild
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: cloudbuildbuild-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  location: us-central1
+  options:
+    dynamicSubstitutions: true
+    logStreamingOption: STREAM_ON
+    logging: CLOUD_LOGGING_ONLY
+    substitutionOption: ALLOW_LOOSE
+  projectRef:
+    external: ${projectId}
+  queueTTL: 3600s
+  steps:
+  - allowFailure: false
+    args:
+    - -c
+    - echo "hello from maximal build"
+    automapSubstitutions: true
+    dir: /workspace
+    env:
+    - BUILD_STEP_ENV=hello
+    id: step-1
+    name: bash
+    timeout: 120s
+  substitutions:
+    _CUSTOM_VAR: custom_value
+  tags:
+  - test
+  - maximal
+  timeout: 600s
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/builds/1aa7979b-e0f0-403a-abc0-f7ee133df2b1
+  observedGeneration: 1
+  observedState:
+    createTime: "2024-04-01T12:34:56.123456Z"
+    finishTime: "2024-04-01T12:34:56.123456Z"
+    id: 1111111111111111
+    logURL: https://console.cloud.google.com/cloud-build/builds;region=us-central1/1aa7979b-e0f0-403a-abc0-f7ee133df2b1?project=${projectNumber}
+    projectID: ${projectId}
+    results:
+      buildStepImages:
+      - sha256:589adbc588d8ef3c1ec3c68333faf4baf5dccb65d3cb50f6cf3d78cad2d6e1b0
+    sourceProvenance: {}
+    startTime: "2024-04-01T12:34:56.123456Z"
+    status: SUCCESS
+    steps:
+    - pullTiming:
+        endTime: "2024-04-01T12:34:56.123456Z"
+        startTime: "2024-04-01T12:34:56.123456Z"
+      status: SUCCESS
+      timing:
+        endTime: "2024-04-01T12:34:56.123456Z"
+        startTime: "2024-04-01T12:34:56.123456Z"
+    timing:
+      BUILD:
+        endTime: "2024-04-01T12:34:56.123456Z"
+        startTime: "2024-04-01T12:34:56.123456Z"

@@ -435,6 +435,21 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		// rolloutOperation contains dynamic rollout timestamps and timing-dependent async zone rollout states in real GCP.
 		visitor.removePaths.Insert(".status.observedState.rolloutOperation")
 	}
+	if u.GetKind() == "CloudBuildBuild" {
+		visitor.replacePaths[".status.observedState.startTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.finishTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.createTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.steps[].pullTiming.startTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.steps[].pullTiming.endTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.steps[].timing.startTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.steps[].timing.endTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.timing.BUILD.startTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.timing.BUILD.endTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.timing.FETCHSOURCE.startTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.timing.FETCHSOURCE.endTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.timing.PUSH.startTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.timing.PUSH.endTime"] = mockgcpregistry.PlaceholderTimestamp
+	}
 
 	// Specific to Datacatalog
 	visitor.replacePaths[".dataCatalogTimestamps.createTime"] = mockgcpregistry.PlaceholderTimestamp
@@ -1666,6 +1681,36 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		visitor.ReplacePath(".response.revisionCreateTime", mockgcpregistry.PlaceholderTimestamp)
 		visitor.ReplacePath(".revisionId", "revision-id-placeholder")
 		visitor.ReplacePath(".response.revisionId", "revision-id-placeholder")
+	}
+
+	// CloudBuild
+	{
+		visitor.ReplacePath(".startTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".finishTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".metadata.build.startTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".metadata.build.finishTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".metadata.build.createTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".steps[].pullTiming.startTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".steps[].pullTiming.endTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".steps[].timing.startTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".steps[].timing.endTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".metadata.build.steps[].pullTiming.startTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".metadata.build.steps[].pullTiming.endTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".metadata.build.steps[].timing.startTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".metadata.build.steps[].timing.endTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".timing.BUILD.startTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".timing.BUILD.endTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".timing.FETCHSOURCE.startTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".timing.FETCHSOURCE.endTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".timing.PUSH.startTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".timing.PUSH.endTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".metadata.build.timing.BUILD.startTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".metadata.build.timing.BUILD.endTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".metadata.build.timing.FETCHSOURCE.startTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".metadata.build.timing.FETCHSOURCE.endTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".metadata.build.timing.PUSH.startTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".metadata.build.timing.PUSH.endTime", mockgcpregistry.PlaceholderTimestamp)
 	}
 
 	// ContactCenterInsights
