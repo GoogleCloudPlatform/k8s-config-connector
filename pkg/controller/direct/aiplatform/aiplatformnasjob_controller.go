@@ -62,15 +62,16 @@ func (m *modelNasJob) AdapterForObject(ctx context.Context, op *directbase.Adapt
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
+
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	i, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
 	id := i.(*krm.AIPlatformNasJobIdentity)
-
-	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
 
 	// Get aiplatform GCP client
 	gcpClient, err := m.client(ctx, id.Location)
@@ -249,6 +250,10 @@ func (a *NasJobAdapter) Export(ctx context.Context) (*unstructured.Unstructured,
 func (a *NasJobAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting NasJob", "name", a.id)
+
+	if !a.id.HasIdentitySpecified() {
+		return true, nil
+	}
 
 	// 1. Check current job state before deleting
 	getReq := &aiplatformpb.GetNasJobRequest{
