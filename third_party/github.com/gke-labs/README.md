@@ -13,7 +13,13 @@ Copies of the two Go modules that Config Connector's multi-cluster leader electi
   - The `multiclusterlease` and `krmsyncer` images are built from these directories as standalone modules, each with its own `go.mod` and `go.sum` (see `build/builder/Dockerfile`).
   - Dependency fixes for those images go into the fork's `go.mod`. KCC's `go.mod` doesn't change what they link.
 - **Source.** Each directory is the module exactly as `go mod download` fetches it. When copied, each directory's `h1:` hash matched the module's `go.sum` entry. Module downloads don't record file modes, so no file is executable.
-- **Local changes.** None yet. Keep them small, and list each one here so that the next update can reapply it.
+- **Local changes.** Keep them small, and list each one here so that the next update can reapply it:
+  - **CRD embedding** (added files): `kube-etl/syncer/config/crd/embed.go` and `multicluster-leader-election/config/crd/bases/embed.go` embed each fork's CRD, so that `config-connector ha setup` installs it. `pkg/cli/cmd/ha` doesn't build without them.
+  - **The syncer's Config Connector wildcard skips the system groups:**
+    - Files: `kube-etl/syncer/controllers/kcc_glob.go` and `kcc_glob_test.go` (added), and the two calls to `kccGlobMatchesGroup` in `krmsyncer_controller.go` (in `expandRule` and `ruleMatchesGVK`).
+    - Change: the `*.cnrm.cloud.google.com` rule no longer matches `core.cnrm.cloud.google.com` and its subgroups (ConfigConnector, ConfigConnectorContext, MultiClusterLease).
+    - Why: `ha setup` lets another cluster's syncer read only what the `cnrm-viewer` role covers, which excludes these groups, so the syncer must not watch them.
+    - Not in upstream yet.
 
 ## Building a fork on its own
 
