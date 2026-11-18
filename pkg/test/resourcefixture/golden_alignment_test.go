@@ -971,6 +971,11 @@ func normalizeRepresentation(obj interface{}) interface{} {
 				}
 			}
 		}
+		if kind, ok := v["kind"].(string); ok && kind == "sql#backupRun" {
+			// databaseVersion and maxChargeableBytes are returned by real GCP but not in cloud_sql_resources v1beta4.BackupRun protobuf.
+			delete(v, "databaseVersion")
+			delete(v, "maxChargeableBytes")
+		}
 		if kind, ok := v["kind"].(string); ok && kind == "compute#backendService" {
 			delete(v, "port")
 			delete(v, "portName")
