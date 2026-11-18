@@ -371,16 +371,12 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=shardCount
+PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=clusterEndpoints
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-east1%2Fclusters%2Frediscluster-${uniqueId}
 
 {
-  "authorizationMode": 2,
-  "automatedBackupConfig": {
-    "automatedBackupMode": 1
-  },
   "clusterEndpoints": [
     {
       "connections": [
@@ -393,18 +389,8 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-eas
       ]
     }
   ],
-  "deletionProtectionEnabled": false,
   "name": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
-  "nodeType": 2,
-  "persistenceConfig": {
-    "mode": 1
-  },
-  "replicaCount": 0,
-  "shardCount": 10,
-  "transitEncryptionMode": 1,
-  "zoneDistributionConfig": {
-    "mode": 1
-  }
+  "shardCount": 10
 }
 
 200 OK
@@ -510,7 +496,7 @@ X-Xss-Protection: 0
     "persistenceConfig": {
       "mode": "DISABLED"
     },
-    "preciseSizeGb": 130,
+    "preciseSizeGb": 39,
     "pscConnections": [
       {
         "address": "10.11.12.13",
@@ -539,8 +525,8 @@ X-Xss-Protection: 0
       }
     ],
     "replicaCount": 0,
-    "shardCount": 10,
-    "sizeGb": 130,
+    "shardCount": 3,
+    "sizeGb": 39,
     "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_DISABLED",
     "uid": "0123456789abcdef",
@@ -552,16 +538,12 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=clusterEndpoints
+PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=shardCount
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-east1%2Fclusters%2Frediscluster-${uniqueId}
 
 {
-  "authorizationMode": 2,
-  "automatedBackupConfig": {
-    "automatedBackupMode": 1
-  },
   "clusterEndpoints": [
     {
       "connections": [
@@ -574,18 +556,8 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-eas
       ]
     }
   ],
-  "deletionProtectionEnabled": false,
   "name": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
-  "nodeType": 2,
-  "persistenceConfig": {
-    "mode": 1
-  },
-  "replicaCount": 0,
-  "shardCount": 10,
-  "transitEncryptionMode": 1,
-  "zoneDistributionConfig": {
-    "mode": 1
-  }
+  "shardCount": 10
 }
 
 200 OK

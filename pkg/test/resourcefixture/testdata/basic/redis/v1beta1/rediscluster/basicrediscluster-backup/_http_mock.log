@@ -318,22 +318,16 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-east1%2Fclusters%2Frediscluster-${uniqueId}
 
 {
-  "authorizationMode": 2,
-  "automatedBackupConfig": {
-    "automatedBackupMode": 1
+  "managedBackupSource": {
+    "backup": "projects/${projectId}/locations/us-east1/backupCollections/a83d3b51-adcc-4ccf-8eed-22e8dda0f6ab/backups/test-backup"
   },
-  "deletionProtectionEnabled": false,
   "name": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
-  "nodeType": 2,
-  "persistenceConfig": {
-    "mode": 1
-  },
-  "replicaCount": 0,
-  "shardCount": 2,
-  "transitEncryptionMode": 1,
-  "zoneDistributionConfig": {
-    "mode": 1
-  }
+  "pscConfigs": [
+    {
+      "network": "projects/${projectId}/global/networks/${networkID}"
+    }
+  ],
+  "shardCount": 2
 }
 
 200 OK

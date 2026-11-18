@@ -17,13 +17,13 @@ package redis
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 
 	"google.golang.org/api/option"
 
 	api "cloud.google.com/go/redis/cluster/apiv1"
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
-	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -286,9 +286,13 @@ func (a *redisClusterAdapter) Update(ctx context.Context, updateOp *directbase.U
 
 		// exactly 1 update_mask field must be specified per update request
 
-		for _, path := range diffRes.FieldMask.GetPaths() {
+		// Sort the paths so the update calls are made in a stable order.
+		paths := append([]string(nil), diffRes.FieldMask.GetPaths()...)
+		sort.Strings(paths)
+
+		for _, path := range paths {
 			req := &pb.UpdateClusterRequest{
-				Cluster: proto.CloneOf(diffRes.MergedDesired),
+				Cluster: a.desired,
 			}
 			a.normalizeReplicationConfig(req.Cluster.CrossClusterReplicationConfig)
 
