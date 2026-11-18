@@ -15,6 +15,8 @@
 package mockprivateca
 
 import (
+	"encoding/base64"
+	"fmt"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
@@ -62,6 +64,34 @@ func (s *MockService) ConfigureVisitor(url string, visitor mockgcpregistry.Norma
 
 	visitor.ReplacePath(".status.caCertificateDescriptions[].subjectDescription.notBeforeTime", mockgcpregistry.PlaceholderTimestamp)
 	visitor.ReplacePath(".status.caCertificateDescriptions[].subjectDescription.notAfterTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".status.caCertificateDescriptions[].subjectDescription.hexSerialNumber", "0123456789abcdef")
+	visitor.ReplacePath(".status.caCertificateDescriptions[].authorityKeyId.keyId", keyId)
+	visitor.ReplacePath(".status.caCertificateDescriptions[].subjectKeyId.keyId", keyId)
+	visitor.ReplacePath(".status.caCertificateDescriptions[].certFingerprint.sha256Hash", sha256)
+	visitor.ReplacePath(".status.caCertificateDescriptions[].tbsCertificateDigest", sha256)
+	visitor.RemovePath(".status.caCertificateDescriptions[].publicKey.format")
+	visitor.ReplacePath(".status.accessUrls.caCertificateAccessUrl", "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/ca.crt")
+	visitor.ReplacePath(".status.accessUrls.crlAccessUrls[]", "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/crl")
+
+	const base64PublicKey = "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUFyeGt3dVBoREZTNlc1eEgvMW1MVApTYXhzMTNONnpGYlRXSUY4aG4vTlk1cXlJYmFpd0FYdEVOeU53NkhSSmd4R2c0WElkRXlMVGpCK1VNVVVLYU9OCnd0WFJTUW9CeGR2VitKeWRlL05jTUUzM3QyT3d1UDBRVzY2UnRLak52b2R5dzRLTHphVmp6T1hPY0YwV0NNYy8KRjV4cU5uUHpOalVncUlBanozSHkrejROWmNnT0lnM3dVdEJRRlNTUm16TmtzdjMwejhLQjdXUXJkaElWb3JuOQpuWVFPeW11eTZPT0dLM3FIUXRZYk1MYU9oREY1VnJ3amozblUxeStQMzdRR1kwdG5KS3VYbGNwR3hJN0tkWTI5CjRJM1F6K0JHemI0Wll0WE1uTzNOZFZVaTRteG14VTBMbVE3VlJkdHpkTGN6cTJDUEoyV2JjTTZkUldmVERoNisKYzdDQys3K1ZBdzlxeW1OSnFXN0wxb2JNSkNuTHpwcHBPVWg0RjNXU1V0SXVLcUZ2alo1eFMzUXBFSGJsRFoybgpUaTY1Tm4yR2JzeVYrc2FxTkpOdUdmVEpvUzRJOGFoakljY2hDaXUzRDMxNm5MczlENmMwckRLNmxsbUpHdFRLCmZsSVEyQkZmY2FtV2VlSXlNU1dIK3Uza2lKTTY2YWF1NVJrNlFXWWlKMTRhaWswNmsvK1pMRnNMazUvbVV3eVEKTWFUMXNPUGQ1Z3FSeUsrdGgyVXNkb1p1dE5PZFZYMWdRNjk4cXdVZk1oTmpkSzNLZUkzNWQvY2xuR2F1UGVPSgo2ZlgySy9WN1hTblQrcGRjRTExZjNFU0FZVEIybnJJSXgzK3NjYXdZalREd0Qrd2JQZ0p4ZG4wc1ppOTNtV2FKCkFPdTV4QjBOSStsYXhZT2tPZHhrYklVQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo="
+	decodedKey, err := base64.StdEncoding.DecodeString(base64PublicKey)
+	if err != nil {
+		panic(fmt.Sprintf("decoding placeholder public key: %v", err))
+	}
+	visitor.ReplacePath(".caCertificateDescriptions[].publicKey.key", base64PublicKey)
+	visitor.ReplacePath(".response.caCertificateDescriptions[].publicKey.key", base64PublicKey)
+	// Direct controller stores decoded PEM in status while legacy TF controller stores base64.
+	visitor.TransformString(".status.caCertificateDescriptions[].publicKey.key", func(s string) string {
+		if strings.HasPrefix(s, "-----BEGIN PUBLIC KEY-----") {
+			return string(decodedKey)
+		}
+		return base64PublicKey
+	})
+
+	const placeholderPEMCert = "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
+	visitor.ReplacePath(".pemCaCertificates[]", placeholderPEMCert)
+	visitor.ReplacePath(".response.pemCaCertificates[]", placeholderPEMCert)
+	visitor.ReplacePath(".status.pemCaCertificates[]", placeholderPEMCert)
 
 	visitor.ReplacePath(".response.caCertificateDescriptions[].subjectDescription.notBeforeTime", mockgcpregistry.PlaceholderTimestamp)
 	visitor.ReplacePath(".response.caCertificateDescriptions[].subjectDescription.notAfterTime", mockgcpregistry.PlaceholderTimestamp)
