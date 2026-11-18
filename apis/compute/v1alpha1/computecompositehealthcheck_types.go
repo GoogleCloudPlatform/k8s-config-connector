@@ -15,12 +15,12 @@
 // API sources for ComputeCompositeHealthCheck, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/compute/v1/compute.proto
 // +kcc:source:service-docs=https://developers.google.com/compute/docs/reference/latest/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/compute/docs/reference/rest
+// +kcc:source:resource-docs=https://cloud.google.com/compute/docs/reference/rest/v1/regionCompositeHealthChecks
 
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -33,13 +33,16 @@ var ComputeCompositeHealthCheckGVK = GroupVersion.WithKind("ComputeCompositeHeal
 // +kcc:required-from-proto
 type ComputeCompositeHealthCheckSpec struct {
 	// The project that this resource belongs to.
+	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
-	// The location of this resource.
-	Location *string `json:"location"`
+	// Location represents the geographical location of the ComputeCompositeHealthCheck. Specify a region name. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)
+	// +required
+	Location string `json:"location"`
 
 	// The ComputeCompositeHealthCheck name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// An optional description of this resource. Provide this property when you
 	//  create the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.description
@@ -59,22 +62,14 @@ type ComputeCompositeHealthCheckSpec struct {
 	//  load balancing scheme INTERNAL orINTERNAL_MANAGED and must be regional and in the same region
 	//  as the CompositeHealthCheck (cross-region deployment forINTERNAL_MANAGED is not supported). Can be mutated.
 	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.health_destination
-	HealthDestination *string `json:"healthDestination,omitempty"`
+	HealthDestinationRef *computev1beta1.ForwardingRuleRef `json:"healthDestinationRef,omitempty"`
 
 	// URLs to the HealthSource resources whose results are AND'ed.
 	//  I.e. he aggregated result is is HEALTHY only if all sources
 	//  are HEALTHY. Must have at least 1. Must not have more than 10.
 	//  Must be regional and in the same region as theCompositeHealthCheck. Can be mutated.
-	// +kcc:guess=possible-reference target=ComputeHealthSource
 	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.health_sources
-	HealthSources []string `json:"healthSources,omitempty"`
-
-	// Output only. [Output Only] URL of the region where the composite health check resides.
-	//  This field applies only to the regional resource. You must specify this
-	//  field as part of the HTTP request URL. It is not settable as a field in
-	//  the request body.
-	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.region
-	Region *string `json:"region,omitempty"`
+	HealthSourceRefs []ComputeHealthSourceRef `json:"healthSourceRefs,omitempty"`
 }
 
 // ComputeCompositeHealthCheckStatus defines the config connector machine state of ComputeCompositeHealthCheck
@@ -98,28 +93,30 @@ type ComputeCompositeHealthCheckStatus struct {
 type ComputeCompositeHealthCheckObservedState struct {
 	// Output only. [Output Only] Creation timestamp inRFC3339
 	//  text format.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.creation_timestamp
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
 	// Output only. [Output Only] A unique identifier for this resource type. The server
 	//  generates this identifier.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.id
 	ID *uint64 `json:"id,omitempty"`
 
 	// Output only. [Output Only] Type of the resource. Alwayscompute#compositeHealthCheck for composite health checks.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.kind
 	Kind *string `json:"kind,omitempty"`
 
+	// Output only. [Output Only] URL of the region where the composite health check resides.
+	//  This field applies only to the regional resource. You must specify this
+	//  field as part of the HTTP request URL. It is not settable as a field in
+	//  the request body.
+	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.region
+	Region *string `json:"region,omitempty"`
+
 	// Output only. [Output Only] Server-defined URL for the resource.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
 
 	// Output only. [Output Only] Server-defined URL with id for the resource.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.self_link_with_id
 	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
 }

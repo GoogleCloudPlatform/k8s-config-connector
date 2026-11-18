@@ -1,5 +1,19 @@
 # Compute Service Journals
 
+### [2026-11-18] Greenfield Step 1b: Triage judgement queue and finalize direct KRM types and identity for ComputeCompositeHealthCheck
+- **Context**: Triaged and finalized direct KRM types, identity, and references for `ComputeCompositeHealthCheck` (issue #16042) following Greenfield Step 1b (`judgement/SKILL.md`).
+- **Judgement Queue Resolutions & Learnings**:
+  1. `untriaged-bulk-generation`: Resolved after triaging all fields, omissions, references, and KRM conventions.
+  2. `verify-resource-docs-link`: Corrected resource documentation link to `https://cloud.google.com/compute/docs/reference/rest/v1/regionCompositeHealthChecks`.
+  3. `location-parent-unknown`: Verified `CompositeHealthCheck` is a regional resource under `projects/{project}/regions/{region}/compositeHealthChecks/{compositehealthcheck}`, managed via `RegionCompositeHealthChecks`. Kept `spec.location` as a required string representing region matching Compute conventions (`ComputeHealthSource`, `ComputeHealthCheckService`).
+  4. `location-or-parent-ref` and `well-known-output-only-pattern-in-comment` on `region`: The proto field `region` is an output-only URL string populated by GCP server. Removed `region` from `ComputeCompositeHealthCheckSpec` and placed in `ComputeCompositeHealthCheckObservedState.Region`.
+  5. `possible-reference-by-sibling` on `.spec.healthSources`: Modeled as `HealthSourceRefs []ComputeHealthSourceRef` (`healthSourceRefs`), referencing sibling `ComputeHealthSource`.
+  6. Unflagged reference on `.spec.healthDestination`: Proto documentation states that `health_destination` must be a URL pointing to a regional `ForwardingRule`. Converted to `HealthDestinationRef *computev1beta1.ForwardingRuleRef` (`healthDestinationRef`).
+  7. `server-set-field-placed` on `creationTimestamp`, `id`, `kind`, `selfLink`, and `selfLinkWithID`: Confirmed server-generated output-only fields; verified placement in `ComputeCompositeHealthCheckObservedState` and removed `+kcc:guess` comments.
+- **Verification**:
+  - Re-ran `./apis/compute/generate.sh` and verified CRD generation, mappers, deepcopy code.
+  - All unit tests (`apis/compute/...`), conformance identity tests, CAIS template tests, and API checks (`tests/apichecks/...`) pass cleanly.
+
 ### [2026-11-18] Greenfield: Triage judgement queue and finalize direct KRM types and identity for ComputeLicense
 - **Context**: Triaged `apis/compute/judgement_queue.yaml` entries and finalized direct KRM types and identity for `ComputeLicense` under `compute.cnrm.cloud.google.com/v1alpha1` (issue #16030).
 - **Triage Decisions**:

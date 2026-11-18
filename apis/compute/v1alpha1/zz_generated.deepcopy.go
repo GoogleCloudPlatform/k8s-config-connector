@@ -858,6 +858,11 @@ func (in *ComputeCompositeHealthCheckObservedState) DeepCopyInto(out *ComputeCom
 		*out = new(string)
 		**out = **in
 	}
+	if in.Region != nil {
+		in, out := &in.Region, &out.Region
+		*out = new(string)
+		**out = **in
+	}
 	if in.SelfLink != nil {
 		in, out := &in.SelfLink, &out.SelfLink
 		*out = new(string)
@@ -903,11 +908,6 @@ func (in *ComputeCompositeHealthCheckSpec) DeepCopyInto(out *ComputeCompositeHea
 		*out = new(v1beta1.ProjectRef)
 		**out = **in
 	}
-	if in.Location != nil {
-		in, out := &in.Location, &out.Location
-		*out = new(string)
-		**out = **in
-	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
@@ -923,20 +923,15 @@ func (in *ComputeCompositeHealthCheckSpec) DeepCopyInto(out *ComputeCompositeHea
 		*out = new(string)
 		**out = **in
 	}
-	if in.HealthDestination != nil {
-		in, out := &in.HealthDestination, &out.HealthDestination
-		*out = new(string)
+	if in.HealthDestinationRef != nil {
+		in, out := &in.HealthDestinationRef, &out.HealthDestinationRef
+		*out = new(computev1beta1.ForwardingRuleRef)
 		**out = **in
 	}
-	if in.HealthSources != nil {
-		in, out := &in.HealthSources, &out.HealthSources
-		*out = make([]string, len(*in))
+	if in.HealthSourceRefs != nil {
+		in, out := &in.HealthSourceRefs, &out.HealthSourceRefs
+		*out = make([]ComputeHealthSourceRef, len(*in))
 		copy(*out, *in)
-	}
-	if in.Region != nil {
-		in, out := &in.Region, &out.Region
-		*out = new(string)
-		**out = **in
 	}
 }
 

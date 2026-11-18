@@ -76,24 +76,79 @@ spec:
                   412 conditionNotMet. To see the latest fingerprint, make a get()
                   request to retrieve the CompositeHealthCheck.
                 type: string
-              healthDestination:
+              healthDestinationRef:
                 description: URL to the destination resource. Must be set. Must be
                   aForwardingRule. The ForwardingRule must have load balancing scheme
                   INTERNAL orINTERNAL_MANAGED and must be regional and in the same
                   region as the CompositeHealthCheck (cross-region deployment forINTERNAL_MANAGED
                   is not supported). Can be mutated.
-                type: string
-              healthSources:
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed ComputeForwardingRule
+                      resource. Should be in the format "projects/{{projectID}}/global/forwardingRules/{{forwardingRuleID}}"
+                      or "projects/{{projectID}}/regions/{{region}}/forwardingRules/{{forwardingRuleID}}".
+                    type: string
+                  name:
+                    description: The name of a ComputeForwardingRule resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ComputeForwardingRule resource.
+                    type: string
+                type: object
+              healthSourceRefs:
                 description: URLs to the HealthSource resources whose results are
                   AND'ed. I.e. he aggregated result is is HEALTHY only if all sources
                   are HEALTHY. Must have at least 1. Must not have more than 10. Must
                   be regional and in the same region as theCompositeHealthCheck. Can
                   be mutated.
                 items:
-                  type: string
+                  description: ComputeHealthSourceRef is a reference to a GCP ComputeHealthSource
+                    resource.
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                    required:
+                    - external
+                  properties:
+                    external:
+                      description: A reference to an externally managed ComputeHealthSource
+                        resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/healthSources/{{healthsourceID}}".
+                      type: string
+                    name:
+                      description: The name of a ComputeHealthSource resource.
+                      type: string
+                    namespace:
+                      description: The namespace of a ComputeHealthSource resource.
+                      type: string
+                  type: object
                 type: array
               location:
-                description: The location of this resource.
+                description: 'Location represents the geographical location of the
+                  ComputeCompositeHealthCheck. Specify a region name. Reference: GCP
+                  definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
                 type: string
               projectRef:
                 description: The project that this resource belongs to.
@@ -127,12 +182,6 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
-              region:
-                description: Output only. [Output Only] URL of the region where the
-                  composite health check resides. This field applies only to the regional
-                  resource. You must specify this field as part of the HTTP request
-                  URL. It is not settable as a field in the request body.
-                type: string
               resourceID:
                 description: The ComputeCompositeHealthCheck name. If not given, the
                   metadata.name will be used.
@@ -199,6 +248,13 @@ spec:
                   kind:
                     description: Output only. [Output Only] Type of the resource.
                       Alwayscompute#compositeHealthCheck for composite health checks.
+                    type: string
+                  region:
+                    description: Output only. [Output Only] URL of the region where
+                      the composite health check resides. This field applies only
+                      to the regional resource. You must specify this field as part
+                      of the HTTP request URL. It is not settable as a field in the
+                      request body.
                     type: string
                   selfLink:
                     description: Output only. [Output Only] Server-defined URL for
