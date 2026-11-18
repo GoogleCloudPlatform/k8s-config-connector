@@ -45,6 +45,7 @@
 // resource: ComputeInstantSnapshotGroup:InstantSnapshotGroup
 // resource: ComputeRolloutPlan:RolloutPlan
 // resource: ComputeInstanceGroupManagerResizeRequest:InstanceGroupManagerResizeRequest
+// resource: ComputeCompositeHealthCheck:CompositeHealthCheck
 
 package v1alpha1
 
@@ -511,6 +512,79 @@ type AutoscalingPolicyScalingSchedule struct {
 	// The time zone to use when interpreting the schedule. The value of this field must be a time zone name from the tz database: https://en.wikipedia.org/wiki/Tz_database. This field is assigned a default value of "UTC" if left empty.
 	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicyScalingSchedule.time_zone
 	TimeZone *string `json:"timeZone,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.CompositeHealthCheck", skipping
+
+// +kcc:proto=google.cloud.compute.v1.CompositeHealthCheck
+type CompositeHealthCheck struct {
+	// Output only. [Output Only] Creation timestamp inRFC3339
+	//  text format.
+	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you
+	//  create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.description
+	Description *string `json:"description,omitempty"`
+
+	// Fingerprint of this resource. A hash of the contents stored in this object.
+	//  This field is used in optimistic locking. This field will be ignored when
+	//  inserting a CompositeHealthCheck. An up-to-date fingerprint
+	//  must be provided in order to patch the CompositeHealthCheck; Otherwise,
+	//  the request will fail with error 412 conditionNotMet. To see
+	//  the latest fingerprint, make a get() request to retrieve the
+	//  CompositeHealthCheck.
+	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// URL to the destination resource. Must be set. Must be aForwardingRule. The ForwardingRule must have
+	//  load balancing scheme INTERNAL orINTERNAL_MANAGED and must be regional and in the same region
+	//  as the CompositeHealthCheck (cross-region deployment forINTERNAL_MANAGED is not supported). Can be mutated.
+	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.health_destination
+	HealthDestination *string `json:"healthDestination,omitempty"`
+
+	// URLs to the HealthSource resources whose results are AND'ed.
+	//  I.e. he aggregated result is is HEALTHY only if all sources
+	//  are HEALTHY. Must have at least 1. Must not have more than 10.
+	//  Must be regional and in the same region as theCompositeHealthCheck. Can be mutated.
+	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.health_sources
+	HealthSources []string `json:"healthSources,omitempty"`
+
+	// Output only. [Output Only] A unique identifier for this resource type. The server
+	//  generates this identifier.
+	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Output only. [Output Only] Type of the resource. Alwayscompute#compositeHealthCheck for composite health checks.
+	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created.
+	//  The name must be 1-63 characters long, and comply withRFC1035.
+	//  Specifically, the name must be 1-63 characters long and match the regular
+	//  expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first
+	//  character must be a lowercase letter, and all following characters must
+	//  be a dash, lowercase letter, or digit, except the last character, which
+	//  cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. [Output Only] URL of the region where the composite health check resides.
+	//  This field applies only to the regional resource. You must specify this
+	//  field as part of the HTTP request URL. It is not settable as a field in
+	//  the request body.
+	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.region
+	Region *string `json:"region,omitempty"`
+
+	// Output only. [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Output only. [Output Only] Server-defined URL with id for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
 }
 */
 
@@ -4542,6 +4616,34 @@ type ShareSettingsProjectConfig struct {
 	// The project ID, should be same as the key of this project config in the parent map.
 	// +kcc:proto:field=google.cloud.compute.v1beta.ShareSettingsProjectConfig.project_id
 	ProjectID *string `json:"projectID,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.CompositeHealthCheck", skipping
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.CompositeHealthCheck
+type CompositeHealthCheckObservedState struct {
+	// Output only. [Output Only] Creation timestamp inRFC3339
+	//  text format.
+	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// Output only. [Output Only] A unique identifier for this resource type. The server
+	//  generates this identifier.
+	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Output only. [Output Only] Type of the resource. Alwayscompute#compositeHealthCheck for composite health checks.
+	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Output only. [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Output only. [Output Only] Server-defined URL with id for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.CompositeHealthCheck.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
 }
 */
 

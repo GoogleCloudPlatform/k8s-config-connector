@@ -1135,6 +1135,58 @@ found existing non-generated mapping function "ComputeBackendServiceSpec_v1beta1
 		return out
 	}
 */
+func ComputeCompositeHealthCheckObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CompositeHealthCheck) *krmcomputev1alpha1.ComputeCompositeHealthCheckObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeCompositeHealthCheckObservedState{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ID = in.Id
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithID = in.SelfLinkWithId
+	return out
+}
+func ComputeCompositeHealthCheckObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeCompositeHealthCheckObservedState) *pb.CompositeHealthCheck {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CompositeHealthCheck{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Id = in.ID
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithId = in.SelfLinkWithID
+	return out
+}
+func ComputeCompositeHealthCheckSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CompositeHealthCheck) *krmcomputev1alpha1.ComputeCompositeHealthCheckSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeCompositeHealthCheckSpec{}
+	out.Description = in.Description
+	out.Fingerprint = in.Fingerprint
+	out.HealthDestination = in.HealthDestination
+	out.HealthSources = in.HealthSources
+	// MISSING: Name
+	out.Region = in.Region
+	return out
+}
+func ComputeCompositeHealthCheckSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeCompositeHealthCheckSpec) *pb.CompositeHealthCheck {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CompositeHealthCheck{}
+	out.Description = in.Description
+	out.Fingerprint = in.Fingerprint
+	out.HealthDestination = in.HealthDestination
+	out.HealthSources = in.HealthSources
+	// MISSING: Name
+	out.Region = in.Region
+	return out
+}
 func ComputeCrossSiteNetworkObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CrossSiteNetwork) *krmcomputev1alpha1.ComputeCrossSiteNetworkObservedState {
 	if in == nil {
 		return nil

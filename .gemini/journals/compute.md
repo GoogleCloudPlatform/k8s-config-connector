@@ -685,3 +685,17 @@
      - `apis/compute/v1alpha1` conformance tests pass cleanly.
      - Golden tests in `tests/apichecks` and `pkg/cli/powertools/cais` pass cleanly.
 
+### [2026-11-18] Greenfield: Prepopulate direct KRM types, identity, and judgement queue for ComputeCompositeHealthCheck
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for `ComputeCompositeHealthCheck` (issue #16025) following Greenfield Step 1a (`prepopulate/SKILL.md`).
+- **Proto & Client Support**:
+  - `CompositeHealthCheck` is defined in Google Cloud Compute Engine v1 (`google.cloud.compute.v1`) and managed via the `RegionCompositeHealthChecks` service (`cloud.google.com/go/compute/apiv1.RegionCompositeHealthChecksClient`) with regional scope `projects/{project}/regions/{region}/compositeHealthChecks/{compositeHealthCheck}`.
+  - Appended `CompositeHealthCheck` and `RegionCompositeHealthChecks` messages and service definitions from preview/compute v1 to `dev/tools/controllerbuilder/generate-proto.sh`, following the established Compute v1 pattern (`HealthSource`, `InstantSnapshotGroup`, `RolloutPlan`).
+- **Scaffolding & Identity**:
+  - Configured `apis/compute/generate.sh` with `generate-types --prepopulate-resource` and `generate-identity`.
+  - Added `ComputeCompositeHealthCheck` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Generated `ComputeCompositeHealthCheck` types, deepcopy, CRD, identity, references, mapper, and judgement queue entries.
+- **Verification**:
+  - Added golden entries for `computecompositehealthchecks` to `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+  - Verified `apis/compute/generate.sh` idempotency.
+  - All tests in `apis/compute/...`, `pkg/controller/direct/compute/...`, and `tests/apichecks/...` passed cleanly.
+

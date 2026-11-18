@@ -1796,6 +1796,416 @@ service RolloutPlans {
 EOF
 fi
 
+# Patch compute v1 compute.proto to include CompositeHealthCheck and RegionCompositeHealthChecks if missing
+if ! grep -q "message CompositeHealthCheck " google/cloud/compute/v1/compute.proto; then
+cat >> google/cloud/compute/v1/compute.proto <<'EOF'
+
+// Represents a composite health check.
+//
+// A composite health check resource specifies the health source resources and
+// the health destination resource to which the aggregated health result from
+// the health source resources is delivered.
+message CompositeHealthCheck {
+  // Output only. [Output Only] Creation timestamp inRFC3339
+  // text format.
+  optional string creation_timestamp = 30525366;
+
+  // An optional description of this resource. Provide this property when you
+  // create the resource.
+  optional string description = 422937596;
+
+  // Fingerprint of this resource. A hash of the contents stored in this object.
+  // This field is used in optimistic locking. This field will be ignored when
+  // inserting a CompositeHealthCheck. An up-to-date fingerprint
+  // must be provided in order to patch the CompositeHealthCheck; Otherwise,
+  // the request will fail with error 412 conditionNotMet. To see
+  // the latest fingerprint, make a get() request to retrieve the
+  // CompositeHealthCheck.
+  optional string fingerprint = 234678500;
+
+  // URL to the destination resource. Must be set. Must be aForwardingRule. The ForwardingRule must have
+  // load balancing scheme INTERNAL orINTERNAL_MANAGED and must be regional and in the same region
+  // as the CompositeHealthCheck (cross-region deployment forINTERNAL_MANAGED is not supported). Can be mutated.
+  optional string health_destination = 311098027;
+
+  // URLs to the HealthSource resources whose results are AND'ed.
+  // I.e. he aggregated result is is HEALTHY only if all sources
+  // are HEALTHY. Must have at least 1. Must not have more than 10.
+  // Must be regional and in the same region as theCompositeHealthCheck. Can be mutated.
+  repeated string health_sources = 397879509;
+
+  // Output only. [Output Only] A unique identifier for this resource type. The server
+  // generates this identifier.
+  optional uint64 id = 3355;
+
+  // Output only. [Output Only] Type of the resource. Alwayscompute#compositeHealthCheck for composite health checks.
+  optional string kind = 3292052;
+
+  // Name of the resource. Provided by the client when the resource is created.
+  // The name must be 1-63 characters long, and comply withRFC1035.
+  // Specifically, the name must be 1-63 characters long and match the regular
+  // expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first
+  // character must be a lowercase letter, and all following characters must
+  // be a dash, lowercase letter, or digit, except the last character, which
+  // cannot be a dash.
+  optional string name = 3373707;
+
+  // Output only. [Output Only] URL of the region where the composite health check resides.
+  // This field applies only to the regional resource. You must specify this
+  // field as part of the HTTP request URL. It is not settable as a field in
+  // the request body.
+  optional string region = 138946292;
+
+  // Output only. [Output Only] Server-defined URL for the resource.
+  optional string self_link = 456214797;
+
+  // Output only. [Output Only] Server-defined URL with id for the resource.
+  optional string self_link_with_id = 44520962;
+
+}
+
+// Contains a list of CompositeHealthChecksScopedList.
+message CompositeHealthCheckAggregatedList {
+  // [Output Only] Unique identifier for the resource; defined by the server.
+  optional string id = 3355;
+
+  // A list of CompositeHealthChecksScopedList resources.
+  map<string, CompositeHealthChecksScopedList> items = 100526016;
+
+  // Output only. Type of resource.
+  optional string kind = 3292052;
+
+  // [Output Only] This token allows you to get the next page of results for
+  // list requests. If the number of results is larger thanmaxResults, use the nextPageToken as a value for
+  // the query parameter pageToken in the next list request.
+  // Subsequent list requests will have their own nextPageToken to
+  // continue paging through the results.
+  optional string next_page_token = 79797525;
+
+  // Output only. [Output Only] Server-defined URL for this resource.
+  optional string self_link = 456214797;
+
+  // Output only. [Output Only] Unreachable resources.
+  repeated string unreachables = 243372063;
+
+  // [Output Only] Informational warning message.
+  optional Warning warning = 50704284;
+
+}
+
+// Response message for RegionCompositeHealthChecks.GetHealth
+message CompositeHealthCheckHealth {
+  // Health state of the CompositeHealthCheck.
+  enum HealthState {
+    // A value indicating that the enum field is not set.
+    UNDEFINED_HEALTH_STATE = 0;
+
+    HEALTHY = 439801213;
+
+    UNHEALTHY = 462118084;
+
+    UNKNOWN = 433141802;
+
+  }
+
+  // Health sources and their corresponding health states.
+  repeated CompositeHealthChecksGetHealthResponseHealthSourceHealth health_sources = 397879509;
+
+  // Health state of the CompositeHealthCheck.
+  // Check the HealthState enum for the list of possible values.
+  optional string health_state = 324007150;
+
+  // Output only. [Output Only] Type of resource. Alwayscompute#compositeHealthCheckHealth for the health of
+  // composite health checks.
+  optional string kind = 3292052;
+
+}
+
+//
+message CompositeHealthCheckList {
+  // [Output Only] Unique identifier for the resource; defined by the server.
+  optional string id = 3355;
+
+  // A list of CompositeHealthCheck resources.
+  repeated CompositeHealthCheck items = 100526016;
+
+  // Output only. [Output Only] Type of the resource. Alwayscompute#compositeHealthCheck for composite health checks.
+  optional string kind = 3292052;
+
+  // [Output Only] This token allows you to get the next page of results for
+  // list requests. If the number of results is larger thanmaxResults, use the nextPageToken as a value for
+  // the query parameter pageToken in the next list request.
+  // Subsequent list requests will have their own nextPageToken to
+  // continue paging through the results.
+  optional string next_page_token = 79797525;
+
+  // [Output Only] Server-defined URL for this resource.
+  optional string self_link = 456214797;
+
+  // [Output Only] Informational warning message.
+  optional Warning warning = 50704284;
+
+}
+
+//
+message CompositeHealthChecksGetHealthResponseHealthSourceHealth {
+  // Health state of the associated HealthSource resource.
+  enum HealthState {
+    // A value indicating that the enum field is not set.
+    UNDEFINED_HEALTH_STATE = 0;
+
+    HEALTHY = 439801213;
+
+    UNHEALTHY = 462118084;
+
+    UNKNOWN = 433141802;
+
+  }
+
+  // Health state of the associated HealthSource resource.
+  // Check the HealthState enum for the list of possible values.
+  optional string health_state = 324007150;
+
+  // Fully qualified URL of the associated HealthSource resource.
+  optional string source = 177235995;
+
+}
+
+//
+message CompositeHealthChecksScopedList {
+  // A list of CompositeHealthChecks contained in this scope.
+  repeated CompositeHealthCheck composite_health_checks = 517891062;
+
+  // Informational warning which replaces the list of composite health checks
+  // when the list is empty.
+  optional Warning warning = 50704284;
+
+}
+
+// A request message for RegionCompositeHealthChecks.AggregatedList. See the method description for details.
+message AggregatedListRegionCompositeHealthChecksRequest {
+  optional string filter = 336120696;
+  optional bool include_all_scopes = 391327988;
+  optional uint32 max_results = 54715419;
+  optional string order_by = 160562920;
+  optional string page_token = 19994697;
+  string project = 227560217 [(google.api.field_behavior) = REQUIRED];
+  optional bool return_partial_success = 517198390;
+  optional int64 service_project_number = 316757497;
+}
+
+// A request message for RegionCompositeHealthChecks.Delete. See the method description for details.
+message DeleteRegionCompositeHealthCheckRequest {
+  // Name of the CompositeHealthCheck resource to delete.
+  string composite_health_check = 466984989 [(google.api.field_behavior) = REQUIRED];
+
+  // Project ID for this request.
+  string project = 227560217 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "project"
+  ];
+
+  // Name of the region scoping this request.
+  string region = 138946292 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "region"
+  ];
+
+  // An optional request ID to identify requests. Specify a unique request ID so
+  // that if you must retry your request, the server will know to ignore the
+  // request if it has already been completed.
+  optional string request_id = 37109963;
+}
+
+// A request message for RegionCompositeHealthChecks.GetHealth. See the method description for details.
+message GetHealthRegionCompositeHealthCheckRequest {
+  // Name of the CompositeHealthCheck resource to get health for.
+  string composite_health_check = 466984989 [(google.api.field_behavior) = REQUIRED];
+
+  // Name of the project scoping this request.
+  string project = 227560217 [(google.api.field_behavior) = REQUIRED];
+
+  // Name of the region scoping this request.
+  string region = 138946292 [(google.api.field_behavior) = REQUIRED];
+}
+
+// A request message for RegionCompositeHealthChecks.Get. See the method description for details.
+message GetRegionCompositeHealthCheckRequest {
+  // Name of the CompositeHealthCheck resource to return.
+  string composite_health_check = 466984989 [(google.api.field_behavior) = REQUIRED];
+
+  // Project ID for this request.
+  string project = 227560217 [(google.api.field_behavior) = REQUIRED];
+
+  // Name of the region scoping this request.
+  string region = 138946292 [(google.api.field_behavior) = REQUIRED];
+}
+
+// A request message for RegionCompositeHealthChecks.Insert. See the method description for details.
+message InsertRegionCompositeHealthCheckRequest {
+  // The body resource for this request
+  CompositeHealthCheck composite_health_check_resource = 132195824 [(google.api.field_behavior) = REQUIRED];
+
+  // Project ID for this request.
+  string project = 227560217 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "project"
+  ];
+
+  // Name of the region scoping this request.
+  string region = 138946292 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "region"
+  ];
+
+  // An optional request ID to identify requests. Specify a unique request ID so
+  // that if you must retry your request, the server will know to ignore the
+  // request if it has already been completed.
+  optional string request_id = 37109963;
+}
+
+// A request message for RegionCompositeHealthChecks.List. See the method description for details.
+message ListRegionCompositeHealthChecksRequest {
+  optional string filter = 336120696;
+  optional uint32 max_results = 54715419;
+  optional string order_by = 160562920;
+  optional string page_token = 19994697;
+  string project = 227560217 [(google.api.field_behavior) = REQUIRED];
+  string region = 138946292 [(google.api.field_behavior) = REQUIRED];
+  optional bool return_partial_success = 517198390;
+}
+
+// A request message for RegionCompositeHealthChecks.Patch. See the method description for details.
+message PatchRegionCompositeHealthCheckRequest {
+  // Name of the CompositeHealthCheck to update. The name
+  // must be 1-63 characters long, and comply with RFC1035.
+  string composite_health_check = 466984989 [(google.api.field_behavior) = REQUIRED];
+
+  // The body resource for this request
+  CompositeHealthCheck composite_health_check_resource = 132195824 [(google.api.field_behavior) = REQUIRED];
+
+  // Project ID for this request.
+  string project = 227560217 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "project"
+  ];
+
+  // Name of the region scoping this request.
+  string region = 138946292 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "region"
+  ];
+
+  // An optional request ID to identify requests. Specify a unique request ID so
+  // that if you must retry your request, the server will know to ignore the
+  // request if it has already been completed.
+  optional string request_id = 37109963;
+}
+
+// A request message for RegionCompositeHealthChecks.TestIamPermissions. See the method description for details.
+message TestIamPermissionsRegionCompositeHealthCheckRequest {
+  // Project ID for this request.
+  string project = 227560217 [(google.api.field_behavior) = REQUIRED];
+
+  // The name of the region for this request.
+  string region = 138946292 [(google.api.field_behavior) = REQUIRED];
+
+  // Name or id of the resource for this request.
+  string resource = 195806222 [(google.api.field_behavior) = REQUIRED];
+
+  // The body resource for this request
+  TestPermissionsRequest test_permissions_request_resource = 439214758 [(google.api.field_behavior) = REQUIRED];
+}
+
+// The RegionCompositeHealthChecks API.
+service RegionCompositeHealthChecks {
+  option (google.api.default_host) =
+    "compute.googleapis.com";
+
+  option (google.api.oauth_scopes) =
+    "https://www.googleapis.com/auth/compute,"
+    "https://www.googleapis.com/auth/cloud-platform";
+
+  // Retrieves the list of all CompositeHealthCheck resources (all
+  // regional) available to the specified project.
+  rpc AggregatedList(AggregatedListRegionCompositeHealthChecksRequest) returns (CompositeHealthCheckAggregatedList) {
+    option (google.api.http) = {
+      get: "/compute/v1/projects/{project}/aggregated/compositeHealthChecks"
+    };
+    option (google.api.method_signature) = "project";
+  }
+
+  // Deletes the specified CompositeHealthCheck in the given region
+  rpc Delete(DeleteRegionCompositeHealthCheckRequest) returns (Operation) {
+    option (google.api.http) = {
+      delete: "/compute/v1/projects/{project}/regions/{region}/compositeHealthChecks/{composite_health_check}"
+    };
+    option (google.api.method_signature) = "project,region,composite_health_check";
+    option (google.cloud.operation_service) = "RegionOperations";
+  }
+
+  // Returns the specified CompositeHealthCheck resource in the given region.
+  rpc Get(GetRegionCompositeHealthCheckRequest) returns (CompositeHealthCheck) {
+    option (google.api.http) = {
+      get: "/compute/v1/projects/{project}/regions/{region}/compositeHealthChecks/{composite_health_check}"
+    };
+    option (google.api.method_signature) = "project,region,composite_health_check";
+  }
+
+  // Gets the most recent health check results for this
+  // regional CompositeHealthCheck.
+  rpc GetHealth(GetHealthRegionCompositeHealthCheckRequest) returns (CompositeHealthCheckHealth) {
+    option (google.api.http) = {
+      get: "/compute/v1/projects/{project}/regions/{region}/compositeHealthChecks/{composite_health_check}/getHealth"
+    };
+    option (google.api.method_signature) = "project,region,composite_health_check";
+  }
+
+  // Create a CompositeHealthCheck in the specified project in the given region
+  // using the parameters that are included in the request.
+  rpc Insert(InsertRegionCompositeHealthCheckRequest) returns (Operation) {
+    option (google.api.http) = {
+      body: "composite_health_check_resource"
+      post: "/compute/v1/projects/{project}/regions/{region}/compositeHealthChecks"
+    };
+    option (google.api.method_signature) = "project,region,composite_health_check_resource";
+    option (google.cloud.operation_service) = "RegionOperations";
+  }
+
+  // Lists the CompositeHealthChecks for a project in the given region.
+  rpc List(ListRegionCompositeHealthChecksRequest) returns (CompositeHealthCheckList) {
+    option (google.api.http) = {
+      get: "/compute/v1/projects/{project}/regions/{region}/compositeHealthChecks"
+    };
+    option (google.api.method_signature) = "project,region";
+  }
+
+  // Updates the specified regional CompositeHealthCheck resource
+  // with the data included in the request.  This method supportsPATCH
+  // semantics and uses theJSON merge
+  // patch format and processing rules.
+  rpc Patch(PatchRegionCompositeHealthCheckRequest) returns (Operation) {
+    option (google.api.http) = {
+      body: "composite_health_check_resource"
+      patch: "/compute/v1/projects/{project}/regions/{region}/compositeHealthChecks/{composite_health_check}"
+    };
+    option (google.api.method_signature) = "project,region,composite_health_check,composite_health_check_resource";
+    option (google.cloud.operation_service) = "RegionOperations";
+  }
+
+  // Returns permissions that a caller has on the specified resource.
+  rpc TestIamPermissions(TestIamPermissionsRegionCompositeHealthCheckRequest) returns (TestPermissionsResponse) {
+    option (google.api.http) = {
+      body: "test_permissions_request_resource"
+      post: "/compute/v1/projects/{project}/regions/{region}/compositeHealthChecks/{resource}/testIamPermissions"
+    };
+    option (google.api.method_signature) = "project,region,resource,test_permissions_request_resource";
+  }
+
+}
+EOF
+fi
+
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"
