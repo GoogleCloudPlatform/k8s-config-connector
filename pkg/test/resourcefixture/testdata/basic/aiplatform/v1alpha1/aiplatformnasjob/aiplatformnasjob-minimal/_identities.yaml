@@ -1,0 +1,6 @@
+- caisURL: //aiplatform.googleapis.com/projects/${projectId}/locations/us-central1/nasJobs/7735980546777415680
+  group: aiplatform.cnrm.cloud.google.com
+  kind: AIPlatformNasJob
+  name: nasjob-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
