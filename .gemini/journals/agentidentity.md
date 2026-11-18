@@ -30,3 +30,16 @@
     - `agentidentityauthprovider-twoleggedoauth`: 2-legged OAuth auth provider exercising `twoLeggedOauth` parameters.
   - **Golden Testing**: Recorded all three fixtures against real GCP (`cnrm-barni-4`) with valid `_audit_probe.log` entries and 7/7 validation checks passing.
 
+### [2026-11-18] AgentIdentityAuthProvider MockGCP Implementation & Alignment
+- **Context**: Implementing Greenfield Step 3 MockGCP and golden log alignment for `AgentIdentityAuthProvider`.
+- **Implementation & Mock Decisions**:
+  - Implemented `mockagentidentity` service under `mockgcp/mockagentidentity` supporting `AuthProviderService` with standard CRUD and list operations.
+  - Extracted `auth_provider_service.proto` from googleapis (pinned commit `2c4dd791cc44104f1fdc49b4cbdadb160772b11e`) to `mockgcp/apis/google/cloud/agentidentity/v1/auth_provider_service.proto` and generated grpc-gateway client handler code into `mockgcp/generated/google/cloud/agentidentity/v1/auth_provider_service.pb.gw.go`.
+  - Added `cloud.google.com/go/agentidentity v0.1.0` to `mockgcp/go.mod` and registered `mockagentidentity` in `mockgcp/register.go`.
+  - Added `AgentIdentityAuthProvider` to supported MockGCP GroupKinds in `config/tests/samples/create/harness.go`.
+  - Mock service behavior:
+    - Default `State`: defaults `AuthProvider_STATE_UNSPECIFIED` (0) to `AuthProvider_ENABLED` (1).
+    - `redirectUrl`: computed deterministically as `https://agentidentitycredentials.googleapis.com/v1/{name}/oauthcallback` for 3-legged OAuth providers.
+    - Secret and input-only stripping: `apiKey.apiKey`, `threeLeggedOauth.clientSecret`, `twoLeggedOauth.clientSecret`, and `workload_ids` are input-only and stripped before returning responses or storage read/write to match real GCP behavior.
+    - Error responses: returns 404 NOT_FOUND with "The requested resource was not found." on non-existent resource lookups, matching real GCP.
+  - **Golden Alignment**: Verified all 3 test fixtures (`agentidentityauthprovider-minimal`, `agentidentityauthprovider-maximal`, and `agentidentityauthprovider-twoleggedoauth`) against MockGCP with zero discrepancies between `_http.log` and `_http_mock.log`.

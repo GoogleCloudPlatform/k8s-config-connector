@@ -14,6 +14,7 @@ replace github.com/gke-labs/kube-etl/syncer => ../third_party/github.com/gke-lab
 
 require (
 	cloud.google.com/go/accesscontextmanager v1.14.0
+	cloud.google.com/go/agentidentity v0.1.0
 	cloud.google.com/go/aiplatform v1.127.0
 	cloud.google.com/go/alloydb v1.26.0
 	cloud.google.com/go/analytics v0.35.0
@@ -58,6 +59,7 @@ require (
 	cloud.google.com/go/eventarc v1.23.0
 	cloud.google.com/go/financialservices v1.2.0
 	cloud.google.com/go/firestore v1.22.0
+	cloud.google.com/go/ftp v0.3.1
 	cloud.google.com/go/geminidataanalytics v1.6.0
 	cloud.google.com/go/gkemulticloud v1.11.0
 	cloud.google.com/go/hypercomputecluster v1.1.0
@@ -132,7 +134,6 @@ require (
 	cloud.google.com/go/auth v0.24.1-0.20261001053825-dbc26066f70a // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.3.0 // indirect
 	cloud.google.com/go/compute/metadata v0.10.0 // indirect
-	cloud.google.com/go/ftp v0.3.1 // indirect
 	cloud.google.com/go/pubsub/v2 v2.5.1 // indirect
 	cloud.google.com/go/resourcemanager v1.15.0 // indirect
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0 // indirect

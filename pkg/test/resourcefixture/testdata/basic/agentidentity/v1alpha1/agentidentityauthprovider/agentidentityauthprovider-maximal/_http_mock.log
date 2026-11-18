@@ -1,0 +1,257 @@
+# Phase: CREATE
+GET https://agentidentity.googleapis.com/v1/projects/${projectId}/locations/us-central1/authProviders/authprovider-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FauthProviders%2Fauthprovider-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "The requested resource was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://agentidentity.googleapis.com/v1/projects/${projectId}/locations/us-central1/authProviders?%24alt=json%3Benum-encoding%3Dint&authProviderId=authprovider-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "allowedScopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+  ],
+  "authProviderTypeParams": {
+    "threeLeggedOauth": {
+      "authorizationUrl": "https://auth.example.com/authorize",
+      "clientId": "example-client-id",
+      "clientSecret": "example-client-secret",
+      "defaultContinueUri": "https://example.com/continue",
+      "tokenUrl": "https://auth.example.com/oauth/token"
+    }
+  },
+  "blockedScopes": [
+    "https://www.googleapis.com/auth/userinfo.profile"
+  ],
+  "description": "Initial description for maximal auth provider",
+  "workloadIds": [
+    "principal://agents.global.org-123456789.system.id.goog/resources/aiplatform/projects/12345/locations/us-central1/reasoningEngines/12345"
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowedScopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+  ],
+  "authProviderTypeParams": {
+    "threeLeggedOauth": {
+      "authorizationUrl": "https://auth.example.com/authorize",
+      "clientId": "example-client-id",
+      "defaultContinueUri": "https://example.com/continue",
+      "redirectUrl": "https://agentidentitycredentials.googleapis.com/v1/projects/${projectId}/locations/us-central1/authProviders/authprovider-max-${uniqueId}/oauthcallback",
+      "tokenUrl": "https://auth.example.com/oauth/token"
+    }
+  },
+  "blockedScopes": [
+    "https://www.googleapis.com/auth/userinfo.profile"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Initial description for maximal auth provider",
+  "name": "projects/${projectId}/locations/us-central1/authProviders/authprovider-max-${uniqueId}",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: UPDATE
+GET https://agentidentity.googleapis.com/v1/projects/${projectId}/locations/us-central1/authProviders/authprovider-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FauthProviders%2Fauthprovider-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowedScopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+  ],
+  "authProviderTypeParams": {
+    "threeLeggedOauth": {
+      "authorizationUrl": "https://auth.example.com/authorize",
+      "clientId": "example-client-id",
+      "defaultContinueUri": "https://example.com/continue",
+      "redirectUrl": "https://agentidentitycredentials.googleapis.com/v1/projects/${projectId}/locations/us-central1/authProviders/authprovider-max-${uniqueId}/oauthcallback",
+      "tokenUrl": "https://auth.example.com/oauth/token"
+    }
+  },
+  "blockedScopes": [
+    "https://www.googleapis.com/auth/userinfo.profile"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Initial description for maximal auth provider",
+  "name": "projects/${projectId}/locations/us-central1/authProviders/authprovider-max-${uniqueId}",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://agentidentity.googleapis.com/v1/projects/${projectId}/locations/us-central1/authProviders/authprovider-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=allowedScopes%2CauthProviderTypeParams%2CblockedScopes%2Cdescription
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: auth_provider.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FauthProviders%2Fauthprovider-max-${uniqueId}
+
+{
+  "allowedScopes": [
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/cloud-platform"
+  ],
+  "authProviderTypeParams": {
+    "threeLeggedOauth": {
+      "authorizationUrl": "https://auth.example.com/authorize2",
+      "clientId": "updated-client-id",
+      "defaultContinueUri": "https://example.com/continue2",
+      "enablePkce": true,
+      "tokenUrl": "https://auth.example.com/oauth/token2"
+    }
+  },
+  "blockedScopes": [
+    "https://www.googleapis.com/auth/userinfo.profile",
+    "https://www.googleapis.com/auth/drive"
+  ],
+  "description": "Updated description for maximal auth provider",
+  "name": "projects/${projectId}/locations/us-central1/authProviders/authprovider-max-${uniqueId}",
+  "workloadIds": [
+    "principal://agents.global.org-123456789.system.id.goog/resources/aiplatform/projects/12345/locations/us-central1/reasoningEngines/12345"
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowedScopes": [
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/cloud-platform"
+  ],
+  "authProviderTypeParams": {
+    "threeLeggedOauth": {
+      "authorizationUrl": "https://auth.example.com/authorize2",
+      "clientId": "updated-client-id",
+      "defaultContinueUri": "https://example.com/continue2",
+      "enablePkce": true,
+      "redirectUrl": "https://agentidentitycredentials.googleapis.com/v1/projects/${projectId}/locations/us-central1/authProviders/authprovider-max-${uniqueId}/oauthcallback",
+      "tokenUrl": "https://auth.example.com/oauth/token2"
+    }
+  },
+  "blockedScopes": [
+    "https://www.googleapis.com/auth/userinfo.profile",
+    "https://www.googleapis.com/auth/drive"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description for maximal auth provider",
+  "name": "projects/${projectId}/locations/us-central1/authProviders/authprovider-max-${uniqueId}",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GET https://agentidentity.googleapis.com/v1/projects/${projectId}/locations/us-central1/authProviders/authprovider-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FauthProviders%2Fauthprovider-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowedScopes": [
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/cloud-platform"
+  ],
+  "authProviderTypeParams": {
+    "threeLeggedOauth": {
+      "authorizationUrl": "https://auth.example.com/authorize2",
+      "clientId": "updated-client-id",
+      "defaultContinueUri": "https://example.com/continue2",
+      "enablePkce": true,
+      "redirectUrl": "https://agentidentitycredentials.googleapis.com/v1/projects/${projectId}/locations/us-central1/authProviders/authprovider-max-${uniqueId}/oauthcallback",
+      "tokenUrl": "https://auth.example.com/oauth/token2"
+    }
+  },
+  "blockedScopes": [
+    "https://www.googleapis.com/auth/userinfo.profile",
+    "https://www.googleapis.com/auth/drive"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description for maximal auth provider",
+  "name": "projects/${projectId}/locations/us-central1/authProviders/authprovider-max-${uniqueId}",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://agentidentity.googleapis.com/v1/projects/${projectId}/locations/us-central1/authProviders/authprovider-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FauthProviders%2Fauthprovider-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
