@@ -347,7 +347,7 @@ func (a *BackupRunAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 	}
 	obj.Spec.ProjectRef = &refsv1beta1.ProjectRef{External: a.id.Project}
 	if a.actual.GetInstance() != "" {
-		obj.Spec.InstanceRef = &refsv1beta1.SQLInstanceRef{External: a.actual.GetInstance()}
+		obj.Spec.InstanceRef = &refsv1beta1.SQLInstanceRef{External: "projects/" + a.id.Project + "/instances/" + a.actual.GetInstance()}
 	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
