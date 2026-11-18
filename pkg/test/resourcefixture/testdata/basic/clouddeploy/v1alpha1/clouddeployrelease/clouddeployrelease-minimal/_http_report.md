@@ -4,7 +4,7 @@
 - **Resource Name:** `clouddeployrelease-min-${uniqueId}`
 - **Source Log:** `_http.log` (37 total HTTP entries, 33 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:e6c907102ac9e699`
+- **Integrity Hash:** `sha256:df6e4804da457f73`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 

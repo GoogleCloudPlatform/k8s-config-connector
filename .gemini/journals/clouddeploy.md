@@ -27,3 +27,14 @@
   4. Real GCP `Release` responses return additional condition fields (`dockerVersionSupportedCondition`, `helmVersionSupportedCondition`, etc.) and `toolVersions` absent from the vendored proto schema in `.build/googleapis.pb`. Added `google.cloud.deploy.v1.Release` to `protovalidate.go`'s `unmarshalDynamicJSON` unknown field allowlist.
   5. `CreateRelease` requires a valid Skaffold archive (`skaffoldConfigUri`) during server-side validation; tests reference `gs://${projectId}-clouddeploy-test-bucket-2026/source.tar.gz`.
 
+### [2026-11-18] Greenfield: MockGCP Implementation and Alignment for CloudDeployRelease
+- **Context**: Implemented MockGCP support and golden log alignment for `CloudDeployRelease` following Greenfield Step 3 (`kcc-direct-mockgcp-implementer`).
+- **Learnings & Observations**:
+  1. Implemented `CreateRelease`, `GetRelease`, `ListReleases`, and `AbandonRelease` in `mockgcp/mockclouddeploy/release.go`.
+  2. `CreateRelease` automatically creates `deliveryPipelineSnapshot` and `targetSnapshots` based on the parent `DeliveryPipeline` in mock storage and its serial pipeline stages.
+  3. Real GCP asynchronous rendering creates `targetArtifacts` and `targetRenders` with a build ID in `projects/${projectNumber}/locations/${location}/builds/${buildId}`. Handled deterministic generation in `GetRelease` to avoid run-to-run drift.
+  4. Normalized volatile nested snapshot fields (`createTime`, `updateTime`, `uid`, `etag`) in `tests/e2e/normalize.go` and `mockgcp/mockclouddeploy/normalize.go`.
+  5. Added proto3 unmapped fields (`toolVersions`, `dockerVersionSupportedCondition`, etc.) and snapshot etags to `normalizeRepresentation` in `pkg/test/resourcefixture/golden_alignment_test.go`.
+  6. Verified all fixtures pass both hermetic e2e tests (`hack/compare-mock`) and golden alignment tests (`TestGoldenLogAlignment`) with 0 errors.
+
+

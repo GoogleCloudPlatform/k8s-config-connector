@@ -33,21 +33,20 @@ status:
         status: true
     createTime: "1970-01-01T00:00:00Z"
     deliveryPipelineSnapshot:
-      createTime: "2026-11-17T20:59:06.550303Z"
+      createTime: "1970-01-01T00:00:00Z"
       description: Test Delivery Pipeline for Release
-      etag: 2c1586bba8f349cf
       name: projects/${projectNumber}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}
       serialPipeline:
         stages:
         - targetID: clouddeploytarget-${uniqueId}
-      uid: b14bd0c1a5bb43208ee11c08856924ed
-      updateTime: "2026-11-17T20:59:06.550303Z"
+      uid: 0123456789abcdef
+      updateTime: "1970-01-01T00:00:00Z"
     etag: abcdef123456
     renderState: IN_PROGRESS
     targetSnapshots:
-    - createTime: "2026-11-17T20:59:05.752712Z"
+    - createTime: "1970-01-01T00:00:00Z"
       description: Test Target for Release
-      etag: 6f18a7099b81a2e0
+      etag: abcdef123456
       executionConfigs:
       - artifactStorage: gs://us-central1.deploy-artifacts.${projectId}.appspot.com
         defaultPool:
@@ -68,6 +67,6 @@ status:
       run:
         location: projects/${projectId}/locations/us-central1
       targetID: clouddeploytarget-${uniqueId}
-      uid: fbb4d5d745f54fcba33cc40e05e8a0b3
-      updateTime: "2026-11-17T20:59:05.752712Z"
+      uid: 0123456789abcdef
+      updateTime: "1970-01-01T00:00:00Z"
     uid: 0123456789abcdef
