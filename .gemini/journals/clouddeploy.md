@@ -56,5 +56,13 @@
   5. Updated documentation URL in `clouddeployrollout_types.go` to `https://cloud.google.com/deploy/docs/reference/rest/v1/projects.locations.deliveryPipelines.releases.rollouts`.
   6. Added unit tests for `CloudDeployRolloutIdentity` and `GetIdentity` in `clouddeployrollout_identity_test.go`.
 
+### [2026-11-18] Direct Controller, Fuzzer, and E2E Fixtures for CloudDeployRollout
+- **Context**: Implemented direct controller, fuzzer, minimal/maximal E2E fixtures, and recorded golden logs against real GCP for `CloudDeployRollout` following Greenfield Step 2.
+- **Learnings & Observations**:
+  1. `Rollout` in `google.cloud.deploy.v1` has no `UpdateRollout` or `DeleteRollout` RPC in GCP Cloud Deploy API. Deletion removes the KRM finalizer without deleting the GCP resource. Configured fixtures with `cnrm.cloud.google.com/deletion-policy: "abandon"`.
+  2. `CloudDeployRollout` maps `TargetRef *CloudDeployTargetRef` to `Rollout.target_id` string via `lastSegment(in.TargetRef.External)` in `pkg/controller/direct/clouddeploy/clouddeployrollout_mapper.go`.
+  3. Created minimal and maximal E2E fixtures with dependencies on `CloudDeployTarget`, `CloudDeployDeliveryPipeline`, and `CloudDeployRelease`. Recorded authentic golden HTTP logs, objects, and audit probe markers against real GCP in project `cnrm-barni-4`, passing all 7/7 HTTP lifecycle checks.
+
+
 
 

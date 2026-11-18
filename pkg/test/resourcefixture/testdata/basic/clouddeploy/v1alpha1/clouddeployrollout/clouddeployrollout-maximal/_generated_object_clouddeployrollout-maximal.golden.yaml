@@ -1,0 +1,49 @@
+apiVersion: clouddeploy.cnrm.cloud.google.com/v1alpha1
+kind: CloudDeployRollout
+metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: abandon
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: clouddeployrollout-max-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  annotations:
+    env: staging
+    team: devops
+  description: Maximal test rollout created by KCC
+  parentRef:
+    name: clouddeployrelease-${uniqueId}
+  targetRef:
+    name: clouddeploytarget-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/releases/clouddeployrelease-${uniqueId}/rollouts/clouddeployrollout-max-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    approvalState: DOES_NOT_NEED_APPROVAL
+    createTime: "1970-01-01T00:00:00Z"
+    etag: abcdef123456
+    phases:
+    - deploymentJobs:
+        deployJob:
+          deployJob: {}
+          id: deploy
+          state: PENDING
+        verifyJob:
+          id: verify
+          state: DISABLED
+          verifyJob: {}
+      id: stable
+      state: PENDING
+    state: PENDING_RELEASE
+    uid: 0123456789abcdef

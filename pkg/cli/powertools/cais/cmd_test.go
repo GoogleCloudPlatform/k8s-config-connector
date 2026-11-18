@@ -664,6 +664,58 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 			}
 
+			// Inject status.externalRef for CloudDeployRelease to simulate a reconciled release in static unit tests.
+			if u.GetKind() == "CloudDeployRelease" && u.GroupVersionKind().Group == "clouddeploy.cnrm.cloud.google.com" {
+				if extRef, ok, _ := unstructured.NestedString(u.Object, "status", "externalRef"); !ok || extRef == "" {
+					releaseID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+					if releaseID == "" {
+						releaseID = u.GetName()
+					}
+					var extRef string
+					if parentExt, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "external"); parentExt != "" {
+						extRef = fmt.Sprintf("%s/releases/%s", strings.TrimSuffix(parentExt, "/"), releaseID)
+					} else if parentName, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "name"); parentName != "" {
+						for _, other := range kccObjs {
+							if other.GetKind() == "CloudDeployDeliveryPipeline" && other.GetName() == parentName {
+								if otherExt, ok, _ := unstructured.NestedString(other.Object, "status", "externalRef"); ok && otherExt != "" {
+									extRef = fmt.Sprintf("%s/releases/%s", strings.TrimSuffix(otherExt, "/"), releaseID)
+								} else {
+									projectID, _, _ := unstructured.NestedString(other.Object, "spec", "projectRef", "external")
+									projectID = strings.TrimPrefix(projectID, "projects/")
+									if projectID == "" {
+										otherAnn := other.GetAnnotations()
+										if otherAnn != nil {
+											projectID = otherAnn["cnrm.cloud.google.com/project-id"]
+										}
+									}
+									if projectID == "" {
+										projectID = annotations["cnrm.cloud.google.com/project-id"]
+									}
+									if projectID == "" {
+										projectID = "mock-project"
+									}
+									location, _, _ := unstructured.NestedString(other.Object, "spec", "location")
+									if location == "" {
+										location = "us-central1"
+									}
+									pipelineID, _, _ := unstructured.NestedString(other.Object, "spec", "resourceID")
+									if pipelineID == "" {
+										pipelineID = other.GetName()
+									}
+									extRef = fmt.Sprintf("projects/%s/locations/%s/deliveryPipelines/%s/releases/%s", projectID, location, pipelineID, releaseID)
+								}
+								break
+							}
+						}
+					}
+					if extRef != "" {
+						if err := unstructured.SetNestedField(u.Object, extRef, "status", "externalRef"); err != nil {
+							t.Fatalf("failed to inject status.externalRef for CloudDeployRelease %s: %v", u.GetName(), err)
+						}
+					}
+				}
+			}
+
 			// If the identity is server-generated, and not specified, inject a spec.resourceID value.
 			gk := u.GroupVersionKind().GroupKind()
 			if obj, err := kccscheme.NewObject(gk); err == nil {
@@ -922,6 +974,54 @@ func normalizeFixtureKCCObjects(allObjs []*unstructured.Unstructured) []*unstruc
 			}
 			extRef := fmt.Sprintf("projects/%s/locations/%s/deliveryPipelines/%s", projectID, location, pipelineID)
 			_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+		}
+		if u.GetKind() == "CloudDeployRelease" && group == "clouddeploy.cnrm.cloud.google.com" {
+			if extRef, ok, _ := unstructured.NestedString(u.Object, "status", "externalRef"); !ok || extRef == "" {
+				releaseID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+				if releaseID == "" {
+					releaseID = u.GetName()
+				}
+				var extRef string
+				if parentExt, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "external"); parentExt != "" {
+					extRef = fmt.Sprintf("%s/releases/%s", strings.TrimSuffix(parentExt, "/"), releaseID)
+				} else if parentName, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "name"); parentName != "" {
+					for _, other := range allObjs {
+						if other.GetKind() == "CloudDeployDeliveryPipeline" && other.GetName() == parentName {
+							if otherExt, ok, _ := unstructured.NestedString(other.Object, "status", "externalRef"); ok && otherExt != "" {
+								extRef = fmt.Sprintf("%s/releases/%s", strings.TrimSuffix(otherExt, "/"), releaseID)
+							} else {
+								projectID, _, _ := unstructured.NestedString(other.Object, "spec", "projectRef", "external")
+								projectID = strings.TrimPrefix(projectID, "projects/")
+								if projectID == "" {
+									otherAnn := other.GetAnnotations()
+									if otherAnn != nil {
+										projectID = otherAnn["cnrm.cloud.google.com/project-id"]
+									}
+								}
+								if projectID == "" {
+									projectID = ann["cnrm.cloud.google.com/project-id"]
+								}
+								if projectID == "" {
+									projectID = "mock-project"
+								}
+								location, _, _ := unstructured.NestedString(other.Object, "spec", "location")
+								if location == "" {
+									location = "us-central1"
+								}
+								pipelineID, _, _ := unstructured.NestedString(other.Object, "spec", "resourceID")
+								if pipelineID == "" {
+									pipelineID = other.GetName()
+								}
+								extRef = fmt.Sprintf("projects/%s/locations/%s/deliveryPipelines/%s/releases/%s", projectID, location, pipelineID, releaseID)
+							}
+							break
+						}
+					}
+				}
+				if extRef != "" {
+					_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+				}
+			}
 		}
 		kccObjs = append(kccObjs, u)
 	}

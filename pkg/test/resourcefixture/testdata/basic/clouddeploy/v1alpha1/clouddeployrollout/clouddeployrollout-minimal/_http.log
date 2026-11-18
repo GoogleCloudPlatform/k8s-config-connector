@@ -1,0 +1,1646 @@
+# Phase: CREATE
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/targets/clouddeploytarget-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftargets%2Fclouddeploytarget-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/targets/clouddeploytarget-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/targets?%24alt=json%3Benum-encoding%3Dint&targetId=clouddeploytarget-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "description": "Test Target for Rollout",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "run": {
+    "location": "projects/${projectId}/locations/us-central1"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/targets/clouddeploytarget-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/targets/clouddeploytarget-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.Target",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Test Target for Rollout",
+    "etag": "abcdef0123A=",
+    "executionConfigs": [
+      {
+        "artifactStorage": "gs://us-central1.deploy-artifacts.${projectId}.appspot.com",
+        "defaultPool": {
+          "artifactStorage": "gs://us-central1.deploy-artifacts.${projectId}.appspot.com",
+          "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+        },
+        "executionTimeout": "3600s",
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "usages": [
+          "RENDER",
+          "DEPLOY",
+          "VERIFY",
+          "PREDEPLOY",
+          "POSTDEPLOY",
+          "ANALYSIS"
+        ]
+      }
+    ],
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/targets/clouddeploytarget-${uniqueId}",
+    "run": {
+      "location": "projects/${projectId}/locations/us-central1"
+    },
+    "targetId": "clouddeploytarget-${uniqueId}",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines?%24alt=json%3Benum-encoding%3Dint&deliveryPipelineId=clouddeploydeliverypipeline-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "description": "Test Delivery Pipeline for Rollout",
+  "serialPipeline": {
+    "stages": [
+      {
+        "targetId": "clouddeploytarget-${uniqueId}"
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.DeliveryPipeline",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Test Delivery Pipeline for Rollout",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+    "serialPipeline": {
+      "stages": [
+        {
+          "targetId": "clouddeploytarget-${uniqueId}"
+        }
+      ]
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/releases/clouddeployrelease-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}%2Freleases%2Fclouddeployrelease-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/releases/clouddeployrelease-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/releases?%24alt=json%3Benum-encoding%3Dint&releaseId=clouddeployrelease-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}
+
+{
+  "skaffoldConfigUri": "gs://${projectId}-clouddeploy-test-bucket-2026/source.tar.gz"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/releases/clouddeployrelease-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/releases/clouddeployrelease-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.Release",
+    "condition": {
+      "dockerVersionSupportedCondition": {
+        "maintenanceModeTime": "2027-11-04T12:00:00Z",
+        "status": true,
+        "supportExpirationTime": "2028-01-03T12:00:00Z",
+        "toolVersionSupportState": "TOOL_VERSION_SUPPORT_STATE_SUPPORTED"
+      },
+      "helmVersionSupportedCondition": {
+        "maintenanceModeTime": "2027-10-15T12:00:00Z",
+        "status": true,
+        "supportExpirationTime": "2027-12-14T12:00:00Z",
+        "toolVersionSupportState": "TOOL_VERSION_SUPPORT_STATE_SUPPORTED"
+      },
+      "kptVersionSupportedCondition": {
+        "maintenanceModeTime": "2027-09-28T12:00:00Z",
+        "status": true,
+        "supportExpirationTime": "2027-11-27T12:00:00Z",
+        "toolVersionSupportState": "TOOL_VERSION_SUPPORT_STATE_SUPPORTED"
+      },
+      "kubectlVersionSupportedCondition": {
+        "maintenanceModeTime": "2027-10-28T12:00:00Z",
+        "status": true,
+        "supportExpirationTime": "2027-12-27T12:00:00Z",
+        "toolVersionSupportState": "TOOL_VERSION_SUPPORT_STATE_SUPPORTED"
+      },
+      "kustomizeVersionSupportedCondition": {
+        "status": true,
+        "toolVersionSupportState": "TOOL_VERSION_SUPPORT_STATE_SUPPORTED"
+      },
+      "releaseReadyCondition": {
+        "status": true
+      },
+      "skaffoldSupportedCondition": {
+        "skaffoldSupportState": "SKAFFOLD_SUPPORT_STATE_SUPPORTED",
+        "status": true
+      },
+      "skaffoldVersionSupportedCondition": {
+        "status": true,
+        "toolVersionSupportState": "TOOL_VERSION_SUPPORT_STATE_SUPPORTED"
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deliveryPipelineSnapshot": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "description": "Test Delivery Pipeline for Rollout",
+      "etag": "abcdef0123A=",
+      "name": "projects/${projectNumber}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+      "serialPipeline": {
+        "stages": [
+          {
+            "targetId": "clouddeploytarget-${uniqueId}"
+          }
+        ]
+      },
+      "uid": "111111111111111111111",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/releases/clouddeployrelease-${uniqueId}",
+    "renderState": "IN_PROGRESS",
+    "skaffoldConfigUri": "gs://${projectId}-clouddeploy-test-bucket-2026/source.tar.gz",
+    "skaffoldVersion": "cd-skaffold",
+    "targetSnapshots": [
+      {
+        "createTime": "2024-04-01T12:34:56.123456Z",
+        "description": "Test Target for Rollout",
+        "etag": "abcdef0123A=",
+        "executionConfigs": [
+          {
+            "artifactStorage": "gs://us-central1.deploy-artifacts.${projectId}.appspot.com",
+            "defaultPool": {
+              "artifactStorage": "gs://us-central1.deploy-artifacts.${projectId}.appspot.com",
+              "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+            },
+            "executionTimeout": "3600s",
+            "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+            "usages": [
+              "RENDER",
+              "DEPLOY",
+              "VERIFY",
+              "PREDEPLOY",
+              "POSTDEPLOY",
+              "ANALYSIS"
+            ]
+          }
+        ],
+        "labels": {
+          "cnrm-test": "true",
+          "managed-by-cnrm": "true"
+        },
+        "name": "projects/${projectNumber}/locations/us-central1/targets/clouddeploytarget-${uniqueId}",
+        "run": {
+          "location": "projects/${projectId}/locations/us-central1"
+        },
+        "targetId": "clouddeploytarget-${uniqueId}",
+        "uid": "111111111111111111111",
+        "updateTime": "2024-04-01T12:34:56.123456Z"
+      }
+    ],
+    "toolVersions": {
+      "docker": "29.9.3",
+      "helm": "4.3.1",
+      "kpt": "1.0.1",
+      "kubectl": "1.37.2",
+      "kustomize": "kubectl",
+      "skaffold": "cd-skaffold"
+    },
+    "uid": "111111111111111111111"
+  }
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/releases/clouddeployrelease-${uniqueId}/rollouts/clouddeployrollout-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}%2Freleases%2Fclouddeployrelease-${uniqueId}%2Frollouts%2Fclouddeployrollout-min-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/releases/clouddeployrelease-${uniqueId}/rollouts/clouddeployrollout-min-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/releases/clouddeployrelease-${uniqueId}/rollouts?%24alt=json%3Benum-encoding%3Dint&rolloutId=clouddeployrollout-min-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}%2Freleases%2Fclouddeployrelease-${uniqueId}
+
+{
+  "targetId": "clouddeploytarget-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/releases/clouddeployrelease-${uniqueId}/rollouts/clouddeployrollout-min-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/releases/clouddeployrelease-${uniqueId}/rollouts/clouddeployrollout-min-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.Rollout",
+    "approvalState": "DOES_NOT_NEED_APPROVAL",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/releases/clouddeployrelease-${uniqueId}/rollouts/clouddeployrollout-min-${uniqueId}",
+    "phases": [
+      {
+        "deploymentJobs": {
+          "deployJob": {
+            "deployJob": {},
+            "id": "deploy",
+            "state": "PENDING"
+          },
+          "verifyJob": {
+            "id": "verify",
+            "state": "DISABLED",
+            "verifyJob": {}
+          }
+        },
+        "id": "stable",
+        "state": "PENDING"
+      }
+    ],
+    "state": "PENDING_RELEASE",
+    "targetId": "clouddeploytarget-${uniqueId}",
+    "uid": "111111111111111111111"
+  }
+}
+
+---
+
+# Phase: DELETE
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/releases/clouddeployrelease-${uniqueId}/rollouts/clouddeployrollout-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}%2Freleases%2Fclouddeployrelease-${uniqueId}%2Frollouts%2Fclouddeployrollout-min-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "approvalState": 2,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/releases/clouddeployrelease-${uniqueId}/rollouts/clouddeployrollout-min-${uniqueId}",
+  "phases": [
+    {
+      "deploymentJobs": {
+        "deployJob": {
+          "deployJob": {},
+          "id": "deploy",
+          "state": 1
+        },
+        "verifyJob": {
+          "id": "verify",
+          "state": 2,
+          "verifyJob": {}
+        }
+      },
+      "id": "stable",
+      "state": 1
+    }
+  ],
+  "state": 7,
+  "targetId": "clouddeploytarget-${uniqueId}",
+  "uid": "111111111111111111111"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/releases/clouddeployrelease-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}%2Freleases%2Fclouddeployrelease-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "condition": {
+    "dockerVersionSupportedCondition": {
+      "maintenanceModeTime": "2027-11-04T12:00:00Z",
+      "status": true,
+      "supportExpirationTime": "2028-01-03T12:00:00Z",
+      "toolVersionSupportState": 1
+    },
+    "helmVersionSupportedCondition": {
+      "maintenanceModeTime": "2027-10-15T12:00:00Z",
+      "status": true,
+      "supportExpirationTime": "2027-12-14T12:00:00Z",
+      "toolVersionSupportState": 1
+    },
+    "kptVersionSupportedCondition": {
+      "maintenanceModeTime": "2027-09-28T12:00:00Z",
+      "status": true,
+      "supportExpirationTime": "2027-11-27T12:00:00Z",
+      "toolVersionSupportState": 1
+    },
+    "kubectlVersionSupportedCondition": {
+      "maintenanceModeTime": "2027-10-28T12:00:00Z",
+      "status": true,
+      "supportExpirationTime": "2027-12-27T12:00:00Z",
+      "toolVersionSupportState": 1
+    },
+    "kustomizeVersionSupportedCondition": {
+      "status": true,
+      "toolVersionSupportState": 1
+    },
+    "releaseReadyCondition": {
+      "status": true
+    },
+    "skaffoldSupportedCondition": {
+      "skaffoldSupportState": 1,
+      "status": true
+    },
+    "skaffoldVersionSupportedCondition": {
+      "status": true,
+      "toolVersionSupportState": 1
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deliveryPipelineSnapshot": {
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Test Delivery Pipeline for Rollout",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectNumber}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+    "serialPipeline": {
+      "stages": [
+        {
+          "targetId": "clouddeploytarget-${uniqueId}"
+        }
+      ]
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/releases/clouddeployrelease-${uniqueId}",
+  "renderState": 3,
+  "skaffoldConfigUri": "gs://${projectId}-clouddeploy-test-bucket-2026/source.tar.gz",
+  "skaffoldVersion": "cd-skaffold",
+  "targetArtifacts": {
+    "clouddeploytarget-${uniqueId}": {}
+  },
+  "targetRenders": {
+    "clouddeploytarget-${uniqueId}": {
+      "renderingBuild": "projects/${projectNumber}/locations/us-central1/builds/1c4ae8bf-3c15-4a2e-b9b1-daa8164935cb",
+      "renderingState": 3
+    }
+  },
+  "targetSnapshots": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "description": "Test Target for Rollout",
+      "etag": "abcdef0123A=",
+      "executionConfigs": [
+        {
+          "artifactStorage": "gs://us-central1.deploy-artifacts.${projectId}.appspot.com",
+          "defaultPool": {
+            "artifactStorage": "gs://us-central1.deploy-artifacts.${projectId}.appspot.com",
+            "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+          },
+          "executionTimeout": "3600s",
+          "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+          "usages": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        }
+      ],
+      "labels": {
+        "cnrm-test": "true",
+        "managed-by-cnrm": "true"
+      },
+      "name": "projects/${projectNumber}/locations/us-central1/targets/clouddeploytarget-${uniqueId}",
+      "run": {
+        "location": "projects/${projectId}/locations/us-central1"
+      },
+      "targetId": "clouddeploytarget-${uniqueId}",
+      "uid": "111111111111111111111",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "toolVersions": {
+    "docker": "29.9.3",
+    "helm": "4.3.1",
+    "kpt": "1.0.1",
+    "kubectl": "1.37.2",
+    "kustomize": "kubectl",
+    "skaffold": "cd-skaffold"
+  },
+  "uid": "111111111111111111111"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test Delivery Pipeline for Rollout",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+  "serialPipeline": {
+    "stages": [
+      {
+        "targetId": "clouddeploytarget-${uniqueId}"
+      }
+    ]
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "issue with pipeline's child resources: pipeline has child resources in an undeletable state: failed precondition"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test Delivery Pipeline for Rollout",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+  "serialPipeline": {
+    "stages": [
+      {
+        "targetId": "clouddeploytarget-${uniqueId}"
+      }
+    ]
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "issue with pipeline's child resources: pipeline has child resources in an undeletable state: failed precondition"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test Delivery Pipeline for Rollout",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+  "serialPipeline": {
+    "stages": [
+      {
+        "targetId": "clouddeploytarget-${uniqueId}"
+      }
+    ]
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "issue with pipeline's child resources: pipeline has child resources in an undeletable state: failed precondition"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test Delivery Pipeline for Rollout",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+  "serialPipeline": {
+    "stages": [
+      {
+        "targetId": "clouddeploytarget-${uniqueId}"
+      }
+    ]
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "issue with pipeline's child resources: pipeline has child resources in an undeletable state: failed precondition"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test Delivery Pipeline for Rollout",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+  "serialPipeline": {
+    "stages": [
+      {
+        "targetId": "clouddeploytarget-${uniqueId}"
+      }
+    ]
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "issue with pipeline's child resources: pipeline has child resources in an undeletable state: failed precondition"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test Delivery Pipeline for Rollout",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+  "serialPipeline": {
+    "stages": [
+      {
+        "targetId": "clouddeploytarget-${uniqueId}"
+      }
+    ]
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "issue with pipeline's child resources: pipeline has child resources in an undeletable state: failed precondition"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test Delivery Pipeline for Rollout",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+  "serialPipeline": {
+    "stages": [
+      {
+        "targetId": "clouddeploytarget-${uniqueId}"
+      }
+    ]
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "error": {
+    "code": 9,
+    "message": "issue with pipeline's child resources: pipeline has child resources in an undeletable state: failed precondition"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test Delivery Pipeline for Rollout",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+  "serialPipeline": {
+    "stages": [
+      {
+        "targetId": "clouddeploytarget-${uniqueId}"
+      }
+    ]
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/targets/clouddeploytarget-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftargets%2Fclouddeploytarget-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test Target for Rollout",
+  "etag": "abcdef0123A=",
+  "executionConfigs": [
+    {
+      "artifactStorage": "gs://us-central1.deploy-artifacts.${projectId}.appspot.com",
+      "defaultPool": {
+        "artifactStorage": "gs://us-central1.deploy-artifacts.${projectId}.appspot.com",
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+      },
+      "executionTimeout": "3600s",
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "usages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/targets/clouddeploytarget-${uniqueId}",
+  "run": {
+    "location": "projects/${projectId}/locations/us-central1"
+  },
+  "targetId": "clouddeploytarget-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/targets/clouddeploytarget-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftargets%2Fclouddeploytarget-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/targets/clouddeploytarget-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/targets/clouddeploytarget-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
