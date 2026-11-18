@@ -1,0 +1,6 @@
+- caisURL: //dialogflow.googleapis.com/projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-max-${uniqueId}
+  group: dialogflow.cnrm.cloud.google.com
+  kind: DialogflowCompanionAgent
+  name: dialogflowcompanionagent-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

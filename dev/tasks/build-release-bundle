@@ -189,7 +189,6 @@ BLOCKED_KINDS=(
     "DevConnectConnection"
     "DevConnectInsightsConfig"
     "DeveloperConnectGitRepositoryLink"
-    "DialogflowCompanionAgent"
     "DialogflowConversationModel"
     "DialogflowConversationProfile"
     "DialogflowEnvironment"

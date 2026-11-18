@@ -230,6 +230,7 @@ func PrivateCACertificateFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_Identity(".name")
 	f.Unimplemented_LabelsAnnotations(".labels")
 
+	f.Unimplemented_NotYetTriaged(".requested_not_before_time")
 	f.Unimplemented_NotYetTriaged(".config.subject_key_id")
 	f.Unimplemented_NotYetTriaged(".config.subject_config.subject.rdn_sequence")
 	f.Unimplemented_NotYetTriaged(".config.subject_config.subject_alt_name.custom_sans")

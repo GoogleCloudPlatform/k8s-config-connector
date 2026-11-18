@@ -1,0 +1,152 @@
+# Phase: CREATE
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcompanionAgents%2Fdialogflowcompanionagent-min-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "CompanionAgent with ID dialogflowcompanionagent-min-${uniqueId} not found in projects/${projectId}/location/global/companionAgents/dialogflowcompanionagent-min-${uniqueId}.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/companionAgents?%24alt=json%3Benum-encoding%3Dint&companionAgentId=dialogflowcompanionagent-min-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "displayName": "Minimal Companion Agent ${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Companion Agent ${uniqueId}",
+  "name": "projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-min-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: UPDATE
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcompanionAgents%2Fdialogflowcompanionagent-min-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Companion Agent ${uniqueId}",
+  "name": "projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-min-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: companion_agent.name=projects%2F${projectId}%2Flocations%2Fglobal%2FcompanionAgents%2Fdialogflowcompanionagent-min-${uniqueId}
+
+{
+  "description": "Updated description for minimal companion agent",
+  "displayName": "Updated Companion Agent ${uniqueId}",
+  "name": "projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-min-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description for minimal companion agent",
+  "displayName": "Updated Companion Agent ${uniqueId}",
+  "name": "projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-min-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcompanionAgents%2Fdialogflowcompanionagent-min-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description for minimal companion agent",
+  "displayName": "Updated Companion Agent ${uniqueId}",
+  "name": "projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-min-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcompanionAgents%2Fdialogflowcompanionagent-min-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

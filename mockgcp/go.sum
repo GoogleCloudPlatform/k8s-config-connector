@@ -104,8 +104,8 @@ cloud.google.com/go/developerconnect v1.1.0 h1:R+IbcxBslrVx1aka0r7fQ8UhO7oZ3JvYw
 cloud.google.com/go/developerconnect v1.1.0/go.mod h1:SkX3Bac/5LUJ4BT7WYSqk7ju9YoU2iHpWm3I0JqmMcQ=
 cloud.google.com/go/devicestreaming v1.0.0 h1:+yVSFN0uTmhUFd5U8nu6MSLpkNd4DFGHDVIQLmTTx1I=
 cloud.google.com/go/devicestreaming v1.0.0/go.mod h1:9qJYACHii1+4yiv9TewXrFpsX4jc77ZAqcEuapi7lJ4=
-cloud.google.com/go/dialogflow v1.82.0 h1:PKC7h47s036UsW4YxTV2aRCTOChEzMzioczRdlKSApk=
-cloud.google.com/go/dialogflow v1.82.0/go.mod h1:UtuiGOq9gAlTz9u4Vt+q1syMrx9ANQzTk+lC3WDdSOw=
+cloud.google.com/go/dialogflow v1.87.0 h1:4+CUAxOpYDn9Dam3UEoN86nHNkGpDDwvqjUl/U9dmzQ=
+cloud.google.com/go/dialogflow v1.87.0/go.mod h1:R3eLljcUogOgTW3GD5A+7xydHVhAaqwqBendeCIzL04=
 cloud.google.com/go/discoveryengine v1.32.0 h1:iPoWBWLMVzf3DhBrYAAybhamVUJ2BjJZyOezEy5/FNw=
 cloud.google.com/go/discoveryengine v1.32.0/go.mod h1:H5dyX1t0Y89kJF/JuwHcE4tiE9/lHFChLwxvZJc6aJw=
 cloud.google.com/go/dlp v1.38.0 h1:/prU5AN590nNArmU6qERiSkRNsixwPaOKYnnmriBGGg=
