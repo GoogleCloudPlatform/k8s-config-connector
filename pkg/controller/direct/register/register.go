@@ -101,6 +101,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataproc"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataproc/dataprocsessiontemplate"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/datastream"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/designcenter"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/developerconnect"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/devicestreaming/session"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dialogflow"

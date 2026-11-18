@@ -13,3 +13,13 @@
   - `verify-service-docs-link` & `verify-resource-docs-link`: Added service docs `https://cloud.google.com/application-design-center/docs` and REST reference `https://cloud.google.com/application-design-center/docs/reference/rest/v1/projects.locations.spaces`.
   - `untriaged-bulk-generation`: Resolved with resolution `edited`.
 
+### [2026-11-18] Greenfield: Implement direct controller, E2E fixtures, and fuzzer for DesignCenterSpace
+- **Context**: Implemented direct controller, fuzzer, and minimal/maximal E2E fixtures for `DesignCenterSpace` (Issue #15981).
+- **Findings & Solutions**:
+  - **API Preconditions**: Creating a `Space` in GCP Design Center requires the GCP project to be designated as an App Hub Management Project (`gcloud apphub boundary update --project=PROJECT_ID --location=global --crm-node=projects/PROJECT_ID`). Without this boundary setup, creation fails with `FAILED_PRECONDITION: Invalid resource state: Current project is not a management project`.
+  - **Field Mapping (Near Miss)**: `EnableGCPSharedTemplates` in KRM versus `EnableGcpSharedTemplates` in proto caused a near-miss during auto-mapping generation. Implemented custom mapping in `pkg/controller/direct/designcenter/designcenterspace_mapper.go` to cleanly map `EnableGCPSharedTemplates` and enable full roundtrip fuzzer coverage.
+  - **StorageBucket Reference Formatting**: GCP Design Center API expects bare bucket name `{$bucket_name}` in `Space.gcs_bucket` instead of the full resource identity URI `projects/{project}/buckets/{bucket}`. Added normalization in mapper to extract the bucket name for proto and prepend the canonical identity URI when reading from proto.
+  - **CRUD Operations**: The Space API uses synchronous CRUD methods (`CreateSpace`, `UpdateSpace`, `DeleteSpace`) rather than LROs. Controller handles synchronous responses directly.
+  - **Fixtures & Golden Output**: Created minimal and maximal fixtures (`designcenterspace-minimal`, `designcenterspace-maximal`) and successfully recorded them against real GCP (`cnrm-barni-4`). Re-reconciliation, Server-Side Apply, and roundtrip fuzzers passed cleanly.
+
+
