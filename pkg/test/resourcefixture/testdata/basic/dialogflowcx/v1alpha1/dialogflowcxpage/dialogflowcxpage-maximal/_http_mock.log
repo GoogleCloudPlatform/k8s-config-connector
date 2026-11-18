@@ -1,0 +1,445 @@
+# Phase: CREATE
+POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/00000000-0000-0000-0000-000000000000/pages?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "displayName": "page-max-${uniqueId}",
+  "entryFulfillment": {
+    "messages": [
+      {
+        "channel": "some-channel",
+        "text": {
+          "text": [
+            "Welcome to page"
+          ]
+        }
+      },
+      {
+        "outputAudioText": {
+          "text": "some output text"
+        }
+      }
+    ],
+    "setParameterActions": [
+      {
+        "parameter": "param1",
+        "value": "val1"
+      }
+    ]
+  },
+  "eventHandlers": [
+    {
+      "event": "custom-event",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "Event triggered"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "transitionRoutes": [
+    {
+      "condition": "$session.params.param1 = \"val1\"",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "Transition triggered"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "page-max-${uniqueId}",
+  "entryFulfillment": {
+    "messages": [
+      {
+        "channel": "some-channel",
+        "text": {
+          "text": [
+            "Welcome to page"
+          ]
+        }
+      },
+      {
+        "outputAudioText": {
+          "text": "some output text"
+        }
+      }
+    ],
+    "setParameterActions": [
+      {
+        "parameter": "param1",
+        "value": "val1"
+      }
+    ]
+  },
+  "eventHandlers": [
+    {
+      "event": "custom-event",
+      "name": "b90dc324-6db0-470a-9c35-356651705727",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "Event triggered"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/00000000-0000-0000-0000-000000000000/pages/81da70d7-7e4a-4e8d-b3f4-108d39ee8fbb",
+  "transitionRoutes": [
+    {
+      "condition": "$session.params.param1 = \"val1\"",
+      "name": "7f94ba12-a9cc-40f9-b729-c43ca5161da6",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "Transition triggered"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+
+---
+
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/00000000-0000-0000-0000-000000000000/pages/81da70d7-7e4a-4e8d-b3f4-108d39ee8fbb?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "page-max-${uniqueId}",
+  "entryFulfillment": {
+    "messages": [
+      {
+        "channel": "some-channel",
+        "text": {
+          "text": [
+            "Welcome to page"
+          ]
+        }
+      },
+      {
+        "outputAudioText": {
+          "text": "some output text"
+        }
+      }
+    ],
+    "setParameterActions": [
+      {
+        "parameter": "param1",
+        "value": "val1"
+      }
+    ]
+  },
+  "eventHandlers": [
+    {
+      "event": "custom-event",
+      "name": "b90dc324-6db0-470a-9c35-356651705727",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "Event triggered"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/00000000-0000-0000-0000-000000000000/pages/81da70d7-7e4a-4e8d-b3f4-108d39ee8fbb",
+  "transitionRoutes": [
+    {
+      "condition": "$session.params.param1 = \"val1\"",
+      "name": "7f94ba12-a9cc-40f9-b729-c43ca5161da6",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "Transition triggered"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+
+---
+
+# Phase: UPDATE
+PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/00000000-0000-0000-0000-000000000000/pages/81da70d7-7e4a-4e8d-b3f4-108d39ee8fbb?alt=json&updateMask=displayName%2CentryFulfillment%2CtransitionRoutes%2CeventHandlers
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "displayName": "page-max-${uniqueId}-upd",
+  "entryFulfillment": {
+    "messages": [
+      {
+        "channel": "some-channel",
+        "text": {
+          "text": [
+            "Welcome to updated page"
+          ]
+        }
+      },
+      {
+        "outputAudioText": {
+          "text": "updated output text"
+        }
+      }
+    ],
+    "setParameterActions": [
+      {
+        "parameter": "param1",
+        "value": "val1"
+      }
+    ]
+  },
+  "eventHandlers": [
+    {
+      "event": "custom-event",
+      "name": "b90dc324-6db0-470a-9c35-356651705727",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "Event updated"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "transitionRoutes": [
+    {
+      "condition": "$session.params.param1 = \"val2\"",
+      "name": "7f94ba12-a9cc-40f9-b729-c43ca5161da6",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "Transition updated"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "page-max-${uniqueId}-upd",
+  "entryFulfillment": {
+    "messages": [
+      {
+        "channel": "some-channel",
+        "text": {
+          "text": [
+            "Welcome to updated page"
+          ]
+        }
+      },
+      {
+        "outputAudioText": {
+          "text": "updated output text"
+        }
+      }
+    ],
+    "setParameterActions": [
+      {
+        "parameter": "param1",
+        "value": "val1"
+      }
+    ]
+  },
+  "eventHandlers": [
+    {
+      "event": "custom-event",
+      "name": "b90dc324-6db0-470a-9c35-356651705727",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "Event updated"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/00000000-0000-0000-0000-000000000000/pages/81da70d7-7e4a-4e8d-b3f4-108d39ee8fbb",
+  "transitionRoutes": [
+    {
+      "condition": "$session.params.param1 = \"val2\"",
+      "name": "7f94ba12-a9cc-40f9-b729-c43ca5161da6",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "Transition updated"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+
+---
+
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/00000000-0000-0000-0000-000000000000/pages/81da70d7-7e4a-4e8d-b3f4-108d39ee8fbb?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "page-max-${uniqueId}-upd",
+  "entryFulfillment": {
+    "messages": [
+      {
+        "channel": "some-channel",
+        "text": {
+          "text": [
+            "Welcome to updated page"
+          ]
+        }
+      },
+      {
+        "outputAudioText": {
+          "text": "updated output text"
+        }
+      }
+    ],
+    "setParameterActions": [
+      {
+        "parameter": "param1",
+        "value": "val1"
+      }
+    ]
+  },
+  "eventHandlers": [
+    {
+      "event": "custom-event",
+      "name": "b90dc324-6db0-470a-9c35-356651705727",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "Event updated"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/00000000-0000-0000-0000-000000000000/pages/81da70d7-7e4a-4e8d-b3f4-108d39ee8fbb",
+  "transitionRoutes": [
+    {
+      "condition": "$session.params.param1 = \"val2\"",
+      "name": "7f94ba12-a9cc-40f9-b729-c43ca5161da6",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "Transition updated"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+
+---
+
+# Phase: DELETE
+DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/00000000-0000-0000-0000-000000000000/pages/81da70d7-7e4a-4e8d-b3f4-108d39ee8fbb?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

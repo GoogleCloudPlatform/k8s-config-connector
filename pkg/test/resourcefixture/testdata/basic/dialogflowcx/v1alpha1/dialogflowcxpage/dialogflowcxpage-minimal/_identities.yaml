@@ -1,6 +1,4 @@
 - caisURL: unknown
-  error: format of DialogflowCXPage external="12f9dd69-3312-4f5e-9182-493fb3504379"
-    was not known (use projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/pages/{page})
   group: dialogflowcx.cnrm.cloud.google.com
   kind: DialogflowCXPage
   name: dialogflowcxpage-minimal-${uniqueId}
