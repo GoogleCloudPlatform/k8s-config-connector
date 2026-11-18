@@ -1145,6 +1145,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"aiplatformragcorpuses.aiplatform.cnrm.cloud.google.com":                        true, // GCP known pattern: Empty oneof option (spec.vectorDbConfig.ragManagedDb.knn)
 		"dlpcontentpolicies.dlp.cnrm.cloud.google.com":                                  true, // GCP known pattern: Empty oneof option (spec.rules[].conditions[].infoTypeCondition.anyInfoType)
 		"cestools.ces.cnrm.cloud.google.com":                                            true, // GCP known pattern: Empty oneof option (spec.openAPITool.apiAuthentication.serviceAgentIDTokenAuthConfig)
+		"clouddeployrollouts.clouddeploy.cnrm.cloud.google.com":                         true, // GCP known pattern: Empty oneof option (status.observedState.phases[].childRolloutJobs.advanceRolloutJobs[].advanceChildRolloutJob)
 	}
 
 	crds, err := crdloader.LoadAllCRDs()

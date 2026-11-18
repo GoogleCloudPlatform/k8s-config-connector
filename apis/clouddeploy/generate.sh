@@ -34,16 +34,13 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 # --- v1alpha1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.deploy.v1 \
-  --api-version clouddeploy.cnrm.cloud.google.com/v1alpha1  \
+  --api-version clouddeploy.cnrm.cloud.google.com/v1alpha1 \
   --resource CloudDeployCustomTargetType:CustomTargetType \
   --resource CloudDeployDeployPolicy:DeployPolicy \
   --resource CloudDeployTarget:Target \
-  --resource CloudDeployAutomation:Automation
-
-${CONTROLLERBUILDER} generate-types \
-  --service google.cloud.deploy.v1 \
-  --api-version clouddeploy.cnrm.cloud.google.com/v1alpha1 \
+  --resource CloudDeployAutomation:Automation \
   --resource CloudDeployRelease:Release \
+  --resource CloudDeployRollout:Rollout \
   --include-skipped-output \
   --allow-non-declarative \
   --prepopulate-resource
@@ -51,7 +48,8 @@ ${CONTROLLERBUILDER} generate-types \
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.deploy.v1 \
   --api-version clouddeploy.cnrm.cloud.google.com/v1alpha1 \
-  --resource CloudDeployRelease:Release
+  --resource CloudDeployRelease:Release \
+  --resource CloudDeployRollout:Rollout
 
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \

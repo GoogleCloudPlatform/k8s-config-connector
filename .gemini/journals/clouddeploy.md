@@ -37,4 +37,13 @@
   5. Added proto3 unmapped fields (`toolVersions`, `dockerVersionSupportedCondition`, etc.) and snapshot etags to `normalizeRepresentation` in `pkg/test/resourcefixture/golden_alignment_test.go`.
   6. Verified all fixtures pass both hermetic e2e tests (`hack/compare-mock`) and golden alignment tests (`TestGoldenLogAlignment`) with 0 errors.
 
+### [2026-11-18] Prepopulating CloudDeployRollout
+- **Context**: Prepopulating direct KRM types, identity, reference, and judgement queue for `CloudDeployRollout` using `google.cloud.deploy.v1` and `--prepopulate-resource`.
+- **Learnings & Observations**:
+  1. `Rollout` in `google.cloud.deploy.v1` is considered non-declarative by default because the API defines `CreateRollout` without `UpdateRollout` (create-only execution resource). Passing `--allow-non-declarative` to `generate-types` is required to scaffold it.
+  2. `CloudDeployRollout` is a child resource under `Release` with pattern `projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/releases/{release}/rollouts/{rollout}`. Identity is generated with ancestor segments `deliveryPipelines/{delivery_pipeline}` and `releases/{release}`.
+  3. `status.observedState.phases[].childRolloutJobs.advanceRolloutJobs[].advanceChildRolloutJob` corresponds to `message AdvanceChildRolloutJob {}` in proto which has no fields. Added `clouddeployrollouts.clouddeploy.cnrm.cloud.google.com` to `knownInvalidCRDs` in `tests/apichecks/crds_test.go` with comment `// GCP known pattern: Empty oneof option (status.observedState.phases[].childRolloutJobs.advanceRolloutJobs[].advanceChildRolloutJob)`.
+  4. `google.cloud.deploy.v1.Metadata` is skipped by `generatemappercommand` because its message name ends in `Metadata`. Added explicit `MetadataObservedState_v1alpha1_FromProto`, `MetadataObservedState_v1alpha1_ToProto`, `CloudRunMetadataObservedState_v1alpha1_FromProto`, `CloudRunMetadataObservedState_v1alpha1_ToProto`, `AutomationRolloutMetadataObservedState_v1alpha1_FromProto`, and `AutomationRolloutMetadataObservedState_v1alpha1_ToProto` helper functions in `pkg/controller/direct/clouddeploy/mapper.generated.go`.
+  5. Added `CloudDeployRollout` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` and synchronized `tests/apichecks/testdata/exceptions/` golden files (`alpha-missingfields.txt`, `spec_dislike_etag.txt`).
+
 
