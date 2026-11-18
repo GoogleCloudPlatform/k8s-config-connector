@@ -41,13 +41,15 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version designcenter.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --resource DesignCenterSpace:Space \
+  --resource DesignCenterCatalog:Catalog \
   --prepopulate-resource
 
 ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.designcenter.v1 \
   --api-version designcenter.cnrm.cloud.google.com/v1alpha1 \
-  --resource DesignCenterSpace:Space
+  --resource DesignCenterSpace:Space \
+  --resource DesignCenterCatalog:Catalog
 
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \

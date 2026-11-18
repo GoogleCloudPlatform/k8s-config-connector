@@ -29,6 +29,46 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func DesignCenterCatalogObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Catalog) *krm.DesignCenterCatalogObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DesignCenterCatalogObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func DesignCenterCatalogObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DesignCenterCatalogObservedState) *pb.Catalog {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Catalog{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func DesignCenterCatalogSpec_FromProto(mapCtx *direct.MapContext, in *pb.Catalog) *krm.DesignCenterCatalogSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DesignCenterCatalogSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func DesignCenterCatalogSpec_ToProto(mapCtx *direct.MapContext, in *krm.DesignCenterCatalogSpec) *pb.Catalog {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Catalog{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
 func DesignCenterSpaceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Space) *krm.DesignCenterSpaceObservedState {
 	if in == nil {
 		return nil
