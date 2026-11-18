@@ -30,5 +30,6 @@ To get the list of contributors, you can use a command like this, replacing the 
 When you are done, save the release notes to `docs/releasenotes/release-{{index args 1 | split "." | slice 0 2 | join "."}}.md`.
 
 Do NOT include any resource whose Kind is listed in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`; those CRDs are excluded from the release bundle.
-After saving, run `./dev/tasks/gather-release-notes <previous_version> <current_version> --check-notes <release notes file>` and remove any entries it reports until it passes.
+Do NOT link `v1alpha1`-only resources to `/config-connector/docs/reference/resource-docs/...` (only Beta/GA resources under `scripts/generate-google3-docs/resource-reference/generated/resource-docs/` have reference doc pages; render `v1alpha1` kinds as plain code spans instead), and ensure all external product/API documentation URLs return HTTP 200 without soft-404s.
+After saving, run `./dev/tasks/gather-release-notes <previous_version> <current_version> --check-notes <release notes file>` and fix or remove any violations it reports until it passes.
 """

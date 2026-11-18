@@ -65,3 +65,64 @@ jobs:
             }
 
             console.log(`Release note validation succeeded:\n${content}`);
+
+  validate-release-notes-files:
+    name: Validate Release Notes Docs & Links
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Changed Release Notes Files
+        id: changes
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          script: |
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              per_page: 100,
+            });
+            const activePaths = files
+              .filter(f => f.status !== 'removed')
+              .map(f => f.filename);
+            const noteFiles = activePaths.filter(p =>
+              /^docs\/releasenotes\/release-.*\.md$/.test(p)
+            );
+            const toolTouched = activePaths.some(p =>
+              /^dev\/tasks\/gather[-_]release[-_]notes/.test(p) ||
+              p === '.github/workflows/validate-release-notes.yaml'
+            );
+            core.setOutput('run_checks', (noteFiles.length > 0 || toolTouched) ? 'true' : 'false');
+            core.setOutput('note_files', noteFiles.join('\n'));
+
+      - name: Checkout Repository
+        if: steps.changes.outputs.run_checks == 'true'
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: Run gather_release_notes Unit Tests
+        if: steps.changes.outputs.run_checks == 'true'
+        run: python3 -B dev/tasks/gather_release_notes_test.py -v
+
+      - name: Check Drafted Release Notes Files
+        if: steps.changes.outputs.note_files != ''
+        env:
+          NOTE_FILES: ${{ steps.changes.outputs.note_files }}
+        run: |
+          set -euo pipefail
+          while IFS= read -r note_file; do
+            [[ -z "${note_file}" ]] && continue
+            ver="${note_file#docs/releasenotes/release-}"
+            ver="${ver%.md}"
+            target_ref=""
+            if git rev-parse --verify --quiet "refs/tags/v${ver}" >/dev/null; then
+              target_ref="v${ver}"
+            else
+              target_ref="$(git tag --list "v${ver}.*" --sort=-v:refname | head -n 1)"
+            fi
+            if [[ -z "${target_ref}" ]]; then
+              target_ref="HEAD"
+            fi
+            echo "Validating ${note_file} against ${target_ref}..."
+            ./dev/tasks/gather-release-notes "${target_ref}" "${target_ref}" --check-notes "${note_file}"
+          done <<< "${NOTE_FILES}"
