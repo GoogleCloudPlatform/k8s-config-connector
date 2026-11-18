@@ -4,7 +4,7 @@
 - **Resource Name:** `sqladminbackup-maximal-${uniqueId}`
 - **Source Log:** `_http.log` (11 total HTTP entries, 9 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:0091a855d6f4704a`
+- **Integrity Hash:** `sha256:81d78d627c5a7990`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 

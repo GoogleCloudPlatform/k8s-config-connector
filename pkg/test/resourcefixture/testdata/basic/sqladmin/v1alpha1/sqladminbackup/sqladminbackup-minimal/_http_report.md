@@ -4,7 +4,7 @@
 - **Resource Name:** `sqladminbackup-minimal-${uniqueId}`
 - **Source Log:** `_http.log` (11 total HTTP entries, 9 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:5208f49eccd7bb5d`
+- **Integrity Hash:** `sha256:e47ec60e04933570`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 

@@ -22,13 +22,13 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/backups/1794959919816
+  externalRef: projects/${projectId}/backups/${backupID}
   observedGeneration: 1
   observedState:
     endTime: "1970-01-01T00:00:00Z"
-    enqueuedTime: "2026-11-17T23:58:39.816Z"
+    enqueuedTime: "2024-04-01T12:34:56.123456Z"
     id: 1111111111111111
     startTime: "2024-04-01T12:34:56.123456Z"
     status: SUCCESSFUL
     type: ON_DEMAND
-    windowStartTime: "2026-11-17T23:58:39.816Z"
+    windowStartTime: "2024-04-01T12:34:56.123456Z"

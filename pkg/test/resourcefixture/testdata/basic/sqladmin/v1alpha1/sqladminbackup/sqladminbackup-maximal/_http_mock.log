@@ -298,7 +298,7 @@ X-Xss-Protection: 0
 
 {
   "backupContext": {
-    "backupId": "1794960364195",
+    "backupId": "${backupID}",
     "kind": "sql#backupContext"
   },
   "insertTime": "2024-04-01T12:34:56.123456Z",
@@ -315,10 +315,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://sqladmin.googleapis.com/v1/projects/${projectId}/instances/sqlinstance-max-${uniqueId}/backupRuns/1794960364195?%24alt=json%3Benum-encoding%3Dint
+GET https://sqladmin.googleapis.com/v1/projects/${projectId}/instances/sqlinstance-max-${uniqueId}/backupRuns/${backupID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: project=${projectId}&instance=sqlinstance-max-${uniqueId}&id=1794960364195
+X-Goog-Request-Params: project=${projectId}&instance=sqlinstance-max-${uniqueId}&id=${backupID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -334,25 +334,25 @@ X-Xss-Protection: 0
   "backupKind": 1,
   "description": "Test on-demand backup",
   "endTime": "2024-04-01T12:34:56.123456Z",
-  "enqueuedTime": "2026-11-18T00:06:04.195Z",
+  "enqueuedTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "instance": "sqlinstance-max-${uniqueId}",
   "kind": "sql#backupRun",
   "location": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/v1/projects/${projectId}/instances/sqlinstance-max-${uniqueId}/backupRuns/1794960364195",
+  "selfLink": "https://sqladmin.googleapis.com/v1/projects/${projectId}/instances/sqlinstance-max-${uniqueId}/backupRuns/${backupID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": 5,
   "type": 2,
-  "windowStartTime": "2026-11-18T00:06:04.195Z"
+  "windowStartTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
 # Phase: DELETE
-DELETE https://sqladmin.googleapis.com/v1/projects/${projectId}/instances/sqlinstance-max-${uniqueId}/backupRuns/1794960364195?%24alt=json%3Benum-encoding%3Dint
+DELETE https://sqladmin.googleapis.com/v1/projects/${projectId}/instances/sqlinstance-max-${uniqueId}/backupRuns/${backupID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: project=${projectId}&instance=sqlinstance-max-${uniqueId}&id=1794960364195
+X-Goog-Request-Params: project=${projectId}&instance=sqlinstance-max-${uniqueId}&id=${backupID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

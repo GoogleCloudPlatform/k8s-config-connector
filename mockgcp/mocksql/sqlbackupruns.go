@@ -17,7 +17,6 @@ package mocksql
 import (
 	"context"
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -50,15 +49,10 @@ func (s *sqlBackupRunsServer) Insert(ctx context.Context, req *pb.SqlBackupRunsI
 
 	project := instName.Project
 
-	backupID := int64(1794959919816)
-	enqueuedTime := timestamppb.New(time.Date(2026, 11, 17, 23, 58, 39, 816000000, time.UTC))
-	if strings.Contains(req.GetInstance(), "max") {
-		backupID = 1794960364195
-		enqueuedTime = timestamppb.New(time.Date(2026, 11, 18, 0, 6, 4, 195000000, time.UTC))
-	}
+	now := time.Now()
+	backupID := now.UnixMilli()
 	backupFqn := fmt.Sprintf("projects/%s/instances/%s/backupRuns/%d", project.ID, req.GetInstance(), backupID)
-
-	startTime := timestamppb.New(time.Date(2024, 4, 1, 12, 34, 56, 123456000, time.UTC))
+	nowProto := timestamppb.New(now)
 
 	backupKind := req.GetBody().GetBackupKind()
 	if backupKind == pb.SqlBackupKind_SQL_BACKUP_KIND_UNSPECIFIED {
@@ -69,10 +63,10 @@ func (s *sqlBackupRunsServer) Insert(ctx context.Context, req *pb.SqlBackupRunsI
 		Id:              backupID,
 		Kind:            "sql#backupRun",
 		Status:          pb.SqlBackupRunStatus_SUCCESSFUL,
-		EnqueuedTime:    enqueuedTime,
-		StartTime:       startTime,
-		EndTime:         startTime,
-		WindowStartTime: enqueuedTime,
+		EnqueuedTime:    nowProto,
+		StartTime:       nowProto,
+		EndTime:         nowProto,
+		WindowStartTime: nowProto,
 		Type:            pb.SqlBackupRunType_ON_DEMAND,
 		Description:     req.GetBody().GetDescription(),
 		Instance:        req.GetInstance(),
