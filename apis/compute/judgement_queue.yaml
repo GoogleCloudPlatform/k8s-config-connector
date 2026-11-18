@@ -506,6 +506,165 @@ entries:
     status: resolved
     resolution: accepted
     note: confirmed output-only; placed in status.observedState.selfLinkWithID
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/zones/{zone}/instanceGroupManagers/{instanceGroupManager}/resizeRequests/{resizeRequest}" contains ancestor segment(s) instanceGroupManagers/{instanceGroupManager} with no matching reference or field on ComputeInstanceGroupManagerResizeRequestSpec
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .spec.state
+    reason: possible-status-field-in-spec
+    detail: state was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .spec.status
+    reason: possible-status-field-in-spec
+    detail: status was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .spec.zone
+    reason: location-or-parent-ref
+    detail: proto defines a zone field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.state. Move the field to .status.observedState.state if it is confirmed output only. Proto comment: [Output only] Current state of the request. Check the State enum for the list of possible values.'
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status. Move the field to .status.observedState.status if it is confirmed output only. Proto comment: [Output only] Status of the request.'
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.error
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.error. Move the field to .status.observedState.status.error if it is confirmed output only. Proto comment: [Output only] Fatal errors encountered during the queueing or provisioning phases of the ResizeRequest that caused the transition to the FAILED state. Contrary to the last_attempt errors, this field is final and errors are never removed from here, as the ResizeRequest is not going to retry.'
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.error.errors
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.error.errors. Move the field to .status.observedState.status.error.errors if it is confirmed output only. Proto comment: [Output Only] The array of errors encountered while processing this operation.'
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.error.errors[].code
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.error.errors[].code. Move the field to .status.observedState.status.error.errors[].code if it is confirmed output only. Proto comment: [Output Only] The error type identifier for this error.'
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.error.errors[].errorDetails
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.error.errors[].errorDetails. Move the field to .status.observedState.status.error.errors[].errorDetails if it is confirmed output only. Proto comment: [Output Only] An optional list of messages that contain the error details. There is a set of defined message types to use for providing details.The syntax depends on the error code. For example, QuotaExceededInfo will have details when the error code is QUOTA_EXCEEDED.'
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.error.errors[].location
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.error.errors[].location. Move the field to .status.observedState.status.error.errors[].location if it is confirmed output only. Proto comment: [Output Only] Indicates the field in the request that caused the error. This property is optional.'
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.error.errors[].message
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.error.errors[].message. Move the field to .status.observedState.status.error.errors[].message if it is confirmed output only. Proto comment: [Output Only] An optional, human-readable error message.'
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.lastAttempt
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.lastAttempt. Move the field to .status.observedState.status.lastAttempt if it is confirmed output only. Proto comment: [Output only] Information about the last attempt to fulfill the request. The value is temporary since the ResizeRequest can retry, as long as it''s still active and the last attempt value can either be cleared or replaced with a different error. Since ResizeRequest retries infrequently, the value may be stale and no longer show an active problem. The value is cleared when ResizeRequest transitions to the final state (becomes inactive). If the final state is FAILED the error describing it will be storred in the "error" field only.'
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.lastAttempt.error.errors
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.lastAttempt.error.errors. Move the field to .status.observedState.status.lastAttempt.error.errors if it is confirmed output only. Proto comment: [Output Only] The array of errors encountered while processing this operation.'
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.lastAttempt.error.errors[].code
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.lastAttempt.error.errors[].code. Move the field to .status.observedState.status.lastAttempt.error.errors[].code if it is confirmed output only. Proto comment: [Output Only] The error type identifier for this error.'
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.lastAttempt.error.errors[].errorDetails
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.lastAttempt.error.errors[].errorDetails. Move the field to .status.observedState.status.lastAttempt.error.errors[].errorDetails if it is confirmed output only. Proto comment: [Output Only] An optional list of messages that contain the error details. There is a set of defined message types to use for providing details.The syntax depends on the error code. For example, QuotaExceededInfo will have details when the error code is QUOTA_EXCEEDED.'
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.lastAttempt.error.errors[].location
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.lastAttempt.error.errors[].location. Move the field to .status.observedState.status.lastAttempt.error.errors[].location if it is confirmed output only. Proto comment: [Output Only] Indicates the field in the request that caused the error. This property is optional.'
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.lastAttempt.error.errors[].message
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.lastAttempt.error.errors[].message. Move the field to .status.observedState.status.lastAttempt.error.errors[].message if it is confirmed output only. Proto comment: [Output Only] An optional, human-readable error message.'
+    status: open
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.zone
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.zone. Move the field to .status.observedState.zone if it is confirmed output only. Proto comment: [Output Only] The URL of a zone where the resize request is located. Populated only for zonal resize requests.'
+    status: open
   - kind: ComputeInstantSnapshot
     group: compute.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

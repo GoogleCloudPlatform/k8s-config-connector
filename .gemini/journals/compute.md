@@ -659,3 +659,16 @@
   5. Tested and verified round-trip fuzzer (`FOCUS=ComputeHealthSource go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`) for both Spec and Status across 200 seeds.
   6. Created minimal and maximal E2E fixtures with dependencies `ComputeHealthCheck`, `ComputeBackendService` (internal passthrough TCP load balancing), and `ComputeHealthAggregationPolicy`. Tested in-place updates mutating `description` and updating `healthAggregationPolicyRef`.
   7. Recorded golden files against live GCP (`cnrm-barni-4`) with `RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/computehealthsource"`. Both `computehealthsource-minimal` and `computehealthsource-maximal` passed all 7/7 automated HTTP lifecycle validation checks (`_http_report.md`).
+
+### [2026-11-18] Greenfield Step 1a: Prepopulate ComputeInstanceGroupManagerResizeRequest
+- **Context**: Prepopulated direct KRM types, identity, reference, mapper, and judgement queue for `ComputeInstanceGroupManagerResizeRequest` under `compute.cnrm.cloud.google.com/v1alpha1` (issue #15994).
+- **Identity Pattern**:
+  - `InstanceGroupManagerResizeRequest` in `google.cloud.compute.v1` is a zonal resource under `instanceGroupManagers`: `projects/{project}/zones/{zone}/instanceGroupManagers/{instanceGroupManager}/resizeRequests/{resizeRequest}`.
+  - Specified `--pattern ComputeInstanceGroupManagerResizeRequest="projects/{project}/zones/{zone}/instanceGroupManagers/{instanceGroupManager}/resizeRequests/{resizeRequest}"` in `generate-identity` to disambiguate from discovery patterns.
+- **Verification**:
+  - `generate-types` and `generate-identity` ran successfully with `--prepopulate-resource`.
+  - Added `ComputeInstanceGroupManagerResizeRequest` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Regenerated CRDs, mappers, deepcopy, and types. Confirmed idempotency.
+  - Conformance and unit tests passed in `apis/compute/v1alpha1`.
+  - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` and verified `tests/apichecks/...` passes.
+  - Verified `pkg/cli/powertools/cais/...` passes.

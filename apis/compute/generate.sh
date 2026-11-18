@@ -137,6 +137,19 @@ ${CONTROLLERBUILDER} generate-identity \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeRolloutPlan:RolloutPlan \
   --pattern ComputeRolloutPlan="projects/{project}/global/rolloutPlans/{rolloutPlan}"
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeInstanceGroupManagerResizeRequest:InstanceGroupManagerResizeRequest \
+  --include-skipped-output \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeInstanceGroupManagerResizeRequest:InstanceGroupManagerResizeRequest \
+  --pattern ComputeInstanceGroupManagerResizeRequest="projects/{project}/zones/{zone}/instanceGroupManagers/{instanceGroupManager}/resizeRequests/{resizeRequest}"
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.compute.v1 \

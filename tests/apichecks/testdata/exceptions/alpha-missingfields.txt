@@ -2574,6 +2574,46 @@
 [missing_field] crd=computehealthsources.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.fingerprint" is not set in unstructured objects
 [missing_field] crd=computehealthsources.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.sources[].external" is not set in unstructured objects
 [missing_field] crd=computehealthsources.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.sources[].namespace" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.requestedRunDuration.nanos" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.requestedRunDuration.seconds" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.resizeBy" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.state" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.error.errors[].code" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.error.errors[].errorDetails[].errorInfo.domain" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.error.errors[].errorDetails[].errorInfo.metadatas" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.error.errors[].errorDetails[].errorInfo.reason" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.error.errors[].errorDetails[].help.links[].description" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.error.errors[].errorDetails[].help.links[].url" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.error.errors[].errorDetails[].localizedMessage.locale" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.error.errors[].errorDetails[].localizedMessage.message" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.error.errors[].errorDetails[].quotaInfo.dimensions" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.error.errors[].errorDetails[].quotaInfo.futureLimit" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.error.errors[].errorDetails[].quotaInfo.limit" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.error.errors[].errorDetails[].quotaInfo.limitName" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.error.errors[].errorDetails[].quotaInfo.metricName" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.error.errors[].errorDetails[].quotaInfo.rolloutStatus" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.error.errors[].location" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.error.errors[].message" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.lastAttempt.error.errors[].code" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.lastAttempt.error.errors[].errorDetails[].errorInfo.domain" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.lastAttempt.error.errors[].errorDetails[].errorInfo.metadatas" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.lastAttempt.error.errors[].errorDetails[].errorInfo.reason" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.lastAttempt.error.errors[].errorDetails[].help.links[].description" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.lastAttempt.error.errors[].errorDetails[].help.links[].url" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.lastAttempt.error.errors[].errorDetails[].localizedMessage.locale" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.lastAttempt.error.errors[].errorDetails[].localizedMessage.message" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.lastAttempt.error.errors[].errorDetails[].quotaInfo.dimensions" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.lastAttempt.error.errors[].errorDetails[].quotaInfo.futureLimit" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.lastAttempt.error.errors[].errorDetails[].quotaInfo.limit" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.lastAttempt.error.errors[].errorDetails[].quotaInfo.limitName" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.lastAttempt.error.errors[].errorDetails[].quotaInfo.metricName" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.lastAttempt.error.errors[].errorDetails[].quotaInfo.rolloutStatus" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.lastAttempt.error.errors[].location" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.status.lastAttempt.error.errors[].message" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.zone" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupnamedports.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.groupRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeinstancegroupnamedports.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.port" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupnamedports.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set

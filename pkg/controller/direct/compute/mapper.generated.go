@@ -7341,6 +7341,86 @@ func Duration_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1
 	out.Seconds = in.Seconds
 	return out
 }
+func Error_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Error) *krmcomputev1alpha1.Error {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.Error{}
+	out.Errors = direct.Slice_FromProto(mapCtx, in.Errors, Errors_v1alpha1_FromProto)
+	return out
+}
+func Error_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.Error) *pb.Error {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Error{}
+	out.Errors = direct.Slice_ToProto(mapCtx, in.Errors, Errors_v1alpha1_ToProto)
+	return out
+}
+func ErrorDetails_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ErrorDetails) *krmcomputev1alpha1.ErrorDetails {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ErrorDetails{}
+	out.ErrorInfo = ErrorInfo_v1alpha1_FromProto(mapCtx, in.GetErrorInfo())
+	out.Help = Help_v1alpha1_FromProto(mapCtx, in.GetHelp())
+	out.LocalizedMessage = LocalizedMessage_v1alpha1_FromProto(mapCtx, in.GetLocalizedMessage())
+	out.QuotaInfo = QuotaExceededInfo_v1alpha1_FromProto(mapCtx, in.GetQuotaInfo())
+	return out
+}
+func ErrorDetails_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ErrorDetails) *pb.ErrorDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ErrorDetails{}
+	out.ErrorInfo = ErrorInfo_v1alpha1_ToProto(mapCtx, in.ErrorInfo)
+	out.Help = Help_v1alpha1_ToProto(mapCtx, in.Help)
+	out.LocalizedMessage = LocalizedMessage_v1alpha1_ToProto(mapCtx, in.LocalizedMessage)
+	out.QuotaInfo = QuotaExceededInfo_v1alpha1_ToProto(mapCtx, in.QuotaInfo)
+	return out
+}
+func ErrorInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ErrorInfo) *krmcomputev1alpha1.ErrorInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ErrorInfo{}
+	out.Domain = in.Domain
+	out.Metadatas = in.Metadatas
+	out.Reason = in.Reason
+	return out
+}
+func ErrorInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ErrorInfo) *pb.ErrorInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ErrorInfo{}
+	out.Domain = in.Domain
+	out.Metadatas = in.Metadatas
+	out.Reason = in.Reason
+	return out
+}
+func Errors_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Errors) *krmcomputev1alpha1.Errors {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.Errors{}
+	out.Code = in.Code
+	out.ErrorDetails = direct.Slice_FromProto(mapCtx, in.ErrorDetails, ErrorDetails_v1alpha1_FromProto)
+	out.Location = in.Location
+	out.Message = in.Message
+	return out
+}
+func Errors_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.Errors) *pb.Errors {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Errors{}
+	out.Code = in.Code
+	out.ErrorDetails = direct.Slice_ToProto(mapCtx, in.ErrorDetails, ErrorDetails_v1alpha1_ToProto)
+	out.Location = in.Location
+	out.Message = in.Message
+	return out
+}
 
 /* found existing non-generated mapping function "FirewallAllow_v1beta1_FromProto", skipping
 func FirewallAllow_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Allowed) *krmcomputev1beta1.FirewallAllow {
@@ -7704,21 +7784,91 @@ func HealthCheckTCPHealthCheck_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 }
 */
 
-/* found existing non-generated mapping function "HealthCheckTCPHealthCheck_v1beta1_ToProto", skipping
-func HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.HealthCheckTCPHealthCheck) *pb.TCPHealthCheck {
+/*
+found existing non-generated mapping function "HealthCheckTCPHealthCheck_v1beta1_ToProto", skipping
+
+	func HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.HealthCheckTCPHealthCheck) *pb.TCPHealthCheck {
+		if in == nil {
+			return nil
+		}
+		out := &pb.TCPHealthCheck{}
+		out.Port = in.Port
+		out.PortName = in.PortName
+		out.PortSpecification = in.PortSpecification
+		out.ProxyHeader = in.ProxyHeader
+		out.Request = in.Request
+		out.Response = in.Response
+		return out
+	}
+*/
+func Help_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Help) *krmcomputev1alpha1.Help {
 	if in == nil {
 		return nil
 	}
-	out := &pb.TCPHealthCheck{}
-	out.Port = in.Port
-	out.PortName = in.PortName
-	out.PortSpecification = in.PortSpecification
-	out.ProxyHeader = in.ProxyHeader
-	out.Request = in.Request
-	out.Response = in.Response
+	out := &krmcomputev1alpha1.Help{}
+	out.Links = direct.Slice_FromProto(mapCtx, in.Links, HelpLink_v1alpha1_FromProto)
 	return out
 }
-*/
+func Help_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.Help) *pb.Help {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Help{}
+	out.Links = direct.Slice_ToProto(mapCtx, in.Links, HelpLink_v1alpha1_ToProto)
+	return out
+}
+func HelpLink_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.HelpLink) *krmcomputev1alpha1.HelpLink {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.HelpLink{}
+	out.Description = in.Description
+	out.URL = in.Url
+	return out
+}
+func HelpLink_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.HelpLink) *pb.HelpLink {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HelpLink{}
+	out.Description = in.Description
+	out.Url = in.URL
+	return out
+}
+func InstanceGroupManagerResizeRequestStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManagerResizeRequestStatus) *krmcomputev1alpha1.InstanceGroupManagerResizeRequestStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InstanceGroupManagerResizeRequestStatus{}
+	out.Error = Error_v1alpha1_FromProto(mapCtx, in.GetError())
+	out.LastAttempt = InstanceGroupManagerResizeRequestStatusLastAttempt_v1alpha1_FromProto(mapCtx, in.GetLastAttempt())
+	return out
+}
+func InstanceGroupManagerResizeRequestStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InstanceGroupManagerResizeRequestStatus) *pb.InstanceGroupManagerResizeRequestStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupManagerResizeRequestStatus{}
+	out.Error = Error_v1alpha1_ToProto(mapCtx, in.Error)
+	out.LastAttempt = InstanceGroupManagerResizeRequestStatusLastAttempt_v1alpha1_ToProto(mapCtx, in.LastAttempt)
+	return out
+}
+func InstanceGroupManagerResizeRequestStatusLastAttempt_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManagerResizeRequestStatusLastAttempt) *krmcomputev1alpha1.InstanceGroupManagerResizeRequestStatusLastAttempt {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InstanceGroupManagerResizeRequestStatusLastAttempt{}
+	out.Error = Error_v1alpha1_FromProto(mapCtx, in.GetError())
+	return out
+}
+func InstanceGroupManagerResizeRequestStatusLastAttempt_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InstanceGroupManagerResizeRequestStatusLastAttempt) *pb.InstanceGroupManagerResizeRequestStatusLastAttempt {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupManagerResizeRequestStatusLastAttempt{}
+	out.Error = Error_v1alpha1_ToProto(mapCtx, in.Error)
+	return out
+}
 
 /* found existing non-generated mapping function "InstanceGroupNamedPort_v1beta1_FromProto", skipping
 func InstanceGroupNamedPort_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NamedPort) *krmcomputev1beta1.InstanceGroupNamedPort {
@@ -8237,6 +8387,24 @@ func InterconnectOutageNotification_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 	out.State = in.State
 	return out
 }
+func LocalizedMessage_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.LocalizedMessage) *krmcomputev1alpha1.LocalizedMessage {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.LocalizedMessage{}
+	out.Locale = in.Locale
+	out.Message = in.Message
+	return out
+}
+func LocalizedMessage_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.LocalizedMessage) *pb.LocalizedMessage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LocalizedMessage{}
+	out.Locale = in.Locale
+	out.Message = in.Message
+	return out
+}
 func MachineImageEncryptionKey_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CustomerEncryptionKey) *krmcomputev1alpha1.MachineImageEncryptionKey {
 	if in == nil {
 		return nil
@@ -8687,18 +8855,46 @@ func PacketmirroringSubnetworks_v1beta1_FromProto(mapCtx *direct.MapContext, in 
 }
 */
 
-/* found existing non-generated mapping function "PacketmirroringSubnetworks_v1beta1_ToProto", skipping
-func PacketmirroringSubnetworks_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.PacketmirroringSubnetworks) *pb.PacketMirroringMirroredResourceInfoSubnetInfo {
+/*
+found existing non-generated mapping function "PacketmirroringSubnetworks_v1beta1_ToProto", skipping
+
+	func PacketmirroringSubnetworks_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.PacketmirroringSubnetworks) *pb.PacketMirroringMirroredResourceInfoSubnetInfo {
+		if in == nil {
+			return nil
+		}
+		out := &pb.PacketMirroringMirroredResourceInfoSubnetInfo{}
+		// MISSING: CanonicalURL
+		// (near miss): "CanonicalURL" vs "CanonicalUrl"
+		// MISSING: URL
+		return out
+	}
+*/
+func QuotaExceededInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.QuotaExceededInfo) *krmcomputev1alpha1.QuotaExceededInfo {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PacketMirroringMirroredResourceInfoSubnetInfo{}
-	// MISSING: CanonicalURL
-	// (near miss): "CanonicalURL" vs "CanonicalUrl"
-	// MISSING: URL
+	out := &krmcomputev1alpha1.QuotaExceededInfo{}
+	out.Dimensions = in.Dimensions
+	out.FutureLimit = in.FutureLimit
+	out.Limit = in.Limit
+	out.LimitName = in.LimitName
+	out.MetricName = in.MetricName
+	out.RolloutStatus = in.RolloutStatus
 	return out
 }
-*/
+func QuotaExceededInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.QuotaExceededInfo) *pb.QuotaExceededInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QuotaExceededInfo{}
+	out.Dimensions = in.Dimensions
+	out.FutureLimit = in.FutureLimit
+	out.Limit = in.Limit
+	out.LimitName = in.LimitName
+	out.MetricName = in.MetricName
+	out.RolloutStatus = in.RolloutStatus
+	return out
+}
 
 /* found existing non-generated mapping function "RegionautoscalerAutoscalingPolicy_v1alpha1_FromProto", skipping
 func RegionautoscalerAutoscalingPolicy_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicy) *krmcomputev1alpha1.RegionautoscalerAutoscalingPolicy {
