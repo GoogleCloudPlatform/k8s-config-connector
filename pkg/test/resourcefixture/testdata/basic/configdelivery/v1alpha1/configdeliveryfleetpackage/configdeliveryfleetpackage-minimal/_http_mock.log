@@ -33,7 +33,8 @@ X-Goog-User-Project: ${projectId}
 
 {
   "labels": {
-    "cnrm-test": "true"
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/resourceBundles/cdrbundle-${uniqueId}"
 }
@@ -247,7 +248,8 @@ X-Goog-User-Project: ${projectId}
 
 {
   "labels": {
-    "cnrm-test": "true"
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/fleetPackages/cdfpackage-${uniqueId}",
   "resourceBundleSelector": {
@@ -325,7 +327,8 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.configdelivery.v1.FleetPackage",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "labels": {
-      "cnrm-test": "true"
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-central1/fleetPackages/cdfpackage-${uniqueId}",
     "resourceBundleSelector": {
@@ -374,7 +377,8 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
-    "cnrm-test": "true"
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/fleetPackages/cdfpackage-${uniqueId}",
   "resourceBundleSelector": {
@@ -579,7 +583,8 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
-    "cnrm-test": "true"
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/resourceBundles/cdrbundle-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"

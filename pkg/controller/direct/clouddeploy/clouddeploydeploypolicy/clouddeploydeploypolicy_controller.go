@@ -17,6 +17,7 @@ package clouddeploydeploypolicy
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddeploy/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -27,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/deploy/apiv1"
@@ -95,7 +97,7 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		gcpClient: gcpClient,
 		desired:   obj,
 		reader:    reader,
-		labels:    u.GetLabels(),
+		labels:    label.GCPLabels(u),
 	}, nil
 }
 
@@ -123,6 +125,7 @@ func (a *Adapter) resolveReferences(ctx context.Context) error {
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	a.desiredPb.Labels = a.labels
 	return nil
 }
 
@@ -199,6 +202,18 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	mapCtx := &direct.MapContext{}
 
 	a.desiredPb.Name = gcpName
+
+	// Preserve system labels (goog- or go-)
+	if a.actual.Labels != nil {
+		if a.desiredPb.Labels == nil {
+			a.desiredPb.Labels = make(map[string]string)
+		}
+		for k, v := range a.actual.Labels {
+			if strings.HasPrefix(k, "goog-") || strings.HasPrefix(k, "go-") {
+				a.desiredPb.Labels[k] = v
+			}
+		}
+	}
 
 	// Let's perform diff between desired and actual.
 	paths, err := common.CompareProtoMessage(a.desiredPb, a.actual, func(fieldName protoreflect.Name, a, b proto.Message) (bool, error) {
