@@ -1,0 +1,51 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: appengine.cnrm.cloud.google.com/v1alpha1
+kind: AppEngineStandardAppVersion
+metadata:
+  name: appenginestandardappversion-${uniqueId}
+spec:
+  project: ${projectId}
+  serviceRef:
+    external: apps/${projectId}/services/default
+  resourceID: v${uniqueId}
+  runtime: python311
+  serviceAccount: ${projectId}@appspot.gserviceaccount.com
+  threadsafe: true
+  instanceClass: B2
+  manualScaling:
+    instances: 1
+  entrypoint:
+    shell: "gunicorn -b :$PORT main:app"
+  deployment:
+    files:
+      - name: main.py
+        sourceUrl: https://storage.googleapis.com/staging.${projectId}.appspot.com/42bc88044284cd927a03d76e4d67e1c03bbc5fe2
+      - name: requirements.txt
+        sourceUrl: https://storage.googleapis.com/staging.${projectId}.appspot.com/235a38433f47948ecaca1d1beca8bdb5b8f73b83
+  envVariables:
+    PORT: "8080"
+    STAGE: "create"
+  inboundServices:
+    - INBOUND_SERVICE_WARMUP
+  handlers:
+    - urlRegex: /api/.*
+      securityLevel: SECURE_ALWAYS
+      script:
+        scriptPath: auto
+    - urlRegex: .*
+      script:
+        scriptPath: auto
+  deleteServiceOnDestroy: false

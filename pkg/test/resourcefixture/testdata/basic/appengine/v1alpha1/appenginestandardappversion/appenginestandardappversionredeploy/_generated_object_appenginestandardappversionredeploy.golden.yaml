@@ -1,0 +1,62 @@
+apiVersion: appengine.cnrm.cloud.google.com/v1alpha1
+kind: AppEngineStandardAppVersion
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: appenginestandardappversion-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  automaticScaling:
+    maxConcurrentRequests: 20
+    standardSchedulerSettings:
+      maxInstances: 2
+      targetCpuUtilization: 0.6
+  deleteServiceOnDestroy: false
+  deployment:
+    files:
+    - name: main.py
+      sourceUrl: https://storage.googleapis.com/staging.${projectId}.appspot.com/42bc88044284cd927a03d76e4d67e1c03bbc5fe2
+    - name: requirements.txt
+      sourceUrl: https://storage.googleapis.com/staging.${projectId}.appspot.com/235a38433f47948ecaca1d1beca8bdb5b8f73b83
+    - name: extra.txt
+      sourceUrl: https://storage.googleapis.com/staging.${projectId}.appspot.com/9a8b23898ec6c1fb392b96eb4486ace3616ee192
+  entrypoint:
+    shell: gunicorn -b :$PORT --workers 2 main:app
+  envVariables:
+    PORT: "8080"
+    STAGE: update
+  handlers:
+  - redirectHttpResponseCode: REDIRECT_HTTP_RESPONSE_CODE_301
+    script:
+      scriptPath: auto
+    securityLevel: SECURE_ALWAYS
+    urlRegex: /api/.*
+  - script:
+      scriptPath: auto
+    urlRegex: .*
+  inboundServices:
+  - INBOUND_SERVICE_WARMUP
+  instanceClass: F2
+  project: ${projectId}
+  resourceID: v${uniqueId}
+  runtime: python311
+  serviceAccount: ${projectId}@appspot.gserviceaccount.com
+  serviceRef:
+    external: apps/${projectId}/services/default
+  threadsafe: true
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: apps/${projectId}/services/default/versions/v${uniqueId}
+  name: apps/${projectId}/services/default/versions/v${uniqueId}
+  observedGeneration: 2

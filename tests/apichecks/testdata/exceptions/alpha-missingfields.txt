@@ -1370,9 +1370,6 @@
 [missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.deployment.zip.sourceUrl" is not set in unstructured objects
 [missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].authFailAction" is not set in unstructured objects
 [missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].login" is not set in unstructured objects
-[missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].redirectHttpResponseCode" is not set in unstructured objects
-[missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].script.scriptPath" is not set in unstructured objects
-[missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].securityLevel" is not set in unstructured objects
 [missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].staticFiles.applicationReadable" is not set in unstructured objects
 [missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].staticFiles.expiration" is not set in unstructured objects
 [missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].staticFiles.httpHeaders" is not set in unstructured objects
@@ -1380,15 +1377,10 @@
 [missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].staticFiles.path" is not set in unstructured objects
 [missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].staticFiles.requireMatchingFile" is not set in unstructured objects
 [missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].staticFiles.uploadPathRegex" is not set in unstructured objects
-[missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].urlRegex" is not set in unstructured objects
-[missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.inboundServices[]" is not set in unstructured objects
 [missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.libraries[].name" is not set in unstructured objects
 [missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.libraries[].version" is not set in unstructured objects
-[missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.manualScaling.instances" is not set in unstructured objects
 [missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.noopOnDestroy" is not set in unstructured objects
 [missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeApiVersion" is not set in unstructured objects
-[missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccount" is not set in unstructured objects
-[missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.threadsafe" is not set in unstructured objects
 [missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.vpcAccessConnector.egressSetting" is not set in unstructured objects
 [missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.vpcAccessConnector.name" is not set in unstructured objects
 [missing_field] crd=apphubdiscoveredservices.apphub.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
