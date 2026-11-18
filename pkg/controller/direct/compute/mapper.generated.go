@@ -1141,9 +1141,11 @@ func ComputeCompositeHealthCheckObservedState_v1alpha1_FromProto(mapCtx *direct.
 	}
 	out := &krmcomputev1alpha1.ComputeCompositeHealthCheckObservedState{}
 	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: HealthSources
 	out.ID = in.Id
 	out.Kind = in.Kind
 	// MISSING: Name
+	out.Region = in.Region
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithID = in.SelfLinkWithId
 	return out
@@ -1154,9 +1156,11 @@ func ComputeCompositeHealthCheckObservedState_v1alpha1_ToProto(mapCtx *direct.Ma
 	}
 	out := &pb.CompositeHealthCheck{}
 	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: HealthSources
 	out.Id = in.ID
 	out.Kind = in.Kind
 	// MISSING: Name
+	out.Region = in.Region
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithId = in.SelfLinkWithID
 	return out
@@ -1168,10 +1172,17 @@ func ComputeCompositeHealthCheckSpec_v1alpha1_FromProto(mapCtx *direct.MapContex
 	out := &krmcomputev1alpha1.ComputeCompositeHealthCheckSpec{}
 	out.Description = in.Description
 	out.Fingerprint = in.Fingerprint
-	out.HealthDestination = in.HealthDestination
-	out.HealthSources = in.HealthSources
+	if in.GetHealthDestination() != "" {
+		out.HealthDestinationRef = &krmcomputev1beta1.ForwardingRuleRef{External: in.GetHealthDestination()}
+	}
+
+	if v := in.GetHealthSources(); len(v) != 0 {
+		for i := range v {
+			out.HealthSourceRefs = append(out.HealthSourceRefs, krmcomputev1alpha1.ComputeHealthSourceRef{External: v[i]})
+		}
+	}
+
 	// MISSING: Name
-	out.Region = in.Region
 	return out
 }
 func ComputeCompositeHealthCheckSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeCompositeHealthCheckSpec) *pb.CompositeHealthCheck {
@@ -1181,10 +1192,17 @@ func ComputeCompositeHealthCheckSpec_v1alpha1_ToProto(mapCtx *direct.MapContext,
 	out := &pb.CompositeHealthCheck{}
 	out.Description = in.Description
 	out.Fingerprint = in.Fingerprint
-	out.HealthDestination = in.HealthDestination
-	out.HealthSources = in.HealthSources
+	if in.HealthDestinationRef != nil {
+		out.HealthDestination = &in.HealthDestinationRef.External
+	}
+
+	if v := in.HealthSourceRefs; len(v) != 0 {
+		for i := range v {
+			out.HealthSources = append(out.HealthSources, v[i].External)
+		}
+	}
+
 	// MISSING: Name
-	out.Region = in.Region
 	return out
 }
 func ComputeCrossSiteNetworkObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CrossSiteNetwork) *krmcomputev1alpha1.ComputeCrossSiteNetworkObservedState {
