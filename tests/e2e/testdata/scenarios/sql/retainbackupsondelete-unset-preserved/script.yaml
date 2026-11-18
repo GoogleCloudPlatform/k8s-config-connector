@@ -1,0 +1,105 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# 00: Create SQLInstance without retainBackupsOnDelete.
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-rbod-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+  labels:
+    step: create
+spec:
+  databaseVersion: POSTGRES_15
+  region: us-central1
+  resourceID: sqlinstance-rbod-${uniqueId}
+  settings:
+    backupConfiguration:
+      enabled: true
+    locationPreference:
+      zone: us-central1-a
+    tier: db-custom-1-3840
+---
+# 01: Enable retainBackupsOnDelete out-of-band via Cloud SQL REST API PATCH
+# (equivalent to gcloud sql instances patch --retain-backups-on-delete).
+kind: HTTPRequest
+method: PATCH
+url: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-rbod-${uniqueId}
+body: |
+  {"settings": {"retainBackupsOnDelete": true}}
+---
+# 02: Change a KRM label while leaving retainBackupsOnDelete unset.
+# KCC sends a PUT that must preserve retainBackupsOnDelete: true.
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-rbod-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+  labels:
+    step: label-change
+spec:
+  databaseVersion: POSTGRES_15
+  region: us-central1
+  resourceID: sqlinstance-rbod-${uniqueId}
+  settings:
+    backupConfiguration:
+      enabled: true
+    locationPreference:
+      zone: us-central1-a
+    tier: db-custom-1-3840
+---
+# 03: Explicitly set retainBackupsOnDelete: false -> KCC sends PUT with false.
+# Keep labels.step unchanged from step 02 so only retainBackupsOnDelete triggers the PUT.
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-rbod-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+  labels:
+    step: label-change
+spec:
+  databaseVersion: POSTGRES_15
+  region: us-central1
+  resourceID: sqlinstance-rbod-${uniqueId}
+  settings:
+    backupConfiguration:
+      enabled: true
+    locationPreference:
+      zone: us-central1-a
+    retainBackupsOnDelete: false
+    tier: db-custom-1-3840
+---
+# 04: Remove retainBackupsOnDelete again -> KCC performs GETs only and keeps false.
+# Keep labels.step unchanged so step 04 triggers no label PUT.
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-rbod-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+  labels:
+    step: label-change
+spec:
+  databaseVersion: POSTGRES_15
+  region: us-central1
+  resourceID: sqlinstance-rbod-${uniqueId}
+  settings:
+    backupConfiguration:
+      enabled: true
+    locationPreference:
+      zone: us-central1-a
+    tier: db-custom-1-3840

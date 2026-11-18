@@ -164,6 +164,9 @@ func DiffSettings(desired *api.Settings, actual *api.Settings) *structuredreport
 	if desired.ReplicationType != actual.ReplicationType {
 		diff.AddField(".settings.replicationType", actual.ReplicationType, desired.ReplicationType)
 	}
+	if desired.RetainBackupsOnDelete != actual.RetainBackupsOnDelete {
+		diff.AddField(".settings.retainBackupsOnDelete", actual.RetainBackupsOnDelete, desired.RetainBackupsOnDelete)
+	}
 	if desired.SettingsVersion != actual.SettingsVersion {
 		diff.AddField(".settings.settingsVersion", actual.SettingsVersion, desired.SettingsVersion)
 	}

@@ -1653,6 +1653,11 @@ func (in *InstanceSettings) DeepCopyInto(out *InstanceSettings) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.RetainBackupsOnDelete != nil {
+		in, out := &in.RetainBackupsOnDelete, &out.RetainBackupsOnDelete
+		*out = new(bool)
+		**out = **in
+	}
 	if in.SqlServerAuditConfig != nil {
 		in, out := &in.SqlServerAuditConfig, &out.SqlServerAuditConfig
 		*out = new(InstanceSqlServerAuditConfig)

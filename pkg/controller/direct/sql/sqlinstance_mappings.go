@@ -170,6 +170,7 @@ func InstanceSettingsKRMToGCP(in krm.InstanceSettings, labels map[string]string)
 		PasswordValidationPolicy: InstancePasswordValidationPolicyKRMToGCP(in.PasswordValidationPolicy),
 		PricingPlan:              direct.ValueOf(in.PricingPlan),
 		ReplicationType:          direct.ValueOf(in.ReplicationType),
+		RetainBackupsOnDelete:    direct.ValueOf(in.RetainBackupsOnDelete),
 		// SettingsVersion is omitted because it is not part of the "desired state".
 		SqlServerAuditConfig:   InstanceSqlServerAuditConfigKRMToGCP(in.SqlServerAuditConfig),
 		StorageAutoResize:      in.DiskAutoresize,
@@ -193,6 +194,9 @@ func InstanceSettingsKRMToGCP(in krm.InstanceSettings, labels map[string]string)
 	}
 	if in.DiskAutoresizeLimit != nil {
 		out.ForceSendFields = append(out.ForceSendFields, "StorageAutoResizeLimit")
+	}
+	if in.RetainBackupsOnDelete != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "RetainBackupsOnDelete")
 	}
 
 	return out
@@ -752,6 +756,7 @@ func InstanceSettingsGCPToKRM(in *api.Settings) krm.InstanceSettings {
 		PasswordValidationPolicy: InstancePasswordValidationPolicyGCPToKRM(in.PasswordValidationPolicy),
 		PricingPlan:              direct.LazyPtr(in.PricingPlan),
 		ReplicationType:          direct.LazyPtr(in.ReplicationType),
+		RetainBackupsOnDelete:    direct.PtrTo(in.RetainBackupsOnDelete),
 		// SettingsVersion is omitted because it is not part of the "desired state".
 		SqlServerAuditConfig: InstanceSqlServerAuditConfigGCPToKRM(in.SqlServerAuditConfig),
 		DiskAutoresize:       in.StorageAutoResize,

@@ -72,6 +72,10 @@ go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/sql/v1b
 
   optional int32 replication_lag_max_seconds = 100;
 
+  // When set to true, Cloud SQL retains backups of the instance even after the
+  // instance is deleted.
+  google.protobuf.BoolValue retain_backups_on_delete = 42;
+
 EOF
 
 go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/sql/v1beta4/cloud_sql_resources.proto --message DatabaseInstance --mode append <<EOF
