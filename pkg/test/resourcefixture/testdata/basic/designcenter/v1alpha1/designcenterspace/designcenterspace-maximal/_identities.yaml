@@ -1,0 +1,12 @@
+- caisURL: //storage.googleapis.com/projects/${projectId}/buckets/dc-bucket-${uniqueId}
+  group: storage.cnrm.cloud.google.com
+  kind: StorageBucket
+  name: dc-bucket-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //designcenter.googleapis.com/projects/${projectId}/locations/us-central1/spaces/designcenterspace-maximal-${uniqueId}
+  group: designcenter.cnrm.cloud.google.com
+  kind: DesignCenterSpace
+  name: designcenterspace-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

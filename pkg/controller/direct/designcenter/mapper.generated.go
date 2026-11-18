@@ -26,7 +26,6 @@ package designcenter
 import (
 	pb "cloud.google.com/go/designcenter/apiv1/designcenterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/designcenter/v1alpha1"
-	krmstoragev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -52,6 +51,8 @@ func DesignCenterSpaceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.D
 	// MISSING: EnableGcpSharedTemplates
 	return out
 }
+
+/* found existing non-generated mapping function "DesignCenterSpaceSpec_FromProto", skipping
 func DesignCenterSpaceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Space) *krm.DesignCenterSpaceSpec {
 	if in == nil {
 		return nil
@@ -68,6 +69,9 @@ func DesignCenterSpaceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Space) *k
 	out.Tags = in.Tags
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "DesignCenterSpaceSpec_ToProto", skipping
 func DesignCenterSpaceSpec_ToProto(mapCtx *direct.MapContext, in *krm.DesignCenterSpaceSpec) *pb.Space {
 	if in == nil {
 		return nil
@@ -84,3 +88,4 @@ func DesignCenterSpaceSpec_ToProto(mapCtx *direct.MapContext, in *krm.DesignCent
 	out.Tags = in.Tags
 	return out
 }
+*/
