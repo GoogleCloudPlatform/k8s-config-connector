@@ -20,12 +20,13 @@ package v1beta1
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/privatecarefs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -1363,6 +1364,11 @@ func (in *InstancePscConfig) DeepCopyInto(out *InstancePscConfig) {
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
+	if in.NetworkAttachmentRef != nil {
+		in, out := &in.NetworkAttachmentRef, &out.NetworkAttachmentRef
+		*out = new(v1alpha1.ComputeNetworkAttachmentRef)
+		**out = **in
+	}
 	if in.PscEnabled != nil {
 		in, out := &in.PscEnabled, &out.PscEnabled
 		*out = new(bool)
@@ -2270,7 +2276,7 @@ func (in *SQLInstanceStatus) DeepCopyInto(out *SQLInstanceStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.AvailableMaintenanceVersions != nil {
@@ -2457,7 +2463,7 @@ func (in *SQLSSLCertStatus) DeepCopyInto(out *SQLSSLCertStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Cert != nil {

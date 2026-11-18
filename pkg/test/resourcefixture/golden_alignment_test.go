@@ -32,6 +32,8 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
+var sqlPscServiceAttachmentRegex = regexp.MustCompile(`^projects/[^/]+/regions/([^/]+)/serviceAttachments/[^/]+$`)
+
 var mockGCPSkipFixtures = map[string]bool{
 	// TODO(https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/12388): Align outdated ComposerEnvironment mock logs with real GCP
 	"composer/v1beta1/composerenvironment/composerenvironmentwithkms":         true,
@@ -951,6 +953,9 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if kind, ok := v["kind"].(string); ok && kind == "sql#instance" {
 			delete(v, "dnsNames")
 			delete(v, "geminiConfig")
+			if saLink, ok := v["pscServiceAttachmentLink"].(string); ok {
+				v["pscServiceAttachmentLink"] = sqlPscServiceAttachmentRegex.ReplaceAllString(saLink, "projects/tenanta-tp/regions/$1/serviceAttachments/a-abcdef-psc-service-attachment-0123456789abcdef")
+			}
 			if settings, ok := v["settings"].(map[string]interface{}); ok {
 				if backupConfig, ok := settings["backupConfiguration"].(map[string]interface{}); ok {
 					delete(backupConfig, "backupTier")
@@ -958,6 +963,23 @@ func normalizeRepresentation(obj interface{}) interface{} {
 					// Postgres instances with backups disabled; newer recordings omit it.
 					if rla, ok := backupConfig["replicationLogArchivingEnabled"].(bool); ok && !rla {
 						delete(backupConfig, "replicationLogArchivingEnabled")
+					}
+				}
+				if ipConfig, ok := settings["ipConfiguration"].(map[string]interface{}); ok {
+					// Real GCP recordings after PR #12483 preserve serverCaMode="GOOGLE_MANAGED_INTERNAL_CA"
+					// from GET onto PUT updates, whereas MockGCP omits default serverCaMode to keep older
+					// pre-#12483 SQL mock logs stable.
+					if caMode, ok := ipConfig["serverCaMode"].(string); ok && caMode == "GOOGLE_MANAGED_INTERNAL_CA" {
+						delete(ipConfig, "serverCaMode")
+					}
+					if pscConfig, ok := ipConfig["pscConfig"].(map[string]interface{}); ok {
+						// TODO: Remove once psc_auto_dns_enabled and psc_write_endpoint_dns_enabled are present in the mockgcp sql v1beta4 proto.
+						if autoDNS, ok := pscConfig["pscAutoDnsEnabled"].(bool); ok && !autoDNS {
+							delete(pscConfig, "pscAutoDnsEnabled")
+						}
+						if writeDNS, ok := pscConfig["pscWriteEndpointDnsEnabled"].(bool); ok && !writeDNS {
+							delete(pscConfig, "pscWriteEndpointDnsEnabled")
+						}
 					}
 				}
 			}

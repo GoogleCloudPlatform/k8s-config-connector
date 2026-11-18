@@ -497,9 +497,11 @@ func unmarshalDynamicJSON(reg *descriptorRegistry, msgDesc protoreflect.MessageD
 		msgDesc.FullName() == "google.cloud.dataform.v1.WorkflowConfig" ||
 		msgDesc.FullName() == "google.cloud.contactcenterinsights.v1.QaScorecardRevision" ||
 		msgDesc.FullName() == "google.cloud.contactcenterinsights.v1.ListQaScorecardRevisionsResponse" ||
-		msgDesc.FullName() == "google.cloud.deploy.v1.Release" {
-		// Discard unknown fields (e.g. source on QaScorecard, conditions on Release) returned in real GCP responses
-		// but absent in vendored googleapis proto schemas.
+		msgDesc.FullName() == "google.cloud.deploy.v1.Release" ||
+		msgDesc.FullName() == "google.cloud.sql.v1beta4.DatabaseInstance" ||
+		msgDesc.FullName() == "google.cloud.sql.v1beta4.UsersListResponse" {
+		// Discard unknown fields (e.g. source on QaScorecard, conditions on Release, dnsNames/networkAttachmentUri on DatabaseInstance,
+		// iamStatus on UsersListResponse) returned in real GCP responses but absent in vendored googleapis proto schemas.
 		discardUnknown = true
 	}
 	opts := protojson.UnmarshalOptions{
