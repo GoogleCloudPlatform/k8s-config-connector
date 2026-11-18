@@ -1,0 +1,167 @@
+# Phase: CREATE
+POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/entityTypes?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "displayName": "entitytype-min-${uniqueId}",
+  "entities": [
+    {
+      "synonyms": [
+        "synonym1"
+      ],
+      "value": "value1"
+    }
+  ],
+  "kind": "KIND_MAP"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "entitytype-min-${uniqueId}",
+  "entities": [
+    {
+      "synonyms": [
+        "synonym1"
+      ],
+      "value": "value1"
+    }
+  ],
+  "kind": "KIND_MAP",
+  "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/entityTypes/13c4c465-0c78-4834-9f62-ff93d1a73f8f"
+}
+
+---
+
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/entityTypes/13c4c465-0c78-4834-9f62-ff93d1a73f8f?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "entitytype-min-${uniqueId}",
+  "entities": [
+    {
+      "synonyms": [
+        "synonym1"
+      ],
+      "value": "value1"
+    }
+  ],
+  "kind": "KIND_MAP",
+  "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/entityTypes/13c4c465-0c78-4834-9f62-ff93d1a73f8f"
+}
+
+---
+
+# Phase: UPDATE
+PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/entityTypes/13c4c465-0c78-4834-9f62-ff93d1a73f8f?alt=json&updateMask=entities
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "displayName": "entitytype-min-${uniqueId}",
+  "entities": [
+    {
+      "synonyms": [
+        "synonym1",
+        "synonym2"
+      ],
+      "value": "value1"
+    }
+  ],
+  "kind": "KIND_MAP"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "entitytype-min-${uniqueId}",
+  "entities": [
+    {
+      "synonyms": [
+        "synonym1",
+        "synonym2"
+      ],
+      "value": "value1"
+    }
+  ],
+  "kind": "KIND_MAP",
+  "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/entityTypes/13c4c465-0c78-4834-9f62-ff93d1a73f8f"
+}
+
+---
+
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/entityTypes/13c4c465-0c78-4834-9f62-ff93d1a73f8f?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "entitytype-min-${uniqueId}",
+  "entities": [
+    {
+      "synonyms": [
+        "synonym1",
+        "synonym2"
+      ],
+      "value": "value1"
+    }
+  ],
+  "kind": "KIND_MAP",
+  "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/entityTypes/13c4c465-0c78-4834-9f62-ff93d1a73f8f"
+}
+
+---
+
+# Phase: DELETE
+DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/entityTypes/13c4c465-0c78-4834-9f62-ff93d1a73f8f?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
