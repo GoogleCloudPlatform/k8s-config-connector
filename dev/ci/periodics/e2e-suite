@@ -50,18 +50,29 @@ case "${SERVICE}" in
   "asset") extra_services="cloudasset.googleapis.com" ;;
   "bigqueryanalyticshub") extra_services="analyticshub.googleapis.com" ;;
   "bigquerybiglake") extra_services="biglake.googleapis.com" ;;
+  "bigquerydatapolicy") extra_services="bigquerydatapolicy.googleapis.com datacatalog.googleapis.com" ;;
+  "billing") extra_services="cloudbilling.googleapis.com" ;;
   "certificatemanager") extra_services="certificatemanager.googleapis.com servicedirectory.googleapis.com privateca.googleapis.com" ;;
   "clouddms") extra_services="datamigration.googleapis.com" ;;
   "cloudfunctions2") extra_services="cloudfunctions.googleapis.com" ;;
   "cloudids") extra_services="ids.googleapis.com" ;;
+  "cloudiot") extra_services="" ;;
+  "cloudquota") extra_services="cloudquotas.googleapis.com" ;;
+  "colab") extra_services="aiplatform.googleapis.com" ;;
+  "configdelivery") extra_services="configdelivery.googleapis.com anthos.googleapis.com" ;;
   "containerattached") extra_services="gkemulticloud.googleapis.com" ;;
   "dialogflowcx") extra_services="dialogflow.googleapis.com" ;;
   "filestore") extra_services="file.googleapis.com" ;;
+  "iam") extra_services="iam.googleapis.com dataproc.googleapis.com gkehub.googleapis.com privateca.googleapis.com" ;;
+  "identityplatform") extra_services="identitytoolkit.googleapis.com" ;;
   "kms") extra_services="cloudkms.googleapis.com" ;;
   "mlengine") extra_services="ml.googleapis.com" ;;
+  "notebooks") extra_services="notebooks.googleapis.com aiplatform.googleapis.com dataproc.googleapis.com" ;;
   "resourcemanager") extra_services="cloudresourcemanager.googleapis.com" ;;
-  "sql") extra_services="sqladmin.googleapis.com" ;;
+  "run") extra_services="run.googleapis.com binaryauthorization.googleapis.com" ;;
+  "sql") extra_services="sqladmin.googleapis.com privateca.googleapis.com" ;;
   "tags") extra_services="cloudresourcemanager.googleapis.com" ;;
+  "vertexai") extra_services="aiplatform.googleapis.com" ;;
 esac
 
 export EXTRA_GCP_SERVICES="${extra_services}"
