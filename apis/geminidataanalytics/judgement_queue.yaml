@@ -25,215 +25,289 @@ entries:
     group: geminidataanalytics.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged judgement queue, updated parent to ProjectAndLocationRef, added KMSKeyRef, removed spec.labels, added service docs link, confirmed non-GCP-reference fields
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     reason: verify-service-docs-link
     detail: neither the Discovery directory nor the service config names a docs page; add one
-    status: open
+    status: resolved
+    resolution: edited
+    note: added service docs link
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.bigqueryAgentAnalyticsTable.datasetID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery dataset ID string within BigQueryTableReference
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.bigqueryAgentAnalyticsTable.projectID
     reason: possible-reference-by-name
     detail: ProjectRef
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery project ID string within BigQueryTableReference
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.bigqueryAgentAnalyticsTable.tableID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery table ID string within BigQueryTableReference
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.publishedContext.datasourceReferences.bq.propertyGraphReferences[].datasetID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery dataset ID string within BigQueryPropertyGraphReference
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.publishedContext.datasourceReferences.bq.propertyGraphReferences[].projectID
     reason: possible-reference-by-name
     detail: ProjectRef
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery project ID string within BigQueryPropertyGraphReference
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.publishedContext.datasourceReferences.bq.propertyGraphReferences[].propertyGraphID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery property graph ID string within BigQueryPropertyGraphReference
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.publishedContext.datasourceReferences.bq.tableReferences[].datasetID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery dataset ID string within BigQueryTableReference
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.publishedContext.datasourceReferences.bq.tableReferences[].projectID
     reason: possible-reference-by-name
     detail: ProjectRef
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery project ID string within BigQueryTableReference
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.publishedContext.datasourceReferences.bq.tableReferences[].tableID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery table ID string within BigQueryTableReference
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.publishedContext.datasourceReferences.looker.exploreReferences[].privateLookerInstanceInfo.lookerInstanceID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Looker instance ID string for private Looker instance connection
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.publishedContext.datasourceReferences.studio.studioReferences[].datasourceID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Looker Studio datasource ID string
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.publishedContext.lookerGoldenQueries[].lookerQuery.clientID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Looker client ID string within LookerQuery
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.publishedContext.lookerGoldenQueries[].lookerQuery.queryID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Looker query ID string within LookerQuery
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.publishedContext.schemaRelationships[].leftSchemaPaths.tableFqn
     reason: possible-reference-by-description-loose
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: fully qualified table name string within SchemaPaths join relationship
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.publishedContext.schemaRelationships[].rightSchemaPaths.tableFqn
     reason: possible-reference-by-description-loose
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: fully qualified table name string within SchemaPaths join relationship
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.publishedContext.userFunctions.bqRoutines[].routineReference.datasetID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery dataset ID string within BigQueryRoutineReference
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.publishedContext.userFunctions.bqRoutines[].routineReference.projectID
     reason: possible-reference-by-name
     detail: ProjectRef
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery project ID string within BigQueryRoutineReference
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.publishedContext.userFunctions.bqRoutines[].routineReference.routineID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery routine ID string within BigQueryRoutineReference
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.stagingContext.datasourceReferences.bq.propertyGraphReferences[].datasetID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery dataset ID string within BigQueryPropertyGraphReference
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.stagingContext.datasourceReferences.bq.propertyGraphReferences[].projectID
     reason: possible-reference-by-name
     detail: ProjectRef
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery project ID string within BigQueryPropertyGraphReference
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.stagingContext.datasourceReferences.bq.propertyGraphReferences[].propertyGraphID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery property graph ID string within BigQueryPropertyGraphReference
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.stagingContext.datasourceReferences.bq.tableReferences[].datasetID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery dataset ID string within BigQueryTableReference
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.stagingContext.datasourceReferences.bq.tableReferences[].projectID
     reason: possible-reference-by-name
     detail: ProjectRef
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery project ID string within BigQueryTableReference
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.stagingContext.datasourceReferences.bq.tableReferences[].tableID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery table ID string within BigQueryTableReference
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.stagingContext.datasourceReferences.looker.exploreReferences[].privateLookerInstanceInfo.lookerInstanceID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Looker instance ID string for private Looker instance connection
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.stagingContext.datasourceReferences.studio.studioReferences[].datasourceID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Looker Studio datasource ID string
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.stagingContext.lookerGoldenQueries[].lookerQuery.clientID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Looker client ID string within LookerQuery
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.stagingContext.lookerGoldenQueries[].lookerQuery.queryID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Looker query ID string within LookerQuery
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.stagingContext.schemaRelationships[].leftSchemaPaths.tableFqn
     reason: possible-reference-by-description-loose
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: fully qualified table name string within SchemaPaths join relationship
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.stagingContext.schemaRelationships[].rightSchemaPaths.tableFqn
     reason: possible-reference-by-description-loose
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: fully qualified table name string within SchemaPaths join relationship
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.stagingContext.userFunctions.bqRoutines[].routineReference.datasetID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery dataset ID string within BigQueryRoutineReference
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.stagingContext.userFunctions.bqRoutines[].routineReference.projectID
     reason: possible-reference-by-name
     detail: ProjectRef
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery project ID string within BigQueryRoutineReference
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.dataAnalyticsAgent.stagingContext.userFunctions.bqRoutines[].routineReference.routineID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery routine ID string within BigQueryRoutineReference
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.kmsKey
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to cloudkms.googleapis.com/CryptoKey (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to KMSKeyRef (*kmsv1beta1.KMSCryptoKeyRef)
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef

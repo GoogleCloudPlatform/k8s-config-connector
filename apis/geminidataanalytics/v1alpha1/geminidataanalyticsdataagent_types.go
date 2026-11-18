@@ -14,14 +14,14 @@
 
 // API sources for GeminiDataAnalyticsDataAgent, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/e7513c828b8db536fa12fc5493d541f323aedf90/google/cloud/geminidataanalytics/v1/data_agent.proto
-// +kcc:guess=source-link reason=verify-service-docs-link
-// +kcc:source:service-docs=
+// +kcc:source:service-docs=https://cloud.google.com/conversational-analytics/docs/overview
 // +kcc:source:resource-docs=https://docs.cloud.google.com/gemini/data-agents/reference/rest/v1/projects.locations.dataAgents
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,11 +32,7 @@ var GeminiDataAnalyticsDataAgentGVK = GroupVersion.WithKind("GeminiDataAnalytics
 // +kcc:spec:proto=google.cloud.geminidataanalytics.v1.DataAgent
 // +kcc:required-from-proto
 type GeminiDataAnalyticsDataAgentSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The GeminiDataAnalyticsDataAgent name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -56,21 +52,12 @@ type GeminiDataAnalyticsDataAgentSpec struct {
 	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DataAgent.description
 	Description *string `json:"description,omitempty"`
 
-	// Optional. Labels to help users filter related agents.
-	//  For example, "sales", "business", "etl", and so on.
-	//  Note labels are used only for filtering and not for policies.
-	//  See the [labels
-	//  documentation](https://cloud.google.com/resource-manager/docs/labels-overview)
-	//  for more details on label usage.
-	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DataAgent.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
 	// Optional. Customer managed encryption key (CMEK) to use for encrypting the
 	//  DataAgent resources. Cloud KMS CryptoKeys must reside in the same location
 	//  as the DataAgent. The expected format is
 	//  `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
 	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DataAgent.kms_key
-	KMSKey *string `json:"kmsKey,omitempty"`
+	KMSKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 
 	// Optional. Controls whether BigQuery Agent Analytics trace logging is
 	//  enabled for the agent.
