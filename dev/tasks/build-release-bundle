@@ -157,6 +157,7 @@ BLOCKED_KINDS=(
     "CloudTalentSolutionCompany"
     "CloudTalentSolutionTenant"
     "CloudTasksQueue"
+    "ComputeCompositeHealthCheck"
     "ComputeHealthCheckService"
     "ComputeInstanceGroupManagerResizeRequest"
     "ComputeNotificationEndpoint"
