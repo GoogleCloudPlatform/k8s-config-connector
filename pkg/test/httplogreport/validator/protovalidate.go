@@ -496,8 +496,9 @@ func unmarshalDynamicJSON(reg *descriptorRegistry, msgDesc protoreflect.MessageD
 	if msgDesc.FullName() == "google.cloud.orchestration.airflow.service.v1.Environment" ||
 		msgDesc.FullName() == "google.cloud.dataform.v1.WorkflowConfig" ||
 		msgDesc.FullName() == "google.cloud.contactcenterinsights.v1.QaScorecardRevision" ||
-		msgDesc.FullName() == "google.cloud.contactcenterinsights.v1.ListQaScorecardRevisionsResponse" {
-		// Discard unknown fields (e.g. source on QaScorecard) returned in real GCP responses
+		msgDesc.FullName() == "google.cloud.contactcenterinsights.v1.ListQaScorecardRevisionsResponse" ||
+		msgDesc.FullName() == "google.cloud.deploy.v1.Release" {
+		// Discard unknown fields (e.g. source on QaScorecard, conditions on Release) returned in real GCP responses
 		// but absent in vendored googleapis proto schemas.
 		discardUnknown = true
 	}

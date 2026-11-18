@@ -128,6 +128,16 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.networkCookie"] = 12345678
 	visitor.replacePaths[".status.observedState.latestCommitTime"] = mockgcpregistry.PlaceholderTime
 
+	// CloudDeployRelease snapshots
+	visitor.replacePaths[".status.observedState.deliveryPipelineSnapshot.createTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.deliveryPipelineSnapshot.updateTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.deliveryPipelineSnapshot.uid"] = "0123456789abcdef"
+	visitor.replacePaths[".status.observedState.deliveryPipelineSnapshot.etag"] = "abcdef123456"
+	visitor.replacePaths[".status.observedState.targetSnapshots[].createTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.targetSnapshots[].updateTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.targetSnapshots[].uid"] = "0123456789abcdef"
+	visitor.replacePaths[".status.observedState.targetSnapshots[].etag"] = "abcdef123456"
+
 	// NetworkConnectivity
 	visitor.replacePaths[".status.observedState.generatedActivationKey"] = "eyJ2ZXJzaW9uIjoxLCJkZXN0aW5hdGlvbkVudmlyb25tZW50VXJpIjoiaHR0cHM6Ly9wYXJ0bmVyLWludGVyY29ubmVjdC51cy1lYXN0LTEuYXBpLmF3cy9wcm92aWRlcnMvZ2NwL2Vudmlyb25tZW50cy9pYWQtcHVibGljIiwic2hhcmVkQ29ubmVjdGlvblV1aWQiOiJiZjBiYWM5NS0wYmYyLTQ1N2QtYmU0NS1iM2ZiY2I0NmY4ZjkiLCJjb25uZWN0aW9uU2l6ZU1icHMiOjEwMDAsImRlc3RpbmF0aW9uQWNjb3VudElkIjoiMTIzNDU2Nzg5MDEyIn0="
 	visitor.replacePaths[".status.observedState.peeringNetwork"] = "projects/123456789012/global/networks/transport-1234567890abcdef-vpc"

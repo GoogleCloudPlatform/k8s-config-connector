@@ -668,6 +668,32 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "targetPlatforms")
 		// CESApp: retentionWindow is returned by real GCP but not in cespb.ConversationLoggingSettings
 		delete(v, "retentionWindow")
+		// CloudDeployRelease: toolVersions and toolVersionSupportedConditions are returned by real GCP
+		// but are not in the current deploypb.Release protobuf.
+		delete(v, "toolVersions")
+		delete(v, "dockerVersionSupportedCondition")
+		delete(v, "helmVersionSupportedCondition")
+		delete(v, "kptVersionSupportedCondition")
+		delete(v, "kubectlVersionSupportedCondition")
+		delete(v, "kustomizeVersionSupportedCondition")
+		delete(v, "skaffoldVersionSupportedCondition")
+		if dps, ok := v["deliveryPipelineSnapshot"].(map[string]interface{}); ok {
+			delete(dps, "etag")
+		}
+		if tss, ok := v["targetSnapshots"].([]interface{}); ok {
+			for _, ts := range tss {
+				if tsm, ok := ts.(map[string]interface{}); ok {
+					delete(tsm, "etag")
+					if ecs, ok := tsm["executionConfigs"].([]interface{}); ok {
+						for _, ec := range ecs {
+							if ecm, ok := ec.(map[string]interface{}); ok {
+								delete(ecm, "usages")
+							}
+						}
+					}
+				}
+			}
+		}
 		if qm, ok := v["qualityMetadata"].(map[string]interface{}); ok {
 			if agentInfo, ok := qm["agentInfo"].([]interface{}); ok {
 				for _, a := range agentInfo {

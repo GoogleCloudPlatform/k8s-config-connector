@@ -1,0 +1,193 @@
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/targets/clouddeploytarget-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test Target for Release",
+  "etag": "abcdef0123A=",
+  "executionConfigs": [
+    {
+      "artifactStorage": "gs://us-central1.deploy-artifacts.${projectId}.appspot.com",
+      "defaultPool": {
+        "artifactStorage": "gs://us-central1.deploy-artifacts.${projectId}.appspot.com",
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+      },
+      "executionTimeout": "3600s",
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "usages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/targets/clouddeploytarget-${uniqueId}",
+  "run": {
+    "location": "projects/${projectId}/locations/us-central1"
+  },
+  "targetId": "clouddeploytarget-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test Delivery Pipeline for Release",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+  "serialPipeline": {
+    "stages": [
+      {
+        "targetId": "clouddeploytarget-${uniqueId}"
+      }
+    ]
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/releases/clouddeployrelease-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "condition": {
+    "dockerVersionSupportedCondition": {
+      "maintenanceModeTime": "2027-11-04T12:00:00Z",
+      "status": true,
+      "supportExpirationTime": "2028-01-03T12:00:00Z",
+      "toolVersionSupportState": 1
+    },
+    "helmVersionSupportedCondition": {
+      "maintenanceModeTime": "2027-10-15T12:00:00Z",
+      "status": true,
+      "supportExpirationTime": "2027-12-14T12:00:00Z",
+      "toolVersionSupportState": 1
+    },
+    "kptVersionSupportedCondition": {
+      "maintenanceModeTime": "2027-09-28T12:00:00Z",
+      "status": true,
+      "supportExpirationTime": "2027-11-27T12:00:00Z",
+      "toolVersionSupportState": 1
+    },
+    "kubectlVersionSupportedCondition": {
+      "maintenanceModeTime": "2027-10-28T12:00:00Z",
+      "status": true,
+      "supportExpirationTime": "2027-12-27T12:00:00Z",
+      "toolVersionSupportState": 1
+    },
+    "kustomizeVersionSupportedCondition": {
+      "status": true,
+      "toolVersionSupportState": 1
+    },
+    "releaseReadyCondition": {
+      "status": true
+    },
+    "skaffoldSupportedCondition": {
+      "skaffoldSupportState": 1,
+      "status": true
+    },
+    "skaffoldVersionSupportedCondition": {
+      "status": true,
+      "toolVersionSupportState": 1
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deliveryPipelineSnapshot": {
+    "createTime": "2026-11-17T20:59:06.550303Z",
+    "description": "Test Delivery Pipeline for Release",
+    "etag": "2c1586bba8f349cf",
+    "name": "projects/${projectNumber}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}",
+    "serialPipeline": {
+      "stages": [
+        {
+          "targetId": "clouddeploytarget-${uniqueId}"
+        }
+      ]
+    },
+    "uid": "b14bd0c1a5bb43208ee11c08856924ed",
+    "updateTime": "2026-11-17T20:59:06.550303Z"
+  },
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/releases/clouddeployrelease-min-${uniqueId}",
+  "renderState": 3,
+  "skaffoldConfigUri": "gs://${projectId}-clouddeploy-test-bucket-2026/source.tar.gz",
+  "skaffoldVersion": "cd-skaffold",
+  "targetArtifacts": {
+    "clouddeploytarget-${uniqueId}": {}
+  },
+  "targetRenders": {
+    "clouddeploytarget-${uniqueId}": {
+      "renderingBuild": "projects/${projectNumber}/locations/us-central1/builds/1aa8bb5d-4833-4812-82b8-2a28aed7955f",
+      "renderingState": 3
+    }
+  },
+  "targetSnapshots": [
+    {
+      "createTime": "2026-11-17T20:59:05.752712Z",
+      "description": "Test Target for Release",
+      "etag": "6f18a7099b81a2e0",
+      "executionConfigs": [
+        {
+          "artifactStorage": "gs://us-central1.deploy-artifacts.${projectId}.appspot.com",
+          "defaultPool": {
+            "artifactStorage": "gs://us-central1.deploy-artifacts.${projectId}.appspot.com",
+            "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+          },
+          "executionTimeout": "3600s",
+          "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+          "usages": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        }
+      ],
+      "labels": {
+        "cnrm-test": "true",
+        "managed-by-cnrm": "true"
+      },
+      "name": "projects/${projectNumber}/locations/us-central1/targets/clouddeploytarget-${uniqueId}",
+      "run": {
+        "location": "projects/${projectId}/locations/us-central1"
+      },
+      "targetId": "clouddeploytarget-${uniqueId}",
+      "uid": "fbb4d5d745f54fcba33cc40e05e8a0b3",
+      "updateTime": "2026-11-17T20:59:05.752712Z"
+    }
+  ],
+  "toolVersions": {
+    "docker": "29.9.3",
+    "helm": "4.3.1",
+    "kpt": "1.0.1",
+    "kubectl": "1.37.2",
+    "kustomize": "kubectl",
+    "skaffold": "cd-skaffold"
+  },
+  "uid": "111111111111111111111"
+}
