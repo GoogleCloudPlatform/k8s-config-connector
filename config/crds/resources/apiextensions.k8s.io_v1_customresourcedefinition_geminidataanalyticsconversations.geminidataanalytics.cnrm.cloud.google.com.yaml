@@ -70,11 +70,32 @@ spec:
                   support of multiple agents in a conversation.
                 items:
                   description: GeminiDataAnalyticsDataAgentRef is a reference to a
-                    DataAgent.
+                    GCP GeminiDataAnalyticsDataAgent resource.
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                    required:
+                    - external
                   properties:
                     external:
-                      description: A reference to an externally managed DataAgent
+                      description: A reference to an externally managed GeminiDataAnalyticsDataAgent
                         resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/dataAgents/{{dataAgentID}}".
+                      type: string
+                    name:
+                      description: The name of a GeminiDataAnalyticsDataAgent resource.
+                      type: string
+                    namespace:
+                      description: The namespace of a GeminiDataAnalyticsDataAgent
+                        resource.
                       type: string
                   type: object
                 type: array

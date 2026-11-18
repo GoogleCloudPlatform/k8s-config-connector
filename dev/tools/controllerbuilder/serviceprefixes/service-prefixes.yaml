@@ -474,6 +474,7 @@ services:
     title: Gemini Data Analytics API
     servicePrefix: GeminiDataAnalytics
     protoPackages:
+      - google.cloud.geminidataanalytics.v1
       - google.cloud.geminidataanalytics.v1beta
   - api: gkebackup
     title: Backup for GKE API

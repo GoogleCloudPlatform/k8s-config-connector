@@ -217,6 +217,7 @@ BLOCKED_KINDS=(
     "FinancialServicesPredictionResult"
     "GDCHardwareManagementHardware"
     "GeminiDataAnalyticsConversation"
+    "GeminiDataAnalyticsDataAgent"
     "GKEBackupBackupChannel"
     "GKEHubFleet"
     "GKEMulticloudAttachedCluster"
