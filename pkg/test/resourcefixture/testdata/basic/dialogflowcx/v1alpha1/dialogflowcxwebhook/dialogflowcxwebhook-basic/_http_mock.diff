@@ -1,0 +1,24 @@
+2c2
+< POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks?alt=json
+---
+> POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks?%24alt=json%3Benum-encoding%3Dint
+39c39
+< GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606?alt=json
+---
+> GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606?%24alt=json%3Benum-encoding%3Dint
+66c66
+< PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606?alt=json&updateMask=displayName%2Ctimeout%2Cdisabled%2CgenericWebService
+---
+> PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606?%24alt=json%3Benum-encoding%3Dint&updateMask=disabled%2CdisplayName%2CgenericWebService%2Ctimeout
+77a78
+>   "name": "projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606",
+105c106,107
+< GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606?alt=json
+---
+> # Phase: DELETE
+> GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606?%24alt=json%3Benum-encoding%3Dint
+132,133c134
+< # Phase: DELETE
+< DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606?alt=json
+---
+> DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606?%24alt=json%3Benum-encoding%3Dint
