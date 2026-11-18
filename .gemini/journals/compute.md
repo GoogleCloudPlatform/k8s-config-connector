@@ -55,6 +55,22 @@
   - Recorded golden HTTP traffic and audit probes against real GCP project `cnrm-barni-4` using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`.
   - Both minimal and maximal fixtures passed all 7 automated lifecycle validation checks (V1-V7) with zero-diff steady-state re-reconciliation and clean deletion.
 
+### [2026-11-18] Greenfield Controller and Fuzzer for ComputeInstanceGroupManagerResizeRequest
+- **Context**: Greenfield Step 2 implementation of direct controller, fuzzer, and E2E fixtures for `ComputeInstanceGroupManagerResizeRequest` (issue #16037).
+- **Findings & Implementation**:
+  1. **Mapper & Fuzzer Generation**:
+     - `controllerbuilder` skips messages ending in `Request` by default (`pathForMessage`), which skipped `InstanceGroupManagerResizeRequest`. Hand-crafted `computeinstancegroupmanagerresizerequest_mapper.go` for `ComputeInstanceGroupManagerResizeRequestSpec` and `ComputeInstanceGroupManagerResizeRequestObservedState` converting to/from `computepb.InstanceGroupManagerResizeRequest`.
+     - Generated fuzzer via `controllerbuilder generate-fuzzer --prepopulate-resource`. Added `f.Unimplemented_NotYetTriaged(".region")` because `ComputeInstanceGroupManagerResizeRequest` is zonal, leaving `.region` unmapped in the proto.
+     - Verified round-trip fuzzer test with `FOCUS=ComputeInstanceGroupManagerResizeRequest go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`.
+  2. **Controller Logic**:
+     - Added `newInstanceGroupManagerResizeRequestsClient` to `pkg/controller/direct/compute/client.go` using `compute.NewInstanceGroupManagerResizeRequestsRESTClient`.
+     - Implemented `InstanceGroupManagerResizeRequestAdapter` handling `Find`, `Create`, `Update`, `Export`, and `Delete` via `gcpClient.Insert`, `gcpClient.Get`, and `gcpClient.Delete`.
+     - Registered direct controller in `static_config.go`.
+  3. **E2E Fixture & Real GCP Behavior**:
+     - Added fixture under `pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinstancegroupmanagerresizerequest/computeinstancegroupmanagerresizerequestbasic/`.
+     - `requestedRunDuration` is required by the GCP API on `Insert` (`Required field 'resource.requestedRunDuration' not specified`).
+     - Real GCP requires automatic repair to be disabled on the parent Managed Instance Group (`Cannot create a resize request when automatic repair is configured in the MIG. To create a resize request, turn off automatic repair.`). Because `ComputeInstanceGroupManager` does not yet support configuring `instanceLifecyclePolicy` (`defaultActionOnFailure: DO_NOTHING`), creating resize requests against KCC-managed MIGs on real GCP encounters this precondition until `ComputeInstanceGroupManager` exposes `instanceLifecyclePolicy`.
+
 ### [2026-11-18] Greenfield Step 1b: Triage judgement queue and finalize direct KRM types and identity for ComputeCompositeHealthCheck
 - **Context**: Triaged and finalized direct KRM types, identity, and references for `ComputeCompositeHealthCheck` (issue #16042) following Greenfield Step 1b (`judgement/SKILL.md`).
 - **Judgement Queue Resolutions & Learnings**:
