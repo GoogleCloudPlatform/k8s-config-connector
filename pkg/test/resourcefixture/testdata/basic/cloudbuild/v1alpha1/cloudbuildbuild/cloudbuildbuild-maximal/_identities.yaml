@@ -1,4 +1,4 @@
-- caisURL: //cloudbuild.googleapis.com/projects/${projectId}/locations/us-central1/builds/1aa7979b-e0f0-403a-abc0-f7ee133df2b1
+- caisURL: //cloudbuild.googleapis.com/projects/${projectId}/locations/us-central1/builds/${buildID}
   group: cloudbuild.cnrm.cloud.google.com
   kind: CloudBuildBuild
   name: cloudbuildbuild-maximal-${uniqueId}

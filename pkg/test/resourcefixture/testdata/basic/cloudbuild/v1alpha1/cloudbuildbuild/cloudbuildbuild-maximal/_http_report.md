@@ -4,7 +4,7 @@
 - **Resource Name:** `cloudbuildbuild-maximal-${uniqueId}`
 - **Source Log:** `_http.log` (5 total HTTP entries, 0 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:a184b2b8f71e8103`
+- **Integrity Hash:** `sha256:3558a038b67c439c`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 

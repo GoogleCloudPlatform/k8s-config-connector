@@ -25,13 +25,13 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1/builds/95760562-1af3-4a34-a454-0bdc1ab90164
+  externalRef: projects/${projectId}/locations/us-central1/builds/${buildID}
   observedGeneration: 1
   observedState:
     createTime: "2024-04-01T12:34:56.123456Z"
     finishTime: "2024-04-01T12:34:56.123456Z"
     id: 1111111111111111
-    logURL: https://console.cloud.google.com/cloud-build/builds;region=us-central1/95760562-1af3-4a34-a454-0bdc1ab90164?project=${projectNumber}
+    logURL: https://console.cloud.google.com/cloud-build/builds;region=us-central1/${buildID}?project=${projectNumber}
     projectID: ${projectId}
     results:
       buildStepImages:

@@ -23,6 +23,49 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "cloudbuild.googleapis.com") && !strings.Contains(url, "cloudbuild") {
+		return
+	}
+
+	replacements.ReplacePath(".startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".finishTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.build.startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.build.finishTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.build.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".steps[].pullTiming.startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".steps[].pullTiming.endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".steps[].timing.startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".steps[].timing.endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.build.steps[].pullTiming.startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.build.steps[].pullTiming.endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.build.steps[].timing.startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.build.steps[].timing.endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".timing.BUILD.startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".timing.BUILD.endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".timing.FETCHSOURCE.startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".timing.FETCHSOURCE.endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".timing.PUSH.startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".timing.PUSH.endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.build.timing.BUILD.startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.build.timing.BUILD.endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.build.timing.FETCHSOURCE.startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.build.timing.FETCHSOURCE.endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.build.timing.PUSH.startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.build.timing.PUSH.endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.finishTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.steps[].pullTiming.startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.steps[].pullTiming.endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.steps[].timing.startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.steps[].timing.endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.timing.BUILD.startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.timing.BUILD.endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.timing.FETCHSOURCE.startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.timing.FETCHSOURCE.endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.timing.PUSH.startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.timing.PUSH.endTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

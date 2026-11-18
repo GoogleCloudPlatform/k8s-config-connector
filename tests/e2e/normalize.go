@@ -1257,6 +1257,13 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 					replacement.PathIDs[teamFolderID] = "2ba614be-5147-410a-ad89-bab4ff528497"
 				}
 			}
+			if u.GetKind() == "CloudBuildBuild" {
+				parts := strings.Split(s, "/")
+				if len(parts) > 0 {
+					buildID := parts[len(parts)-1]
+					replacement.PathIDs[buildID] = "${buildID}"
+				}
+			}
 		}
 		return s
 	})
@@ -1378,6 +1385,26 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 				for _, match := range matches {
 					if len(match) > 1 {
 						normalizer.Replacements.PathIDs[match[1]] = "${styleConfigId}"
+					}
+				}
+			}
+		}
+	}
+
+	// Find CloudBuild build IDs in URL or Body and add to PathIDs
+	buildIDRegex := regexp.MustCompile(`/builds/([a-zA-Z0-9_-]+)`)
+	for _, event := range events {
+		if !strings.Contains(event.Request.URL, "cloudbuild") {
+			continue
+		}
+		if matches := buildIDRegex.FindStringSubmatch(event.Request.URL); len(matches) > 1 {
+			normalizer.Replacements.PathIDs[matches[1]] = "${buildID}"
+		}
+		if event.Response.Body != "" {
+			if matches := buildIDRegex.FindAllStringSubmatch(event.Response.Body, -1); len(matches) > 0 {
+				for _, match := range matches {
+					if len(match) > 1 {
+						normalizer.Replacements.PathIDs[match[1]] = "${buildID}"
 					}
 				}
 			}
@@ -1681,49 +1708,6 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		visitor.ReplacePath(".response.revisionCreateTime", mockgcpregistry.PlaceholderTimestamp)
 		visitor.ReplacePath(".revisionId", "revision-id-placeholder")
 		visitor.ReplacePath(".response.revisionId", "revision-id-placeholder")
-	}
-
-	// CloudBuild
-	{
-		visitor.ReplacePath(".startTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".finishTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".metadata.build.startTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".metadata.build.finishTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".metadata.build.createTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".steps[].pullTiming.startTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".steps[].pullTiming.endTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".steps[].timing.startTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".steps[].timing.endTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".metadata.build.steps[].pullTiming.startTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".metadata.build.steps[].pullTiming.endTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".metadata.build.steps[].timing.startTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".metadata.build.steps[].timing.endTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".timing.BUILD.startTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".timing.BUILD.endTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".timing.FETCHSOURCE.startTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".timing.FETCHSOURCE.endTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".timing.PUSH.startTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".timing.PUSH.endTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".metadata.build.timing.BUILD.startTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".metadata.build.timing.BUILD.endTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".metadata.build.timing.FETCHSOURCE.startTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".metadata.build.timing.FETCHSOURCE.endTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".metadata.build.timing.PUSH.startTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".metadata.build.timing.PUSH.endTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".response.startTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".response.finishTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".response.steps[].pullTiming.startTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".response.steps[].pullTiming.endTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".response.steps[].timing.startTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".response.steps[].timing.endTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".response.timing.BUILD.startTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".response.timing.BUILD.endTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".response.timing.FETCHSOURCE.startTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".response.timing.FETCHSOURCE.endTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".response.timing.PUSH.startTime", mockgcpregistry.PlaceholderTimestamp)
-		visitor.ReplacePath(".response.timing.PUSH.endTime", mockgcpregistry.PlaceholderTimestamp)
 	}
 
 	// ContactCenterInsights

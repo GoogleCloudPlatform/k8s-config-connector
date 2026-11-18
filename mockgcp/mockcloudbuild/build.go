@@ -20,6 +20,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/google/uuid"
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -127,16 +128,7 @@ func (s *CloudBuildV1) CreateBuild(ctx context.Context, req *pb.CreateBuildReque
 		return nil, err
 	}
 
-	// Real GCP assigns a server-generated UUID for the build ID.
-	// To match this behavior and ensure stable E2E tests and golden files,
-	// we use deterministic UUIDs matching the recorded baselines.
-	buildID := "95760562-1af3-4a34-a454-0bdc1ab90164"
-	for _, tag := range req.GetBuild().GetTags() {
-		if tag == "maximal" {
-			buildID = "1aa7979b-e0f0-403a-abc0-f7ee133df2b1"
-			break
-		}
-	}
+	buildID := uuid.New().String()
 	name := &buildName{
 		Project:  project,
 		Location: location,
@@ -155,39 +147,7 @@ func (s *CloudBuildV1) CreateBuild(ctx context.Context, req *pb.CreateBuildReque
 	build.ProjectId = name.Project.ID
 	build.CreateTime = now
 
-	if build.QueueTtl == nil {
-		build.QueueTtl = &durationpb.Duration{Seconds: 3600}
-	}
-	if build.Timeout == nil {
-		build.Timeout = &durationpb.Duration{Seconds: 3600}
-	}
-	if build.ServiceAccount == "" {
-		build.ServiceAccount = fmt.Sprintf("projects/%s/serviceAccounts/%d-compute@developer.gserviceaccount.com", name.Project.ID, name.Project.Number)
-	}
-
-	if build.Options == nil {
-		build.Options = &pb.BuildOptions{}
-	}
-	if build.Options.Logging == pb.BuildOptions_LOGGING_UNSPECIFIED {
-		build.Options.Logging = pb.BuildOptions_LEGACY
-	}
-	if build.Options.Pool == nil {
-		build.Options.Pool = &pb.BuildOptions_PoolOption{}
-	}
-
-	if build.Options.Logging != pb.BuildOptions_CLOUD_LOGGING_ONLY && build.LogsBucket == "" {
-		if name.Location != "" {
-			build.LogsBucket = fmt.Sprintf("gs://%d-%s-cloudbuild-logs", name.Project.Number, name.Location)
-		} else {
-			build.LogsBucket = fmt.Sprintf("gs://%d-cloudbuild-logs", name.Project.Number)
-		}
-	}
-
-	if name.Location != "" && name.Location != "global" {
-		build.LogUrl = fmt.Sprintf("https://console.cloud.google.com/cloud-build/builds;region=%s/%s?project=%d", name.Location, name.BuildID, name.Project.Number)
-	} else {
-		build.LogUrl = fmt.Sprintf("https://console.cloud.google.com/cloud-build/builds/%s?project=%d", name.BuildID, name.Project.Number)
-	}
+	s.populateDefaults(name, build)
 
 	// Prepare initial build (for LRO metadata)
 	initialBuild := proto.Clone(build).(*pb.Build)
@@ -240,6 +200,47 @@ func (s *CloudBuildV1) CreateBuild(ctx context.Context, req *pb.CreateBuildReque
 	})
 }
 
+func (s *CloudBuildV1) populateDefaults(name *buildName, build *pb.Build) {
+	if build.QueueTtl == nil {
+		build.QueueTtl = &durationpb.Duration{Seconds: 3600}
+	}
+	if build.Timeout == nil {
+		build.Timeout = &durationpb.Duration{Seconds: 3600}
+	}
+	if build.ServiceAccount == "" {
+		build.ServiceAccount = fmt.Sprintf("projects/%s/serviceAccounts/%d-compute@developer.gserviceaccount.com", name.Project.ID, name.Project.Number)
+	}
+
+	if build.Options == nil {
+		build.Options = &pb.BuildOptions{}
+	}
+	if build.Options.Logging == pb.BuildOptions_LOGGING_UNSPECIFIED {
+		build.Options.Logging = pb.BuildOptions_LEGACY
+	}
+	if build.Options.Pool == nil {
+		build.Options.Pool = &pb.BuildOptions_PoolOption{}
+	}
+
+	if build.Options.Logging != pb.BuildOptions_CLOUD_LOGGING_ONLY && build.LogsBucket == "" {
+		if name.Location != "" {
+			build.LogsBucket = fmt.Sprintf("gs://%d-%s-cloudbuild-logs", name.Project.Number, name.Location)
+		} else {
+			build.LogsBucket = fmt.Sprintf("gs://%d-cloudbuild-logs", name.Project.Number)
+		}
+	}
+
+	if build.LogUrl == "" {
+		if name.Location != "" && name.Location != "global" {
+			build.LogUrl = fmt.Sprintf("https://console.cloud.google.com/cloud-build/builds;region=%s/%s?project=%d", name.Location, name.BuildID, name.Project.Number)
+		} else {
+			build.LogUrl = fmt.Sprintf("https://console.cloud.google.com/cloud-build/builds/%s?project=%d", name.BuildID, name.Project.Number)
+		}
+	}
+
+	// TODO: Document proto3 zero-value gaps. Fields such as dynamicSubstitutions=false
+	// or empty results are omitted by proto3 JSON serialization unless explicitly populated.
+}
+
 func (s *CloudBuildV1) GetBuild(ctx context.Context, req *pb.GetBuildRequest) (*pb.Build, error) {
 	name, err := s.parseBuildName(req.GetName(), req.GetProjectId(), req.GetId())
 	if err != nil {
@@ -254,5 +255,6 @@ func (s *CloudBuildV1) GetBuild(ctx context.Context, req *pb.GetBuildRequest) (*
 		}
 		return nil, err
 	}
+	s.populateDefaults(name, obj)
 	return obj, nil
 }

@@ -4,7 +4,7 @@
 - **Resource Name:** `cloudbuildbuild-minimal-${uniqueId}`
 - **Source Log:** `_http.log` (5 total HTTP entries, 0 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:cff6d2678434a49f`
+- **Integrity Hash:** `sha256:19eccfb0ced67444`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 
