@@ -1,0 +1,184 @@
+# Phase: CREATE
+GET https://agentidentity.googleapis.com/v1/projects/${projectId}/locations/us-central1/authProviders/authprovider-2lo-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FauthProviders%2Fauthprovider-2lo-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "The requested resource was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://agentidentity.googleapis.com/v1/projects/${projectId}/locations/us-central1/authProviders?%24alt=json%3Benum-encoding%3Dint&authProviderId=authprovider-2lo-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "authProviderTypeParams": {
+    "twoLeggedOauth": {
+      "clientId": "example-2lo-client-id",
+      "clientSecret": "example-2lo-client-secret",
+      "tokenUrl": "https://auth.example.com/oauth/token"
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "authProviderTypeParams": {
+    "twoLeggedOauth": {
+      "clientId": "example-2lo-client-id",
+      "tokenUrl": "https://auth.example.com/oauth/token"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/authProviders/authprovider-2lo-${uniqueId}",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: UPDATE
+GET https://agentidentity.googleapis.com/v1/projects/${projectId}/locations/us-central1/authProviders/authprovider-2lo-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FauthProviders%2Fauthprovider-2lo-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "authProviderTypeParams": {
+    "twoLeggedOauth": {
+      "clientId": "example-2lo-client-id",
+      "tokenUrl": "https://auth.example.com/oauth/token"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/authProviders/authprovider-2lo-${uniqueId}",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://agentidentity.googleapis.com/v1/projects/${projectId}/locations/us-central1/authProviders/authprovider-2lo-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=authProviderTypeParams
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: auth_provider.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FauthProviders%2Fauthprovider-2lo-${uniqueId}
+
+{
+  "authProviderTypeParams": {
+    "twoLeggedOauth": {
+      "clientId": "updated-2lo-client-id",
+      "tokenUrl": "https://auth.example.com/oauth/token2"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/authProviders/authprovider-2lo-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "authProviderTypeParams": {
+    "twoLeggedOauth": {
+      "clientId": "updated-2lo-client-id",
+      "tokenUrl": "https://auth.example.com/oauth/token2"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/authProviders/authprovider-2lo-${uniqueId}",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GET https://agentidentity.googleapis.com/v1/projects/${projectId}/locations/us-central1/authProviders/authprovider-2lo-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FauthProviders%2Fauthprovider-2lo-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "authProviderTypeParams": {
+    "twoLeggedOauth": {
+      "clientId": "updated-2lo-client-id",
+      "tokenUrl": "https://auth.example.com/oauth/token2"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/authProviders/authprovider-2lo-${uniqueId}",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://agentidentity.googleapis.com/v1/projects/${projectId}/locations/us-central1/authProviders/authprovider-2lo-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FauthProviders%2Fauthprovider-2lo-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

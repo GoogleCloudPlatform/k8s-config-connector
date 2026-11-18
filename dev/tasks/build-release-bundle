@@ -90,7 +90,6 @@ BLOCKED_KINDS=(
     "AIPlatformNotebookRuntimeTemplate"
     "AIPlatformOnlineEvaluator"
     "AIPlatformRAGCorpus"
-    "AgentIdentityAuthProvider"
     "AgentRegistryService"
     "ApigeeApiProduct"
     "ApigeeRegistryAPI"

@@ -1681,6 +1681,8 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 
 			case schema.GroupKind{Group: "ftp.cnrm.cloud.google.com", Kind: "FTPServer"}:
 
+			case schema.GroupKind{Group: "agentidentity.cnrm.cloud.google.com", Kind: "AgentIdentityAuthProvider"}:
+
 			default:
 				t.Skipf("gk %v not suppported by mock gcp %v; skipping", gvk.GroupKind(), testKey)
 			}
