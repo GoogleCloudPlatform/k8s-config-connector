@@ -121,7 +121,7 @@ func (m *modelBuild) client(ctx context.Context, location string) (*gcp.Client, 
 	if err != nil {
 		return nil, fmt.Errorf("building Build client: %w", err)
 	}
-	return gcpClient, err
+	return gcpClient, nil
 }
 
 type BuildAdapter struct {
