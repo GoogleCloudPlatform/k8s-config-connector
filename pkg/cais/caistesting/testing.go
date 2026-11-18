@@ -333,6 +333,15 @@ func NormalizeDynamicIDs(s string) string {
 				}
 			}
 		}
+		// Normalize DialogflowCXEntityType IDs: locations/.../agents/.../entityTypes/<entityTypeId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/entityTypes/"); idx != -1 && strings.Contains(line, "dialogflow") {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
 		// Normalize DialogflowWebhook IDs: locations/.../agents/.../webhooks/<webhookId>
 		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
 		if idx := strings.Index(line, "/webhooks/"); idx != -1 && strings.Contains(line, "dialogflow") {
