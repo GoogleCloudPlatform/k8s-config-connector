@@ -401,3 +401,31 @@
      - Passed `apichecks` (`TestCRDFieldPresenceInTestsForAlpha`, `TestGenerateScripts`, `TestDirectResourceFileNaming`), `resourcefixture` tests, and `make fmt`.
 - **Impact**: AIPlatformBatchPredictionJob direct controller, fuzzer, and real GCP E2E fixtures are fully implemented and verified against real GCP APIs.
 
+### [2026-11-18] Greenfield Step 1a: Prepopulate direct KRM types, identity, and judgement queue for AIPlatformNasJob
+- **Context**: Prepopulating direct KRM types, identity, and `judgement_queue.yaml` for `AIPlatformNasJob` under `aiplatform.cnrm.cloud.google.com/v1alpha1` (Issue #16017).
+- **Implementation & Learnings**:
+  1. **Deterministic Generation**:
+     - Added `--resource AIPlatformNasJob:NasJob` to `generate-types` and `generate-identity` in `apis/aiplatform/generate.sh`.
+     - Proto `google.cloud.aiplatform.v1.NasJob` is GA and follows the URL pattern `projects/{project}/locations/{location}/nasJobs/{nas_job}`.
+     - `CreateNasJobRequest` does not accept a user-specified ID, so `controllerbuilder generate-identity` generated `identity.ServerGeneratedIdentity` for `AIPlatformNasJobIdentity`.
+  2. **Release Bundle Blocklist**:
+     - Added `AIPlatformNasJob` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  3. **Judgement Queue**:
+     - Open entries including `untriaged-bulk-generation` and `identity-server-generated-id` were populated in `apis/aiplatform/judgement_queue.yaml` for Step 1b triage.
+  4. **Golden Exceptions**:
+     - Updated `alpha-missingfields.txt` and `refs_not_representable.txt` for untriaged fields in `AIPlatformNasJob`.
+- **Impact**: Initial KRM scaffolding, IdentityV2, and judgement queue entries are successfully set up and verified with clean compilation and passing tests.
+
+
+
+### [2026-11-18] Greenfield Step 1b: Triaging Judgement Queue and Finalizing Direct KRM Types and Identity for AIPlatformNasJob
+- **Context**: Triaging judgement queue and finalizing direct KRM types, identity, and references for `AIPlatformNasJob` under `aiplatform.cnrm.cloud.google.com/v1alpha1` (Issue #16031).
+- **Implementation & Learnings**:
+  1. **Parent & Location Ref**: Replaced separate `ProjectRef` and `Location` fields on `AIPlatformNasJobSpec` with inlined `*parent.ProjectAndLocationRef`.
+  2. **References Modelled**:
+     - `SearchTrialJobSpec` and `TrainTrialJobSpec` inside `NasJobSpec` updated to use `CustomJobSpecWithRequired`, enabling typed references for `PersistentResourceRef`, `ServiceAccountRef`, `NetworkRef`, `ModelRefs`, `TensorboardRef`, `ExperimentRef`, `ExperimentRunRef`, and `PSCInterfaceConfig`.
+     - `ResumeNasJobRef` in `NasJobSpec` converted from `ResumeNasJobID *string` to `*AIPlatformNasJobRef`.
+  3. **Documentation URL**: Verified REST resource documentation URL `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.nasJobs` and removed guess marker comment.
+  4. **Judgement Queue**: Triaged all 71 entries for `AIPlatformNasJob` in `apis/aiplatform/judgement_queue.yaml` (editing parentRef, docs link, CustomJobSpecWithRequired fields, ResumeNasJobRef; accepting server-generated identity, deprecated fields, and non-representable strings).
+  5. **Verification**: Ran `generate.sh`, `go test -v ./apis/aiplatform/...`, `go test -v ./pkg/cli/powertools/cais/...`, and `dev/tasks/diff-crds`. All tests passed cleanly.
+  6. **Top-Level Labels**: Removed top-level `Labels map[string]string` from `AIPlatformNasJobSpec` so resource labels are managed via KRM `metadata.labels`, avoiding dual reconciliation and satisfying `TestVerifyLabelsTestCasesExist`.

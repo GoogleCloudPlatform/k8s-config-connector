@@ -44,6 +44,7 @@
 // resource: AIPlatformExecution:Execution
 // resource: AIPlatformNotebookExecutionJob:NotebookExecutionJob
 // resource: AIPlatformBatchPredictionJob:BatchPredictionJob
+// resource: AIPlatformNasJob:NasJob
 
 package v1alpha1
 
@@ -2605,6 +2606,24 @@ type ModelSourceInfo struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ModelSourceInfo.copy
 	Copy *bool `json:"copy,omitempty"`
 }
+
+/* unreachable type NasJobOutput
+// +kcc:proto=google.cloud.aiplatform.v1.NasJobOutput
+type NasJobOutput struct {
+}
+*/
+
+/* unreachable type NasJobOutput_MultiTrialJobOutput
+// +kcc:proto=google.cloud.aiplatform.v1.NasJobOutput.MultiTrialJobOutput
+type NasJobOutput_MultiTrialJobOutput struct {
+}
+*/
+
+/* unreachable type NasTrial
+// +kcc:proto=google.cloud.aiplatform.v1.NasTrial
+type NasTrial struct {
+}
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.NfsMount
 type NfsMount struct {
@@ -5529,6 +5548,49 @@ type ModelDeploymentMonitoringBigQueryTableObservedState struct {
 	RequestResponseLoggingSchemaVersion *string `json:"requestResponseLoggingSchemaVersion,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.NasJobOutput
+type NasJobOutputObservedState struct {
+	// Output only. The output of this multi-trial Neural Architecture Search
+	//  (NAS) job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobOutput.multi_trial_job_output
+	MultiTrialJobOutput *NasJobOutput_MultiTrialJobOutputObservedState `json:"multiTrialJobOutput,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.NasJobOutput.MultiTrialJobOutput
+type NasJobOutput_MultiTrialJobOutputObservedState struct {
+	// Output only. List of NasTrials that were started as part of search stage.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobOutput.MultiTrialJobOutput.search_trials
+	SearchTrials []NasTrialObservedState `json:"searchTrials,omitempty"`
+
+	// Output only. List of NasTrials that were started as part of train stage.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobOutput.MultiTrialJobOutput.train_trials
+	TrainTrials []NasTrialObservedState `json:"trainTrials,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.NasTrial
+type NasTrialObservedState struct {
+	// Output only. The identifier of the NasTrial assigned by the service.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasTrial.id
+	ID *string `json:"id,omitempty"`
+
+	// Output only. The detailed state of the NasTrial.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasTrial.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The final measurement containing the objective value.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasTrial.final_measurement
+	FinalMeasurement *MeasurementObservedState `json:"finalMeasurement,omitempty"`
+
+	// Output only. Time when the NasTrial was started.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasTrial.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Output only. Time when the NasTrial's status changed to `SUCCEEDED` or
+	//  `INFEASIBLE`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasTrial.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
 
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.NotebookEucConfig
 type NotebookEUCConfigObservedState struct {
