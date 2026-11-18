@@ -96,6 +96,10 @@ type AddonsConfig struct {
 	/* The status of the Parallelstore CSI driver addon, which allows the usage of Parallelstore instance as volumes. Defaults to disabled; set enabled = true to enable. */
 	// +kcc:proto:field=google.container.v1.AddonsConfig.parallelstore_csi_driver_config
 	ParallelstoreCSIDriverConfig *ParallelstoreCSIDriverConfig `json:"parallelstoreCsiDriverConfig,omitempty"`
+
+	/* The status of the Ray Operator addon, which enables management of Ray AI/ML jobs on GKE. Defaults to disabled; set enabled = true to enable. */
+	// +kcc:proto:field=google.container.v1.AddonsConfig.ray_operator_config
+	RayOperatorConfig *RayOperatorConfig `json:"rayOperatorConfig,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.AdvancedDatapathObservabilityConfig
@@ -1188,6 +1192,38 @@ type NotificationConfig_PubSub struct {
 	/* The PubSubTopic to send the notification to. */
 	// +kcc:proto:field=google.container.v1.NotificationConfig.NotificationConfig_PubSub.topic
 	TopicRef *pubsubv1beta1.PubSubTopicRef `json:"topicRef,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.RayClusterLoggingConfig
+type RayClusterLoggingConfig struct {
+	/* Enable log collection for Ray clusters. */
+	// +required
+	// +kcc:proto:field=google.container.v1.RayClusterLoggingConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.RayClusterMonitoringConfig
+type RayClusterMonitoringConfig struct {
+	/* Enable metrics collection for Ray clusters. */
+	// +required
+	// +kcc:proto:field=google.container.v1.RayClusterMonitoringConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.RayOperatorConfig
+type RayOperatorConfig struct {
+	/* Whether the Ray Operator addon is enabled for this cluster. */
+	// +required
+	// +kcc:proto:field=google.container.v1.RayOperatorConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	/* Logging configuration for Ray clusters. */
+	// +kcc:proto:field=google.container.v1.RayOperatorConfig.ray_cluster_logging_config
+	RayClusterLoggingConfig *RayClusterLoggingConfig `json:"rayClusterLoggingConfig,omitempty"`
+
+	/* Monitoring configuration for Ray clusters. */
+	// +kcc:proto:field=google.container.v1.RayOperatorConfig.ray_cluster_monitoring_config
+	RayClusterMonitoringConfig *RayClusterMonitoringConfig `json:"rayClusterMonitoringConfig,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.RecurringTimeWindow.window

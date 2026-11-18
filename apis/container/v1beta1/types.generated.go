@@ -3237,7 +3237,8 @@ type RangeInfo struct {
 }
 */
 
-/* unreachable type RayClusterLoggingConfig
+/* found existing non-generated go type "RayClusterLoggingConfig", skipping
+
 // +kcc:proto=google.container.v1.RayClusterLoggingConfig
 type RayClusterLoggingConfig struct {
 	// Enable log collection for Ray clusters.
@@ -3246,7 +3247,8 @@ type RayClusterLoggingConfig struct {
 }
 */
 
-/* unreachable type RayClusterMonitoringConfig
+/* found existing non-generated go type "RayClusterMonitoringConfig", skipping
+
 // +kcc:proto=google.container.v1.RayClusterMonitoringConfig
 type RayClusterMonitoringConfig struct {
 	// Enable metrics collection for Ray clusters.
@@ -3255,7 +3257,8 @@ type RayClusterMonitoringConfig struct {
 }
 */
 
-/* unreachable type RayOperatorConfig
+/* found existing non-generated go type "RayOperatorConfig", skipping
+
 // +kcc:proto=google.container.v1.RayOperatorConfig
 type RayOperatorConfig struct {
 	// Whether the Ray Operator addon is enabled for this cluster.

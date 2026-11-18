@@ -114,6 +114,12 @@ addonsConfig:
     disabled: boolean
   parallelstoreCsiDriverConfig:
     enabled: boolean
+  rayOperatorConfig:
+    enabled: boolean
+    rayClusterLoggingConfig:
+      enabled: boolean
+    rayClusterMonitoringConfig:
+      enabled: boolean
 allowNetAdmin: boolean
 authenticatorGroupsConfig:
   securityGroup: string
@@ -804,6 +810,66 @@ workloadIdentityConfig:
         <td>
             <p><code class="apitype">boolean</code></p>
             <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>addonsConfig.rayOperatorConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The status of the Ray Operator addon, which enables management of Ray AI/ML jobs on GKE. Defaults to disabled; set enabled = true to enable.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>addonsConfig.rayOperatorConfig.enabled</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Whether the Ray Operator addon is enabled for this cluster.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>addonsConfig.rayOperatorConfig.rayClusterLoggingConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Logging configuration for Ray clusters.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>addonsConfig.rayOperatorConfig.rayClusterLoggingConfig.enabled</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Enable log collection for Ray clusters.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>addonsConfig.rayOperatorConfig.rayClusterMonitoringConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Monitoring configuration for Ray clusters.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>addonsConfig.rayOperatorConfig.rayClusterMonitoringConfig.enabled</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Enable metrics collection for Ray clusters.</p>
         </td>
     </tr>
     <tr>

@@ -74,6 +74,9 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       },
       "parallelstoreCsiDriverConfig": {
         "enabled": false
+      },
+      "rayOperatorConfig": {
+        "enabled": false
       }
     },
     "autopilot": {
@@ -262,7 +265,8 @@ X-Xss-Protection: 0
     "networkPolicyConfig": {
       "disabled": true
     },
-    "parallelstoreCsiDriverConfig": {}
+    "parallelstoreCsiDriverConfig": {},
+    "rayOperatorConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -652,7 +656,8 @@ X-Xss-Protection: 0
     "networkPolicyConfig": {
       "disabled": true
     },
-    "parallelstoreCsiDriverConfig": {}
+    "parallelstoreCsiDriverConfig": {},
+    "rayOperatorConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -1042,7 +1047,8 @@ X-Xss-Protection: 0
     "networkPolicyConfig": {
       "disabled": true
     },
-    "parallelstoreCsiDriverConfig": {}
+    "parallelstoreCsiDriverConfig": {},
+    "rayOperatorConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -1384,6 +1390,9 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       },
       "parallelstoreCsiDriverConfig": {
         "enabled": false
+      },
+      "rayOperatorConfig": {
+        "enabled": false
       }
     }
   }
@@ -1481,7 +1490,8 @@ X-Xss-Protection: 0
     "networkPolicyConfig": {
       "disabled": true
     },
-    "parallelstoreCsiDriverConfig": {}
+    "parallelstoreCsiDriverConfig": {},
+    "rayOperatorConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -1871,7 +1881,8 @@ X-Xss-Protection: 0
     "networkPolicyConfig": {
       "disabled": true
     },
-    "parallelstoreCsiDriverConfig": {}
+    "parallelstoreCsiDriverConfig": {},
+    "rayOperatorConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -2261,7 +2272,8 @@ X-Xss-Protection: 0
     "networkPolicyConfig": {
       "disabled": true
     },
-    "parallelstoreCsiDriverConfig": {}
+    "parallelstoreCsiDriverConfig": {},
+    "rayOperatorConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -2604,6 +2616,15 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       },
       "parallelstoreCsiDriverConfig": {
         "enabled": true
+      },
+      "rayOperatorConfig": {
+        "enabled": true,
+        "rayClusterLoggingConfig": {
+          "enabled": true
+        },
+        "rayClusterMonitoringConfig": {
+          "enabled": true
+        }
       }
     }
   }
@@ -2706,6 +2727,15 @@ X-Xss-Protection: 0
     "networkPolicyConfig": {},
     "parallelstoreCsiDriverConfig": {
       "enabled": true
+    },
+    "rayOperatorConfig": {
+      "enabled": true,
+      "rayClusterLoggingConfig": {
+        "enabled": true
+      },
+      "rayClusterMonitoringConfig": {
+        "enabled": true
+      }
     }
   },
   "anonymousAuthenticationConfig": {
@@ -3101,6 +3131,15 @@ X-Xss-Protection: 0
     "networkPolicyConfig": {},
     "parallelstoreCsiDriverConfig": {
       "enabled": true
+    },
+    "rayOperatorConfig": {
+      "enabled": true,
+      "rayClusterLoggingConfig": {
+        "enabled": true
+      },
+      "rayClusterMonitoringConfig": {
+        "enabled": true
+      }
     }
   },
   "anonymousAuthenticationConfig": {
@@ -3496,6 +3535,15 @@ X-Xss-Protection: 0
     "networkPolicyConfig": {},
     "parallelstoreCsiDriverConfig": {
       "enabled": true
+    },
+    "rayOperatorConfig": {
+      "enabled": true,
+      "rayClusterLoggingConfig": {
+        "enabled": true
+      },
+      "rayClusterMonitoringConfig": {
+        "enabled": true
+      }
     }
   },
   "anonymousAuthenticationConfig": {
