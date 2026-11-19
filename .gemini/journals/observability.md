@@ -36,3 +36,15 @@
   4. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...`.
   5. Kept all findings in `apis/observability/judgement_queue.yaml` with `status: open` for Step 1b triage.
 
+### [2026-11-19] ObservabilityLink Judgement Queue Triage and Types Finalization
+- **Context**: Triaged `apis/observability/judgement_queue.yaml` and finalized KRM types, identity, and reference for `ObservabilityLink`.
+- **Learnings & Decisions**:
+  1. The parent pattern for `ObservabilityLink` is `projects/{project}/locations/{location}/buckets/{bucket}/datasets/{dataset}` (`observability.googleapis.com/Dataset`). In GCP Observability API, datasets are read-only / system-provided collections within buckets (such as `Spans` in `_Trace`) with no `CreateDataset` RPC.
+  2. Implemented external-only `ObservabilityDatasetRef` and `ObservabilityDatasetIdentity` in `apis/observability/v1alpha1/observabilitydataset_reference.go` and `apis/observability/v1alpha1/observabilitydataset_identity.go` per `references/PARENT_AND_IDENTITY.md` (Case B).
+  3. Replaced `spec.projectRef` and `spec.location` on `ObservabilityLinkSpec` with a single required immutable `spec.parentRef` (`*ObservabilityDatasetRef`).
+  4. Updated the resource docs URL to `https://docs.cloud.google.com/stackdriver/docs/reference/observability/api/rest/v1/projects.locations.buckets.datasets.links` and removed `+kcc:guess=source-link`.
+  5. Regenerated identity, deepcopy, CRD, and mappers via `./apis/observability/generate.sh`. The generated identity automatically uses `spec.parentRef.Normalize()` and parses parent external URI to construct `ObservabilityLinkIdentity`.
+  6. Added comprehensive unit tests in `observabilitylink_identity_test.go` and conformance tests in `observabilitydataset_identity_test.go`.
+  7. Re-recorded `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` and `tests/apichecks/testdata/exceptions/naming_violations.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...` and verified all presubmit tests pass.
+
+

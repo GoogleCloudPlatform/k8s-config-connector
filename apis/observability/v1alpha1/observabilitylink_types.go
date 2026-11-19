@@ -15,13 +15,11 @@
 // API sources for ObservabilityLink, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/9f84face29bd2b2333f1927a24512b9ff2d195bc/google/cloud/observability/v1/observability.proto
 // +kcc:source:service-docs=https://cloud.google.com/stackdriver/docs/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/stackdriver/docs/reference/rest/v1/projects.locations.buckets.datasets.links
+// +kcc:source:resource-docs=https://docs.cloud.google.com/stackdriver/docs/reference/observability/api/rest/v1/projects.locations.buckets.datasets.links
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,11 +30,10 @@ var ObservabilityLinkGVK = GroupVersion.WithKind("ObservabilityLink")
 // +kcc:spec:proto=google.cloud.observability.v1.Link
 // +kcc:required-from-proto
 type ObservabilityLinkSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// The ObservabilityDataset this ObservabilityLink is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *ObservabilityDatasetRef `json:"parentRef"`
 
 	// The ObservabilityLink name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
