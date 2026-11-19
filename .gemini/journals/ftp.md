@@ -36,3 +36,12 @@
   5. Validation: `pkg/test/httplogreport/specdiff/differ.go` was updated to simplify reference values (e.g. `projectRef`) when comparing nested map structures in slices.
 - **Impact**: Full direct controller implementation, 200-seed round-trip fuzzer, and real GCP recorded minimal and maximal fixtures with 100% CRD field coverage (all missing field exceptions cleared).
 
+### [2026-11-17] FTPUser Direct Greenfield Types Prepopulation
+- **Context**: Prepopulating direct KRM types, identity, mapper, and judgement queue for `FTPUser` under `ftp.cnrm.cloud.google.com/v1alpha1`.
+- **Actions & Configurations**:
+  1. Configured `apis/ftp/generate.sh` to include `generate-types` and `generate-identity` for `FTPUser:User` before `generate-mapper`.
+  2. Added `FTPUser` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  3. Ran `./apis/ftp/generate.sh` to emit `ftpuser_types.go`, `ftpuser_identity.generated.go`, `ftpuser_reference.generated.go`, updated `types.generated.go`, `mapper.generated.go`, CRD `ftpusers.ftp.cnrm.cloud.google.com`, and `apis/ftp/judgement_queue.yaml` entries.
+  4. Ran `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...` to update `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+- **Impact**: Prepopulates Greenfield Step 1a for `FTPUser` with passing identity conformance unit tests and `apichecks`.
+

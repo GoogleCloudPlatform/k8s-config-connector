@@ -50,6 +50,20 @@ ${CONTROLLERBUILDER} generate-identity \
   --api-version ftp.cnrm.cloud.google.com/v1alpha1 \
   --resource FTPServer:Server
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.ftp.v1 \
+  --api-version ftp.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource FTPUser:User \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.ftp.v1 \
+  --api-version ftp.cnrm.cloud.google.com/v1alpha1 \
+  --resource FTPUser:User
+
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.ftp.v1 \
