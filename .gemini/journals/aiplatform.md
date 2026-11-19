@@ -429,3 +429,25 @@
   4. **Judgement Queue**: Triaged all 71 entries for `AIPlatformNasJob` in `apis/aiplatform/judgement_queue.yaml` (editing parentRef, docs link, CustomJobSpecWithRequired fields, ResumeNasJobRef; accepting server-generated identity, deprecated fields, and non-representable strings).
   5. **Verification**: Ran `generate.sh`, `go test -v ./apis/aiplatform/...`, `go test -v ./pkg/cli/powertools/cais/...`, and `dev/tasks/diff-crds`. All tests passed cleanly.
   6. **Top-Level Labels**: Removed top-level `Labels map[string]string` from `AIPlatformNasJobSpec` so resource labels are managed via KRM `metadata.labels`, avoiding dual reconciliation and satisfying `TestVerifyLabelsTestCasesExist`.
+
+### [2026-11-18] Greenfield Step 2: Implementing Direct Controller, Fuzzer, and E2E Fixtures for AIPlatformNasJob
+- **Context**: Implementing Greenfield Step 2 direct controller, fuzzer, and real GCP E2E fixtures for `AIPlatformNasJob` under `aiplatform.cnrm.cloud.google.com/v1alpha1` (Issue #16043).
+- **Implementation & Learnings**:
+  1. **Deterministic Controller & Fuzzer Generation**:
+     - Ran `controllerbuilder generate-controller` and `generate-fuzzer` with `--prepopulate-resource` for `AIPlatformNasJob:NasJob`.
+     - Generated `pkg/controller/direct/aiplatform/aiplatformnasjob_controller.go` and `pkg/controller/direct/aiplatform/aiplatformnasjob_fuzzer.generated.go`.
+     - Static configuration updated in `pkg/controller/resourceconfig/static_config.go` via `dev/tasks/generate_static_config.py`.
+  2. **Job Deletion Cancellation Requirement**:
+     - In GCP Vertex AI, `NasJob` cannot be deleted if it is in an active/non-terminal state (e.g. `JOB_STATE_PENDING` or `JOB_STATE_RUNNING`), returning `FAILED_PRECONDITION: The Job ... is in state "PENDING", and cannot be deleted. Please cancel it or wait for its completion before trying deleting it again.`
+     - Updated `NasJobAdapter.Delete` to inspect the job state via `GetNasJob`. If non-terminal, it initiates `CancelNasJob` and requeues until the job transitions to a terminal state (`JOB_STATE_SUCCEEDED`, `JOB_STATE_FAILED`, or `JOB_STATE_CANCELLED`), matching the pattern used in `HyperparameterTuningJob`, `BatchPredictionJob`, and `CustomJob`.
+  3. **E2E Fixtures & Real GCP Verification**:
+     - Created `aiplatformnasjob-minimal` and `aiplatformnasjob-maximal` under `pkg/test/resourcefixture/testdata/basic/aiplatform/v1alpha1/aiplatformnasjob/`.
+     - The minimal fixture specifies `searchSpaceSpec`, `metric`, and `searchTrialSpec` with container specifications.
+     - The maximal fixture exercises `multiTrialAlgorithm`, `trainTrialSpec` (`frequency` and `maxParallelTrialCount`), `maxFailedTrialCount`, and a service account dependency.
+     - Recorded golden HTTP logs against real GCP (`cnrm-barni-4`) using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`. Both fixtures passed all 7/7 automated lifecycle checks cleanly.
+  4. **Fuzzing & Linters**:
+     - Verified 200-seed round-trip fuzzer via `FOCUS=AIPlatformNasJob go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`.
+     - Updated golden exceptions in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test -v ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha`.
+     - Passed `apichecks` (`TestCRDFieldPresenceInTestsForAlpha`, `TestGenerateScripts`, `TestDirectResourceFileNaming`), `resourcefixture` tests, and `make fmt`.
+- **Impact**: `AIPlatformNasJob` direct controller, fuzzer, and real GCP E2E fixtures are fully implemented and verified against real GCP APIs.
+
