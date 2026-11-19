@@ -132,7 +132,7 @@ The following resources now use the direct reconciler by default:
 
 ## New Features:
 
-*   **Multi-Cluster Leader (MCL) Election Improvements**: Bundled Multi-Cluster Leader election and syncer binaries into the controller image, and configured the manager to fail closed at startup if no multi-cluster leader election configuration is found.
+*   **Multi-Cluster Leader (MCL) Election Improvements**: Configured the kccmanager to fail closed at startup if no multi-cluster leader election configuration is found.
 *   **Go Toolchain Update**: Config Connector images are now built with Go 1.26.11 (operator: Go 1.27.4) and upgraded dependencies.
 
 ## Bug Fixes:
