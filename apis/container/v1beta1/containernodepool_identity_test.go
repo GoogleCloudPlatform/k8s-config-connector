@@ -19,6 +19,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
@@ -180,6 +181,9 @@ func TestContainerNodePool_GetIdentity(t *testing.T) {
 		obj     *ContainerNodePool
 		wantErr bool
 		want    *ContainerNodePoolIdentity
+		// wantClusterRefExternal, if set, is the value GetIdentity must write back
+		// to obj.Spec.ClusterRef.External (a bare cluster name is completed in place).
+		wantClusterRefExternal string
 	}{
 		{
 			name: "GetIdentity with valid spec and matching status.externalRef",
@@ -268,11 +272,102 @@ func TestContainerNodePool_GetIdentity(t *testing.T) {
 			},
 			wantErr: true,
 		},
+		{
+			name: "GetIdentity with bare clusterRef.external completes it from location and project",
+			obj: &ContainerNodePool{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "my-nodepool",
+					Namespace: "default",
+					Annotations: map[string]string{
+						"cnrm.cloud.google.com/project-id": "my-project",
+					},
+				},
+				Spec: ContainerNodePoolSpec{
+					Location: "us-central1-a",
+					ClusterRef: ContainerClusterRef{
+						External: "my-cluster",
+					},
+				},
+			},
+			want: &ContainerNodePoolIdentity{
+				Project:  "my-project",
+				Location: "us-central1-a",
+				Cluster:  "my-cluster",
+				NodePool: "my-nodepool",
+			},
+			wantClusterRefExternal: "projects/my-project/locations/us-central1-a/clusters/my-cluster",
+		},
+		{
+			name: "GetIdentity with bare clusterRef.external that is not a valid segment fails",
+			obj: &ContainerNodePool{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "my-nodepool",
+					Namespace: "default",
+					Annotations: map[string]string{
+						"cnrm.cloud.google.com/project-id": "my-project",
+					},
+				},
+				Spec: ContainerNodePoolSpec{
+					Location: "us-central1-a",
+					ClusterRef: ContainerClusterRef{
+						External: "my cluster",
+					},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "GetIdentity with path traversal in resourceID fails",
+			obj: &ContainerNodePool{
+				Spec: ContainerNodePoolSpec{
+					ClusterRef: ContainerClusterRef{
+						External: "projects/my-project/locations/us-central1/clusters/my-cluster",
+					},
+					ResourceID: lazyPtr("np/nodePools/x"),
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "GetIdentity with bare clusterRef.external and missing location fails",
+			obj: &ContainerNodePool{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "my-nodepool",
+					Namespace: "default",
+					Annotations: map[string]string{
+						"cnrm.cloud.google.com/project-id": "my-project",
+					},
+				},
+				Spec: ContainerNodePoolSpec{
+					ClusterRef: ContainerClusterRef{
+						External: "my-cluster",
+					},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "GetIdentity with bare clusterRef.external and missing project fails",
+			obj: &ContainerNodePool{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "my-nodepool",
+					Namespace: "default",
+				},
+				Spec: ContainerNodePoolSpec{
+					Location: "us-central1-a",
+					ClusterRef: ContainerClusterRef{
+						External: "my-cluster",
+					},
+				},
+			},
+			wantErr: true,
+		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			gotIdentity, err := tt.obj.GetIdentity(ctx, fakeClient)
+
 			if (err != nil) != tt.wantErr {
 				t.Errorf("GetIdentity() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -280,6 +375,9 @@ func TestContainerNodePool_GetIdentity(t *testing.T) {
 			if !tt.wantErr {
 				if diff := cmp.Diff(tt.want, gotIdentity); diff != "" {
 					t.Errorf("GetIdentity() mismatch (-want +got):\n%s", diff)
+				}
+				if tt.wantClusterRefExternal != "" && tt.obj.Spec.ClusterRef.External != tt.wantClusterRefExternal {
+					t.Errorf("GetIdentity() ClusterRef.External = %q, want %q", tt.obj.Spec.ClusterRef.External, tt.wantClusterRefExternal)
 				}
 			}
 		})

@@ -4,7 +4,7 @@
 - **Resource Name:** `dataplexasset-minimal-${uniqueId}`
 - **Source Log:** `_http.log` (29 total HTTP entries, 20 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:a40b6587273cff0a`
+- **Integrity Hash:** `sha256:d576c43be80637e8`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 
@@ -27,7 +27,7 @@
 | 10 | `CREATE` | `GET` `404` | `.../locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/`<br>`dataplexasset-minimal-${uniqueId}` | Pre-create existence check |
 | 11 | `CREATE` | `POST` `200` | `.../locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/`<br>`assets`<br>`?assetId=dataplexasset-minimal-${uniqueId}` | LRO: create -> done (#12)<br>Created resource |
 | 13 | `UPDATE` | `GET` `200` | `.../locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/`<br>`dataplexasset-minimal-${uniqueId}` | Pre-update read |
-| 14 | `UPDATE` | `PATCH` `200` | `.../locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/`<br>`dataplexasset-minimal-${uniqueId}` | LRO: update -> done (#15)<br>updateMask: description, resourceSpec |
+| 14 | `UPDATE` | `PATCH` `200` | `.../locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/`<br>`dataplexasset-minimal-${uniqueId}` | LRO: update -> done (#15)<br>updateMask: description |
 | 16 | `DELETE` | `GET` `200` | `.../locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/`<br>`dataplexasset-minimal-${uniqueId}` | Pre-delete read |
 | 17 | `DELETE` | `DELETE` `200` | `.../locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/`<br>`dataplexasset-minimal-${uniqueId}` | LRO: delete -> done (#18)<br>Deleted resource |
 

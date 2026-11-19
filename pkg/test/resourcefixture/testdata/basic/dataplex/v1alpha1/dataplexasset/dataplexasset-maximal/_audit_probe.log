@@ -74,7 +74,7 @@ X-Gfe-Server: envoy
     "schedule": "0 2 * * *"
   },
   "discoveryStatus": {
-    "lastRunTime": "2026-11-09T22:37:47.127338Z",
+    "lastRunTime": "2024-04-01T12:34:56.123456Z",
     "state": 2,
     "updateTime": "2024-04-01T12:34:56.123456Z"
   },

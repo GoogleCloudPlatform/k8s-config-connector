@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -94,7 +95,20 @@ func (r *KMSCryptoKeyRef) Normalize(ctx context.Context, reader client.Reader, d
 		}
 		return selfLink
 	}
-	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+	if err := refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback); err != nil {
+		return err
+	}
+	// Leave a bare "projects/..." path exactly as written; only host- or
+	// URL-prefixed values, which GCP rejects, are canonicalized.
+	if strings.HasPrefix(r.External, "projects/") {
+		return nil
+	}
+	id := &KMSCryptoKeyIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return err
+	}
+	r.External = id.String()
+	return nil
 }
 
 // kmsCryptoKeyRef defines the resource reference to KMSCryptoKey.

@@ -51,8 +51,13 @@ func Asset_ResourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Asset_Resourc
 	out.Type = direct.Enum_ToProto[pb.Asset_ResourceSpec_Type](mapCtx, in.Type)
 	out.ReadAccessMode = direct.Enum_ToProto[pb.Asset_ResourceSpec_AccessMode](mapCtx, in.ReadAccessMode)
 
-	if in.StorageBucketRef != nil {
-		out.Name = in.StorageBucketRef.External
+	if in.StorageBucketRef != nil && in.StorageBucketRef.External != "" {
+		bucketID := &storagev1beta1.StorageBucketIdentity{}
+		if err := bucketID.FromExternal(in.StorageBucketRef.External); err == nil {
+			out.Name = bucketID.String()
+		} else {
+			out.Name = in.StorageBucketRef.External
+		}
 	} else if in.BigQueryDatasetRef != nil {
 		out.Name = in.BigQueryDatasetRef.External
 	}

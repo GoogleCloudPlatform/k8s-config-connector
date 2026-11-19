@@ -4,7 +4,7 @@
 - **Resource Name:** `dataplexasset-maximal-${uniqueId}`
 - **Source Log:** `_http.log` (29 total HTTP entries, 20 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:72f8836b4634738f`
+- **Integrity Hash:** `sha256:2effcbf9036090c6`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 
@@ -35,7 +35,7 @@
 | 10 | `CREATE` | `GET` `404` | `.../locations/us-central1/lakes/dplake-max-${uniqueId}/zones/dpzone-max-${uniqueId}/assets/`<br>`dataplexasset-maximal-${uniqueId}` | Pre-create existence check |
 | 11 | `CREATE` | `POST` `200` | `.../locations/us-central1/lakes/dplake-max-${uniqueId}/zones/dpzone-max-${uniqueId}/`<br>`assets`<br>`?assetId=dataplexasset-maximal-${uniqueId}` | LRO: create -> done (#12)<br>Created resource |
 | 13 | `UPDATE` | `GET` `200` | `.../locations/us-central1/lakes/dplake-max-${uniqueId}/zones/dpzone-max-${uniqueId}/assets/`<br>`dataplexasset-maximal-${uniqueId}` | Pre-update read |
-| 14 | `UPDATE` | `PATCH` `200` | `.../locations/us-central1/lakes/dplake-max-${uniqueId}/zones/dpzone-max-${uniqueId}/assets/`<br>`dataplexasset-maximal-${uniqueId}` | LRO: update -> done (#15)<br>updateMask: description, discoverySpec, displayName, resourceSpec |
+| 14 | `UPDATE` | `PATCH` `200` | `.../locations/us-central1/lakes/dplake-max-${uniqueId}/zones/dpzone-max-${uniqueId}/assets/`<br>`dataplexasset-maximal-${uniqueId}` | LRO: update -> done (#15)<br>updateMask: description, discoverySpec, displayName |
 | 16 | `DELETE` | `GET` `200` | `.../locations/us-central1/lakes/dplake-max-${uniqueId}/zones/dpzone-max-${uniqueId}/assets/`<br>`dataplexasset-maximal-${uniqueId}` | Pre-delete read |
 | 17 | `DELETE` | `DELETE` `200` | `.../locations/us-central1/lakes/dplake-max-${uniqueId}/zones/dpzone-max-${uniqueId}/assets/`<br>`dataplexasset-maximal-${uniqueId}` | LRO: delete -> done (#18)<br>Deleted resource |
 

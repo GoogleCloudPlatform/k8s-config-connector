@@ -233,15 +233,13 @@ func LoggingLogSinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogSin
 		}
 		out.Destination = ext
 	} else if in.Destination.StorageBucketRef != nil && in.Destination.StorageBucketRef.External != "" {
-		ext := in.Destination.StorageBucketRef.External
-		if strings.Contains(ext, "/buckets/") {
-			parts := strings.Split(ext, "/buckets/")
-			ext = parts[len(parts)-1]
+		ext := strings.TrimPrefix(in.Destination.StorageBucketRef.External, "storage.googleapis.com/")
+		bucketID := &storagev1beta1.StorageBucketIdentity{}
+		if err := bucketID.FromExternal(ext); err == nil {
+			out.Destination = "storage.googleapis.com/" + bucketID.BucketName()
+		} else {
+			out.Destination = "storage.googleapis.com/" + ext
 		}
-		if !strings.HasPrefix(ext, "storage.googleapis.com/") {
-			ext = "storage.googleapis.com/" + ext
-		}
-		out.Destination = ext
 	}
 
 	if len(in.Exclusions) > 0 {

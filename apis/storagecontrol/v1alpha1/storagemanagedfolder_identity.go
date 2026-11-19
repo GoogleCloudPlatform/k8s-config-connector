@@ -21,6 +21,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -53,17 +54,30 @@ func (p *ManagedFolderParent) String() string {
 
 // New builds a ManagedFolderIdentity from the Config Connector ManagedFolder object.
 func NewManagedFolderIdentity(ctx context.Context, reader client.Reader, obj *StorageManagedFolder) (*ManagedFolderIdentity, error) {
+	if obj.Spec.StorageFolderParent == nil {
+		return nil, fmt.Errorf("spec.projectRef and spec.storagebucketRef are required")
+	}
 
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
+	if projectRef == nil || projectRef.ProjectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	bucketName := obj.Spec.StorageBucketRef.Name
+	projectID := projectRef.ProjectID
+	if obj.Spec.StorageBucketRef == nil {
+		return nil, fmt.Errorf("spec.storagebucketRef is required")
+	}
+	if err := obj.Spec.StorageBucketRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, err
+	}
+	bucketIdentity := &storagev1beta1.StorageBucketIdentity{}
+	if err := bucketIdentity.FromExternal(obj.Spec.StorageBucketRef.External); err != nil {
+		return nil, err
+	}
+	bucketName := bucketIdentity.BucketName()
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)

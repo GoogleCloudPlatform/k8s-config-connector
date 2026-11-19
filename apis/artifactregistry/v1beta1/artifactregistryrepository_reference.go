@@ -16,8 +16,8 @@ package v1beta1
 
 import (
 	"context"
+	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -89,16 +89,52 @@ func (r *ArtifactRegistryRepositoryRef) ParseExternalToIdentity() (identity.Iden
 }
 
 func (r *ArtifactRegistryRepositoryRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	// The fallback resolves only from status.name, which is set only after the
+	// repository exists in GCP. It deliberately does not require Ready=True, so
+	// that dependents (including their deletion) are not blocked while the
+	// repository is Updating, UpdateFailed, DeleteFailed or being deleted.
 	fallback := func(u *unstructured.Unstructured) string {
-		obj, err := common.ToStructuredType[*ArtifactRegistryRepository](u)
+		statusName, _, err := unstructured.NestedString(u.Object, "status", "name")
+		if err != nil || statusName == "" {
+			return ""
+		}
+		if strings.Contains(statusName, "/") {
+			id := &ArtifactRegistryRepositoryIdentity{}
+			if err := id.FromExternal(statusName); err != nil {
+				return ""
+			}
+			return id.String()
+		}
+		location, err := refs.GetLocation(u)
 		if err != nil {
 			return ""
 		}
-		identity, err := getIdentityFromArtifactRegistryRepositorySpec(ctx, reader, obj)
+		projectID, err := refs.ResolveProjectID(ctx, reader, u)
 		if err != nil {
 			return ""
 		}
-		return identity.String()
+		id := &ArtifactRegistryRepositoryIdentity{
+			Project:    projectID,
+			Location:   location,
+			Repository: statusName,
+		}
+		if err := ArtifactRegistryRepositoryIdentityFormat.Validate(*id); err != nil {
+			return ""
+		}
+		return id.String()
 	}
-	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+	if err := refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback); err != nil {
+		return err
+	}
+	// Leave a bare "projects/..." path exactly as written; only host- or
+	// URL-prefixed values, which GCP rejects, are canonicalized.
+	if strings.HasPrefix(r.External, "projects/") {
+		return nil
+	}
+	id := &ArtifactRegistryRepositoryIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return err
+	}
+	r.External = id.String()
+	return nil
 }

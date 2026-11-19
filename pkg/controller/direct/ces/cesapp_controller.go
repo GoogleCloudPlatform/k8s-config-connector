@@ -193,7 +193,7 @@ func (a *AppAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 		a.actual,
 		CESAppSpec_FromProto,
 		CESAppSpec_ToProto,
-		nil,
+		normalizeAppForDiff,
 	)
 	if err != nil {
 		return err

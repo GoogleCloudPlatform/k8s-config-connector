@@ -25,6 +25,7 @@ import (
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -160,6 +161,7 @@ func (a *AssetAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	a.resolveStorageBucketProject(resource)
 
 	req := &dataplexpb.CreateAssetRequest{
 		Parent:  a.id.ParentString(),
@@ -196,7 +198,7 @@ func (a *AssetAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 		a.actual,
 		DataplexAssetSpec_FromProto,
 		DataplexAssetSpec_ToProto,
-		nil,
+		normalizeAssetForDiff,
 	)
 	if err != nil {
 		return err
@@ -207,6 +209,7 @@ func (a *AssetAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	} else {
 		report.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, report)
+		a.resolveStorageBucketProject(resource)
 		resource.Name = a.id.String()
 		req := &dataplexpb.UpdateAssetRequest{
 			UpdateMask: updateMask,
@@ -284,4 +287,41 @@ func (a *AssetAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOp
 		return false, fmt.Errorf("waiting delete Asset %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func (a *AssetAdapter) resolveStorageBucketProject(asset *dataplexpb.Asset) {
+	if a.id == nil || a.id.Project == "" {
+		return
+	}
+	rs := asset.GetResourceSpec()
+	if rs == nil || rs.GetName() == "" {
+		return
+	}
+	isStorageBucket := rs.GetType() == dataplexpb.Asset_ResourceSpec_STORAGE_BUCKET || strings.Contains(rs.GetName(), "/buckets/")
+	if !isStorageBucket {
+		return
+	}
+	bucketID := &storagev1beta1.StorageBucketIdentity{}
+	if err := bucketID.FromExternal(rs.GetName()); err == nil {
+		if bucketID.Project == "" || bucketID.Project == "_" {
+			bucketID.Project = a.id.Project
+		}
+		rs.Name = bucketID.String()
+	}
+}
+
+func normalizeAssetForDiff(_ context.Context, asset *dataplexpb.Asset) error {
+	rs := asset.GetResourceSpec()
+	if rs == nil || rs.GetName() == "" {
+		return nil
+	}
+	isStorageBucket := rs.GetType() == dataplexpb.Asset_ResourceSpec_STORAGE_BUCKET || strings.Contains(rs.GetName(), "/buckets/")
+	if !isStorageBucket {
+		return nil
+	}
+	bucketID := &storagev1beta1.StorageBucketIdentity{}
+	if err := bucketID.FromExternal(rs.GetName()); err == nil {
+		rs.Name = bucketID.BucketName()
+	}
+	return nil
 }

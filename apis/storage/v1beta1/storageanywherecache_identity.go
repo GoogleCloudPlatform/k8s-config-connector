@@ -69,6 +69,9 @@ func GetAnywhereCacheIdentity(parent *AnywhereCacheParent, id string) *AnywhereC
 func NewAnywhereCacheIdentity(ctx context.Context, reader client.Reader, obj *StorageAnywhereCache) (*AnywhereCacheIdentity, error) {
 
 	// Get Parent
+	if obj.Spec.BucketRef == nil {
+		return nil, fmt.Errorf("spec.bucketRef is required")
+	}
 	if err := obj.Spec.BucketRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 		return nil, err
 	}
@@ -119,9 +122,9 @@ func ParseAnywhereCacheExternal(external string) (parent *AnywhereCacheParent, r
 }
 
 func ParseBucketExternal(external string) (string, error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "buckets" {
-		return "", fmt.Errorf("format of BucketRef external should be projects/{project_id}/buckets/{bucket_name}, but received external=%q", external)
+	id := &StorageBucketIdentity{}
+	if err := id.FromExternal(external); err != nil {
+		return "", err
 	}
-	return tokens[3], nil
+	return id.BucketName(), nil
 }

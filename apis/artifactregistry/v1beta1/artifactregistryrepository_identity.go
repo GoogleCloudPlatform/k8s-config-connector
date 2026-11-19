@@ -64,23 +64,26 @@ func (i *ArtifactRegistryRepositoryIdentity) Host() string {
 func getIdentityFromArtifactRegistryRepositorySpec(ctx context.Context, reader client.Reader, obj *ArtifactRegistryRepository) (*ArtifactRegistryRepositoryIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
 	location, err := refs.GetLocation(obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+		return nil, fmt.Errorf("cannot resolve location: %w", err)
 	}
 
 	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project")
+		return nil, fmt.Errorf("cannot resolve project: %w", err)
 	}
 
 	identity := &ArtifactRegistryRepositoryIdentity{
 		Project:    projectID,
 		Location:   location,
 		Repository: resourceID,
+	}
+	if err := ArtifactRegistryRepositoryIdentityFormat.Validate(*identity); err != nil {
+		return nil, err
 	}
 	return identity, nil
 }

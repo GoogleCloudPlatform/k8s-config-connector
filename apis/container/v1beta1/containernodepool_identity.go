@@ -84,6 +84,31 @@ func (i *ContainerNodePoolIdentity) LocationValue() string {
 }
 
 func getIdentityFromContainerNodePoolSpec(ctx context.Context, reader client.Reader, obj *ContainerNodePool) (*ContainerNodePoolIdentity, error) {
+	// A bare clusterRef.external (Terraform parity) is completed to the canonical
+	// cluster path from the node pool's location and project, and written back to
+	// obj.Spec.ClusterRef: the direct controller keeps obj as desiredKRM and later
+	// normalizes its references, which would reject the bare name.
+	if obj.Spec.ClusterRef.Name == "" && refs.IsShortName(obj.Spec.ClusterRef.External) {
+		bareCluster := obj.Spec.ClusterRef.External
+		clusterLocation, err := refs.GetLocation(obj)
+		if err != nil {
+			return nil, fmt.Errorf("resolving location for bare clusterRef.external %q: %w", bareCluster, err)
+		}
+		projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+		if err != nil {
+			return nil, fmt.Errorf("resolving project for bare clusterRef.external %q: %w", bareCluster, err)
+		}
+		resolvedCluster := &ContainerClusterIdentity{
+			Project:  projectID,
+			Location: clusterLocation,
+			Cluster:  bareCluster,
+		}
+		if err := RegionalContainerClusterIdentityFormat.Validate(*resolvedCluster); err != nil {
+			return nil, err
+		}
+		obj.Spec.ClusterRef.SetExternal(resolvedCluster.String())
+	}
+
 	clusterRef := obj.Spec.ClusterRef.DeepCopy()
 	if err := clusterRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 		return nil, err
@@ -92,7 +117,7 @@ func getIdentityFromContainerNodePoolSpec(ctx context.Context, reader client.Rea
 	if err != nil {
 		return nil, err
 	}
-	clusterId := clusterIdentity.(*ContainerClusterIdentity)
+	clusterID := clusterIdentity.(*ContainerClusterIdentity)
 
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
@@ -101,14 +126,17 @@ func getIdentityFromContainerNodePoolSpec(ctx context.Context, reader client.Rea
 
 	location := obj.Spec.Location
 	if location == "" {
-		location = clusterId.Location
+		location = clusterID.Location
 	}
 
 	identity := &ContainerNodePoolIdentity{
-		Project:  clusterId.Project,
+		Project:  clusterID.Project,
 		Location: location,
-		Cluster:  clusterId.Cluster,
+		Cluster:  clusterID.Cluster,
 		NodePool: resourceID,
+	}
+	if err := RegionalContainerNodePoolIdentityFormat.Validate(*identity); err != nil {
+		return nil, err
 	}
 
 	return identity, nil

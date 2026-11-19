@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: clouddeploy.cnrm.cloud.google.com
+  kind: CloudDeployTarget
+  name: clouddeploytarget-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

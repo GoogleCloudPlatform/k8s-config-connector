@@ -175,7 +175,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a1c252f856
+X-Goog-Gcs-Base-Ts: 1a1f25b77fb
 
 {
   "error": {
@@ -221,7 +221,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a1c252fad5
+X-Goog-Gcs-Base-Ts: 1a1f25b7aef
 
 {
   "etag": "abcdef0123A=",
@@ -267,7 +267,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a1c252fb04
+X-Goog-Gcs-Base-Ts: 1a1f25b8094
 
 {
   "etag": "abcdef0123A=",
@@ -462,7 +462,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://dataplex.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/dataplexasset-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CresourceSpec
+PATCH https://dataplex.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/lakes/dplake-min-${uniqueId}/zones/dpzone-min-${uniqueId}/assets/dataplexasset-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: asset.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Flakes%2Fdplake-min-${uniqueId}%2Fzones%2Fdpzone-min-${uniqueId}%2Fassets%2Fdataplexasset-minimal-${uniqueId}
@@ -670,7 +670,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a1c2566174
+X-Goog-Gcs-Base-Ts: 1a1f25ec16d
 
 {
   "etag": "abcdef0123A=",
@@ -716,7 +716,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a1c25661a3
+X-Goog-Gcs-Base-Ts: 1a1f25ec271
 
 {
   "kind": "storage#objects"
@@ -733,7 +733,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a1c2566382
+X-Goog-Gcs-Base-Ts: 1a1f25ec654
 
 
 ---
