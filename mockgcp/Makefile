@@ -148,6 +148,7 @@ generate-grpc-for-google-protos:
 		./apis/google/cloud/designcenter/v1/*.proto \
 		./apis/google/cloud/agentidentity/v1/*.proto \
 		./apis/google/cloud/sql/v1/cloud_sql_blue_green_deployments.proto \
+		./apis/google/cloud/biglake/v1/*.proto \
 		./third_party/googleapis/google/cloud/contactcenterinsights/v1/*.proto \
 		./third_party/googleapis/google/cloud/configdelivery/v1/*.proto \
 		./third_party/googleapis/google/cloud/saasplatform/saasservicemgmt/v1beta1/*.proto \

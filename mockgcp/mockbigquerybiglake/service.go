@@ -20,8 +20,11 @@ package mockbigquerybiglake
 // proto.service: google.cloud.biglake.v1.IcebergCatalogService
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"net/http"
+	"strings"
 
 	biglakepb "cloud.google.com/go/biglake/apiv1/biglakepb"
 	"google.golang.org/grpc"
@@ -29,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
+	icebergpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/biglake/v1"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/biglake/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -64,13 +68,63 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	biglakepb.RegisterIcebergCatalogServiceServer(grpcServer, &icebergCatalogService{MockService: s})
 }
 
+type icebergResponseWriter struct {
+	http.ResponseWriter
+	buf        bytes.Buffer
+	statusCode int
+}
+
+func (w *icebergResponseWriter) Write(b []byte) (int, error) {
+	return w.buf.Write(b)
+}
+
+func (w *icebergResponseWriter) WriteHeader(statusCode int) {
+	w.statusCode = statusCode
+}
+
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterMetastoreServiceHandler,
+		icebergpb.RegisterIcebergCatalogServiceHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err
 	}
 
-	return mux, nil
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 && strings.Contains(error.Message, "Namespace") {
+			error.Errors = nil
+			error.Status = ""
+			error.Type = "NoSuchNamespaceException"
+		}
+	}
+
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPatch && strings.HasSuffix(r.URL.Path, "/properties") {
+			rw := &icebergResponseWriter{ResponseWriter: w, statusCode: http.StatusOK}
+			mux.ServeHTTP(rw, r)
+			if rw.statusCode == http.StatusOK {
+				var data map[string]any
+				if err := json.Unmarshal(rw.buf.Bytes(), &data); err == nil {
+					if _, ok := data["missing"]; !ok {
+						data["missing"] = []string{}
+					}
+					if _, ok := data["removed"]; !ok {
+						data["removed"] = []string{}
+					}
+					if modified, err := json.Marshal(data); err == nil {
+						w.WriteHeader(rw.statusCode)
+						w.Write(modified)
+						return
+					}
+				}
+			}
+			w.WriteHeader(rw.statusCode)
+			w.Write(rw.buf.Bytes())
+			return
+		}
+		mux.ServeHTTP(w, r)
+	})
+
+	return handler, nil
 }

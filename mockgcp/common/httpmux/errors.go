@@ -33,6 +33,7 @@ type ErrorResponse struct {
 	Code    int                    `json:"code,omitempty"`
 	Message string                 `json:"message,omitempty"`
 	Status  string                 `json:"status,omitempty"`
+	Type    string                 `json:"type,omitempty"`
 	Errors  []ErrorResponseDetails `json:"errors,omitempty"`
 }
 

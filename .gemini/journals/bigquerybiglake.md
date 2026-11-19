@@ -81,3 +81,18 @@
   8. Recorded golden HTTP logs against real GCP (`cnrm-barni-4`) using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`. Both minimal and maximal fixtures passed all 7/7 automated validation checks.
   9. Verified fuzzer passes (`FOCUS=BigLakeIcebergNamespace go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`), and removed covered fields from `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test -v ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha`.
 - **Impact**: Greenfield Step 2 complete; `BigLakeIcebergNamespace` controller, fuzzer, and real GCP golden files recorded and verified.
+
+### [2026-11-19] Greenfield Step 3: Implement MockGCP and Alignment for BigLakeIcebergNamespace
+- **Context**: Implementing MockGCP service and alignment for `BigLakeIcebergNamespace` under `bigquerybiglake.cnrm.cloud.google.com/v1alpha1` (Issue #16182).
+- **Details**:
+  1. Generated grpc-gateway bindings for `apis/google/cloud/biglake/v1/iceberg_rest_catalog.proto` into `mockgcp/generated/google/cloud/biglake/v1/iceberg_rest_catalog.pb.gw.go` and added `./apis/google/cloud/biglake/v1/*.proto` to `generate-grpc-for-google-protos` in `mockgcp/Makefile`.
+  2. Extended `mockbigquerybiglake/service.go` to register `icebergpb.RegisterIcebergCatalogServiceHandler` with `httpmux.NewServeMux` for routing REST requests to `IcebergCatalogService`.
+  3. Implemented full CRUD handlers for Iceberg namespaces on `*icebergCatalogService` in `mockgcp/mockbigquerybiglake/icebergnamespace.go` (`CreateIcebergNamespace`, `GetIcebergNamespace`, `UpdateIcebergNamespace`, `DeleteIcebergNamespace`, `ListIcebergNamespaces`).
+  4. Verified parent catalog existence in CRUD methods, returning 404 with standard message if the parent catalog does not exist in storage.
+  5. Implemented server-side `location` property defaulting: derives `location = <catalog.defaultLocation>/<namespace>` in storage upon namespace creation, matching real GCP BigLake REST catalog behavior.
+  6. Added `Type` field to `httpmux.ErrorResponse` with `json:"type,omitempty"` and configured `mux.RewriteError` in `mockbigquerybiglake` to return `{ "error": { "code": 404, "message": "...", "type": "NoSuchNamespaceException" } }` matching real GCP Iceberg REST catalog error format.
+  7. Wrapped PATCH `/properties` responses in `NewHTTPMux` to emit empty `missing: []` and `removed: []` slices matching real GCP responses.
+  8. Added `BigLakeIcebergNamespace` to supported mock resources in `config/tests/samples/create/harness.go`.
+  9. Aligned mock behavior with authentic real GCP golden logs using `hack/compare-mock`. Generated `_http_mock.log` for both `biglakeicebergnamespace-minimal` and `biglakeicebergnamespace-maximal`.
+  10. Verified `TestGoldenLogAlignment` passes with zero discrepancies and `./dev/ci/presubmits/tests-e2e-fixtures-suite bigquerybiglake` passes all 8 test fixtures.
+- **Impact**: Greenfield Step 3 complete; `BigLakeIcebergNamespace` MockGCP implementation and golden log alignment verified.
