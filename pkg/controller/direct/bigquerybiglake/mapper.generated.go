@@ -20,10 +20,12 @@
 // krm.group: bigquerybiglake.cnrm.cloud.google.com
 // krm.version: v1beta1
 // proto.service: google.cloud.bigquery.biglake.v1
+// proto.service: google.cloud.biglake.v1
 
 package bigquerybiglake
 
 import (
+	biglakepb "cloud.google.com/go/biglake/apiv1/biglakepb"
 	pb "cloud.google.com/go/bigquery/biglake/apiv1/biglakepb"
 	krmbigquerybiglakev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1beta1"
@@ -118,6 +120,64 @@ func BigLakeDatabaseSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigq
 	}
 	// MISSING: Name
 	out.Type = direct.Enum_ToProto[pb.Database_Type](mapCtx, in.Type)
+	return out
+}
+func BigLakeIcebergCatalogObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *biglakepb.IcebergCatalog) *krmbigquerybiglakev1alpha1.BigLakeIcebergCatalogObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.BigLakeIcebergCatalogObservedState{}
+	// MISSING: Name
+	out.BiglakeServiceAccount = direct.LazyPtr(in.GetBiglakeServiceAccount())
+	out.BiglakeServiceAccountUniqueID = direct.LazyPtr(in.GetBiglakeServiceAccountUniqueId())
+	out.StorageRegions = in.StorageRegions
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Replicas = direct.Slice_FromProto(mapCtx, in.Replicas, IcebergCatalog_ReplicaObservedState_v1alpha1_FromProto)
+	out.FederatedCatalogOptions = IcebergCatalog_FederatedCatalogOptionsObservedState_v1alpha1_FromProto(mapCtx, in.GetFederatedCatalogOptions())
+	return out
+}
+func BigLakeIcebergCatalogObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.BigLakeIcebergCatalogObservedState) *biglakepb.IcebergCatalog {
+	if in == nil {
+		return nil
+	}
+	out := &biglakepb.IcebergCatalog{}
+	// MISSING: Name
+	out.BiglakeServiceAccount = direct.ValueOf(in.BiglakeServiceAccount)
+	out.BiglakeServiceAccountUniqueId = direct.ValueOf(in.BiglakeServiceAccountUniqueID)
+	out.StorageRegions = in.StorageRegions
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Replicas = direct.Slice_ToProto(mapCtx, in.Replicas, IcebergCatalog_ReplicaObservedState_v1alpha1_ToProto)
+	out.FederatedCatalogOptions = IcebergCatalog_FederatedCatalogOptionsObservedState_v1alpha1_ToProto(mapCtx, in.FederatedCatalogOptions)
+	return out
+}
+func BigLakeIcebergCatalogSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *biglakepb.IcebergCatalog) *krmbigquerybiglakev1alpha1.BigLakeIcebergCatalogSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.BigLakeIcebergCatalogSpec{}
+	// MISSING: Name
+	out.CredentialMode = direct.Enum_FromProto(mapCtx, in.GetCredentialMode())
+	out.CatalogType = direct.Enum_FromProto(mapCtx, in.GetCatalogType())
+	out.DefaultLocation = direct.LazyPtr(in.GetDefaultLocation())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.RestrictedLocationsConfig = IcebergCatalog_RestrictedLocationsConfig_v1alpha1_FromProto(mapCtx, in.GetRestrictedLocationsConfig())
+	out.FederatedCatalogOptions = IcebergCatalog_FederatedCatalogOptions_v1alpha1_FromProto(mapCtx, in.GetFederatedCatalogOptions())
+	return out
+}
+func BigLakeIcebergCatalogSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.BigLakeIcebergCatalogSpec) *biglakepb.IcebergCatalog {
+	if in == nil {
+		return nil
+	}
+	out := &biglakepb.IcebergCatalog{}
+	// MISSING: Name
+	out.CredentialMode = direct.Enum_ToProto[biglakepb.IcebergCatalog_CredentialMode](mapCtx, in.CredentialMode)
+	out.CatalogType = direct.Enum_ToProto[biglakepb.IcebergCatalog_CatalogType](mapCtx, in.CatalogType)
+	out.DefaultLocation = direct.ValueOf(in.DefaultLocation)
+	out.Description = direct.ValueOf(in.Description)
+	out.RestrictedLocationsConfig = IcebergCatalog_RestrictedLocationsConfig_v1alpha1_ToProto(mapCtx, in.RestrictedLocationsConfig)
+	out.FederatedCatalogOptions = IcebergCatalog_FederatedCatalogOptions_v1alpha1_ToProto(mapCtx, in.FederatedCatalogOptions)
 	return out
 }
 func BigLakeTableObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table) *krm.BigLakeTableObservedState {
@@ -244,5 +304,197 @@ func HiveTableOptions_StorageDescriptor_v1beta1_ToProto(mapCtx *direct.MapContex
 	out.InputFormat = direct.ValueOf(in.InputFormat)
 	out.OutputFormat = direct.ValueOf(in.OutputFormat)
 	out.SerdeInfo = HiveTableOptions_SerDeInfo_v1beta1_ToProto(mapCtx, in.SerdeInfo)
+	return out
+}
+func IcebergCatalog_FederatedCatalogOptionsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *biglakepb.IcebergCatalog_FederatedCatalogOptions) *krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptionsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptionsObservedState{}
+	// MISSING: UnityCatalogInfo
+	// MISSING: GlueCatalogInfo
+	// MISSING: SnowflakeCatalogInfo
+	// MISSING: SecretName
+	// MISSING: ServiceDirectoryName
+	// MISSING: RefreshOptions
+	out.RefreshStatus = IcebergCatalog_FederatedCatalogOptions_RefreshStatusObservedState_v1alpha1_FromProto(mapCtx, in.GetRefreshStatus())
+	return out
+}
+func IcebergCatalog_FederatedCatalogOptionsObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptionsObservedState) *biglakepb.IcebergCatalog_FederatedCatalogOptions {
+	if in == nil {
+		return nil
+	}
+	out := &biglakepb.IcebergCatalog_FederatedCatalogOptions{}
+	// MISSING: UnityCatalogInfo
+	// MISSING: GlueCatalogInfo
+	// MISSING: SnowflakeCatalogInfo
+	// MISSING: SecretName
+	// MISSING: ServiceDirectoryName
+	// MISSING: RefreshOptions
+	out.RefreshStatus = IcebergCatalog_FederatedCatalogOptions_RefreshStatusObservedState_v1alpha1_ToProto(mapCtx, in.RefreshStatus)
+	return out
+}
+func IcebergCatalog_FederatedCatalogOptions_GlueCatalogInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *biglakepb.IcebergCatalog_FederatedCatalogOptions_GlueCatalogInfo) *krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions_GlueCatalogInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions_GlueCatalogInfo{}
+	out.Warehouse = in.Warehouse
+	out.AwsRegion = in.AwsRegion
+	out.AwsRoleArn = in.AwsRoleArn
+	return out
+}
+func IcebergCatalog_FederatedCatalogOptions_GlueCatalogInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions_GlueCatalogInfo) *biglakepb.IcebergCatalog_FederatedCatalogOptions_GlueCatalogInfo {
+	if in == nil {
+		return nil
+	}
+	out := &biglakepb.IcebergCatalog_FederatedCatalogOptions_GlueCatalogInfo{}
+	out.Warehouse = in.Warehouse
+	out.AwsRegion = in.AwsRegion
+	out.AwsRoleArn = in.AwsRoleArn
+	return out
+}
+func IcebergCatalog_FederatedCatalogOptions_RefreshOptions_v1alpha1_FromProto(mapCtx *direct.MapContext, in *biglakepb.IcebergCatalog_FederatedCatalogOptions_RefreshOptions) *krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions_RefreshOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions_RefreshOptions{}
+	out.RefreshSchedule = IcebergCatalog_FederatedCatalogOptions_RefreshSchedule_v1alpha1_FromProto(mapCtx, in.GetRefreshSchedule())
+	out.RefreshScope = IcebergCatalog_FederatedCatalogOptions_RefreshScope_v1alpha1_FromProto(mapCtx, in.GetRefreshScope())
+	return out
+}
+func IcebergCatalog_FederatedCatalogOptions_RefreshOptions_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions_RefreshOptions) *biglakepb.IcebergCatalog_FederatedCatalogOptions_RefreshOptions {
+	if in == nil {
+		return nil
+	}
+	out := &biglakepb.IcebergCatalog_FederatedCatalogOptions_RefreshOptions{}
+	out.RefreshSchedule = IcebergCatalog_FederatedCatalogOptions_RefreshSchedule_v1alpha1_ToProto(mapCtx, in.RefreshSchedule)
+	out.RefreshScope = IcebergCatalog_FederatedCatalogOptions_RefreshScope_v1alpha1_ToProto(mapCtx, in.RefreshScope)
+	return out
+}
+func IcebergCatalog_FederatedCatalogOptions_RefreshSchedule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *biglakepb.IcebergCatalog_FederatedCatalogOptions_RefreshSchedule) *krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions_RefreshSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions_RefreshSchedule{}
+	out.RefreshInterval = direct.StringDuration_FromProto(mapCtx, in.GetRefreshInterval())
+	return out
+}
+func IcebergCatalog_FederatedCatalogOptions_RefreshSchedule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions_RefreshSchedule) *biglakepb.IcebergCatalog_FederatedCatalogOptions_RefreshSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &biglakepb.IcebergCatalog_FederatedCatalogOptions_RefreshSchedule{}
+	out.RefreshInterval = direct.StringDuration_ToProto(mapCtx, in.RefreshInterval)
+	return out
+}
+func IcebergCatalog_FederatedCatalogOptions_RefreshScope_v1alpha1_FromProto(mapCtx *direct.MapContext, in *biglakepb.IcebergCatalog_FederatedCatalogOptions_RefreshScope) *krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions_RefreshScope {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions_RefreshScope{}
+	out.NamespaceFilters = in.NamespaceFilters
+	return out
+}
+func IcebergCatalog_FederatedCatalogOptions_RefreshScope_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions_RefreshScope) *biglakepb.IcebergCatalog_FederatedCatalogOptions_RefreshScope {
+	if in == nil {
+		return nil
+	}
+	out := &biglakepb.IcebergCatalog_FederatedCatalogOptions_RefreshScope{}
+	out.NamespaceFilters = in.NamespaceFilters
+	return out
+}
+func IcebergCatalog_FederatedCatalogOptions_RefreshStatusObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *biglakepb.IcebergCatalog_FederatedCatalogOptions_RefreshStatus) *krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions_RefreshStatusObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions_RefreshStatusObservedState{}
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.Status = direct.Status_FromProto(mapCtx, in.GetStatus())
+	return out
+}
+func IcebergCatalog_FederatedCatalogOptions_RefreshStatusObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions_RefreshStatusObservedState) *biglakepb.IcebergCatalog_FederatedCatalogOptions_RefreshStatus {
+	if in == nil {
+		return nil
+	}
+	out := &biglakepb.IcebergCatalog_FederatedCatalogOptions_RefreshStatus{}
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.Status = direct.Status_ToProto(mapCtx, in.Status)
+	return out
+}
+func IcebergCatalog_FederatedCatalogOptions_SnowflakeCatalogInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *biglakepb.IcebergCatalog_FederatedCatalogOptions_SnowflakeCatalogInfo) *krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions_SnowflakeCatalogInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions_SnowflakeCatalogInfo{}
+	out.AccountIdentifier = in.AccountIdentifier
+	out.Warehouse = in.Warehouse
+	out.SnowflakeRole = in.SnowflakeRole
+	return out
+}
+func IcebergCatalog_FederatedCatalogOptions_SnowflakeCatalogInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions_SnowflakeCatalogInfo) *biglakepb.IcebergCatalog_FederatedCatalogOptions_SnowflakeCatalogInfo {
+	if in == nil {
+		return nil
+	}
+	out := &biglakepb.IcebergCatalog_FederatedCatalogOptions_SnowflakeCatalogInfo{}
+	out.AccountIdentifier = in.AccountIdentifier
+	out.Warehouse = in.Warehouse
+	out.SnowflakeRole = in.SnowflakeRole
+	return out
+}
+func IcebergCatalog_FederatedCatalogOptions_UnityCatalogInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *biglakepb.IcebergCatalog_FederatedCatalogOptions_UnityCatalogInfo) *krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions_UnityCatalogInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions_UnityCatalogInfo{}
+	out.InstanceName = in.InstanceName
+	out.CatalogName = in.CatalogName
+	out.ServicePrincipalApplicationID = in.ServicePrincipalApplicationId
+	return out
+}
+func IcebergCatalog_FederatedCatalogOptions_UnityCatalogInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.IcebergCatalog_FederatedCatalogOptions_UnityCatalogInfo) *biglakepb.IcebergCatalog_FederatedCatalogOptions_UnityCatalogInfo {
+	if in == nil {
+		return nil
+	}
+	out := &biglakepb.IcebergCatalog_FederatedCatalogOptions_UnityCatalogInfo{}
+	out.InstanceName = in.InstanceName
+	out.CatalogName = in.CatalogName
+	out.ServicePrincipalApplicationId = in.ServicePrincipalApplicationID
+	return out
+}
+func IcebergCatalog_ReplicaObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *biglakepb.IcebergCatalog_Replica) *krmbigquerybiglakev1alpha1.IcebergCatalog_ReplicaObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.IcebergCatalog_ReplicaObservedState{}
+	out.Region = direct.LazyPtr(in.GetRegion())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func IcebergCatalog_ReplicaObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.IcebergCatalog_ReplicaObservedState) *biglakepb.IcebergCatalog_Replica {
+	if in == nil {
+		return nil
+	}
+	out := &biglakepb.IcebergCatalog_Replica{}
+	out.Region = direct.ValueOf(in.Region)
+	out.State = direct.Enum_ToProto[biglakepb.IcebergCatalog_Replica_State](mapCtx, in.State)
+	return out
+}
+func IcebergCatalog_RestrictedLocationsConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *biglakepb.IcebergCatalog_RestrictedLocationsConfig) *krmbigquerybiglakev1alpha1.IcebergCatalog_RestrictedLocationsConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.IcebergCatalog_RestrictedLocationsConfig{}
+	out.RestrictedLocations = in.RestrictedLocations
+	return out
+}
+func IcebergCatalog_RestrictedLocationsConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.IcebergCatalog_RestrictedLocationsConfig) *biglakepb.IcebergCatalog_RestrictedLocationsConfig {
+	if in == nil {
+		return nil
+	}
+	out := &biglakepb.IcebergCatalog_RestrictedLocationsConfig{}
+	out.RestrictedLocations = in.RestrictedLocations
 	return out
 }

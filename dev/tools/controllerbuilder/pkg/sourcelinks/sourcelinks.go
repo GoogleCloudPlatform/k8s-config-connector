@@ -193,6 +193,7 @@ func (r *Resolver) links(ctx context.Context, in input) []Link {
 var kccProtoOverrides = map[string]bool{
 	"google/cloud/backupdr/v1/autoprotectionpolicy.proto": true,
 	"google/cloud/backupdr/v1/backupdr.proto":             true,
+	"google/cloud/biglake/v1/iceberg_rest_catalog.proto":  true,
 	"google/cloud/config/v1/config.proto":                 true,
 	"google/cloud/dataplex/v1/catalog.proto":              true,
 	"google/logging/v2/logging_config.proto":              true,

@@ -30,6 +30,7 @@ require (
 	cloud.google.com/go/backupdr v1.20.0
 	cloud.google.com/go/batch v1.19.0
 	cloud.google.com/go/beyondcorp v1.7.0
+	cloud.google.com/go/biglake v1.6.1
 	cloud.google.com/go/bigquery v1.86.0
 	cloud.google.com/go/billing v1.26.0
 	cloud.google.com/go/certificatemanager v1.14.0
