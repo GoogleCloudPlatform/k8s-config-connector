@@ -41,15 +41,15 @@
 # triage asked for runs before anything else takes the issue. The
 # overseer's gates skip an issue labelled overseer/stop. Needs a factory
 # whose rules take a list under apply (gke-labs/gemini-for-kubernetes-development#2240).
-name: greenfield-triage
-description: Check whether a greenfield kind can be implemented now, and comment and label it
+name: brownfield-triage
+description: Check whether a brownfield kind should be migrated, and comment and label it
 on: issue
 order: 3
 when:
   labels:
     all: [overseer/triage, workflow/brownfield]
 run:
-  recipe: greenfield-triage
+  recipe: brownfield-triage
   apply: [comment, label]
   on-success:
     unlabel: [overseer/triage, "{{trigger}}"]
