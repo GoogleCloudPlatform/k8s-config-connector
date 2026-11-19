@@ -334,6 +334,20 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 			}
 
+			// Inject status.externalRef for BigLakeIcebergNamespace to simulate a reconciled iceberg namespace in static unit tests.
+			if u.GetKind() == "BigLakeIcebergNamespace" && u.GroupVersionKind().Group == "bigquerybiglake.cnrm.cloud.google.com" {
+				goldens, _ := filepath.Glob(filepath.Join(dir, "_generated_object_*.golden.yaml"))
+				for _, gPath := range goldens {
+					for _, gu := range parseFixtureYAML(t, gPath, gcpProject) {
+						if gu.GetKind() == u.GetKind() && gu.GetName() == u.GetName() {
+							if extRef, ok, _ := unstructured.NestedString(gu.Object, "status", "externalRef"); ok && extRef != "" {
+								_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+							}
+						}
+					}
+				}
+			}
+
 			// Inject status.externalRef for DataplexEntity to simulate a reconciled entity in static unit tests.
 			if u.GetKind() == "DataplexEntity" && u.GroupVersionKind().Group == "dataplex.cnrm.cloud.google.com" {
 				goldens, _ := filepath.Glob(filepath.Join(dir, "_generated_object_*.golden.yaml"))
@@ -820,6 +834,26 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 			}
 
+			// Inject status.externalRef for BigLakeIcebergCatalog to simulate a reconciled catalog in static unit tests.
+			if u.GetKind() == "BigLakeIcebergCatalog" && u.GroupVersionKind().Group == "bigquerybiglake.cnrm.cloud.google.com" {
+				projectID, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external")
+				projectID = strings.TrimPrefix(projectID, "projects/")
+				if projectID == "" {
+					projectID = annotations["cnrm.cloud.google.com/project-id"]
+				}
+				if projectID == "" {
+					projectID = "mock-project"
+				}
+				catalogID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+				if catalogID == "" {
+					catalogID = u.GetName()
+				}
+				extRef := fmt.Sprintf("projects/%s/catalogs/%s", projectID, catalogID)
+				if err := unstructured.SetNestedField(u.Object, extRef, "status", "externalRef"); err != nil {
+					t.Fatalf("failed to inject status.externalRef for BigLakeIcebergCatalog %s: %v", u.GetName(), err)
+				}
+			}
+
 			// If the identity is server-generated, and not specified, inject a spec.resourceID value.
 			gk := u.GroupVersionKind().GroupKind()
 			if obj, err := kccscheme.NewObject(gk); err == nil {
@@ -1194,6 +1228,22 @@ func normalizeFixtureKCCObjects(allObjs []*unstructured.Unstructured) []*unstruc
 					_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
 				}
 			}
+		}
+		if u.GetKind() == "BigLakeIcebergCatalog" && group == "bigquerybiglake.cnrm.cloud.google.com" {
+			projectID, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external")
+			projectID = strings.TrimPrefix(projectID, "projects/")
+			if projectID == "" {
+				projectID = ann["cnrm.cloud.google.com/project-id"]
+			}
+			if projectID == "" {
+				projectID = "mock-project"
+			}
+			catalogID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+			if catalogID == "" {
+				catalogID = u.GetName()
+			}
+			extRef := fmt.Sprintf("projects/%s/catalogs/%s", projectID, catalogID)
+			_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
 		}
 		kccObjs = append(kccObjs, u)
 	}
