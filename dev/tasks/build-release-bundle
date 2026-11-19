@@ -282,6 +282,7 @@ BLOCKED_KINDS=(
     "SecurityposturePosture"
     "SecurityposturePostureDeployment"
     "SpannerInstancePartition"
+    "SQLBlueGreenDeployment"
     "StorageBatchOperationsJob"
     "StorageInsightsDatasetConfig"
     "StorageRapidCache"

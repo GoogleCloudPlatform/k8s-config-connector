@@ -30,6 +30,10 @@ func Int32Value_FromProto(mapCtx *direct.MapContext, in *wrapperspb.Int32Value) 
 	}
 }
 
+func Int32Value_v1beta1_FromProto(mapCtx *direct.MapContext, in *wrapperspb.Int32Value) *krm.Int32Value {
+	return Int32Value_FromProto(mapCtx, in)
+}
+
 func Int32Value_ToProto(mapCtx *direct.MapContext, in *krm.Int32Value) *wrapperspb.Int32Value {
 	if in == nil || in.Value == nil {
 		return nil
@@ -38,6 +42,33 @@ func Int32Value_ToProto(mapCtx *direct.MapContext, in *krm.Int32Value) *wrappers
 		Value: *in.Value,
 	}
 }
+
+func Int32Value_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Int32Value) *wrapperspb.Int32Value {
+	return Int32Value_ToProto(mapCtx, in)
+}
+
+func ReplicationCluster_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ReplicationCluster) *krm.ReplicationCluster {
+	return ReplicationCluster_FromProto(mapCtx, in)
+}
+
+func ReplicationCluster_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ReplicationCluster) *pb.ReplicationCluster {
+	return ReplicationCluster_ToProto(mapCtx, in)
+}
+
+func ReplicationClusterObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ReplicationCluster) *krm.ReplicationClusterObservedState {
+	return ReplicationClusterObservedState_FromProto(mapCtx, in)
+}
+
+func ReplicationClusterObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ReplicationClusterObservedState) *pb.ReplicationCluster {
+	return ReplicationClusterObservedState_ToProto(mapCtx, in)
+}
+
+var (
+	DatabaseInstance_FromProto              = DatabaseInstance_v1beta1_FromProto
+	DatabaseInstance_ToProto                = DatabaseInstance_v1beta1_ToProto
+	DatabaseInstanceObservedState_FromProto = DatabaseInstanceObservedState_v1beta1_FromProto
+	DatabaseInstanceObservedState_ToProto   = DatabaseInstanceObservedState_v1beta1_ToProto
+)
 
 func BackupConfigurationObservedState_TransactionalLogStorageState_ToProto(mapCtx *direct.MapContext, in *string) *pb.BackupConfiguration_TransactionalLogStorageState {
 	if in == nil {

@@ -48,6 +48,7 @@
 [kind-name-violation] kind=NotebookInstanceV2 api=notebooks message=Instance: expected kind name is NotebooksInstance
 [kind-name-violation] kind=RecaptchaEnterpriseKey api=recaptchaenterprise message=Key: expected kind name is ReCAPTCHAEnterpriseKey
 [kind-name-violation] kind=SQLAdminBackup api=sqladmin message=BackupRun: the service prefix of API sqladmin (SQLAdmin) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=SQLBlueGreenDeployment api=sqladmin message=BlueGreenDeployment: the service prefix of API sqladmin (SQLAdmin) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=SQLInstance api=sqladmin message=DatabaseInstance: the service prefix of API sqladmin (SQLAdmin) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=SQLSSLCert api=sqladmin message=SslCert: the service prefix of API sqladmin (SQLAdmin) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=SaasServiceMgmtRelease api=saasservicemgmt message=Release: expected kind name is SaaSServiceMgmtRelease

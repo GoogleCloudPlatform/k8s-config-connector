@@ -7097,6 +7097,11 @@
 [missing_field] crd=spannerinstancepartitions.spanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.processingUnits" is not set in unstructured objects
 [missing_field] crd=spannerinstancepartitions.spanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=sqladminbackups.sqladmin.cnrm.cloud.google.com version=v1alpha1: field ".spec.diskEncryptionConfiguration.kmsKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=sqlbluegreendeployments.sql.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=sqlbluegreendeployments.sql.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=sqlbluegreendeployments.sql.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=sqlbluegreendeployments.sql.cnrm.cloud.google.com version=v1alpha1: field ".spec.requestedConfig.databaseVersion" is not set in unstructured objects
+[missing_field] crd=sqlbluegreendeployments.sql.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceInstance" is not set in unstructured objects
 [missing_field] crd=storagehmackeys.storage.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=storagehmackeys.storage.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountEmail" is not set in unstructured objects
 [missing_field] crd=storagehmackeys.storage.cnrm.cloud.google.com version=v1alpha1: field ".spec.state" is not set in unstructured objects

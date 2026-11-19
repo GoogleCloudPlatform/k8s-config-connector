@@ -20,27 +20,30 @@
 // krm.group: sql.cnrm.cloud.google.com
 // krm.version: v1beta1
 // proto.service: google.cloud.sql.v1beta4
+// proto.service: google.cloud.sql.v1
 
 package sql
 
 import (
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
+	sqlpb "cloud.google.com/go/sql/apiv1/sqlpb"
+	krmsqlv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1alpha1"
+	krmsqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/sql/v1beta4"
 )
 
-func AclEntry_FromProto(mapCtx *direct.MapContext, in *pb.AclEntry) *krm.AclEntry {
+func AclEntry_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AclEntry) *krmsqlv1beta1.AclEntry {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AclEntry{}
+	out := &krmsqlv1beta1.AclEntry{}
 	out.Value = direct.LazyPtr(in.GetValue())
 	out.ExpirationTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpirationTime())
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Kind = direct.LazyPtr(in.GetKind())
 	return out
 }
-func AclEntry_ToProto(mapCtx *direct.MapContext, in *krm.AclEntry) *pb.AclEntry {
+func AclEntry_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.AclEntry) *pb.AclEntry {
 	if in == nil {
 		return nil
 	}
@@ -51,15 +54,15 @@ func AclEntry_ToProto(mapCtx *direct.MapContext, in *krm.AclEntry) *pb.AclEntry 
 	out.Kind = direct.ValueOf(in.Kind)
 	return out
 }
-func AdvancedMachineFeatures_FromProto(mapCtx *direct.MapContext, in *pb.AdvancedMachineFeatures) *krm.AdvancedMachineFeatures {
+func AdvancedMachineFeatures_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AdvancedMachineFeatures) *krmsqlv1beta1.AdvancedMachineFeatures {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AdvancedMachineFeatures{}
+	out := &krmsqlv1beta1.AdvancedMachineFeatures{}
 	out.ThreadsPerCore = direct.LazyPtr(in.GetThreadsPerCore())
 	return out
 }
-func AdvancedMachineFeatures_ToProto(mapCtx *direct.MapContext, in *krm.AdvancedMachineFeatures) *pb.AdvancedMachineFeatures {
+func AdvancedMachineFeatures_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.AdvancedMachineFeatures) *pb.AdvancedMachineFeatures {
 	if in == nil {
 		return nil
 	}
@@ -67,17 +70,17 @@ func AdvancedMachineFeatures_ToProto(mapCtx *direct.MapContext, in *krm.Advanced
 	out.ThreadsPerCore = direct.ValueOf(in.ThreadsPerCore)
 	return out
 }
-func AvailableDatabaseVersion_FromProto(mapCtx *direct.MapContext, in *pb.AvailableDatabaseVersion) *krm.AvailableDatabaseVersion {
+func AvailableDatabaseVersion_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AvailableDatabaseVersion) *krmsqlv1beta1.AvailableDatabaseVersion {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AvailableDatabaseVersion{}
+	out := &krmsqlv1beta1.AvailableDatabaseVersion{}
 	out.MajorVersion = in.MajorVersion
 	out.Name = in.Name
 	out.DisplayName = in.DisplayName
 	return out
 }
-func AvailableDatabaseVersion_ToProto(mapCtx *direct.MapContext, in *krm.AvailableDatabaseVersion) *pb.AvailableDatabaseVersion {
+func AvailableDatabaseVersion_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.AvailableDatabaseVersion) *pb.AvailableDatabaseVersion {
 	if in == nil {
 		return nil
 	}
@@ -87,11 +90,11 @@ func AvailableDatabaseVersion_ToProto(mapCtx *direct.MapContext, in *krm.Availab
 	out.DisplayName = in.DisplayName
 	return out
 }
-func BackupConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.BackupConfiguration) *krm.BackupConfiguration {
+func BackupConfiguration_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupConfiguration) *krmsqlv1beta1.BackupConfiguration {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupConfiguration{}
+	out := &krmsqlv1beta1.BackupConfiguration{}
 	out.StartTime = direct.LazyPtr(in.GetStartTime())
 	out.Enabled = direct.BoolValue_FromProto(mapCtx, in.GetEnabled())
 	out.Kind = direct.LazyPtr(in.GetKind())
@@ -99,12 +102,13 @@ func BackupConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.BackupConfi
 	out.ReplicationLogArchivingEnabled = direct.BoolValue_FromProto(mapCtx, in.GetReplicationLogArchivingEnabled())
 	out.Location = direct.LazyPtr(in.GetLocation())
 	out.PointInTimeRecoveryEnabled = direct.BoolValue_FromProto(mapCtx, in.GetPointInTimeRecoveryEnabled())
-	out.TransactionLogRetentionDays = Int32Value_FromProto(mapCtx, in.GetTransactionLogRetentionDays())
-	out.BackupRetentionSettings = BackupRetentionSettings_FromProto(mapCtx, in.GetBackupRetentionSettings())
+	out.TransactionLogRetentionDays = Int32Value_v1beta1_FromProto(mapCtx, in.GetTransactionLogRetentionDays())
+	out.BackupRetentionSettings = BackupRetentionSettings_v1beta1_FromProto(mapCtx, in.GetBackupRetentionSettings())
 	// MISSING: TransactionalLogStorageState
+	// MISSING: BackupTier
 	return out
 }
-func BackupConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.BackupConfiguration) *pb.BackupConfiguration {
+func BackupConfiguration_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.BackupConfiguration) *pb.BackupConfiguration {
 	if in == nil {
 		return nil
 	}
@@ -116,16 +120,17 @@ func BackupConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.BackupConfig
 	out.ReplicationLogArchivingEnabled = direct.BoolValue_ToProto(mapCtx, in.ReplicationLogArchivingEnabled)
 	out.Location = direct.ValueOf(in.Location)
 	out.PointInTimeRecoveryEnabled = direct.BoolValue_ToProto(mapCtx, in.PointInTimeRecoveryEnabled)
-	out.TransactionLogRetentionDays = Int32Value_ToProto(mapCtx, in.TransactionLogRetentionDays)
-	out.BackupRetentionSettings = BackupRetentionSettings_ToProto(mapCtx, in.BackupRetentionSettings)
+	out.TransactionLogRetentionDays = Int32Value_v1beta1_ToProto(mapCtx, in.TransactionLogRetentionDays)
+	out.BackupRetentionSettings = BackupRetentionSettings_v1beta1_ToProto(mapCtx, in.BackupRetentionSettings)
 	// MISSING: TransactionalLogStorageState
+	// MISSING: BackupTier
 	return out
 }
-func BackupConfigurationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupConfiguration) *krm.BackupConfigurationObservedState {
+func BackupConfigurationObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupConfiguration) *krmsqlv1beta1.BackupConfigurationObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupConfigurationObservedState{}
+	out := &krmsqlv1beta1.BackupConfigurationObservedState{}
 	// MISSING: StartTime
 	// MISSING: Enabled
 	// MISSING: Kind
@@ -136,9 +141,10 @@ func BackupConfigurationObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	// MISSING: TransactionLogRetentionDays
 	// MISSING: BackupRetentionSettings
 	out.TransactionalLogStorageState = direct.Enum_FromProto(mapCtx, in.GetTransactionalLogStorageState())
+	// MISSING: BackupTier
 	return out
 }
-func BackupConfigurationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupConfigurationObservedState) *pb.BackupConfiguration {
+func BackupConfigurationObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.BackupConfigurationObservedState) *pb.BackupConfiguration {
 	if in == nil {
 		return nil
 	}
@@ -153,35 +159,156 @@ func BackupConfigurationObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: TransactionLogRetentionDays
 	// MISSING: BackupRetentionSettings
 	out.TransactionalLogStorageState = direct.EnumPtr_ToProto[pb.BackupConfiguration_TransactionalLogStorageState](mapCtx, in.TransactionalLogStorageState)
+	// MISSING: BackupTier
 	return out
 }
-func BackupRetentionSettings_FromProto(mapCtx *direct.MapContext, in *pb.BackupRetentionSettings) *krm.BackupRetentionSettings {
+func BackupRetentionSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupRetentionSettings) *krmsqlv1beta1.BackupRetentionSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupRetentionSettings{}
+	out := &krmsqlv1beta1.BackupRetentionSettings{}
 	out.RetentionUnit = direct.Enum_FromProto(mapCtx, in.GetRetentionUnit())
-	out.RetainedBackups = Int32Value_FromProto(mapCtx, in.GetRetainedBackups())
+	out.RetainedBackups = Int32Value_v1beta1_FromProto(mapCtx, in.GetRetainedBackups())
 	return out
 }
-func BackupRetentionSettings_ToProto(mapCtx *direct.MapContext, in *krm.BackupRetentionSettings) *pb.BackupRetentionSettings {
+func BackupRetentionSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.BackupRetentionSettings) *pb.BackupRetentionSettings {
 	if in == nil {
 		return nil
 	}
 	out := &pb.BackupRetentionSettings{}
 	out.RetentionUnit = direct.Enum_ToProto[pb.BackupRetentionSettings_RetentionUnit](mapCtx, in.RetentionUnit)
-	out.RetainedBackups = Int32Value_ToProto(mapCtx, in.RetainedBackups)
+	out.RetainedBackups = Int32Value_v1beta1_ToProto(mapCtx, in.RetainedBackups)
 	return out
 }
-func DataCacheConfig_FromProto(mapCtx *direct.MapContext, in *pb.DataCacheConfig) *krm.DataCacheConfig {
+func BlueGreenDeployment_DeploymentTasksObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *sqlpb.BlueGreenDeployment_DeploymentTasks) *krmsqlv1alpha1.BlueGreenDeployment_DeploymentTasksObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataCacheConfig{}
+	out := &krmsqlv1alpha1.BlueGreenDeployment_DeploymentTasksObservedState{}
+	out.Task = direct.Slice_FromProto(mapCtx, in.Task, BlueGreenDeployment_SourceTargetPairedNode_DeploymentTaskObservedState_v1alpha1_FromProto)
+	return out
+}
+func BlueGreenDeployment_DeploymentTasksObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1alpha1.BlueGreenDeployment_DeploymentTasksObservedState) *sqlpb.BlueGreenDeployment_DeploymentTasks {
+	if in == nil {
+		return nil
+	}
+	out := &sqlpb.BlueGreenDeployment_DeploymentTasks{}
+	out.Task = direct.Slice_ToProto(mapCtx, in.Task, BlueGreenDeployment_SourceTargetPairedNode_DeploymentTaskObservedState_v1alpha1_ToProto)
+	return out
+}
+func BlueGreenDeployment_RequestedConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *sqlpb.BlueGreenDeployment_RequestedConfig) *krmsqlv1alpha1.BlueGreenDeployment_RequestedConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmsqlv1alpha1.BlueGreenDeployment_RequestedConfig{}
+	out.DatabaseVersion = direct.LazyPtr(in.GetDatabaseVersion())
+	return out
+}
+func BlueGreenDeployment_RequestedConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1alpha1.BlueGreenDeployment_RequestedConfig) *sqlpb.BlueGreenDeployment_RequestedConfig {
+	if in == nil {
+		return nil
+	}
+	out := &sqlpb.BlueGreenDeployment_RequestedConfig{}
+	out.DatabaseVersion = direct.ValueOf(in.DatabaseVersion)
+	return out
+}
+func BlueGreenDeployment_SourceTargetPairedNodeObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *sqlpb.BlueGreenDeployment_SourceTargetPairedNode) *krmsqlv1alpha1.BlueGreenDeployment_SourceTargetPairedNodeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmsqlv1alpha1.BlueGreenDeployment_SourceTargetPairedNodeObservedState{}
+	out.Source = BlueGreenDeployment_SourceTargetPairedNode_NodeInfoObservedState_v1alpha1_FromProto(mapCtx, in.GetSource())
+	out.Target = BlueGreenDeployment_SourceTargetPairedNode_NodeInfoObservedState_v1alpha1_FromProto(mapCtx, in.GetTarget())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Diffs = direct.Slice_FromProto(mapCtx, in.Diffs, BlueGreenDeployment_SourceTargetPairedNode_ConfigDiffObservedState_v1alpha1_FromProto)
+	return out
+}
+func BlueGreenDeployment_SourceTargetPairedNodeObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1alpha1.BlueGreenDeployment_SourceTargetPairedNodeObservedState) *sqlpb.BlueGreenDeployment_SourceTargetPairedNode {
+	if in == nil {
+		return nil
+	}
+	out := &sqlpb.BlueGreenDeployment_SourceTargetPairedNode{}
+	out.Source = BlueGreenDeployment_SourceTargetPairedNode_NodeInfoObservedState_v1alpha1_ToProto(mapCtx, in.Source)
+	out.Target = BlueGreenDeployment_SourceTargetPairedNode_NodeInfoObservedState_v1alpha1_ToProto(mapCtx, in.Target)
+	out.State = direct.Enum_ToProto[sqlpb.BlueGreenDeployment_SourceTargetPairedNode_State](mapCtx, in.State)
+	out.Diffs = direct.Slice_ToProto(mapCtx, in.Diffs, BlueGreenDeployment_SourceTargetPairedNode_ConfigDiffObservedState_v1alpha1_ToProto)
+	return out
+}
+func BlueGreenDeployment_SourceTargetPairedNode_ConfigDiffObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *sqlpb.BlueGreenDeployment_SourceTargetPairedNode_ConfigDiff) *krmsqlv1alpha1.BlueGreenDeployment_SourceTargetPairedNode_ConfigDiffObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmsqlv1alpha1.BlueGreenDeployment_SourceTargetPairedNode_ConfigDiffObservedState{}
+	out.Field = direct.LazyPtr(in.GetField())
+	out.SourceValue = direct.LazyPtr(in.GetSourceValue())
+	out.TargetValue = direct.LazyPtr(in.GetTargetValue())
+	return out
+}
+func BlueGreenDeployment_SourceTargetPairedNode_ConfigDiffObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1alpha1.BlueGreenDeployment_SourceTargetPairedNode_ConfigDiffObservedState) *sqlpb.BlueGreenDeployment_SourceTargetPairedNode_ConfigDiff {
+	if in == nil {
+		return nil
+	}
+	out := &sqlpb.BlueGreenDeployment_SourceTargetPairedNode_ConfigDiff{}
+	out.Field = direct.ValueOf(in.Field)
+	out.SourceValue = direct.ValueOf(in.SourceValue)
+	out.TargetValue = direct.ValueOf(in.TargetValue)
+	return out
+}
+func BlueGreenDeployment_SourceTargetPairedNode_DeploymentTaskObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *sqlpb.BlueGreenDeployment_SourceTargetPairedNode_DeploymentTask) *krmsqlv1alpha1.BlueGreenDeployment_SourceTargetPairedNode_DeploymentTaskObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmsqlv1alpha1.BlueGreenDeployment_SourceTargetPairedNode_DeploymentTaskObservedState{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.ErrorMessage = direct.LazyPtr(in.GetErrorMessage())
+	return out
+}
+func BlueGreenDeployment_SourceTargetPairedNode_DeploymentTaskObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1alpha1.BlueGreenDeployment_SourceTargetPairedNode_DeploymentTaskObservedState) *sqlpb.BlueGreenDeployment_SourceTargetPairedNode_DeploymentTask {
+	if in == nil {
+		return nil
+	}
+	out := &sqlpb.BlueGreenDeployment_SourceTargetPairedNode_DeploymentTask{}
+	out.Type = direct.Enum_ToProto[sqlpb.BlueGreenDeployment_SourceTargetPairedNode_DeploymentTask_Type](mapCtx, in.Type)
+	out.State = direct.Enum_ToProto[sqlpb.BlueGreenDeployment_SourceTargetPairedNode_DeploymentTask_State](mapCtx, in.State)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.ErrorMessage = direct.ValueOf(in.ErrorMessage)
+	return out
+}
+func BlueGreenDeployment_SourceTargetPairedNode_NodeInfoObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *sqlpb.BlueGreenDeployment_SourceTargetPairedNode_NodeInfo) *krmsqlv1alpha1.BlueGreenDeployment_SourceTargetPairedNode_NodeInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmsqlv1alpha1.BlueGreenDeployment_SourceTargetPairedNode_NodeInfoObservedState{}
+	out.Instance = direct.LazyPtr(in.GetInstance())
+	out.Connection = direct.LazyPtr(in.GetConnection())
+	out.DNS = direct.LazyPtr(in.GetDns())
+	out.IPMappings = direct.Slice_FromProto(mapCtx, in.IpMappings, IPMapping_v1alpha1_FromProto)
+	return out
+}
+func BlueGreenDeployment_SourceTargetPairedNode_NodeInfoObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1alpha1.BlueGreenDeployment_SourceTargetPairedNode_NodeInfoObservedState) *sqlpb.BlueGreenDeployment_SourceTargetPairedNode_NodeInfo {
+	if in == nil {
+		return nil
+	}
+	out := &sqlpb.BlueGreenDeployment_SourceTargetPairedNode_NodeInfo{}
+	out.Instance = direct.ValueOf(in.Instance)
+	out.Connection = direct.ValueOf(in.Connection)
+	out.Dns = direct.ValueOf(in.DNS)
+	out.IpMappings = direct.Slice_ToProto(mapCtx, in.IPMappings, IPMapping_v1alpha1_ToProto)
+	return out
+}
+func DataCacheConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DataCacheConfig) *krmsqlv1beta1.DataCacheConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmsqlv1beta1.DataCacheConfig{}
 	out.DataCacheEnabled = direct.LazyPtr(in.GetDataCacheEnabled())
 	return out
 }
-func DataCacheConfig_ToProto(mapCtx *direct.MapContext, in *krm.DataCacheConfig) *pb.DataCacheConfig {
+func DataCacheConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.DataCacheConfig) *pb.DataCacheConfig {
 	if in == nil {
 		return nil
 	}
@@ -189,16 +316,16 @@ func DataCacheConfig_ToProto(mapCtx *direct.MapContext, in *krm.DataCacheConfig)
 	out.DataCacheEnabled = direct.ValueOf(in.DataCacheEnabled)
 	return out
 }
-func DatabaseFlags_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseFlags) *krm.DatabaseFlags {
+func DatabaseFlags_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseFlags) *krmsqlv1beta1.DatabaseFlags {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DatabaseFlags{}
+	out := &krmsqlv1beta1.DatabaseFlags{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Value = direct.LazyPtr(in.GetValue())
 	return out
 }
-func DatabaseFlags_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseFlags) *pb.DatabaseFlags {
+func DatabaseFlags_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.DatabaseFlags) *pb.DatabaseFlags {
 	if in == nil {
 		return nil
 	}
@@ -207,29 +334,29 @@ func DatabaseFlags_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseFlags) *pb
 	out.Value = direct.ValueOf(in.Value)
 	return out
 }
-func DatabaseInstance_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseInstance) *krm.DatabaseInstance {
+func DatabaseInstance_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseInstance) *krmsqlv1beta1.DatabaseInstance {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DatabaseInstance{}
+	out := &krmsqlv1beta1.DatabaseInstance{}
 	out.Kind = direct.LazyPtr(in.GetKind())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.DatabaseVersion = direct.Enum_FromProto(mapCtx, in.GetDatabaseVersion())
-	out.Settings = Settings_FromProto(mapCtx, in.GetSettings())
+	out.Settings = Settings_v1beta1_FromProto(mapCtx, in.GetSettings())
 	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.FailoverReplica = DatabaseInstance_SQLFailoverReplica_FromProto(mapCtx, in.GetFailoverReplica())
+	out.FailoverReplica = DatabaseInstance_SQLFailoverReplica_v1beta1_FromProto(mapCtx, in.GetFailoverReplica())
 	out.MasterInstanceName = direct.LazyPtr(in.GetMasterInstanceName())
 	out.ReplicaNames = in.ReplicaNames
 	out.MaxDiskSize = direct.Int64Value_FromProto(mapCtx, in.GetMaxDiskSize())
 	out.CurrentDiskSize = direct.Int64Value_FromProto(mapCtx, in.GetCurrentDiskSize())
-	out.IPAddresses = direct.Slice_FromProto(mapCtx, in.IpAddresses, IPMapping_FromProto)
-	out.ServerCACert = SSLCert_FromProto(mapCtx, in.GetServerCaCert())
+	out.IPAddresses = direct.Slice_FromProto(mapCtx, in.IpAddresses, IPMapping_v1beta1_FromProto)
+	out.ServerCACert = SSLCert_v1beta1_FromProto(mapCtx, in.GetServerCaCert())
 	out.InstanceType = direct.Enum_FromProto(mapCtx, in.GetInstanceType())
 	out.Project = direct.LazyPtr(in.GetProject())
 	out.IPV6Address = direct.LazyPtr(in.GetIpv6Address())
 	out.ServiceAccountEmailAddress = direct.LazyPtr(in.GetServiceAccountEmailAddress())
-	out.OnPremisesConfiguration = OnPremisesConfiguration_FromProto(mapCtx, in.GetOnPremisesConfiguration())
-	out.ReplicaConfiguration = ReplicaConfiguration_FromProto(mapCtx, in.GetReplicaConfiguration())
+	out.OnPremisesConfiguration = OnPremisesConfiguration_v1beta1_FromProto(mapCtx, in.GetOnPremisesConfiguration())
+	out.ReplicaConfiguration = ReplicaConfiguration_v1beta1_FromProto(mapCtx, in.GetReplicaConfiguration())
 	out.BackendType = direct.Enum_FromProto(mapCtx, in.GetBackendType())
 	out.SelfLink = direct.LazyPtr(in.GetSelfLink())
 	out.SuspensionReason = direct.EnumSlice_FromProto(mapCtx, in.SuspensionReason)
@@ -238,13 +365,13 @@ func DatabaseInstance_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseInstan
 	out.Region = direct.LazyPtr(in.GetRegion())
 	out.GCEZone = direct.LazyPtr(in.GetGceZone())
 	out.SecondaryGCEZone = direct.LazyPtr(in.GetSecondaryGceZone())
-	out.DiskEncryptionConfiguration = DiskEncryptionConfiguration_FromProto(mapCtx, in.GetDiskEncryptionConfiguration())
-	out.DiskEncryptionStatus = DiskEncryptionStatus_FromProto(mapCtx, in.GetDiskEncryptionStatus())
+	out.DiskEncryptionConfiguration = DiskEncryptionConfiguration_v1beta1_FromProto(mapCtx, in.GetDiskEncryptionConfiguration())
+	out.DiskEncryptionStatus = DiskEncryptionStatus_v1beta1_FromProto(mapCtx, in.GetDiskEncryptionStatus())
 	out.RootPassword = direct.LazyPtr(in.GetRootPassword())
-	out.ScheduledMaintenance = DatabaseInstance_SQLScheduledMaintenance_FromProto(mapCtx, in.GetScheduledMaintenance())
+	out.ScheduledMaintenance = DatabaseInstance_SQLScheduledMaintenance_v1beta1_FromProto(mapCtx, in.GetScheduledMaintenance())
 	out.SatisfiesPzs = direct.BoolValue_FromProto(mapCtx, in.GetSatisfiesPzs())
 	// MISSING: DatabaseInstalledVersion
-	out.OutOfDiskReport = DatabaseInstance_SQLOutOfDiskReport_FromProto(mapCtx, in.GetOutOfDiskReport())
+	out.OutOfDiskReport = DatabaseInstance_SQLOutOfDiskReport_v1beta1_FromProto(mapCtx, in.GetOutOfDiskReport())
 	// MISSING: CreateTime
 	// MISSING: AvailableMaintenanceVersions
 	out.MaintenanceVersion = direct.LazyPtr(in.GetMaintenanceVersion())
@@ -254,11 +381,22 @@ func DatabaseInstance_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseInstan
 	// MISSING: DNSName
 	// MISSING: PrimaryDNSName
 	// MISSING: WriteEndpoint
-	out.ReplicationCluster = ReplicationCluster_FromProto(mapCtx, in.GetReplicationCluster())
-	out.GeminiConfig = GeminiInstanceConfig_FromProto(mapCtx, in.GetGeminiConfig())
+	out.ReplicationCluster = ReplicationCluster_v1beta1_FromProto(mapCtx, in.GetReplicationCluster())
+	out.GeminiConfig = GeminiInstanceConfig_v1beta1_FromProto(mapCtx, in.GetGeminiConfig())
+	// MISSING: SatisfiesPzi
+	// MISSING: SwitchTransactionLogsToCloudStorageEnabled
+	// MISSING: IncludeReplicasForMajorVersionUpgrade
+	// MISSING: SkipPrecheck
+	// MISSING: Tags
+	// MISSING: NodeCount
+	// MISSING: Nodes
+	// MISSING: DNSNames
+	// MISSING: DeploymentInfo
+	// MISSING: DatabaseCenterIntegrationEnabled
+	// MISSING: DatabaseCenterIntegration
 	return out
 }
-func DatabaseInstance_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseInstance) *pb.DatabaseInstance {
+func DatabaseInstance_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.DatabaseInstance) *pb.DatabaseInstance {
 	if in == nil {
 		return nil
 	}
@@ -266,21 +404,21 @@ func DatabaseInstance_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseInstanc
 	out.Kind = direct.ValueOf(in.Kind)
 	out.State = direct.Enum_ToProto[pb.DatabaseInstance_SqlInstanceState](mapCtx, in.State)
 	out.DatabaseVersion = direct.Enum_ToProto[pb.SqlDatabaseVersion](mapCtx, in.DatabaseVersion)
-	out.Settings = Settings_ToProto(mapCtx, in.Settings)
+	out.Settings = Settings_v1beta1_ToProto(mapCtx, in.Settings)
 	out.Etag = direct.ValueOf(in.Etag)
-	out.FailoverReplica = DatabaseInstance_SQLFailoverReplica_ToProto(mapCtx, in.FailoverReplica)
+	out.FailoverReplica = DatabaseInstance_SQLFailoverReplica_v1beta1_ToProto(mapCtx, in.FailoverReplica)
 	out.MasterInstanceName = direct.ValueOf(in.MasterInstanceName)
 	out.ReplicaNames = in.ReplicaNames
 	out.MaxDiskSize = direct.Int64Value_ToProto(mapCtx, in.MaxDiskSize)
 	out.CurrentDiskSize = direct.Int64Value_ToProto(mapCtx, in.CurrentDiskSize)
-	out.IpAddresses = direct.Slice_ToProto(mapCtx, in.IPAddresses, IPMapping_ToProto)
-	out.ServerCaCert = SSLCert_ToProto(mapCtx, in.ServerCACert)
+	out.IpAddresses = direct.Slice_ToProto(mapCtx, in.IPAddresses, IPMapping_v1beta1_ToProto)
+	out.ServerCaCert = SSLCert_v1beta1_ToProto(mapCtx, in.ServerCACert)
 	out.InstanceType = direct.Enum_ToProto[pb.SqlInstanceType](mapCtx, in.InstanceType)
 	out.Project = direct.ValueOf(in.Project)
 	out.Ipv6Address = direct.ValueOf(in.IPV6Address)
 	out.ServiceAccountEmailAddress = direct.ValueOf(in.ServiceAccountEmailAddress)
-	out.OnPremisesConfiguration = OnPremisesConfiguration_ToProto(mapCtx, in.OnPremisesConfiguration)
-	out.ReplicaConfiguration = ReplicaConfiguration_ToProto(mapCtx, in.ReplicaConfiguration)
+	out.OnPremisesConfiguration = OnPremisesConfiguration_v1beta1_ToProto(mapCtx, in.OnPremisesConfiguration)
+	out.ReplicaConfiguration = ReplicaConfiguration_v1beta1_ToProto(mapCtx, in.ReplicaConfiguration)
 	out.BackendType = direct.Enum_ToProto[pb.SqlBackendType](mapCtx, in.BackendType)
 	out.SelfLink = direct.ValueOf(in.SelfLink)
 	out.SuspensionReason = direct.EnumSlice_ToProto[pb.SqlSuspensionReason](mapCtx, in.SuspensionReason)
@@ -289,13 +427,13 @@ func DatabaseInstance_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseInstanc
 	out.Region = direct.ValueOf(in.Region)
 	out.GceZone = direct.ValueOf(in.GCEZone)
 	out.SecondaryGceZone = direct.ValueOf(in.SecondaryGCEZone)
-	out.DiskEncryptionConfiguration = DiskEncryptionConfiguration_ToProto(mapCtx, in.DiskEncryptionConfiguration)
-	out.DiskEncryptionStatus = DiskEncryptionStatus_ToProto(mapCtx, in.DiskEncryptionStatus)
+	out.DiskEncryptionConfiguration = DiskEncryptionConfiguration_v1beta1_ToProto(mapCtx, in.DiskEncryptionConfiguration)
+	out.DiskEncryptionStatus = DiskEncryptionStatus_v1beta1_ToProto(mapCtx, in.DiskEncryptionStatus)
 	out.RootPassword = direct.ValueOf(in.RootPassword)
-	out.ScheduledMaintenance = DatabaseInstance_SQLScheduledMaintenance_ToProto(mapCtx, in.ScheduledMaintenance)
+	out.ScheduledMaintenance = DatabaseInstance_SQLScheduledMaintenance_v1beta1_ToProto(mapCtx, in.ScheduledMaintenance)
 	out.SatisfiesPzs = direct.BoolValue_ToProto(mapCtx, in.SatisfiesPzs)
 	// MISSING: DatabaseInstalledVersion
-	out.OutOfDiskReport = DatabaseInstance_SQLOutOfDiskReport_ToProto(mapCtx, in.OutOfDiskReport)
+	out.OutOfDiskReport = DatabaseInstance_SQLOutOfDiskReport_v1beta1_ToProto(mapCtx, in.OutOfDiskReport)
 	// MISSING: CreateTime
 	// MISSING: AvailableMaintenanceVersions
 	out.MaintenanceVersion = direct.ValueOf(in.MaintenanceVersion)
@@ -305,19 +443,30 @@ func DatabaseInstance_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseInstanc
 	// MISSING: DNSName
 	// MISSING: PrimaryDNSName
 	// MISSING: WriteEndpoint
-	out.ReplicationCluster = ReplicationCluster_ToProto(mapCtx, in.ReplicationCluster)
-	out.GeminiConfig = GeminiInstanceConfig_ToProto(mapCtx, in.GeminiConfig)
+	out.ReplicationCluster = ReplicationCluster_v1beta1_ToProto(mapCtx, in.ReplicationCluster)
+	out.GeminiConfig = GeminiInstanceConfig_v1beta1_ToProto(mapCtx, in.GeminiConfig)
+	// MISSING: SatisfiesPzi
+	// MISSING: SwitchTransactionLogsToCloudStorageEnabled
+	// MISSING: IncludeReplicasForMajorVersionUpgrade
+	// MISSING: SkipPrecheck
+	// MISSING: Tags
+	// MISSING: NodeCount
+	// MISSING: Nodes
+	// MISSING: DNSNames
+	// MISSING: DeploymentInfo
+	// MISSING: DatabaseCenterIntegrationEnabled
+	// MISSING: DatabaseCenterIntegration
 	return out
 }
-func DatabaseInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseInstance) *krm.DatabaseInstanceObservedState {
+func DatabaseInstanceObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseInstance) *krmsqlv1beta1.DatabaseInstanceObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DatabaseInstanceObservedState{}
+	out := &krmsqlv1beta1.DatabaseInstanceObservedState{}
 	// MISSING: Kind
 	// MISSING: State
 	// MISSING: DatabaseVersion
-	out.Settings = SettingsObservedState_FromProto(mapCtx, in.GetSettings())
+	out.Settings = SettingsObservedState_v1beta1_FromProto(mapCtx, in.GetSettings())
 	// MISSING: Etag
 	// MISSING: FailoverReplica
 	// MISSING: MasterInstanceName
@@ -350,17 +499,28 @@ func DatabaseInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.D
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.AvailableMaintenanceVersions = in.AvailableMaintenanceVersions
 	// MISSING: MaintenanceVersion
-	out.UpgradableDatabaseVersions = direct.Slice_FromProto(mapCtx, in.UpgradableDatabaseVersions, AvailableDatabaseVersion_FromProto)
+	out.UpgradableDatabaseVersions = direct.Slice_FromProto(mapCtx, in.UpgradableDatabaseVersions, AvailableDatabaseVersion_v1beta1_FromProto)
 	// MISSING: SQLNetworkArchitecture
 	out.PSCServiceAttachmentLink = in.PscServiceAttachmentLink
 	out.DNSName = in.DnsName
 	out.PrimaryDNSName = in.PrimaryDnsName
 	out.WriteEndpoint = in.WriteEndpoint
-	out.ReplicationCluster = ReplicationClusterObservedState_FromProto(mapCtx, in.GetReplicationCluster())
-	out.GeminiConfig = GeminiInstanceConfigObservedState_FromProto(mapCtx, in.GetGeminiConfig())
+	out.ReplicationCluster = ReplicationClusterObservedState_v1beta1_FromProto(mapCtx, in.GetReplicationCluster())
+	out.GeminiConfig = GeminiInstanceConfigObservedState_v1beta1_FromProto(mapCtx, in.GetGeminiConfig())
+	// MISSING: SatisfiesPzi
+	// MISSING: SwitchTransactionLogsToCloudStorageEnabled
+	// MISSING: IncludeReplicasForMajorVersionUpgrade
+	// MISSING: SkipPrecheck
+	// MISSING: Tags
+	// MISSING: NodeCount
+	// MISSING: Nodes
+	// MISSING: DNSNames
+	// MISSING: DeploymentInfo
+	// MISSING: DatabaseCenterIntegrationEnabled
+	// MISSING: DatabaseCenterIntegration
 	return out
 }
-func DatabaseInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseInstanceObservedState) *pb.DatabaseInstance {
+func DatabaseInstanceObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.DatabaseInstanceObservedState) *pb.DatabaseInstance {
 	if in == nil {
 		return nil
 	}
@@ -368,7 +528,7 @@ func DatabaseInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Da
 	// MISSING: Kind
 	// MISSING: State
 	// MISSING: DatabaseVersion
-	out.Settings = SettingsObservedState_ToProto(mapCtx, in.Settings)
+	out.Settings = SettingsObservedState_v1beta1_ToProto(mapCtx, in.Settings)
 	// MISSING: Etag
 	// MISSING: FailoverReplica
 	// MISSING: MasterInstanceName
@@ -401,26 +561,37 @@ func DatabaseInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Da
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.AvailableMaintenanceVersions = in.AvailableMaintenanceVersions
 	// MISSING: MaintenanceVersion
-	out.UpgradableDatabaseVersions = direct.Slice_ToProto(mapCtx, in.UpgradableDatabaseVersions, AvailableDatabaseVersion_ToProto)
+	out.UpgradableDatabaseVersions = direct.Slice_ToProto(mapCtx, in.UpgradableDatabaseVersions, AvailableDatabaseVersion_v1beta1_ToProto)
 	// MISSING: SQLNetworkArchitecture
 	out.PscServiceAttachmentLink = in.PSCServiceAttachmentLink
 	out.DnsName = in.DNSName
 	out.PrimaryDnsName = in.PrimaryDNSName
 	out.WriteEndpoint = in.WriteEndpoint
-	out.ReplicationCluster = ReplicationClusterObservedState_ToProto(mapCtx, in.ReplicationCluster)
-	out.GeminiConfig = GeminiInstanceConfigObservedState_ToProto(mapCtx, in.GeminiConfig)
+	out.ReplicationCluster = ReplicationClusterObservedState_v1beta1_ToProto(mapCtx, in.ReplicationCluster)
+	out.GeminiConfig = GeminiInstanceConfigObservedState_v1beta1_ToProto(mapCtx, in.GeminiConfig)
+	// MISSING: SatisfiesPzi
+	// MISSING: SwitchTransactionLogsToCloudStorageEnabled
+	// MISSING: IncludeReplicasForMajorVersionUpgrade
+	// MISSING: SkipPrecheck
+	// MISSING: Tags
+	// MISSING: NodeCount
+	// MISSING: Nodes
+	// MISSING: DNSNames
+	// MISSING: DeploymentInfo
+	// MISSING: DatabaseCenterIntegrationEnabled
+	// MISSING: DatabaseCenterIntegration
 	return out
 }
-func DatabaseInstance_SQLFailoverReplica_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseInstance_SqlFailoverReplica) *krm.DatabaseInstance_SQLFailoverReplica {
+func DatabaseInstance_SQLFailoverReplica_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseInstance_SqlFailoverReplica) *krmsqlv1beta1.DatabaseInstance_SQLFailoverReplica {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DatabaseInstance_SQLFailoverReplica{}
+	out := &krmsqlv1beta1.DatabaseInstance_SQLFailoverReplica{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Available = direct.BoolValue_FromProto(mapCtx, in.GetAvailable())
 	return out
 }
-func DatabaseInstance_SQLFailoverReplica_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseInstance_SQLFailoverReplica) *pb.DatabaseInstance_SqlFailoverReplica {
+func DatabaseInstance_SQLFailoverReplica_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.DatabaseInstance_SQLFailoverReplica) *pb.DatabaseInstance_SqlFailoverReplica {
 	if in == nil {
 		return nil
 	}
@@ -429,16 +600,16 @@ func DatabaseInstance_SQLFailoverReplica_ToProto(mapCtx *direct.MapContext, in *
 	out.Available = direct.BoolValue_ToProto(mapCtx, in.Available)
 	return out
 }
-func DatabaseInstance_SQLOutOfDiskReport_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseInstance_SqlOutOfDiskReport) *krm.DatabaseInstance_SQLOutOfDiskReport {
+func DatabaseInstance_SQLOutOfDiskReport_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseInstance_SqlOutOfDiskReport) *krmsqlv1beta1.DatabaseInstance_SQLOutOfDiskReport {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DatabaseInstance_SQLOutOfDiskReport{}
+	out := &krmsqlv1beta1.DatabaseInstance_SQLOutOfDiskReport{}
 	out.SQLOutOfDiskState = direct.Enum_FromProto(mapCtx, in.GetSqlOutOfDiskState())
 	out.SQLMinRecommendedIncreaseSizeGB = in.SqlMinRecommendedIncreaseSizeGb
 	return out
 }
-func DatabaseInstance_SQLOutOfDiskReport_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseInstance_SQLOutOfDiskReport) *pb.DatabaseInstance_SqlOutOfDiskReport {
+func DatabaseInstance_SQLOutOfDiskReport_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.DatabaseInstance_SQLOutOfDiskReport) *pb.DatabaseInstance_SqlOutOfDiskReport {
 	if in == nil {
 		return nil
 	}
@@ -447,18 +618,18 @@ func DatabaseInstance_SQLOutOfDiskReport_ToProto(mapCtx *direct.MapContext, in *
 	out.SqlMinRecommendedIncreaseSizeGb = in.SQLMinRecommendedIncreaseSizeGB
 	return out
 }
-func DatabaseInstance_SQLScheduledMaintenance_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseInstance_SqlScheduledMaintenance) *krm.DatabaseInstance_SQLScheduledMaintenance {
+func DatabaseInstance_SQLScheduledMaintenance_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseInstance_SqlScheduledMaintenance) *krmsqlv1beta1.DatabaseInstance_SQLScheduledMaintenance {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DatabaseInstance_SQLScheduledMaintenance{}
+	out := &krmsqlv1beta1.DatabaseInstance_SQLScheduledMaintenance{}
 	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
 	out.CanDefer = direct.LazyPtr(in.GetCanDefer())
 	out.CanReschedule = direct.LazyPtr(in.GetCanReschedule())
 	out.ScheduleDeadlineTime = direct.StringTimestamp_FromProto(mapCtx, in.GetScheduleDeadlineTime())
 	return out
 }
-func DatabaseInstance_SQLScheduledMaintenance_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseInstance_SQLScheduledMaintenance) *pb.DatabaseInstance_SqlScheduledMaintenance {
+func DatabaseInstance_SQLScheduledMaintenance_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.DatabaseInstance_SQLScheduledMaintenance) *pb.DatabaseInstance_SqlScheduledMaintenance {
 	if in == nil {
 		return nil
 	}
@@ -469,17 +640,17 @@ func DatabaseInstance_SQLScheduledMaintenance_ToProto(mapCtx *direct.MapContext,
 	out.ScheduleDeadlineTime = direct.StringTimestamp_ToProto(mapCtx, in.ScheduleDeadlineTime)
 	return out
 }
-func DenyMaintenancePeriod_FromProto(mapCtx *direct.MapContext, in *pb.DenyMaintenancePeriod) *krm.DenyMaintenancePeriod {
+func DenyMaintenancePeriod_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DenyMaintenancePeriod) *krmsqlv1beta1.DenyMaintenancePeriod {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DenyMaintenancePeriod{}
+	out := &krmsqlv1beta1.DenyMaintenancePeriod{}
 	out.StartDate = direct.LazyPtr(in.GetStartDate())
 	out.EndDate = direct.LazyPtr(in.GetEndDate())
 	out.Time = direct.LazyPtr(in.GetTime())
 	return out
 }
-func DenyMaintenancePeriod_ToProto(mapCtx *direct.MapContext, in *krm.DenyMaintenancePeriod) *pb.DenyMaintenancePeriod {
+func DenyMaintenancePeriod_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.DenyMaintenancePeriod) *pb.DenyMaintenancePeriod {
 	if in == nil {
 		return nil
 	}
@@ -489,34 +660,38 @@ func DenyMaintenancePeriod_ToProto(mapCtx *direct.MapContext, in *krm.DenyMainte
 	out.Time = direct.ValueOf(in.Time)
 	return out
 }
-func DiskEncryptionConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.DiskEncryptionConfiguration) *krm.DiskEncryptionConfiguration {
+func DiskEncryptionConfiguration_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DiskEncryptionConfiguration) *krmsqlv1beta1.DiskEncryptionConfiguration {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DiskEncryptionConfiguration{}
+	out := &krmsqlv1beta1.DiskEncryptionConfiguration{}
 	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
 	out.Kind = direct.LazyPtr(in.GetKind())
+	// MISSING: ConfidentialMode
+	// MISSING: CmekSourceLogEncryptionEnforced
 	return out
 }
-func DiskEncryptionConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.DiskEncryptionConfiguration) *pb.DiskEncryptionConfiguration {
+func DiskEncryptionConfiguration_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.DiskEncryptionConfiguration) *pb.DiskEncryptionConfiguration {
 	if in == nil {
 		return nil
 	}
 	out := &pb.DiskEncryptionConfiguration{}
 	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
 	out.Kind = direct.ValueOf(in.Kind)
+	// MISSING: ConfidentialMode
+	// MISSING: CmekSourceLogEncryptionEnforced
 	return out
 }
-func DiskEncryptionStatus_FromProto(mapCtx *direct.MapContext, in *pb.DiskEncryptionStatus) *krm.DiskEncryptionStatus {
+func DiskEncryptionStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DiskEncryptionStatus) *krmsqlv1beta1.DiskEncryptionStatus {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DiskEncryptionStatus{}
+	out := &krmsqlv1beta1.DiskEncryptionStatus{}
 	out.KMSKeyVersionName = direct.LazyPtr(in.GetKmsKeyVersionName())
 	out.Kind = direct.LazyPtr(in.GetKind())
 	return out
 }
-func DiskEncryptionStatus_ToProto(mapCtx *direct.MapContext, in *krm.DiskEncryptionStatus) *pb.DiskEncryptionStatus {
+func DiskEncryptionStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.DiskEncryptionStatus) *pb.DiskEncryptionStatus {
 	if in == nil {
 		return nil
 	}
@@ -525,11 +700,11 @@ func DiskEncryptionStatus_ToProto(mapCtx *direct.MapContext, in *krm.DiskEncrypt
 	out.Kind = direct.ValueOf(in.Kind)
 	return out
 }
-func GeminiInstanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.GeminiInstanceConfig) *krm.GeminiInstanceConfig {
+func GeminiInstanceConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GeminiInstanceConfig) *krmsqlv1beta1.GeminiInstanceConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GeminiInstanceConfig{}
+	out := &krmsqlv1beta1.GeminiInstanceConfig{}
 	// MISSING: Entitled
 	// MISSING: GoogleVacuumMgmtEnabled
 	// MISSING: OomSessionCancelEnabled
@@ -538,7 +713,7 @@ func GeminiInstanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.GeminiInst
 	// MISSING: FlagRecommenderEnabled
 	return out
 }
-func GeminiInstanceConfig_ToProto(mapCtx *direct.MapContext, in *krm.GeminiInstanceConfig) *pb.GeminiInstanceConfig {
+func GeminiInstanceConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.GeminiInstanceConfig) *pb.GeminiInstanceConfig {
 	if in == nil {
 		return nil
 	}
@@ -551,11 +726,11 @@ func GeminiInstanceConfig_ToProto(mapCtx *direct.MapContext, in *krm.GeminiInsta
 	// MISSING: FlagRecommenderEnabled
 	return out
 }
-func GeminiInstanceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GeminiInstanceConfig) *krm.GeminiInstanceConfigObservedState {
+func GeminiInstanceConfigObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GeminiInstanceConfig) *krmsqlv1beta1.GeminiInstanceConfigObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GeminiInstanceConfigObservedState{}
+	out := &krmsqlv1beta1.GeminiInstanceConfigObservedState{}
 	out.Entitled = in.Entitled
 	out.GoogleVacuumMgmtEnabled = in.GoogleVacuumMgmtEnabled
 	out.OomSessionCancelEnabled = in.OomSessionCancelEnabled
@@ -564,7 +739,7 @@ func GeminiInstanceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *
 	out.FlagRecommenderEnabled = in.FlagRecommenderEnabled
 	return out
 }
-func GeminiInstanceConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GeminiInstanceConfigObservedState) *pb.GeminiInstanceConfig {
+func GeminiInstanceConfigObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.GeminiInstanceConfigObservedState) *pb.GeminiInstanceConfig {
 	if in == nil {
 		return nil
 	}
@@ -577,22 +752,26 @@ func GeminiInstanceConfigObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	out.FlagRecommenderEnabled = in.FlagRecommenderEnabled
 	return out
 }
-func IPConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.IpConfiguration) *krm.IPConfiguration {
+func IPConfiguration_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.IpConfiguration) *krmsqlv1beta1.IPConfiguration {
 	if in == nil {
 		return nil
 	}
-	out := &krm.IPConfiguration{}
+	out := &krmsqlv1beta1.IPConfiguration{}
 	out.IPV4Enabled = direct.BoolValue_FromProto(mapCtx, in.GetIpv4Enabled())
 	out.PrivateNetwork = direct.LazyPtr(in.GetPrivateNetwork())
 	out.RequireSSL = direct.BoolValue_FromProto(mapCtx, in.GetRequireSsl())
-	out.AuthorizedNetworks = direct.Slice_FromProto(mapCtx, in.AuthorizedNetworks, AclEntry_FromProto)
+	out.AuthorizedNetworks = direct.Slice_FromProto(mapCtx, in.AuthorizedNetworks, AclEntry_v1beta1_FromProto)
 	out.AllocatedIPRange = direct.LazyPtr(in.GetAllocatedIpRange())
 	out.EnablePrivatePathForGoogleCloudServices = direct.BoolValue_FromProto(mapCtx, in.GetEnablePrivatePathForGoogleCloudServices())
 	out.SSLMode = direct.Enum_FromProto(mapCtx, in.GetSslMode())
-	out.PSCConfig = PSCConfig_FromProto(mapCtx, in.GetPscConfig())
+	out.PSCConfig = PSCConfig_v1beta1_FromProto(mapCtx, in.GetPscConfig())
+	// MISSING: ServerCAMode
+	// MISSING: CustomSubjectAlternativeNames
+	// MISSING: ServerCAPool
+	// MISSING: ServerCertificateRotationMode
 	return out
 }
-func IPConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.IPConfiguration) *pb.IpConfiguration {
+func IPConfiguration_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.IPConfiguration) *pb.IpConfiguration {
 	if in == nil {
 		return nil
 	}
@@ -600,24 +779,48 @@ func IPConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.IPConfiguration)
 	out.Ipv4Enabled = direct.BoolValue_ToProto(mapCtx, in.IPV4Enabled)
 	out.PrivateNetwork = direct.ValueOf(in.PrivateNetwork)
 	out.RequireSsl = direct.BoolValue_ToProto(mapCtx, in.RequireSSL)
-	out.AuthorizedNetworks = direct.Slice_ToProto(mapCtx, in.AuthorizedNetworks, AclEntry_ToProto)
+	out.AuthorizedNetworks = direct.Slice_ToProto(mapCtx, in.AuthorizedNetworks, AclEntry_v1beta1_ToProto)
 	out.AllocatedIpRange = direct.ValueOf(in.AllocatedIPRange)
 	out.EnablePrivatePathForGoogleCloudServices = direct.BoolValue_ToProto(mapCtx, in.EnablePrivatePathForGoogleCloudServices)
 	out.SslMode = direct.Enum_ToProto[pb.IpConfiguration_SslMode](mapCtx, in.SSLMode)
-	out.PscConfig = PSCConfig_ToProto(mapCtx, in.PSCConfig)
+	out.PscConfig = PSCConfig_v1beta1_ToProto(mapCtx, in.PSCConfig)
+	// MISSING: ServerCAMode
+	// MISSING: CustomSubjectAlternativeNames
+	// MISSING: ServerCAPool
+	// MISSING: ServerCertificateRotationMode
 	return out
 }
-func IPMapping_FromProto(mapCtx *direct.MapContext, in *pb.IpMapping) *krm.IPMapping {
+func IPMapping_v1alpha1_FromProto(mapCtx *direct.MapContext, in *sqlpb.IpMapping) *krmsqlv1alpha1.IPMapping {
 	if in == nil {
 		return nil
 	}
-	out := &krm.IPMapping{}
+	out := &krmsqlv1alpha1.IPMapping{}
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.IPAddress = direct.LazyPtr(in.GetIpAddress())
 	out.TimeToRetire = direct.StringTimestamp_FromProto(mapCtx, in.GetTimeToRetire())
 	return out
 }
-func IPMapping_ToProto(mapCtx *direct.MapContext, in *krm.IPMapping) *pb.IpMapping {
+func IPMapping_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1alpha1.IPMapping) *sqlpb.IpMapping {
+	if in == nil {
+		return nil
+	}
+	out := &sqlpb.IpMapping{}
+	out.Type = direct.Enum_ToProto[sqlpb.SqlIpAddressType](mapCtx, in.Type)
+	out.IpAddress = direct.ValueOf(in.IPAddress)
+	out.TimeToRetire = direct.StringTimestamp_ToProto(mapCtx, in.TimeToRetire)
+	return out
+}
+func IPMapping_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.IpMapping) *krmsqlv1beta1.IPMapping {
+	if in == nil {
+		return nil
+	}
+	out := &krmsqlv1beta1.IPMapping{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.IPAddress = direct.LazyPtr(in.GetIpAddress())
+	out.TimeToRetire = direct.StringTimestamp_FromProto(mapCtx, in.GetTimeToRetire())
+	return out
+}
+func IPMapping_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.IPMapping) *pb.IpMapping {
 	if in == nil {
 		return nil
 	}
@@ -627,19 +830,20 @@ func IPMapping_ToProto(mapCtx *direct.MapContext, in *krm.IPMapping) *pb.IpMappi
 	out.TimeToRetire = direct.StringTimestamp_ToProto(mapCtx, in.TimeToRetire)
 	return out
 }
-func InsightsConfig_FromProto(mapCtx *direct.MapContext, in *pb.InsightsConfig) *krm.InsightsConfig {
+func InsightsConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InsightsConfig) *krmsqlv1beta1.InsightsConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.InsightsConfig{}
+	out := &krmsqlv1beta1.InsightsConfig{}
 	out.QueryInsightsEnabled = direct.LazyPtr(in.GetQueryInsightsEnabled())
 	out.RecordClientAddress = direct.LazyPtr(in.GetRecordClientAddress())
 	out.RecordApplicationTags = direct.LazyPtr(in.GetRecordApplicationTags())
-	out.QueryStringLength = Int32Value_FromProto(mapCtx, in.GetQueryStringLength())
-	out.QueryPlansPerMinute = Int32Value_FromProto(mapCtx, in.GetQueryPlansPerMinute())
+	out.QueryStringLength = Int32Value_v1beta1_FromProto(mapCtx, in.GetQueryStringLength())
+	out.QueryPlansPerMinute = Int32Value_v1beta1_FromProto(mapCtx, in.GetQueryPlansPerMinute())
+	// MISSING: EnhancedQueryInsightsEnabled
 	return out
 }
-func InsightsConfig_ToProto(mapCtx *direct.MapContext, in *krm.InsightsConfig) *pb.InsightsConfig {
+func InsightsConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.InsightsConfig) *pb.InsightsConfig {
 	if in == nil {
 		return nil
 	}
@@ -647,21 +851,22 @@ func InsightsConfig_ToProto(mapCtx *direct.MapContext, in *krm.InsightsConfig) *
 	out.QueryInsightsEnabled = direct.ValueOf(in.QueryInsightsEnabled)
 	out.RecordClientAddress = direct.ValueOf(in.RecordClientAddress)
 	out.RecordApplicationTags = direct.ValueOf(in.RecordApplicationTags)
-	out.QueryStringLength = Int32Value_ToProto(mapCtx, in.QueryStringLength)
-	out.QueryPlansPerMinute = Int32Value_ToProto(mapCtx, in.QueryPlansPerMinute)
+	out.QueryStringLength = Int32Value_v1beta1_ToProto(mapCtx, in.QueryStringLength)
+	out.QueryPlansPerMinute = Int32Value_v1beta1_ToProto(mapCtx, in.QueryPlansPerMinute)
+	// MISSING: EnhancedQueryInsightsEnabled
 	return out
 }
-func InstanceReference_FromProto(mapCtx *direct.MapContext, in *pb.InstanceReference) *krm.InstanceReference {
+func InstanceReference_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceReference) *krmsqlv1beta1.InstanceReference {
 	if in == nil {
 		return nil
 	}
-	out := &krm.InstanceReference{}
+	out := &krmsqlv1beta1.InstanceReference{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Region = direct.LazyPtr(in.GetRegion())
 	out.Project = direct.LazyPtr(in.GetProject())
 	return out
 }
-func InstanceReference_ToProto(mapCtx *direct.MapContext, in *krm.InstanceReference) *pb.InstanceReference {
+func InstanceReference_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.InstanceReference) *pb.InstanceReference {
 	if in == nil {
 		return nil
 	}
@@ -671,18 +876,18 @@ func InstanceReference_ToProto(mapCtx *direct.MapContext, in *krm.InstanceRefere
 	out.Project = direct.ValueOf(in.Project)
 	return out
 }
-func LocationPreference_FromProto(mapCtx *direct.MapContext, in *pb.LocationPreference) *krm.LocationPreference {
+func LocationPreference_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.LocationPreference) *krmsqlv1beta1.LocationPreference {
 	if in == nil {
 		return nil
 	}
-	out := &krm.LocationPreference{}
+	out := &krmsqlv1beta1.LocationPreference{}
 	out.FollowGaeApplication = direct.LazyPtr(in.GetFollowGaeApplication())
 	out.Zone = direct.LazyPtr(in.GetZone())
 	out.SecondaryZone = direct.LazyPtr(in.GetSecondaryZone())
 	out.Kind = direct.LazyPtr(in.GetKind())
 	return out
 }
-func LocationPreference_ToProto(mapCtx *direct.MapContext, in *krm.LocationPreference) *pb.LocationPreference {
+func LocationPreference_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.LocationPreference) *pb.LocationPreference {
 	if in == nil {
 		return nil
 	}
@@ -693,37 +898,37 @@ func LocationPreference_ToProto(mapCtx *direct.MapContext, in *krm.LocationPrefe
 	out.Kind = direct.ValueOf(in.Kind)
 	return out
 }
-func MaintenanceWindow_FromProto(mapCtx *direct.MapContext, in *pb.MaintenanceWindow) *krm.MaintenanceWindow {
+func MaintenanceWindow_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.MaintenanceWindow) *krmsqlv1beta1.MaintenanceWindow {
 	if in == nil {
 		return nil
 	}
-	out := &krm.MaintenanceWindow{}
-	out.Hour = Int32Value_FromProto(mapCtx, in.GetHour())
-	out.Day = Int32Value_FromProto(mapCtx, in.GetDay())
+	out := &krmsqlv1beta1.MaintenanceWindow{}
+	out.Hour = Int32Value_v1beta1_FromProto(mapCtx, in.GetHour())
+	out.Day = Int32Value_v1beta1_FromProto(mapCtx, in.GetDay())
 	out.UpdateTrack = direct.Enum_FromProto(mapCtx, in.GetUpdateTrack())
 	out.Kind = direct.LazyPtr(in.GetKind())
 	return out
 }
-func MaintenanceWindow_ToProto(mapCtx *direct.MapContext, in *krm.MaintenanceWindow) *pb.MaintenanceWindow {
+func MaintenanceWindow_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.MaintenanceWindow) *pb.MaintenanceWindow {
 	if in == nil {
 		return nil
 	}
 	out := &pb.MaintenanceWindow{}
-	out.Hour = Int32Value_ToProto(mapCtx, in.Hour)
-	out.Day = Int32Value_ToProto(mapCtx, in.Day)
+	out.Hour = Int32Value_v1beta1_ToProto(mapCtx, in.Hour)
+	out.Day = Int32Value_v1beta1_ToProto(mapCtx, in.Day)
 	out.UpdateTrack = direct.Enum_ToProto[pb.SqlUpdateTrack](mapCtx, in.UpdateTrack)
 	out.Kind = direct.ValueOf(in.Kind)
 	return out
 }
-func MySQLReplicaConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.MySqlReplicaConfiguration) *krm.MySQLReplicaConfiguration {
+func MySQLReplicaConfiguration_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.MySqlReplicaConfiguration) *krmsqlv1beta1.MySQLReplicaConfiguration {
 	if in == nil {
 		return nil
 	}
-	out := &krm.MySQLReplicaConfiguration{}
+	out := &krmsqlv1beta1.MySQLReplicaConfiguration{}
 	out.DumpFilePath = direct.LazyPtr(in.GetDumpFilePath())
 	out.Username = direct.LazyPtr(in.GetUsername())
 	out.Password = direct.LazyPtr(in.GetPassword())
-	out.ConnectRetryInterval = Int32Value_FromProto(mapCtx, in.GetConnectRetryInterval())
+	out.ConnectRetryInterval = Int32Value_v1beta1_FromProto(mapCtx, in.GetConnectRetryInterval())
 	out.MasterHeartbeatPeriod = direct.Int64Value_FromProto(mapCtx, in.GetMasterHeartbeatPeriod())
 	out.CACertificate = direct.LazyPtr(in.GetCaCertificate())
 	out.ClientCertificate = direct.LazyPtr(in.GetClientCertificate())
@@ -733,7 +938,7 @@ func MySQLReplicaConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.MySql
 	out.Kind = direct.LazyPtr(in.GetKind())
 	return out
 }
-func MySQLReplicaConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.MySQLReplicaConfiguration) *pb.MySqlReplicaConfiguration {
+func MySQLReplicaConfiguration_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.MySQLReplicaConfiguration) *pb.MySqlReplicaConfiguration {
 	if in == nil {
 		return nil
 	}
@@ -741,7 +946,7 @@ func MySQLReplicaConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.MySQLR
 	out.DumpFilePath = direct.ValueOf(in.DumpFilePath)
 	out.Username = direct.ValueOf(in.Username)
 	out.Password = direct.ValueOf(in.Password)
-	out.ConnectRetryInterval = Int32Value_ToProto(mapCtx, in.ConnectRetryInterval)
+	out.ConnectRetryInterval = Int32Value_v1beta1_ToProto(mapCtx, in.ConnectRetryInterval)
 	out.MasterHeartbeatPeriod = direct.Int64Value_ToProto(mapCtx, in.MasterHeartbeatPeriod)
 	out.CaCertificate = direct.ValueOf(in.CACertificate)
 	out.ClientCertificate = direct.ValueOf(in.ClientCertificate)
@@ -751,11 +956,11 @@ func MySQLReplicaConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.MySQLR
 	out.Kind = direct.ValueOf(in.Kind)
 	return out
 }
-func OnPremisesConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.OnPremisesConfiguration) *krm.OnPremisesConfiguration {
+func OnPremisesConfiguration_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.OnPremisesConfiguration) *krmsqlv1beta1.OnPremisesConfiguration {
 	if in == nil {
 		return nil
 	}
-	out := &krm.OnPremisesConfiguration{}
+	out := &krmsqlv1beta1.OnPremisesConfiguration{}
 	out.HostPort = direct.LazyPtr(in.GetHostPort())
 	out.Kind = direct.LazyPtr(in.GetKind())
 	out.Username = direct.LazyPtr(in.GetUsername())
@@ -764,10 +969,13 @@ func OnPremisesConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.OnPremi
 	out.ClientCertificate = direct.LazyPtr(in.GetClientCertificate())
 	out.ClientKey = direct.LazyPtr(in.GetClientKey())
 	out.DumpFilePath = direct.LazyPtr(in.GetDumpFilePath())
-	out.SourceInstance = InstanceReference_FromProto(mapCtx, in.GetSourceInstance())
+	out.SourceInstance = InstanceReference_v1beta1_FromProto(mapCtx, in.GetSourceInstance())
+	// MISSING: SelectedObjects
+	// MISSING: SSLOption
+	// MISSING: DmsManaged
 	return out
 }
-func OnPremisesConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.OnPremisesConfiguration) *pb.OnPremisesConfiguration {
+func OnPremisesConfiguration_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.OnPremisesConfiguration) *pb.OnPremisesConfiguration {
 	if in == nil {
 		return nil
 	}
@@ -780,107 +988,178 @@ func OnPremisesConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.OnPremis
 	out.ClientCertificate = direct.ValueOf(in.ClientCertificate)
 	out.ClientKey = direct.ValueOf(in.ClientKey)
 	out.DumpFilePath = direct.ValueOf(in.DumpFilePath)
-	out.SourceInstance = InstanceReference_ToProto(mapCtx, in.SourceInstance)
+	out.SourceInstance = InstanceReference_v1beta1_ToProto(mapCtx, in.SourceInstance)
+	// MISSING: SelectedObjects
+	// MISSING: SSLOption
+	// MISSING: DmsManaged
 	return out
 }
-func PSCConfig_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PSCConfig {
+func PSCConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krmsqlv1beta1.PSCConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PSCConfig{}
+	out := &krmsqlv1beta1.PSCConfig{}
 	out.PSCEnabled = in.PscEnabled
 	out.AllowedConsumerProjects = in.AllowedConsumerProjects
+	// MISSING: PSCAutoConnections
+	// MISSING: NetworkAttachmentURI
+	// MISSING: PSCAutoDNSEnabled
+	// MISSING: PSCWriteEndpointDNSEnabled
+	// MISSING: PSCAutoConnectionPolicyEnabled
 	return out
 }
-func PSCConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCConfig) *pb.PscConfig {
+func PSCConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.PSCConfig) *pb.PscConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.PscConfig{}
 	out.PscEnabled = in.PSCEnabled
 	out.AllowedConsumerProjects = in.AllowedConsumerProjects
+	// MISSING: PSCAutoConnections
+	// MISSING: NetworkAttachmentURI
+	// MISSING: PSCAutoDNSEnabled
+	// MISSING: PSCWriteEndpointDNSEnabled
+	// MISSING: PSCAutoConnectionPolicyEnabled
 	return out
 }
-func PasswordValidationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.PasswordValidationPolicy) *krm.PasswordValidationPolicy {
+func PasswordValidationPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PasswordValidationPolicy) *krmsqlv1beta1.PasswordValidationPolicy {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PasswordValidationPolicy{}
-	out.MinLength = Int32Value_FromProto(mapCtx, in.GetMinLength())
+	out := &krmsqlv1beta1.PasswordValidationPolicy{}
+	out.MinLength = Int32Value_v1beta1_FromProto(mapCtx, in.GetMinLength())
 	out.Complexity = direct.Enum_FromProto(mapCtx, in.GetComplexity())
-	out.ReuseInterval = Int32Value_FromProto(mapCtx, in.GetReuseInterval())
+	out.ReuseInterval = Int32Value_v1beta1_FromProto(mapCtx, in.GetReuseInterval())
 	out.DisallowUsernameSubstring = direct.BoolValue_FromProto(mapCtx, in.GetDisallowUsernameSubstring())
 	out.PasswordChangeInterval = direct.StringDuration_FromProto(mapCtx, in.GetPasswordChangeInterval())
 	out.EnablePasswordPolicy = direct.BoolValue_FromProto(mapCtx, in.GetEnablePasswordPolicy())
 	out.DisallowCompromisedCredentials = direct.BoolValue_FromProto(mapCtx, in.GetDisallowCompromisedCredentials())
 	return out
 }
-func PasswordValidationPolicy_ToProto(mapCtx *direct.MapContext, in *krm.PasswordValidationPolicy) *pb.PasswordValidationPolicy {
+func PasswordValidationPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.PasswordValidationPolicy) *pb.PasswordValidationPolicy {
 	if in == nil {
 		return nil
 	}
 	out := &pb.PasswordValidationPolicy{}
-	out.MinLength = Int32Value_ToProto(mapCtx, in.MinLength)
+	out.MinLength = Int32Value_v1beta1_ToProto(mapCtx, in.MinLength)
 	out.Complexity = direct.Enum_ToProto[pb.PasswordValidationPolicy_Complexity](mapCtx, in.Complexity)
-	out.ReuseInterval = Int32Value_ToProto(mapCtx, in.ReuseInterval)
+	out.ReuseInterval = Int32Value_v1beta1_ToProto(mapCtx, in.ReuseInterval)
 	out.DisallowUsernameSubstring = direct.BoolValue_ToProto(mapCtx, in.DisallowUsernameSubstring)
 	out.PasswordChangeInterval = direct.StringDuration_ToProto(mapCtx, in.PasswordChangeInterval)
 	out.EnablePasswordPolicy = direct.BoolValue_ToProto(mapCtx, in.EnablePasswordPolicy)
 	out.DisallowCompromisedCredentials = direct.BoolValue_ToProto(mapCtx, in.DisallowCompromisedCredentials)
 	return out
 }
-func ReplicaConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.ReplicaConfiguration) *krm.ReplicaConfiguration {
+func ReplicaConfiguration_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ReplicaConfiguration) *krmsqlv1beta1.ReplicaConfiguration {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ReplicaConfiguration{}
+	out := &krmsqlv1beta1.ReplicaConfiguration{}
 	out.Kind = direct.LazyPtr(in.GetKind())
-	out.MysqlReplicaConfiguration = MySQLReplicaConfiguration_FromProto(mapCtx, in.GetMysqlReplicaConfiguration())
+	out.MysqlReplicaConfiguration = MySQLReplicaConfiguration_v1beta1_FromProto(mapCtx, in.GetMysqlReplicaConfiguration())
 	out.FailoverTarget = direct.BoolValue_FromProto(mapCtx, in.GetFailoverTarget())
 	out.CascadableReplica = direct.BoolValue_FromProto(mapCtx, in.GetCascadableReplica())
 	return out
 }
-func ReplicaConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.ReplicaConfiguration) *pb.ReplicaConfiguration {
+func ReplicaConfiguration_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.ReplicaConfiguration) *pb.ReplicaConfiguration {
 	if in == nil {
 		return nil
 	}
 	out := &pb.ReplicaConfiguration{}
 	out.Kind = direct.ValueOf(in.Kind)
-	out.MysqlReplicaConfiguration = MySQLReplicaConfiguration_ToProto(mapCtx, in.MysqlReplicaConfiguration)
+	out.MysqlReplicaConfiguration = MySQLReplicaConfiguration_v1beta1_ToProto(mapCtx, in.MysqlReplicaConfiguration)
 	out.FailoverTarget = direct.BoolValue_ToProto(mapCtx, in.FailoverTarget)
 	out.CascadableReplica = direct.BoolValue_ToProto(mapCtx, in.CascadableReplica)
 	return out
 }
-func SQLActiveDirectoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.SqlActiveDirectoryConfig) *krm.SQLActiveDirectoryConfig {
+func SQLActiveDirectoryConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SqlActiveDirectoryConfig) *krmsqlv1beta1.SQLActiveDirectoryConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.SQLActiveDirectoryConfig{}
+	out := &krmsqlv1beta1.SQLActiveDirectoryConfig{}
 	out.Kind = direct.LazyPtr(in.GetKind())
 	out.Domain = direct.LazyPtr(in.GetDomain())
+	// MISSING: Mode
+	// MISSING: DNSServers
+	// MISSING: AdminCredentialSecretName
+	// MISSING: OrganizationalUnit
 	return out
 }
-func SQLActiveDirectoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.SQLActiveDirectoryConfig) *pb.SqlActiveDirectoryConfig {
+func SQLActiveDirectoryConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.SQLActiveDirectoryConfig) *pb.SqlActiveDirectoryConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.SqlActiveDirectoryConfig{}
 	out.Kind = direct.ValueOf(in.Kind)
 	out.Domain = direct.ValueOf(in.Domain)
+	// MISSING: Mode
+	// MISSING: DNSServers
+	// MISSING: AdminCredentialSecretName
+	// MISSING: OrganizationalUnit
 	return out
 }
-func SQLServerAuditConfig_FromProto(mapCtx *direct.MapContext, in *pb.SqlServerAuditConfig) *krm.SQLServerAuditConfig {
+func SQLBlueGreenDeploymentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *sqlpb.BlueGreenDeployment) *krmsqlv1alpha1.SQLBlueGreenDeploymentObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.SQLServerAuditConfig{}
+	out := &krmsqlv1alpha1.SQLBlueGreenDeploymentObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.SwitchoverTargetInstance = direct.LazyPtr(in.GetSwitchoverTargetInstance())
+	out.ErrorDetail = direct.LazyPtr(in.GetErrorDetail())
+	out.DeploymentMappings = direct.Slice_FromProto(mapCtx, in.DeploymentMappings, BlueGreenDeployment_SourceTargetPairedNodeObservedState_v1alpha1_FromProto)
+	out.DeploymentTasks = BlueGreenDeployment_DeploymentTasksObservedState_v1alpha1_FromProto(mapCtx, in.GetDeploymentTasks())
+	return out
+}
+func SQLBlueGreenDeploymentObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1alpha1.SQLBlueGreenDeploymentObservedState) *sqlpb.BlueGreenDeployment {
+	if in == nil {
+		return nil
+	}
+	out := &sqlpb.BlueGreenDeployment{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.State = direct.Enum_ToProto[sqlpb.BlueGreenDeployment_State](mapCtx, in.State)
+	out.SwitchoverTargetInstance = direct.ValueOf(in.SwitchoverTargetInstance)
+	out.ErrorDetail = direct.ValueOf(in.ErrorDetail)
+	out.DeploymentMappings = direct.Slice_ToProto(mapCtx, in.DeploymentMappings, BlueGreenDeployment_SourceTargetPairedNodeObservedState_v1alpha1_ToProto)
+	out.DeploymentTasks = BlueGreenDeployment_DeploymentTasksObservedState_v1alpha1_ToProto(mapCtx, in.DeploymentTasks)
+	return out
+}
+func SQLBlueGreenDeploymentSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *sqlpb.BlueGreenDeployment) *krmsqlv1alpha1.SQLBlueGreenDeploymentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmsqlv1alpha1.SQLBlueGreenDeploymentSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.SourceInstance = direct.LazyPtr(in.GetSourceInstance())
+	out.RequestedConfig = BlueGreenDeployment_RequestedConfig_v1alpha1_FromProto(mapCtx, in.GetRequestedConfig())
+	return out
+}
+func SQLBlueGreenDeploymentSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1alpha1.SQLBlueGreenDeploymentSpec) *sqlpb.BlueGreenDeployment {
+	if in == nil {
+		return nil
+	}
+	out := &sqlpb.BlueGreenDeployment{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.SourceInstance = direct.ValueOf(in.SourceInstance)
+	out.RequestedConfig = BlueGreenDeployment_RequestedConfig_v1alpha1_ToProto(mapCtx, in.RequestedConfig)
+	return out
+}
+func SQLServerAuditConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SqlServerAuditConfig) *krmsqlv1beta1.SQLServerAuditConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmsqlv1beta1.SQLServerAuditConfig{}
 	out.Kind = direct.LazyPtr(in.GetKind())
 	out.Bucket = direct.LazyPtr(in.GetBucket())
 	out.RetentionInterval = direct.StringDuration_FromProto(mapCtx, in.GetRetentionInterval())
 	out.UploadInterval = direct.StringDuration_FromProto(mapCtx, in.GetUploadInterval())
 	return out
 }
-func SQLServerAuditConfig_ToProto(mapCtx *direct.MapContext, in *krm.SQLServerAuditConfig) *pb.SqlServerAuditConfig {
+func SQLServerAuditConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.SQLServerAuditConfig) *pb.SqlServerAuditConfig {
 	if in == nil {
 		return nil
 	}
@@ -891,11 +1170,11 @@ func SQLServerAuditConfig_ToProto(mapCtx *direct.MapContext, in *krm.SQLServerAu
 	out.UploadInterval = direct.StringDuration_ToProto(mapCtx, in.UploadInterval)
 	return out
 }
-func SSLCert_FromProto(mapCtx *direct.MapContext, in *pb.SslCert) *krm.SSLCert {
+func SSLCert_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslCert) *krmsqlv1beta1.SSLCert {
 	if in == nil {
 		return nil
 	}
-	out := &krm.SSLCert{}
+	out := &krmsqlv1beta1.SSLCert{}
 	out.Kind = direct.LazyPtr(in.GetKind())
 	out.CertSerialNumber = direct.LazyPtr(in.GetCertSerialNumber())
 	out.Cert = direct.LazyPtr(in.GetCert())
@@ -907,7 +1186,7 @@ func SSLCert_FromProto(mapCtx *direct.MapContext, in *pb.SslCert) *krm.SSLCert {
 	out.SelfLink = direct.LazyPtr(in.GetSelfLink())
 	return out
 }
-func SSLCert_ToProto(mapCtx *direct.MapContext, in *krm.SSLCert) *pb.SslCert {
+func SSLCert_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.SSLCert) *pb.SslCert {
 	if in == nil {
 		return nil
 	}
@@ -923,11 +1202,11 @@ func SSLCert_ToProto(mapCtx *direct.MapContext, in *krm.SSLCert) *pb.SslCert {
 	out.SelfLink = direct.ValueOf(in.SelfLink)
 	return out
 }
-func Settings_FromProto(mapCtx *direct.MapContext, in *pb.Settings) *krm.Settings {
+func Settings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Settings) *krmsqlv1beta1.Settings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Settings{}
+	out := &krmsqlv1beta1.Settings{}
 	out.SettingsVersion = direct.Int64Value_FromProto(mapCtx, in.GetSettingsVersion())
 	out.AuthorizedGaeApplications = in.AuthorizedGaeApplications
 	out.Tier = direct.LazyPtr(in.GetTier())
@@ -938,33 +1217,45 @@ func Settings_FromProto(mapCtx *direct.MapContext, in *pb.Settings) *krm.Setting
 	out.ReplicationType = direct.Enum_FromProto(mapCtx, in.GetReplicationType())
 	out.StorageAutoResizeLimit = direct.Int64Value_FromProto(mapCtx, in.GetStorageAutoResizeLimit())
 	out.ActivationPolicy = direct.Enum_FromProto(mapCtx, in.GetActivationPolicy())
-	out.IPConfiguration = IPConfiguration_FromProto(mapCtx, in.GetIpConfiguration())
+	out.IPConfiguration = IPConfiguration_v1beta1_FromProto(mapCtx, in.GetIpConfiguration())
 	out.StorageAutoResize = direct.BoolValue_FromProto(mapCtx, in.GetStorageAutoResize())
-	out.LocationPreference = LocationPreference_FromProto(mapCtx, in.GetLocationPreference())
-	out.DatabaseFlags = direct.Slice_FromProto(mapCtx, in.DatabaseFlags, DatabaseFlags_FromProto)
+	out.LocationPreference = LocationPreference_v1beta1_FromProto(mapCtx, in.GetLocationPreference())
+	out.DatabaseFlags = direct.Slice_FromProto(mapCtx, in.DatabaseFlags, DatabaseFlags_v1beta1_FromProto)
 	out.DataDiskType = direct.Enum_FromProto(mapCtx, in.GetDataDiskType())
-	out.MaintenanceWindow = MaintenanceWindow_FromProto(mapCtx, in.GetMaintenanceWindow())
-	out.BackupConfiguration = BackupConfiguration_FromProto(mapCtx, in.GetBackupConfiguration())
+	out.MaintenanceWindow = MaintenanceWindow_v1beta1_FromProto(mapCtx, in.GetMaintenanceWindow())
+	out.BackupConfiguration = BackupConfiguration_v1beta1_FromProto(mapCtx, in.GetBackupConfiguration())
 	out.DatabaseReplicationEnabled = direct.BoolValue_FromProto(mapCtx, in.GetDatabaseReplicationEnabled())
 	out.CrashSafeReplicationEnabled = direct.BoolValue_FromProto(mapCtx, in.GetCrashSafeReplicationEnabled())
 	out.DataDiskSizeGB = direct.Int64Value_FromProto(mapCtx, in.GetDataDiskSizeGb())
-	out.ActiveDirectoryConfig = SQLActiveDirectoryConfig_FromProto(mapCtx, in.GetActiveDirectoryConfig())
+	out.ActiveDirectoryConfig = SQLActiveDirectoryConfig_v1beta1_FromProto(mapCtx, in.GetActiveDirectoryConfig())
 	out.Collation = direct.LazyPtr(in.GetCollation())
-	out.DenyMaintenancePeriods = direct.Slice_FromProto(mapCtx, in.DenyMaintenancePeriods, DenyMaintenancePeriod_FromProto)
-	out.InsightsConfig = InsightsConfig_FromProto(mapCtx, in.GetInsightsConfig())
-	out.PasswordValidationPolicy = PasswordValidationPolicy_FromProto(mapCtx, in.GetPasswordValidationPolicy())
-	out.SQLServerAuditConfig = SQLServerAuditConfig_FromProto(mapCtx, in.GetSqlServerAuditConfig())
+	out.DenyMaintenancePeriods = direct.Slice_FromProto(mapCtx, in.DenyMaintenancePeriods, DenyMaintenancePeriod_v1beta1_FromProto)
+	out.InsightsConfig = InsightsConfig_v1beta1_FromProto(mapCtx, in.GetInsightsConfig())
+	out.PasswordValidationPolicy = PasswordValidationPolicy_v1beta1_FromProto(mapCtx, in.GetPasswordValidationPolicy())
+	out.SQLServerAuditConfig = SQLServerAuditConfig_v1beta1_FromProto(mapCtx, in.GetSqlServerAuditConfig())
 	out.Edition = direct.Enum_FromProto(mapCtx, in.GetEdition())
 	out.ConnectorEnforcement = direct.Enum_FromProto(mapCtx, in.GetConnectorEnforcement())
 	out.DeletionProtectionEnabled = direct.BoolValue_FromProto(mapCtx, in.GetDeletionProtectionEnabled())
 	out.TimeZone = direct.LazyPtr(in.GetTimeZone())
-	out.AdvancedMachineFeatures = AdvancedMachineFeatures_FromProto(mapCtx, in.GetAdvancedMachineFeatures())
-	out.DataCacheConfig = DataCacheConfig_FromProto(mapCtx, in.GetDataCacheConfig())
+	out.AdvancedMachineFeatures = AdvancedMachineFeatures_v1beta1_FromProto(mapCtx, in.GetAdvancedMachineFeatures())
+	out.DataCacheConfig = DataCacheConfig_v1beta1_FromProto(mapCtx, in.GetDataCacheConfig())
+	// MISSING: ReplicationLagMaxSeconds
 	out.EnableGoogleMlIntegration = direct.BoolValue_FromProto(mapCtx, in.GetEnableGoogleMlIntegration())
 	out.EnableDataplexIntegration = direct.BoolValue_FromProto(mapCtx, in.GetEnableDataplexIntegration())
+	// MISSING: RetainBackupsOnDelete
+	// MISSING: DataDiskProvisionedIops
+	// MISSING: DataDiskProvisionedThroughput
+	// MISSING: ConnectionPoolConfig
+	// MISSING: FinalBackupConfig
+	// MISSING: ReadPoolAutoScaleConfig
+	// MISSING: AcceleratedReplicaMode
+	// MISSING: AutoUpgradeEnabled
+	// MISSING: EntraidConfig
+	// MISSING: DataAPIAccess
+	// MISSING: PerformanceCaptureConfig
 	return out
 }
-func Settings_ToProto(mapCtx *direct.MapContext, in *krm.Settings) *pb.Settings {
+func Settings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.Settings) *pb.Settings {
 	if in == nil {
 		return nil
 	}
@@ -979,37 +1270,49 @@ func Settings_ToProto(mapCtx *direct.MapContext, in *krm.Settings) *pb.Settings 
 	out.ReplicationType = direct.Enum_ToProto[pb.SqlReplicationType](mapCtx, in.ReplicationType)
 	out.StorageAutoResizeLimit = direct.Int64Value_ToProto(mapCtx, in.StorageAutoResizeLimit)
 	out.ActivationPolicy = direct.Enum_ToProto[pb.Settings_SqlActivationPolicy](mapCtx, in.ActivationPolicy)
-	out.IpConfiguration = IPConfiguration_ToProto(mapCtx, in.IPConfiguration)
+	out.IpConfiguration = IPConfiguration_v1beta1_ToProto(mapCtx, in.IPConfiguration)
 	out.StorageAutoResize = direct.BoolValue_ToProto(mapCtx, in.StorageAutoResize)
-	out.LocationPreference = LocationPreference_ToProto(mapCtx, in.LocationPreference)
-	out.DatabaseFlags = direct.Slice_ToProto(mapCtx, in.DatabaseFlags, DatabaseFlags_ToProto)
+	out.LocationPreference = LocationPreference_v1beta1_ToProto(mapCtx, in.LocationPreference)
+	out.DatabaseFlags = direct.Slice_ToProto(mapCtx, in.DatabaseFlags, DatabaseFlags_v1beta1_ToProto)
 	out.DataDiskType = direct.Enum_ToProto[pb.SqlDataDiskType](mapCtx, in.DataDiskType)
-	out.MaintenanceWindow = MaintenanceWindow_ToProto(mapCtx, in.MaintenanceWindow)
-	out.BackupConfiguration = BackupConfiguration_ToProto(mapCtx, in.BackupConfiguration)
+	out.MaintenanceWindow = MaintenanceWindow_v1beta1_ToProto(mapCtx, in.MaintenanceWindow)
+	out.BackupConfiguration = BackupConfiguration_v1beta1_ToProto(mapCtx, in.BackupConfiguration)
 	out.DatabaseReplicationEnabled = direct.BoolValue_ToProto(mapCtx, in.DatabaseReplicationEnabled)
 	out.CrashSafeReplicationEnabled = direct.BoolValue_ToProto(mapCtx, in.CrashSafeReplicationEnabled)
 	out.DataDiskSizeGb = direct.Int64Value_ToProto(mapCtx, in.DataDiskSizeGB)
-	out.ActiveDirectoryConfig = SQLActiveDirectoryConfig_ToProto(mapCtx, in.ActiveDirectoryConfig)
+	out.ActiveDirectoryConfig = SQLActiveDirectoryConfig_v1beta1_ToProto(mapCtx, in.ActiveDirectoryConfig)
 	out.Collation = direct.ValueOf(in.Collation)
-	out.DenyMaintenancePeriods = direct.Slice_ToProto(mapCtx, in.DenyMaintenancePeriods, DenyMaintenancePeriod_ToProto)
-	out.InsightsConfig = InsightsConfig_ToProto(mapCtx, in.InsightsConfig)
-	out.PasswordValidationPolicy = PasswordValidationPolicy_ToProto(mapCtx, in.PasswordValidationPolicy)
-	out.SqlServerAuditConfig = SQLServerAuditConfig_ToProto(mapCtx, in.SQLServerAuditConfig)
+	out.DenyMaintenancePeriods = direct.Slice_ToProto(mapCtx, in.DenyMaintenancePeriods, DenyMaintenancePeriod_v1beta1_ToProto)
+	out.InsightsConfig = InsightsConfig_v1beta1_ToProto(mapCtx, in.InsightsConfig)
+	out.PasswordValidationPolicy = PasswordValidationPolicy_v1beta1_ToProto(mapCtx, in.PasswordValidationPolicy)
+	out.SqlServerAuditConfig = SQLServerAuditConfig_v1beta1_ToProto(mapCtx, in.SQLServerAuditConfig)
 	out.Edition = direct.Enum_ToProto[pb.Settings_Edition](mapCtx, in.Edition)
 	out.ConnectorEnforcement = direct.Enum_ToProto[pb.Settings_ConnectorEnforcement](mapCtx, in.ConnectorEnforcement)
 	out.DeletionProtectionEnabled = direct.BoolValue_ToProto(mapCtx, in.DeletionProtectionEnabled)
 	out.TimeZone = direct.ValueOf(in.TimeZone)
-	out.AdvancedMachineFeatures = AdvancedMachineFeatures_ToProto(mapCtx, in.AdvancedMachineFeatures)
-	out.DataCacheConfig = DataCacheConfig_ToProto(mapCtx, in.DataCacheConfig)
+	out.AdvancedMachineFeatures = AdvancedMachineFeatures_v1beta1_ToProto(mapCtx, in.AdvancedMachineFeatures)
+	out.DataCacheConfig = DataCacheConfig_v1beta1_ToProto(mapCtx, in.DataCacheConfig)
+	// MISSING: ReplicationLagMaxSeconds
 	out.EnableGoogleMlIntegration = direct.BoolValue_ToProto(mapCtx, in.EnableGoogleMlIntegration)
 	out.EnableDataplexIntegration = direct.BoolValue_ToProto(mapCtx, in.EnableDataplexIntegration)
+	// MISSING: RetainBackupsOnDelete
+	// MISSING: DataDiskProvisionedIops
+	// MISSING: DataDiskProvisionedThroughput
+	// MISSING: ConnectionPoolConfig
+	// MISSING: FinalBackupConfig
+	// MISSING: ReadPoolAutoScaleConfig
+	// MISSING: AcceleratedReplicaMode
+	// MISSING: AutoUpgradeEnabled
+	// MISSING: EntraidConfig
+	// MISSING: DataAPIAccess
+	// MISSING: PerformanceCaptureConfig
 	return out
 }
-func SettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Settings) *krm.SettingsObservedState {
+func SettingsObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Settings) *krmsqlv1beta1.SettingsObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.SettingsObservedState{}
+	out := &krmsqlv1beta1.SettingsObservedState{}
 	// MISSING: SettingsVersion
 	// MISSING: AuthorizedGaeApplications
 	// MISSING: Tier
@@ -1026,7 +1329,7 @@ func SettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Settings)
 	// MISSING: DatabaseFlags
 	// MISSING: DataDiskType
 	// MISSING: MaintenanceWindow
-	out.BackupConfiguration = BackupConfigurationObservedState_FromProto(mapCtx, in.GetBackupConfiguration())
+	out.BackupConfiguration = BackupConfigurationObservedState_v1beta1_FromProto(mapCtx, in.GetBackupConfiguration())
 	// MISSING: DatabaseReplicationEnabled
 	// MISSING: CrashSafeReplicationEnabled
 	// MISSING: DataDiskSizeGB
@@ -1042,11 +1345,23 @@ func SettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Settings)
 	// MISSING: TimeZone
 	// MISSING: AdvancedMachineFeatures
 	// MISSING: DataCacheConfig
+	// MISSING: ReplicationLagMaxSeconds
 	// MISSING: EnableGoogleMlIntegration
 	// MISSING: EnableDataplexIntegration
+	// MISSING: RetainBackupsOnDelete
+	// MISSING: DataDiskProvisionedIops
+	// MISSING: DataDiskProvisionedThroughput
+	// MISSING: ConnectionPoolConfig
+	// MISSING: FinalBackupConfig
+	// MISSING: ReadPoolAutoScaleConfig
+	// MISSING: AcceleratedReplicaMode
+	// MISSING: AutoUpgradeEnabled
+	// MISSING: EntraidConfig
+	// MISSING: DataAPIAccess
+	// MISSING: PerformanceCaptureConfig
 	return out
 }
-func SettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SettingsObservedState) *pb.Settings {
+func SettingsObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmsqlv1beta1.SettingsObservedState) *pb.Settings {
 	if in == nil {
 		return nil
 	}
@@ -1067,7 +1382,7 @@ func SettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SettingsOb
 	// MISSING: DatabaseFlags
 	// MISSING: DataDiskType
 	// MISSING: MaintenanceWindow
-	out.BackupConfiguration = BackupConfigurationObservedState_ToProto(mapCtx, in.BackupConfiguration)
+	out.BackupConfiguration = BackupConfigurationObservedState_v1beta1_ToProto(mapCtx, in.BackupConfiguration)
 	// MISSING: DatabaseReplicationEnabled
 	// MISSING: CrashSafeReplicationEnabled
 	// MISSING: DataDiskSizeGB
@@ -1083,7 +1398,19 @@ func SettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SettingsOb
 	// MISSING: TimeZone
 	// MISSING: AdvancedMachineFeatures
 	// MISSING: DataCacheConfig
+	// MISSING: ReplicationLagMaxSeconds
 	// MISSING: EnableGoogleMlIntegration
 	// MISSING: EnableDataplexIntegration
+	// MISSING: RetainBackupsOnDelete
+	// MISSING: DataDiskProvisionedIops
+	// MISSING: DataDiskProvisionedThroughput
+	// MISSING: ConnectionPoolConfig
+	// MISSING: FinalBackupConfig
+	// MISSING: ReadPoolAutoScaleConfig
+	// MISSING: AcceleratedReplicaMode
+	// MISSING: AutoUpgradeEnabled
+	// MISSING: EntraidConfig
+	// MISSING: DataAPIAccess
+	// MISSING: PerformanceCaptureConfig
 	return out
 }
