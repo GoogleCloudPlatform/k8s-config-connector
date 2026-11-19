@@ -2684,20 +2684,10 @@
 [missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.requestedFeatures[]" is not set in unstructured objects
 [missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.requestedLinkCount" is not set in unstructured objects
 [missing_field] crd=computelicenses.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.allowedReplacementLicenses[]" is not set in unstructured objects
-[missing_field] crd=computelicenses.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.appendableToDisk" is not set in unstructured objects
-[missing_field] crd=computelicenses.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computelicenses.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.incompatibleLicenses[]" is not set in unstructured objects
 [missing_field] crd=computelicenses.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.minimumRetention.nanos" is not set in unstructured objects
-[missing_field] crd=computelicenses.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.minimumRetention.seconds" is not set in unstructured objects
-[missing_field] crd=computelicenses.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.multiTenantOnly" is not set in unstructured objects
-[missing_field] crd=computelicenses.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.osLicense" is not set in unstructured objects
-[missing_field] crd=computelicenses.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=computelicenses.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.removableFromDisk" is not set in unstructured objects
 [missing_field] crd=computelicenses.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.requiredCoattachedLicenses[]" is not set in unstructured objects
-[missing_field] crd=computelicenses.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceRequirements.minGuestCPUCount" is not set in unstructured objects
-[missing_field] crd=computelicenses.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceRequirements.minMemoryMb" is not set in unstructured objects
 [missing_field] crd=computelicenses.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.soleTenantOnly" is not set in unstructured objects
-[missing_field] crd=computelicenses.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.transferable" is not set in unstructured objects
 [missing_field] crd=computemachineimages.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computemachineimages.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.guestFlush" is not set in unstructured objects
 [missing_field] crd=computemachineimages.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.machineImageEncryptionKey.kmsKeyName" is not set in unstructured objects

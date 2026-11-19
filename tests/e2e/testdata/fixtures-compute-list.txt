@@ -36,6 +36,8 @@ pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinterconnectatta
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinterconnectattachmentgroup/computeinterconnectattachmentgroup-minimal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinterconnectgroup/computeinterconnectgroup-maximal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinterconnectgroup/computeinterconnectgroup-minimal
+pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computelicense/computelicense-maximal
+pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computelicense/computelicense-minimal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computemachineimage/computemachineimageautogen
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computenetworkattachment/computenetworkattachment-minimal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computenetworkedgesecurityservice/computenetworkedgesecurityservice-minimal
