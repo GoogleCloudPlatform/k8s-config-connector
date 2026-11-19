@@ -2778,12 +2778,7 @@
 [missing_field] crd=computeperinstanceconfigs.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeperinstanceconfigs.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.removeInstanceStateOnDestroy" is not set in unstructured objects
 [missing_field] crd=computeperinstanceconfigs.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.zone" is not set in unstructured objects
-[missing_field] crd=computepublicadvertisedprefixes.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=computepublicadvertisedprefixes.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.dnsVerificationIP" is not set in unstructured objects
 [missing_field] crd=computepublicadvertisedprefixes.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.fingerprint" is not set in unstructured objects
-[missing_field] crd=computepublicadvertisedprefixes.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.ipCIDRRange" is not set in unstructured objects
-[missing_field] crd=computepublicadvertisedprefixes.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.pdpScope" is not set in unstructured objects
-[missing_field] crd=computepublicadvertisedprefixes.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeregionautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.cooldownPeriod" is not set in unstructured objects
 [missing_field] crd=computeregionautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.cpuUtilization.predictiveMethod" is not set in unstructured objects
 [missing_field] crd=computeregionautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.cpuUtilization.target" is not set in unstructured objects

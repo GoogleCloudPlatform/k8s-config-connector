@@ -769,4 +769,17 @@
   - Verified `apis/compute/generate.sh` idempotency.
   - All tests in `apis/compute/...`, `pkg/controller/direct/compute/...`, `pkg/gcpurls/...`, and `tests/apichecks/...` passed cleanly.
 
+### [2026-11-19] Greenfield Step 2: Implement direct controller, E2E fixtures, and fuzzer for ComputePublicAdvertisedPrefix
+- **Context**: Greenfield direct controller, E2E fixtures, and fuzzer for `ComputePublicAdvertisedPrefix` (issue #16112) following Greenfield Step 2 (`generated/SKILL.md`).
+- **Implementation & Learnings**:
+  1. Generated direct controller and round-trip fuzzer via one-shot `controllerbuilder generate-controller` and `generate-fuzzer --prepopulate-resource`.
+  2. Compute Engine API uses `PublicAdvertisedPrefixesClient` (`gcp.NewPublicAdvertisedPrefixesRESTClient`) with operations `Get`, `Insert`, `Patch`, and `Delete`.
+  3. `AdapterForObject` calls `common.NormalizeGreenfieldReferences` first, followed by `obj.GetIdentity`.
+  4. In `Update`, used `common.CompareGreenfieldSpec` and passed `resource.Fingerprint = a.actual.Fingerprint` for optimistic locking required by Compute API `Patch`.
+  5. The proto message contains `ipv6_access_type` which was not mapped in KRM; added `f.Unimplemented_NotYetTriaged(".ipv6_access_type")` to the fuzzer. Verified 200-seed round-trip fuzzer (`FOCUS=ComputePublicAdvertisedPrefix go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`) passes cleanly for both Spec and Status.
+  6. Registered `ComputePublicAdvertisedPrefix` in `pkg/controller/resourceconfig/static_config.go` with `generate_static_config.py`.
+  7. Authored minimal (`computepublicadvertisedprefix-minimal`) and maximal (`computepublicadvertisedprefix-maximal`) E2E fixtures under `pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computepublicadvertisedprefix/` covering `projectRef`, `resourceID`, `ipCIDRRange`, `dnsVerificationIP`, `pdpScope`, and `description`, with in-place mutation of `description` in `update.yaml`.
+  8. Synchronized `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via `TestCRDFieldPresenceInTestsForAlpha`.
+  9. Real GCP testing note: Creation on real GCP requires owning a public IP range and publishing an RPKI ROA with origin Google ASN 396982 (`The prefix ... has invalid ROA. Please create ROA with origin AS 396982.` / `Please use a public IP range owned by you.`); E2E golden traffic is therefore simulated and aligned through MockGCP in downstream graph steps (mockgcp / mockgcp-alignment).
+
 
