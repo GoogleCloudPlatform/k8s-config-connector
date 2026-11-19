@@ -98,15 +98,28 @@ observabilityConfig:
   trackClientAddress: boolean
   trackWaitEvents: boolean
 pscInstanceConfig:
-  allowedConsumerProjects:
-  - string
+  allowedConsumerProjectRefs:
+  - external: string
+    kind: string
+    name: string
+    namespace: string
   pscAutoConnectionPolicyState: string
   pscAutoConnections:
-  - consumerNetwork: string
-    consumerProject: string
+  - consumerNetworkRef:
+      external: string
+      name: string
+      namespace: string
+    consumerProjectRef:
+      external: string
+      kind: string
+      name: string
+      namespace: string
   pscAutoDNSState: string
   pscInterfaceConfigs:
-  - networkAttachmentResource: string
+  - networkAttachmentResourceRef:
+      external: string
+      name: string
+      namespace: string
 queryInsightsConfig:
   queryPlansPerMinute: integer
   queryStringLength: integer
@@ -515,22 +528,62 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
     </tr>
     <tr>
         <td>
-            <p><code>pscInstanceConfig.allowedConsumerProjects</code></p>
+            <p><code>pscInstanceConfig.allowedConsumerProjectRefs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">list (string)</code></p>
-            <p>Optional. List of consumer projects that are allowed to create PSC endpoints to service-attachments to this instance. Specify project numbers if Config Connector cannot read the consumer project.</p>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Optional. List of consumer projects that are allowed to create PSC endpoints to service-attachments to this instance.</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>pscInstanceConfig.allowedConsumerProjects[]</code></p>
+            <p><code>pscInstanceConfig.allowedConsumerProjectRefs[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The Project that this resource belongs to.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.allowedConsumerProjectRefs[].external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p></p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.allowedConsumerProjectRefs[].kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The kind of the Project resource; optional but must be `Project` if provided.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.allowedConsumerProjectRefs[].name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `name` field of a `Project` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.allowedConsumerProjectRefs[].namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -550,7 +603,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Optional. Configurations for setting up PSC service automation. Specify project numbers if Config Connector cannot read the consumer project.</p>
+            <p>Optional. Configurations for setting up PSC service automation.</p>
         </td>
     </tr>
     <tr>
@@ -565,22 +618,92 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
     </tr>
     <tr>
         <td>
-            <p><code>pscInstanceConfig.pscAutoConnections[].consumerNetwork</code></p>
+            <p><code>pscInstanceConfig.pscAutoConnections[].consumerNetworkRef</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">string</code></p>
+            <p><code class="apitype">object</code></p>
             <p>The consumer network for the PSC service automation, example: "projects/vpc-host-project/global/networks/default". The consumer network might be hosted a different project than the consumer project.</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>pscInstanceConfig.pscAutoConnections[].consumerProject</code></p>
+            <p><code>pscInstanceConfig.pscAutoConnections[].consumerNetworkRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscAutoConnections[].consumerNetworkRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of a ComputeNetwork resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscAutoConnections[].consumerNetworkRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace of a ComputeNetwork resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscAutoConnections[].consumerProjectRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
             <p>The consumer project to which the PSC service automation endpoint will be created.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscAutoConnections[].consumerProjectRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscAutoConnections[].consumerProjectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The kind of the Project resource; optional but must be `Project` if provided.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscAutoConnections[].consumerProjectRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `name` field of a `Project` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscAutoConnections[].consumerProjectRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -615,12 +738,42 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
     </tr>
     <tr>
         <td>
-            <p><code>pscInstanceConfig.pscInterfaceConfigs[].networkAttachmentResource</code></p>
+            <p><code>pscInstanceConfig.pscInterfaceConfigs[].networkAttachmentResourceRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The network attachment resource created in the consumer network to which the PSC interface will be linked. This is of the format: "projects/${CONSUMER_PROJECT}/regions/${REGION}/networkAttachments/${NETWORK_ATTACHMENT_NAME}". The network attachment must be in the same region as the instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscInterfaceConfigs[].networkAttachmentResourceRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The network attachment resource created in the consumer network to which the PSC interface will be linked. This is of the format: "projects/${CONSUMER_PROJECT}/regions/${REGION}/networkAttachments/${NETWORK_ATTACHMENT_NAME}". The network attachment must be in the same region as the instance.</p>
+            <p>A reference to an externally managed ComputeNetworkAttachment resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/networkAttachments/{{networkattachmentID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscInterfaceConfigs[].networkAttachmentResourceRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of a ComputeNetworkAttachment resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscInterfaceConfigs[].networkAttachmentResourceRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace of a ComputeNetworkAttachment resource.</p>
         </td>
     </tr>
     <tr>

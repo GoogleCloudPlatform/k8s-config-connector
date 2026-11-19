@@ -18,15 +18,22 @@ spec:
   machineConfig:
     cpuCount: 2
   pscInstanceConfig:
-    allowedConsumerProjects:
-    - ${projectId}
+    allowedConsumerProjectRefs:
+    - external: ${projectId}
     pscAutoConnectionPolicyState: DISABLED
     pscAutoConnections:
-    - consumerNetwork: projects/${projectNumber}/global/networks/${networkID}
-      consumerProject: ${projectId}
+    - consumerNetworkRef:
+        name: ${networkID}
+      consumerProjectRef:
+        external: ${projectId}
+    - consumerNetworkRef:
+        name: ${networkID}
+      consumerProjectRef:
+        external: ${projectId}
     pscAutoDNSState: PSC_AUTO_DNS_STATE_DISABLED
     pscInterfaceConfigs:
-    - networkAttachmentResource: projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}
+    - networkAttachmentResourceRef:
+        name: ${networkAttachmentID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -41,6 +48,7 @@ status:
   observedState:
     pscInstanceConfig:
       pscAutoConnections:
+      - consumerNetworkStatus: CONNECTION_POLICY_MISSING
       - consumerNetworkStatus: CONNECTION_POLICY_MISSING
       pscDNSName: 00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.europe-west1.alloydb-psc.goog.
       serviceAttachmentLink: https://www.googleapis.com/compute/v1/projects/tenant-project/regions/europe-west1/serviceAttachments/alloydb-psc-sa

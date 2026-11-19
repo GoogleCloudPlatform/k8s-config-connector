@@ -16,6 +16,24 @@
   name: na-${uniqueId}
   namespace: ${uniqueId}
   version: v1alpha1
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/networks/computenetwork-2-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeNetwork
+  name: computenetwork-2-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/europe-west1/subnetworks/computesubnetwork-2-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeSubnetwork
+  name: computesubnetwork-2-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/europe-west1/networkAttachments/na-2-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeNetworkAttachment
+  name: na-2-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
 - caisURL: //alloydb.googleapis.com/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}
   group: alloydb.cnrm.cloud.google.com
   kind: AlloyDBCluster

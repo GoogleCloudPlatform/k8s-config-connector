@@ -285,36 +285,11 @@ type Instance_ObservabilityInstanceConfig struct {
 	AssistiveExperiencesEnabled *bool `json:"assistiveExperiencesEnabled,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig
-type Instance_PSCAutoConnectionConfig struct {
-	// The consumer project to which the PSC service automation endpoint will
-	//  be created.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig.consumer_project
-	ConsumerProject *string `json:"consumerProject,omitempty"`
-
-	// The consumer network for the PSC service automation, example:
-	//  "projects/vpc-host-project/global/networks/default".
-	//  The consumer network might be hosted a different project than the
-	//  consumer project.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig.consumer_network
-	ConsumerNetwork *string `json:"consumerNetwork,omitempty"`
-}
-
 /* unreachable type Instance_PSCInstanceInfo
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.PscInstanceInfo
 type Instance_PSCInstanceInfo struct {
 }
 */
-
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.PscInterfaceConfig
-type Instance_PSCInterfaceConfig struct {
-	// The network attachment resource created in the consumer network to which
-	//  the PSC interface will be linked. This is of the format:
-	//  "projects/${CONSUMER_PROJECT}/regions/${REGION}/networkAttachments/${NETWORK_ATTACHMENT_NAME}".
-	//  The network attachment must be in the same region as the instance.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInterfaceConfig.network_attachment_resource
-	NetworkAttachmentResource *string `json:"networkAttachmentResource,omitempty"`
-}
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.QueryInsightsInstanceConfig
 type Instance_QueryInsightsInstanceConfig struct {
@@ -533,45 +508,6 @@ type Instance_ObservabilityInstanceConfigObservedState struct {
 	//  read-only flag and only modifiable by internal API.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.track_wait_event_types
 	TrackWaitEventTypes *bool `json:"trackWaitEventTypes,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig
-type Instance_PSCAutoConnectionConfigObservedState struct {
-	// Output only. The IP address of the PSC service automation endpoint.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig.ip_address
-	IPAddress *string `json:"ipAddress,omitempty"`
-
-	// Output only. The status of the PSC service automation connection.
-	//  Possible values:
-	//    "STATE_UNSPECIFIED" - An invalid state as the default case.
-	//    "ACTIVE" - The connection has been created successfully.
-	//    "FAILED" - The connection is not functional since some resources on the
-	//  connection fail to be created.
-	//    "CREATING" - The connection is being created.
-	//    "DELETING" - The connection is being deleted.
-	//    "CREATE_REPAIRING" - The connection is being repaired to complete
-	//  creation.
-	//    "DELETE_REPAIRING" - The connection is being repaired to complete
-	//  deletion.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig.status
-	Status *string `json:"status,omitempty"`
-
-	// Output only. The status of the service connection policy.
-	//  Possible values:
-	//    "STATE_UNSPECIFIED" - Default state, when Connection Map is created
-	//  initially.
-	//    "VALID" - Set when policy and map configuration is valid, and their
-	//  matching can lead to allowing creation of PSC Connections subject to
-	//  other constraints like connections limit.
-	//    "CONNECTION_POLICY_MISSING" - No Service Connection Policy found for
-	//  this network and Service Class
-	//    "POLICY_LIMIT_REACHED" - Service Connection Policy limit reached for
-	//    this network and Service Class
-	//    "CONSUMER_INSTANCE_PROJECT_NOT_ALLOWLISTED" - The consumer instance
-	//  project is not in AllowedGoogleProducersResourceHierarchyLevels of the
-	//  matching ServiceConnectionPolicy.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig.consumer_network_status
-	ConsumerNetworkStatus *string `json:"consumerNetworkStatus,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.PscInstanceInfo

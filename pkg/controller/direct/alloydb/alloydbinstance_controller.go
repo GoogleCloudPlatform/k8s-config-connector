@@ -24,6 +24,7 @@ import (
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -117,6 +118,46 @@ func validateConfig(spec *krm.AlloyDBInstanceSpec) error {
 	return nil
 }
 
+func resolvePSCReferences(ctx context.Context, reader client.Reader, obj *krm.AlloyDBInstance) error {
+	if obj.Spec.PSCInstanceConfig == nil {
+		return nil
+	}
+	psc := obj.Spec.PSCInstanceConfig
+	for i := range psc.AllowedConsumerProjectRefs {
+		proj, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), &psc.AllowedConsumerProjectRefs[i])
+		if err != nil {
+			return fmt.Errorf("resolving spec.pscInstanceConfig.allowedConsumerProjectRefs[%d]: %w", i, err)
+		}
+		psc.AllowedConsumerProjectRefs[i].SetExternal(proj.ProjectID)
+	}
+	for i := range psc.PSCAutoConnections {
+		if psc.PSCAutoConnections[i].ConsumerProjectRef != nil {
+			proj, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), psc.PSCAutoConnections[i].ConsumerProjectRef)
+			if err != nil {
+				return fmt.Errorf("resolving spec.pscInstanceConfig.pscAutoConnections[%d].consumerProjectRef: %w", i, err)
+			}
+			psc.PSCAutoConnections[i].ConsumerProjectRef.SetExternal(proj.ProjectID)
+		}
+		if psc.PSCAutoConnections[i].ConsumerNetworkRef != nil {
+			if err := psc.PSCAutoConnections[i].ConsumerNetworkRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+				return fmt.Errorf("resolving spec.pscInstanceConfig.pscAutoConnections[%d].consumerNetworkRef: %w", i, err)
+			}
+		}
+	}
+	for i := range psc.PSCInterfaceConfigs {
+		naRef := psc.PSCInterfaceConfigs[i].NetworkAttachmentResourceRef
+		if naRef != nil {
+			if naRef.External != "" {
+				naRef.External = strings.TrimPrefix(apirefs.TrimComputeURIPrefix(strings.TrimSpace(naRef.External)), "/")
+			}
+			if err := naRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+				return fmt.Errorf("resolving spec.pscInstanceConfig.pscInterfaceConfigs[%d].networkAttachmentResourceRef: %w", i, err)
+			}
+		}
+	}
+	return nil
+}
+
 func (m *instanceModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader
@@ -190,15 +231,17 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	log.V(2).Info("creating instance", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	if err := resolveInstanceType(ctx, a.reader, a.desired, false); err != nil {
-		return err
-	}
-
-	if err := validateConfig(&a.desired.Spec); err != nil {
-		return err
-	}
-
 	desired := a.desired.DeepCopy()
+	if err := resolveInstanceType(ctx, a.reader, desired, false); err != nil {
+		return err
+	}
+	if err := resolvePSCReferences(ctx, a.reader, desired); err != nil {
+		return err
+	}
+	if err := validateConfig(&desired.Spec); err != nil {
+		return err
+	}
+
 	resource := AlloyDBInstanceSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -210,7 +253,7 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	resource.Labels["managed-by-cnrm"] = "true"
 
 	var created *alloydbpb.Instance
-	instanceType := a.desired.Spec.InstanceTypeRef.External
+	instanceType := desired.Spec.InstanceTypeRef.External
 	if instanceType == "SECONDARY" {
 		req := &alloydbpb.CreateSecondaryInstanceRequest{
 			Parent:     a.id.ParentString(),
@@ -261,11 +304,14 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	log.V(2).Info("updating instance", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	if err := resolveInstanceType(ctx, a.reader, a.desired, false); err != nil {
+	desired := a.desired.DeepCopy()
+	if err := resolveInstanceType(ctx, a.reader, desired, false); err != nil {
 		return err
 	}
-
-	if err := validateConfig(&a.desired.Spec); err != nil {
+	if err := resolvePSCReferences(ctx, a.reader, desired); err != nil {
+		return err
+	}
+	if err := validateConfig(&desired.Spec); err != nil {
 		return err
 	}
 
@@ -275,7 +321,7 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	}
 
 	// TODO: Change to CompareProtoMessage once we support all the files in the instance pb.
-	updatePaths, err := compareInstance(ctx, parsedActual, &a.desired.Spec, a.projectMapper)
+	updatePaths, err := compareInstance(ctx, parsedActual, &desired.Spec, a.projectMapper)
 	if err != nil {
 		return err
 	}
@@ -314,7 +360,7 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: updatePaths,
 	}
-	desiredPb := AlloyDBInstanceSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desiredPb := AlloyDBInstanceSpec_ToProto(mapCtx, &desired.Spec)
 	desiredPb.Labels = desiredLabels
 	desiredPb.Name = a.id.String()
 	req := &alloydbpb.UpdateInstanceRequest{
@@ -394,14 +440,14 @@ func stringPtrChanged(actual, desired *string, basePath string, log klog.Logger)
 	return "", false
 }
 
-func canonicalizeProjectSetRaw(items []string) []string {
+func canonicalizeProjectSetRaw(items []refsv1beta1.ProjectRef) []string {
 	if len(items) == 0 {
 		return nil
 	}
 	seen := make(map[string]bool, len(items))
 	out := make([]string, 0, len(items))
 	for _, item := range items {
-		trimmed := strings.TrimPrefix(strings.TrimSpace(item), "projects/")
+		trimmed := strings.TrimPrefix(strings.TrimSpace(item.External), "projects/")
 		if !seen[trimmed] {
 			seen[trimmed] = true
 			out = append(out, trimmed)
@@ -425,7 +471,7 @@ func resolveProjectToNumberString(ctx context.Context, projectMapper *projects.P
 }
 
 func resolveProjectSegmentInPath(ctx context.Context, projectMapper *projects.ProjectMapper, resourcePath string) string {
-	trimmed := strings.TrimPrefix(refsv1beta1.TrimComputeURIPrefix(strings.TrimSpace(resourcePath)), "/")
+	trimmed := strings.TrimPrefix(apirefs.TrimComputeURIPrefix(strings.TrimSpace(resourcePath)), "/")
 	if trimmed == "" || projectMapper == nil {
 		return trimmed
 	}
@@ -442,7 +488,7 @@ func resolveProjectSegmentInPath(ctx context.Context, projectMapper *projects.Pr
 	return trimmed
 }
 
-func allowedConsumerProjectsChanged(ctx context.Context, actual, desired []string, projectMapper *projects.ProjectMapper) bool {
+func allowedConsumerProjectsChanged(ctx context.Context, actual, desired []refsv1beta1.ProjectRef, projectMapper *projects.ProjectMapper) bool {
 	rawActual := canonicalizeProjectSetRaw(actual)
 	rawDesired := canonicalizeProjectSetRaw(desired)
 	if slices.Equal(rawActual, rawDesired) {
@@ -488,9 +534,16 @@ func canonicalizeAutoConnectionsRaw(items []krm.Instance_PSCAutoConnectionConfig
 	seen := make(map[pscAutoConnPair]bool, len(items))
 	out := make([]pscAutoConnPair, 0, len(items))
 	for _, item := range items {
+		var projExternal, netExternal string
+		if item.ConsumerProjectRef != nil {
+			projExternal = item.ConsumerProjectRef.External
+		}
+		if item.ConsumerNetworkRef != nil {
+			netExternal = item.ConsumerNetworkRef.External
+		}
 		pair := pscAutoConnPair{
-			project: strings.TrimPrefix(strings.TrimSpace(direct.ValueOf(item.ConsumerProject)), "projects/"),
-			network: strings.TrimPrefix(refsv1beta1.TrimComputeURIPrefix(strings.TrimSpace(direct.ValueOf(item.ConsumerNetwork))), "/"),
+			project: strings.TrimPrefix(strings.TrimSpace(projExternal), "projects/"),
+			network: strings.TrimPrefix(apirefs.TrimComputeURIPrefix(strings.TrimSpace(netExternal)), "/"),
 		}
 		if !seen[pair] {
 			seen[pair] = true
@@ -539,7 +592,11 @@ func pscInterfaceConfigsChanged(ctx context.Context, actual, desired []krm.Insta
 	canonicalizeRaw := func(items []krm.Instance_PSCInterfaceConfig) []string {
 		out := make([]string, 0, len(items))
 		for _, item := range items {
-			na := strings.TrimPrefix(refsv1beta1.TrimComputeURIPrefix(strings.TrimSpace(direct.ValueOf(item.NetworkAttachmentResource))), "/")
+			var naExternal string
+			if item.NetworkAttachmentResourceRef != nil {
+				naExternal = item.NetworkAttachmentResourceRef.External
+			}
+			na := strings.TrimPrefix(apirefs.TrimComputeURIPrefix(strings.TrimSpace(naExternal)), "/")
 			out = append(out, na)
 		}
 		slices.Sort(out)
@@ -709,9 +766,9 @@ func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSp
 		}
 		desiredPSC := desired.PSCInstanceConfig
 
-		if desiredPSC.AllowedConsumerProjects != nil {
-			if allowedConsumerProjectsChanged(ctx, actualPSC.AllowedConsumerProjects, desiredPSC.AllowedConsumerProjects, projectMapper) {
-				log.V(2).Info("'spec.pscInstanceConfig.allowedConsumerProjects' field is updated (-old +new)", cmp.Diff(actualPSC.AllowedConsumerProjects, desiredPSC.AllowedConsumerProjects))
+		if desiredPSC.AllowedConsumerProjectRefs != nil {
+			if allowedConsumerProjectsChanged(ctx, actualPSC.AllowedConsumerProjectRefs, desiredPSC.AllowedConsumerProjectRefs, projectMapper) {
+				log.V(2).Info("'spec.pscInstanceConfig.allowedConsumerProjectRefs' field is updated (-old +new)", cmp.Diff(actualPSC.AllowedConsumerProjectRefs, desiredPSC.AllowedConsumerProjectRefs))
 				updatePaths = append(updatePaths, "psc_instance_config.allowed_consumer_projects")
 			}
 		}

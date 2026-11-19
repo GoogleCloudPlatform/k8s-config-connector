@@ -27,7 +27,9 @@ import (
 	pb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
 	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -742,8 +744,12 @@ func Instance_PSCAutoConnectionConfig_FromProto(mapCtx *direct.MapContext, in *p
 		return nil
 	}
 	out := &krm.Instance_PSCAutoConnectionConfig{}
-	out.ConsumerProject = direct.LazyPtr(in.GetConsumerProject())
-	out.ConsumerNetwork = direct.LazyPtr(in.GetConsumerNetwork())
+	if in.GetConsumerProject() != "" {
+		out.ConsumerProjectRef = &refsv1beta1.ProjectRef{External: in.GetConsumerProject()}
+	}
+	if in.GetConsumerNetwork() != "" {
+		out.ConsumerNetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetConsumerNetwork()}
+	}
 	// MISSING: IPAddress
 	// MISSING: Status
 	// MISSING: ConsumerNetworkStatus
@@ -754,8 +760,12 @@ func Instance_PSCAutoConnectionConfig_ToProto(mapCtx *direct.MapContext, in *krm
 		return nil
 	}
 	out := &pb.Instance_PscAutoConnectionConfig{}
-	out.ConsumerProject = direct.ValueOf(in.ConsumerProject)
-	out.ConsumerNetwork = direct.ValueOf(in.ConsumerNetwork)
+	if in.ConsumerProjectRef != nil {
+		out.ConsumerProject = in.ConsumerProjectRef.External
+	}
+	if in.ConsumerNetworkRef != nil {
+		out.ConsumerNetwork = in.ConsumerNetworkRef.External
+	}
 	// MISSING: IPAddress
 	// MISSING: Status
 	// MISSING: ConsumerNetworkStatus
@@ -791,7 +801,13 @@ func Instance_PSCInstanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.Inst
 	}
 	out := &krm.Instance_PSCInstanceConfig{}
 	// MISSING: ServiceAttachmentLink
-	out.AllowedConsumerProjects = in.AllowedConsumerProjects
+
+	if v := in.GetAllowedConsumerProjects(); len(v) != 0 {
+		for i := range v {
+			out.AllowedConsumerProjectRefs = append(out.AllowedConsumerProjectRefs, refsv1beta1.ProjectRef{External: v[i]})
+		}
+	}
+
 	// MISSING: PSCDNSName
 	out.PSCInterfaceConfigs = direct.Slice_FromProto(mapCtx, in.PscInterfaceConfigs, Instance_PSCInterfaceConfig_FromProto)
 	out.PSCAutoConnections = direct.Slice_FromProto(mapCtx, in.PscAutoConnections, Instance_PSCAutoConnectionConfig_FromProto)
@@ -805,7 +821,13 @@ func Instance_PSCInstanceConfig_ToProto(mapCtx *direct.MapContext, in *krm.Insta
 	}
 	out := &pb.Instance_PscInstanceConfig{}
 	// MISSING: ServiceAttachmentLink
-	out.AllowedConsumerProjects = in.AllowedConsumerProjects
+
+	if v := in.AllowedConsumerProjectRefs; len(v) != 0 {
+		for i := range v {
+			out.AllowedConsumerProjects = append(out.AllowedConsumerProjects, v[i].External)
+		}
+	}
+
 	// MISSING: PSCDNSName
 	out.PscInterfaceConfigs = direct.Slice_ToProto(mapCtx, in.PSCInterfaceConfigs, Instance_PSCInterfaceConfig_ToProto)
 	out.PscAutoConnections = direct.Slice_ToProto(mapCtx, in.PSCAutoConnections, Instance_PSCAutoConnectionConfig_ToProto)
@@ -868,7 +890,9 @@ func Instance_PSCInterfaceConfig_FromProto(mapCtx *direct.MapContext, in *pb.Ins
 		return nil
 	}
 	out := &krm.Instance_PSCInterfaceConfig{}
-	out.NetworkAttachmentResource = direct.LazyPtr(in.GetNetworkAttachmentResource())
+	if in.GetNetworkAttachmentResource() != "" {
+		out.NetworkAttachmentResourceRef = &krmcomputev1alpha1.ComputeNetworkAttachmentRef{External: in.GetNetworkAttachmentResource()}
+	}
 	return out
 }
 func Instance_PSCInterfaceConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PSCInterfaceConfig) *pb.Instance_PscInterfaceConfig {
@@ -876,7 +900,9 @@ func Instance_PSCInterfaceConfig_ToProto(mapCtx *direct.MapContext, in *krm.Inst
 		return nil
 	}
 	out := &pb.Instance_PscInterfaceConfig{}
-	out.NetworkAttachmentResource = direct.ValueOf(in.NetworkAttachmentResource)
+	if in.NetworkAttachmentResourceRef != nil {
+		out.NetworkAttachmentResource = in.NetworkAttachmentResourceRef.External
+	}
 	return out
 }
 func Instance_QueryInsightsInstanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_QueryInsightsInstanceConfig) *krm.Instance_QueryInsightsInstanceConfig {
