@@ -92,6 +92,10 @@ func NormalizeDynamicIDs(s string) string {
 				lines[i] = line[:idx+len("/companies/")] + "ctsco-min-${uniqueId}"
 			}
 		}
+		// Normalize CloudBuildBuild server-generated build IDs: projects/.../locations/.../builds/<buildId>
+		if idx := strings.Index(line, "/builds/"); idx != -1 {
+			lines[i] = line[:idx+len("/builds/")] + "${buildID}"
+		}
 		// Normalize ComputeFirewallPolicy IDs: locations/global/firewallPolicies/<firewallPolicyId>
 		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
 		if idx := strings.Index(line, "/firewallPolicies/"); idx != -1 {

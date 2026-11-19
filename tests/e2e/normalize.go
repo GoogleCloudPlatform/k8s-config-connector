@@ -437,6 +437,21 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		// rolloutOperation contains dynamic rollout timestamps and timing-dependent async zone rollout states in real GCP.
 		visitor.removePaths.Insert(".status.observedState.rolloutOperation")
 	}
+	if u.GetKind() == "CloudBuildBuild" {
+		visitor.replacePaths[".status.observedState.startTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.finishTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.createTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.steps[].pullTiming.startTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.steps[].pullTiming.endTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.steps[].timing.startTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.steps[].timing.endTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.timing.BUILD.startTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.timing.BUILD.endTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.timing.FETCHSOURCE.startTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.timing.FETCHSOURCE.endTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.timing.PUSH.startTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.timing.PUSH.endTime"] = mockgcpregistry.PlaceholderTimestamp
+	}
 
 	// Specific to Datacatalog
 	visitor.replacePaths[".dataCatalogTimestamps.createTime"] = mockgcpregistry.PlaceholderTimestamp
@@ -1244,6 +1259,13 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 					replacement.PathIDs[teamFolderID] = "2ba614be-5147-410a-ad89-bab4ff528497"
 				}
 			}
+			if u.GetKind() == "CloudBuildBuild" {
+				parts := strings.Split(s, "/")
+				if len(parts) > 0 {
+					buildID := parts[len(parts)-1]
+					replacement.PathIDs[buildID] = "${buildID}"
+				}
+			}
 		}
 		return s
 	})
@@ -1365,6 +1387,26 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 				for _, match := range matches {
 					if len(match) > 1 {
 						normalizer.Replacements.PathIDs[match[1]] = "${styleConfigId}"
+					}
+				}
+			}
+		}
+	}
+
+	// Find CloudBuild build IDs in URL or Body and add to PathIDs
+	buildIDRegex := regexp.MustCompile(`/builds/([a-zA-Z0-9_-]+)`)
+	for _, event := range events {
+		if !strings.Contains(event.Request.URL, "cloudbuild") {
+			continue
+		}
+		if matches := buildIDRegex.FindStringSubmatch(event.Request.URL); len(matches) > 1 {
+			normalizer.Replacements.PathIDs[matches[1]] = "${buildID}"
+		}
+		if event.Response.Body != "" {
+			if matches := buildIDRegex.FindAllStringSubmatch(event.Response.Body, -1); len(matches) > 0 {
+				for _, match := range matches {
+					if len(match) > 1 {
+						normalizer.Replacements.PathIDs[match[1]] = "${buildID}"
 					}
 				}
 			}

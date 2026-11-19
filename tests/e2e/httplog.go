@@ -392,6 +392,10 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 			if len(tokens) == 2 && tokens[0] == "operations" {
 				id = strings.TrimPrefix(s, "operations/")
 			}
+			// operation name format: operations/build/{projectId}/{operationId}
+			if len(tokens) == 4 && tokens[0] == "operations" && tokens[1] == "build" {
+				id = tokens[3]
+			}
 			// operation name format: {prefix}/operations/{operationId}
 			if len(tokens) > 2 && tokens[len(tokens)-2] == "operations" {
 				id = tokens[len(tokens)-1]
@@ -408,6 +412,8 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 				// Bigtable uses an unusual operation path: "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-b/operations/${operationID}"
 			case "accessPolicies":
 				// Access Context Manager uses an unusual operation path: "operations/accessPolicies/${accessPolicyId}/delete/${operationID}"
+			case "build":
+				// Cloud Build uses "operations/build/{project}/{id}"
 			default:
 				x.OperationIDs[id] = true
 			}

@@ -1,0 +1,60 @@
+GET https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/builds/${buildID}
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "finishTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "logUrl": "https://console.cloud.google.com/cloud-build/builds;region=us-central1/${buildID}?project=${projectNumber}",
+  "name": "projects/${projectNumber}/locations/us-central1/builds/${buildID}",
+  "options": {
+    "dynamicSubstitutions": true,
+    "logStreamingOption": "STREAM_ON",
+    "logging": "CLOUD_LOGGING_ONLY",
+    "pool": {},
+    "substitutionOption": "ALLOW_LOOSE",
+    "workerRelease": "legacy"
+  },
+  "projectId": "${projectId}",
+  "queueTtl": "3600s",
+  "results": {
+    "buildStepImages": [
+      "sha256:589adbc588d8ef3c1ec3c68333faf4baf5dccb65d3cb50f6cf3d78cad2d6e1b0"
+    ],
+    "buildStepOutputs": [
+      ""
+    ],
+    "buildStepResults": {
+      "step-1": {}
+    },
+    "resourceUsage": {
+      "averageCpuUtilization": 0.4695288,
+      "averageMemoryUtilization": 0.079485446,
+      "peakCpuUtilization": 0.5701846,
+      "peakMemoryUtilization": 0.08245145,
+      "totalCpuDuration": "2.620s"
+    }
+  },
+  "serviceAccount": "projects/${projectId}/serviceAccounts/${projectNumber}-compute@developer.gserviceaccount.com",
+  "sourceProvenance": {},
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "SUCCESS",
+  "steps": [],
+  "substitutions": {
+    "_CUSTOM_VAR": "custom_value"
+  },
+  "tags": [
+    "test",
+    "maximal"
+  ],
+  "timeout": "600s",
+  "timing": {
+    "BUILD": {
+      "endTime": "2024-04-01T12:34:56.123456Z",
+      "startTime": "2024-04-01T12:34:56.123456Z"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+- caisURL: //cloudbuild.googleapis.com/projects/${projectId}/locations/us-central1/builds/${buildID}
+  group: cloudbuild.cnrm.cloud.google.com
+  kind: CloudBuildBuild
+  name: cloudbuildbuild-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

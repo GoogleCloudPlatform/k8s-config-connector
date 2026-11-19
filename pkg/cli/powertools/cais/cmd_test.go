@@ -292,6 +292,20 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 			}
 
+			// Inject status.externalRef for CloudBuildBuild to simulate a reconciled build in static unit tests.
+			if u.GetKind() == "CloudBuildBuild" && u.GroupVersionKind().Group == "cloudbuild.cnrm.cloud.google.com" {
+				goldens, _ := filepath.Glob(filepath.Join(dir, "_generated_object_*.golden.yaml"))
+				for _, gPath := range goldens {
+					for _, gu := range parseFixtureYAML(t, gPath, gcpProject) {
+						if gu.GetKind() == u.GetKind() && gu.GetName() == u.GetName() {
+							if extRef, ok, _ := unstructured.NestedString(gu.Object, "status", "externalRef"); ok && extRef != "" {
+								_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+							}
+						}
+					}
+				}
+			}
+
 			// Inject status.externalRef for DataplexEntity to simulate a reconciled entity in static unit tests.
 			if u.GetKind() == "DataplexEntity" && u.GroupVersionKind().Group == "dataplex.cnrm.cloud.google.com" {
 				goldens, _ := filepath.Glob(filepath.Join(dir, "_generated_object_*.golden.yaml"))

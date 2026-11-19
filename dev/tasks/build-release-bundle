@@ -142,7 +142,6 @@ BLOCKED_KINDS=(
     "ChronicleReferenceList"
     "ChronicleRule"
     "CloudBatchResourceAllowance"
-    "CloudBuildBuild"
     "CloudchannelChannelPartnerLink"
     "CloudchannelChannelPartnerRepricingConfig"
     "CloudchannelCustomer"

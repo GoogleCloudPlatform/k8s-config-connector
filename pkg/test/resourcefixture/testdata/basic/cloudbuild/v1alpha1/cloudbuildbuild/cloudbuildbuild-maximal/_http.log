@@ -1,0 +1,405 @@
+# Phase: CREATE
+GRPC /google.devtools.cloudbuild.v1.CloudBuild/CreateBuild
+
+{
+  "build": {
+    "options": {
+      "dynamicSubstitutions": true,
+      "logStreamingOption": "STREAM_ON",
+      "logging": "CLOUD_LOGGING_ONLY",
+      "substitutionOption": "ALLOW_LOOSE"
+    },
+    "queueTtl": "3600s",
+    "steps": [
+      {
+        "args": [
+          "-c",
+          "echo \"hello from maximal build\""
+        ],
+        "automapSubstitutions": true,
+        "dir": "/workspace",
+        "env": [
+          "BUILD_STEP_ENV=hello"
+        ],
+        "id": "step-1",
+        "name": "bash",
+        "timeout": "120s"
+      }
+    ],
+    "substitutions": {
+      "_CUSTOM_VAR": "custom_value"
+    },
+    "tags": [
+      "test",
+      "maximal"
+    ],
+    "timeout": "600s"
+  },
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.BuildOperationMetadata",
+    "build": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "id": "${buildID}",
+      "logUrl": "https://console.cloud.google.com/cloud-build/builds;region=us-central1/${buildID}?project=${projectNumber}",
+      "name": "projects/${projectNumber}/locations/us-central1/builds/${buildID}",
+      "options": {
+        "dynamicSubstitutions": true,
+        "logStreamingOption": "STREAM_ON",
+        "logging": "CLOUD_LOGGING_ONLY",
+        "pool": {},
+        "substitutionOption": "ALLOW_LOOSE"
+      },
+      "projectId": "${projectId}",
+      "queueTtl": "3600s",
+      "serviceAccount": "projects/${projectId}/serviceAccounts/${projectNumber}-compute@developer.gserviceaccount.com",
+      "status": "QUEUED",
+      "steps": [
+        {
+          "args": [
+            "-c",
+            "echo \"hello from maximal build\""
+          ],
+          "automapSubstitutions": true,
+          "dir": "/workspace",
+          "env": [
+            "BUILD_STEP_ENV=hello"
+          ],
+          "id": "step-1",
+          "name": "bash",
+          "timeout": "120s"
+        }
+      ],
+      "substitutions": {
+        "_CUSTOM_VAR": "custom_value"
+      },
+      "tags": [
+        "test",
+        "maximal"
+      ],
+      "timeout": "600s"
+    }
+  },
+  "name": "operations/build/${projectId}/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "operations/build/${projectId}/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.BuildOperationMetadata",
+    "build": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "finishTime": "2024-04-01T12:34:56.123456Z",
+      "id": "${buildID}",
+      "logUrl": "https://console.cloud.google.com/cloud-build/builds;region=us-central1/${buildID}?project=${projectNumber}",
+      "name": "projects/${projectNumber}/locations/us-central1/builds/${buildID}",
+      "options": {
+        "dynamicSubstitutions": true,
+        "logStreamingOption": "STREAM_ON",
+        "logging": "CLOUD_LOGGING_ONLY",
+        "pool": {},
+        "substitutionOption": "ALLOW_LOOSE"
+      },
+      "projectId": "${projectId}",
+      "queueTtl": "3600s",
+      "results": {
+        "buildStepImages": [
+          "sha256:589adbc588d8ef3c1ec3c68333faf4baf5dccb65d3cb50f6cf3d78cad2d6e1b0"
+        ],
+        "buildStepOutputs": [
+          ""
+        ]
+      },
+      "serviceAccount": "projects/${projectId}/serviceAccounts/${projectNumber}-compute@developer.gserviceaccount.com",
+      "sourceProvenance": {},
+      "startTime": "2024-04-01T12:34:56.123456Z",
+      "status": "SUCCESS",
+      "steps": [
+        {
+          "args": [
+            "-c",
+            "echo \"hello from maximal build\""
+          ],
+          "automapSubstitutions": true,
+          "dir": "/workspace",
+          "env": [
+            "BUILD_STEP_ENV=hello"
+          ],
+          "id": "step-1",
+          "name": "bash",
+          "pullTiming": {
+            "endTime": "2024-04-01T12:34:56.123456Z",
+            "startTime": "2024-04-01T12:34:56.123456Z"
+          },
+          "status": "SUCCESS",
+          "timeout": "120s",
+          "timing": {
+            "endTime": "2024-04-01T12:34:56.123456Z",
+            "startTime": "2024-04-01T12:34:56.123456Z"
+          }
+        }
+      ],
+      "substitutions": {
+        "_CUSTOM_VAR": "custom_value"
+      },
+      "tags": [
+        "test",
+        "maximal"
+      ],
+      "timeout": "600s",
+      "timing": {
+        "BUILD": {
+          "endTime": "2024-04-01T12:34:56.123456Z",
+          "startTime": "2024-04-01T12:34:56.123456Z"
+        }
+      }
+    }
+  },
+  "name": "operations/build/${projectId}/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.Build",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "finishTime": "2026-11-18T06:37:19.915748Z",
+    "id": "000000000000000000000",
+    "logUrl": "https://console.cloud.google.com/cloud-build/builds;region=us-central1/${buildID}?project=${projectNumber}",
+    "name": "projects/${projectNumber}/locations/us-central1/builds/${buildID}",
+    "options": {
+      "dynamicSubstitutions": true,
+      "logStreamingOption": "STREAM_ON",
+      "logging": "CLOUD_LOGGING_ONLY",
+      "pool": {},
+      "substitutionOption": "ALLOW_LOOSE"
+    },
+    "projectId": "${projectId}",
+    "queueTtl": "3600s",
+    "results": {
+      "buildStepImages": [
+        "sha256:589adbc588d8ef3c1ec3c68333faf4baf5dccb65d3cb50f6cf3d78cad2d6e1b0"
+      ],
+      "buildStepOutputs": [
+        ""
+      ]
+    },
+    "serviceAccount": "projects/${projectId}/serviceAccounts/${projectNumber}-compute@developer.gserviceaccount.com",
+    "sourceProvenance": {},
+    "startTime": "2024-04-01T12:34:56.123456Z",
+    "status": "SUCCESS",
+    "steps": [
+      {
+        "args": [
+          "-c",
+          "echo \"hello from maximal build\""
+        ],
+        "automapSubstitutions": true,
+        "dir": "/workspace",
+        "env": [
+          "BUILD_STEP_ENV=hello"
+        ],
+        "id": "step-1",
+        "name": "bash",
+        "pullTiming": {
+          "endTime": "2026-11-18T06:37:18.666186621Z",
+          "startTime": "2026-11-18T06:37:16.981875725Z"
+        },
+        "status": "SUCCESS",
+        "timeout": "120s",
+        "timing": {
+          "endTime": "2026-11-18T06:37:19.369364660Z",
+          "startTime": "2026-11-18T06:37:16.981875725Z"
+        }
+      }
+    ],
+    "substitutions": {
+      "_CUSTOM_VAR": "custom_value"
+    },
+    "tags": [
+      "test",
+      "maximal"
+    ],
+    "timeout": "600s",
+    "timing": {
+      "BUILD": {
+        "endTime": "2026-11-18T06:37:19.369564950Z",
+        "startTime": "2026-11-18T06:37:16.345200022Z"
+      }
+    }
+  }
+}
+
+---
+
+GRPC /google.devtools.cloudbuild.v1.CloudBuild/GetBuild
+
+{
+  "name": "projects/${projectId}/locations/us-central1/builds/${buildID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "finishTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "logUrl": "https://console.cloud.google.com/cloud-build/builds;region=us-central1/${buildID}?project=${projectNumber}",
+  "name": "projects/${projectNumber}/locations/us-central1/builds/${buildID}",
+  "options": {
+    "dynamicSubstitutions": true,
+    "logStreamingOption": "STREAM_ON",
+    "logging": "CLOUD_LOGGING_ONLY",
+    "pool": {},
+    "substitutionOption": "ALLOW_LOOSE"
+  },
+  "projectId": "${projectId}",
+  "queueTtl": "3600s",
+  "results": {
+    "buildStepImages": [
+      "sha256:589adbc588d8ef3c1ec3c68333faf4baf5dccb65d3cb50f6cf3d78cad2d6e1b0"
+    ],
+    "buildStepOutputs": [
+      ""
+    ]
+  },
+  "serviceAccount": "projects/${projectId}/serviceAccounts/${projectNumber}-compute@developer.gserviceaccount.com",
+  "sourceProvenance": {},
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "SUCCESS",
+  "steps": [],
+  "substitutions": {
+    "_CUSTOM_VAR": "custom_value"
+  },
+  "tags": [
+    "test",
+    "maximal"
+  ],
+  "timeout": "600s",
+  "timing": {
+    "BUILD": {
+      "endTime": "2024-04-01T12:34:56.123456Z",
+      "startTime": "2024-04-01T12:34:56.123456Z"
+    }
+  }
+}
+
+---
+
+# Phase: DELETE
+GRPC /google.devtools.cloudbuild.v1.CloudBuild/GetBuild
+
+{
+  "name": "projects/${projectId}/locations/us-central1/builds/${buildID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "finishTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "logUrl": "https://console.cloud.google.com/cloud-build/builds;region=us-central1/${buildID}?project=${projectNumber}",
+  "name": "projects/${projectNumber}/locations/us-central1/builds/${buildID}",
+  "options": {
+    "dynamicSubstitutions": true,
+    "logStreamingOption": "STREAM_ON",
+    "logging": "CLOUD_LOGGING_ONLY",
+    "pool": {},
+    "substitutionOption": "ALLOW_LOOSE"
+  },
+  "projectId": "${projectId}",
+  "queueTtl": "3600s",
+  "results": {
+    "buildStepImages": [
+      "sha256:589adbc588d8ef3c1ec3c68333faf4baf5dccb65d3cb50f6cf3d78cad2d6e1b0"
+    ],
+    "buildStepOutputs": [
+      ""
+    ]
+  },
+  "serviceAccount": "projects/${projectId}/serviceAccounts/${projectNumber}-compute@developer.gserviceaccount.com",
+  "sourceProvenance": {},
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "SUCCESS",
+  "steps": [],
+  "substitutions": {
+    "_CUSTOM_VAR": "custom_value"
+  },
+  "tags": [
+    "test",
+    "maximal"
+  ],
+  "timeout": "600s",
+  "timing": {
+    "BUILD": {
+      "endTime": "2024-04-01T12:34:56.123456Z",
+      "startTime": "2024-04-01T12:34:56.123456Z"
+    }
+  }
+}
+
+---
+
+GRPC /google.devtools.cloudbuild.v1.CloudBuild/GetBuild
+
+{
+  "name": "projects/${projectId}/locations/us-central1/builds/${buildID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "finishTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "logUrl": "https://console.cloud.google.com/cloud-build/builds;region=us-central1/${buildID}?project=${projectNumber}",
+  "name": "projects/${projectNumber}/locations/us-central1/builds/${buildID}",
+  "options": {
+    "dynamicSubstitutions": true,
+    "logStreamingOption": "STREAM_ON",
+    "logging": "CLOUD_LOGGING_ONLY",
+    "pool": {},
+    "substitutionOption": "ALLOW_LOOSE"
+  },
+  "projectId": "${projectId}",
+  "queueTtl": "3600s",
+  "results": {
+    "buildStepImages": [
+      "sha256:589adbc588d8ef3c1ec3c68333faf4baf5dccb65d3cb50f6cf3d78cad2d6e1b0"
+    ],
+    "buildStepOutputs": [
+      ""
+    ]
+  },
+  "serviceAccount": "projects/${projectId}/serviceAccounts/${projectNumber}-compute@developer.gserviceaccount.com",
+  "sourceProvenance": {},
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "SUCCESS",
+  "steps": [],
+  "substitutions": {
+    "_CUSTOM_VAR": "custom_value"
+  },
+  "tags": [
+    "test",
+    "maximal"
+  ],
+  "timeout": "600s",
+  "timing": {
+    "BUILD": {
+      "endTime": "2024-04-01T12:34:56.123456Z",
+      "startTime": "2024-04-01T12:34:56.123456Z"
+    }
+  }
+}

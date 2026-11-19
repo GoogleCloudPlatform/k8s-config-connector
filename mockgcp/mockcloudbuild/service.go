@@ -25,8 +25,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	pbhttpv2 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/devtools/cloudbuild/v2"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/devtools/cloudbuild/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
+
+func init() {
+	mockgcpregistry.Register(New)
+}
 
 // MockService represents a mocked cloudbuild service.
 type MockService struct {
@@ -40,7 +45,7 @@ type MockService struct {
 }
 
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
@@ -58,6 +63,11 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterCloudBuildServer(grpcServer, s.v1)
 	pbv2.RegisterRepositoryManagerServer(grpcServer, s.v2)
+
+	// Also register under v1 name so that v1 gRPC clients can call it
+	desc := pb.CloudBuild_ServiceDesc
+	desc.ServiceName = "google.devtools.cloudbuild.v1.CloudBuild"
+	grpcServer.RegisterService(&desc, s.v1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
