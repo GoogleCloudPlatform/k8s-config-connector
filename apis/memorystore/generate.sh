@@ -33,23 +33,46 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 PROTO_SHA="eef26aec30227ec265b3150fa79bab3df4e3a38b"
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 
-./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+if [[ -z "${SKIP_GENERATE_PROTOS:-}" ]]; then
+  ./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+fi
 
+# --- v1alpha1 ---
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.memorystore.v1 \
+  --api-version memorystore.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource \
+  --resource MemorystoreACLPolicy:AclPolicy \
+  --proto-source-path ${PROTO_OUT}
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.memorystore.v1 \
+  --api-version memorystore.cnrm.cloud.google.com/v1alpha1 \
+  --resource MemorystoreACLPolicy:AclPolicy \
+  --proto-source-path ${PROTO_OUT}
+
+# --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.memorystore.v1 \
   --api-version memorystore.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output \
-  --resource MemorystoreInstance:Instance
+  --resource MemorystoreInstance:Instance \
+  --proto-source-path ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.memorystore.v1 \
   --api-version memorystore.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output
+  --include-skipped-output \
+  --skip-proto AclPolicy,AclRule,AclPolicyRevision,AclPolicyRevisionStatus,InstanceAclPolicyAttachment \
+  --proto-source-path ${PROTO_OUT}
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/memorystore" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/memorystore/
