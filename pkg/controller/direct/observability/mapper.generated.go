@@ -30,6 +30,44 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func ObservabilityLinkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Link) *krm.ObservabilityLinkObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ObservabilityLinkObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	return out
+}
+func ObservabilityLinkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ObservabilityLinkObservedState) *pb.Link {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Link{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	return out
+}
+func ObservabilityLinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Link) *krm.ObservabilityLinkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ObservabilityLinkSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func ObservabilityLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.ObservabilityLinkSpec) *pb.Link {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Link{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
 func ObservabilityTraceScopeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TraceScope) *krm.ObservabilityTraceScopeObservedState {
 	if in == nil {
 		return nil

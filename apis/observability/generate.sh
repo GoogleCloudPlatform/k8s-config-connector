@@ -46,11 +46,25 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ObservabilityTraceScope:TraceScope \
   --prepopulate-resource
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.observability.v1 \
+  --api-version observability.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource ObservabilityLink:Link \
+  --prepopulate-resource
+
 ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.observability.v1 \
   --api-version observability.cnrm.cloud.google.com/v1alpha1 \
   --resource ObservabilityTraceScope:TraceScope
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.observability.v1 \
+  --api-version observability.cnrm.cloud.google.com/v1alpha1 \
+  --resource ObservabilityLink:Link
 
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \
