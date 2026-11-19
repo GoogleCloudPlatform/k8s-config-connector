@@ -205,6 +205,50 @@ func MigrationCenterGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.Migrati
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
+func MigrationCenterImportDataFileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ImportDataFile) *krm.MigrationCenterImportDataFileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MigrationCenterImportDataFileObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.UploadFileInfo = UploadFileInfoObservedState_FromProto(mapCtx, in.GetUploadFileInfo())
+	return out
+}
+func MigrationCenterImportDataFileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MigrationCenterImportDataFileObservedState) *pb.ImportDataFile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ImportDataFile{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.State = direct.Enum_ToProto[pb.ImportDataFile_State](mapCtx, in.State)
+	if oneof := UploadFileInfoObservedState_ToProto(mapCtx, in.UploadFileInfo); oneof != nil {
+		out.FileInfo = &pb.ImportDataFile_UploadFileInfo{UploadFileInfo: oneof}
+	}
+	return out
+}
+func MigrationCenterImportDataFileSpec_FromProto(mapCtx *direct.MapContext, in *pb.ImportDataFile) *krm.MigrationCenterImportDataFileSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MigrationCenterImportDataFileSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Format = direct.Enum_FromProto(mapCtx, in.GetFormat())
+	return out
+}
+func MigrationCenterImportDataFileSpec_ToProto(mapCtx *direct.MapContext, in *krm.MigrationCenterImportDataFileSpec) *pb.ImportDataFile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ImportDataFile{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Format = direct.Enum_ToProto[pb.ImportJobFormat](mapCtx, in.Format)
+	return out
+}
 func MigrationCenterImportJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ImportJob) *krm.MigrationCenterImportJobObservedState {
 	if in == nil {
 		return nil
@@ -891,6 +935,26 @@ func SoleTenantNodeType_ToProto(mapCtx *direct.MapContext, in *krm.SoleTenantNod
 	}
 	out := &pb.SoleTenantNodeType{}
 	out.NodeName = direct.ValueOf(in.NodeName)
+	return out
+}
+func UploadFileInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.UploadFileInfo) *krm.UploadFileInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UploadFileInfoObservedState{}
+	out.SignedURI = direct.LazyPtr(in.GetSignedUri())
+	out.Headers = in.Headers
+	out.URIExpirationTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUriExpirationTime())
+	return out
+}
+func UploadFileInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.UploadFileInfoObservedState) *pb.UploadFileInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UploadFileInfo{}
+	out.SignedUri = direct.ValueOf(in.SignedURI)
+	out.Headers = in.Headers
+	out.UriExpirationTime = direct.StringTimestamp_ToProto(mapCtx, in.URIExpirationTime)
 	return out
 }
 func ValidationReport_FromProto(mapCtx *direct.MapContext, in *pb.ValidationReport) *krm.ValidationReport {

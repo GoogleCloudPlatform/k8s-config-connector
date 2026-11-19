@@ -17,6 +17,7 @@
 // krm.group: migrationcenter.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.migrationcenter.v1
+// resource: MigrationCenterImportDataFile:ImportDataFile
 // resource: MigrationCenterImportJob:ImportJob
 // resource: MigrationCenterReport:Report
 // resource: MigrationCenterReportConfig:ReportConfig
@@ -68,6 +69,21 @@ type FileValidationReport struct {
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.FileValidationReport.file_errors
 	FileErrors []ImportError `json:"fileErrors,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.ImportDataFile", skipping
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ImportDataFile
+type ImportDataFile struct {
+
+	// User-friendly display name. Maximum length is 63 characters.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportDataFile.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Required. The payload format.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportDataFile.format
+	Format *string `json:"format,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.migrationcenter.v1.ImportError
 type ImportError struct {
@@ -518,6 +534,12 @@ type SoleTenantNodeType struct {
 	NodeName *string `json:"nodeName,omitempty"`
 }
 
+/* unreachable type UploadFileInfo
+// +kcc:proto=google.cloud.migrationcenter.v1.UploadFileInfo
+type UploadFileInfo struct {
+}
+*/
+
 // +kcc:proto=google.cloud.migrationcenter.v1.ValidationReport
 type ValidationReport struct {
 	// List of errors found in files.
@@ -640,6 +662,28 @@ type ExecutionReportObservedState struct {
 	TotalRowsCount *int32 `json:"totalRowsCount,omitempty"`
 }
 
+/* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.ImportDataFile", skipping
+
+// +kcc:observedstate:proto=google.cloud.migrationcenter.v1.ImportDataFile
+type ImportDataFileObservedState struct {
+	// Output only. The name of the file.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportDataFile.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The timestamp when the file was created.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportDataFile.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The state of the import data file.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportDataFile.state
+	State *string `json:"state,omitempty"`
+
+	// Information about a file that is uploaded to a storage service.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportDataFile.upload_file_info
+	UploadFileInfo *UploadFileInfoObservedState `json:"uploadFileInfo,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.ImportJob", skipping
 
 // +kcc:observedstate:proto=google.cloud.migrationcenter.v1.ImportJob
@@ -713,3 +757,18 @@ type ReportConfigObservedState struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.migrationcenter.v1.UploadFileInfo
+type UploadFileInfoObservedState struct {
+	// Output only. Upload URI for the file.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.UploadFileInfo.signed_uri
+	SignedURI *string `json:"signedURI,omitempty"`
+
+	// Output only. The headers that were used to sign the URI.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.UploadFileInfo.headers
+	Headers map[string]string `json:"headers,omitempty"`
+
+	// Output only. Expiration time of the upload URI.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.UploadFileInfo.uri_expiration_time
+	URIExpirationTime *string `json:"uriExpirationTime,omitempty"`
+}

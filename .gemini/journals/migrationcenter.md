@@ -90,6 +90,15 @@
   - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` to reflect 100% spec field coverage in tests.
 - **Impact**: Full lifecycle reconciliation for `MigrationCenterImportJob` verified with authentic GCP audit logs and golden traffic.
 
+### 2026-11-19 Greenfield Step 1a prepopulate types, identity, and judgement queue for MigrationCenterImportDataFile
+- **Context**: Prepopulating direct KRM types, identity, references, and `judgement_queue.yaml` for `MigrationCenterImportDataFile` under `v1alpha1`.
+- **Details**:
+  - Added `MigrationCenterImportDataFile:ImportDataFile` to `generate-types` and `generate-identity` in `apis/migrationcenter/generate.sh`.
+  - Added `MigrationCenterImportDataFile` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Ran `apis/migrationcenter/generate.sh` to scaffold `migrationcenterimportdatafile_types.go`, identity, reference, CRD, and entries in `apis/migrationcenter/judgement_queue.yaml`.
+  - Recorded untriaged fields in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+- **Impact**: Mechanical prepopulation complete with clean compilation, passing unit tests, and passing `apichecks`.
+
 
 
 
