@@ -1539,9 +1539,8 @@
 [missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.federatedCatalogOptions.unityCatalogInfo.catalogName" is not set in unstructured objects
 [missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.federatedCatalogOptions.unityCatalogInfo.instanceName" is not set in unstructured objects
 [missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.federatedCatalogOptions.unityCatalogInfo.servicePrincipalApplicationID" is not set in unstructured objects
-[missing_field] crd=biglakeicebergnamespaces.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=biglakeicebergnamespaces.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.namespace[]" is not set in unstructured objects
-[missing_field] crd=biglakeicebergnamespaces.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=biglakeicebergnamespaces.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=biglakeicebergnamespaces.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties" is not set in unstructured objects
 [missing_field] crd=bigqueryanalyticshubquerytemplates.bigqueryanalyticshub.cnrm.cloud.google.com version=v1alpha1: field ".spec.proposer" is not set in unstructured objects
 [missing_field] crd=bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataMaskingPolicy.predefinedExpression" is not set in unstructured objects

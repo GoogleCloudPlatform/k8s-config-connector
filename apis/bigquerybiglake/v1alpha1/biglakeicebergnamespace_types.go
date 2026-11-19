@@ -15,13 +15,11 @@
 // API sources for BigLakeIcebergNamespace, recorded by generate-types:
 // +kcc:source:proto=https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/mockgcp/apis/google/cloud/biglake/v1/iceberg_rest_catalog.proto
 // +kcc:source:service-docs=https://cloud.google.com/products/lakehouse
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/products/lakehouse/docs/reference/rest
+// +kcc:source:resource-docs=https://cloud.google.com/bigquery/docs/iceberg-rest-catalog-about
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,14 +30,14 @@ var BigLakeIcebergNamespaceGVK = GroupVersion.WithKind("BigLakeIcebergNamespace"
 // +kcc:spec:proto=google.cloud.biglake.v1.IcebergNamespace
 // +kcc:required-from-proto
 type BigLakeIcebergNamespaceSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// The BigLakeIcebergCatalog this BigLakeIcebergNamespace is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *BigLakeIcebergCatalogRef `json:"parentRef"`
 
 	// The BigLakeIcebergNamespace name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Required. The name of the namespace.
 	// +kcc:proto:field=google.cloud.biglake.v1.IcebergNamespace.namespace
 	// +required

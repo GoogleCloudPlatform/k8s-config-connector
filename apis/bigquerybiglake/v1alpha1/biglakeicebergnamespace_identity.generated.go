@@ -24,10 +24,10 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -79,22 +79,19 @@ func (i *BigLakeIcebergNamespaceIdentity) ParentString() string {
 func getIdentityFromBigLakeIcebergNamespaceSpec(ctx context.Context, reader client.Reader, obj *BigLakeIcebergNamespace) (*BigLakeIcebergNamespaceIdentity, error) {
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	if obj.Spec.ParentRef == nil {
+		return nil, fmt.Errorf("spec.parentRef is required")
 	}
-
-	// +kcc:guess reason=identity-root-unknown
-	catalog := ""
-	if catalog == "" {
-		return nil, fmt.Errorf("cannot resolve catalog for BigLakeIcebergNamespace")
+	parentRef := *obj.Spec.ParentRef
+	if err := parentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, fmt.Errorf("resolving spec.parentRef: %w", err)
 	}
-
-	return &BigLakeIcebergNamespaceIdentity{
-		Project:   projectID,
-		Catalog:   catalog,
-		Namespace: resourceID,
-	}, nil
+	parsed := &BigLakeIcebergNamespaceIdentity{}
+	if err := parsed.FromExternal(strings.TrimSuffix(parentRef.GetExternal(), "/") + "/namespaces" + "/_"); err != nil {
+		return nil, fmt.Errorf("parsing spec.parentRef external=%q: %w", parentRef.GetExternal(), err)
+	}
+	parsed.Namespace = resourceID
+	return parsed, nil
 }
 
 func (obj *BigLakeIcebergNamespace) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
