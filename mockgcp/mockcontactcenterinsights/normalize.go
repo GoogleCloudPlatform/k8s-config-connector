@@ -100,6 +100,20 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 				}
 			}
 		}
+		if strings.Contains(val, "/issueModels/") {
+			tokens := strings.Split(val, "/")
+			for i := 0; i < len(tokens)-1; i++ {
+				if tokens[i] == "issueModels" {
+					id := tokens[i+1]
+					if idx := strings.Index(id, "?"); idx != -1 {
+						id = id[:idx]
+					}
+					if isNumeric(id) {
+						replacements.ReplaceStringValue(id, "${issueModelId}")
+					}
+				}
+			}
+		}
 	}
 
 	previsitValue(event.URL())

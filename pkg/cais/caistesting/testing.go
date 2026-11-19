@@ -92,6 +92,15 @@ func NormalizeDynamicIDs(s string) string {
 				lines[i] = line[:idx+len("/companies/")] + "ctsco-min-${uniqueId}"
 			}
 		}
+		// Normalize CCInsightsIssueModel IDs: locations/.../issueModels/<issueModelId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/issueModels/"); idx != -1 {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
 		// Normalize ComputeFirewallPolicy IDs: locations/global/firewallPolicies/<firewallPolicyId>
 		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
 		if idx := strings.Index(line, "/firewallPolicies/"); idx != -1 {

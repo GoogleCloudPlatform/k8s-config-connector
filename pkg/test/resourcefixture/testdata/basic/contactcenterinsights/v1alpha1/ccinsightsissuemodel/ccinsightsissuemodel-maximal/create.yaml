@@ -1,0 +1,13 @@
+apiVersion: contactcenterinsights.cnrm.cloud.google.com/v1alpha1
+kind: CCInsightsIssueModel
+metadata:
+  name: ccinsightsissuemodel-max-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Maximal Issue Model"
+  inputDataConfig:
+    filter: 'medium="PHONE_CALL"'
+  modelType: TYPE_V2
+  languageCode: "en-US"
