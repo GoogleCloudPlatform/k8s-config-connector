@@ -142,12 +142,35 @@ func compareAuditConfigs(desired, actual []IAMPolicyAuditConfig) *structuredrepo
 		}
 	}
 
-	// Check for removed audit configs.
-	for service := range actualMap {
-		if _, ok := desiredMap[service]; !ok {
-			diff.AddField(fmt.Sprintf("spec.auditConfigs[service=%v]", service), "absent in desired spec", "present in actual spec")
-		}
+	return diff
+}
+
+// IAMAuditConfigSpecDiffers compares two IAMAuditConfigSpec objects and returns a diff.
+func IAMAuditConfigSpecDiffers(desired, actual *IAMAuditConfigSpec) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
+
+	// Compare ResourceReference, which is immutable.
+	if desired.ResourceReference.Kind != actual.ResourceReference.Kind {
+		diff.AddField("spec.resourceRef.kind", desired.ResourceReference.Kind, actual.ResourceReference.Kind)
 	}
+	if desired.ResourceReference.Namespace != actual.ResourceReference.Namespace {
+		diff.AddField("spec.resourceRef.namespace", desired.ResourceReference.Namespace, actual.ResourceReference.Namespace)
+	}
+	if desired.ResourceReference.Name != actual.ResourceReference.Name {
+		diff.AddField("spec.resourceRef.name", desired.ResourceReference.Name, actual.ResourceReference.Name)
+	}
+	if desired.ResourceReference.External != actual.ResourceReference.External {
+		diff.AddField("spec.resourceRef.external", desired.ResourceReference.External, actual.ResourceReference.External)
+	}
+
+	if desired.Service != actual.Service {
+		diff.AddField("spec.service", desired.Service, actual.Service)
+	}
+
+	desiredAuditConfigs := []IAMPolicyAuditConfig{{Service: desired.Service, AuditLogConfigs: desired.AuditLogConfigs}}
+	actualAuditConfigs := []IAMPolicyAuditConfig{{Service: actual.Service, AuditLogConfigs: actual.AuditLogConfigs}}
+	auditConfigDiffs := compareAuditConfigs(desiredAuditConfigs, actualAuditConfigs)
+	diff.AddDiff(auditConfigDiffs)
 
 	return diff
 }
