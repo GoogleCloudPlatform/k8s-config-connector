@@ -19,14 +19,15 @@ import (
 	"net/http"
 	"strings"
 
+	sqlpb "cloud.google.com/go/sql/apiv1/sqlpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	gw_v1 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/sql/v1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/sql/v1beta4"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
-
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/sql/v1beta4"
 )
 
 func init() {
@@ -65,6 +66,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterSqlOperationsServiceServer(grpcServer, &sqlOperationsService{MockService: s})
 	pb.RegisterSqlSslCertsServiceServer(grpcServer, &sqlSslCertsServer{MockService: s})
 	pb.RegisterSqlBackupRunsServiceServer(grpcServer, &sqlBackupRunsServer{MockService: s})
+	sqlpb.RegisterBlueGreenDeploymentsServiceServer(grpcServer, &blueGreenDeploymentsServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -74,7 +76,8 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb.RegisterSqlUsersServiceHandler,
 		pb.RegisterSqlOperationsServiceHandler,
 		pb.RegisterSqlSslCertsServiceHandler,
-		pb.RegisterSqlBackupRunsServiceHandler)
+		pb.RegisterSqlBackupRunsServiceHandler,
+		gw_v1.RegisterBlueGreenDeploymentsServiceHandler)
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +99,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	rewriteV1ToV1Beta4 := func(w http.ResponseWriter, r *http.Request) {
 		u := r.URL
-		if strings.HasPrefix(u.Path, "/v1/projects/") {
+		if strings.HasPrefix(u.Path, "/v1/projects/") && !strings.Contains(u.Path, "/blueGreenDeployments") {
 			u2 := *u
 			u2.Path = "/sql/v1beta4/projects/" + strings.TrimPrefix(u.Path, "/v1/projects/")
 			r = httpmux.RewriteRequest(r, &u2)
