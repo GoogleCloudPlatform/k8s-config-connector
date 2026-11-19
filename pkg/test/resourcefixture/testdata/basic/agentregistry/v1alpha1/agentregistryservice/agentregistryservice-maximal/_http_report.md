@@ -4,7 +4,7 @@
 - **Resource Name:** `agentregistryservice-maximal-${uniqueId}`
 - **Source Log:** `_http.log` (9 total HTTP entries, 0 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:1ca54be678e28da6`
+- **Integrity Hash:** `sha256:8e717ca6aa55c3d3`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 
