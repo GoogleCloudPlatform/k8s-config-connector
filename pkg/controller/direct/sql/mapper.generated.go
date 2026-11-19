@@ -26,6 +26,7 @@ package sql
 
 import (
 	sqlpb "cloud.google.com/go/sql/apiv1/sqlpb"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krmsqlv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1alpha1"
 	krmsqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -1133,7 +1134,9 @@ func SQLBlueGreenDeploymentSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 	out := &krmsqlv1alpha1.SQLBlueGreenDeploymentSpec{}
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.SourceInstance = direct.LazyPtr(in.GetSourceInstance())
+	if in.GetSourceInstance() != "" {
+		out.SourceInstanceRef = &refsv1beta1.SQLInstanceRef{External: in.GetSourceInstance()}
+	}
 	out.RequestedConfig = BlueGreenDeployment_RequestedConfig_v1alpha1_FromProto(mapCtx, in.GetRequestedConfig())
 	return out
 }
@@ -1144,7 +1147,9 @@ func SQLBlueGreenDeploymentSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	out := &sqlpb.BlueGreenDeployment{}
 	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
-	out.SourceInstance = direct.ValueOf(in.SourceInstance)
+	if in.SourceInstanceRef != nil {
+		out.SourceInstance = in.SourceInstanceRef.External
+	}
 	out.RequestedConfig = BlueGreenDeployment_RequestedConfig_v1alpha1_ToProto(mapCtx, in.RequestedConfig)
 	return out
 }
