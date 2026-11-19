@@ -1,0 +1,6 @@
+- caisURL: //observability.googleapis.com/projects/${projectId}/locations/us-central1/buckets/_Trace/datasets/Spans/links/link_max_${uniqueId}
+  group: observability.cnrm.cloud.google.com
+  kind: ObservabilityLink
+  name: observabilitylink-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
