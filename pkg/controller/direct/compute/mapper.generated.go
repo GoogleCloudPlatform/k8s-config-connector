@@ -5114,29 +5114,89 @@ func ComputePacketMirroringStatus_v1beta1_FromProto(mapCtx *direct.MapContext, i
 }
 */
 
-/* found existing non-generated mapping function "ComputePacketMirroringStatus_v1beta1_ToProto", skipping
-func ComputePacketMirroringStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputePacketMirroringStatus) *pb.PacketMirroring {
+/*
+found existing non-generated mapping function "ComputePacketMirroringStatus_v1beta1_ToProto", skipping
+
+	func ComputePacketMirroringStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputePacketMirroringStatus) *pb.PacketMirroring {
+		if in == nil {
+			return nil
+		}
+		out := &pb.PacketMirroring{}
+		out.CollectorIlb = PacketmirroringCollectorIlbStatus_v1beta1_ToProto(mapCtx, in.CollectorIlb)
+		// MISSING: CreationTimestamp
+		// MISSING: Description
+		// MISSING: Enable
+		// MISSING: Filter
+		// MISSING: ID
+		// (near miss): "ID" vs "Id"
+		// MISSING: Kind
+		// MISSING: MirroredResources
+		// MISSING: Name
+		out.Network = PacketmirroringNetworkStatus_v1beta1_ToProto(mapCtx, in.Network)
+		// MISSING: Priority
+		out.Region = in.Region
+		out.SelfLink = in.SelfLink
+		return out
+	}
+*/
+func ComputePublicAdvertisedPrefixObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PublicAdvertisedPrefix) *krmcomputev1alpha1.ComputePublicAdvertisedPrefixObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PacketMirroring{}
-	out.CollectorIlb = PacketmirroringCollectorIlbStatus_v1beta1_ToProto(mapCtx, in.CollectorIlb)
-	// MISSING: CreationTimestamp
-	// MISSING: Description
-	// MISSING: Enable
-	// MISSING: Filter
-	// MISSING: ID
-	// (near miss): "ID" vs "Id"
-	// MISSING: Kind
-	// MISSING: MirroredResources
+	out := &krmcomputev1alpha1.ComputePublicAdvertisedPrefixObservedState{}
+	out.ByoipAPIVersion = in.ByoipApiVersion
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ID = in.Id
+	out.Kind = in.Kind
 	// MISSING: Name
-	out.Network = PacketmirroringNetworkStatus_v1beta1_ToProto(mapCtx, in.Network)
-	// MISSING: Priority
-	out.Region = in.Region
+	out.PublicDelegatedPrefixs = direct.Slice_FromProto(mapCtx, in.PublicDelegatedPrefixs, PublicAdvertisedPrefixPublicDelegatedPrefix_v1alpha1_FromProto)
 	out.SelfLink = in.SelfLink
+	out.SharedSecret = in.SharedSecret
+	out.Status = in.Status
 	return out
 }
-*/
+func ComputePublicAdvertisedPrefixObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputePublicAdvertisedPrefixObservedState) *pb.PublicAdvertisedPrefix {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PublicAdvertisedPrefix{}
+	out.ByoipApiVersion = in.ByoipAPIVersion
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Id = in.ID
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.PublicDelegatedPrefixs = direct.Slice_ToProto(mapCtx, in.PublicDelegatedPrefixs, PublicAdvertisedPrefixPublicDelegatedPrefix_v1alpha1_ToProto)
+	out.SelfLink = in.SelfLink
+	out.SharedSecret = in.SharedSecret
+	out.Status = in.Status
+	return out
+}
+func ComputePublicAdvertisedPrefixSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PublicAdvertisedPrefix) *krmcomputev1alpha1.ComputePublicAdvertisedPrefixSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputePublicAdvertisedPrefixSpec{}
+	out.Description = in.Description
+	out.DNSVerificationIP = in.DnsVerificationIp
+	out.Fingerprint = in.Fingerprint
+	out.IPCIDRRange = in.IpCidrRange
+	// MISSING: Name
+	out.PdpScope = in.PdpScope
+	return out
+}
+func ComputePublicAdvertisedPrefixSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputePublicAdvertisedPrefixSpec) *pb.PublicAdvertisedPrefix {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PublicAdvertisedPrefix{}
+	out.Description = in.Description
+	out.DnsVerificationIp = in.DNSVerificationIP
+	out.Fingerprint = in.Fingerprint
+	out.IpCidrRange = in.IPCIDRRange
+	// MISSING: Name
+	out.PdpScope = in.PdpScope
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeRegionAutoscalerSpec_v1alpha1_FromProto", skipping
 func ComputeRegionAutoscalerSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Autoscaler) *krmcomputev1alpha1.ComputeRegionAutoscalerSpec {
@@ -9029,6 +9089,30 @@ found existing non-generated mapping function "PacketmirroringSubnetworks_v1beta
 		return out
 	}
 */
+func PublicAdvertisedPrefixPublicDelegatedPrefix_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PublicAdvertisedPrefixPublicDelegatedPrefix) *krmcomputev1alpha1.PublicAdvertisedPrefixPublicDelegatedPrefix {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.PublicAdvertisedPrefixPublicDelegatedPrefix{}
+	out.IPRange = in.IpRange
+	out.Name = in.Name
+	out.Project = in.Project
+	out.Region = in.Region
+	out.Status = in.Status
+	return out
+}
+func PublicAdvertisedPrefixPublicDelegatedPrefix_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.PublicAdvertisedPrefixPublicDelegatedPrefix) *pb.PublicAdvertisedPrefixPublicDelegatedPrefix {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PublicAdvertisedPrefixPublicDelegatedPrefix{}
+	out.IpRange = in.IPRange
+	out.Name = in.Name
+	out.Project = in.Project
+	out.Region = in.Region
+	out.Status = in.Status
+	return out
+}
 func QuotaExceededInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.QuotaExceededInfo) *krmcomputev1alpha1.QuotaExceededInfo {
 	if in == nil {
 		return nil
