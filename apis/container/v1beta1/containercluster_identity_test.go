@@ -16,6 +16,11 @@ package v1beta1
 
 import (
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
 func TestContainerClusterIdentity_FromExternal(t *testing.T) {
@@ -100,5 +105,123 @@ func TestContainerClusterIdentity_String(t *testing.T) {
 	expected := "projects/my-project/locations/us-central1/clusters/my-cluster"
 	if actual := identity.String(); actual != expected {
 		t.Errorf("String() = %v, want %v", actual, expected)
+	}
+}
+
+func TestContainerCluster_GetIdentity(t *testing.T) {
+	scheme := runtime.NewScheme()
+	if err := AddToScheme(scheme); err != nil {
+		t.Fatalf("AddToScheme() unexpected error: %v", err)
+	}
+	reader := fake.NewClientBuilder().WithScheme(scheme).Build()
+
+	strPtr := func(s string) *string { return &s }
+
+	tests := []struct {
+		name    string
+		obj     *ContainerCluster
+		want    *ContainerClusterIdentity
+		wantStr string
+		wantErr bool
+	}{
+		{
+			name: "valid_spec_and_matching_v1beta1_self_link",
+			obj: &ContainerCluster{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "my-cluster",
+					Namespace: "default",
+					Annotations: map[string]string{
+						"cnrm.cloud.google.com/project-id": "my-project",
+					},
+				},
+				Spec: ContainerClusterSpec{
+					Location: strPtr("us-central1"),
+				},
+				Status: ContainerClusterStatus{
+					SelfLink: strPtr("https://container.googleapis.com/v1beta1/projects/my-project/locations/us-central1/clusters/my-cluster"),
+				},
+			},
+			want: &ContainerClusterIdentity{
+				Project:  "my-project",
+				Location: "us-central1",
+				Cluster:  "my-cluster",
+			},
+			wantStr: "projects/my-project/locations/us-central1/clusters/my-cluster",
+		},
+		{
+			name: "valid_zonal_spec_and_matching_zonal_self_link",
+			obj: &ContainerCluster{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "my-cluster",
+					Namespace: "default",
+					Annotations: map[string]string{
+						"cnrm.cloud.google.com/project-id": "my-project",
+					},
+				},
+				Spec: ContainerClusterSpec{
+					Location: strPtr("us-central1-a"),
+				},
+				Status: ContainerClusterStatus{
+					SelfLink: strPtr("https://container.googleapis.com/v1/projects/my-project/zones/us-central1-a/clusters/my-cluster"),
+				},
+			},
+			want: &ContainerClusterIdentity{
+				Project:  "my-project",
+				Location: "us-central1-a",
+				Cluster:  "my-cluster",
+			},
+			wantStr: "projects/my-project/locations/us-central1-a/clusters/my-cluster",
+		},
+		{
+			name: "resource_id_path_traversal_rejected",
+			obj: &ContainerCluster{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "my-cluster",
+					Namespace: "default",
+					Annotations: map[string]string{
+						"cnrm.cloud.google.com/project-id": "my-project",
+					},
+				},
+				Spec: ContainerClusterSpec{
+					Location:   strPtr("us-central1"),
+					ResourceID: strPtr("real-cluster/nodePools/np-1"),
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "project_id_path_traversal_rejected",
+			obj: &ContainerCluster{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "my-cluster",
+					Namespace: "default",
+					Annotations: map[string]string{
+						"cnrm.cloud.google.com/project-id": "my-project/locations/us",
+					},
+				},
+				Spec: ContainerClusterSpec{
+					Location: strPtr("us-central1"),
+				},
+			},
+			wantErr: true,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			got, err := tc.obj.GetIdentity(t.Context(), reader)
+
+			if (err != nil) != tc.wantErr {
+				t.Fatalf("GetIdentity() error = %v, wantErr %v", err, tc.wantErr)
+			}
+			if !tc.wantErr {
+				if diff := cmp.Diff(tc.want, got); diff != "" {
+					t.Errorf("GetIdentity() mismatch (-want +got):\n%s", diff)
+				}
+				if got.String() != tc.wantStr {
+					t.Errorf("GetIdentity().String() = %q, want %q", got.String(), tc.wantStr)
+				}
+			}
+		})
 	}
 }

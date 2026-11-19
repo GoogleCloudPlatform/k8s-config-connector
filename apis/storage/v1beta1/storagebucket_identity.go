@@ -71,17 +71,51 @@ func ParseStorageBucketExternal(external string) (*StorageBucketIdentity, error)
 func (i *StorageBucketIdentity) FromExternal(ref string) error {
 	if strings.HasPrefix(ref, "gs://") {
 		bucket := strings.TrimPrefix(ref, "gs://")
-		if !strings.Contains(bucket, "/") {
+		bucket = strings.TrimSuffix(bucket, "/")
+		if !isValidGCSBucketName(bucket) {
+			return fmt.Errorf("format of StorageBucket external=%q was not known (use %s)", ref, StorageBucketURLFormat)
+		}
+		i.Project = "_"
+		i.Bucket = bucket
+		return nil
+	}
+
+	for _, prefix := range []string{
+		"https://www.googleapis.com/storage/v1/b/",
+		"http://www.googleapis.com/storage/v1/b/",
+		"//www.googleapis.com/storage/v1/b/",
+		"www.googleapis.com/storage/v1/b/",
+		"https://storage.googleapis.com/storage/v1/b/",
+		"http://storage.googleapis.com/storage/v1/b/",
+		"//storage.googleapis.com/storage/v1/b/",
+		"storage.googleapis.com/storage/v1/b/",
+	} {
+		if strings.HasPrefix(ref, prefix) {
+			bucket := strings.TrimPrefix(ref, prefix)
+			bucket = strings.TrimSuffix(bucket, "/")
+			if !isValidGCSBucketName(bucket) {
+				return fmt.Errorf("format of StorageBucket external=%q was not known (use %s)", ref, StorageBucketURLFormat)
+			}
+			i.Project = "_"
 			i.Bucket = bucket
-			i.Project = ""
 			return nil
 		}
 	}
+
+	if !strings.Contains(ref, "/") {
+		if !isValidGCSBucketName(ref) {
+			return fmt.Errorf("format of StorageBucket external=%q was not known (use %s)", ref, StorageBucketURLFormat)
+		}
+		i.Project = "_"
+		i.Bucket = ref
+		return nil
+	}
+
 	parsed, match, err := StorageBucketIdentityFormat.Parse(ref)
 	if err != nil {
 		return fmt.Errorf("format of StorageBucket external=%q was not known (use %s): %w", ref, StorageBucketURLFormat, err)
 	}
-	if !match {
+	if !match || !isValidGCSBucketName(parsed.Bucket) {
 		return fmt.Errorf("format of StorageBucket external=%q was not known (use %s)", ref, StorageBucketURLFormat)
 	}
 
@@ -89,20 +123,46 @@ func (i *StorageBucketIdentity) FromExternal(ref string) error {
 	return nil
 }
 
+const maxGCSBucketNameLength = 222
+
+func isValidGCSBucketName(bucket string) bool {
+	if len(bucket) == 0 || len(bucket) > maxGCSBucketNameLength {
+		return false
+	}
+	if !gcpurls.IsValidSegment(bucket) || strings.Contains(bucket, "..") {
+		return false
+	}
+	for idx := 0; idx < len(bucket); idx++ {
+		c := bucket[idx]
+		isLowerAlphaNum := (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')
+		isAllowedPunct := c == '-' || c == '_' || c == '.'
+		if !isLowerAlphaNum && !isAllowedPunct {
+			return false
+		}
+		if (idx == 0 || idx == len(bucket)-1) && !isLowerAlphaNum {
+			return false
+		}
+	}
+	return true
+}
+
 func getIdentityFromStorageBucketSpec(ctx context.Context, reader client.Reader, obj *StorageBucket) (*StorageBucketIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
 	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project")
+		return nil, fmt.Errorf("cannot resolve project: %w", err)
 	}
 
 	identity := &StorageBucketIdentity{
 		Project: projectID,
 		Bucket:  resourceID,
+	}
+	if err := StorageBucketIdentityFormat.Validate(*identity); err != nil {
+		return nil, err
 	}
 	return identity, nil
 }

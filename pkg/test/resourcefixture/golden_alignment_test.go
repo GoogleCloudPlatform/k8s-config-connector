@@ -678,6 +678,23 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "kubectlVersionSupportedCondition")
 		delete(v, "kustomizeVersionSupportedCondition")
 		delete(v, "skaffoldVersionSupportedCondition")
+		// CloudDeployTarget: real GCP adds the ANALYSIS usage to the default execution config,
+		// but ANALYSIS is not in the current deploypb ExecutionEnvironmentUsage enum.
+		if _, ok := v["targetId"]; ok {
+			if ecs, ok := v["executionConfigs"].([]interface{}); ok {
+				for _, ec := range ecs {
+					if ecm, ok := ec.(map[string]interface{}); ok {
+						delete(ecm, "usages")
+					}
+				}
+			}
+		}
+		// CESApp: real GCP sets a default modelSettings.model when it is unset; mockces does not.
+		if _, ok := v["predefinedVariableDeclarations"]; ok {
+			if ms, ok := v["modelSettings"].(map[string]interface{}); ok && len(ms) == 1 && ms["model"] == "gemini-3.5-flash" {
+				delete(v, "modelSettings")
+			}
+		}
 		if dps, ok := v["deliveryPipelineSnapshot"].(map[string]interface{}); ok {
 			delete(dps, "etag")
 		}

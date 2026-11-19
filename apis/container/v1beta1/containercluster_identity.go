@@ -81,6 +81,9 @@ func getIdentityFromContainerClusterSpec(ctx context.Context, reader client.Read
 		Location: location,
 		Cluster:  resourceID,
 	}
+	if err := RegionalContainerClusterIdentityFormat.Validate(*identity); err != nil {
+		return nil, err
+	}
 	return identity, nil
 }
 

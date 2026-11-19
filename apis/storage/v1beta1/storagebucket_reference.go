@@ -17,9 +17,9 @@ package v1beta1
 import (
 	"context"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
@@ -83,16 +83,48 @@ func (r *StorageBucketRef) ParseExternalToIdentity() (identity.Identity, error) 
 }
 
 func (r *StorageBucketRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	// The fallback resolves only from status.url/status.selfLink, which are set
+	// only after the bucket exists in GCP. It deliberately does not require
+	// Ready=True, so that dependents (including their deletion) are not blocked
+	// while the bucket is Updating, UpdateFailed, DeleteFailed or being deleted.
 	fallback := func(u *unstructured.Unstructured) string {
-		obj, err := common.ToStructuredType[*StorageBucket](u)
-		if err != nil {
+		bucketName := storageBucketNameFromStatus(u)
+		if bucketName == "" {
 			return ""
 		}
-		identity, err := getIdentityFromStorageBucketSpec(ctx, reader, obj)
-		if err != nil {
-			return ""
+		// status.url and status.selfLink carry no project, so reading the project
+		// annotation is a deliberate exception to the status-only rule. Without a
+		// configured project, use "_" (bucket names are global). If a project is
+		// configured but cannot be resolved, stay not-ready and retry rather than
+		// resolving to a different identity.
+		projectID := "_"
+		_, hasProjectRef, _ := unstructured.NestedFieldNoCopy(u.Object, "spec", "projectRef")
+		if hasProjectRef || u.GetAnnotations()["cnrm.cloud.google.com/project-id"] != "" {
+			resolved, err := refs.ResolveProjectID(ctx, reader, u)
+			if err != nil || !gcpurls.IsValidSegment(resolved) {
+				return ""
+			}
+			projectID = resolved
 		}
-		return identity.String()
+		id := &StorageBucketIdentity{
+			Project: projectID,
+			Bucket:  bucketName,
+		}
+		return id.String()
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+}
+
+func storageBucketNameFromStatus(u *unstructured.Unstructured) string {
+	for _, field := range []string{"url", "selfLink"} {
+		val, _, err := unstructured.NestedString(u.Object, "status", field)
+		if err != nil || val == "" {
+			continue
+		}
+		parsed := &StorageBucketIdentity{}
+		if err := parsed.FromExternal(val); err == nil && parsed.Bucket != "" {
+			return parsed.Bucket
+		}
+	}
+	return ""
 }

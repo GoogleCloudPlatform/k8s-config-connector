@@ -1,0 +1,23 @@
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+kind: ArtifactRegistryRepository
+metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+  generation: 1
+  name: artifactregistryrepository-${uniqueId}
+  namespace: ${projectId}
+spec:
+  format: GENERIC
+  location: us-central1
+  resourceID: artifactregistryrepository-${uniqueId}/packages/package-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: 'Update call failed: invalid value "artifactregistryrepository-${uniqueId}/packages/package-${uniqueId}"
+      for segment {repository}'
+    reason: UpdateFailed
+    status: "False"
+    type: Ready
+  observedGeneration: 1

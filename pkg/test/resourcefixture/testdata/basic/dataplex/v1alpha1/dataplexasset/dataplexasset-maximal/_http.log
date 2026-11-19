@@ -175,7 +175,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a1c27557a8
+X-Goog-Gcs-Base-Ts: 1a1f24d77e1
 
 {
   "error": {
@@ -221,7 +221,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a1c2755958
+X-Goog-Gcs-Base-Ts: 1a1f24d7c2e
 
 {
   "etag": "abcdef0123A=",
@@ -267,7 +267,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a1c2755989
+X-Goog-Gcs-Base-Ts: 1a1f24d807f
 
 {
   "etag": "abcdef0123A=",
@@ -435,7 +435,7 @@ X-Xss-Protection: 0
       "schedule": "0 1 * * *"
     },
     "discoveryStatus": {
-      "lastRunTime": "2026-11-09T22:37:47.127338Z",
+      "lastRunTime": "2024-04-01T12:34:56.123456Z",
       "state": "IN_PROGRESS",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -499,7 +499,7 @@ X-Xss-Protection: 0
     "schedule": "0 1 * * *"
   },
   "discoveryStatus": {
-    "lastRunTime": "2026-11-09T22:37:47.127338Z",
+    "lastRunTime": "2024-04-01T12:34:56.123456Z",
     "state": 2,
     "updateTime": "2024-04-01T12:34:56.123456Z"
   },
@@ -525,7 +525,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://dataplex.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/lakes/dplake-max-${uniqueId}/zones/dpzone-max-${uniqueId}/assets/dataplexasset-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdiscoverySpec%2CdisplayName%2CresourceSpec
+PATCH https://dataplex.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/lakes/dplake-max-${uniqueId}/zones/dpzone-max-${uniqueId}/assets/dataplexasset-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdiscoverySpec%2CdisplayName
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: asset.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Flakes%2Fdplake-max-${uniqueId}%2Fzones%2Fdpzone-max-${uniqueId}%2Fassets%2Fdataplexasset-maximal-${uniqueId}
@@ -636,7 +636,7 @@ X-Xss-Protection: 0
       "schedule": "0 2 * * *"
     },
     "discoveryStatus": {
-      "lastRunTime": "2026-11-09T22:37:47.127338Z",
+      "lastRunTime": "2024-04-01T12:34:56.123456Z",
       "state": "IN_PROGRESS",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -702,7 +702,7 @@ X-Xss-Protection: 0
     "schedule": "0 2 * * *"
   },
   "discoveryStatus": {
-    "lastRunTime": "2026-11-09T22:37:47.127338Z",
+    "lastRunTime": "2024-04-01T12:34:56.123456Z",
     "state": 2,
     "updateTime": "2024-04-01T12:34:56.123456Z"
   },
@@ -798,7 +798,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a1c27b96e7
+X-Goog-Gcs-Base-Ts: 1a1f2527d52
 
 {
   "etag": "abcdef0123A=",
@@ -844,7 +844,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a1c27b9710
+X-Goog-Gcs-Base-Ts: 1a1f252814c
 
 {
   "kind": "storage#objects"
@@ -861,7 +861,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a1c27b9822
+X-Goog-Gcs-Base-Ts: 1a1f25283b2
 
 
 ---

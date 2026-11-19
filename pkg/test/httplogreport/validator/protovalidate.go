@@ -498,8 +498,10 @@ func unmarshalDynamicJSON(reg *descriptorRegistry, msgDesc protoreflect.MessageD
 		msgDesc.FullName() == "google.cloud.contactcenterinsights.v1.QaScorecardRevision" ||
 		msgDesc.FullName() == "google.cloud.contactcenterinsights.v1.ListQaScorecardRevisionsResponse" ||
 		msgDesc.FullName() == "google.cloud.deploy.v1.Release" ||
+		msgDesc.FullName() == "google.cloud.deploy.v1.Target" ||
 		msgDesc.FullName() == "google.cloud.sql.v1.BackupRun" {
-		// Discard unknown fields (e.g. databaseVersion on BackupRun, source on QaScorecard, conditions on Release) returned in real GCP responses
+		// Discard unknown fields (e.g. databaseVersion on BackupRun, source on QaScorecard, conditions on Release) and
+		// unknown enum values (e.g. the ANALYSIS execution environment usage on Target) returned in real GCP responses
 		// but absent in vendored googleapis proto schemas.
 		discardUnknown = true
 	}

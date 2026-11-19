@@ -16,6 +16,7 @@ package v1beta1
 
 import (
 	"context"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -84,14 +85,36 @@ func (r *ContainerClusterRef) ParseExternalToIdentity() (identity.Identity, erro
 }
 
 func (r *ContainerClusterRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	// The fallback resolves only from status.selfLink, which is set only after the
+	// cluster exists in GCP. It deliberately does not require Ready=True, so that
+	// dependents (including their deletion) are not blocked while the cluster is
+	// Updating, UpdateFailed, DeleteFailed or being deleted.
 	fallback := func(u *unstructured.Unstructured) string {
-		id, err := getIdentityFromContainerClusterSpec(ctx, reader, u)
-		if err != nil {
+		selfLink, _, err := unstructured.NestedString(u.Object, "status", "selfLink")
+		if err != nil || selfLink == "" {
+			return ""
+		}
+		id := &ContainerClusterIdentity{}
+		if err := id.FromExternal(selfLink); err != nil {
 			return ""
 		}
 		return id.String()
 	}
-	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+	if err := refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback); err != nil {
+		return err
+	}
+	// Leave a bare "projects/..." path (including the zonal form) exactly as
+	// written: GCP accepts it, and consumers diff it against the GCP-echoed value.
+	// Only host- or URL-prefixed values, which GCP rejects, are canonicalized.
+	if strings.HasPrefix(r.External, "projects/") {
+		return nil
+	}
+	id := &ContainerClusterIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return err
+	}
+	r.External = id.String()
+	return nil
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on ContainerCluster.

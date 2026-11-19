@@ -523,7 +523,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://dataplex.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/lakes/dplake-max-${uniqueId}/zones/dpzone-max-${uniqueId}/assets/dataplexasset-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdiscoverySpec%2CdisplayName%2CresourceSpec
+PATCH https://dataplex.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/lakes/dplake-max-${uniqueId}/zones/dpzone-max-${uniqueId}/assets/dataplexasset-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdiscoverySpec%2CdisplayName
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: asset.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Flakes%2Fdplake-max-${uniqueId}%2Fzones%2Fdpzone-max-${uniqueId}%2Fassets%2Fdataplexasset-maximal-${uniqueId}

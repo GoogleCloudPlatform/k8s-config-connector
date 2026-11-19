@@ -345,24 +345,6 @@ func AudioProcessingConfig_ToProto(mapCtx *direct.MapContext, in *krm.AudioProce
 	out.AmbientSoundConfig = AmbientSoundConfig_ToProto(mapCtx, in.AmbientSoundConfig)
 	return out
 }
-func AudioRecordingConfig_FromProto(mapCtx *direct.MapContext, in *pb.AudioRecordingConfig) *krm.AudioRecordingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AudioRecordingConfig{}
-	out.GCSBucket = direct.LazyPtr(in.GetGcsBucket())
-	out.GCSPathPrefix = direct.LazyPtr(in.GetGcsPathPrefix())
-	return out
-}
-func AudioRecordingConfig_ToProto(mapCtx *direct.MapContext, in *krm.AudioRecordingConfig) *pb.AudioRecordingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AudioRecordingConfig{}
-	out.GcsBucket = direct.ValueOf(in.GCSBucket)
-	out.GcsPathPrefix = direct.ValueOf(in.GCSPathPrefix)
-	return out
-}
 func BargeInConfig_FromProto(mapCtx *direct.MapContext, in *pb.BargeInConfig) *krm.BargeInConfig {
 	if in == nil {
 		return nil
