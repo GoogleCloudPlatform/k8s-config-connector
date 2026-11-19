@@ -17,48 +17,36 @@
 // krm.group: observability.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.observability.v1
-// resource: ObservabilityTraceScope:TraceScope
+// resource: ObservabilityLink:Link
 
 package v1alpha1
 
-/* found existing non-generated go type with proto tag "google.cloud.observability.v1.TraceScope", skipping
+/* found existing non-generated go type with proto tag "google.cloud.observability.v1.Link", skipping
 
-// +kcc:proto=google.cloud.observability.v1.TraceScope
-type TraceScope struct {
-	// Identifier. The resource name of the trace scope.
+// +kcc:proto=google.cloud.observability.v1.Link
+type Link struct {
+	// Identifier. Name of the link. The format is:
 	//
-	//  For example:
-	//
-	//      projects/my-project/locations/global/traceScopes/my-trace-scope
-	// +kcc:proto:field=google.cloud.observability.v1.TraceScope.name
+	//      projects/[PROJECT_ID]/locations/[LOCATION]/buckets/[BUCKET_ID]/datasets/[DATASET_ID]/links/[LINK_ID]
+	// +kcc:proto:field=google.cloud.observability.v1.Link.name
 	Name *string `json:"name,omitempty"`
 
-	// Required. Names of the projects that are included in this trace scope.
-	//
-	//  *  `projects/[PROJECT_ID]`
-	//
-	//  A trace scope can include a maximum of 20 projects.
-	// +kcc:proto:field=google.cloud.observability.v1.TraceScope.resource_names
-	ResourceNames []string `json:"resourceNames,omitempty"`
+	// Optional. A user friendly display name.
+	// +kcc:proto:field=google.cloud.observability.v1.Link.display_name
+	DisplayName *string `json:"displayName,omitempty"`
 
-	// Optional. Describes this trace scope.
-	//
-	//  The maximum length of the description is 8000 characters.
-	// +kcc:proto:field=google.cloud.observability.v1.TraceScope.description
+	// Optional. Description of the link.
+	// +kcc:proto:field=google.cloud.observability.v1.Link.description
 	Description *string `json:"description,omitempty"`
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.observability.v1.TraceScope", skipping
+/* found existing non-generated go type with proto tag "google.cloud.observability.v1.Link", skipping
 
-// +kcc:observedstate:proto=google.cloud.observability.v1.TraceScope
-type TraceScopeObservedState struct {
-	// Output only. The creation timestamp of the trace scope.
-	// +kcc:proto:field=google.cloud.observability.v1.TraceScope.create_time
+// +kcc:observedstate:proto=google.cloud.observability.v1.Link
+type LinkObservedState struct {
+	// Output only. Create timestamp.
+	// +kcc:proto:field=google.cloud.observability.v1.Link.create_time
 	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The last update timestamp of the trace scope.
-	// +kcc:proto:field=google.cloud.observability.v1.TraceScope.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */

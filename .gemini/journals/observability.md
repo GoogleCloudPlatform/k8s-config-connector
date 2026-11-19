@@ -26,3 +26,13 @@
   4. Created minimal and maximal E2E fixtures with `location: global`, `resourceNameRefs`, and mutable `description`.
   5. Recorded golden HTTP logs against real GCP (`cnrm-barni-4`) using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`. Both minimal and maximal fixtures passed all 7/7 lifecycle validation checks.
   6. Removed `ObservabilityTraceScope` from `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` as all spec fields are now covered by test fixtures.
+
+### [2026-11-19] ObservabilityLink Prepopulation
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for `ObservabilityLink` under `apis/observability/v1alpha1`.
+- **Decisions**:
+  1. Configured `apis/observability/generate.sh` with `generate-types` and `generate-identity` for `ObservabilityLink:Link` using `--prepopulate-resource`.
+  2. Generated `observabilitylink_types.go`, `observabilitylink_identity.generated.go`, `observabilitylink_reference.generated.go`, `observabilitylink_identity_generated_test.go`, CRD, and updated `mapper.generated.go`.
+  3. Added `ObservabilityLink` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...`.
+  5. Kept all findings in `apis/observability/judgement_queue.yaml` with `status: open` for Step 1b triage.
+

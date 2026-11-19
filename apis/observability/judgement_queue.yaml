@@ -21,13 +21,39 @@
 # file does not have.
 
 entries:
+  - kind: ObservabilityLink
+    group: observability.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ObservabilityLink
+    group: observability.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/buckets/{bucket}/datasets/{dataset}/links/{link}" contains ancestor segment(s) buckets/{bucket}, datasets/{dataset} with no matching reference or field on ObservabilityLinkSpec
+    status: open
+  - kind: ObservabilityLink
+    group: observability.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/buckets/{bucket}/datasets/{dataset}, and no DatasetRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: ObservabilityLink
+    group: observability.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.buckets.datasets.links: https://docs.cloud.google.com/stackdriver/docs/reference/rest/v1/projects.locations.buckets.datasets.links'
+    status: open
+  - kind: ObservabilityLink
+    group: observability.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/buckets/{bucket}/datasets/{dataset}, which already names the location; a reference to it could replace location and the root reference
+    status: open
   - kind: ObservabilityTraceScope
     group: observability.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    note: inlined *parent.ProjectAndLocationRef; converted resourceNames to resourceNameRefs ([]refsv1beta1.ProjectRef)
-    resolution: edited
     status: resolved
+    resolution: edited
+    note: inlined *parent.ProjectAndLocationRef; converted resourceNames to resourceNameRefs ([]refsv1beta1.ProjectRef)
   - kind: ObservabilityTraceScope
     group: observability.cnrm.cloud.google.com
     field: .spec.location
