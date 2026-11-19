@@ -65,9 +65,11 @@
   2. **Controller Logic**:
      - Added `newInstanceGroupManagerResizeRequestsClient` to `pkg/controller/direct/compute/client.go` using `compute.NewInstanceGroupManagerResizeRequestsRESTClient`.
      - Implemented `InstanceGroupManagerResizeRequestAdapter` handling `Find`, `Create`, `Update`, `Export`, and `Delete` via `gcpClient.Insert`, `gcpClient.Get`, and `gcpClient.Delete`.
+     - Ensured `common.NormalizeGreenfieldReferences` is called prior to `obj.GetIdentity` in `AdapterForObject`.
      - Registered direct controller in `static_config.go`.
   3. **E2E Fixture & Real GCP Behavior**:
-     - Added fixture under `pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinstancegroupmanagerresizerequest/computeinstancegroupmanagerresizerequestbasic/`.
+     - Converted test fixtures into canonical minimal and maximal structures: `pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinstancegroupmanagerresizerequest/computeinstancegroupmanagerresizerequest-minimal/` and `computeinstancegroupmanagerresizerequest-maximal/`.
+     - Populated previously unexercised fields (`.spec.description` and `.spec.requestedRunDuration.nanos`) in the maximal fixture and updated `alpha-missingfields.txt` and `fixtures-compute-list.txt`.
      - `requestedRunDuration` is required by the GCP API on `Insert` (`Required field 'resource.requestedRunDuration' not specified`).
      - Real GCP requires automatic repair to be disabled on the parent Managed Instance Group (`Cannot create a resize request when automatic repair is configured in the MIG. To create a resize request, turn off automatic repair.`). Because `ComputeInstanceGroupManager` does not yet support configuring `instanceLifecyclePolicy` (`defaultActionOnFailure: DO_NOTHING`), creating resize requests against KCC-managed MIGs on real GCP encounters this precondition until `ComputeInstanceGroupManager` exposes `instanceLifecyclePolicy`.
 

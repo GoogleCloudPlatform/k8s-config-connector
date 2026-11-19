@@ -2648,8 +2648,6 @@
 [missing_field] crd=computehealthsources.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.fingerprint" is not set in unstructured objects
 [missing_field] crd=computehealthsources.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.sources[].external" is not set in unstructured objects
 [missing_field] crd=computehealthsources.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.sources[].namespace" is not set in unstructured objects
-[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=computeinstancegroupmanagerresizerequests.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.requestedRunDuration.nanos" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupnamedports.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.groupRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeinstancegroupnamedports.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.port" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupnamedports.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
