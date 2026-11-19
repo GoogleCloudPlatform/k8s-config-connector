@@ -66,6 +66,7 @@
      - Added `newInstanceGroupManagerResizeRequestsClient` to `pkg/controller/direct/compute/client.go` using `compute.NewInstanceGroupManagerResizeRequestsRESTClient`.
      - Implemented `InstanceGroupManagerResizeRequestAdapter` handling `Find`, `Create`, `Update`, `Export`, and `Delete` via `gcpClient.Insert`, `gcpClient.Get`, and `gcpClient.Delete`.
      - Ensured `common.NormalizeGreenfieldReferences` is called prior to `obj.GetIdentity` in `AdapterForObject`.
+     - In `Export`, ensured `spec.parentRef` is populated with `a.id.ParentString()`, `spec.resourceID` is populated, and `u.SetName(a.id.ResizeRequest)` conforms to Kubernetes RFC 1123 resource naming rules.
      - Registered direct controller in `static_config.go`.
   3. **E2E Fixture & Real GCP Behavior**:
      - Converted test fixtures into canonical minimal and maximal structures: `pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinstancegroupmanagerresizerequest/computeinstancegroupmanagerresizerequest-minimal/` and `computeinstancegroupmanagerresizerequest-maximal/`.

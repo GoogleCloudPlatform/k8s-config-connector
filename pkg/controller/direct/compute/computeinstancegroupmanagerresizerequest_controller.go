@@ -25,6 +25,7 @@ import (
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -232,13 +233,15 @@ func (a *InstanceGroupManagerResizeRequestAdapter) Export(ctx context.Context) (
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+	obj.Spec.ParentRef = &computev1beta1.ComputeInstanceGroupManagerRef{External: a.id.ParentString()}
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.ResizeRequest)
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u.Object = uObj
-	u.SetName(a.id.String())
+	u.SetName(a.id.ResizeRequest)
 	u.SetGroupVersionKind(krm.ComputeInstanceGroupManagerResizeRequestGVK)
 
 	return u, nil
