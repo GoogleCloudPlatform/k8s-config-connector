@@ -165,3 +165,17 @@
   4. Handled default values (`languageCode: "en-US"`, conditional initialization of empty notification and assistant config blocks, and `createTime` omission on update responses) matching authentic GCP behavior.
   5. Successfully aligned and verified minimal and maximal test fixtures with `hack/compare-mock` and `TestGoldenLogAlignment`, with `_http_mock.log` matching `_http.log` cleanly. Passed `./dev/ci/presubmits/tests-e2e-fixtures-suite dialogflow`.
 - **Impact**: Enables hermetic mock testing and end-to-end reconciliation for DialogflowConversationProfile without requiring live GCP access.
+
+### [2026-11-19] DialogflowGeneratorEvaluation Greenfield Step 1b Judgement Queue Triage
+- **Context**: Finalizing direct KRM types, identity, references, and triaging judgement queue for DialogflowGeneratorEvaluation (Issue #15949).
+- **Details**:
+  1. `DialogflowGeneratorEvaluation` belongs to `google.cloud.dialogflow.v2` (GCP resource: `projects/{project}/locations/{location}/generators/{generator}/evaluations/{evaluation}`).
+  2. Modeled child resource parentage with required, immutable `spec.parentRef *DialogflowGeneratorRef` (`json:"parentRef"`) per `go/kcc-oneparent` (Case B). Configured `generate-identity` to resolve ancestor segments from `parentRef`. Confirmed server-generated identity conforming to `identity.ServerGeneratedIdentity`.
+  3. Defined dedicated nested struct `DialogflowGeneratorEvaluation_Generator` for `spec.initialGenerator` to omit top-level KRM resource-identity fields (`projectRef`, `location`, `resourceID`).
+  4. Enforced proto-required fields with dedicated `WithRequired` variants (`SummarizationContextWithRequired`, `FewShotExampleWithRequired`, `GeneratorSuggestionWithRequired`, `FreeFormSuggestionWithRequired`, `SummarySuggestionWithRequired`, `SummarySuggestion_SummarySectionWithRequired`).
+  5. Moved `ToolCall` to `dialogflowplaybook_types.go` and `GeneratorSuggestion` to `dialogflowgenerator_types.go` to prevent upstream proto drift without modifying shared `controllerbuilder` tooling.
+  6. Converted `.spec.generatorEvaluationConfig.inputDataConfig.datasetInputDataConfig.dataset` to `datasetRef *vertexaiv1beta1.VertexAIDatasetRef`.
+  7. Deferred `.spec.generatorEvaluationConfig.outputGCSBucketPath` as a GCS folder URI (`gs://...`) in `refs_deferred.txt`.
+  8. Implemented dedicated direct mappers in `pkg/controller/direct/dialogflow/dialogflowgeneratorevaluation_mapper.go` conforming to `TestDirectResourceFileNaming` and preserved existing controller mappers with zero diff.
+  9. Resolved all 37 judgement queue entries in `apis/dialogflow/judgement_queue.yaml` and placed `DialogflowGeneratorEvaluation` on `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+- **Impact**: Cleanly scaffolds and finalizes direct KRM types, IdentityV2 conformance, references, CRD schema, and isolated direct mappers for `DialogflowGeneratorEvaluation`.

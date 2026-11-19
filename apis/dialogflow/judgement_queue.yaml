@@ -91,207 +91,155 @@ entries:
     group: dialogflow.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: resolved
-    resolution: accepted
-    note: triaged all findings; modelled parent as inlined *parent.ProjectAndLocationRef, converted references, resolved non-reference fields
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     reason: identity-multi-pattern
-    detail: proto message google.cloud.dialogflow.v2.ConversationProfile declares 2 resource name patterns (projects/{project}/conversationProfiles/{conversation_profile}, projects/{project}/locations/{location}/conversationProfiles/{conversation_profile}); generated identity uses "projects/{project}/conversationProfiles/{conversation_profile}" (pass --pattern DialogflowConversationProfile=<pattern> to override)
-    status: resolved
-    resolution: edited
-    note: configured --pattern override in generate.sh matching CAIS resource pattern projects/{project}/locations/{location}/conversationProfiles/{conversationProfile}
+    detail: proto message google.cloud.dialogflow.v2.ConversationProfile declares 2 resource name patterns (projects/{project}/conversationProfiles/{conversation_profile}, projects/{project}/locations/{location}/conversationProfiles/{conversation_profile}); generated identity uses "projects/{project}/locations/{location}/conversationProfiles/{conversation_profile}" (pass --pattern DialogflowConversationProfile=<pattern> to override)
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: generated DialogflowConversationProfileIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
-    status: resolved
-    resolution: accepted
-    note: confirmed CreateConversationProfileRequest has no *_id parameter and resource ID is assigned by the server
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.automatedAgentConfig.agent
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: resolved
-    resolution: not-applicable
-    note: polymorphic target accepts ES or CX agent or environment path; DialogflowEnvironmentRef only models CX environments and cannot represent ES environments or direct agent paths
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.endUserSuggestionConfig.featureConfigs[].conversationModelConfig.model
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/ConversationModel (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: resolved
-    resolution: edited
-    note: converted to modelRef (*DialogflowConversationModelRef)
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.endUserSuggestionConfig.featureConfigs[].queryConfig.dialogflowQuerySource.agent
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: resolved
-    resolution: not-applicable
-    note: target requires regional Dialogflow ES agent (projects/*/locations/*/agent); DialogflowAgentRef is global only (projects/*/agent) and DialogflowCXAgent has distinct format (.../agents/*)
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.endUserSuggestionConfig.featureConfigs[].queryConfig.dialogflowQuerySource.humanAgentSideConfig.agent
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: resolved
-    resolution: not-applicable
-    note: target requires regional Dialogflow ES agent (projects/*/locations/*/agent); DialogflowAgentRef is global only (projects/*/agent) and DialogflowCXAgent has distinct format (.../agents/*)
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.endUserSuggestionConfig.featureConfigs[].queryConfig.documentQuerySource.documents
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Document (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: resolved
-    resolution: not-applicable
-    note: DialogflowDocument is a non-declarative data-plane document (excluded in nondeclarative.go) with no KCC resource or Ref type
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.endUserSuggestionConfig.featureConfigs[].queryConfig.knowledgeBaseQuerySource.knowledgeBases
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/KnowledgeBase (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: resolved
-    resolution: edited
-    note: converted to knowledgeBaseRefs ([]DialogflowKnowledgeBaseRef)
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.endUserSuggestionConfig.generators
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Generator (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: resolved
-    resolution: edited
-    note: converted to generatorRefs ([]DialogflowGeneratorRef)
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.humanAgentSuggestionConfig.featureConfigs[].conversationModelConfig.model
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/ConversationModel (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: resolved
-    resolution: edited
-    note: converted to modelRef (*DialogflowConversationModelRef)
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.humanAgentSuggestionConfig.featureConfigs[].queryConfig.dialogflowQuerySource.agent
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: resolved
-    resolution: not-applicable
-    note: target requires regional Dialogflow ES agent (projects/*/locations/*/agent); DialogflowAgentRef is global only (projects/*/agent) and DialogflowCXAgent has distinct format (.../agents/*)
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.humanAgentSuggestionConfig.featureConfigs[].queryConfig.dialogflowQuerySource.humanAgentSideConfig.agent
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: resolved
-    resolution: not-applicable
-    note: target requires regional Dialogflow ES agent (projects/*/locations/*/agent); DialogflowAgentRef is global only (projects/*/agent) and DialogflowCXAgent has distinct format (.../agents/*)
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.humanAgentSuggestionConfig.featureConfigs[].queryConfig.documentQuerySource.documents
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Document (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: resolved
-    resolution: not-applicable
-    note: DialogflowDocument is a non-declarative data-plane document (excluded in nondeclarative.go) with no KCC resource or Ref type
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.humanAgentSuggestionConfig.featureConfigs[].queryConfig.knowledgeBaseQuerySource.knowledgeBases
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/KnowledgeBase (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: resolved
-    resolution: edited
-    note: converted to knowledgeBaseRefs ([]DialogflowKnowledgeBaseRef)
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.humanAgentSuggestionConfig.generators
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Generator (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: resolved
-    resolution: edited
-    note: converted to generatorRefs ([]DialogflowGeneratorRef)
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.notificationConfig.topic
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/<Project"
-    status: resolved
-    resolution: edited
-    note: converted to topicRef (*pubsubv1beta1.PubSubTopicRef)
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentHandoffConfig.salesforceLiveAgentConfig.buttonID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: resolved
-    resolution: not-applicable
-    note: Salesforce third-party identifier, not a GCP resource reference
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentHandoffConfig.salesforceLiveAgentConfig.deploymentID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: resolved
-    resolution: not-applicable
-    note: Salesforce third-party identifier, not a GCP resource reference
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentHandoffConfig.salesforceLiveAgentConfig.organizationID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: resolved
-    resolution: not-applicable
-    note: Salesforce third-party identifier, not a GCP resource reference
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.newMessageEventNotificationConfig.topic
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/<Project"
-    status: resolved
-    resolution: edited
-    note: converted to topicRef (*pubsubv1beta1.PubSubTopicRef)
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.newRecognitionResultNotificationConfig.topic
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/<Project"
-    status: resolved
-    resolution: edited
-    note: converted to topicRef (*pubsubv1beta1.PubSubTopicRef)
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.notificationConfig.topic
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/<Project"
-    status: resolved
-    resolution: edited
-    note: converted to topicRef (*pubsubv1beta1.PubSubTopicRef)
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.securitySettings
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/CXSecuritySettings (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: resolved
-    resolution: edited
-    note: converted to securitySettingsRef (*DialogflowSecuritySettingsRef)
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.sttConfig.phraseSets
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to speech.googleapis.com/PhraseSet (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: resolved
-    resolution: edited
-    note: converted to phraseSetRefs ([]speechv1beta1.PhraseSetRef)
+    status: open
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.ttsConfig.effectsProfileID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: resolved
-    resolution: not-applicable
-    note: audio effects profile identifiers (e.g. telephony-class-application), not GCP resource references
+    status: open
   - kind: DialogflowEntityType
     group: dialogflow.cnrm.cloud.google.com
     reason: identity-multi-pattern
@@ -721,6 +669,299 @@ entries:
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Webhook (google.api.resource_reference); confirm whether it should be a KCC reference
     status: open
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: triaged all fields; configured spec.parentRef to DialogflowGeneratorRef, converted dataset to datasetRef (VertexAIDatasetRef), removed deprecated fields, and preserved shared DialogflowGeneratorSpec optionality
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/generators/{generator}/evaluations/{evaluation}" contains ancestor segment(s) generators/{generator} with no matching reference or field on DialogflowGeneratorEvaluationSpec
+    status: resolved
+    resolution: edited
+    note: modelled parent as spec.parentRef (*DialogflowGeneratorRef), replacing projectRef and location
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: generated DialogflowGeneratorEvaluationIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
+    status: resolved
+    resolution: accepted
+    note: confirmed server-generated ID; CreateGeneratorEvaluationRequest has no evaluation_id field
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.generatorEvaluationConfig.inputDataConfig.datasetInputDataConfig.dataset
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/<ProjectId>/locations/<LocationID>/datasets/<DatasetID>"
+    status: resolved
+    resolution: edited
+    note: converted to datasetRef (*vertexaiv1beta1.VertexAIDatasetRef)
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.generatorEvaluationConfig.inputDataConfig.endTime
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: resolved
+    resolution: edited
+    note: removed deprecated field from GeneratorEvaluationConfig_InputDataConfig
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.generatorEvaluationConfig.inputDataConfig.inputDataSourceType
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: resolved
+    resolution: edited
+    note: removed deprecated field from GeneratorEvaluationConfig_InputDataConfig
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.generatorEvaluationConfig.inputDataConfig.isSummaryGenerationAllowed
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: resolved
+    resolution: edited
+    note: removed deprecated field from GeneratorEvaluationConfig_InputDataConfig
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.generatorEvaluationConfig.inputDataConfig.startTime
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: resolved
+    resolution: edited
+    note: removed deprecated field from GeneratorEvaluationConfig_InputDataConfig
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.generatorEvaluationConfig.outputGCSBucketPath
+    reason: possible-reference-by-description
+    detail: the field name has bucket and the description mentions Cloud Storage
+    status: resolved
+    resolution: not-applicable
+    note: Cloud Storage path (gs://<bucket>/<path>), not a control-plane resource reference
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.generatorEvaluationConfig.summarizationConfig.accuracyEvaluationVersion
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: resolved
+    resolution: edited
+    note: removed deprecated field from GeneratorEvaluationConfig_SummarizationConfig
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.generatorEvaluationConfig.summarizationConfig.completenessEvaluationVersion
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: resolved
+    resolution: edited
+    note: removed deprecated field from GeneratorEvaluationConfig_SummarizationConfig
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.generatorEvaluationConfig.summarizationConfig.enableAccuracyEvaluation
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: resolved
+    resolution: edited
+    note: removed deprecated field from GeneratorEvaluationConfig_SummarizationConfig
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.generatorEvaluationConfig.summarizationConfig.enableCompletenessEvaluation
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: resolved
+    resolution: edited
+    note: removed deprecated field from GeneratorEvaluationConfig_SummarizationConfig
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.generatorRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to DialogflowGeneratorRef, read from the generators segment of projects/{project}/locations/{location}/generators/{generator}/evaluations/{evaluation}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: resolved
+    resolution: edited
+    note: configured as spec.parentRef (*DialogflowGeneratorRef) per one-parent rule
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.cesAppSpecs
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: resolved
+    resolution: accepted
+    note: field is deprecated in proto and omitted from DialogflowGeneratorSpec
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.cesAppSpecs
+    reason: deprecated-message
+    detail: the proto marks message google.cloud.dialogflow.v2.CesAppSpec deprecated (option deprecated = true); confirm whether this field should be kept
+    status: resolved
+    resolution: accepted
+    note: field is deprecated in proto and omitted from DialogflowGeneratorSpec
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.cesAppSpecs[].cesApp
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/App (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: accepted
+    note: field is omitted from DialogflowGeneratorSpec
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.cesToolSpecs[].cesTool
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: accepted
+    note: field is omitted from DialogflowGeneratorSpec
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.summarizationContext.fewShotExamples[].output
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DialogflowGeneratorSpec in dialogflowgenerator_types.go is also used by DialogflowGenerator. To enforce it for DialogflowGeneratorEvaluation only, give DialogflowGeneratorEvaluation its own copy of DialogflowGeneratorSpec whose SummarizationContext field holds SummarizationContextWithRequired, and run generate.sh again. DialogflowGeneratorEvaluation is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced REQUIRED on output via FewShotExampleWithRequired in SummarizationContextWithRequired
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.summarizationContext.fewShotExamples[].output.freeFormSuggestion.response
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DialogflowGeneratorSpec in dialogflowgenerator_types.go is also used by DialogflowGenerator. To enforce it for DialogflowGeneratorEvaluation only, give DialogflowGeneratorEvaluation its own copy of DialogflowGeneratorSpec whose SummarizationContext field holds SummarizationContextWithRequired, and run generate.sh again. DialogflowGeneratorEvaluation is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced REQUIRED on response via FreeFormSuggestionWithRequired in GeneratorSuggestionWithRequired
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.summarizationContext.fewShotExamples[].output.summarySuggestion.summarySections
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DialogflowGeneratorSpec in dialogflowgenerator_types.go is also used by DialogflowGenerator. To enforce it for DialogflowGeneratorEvaluation only, give DialogflowGeneratorEvaluation its own copy of DialogflowGeneratorSpec whose SummarizationContext field holds SummarizationContextWithRequired, and run generate.sh again. DialogflowGeneratorEvaluation is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced REQUIRED on summarySections via SummarySuggestionWithRequired in GeneratorSuggestionWithRequired
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.summarizationContext.fewShotExamples[].output.summarySuggestion.summarySections[].section
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DialogflowGeneratorSpec in dialogflowgenerator_types.go is also used by DialogflowGenerator. To enforce it for DialogflowGeneratorEvaluation only, give DialogflowGeneratorEvaluation its own copy of DialogflowGeneratorSpec whose SummarizationContext field holds SummarizationContextWithRequired, and run generate.sh again. DialogflowGeneratorEvaluation is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced REQUIRED on section via SummarySuggestion_SummarySectionWithRequired in SummarySuggestionWithRequired
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.summarizationContext.fewShotExamples[].output.summarySuggestion.summarySections[].summary
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DialogflowGeneratorSpec in dialogflowgenerator_types.go is also used by DialogflowGenerator. To enforce it for DialogflowGeneratorEvaluation only, give DialogflowGeneratorEvaluation its own copy of DialogflowGeneratorSpec whose SummarizationContext field holds SummarizationContextWithRequired, and run generate.sh again. DialogflowGeneratorEvaluation is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced REQUIRED on summary via SummarySuggestion_SummarySectionWithRequired in SummarySuggestionWithRequired
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCall
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DialogflowGeneratorSpec in dialogflowgenerator_types.go is also used by DialogflowGenerator. To enforce it for DialogflowGeneratorEvaluation only, give DialogflowGeneratorEvaluation its own copy of DialogflowGeneratorSpec whose SummarizationContext field holds SummarizationContextWithRequired, and run generate.sh again. DialogflowGeneratorEvaluation is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: toolCallInfo is omitted from GeneratorSuggestion and GeneratorSuggestionWithRequired
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCall.cesApp
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/App (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: accepted
+    note: field is omitted from DialogflowGeneratorSpec
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCall.cesTool
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: accepted
+    note: field is omitted from DialogflowGeneratorSpec
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCall.cesToolset
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/Toolset (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: accepted
+    note: field is omitted from DialogflowGeneratorSpec
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCall.tool
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to dialogflow.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: accepted
+    note: field is omitted from DialogflowGeneratorSpec
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCallResult
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DialogflowGeneratorSpec in dialogflowgenerator_types.go is also used by DialogflowGenerator. To enforce it for DialogflowGeneratorEvaluation only, give DialogflowGeneratorEvaluation its own copy of DialogflowGeneratorSpec whose SummarizationContext field holds SummarizationContextWithRequired, and run generate.sh again. DialogflowGeneratorEvaluation is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: toolCallInfo is omitted from GeneratorSuggestion and GeneratorSuggestionWithRequired
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCallResult.cesApp
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/App (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: accepted
+    note: field is omitted from DialogflowGeneratorSpec
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCallResult.cesTool
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: accepted
+    note: field is omitted from DialogflowGeneratorSpec
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCallResult.cesToolset
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/Toolset (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: accepted
+    note: field is omitted from DialogflowGeneratorSpec
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCallResult.tool
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to dialogflow.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: accepted
+    note: field is omitted from DialogflowGeneratorSpec
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.tools
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to dialogflow.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: accepted
+    note: field is omitted from DialogflowGeneratorSpec
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.toolsetTools[].operationID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: resolved
+    resolution: accepted
+    note: field is omitted from DialogflowGeneratorSpec
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.initialGenerator.toolsetTools[].toolset
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/Toolset (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: accepted
+    note: field is omitted from DialogflowGeneratorSpec
+  - kind: DialogflowGeneratorEvaluation
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/generators/{generator}, which already names the location; a reference to it could replace location and the root reference
+    status: resolved
+    resolution: edited
+    note: removed location and root reference; parent is modelled as spec.parentRef (*DialogflowGeneratorRef)
   - kind: DialogflowPage
     group: dialogflow.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

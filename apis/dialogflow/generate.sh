@@ -86,21 +86,22 @@ ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --resource DialogflowConversationModel:ConversationModel \
-  --resource DialogflowConversationProfile:ConversationProfile \
-  --pattern DialogflowConversationProfile=projects/{project}/locations/{location}/conversationProfiles/{conversationProfile}
+  --resource DialogflowConversationProfile:ConversationProfile
 
 ${CONTROLLERBUILDER} generate-types \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource \
-  --resource DialogflowCompanionAgent:CompanionAgent
+  --resource DialogflowCompanionAgent:CompanionAgent \
+  --resource DialogflowGeneratorEvaluation:GeneratorEvaluation
 
 ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
-  --resource DialogflowCompanionAgent:CompanionAgent
+  --resource DialogflowCompanionAgent:CompanionAgent \
+  --resource DialogflowGeneratorEvaluation:GeneratorEvaluation
 
 ${CONTROLLERBUILDER} generate-types \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
@@ -145,6 +146,7 @@ ${CONTROLLERBUILDER} generate-mapper \
 mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/mapper.generated.go" || true
 rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow/" || true
 sed -i 's/package dialogflow/package generator/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/mapper.generated.go"
+git checkout -- "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/mapper.generated.go" 2>/dev/null || true
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.v2 \
@@ -154,6 +156,7 @@ ${CONTROLLERBUILDER} generate-mapper \
 mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/mapper.generated.go" || true
 rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow/" || true
 sed -i 's/package dialogflow/package conversationdataset/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/mapper.generated.go"
+git checkout -- "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/mapper.generated.go" 2>/dev/null || true
 
 cd ${REPO_ROOT}
 if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
