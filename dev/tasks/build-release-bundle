@@ -280,7 +280,6 @@ BLOCKED_KINDS=(
     "SecurityposturePosture"
     "SecurityposturePostureDeployment"
     "SpannerInstancePartition"
-    "SQLAdminBackup"
     "StorageBatchOperationsJob"
     "StorageInsightsDatasetConfig"
     "StorageRapidCache"
