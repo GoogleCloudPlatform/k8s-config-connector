@@ -105,7 +105,7 @@ behaviour. The API is unchanged. To use the direct reconciler, add the
 Config Connector object. The following resources now have direct reconciliation
 support (and we list some of the issues that this fixes):
 
-*   [`DialogflowCXAgent`](https://cloud.google.com/config-connector/docs/reference/resource-docs/dialogflowcx/dialogflowcxagent)
+*   `DialogflowCXAgent`
     *   Support direct reconciliation (opt-in).
 
 The following resources now use the direct reconciler by default:
