@@ -739,3 +739,17 @@
   - Verified `apis/compute/generate.sh` idempotency.
   - All tests in `apis/compute/...`, `pkg/controller/direct/compute/...`, and `tests/apichecks/...` passed cleanly.
 
+### [2026-11-18] Greenfield: Prepopulate direct KRM types, identity, and judgement queue for ComputePublicAdvertisedPrefix
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for `ComputePublicAdvertisedPrefix` (issue #16064) following Greenfield Step 1a (`prepopulate/SKILL.md`).
+- **Proto & Client Support**:
+  - `PublicAdvertisedPrefix` is defined in Google Cloud Compute Engine v1 (`google.cloud.compute.v1`) and managed via the `PublicAdvertisedPrefixes` service (`cloud.google.com/go/compute/apiv1.PublicAdvertisedPrefixesClient`) with global scope `projects/{project}/global/publicAdvertisedPrefixes/{publicAdvertisedPrefix}`.
+- **Scaffolding & Identity**:
+  - Added `generate-types --prepopulate-resource` and `generate-identity --pattern ComputePublicAdvertisedPrefix="projects/{project}/global/publicAdvertisedPrefixes/{publicAdvertisedPrefix}"` to `apis/compute/generate.sh`. Note that CAIS metadata contained `{{PUBLIC_DELEGATED_PREFIX}}` as placeholder for the advertised prefix name; specifying `--pattern` ensures clean struct field naming `PublicAdvertisedPrefix` matching KRM conventions.
+  - Added `ComputePublicAdvertisedPrefix` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Generated `ComputePublicAdvertisedPrefix` types, deepcopy, CRD, identity, references, mapper, and judgement queue entries.
+- **Verification**:
+  - Added golden entries for `computepublicadvertisedprefixes` to `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+  - Verified `apis/compute/generate.sh` idempotency.
+  - All tests in `apis/compute/...`, `pkg/controller/direct/compute/...`, `pkg/gcpurls/...`, and `tests/apichecks/...` passed cleanly.
+
+

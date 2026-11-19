@@ -163,6 +163,7 @@ BLOCKED_KINDS=(
     "ComputeInstanceGroupManagerResizeRequest"
     "ComputeLicense"
     "ComputeNotificationEndpoint"
+    "ComputePublicAdvertisedPrefix"
     "ConnectorsConnection"
     "ContactCenterInsightsConversation"
     "ContentWarehouseDocument"
