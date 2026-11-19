@@ -1,0 +1,36 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha1
+kind: ComputeCompositeHealthCheck
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: ${compositeHealthCheckID}
+  namespace: ${uniqueId}
+spec:
+  description: Updated description for minimal composite health check
+  healthDestinationRef:
+    name: ${forwardingRuleID}
+  healthSourceRefs:
+  - name: ${healthSourceID}
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/regions/us-central1/compositeHealthChecks/${compositeHealthCheckID}
+  observedGeneration: 2
+  observedState:
+    creationTimestamp: "1970-01-01T00:00:00Z"
+    id: 1111111111111111
+    kind: compute#compositeHealthCheck
+    region: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1
+    selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/compositeHealthChecks/${compositeHealthCheckID}
+    selfLinkWithID: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/compositeHealthChecks/${compositeHealthCheckID}
