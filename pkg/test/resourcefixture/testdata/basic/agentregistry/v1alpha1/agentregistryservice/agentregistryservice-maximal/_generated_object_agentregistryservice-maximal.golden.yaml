@@ -1,0 +1,46 @@
+apiVersion: agentregistry.cnrm.cloud.google.com/v1alpha1
+kind: AgentRegistryService
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: agentregistryservice-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Maximal MCP Server Description Updated
+  displayName: Maximal MCP Server Updated
+  interfaces:
+  - protocolBinding: JSONRPC
+    url: https://mcp-maximal-updated-${uniqueId}.com
+  location: us-central1
+  mcpServerSpec:
+    content:
+      tools:
+      - description: Get current weather
+        inputSchema:
+          properties:
+            location:
+              type: string
+          required:
+          - location
+          type: object
+        name: get_weather
+    type: TOOL_SPEC
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/services/agentregistryservice-maximal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    registryResource: projects/${projectNumber}/locations/us-central1/mcpServers/agentregistry-00000000-0000-0000-d1d7-1b952e0bc752
+    updateTime: "1970-01-01T00:00:00Z"
