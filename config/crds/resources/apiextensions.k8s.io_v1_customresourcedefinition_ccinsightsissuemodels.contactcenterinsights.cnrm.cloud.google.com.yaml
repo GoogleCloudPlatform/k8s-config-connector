@@ -8,7 +8,6 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
   name: ccinsightsissuemodels.contactcenterinsights.cnrm.cloud.google.com
 spec:
@@ -205,6 +204,24 @@ spec:
                           at this point in time.
                         format: int64
                         type: integer
+                      issueStats:
+                        additionalProperties:
+                          properties:
+                            displayName:
+                              description: Display name of the issue.
+                              type: string
+                            issue:
+                              description: 'Issue resource. Format: projects/{project}/locations/{location}/issueModels/{issue_model}/issues/{issue}'
+                              type: string
+                            labeledConversationsCount:
+                              description: Number of conversations attached to the
+                                issue at this point in time.
+                              format: int64
+                              type: integer
+                          type: object
+                        description: Statistics on each issue. Key is the issue's
+                          resource name.
+                        type: object
                       unclassifiedConversationsCount:
                         description: Number of analyzed conversations for which no
                           issue was applicable at this point in time.

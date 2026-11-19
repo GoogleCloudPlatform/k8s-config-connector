@@ -21,6 +21,34 @@
 # file does not have.
 
 entries:
+  - kind: CCInsightsIssueModel
+    group: contactcenterinsights.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: CCInsightsIssueModel
+    group: contactcenterinsights.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: generated CCInsightsIssueModelIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
+    status: open
+  - kind: CCInsightsIssueModel
+    group: contactcenterinsights.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.medium
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: open
+  - kind: CCInsightsIssueModel
+    group: contactcenterinsights.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: open
+  - kind: CCInsightsIssueModel
+    group: contactcenterinsights.cnrm.cloud.google.com
+    field: .status.observedState.trainingStats.issueStats
+    reason: message-map-derived
+    detail: derived as map[string]IssueModelLabelStats_IssueStats from proto google.cloud.contactcenterinsights.v1.IssueModelLabelStats.IssueStats; verify Go type and mapping
+    status: open
   - kind: CCInsightsQAScorecardRevision
     group: contactcenterinsights.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

@@ -41,6 +41,7 @@ func Analysis_FromProto(mapCtx *direct.MapContext, in *pb.Analysis) *krm.Analysi
 	out.AnnotatorSelector = AnnotatorSelector_FromProto(mapCtx, in.GetAnnotatorSelector())
 	return out
 }
+
 func Analysis_ToProto(mapCtx *direct.MapContext, in *krm.Analysis) *pb.Analysis {
 	if in == nil {
 		return nil
@@ -53,6 +54,7 @@ func Analysis_ToProto(mapCtx *direct.MapContext, in *krm.Analysis) *pb.Analysis 
 	out.AnnotatorSelector = AnnotatorSelector_ToProto(mapCtx, in.AnnotatorSelector)
 	return out
 }
+
 func AnalysisObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Analysis) *krm.AnalysisObservedState {
 	if in == nil {
 		return nil
@@ -65,6 +67,7 @@ func AnalysisObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Analysis)
 	out.AnnotatorSelector = AnnotatorSelector_FromProto(mapCtx, in.GetAnnotatorSelector())
 	return out
 }
+
 func AnalysisObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalysisObservedState) *pb.Analysis {
 	if in == nil {
 		return nil
@@ -77,6 +80,7 @@ func AnalysisObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalysisOb
 	out.AnnotatorSelector = AnnotatorSelector_ToProto(mapCtx, in.AnnotatorSelector)
 	return out
 }
+
 func AnalysisResult_FromProto(mapCtx *direct.MapContext, in *pb.AnalysisResult) *krm.AnalysisResult {
 	if in == nil {
 		return nil
@@ -86,6 +90,7 @@ func AnalysisResult_FromProto(mapCtx *direct.MapContext, in *pb.AnalysisResult) 
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	return out
 }
+
 func AnalysisResult_ToProto(mapCtx *direct.MapContext, in *krm.AnalysisResult) *pb.AnalysisResult {
 	if in == nil {
 		return nil
@@ -97,6 +102,7 @@ func AnalysisResult_ToProto(mapCtx *direct.MapContext, in *krm.AnalysisResult) *
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
 }
+
 func AnalysisResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AnalysisResult) *krm.AnalysisResultObservedState {
 	if in == nil {
 		return nil
@@ -106,6 +112,7 @@ func AnalysisResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Ana
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	return out
 }
+
 func AnalysisResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalysisResultObservedState) *pb.AnalysisResult {
 	if in == nil {
 		return nil
@@ -117,6 +124,7 @@ func AnalysisResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Anal
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
 }
+
 func AnnotationBoundary_FromProto(mapCtx *direct.MapContext, in *pb.AnnotationBoundary) *krm.AnnotationBoundary {
 	if in == nil {
 		return nil
@@ -126,6 +134,7 @@ func AnnotationBoundary_FromProto(mapCtx *direct.MapContext, in *pb.AnnotationBo
 	out.TranscriptIndex = direct.LazyPtr(in.GetTranscriptIndex())
 	return out
 }
+
 func AnnotationBoundary_ToProto(mapCtx *direct.MapContext, in *krm.AnnotationBoundary) *pb.AnnotationBoundary {
 	if in == nil {
 		return nil
@@ -137,12 +146,14 @@ func AnnotationBoundary_ToProto(mapCtx *direct.MapContext, in *krm.AnnotationBou
 	out.TranscriptIndex = direct.ValueOf(in.TranscriptIndex)
 	return out
 }
+
 func AnnotationBoundary_WordIndex_ToProto(mapCtx *direct.MapContext, in *int32) *pb.AnnotationBoundary_WordIndex {
 	if in == nil {
 		return nil
 	}
 	return &pb.AnnotationBoundary_WordIndex{WordIndex: *in}
 }
+
 func AnnotatorSelector_FromProto(mapCtx *direct.MapContext, in *pb.AnnotatorSelector) *krm.AnnotatorSelector {
 	if in == nil {
 		return nil
@@ -163,6 +174,7 @@ func AnnotatorSelector_FromProto(mapCtx *direct.MapContext, in *pb.AnnotatorSele
 	out.QaConfig = AnnotatorSelector_QaConfig_FromProto(mapCtx, in.GetQaConfig())
 	return out
 }
+
 func AnnotatorSelector_ToProto(mapCtx *direct.MapContext, in *krm.AnnotatorSelector) *pb.AnnotatorSelector {
 	if in == nil {
 		return nil
@@ -183,6 +195,7 @@ func AnnotatorSelector_ToProto(mapCtx *direct.MapContext, in *krm.AnnotatorSelec
 	out.QaConfig = AnnotatorSelector_QaConfig_ToProto(mapCtx, in.QaConfig)
 	return out
 }
+
 func AnnotatorSelector_QaConfig_FromProto(mapCtx *direct.MapContext, in *pb.AnnotatorSelector_QaConfig) *krm.AnnotatorSelector_QaConfig {
 	if in == nil {
 		return nil
@@ -191,6 +204,7 @@ func AnnotatorSelector_QaConfig_FromProto(mapCtx *direct.MapContext, in *pb.Anno
 	out.ScorecardList = AnnotatorSelector_QaConfig_ScorecardList_FromProto(mapCtx, in.GetScorecardList())
 	return out
 }
+
 func AnnotatorSelector_QaConfig_ToProto(mapCtx *direct.MapContext, in *krm.AnnotatorSelector_QaConfig) *pb.AnnotatorSelector_QaConfig {
 	if in == nil {
 		return nil
@@ -201,6 +215,7 @@ func AnnotatorSelector_QaConfig_ToProto(mapCtx *direct.MapContext, in *krm.Annot
 	}
 	return out
 }
+
 func AnnotatorSelector_QaConfig_ScorecardList_FromProto(mapCtx *direct.MapContext, in *pb.AnnotatorSelector_QaConfig_ScorecardList) *krm.AnnotatorSelector_QaConfig_ScorecardList {
 	if in == nil {
 		return nil
@@ -209,6 +224,7 @@ func AnnotatorSelector_QaConfig_ScorecardList_FromProto(mapCtx *direct.MapContex
 	out.QaScorecardRevisions = in.QaScorecardRevisions
 	return out
 }
+
 func AnnotatorSelector_QaConfig_ScorecardList_ToProto(mapCtx *direct.MapContext, in *krm.AnnotatorSelector_QaConfig_ScorecardList) *pb.AnnotatorSelector_QaConfig_ScorecardList {
 	if in == nil {
 		return nil
@@ -217,6 +233,7 @@ func AnnotatorSelector_QaConfig_ScorecardList_ToProto(mapCtx *direct.MapContext,
 	out.QaScorecardRevisions = in.QaScorecardRevisions
 	return out
 }
+
 func AnnotatorSelector_SummarizationConfig_FromProto(mapCtx *direct.MapContext, in *pb.AnnotatorSelector_SummarizationConfig) *krm.AnnotatorSelector_SummarizationConfig {
 	if in == nil {
 		return nil
@@ -226,6 +243,7 @@ func AnnotatorSelector_SummarizationConfig_FromProto(mapCtx *direct.MapContext, 
 	out.SummarizationModel = direct.Enum_FromProto(mapCtx, in.GetSummarizationModel())
 	return out
 }
+
 func AnnotatorSelector_SummarizationConfig_ToProto(mapCtx *direct.MapContext, in *krm.AnnotatorSelector_SummarizationConfig) *pb.AnnotatorSelector_SummarizationConfig {
 	if in == nil {
 		return nil
@@ -239,18 +257,21 @@ func AnnotatorSelector_SummarizationConfig_ToProto(mapCtx *direct.MapContext, in
 	}
 	return out
 }
+
 func AnnotatorSelector_SummarizationConfig_ConversationProfile_ToProto(mapCtx *direct.MapContext, in *string) *pb.AnnotatorSelector_SummarizationConfig_ConversationProfile {
 	if in == nil {
 		return nil
 	}
 	return &pb.AnnotatorSelector_SummarizationConfig_ConversationProfile{ConversationProfile: *in}
 }
+
 func AnnotatorSelector_SummarizationConfig_SummarizationModel_ToProto(mapCtx *direct.MapContext, in *string) *pb.AnnotatorSelector_SummarizationConfig_SummarizationModel_ {
 	if in == nil {
 		return nil
 	}
 	return &pb.AnnotatorSelector_SummarizationConfig_SummarizationModel_{SummarizationModel: direct.Enum_ToProto[pb.AnnotatorSelector_SummarizationConfig_SummarizationModel](mapCtx, in)}
 }
+
 func AnswerFeedback_FromProto(mapCtx *direct.MapContext, in *pb.AnswerFeedback) *krm.AnswerFeedback {
 	if in == nil {
 		return nil
@@ -261,6 +282,7 @@ func AnswerFeedback_FromProto(mapCtx *direct.MapContext, in *pb.AnswerFeedback) 
 	out.Displayed = direct.LazyPtr(in.GetDisplayed())
 	return out
 }
+
 func AnswerFeedback_ToProto(mapCtx *direct.MapContext, in *krm.AnswerFeedback) *pb.AnswerFeedback {
 	if in == nil {
 		return nil
@@ -271,6 +293,7 @@ func AnswerFeedback_ToProto(mapCtx *direct.MapContext, in *krm.AnswerFeedback) *
 	out.Displayed = direct.ValueOf(in.Displayed)
 	return out
 }
+
 func ArticleSuggestionData_FromProto(mapCtx *direct.MapContext, in *pb.ArticleSuggestionData) *krm.ArticleSuggestionData {
 	if in == nil {
 		return nil
@@ -284,6 +307,7 @@ func ArticleSuggestionData_FromProto(mapCtx *direct.MapContext, in *pb.ArticleSu
 	out.Source = direct.LazyPtr(in.GetSource())
 	return out
 }
+
 func ArticleSuggestionData_ToProto(mapCtx *direct.MapContext, in *krm.ArticleSuggestionData) *pb.ArticleSuggestionData {
 	if in == nil {
 		return nil
@@ -297,6 +321,7 @@ func ArticleSuggestionData_ToProto(mapCtx *direct.MapContext, in *krm.ArticleSug
 	out.Source = direct.ValueOf(in.Source)
 	return out
 }
+
 func CCInsightsAnalysisRuleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AnalysisRule) *krm.CCInsightsAnalysisRuleObservedState {
 	if in == nil {
 		return nil
@@ -307,6 +332,7 @@ func CCInsightsAnalysisRuleObservedState_FromProto(mapCtx *direct.MapContext, in
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
+
 func CCInsightsAnalysisRuleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsAnalysisRuleObservedState) *pb.AnalysisRule {
 	if in == nil {
 		return nil
@@ -317,6 +343,7 @@ func CCInsightsAnalysisRuleObservedState_ToProto(mapCtx *direct.MapContext, in *
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
+
 func CCInsightsAnalysisRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.AnalysisRule) *krm.CCInsightsAnalysisRuleSpec {
 	if in == nil {
 		return nil
@@ -330,6 +357,7 @@ func CCInsightsAnalysisRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.Anal
 	out.Active = direct.LazyPtr(in.GetActive())
 	return out
 }
+
 func CCInsightsAnalysisRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsAnalysisRuleSpec) *pb.AnalysisRule {
 	if in == nil {
 		return nil
@@ -343,6 +371,7 @@ func CCInsightsAnalysisRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCIns
 	out.Active = direct.ValueOf(in.Active)
 	return out
 }
+
 func CCInsightsConversationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Conversation) *krm.CCInsightsConversationObservedState {
 	if in == nil {
 		return nil
@@ -360,6 +389,7 @@ func CCInsightsConversationObservedState_FromProto(mapCtx *direct.MapContext, in
 	// MISSING: DialogflowIntents
 	return out
 }
+
 func CCInsightsConversationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsConversationObservedState) *pb.Conversation {
 	if in == nil {
 		return nil
@@ -377,6 +407,7 @@ func CCInsightsConversationObservedState_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: DialogflowIntents
 	return out
 }
+
 func CCInsightsConversationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Conversation) *krm.CCInsightsConversationSpec {
 	if in == nil {
 		return nil
@@ -398,6 +429,7 @@ func CCInsightsConversationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Conv
 	out.ObfuscatedUserID = direct.LazyPtr(in.GetObfuscatedUserId())
 	return out
 }
+
 func CCInsightsConversationSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsConversationSpec) *pb.Conversation {
 	if in == nil {
 		return nil
@@ -425,6 +457,7 @@ func CCInsightsConversationSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCIns
 	out.ObfuscatedUserId = direct.ValueOf(in.ObfuscatedUserID)
 	return out
 }
+
 func CCInsightsIssueModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IssueModel) *krm.CCInsightsIssueModelObservedState {
 	if in == nil {
 		return nil
@@ -439,6 +472,7 @@ func CCInsightsIssueModelObservedState_FromProto(mapCtx *direct.MapContext, in *
 	out.TrainingStats = IssueModelLabelStats_FromProto(mapCtx, in.GetTrainingStats())
 	return out
 }
+
 func CCInsightsIssueModelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsIssueModelObservedState) *pb.IssueModel {
 	if in == nil {
 		return nil
@@ -453,6 +487,7 @@ func CCInsightsIssueModelObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	out.TrainingStats = IssueModelLabelStats_ToProto(mapCtx, in.TrainingStats)
 	return out
 }
+
 func CCInsightsIssueModelSpec_FromProto(mapCtx *direct.MapContext, in *pb.IssueModel) *krm.CCInsightsIssueModelSpec {
 	if in == nil {
 		return nil
@@ -465,6 +500,7 @@ func CCInsightsIssueModelSpec_FromProto(mapCtx *direct.MapContext, in *pb.IssueM
 	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
 	return out
 }
+
 func CCInsightsIssueModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsIssueModelSpec) *pb.IssueModel {
 	if in == nil {
 		return nil
@@ -477,6 +513,7 @@ func CCInsightsIssueModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCInsig
 	out.LanguageCode = direct.ValueOf(in.LanguageCode)
 	return out
 }
+
 func CCInsightsPhraseMatcherObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PhraseMatcher) *krm.CCInsightsPhraseMatcherObservedState {
 	if in == nil {
 		return nil
@@ -489,6 +526,7 @@ func CCInsightsPhraseMatcherObservedState_FromProto(mapCtx *direct.MapContext, i
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
+
 func CCInsightsPhraseMatcherObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsPhraseMatcherObservedState) *pb.PhraseMatcher {
 	if in == nil {
 		return nil
@@ -501,6 +539,7 @@ func CCInsightsPhraseMatcherObservedState_ToProto(mapCtx *direct.MapContext, in 
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
+
 func CCInsightsPhraseMatcherSpec_FromProto(mapCtx *direct.MapContext, in *pb.PhraseMatcher) *krm.CCInsightsPhraseMatcherSpec {
 	if in == nil {
 		return nil
@@ -515,6 +554,7 @@ func CCInsightsPhraseMatcherSpec_FromProto(mapCtx *direct.MapContext, in *pb.Phr
 	out.RoleMatch = direct.Enum_FromProto(mapCtx, in.GetRoleMatch())
 	return out
 }
+
 func CCInsightsPhraseMatcherSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsPhraseMatcherSpec) *pb.PhraseMatcher {
 	if in == nil {
 		return nil
@@ -529,6 +569,7 @@ func CCInsightsPhraseMatcherSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCIn
 	out.RoleMatch = direct.Enum_ToProto[pb.ConversationParticipant_Role](mapCtx, in.RoleMatch)
 	return out
 }
+
 func CCInsightsQAScorecardObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecard) *krm.CCInsightsQAScorecardObservedState {
 	if in == nil {
 		return nil
@@ -539,6 +580,7 @@ func CCInsightsQAScorecardObservedState_FromProto(mapCtx *direct.MapContext, in 
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
+
 func CCInsightsQAScorecardObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsQAScorecardObservedState) *pb.QaScorecard {
 	if in == nil {
 		return nil
@@ -549,6 +591,7 @@ func CCInsightsQAScorecardObservedState_ToProto(mapCtx *direct.MapContext, in *k
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
+
 func CCInsightsQAScorecardRevisionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecardRevision) *krm.CCInsightsQAScorecardRevisionObservedState {
 	if in == nil {
 		return nil
@@ -557,11 +600,11 @@ func CCInsightsQAScorecardRevisionObservedState_FromProto(mapCtx *direct.MapCont
 	// MISSING: Name
 	out.Snapshot = QaScorecardObservedState_FromProto(mapCtx, in.GetSnapshot())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	// MISSING: AlternateIds
-	// (near miss): "AlternateIds" vs "AlternateIDs"
+	out.AlternateIDs = in.AlternateIds
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
+
 func CCInsightsQAScorecardRevisionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsQAScorecardRevisionObservedState) *pb.QaScorecardRevision {
 	if in == nil {
 		return nil
@@ -570,11 +613,11 @@ func CCInsightsQAScorecardRevisionObservedState_ToProto(mapCtx *direct.MapContex
 	// MISSING: Name
 	out.Snapshot = QaScorecardObservedState_ToProto(mapCtx, in.Snapshot)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	// MISSING: AlternateIds
-	// (near miss): "AlternateIds" vs "AlternateIDs"
+	out.AlternateIds = in.AlternateIDs
 	out.State = direct.Enum_ToProto[pb.QaScorecardRevision_State](mapCtx, in.State)
 	return out
 }
+
 func CCInsightsQAScorecardRevisionSpec_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecardRevision) *krm.CCInsightsQAScorecardRevisionSpec {
 	if in == nil {
 		return nil
@@ -585,6 +628,7 @@ func CCInsightsQAScorecardRevisionSpec_FromProto(mapCtx *direct.MapContext, in *
 	// MISSING: AlternateIds
 	return out
 }
+
 func CCInsightsQAScorecardRevisionSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsQAScorecardRevisionSpec) *pb.QaScorecardRevision {
 	if in == nil {
 		return nil
@@ -595,6 +639,7 @@ func CCInsightsQAScorecardRevisionSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: AlternateIds
 	return out
 }
+
 func CCInsightsQAScorecardSpec_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecard) *krm.CCInsightsQAScorecardSpec {
 	if in == nil {
 		return nil
@@ -605,6 +650,7 @@ func CCInsightsQAScorecardSpec_FromProto(mapCtx *direct.MapContext, in *pb.QaSco
 	out.Description = direct.LazyPtr(in.GetDescription())
 	return out
 }
+
 func CCInsightsQAScorecardSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsQAScorecardSpec) *pb.QaScorecard {
 	if in == nil {
 		return nil
@@ -615,6 +661,7 @@ func CCInsightsQAScorecardSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCInsi
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
+
 func CCInsightsQaQuestionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QaQuestion) *krm.CCInsightsQaQuestionObservedState {
 	if in == nil {
 		return nil
@@ -626,6 +673,7 @@ func CCInsightsQaQuestionObservedState_FromProto(mapCtx *direct.MapContext, in *
 	out.Metrics = QaQuestion_MetricsObservedState_FromProto(mapCtx, in.GetMetrics())
 	return out
 }
+
 func CCInsightsQaQuestionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsQaQuestionObservedState) *pb.QaQuestion {
 	if in == nil {
 		return nil
@@ -637,6 +685,7 @@ func CCInsightsQaQuestionObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Metrics = QaQuestion_MetricsObservedState_ToProto(mapCtx, in.Metrics)
 	return out
 }
+
 func CCInsightsQaQuestionSpec_FromProto(mapCtx *direct.MapContext, in *pb.QaQuestion) *krm.CCInsightsQaQuestionSpec {
 	if in == nil {
 		return nil
@@ -652,6 +701,7 @@ func CCInsightsQaQuestionSpec_FromProto(mapCtx *direct.MapContext, in *pb.QaQues
 	out.TuningMetadata = QaQuestion_TuningMetadata_FromProto(mapCtx, in.GetTuningMetadata())
 	return out
 }
+
 func CCInsightsQaQuestionSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsQaQuestionSpec) *pb.QaQuestion {
 	if in == nil {
 		return nil
@@ -667,6 +717,7 @@ func CCInsightsQaQuestionSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCInsig
 	out.TuningMetadata = QaQuestion_TuningMetadata_ToProto(mapCtx, in.TuningMetadata)
 	return out
 }
+
 func CCInsightsViewObservedState_FromProto(mapCtx *direct.MapContext, in *pb.View) *krm.CCInsightsViewObservedState {
 	if in == nil {
 		return nil
@@ -677,6 +728,7 @@ func CCInsightsViewObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Vie
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
+
 func CCInsightsViewObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsViewObservedState) *pb.View {
 	if in == nil {
 		return nil
@@ -687,6 +739,7 @@ func CCInsightsViewObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CCIn
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
+
 func CCInsightsViewSpec_FromProto(mapCtx *direct.MapContext, in *pb.View) *krm.CCInsightsViewSpec {
 	if in == nil {
 		return nil
@@ -697,6 +750,7 @@ func CCInsightsViewSpec_FromProto(mapCtx *direct.MapContext, in *pb.View) *krm.C
 	out.Value = direct.LazyPtr(in.GetValue())
 	return out
 }
+
 func CCInsightsViewSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsViewSpec) *pb.View {
 	if in == nil {
 		return nil
@@ -707,6 +761,7 @@ func CCInsightsViewSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsVie
 	out.Value = direct.ValueOf(in.Value)
 	return out
 }
+
 func CallAnnotation_FromProto(mapCtx *direct.MapContext, in *pb.CallAnnotation) *krm.CallAnnotation {
 	if in == nil {
 		return nil
@@ -725,6 +780,7 @@ func CallAnnotation_FromProto(mapCtx *direct.MapContext, in *pb.CallAnnotation) 
 	out.AnnotationEndBoundary = AnnotationBoundary_FromProto(mapCtx, in.GetAnnotationEndBoundary())
 	return out
 }
+
 func CallAnnotation_ToProto(mapCtx *direct.MapContext, in *krm.CallAnnotation) *pb.CallAnnotation {
 	if in == nil {
 		return nil
@@ -759,6 +815,7 @@ func CallAnnotation_ToProto(mapCtx *direct.MapContext, in *krm.CallAnnotation) *
 	out.AnnotationEndBoundary = AnnotationBoundary_ToProto(mapCtx, in.AnnotationEndBoundary)
 	return out
 }
+
 func ConversationDataSource_FromProto(mapCtx *direct.MapContext, in *pb.ConversationDataSource) *krm.ConversationDataSource {
 	if in == nil {
 		return nil
@@ -768,6 +825,7 @@ func ConversationDataSource_FromProto(mapCtx *direct.MapContext, in *pb.Conversa
 	out.DialogflowSource = DialogflowSource_FromProto(mapCtx, in.GetDialogflowSource())
 	return out
 }
+
 func ConversationDataSource_ToProto(mapCtx *direct.MapContext, in *krm.ConversationDataSource) *pb.ConversationDataSource {
 	if in == nil {
 		return nil
@@ -781,6 +839,7 @@ func ConversationDataSource_ToProto(mapCtx *direct.MapContext, in *krm.Conversat
 	}
 	return out
 }
+
 func ConversationDataSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConversationDataSource) *krm.ConversationDataSourceObservedState {
 	if in == nil {
 		return nil
@@ -790,6 +849,7 @@ func ConversationDataSourceObservedState_FromProto(mapCtx *direct.MapContext, in
 	out.DialogflowSource = DialogflowSourceObservedState_FromProto(mapCtx, in.GetDialogflowSource())
 	return out
 }
+
 func ConversationDataSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ConversationDataSourceObservedState) *pb.ConversationDataSource {
 	if in == nil {
 		return nil
@@ -801,6 +861,7 @@ func ConversationDataSourceObservedState_ToProto(mapCtx *direct.MapContext, in *
 	}
 	return out
 }
+
 func ConversationLevelSentiment_FromProto(mapCtx *direct.MapContext, in *pb.ConversationLevelSentiment) *krm.ConversationLevelSentiment {
 	if in == nil {
 		return nil
@@ -810,6 +871,7 @@ func ConversationLevelSentiment_FromProto(mapCtx *direct.MapContext, in *pb.Conv
 	out.SentimentData = SentimentData_FromProto(mapCtx, in.GetSentimentData())
 	return out
 }
+
 func ConversationLevelSentiment_ToProto(mapCtx *direct.MapContext, in *krm.ConversationLevelSentiment) *pb.ConversationLevelSentiment {
 	if in == nil {
 		return nil
@@ -819,6 +881,7 @@ func ConversationLevelSentiment_ToProto(mapCtx *direct.MapContext, in *krm.Conve
 	out.SentimentData = SentimentData_ToProto(mapCtx, in.SentimentData)
 	return out
 }
+
 func ConversationLevelSilence_FromProto(mapCtx *direct.MapContext, in *pb.ConversationLevelSilence) *krm.ConversationLevelSilence {
 	if in == nil {
 		return nil
@@ -828,6 +891,7 @@ func ConversationLevelSilence_FromProto(mapCtx *direct.MapContext, in *pb.Conver
 	out.SilencePercentage = direct.LazyPtr(in.GetSilencePercentage())
 	return out
 }
+
 func ConversationLevelSilence_ToProto(mapCtx *direct.MapContext, in *krm.ConversationLevelSilence) *pb.ConversationLevelSilence {
 	if in == nil {
 		return nil
@@ -837,6 +901,7 @@ func ConversationLevelSilence_ToProto(mapCtx *direct.MapContext, in *krm.Convers
 	out.SilencePercentage = direct.ValueOf(in.SilencePercentage)
 	return out
 }
+
 func ConversationParticipant_FromProto(mapCtx *direct.MapContext, in *pb.ConversationParticipant) *krm.ConversationParticipant {
 	if in == nil {
 		return nil
@@ -849,6 +914,7 @@ func ConversationParticipant_FromProto(mapCtx *direct.MapContext, in *pb.Convers
 	out.Role = direct.Enum_FromProto(mapCtx, in.GetRole())
 	return out
 }
+
 func ConversationParticipant_ToProto(mapCtx *direct.MapContext, in *krm.ConversationParticipant) *pb.ConversationParticipant {
 	if in == nil {
 		return nil
@@ -865,18 +931,21 @@ func ConversationParticipant_ToProto(mapCtx *direct.MapContext, in *krm.Conversa
 	out.Role = direct.Enum_ToProto[pb.ConversationParticipant_Role](mapCtx, in.Role)
 	return out
 }
+
 func ConversationParticipant_DialogflowParticipantName_ToProto(mapCtx *direct.MapContext, in *string) *pb.ConversationParticipant_DialogflowParticipantName {
 	if in == nil {
 		return nil
 	}
 	return &pb.ConversationParticipant_DialogflowParticipantName{DialogflowParticipantName: *in}
 }
+
 func ConversationParticipant_UserId_ToProto(mapCtx *direct.MapContext, in *string) *pb.ConversationParticipant_UserId {
 	if in == nil {
 		return nil
 	}
 	return &pb.ConversationParticipant_UserId{UserId: *in}
 }
+
 func ConversationSummarizationSuggestionData_FromProto(mapCtx *direct.MapContext, in *pb.ConversationSummarizationSuggestionData) *krm.ConversationSummarizationSuggestionData {
 	if in == nil {
 		return nil
@@ -890,6 +959,7 @@ func ConversationSummarizationSuggestionData_FromProto(mapCtx *direct.MapContext
 	out.ConversationModel = direct.LazyPtr(in.GetConversationModel())
 	return out
 }
+
 func ConversationSummarizationSuggestionData_ToProto(mapCtx *direct.MapContext, in *krm.ConversationSummarizationSuggestionData) *pb.ConversationSummarizationSuggestionData {
 	if in == nil {
 		return nil
@@ -903,6 +973,7 @@ func ConversationSummarizationSuggestionData_ToProto(mapCtx *direct.MapContext, 
 	out.ConversationModel = direct.ValueOf(in.ConversationModel)
 	return out
 }
+
 func Conversation_Transcript_FromProto(mapCtx *direct.MapContext, in *pb.Conversation_Transcript) *krm.Conversation_Transcript {
 	if in == nil {
 		return nil
@@ -911,6 +982,7 @@ func Conversation_Transcript_FromProto(mapCtx *direct.MapContext, in *pb.Convers
 	out.TranscriptSegments = direct.Slice_FromProto(mapCtx, in.TranscriptSegments, Conversation_Transcript_TranscriptSegment_FromProto)
 	return out
 }
+
 func Conversation_Transcript_ToProto(mapCtx *direct.MapContext, in *krm.Conversation_Transcript) *pb.Conversation_Transcript {
 	if in == nil {
 		return nil
@@ -919,6 +991,7 @@ func Conversation_Transcript_ToProto(mapCtx *direct.MapContext, in *krm.Conversa
 	out.TranscriptSegments = direct.Slice_ToProto(mapCtx, in.TranscriptSegments, Conversation_Transcript_TranscriptSegment_ToProto)
 	return out
 }
+
 func Conversation_Transcript_TranscriptSegment_FromProto(mapCtx *direct.MapContext, in *pb.Conversation_Transcript_TranscriptSegment) *krm.Conversation_Transcript_TranscriptSegment {
 	if in == nil {
 		return nil
@@ -935,6 +1008,7 @@ func Conversation_Transcript_TranscriptSegment_FromProto(mapCtx *direct.MapConte
 	out.Sentiment = SentimentData_FromProto(mapCtx, in.GetSentiment())
 	return out
 }
+
 func Conversation_Transcript_TranscriptSegment_ToProto(mapCtx *direct.MapContext, in *krm.Conversation_Transcript_TranscriptSegment) *pb.Conversation_Transcript_TranscriptSegment {
 	if in == nil {
 		return nil
@@ -951,6 +1025,7 @@ func Conversation_Transcript_TranscriptSegment_ToProto(mapCtx *direct.MapContext
 	out.Sentiment = SentimentData_ToProto(mapCtx, in.Sentiment)
 	return out
 }
+
 func Conversation_Transcript_TranscriptSegment_WordInfo_FromProto(mapCtx *direct.MapContext, in *pb.Conversation_Transcript_TranscriptSegment_WordInfo) *krm.Conversation_Transcript_TranscriptSegment_WordInfo {
 	if in == nil {
 		return nil
@@ -962,6 +1037,7 @@ func Conversation_Transcript_TranscriptSegment_WordInfo_FromProto(mapCtx *direct
 	out.Confidence = direct.LazyPtr(in.GetConfidence())
 	return out
 }
+
 func Conversation_Transcript_TranscriptSegment_WordInfo_ToProto(mapCtx *direct.MapContext, in *krm.Conversation_Transcript_TranscriptSegment_WordInfo) *pb.Conversation_Transcript_TranscriptSegment_WordInfo {
 	if in == nil {
 		return nil
@@ -973,6 +1049,7 @@ func Conversation_Transcript_TranscriptSegment_WordInfo_ToProto(mapCtx *direct.M
 	out.Confidence = direct.ValueOf(in.Confidence)
 	return out
 }
+
 func DialogflowIntent_FromProto(mapCtx *direct.MapContext, in *pb.DialogflowIntent) *krm.DialogflowIntent {
 	if in == nil {
 		return nil
@@ -981,6 +1058,7 @@ func DialogflowIntent_FromProto(mapCtx *direct.MapContext, in *pb.DialogflowInte
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	return out
 }
+
 func DialogflowIntent_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowIntent) *pb.DialogflowIntent {
 	if in == nil {
 		return nil
@@ -989,6 +1067,7 @@ func DialogflowIntent_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowInten
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	return out
 }
+
 func DialogflowInteractionData_FromProto(mapCtx *direct.MapContext, in *pb.DialogflowInteractionData) *krm.DialogflowInteractionData {
 	if in == nil {
 		return nil
@@ -998,6 +1077,7 @@ func DialogflowInteractionData_FromProto(mapCtx *direct.MapContext, in *pb.Dialo
 	out.Confidence = direct.LazyPtr(in.GetConfidence())
 	return out
 }
+
 func DialogflowInteractionData_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowInteractionData) *pb.DialogflowInteractionData {
 	if in == nil {
 		return nil
@@ -1007,6 +1087,7 @@ func DialogflowInteractionData_ToProto(mapCtx *direct.MapContext, in *krm.Dialog
 	out.Confidence = direct.ValueOf(in.Confidence)
 	return out
 }
+
 func DialogflowSource_FromProto(mapCtx *direct.MapContext, in *pb.DialogflowSource) *krm.DialogflowSource {
 	if in == nil {
 		return nil
@@ -1016,6 +1097,7 @@ func DialogflowSource_FromProto(mapCtx *direct.MapContext, in *pb.DialogflowSour
 	out.AudioURI = direct.LazyPtr(in.GetAudioUri())
 	return out
 }
+
 func DialogflowSource_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowSource) *pb.DialogflowSource {
 	if in == nil {
 		return nil
@@ -1025,6 +1107,7 @@ func DialogflowSource_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowSourc
 	out.AudioUri = direct.ValueOf(in.AudioURI)
 	return out
 }
+
 func DialogflowSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DialogflowSource) *krm.DialogflowSourceObservedState {
 	if in == nil {
 		return nil
@@ -1034,6 +1117,7 @@ func DialogflowSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.D
 	// MISSING: AudioURI
 	return out
 }
+
 func DialogflowSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowSourceObservedState) *pb.DialogflowSource {
 	if in == nil {
 		return nil
@@ -1043,6 +1127,7 @@ func DialogflowSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Di
 	// MISSING: AudioURI
 	return out
 }
+
 func Entity_FromProto(mapCtx *direct.MapContext, in *pb.Entity) *krm.Entity {
 	if in == nil {
 		return nil
@@ -1055,6 +1140,7 @@ func Entity_FromProto(mapCtx *direct.MapContext, in *pb.Entity) *krm.Entity {
 	out.Sentiment = SentimentData_FromProto(mapCtx, in.GetSentiment())
 	return out
 }
+
 func Entity_ToProto(mapCtx *direct.MapContext, in *krm.Entity) *pb.Entity {
 	if in == nil {
 		return nil
@@ -1067,6 +1153,7 @@ func Entity_ToProto(mapCtx *direct.MapContext, in *krm.Entity) *pb.Entity {
 	out.Sentiment = SentimentData_ToProto(mapCtx, in.Sentiment)
 	return out
 }
+
 func EntityMentionData_FromProto(mapCtx *direct.MapContext, in *pb.EntityMentionData) *krm.EntityMentionData {
 	if in == nil {
 		return nil
@@ -1077,6 +1164,7 @@ func EntityMentionData_FromProto(mapCtx *direct.MapContext, in *pb.EntityMention
 	out.Sentiment = SentimentData_FromProto(mapCtx, in.GetSentiment())
 	return out
 }
+
 func EntityMentionData_ToProto(mapCtx *direct.MapContext, in *krm.EntityMentionData) *pb.EntityMentionData {
 	if in == nil {
 		return nil
@@ -1087,6 +1175,7 @@ func EntityMentionData_ToProto(mapCtx *direct.MapContext, in *krm.EntityMentionD
 	out.Sentiment = SentimentData_ToProto(mapCtx, in.Sentiment)
 	return out
 }
+
 func ExactMatchConfig_FromProto(mapCtx *direct.MapContext, in *pb.ExactMatchConfig) *krm.ExactMatchConfig {
 	if in == nil {
 		return nil
@@ -1095,6 +1184,7 @@ func ExactMatchConfig_FromProto(mapCtx *direct.MapContext, in *pb.ExactMatchConf
 	out.CaseSensitive = direct.LazyPtr(in.GetCaseSensitive())
 	return out
 }
+
 func ExactMatchConfig_ToProto(mapCtx *direct.MapContext, in *krm.ExactMatchConfig) *pb.ExactMatchConfig {
 	if in == nil {
 		return nil
@@ -1103,6 +1193,7 @@ func ExactMatchConfig_ToProto(mapCtx *direct.MapContext, in *krm.ExactMatchConfi
 	out.CaseSensitive = direct.ValueOf(in.CaseSensitive)
 	return out
 }
+
 func FaqAnswerData_FromProto(mapCtx *direct.MapContext, in *pb.FaqAnswerData) *krm.FaqAnswerData {
 	if in == nil {
 		return nil
@@ -1116,6 +1207,7 @@ func FaqAnswerData_FromProto(mapCtx *direct.MapContext, in *pb.FaqAnswerData) *k
 	out.Source = direct.LazyPtr(in.GetSource())
 	return out
 }
+
 func FaqAnswerData_ToProto(mapCtx *direct.MapContext, in *krm.FaqAnswerData) *pb.FaqAnswerData {
 	if in == nil {
 		return nil
@@ -1129,6 +1221,7 @@ func FaqAnswerData_ToProto(mapCtx *direct.MapContext, in *krm.FaqAnswerData) *pb
 	out.Source = direct.ValueOf(in.Source)
 	return out
 }
+
 func GCSSource_FromProto(mapCtx *direct.MapContext, in *pb.GcsSource) *krm.GCSSource {
 	if in == nil {
 		return nil
@@ -1138,6 +1231,7 @@ func GCSSource_FromProto(mapCtx *direct.MapContext, in *pb.GcsSource) *krm.GCSSo
 	out.TranscriptURI = direct.LazyPtr(in.GetTranscriptUri())
 	return out
 }
+
 func GCSSource_ToProto(mapCtx *direct.MapContext, in *krm.GCSSource) *pb.GcsSource {
 	if in == nil {
 		return nil
@@ -1147,6 +1241,7 @@ func GCSSource_ToProto(mapCtx *direct.MapContext, in *krm.GCSSource) *pb.GcsSour
 	out.TranscriptUri = direct.ValueOf(in.TranscriptURI)
 	return out
 }
+
 func HoldData_FromProto(mapCtx *direct.MapContext, in *pb.HoldData) *krm.HoldData {
 	if in == nil {
 		return nil
@@ -1154,6 +1249,7 @@ func HoldData_FromProto(mapCtx *direct.MapContext, in *pb.HoldData) *krm.HoldDat
 	out := &krm.HoldData{}
 	return out
 }
+
 func HoldData_ToProto(mapCtx *direct.MapContext, in *krm.HoldData) *pb.HoldData {
 	if in == nil {
 		return nil
@@ -1161,6 +1257,7 @@ func HoldData_ToProto(mapCtx *direct.MapContext, in *krm.HoldData) *pb.HoldData 
 	out := &pb.HoldData{}
 	return out
 }
+
 func Intent_FromProto(mapCtx *direct.MapContext, in *pb.Intent) *krm.Intent {
 	if in == nil {
 		return nil
@@ -1170,6 +1267,7 @@ func Intent_FromProto(mapCtx *direct.MapContext, in *pb.Intent) *krm.Intent {
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	return out
 }
+
 func Intent_ToProto(mapCtx *direct.MapContext, in *krm.Intent) *pb.Intent {
 	if in == nil {
 		return nil
@@ -1179,6 +1277,7 @@ func Intent_ToProto(mapCtx *direct.MapContext, in *krm.Intent) *pb.Intent {
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	return out
 }
+
 func IntentMatchData_FromProto(mapCtx *direct.MapContext, in *pb.IntentMatchData) *krm.IntentMatchData {
 	if in == nil {
 		return nil
@@ -1187,6 +1286,7 @@ func IntentMatchData_FromProto(mapCtx *direct.MapContext, in *pb.IntentMatchData
 	out.IntentUniqueID = direct.LazyPtr(in.GetIntentUniqueId())
 	return out
 }
+
 func IntentMatchData_ToProto(mapCtx *direct.MapContext, in *krm.IntentMatchData) *pb.IntentMatchData {
 	if in == nil {
 		return nil
@@ -1195,6 +1295,7 @@ func IntentMatchData_ToProto(mapCtx *direct.MapContext, in *krm.IntentMatchData)
 	out.IntentUniqueId = direct.ValueOf(in.IntentUniqueID)
 	return out
 }
+
 func InterruptionData_FromProto(mapCtx *direct.MapContext, in *pb.InterruptionData) *krm.InterruptionData {
 	if in == nil {
 		return nil
@@ -1202,6 +1303,7 @@ func InterruptionData_FromProto(mapCtx *direct.MapContext, in *pb.InterruptionDa
 	out := &krm.InterruptionData{}
 	return out
 }
+
 func InterruptionData_ToProto(mapCtx *direct.MapContext, in *krm.InterruptionData) *pb.InterruptionData {
 	if in == nil {
 		return nil
@@ -1209,6 +1311,7 @@ func InterruptionData_ToProto(mapCtx *direct.MapContext, in *krm.InterruptionDat
 	out := &pb.InterruptionData{}
 	return out
 }
+
 func IssueAssignment_FromProto(mapCtx *direct.MapContext, in *pb.IssueAssignment) *krm.IssueAssignment {
 	if in == nil {
 		return nil
@@ -1219,6 +1322,7 @@ func IssueAssignment_FromProto(mapCtx *direct.MapContext, in *pb.IssueAssignment
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	return out
 }
+
 func IssueAssignment_ToProto(mapCtx *direct.MapContext, in *krm.IssueAssignment) *pb.IssueAssignment {
 	if in == nil {
 		return nil
@@ -1229,6 +1333,7 @@ func IssueAssignment_ToProto(mapCtx *direct.MapContext, in *krm.IssueAssignment)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	return out
 }
+
 func IssueMatchData_FromProto(mapCtx *direct.MapContext, in *pb.IssueMatchData) *krm.IssueMatchData {
 	if in == nil {
 		return nil
@@ -1237,6 +1342,7 @@ func IssueMatchData_FromProto(mapCtx *direct.MapContext, in *pb.IssueMatchData) 
 	out.IssueAssignment = IssueAssignment_FromProto(mapCtx, in.GetIssueAssignment())
 	return out
 }
+
 func IssueMatchData_ToProto(mapCtx *direct.MapContext, in *krm.IssueMatchData) *pb.IssueMatchData {
 	if in == nil {
 		return nil
@@ -1245,6 +1351,7 @@ func IssueMatchData_ToProto(mapCtx *direct.MapContext, in *krm.IssueMatchData) *
 	out.IssueAssignment = IssueAssignment_ToProto(mapCtx, in.IssueAssignment)
 	return out
 }
+
 func IssueModelLabelStats_FromProto(mapCtx *direct.MapContext, in *pb.IssueModelLabelStats) *krm.IssueModelLabelStats {
 	if in == nil {
 		return nil
@@ -1255,6 +1362,7 @@ func IssueModelLabelStats_FromProto(mapCtx *direct.MapContext, in *pb.IssueModel
 	// MISSING: IssueStats
 	return out
 }
+
 func IssueModelLabelStats_ToProto(mapCtx *direct.MapContext, in *krm.IssueModelLabelStats) *pb.IssueModelLabelStats {
 	if in == nil {
 		return nil
@@ -1265,6 +1373,7 @@ func IssueModelLabelStats_ToProto(mapCtx *direct.MapContext, in *krm.IssueModelL
 	// MISSING: IssueStats
 	return out
 }
+
 func IssueModelLabelStats_IssueStats_FromProto(mapCtx *direct.MapContext, in *pb.IssueModelLabelStats_IssueStats) *krm.IssueModelLabelStats_IssueStats {
 	if in == nil {
 		return nil
@@ -1275,6 +1384,7 @@ func IssueModelLabelStats_IssueStats_FromProto(mapCtx *direct.MapContext, in *pb
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	return out
 }
+
 func IssueModelLabelStats_IssueStats_ToProto(mapCtx *direct.MapContext, in *krm.IssueModelLabelStats_IssueStats) *pb.IssueModelLabelStats_IssueStats {
 	if in == nil {
 		return nil
@@ -1285,6 +1395,7 @@ func IssueModelLabelStats_IssueStats_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	return out
 }
+
 func IssueModelResult_FromProto(mapCtx *direct.MapContext, in *pb.IssueModelResult) *krm.IssueModelResult {
 	if in == nil {
 		return nil
@@ -1294,6 +1405,7 @@ func IssueModelResult_FromProto(mapCtx *direct.MapContext, in *pb.IssueModelResu
 	out.Issues = direct.Slice_FromProto(mapCtx, in.Issues, IssueAssignment_FromProto)
 	return out
 }
+
 func IssueModelResult_ToProto(mapCtx *direct.MapContext, in *krm.IssueModelResult) *pb.IssueModelResult {
 	if in == nil {
 		return nil
@@ -1303,6 +1415,7 @@ func IssueModelResult_ToProto(mapCtx *direct.MapContext, in *krm.IssueModelResul
 	out.Issues = direct.Slice_ToProto(mapCtx, in.Issues, IssueAssignment_ToProto)
 	return out
 }
+
 func IssueModel_InputDataConfig_FromProto(mapCtx *direct.MapContext, in *pb.IssueModel_InputDataConfig) *krm.IssueModel_InputDataConfig {
 	if in == nil {
 		return nil
@@ -1313,6 +1426,7 @@ func IssueModel_InputDataConfig_FromProto(mapCtx *direct.MapContext, in *pb.Issu
 	out.Filter = direct.LazyPtr(in.GetFilter())
 	return out
 }
+
 func IssueModel_InputDataConfig_ToProto(mapCtx *direct.MapContext, in *krm.IssueModel_InputDataConfig) *pb.IssueModel_InputDataConfig {
 	if in == nil {
 		return nil
@@ -1323,6 +1437,7 @@ func IssueModel_InputDataConfig_ToProto(mapCtx *direct.MapContext, in *krm.Issue
 	out.Filter = direct.ValueOf(in.Filter)
 	return out
 }
+
 func IssueModel_InputDataConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IssueModel_InputDataConfig) *krm.IssueModel_InputDataConfigObservedState {
 	if in == nil {
 		return nil
@@ -1333,6 +1448,7 @@ func IssueModel_InputDataConfigObservedState_FromProto(mapCtx *direct.MapContext
 	// MISSING: Filter
 	return out
 }
+
 func IssueModel_InputDataConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.IssueModel_InputDataConfigObservedState) *pb.IssueModel_InputDataConfig {
 	if in == nil {
 		return nil
@@ -1343,6 +1459,7 @@ func IssueModel_InputDataConfigObservedState_ToProto(mapCtx *direct.MapContext, 
 	// MISSING: Filter
 	return out
 }
+
 func PhraseMatchData_FromProto(mapCtx *direct.MapContext, in *pb.PhraseMatchData) *krm.PhraseMatchData {
 	if in == nil {
 		return nil
@@ -1352,6 +1469,7 @@ func PhraseMatchData_FromProto(mapCtx *direct.MapContext, in *pb.PhraseMatchData
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	return out
 }
+
 func PhraseMatchData_ToProto(mapCtx *direct.MapContext, in *krm.PhraseMatchData) *pb.PhraseMatchData {
 	if in == nil {
 		return nil
@@ -1361,6 +1479,7 @@ func PhraseMatchData_ToProto(mapCtx *direct.MapContext, in *krm.PhraseMatchData)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	return out
 }
+
 func PhraseMatchRule_FromProto(mapCtx *direct.MapContext, in *pb.PhraseMatchRule) *krm.PhraseMatchRule {
 	if in == nil {
 		return nil
@@ -1371,6 +1490,7 @@ func PhraseMatchRule_FromProto(mapCtx *direct.MapContext, in *pb.PhraseMatchRule
 	out.Config = PhraseMatchRuleConfig_FromProto(mapCtx, in.GetConfig())
 	return out
 }
+
 func PhraseMatchRule_ToProto(mapCtx *direct.MapContext, in *krm.PhraseMatchRule) *pb.PhraseMatchRule {
 	if in == nil {
 		return nil
@@ -1381,6 +1501,7 @@ func PhraseMatchRule_ToProto(mapCtx *direct.MapContext, in *krm.PhraseMatchRule)
 	out.Config = PhraseMatchRuleConfig_ToProto(mapCtx, in.Config)
 	return out
 }
+
 func PhraseMatchRuleConfig_FromProto(mapCtx *direct.MapContext, in *pb.PhraseMatchRuleConfig) *krm.PhraseMatchRuleConfig {
 	if in == nil {
 		return nil
@@ -1389,6 +1510,7 @@ func PhraseMatchRuleConfig_FromProto(mapCtx *direct.MapContext, in *pb.PhraseMat
 	out.ExactMatchConfig = ExactMatchConfig_FromProto(mapCtx, in.GetExactMatchConfig())
 	return out
 }
+
 func PhraseMatchRuleConfig_ToProto(mapCtx *direct.MapContext, in *krm.PhraseMatchRuleConfig) *pb.PhraseMatchRuleConfig {
 	if in == nil {
 		return nil
@@ -1399,6 +1521,7 @@ func PhraseMatchRuleConfig_ToProto(mapCtx *direct.MapContext, in *krm.PhraseMatc
 	}
 	return out
 }
+
 func PhraseMatchRuleGroup_FromProto(mapCtx *direct.MapContext, in *pb.PhraseMatchRuleGroup) *krm.PhraseMatchRuleGroup {
 	if in == nil {
 		return nil
@@ -1408,6 +1531,7 @@ func PhraseMatchRuleGroup_FromProto(mapCtx *direct.MapContext, in *pb.PhraseMatc
 	out.PhraseMatchRules = direct.Slice_FromProto(mapCtx, in.PhraseMatchRules, PhraseMatchRule_FromProto)
 	return out
 }
+
 func PhraseMatchRuleGroup_ToProto(mapCtx *direct.MapContext, in *krm.PhraseMatchRuleGroup) *pb.PhraseMatchRuleGroup {
 	if in == nil {
 		return nil
@@ -1417,6 +1541,7 @@ func PhraseMatchRuleGroup_ToProto(mapCtx *direct.MapContext, in *krm.PhraseMatch
 	out.PhraseMatchRules = direct.Slice_ToProto(mapCtx, in.PhraseMatchRules, PhraseMatchRule_ToProto)
 	return out
 }
+
 func QaAnswer_FromProto(mapCtx *direct.MapContext, in *pb.QaAnswer) *krm.QaAnswer {
 	if in == nil {
 		return nil
@@ -1430,6 +1555,7 @@ func QaAnswer_FromProto(mapCtx *direct.MapContext, in *pb.QaAnswer) *krm.QaAnswe
 	out.AnswerSources = direct.Slice_FromProto(mapCtx, in.AnswerSources, QaAnswer_AnswerSource_FromProto)
 	return out
 }
+
 func QaAnswer_ToProto(mapCtx *direct.MapContext, in *krm.QaAnswer) *pb.QaAnswer {
 	if in == nil {
 		return nil
@@ -1443,6 +1569,7 @@ func QaAnswer_ToProto(mapCtx *direct.MapContext, in *krm.QaAnswer) *pb.QaAnswer 
 	out.AnswerSources = direct.Slice_ToProto(mapCtx, in.AnswerSources, QaAnswer_AnswerSource_ToProto)
 	return out
 }
+
 func QaAnswerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QaAnswer) *krm.QaAnswerObservedState {
 	if in == nil {
 		return nil
@@ -1456,6 +1583,7 @@ func QaAnswerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QaAnswer)
 	out.AnswerSources = direct.Slice_FromProto(mapCtx, in.AnswerSources, QaAnswer_AnswerSourceObservedState_FromProto)
 	return out
 }
+
 func QaAnswerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.QaAnswerObservedState) *pb.QaAnswer {
 	if in == nil {
 		return nil
@@ -1469,6 +1597,7 @@ func QaAnswerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.QaAnswerOb
 	out.AnswerSources = direct.Slice_ToProto(mapCtx, in.AnswerSources, QaAnswer_AnswerSourceObservedState_ToProto)
 	return out
 }
+
 func QaAnswer_AnswerSource_FromProto(mapCtx *direct.MapContext, in *pb.QaAnswer_AnswerSource) *krm.QaAnswer_AnswerSource {
 	if in == nil {
 		return nil
@@ -1478,6 +1607,7 @@ func QaAnswer_AnswerSource_FromProto(mapCtx *direct.MapContext, in *pb.QaAnswer_
 	out.AnswerValue = QaAnswer_AnswerValue_FromProto(mapCtx, in.GetAnswerValue())
 	return out
 }
+
 func QaAnswer_AnswerSource_ToProto(mapCtx *direct.MapContext, in *krm.QaAnswer_AnswerSource) *pb.QaAnswer_AnswerSource {
 	if in == nil {
 		return nil
@@ -1487,6 +1617,7 @@ func QaAnswer_AnswerSource_ToProto(mapCtx *direct.MapContext, in *krm.QaAnswer_A
 	out.AnswerValue = QaAnswer_AnswerValue_ToProto(mapCtx, in.AnswerValue)
 	return out
 }
+
 func QaAnswer_AnswerSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QaAnswer_AnswerSource) *krm.QaAnswer_AnswerSourceObservedState {
 	if in == nil {
 		return nil
@@ -1496,6 +1627,7 @@ func QaAnswer_AnswerSourceObservedState_FromProto(mapCtx *direct.MapContext, in 
 	out.AnswerValue = QaAnswer_AnswerValueObservedState_FromProto(mapCtx, in.GetAnswerValue())
 	return out
 }
+
 func QaAnswer_AnswerSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.QaAnswer_AnswerSourceObservedState) *pb.QaAnswer_AnswerSource {
 	if in == nil {
 		return nil
@@ -1505,6 +1637,7 @@ func QaAnswer_AnswerSourceObservedState_ToProto(mapCtx *direct.MapContext, in *k
 	out.AnswerValue = QaAnswer_AnswerValueObservedState_ToProto(mapCtx, in.AnswerValue)
 	return out
 }
+
 func QaAnswer_AnswerValue_FromProto(mapCtx *direct.MapContext, in *pb.QaAnswer_AnswerValue) *krm.QaAnswer_AnswerValue {
 	if in == nil {
 		return nil
@@ -1520,6 +1653,7 @@ func QaAnswer_AnswerValue_FromProto(mapCtx *direct.MapContext, in *pb.QaAnswer_A
 	// MISSING: NormalizedScore
 	return out
 }
+
 func QaAnswer_AnswerValue_ToProto(mapCtx *direct.MapContext, in *krm.QaAnswer_AnswerValue) *pb.QaAnswer_AnswerValue {
 	if in == nil {
 		return nil
@@ -1543,30 +1677,35 @@ func QaAnswer_AnswerValue_ToProto(mapCtx *direct.MapContext, in *krm.QaAnswer_An
 	// MISSING: NormalizedScore
 	return out
 }
+
 func QaAnswer_AnswerValue_StrValue_ToProto(mapCtx *direct.MapContext, in *string) *pb.QaAnswer_AnswerValue_StrValue {
 	if in == nil {
 		return nil
 	}
 	return &pb.QaAnswer_AnswerValue_StrValue{StrValue: *in}
 }
+
 func QaAnswer_AnswerValue_NumValue_ToProto(mapCtx *direct.MapContext, in *float64) *pb.QaAnswer_AnswerValue_NumValue {
 	if in == nil {
 		return nil
 	}
 	return &pb.QaAnswer_AnswerValue_NumValue{NumValue: *in}
 }
+
 func QaAnswer_AnswerValue_BoolValue_ToProto(mapCtx *direct.MapContext, in *bool) *pb.QaAnswer_AnswerValue_BoolValue {
 	if in == nil {
 		return nil
 	}
 	return &pb.QaAnswer_AnswerValue_BoolValue{BoolValue: *in}
 }
+
 func QaAnswer_AnswerValue_NaValue_ToProto(mapCtx *direct.MapContext, in *bool) *pb.QaAnswer_AnswerValue_NaValue {
 	if in == nil {
 		return nil
 	}
 	return &pb.QaAnswer_AnswerValue_NaValue{NaValue: *in}
 }
+
 func QaAnswer_AnswerValueObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QaAnswer_AnswerValue) *krm.QaAnswer_AnswerValueObservedState {
 	if in == nil {
 		return nil
@@ -1582,6 +1721,7 @@ func QaAnswer_AnswerValueObservedState_FromProto(mapCtx *direct.MapContext, in *
 	out.NormalizedScore = in.NormalizedScore
 	return out
 }
+
 func QaAnswer_AnswerValueObservedState_ToProto(mapCtx *direct.MapContext, in *krm.QaAnswer_AnswerValueObservedState) *pb.QaAnswer_AnswerValue {
 	if in == nil {
 		return nil
@@ -1605,30 +1745,35 @@ func QaAnswer_AnswerValueObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	out.NormalizedScore = in.NormalizedScore
 	return out
 }
+
 func QaAnswer_AnswerValueObservedState_StrValue_ToProto(mapCtx *direct.MapContext, in *string) *pb.QaAnswer_AnswerValue_StrValue {
 	if in == nil {
 		return nil
 	}
 	return &pb.QaAnswer_AnswerValue_StrValue{StrValue: *in}
 }
+
 func QaAnswer_AnswerValueObservedState_NumValue_ToProto(mapCtx *direct.MapContext, in *float64) *pb.QaAnswer_AnswerValue_NumValue {
 	if in == nil {
 		return nil
 	}
 	return &pb.QaAnswer_AnswerValue_NumValue{NumValue: *in}
 }
+
 func QaAnswer_AnswerValueObservedState_BoolValue_ToProto(mapCtx *direct.MapContext, in *bool) *pb.QaAnswer_AnswerValue_BoolValue {
 	if in == nil {
 		return nil
 	}
 	return &pb.QaAnswer_AnswerValue_BoolValue{BoolValue: *in}
 }
+
 func QaAnswer_AnswerValueObservedState_NaValue_ToProto(mapCtx *direct.MapContext, in *bool) *pb.QaAnswer_AnswerValue_NaValue {
 	if in == nil {
 		return nil
 	}
 	return &pb.QaAnswer_AnswerValue_NaValue{NaValue: *in}
 }
+
 func QaQuestion_AnswerChoice_FromProto(mapCtx *direct.MapContext, in *pb.QaQuestion_AnswerChoice) *krm.QaQuestion_AnswerChoice {
 	if in == nil {
 		return nil
@@ -1642,6 +1787,7 @@ func QaQuestion_AnswerChoice_FromProto(mapCtx *direct.MapContext, in *pb.QaQuest
 	out.Score = in.Score
 	return out
 }
+
 func QaQuestion_AnswerChoice_ToProto(mapCtx *direct.MapContext, in *krm.QaQuestion_AnswerChoice) *pb.QaQuestion_AnswerChoice {
 	if in == nil {
 		return nil
@@ -1663,30 +1809,35 @@ func QaQuestion_AnswerChoice_ToProto(mapCtx *direct.MapContext, in *krm.QaQuesti
 	out.Score = in.Score
 	return out
 }
+
 func QaQuestion_AnswerChoice_StrValue_ToProto(mapCtx *direct.MapContext, in *string) *pb.QaQuestion_AnswerChoice_StrValue {
 	if in == nil {
 		return nil
 	}
 	return &pb.QaQuestion_AnswerChoice_StrValue{StrValue: *in}
 }
+
 func QaQuestion_AnswerChoice_NumValue_ToProto(mapCtx *direct.MapContext, in *float64) *pb.QaQuestion_AnswerChoice_NumValue {
 	if in == nil {
 		return nil
 	}
 	return &pb.QaQuestion_AnswerChoice_NumValue{NumValue: *in}
 }
+
 func QaQuestion_AnswerChoice_BoolValue_ToProto(mapCtx *direct.MapContext, in *bool) *pb.QaQuestion_AnswerChoice_BoolValue {
 	if in == nil {
 		return nil
 	}
 	return &pb.QaQuestion_AnswerChoice_BoolValue{BoolValue: *in}
 }
+
 func QaQuestion_AnswerChoice_NaValue_ToProto(mapCtx *direct.MapContext, in *bool) *pb.QaQuestion_AnswerChoice_NaValue {
 	if in == nil {
 		return nil
 	}
 	return &pb.QaQuestion_AnswerChoice_NaValue{NaValue: *in}
 }
+
 func QaQuestion_Metrics_FromProto(mapCtx *direct.MapContext, in *pb.QaQuestion_Metrics) *krm.QaQuestion_Metrics {
 	if in == nil {
 		return nil
@@ -1695,6 +1846,7 @@ func QaQuestion_Metrics_FromProto(mapCtx *direct.MapContext, in *pb.QaQuestion_M
 	// MISSING: Accuracy
 	return out
 }
+
 func QaQuestion_Metrics_ToProto(mapCtx *direct.MapContext, in *krm.QaQuestion_Metrics) *pb.QaQuestion_Metrics {
 	if in == nil {
 		return nil
@@ -1703,6 +1855,7 @@ func QaQuestion_Metrics_ToProto(mapCtx *direct.MapContext, in *krm.QaQuestion_Me
 	// MISSING: Accuracy
 	return out
 }
+
 func QaQuestion_MetricsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QaQuestion_Metrics) *krm.QaQuestion_MetricsObservedState {
 	if in == nil {
 		return nil
@@ -1711,6 +1864,7 @@ func QaQuestion_MetricsObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	out.Accuracy = direct.LazyPtr(in.GetAccuracy())
 	return out
 }
+
 func QaQuestion_MetricsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.QaQuestion_MetricsObservedState) *pb.QaQuestion_Metrics {
 	if in == nil {
 		return nil
@@ -1719,6 +1873,7 @@ func QaQuestion_MetricsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.Accuracy = direct.ValueOf(in.Accuracy)
 	return out
 }
+
 func QaScorecard_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecard) *krm.QaScorecard {
 	if in == nil {
 		return nil
@@ -1731,6 +1886,7 @@ func QaScorecard_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecard) *krm.Q
 	// MISSING: UpdateTime
 	return out
 }
+
 func QaScorecard_ToProto(mapCtx *direct.MapContext, in *krm.QaScorecard) *pb.QaScorecard {
 	if in == nil {
 		return nil
@@ -1743,6 +1899,7 @@ func QaScorecard_ToProto(mapCtx *direct.MapContext, in *krm.QaScorecard) *pb.QaS
 	// MISSING: UpdateTime
 	return out
 }
+
 func QaScorecardObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecard) *krm.QaScorecardObservedState {
 	if in == nil {
 		return nil
@@ -1755,6 +1912,7 @@ func QaScorecardObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QaScor
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
+
 func QaScorecardObservedState_ToProto(mapCtx *direct.MapContext, in *krm.QaScorecardObservedState) *pb.QaScorecard {
 	if in == nil {
 		return nil
@@ -1767,6 +1925,7 @@ func QaScorecardObservedState_ToProto(mapCtx *direct.MapContext, in *krm.QaScore
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
+
 func QaScorecardResult_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecardResult) *krm.QaScorecardResult {
 	if in == nil {
 		return nil
@@ -1785,6 +1944,7 @@ func QaScorecardResult_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecardRe
 	out.ScoreSources = direct.Slice_FromProto(mapCtx, in.ScoreSources, QaScorecardResult_ScoreSource_FromProto)
 	return out
 }
+
 func QaScorecardResult_ToProto(mapCtx *direct.MapContext, in *krm.QaScorecardResult) *pb.QaScorecardResult {
 	if in == nil {
 		return nil
@@ -1803,6 +1963,7 @@ func QaScorecardResult_ToProto(mapCtx *direct.MapContext, in *krm.QaScorecardRes
 	out.ScoreSources = direct.Slice_ToProto(mapCtx, in.ScoreSources, QaScorecardResult_ScoreSource_ToProto)
 	return out
 }
+
 func QaScorecardResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecardResult) *krm.QaScorecardResultObservedState {
 	if in == nil {
 		return nil
@@ -1821,6 +1982,7 @@ func QaScorecardResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.ScoreSources = direct.Slice_FromProto(mapCtx, in.ScoreSources, QaScorecardResult_ScoreSource_FromProto)
 	return out
 }
+
 func QaScorecardResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.QaScorecardResultObservedState) *pb.QaScorecardResult {
 	if in == nil {
 		return nil
@@ -1839,6 +2001,7 @@ func QaScorecardResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Q
 	out.ScoreSources = direct.Slice_ToProto(mapCtx, in.ScoreSources, QaScorecardResult_ScoreSource_ToProto)
 	return out
 }
+
 func QaScorecardResult_QaTagResult_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecardResult_QaTagResult) *krm.QaScorecardResult_QaTagResult {
 	if in == nil {
 		return nil
@@ -1850,6 +2013,7 @@ func QaScorecardResult_QaTagResult_FromProto(mapCtx *direct.MapContext, in *pb.Q
 	out.NormalizedScore = in.NormalizedScore
 	return out
 }
+
 func QaScorecardResult_QaTagResult_ToProto(mapCtx *direct.MapContext, in *krm.QaScorecardResult_QaTagResult) *pb.QaScorecardResult_QaTagResult {
 	if in == nil {
 		return nil
@@ -1861,6 +2025,7 @@ func QaScorecardResult_QaTagResult_ToProto(mapCtx *direct.MapContext, in *krm.Qa
 	out.NormalizedScore = in.NormalizedScore
 	return out
 }
+
 func QaScorecardResult_ScoreSource_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecardResult_ScoreSource) *krm.QaScorecardResult_ScoreSource {
 	if in == nil {
 		return nil
@@ -1873,6 +2038,7 @@ func QaScorecardResult_ScoreSource_FromProto(mapCtx *direct.MapContext, in *pb.Q
 	out.QaTagResults = direct.Slice_FromProto(mapCtx, in.QaTagResults, QaScorecardResult_QaTagResult_FromProto)
 	return out
 }
+
 func QaScorecardResult_ScoreSource_ToProto(mapCtx *direct.MapContext, in *krm.QaScorecardResult_ScoreSource) *pb.QaScorecardResult_ScoreSource {
 	if in == nil {
 		return nil
@@ -1885,6 +2051,7 @@ func QaScorecardResult_ScoreSource_ToProto(mapCtx *direct.MapContext, in *krm.Qa
 	out.QaTagResults = direct.Slice_ToProto(mapCtx, in.QaTagResults, QaScorecardResult_QaTagResult_ToProto)
 	return out
 }
+
 func RuntimeAnnotation_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeAnnotation) *krm.RuntimeAnnotation {
 	if in == nil {
 		return nil
@@ -1904,6 +2071,7 @@ func RuntimeAnnotation_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeAnnota
 	out.UserInput = RuntimeAnnotation_UserInput_FromProto(mapCtx, in.GetUserInput())
 	return out
 }
+
 func RuntimeAnnotation_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeAnnotation) *pb.RuntimeAnnotation {
 	if in == nil {
 		return nil
@@ -1935,6 +2103,7 @@ func RuntimeAnnotation_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeAnnotat
 	out.UserInput = RuntimeAnnotation_UserInput_ToProto(mapCtx, in.UserInput)
 	return out
 }
+
 func RuntimeAnnotation_UserInput_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeAnnotation_UserInput) *krm.RuntimeAnnotation_UserInput {
 	if in == nil {
 		return nil
@@ -1945,6 +2114,7 @@ func RuntimeAnnotation_UserInput_FromProto(mapCtx *direct.MapContext, in *pb.Run
 	out.QuerySource = direct.Enum_FromProto(mapCtx, in.GetQuerySource())
 	return out
 }
+
 func RuntimeAnnotation_UserInput_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeAnnotation_UserInput) *pb.RuntimeAnnotation_UserInput {
 	if in == nil {
 		return nil
@@ -1955,6 +2125,7 @@ func RuntimeAnnotation_UserInput_ToProto(mapCtx *direct.MapContext, in *krm.Runt
 	out.QuerySource = direct.Enum_ToProto[pb.RuntimeAnnotation_UserInput_QuerySource](mapCtx, in.QuerySource)
 	return out
 }
+
 func SentimentData_FromProto(mapCtx *direct.MapContext, in *pb.SentimentData) *krm.SentimentData {
 	if in == nil {
 		return nil
@@ -1964,6 +2135,7 @@ func SentimentData_FromProto(mapCtx *direct.MapContext, in *pb.SentimentData) *k
 	out.Score = direct.LazyPtr(in.GetScore())
 	return out
 }
+
 func SentimentData_ToProto(mapCtx *direct.MapContext, in *krm.SentimentData) *pb.SentimentData {
 	if in == nil {
 		return nil
@@ -1973,6 +2145,7 @@ func SentimentData_ToProto(mapCtx *direct.MapContext, in *krm.SentimentData) *pb
 	out.Score = direct.ValueOf(in.Score)
 	return out
 }
+
 func SilenceData_FromProto(mapCtx *direct.MapContext, in *pb.SilenceData) *krm.SilenceData {
 	if in == nil {
 		return nil
@@ -1980,6 +2153,7 @@ func SilenceData_FromProto(mapCtx *direct.MapContext, in *pb.SilenceData) *krm.S
 	out := &krm.SilenceData{}
 	return out
 }
+
 func SilenceData_ToProto(mapCtx *direct.MapContext, in *krm.SilenceData) *pb.SilenceData {
 	if in == nil {
 		return nil
@@ -1987,6 +2161,7 @@ func SilenceData_ToProto(mapCtx *direct.MapContext, in *krm.SilenceData) *pb.Sil
 	out := &pb.SilenceData{}
 	return out
 }
+
 func SmartComposeSuggestionData_FromProto(mapCtx *direct.MapContext, in *pb.SmartComposeSuggestionData) *krm.SmartComposeSuggestionData {
 	if in == nil {
 		return nil
@@ -1998,6 +2173,7 @@ func SmartComposeSuggestionData_FromProto(mapCtx *direct.MapContext, in *pb.Smar
 	out.QueryRecord = direct.LazyPtr(in.GetQueryRecord())
 	return out
 }
+
 func SmartComposeSuggestionData_ToProto(mapCtx *direct.MapContext, in *krm.SmartComposeSuggestionData) *pb.SmartComposeSuggestionData {
 	if in == nil {
 		return nil
@@ -2009,6 +2185,7 @@ func SmartComposeSuggestionData_ToProto(mapCtx *direct.MapContext, in *krm.Smart
 	out.QueryRecord = direct.ValueOf(in.QueryRecord)
 	return out
 }
+
 func SmartReplyData_FromProto(mapCtx *direct.MapContext, in *pb.SmartReplyData) *krm.SmartReplyData {
 	if in == nil {
 		return nil
@@ -2020,6 +2197,7 @@ func SmartReplyData_FromProto(mapCtx *direct.MapContext, in *pb.SmartReplyData) 
 	out.QueryRecord = direct.LazyPtr(in.GetQueryRecord())
 	return out
 }
+
 func SmartReplyData_ToProto(mapCtx *direct.MapContext, in *krm.SmartReplyData) *pb.SmartReplyData {
 	if in == nil {
 		return nil
