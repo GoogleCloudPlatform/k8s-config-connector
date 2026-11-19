@@ -239,7 +239,6 @@ BLOCKED_KINDS=(
     "MapmanagementMapContextConfig"
     "MapsPlatformDatasetsDataset"
     "MarketingPlatformAdminAnalyticsAccountLink"
-    "MigrationCenterImportJob"
     "ModelArmorTemplate"
     "NetappQuotaRule"
     "NetappReplication"

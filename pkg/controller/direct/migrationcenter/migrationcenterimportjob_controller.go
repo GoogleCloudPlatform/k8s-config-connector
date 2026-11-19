@@ -62,15 +62,15 @@ func (m *modelImportJob) AdapterForObject(ctx context.Context, op *directbase.Ad
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	i, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
 	id := i.(*krm.MigrationCenterImportJobIdentity)
-
-	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
 
 	// Get migrationcenter GCP client
 	gcpClient, err := m.client(ctx)
