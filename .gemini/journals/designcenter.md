@@ -22,4 +22,24 @@
   - **CRUD Operations**: The Space API uses synchronous CRUD methods (`CreateSpace`, `UpdateSpace`, `DeleteSpace`) rather than LROs. Controller handles synchronous responses directly.
   - **Fixtures & Golden Output**: Created minimal and maximal fixtures (`designcenterspace-minimal`, `designcenterspace-maximal`) and successfully recorded them against real GCP (`cnrm-barni-4`). Re-reconciliation, Server-Side Apply, and roundtrip fuzzers passed cleanly.
 
+### [2026-11-18] Prepopulating DesignCenterCatalog
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for DesignCenterCatalog (Issue #16049).
+- **Findings & Solution**:
+  - Configured `apis/designcenter/generate.sh` with dedicated `--resource DesignCenterCatalog:Catalog` under `generate-types` and `generate-identity`.
+  - Mechanically generated `designcentercatalog_types.go`, `designcentercatalog_identity.generated.go`, `designcentercatalog_reference.generated.go`, `designcentercatalog_identity_generated_test.go`, CRD manifest, deepcopy, and `pkg/controller/direct/designcenter/mapper.generated.go`.
+  - Added `DesignCenterCatalog` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Initialized open entries in `apis/designcenter/judgement_queue.yaml` for `DesignCenterCatalog` (including `untriaged-bulk-generation` with `status: open`).
+  - Recorded untriaged missing fields in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+
+### [2026-11-19] Triaging judgement queue and finalizing KRM types for DesignCenterCatalog
+- **Context**: Triaged `apis/designcenter/judgement_queue.yaml` and finalized KRM types, identity, and reference types for `DesignCenterCatalog` (Issue #16066).
+- **Resolutions & Findings**:
+  - `location-or-parent-ref`, `parent-ref-guessed`, `identity-root-unknown`: DesignCenterCatalog is a child resource under DesignCenterSpace (`projects/{project}/locations/{location}/spaces/{space}/catalogs/{catalog}`). Per `judgement/references/PARENT_AND_IDENTITY.md` (Case B), replaced `ProjectRef`, `Location`, and `SpaceRef` with required, immutable `ParentRef *DesignCenterSpaceRef` (`json:"parentRef"`).
+  - `identity-not-in-cai`: Verified template `//designcenter.googleapis.com/projects/{project}/locations/{location}/spaces/{space}/catalogs/{catalog}` against proto `google.api.resource` pattern and marked accepted.
+  - `verify-service-docs-link` & `verify-resource-docs-link`: Added service docs `https://cloud.google.com/application-design-center/docs` and REST reference `https://cloud.google.com/application-design-center/docs/reference/rest/v1/projects.locations.spaces.catalogs`.
+  - `untriaged-bulk-generation`: Resolved with resolution `edited`.
+  - Updated golden exceptions in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+
+
+
 

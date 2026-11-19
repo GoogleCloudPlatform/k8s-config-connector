@@ -18,8 +18,28 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.designcenter.v1
 // resource: DesignCenterSpace:Space
+// resource: DesignCenterCatalog:Catalog
 
 package v1alpha1
+
+/* found existing non-generated go type with proto tag "google.cloud.designcenter.v1.Catalog", skipping
+
+// +kcc:proto=google.cloud.designcenter.v1.Catalog
+type Catalog struct {
+	// Identifier. The catalog name in the following format:
+	//  `projects/$project/locations/$location/spaces/$space/catalogs/$catalog`
+	// +kcc:proto:field=google.cloud.designcenter.v1.Catalog.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The catalog display name.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Catalog.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The catalog description.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Catalog.description
+	Description *string `json:"description,omitempty"`
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.designcenter.v1.Space", skipping
 
@@ -64,6 +84,20 @@ type Space struct {
 	//  https://cloud.google.com/resource-manager/docs/tags/tags-overview.
 	// +kcc:proto:field=google.cloud.designcenter.v1.Space.tags
 	Tags map[string]string `json:"tags,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.designcenter.v1.Catalog", skipping
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.Catalog
+type CatalogObservedState struct {
+	// Output only. The catalog creation timestamp.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Catalog.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The catalog update timestamp.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Catalog.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
 
