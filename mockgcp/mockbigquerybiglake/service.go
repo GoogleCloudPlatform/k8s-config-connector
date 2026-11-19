@@ -17,19 +17,26 @@ package mockbigquerybiglake
 // +tool:mockgcp-service
 // http.host: biglake.googleapis.com
 // proto.service: google.cloud.bigquery.biglake.v1.MetastoreService
+// proto.service: google.cloud.biglake.v1.IcebergCatalogService
 
 import (
 	"context"
 	"net/http"
 
+	biglakepb "cloud.google.com/go/biglake/apiv1/biglakepb"
 	"google.golang.org/grpc"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/biglake/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
+
+func init() {
+	mockgcpregistry.Register(New)
+}
 
 // MockService represents a mocked biglake service.
 type MockService struct {
@@ -39,7 +46,7 @@ type MockService struct {
 }
 
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
@@ -54,6 +61,7 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterMetastoreServiceServer(grpcServer, &bigLakeService{MockService: s})
+	biglakepb.RegisterIcebergCatalogServiceServer(grpcServer, &icebergCatalogService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {

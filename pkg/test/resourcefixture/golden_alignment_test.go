@@ -460,7 +460,7 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 	}
 }
 
-var statusRegex = regexp.MustCompile(`^\d{3} `)
+var statusRegex = regexp.MustCompile(`^(\d{3} |OK$|error: )`)
 
 func parseLog(t *testing.T, content string) []httpEvent {
 	var events []httpEvent
@@ -644,8 +644,10 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "endTime")
 		delete(v, "statusMessage")
 		delete(v, "createTime")
+		delete(v, "create-time")
 		delete(v, "creationTime")
 		delete(v, "updateTime")
+		delete(v, "update-time")
 		delete(v, "updateTimestamp")
 		delete(v, "consistencyMembershipResolutionTime")
 		delete(v, "rolloutOperation")
