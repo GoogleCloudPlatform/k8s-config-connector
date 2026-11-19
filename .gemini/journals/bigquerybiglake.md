@@ -37,3 +37,33 @@
   6. Verified fuzzer passes (`FOCUS=BigLakeIcebergCatalog go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`), and updated `alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test -v ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha`.
 - **Impact**: Greenfield Step 2 complete; `BigLakeIcebergCatalog` controller, fuzzer, and real GCP fixtures verified and ready for Step 3 MockGCP implementation.
 
+### [2026-11-19] Greenfield Step 1a: Prepopulate direct KRM types, identity, and judgement queue for BigLakeIcebergNamespace
+- **Context**: Prepopulating direct KRM types, identity, reference, and `judgement_queue.yaml` for `BigLakeIcebergNamespace` under `bigquerybiglake.cnrm.cloud.google.com/v1alpha1` (Issue #16142).
+- **Details**:
+  1. Verified `BigLakeIcebergNamespace` corresponds to `google.cloud.biglake.v1.IcebergNamespace` from `iceberg_rest_catalog.proto` under the GA package `google.cloud.biglake.v1`.
+  2. Configured `apis/bigquerybiglake/generate.sh` to add `generate-types` with `--resource BigLakeIcebergNamespace:IcebergNamespace` and `--prepopulate-resource`, and `generate-identity` with `--pattern BigLakeIcebergNamespace=projects/{project}/catalogs/{catalog}/namespaces/{namespace}`.
+  3. Ran `./apis/bigquerybiglake/generate.sh`, generating `biglakeicebergnamespace_types.go`, `biglakeicebergnamespace_identity.generated.go`, `biglakeicebergnamespace_identity_generated_test.go`, `biglakeicebergnamespace_reference.generated.go`, updating `types.generated.go`, `mapper.generated.go`, and generating the CRD.
+  4. Confirmed `apis/bigquerybiglake/judgement_queue.yaml` was populated with open entries for `BigLakeIcebergNamespace` including `untriaged-bulk-generation` (`status: open`).
+  5. Added `"BigLakeIcebergNamespace"` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` sorted alphabetically.
+  6. Verified compilation of `apis/bigquerybiglake/...` and `pkg/controller/direct/bigquerybiglake/...`.
+  7. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...`.
+  8. Verified `./apis/bigquerybiglake/generate.sh` idempotency (producing zero uncommitted diffs), and confirmed all unit tests and `apichecks` pass.
+- **Impact**: Greenfield Step 1a complete; `BigLakeIcebergNamespace` is prepopulated with open judgement queue entries ready for Step 1b triage.
+
+### [2026-11-19] Greenfield Step 1b: Triage judgement queue and finalize direct KRM types and identity for BigLakeIcebergNamespace
+- **Context**: Triaging `apis/bigquerybiglake/judgement_queue.yaml` and finalizing direct KRM types, identity, and references for `BigLakeIcebergNamespace` (Issue #16154).
+- **Details**:
+  1. Triaged and resolved all 7 entries in `apis/bigquerybiglake/judgement_queue.yaml` for `BigLakeIcebergNamespace`.
+  2. Applied Case B (Child Resource of Another GCP Resource) from `judgement/references/PARENT_AND_IDENTITY.md`: modeled parent as required, immutable `spec.parentRef` (`*BigLakeIcebergCatalogRef`), and removed `spec.projectRef` and `spec.location`. Resolved `location-parent-unknown` and `identity-root-unknown`.
+  3. Re-ran `./apis/bigquerybiglake/generate.sh`, which automatically updated `getIdentityFromBigLakeIcebergNamespaceSpec` to normalize `spec.parentRef` and construct the identity `projects/{project}/catalogs/{catalog}/namespaces/{namespace}`.
+  4. Added `//biglake.googleapis.com/projects/{}/catalogs/{}/namespaces/{}` to `ignoredTemplates` in `pkg/gcpurls/registry_test.go` and resolved `identity-not-in-cai`.
+  5. Updated resource-docs URL in `biglakeicebergnamespace_types.go` to `https://cloud.google.com/bigquery/docs/iceberg-rest-catalog-about`, removed the guess annotation, and resolved `verify-resource-docs-link`.
+  6. Resolved `empty-observedstate` as accepted since `google.cloud.biglake.v1.IcebergNamespace` contains no server-populated output-only fields and `ObservedState` is commented out.
+  7. Resolved `identity-server-generated-id` as accepted since `CreateIcebergNamespaceRequest` has no ID parameter in the RPC request, matching existing direct resource precedent while supporting client-specified namespace IDs via `spec.resourceID` or `metadata.name`.
+  8. Added comprehensive unit tests in `biglakeicebergnamespace_identity_test.go` covering `GetIdentity` with explicit `resourceID`, missing `parentRef`, server-generated ID from status, and drift detection.
+  9. Resolved `untriaged-bulk-generation` (`edited`).
+  10. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...` to reflect replacing `spec.projectRef`/`spec.location` with `spec.parentRef`.
+  11. Verified all unit tests, `apichecks`, and `gcpurls` tests pass cleanly.
+- **Impact**: Greenfield Step 1b complete; `BigLakeIcebergNamespace` types, identity, references, CRD, and judgement queue triaged and fully verified.
+
+

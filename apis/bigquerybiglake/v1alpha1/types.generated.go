@@ -21,6 +21,7 @@
 // resource: BigLakeCatalog:Catalog
 // resource: BigLakeDatabase:Database
 // resource: BigLakeIcebergCatalog:IcebergCatalog
+// resource: BigLakeIcebergNamespace:IcebergNamespace
 
 package v1alpha1
 
@@ -271,6 +272,20 @@ type IcebergCatalog_RestrictedLocationsConfig struct {
 	// +kcc:proto:field=google.cloud.biglake.v1.IcebergCatalog.RestrictedLocationsConfig.restricted_locations
 	RestrictedLocations []string `json:"restrictedLocations,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.biglake.v1.IcebergNamespace", skipping
+
+// +kcc:proto=google.cloud.biglake.v1.IcebergNamespace
+type IcebergNamespace struct {
+	// Required. The name of the namespace.
+	// +kcc:proto:field=google.cloud.biglake.v1.IcebergNamespace.namespace
+	Namespace []string `json:"namespace,omitempty"`
+
+	// Optional. The optional properties of the namespace.
+	// +kcc:proto:field=google.cloud.biglake.v1.IcebergNamespace.properties
+	Properties map[string]string `json:"properties,omitempty"`
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.bigquery.biglake.v1.Catalog", skipping
 

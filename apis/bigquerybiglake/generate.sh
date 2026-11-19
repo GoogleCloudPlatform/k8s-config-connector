@@ -45,13 +45,16 @@ ${CONTROLLERBUILDER} generate-types \
     --api-version "bigquerybiglake.cnrm.cloud.google.com/v1alpha1" \
     --include-skipped-output \
     --resource BigLakeIcebergCatalog:IcebergCatalog \
+    --resource BigLakeIcebergNamespace:IcebergNamespace \
     --prepopulate-resource
 
 ${CONTROLLERBUILDER} generate-identity \
     --service google.cloud.biglake.v1 \
     --api-version "bigquerybiglake.cnrm.cloud.google.com/v1alpha1" \
     --resource BigLakeIcebergCatalog:IcebergCatalog \
-    --pattern BigLakeIcebergCatalog=projects/{project}/catalogs/{catalog}
+    --resource BigLakeIcebergNamespace:IcebergNamespace \
+    --pattern BigLakeIcebergCatalog=projects/{project}/catalogs/{catalog} \
+    --pattern BigLakeIcebergNamespace=projects/{project}/catalogs/{catalog}/namespaces/{namespace}
 
 # --- v1beta1 ---
 
