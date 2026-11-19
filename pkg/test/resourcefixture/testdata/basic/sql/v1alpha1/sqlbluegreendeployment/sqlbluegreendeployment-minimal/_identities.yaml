@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: sql.cnrm.cloud.google.com
+  kind: SQLInstance
+  name: sqlinstance-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //sqladmin.googleapis.com/projects/${projectId}/locations/us-central1/blueGreenDeployments/sqlbgd-minimal-${uniqueId}
+  group: sql.cnrm.cloud.google.com
+  kind: SQLBlueGreenDeployment
+  name: sqlbgd-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
