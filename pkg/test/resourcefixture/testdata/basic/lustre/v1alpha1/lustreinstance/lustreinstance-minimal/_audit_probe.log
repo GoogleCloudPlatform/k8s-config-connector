@@ -1,0 +1,160 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "autoCreateSubnetworks": true,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Default network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "peerings": [
+    {
+      "autoCreateRoutes": true,
+      "connectionStatus": {
+        "trafficConfiguration": {
+          "exportCustomRoutesToPeer": true,
+          "exportSubnetRoutesWithPublicIpToPeer": true,
+          "importCustomRoutesFromPeer": true,
+          "importSubnetRoutesWithPublicIpFromPeer": true,
+          "stackType": "IPV4_ONLY"
+        },
+        "updateStrategy": "INDEPENDENT"
+      },
+      "exchangeSubnetRoutes": true,
+      "exportCustomRoutes": true,
+      "exportSubnetRoutesWithPublicIp": true,
+      "importCustomRoutes": true,
+      "importSubnetRoutesWithPublicIp": true,
+      "name": "filestore-peer-205697518936",
+      "network": "https://www.googleapis.com/compute/beta/projects/r839adf9e2adedea3p-tp/global/networks/${networkID}-2309458234058",
+      "stackType": "IPV4_ONLY",
+      "state": "ACTIVE",
+      "stateDetails": "[2026-09-15T15:22:39.817-07:00]: Connected.",
+      "updateStrategy": "INDEPENDENT"
+    },
+    {
+      "autoCreateRoutes": true,
+      "connectionStatus": {
+        "trafficConfiguration": {
+          "exportCustomRoutesToPeer": false,
+          "exportSubnetRoutesWithPublicIpToPeer": true,
+          "importCustomRoutesFromPeer": false,
+          "importSubnetRoutesWithPublicIpFromPeer": true,
+          "stackType": "IPV4_ONLY"
+        },
+        "updateStrategy": "INDEPENDENT"
+      },
+      "exchangeSubnetRoutes": true,
+      "exportCustomRoutes": false,
+      "exportSubnetRoutesWithPublicIp": true,
+      "importCustomRoutes": false,
+      "importSubnetRoutesWithPublicIp": true,
+      "name": "redis-peer-1035741069106",
+      "network": "https://www.googleapis.com/compute/beta/projects/n93e82bfd992400f1p-tp/global/networks/${networkID}-redis-e619463a-57d4-4053-a70d-b8c275ad4d49",
+      "stackType": "IPV4_ONLY",
+      "state": "ACTIVE",
+      "stateDetails": "[2026-08-27T08:50:32.943-07:00]: Connected.",
+      "updateStrategy": "INDEPENDENT"
+    },
+    {
+      "autoCreateRoutes": true,
+      "connectionStatus": {
+        "trafficConfiguration": {
+          "exportCustomRoutesToPeer": false,
+          "exportSubnetRoutesWithPublicIpToPeer": false,
+          "importCustomRoutesFromPeer": false,
+          "importSubnetRoutesWithPublicIpFromPeer": false,
+          "stackType": "IPV4_ONLY"
+        },
+        "updateStrategy": "INDEPENDENT"
+      },
+      "exchangeSubnetRoutes": true,
+      "exportCustomRoutes": false,
+      "exportSubnetRoutesWithPublicIp": false,
+      "importCustomRoutes": false,
+      "importSubnetRoutesWithPublicIp": false,
+      "name": "servicenetworking-googleapis-com",
+      "network": "https://www.googleapis.com/compute/beta/projects/j2b4b3bfb609f2b07p-tp/global/networks/servicenetworking",
+      "stackType": "IPV4_ONLY",
+      "state": "ACTIVE",
+      "stateDetails": "[2026-11-19T04:18:57.567-08:00]: Connected.",
+      "updateStrategy": "INDEPENDENT"
+    }
+  ],
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "subnetworks": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${networkID}"
+  ]
+}
+
+---
+
+GET https://lustre.googleapis.com/v1/projects/${projectId}/locations/us-east4-b/instances/lustreinstance-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "capacityGib": "18000",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Minimal updated description",
+  "filesystem": "testfs",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "mountPoint": "192.168.84.3@tcp:/testfs",
+  "name": "projects/${projectId}/locations/us-east4-b/instances/lustreinstance-minimal-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "perUnitStorageThroughput": "1000",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
