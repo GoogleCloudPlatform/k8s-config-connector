@@ -1,6 +1,7 @@
+# Phase: CREATE
 GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-east1/deliveryPipelines/clouddeploydeliverypipeline-full-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-full-2-${uniqueId}
 
 404 Not Found
@@ -25,7 +26,7 @@ X-Xss-Protection: 0
 
 POST https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-east1/deliveryPipelines?%24alt=json%3Benum-encoding%3Dint&deliveryPipelineId=clouddeploydeliverypipeline-full-2-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-east1
 
 {
@@ -113,7 +114,7 @@ X-Xss-Protection: 0
 
 GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Foperations%2F${operationID}
 
 200 OK
@@ -205,9 +206,10 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: UPDATE
 GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-east1/deliveryPipelines/clouddeploydeliverypipeline-full-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-full-2-${uniqueId}
 
 200 OK
@@ -288,7 +290,7 @@ X-Xss-Protection: 0
 
 PATCH https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-east1/deliveryPipelines/clouddeploydeliverypipeline-full-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=name%2CserialPipeline.stages
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: delivery_pipeline.name=projects%2F${projectId}%2Flocations%2Fus-east1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-full-2-${uniqueId}
 
 {
@@ -326,6 +328,9 @@ X-Goog-Request-Params: delivery_pipeline.name=projects%2F${projectId}%2Flocation
                   "httpRoute": "my-http-route",
                   "podSelectorLabel": "app=my-app",
                   "routeDestinations": {
+                    "destinationIds": [
+                      "dest1"
+                    ],
                     "propagateService": true
                   },
                   "routeUpdateWaitTime": "60s",
@@ -367,7 +372,7 @@ X-Xss-Protection: 0
 
 GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Foperations%2F${operationID}
 
 200 OK
@@ -428,6 +433,9 @@ X-Xss-Protection: 0
                     "httpRoute": "my-http-route",
                     "podSelectorLabel": "app=my-app",
                     "routeDestinations": {
+                      "destinationIds": [
+                        "dest1"
+                      ],
                       "propagateService": true
                     },
                     "routeUpdateWaitTime": "60s",
@@ -449,9 +457,10 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: DELETE
 GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-east1/deliveryPipelines/clouddeploydeliverypipeline-full-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-full-2-${uniqueId}
 
 200 OK
@@ -500,6 +509,9 @@ X-Xss-Protection: 0
                   "httpRoute": "my-http-route",
                   "podSelectorLabel": "app=my-app",
                   "routeDestinations": {
+                    "destinationIds": [
+                      "dest1"
+                    ],
                     "propagateService": true
                   },
                   "routeUpdateWaitTime": "60s",
@@ -522,7 +534,7 @@ X-Xss-Protection: 0
 
 DELETE https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-east1/deliveryPipelines/clouddeploydeliverypipeline-full-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-full-2-${uniqueId}
 
 200 OK
@@ -550,7 +562,7 @@ X-Xss-Protection: 0
 
 GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Foperations%2F${operationID}
 
 200 OK

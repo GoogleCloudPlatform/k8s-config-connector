@@ -1,0 +1,38 @@
+apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
+kind: AIPlatformArtifact
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+    env: prod
+  name: aiplatformartifact-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Updated test artifact description ${uniqueId}
+  displayName: Updated Maximal Artifact ${uniqueId}
+  metadata:
+    framework: pytorch
+    version: "2.0"
+  parentRef:
+    name: metadatastore${uniqueId}
+  resourceID: artifact-maximal-${uniqueId}
+  schemaTitle: system.Artifact
+  schemaVersion: 0.0.1
+  state: LIVE
+  uri: https://example.com/artifact/updated-model.bin
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/metadataStores/metadatastore${uniqueId}/artifacts/artifact-maximal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    etag: abcdef123456
+    updateTime: "1970-01-01T00:00:00Z"

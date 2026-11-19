@@ -1,0 +1,49 @@
+apiVersion: agentidentity.cnrm.cloud.google.com/v1alpha1
+kind: AgentIdentityAuthProvider
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: authprovider-max-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  allowedScopes:
+  - https://www.googleapis.com/auth/userinfo.email
+  - https://www.googleapis.com/auth/cloud-platform
+  authProviderTypeParams:
+    threeLeggedOauth:
+      authorizationURL: https://auth.example.com/authorize2
+      clientID: updated-client-id
+      clientSecret: example-client-secret
+      defaultContinueURI: https://example.com/continue2
+      enablePkce: true
+      tokenURL: https://auth.example.com/oauth/token2
+  blockedScopes:
+  - https://www.googleapis.com/auth/userinfo.profile
+  - https://www.googleapis.com/auth/drive
+  description: Updated description for maximal auth provider
+  location: us-central1
+  projectRef:
+    external: projects/${projectId}
+  resourceID: authprovider-max-${uniqueId}
+  workloadIDs:
+  - principal://agents.global.org-123456789.system.id.goog/resources/aiplatform/projects/12345/locations/us-central1/reasoningEngines/12345
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/authProviders/authprovider-max-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    authProviderTypeParams:
+      threeLeggedOauth:
+        redirectURL: https://agentidentitycredentials.googleapis.com/v1/projects/${projectId}/locations/us-central1/authProviders/authprovider-max-${uniqueId}/oauthcallback
+    createTime: "1970-01-01T00:00:00Z"
+    state: ENABLED
+    updateTime: "1970-01-01T00:00:00Z"

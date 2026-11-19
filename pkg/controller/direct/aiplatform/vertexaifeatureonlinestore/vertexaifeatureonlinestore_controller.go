@@ -164,6 +164,15 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 	log.V(2).Info("successfully created VertexAIFeatureOnlineStore", "name", a.id.String())
 
+	// Build status from a GET because CreateFeatureOnlineStore LRO returns only the resource name.
+	getReq := &pb.GetFeatureOnlineStoreRequest{
+		Name: a.id.String(),
+	}
+	created, err = a.gcpClient.GetFeatureOnlineStore(ctx, getReq)
+	if err != nil {
+		return fmt.Errorf("getting VertexAIFeatureOnlineStore %q after creation: %w", a.id.String(), err)
+	}
+
 	status := &krm.VertexAIFeatureOnlineStoreStatus{}
 	status.ObservedState = aiplatform.VertexAIFeatureOnlineStoreObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
@@ -233,6 +242,15 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return fmt.Errorf("waiting for update VertexAIFeatureOnlineStore %q: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully updated VertexAIFeatureOnlineStore", "name", a.id.String())
+
+	// Build status from a GET because UpdateFeatureOnlineStore LRO returns only the resource name.
+	getReq := &pb.GetFeatureOnlineStoreRequest{
+		Name: a.id.String(),
+	}
+	updated, err = a.gcpClient.GetFeatureOnlineStore(ctx, getReq)
+	if err != nil {
+		return fmt.Errorf("getting VertexAIFeatureOnlineStore %q after update: %w", a.id.String(), err)
+	}
 
 	status := &krm.VertexAIFeatureOnlineStoreStatus{}
 	status.ObservedState = aiplatform.VertexAIFeatureOnlineStoreObservedState_FromProto(mapCtx, updated)

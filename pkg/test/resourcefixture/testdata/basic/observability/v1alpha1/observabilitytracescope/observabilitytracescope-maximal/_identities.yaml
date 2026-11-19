@@ -1,0 +1,6 @@
+- caisURL: //observability.googleapis.com/projects/${projectId}/locations/global/traceScopes/tracescope-max-${uniqueId}
+  group: observability.cnrm.cloud.google.com
+  kind: ObservabilityTraceScope
+  name: tracescope-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

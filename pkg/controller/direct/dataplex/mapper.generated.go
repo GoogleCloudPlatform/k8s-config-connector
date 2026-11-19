@@ -2539,6 +2539,7 @@ func DataplexEntityObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Ent
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.CatalogEntry = direct.LazyPtr(in.GetCatalogEntry())
 	out.Format = StorageFormatObservedState_FromProto(mapCtx, in.GetFormat())
 	out.Compatibility = Entity_CompatibilityStatusObservedState_FromProto(mapCtx, in.GetCompatibility())
@@ -2555,51 +2556,12 @@ func DataplexEntityObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Data
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
 	out.CatalogEntry = direct.ValueOf(in.CatalogEntry)
 	out.Format = StorageFormatObservedState_ToProto(mapCtx, in.Format)
 	out.Compatibility = Entity_CompatibilityStatusObservedState_ToProto(mapCtx, in.Compatibility)
 	out.Access = StorageAccessObservedState_ToProto(mapCtx, in.Access)
 	out.Uid = direct.ValueOf(in.Uid)
-	return out
-}
-
-func DataplexEntitySpec_FromProto(mapCtx *direct.MapContext, in *pb.Entity) *krm.DataplexEntitySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataplexEntitySpec{}
-	// MISSING: Name
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.ID = direct.LazyPtr(in.GetId())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.Asset = direct.LazyPtr(in.GetAsset())
-	out.DataPath = direct.LazyPtr(in.GetDataPath())
-	out.DataPathPattern = direct.LazyPtr(in.GetDataPathPattern())
-	out.System = direct.Enum_FromProto(mapCtx, in.GetSystem())
-	out.Format = StorageFormat_FromProto(mapCtx, in.GetFormat())
-	out.Schema = Schema_FromProto(mapCtx, in.GetSchema())
-	return out
-}
-
-func DataplexEntitySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntitySpec) *pb.Entity {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Entity{}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.Id = direct.ValueOf(in.ID)
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Type = direct.Enum_ToProto[pb.Entity_Type](mapCtx, in.Type)
-	out.Asset = direct.ValueOf(in.Asset)
-	out.DataPath = direct.ValueOf(in.DataPath)
-	out.DataPathPattern = direct.ValueOf(in.DataPathPattern)
-	out.System = direct.Enum_ToProto[pb.StorageSystem](mapCtx, in.System)
-	out.Format = StorageFormat_ToProto(mapCtx, in.Format)
-	out.Schema = Schema_ToProto(mapCtx, in.Schema)
 	return out
 }
 
@@ -3198,6 +3160,30 @@ func DataplexMetadataJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.Dataplex
 	if oneof := MetadataJobExportJobSpec_ToProto(mapCtx, in.ExportSpec); oneof != nil {
 		out.Spec = &pb.MetadataJob_ExportSpec{ExportSpec: oneof}
 	}
+	return out
+}
+
+func DataplexPartitionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Partition) *krm.DataplexPartitionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexPartitionSpec{}
+	// MISSING: Name
+	out.Values = in.Values
+	out.Location = direct.LazyPtr(in.GetLocation())
+	// MISSING: Etag
+	return out
+}
+
+func DataplexPartitionSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexPartitionSpec) *pb.Partition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Partition{}
+	// MISSING: Name
+	out.Values = in.Values
+	out.Location = direct.ValueOf(in.Location)
+	// MISSING: Etag
 	return out
 }
 

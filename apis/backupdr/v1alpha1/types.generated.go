@@ -18,8 +18,89 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.backupdr.v1
 // resource: BackupDRManagementServer:ManagementServer
+// resource: BackupDRRestoreVerificationPlan:RestoreVerificationPlan
+// resource: BackupDRAutoProtectionPolicy:AutoProtectionPolicy
 
 package v1alpha1
+
+/* found existing non-generated go type with proto tag "google.cloud.backupdr.v1.AutoProtectionPolicy", skipping
+
+// +kcc:proto=google.cloud.backupdr.v1.AutoProtectionPolicy
+type AutoProtectionPolicy struct {
+
+	// Optional. A description of the policy. The description must be at most 2048
+	//  characters.
+	// +kcc:proto:field=google.cloud.backupdr.v1.AutoProtectionPolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. The backup plan details for matching resources.
+	// +kcc:proto:field=google.cloud.backupdr.v1.AutoProtectionPolicy.backup_plan_details
+	BackupPlanDetails []BackupPlanDetail `json:"backupPlanDetails,omitempty"`
+
+	// Required. The criteria for matching resources.
+	// +kcc:proto:field=google.cloud.backupdr.v1.AutoProtectionPolicy.criteria
+	Criteria *Criteria `json:"criteria,omitempty"`
+
+	// Output only. The etag for the policy.
+	//  If this is provided on update, it must match the server's etag.
+	// +kcc:proto:field=google.cloud.backupdr.v1.AutoProtectionPolicy.etag
+	Etag *string `json:"etag,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "BackupPlanDetail", skipping
+
+// +kcc:proto=google.cloud.backupdr.v1.BackupPlanDetail
+type BackupPlanDetail struct {
+	// Required. The type of resource that this policy will automatically protect.
+	//  Allowed values are, `compute.googleapis.com/Instance` and
+	//  `compute.googleapis.com/Disk` are supported.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanDetail.resource_type
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// Required. The resource name of the BackupPlan to apply to resources that
+	//  match the policy's criteria. This backup plan must be in the same location
+	//  as AutoProtectionPolicy. Format:
+	//  projects/{project}/locations/{location}/backupPlans/{backupPlanId}
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanDetail.backup_plan
+	BackupPlan *string `json:"backupPlan,omitempty"`
+}
+*/
+
+/* unreachable type BindingSummary
+// +kcc:proto=google.cloud.backupdr.v1.BindingSummary
+type BindingSummary struct {
+}
+*/
+
+// +kcc:proto=google.cloud.backupdr.v1.Criteria
+type Criteria struct {
+	// Required. A list of matching conditions that a resource must meet to be
+	//  protected by the policy.
+	// +kcc:proto:field=google.cloud.backupdr.v1.Criteria.matching_conditions
+	// +required
+	MatchingConditions []MatchingCondition `json:"matchingConditions,omitempty"`
+}
+
+// +kcc:proto=google.cloud.backupdr.v1.KeyValuePair
+type KeyValuePair struct {
+	// Required. The key of the label to match.
+	//  This must be in the format `{label_key}`.
+	//  The key must match the regex
+	//  Format:`[\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}`.
+	// +kcc:proto:field=google.cloud.backupdr.v1.KeyValuePair.key
+	// +required
+	Key *string `json:"key,omitempty"`
+
+	// Required. The values of the label to match.
+	//  There will be explicit "OR" between values of array.
+	//  Each value must be in the format `{label_value}`.
+	//  The value must match the regex
+	//  Format: `[\\p{Ll}\\p{Lo}\\p{N}_-]{1,63}`.
+	// +kcc:proto:field=google.cloud.backupdr.v1.KeyValuePair.values
+	// +required
+	Values []string `json:"values,omitempty"`
+}
 
 /* found existing non-generated go type with proto tag "google.cloud.backupdr.v1.ManagementServer", skipping
 
@@ -62,6 +143,14 @@ type ManagementURI struct {
 }
 */
 
+// +kcc:proto=google.cloud.backupdr.v1.MatchingCondition
+type MatchingCondition struct {
+	// Optional. A condition that matches resources based on their labels.
+	//  For MVP, this is limited to a single label match.
+	// +kcc:proto:field=google.cloud.backupdr.v1.MatchingCondition.label_condition
+	LabelCondition *KeyValuePair `json:"labelCondition,omitempty"`
+}
+
 /* found existing non-generated go type "NetworkConfig", skipping
 
 // +kcc:proto=google.cloud.backupdr.v1.NetworkConfig
@@ -78,6 +167,69 @@ type NetworkConfig struct {
 }
 */
 
+/* unreachable type PolicyEvaluationSummary
+// +kcc:proto=google.cloud.backupdr.v1.PolicyEvaluationSummary
+type PolicyEvaluationSummary struct {
+}
+*/
+
+// +kcc:proto=google.cloud.backupdr.v1.RestoreVerificationCleanupRule
+type RestoreVerificationCleanupRule struct {
+	// Optional. Duration after restore finishes when cleanup triggers.
+	//  Delay must be non-negative and at most 30 days (2592000 seconds).
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationCleanupRule.cleanup_delay
+	CleanupDelay *string `json:"cleanupDelay,omitempty"`
+
+	// Optional. If set to true, the restored resource will not be cleaned up.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationCleanupRule.skip_cleanup
+	SkipCleanup *bool `json:"skipCleanup,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.backupdr.v1.RestoreVerificationPlan", skipping
+
+// +kcc:proto=google.cloud.backupdr.v1.RestoreVerificationPlan
+type RestoreVerificationPlan struct {
+
+	// Optional. The description of the `RestoreVerificationPlan` resource.
+	//
+	//  The description allows for additional details about
+	//  `RestoreVerificationPlan` and its use cases to be provided. An example
+	//  description is the following: "This is a restore verification plan that
+	//  performs a daily verification and cleans up the resources immediately
+	//  after." The description must be at most 2048 characters.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. User-defined labels.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Required. Describes the schedule on which the restore verification will be
+	//  executed.
+	//
+	//  The schedule is specified as a
+	//  [Crontab](https://en.wikipedia.org/wiki/Cron#Overview) string.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.schedule
+	Schedule *string `json:"schedule,omitempty"`
+
+	// Optional. Specifies the time zone to be used in interpreting
+	//  [schedule][google.cloud.backupdr.v1.RestoreVerificationPlan.schedule].
+	//  The value of this field must be a time zone name from the [tz
+	//  database](https://en.wikipedia.org/wiki/Tz_database), like
+	//  "America/New_York" or "UTC". Defaults to `UTC` if not specified.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.time_zone
+	TimeZone *string `json:"timeZone,omitempty"`
+
+	// Optional. The cleanup rule to apply if the restore verification succeeds.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.success_cleanup_rule
+	SuccessCleanupRule *RestoreVerificationCleanupRule `json:"successCleanupRule,omitempty"`
+
+	// Optional. The cleanup rule to apply if the restore verification fails.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.failure_cleanup_rule
+	FailureCleanupRule *RestoreVerificationCleanupRule `json:"failureCleanupRule,omitempty"`
+}
+*/
+
 /* unreachable type WorkforceIdentityBasedManagementURI
 // +kcc:proto=google.cloud.backupdr.v1.WorkforceIdentityBasedManagementURI
 type WorkforceIdentityBasedManagementURI struct {
@@ -90,6 +242,47 @@ type WorkforceIdentityBasedManagementURI struct {
 type WorkforceIdentityBasedOAuth2ClientID struct {
 }
 */
+
+/* found existing non-generated go type with proto tag "google.cloud.backupdr.v1.AutoProtectionPolicy", skipping
+
+// +kcc:observedstate:proto=google.cloud.backupdr.v1.AutoProtectionPolicy
+type AutoProtectionPolicyObservedState struct {
+	// Output only. Identifier. The resource name of the AutoProtectionPolicy.
+	//  Format:
+	//  `projects/{project}/locations/{location}/autoProtectionPolicies/{auto_protection_policy}`
+	// +kcc:proto:field=google.cloud.backupdr.v1.AutoProtectionPolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The current state of the AutoProtectionPolicy.
+	// +kcc:proto:field=google.cloud.backupdr.v1.AutoProtectionPolicy.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Summary of total count of different containers covered through
+	//  this policy.
+	// +kcc:proto:field=google.cloud.backupdr.v1.AutoProtectionPolicy.binding_summary
+	BindingSummary *BindingSummaryObservedState `json:"bindingSummary,omitempty"`
+
+	// Output only. Summary of last policy evaluation when job was run per
+	//  workload type.
+	// +kcc:proto:field=google.cloud.backupdr.v1.AutoProtectionPolicy.policy_evaluation_summary
+	PolicyEvaluationSummary *PolicyEvaluationSummaryObservedState `json:"policyEvaluationSummary,omitempty"`
+
+	// Output only. The timestamp when the policy was created.
+	// +kcc:proto:field=google.cloud.backupdr.v1.AutoProtectionPolicy.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the policy was last updated.
+	// +kcc:proto:field=google.cloud.backupdr.v1.AutoProtectionPolicy.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.backupdr.v1.BindingSummary
+type BindingSummaryObservedState struct {
+	// Output only. Total count of Projects protected with this policy.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BindingSummary.project_count
+	ProjectCount *int64 `json:"projectCount,omitempty"`
+}
 
 /* found existing non-generated go type with proto tag "google.cloud.backupdr.v1.ManagementServer", skipping
 
@@ -159,6 +352,50 @@ type ManagementURIObservedState struct {
 	// Output only. The ManagementServer AGM/RD API URL.
 	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementURI.api
 	API *string `json:"api,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.backupdr.v1.PolicyEvaluationSummary
+type PolicyEvaluationSummaryObservedState struct {
+	// Output only. The number of resources that currently match the policy's
+	//  criteria.
+	// +kcc:proto:field=google.cloud.backupdr.v1.PolicyEvaluationSummary.matching_resource_count
+	MatchingResourceCount *int64 `json:"matchingResourceCount,omitempty"`
+
+	// Output only. The number of matching resources that are successfully
+	//  protected.
+	// +kcc:proto:field=google.cloud.backupdr.v1.PolicyEvaluationSummary.protected_resource_count
+	ProtectedResourceCount *int64 `json:"protectedResourceCount,omitempty"`
+
+	// Output only. The number of matching resources whose protection failed
+	//  during job run.
+	// +kcc:proto:field=google.cloud.backupdr.v1.PolicyEvaluationSummary.failed_resource_count
+	FailedResourceCount *int64 `json:"failedResourceCount,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.backupdr.v1.RestoreVerificationPlan", skipping
+
+// +kcc:observedstate:proto=google.cloud.backupdr.v1.RestoreVerificationPlan
+type RestoreVerificationPlanObservedState struct {
+	// Output only. Identifier. The resource name of the
+	//  `RestoreVerificationPlan`.
+	//
+	//  Format:
+	//  `projects/{project}/locations/{location}/restoreVerificationPlans/{restoreVerificationPlan}`
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. When the `RestoreVerificationPlan` was created.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. When the `RestoreVerificationPlan` was last updated.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The `State` for the `RestoreVerificationPlan`.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreVerificationPlan.state
+	State *string `json:"state,omitempty"`
 }
 */
 

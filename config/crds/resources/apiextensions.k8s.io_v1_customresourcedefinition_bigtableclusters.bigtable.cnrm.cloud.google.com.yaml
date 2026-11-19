@@ -152,7 +152,8 @@ spec:
                     type: object
                 type: object
               instanceRef:
-                description: InstanceRef is a reference to a BigtableInstance.
+                description: The BigtableInstance this BigtableCluster is created
+                  under.
                 oneOf:
                 - not:
                     required:

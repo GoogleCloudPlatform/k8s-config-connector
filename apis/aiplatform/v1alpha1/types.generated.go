@@ -42,6 +42,9 @@
 // resource: AIPlatformArtifact:Artifact
 // resource: AIPlatformContext:Context
 // resource: AIPlatformExecution:Execution
+// resource: AIPlatformNotebookExecutionJob:NotebookExecutionJob
+// resource: AIPlatformBatchPredictionJob:BatchPredictionJob
+// resource: AIPlatformNasJob:NasJob
 
 package v1alpha1
 
@@ -137,6 +140,203 @@ type AutomaticResources struct {
 	MaxReplicaCount *int32 `json:"maxReplicaCount,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.BatchPredictionJob.InputConfig
+type BatchPredictionJob_InputConfig struct {
+	// The Cloud Storage location for the input instances.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.BatchPredictionJob.InputConfig.gcs_source
+	GCSSource *GCSSourceWithRequired `json:"gcsSource,omitempty"`
+
+	// The BigQuery location of the input table.
+	//  The schema of the table should be in the format described by the given
+	//  context OpenAPI Schema, if one is provided. The table may contain
+	//  additional columns that are not described by the schema, and they will
+	//  be ignored.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.BatchPredictionJob.InputConfig.bigquery_source
+	BigquerySource *BigQuerySourceWithRequired `json:"bigquerySource,omitempty"`
+
+	// A Vertex Managed Dataset. Currently, only datasets of type Multimodal
+	//  are supported.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.BatchPredictionJob.InputConfig.vertex_multimodal_dataset_source
+	VertexMultimodalDatasetSource *VertexMultimodalDatasetSource `json:"vertexMultimodalDatasetSource,omitempty"`
+
+	// Required. The format in which instances are given, must be one of the
+	//  [Model's][google.cloud.aiplatform.v1.BatchPredictionJob.model]
+	//  [supported_input_storage_formats][google.cloud.aiplatform.v1.Model.supported_input_storage_formats].
+	// +kcc:proto:field=google.cloud.aiplatform.v1.BatchPredictionJob.InputConfig.instances_format
+	// +required
+	InstancesFormat *string `json:"instancesFormat,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.BatchPredictionJob.InstanceConfig
+type BatchPredictionJob_InstanceConfig struct {
+	// The format of the instance that the Model accepts. Vertex AI will
+	//  convert compatible
+	//  [batch prediction input instance
+	//  formats][google.cloud.aiplatform.v1.BatchPredictionJob.InputConfig.instances_format]
+	//  to the specified format.
+	//
+	//  Supported values are:
+	//
+	//  * `object`: Each input is converted to JSON object format.
+	//      * For `bigquery`, each row is converted to an object.
+	//      * For `jsonl`, each line of the JSONL input must be an object.
+	//      * Does not apply to `csv`, `file-list`, `tf-record`, or
+	//        `tf-record-gzip`.
+	//
+	//  * `array`: Each input is converted to JSON array format.
+	//      * For `bigquery`, each row is converted to an array. The order
+	//        of columns is determined by the BigQuery column order, unless
+	//        [included_fields][google.cloud.aiplatform.v1.BatchPredictionJob.InstanceConfig.included_fields]
+	//        is populated.
+	//        [included_fields][google.cloud.aiplatform.v1.BatchPredictionJob.InstanceConfig.included_fields]
+	//        must be populated for specifying field orders.
+	//      * For `jsonl`, if each line of the JSONL input is an object,
+	//        [included_fields][google.cloud.aiplatform.v1.BatchPredictionJob.InstanceConfig.included_fields]
+	//        must be populated for specifying field orders.
+	//      * Does not apply to `csv`, `file-list`, `tf-record`, or
+	//        `tf-record-gzip`.
+	//
+	//  If not specified, Vertex AI converts the batch prediction input as
+	//  follows:
+	//
+	//   * For `bigquery` and `csv`, the behavior is the same as `array`. The
+	//     order of columns is the same as defined in the file or table, unless
+	//     [included_fields][google.cloud.aiplatform.v1.BatchPredictionJob.InstanceConfig.included_fields]
+	//     is populated.
+	//   * For `jsonl`, the prediction instance format is determined by
+	//     each line of the input.
+	//   * For `tf-record`/`tf-record-gzip`, each record will be converted to
+	//     an object in the format of `{"b64": <value>}`, where `<value>` is
+	//     the Base64-encoded string of the content of the record.
+	//   * For `file-list`, each file in the list will be converted to an
+	//     object in the format of `{"b64": <value>}`, where `<value>` is
+	//     the Base64-encoded string of the content of the file.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.BatchPredictionJob.InstanceConfig.instance_type
+	InstanceType *string `json:"instanceType,omitempty"`
+
+	// The name of the field that is considered as a key.
+	//
+	//  The values identified by the key field is not included in the transformed
+	//  instances that is sent to the Model. This is similar to
+	//  specifying this name of the field in
+	//  [excluded_fields][google.cloud.aiplatform.v1.BatchPredictionJob.InstanceConfig.excluded_fields].
+	//  In addition, the batch prediction output will not include the instances.
+	//  Instead the output will only include the value of the key field, in a
+	//  field named `key` in the output:
+	//
+	//   * For `jsonl` output format, the output will have a `key` field
+	//     instead of the `instance` field.
+	//   * For `csv`/`bigquery` output format, the output will have have a `key`
+	//     column instead of the instance feature columns.
+	//
+	//  The input must be JSONL with objects at each line, CSV, BigQuery
+	//  or TfRecord.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.BatchPredictionJob.InstanceConfig.key_field
+	KeyField *string `json:"keyField,omitempty"`
+
+	// Fields that will be included in the prediction instance that is
+	//  sent to the Model.
+	//
+	//  If
+	//  [instance_type][google.cloud.aiplatform.v1.BatchPredictionJob.InstanceConfig.instance_type]
+	//  is `array`, the order of field names in included_fields also determines
+	//  the order of the values in the array.
+	//
+	//  When included_fields is populated,
+	//  [excluded_fields][google.cloud.aiplatform.v1.BatchPredictionJob.InstanceConfig.excluded_fields]
+	//  must be empty.
+	//
+	//  The input must be JSONL with objects at each line, BigQuery
+	//  or TfRecord.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.BatchPredictionJob.InstanceConfig.included_fields
+	IncludedFields []string `json:"includedFields,omitempty"`
+
+	// Fields that will be excluded in the prediction instance that is
+	//  sent to the Model.
+	//
+	//  Excluded will be attached to the batch prediction output if
+	//  [key_field][google.cloud.aiplatform.v1.BatchPredictionJob.InstanceConfig.key_field]
+	//  is not specified.
+	//
+	//  When excluded_fields is populated,
+	//  [included_fields][google.cloud.aiplatform.v1.BatchPredictionJob.InstanceConfig.included_fields]
+	//  must be empty.
+	//
+	//  The input must be JSONL with objects at each line, BigQuery
+	//  or TfRecord.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.BatchPredictionJob.InstanceConfig.excluded_fields
+	ExcludedFields []string `json:"excludedFields,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.BatchPredictionJob.OutputConfig
+type BatchPredictionJob_OutputConfig struct {
+	// The Cloud Storage location of the directory where the output is
+	//  to be written to. In the given directory a new directory is created.
+	//  Its name is `prediction-<model-display-name>-<job-create-time>`,
+	//  where timestamp is in YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format.
+	//  Inside of it files `predictions_0001.<extension>`,
+	//  `predictions_0002.<extension>`, ..., `predictions_N.<extension>`
+	//  are created where `<extension>` depends on chosen
+	//  [predictions_format][google.cloud.aiplatform.v1.BatchPredictionJob.OutputConfig.predictions_format],
+	//  and N may equal 0001 and depends on the total number of successfully
+	//  predicted instances. If the Model has both
+	//  [instance][google.cloud.aiplatform.v1.PredictSchemata.instance_schema_uri]
+	//  and
+	//  [prediction][google.cloud.aiplatform.v1.PredictSchemata.parameters_schema_uri]
+	//  schemata defined then each such file contains predictions as per the
+	//  [predictions_format][google.cloud.aiplatform.v1.BatchPredictionJob.OutputConfig.predictions_format].
+	//  If prediction for any instance failed (partially or completely), then
+	//  an additional `errors_0001.<extension>`, `errors_0002.<extension>`,...,
+	//  `errors_N.<extension>` files are created (N depends on total number
+	//  of failed predictions). These files contain the failed instances,
+	//  as per their schema, followed by an additional `error` field which as
+	//  value has [google.rpc.Status][google.rpc.Status]
+	//  containing only `code` and `message` fields.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.BatchPredictionJob.OutputConfig.gcs_destination
+	GCSDestination *GCSDestinationWithRequired `json:"gcsDestination,omitempty"`
+
+	// The BigQuery project or dataset location where the output is to be
+	//  written to. If project is provided, a new dataset is created with name
+	//  `prediction_<model-display-name>_<job-create-time>`
+	//  where <model-display-name> is made
+	//  BigQuery-dataset-name compatible (for example, most special characters
+	//  become underscores), and timestamp is in
+	//  YYYY_MM_DDThh_mm_ss_sssZ "based on ISO-8601" format. In the dataset
+	//  two tables will be created, `predictions`, and `errors`.
+	//  If the Model has both
+	//  [instance][google.cloud.aiplatform.v1.PredictSchemata.instance_schema_uri]
+	//  and
+	//  [prediction][google.cloud.aiplatform.v1.PredictSchemata.parameters_schema_uri]
+	//  schemata defined then the tables have columns as follows: The
+	//  `predictions` table contains instances for which the prediction
+	//  succeeded, it has columns as per a concatenation of the Model's
+	//  instance and prediction schemata. The `errors` table contains rows for
+	//  which the prediction has failed, it has instance columns, as per the
+	//  instance schema, followed by a single "errors" column, which as values
+	//  has [google.rpc.Status][google.rpc.Status]
+	//  represented as a STRUCT, and containing only `code` and `message`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.BatchPredictionJob.OutputConfig.bigquery_destination
+	BigqueryDestination *BigQueryDestination `json:"bigqueryDestination,omitempty"`
+
+	// The details for a Vertex Multimodal Dataset that will be created for
+	//  the output.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.BatchPredictionJob.OutputConfig.vertex_multimodal_dataset_destination
+	VertexMultimodalDatasetDestination *VertexMultimodalDatasetDestination `json:"vertexMultimodalDatasetDestination,omitempty"`
+
+	// Required. The format in which Vertex AI gives the predictions, must be
+	//  one of the [Model's][google.cloud.aiplatform.v1.BatchPredictionJob.model]
+	//  [supported_output_storage_formats][google.cloud.aiplatform.v1.Model.supported_output_storage_formats].
+	// +kcc:proto:field=google.cloud.aiplatform.v1.BatchPredictionJob.OutputConfig.predictions_format
+	// +required
+	PredictionsFormat *string `json:"predictionsFormat,omitempty"`
+}
+
+/* unreachable type BatchPredictionJob_OutputInfo
+// +kcc:proto=google.cloud.aiplatform.v1.BatchPredictionJob.OutputInfo
+type BatchPredictionJob_OutputInfo struct {
+}
+*/
+
 // +kcc:proto=google.cloud.aiplatform.v1.BigQueryDestination
 type BigQueryDestination struct {
 	// Required. BigQuery URI to a project or table, up to 2000 characters long.
@@ -161,6 +361,17 @@ type BigQuerySource struct {
 	//
 	//  *  BigQuery path. For example: `bq://projectId.bqDatasetId.bqTableId`.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.BigQuerySource.input_uri
+	InputURI *string `json:"inputURI,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.BigQuerySource
+type BigQuerySourceWithRequired struct {
+	// Required. BigQuery URI to a table, up to 2000 characters long.
+	//  Accepted forms:
+	//
+	//  *  BigQuery path. For example: `bq://projectId.bqDatasetId.bqTableId`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.BigQuerySource.input_uri
+	// +required
 	InputURI *string `json:"inputURI,omitempty"`
 }
 
@@ -244,6 +455,12 @@ type ColabImage struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ColabImage.release_name
 	ReleaseName *string `json:"releaseName,omitempty"`
 }
+
+/* unreachable type CompletionStats
+// +kcc:proto=google.cloud.aiplatform.v1.CompletionStats
+type CompletionStats struct {
+}
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.ContainerSpec
 type ContainerSpec struct {
@@ -452,6 +669,31 @@ type Examples struct {
 	NeighborCount *int32 `json:"neighborCount,omitempty"`
 }
 
+/* unreachable type ExamplesWithRequired
+// +kcc:proto=google.cloud.aiplatform.v1.Examples
+type ExamplesWithRequired struct {
+	// The Cloud Storage input instances.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Examples.example_gcs_source
+	ExampleGCSSource *Examples_ExampleGCSSourceWithRequired `json:"exampleGCSSource,omitempty"`
+
+	// The full configuration for the generated index, the semantics are the
+	//  same as [metadata][google.cloud.aiplatform.v1.Index.metadata] and should
+	//  match
+	//  [NearestNeighborSearchConfig](https://cloud.google.com/vertex-ai/docs/explainable-ai/configuring-explanations-example-based#nearest-neighbor-search-config).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Examples.nearest_neighbor_search_config
+	NearestNeighborSearchConfig *Value `json:"nearestNeighborSearchConfig,omitempty"`
+
+	// Simplified preset configuration, which automatically sets configuration
+	//  values based on the desired query speed-precision trade-off and modality.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Examples.presets
+	Presets *Presets `json:"presets,omitempty"`
+
+	// The number of neighbors to return when querying for examples.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Examples.neighbor_count
+	NeighborCount *int32 `json:"neighborCount,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.aiplatform.v1.Examples.ExampleGcsSource
 type Examples_ExampleGCSSource struct {
 	// The format in which instances are given, if not specified, assume it's
@@ -463,6 +705,20 @@ type Examples_ExampleGCSSource struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Examples.ExampleGcsSource.gcs_source
 	GCSSource *GCSSource `json:"gcsSource,omitempty"`
 }
+
+/* unreachable type Examples_ExampleGCSSourceWithRequired
+// +kcc:proto=google.cloud.aiplatform.v1.Examples.ExampleGcsSource
+type Examples_ExampleGCSSourceWithRequired struct {
+	// The format in which instances are given, if not specified, assume it's
+	//  JSONL format. Currently only JSONL format is supported.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Examples.ExampleGcsSource.data_format
+	DataFormat *string `json:"dataFormat,omitempty"`
+
+	// The Cloud Storage location for the input instances.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Examples.ExampleGcsSource.gcs_source
+	GCSSource *GCSSourceWithRequired `json:"gcsSource,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.ExecutableCode
 type ExecutableCode struct {
@@ -686,6 +942,18 @@ type ExplanationMetadata_OutputMetadata struct {
 type ExplanationSpec struct {
 	// Required. Parameters that configure explaining of the Model's predictions.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationSpec.parameters
+	Parameters *ExplanationParameters `json:"parameters,omitempty"`
+
+	// Optional. Metadata describing the Model's input and output for explanation.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationSpec.metadata
+	Metadata *ExplanationMetadata `json:"metadata,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.ExplanationSpec
+type ExplanationSpecWithRequired struct {
+	// Required. Parameters that configure explaining of the Model's predictions.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationSpec.parameters
+	// +required
 	Parameters *ExplanationParameters `json:"parameters,omitempty"`
 
 	// Optional. Metadata describing the Model's input and output for explanation.
@@ -1145,7 +1413,17 @@ type GCSSource struct {
 	//  wildcards. For more information on wildcards, see
 	//  https://cloud.google.com/storage/docs/wildcards.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.GcsSource.uris
-	Uris []string `json:"uris,omitempty"`
+	URIs []string `json:"uris,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.GcsSource
+type GCSSourceWithRequired struct {
+	// Required. Google Cloud Storage URI(-s) to the input file(s). May contain
+	//  wildcards. For more information on wildcards, see
+	//  https://cloud.google.com/storage/docs/wildcards.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.GcsSource.uris
+	// +required
+	URIs []string `json:"uris,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.GenieSource
@@ -1358,6 +1636,38 @@ type IntegratedGradientsAttribution struct {
 	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
 }
 
+/* unreachable type IntegratedGradientsAttributionWithRequired
+// +kcc:proto=google.cloud.aiplatform.v1.IntegratedGradientsAttribution
+type IntegratedGradientsAttributionWithRequired struct {
+	// Required. The number of steps for approximating the path integral.
+	//  A good value to start is 50 and gradually increase until the
+	//  sum to diff property is within the desired error range.
+	//
+	//  Valid range of its value is [1, 100], inclusively.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.IntegratedGradientsAttribution.step_count
+	// +required
+	StepCount *int32 `json:"stepCount,omitempty"`
+
+	// Config for SmoothGrad approximation of gradients.
+	//
+	//  When enabled, the gradients are approximated by averaging the gradients
+	//  from noisy samples in the vicinity of the inputs. Adding
+	//  noise can help improve the computed gradients. Refer to this paper for more
+	//  details: https://arxiv.org/pdf/1706.03825.pdf
+	// +kcc:proto:field=google.cloud.aiplatform.v1.IntegratedGradientsAttribution.smooth_grad_config
+	SmoothGradConfig *SmoothGradConfig `json:"smoothGradConfig,omitempty"`
+
+	// Config for IG with blur baseline.
+	//
+	//  When enabled, a linear path from the maximally blurred image to the input
+	//  image is created. Using a blurred baseline instead of zero (black image) is
+	//  motivated by the BlurIG approach explained here:
+	//  https://arxiv.org/abs/2004.03383
+	// +kcc:proto:field=google.cloud.aiplatform.v1.IntegratedGradientsAttribution.blur_baseline_config
+	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.aiplatform.v1.LustreMount
 type LustreMount struct {
 	// Required. IP address of the Lustre instance.
@@ -1512,6 +1822,19 @@ type MachineSpecWithRequired struct {
 	//  consumes reservation.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.reservation_affinity
 	ReservationAffinity *ReservationAffinityWithRequired `json:"reservationAffinity,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.ManualBatchTuningParameters
+type ManualBatchTuningParameters struct {
+	// Immutable. The number of the records (e.g. instances) of the operation
+	//  given in each batch to a machine replica. Machine type, and size of a
+	//  single record should be considered when setting this parameter, higher
+	//  value speeds up the batch operation's execution, but too high value will
+	//  result in a whole batch not fitting in a machine's memory, and the whole
+	//  operation will fail.
+	//  The default value is 64.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ManualBatchTuningParameters.batch_size
+	BatchSize *int32 `json:"batchSize,omitempty"`
 }
 
 /* unreachable type Measurement
@@ -1846,6 +2169,273 @@ type ModelContainerSpec struct {
 	LivenessProbe *Probe `json:"livenessProbe,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.ModelContainerSpec
+type ModelContainerSpecWithRequired struct {
+	// Required. Immutable. URI of the Docker image to be used as the custom
+	//  container for serving predictions. This URI must identify an image in
+	//  Artifact Registry or Container Registry. Learn more about the [container
+	//  publishing
+	//  requirements](https://cloud.google.com/vertex-ai/docs/predictions/custom-container-requirements#publishing),
+	//  including permissions requirements for the Vertex AI Service Agent.
+	//
+	//  The container image is ingested upon
+	//  [ModelService.UploadModel][google.cloud.aiplatform.v1.ModelService.UploadModel],
+	//  stored internally, and this original path is afterwards not used.
+	//
+	//  To learn about the requirements for the Docker image itself, see
+	//  [Custom container
+	//  requirements](https://cloud.google.com/vertex-ai/docs/predictions/custom-container-requirements#).
+	//
+	//  You can use the URI to one of Vertex AI's [pre-built container images for
+	//  prediction](https://cloud.google.com/vertex-ai/docs/predictions/pre-built-containers)
+	//  in this field.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ModelContainerSpec.image_uri
+	// +required
+	ImageURI *string `json:"imageURI,omitempty"`
+
+	// Immutable. Specifies the command that runs when the container starts. This
+	//  overrides the container's
+	//  [ENTRYPOINT](https://docs.docker.com/engine/reference/builder/#entrypoint).
+	//  Specify this field as an array of executable and arguments, similar to a
+	//  Docker `ENTRYPOINT`'s "exec" form, not its "shell" form.
+	//
+	//  If you do not specify this field, then the container's `ENTRYPOINT` runs,
+	//  in conjunction with the
+	//  [args][google.cloud.aiplatform.v1.ModelContainerSpec.args] field or the
+	//  container's [`CMD`](https://docs.docker.com/engine/reference/builder/#cmd),
+	//  if either exists. If this field is not specified and the container does not
+	//  have an `ENTRYPOINT`, then refer to the Docker documentation about [how
+	//  `CMD` and `ENTRYPOINT`
+	//  interact](https://docs.docker.com/engine/reference/builder/#understand-how-cmd-and-entrypoint-interact).
+	//
+	//  If you specify this field, then you can also specify the `args` field to
+	//  provide additional arguments for this command. However, if you specify this
+	//  field, then the container's `CMD` is ignored. See the
+	//  [Kubernetes documentation about how the
+	//  `command` and `args` fields interact with a container's `ENTRYPOINT` and
+	//  `CMD`](https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#notes).
+	//
+	//  In this field, you can reference [environment variables set by Vertex
+	//  AI](https://cloud.google.com/vertex-ai/docs/predictions/custom-container-requirements#aip-variables)
+	//  and environment variables set in the
+	//  [env][google.cloud.aiplatform.v1.ModelContainerSpec.env] field. You cannot
+	//  reference environment variables set in the Docker image. In order for
+	//  environment variables to be expanded, reference them by using the following
+	//  syntax: <code>$(<var>VARIABLE_NAME</var>)</code> Note that this differs
+	//  from Bash variable expansion, which does not use parentheses. If a variable
+	//  cannot be resolved, the reference in the input string is used unchanged. To
+	//  avoid variable expansion, you can escape this syntax with `$$`; for
+	//  example: <code>$$(<var>VARIABLE_NAME</var>)</code> This field corresponds
+	//  to the `command` field of the Kubernetes Containers [v1 core
+	//  API](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.23/#container-v1-core).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ModelContainerSpec.command
+	Command []string `json:"command,omitempty"`
+
+	// Immutable. Specifies arguments for the command that runs when the container
+	//  starts. This overrides the container's
+	//  [`CMD`](https://docs.docker.com/engine/reference/builder/#cmd). Specify
+	//  this field as an array of executable and arguments, similar to a Docker
+	//  `CMD`'s "default parameters" form.
+	//
+	//  If you don't specify this field but do specify the
+	//  [command][google.cloud.aiplatform.v1.ModelContainerSpec.command] field,
+	//  then the command from the `command` field runs without any additional
+	//  arguments. See the [Kubernetes documentation about how the `command` and
+	//  `args` fields interact with a container's `ENTRYPOINT` and
+	//  `CMD`](https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#notes).
+	//
+	//  If you don't specify this field and don't specify the `command` field,
+	//  then the container's
+	//  [`ENTRYPOINT`](https://docs.docker.com/engine/reference/builder/#cmd) and
+	//  `CMD` determine what runs based on their default behavior. See the Docker
+	//  documentation about [how `CMD` and `ENTRYPOINT`
+	//  interact](https://docs.docker.com/engine/reference/builder/#understand-how-cmd-and-entrypoint-interact).
+	//
+	//  In this field, you can reference [environment variables
+	//  set by Vertex
+	//  AI](https://cloud.google.com/vertex-ai/docs/predictions/custom-container-requirements#aip-variables)
+	//  and environment variables set in the
+	//  [env][google.cloud.aiplatform.v1.ModelContainerSpec.env] field. You cannot
+	//  reference environment variables set in the Docker image. In order for
+	//  environment variables to be expanded, reference them by using the following
+	//  syntax: <code>$(<var>VARIABLE_NAME</var>)</code> Note that this differs
+	//  from Bash variable expansion, which does not use parentheses. If a variable
+	//  cannot be resolved, the reference in the input string is used unchanged. To
+	//  avoid variable expansion, you can escape this syntax with `$$`; for
+	//  example: <code>$$(<var>VARIABLE_NAME</var>)</code> This field corresponds
+	//  to the `args` field of the Kubernetes Containers [v1 core
+	//  API](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.23/#container-v1-core).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ModelContainerSpec.args
+	Args []string `json:"args,omitempty"`
+
+	// Immutable. List of environment variables to set in the container. After the
+	//  container starts running, code running in the container can read these
+	//  environment variables.
+	//
+	//  Additionally, the
+	//  [command][google.cloud.aiplatform.v1.ModelContainerSpec.command] and
+	//  [args][google.cloud.aiplatform.v1.ModelContainerSpec.args] fields can
+	//  reference these variables. Later entries in this list can also reference
+	//  earlier entries. For example, the following example sets the variable
+	//  `VAR_2` to have the value `foo bar`:
+	//
+	//  ```json
+	//  [
+	//    {
+	//      "name": "VAR_1",
+	//      "value": "foo"
+	//    },
+	//    {
+	//      "name": "VAR_2",
+	//      "value": "$(VAR_1) bar"
+	//    }
+	//  ]
+	//  ```
+	//
+	//  If you switch the order of the variables in the example, then the expansion
+	//  does not occur.
+	//
+	//  This field corresponds to the `env` field of the Kubernetes Containers
+	//  [v1 core
+	//  API](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.23/#container-v1-core).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ModelContainerSpec.env
+	Env []EnvVarWithRequired `json:"env,omitempty"`
+
+	// Immutable. List of ports to expose from the container. Vertex AI sends any
+	//  prediction requests that it receives to the first port on this list. Vertex
+	//  AI also sends
+	//  [liveness and health
+	//  checks](https://cloud.google.com/vertex-ai/docs/predictions/custom-container-requirements#liveness)
+	//  to this port.
+	//
+	//  If you do not specify this field, it defaults to following value:
+	//
+	//  ```json
+	//  [
+	//    {
+	//      "containerPort": 8080
+	//    }
+	//  ]
+	//  ```
+	//
+	//  Vertex AI does not use ports other than the first one listed. This field
+	//  corresponds to the `ports` field of the Kubernetes Containers
+	//  [v1 core
+	//  API](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.23/#container-v1-core).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ModelContainerSpec.ports
+	Ports []Port `json:"ports,omitempty"`
+
+	// Immutable. HTTP path on the container to send prediction requests to.
+	//  Vertex AI forwards requests sent using
+	//  [projects.locations.endpoints.predict][google.cloud.aiplatform.v1.PredictionService.Predict]
+	//  to this path on the container's IP address and port. Vertex AI then returns
+	//  the container's response in the API response.
+	//
+	//  For example, if you set this field to `/foo`, then when Vertex AI
+	//  receives a prediction request, it forwards the request body in a POST
+	//  request to the `/foo` path on the port of your container specified by the
+	//  first value of this `ModelContainerSpec`'s
+	//  [ports][google.cloud.aiplatform.v1.ModelContainerSpec.ports] field.
+	//
+	//  If you don't specify this field, it defaults to the following value when
+	//  you [deploy this Model to an
+	//  Endpoint][google.cloud.aiplatform.v1.EndpointService.DeployModel]:
+	//  <code>/v1/endpoints/<var>ENDPOINT</var>/deployedModels/<var>DEPLOYED_MODEL</var>:predict</code>
+	//  The placeholders in this value are replaced as follows:
+	//
+	//  * <var>ENDPOINT</var>: The last segment (following `endpoints/`)of the
+	//    Endpoint.name][] field of the Endpoint where this Model has been
+	//    deployed. (Vertex AI makes this value available to your container code
+	//    as the [`AIP_ENDPOINT_ID` environment
+	//   variable](https://cloud.google.com/vertex-ai/docs/predictions/custom-container-requirements#aip-variables).)
+	//
+	//  * <var>DEPLOYED_MODEL</var>:
+	//  [DeployedModel.id][google.cloud.aiplatform.v1.DeployedModel.id] of the
+	//  `DeployedModel`.
+	//    (Vertex AI makes this value available to your container code
+	//    as the [`AIP_DEPLOYED_MODEL_ID` environment
+	//    variable](https://cloud.google.com/vertex-ai/docs/predictions/custom-container-requirements#aip-variables).)
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ModelContainerSpec.predict_route
+	PredictRoute *string `json:"predictRoute,omitempty"`
+
+	// Immutable. HTTP path on the container to send health checks to. Vertex AI
+	//  intermittently sends GET requests to this path on the container's IP
+	//  address and port to check that the container is healthy. Read more about
+	//  [health
+	//  checks](https://cloud.google.com/vertex-ai/docs/predictions/custom-container-requirements#health).
+	//
+	//  For example, if you set this field to `/bar`, then Vertex AI
+	//  intermittently sends a GET request to the `/bar` path on the port of your
+	//  container specified by the first value of this `ModelContainerSpec`'s
+	//  [ports][google.cloud.aiplatform.v1.ModelContainerSpec.ports] field.
+	//
+	//  If you don't specify this field, it defaults to the following value when
+	//  you [deploy this Model to an
+	//  Endpoint][google.cloud.aiplatform.v1.EndpointService.DeployModel]:
+	//  <code>/v1/endpoints/<var>ENDPOINT</var>/deployedModels/<var>DEPLOYED_MODEL</var>:predict</code>
+	//  The placeholders in this value are replaced as follows:
+	//
+	//  * <var>ENDPOINT</var>: The last segment (following `endpoints/`)of the
+	//    Endpoint.name][] field of the Endpoint where this Model has been
+	//    deployed. (Vertex AI makes this value available to your container code
+	//    as the [`AIP_ENDPOINT_ID` environment
+	//    variable](https://cloud.google.com/vertex-ai/docs/predictions/custom-container-requirements#aip-variables).)
+	//
+	//  * <var>DEPLOYED_MODEL</var>:
+	//  [DeployedModel.id][google.cloud.aiplatform.v1.DeployedModel.id] of the
+	//  `DeployedModel`.
+	//    (Vertex AI makes this value available to your container code as the
+	//    [`AIP_DEPLOYED_MODEL_ID` environment
+	//    variable](https://cloud.google.com/vertex-ai/docs/predictions/custom-container-requirements#aip-variables).)
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ModelContainerSpec.health_route
+	HealthRoute *string `json:"healthRoute,omitempty"`
+
+	// Immutable. Invoke route prefix for the custom container. "/*" is the only
+	//  supported value right now. By setting this field, any non-root route on
+	//  this model will be accessible with invoke http call eg: "/invoke/foo/bar",
+	//  however the [PredictionService.Invoke] RPC is not supported yet.
+	//
+	//  Only one of `predict_route` or `invoke_route_prefix` can be set, and we
+	//  default to using `predict_route` if this field is not set. If this field
+	//  is set, the Model can only be deployed to dedicated endpoint.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ModelContainerSpec.invoke_route_prefix
+	InvokeRoutePrefix *string `json:"invokeRoutePrefix,omitempty"`
+
+	// Immutable. List of ports to expose from the container. Vertex AI sends gRPC
+	//  prediction requests that it receives to the first port on this list. Vertex
+	//  AI also sends liveness and health checks to this port.
+	//
+	//  If you do not specify this field, gRPC requests to the container will be
+	//  disabled.
+	//
+	//  Vertex AI does not use ports other than the first one listed. This field
+	//  corresponds to the `ports` field of the Kubernetes Containers v1 core API.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ModelContainerSpec.grpc_ports
+	GrpcPorts []Port `json:"grpcPorts,omitempty"`
+
+	// Immutable. Deployment timeout.
+	//  Limit for deployment timeout is 2 hours.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ModelContainerSpec.deployment_timeout
+	DeploymentTimeout *string `json:"deploymentTimeout,omitempty"`
+
+	// Immutable. The amount of the VM memory to reserve as the shared memory for
+	//  the model in megabytes.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ModelContainerSpec.shared_memory_size_mb
+	SharedMemorySizeMb *int64 `json:"sharedMemorySizeMb,omitempty"`
+
+	// Immutable. Specification for Kubernetes startup probe.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ModelContainerSpec.startup_probe
+	StartupProbe *Probe `json:"startupProbe,omitempty"`
+
+	// Immutable. Specification for Kubernetes readiness probe.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ModelContainerSpec.health_probe
+	HealthProbe *Probe `json:"healthProbe,omitempty"`
+
+	// Immutable. Specification for Kubernetes liveness probe.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ModelContainerSpec.liveness_probe
+	LivenessProbe *Probe `json:"livenessProbe,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.ModelDeploymentMonitoringBigQueryTable
 type ModelDeploymentMonitoringBigQueryTable struct {
 	// The source of log.
@@ -2017,6 +2607,24 @@ type ModelSourceInfo struct {
 	Copy *bool `json:"copy,omitempty"`
 }
 
+/* unreachable type NasJobOutput
+// +kcc:proto=google.cloud.aiplatform.v1.NasJobOutput
+type NasJobOutput struct {
+}
+*/
+
+/* unreachable type NasJobOutput_MultiTrialJobOutput
+// +kcc:proto=google.cloud.aiplatform.v1.NasJobOutput.MultiTrialJobOutput
+type NasJobOutput_MultiTrialJobOutput struct {
+}
+*/
+
+/* unreachable type NasTrial
+// +kcc:proto=google.cloud.aiplatform.v1.NasTrial
+type NasTrial struct {
+}
+*/
+
 // +kcc:proto=google.cloud.aiplatform.v1.NfsMount
 type NfsMount struct {
 	// Required. IP address of the NFS server.
@@ -2070,6 +2678,21 @@ type NotebookExecutionJob_CustomEnvironmentSpec struct {
 	// The specification of a single machine for the execution job.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec.machine_spec
 	MachineSpec *MachineSpec `json:"machineSpec,omitempty"`
+
+	// The specification of a persistent disk to attach for the execution job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec.persistent_disk_spec
+	PersistentDiskSpec *PersistentDiskSpec `json:"persistentDiskSpec,omitempty"`
+
+	// The network configuration to use for the execution job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec.network_spec
+	NetworkSpec *NetworkSpec `json:"networkSpec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec
+type NotebookExecutionJob_CustomEnvironmentSpecWithRequired struct {
+	// The specification of a single machine for the execution job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec.machine_spec
+	MachineSpec *MachineSpecWithRequired `json:"machineSpec,omitempty"`
 
 	// The specification of a persistent disk to attach for the execution job.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec.persistent_disk_spec
@@ -2774,6 +3397,12 @@ type ResourceRuntimeSpec struct {
 	RaySpec *RaySpec `json:"raySpec,omitempty"`
 }
 
+/* unreachable type ResourcesConsumed
+// +kcc:proto=google.cloud.aiplatform.v1.ResourcesConsumed
+type ResourcesConsumed struct {
+}
+*/
+
 // +kcc:proto=google.cloud.aiplatform.v1.Retrieval
 type Retrieval struct {
 	// Set to use data source powered by Vertex AI Search.
@@ -2810,6 +3439,19 @@ type SampledShapleyAttribution struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.SampledShapleyAttribution.path_count
 	PathCount *int32 `json:"pathCount,omitempty"`
 }
+
+/* unreachable type SampledShapleyAttributionWithRequired
+// +kcc:proto=google.cloud.aiplatform.v1.SampledShapleyAttribution
+type SampledShapleyAttributionWithRequired struct {
+	// Required. The number of feature permutations to consider when approximating
+	//  the Shapley values.
+	//
+	//  Valid range of its value is [1, 50], inclusively.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.SampledShapleyAttribution.path_count
+	// +required
+	PathCount *int32 `json:"pathCount,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.SamplingStrategy
 type SamplingStrategy struct {
@@ -3834,8 +4476,38 @@ type TuningDataStats struct {
 }
 */
 
+// +kcc:proto=google.cloud.aiplatform.v1.UnmanagedContainerModel
+type UnmanagedContainerModel struct {
+	// The path to the directory containing the Model artifact and any of its
+	//  supporting files.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.UnmanagedContainerModel.artifact_uri
+	ArtifactURI *string `json:"artifactURI,omitempty"`
+
+	// Contains the schemata used in Model's predictions and explanations
+	// +kcc:proto:field=google.cloud.aiplatform.v1.UnmanagedContainerModel.predict_schemata
+	PredictSchemata *PredictSchemata `json:"predictSchemata,omitempty"`
+
+	// Input only. The specification of the container that is to be used when
+	//  deploying this Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.UnmanagedContainerModel.container_spec
+	ContainerSpec *ModelContainerSpecWithRequired `json:"containerSpec,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.UrlContext
 type URLContext struct {
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.VertexMultimodalDatasetDestination
+type VertexMultimodalDatasetDestination struct {
+	// Optional. The destination of the underlying BigQuery table that will be
+	//  created for the output Multimodal Dataset. If not specified, the BigQuery
+	//  table will be created in a default BigQuery dataset.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexMultimodalDatasetDestination.bigquery_destination
+	BigqueryDestination *BigQueryDestination `json:"bigqueryDestination,omitempty"`
+
+	// Optional. Display name of the output dataset.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexMultimodalDatasetDestination.display_name
+	DisplayName *string `json:"displayName,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.VertexRagStore
@@ -3968,35 +4640,37 @@ type XraiAttribution struct {
 	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1beta1.BatchDedicatedResources
-type BatchDedicatedResources struct {
-	// Required. Immutable. The specification of a single machine.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BatchDedicatedResources.machine_spec
+/* unreachable type XraiAttributionWithRequired
+// +kcc:proto=google.cloud.aiplatform.v1.XraiAttribution
+type XraiAttributionWithRequired struct {
+	// Required. The number of steps for approximating the path integral.
+	//  A good value to start is 50 and gradually increase until the
+	//  sum to diff property is met within the desired error range.
+	//
+	//  Valid range of its value is [1, 100], inclusively.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.XraiAttribution.step_count
 	// +required
-	MachineSpec *MachineSpec `json:"machineSpec,omitempty"`
+	StepCount *int32 `json:"stepCount,omitempty"`
 
-	// Immutable. The number of machine replicas used at the start of the batch
-	//  operation. If not set, Vertex AI decides starting number, not greater than
-	//  [max_replica_count][google.cloud.aiplatform.v1beta1.BatchDedicatedResources.max_replica_count]
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BatchDedicatedResources.starting_replica_count
-	StartingReplicaCount *int32 `json:"startingReplicaCount,omitempty"`
+	// Config for SmoothGrad approximation of gradients.
+	//
+	//  When enabled, the gradients are approximated by averaging the gradients
+	//  from noisy samples in the vicinity of the inputs. Adding
+	//  noise can help improve the computed gradients. Refer to this paper for more
+	//  details: https://arxiv.org/pdf/1706.03825.pdf
+	// +kcc:proto:field=google.cloud.aiplatform.v1.XraiAttribution.smooth_grad_config
+	SmoothGradConfig *SmoothGradConfig `json:"smoothGradConfig,omitempty"`
 
-	// Immutable. The maximum number of machine replicas the batch operation may
-	//  be scaled to. The default value is 10.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BatchDedicatedResources.max_replica_count
-	MaxReplicaCount *int32 `json:"maxReplicaCount,omitempty"`
-
-	// Optional. Immutable. If set, use DWS resource to schedule the deployment
-	//  workload. reference:
-	//  (https://cloud.google.com/blog/products/compute/introducing-dynamic-workload-scheduler)
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BatchDedicatedResources.flex_start
-	FlexStart *FlexStart `json:"flexStart,omitempty"`
-
-	// Optional. If true, schedule the deployment workload on [spot
-	//  VMs](https://cloud.google.com/kubernetes-engine/docs/concepts/spot-vms).
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BatchDedicatedResources.spot
-	Spot *bool `json:"spot,omitempty"`
+	// Config for XRAI with blur baseline.
+	//
+	//  When enabled, a linear path from the maximally blurred image to the input
+	//  image is created. Using a blurred baseline instead of zero (black image) is
+	//  motivated by the BlurIG approach explained here:
+	//  https://arxiv.org/abs/2004.03383
+	// +kcc:proto:field=google.cloud.aiplatform.v1.XraiAttribution.blur_baseline_config
+	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
 }
+*/
 
 /* unreachable type CustomCodeExecutionSpec
 // +kcc:proto=google.cloud.aiplatform.v1beta1.CustomCodeExecutionSpec
@@ -4096,62 +4770,6 @@ type EvaluationParserConfig_CustomCodeParserConfig struct {
 }
 */
 
-/* unreachable type ExamplesWithRequired
-// +kcc:proto=google.cloud.aiplatform.v1beta1.Examples
-type ExamplesWithRequired struct {
-	// The Cloud Storage input instances.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Examples.example_gcs_source
-	ExampleGCSSource *Examples_ExampleGCSSourceWithRequired `json:"exampleGCSSource,omitempty"`
-
-	// The full configuration for the generated index, the semantics are the
-	//  same as [metadata][google.cloud.aiplatform.v1beta1.Index.metadata] and
-	//  should match
-	//  [NearestNeighborSearchConfig](https://cloud.google.com/vertex-ai/docs/explainable-ai/configuring-explanations-example-based#nearest-neighbor-search-config).
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Examples.nearest_neighbor_search_config
-	NearestNeighborSearchConfig *Value `json:"nearestNeighborSearchConfig,omitempty"`
-
-	// Simplified preset configuration, which automatically sets configuration
-	//  values based on the desired query speed-precision trade-off and modality.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Examples.presets
-	Presets *Presets `json:"presets,omitempty"`
-
-	// The Cloud Storage locations that contain the instances to be
-	//  indexed for approximate nearest neighbor search.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Examples.gcs_source
-	GCSSource *GCSSourceWithRequired `json:"gcsSource,omitempty"`
-
-	// The number of neighbors to return when querying for examples.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Examples.neighbor_count
-	NeighborCount *int32 `json:"neighborCount,omitempty"`
-}
-*/
-
-/* unreachable type Examples_ExampleGCSSourceWithRequired
-// +kcc:proto=google.cloud.aiplatform.v1beta1.Examples.ExampleGcsSource
-type Examples_ExampleGCSSourceWithRequired struct {
-	// The format in which instances are given, if not specified, assume it's
-	//  JSONL format. Currently only JSONL format is supported.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Examples.ExampleGcsSource.data_format
-	DataFormat *string `json:"dataFormat,omitempty"`
-
-	// The Cloud Storage location for the input instances.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Examples.ExampleGcsSource.gcs_source
-	GCSSource *GCSSourceWithRequired `json:"gcsSource,omitempty"`
-}
-*/
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ExplanationSpec
-type ExplanationSpecWithRequired struct {
-	// Required. Parameters that configure explaining of the Model's predictions.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExplanationSpec.parameters
-	// +required
-	Parameters *ExplanationParameters `json:"parameters,omitempty"`
-
-	// Optional. Metadata describing the Model's input and output for explanation.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExplanationSpec.metadata
-	Metadata *ExplanationMetadata `json:"metadata,omitempty"`
-}
-
 // +kcc:proto=google.cloud.aiplatform.v1beta1.FlexStart
 type FlexStart struct {
 	// The max duration of the deployment is max_runtime_duration. The
@@ -4161,56 +4779,12 @@ type FlexStart struct {
 	MaxRuntimeDuration *string `json:"maxRuntimeDuration,omitempty"`
 }
 
-/* unreachable type GCSSourceWithRequired
-// +kcc:proto=google.cloud.aiplatform.v1beta1.GcsSource
-type GCSSourceWithRequired struct {
-	// Required. Google Cloud Storage URI(-s) to the input file(s). May contain
-	//  wildcards. For more information on wildcards, see
-	//  https://cloud.google.com/storage/docs/wildcards.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.GcsSource.uris
-	// +required
-	URIs []string `json:"uris,omitempty"`
-}
-*/
-
 /* unreachable type GenerationConfig_ModelConfig
 // +kcc:proto=google.cloud.aiplatform.v1beta1.GenerationConfig.ModelConfig
 type GenerationConfig_ModelConfig struct {
 	// Required. Feature selection preference.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.GenerationConfig.ModelConfig.feature_selection_preference
 	FeatureSelectionPreference *string `json:"featureSelectionPreference,omitempty"`
-}
-*/
-
-/* unreachable type IntegratedGradientsAttributionWithRequired
-// +kcc:proto=google.cloud.aiplatform.v1beta1.IntegratedGradientsAttribution
-type IntegratedGradientsAttributionWithRequired struct {
-	// Required. The number of steps for approximating the path integral.
-	//  A good value to start is 50 and gradually increase until the
-	//  sum to diff property is within the desired error range.
-	//
-	//  Valid range of its value is [1, 100], inclusively.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.IntegratedGradientsAttribution.step_count
-	// +required
-	StepCount *int32 `json:"stepCount,omitempty"`
-
-	// Config for SmoothGrad approximation of gradients.
-	//
-	//  When enabled, the gradients are approximated by averaging the gradients
-	//  from noisy samples in the vicinity of the inputs. Adding
-	//  noise can help improve the computed gradients. Refer to this paper for more
-	//  details: https://arxiv.org/pdf/1706.03825.pdf
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.IntegratedGradientsAttribution.smooth_grad_config
-	SmoothGradConfig *SmoothGradConfig `json:"smoothGradConfig,omitempty"`
-
-	// Config for IG with blur baseline.
-	//
-	//  When enabled, a linear path from the maximally blurred image to the input
-	//  image is created. Using a blurred baseline instead of zero (black image) is
-	//  motivated by the BlurIG approach explained here:
-	//  https://arxiv.org/abs/2004.03383
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.IntegratedGradientsAttribution.blur_baseline_config
-	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
 }
 */
 
@@ -4704,51 +5278,6 @@ type RubricGenerationSpec struct {
 }
 */
 
-/* unreachable type SampledShapleyAttributionWithRequired
-// +kcc:proto=google.cloud.aiplatform.v1beta1.SampledShapleyAttribution
-type SampledShapleyAttributionWithRequired struct {
-	// Required. The number of feature permutations to consider when approximating
-	//  the Shapley values.
-	//
-	//  Valid range of its value is [1, 50], inclusively.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.SampledShapleyAttribution.path_count
-	// +required
-	PathCount *int32 `json:"pathCount,omitempty"`
-}
-*/
-
-/* unreachable type XraiAttributionWithRequired
-// +kcc:proto=google.cloud.aiplatform.v1beta1.XraiAttribution
-type XraiAttributionWithRequired struct {
-	// Required. The number of steps for approximating the path integral.
-	//  A good value to start is 50 and gradually increase until the
-	//  sum to diff property is met within the desired error range.
-	//
-	//  Valid range of its value is [1, 100], inclusively.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.XraiAttribution.step_count
-	// +required
-	StepCount *int32 `json:"stepCount,omitempty"`
-
-	// Config for SmoothGrad approximation of gradients.
-	//
-	//  When enabled, the gradients are approximated by averaging the gradients
-	//  from noisy samples in the vicinity of the inputs. Adding
-	//  noise can help improve the computed gradients. Refer to this paper for more
-	//  details: https://arxiv.org/pdf/1706.03825.pdf
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.XraiAttribution.smooth_grad_config
-	SmoothGradConfig *SmoothGradConfig `json:"smoothGradConfig,omitempty"`
-
-	// Config for XRAI with blur baseline.
-	//
-	//  When enabled, a linear path from the maximally blurred image to the input
-	//  image is created. Using a blurred baseline instead of zero (black image) is
-	//  motivated by the BlurIG approach explained here:
-	//  https://arxiv.org/abs/2004.03383
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.XraiAttribution.blur_baseline_config
-	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
-}
-*/
-
 // +kcc:proto=google.protobuf.Int32Value
 type Int32Value struct {
 	// The int32 value.
@@ -4784,6 +5313,33 @@ type LatLng struct {
 	Longitude *float64 `json:"longitude,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.BatchPredictionJob.OutputInfo
+type BatchPredictionJob_OutputInfoObservedState struct {
+	// Output only. The full path of the Cloud Storage directory created, into
+	//  which the prediction output is written.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.BatchPredictionJob.OutputInfo.gcs_output_directory
+	GCSOutputDirectory *string `json:"gcsOutputDirectory,omitempty"`
+
+	// Output only. The path of the BigQuery dataset created, in
+	//  `bq://projectId.bqDatasetId`
+	//  format, into which the prediction output is written.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.BatchPredictionJob.OutputInfo.bigquery_output_dataset
+	BigqueryOutputDataset *string `json:"bigqueryOutputDataset,omitempty"`
+
+	// Output only. The resource name of the Vertex Managed Dataset created,
+	//  into which the prediction output is written. Format:
+	//  `projects/{project}/locations/{location}/datasets/{dataset}`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.BatchPredictionJob.OutputInfo.vertex_multimodal_dataset_name
+	VertexMultimodalDatasetName *string `json:"vertexMultimodalDatasetName,omitempty"`
+
+	// Output only. The name of the BigQuery table created, in
+	//  `predictions_<timestamp>`
+	//  format, into which the prediction output is written.
+	//  Can be used by UI to generate the BigQuery output path, for example.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.BatchPredictionJob.OutputInfo.bigquery_output_table
+	BigqueryOutputTable *string `json:"bigqueryOutputTable,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.ColabImage
 type ColabImageObservedState struct {
 	// Output only. A human-readable description of the specified colab image
@@ -4791,6 +5347,31 @@ type ColabImageObservedState struct {
 	//  Python 3.11"
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ColabImage.description
 	Description *string `json:"description,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.CompletionStats
+type CompletionStatsObservedState struct {
+	// Output only. The number of entities that had been processed successfully.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CompletionStats.successful_count
+	SuccessfulCount *int64 `json:"successfulCount,omitempty"`
+
+	// Output only. The number of entities for which any error was encountered.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CompletionStats.failed_count
+	FailedCount *int64 `json:"failedCount,omitempty"`
+
+	// Output only. In cases when enough errors are encountered a job, pipeline,
+	//  or operation may be failed as a whole. Below is the number of entities for
+	//  which the processing had not been finished (either in successful or failed
+	//  state). Set to -1 if the number is unknown (for example, the operation
+	//  failed before the total entity number could be collected).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CompletionStats.incomplete_count
+	IncompleteCount *int64 `json:"incompleteCount,omitempty"`
+
+	// Output only. The number of the successful forecast points that are
+	//  generated by the forecasting model. This is ONLY used by the forecasting
+	//  batch prediction.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CompletionStats.successful_forecast_point_count
+	SuccessfulForecastPointCount *int64 `json:"successfulForecastPointCount,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.CorpusStatus
@@ -4968,6 +5549,49 @@ type ModelDeploymentMonitoringBigQueryTableObservedState struct {
 }
 */
 
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.NasJobOutput
+type NasJobOutputObservedState struct {
+	// Output only. The output of this multi-trial Neural Architecture Search
+	//  (NAS) job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobOutput.multi_trial_job_output
+	MultiTrialJobOutput *NasJobOutput_MultiTrialJobOutputObservedState `json:"multiTrialJobOutput,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.NasJobOutput.MultiTrialJobOutput
+type NasJobOutput_MultiTrialJobOutputObservedState struct {
+	// Output only. List of NasTrials that were started as part of search stage.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobOutput.MultiTrialJobOutput.search_trials
+	SearchTrials []NasTrialObservedState `json:"searchTrials,omitempty"`
+
+	// Output only. List of NasTrials that were started as part of train stage.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasJobOutput.MultiTrialJobOutput.train_trials
+	TrainTrials []NasTrialObservedState `json:"trainTrials,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.NasTrial
+type NasTrialObservedState struct {
+	// Output only. The identifier of the NasTrial assigned by the service.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasTrial.id
+	ID *string `json:"id,omitempty"`
+
+	// Output only. The detailed state of the NasTrial.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasTrial.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The final measurement containing the objective value.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasTrial.final_measurement
+	FinalMeasurement *MeasurementObservedState `json:"finalMeasurement,omitempty"`
+
+	// Output only. Time when the NasTrial was started.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasTrial.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Output only. Time when the NasTrial's status changed to `SUCCEEDED` or
+	//  `INFEASIBLE`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NasTrial.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.NotebookEucConfig
 type NotebookEUCConfigObservedState struct {
 	// Output only. Whether ActAs check is bypassed for service account attached
@@ -5012,6 +5636,15 @@ type ResourcePoolObservedState struct {
 	//  this resource pool. Will replace idle_replica_count.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourcePool.used_replica_count
 	UsedReplicaCount *int64 `json:"usedReplicaCount,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.ResourcesConsumed
+type ResourcesConsumedObservedState struct {
+	// Output only. The number of replica hours used. Note that many replicas may
+	//  run in parallel, and additionally any given work may be queued for some
+	//  time. Therefore this value is not strictly related to wall time.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourcesConsumed.replica_hours
+	ReplicaHours *float64 `json:"replicaHours,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.SupervisedTuningDataStats

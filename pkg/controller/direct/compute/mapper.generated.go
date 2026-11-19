@@ -29,6 +29,7 @@ import (
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmnetworkconnectivitynetworkconnectivityrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/networkconnectivityrefs"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -1134,6 +1135,76 @@ found existing non-generated mapping function "ComputeBackendServiceSpec_v1beta1
 		return out
 	}
 */
+func ComputeCompositeHealthCheckObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CompositeHealthCheck) *krmcomputev1alpha1.ComputeCompositeHealthCheckObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeCompositeHealthCheckObservedState{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: HealthSources
+	out.ID = in.Id
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.Region = in.Region
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithID = in.SelfLinkWithId
+	return out
+}
+func ComputeCompositeHealthCheckObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeCompositeHealthCheckObservedState) *pb.CompositeHealthCheck {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CompositeHealthCheck{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: HealthSources
+	out.Id = in.ID
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.Region = in.Region
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithId = in.SelfLinkWithID
+	return out
+}
+func ComputeCompositeHealthCheckSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CompositeHealthCheck) *krmcomputev1alpha1.ComputeCompositeHealthCheckSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeCompositeHealthCheckSpec{}
+	out.Description = in.Description
+	out.Fingerprint = in.Fingerprint
+	if in.GetHealthDestination() != "" {
+		out.HealthDestinationRef = &krmcomputev1beta1.ForwardingRuleRef{External: in.GetHealthDestination()}
+	}
+
+	if v := in.GetHealthSources(); len(v) != 0 {
+		for i := range v {
+			out.HealthSourceRefs = append(out.HealthSourceRefs, krmcomputev1alpha1.ComputeHealthSourceRef{External: v[i]})
+		}
+	}
+
+	// MISSING: Name
+	return out
+}
+func ComputeCompositeHealthCheckSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeCompositeHealthCheckSpec) *pb.CompositeHealthCheck {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CompositeHealthCheck{}
+	out.Description = in.Description
+	out.Fingerprint = in.Fingerprint
+	if in.HealthDestinationRef != nil {
+		out.HealthDestination = &in.HealthDestinationRef.External
+	}
+
+	if v := in.HealthSourceRefs; len(v) != 0 {
+		for i := range v {
+			out.HealthSources = append(out.HealthSources, v[i].External)
+		}
+	}
+
+	// MISSING: Name
+	return out
+}
 func ComputeCrossSiteNetworkObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CrossSiteNetwork) *krmcomputev1alpha1.ComputeCrossSiteNetworkObservedState {
 	if in == nil {
 		return nil
@@ -2503,37 +2574,97 @@ func ComputeHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 }
 */
 
-/* found existing non-generated mapping function "ComputeHealthCheckSpec_v1beta1_ToProto", skipping
-func ComputeHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeHealthCheckSpec) *pb.HealthCheck {
+/*
+found existing non-generated mapping function "ComputeHealthCheckSpec_v1beta1_ToProto", skipping
+
+	func ComputeHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeHealthCheckSpec) *pb.HealthCheck {
+		if in == nil {
+			return nil
+		}
+		out := &pb.HealthCheck{}
+		out.CheckIntervalSec = in.CheckIntervalSec
+		// MISSING: CreationTimestamp
+		out.Description = in.Description
+		// MISSING: GrpcHealthCheck
+		// (near miss): "GrpcHealthCheck" vs "GRPCHealthCheck"
+		out.HealthyThreshold = in.HealthyThreshold
+		// MISSING: Http2HealthCheck
+		// (near miss): "Http2HealthCheck" vs "HTTP2HealthCheck"
+		out.HttpHealthCheck = HealthCheckHTTPHealthCheck_v1beta1_ToProto(mapCtx, in.HTTPHealthCheck)
+		out.HttpsHealthCheck = HealthCheckHTTPSHealthCheck_v1beta1_ToProto(mapCtx, in.HTTPSHealthCheck)
+		// MISSING: ID
+		// MISSING: Kind
+		out.LogConfig = HealthCheckLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
+		// MISSING: Name
+		// MISSING: Region
+		// MISSING: SelfLink
+		out.SourceRegions = in.SourceRegions
+		out.SslHealthCheck = HealthCheckSSLHealthCheck_v1beta1_ToProto(mapCtx, in.SSLHealthCheck)
+		out.TcpHealthCheck = HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx, in.TCPHealthCheck)
+		out.TimeoutSec = in.TimeoutSec
+		// MISSING: Type
+		out.UnhealthyThreshold = in.UnhealthyThreshold
+		return out
+	}
+*/
+func ComputeHealthSourceObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.HealthSource) *krmcomputev1alpha1.ComputeHealthSourceObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.HealthCheck{}
-	out.CheckIntervalSec = in.CheckIntervalSec
-	// MISSING: CreationTimestamp
-	out.Description = in.Description
-	// MISSING: GrpcHealthCheck
-	// (near miss): "GrpcHealthCheck" vs "GRPCHealthCheck"
-	out.HealthyThreshold = in.HealthyThreshold
-	// MISSING: Http2HealthCheck
-	// (near miss): "Http2HealthCheck" vs "HTTP2HealthCheck"
-	out.HttpHealthCheck = HealthCheckHTTPHealthCheck_v1beta1_ToProto(mapCtx, in.HTTPHealthCheck)
-	out.HttpsHealthCheck = HealthCheckHTTPSHealthCheck_v1beta1_ToProto(mapCtx, in.HTTPSHealthCheck)
-	// MISSING: ID
-	// MISSING: Kind
-	out.LogConfig = HealthCheckLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
+	out := &krmcomputev1alpha1.ComputeHealthSourceObservedState{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ID = in.Id
+	out.Kind = in.Kind
 	// MISSING: Name
-	// MISSING: Region
-	// MISSING: SelfLink
-	out.SourceRegions = in.SourceRegions
-	out.SslHealthCheck = HealthCheckSSLHealthCheck_v1beta1_ToProto(mapCtx, in.SSLHealthCheck)
-	out.TcpHealthCheck = HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx, in.TCPHealthCheck)
-	out.TimeoutSec = in.TimeoutSec
-	// MISSING: Type
-	out.UnhealthyThreshold = in.UnhealthyThreshold
+	out.Region = in.Region
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithID = in.SelfLinkWithId
 	return out
 }
-*/
+func ComputeHealthSourceObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeHealthSourceObservedState) *pb.HealthSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HealthSource{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Id = in.ID
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.Region = in.Region
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithId = in.SelfLinkWithID
+	return out
+}
+func ComputeHealthSourceSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.HealthSource) *krmcomputev1alpha1.ComputeHealthSourceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeHealthSourceSpec{}
+	out.Description = in.Description
+	out.Fingerprint = in.Fingerprint
+	if in.GetHealthAggregationPolicy() != "" {
+		out.HealthAggregationPolicyRef = &krmcomputev1alpha1.ComputeHealthAggregationPolicyRef{External: in.GetHealthAggregationPolicy()}
+	}
+	// MISSING: Name
+	out.SourceType = in.SourceType
+	out.Sources = ComputeHealthSourceSpec_Sources_FromProto(mapCtx, in.Sources)
+	return out
+}
+func ComputeHealthSourceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeHealthSourceSpec) *pb.HealthSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HealthSource{}
+	out.Description = in.Description
+	out.Fingerprint = in.Fingerprint
+	if in.HealthAggregationPolicyRef != nil {
+		out.HealthAggregationPolicy = &in.HealthAggregationPolicyRef.External
+	}
+	// MISSING: Name
+	out.SourceType = in.SourceType
+	out.Sources = ComputeHealthSourceSpec_Sources_ToProto(mapCtx, in.Sources)
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeImageSpec_v1beta1_FromProto", skipping
 func ComputeImageSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Image) *krmcomputev1beta1.ComputeImageSpec {
@@ -3184,6 +3315,64 @@ found existing non-generated mapping function "ComputeInstanceStatus_v1beta1_ToP
 		return out
 	}
 */
+func ComputeInstantSnapshotGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstantSnapshotGroup) *krmcomputev1alpha1.ComputeInstantSnapshotGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeInstantSnapshotGroupObservedState{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ID = in.Id
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.Region = in.Region
+	out.ResourceStatus = InstantSnapshotGroupResourceStatus_v1alpha1_FromProto(mapCtx, in.GetResourceStatus())
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithID = in.SelfLinkWithId
+	out.Status = in.Status
+	out.Zone = in.Zone
+	return out
+}
+func ComputeInstantSnapshotGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInstantSnapshotGroupObservedState) *pb.InstantSnapshotGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstantSnapshotGroup{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Id = in.ID
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.Region = in.Region
+	out.ResourceStatus = InstantSnapshotGroupResourceStatus_v1alpha1_ToProto(mapCtx, in.ResourceStatus)
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithId = in.SelfLinkWithID
+	out.Status = in.Status
+	out.Zone = in.Zone
+	return out
+}
+func ComputeInstantSnapshotGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstantSnapshotGroup) *krmcomputev1alpha1.ComputeInstantSnapshotGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeInstantSnapshotGroupSpec{}
+	out.Description = in.Description
+	// MISSING: Name
+	if in.GetSourceConsistencyGroup() != "" {
+		out.SourceConsistencyGroupRef = &krmcomputev1beta1.ComputeResourcePolicyRef{External: in.GetSourceConsistencyGroup()}
+	}
+	return out
+}
+func ComputeInstantSnapshotGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInstantSnapshotGroupSpec) *pb.InstantSnapshotGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstantSnapshotGroup{}
+	out.Description = in.Description
+	// MISSING: Name
+	if in.SourceConsistencyGroupRef != nil {
+		out.SourceConsistencyGroup = &in.SourceConsistencyGroupRef.External
+	}
+	return out
+}
 func ComputeInstantSnapshotObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstantSnapshot) *krmcomputev1alpha1.ComputeInstantSnapshotObservedState {
 	if in == nil {
 		return nil
@@ -3258,6 +3447,76 @@ func ComputeInstantSnapshotSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	}
 	return out
 }
+func ComputeInterconnectAttachmentGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroup) *krmcomputev1alpha1.ComputeInterconnectAttachmentGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeInterconnectAttachmentGroupObservedState{}
+	out.Configured = InterconnectAttachmentGroupConfigured_v1alpha1_FromProto(mapCtx, in.GetConfigured())
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Etag = in.Etag
+	out.ID = in.Id
+	out.Kind = in.Kind
+	out.LogicalStructure = InterconnectAttachmentGroupLogicalStructure_v1alpha1_FromProto(mapCtx, in.GetLogicalStructure())
+	// MISSING: Name
+	out.SelfLink = in.SelfLink
+	return out
+}
+func ComputeInterconnectAttachmentGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInterconnectAttachmentGroupObservedState) *pb.InterconnectAttachmentGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroup{}
+	out.Configured = InterconnectAttachmentGroupConfigured_v1alpha1_ToProto(mapCtx, in.Configured)
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Etag = in.Etag
+	out.Id = in.ID
+	out.Kind = in.Kind
+	out.LogicalStructure = InterconnectAttachmentGroupLogicalStructure_v1alpha1_ToProto(mapCtx, in.LogicalStructure)
+	// MISSING: Name
+	out.SelfLink = in.SelfLink
+	return out
+}
+func ComputeInterconnectAttachmentGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroup) *krmcomputev1alpha1.ComputeInterconnectAttachmentGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeInterconnectAttachmentGroupSpec{}
+	if in.Attachments != nil {
+		out.Attachments = make(map[string]krmcomputev1alpha1.InterconnectAttachmentGroupAttachment, len(in.Attachments))
+		for k, v := range in.Attachments {
+			if c := InterconnectAttachmentGroupAttachment_v1alpha1_FromProto(mapCtx, v); c != nil {
+				out.Attachments[k] = *c
+			}
+		}
+	}
+	out.Description = in.Description
+	out.Intent = InterconnectAttachmentGroupIntent_v1alpha1_FromProto(mapCtx, in.GetIntent())
+	if in.GetInterconnectGroup() != "" {
+		out.InterconnectGroupRef = &krmcomputev1alpha1.ComputeInterconnectGroupRef{External: in.GetInterconnectGroup()}
+	}
+	// MISSING: Name
+	return out
+}
+func ComputeInterconnectAttachmentGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInterconnectAttachmentGroupSpec) *pb.InterconnectAttachmentGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroup{}
+	if in.Attachments != nil {
+		out.Attachments = make(map[string]*pb.InterconnectAttachmentGroupAttachment, len(in.Attachments))
+		for k, v := range in.Attachments {
+			out.Attachments[k] = InterconnectAttachmentGroupAttachment_v1alpha1_ToProto(mapCtx, &v)
+		}
+	}
+	out.Description = in.Description
+	out.Intent = InterconnectAttachmentGroupIntent_v1alpha1_ToProto(mapCtx, in.Intent)
+	if in.InterconnectGroupRef != nil {
+		out.InterconnectGroup = &in.InterconnectGroupRef.External
+	}
+	// MISSING: Name
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeInterconnectAttachmentSpec_v1beta1_FromProto", skipping
 func ComputeInterconnectAttachmentSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachment) *krmcomputev1beta1.ComputeInterconnectAttachmentSpec {
@@ -3312,58 +3571,124 @@ func ComputeInterconnectAttachmentSpec_v1beta1_FromProto(mapCtx *direct.MapConte
 }
 */
 
-/* found existing non-generated mapping function "ComputeInterconnectAttachmentSpec_v1beta1_ToProto", skipping
-func ComputeInterconnectAttachmentSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeInterconnectAttachmentSpec) *pb.InterconnectAttachment {
+/*
+found existing non-generated mapping function "ComputeInterconnectAttachmentSpec_v1beta1_ToProto", skipping
+
+	func ComputeInterconnectAttachmentSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeInterconnectAttachmentSpec) *pb.InterconnectAttachment {
+		if in == nil {
+			return nil
+		}
+		out := &pb.InterconnectAttachment{}
+		out.AdminEnabled = in.AdminEnabled
+		// MISSING: AttachmentGroup
+		out.Bandwidth = in.Bandwidth
+		// MISSING: CandidateIPV6Subnets
+		out.CandidateSubnets = in.CandidateSubnets
+		// MISSING: CloudRouterIPAddress
+		// MISSING: CloudRouterIPV6Address
+		// MISSING: CloudRouterIPV6InterfaceID
+		// MISSING: ConfigurationConstraints
+		// MISSING: CreationTimestamp
+		// MISSING: CustomerRouterIPAddress
+		// MISSING: CustomerRouterIPV6Address
+		// MISSING: CustomerRouterIPV6InterfaceID
+		// MISSING: DataplaneVersion
+		out.Description = in.Description
+		out.EdgeAvailabilityDomain = in.EdgeAvailabilityDomain
+		out.Encryption = in.Encryption
+		// MISSING: GoogleReferenceID
+		// MISSING: ID
+		out.Interconnect = in.Interconnect
+		out.IpsecInternalAddresses = ComputeInterconnectAttachmentSpec_IpsecInternalAddresses_ToProto(mapCtx, in.IpsecInternalAddresses)
+		// MISSING: Kind
+		// MISSING: LabelFingerprint
+		// MISSING: Labels
+		out.Mtu = in.Mtu
+		// MISSING: Name
+		// MISSING: OperationalStatus
+		// MISSING: PairingKey
+		// MISSING: PartnerAsn
+		// MISSING: PartnerMetadata
+		// MISSING: PrivateInterconnectInfo
+		out.Region = in.Region
+		// MISSING: RemoteService
+		if in.RouterRef != nil {
+			out.Router = &in.RouterRef.External
+		}
+		// MISSING: SatisfiesPzs
+		// MISSING: SelfLink
+		// MISSING: StackType
+		// MISSING: State
+		// MISSING: SubnetLength
+		out.Type = in.Type
+		out.VlanTag8021q = in.VlanTag8021q
+		return out
+	}
+*/
+func ComputeInterconnectGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroup) *krmcomputev1alpha1.ComputeInterconnectGroupObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.InterconnectAttachment{}
-	out.AdminEnabled = in.AdminEnabled
-	// MISSING: AttachmentGroup
-	out.Bandwidth = in.Bandwidth
-	// MISSING: CandidateIPV6Subnets
-	out.CandidateSubnets = in.CandidateSubnets
-	// MISSING: CloudRouterIPAddress
-	// MISSING: CloudRouterIPV6Address
-	// MISSING: CloudRouterIPV6InterfaceID
-	// MISSING: ConfigurationConstraints
-	// MISSING: CreationTimestamp
-	// MISSING: CustomerRouterIPAddress
-	// MISSING: CustomerRouterIPV6Address
-	// MISSING: CustomerRouterIPV6InterfaceID
-	// MISSING: DataplaneVersion
-	out.Description = in.Description
-	out.EdgeAvailabilityDomain = in.EdgeAvailabilityDomain
-	out.Encryption = in.Encryption
-	// MISSING: GoogleReferenceID
-	// MISSING: ID
-	out.Interconnect = in.Interconnect
-	out.IpsecInternalAddresses = ComputeInterconnectAttachmentSpec_IpsecInternalAddresses_ToProto(mapCtx, in.IpsecInternalAddresses)
-	// MISSING: Kind
-	// MISSING: LabelFingerprint
-	// MISSING: Labels
-	out.Mtu = in.Mtu
+	out := &krmcomputev1alpha1.ComputeInterconnectGroupObservedState{}
+	out.Configured = InterconnectGroupConfigured_v1alpha1_FromProto(mapCtx, in.GetConfigured())
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Etag = in.Etag
+	out.ID = in.Id
+	out.Kind = in.Kind
 	// MISSING: Name
-	// MISSING: OperationalStatus
-	// MISSING: PairingKey
-	// MISSING: PartnerAsn
-	// MISSING: PartnerMetadata
-	// MISSING: PrivateInterconnectInfo
-	out.Region = in.Region
-	// MISSING: RemoteService
-	if in.RouterRef != nil {
-		out.Router = &in.RouterRef.External
-	}
-	// MISSING: SatisfiesPzs
-	// MISSING: SelfLink
-	// MISSING: StackType
-	// MISSING: State
-	// MISSING: SubnetLength
-	out.Type = in.Type
-	out.VlanTag8021q = in.VlanTag8021q
+	out.PhysicalStructure = InterconnectGroupPhysicalStructure_v1alpha1_FromProto(mapCtx, in.GetPhysicalStructure())
+	out.SelfLink = in.SelfLink
 	return out
 }
-*/
+func ComputeInterconnectGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInterconnectGroupObservedState) *pb.InterconnectGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroup{}
+	out.Configured = InterconnectGroupConfigured_v1alpha1_ToProto(mapCtx, in.Configured)
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Etag = in.Etag
+	out.Id = in.ID
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.PhysicalStructure = InterconnectGroupPhysicalStructure_v1alpha1_ToProto(mapCtx, in.PhysicalStructure)
+	out.SelfLink = in.SelfLink
+	return out
+}
+func ComputeInterconnectGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroup) *krmcomputev1alpha1.ComputeInterconnectGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeInterconnectGroupSpec{}
+	out.Description = in.Description
+	out.Intent = InterconnectGroupIntent_v1alpha1_FromProto(mapCtx, in.GetIntent())
+	if in.Interconnects != nil {
+		out.Interconnects = make(map[string]krmcomputev1alpha1.InterconnectGroupInterconnect, len(in.Interconnects))
+		for k, v := range in.Interconnects {
+			if c := InterconnectGroupInterconnect_v1alpha1_FromProto(mapCtx, v); c != nil {
+				out.Interconnects[k] = *c
+			}
+		}
+	}
+	// MISSING: Name
+	return out
+}
+func ComputeInterconnectGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInterconnectGroupSpec) *pb.InterconnectGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroup{}
+	out.Description = in.Description
+	out.Intent = InterconnectGroupIntent_v1alpha1_ToProto(mapCtx, in.Intent)
+	if in.Interconnects != nil {
+		out.Interconnects = make(map[string]*pb.InterconnectGroupInterconnect, len(in.Interconnects))
+		for k, v := range in.Interconnects {
+			out.Interconnects[k] = InterconnectGroupInterconnect_v1alpha1_ToProto(mapCtx, &v)
+		}
+	}
+	// MISSING: Name
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeInterconnectObservedState_v1alpha1_FromProto", skipping
 func ComputeInterconnectObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Interconnect) *krmcomputev1alpha1.ComputeInterconnectObservedState {
@@ -3480,6 +3805,78 @@ found existing non-generated mapping function "ComputeInterconnectSpec_v1alpha1_
 		return out
 	}
 */
+func ComputeLicenseObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.License) *krmcomputev1alpha1.ComputeLicenseObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeLicenseObservedState{}
+	out.ChargesUseFee = in.ChargesUseFee
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ID = in.Id
+	out.Kind = in.Kind
+	out.LicenseCode = in.LicenseCode
+	// MISSING: Name
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithID = in.SelfLinkWithId
+	out.UpdateTimestamp = in.UpdateTimestamp
+	return out
+}
+func ComputeLicenseObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeLicenseObservedState) *pb.License {
+	if in == nil {
+		return nil
+	}
+	out := &pb.License{}
+	out.ChargesUseFee = in.ChargesUseFee
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Id = in.ID
+	out.Kind = in.Kind
+	out.LicenseCode = in.LicenseCode
+	// MISSING: Name
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithId = in.SelfLinkWithID
+	out.UpdateTimestamp = in.UpdateTimestamp
+	return out
+}
+func ComputeLicenseSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.License) *krmcomputev1alpha1.ComputeLicenseSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeLicenseSpec{}
+	out.AllowedReplacementLicenses = in.AllowedReplacementLicenses
+	out.AppendableToDisk = in.AppendableToDisk
+	out.Description = in.Description
+	out.IncompatibleLicenses = in.IncompatibleLicenses
+	out.MinimumRetention = Duration_v1alpha1_FromProto(mapCtx, in.GetMinimumRetention())
+	out.MultiTenantOnly = in.MultiTenantOnly
+	// MISSING: Name
+	out.OSLicense = in.OsLicense
+	out.RemovableFromDisk = in.RemovableFromDisk
+	out.RequiredCoattachedLicenses = in.RequiredCoattachedLicenses
+	out.ResourceRequirements = LicenseResourceRequirements_v1alpha1_FromProto(mapCtx, in.GetResourceRequirements())
+	out.SoleTenantOnly = in.SoleTenantOnly
+	out.Transferable = in.Transferable
+	return out
+}
+func ComputeLicenseSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeLicenseSpec) *pb.License {
+	if in == nil {
+		return nil
+	}
+	out := &pb.License{}
+	out.AllowedReplacementLicenses = in.AllowedReplacementLicenses
+	out.AppendableToDisk = in.AppendableToDisk
+	out.Description = in.Description
+	out.IncompatibleLicenses = in.IncompatibleLicenses
+	out.MinimumRetention = Duration_v1alpha1_ToProto(mapCtx, in.MinimumRetention)
+	out.MultiTenantOnly = in.MultiTenantOnly
+	// MISSING: Name
+	out.OsLicense = in.OSLicense
+	out.RemovableFromDisk = in.RemovableFromDisk
+	out.RequiredCoattachedLicenses = in.RequiredCoattachedLicenses
+	out.ResourceRequirements = LicenseResourceRequirements_v1alpha1_ToProto(mapCtx, in.ResourceRequirements)
+	out.SoleTenantOnly = in.SoleTenantOnly
+	out.Transferable = in.Transferable
+	return out
+}
 func ComputeMachineImageSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MachineImage) *krmcomputev1alpha1.ComputeMachineImageSpec {
 	if in == nil {
 		return nil
@@ -4980,26 +5377,78 @@ func ComputeResourcePolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 }
 */
 
-/* found existing non-generated mapping function "ComputeResourcePolicySpec_v1beta1_ToProto", skipping
-func ComputeResourcePolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeResourcePolicySpec) *pb.ResourcePolicy {
+/*
+found existing non-generated mapping function "ComputeResourcePolicySpec_v1beta1_ToProto", skipping
+
+	func ComputeResourcePolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeResourcePolicySpec) *pb.ResourcePolicy {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ResourcePolicy{}
+		out.Description = in.Description
+		out.DiskConsistencyGroupPolicy = ResourcePolicyDiskConsistencyGroupPolicy_v1beta1_ToProto(mapCtx, in.DiskConsistencyGroupPolicy)
+		out.GroupPlacementPolicy = ResourcePolicyGroupPlacementPolicy_v1beta1_ToProto(mapCtx, in.GroupPlacementPolicy)
+		out.InstanceSchedulePolicy = ResourcePolicyInstanceSchedulePolicy_v1beta1_ToProto(mapCtx, in.InstanceSchedulePolicy)
+		// MISSING: Kind
+		// MISSING: Name
+		out.Region = in.Region
+		// MISSING: ResourceStatus
+		// MISSING: SelfLink
+		out.SnapshotSchedulePolicy = ResourcePolicySnapshotSchedulePolicy_v1beta1_ToProto(mapCtx, in.SnapshotSchedulePolicy)
+		// MISSING: WorkloadPolicy
+		return out
+	}
+*/
+func ComputeRolloutPlanObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlan) *krmcomputev1alpha1.ComputeRolloutPlanObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ResourcePolicy{}
-	out.Description = in.Description
-	out.DiskConsistencyGroupPolicy = ResourcePolicyDiskConsistencyGroupPolicy_v1beta1_ToProto(mapCtx, in.DiskConsistencyGroupPolicy)
-	out.GroupPlacementPolicy = ResourcePolicyGroupPlacementPolicy_v1beta1_ToProto(mapCtx, in.GroupPlacementPolicy)
-	out.InstanceSchedulePolicy = ResourcePolicyInstanceSchedulePolicy_v1beta1_ToProto(mapCtx, in.InstanceSchedulePolicy)
-	// MISSING: Kind
+	out := &krmcomputev1alpha1.ComputeRolloutPlanObservedState{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ID = in.Id
+	out.Kind = in.Kind
 	// MISSING: Name
-	out.Region = in.Region
-	// MISSING: ResourceStatus
-	// MISSING: SelfLink
-	out.SnapshotSchedulePolicy = ResourcePolicySnapshotSchedulePolicy_v1beta1_ToProto(mapCtx, in.SnapshotSchedulePolicy)
-	// MISSING: WorkloadPolicy
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithID = in.SelfLinkWithId
+	out.Waves = direct.Slice_FromProto(mapCtx, in.Waves, RolloutPlanWaveObservedState_v1alpha1_FromProto)
 	return out
 }
-*/
+func ComputeRolloutPlanObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeRolloutPlanObservedState) *pb.RolloutPlan {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutPlan{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Id = in.ID
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithId = in.SelfLinkWithID
+	out.Waves = direct.Slice_ToProto(mapCtx, in.Waves, RolloutPlanWaveObservedState_v1alpha1_ToProto)
+	return out
+}
+func ComputeRolloutPlanSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlan) *krmcomputev1alpha1.ComputeRolloutPlanSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeRolloutPlanSpec{}
+	out.Description = in.Description
+	out.LocationScope = in.LocationScope
+	// MISSING: Name
+	out.Waves = direct.Slice_FromProto(mapCtx, in.Waves, RolloutPlanWave_v1alpha1_FromProto)
+	return out
+}
+func ComputeRolloutPlanSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeRolloutPlanSpec) *pb.RolloutPlan {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutPlan{}
+	out.Description = in.Description
+	out.LocationScope = in.LocationScope
+	// MISSING: Name
+	out.Waves = direct.Slice_ToProto(mapCtx, in.Waves, RolloutPlanWave_v1alpha1_ToProto)
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeRouteSpec_v1beta1_FromProto", skipping
 func ComputeRouteSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Route) *krmcomputev1beta1.ComputeRouteSpec {
@@ -5856,6 +6305,76 @@ func ComputeSnapshotStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcom
 	out.StorageBytes = in.StorageBytes
 	// MISSING: StorageBytesStatus
 	// MISSING: StorageLocations
+	return out
+}
+func ComputeStoragePoolObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.StoragePool) *krmcomputev1alpha1.ComputeStoragePoolObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeStoragePoolObservedState{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ID = in.Id
+	out.Kind = in.Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	out.ResourceStatus = StoragePoolResourceStatus_v1alpha1_FromProto(mapCtx, in.GetResourceStatus())
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithID = in.SelfLinkWithId
+	out.State = in.State
+	out.Status = StoragePoolResourceStatus_v1alpha1_FromProto(mapCtx, in.GetStatus())
+	out.Zone = in.Zone
+	return out
+}
+func ComputeStoragePoolObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeStoragePoolObservedState) *pb.StoragePool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StoragePool{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Id = in.ID
+	out.Kind = in.Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	out.ResourceStatus = StoragePoolResourceStatus_v1alpha1_ToProto(mapCtx, in.ResourceStatus)
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithId = in.SelfLinkWithID
+	out.State = in.State
+	out.Status = StoragePoolResourceStatus_v1alpha1_ToProto(mapCtx, in.Status)
+	out.Zone = in.Zone
+	return out
+}
+func ComputeStoragePoolSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.StoragePool) *krmcomputev1alpha1.ComputeStoragePoolSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeStoragePoolSpec{}
+	out.CapacityProvisioningType = in.CapacityProvisioningType
+	out.Description = in.Description
+	// MISSING: Labels
+	// MISSING: Name
+	out.PerformanceProvisioningType = in.PerformanceProvisioningType
+	out.PoolProvisionedCapacityGB = in.PoolProvisionedCapacityGb
+	out.PoolProvisionedIops = in.PoolProvisionedIops
+	out.PoolProvisionedThroughput = in.PoolProvisionedThroughput
+	out.StoragePoolType = in.StoragePoolType
+	return out
+}
+func ComputeStoragePoolSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeStoragePoolSpec) *pb.StoragePool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StoragePool{}
+	out.CapacityProvisioningType = in.CapacityProvisioningType
+	out.Description = in.Description
+	// MISSING: Labels
+	// MISSING: Name
+	out.PerformanceProvisioningType = in.PerformanceProvisioningType
+	out.PoolProvisionedCapacityGb = in.PoolProvisionedCapacityGB
+	out.PoolProvisionedIops = in.PoolProvisionedIops
+	out.PoolProvisionedThroughput = in.PoolProvisionedThroughput
+	out.StoragePoolType = in.StoragePoolType
 	return out
 }
 func ComputeSubnetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Subnetwork) *krmcomputev1beta1.ComputeSubnetworkSpec {
@@ -6964,6 +7483,86 @@ func Duration_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1
 	out.Seconds = in.Seconds
 	return out
 }
+func Error_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Error) *krmcomputev1alpha1.Error {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.Error{}
+	out.Errors = direct.Slice_FromProto(mapCtx, in.Errors, Errors_v1alpha1_FromProto)
+	return out
+}
+func Error_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.Error) *pb.Error {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Error{}
+	out.Errors = direct.Slice_ToProto(mapCtx, in.Errors, Errors_v1alpha1_ToProto)
+	return out
+}
+func ErrorDetails_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ErrorDetails) *krmcomputev1alpha1.ErrorDetails {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ErrorDetails{}
+	out.ErrorInfo = ErrorInfo_v1alpha1_FromProto(mapCtx, in.GetErrorInfo())
+	out.Help = Help_v1alpha1_FromProto(mapCtx, in.GetHelp())
+	out.LocalizedMessage = LocalizedMessage_v1alpha1_FromProto(mapCtx, in.GetLocalizedMessage())
+	out.QuotaInfo = QuotaExceededInfo_v1alpha1_FromProto(mapCtx, in.GetQuotaInfo())
+	return out
+}
+func ErrorDetails_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ErrorDetails) *pb.ErrorDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ErrorDetails{}
+	out.ErrorInfo = ErrorInfo_v1alpha1_ToProto(mapCtx, in.ErrorInfo)
+	out.Help = Help_v1alpha1_ToProto(mapCtx, in.Help)
+	out.LocalizedMessage = LocalizedMessage_v1alpha1_ToProto(mapCtx, in.LocalizedMessage)
+	out.QuotaInfo = QuotaExceededInfo_v1alpha1_ToProto(mapCtx, in.QuotaInfo)
+	return out
+}
+func ErrorInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ErrorInfo) *krmcomputev1alpha1.ErrorInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ErrorInfo{}
+	out.Domain = in.Domain
+	out.Metadatas = in.Metadatas
+	out.Reason = in.Reason
+	return out
+}
+func ErrorInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ErrorInfo) *pb.ErrorInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ErrorInfo{}
+	out.Domain = in.Domain
+	out.Metadatas = in.Metadatas
+	out.Reason = in.Reason
+	return out
+}
+func Errors_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Errors) *krmcomputev1alpha1.Errors {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.Errors{}
+	out.Code = in.Code
+	out.ErrorDetails = direct.Slice_FromProto(mapCtx, in.ErrorDetails, ErrorDetails_v1alpha1_FromProto)
+	out.Location = in.Location
+	out.Message = in.Message
+	return out
+}
+func Errors_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.Errors) *pb.Errors {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Errors{}
+	out.Code = in.Code
+	out.ErrorDetails = direct.Slice_ToProto(mapCtx, in.ErrorDetails, ErrorDetails_v1alpha1_ToProto)
+	out.Location = in.Location
+	out.Message = in.Message
+	return out
+}
 
 /* found existing non-generated mapping function "FirewallAllow_v1beta1_FromProto", skipping
 func FirewallAllow_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Allowed) *krmcomputev1beta1.FirewallAllow {
@@ -7327,21 +7926,91 @@ func HealthCheckTCPHealthCheck_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 }
 */
 
-/* found existing non-generated mapping function "HealthCheckTCPHealthCheck_v1beta1_ToProto", skipping
-func HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.HealthCheckTCPHealthCheck) *pb.TCPHealthCheck {
+/*
+found existing non-generated mapping function "HealthCheckTCPHealthCheck_v1beta1_ToProto", skipping
+
+	func HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.HealthCheckTCPHealthCheck) *pb.TCPHealthCheck {
+		if in == nil {
+			return nil
+		}
+		out := &pb.TCPHealthCheck{}
+		out.Port = in.Port
+		out.PortName = in.PortName
+		out.PortSpecification = in.PortSpecification
+		out.ProxyHeader = in.ProxyHeader
+		out.Request = in.Request
+		out.Response = in.Response
+		return out
+	}
+*/
+func Help_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Help) *krmcomputev1alpha1.Help {
 	if in == nil {
 		return nil
 	}
-	out := &pb.TCPHealthCheck{}
-	out.Port = in.Port
-	out.PortName = in.PortName
-	out.PortSpecification = in.PortSpecification
-	out.ProxyHeader = in.ProxyHeader
-	out.Request = in.Request
-	out.Response = in.Response
+	out := &krmcomputev1alpha1.Help{}
+	out.Links = direct.Slice_FromProto(mapCtx, in.Links, HelpLink_v1alpha1_FromProto)
 	return out
 }
-*/
+func Help_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.Help) *pb.Help {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Help{}
+	out.Links = direct.Slice_ToProto(mapCtx, in.Links, HelpLink_v1alpha1_ToProto)
+	return out
+}
+func HelpLink_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.HelpLink) *krmcomputev1alpha1.HelpLink {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.HelpLink{}
+	out.Description = in.Description
+	out.URL = in.Url
+	return out
+}
+func HelpLink_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.HelpLink) *pb.HelpLink {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HelpLink{}
+	out.Description = in.Description
+	out.Url = in.URL
+	return out
+}
+func InstanceGroupManagerResizeRequestStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManagerResizeRequestStatus) *krmcomputev1alpha1.InstanceGroupManagerResizeRequestStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InstanceGroupManagerResizeRequestStatus{}
+	out.Error = Error_v1alpha1_FromProto(mapCtx, in.GetError())
+	out.LastAttempt = InstanceGroupManagerResizeRequestStatusLastAttempt_v1alpha1_FromProto(mapCtx, in.GetLastAttempt())
+	return out
+}
+func InstanceGroupManagerResizeRequestStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InstanceGroupManagerResizeRequestStatus) *pb.InstanceGroupManagerResizeRequestStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupManagerResizeRequestStatus{}
+	out.Error = Error_v1alpha1_ToProto(mapCtx, in.Error)
+	out.LastAttempt = InstanceGroupManagerResizeRequestStatusLastAttempt_v1alpha1_ToProto(mapCtx, in.LastAttempt)
+	return out
+}
+func InstanceGroupManagerResizeRequestStatusLastAttempt_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManagerResizeRequestStatusLastAttempt) *krmcomputev1alpha1.InstanceGroupManagerResizeRequestStatusLastAttempt {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InstanceGroupManagerResizeRequestStatusLastAttempt{}
+	out.Error = Error_v1alpha1_FromProto(mapCtx, in.GetError())
+	return out
+}
+func InstanceGroupManagerResizeRequestStatusLastAttempt_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InstanceGroupManagerResizeRequestStatusLastAttempt) *pb.InstanceGroupManagerResizeRequestStatusLastAttempt {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupManagerResizeRequestStatusLastAttempt{}
+	out.Error = Error_v1alpha1_ToProto(mapCtx, in.Error)
+	return out
+}
 
 /* found existing non-generated mapping function "InstanceGroupNamedPort_v1beta1_FromProto", skipping
 func InstanceGroupNamedPort_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NamedPort) *krmcomputev1beta1.InstanceGroupNamedPort {
@@ -7368,6 +8037,42 @@ found existing non-generated mapping function "InstanceGroupNamedPort_v1beta1_To
 		return out
 	}
 */
+func InstantSnapshotGroupResourceStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstantSnapshotGroupResourceStatus) *krmcomputev1alpha1.InstantSnapshotGroupResourceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InstantSnapshotGroupResourceStatus{}
+	out.ConsistencyMembershipResolutionTime = in.ConsistencyMembershipResolutionTime
+	out.SourceInfo = InstantSnapshotGroupSourceInfo_v1alpha1_FromProto(mapCtx, in.GetSourceInfo())
+	return out
+}
+func InstantSnapshotGroupResourceStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InstantSnapshotGroupResourceStatus) *pb.InstantSnapshotGroupResourceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstantSnapshotGroupResourceStatus{}
+	out.ConsistencyMembershipResolutionTime = in.ConsistencyMembershipResolutionTime
+	out.SourceInfo = InstantSnapshotGroupSourceInfo_v1alpha1_ToProto(mapCtx, in.SourceInfo)
+	return out
+}
+func InstantSnapshotGroupSourceInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstantSnapshotGroupSourceInfo) *krmcomputev1alpha1.InstantSnapshotGroupSourceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InstantSnapshotGroupSourceInfo{}
+	out.ConsistencyGroup = in.ConsistencyGroup
+	out.ConsistencyGroupID = in.ConsistencyGroupId
+	return out
+}
+func InstantSnapshotGroupSourceInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InstantSnapshotGroupSourceInfo) *pb.InstantSnapshotGroupSourceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstantSnapshotGroupSourceInfo{}
+	out.ConsistencyGroup = in.ConsistencyGroup
+	out.ConsistencyGroupId = in.ConsistencyGroupID
+	return out
+}
 func InstantSnapshotResourceStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstantSnapshotResourceStatus) *krmcomputev1alpha1.InstantSnapshotResourceStatus {
 	if in == nil {
 		return nil
@@ -7382,6 +8087,192 @@ func InstantSnapshotResourceStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 	}
 	out := &pb.InstantSnapshotResourceStatus{}
 	out.StorageSizeBytes = in.StorageSizeBytes
+	return out
+}
+func InterconnectAttachmentGroupAttachment_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroupAttachment) *krmcomputev1alpha1.InterconnectAttachmentGroupAttachment {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectAttachmentGroupAttachment{}
+	if in.GetAttachment() != "" {
+		out.AttachmentRef = &krmcomputev1beta1.ComputeInterconnectAttachmentRef{External: in.GetAttachment()}
+	}
+	return out
+}
+func InterconnectAttachmentGroupAttachment_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectAttachmentGroupAttachment) *pb.InterconnectAttachmentGroupAttachment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroupAttachment{}
+	if in.AttachmentRef != nil {
+		out.Attachment = &in.AttachmentRef.External
+	}
+	return out
+}
+func InterconnectAttachmentGroupConfigured_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroupConfigured) *krmcomputev1alpha1.InterconnectAttachmentGroupConfigured {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectAttachmentGroupConfigured{}
+	out.AvailabilitySla = InterconnectAttachmentGroupConfiguredAvailabilitySla_v1alpha1_FromProto(mapCtx, in.GetAvailabilitySla())
+	return out
+}
+func InterconnectAttachmentGroupConfigured_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectAttachmentGroupConfigured) *pb.InterconnectAttachmentGroupConfigured {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroupConfigured{}
+	out.AvailabilitySla = InterconnectAttachmentGroupConfiguredAvailabilitySla_v1alpha1_ToProto(mapCtx, in.AvailabilitySla)
+	return out
+}
+func InterconnectAttachmentGroupConfiguredAvailabilitySla_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroupConfiguredAvailabilitySLA) *krmcomputev1alpha1.InterconnectAttachmentGroupConfiguredAvailabilitySla {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectAttachmentGroupConfiguredAvailabilitySla{}
+	out.EffectiveSla = in.EffectiveSla
+	out.IntendedSlaBlockers = direct.Slice_FromProto(mapCtx, in.IntendedSlaBlockers, InterconnectAttachmentGroupConfiguredAvailabilitySlaIntendedSlaBlockers_v1alpha1_FromProto)
+	return out
+}
+func InterconnectAttachmentGroupConfiguredAvailabilitySla_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectAttachmentGroupConfiguredAvailabilitySla) *pb.InterconnectAttachmentGroupConfiguredAvailabilitySLA {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroupConfiguredAvailabilitySLA{}
+	out.EffectiveSla = in.EffectiveSla
+	out.IntendedSlaBlockers = direct.Slice_ToProto(mapCtx, in.IntendedSlaBlockers, InterconnectAttachmentGroupConfiguredAvailabilitySlaIntendedSlaBlockers_v1alpha1_ToProto)
+	return out
+}
+func InterconnectAttachmentGroupConfiguredAvailabilitySlaIntendedSlaBlockers_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers) *krmcomputev1alpha1.InterconnectAttachmentGroupConfiguredAvailabilitySlaIntendedSlaBlockers {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectAttachmentGroupConfiguredAvailabilitySlaIntendedSlaBlockers{}
+	out.Attachments = in.Attachments
+	out.BlockerType = in.BlockerType
+	out.DocumentationLink = in.DocumentationLink
+	out.Explanation = in.Explanation
+	out.Metros = in.Metros
+	out.Regions = in.Regions
+	out.Zones = in.Zones
+	return out
+}
+func InterconnectAttachmentGroupConfiguredAvailabilitySlaIntendedSlaBlockers_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectAttachmentGroupConfiguredAvailabilitySlaIntendedSlaBlockers) *pb.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers{}
+	out.Attachments = in.Attachments
+	out.BlockerType = in.BlockerType
+	out.DocumentationLink = in.DocumentationLink
+	out.Explanation = in.Explanation
+	out.Metros = in.Metros
+	out.Regions = in.Regions
+	out.Zones = in.Zones
+	return out
+}
+func InterconnectAttachmentGroupIntent_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroupIntent) *krmcomputev1alpha1.InterconnectAttachmentGroupIntent {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectAttachmentGroupIntent{}
+	out.AvailabilitySla = in.AvailabilitySla
+	return out
+}
+func InterconnectAttachmentGroupIntent_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectAttachmentGroupIntent) *pb.InterconnectAttachmentGroupIntent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroupIntent{}
+	out.AvailabilitySla = in.AvailabilitySla
+	return out
+}
+func InterconnectAttachmentGroupLogicalStructure_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroupLogicalStructure) *krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructure {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructure{}
+	out.Regions = direct.Slice_FromProto(mapCtx, in.Regions, InterconnectAttachmentGroupLogicalStructureRegion_v1alpha1_FromProto)
+	return out
+}
+func InterconnectAttachmentGroupLogicalStructure_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructure) *pb.InterconnectAttachmentGroupLogicalStructure {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroupLogicalStructure{}
+	out.Regions = direct.Slice_ToProto(mapCtx, in.Regions, InterconnectAttachmentGroupLogicalStructureRegion_v1alpha1_ToProto)
+	return out
+}
+func InterconnectAttachmentGroupLogicalStructureRegion_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroupLogicalStructureRegion) *krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegion {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegion{}
+	out.Metros = direct.Slice_FromProto(mapCtx, in.Metros, InterconnectAttachmentGroupLogicalStructureRegionMetro_v1alpha1_FromProto)
+	out.Region = in.Region
+	return out
+}
+func InterconnectAttachmentGroupLogicalStructureRegion_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegion) *pb.InterconnectAttachmentGroupLogicalStructureRegion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroupLogicalStructureRegion{}
+	out.Metros = direct.Slice_ToProto(mapCtx, in.Metros, InterconnectAttachmentGroupLogicalStructureRegionMetro_v1alpha1_ToProto)
+	out.Region = in.Region
+	return out
+}
+func InterconnectAttachmentGroupLogicalStructureRegionMetro_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroupLogicalStructureRegionMetro) *krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegionMetro {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegionMetro{}
+	out.Facilities = direct.Slice_FromProto(mapCtx, in.Facilities, InterconnectAttachmentGroupLogicalStructureRegionMetroFacility_v1alpha1_FromProto)
+	out.Metro = in.Metro
+	return out
+}
+func InterconnectAttachmentGroupLogicalStructureRegionMetro_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegionMetro) *pb.InterconnectAttachmentGroupLogicalStructureRegionMetro {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroupLogicalStructureRegionMetro{}
+	out.Facilities = direct.Slice_ToProto(mapCtx, in.Facilities, InterconnectAttachmentGroupLogicalStructureRegionMetroFacility_v1alpha1_ToProto)
+	out.Metro = in.Metro
+	return out
+}
+func InterconnectAttachmentGroupLogicalStructureRegionMetroFacility_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroupLogicalStructureRegionMetroFacility) *krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacility {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacility{}
+	out.Facility = in.Facility
+	out.Zones = direct.Slice_FromProto(mapCtx, in.Zones, InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone_v1alpha1_FromProto)
+	return out
+}
+func InterconnectAttachmentGroupLogicalStructureRegionMetroFacility_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacility) *pb.InterconnectAttachmentGroupLogicalStructureRegionMetroFacility {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroupLogicalStructureRegionMetroFacility{}
+	out.Facility = in.Facility
+	out.Zones = direct.Slice_ToProto(mapCtx, in.Zones, InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone_v1alpha1_ToProto)
+	return out
+}
+func InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone) *krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone{}
+	out.Attachments = in.Attachments
+	out.Zone = in.Zone
+	return out
+}
+func InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone) *pb.InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone{}
+	out.Attachments = in.Attachments
+	out.Zone = in.Zone
 	return out
 }
 func InterconnectCircuitInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectCircuitInfo) *krmcomputev1alpha1.InterconnectCircuitInfo {
@@ -7402,6 +8293,174 @@ func InterconnectCircuitInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.CustomerDemarcId = in.CustomerDemarcID
 	out.GoogleCircuitId = in.GoogleCircuitID
 	out.GoogleDemarcId = in.GoogleDemarcID
+	return out
+}
+func InterconnectGroupConfigured_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroupConfigured) *krmcomputev1alpha1.InterconnectGroupConfigured {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectGroupConfigured{}
+	out.TopologyCapability = InterconnectGroupConfiguredTopologyCapability_v1alpha1_FromProto(mapCtx, in.GetTopologyCapability())
+	return out
+}
+func InterconnectGroupConfigured_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectGroupConfigured) *pb.InterconnectGroupConfigured {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroupConfigured{}
+	out.TopologyCapability = InterconnectGroupConfiguredTopologyCapability_v1alpha1_ToProto(mapCtx, in.TopologyCapability)
+	return out
+}
+func InterconnectGroupConfiguredTopologyCapability_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroupConfiguredTopologyCapability) *krmcomputev1alpha1.InterconnectGroupConfiguredTopologyCapability {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectGroupConfiguredTopologyCapability{}
+	out.IntendedCapabilityBlockers = direct.Slice_FromProto(mapCtx, in.IntendedCapabilityBlockers, InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers_v1alpha1_FromProto)
+	out.SupportedSla = in.SupportedSla
+	return out
+}
+func InterconnectGroupConfiguredTopologyCapability_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectGroupConfiguredTopologyCapability) *pb.InterconnectGroupConfiguredTopologyCapability {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroupConfiguredTopologyCapability{}
+	out.IntendedCapabilityBlockers = direct.Slice_ToProto(mapCtx, in.IntendedCapabilityBlockers, InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers_v1alpha1_ToProto)
+	out.SupportedSla = in.SupportedSla
+	return out
+}
+func InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers) *krmcomputev1alpha1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers{}
+	out.BlockerType = in.BlockerType
+	out.DocumentationLink = in.DocumentationLink
+	out.Explanation = in.Explanation
+	out.Facilities = in.Facilities
+	out.Interconnects = in.Interconnects
+	out.Metros = in.Metros
+	out.Zones = in.Zones
+	return out
+}
+func InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers) *pb.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers{}
+	out.BlockerType = in.BlockerType
+	out.DocumentationLink = in.DocumentationLink
+	out.Explanation = in.Explanation
+	out.Facilities = in.Facilities
+	out.Interconnects = in.Interconnects
+	out.Metros = in.Metros
+	out.Zones = in.Zones
+	return out
+}
+func InterconnectGroupIntent_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroupIntent) *krmcomputev1alpha1.InterconnectGroupIntent {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectGroupIntent{}
+	out.TopologyCapability = in.TopologyCapability
+	return out
+}
+func InterconnectGroupIntent_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectGroupIntent) *pb.InterconnectGroupIntent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroupIntent{}
+	out.TopologyCapability = in.TopologyCapability
+	return out
+}
+func InterconnectGroupInterconnect_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroupInterconnect) *krmcomputev1alpha1.InterconnectGroupInterconnect {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectGroupInterconnect{}
+	if in.GetInterconnect() != "" {
+		out.InterconnectRef = &krmcomputev1alpha1.ComputeInterconnectRef{External: in.GetInterconnect()}
+	}
+	return out
+}
+func InterconnectGroupInterconnect_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectGroupInterconnect) *pb.InterconnectGroupInterconnect {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroupInterconnect{}
+	if in.InterconnectRef != nil {
+		out.Interconnect = &in.InterconnectRef.External
+	}
+	return out
+}
+func InterconnectGroupPhysicalStructure_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroupPhysicalStructure) *krmcomputev1alpha1.InterconnectGroupPhysicalStructure {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectGroupPhysicalStructure{}
+	out.Metros = direct.Slice_FromProto(mapCtx, in.Metros, InterconnectGroupPhysicalStructureMetros_v1alpha1_FromProto)
+	return out
+}
+func InterconnectGroupPhysicalStructure_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectGroupPhysicalStructure) *pb.InterconnectGroupPhysicalStructure {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroupPhysicalStructure{}
+	out.Metros = direct.Slice_ToProto(mapCtx, in.Metros, InterconnectGroupPhysicalStructureMetros_v1alpha1_ToProto)
+	return out
+}
+func InterconnectGroupPhysicalStructureMetros_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroupPhysicalStructureMetros) *krmcomputev1alpha1.InterconnectGroupPhysicalStructureMetros {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectGroupPhysicalStructureMetros{}
+	out.Facilities = direct.Slice_FromProto(mapCtx, in.Facilities, InterconnectGroupPhysicalStructureMetrosFacilities_v1alpha1_FromProto)
+	out.Metro = in.Metro
+	return out
+}
+func InterconnectGroupPhysicalStructureMetros_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectGroupPhysicalStructureMetros) *pb.InterconnectGroupPhysicalStructureMetros {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroupPhysicalStructureMetros{}
+	out.Facilities = direct.Slice_ToProto(mapCtx, in.Facilities, InterconnectGroupPhysicalStructureMetrosFacilities_v1alpha1_ToProto)
+	out.Metro = in.Metro
+	return out
+}
+func InterconnectGroupPhysicalStructureMetrosFacilities_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroupPhysicalStructureMetrosFacilities) *krmcomputev1alpha1.InterconnectGroupPhysicalStructureMetrosFacilities {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectGroupPhysicalStructureMetrosFacilities{}
+	out.Facility = in.Facility
+	out.Zones = direct.Slice_FromProto(mapCtx, in.Zones, InterconnectGroupPhysicalStructureMetrosFacilitiesZones_v1alpha1_FromProto)
+	return out
+}
+func InterconnectGroupPhysicalStructureMetrosFacilities_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectGroupPhysicalStructureMetrosFacilities) *pb.InterconnectGroupPhysicalStructureMetrosFacilities {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroupPhysicalStructureMetrosFacilities{}
+	out.Facility = in.Facility
+	out.Zones = direct.Slice_ToProto(mapCtx, in.Zones, InterconnectGroupPhysicalStructureMetrosFacilitiesZones_v1alpha1_ToProto)
+	return out
+}
+func InterconnectGroupPhysicalStructureMetrosFacilitiesZones_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectGroupPhysicalStructureMetrosFacilitiesZones) *krmcomputev1alpha1.InterconnectGroupPhysicalStructureMetrosFacilitiesZones {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectGroupPhysicalStructureMetrosFacilitiesZones{}
+	out.Interconnects = in.Interconnects
+	out.Zone = in.Zone
+	return out
+}
+func InterconnectGroupPhysicalStructureMetrosFacilitiesZones_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectGroupPhysicalStructureMetrosFacilitiesZones) *pb.InterconnectGroupPhysicalStructureMetrosFacilitiesZones {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectGroupPhysicalStructureMetrosFacilitiesZones{}
+	out.Interconnects = in.Interconnects
+	out.Zone = in.Zone
 	return out
 }
 func InterconnectMacsec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectMacsec) *krmcomputev1alpha1.InterconnectMacsec {
@@ -7468,6 +8527,42 @@ func InterconnectOutageNotification_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 	out.Source = in.Source
 	out.StartTime = in.StartTime
 	out.State = in.State
+	return out
+}
+func LicenseResourceRequirements_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.LicenseResourceRequirements) *krmcomputev1alpha1.LicenseResourceRequirements {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.LicenseResourceRequirements{}
+	out.MinGuestCPUCount = in.MinGuestCpuCount
+	out.MinMemoryMb = in.MinMemoryMb
+	return out
+}
+func LicenseResourceRequirements_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.LicenseResourceRequirements) *pb.LicenseResourceRequirements {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LicenseResourceRequirements{}
+	out.MinGuestCpuCount = in.MinGuestCPUCount
+	out.MinMemoryMb = in.MinMemoryMb
+	return out
+}
+func LocalizedMessage_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.LocalizedMessage) *krmcomputev1alpha1.LocalizedMessage {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.LocalizedMessage{}
+	out.Locale = in.Locale
+	out.Message = in.Message
+	return out
+}
+func LocalizedMessage_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.LocalizedMessage) *pb.LocalizedMessage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LocalizedMessage{}
+	out.Locale = in.Locale
+	out.Message = in.Message
 	return out
 }
 func MachineImageEncryptionKey_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CustomerEncryptionKey) *krmcomputev1alpha1.MachineImageEncryptionKey {
@@ -7920,18 +9015,46 @@ func PacketmirroringSubnetworks_v1beta1_FromProto(mapCtx *direct.MapContext, in 
 }
 */
 
-/* found existing non-generated mapping function "PacketmirroringSubnetworks_v1beta1_ToProto", skipping
-func PacketmirroringSubnetworks_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.PacketmirroringSubnetworks) *pb.PacketMirroringMirroredResourceInfoSubnetInfo {
+/*
+found existing non-generated mapping function "PacketmirroringSubnetworks_v1beta1_ToProto", skipping
+
+	func PacketmirroringSubnetworks_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.PacketmirroringSubnetworks) *pb.PacketMirroringMirroredResourceInfoSubnetInfo {
+		if in == nil {
+			return nil
+		}
+		out := &pb.PacketMirroringMirroredResourceInfoSubnetInfo{}
+		// MISSING: CanonicalURL
+		// (near miss): "CanonicalURL" vs "CanonicalUrl"
+		// MISSING: URL
+		return out
+	}
+*/
+func QuotaExceededInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.QuotaExceededInfo) *krmcomputev1alpha1.QuotaExceededInfo {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PacketMirroringMirroredResourceInfoSubnetInfo{}
-	// MISSING: CanonicalURL
-	// (near miss): "CanonicalURL" vs "CanonicalUrl"
-	// MISSING: URL
+	out := &krmcomputev1alpha1.QuotaExceededInfo{}
+	out.Dimensions = in.Dimensions
+	out.FutureLimit = in.FutureLimit
+	out.Limit = in.Limit
+	out.LimitName = in.LimitName
+	out.MetricName = in.MetricName
+	out.RolloutStatus = in.RolloutStatus
 	return out
 }
-*/
+func QuotaExceededInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.QuotaExceededInfo) *pb.QuotaExceededInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QuotaExceededInfo{}
+	out.Dimensions = in.Dimensions
+	out.FutureLimit = in.FutureLimit
+	out.Limit = in.Limit
+	out.LimitName = in.LimitName
+	out.MetricName = in.MetricName
+	out.RolloutStatus = in.RolloutStatus
+	return out
+}
 
 /* found existing non-generated mapping function "RegionautoscalerAutoscalingPolicy_v1alpha1_FromProto", skipping
 func RegionautoscalerAutoscalingPolicy_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicy) *krmcomputev1alpha1.RegionautoscalerAutoscalingPolicy {
@@ -8531,19 +9654,213 @@ func ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_FromProto(ma
 }
 */
 
-/* found existing non-generated mapping function "ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto", skipping
-func ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ResourcePolicySnapshotSchedulePolicySnapshotProperties) *pb.ResourcePolicySnapshotSchedulePolicySnapshotProperties {
+/*
+found existing non-generated mapping function "ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto", skipping
+
+	func ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ResourcePolicySnapshotSchedulePolicySnapshotProperties) *pb.ResourcePolicySnapshotSchedulePolicySnapshotProperties {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ResourcePolicySnapshotSchedulePolicySnapshotProperties{}
+		out.ChainName = in.ChainName
+		out.GuestFlush = in.GuestFlush
+		out.Labels = in.Labels
+		out.StorageLocations = in.StorageLocations
+		return out
+	}
+*/
+func RolloutPlanWave_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlanWave) *krmcomputev1alpha1.RolloutPlanWave {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ResourcePolicySnapshotSchedulePolicySnapshotProperties{}
-	out.ChainName = in.ChainName
-	out.GuestFlush = in.GuestFlush
-	out.Labels = in.Labels
-	out.StorageLocations = in.StorageLocations
+	out := &krmcomputev1alpha1.RolloutPlanWave{}
+	out.DisplayName = in.DisplayName
+	// MISSING: Number
+	out.OrchestrationOptions = RolloutPlanWaveOrchestrationOptions_v1alpha1_FromProto(mapCtx, in.GetOrchestrationOptions())
+	out.Selectors = direct.Slice_FromProto(mapCtx, in.Selectors, RolloutPlanWaveSelector_v1alpha1_FromProto)
+	out.Validation = RolloutPlanWaveValidation_v1alpha1_FromProto(mapCtx, in.GetValidation())
 	return out
 }
-*/
+func RolloutPlanWave_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RolloutPlanWave) *pb.RolloutPlanWave {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutPlanWave{}
+	out.DisplayName = in.DisplayName
+	// MISSING: Number
+	out.OrchestrationOptions = RolloutPlanWaveOrchestrationOptions_v1alpha1_ToProto(mapCtx, in.OrchestrationOptions)
+	out.Selectors = direct.Slice_ToProto(mapCtx, in.Selectors, RolloutPlanWaveSelector_v1alpha1_ToProto)
+	out.Validation = RolloutPlanWaveValidation_v1alpha1_ToProto(mapCtx, in.Validation)
+	return out
+}
+func RolloutPlanWaveObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlanWave) *krmcomputev1alpha1.RolloutPlanWaveObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RolloutPlanWaveObservedState{}
+	// MISSING: DisplayName
+	out.Number = in.Number
+	// MISSING: OrchestrationOptions
+	// MISSING: Selectors
+	// MISSING: Validation
+	return out
+}
+func RolloutPlanWaveObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RolloutPlanWaveObservedState) *pb.RolloutPlanWave {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutPlanWave{}
+	// MISSING: DisplayName
+	out.Number = in.Number
+	// MISSING: OrchestrationOptions
+	// MISSING: Selectors
+	// MISSING: Validation
+	return out
+}
+func RolloutPlanWaveOrchestrationOptions_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlanWaveOrchestrationOptions) *krmcomputev1alpha1.RolloutPlanWaveOrchestrationOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RolloutPlanWaveOrchestrationOptions{}
+	out.Delays = direct.Slice_FromProto(mapCtx, in.Delays, RolloutPlanWaveOrchestrationOptionsDelay_v1alpha1_FromProto)
+	out.MaxConcurrentLocations = in.MaxConcurrentLocations
+	out.MaxConcurrentResourcesPerLocation = in.MaxConcurrentResourcesPerLocation
+	return out
+}
+func RolloutPlanWaveOrchestrationOptions_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RolloutPlanWaveOrchestrationOptions) *pb.RolloutPlanWaveOrchestrationOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutPlanWaveOrchestrationOptions{}
+	out.Delays = direct.Slice_ToProto(mapCtx, in.Delays, RolloutPlanWaveOrchestrationOptionsDelay_v1alpha1_ToProto)
+	out.MaxConcurrentLocations = in.MaxConcurrentLocations
+	out.MaxConcurrentResourcesPerLocation = in.MaxConcurrentResourcesPerLocation
+	return out
+}
+func RolloutPlanWaveOrchestrationOptionsDelay_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlanWaveOrchestrationOptionsDelay) *krmcomputev1alpha1.RolloutPlanWaveOrchestrationOptionsDelay {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RolloutPlanWaveOrchestrationOptionsDelay{}
+	out.Delimiter = in.Delimiter
+	out.Duration = in.Duration
+	out.Type = in.Type
+	return out
+}
+func RolloutPlanWaveOrchestrationOptionsDelay_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RolloutPlanWaveOrchestrationOptionsDelay) *pb.RolloutPlanWaveOrchestrationOptionsDelay {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutPlanWaveOrchestrationOptionsDelay{}
+	out.Delimiter = in.Delimiter
+	out.Duration = in.Duration
+	out.Type = in.Type
+	return out
+}
+func RolloutPlanWaveSelector_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlanWaveSelector) *krmcomputev1alpha1.RolloutPlanWaveSelector {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RolloutPlanWaveSelector{}
+	out.LocationSelector = RolloutPlanWaveSelectorLocationSelector_v1alpha1_FromProto(mapCtx, in.GetLocationSelector())
+	out.ResourceHierarchySelector = RolloutPlanWaveSelectorResourceHierarchySelector_v1alpha1_FromProto(mapCtx, in.GetResourceHierarchySelector())
+	return out
+}
+func RolloutPlanWaveSelector_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RolloutPlanWaveSelector) *pb.RolloutPlanWaveSelector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutPlanWaveSelector{}
+	out.LocationSelector = RolloutPlanWaveSelectorLocationSelector_v1alpha1_ToProto(mapCtx, in.LocationSelector)
+	out.ResourceHierarchySelector = RolloutPlanWaveSelectorResourceHierarchySelector_v1alpha1_ToProto(mapCtx, in.ResourceHierarchySelector)
+	return out
+}
+func RolloutPlanWaveSelectorLocationSelector_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlanWaveSelectorLocationSelector) *krmcomputev1alpha1.RolloutPlanWaveSelectorLocationSelector {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RolloutPlanWaveSelectorLocationSelector{}
+	out.IncludedLocations = in.IncludedLocations
+	return out
+}
+func RolloutPlanWaveSelectorLocationSelector_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RolloutPlanWaveSelectorLocationSelector) *pb.RolloutPlanWaveSelectorLocationSelector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutPlanWaveSelectorLocationSelector{}
+	out.IncludedLocations = in.IncludedLocations
+	return out
+}
+func RolloutPlanWaveSelectorResourceHierarchySelector_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlanWaveSelectorResourceHierarchySelector) *krmcomputev1alpha1.RolloutPlanWaveSelectorResourceHierarchySelector {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RolloutPlanWaveSelectorResourceHierarchySelector{}
+
+	if v := in.GetIncludedFolders(); len(v) != 0 {
+		for i := range v {
+			out.IncludedFolderRefs = append(out.IncludedFolderRefs, refsv1beta1.FolderRef{External: v[i]})
+		}
+	}
+
+	if v := in.GetIncludedOrganizations(); len(v) != 0 {
+		for i := range v {
+			out.IncludedOrganizationRefs = append(out.IncludedOrganizationRefs, refsv1beta1.OrganizationRef{External: v[i]})
+		}
+	}
+
+	if v := in.GetIncludedProjects(); len(v) != 0 {
+		for i := range v {
+			out.IncludedProjectRefs = append(out.IncludedProjectRefs, refsv1beta1.ProjectRef{External: v[i]})
+		}
+	}
+
+	return out
+}
+func RolloutPlanWaveSelectorResourceHierarchySelector_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RolloutPlanWaveSelectorResourceHierarchySelector) *pb.RolloutPlanWaveSelectorResourceHierarchySelector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutPlanWaveSelectorResourceHierarchySelector{}
+
+	if v := in.IncludedFolderRefs; len(v) != 0 {
+		for i := range v {
+			out.IncludedFolders = append(out.IncludedFolders, v[i].External)
+		}
+	}
+
+	if v := in.IncludedOrganizationRefs; len(v) != 0 {
+		for i := range v {
+			out.IncludedOrganizations = append(out.IncludedOrganizations, v[i].External)
+		}
+	}
+
+	if v := in.IncludedProjectRefs; len(v) != 0 {
+		for i := range v {
+			out.IncludedProjects = append(out.IncludedProjects, v[i].External)
+		}
+	}
+
+	return out
+}
+func RolloutPlanWaveValidation_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RolloutPlanWaveValidation) *krmcomputev1alpha1.RolloutPlanWaveValidation {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RolloutPlanWaveValidation{}
+	out.TimeBasedValidationMetadata = RolloutPlanWaveValidationTimeBasedValidationMetadata_v1alpha1_FromProto(mapCtx, in.GetTimeBasedValidationMetadata())
+	out.Type = in.Type
+	return out
+}
+func RolloutPlanWaveValidation_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RolloutPlanWaveValidation) *pb.RolloutPlanWaveValidation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutPlanWaveValidation{}
+	out.TimeBasedValidationMetadata = RolloutPlanWaveValidationTimeBasedValidationMetadata_v1alpha1_ToProto(mapCtx, in.TimeBasedValidationMetadata)
+	out.Type = in.Type
+	return out
+}
 
 /* found existing non-generated mapping function "RouterAdvertisedIPRange_v1beta1_FromProto", skipping
 func RouterAdvertisedIPRange_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterAdvertisedIpRange) *krmcomputev1beta1.RouterAdvertisedIPRange {
@@ -9182,6 +10499,40 @@ found existing non-generated mapping function "SnapshotSourceDiskEncryptionKey_v
 		return out
 	}
 */
+func StoragePoolResourceStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.StoragePoolResourceStatus) *krmcomputev1alpha1.StoragePoolResourceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.StoragePoolResourceStatus{}
+	out.DiskCount = in.DiskCount
+	out.LastResizeTimestamp = in.LastResizeTimestamp
+	out.MaxTotalProvisionedDiskCapacityGB = in.MaxTotalProvisionedDiskCapacityGb
+	out.PoolUsedCapacityBytes = in.PoolUsedCapacityBytes
+	out.PoolUsedIops = in.PoolUsedIops
+	out.PoolUsedThroughput = in.PoolUsedThroughput
+	out.PoolUserWrittenBytes = in.PoolUserWrittenBytes
+	out.TotalProvisionedDiskCapacityGB = in.TotalProvisionedDiskCapacityGb
+	out.TotalProvisionedDiskIops = in.TotalProvisionedDiskIops
+	out.TotalProvisionedDiskThroughput = in.TotalProvisionedDiskThroughput
+	return out
+}
+func StoragePoolResourceStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.StoragePoolResourceStatus) *pb.StoragePoolResourceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StoragePoolResourceStatus{}
+	out.DiskCount = in.DiskCount
+	out.LastResizeTimestamp = in.LastResizeTimestamp
+	out.MaxTotalProvisionedDiskCapacityGb = in.MaxTotalProvisionedDiskCapacityGB
+	out.PoolUsedCapacityBytes = in.PoolUsedCapacityBytes
+	out.PoolUsedIops = in.PoolUsedIops
+	out.PoolUsedThroughput = in.PoolUsedThroughput
+	out.PoolUserWrittenBytes = in.PoolUserWrittenBytes
+	out.TotalProvisionedDiskCapacityGb = in.TotalProvisionedDiskCapacityGB
+	out.TotalProvisionedDiskIops = in.TotalProvisionedDiskIops
+	out.TotalProvisionedDiskThroughput = in.TotalProvisionedDiskThroughput
+	return out
+}
 func SubnetworkLogConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SubnetworkLogConfig) *krmcomputev1beta1.SubnetworkLogConfig {
 	if in == nil {
 		return nil

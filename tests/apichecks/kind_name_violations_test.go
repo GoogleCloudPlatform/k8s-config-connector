@@ -207,13 +207,13 @@ var knownKindNames = []struct {
 	{ServicePrefix: "BigQueryDataPolicy", Message: "DataPolicy", Want: "BigQueryDataPolicy"},
 	{ServicePrefix: "Billing", Message: "BillingAccount", Want: "BillingAccount"},
 	{ServicePrefix: "CloudBuild", Message: "BuildTrigger", Want: "CloudBuildTrigger"},
-	{ServicePrefix: "ConfigDeployment", Message: "DeploymentGroup", Want: "ConfigDeploymentGroup"},
 	{ServicePrefix: "IAP", Message: "IapSettings", Want: "IAPSettings"},
 	{ServicePrefix: "VMwareEngine", Message: "VmwareEngineNetwork", Want: "VMwareEngineNetwork"},
 
 	// Others
 	{ServicePrefix: "CloudResourceManager", Message: "Folder", Want: "Folder"},
 	{ServicePrefix: "CloudResourceManager", Message: "Project", Want: "Project"},
+	{ServicePrefix: "CloudResourceManager", Message: "TagHold", Want: "ResourceManagerTagHold"},
 }
 
 // isKnownKindName reports whether knownKindNames allows kind for a message of

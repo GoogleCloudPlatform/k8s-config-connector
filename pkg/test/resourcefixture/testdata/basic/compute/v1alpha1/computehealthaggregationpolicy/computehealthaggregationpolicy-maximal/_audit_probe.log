@@ -1,0 +1,20 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthAggregationPolicies/computehealthaggregationpolicy-maximal-${uniqueId}
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "fingerprint": "abcdef0123A=",
+  "healthyPercentThreshold": 80,
+  "id": "000000000000000000000",
+  "kind": "compute#healthAggregationPolicy",
+  "minHealthyThreshold": 3,
+  "name": "computehealthaggregationpolicy-maximal-${uniqueId}",
+  "policyType": "BACKEND_SERVICE_POLICY",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthAggregationPolicies/computehealthaggregationpolicy-maximal-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthAggregationPolicies/6649360438164902212"
+}

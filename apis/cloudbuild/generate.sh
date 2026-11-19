@@ -38,7 +38,19 @@ ${CONTROLLERBUILDER} generate-types \
   --resource CloudBuildConnection:Connection \
   --include-skipped-output
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.devtools.cloudbuild.v1 \
+  --api-version cloudbuild.cnrm.cloud.google.com/v1alpha1 \
+  --resource CloudBuildBuild:Build \
+  --include-skipped-output \
+  --prepopulate-resource \
+  --allow-non-declarative
 
+${CONTROLLERBUILDER} generate-identity \
+  --service google.devtools.cloudbuild.v1 \
+  --api-version cloudbuild.cnrm.cloud.google.com/v1alpha1 \
+  --resource CloudBuildBuild:Build \
+  --pattern CloudBuildBuild=projects/{project}/locations/{location}/builds/{build}
 
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
@@ -51,7 +63,8 @@ ${CONTROLLERBUILDER} generate-mapper \
   --service google.devtools.cloudbuild.v1,google.devtools.cloudbuild.v2 \
   --api-version "cloudbuild.cnrm.cloud.google.com/v1beta1" \
   --include-skipped-output \
-  --multiversion
+  --multiversion \
+  --prepopulate-resource
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

@@ -31,7 +31,7 @@ var _ refsv1beta1.ExternalNormalizer = &ConversionWorkspaceRef{}
 // ConversionWorkspaceRef is a reference to a CloudDMSConversionWorkspace.
 type ConversionWorkspaceRef struct {
 	// A reference to an externally managed CloudDMSConversionWorkspace resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/conversionworkspaces/{{conversionworkspaceID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/conversionWorkspaces/{{conversionworkspaceID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a CloudDMSConversionWorkspace resource.

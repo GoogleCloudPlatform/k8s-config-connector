@@ -54,10 +54,16 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDatasetsServerServer(grpcServer, &datasetsServer{MockService: s})
 	pb.RegisterTablesServerServer(grpcServer, &tablesServer{MockService: s})
 	pb.RegisterRoutinesServerServer(grpcServer, &routinesServer{MockService: s})
+	pb.RegisterRowAccessPoliciesServerServer(grpcServer, &rowAccessPoliciesServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{}, pb.RegisterDatasetsServerHandler, pb.RegisterTablesServerHandler, pb.RegisterRoutinesServerHandler)
+	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
+		pb.RegisterDatasetsServerHandler,
+		pb.RegisterTablesServerHandler,
+		pb.RegisterRoutinesServerHandler,
+		pb.RegisterRowAccessPoliciesServerHandler,
+	)
 	if err != nil {
 		return nil, err
 	}

@@ -1,0 +1,617 @@
+# Phase: CREATE
+GET https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/cesapp-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fapps%2Fcesapp-maximal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us/apps/cesapp-maximal-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps?%24alt=json%3Benum-encoding%3Dint&appId=cesapp-maximal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus
+
+{
+  "audioProcessingConfig": {
+    "ambientSoundConfig": {
+      "prebuiltAmbientSound": "office_1"
+    },
+    "bargeInConfig": {
+      "bargeInAwareness": true
+    },
+    "inactivityTimeout": "10s"
+  },
+  "defaultChannelProfile": {
+    "channelType": 3,
+    "profileId": "default-api"
+  },
+  "description": "Maximal test fixture for CESApp",
+  "displayName": "cesapp-maximal-${uniqueId}",
+  "errorHandlingSettings": {
+    "errorHandlingStrategy": 2
+  },
+  "evaluationMetricsThresholds": {
+    "goldenHallucinationMetricBehavior": 2,
+    "scenarioHallucinationMetricBehavior": 2
+  },
+  "globalInstruction": "You are a helpful customer service representative.",
+  "languageSettings": {
+    "defaultLanguageCode": "en-US",
+    "enableMultilingualSupport": true,
+    "supportedLanguageCodes": [
+      "es-ES"
+    ]
+  },
+  "loggingSettings": {
+    "cloudLoggingSettings": {
+      "enableCloudLogging": true
+    },
+    "conversationLoggingSettings": {}
+  },
+  "metadata": {
+    "env": "test"
+  },
+  "modelSettings": {
+    "temperature": 0.7
+  },
+  "pinned": true,
+  "timeZoneSettings": {
+    "timeZone": "America/New_York"
+  },
+  "toolExecutionMode": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.ces.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us/operations/${operationID}"
+}
+
+---
+
+GET https://ces.googleapis.com/v1/projects/${projectId}/locations/us/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.ces.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.ces.v1.App",
+    "audioProcessingConfig": {
+      "ambientSoundConfig": {
+        "prebuiltAmbientSound": "office_1"
+      },
+      "bargeInConfig": {
+        "bargeInAwareness": true
+      },
+      "inactivityTimeout": "10s"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "defaultChannelProfile": {
+      "channelType": "API",
+      "profileId": "default-api"
+    },
+    "description": "Maximal test fixture for CESApp",
+    "displayName": "cesapp-maximal-${uniqueId}",
+    "errorHandlingSettings": {
+      "errorHandlingStrategy": "FALLBACK_RESPONSE"
+    },
+    "etag": "abcdef0123A=",
+    "evaluationMetricsThresholds": {
+      "goldenHallucinationMetricBehavior": "ENABLED",
+      "scenarioHallucinationMetricBehavior": "ENABLED"
+    },
+    "globalInstruction": "You are a helpful customer service representative.",
+    "languageSettings": {
+      "defaultLanguageCode": "en-US",
+      "enableMultilingualSupport": true,
+      "supportedLanguageCodes": [
+        "es-ES"
+      ]
+    },
+    "loggingSettings": {
+      "cloudLoggingSettings": {
+        "enableCloudLogging": true
+      },
+      "conversationLoggingSettings": {}
+    },
+    "metadata": {
+      "env": "test"
+    },
+    "modelSettings": {
+      "temperature": 0.7
+    },
+    "name": "projects/${projectId}/locations/us/apps/cesapp-maximal-${uniqueId}",
+    "pinned": true,
+    "predefinedVariableDeclarations": [
+      {
+        "description": "Current time represented in the ISO 8601 format along with its corresponding IANA Time Zone.",
+        "name": "current_date",
+        "schema": {
+          "type": "STRING"
+        }
+      },
+      {
+        "description": "Contains session specific variables like modality, channel, recording control, and language code.",
+        "name": "_session",
+        "schema": {
+          "properties": {
+            "channel": {
+              "type": "STRING"
+            },
+            "language_code": {
+              "type": "STRING"
+            },
+            "modality": {
+              "type": "STRING"
+            },
+            "recording_control": {
+              "type": "STRING"
+            }
+          },
+          "type": "OBJECT"
+        }
+      }
+    ],
+    "timeZoneSettings": {
+      "timeZone": "America/New_York"
+    },
+    "toolExecutionMode": "PARALLEL",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+# Phase: UPDATE
+GET https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/cesapp-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fapps%2Fcesapp-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "audioProcessingConfig": {
+    "ambientSoundConfig": {
+      "prebuiltAmbientSound": "office_1"
+    },
+    "bargeInConfig": {
+      "bargeInAwareness": true
+    },
+    "inactivityTimeout": "10s"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultChannelProfile": {
+    "channelType": 3,
+    "profileId": "default-api"
+  },
+  "description": "Maximal test fixture for CESApp",
+  "displayName": "cesapp-maximal-${uniqueId}",
+  "errorHandlingSettings": {
+    "errorHandlingStrategy": 2
+  },
+  "etag": "abcdef0123A=",
+  "evaluationMetricsThresholds": {
+    "goldenHallucinationMetricBehavior": 2,
+    "scenarioHallucinationMetricBehavior": 2
+  },
+  "globalInstruction": "You are a helpful customer service representative.",
+  "languageSettings": {
+    "defaultLanguageCode": "en-US",
+    "enableMultilingualSupport": true,
+    "supportedLanguageCodes": [
+      "es-ES"
+    ]
+  },
+  "loggingSettings": {
+    "cloudLoggingSettings": {
+      "enableCloudLogging": true
+    },
+    "conversationLoggingSettings": {}
+  },
+  "metadata": {
+    "env": "test"
+  },
+  "modelSettings": {
+    "temperature": 0.7
+  },
+  "name": "projects/${projectId}/locations/us/apps/cesapp-maximal-${uniqueId}",
+  "pinned": true,
+  "predefinedVariableDeclarations": [
+    {
+      "description": "Current time represented in the ISO 8601 format along with its corresponding IANA Time Zone.",
+      "name": "current_date",
+      "schema": {
+        "type": 1
+      }
+    },
+    {
+      "description": "Contains session specific variables like modality, channel, recording control, and language code.",
+      "name": "_session",
+      "schema": {
+        "properties": {
+          "channel": {
+            "type": 1
+          },
+          "language_code": {
+            "type": 1
+          },
+          "modality": {
+            "type": 1
+          },
+          "recording_control": {
+            "type": 1
+          }
+        },
+        "type": 5
+      }
+    }
+  ],
+  "timeZoneSettings": {
+    "timeZone": "America/New_York"
+  },
+  "toolExecutionMode": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/cesapp-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName%2CglobalInstruction%2Cmetadata%2CmodelSettings%2Cpinned%2CtimeZoneSettings
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: app.name=projects%2F${projectId}%2Flocations%2Fus%2Fapps%2Fcesapp-maximal-${uniqueId}
+
+{
+  "audioProcessingConfig": {
+    "ambientSoundConfig": {
+      "prebuiltAmbientSound": "office_1"
+    },
+    "bargeInConfig": {
+      "bargeInAwareness": true
+    },
+    "inactivityTimeout": "10s"
+  },
+  "defaultChannelProfile": {
+    "channelType": 3,
+    "profileId": "default-api"
+  },
+  "description": "Updated maximal test fixture for CESApp",
+  "displayName": "cesapp-max-updated-${uniqueId}",
+  "errorHandlingSettings": {
+    "errorHandlingStrategy": 2
+  },
+  "evaluationMetricsThresholds": {
+    "goldenHallucinationMetricBehavior": 2,
+    "scenarioHallucinationMetricBehavior": 2
+  },
+  "globalInstruction": "You are an updated customer service representative.",
+  "languageSettings": {
+    "defaultLanguageCode": "en-US",
+    "enableMultilingualSupport": true,
+    "supportedLanguageCodes": [
+      "es-ES"
+    ]
+  },
+  "loggingSettings": {
+    "cloudLoggingSettings": {
+      "enableCloudLogging": true
+    },
+    "conversationLoggingSettings": {}
+  },
+  "metadata": {
+    "env": "prod"
+  },
+  "modelSettings": {
+    "temperature": 0.5
+  },
+  "name": "projects/${projectId}/locations/us/apps/cesapp-maximal-${uniqueId}",
+  "timeZoneSettings": {
+    "timeZone": "America/Chicago"
+  },
+  "toolExecutionMode": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "audioProcessingConfig": {
+    "ambientSoundConfig": {
+      "prebuiltAmbientSound": "office_1"
+    },
+    "bargeInConfig": {
+      "bargeInAwareness": true
+    },
+    "inactivityTimeout": "10s"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultChannelProfile": {
+    "channelType": 3,
+    "profileId": "default-api"
+  },
+  "description": "Updated maximal test fixture for CESApp",
+  "displayName": "cesapp-max-updated-${uniqueId}",
+  "errorHandlingSettings": {
+    "errorHandlingStrategy": 2
+  },
+  "etag": "abcdef0123A=",
+  "evaluationMetricsThresholds": {
+    "goldenHallucinationMetricBehavior": 2,
+    "scenarioHallucinationMetricBehavior": 2
+  },
+  "globalInstruction": "You are an updated customer service representative.",
+  "languageSettings": {
+    "defaultLanguageCode": "en-US",
+    "enableMultilingualSupport": true,
+    "supportedLanguageCodes": [
+      "es-ES"
+    ]
+  },
+  "loggingSettings": {
+    "cloudLoggingSettings": {
+      "enableCloudLogging": true
+    },
+    "conversationLoggingSettings": {}
+  },
+  "metadata": {
+    "env": "prod"
+  },
+  "modelSettings": {
+    "temperature": 0.5
+  },
+  "name": "projects/${projectId}/locations/us/apps/cesapp-maximal-${uniqueId}",
+  "predefinedVariableDeclarations": [
+    {
+      "description": "Current time represented in the ISO 8601 format along with its corresponding IANA Time Zone.",
+      "name": "current_date",
+      "schema": {
+        "type": 1
+      }
+    },
+    {
+      "description": "Contains session specific variables like modality, channel, recording control, and language code.",
+      "name": "_session",
+      "schema": {
+        "properties": {
+          "channel": {
+            "type": 1
+          },
+          "language_code": {
+            "type": 1
+          },
+          "modality": {
+            "type": 1
+          },
+          "recording_control": {
+            "type": 1
+          }
+        },
+        "type": 5
+      }
+    }
+  ],
+  "timeZoneSettings": {
+    "timeZone": "America/Chicago"
+  },
+  "toolExecutionMode": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GET https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/cesapp-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fapps%2Fcesapp-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "audioProcessingConfig": {
+    "ambientSoundConfig": {
+      "prebuiltAmbientSound": "office_1"
+    },
+    "bargeInConfig": {
+      "bargeInAwareness": true
+    },
+    "inactivityTimeout": "10s"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultChannelProfile": {
+    "channelType": 3,
+    "profileId": "default-api"
+  },
+  "description": "Updated maximal test fixture for CESApp",
+  "displayName": "cesapp-max-updated-${uniqueId}",
+  "errorHandlingSettings": {
+    "errorHandlingStrategy": 2
+  },
+  "etag": "abcdef0123A=",
+  "evaluationMetricsThresholds": {
+    "goldenHallucinationMetricBehavior": 2,
+    "scenarioHallucinationMetricBehavior": 2
+  },
+  "globalInstruction": "You are an updated customer service representative.",
+  "languageSettings": {
+    "defaultLanguageCode": "en-US",
+    "enableMultilingualSupport": true,
+    "supportedLanguageCodes": [
+      "es-ES"
+    ]
+  },
+  "loggingSettings": {
+    "cloudLoggingSettings": {
+      "enableCloudLogging": true
+    },
+    "conversationLoggingSettings": {}
+  },
+  "metadata": {
+    "env": "prod"
+  },
+  "modelSettings": {
+    "temperature": 0.5
+  },
+  "name": "projects/${projectId}/locations/us/apps/cesapp-maximal-${uniqueId}",
+  "predefinedVariableDeclarations": [
+    {
+      "description": "Current time represented in the ISO 8601 format along with its corresponding IANA Time Zone.",
+      "name": "current_date",
+      "schema": {
+        "type": 1
+      }
+    },
+    {
+      "description": "Contains session specific variables like modality, channel, recording control, and language code.",
+      "name": "_session",
+      "schema": {
+        "properties": {
+          "channel": {
+            "type": 1
+          },
+          "language_code": {
+            "type": 1
+          },
+          "modality": {
+            "type": 1
+          },
+          "recording_control": {
+            "type": 1
+          }
+        },
+        "type": 5
+      }
+    }
+  ],
+  "timeZoneSettings": {
+    "timeZone": "America/Chicago"
+  },
+  "toolExecutionMode": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/cesapp-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fapps%2Fcesapp-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.ces.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us/operations/${operationID}"
+}
+
+---
+
+GET https://ces.googleapis.com/v1/projects/${projectId}/locations/us/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.ces.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

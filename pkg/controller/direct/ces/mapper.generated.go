@@ -25,12 +25,148 @@ package ces
 
 import (
 	pb "cloud.google.com/go/ces/apiv1/cespb"
+	krmaiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/ces/v1alpha1"
+	krmconnectorsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/connectors/v1alpha1"
+	krmdiscoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 	krmdlpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dlp/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmservicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func APIAuthentication_FromProto(mapCtx *direct.MapContext, in *pb.ApiAuthentication) *krm.APIAuthentication {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIAuthentication{}
+	out.APIKeyConfig = APIKeyConfig_FromProto(mapCtx, in.GetApiKeyConfig())
+	out.OauthConfig = OAuthConfig_FromProto(mapCtx, in.GetOauthConfig())
+	out.ServiceAgentIDTokenAuthConfig = ServiceAgentIDTokenAuthConfig_FromProto(mapCtx, in.GetServiceAgentIdTokenAuthConfig())
+	out.ServiceAccountAuthConfig = ServiceAccountAuthConfig_FromProto(mapCtx, in.GetServiceAccountAuthConfig())
+	out.BearerTokenConfig = BearerTokenConfig_FromProto(mapCtx, in.GetBearerTokenConfig())
+	return out
+}
+func APIAuthentication_ToProto(mapCtx *direct.MapContext, in *krm.APIAuthentication) *pb.ApiAuthentication {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiAuthentication{}
+	if oneof := APIKeyConfig_ToProto(mapCtx, in.APIKeyConfig); oneof != nil {
+		out.AuthConfig = &pb.ApiAuthentication_ApiKeyConfig{ApiKeyConfig: oneof}
+	}
+	if oneof := OAuthConfig_ToProto(mapCtx, in.OauthConfig); oneof != nil {
+		out.AuthConfig = &pb.ApiAuthentication_OauthConfig{OauthConfig: oneof}
+	}
+	if oneof := ServiceAgentIDTokenAuthConfig_ToProto(mapCtx, in.ServiceAgentIDTokenAuthConfig); oneof != nil {
+		out.AuthConfig = &pb.ApiAuthentication_ServiceAgentIdTokenAuthConfig{ServiceAgentIdTokenAuthConfig: oneof}
+	}
+	if oneof := ServiceAccountAuthConfig_ToProto(mapCtx, in.ServiceAccountAuthConfig); oneof != nil {
+		out.AuthConfig = &pb.ApiAuthentication_ServiceAccountAuthConfig{ServiceAccountAuthConfig: oneof}
+	}
+	if oneof := BearerTokenConfig_ToProto(mapCtx, in.BearerTokenConfig); oneof != nil {
+		out.AuthConfig = &pb.ApiAuthentication_BearerTokenConfig{BearerTokenConfig: oneof}
+	}
+	return out
+}
+func APIKeyConfig_FromProto(mapCtx *direct.MapContext, in *pb.ApiKeyConfig) *krm.APIKeyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIKeyConfig{}
+	out.KeyName = direct.LazyPtr(in.GetKeyName())
+	if in.GetApiKeySecretVersion() != "" {
+		out.APIKeySecretVersionRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetApiKeySecretVersion()}
+	}
+	out.RequestLocation = direct.Enum_FromProto(mapCtx, in.GetRequestLocation())
+	return out
+}
+func APIKeyConfig_ToProto(mapCtx *direct.MapContext, in *krm.APIKeyConfig) *pb.ApiKeyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiKeyConfig{}
+	out.KeyName = direct.ValueOf(in.KeyName)
+	if in.APIKeySecretVersionRef != nil {
+		out.ApiKeySecretVersion = in.APIKeySecretVersionRef.External
+	}
+	out.RequestLocation = direct.Enum_ToProto[pb.ApiKeyConfig_RequestLocation](mapCtx, in.RequestLocation)
+	return out
+}
+func Action_FromProto(mapCtx *direct.MapContext, in *pb.Action) *krm.Action {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Action{}
+	out.ConnectionActionID = direct.LazyPtr(in.GetConnectionActionId())
+	out.EntityOperation = Action_EntityOperation_FromProto(mapCtx, in.GetEntityOperation())
+	out.InputFields = in.InputFields
+	out.OutputFields = in.OutputFields
+	return out
+}
+func Action_ToProto(mapCtx *direct.MapContext, in *krm.Action) *pb.Action {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Action{}
+	if oneof := Action_ConnectionActionId_ToProto(mapCtx, in.ConnectionActionID); oneof != nil {
+		out.ActionSpec = oneof
+	}
+	if oneof := Action_EntityOperation_ToProto(mapCtx, in.EntityOperation); oneof != nil {
+		out.ActionSpec = &pb.Action_EntityOperation_{EntityOperation: oneof}
+	}
+	out.InputFields = in.InputFields
+	out.OutputFields = in.OutputFields
+	return out
+}
+func Action_ConnectionActionId_ToProto(mapCtx *direct.MapContext, in *string) *pb.Action_ConnectionActionId {
+	if in == nil {
+		return nil
+	}
+	return &pb.Action_ConnectionActionId{ConnectionActionId: *in}
+}
+func Action_EntityOperation_FromProto(mapCtx *direct.MapContext, in *pb.Action_EntityOperation) *krm.Action_EntityOperation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Action_EntityOperation{}
+	out.EntityID = direct.LazyPtr(in.GetEntityId())
+	out.Operation = direct.Enum_FromProto(mapCtx, in.GetOperation())
+	return out
+}
+func Action_EntityOperation_ToProto(mapCtx *direct.MapContext, in *krm.Action_EntityOperation) *pb.Action_EntityOperation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Action_EntityOperation{}
+	out.EntityId = direct.ValueOf(in.EntityID)
+	out.Operation = direct.Enum_ToProto[pb.Action_EntityOperation_OperationType](mapCtx, in.Operation)
+	return out
+}
+func AgentTool_FromProto(mapCtx *direct.MapContext, in *pb.AgentTool) *krm.AgentTool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AgentTool{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	if in.GetRootAgent() != "" {
+		out.RootAgentRef = &krm.CesAgentRef{External: in.GetRootAgent()}
+	}
+	return out
+}
+func AgentTool_ToProto(mapCtx *direct.MapContext, in *krm.AgentTool) *pb.AgentTool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AgentTool{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	if in.RootAgentRef != nil {
+		out.RootAgent = in.RootAgentRef.External
+	}
+	return out
+}
 func Agent_AgentToolset_FromProto(mapCtx *direct.MapContext, in *pb.Agent_AgentToolset) *krm.Agent_AgentToolset {
 	if in == nil {
 		return nil
@@ -245,6 +381,22 @@ func BargeInConfig_ToProto(mapCtx *direct.MapContext, in *krm.BargeInConfig) *pb
 	out.BargeInAwareness = direct.ValueOf(in.BargeInAwareness)
 	return out
 }
+func BearerTokenConfig_FromProto(mapCtx *direct.MapContext, in *pb.BearerTokenConfig) *krm.BearerTokenConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BearerTokenConfig{}
+	out.Token = direct.LazyPtr(in.GetToken())
+	return out
+}
+func BearerTokenConfig_ToProto(mapCtx *direct.MapContext, in *krm.BearerTokenConfig) *pb.BearerTokenConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BearerTokenConfig{}
+	out.Token = direct.ValueOf(in.Token)
+	return out
+}
 func BigQueryExportSettings_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryExportSettings) *krm.BigQueryExportSettings {
 	if in == nil {
 		return nil
@@ -365,6 +517,288 @@ func CESAppSpec_ToProto(mapCtx *direct.MapContext, in *krm.CESAppSpec) *pb.App {
 	out.Metadata = in.Metadata
 	out.ClientCertificateSettings = ClientCertificateSettings_ToProto(mapCtx, in.ClientCertificateSettings)
 	out.Locked = direct.ValueOf(in.Locked)
+	return out
+}
+func CESDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Deployment) *krm.CESDeploymentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CESDeploymentObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func CESDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CESDeploymentObservedState) *pb.Deployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Deployment{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
+func CESDeploymentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Deployment) *krm.CESDeploymentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CESDeploymentSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	if in.GetAppVersion() != "" {
+		out.AppVersionRef = &krm.CesAppVersionRef{External: in.GetAppVersion()}
+	}
+	out.ChannelProfile = ChannelProfile_FromProto(mapCtx, in.GetChannelProfile())
+	return out
+}
+func CESDeploymentSpec_ToProto(mapCtx *direct.MapContext, in *krm.CESDeploymentSpec) *pb.Deployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Deployment{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	if in.AppVersionRef != nil {
+		out.AppVersion = in.AppVersionRef.External
+	}
+	out.ChannelProfile = ChannelProfile_ToProto(mapCtx, in.ChannelProfile)
+	return out
+}
+func CESGuardrailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail) *krm.CESGuardrailObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CESGuardrailObservedState{}
+	out.LlmPromptSecurity = Guardrail_LlmPromptSecurityObservedState_FromProto(mapCtx, in.GetLlmPromptSecurity())
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func CESGuardrailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CESGuardrailObservedState) *pb.Guardrail {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail{}
+	if oneof := Guardrail_LlmPromptSecurityObservedState_ToProto(mapCtx, in.LlmPromptSecurity); oneof != nil {
+		out.GuardrailType = &pb.Guardrail_LlmPromptSecurity_{LlmPromptSecurity: oneof}
+	}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
+func CESGuardrailSpec_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail) *krm.CESGuardrailSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CESGuardrailSpec{}
+	out.ContentFilter = Guardrail_ContentFilter_FromProto(mapCtx, in.GetContentFilter())
+	out.LlmPromptSecurity = Guardrail_LlmPromptSecurity_FromProto(mapCtx, in.GetLlmPromptSecurity())
+	out.LlmPolicy = Guardrail_LlmPolicy_FromProto(mapCtx, in.GetLlmPolicy())
+	out.ModelSafety = Guardrail_ModelSafety_FromProto(mapCtx, in.GetModelSafety())
+	out.CodeCallback = Guardrail_CodeCallback_FromProto(mapCtx, in.GetCodeCallback())
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.Action = TriggerAction_FromProto(mapCtx, in.GetAction())
+	return out
+}
+func CESGuardrailSpec_ToProto(mapCtx *direct.MapContext, in *krm.CESGuardrailSpec) *pb.Guardrail {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail{}
+	if oneof := Guardrail_ContentFilter_ToProto(mapCtx, in.ContentFilter); oneof != nil {
+		out.GuardrailType = &pb.Guardrail_ContentFilter_{ContentFilter: oneof}
+	}
+	if oneof := Guardrail_LlmPromptSecurity_ToProto(mapCtx, in.LlmPromptSecurity); oneof != nil {
+		out.GuardrailType = &pb.Guardrail_LlmPromptSecurity_{LlmPromptSecurity: oneof}
+	}
+	if oneof := Guardrail_LlmPolicy_ToProto(mapCtx, in.LlmPolicy); oneof != nil {
+		out.GuardrailType = &pb.Guardrail_LlmPolicy_{LlmPolicy: oneof}
+	}
+	if oneof := Guardrail_ModelSafety_ToProto(mapCtx, in.ModelSafety); oneof != nil {
+		out.GuardrailType = &pb.Guardrail_ModelSafety_{ModelSafety: oneof}
+	}
+	if oneof := Guardrail_CodeCallback_ToProto(mapCtx, in.CodeCallback); oneof != nil {
+		out.GuardrailType = &pb.Guardrail_CodeCallback_{CodeCallback: oneof}
+	}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Enabled = direct.ValueOf(in.Enabled)
+	out.Action = TriggerAction_ToProto(mapCtx, in.Action)
+	return out
+}
+func CESToolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Tool) *krm.CESToolObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CESToolObservedState{}
+	out.DataStoreTool = DataStoreToolObservedState_FromProto(mapCtx, in.GetDataStoreTool())
+	out.PythonFunction = PythonFunctionObservedState_FromProto(mapCtx, in.GetPythonFunction())
+	out.SystemTool = SystemToolObservedState_FromProto(mapCtx, in.GetSystemTool())
+	out.WidgetTool = WidgetToolObservedState_FromProto(mapCtx, in.GetWidgetTool())
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.GeneratedSummary = direct.LazyPtr(in.GetGeneratedSummary())
+	return out
+}
+func CESToolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CESToolObservedState) *pb.Tool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool{}
+	if oneof := DataStoreToolObservedState_ToProto(mapCtx, in.DataStoreTool); oneof != nil {
+		out.ToolType = &pb.Tool_DataStoreTool{DataStoreTool: oneof}
+	}
+	if oneof := PythonFunctionObservedState_ToProto(mapCtx, in.PythonFunction); oneof != nil {
+		out.ToolType = &pb.Tool_PythonFunction{PythonFunction: oneof}
+	}
+	if oneof := SystemToolObservedState_ToProto(mapCtx, in.SystemTool); oneof != nil {
+		out.ToolType = &pb.Tool_SystemTool{SystemTool: oneof}
+	}
+	if oneof := WidgetToolObservedState_ToProto(mapCtx, in.WidgetTool); oneof != nil {
+		out.ToolType = &pb.Tool_WidgetTool{WidgetTool: oneof}
+	}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.GeneratedSummary = direct.ValueOf(in.GeneratedSummary)
+	return out
+}
+func CESToolSpec_FromProto(mapCtx *direct.MapContext, in *pb.Tool) *krm.CESToolSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CESToolSpec{}
+	out.ClientFunction = ClientFunction_FromProto(mapCtx, in.GetClientFunction())
+	out.OpenAPITool = OpenAPITool_FromProto(mapCtx, in.GetOpenApiTool())
+	out.GoogleSearchTool = GoogleSearchTool_FromProto(mapCtx, in.GetGoogleSearchTool())
+	out.ConnectorTool = ConnectorTool_FromProto(mapCtx, in.GetConnectorTool())
+	out.DataStoreTool = DataStoreTool_FromProto(mapCtx, in.GetDataStoreTool())
+	out.PythonFunction = PythonFunction_FromProto(mapCtx, in.GetPythonFunction())
+	out.McpTool = McpTool_FromProto(mapCtx, in.GetMcpTool())
+	out.FileSearchTool = FileSearchTool_FromProto(mapCtx, in.GetFileSearchTool())
+	out.SystemTool = SystemTool_FromProto(mapCtx, in.GetSystemTool())
+	out.AgentTool = AgentTool_FromProto(mapCtx, in.GetAgentTool())
+	out.WidgetTool = WidgetTool_FromProto(mapCtx, in.GetWidgetTool())
+	// MISSING: Name
+	out.ExecutionType = direct.Enum_FromProto(mapCtx, in.GetExecutionType())
+	out.ToolFakeConfig = ToolFakeConfig_FromProto(mapCtx, in.GetToolFakeConfig())
+	return out
+}
+func CESToolSpec_ToProto(mapCtx *direct.MapContext, in *krm.CESToolSpec) *pb.Tool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool{}
+	if oneof := ClientFunction_ToProto(mapCtx, in.ClientFunction); oneof != nil {
+		out.ToolType = &pb.Tool_ClientFunction{ClientFunction: oneof}
+	}
+	if oneof := OpenAPITool_ToProto(mapCtx, in.OpenAPITool); oneof != nil {
+		out.ToolType = &pb.Tool_OpenApiTool{OpenApiTool: oneof}
+	}
+	if oneof := GoogleSearchTool_ToProto(mapCtx, in.GoogleSearchTool); oneof != nil {
+		out.ToolType = &pb.Tool_GoogleSearchTool{GoogleSearchTool: oneof}
+	}
+	if oneof := ConnectorTool_ToProto(mapCtx, in.ConnectorTool); oneof != nil {
+		out.ToolType = &pb.Tool_ConnectorTool{ConnectorTool: oneof}
+	}
+	if oneof := DataStoreTool_ToProto(mapCtx, in.DataStoreTool); oneof != nil {
+		out.ToolType = &pb.Tool_DataStoreTool{DataStoreTool: oneof}
+	}
+	if oneof := PythonFunction_ToProto(mapCtx, in.PythonFunction); oneof != nil {
+		out.ToolType = &pb.Tool_PythonFunction{PythonFunction: oneof}
+	}
+	if oneof := McpTool_ToProto(mapCtx, in.McpTool); oneof != nil {
+		out.ToolType = &pb.Tool_McpTool{McpTool: oneof}
+	}
+	if oneof := FileSearchTool_ToProto(mapCtx, in.FileSearchTool); oneof != nil {
+		out.ToolType = &pb.Tool_FileSearchTool{FileSearchTool: oneof}
+	}
+	if oneof := SystemTool_ToProto(mapCtx, in.SystemTool); oneof != nil {
+		out.ToolType = &pb.Tool_SystemTool{SystemTool: oneof}
+	}
+	if oneof := AgentTool_ToProto(mapCtx, in.AgentTool); oneof != nil {
+		out.ToolType = &pb.Tool_AgentTool{AgentTool: oneof}
+	}
+	if oneof := WidgetTool_ToProto(mapCtx, in.WidgetTool); oneof != nil {
+		out.ToolType = &pb.Tool_WidgetTool{WidgetTool: oneof}
+	}
+	// MISSING: Name
+	out.ExecutionType = direct.Enum_ToProto[pb.ExecutionType](mapCtx, in.ExecutionType)
+	out.ToolFakeConfig = ToolFakeConfig_ToProto(mapCtx, in.ToolFakeConfig)
+	return out
+}
+func CESToolsetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Toolset) *krm.CESToolsetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CESToolsetObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func CESToolsetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CESToolsetObservedState) *pb.Toolset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Toolset{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func CESToolsetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Toolset) *krm.CESToolsetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CESToolsetSpec{}
+	out.McpToolset = McpToolset_FromProto(mapCtx, in.GetMcpToolset())
+	out.OpenAPIToolset = OpenAPIToolset_FromProto(mapCtx, in.GetOpenApiToolset())
+	out.ConnectorToolset = ConnectorToolset_FromProto(mapCtx, in.GetConnectorToolset())
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.ExecutionType = direct.Enum_FromProto(mapCtx, in.GetExecutionType())
+	out.ToolFakeConfig = ToolFakeConfig_FromProto(mapCtx, in.GetToolFakeConfig())
+	return out
+}
+func CESToolsetSpec_ToProto(mapCtx *direct.MapContext, in *krm.CESToolsetSpec) *pb.Toolset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Toolset{}
+	if oneof := McpToolset_ToProto(mapCtx, in.McpToolset); oneof != nil {
+		out.ToolsetType = &pb.Toolset_McpToolset{McpToolset: oneof}
+	}
+	if oneof := OpenAPIToolset_ToProto(mapCtx, in.OpenAPIToolset); oneof != nil {
+		out.ToolsetType = &pb.Toolset_OpenApiToolset{OpenApiToolset: oneof}
+	}
+	if oneof := ConnectorToolset_ToProto(mapCtx, in.ConnectorToolset); oneof != nil {
+		out.ToolsetType = &pb.Toolset_ConnectorToolset{ConnectorToolset: oneof}
+	}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.ExecutionType = direct.Enum_ToProto[pb.ExecutionType](mapCtx, in.ExecutionType)
+	out.ToolFakeConfig = ToolFakeConfig_ToProto(mapCtx, in.ToolFakeConfig)
 	return out
 }
 func Callback_FromProto(mapCtx *direct.MapContext, in *pb.Callback) *krm.Callback {
@@ -591,6 +1025,28 @@ func ClientCertificateSettings_ToProto(mapCtx *direct.MapContext, in *krm.Client
 	}
 	return out
 }
+func ClientFunction_FromProto(mapCtx *direct.MapContext, in *pb.ClientFunction) *krm.ClientFunction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClientFunction{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Parameters = Schema_FromProto(mapCtx, in.GetParameters())
+	out.Response = Schema_FromProto(mapCtx, in.GetResponse())
+	return out
+}
+func ClientFunction_ToProto(mapCtx *direct.MapContext, in *krm.ClientFunction) *pb.ClientFunction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ClientFunction{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	out.Parameters = Schema_ToProto(mapCtx, in.Parameters)
+	out.Response = Schema_ToProto(mapCtx, in.Response)
+	return out
+}
 func CloudLoggingSettings_FromProto(mapCtx *direct.MapContext, in *pb.CloudLoggingSettings) *krm.CloudLoggingSettings {
 	if in == nil {
 		return nil
@@ -607,6 +1063,70 @@ func CloudLoggingSettings_ToProto(mapCtx *direct.MapContext, in *krm.CloudLoggin
 	out.EnableCloudLogging = direct.ValueOf(in.EnableCloudLogging)
 	return out
 }
+func CodeBlock_FromProto(mapCtx *direct.MapContext, in *pb.CodeBlock) *krm.CodeBlock {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CodeBlock{}
+	out.PythonCode = direct.LazyPtr(in.GetPythonCode())
+	return out
+}
+func CodeBlock_ToProto(mapCtx *direct.MapContext, in *krm.CodeBlock) *pb.CodeBlock {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CodeBlock{}
+	out.PythonCode = direct.ValueOf(in.PythonCode)
+	return out
+}
+func ConnectorTool_FromProto(mapCtx *direct.MapContext, in *pb.ConnectorTool) *krm.ConnectorTool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConnectorTool{}
+	if in.GetConnection() != "" {
+		out.ConnectionRef = &krmconnectorsv1alpha1.ConnectorsConnectionRef{External: in.GetConnection()}
+	}
+	out.Action = Action_FromProto(mapCtx, in.GetAction())
+	out.AuthConfig = EndUserAuthConfig_FromProto(mapCtx, in.GetAuthConfig())
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func ConnectorTool_ToProto(mapCtx *direct.MapContext, in *krm.ConnectorTool) *pb.ConnectorTool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectorTool{}
+	if in.ConnectionRef != nil {
+		out.Connection = in.ConnectionRef.External
+	}
+	out.Action = Action_ToProto(mapCtx, in.Action)
+	out.AuthConfig = EndUserAuthConfig_ToProto(mapCtx, in.AuthConfig)
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func ConnectorToolset_FromProto(mapCtx *direct.MapContext, in *pb.ConnectorToolset) *krm.ConnectorToolset {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConnectorToolset{}
+	out.Connection = direct.LazyPtr(in.GetConnection())
+	out.AuthConfig = EndUserAuthConfig_FromProto(mapCtx, in.GetAuthConfig())
+	out.ConnectorActions = direct.Slice_FromProto(mapCtx, in.ConnectorActions, Action_FromProto)
+	return out
+}
+func ConnectorToolset_ToProto(mapCtx *direct.MapContext, in *krm.ConnectorToolset) *pb.ConnectorToolset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectorToolset{}
+	out.Connection = direct.ValueOf(in.Connection)
+	out.AuthConfig = EndUserAuthConfig_ToProto(mapCtx, in.AuthConfig)
+	out.ConnectorActions = direct.Slice_ToProto(mapCtx, in.ConnectorActions, Action_ToProto)
+	return out
+}
 func ConversationLoggingSettings_FromProto(mapCtx *direct.MapContext, in *pb.ConversationLoggingSettings) *krm.ConversationLoggingSettings {
 	if in == nil {
 		return nil
@@ -621,6 +1141,32 @@ func ConversationLoggingSettings_ToProto(mapCtx *direct.MapContext, in *krm.Conv
 	}
 	out := &pb.ConversationLoggingSettings{}
 	out.DisableConversationLogging = direct.ValueOf(in.DisableConversationLogging)
+	return out
+}
+func DataStoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataStore) *krm.DataStoreObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreObservedState{}
+	// MISSING: Name
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.DocumentProcessingMode = direct.Enum_FromProto(mapCtx, in.GetDocumentProcessingMode())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.ConnectorConfig = DataStore_ConnectorConfig_FromProto(mapCtx, in.GetConnectorConfig())
+	return out
+}
+func DataStoreObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreObservedState) *pb.DataStore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStore{}
+	// MISSING: Name
+	out.Type = direct.Enum_ToProto[pb.DataStore_DataStoreType](mapCtx, in.Type)
+	out.DocumentProcessingMode = direct.Enum_ToProto[pb.DataStore_DocumentProcessingMode](mapCtx, in.DocumentProcessingMode)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.ConnectorConfig = DataStore_ConnectorConfig_ToProto(mapCtx, in.ConnectorConfig)
 	return out
 }
 func DataStoreSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreSettings) *krm.DataStoreSettingsObservedState {
@@ -655,6 +1201,414 @@ func DataStoreSettings_EngineObservedState_ToProto(mapCtx *direct.MapContext, in
 	out := &pb.DataStoreSettings_Engine{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Type = direct.Enum_ToProto[pb.DataStoreSettings_Engine_Type](mapCtx, in.Type)
+	return out
+}
+func DataStoreTool_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreTool) *krm.DataStoreTool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreTool{}
+	out.DataStoreSource = DataStoreTool_DataStoreSource_FromProto(mapCtx, in.GetDataStoreSource())
+	out.EngineSource = DataStoreTool_EngineSource_FromProto(mapCtx, in.GetEngineSource())
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.BoostSpecs = direct.Slice_FromProto(mapCtx, in.BoostSpecs, DataStoreTool_BoostSpecs_FromProto)
+	out.ModalityConfigs = direct.Slice_FromProto(mapCtx, in.ModalityConfigs, DataStoreTool_ModalityConfig_FromProto)
+	out.FilterParameterBehavior = direct.Enum_FromProto(mapCtx, in.GetFilterParameterBehavior())
+	return out
+}
+func DataStoreTool_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreTool) *pb.DataStoreTool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStoreTool{}
+	if oneof := DataStoreTool_DataStoreSource_ToProto(mapCtx, in.DataStoreSource); oneof != nil {
+		out.SearchSource = &pb.DataStoreTool_DataStoreSource_{DataStoreSource: oneof}
+	}
+	if oneof := DataStoreTool_EngineSource_ToProto(mapCtx, in.EngineSource); oneof != nil {
+		out.SearchSource = &pb.DataStoreTool_EngineSource_{EngineSource: oneof}
+	}
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	out.BoostSpecs = direct.Slice_ToProto(mapCtx, in.BoostSpecs, DataStoreTool_BoostSpecs_ToProto)
+	out.ModalityConfigs = direct.Slice_ToProto(mapCtx, in.ModalityConfigs, DataStoreTool_ModalityConfig_ToProto)
+	out.FilterParameterBehavior = direct.Enum_ToProto[pb.DataStoreTool_FilterParameterBehavior](mapCtx, in.FilterParameterBehavior)
+	return out
+}
+func DataStoreToolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreTool) *krm.DataStoreToolObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreToolObservedState{}
+	out.DataStoreSource = DataStoreTool_DataStoreSourceObservedState_FromProto(mapCtx, in.GetDataStoreSource())
+	out.EngineSource = DataStoreTool_EngineSourceObservedState_FromProto(mapCtx, in.GetEngineSource())
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: BoostSpecs
+	// MISSING: ModalityConfigs
+	// MISSING: FilterParameterBehavior
+	return out
+}
+func DataStoreToolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreToolObservedState) *pb.DataStoreTool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStoreTool{}
+	if oneof := DataStoreTool_DataStoreSourceObservedState_ToProto(mapCtx, in.DataStoreSource); oneof != nil {
+		out.SearchSource = &pb.DataStoreTool_DataStoreSource_{DataStoreSource: oneof}
+	}
+	if oneof := DataStoreTool_EngineSourceObservedState_ToProto(mapCtx, in.EngineSource); oneof != nil {
+		out.SearchSource = &pb.DataStoreTool_EngineSource_{EngineSource: oneof}
+	}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: BoostSpecs
+	// MISSING: ModalityConfigs
+	// MISSING: FilterParameterBehavior
+	return out
+}
+func DataStoreTool_BoostSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreTool_BoostSpec) *krm.DataStoreTool_BoostSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreTool_BoostSpec{}
+	out.ConditionBoostSpecs = direct.Slice_FromProto(mapCtx, in.ConditionBoostSpecs, DataStoreTool_BoostSpec_ConditionBoostSpec_FromProto)
+	return out
+}
+func DataStoreTool_BoostSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreTool_BoostSpec) *pb.DataStoreTool_BoostSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStoreTool_BoostSpec{}
+	out.ConditionBoostSpecs = direct.Slice_ToProto(mapCtx, in.ConditionBoostSpecs, DataStoreTool_BoostSpec_ConditionBoostSpec_ToProto)
+	return out
+}
+func DataStoreTool_BoostSpec_ConditionBoostSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreTool_BoostSpec_ConditionBoostSpec) *krm.DataStoreTool_BoostSpec_ConditionBoostSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreTool_BoostSpec_ConditionBoostSpec{}
+	out.Condition = direct.LazyPtr(in.GetCondition())
+	out.Boost = direct.LazyPtr(in.GetBoost())
+	out.BoostControlSpec = DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec_FromProto(mapCtx, in.GetBoostControlSpec())
+	return out
+}
+func DataStoreTool_BoostSpec_ConditionBoostSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreTool_BoostSpec_ConditionBoostSpec) *pb.DataStoreTool_BoostSpec_ConditionBoostSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStoreTool_BoostSpec_ConditionBoostSpec{}
+	out.Condition = direct.ValueOf(in.Condition)
+	out.Boost = direct.ValueOf(in.Boost)
+	out.BoostControlSpec = DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec_ToProto(mapCtx, in.BoostControlSpec)
+	return out
+}
+func DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec) *krm.DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec{}
+	out.FieldName = direct.LazyPtr(in.GetFieldName())
+	out.AttributeType = direct.Enum_FromProto(mapCtx, in.GetAttributeType())
+	out.InterpolationType = direct.Enum_FromProto(mapCtx, in.GetInterpolationType())
+	out.ControlPoints = direct.Slice_FromProto(mapCtx, in.ControlPoints, DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec_ControlPoint_FromProto)
+	return out
+}
+func DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec) *pb.DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec{}
+	out.FieldName = direct.ValueOf(in.FieldName)
+	out.AttributeType = direct.Enum_ToProto[pb.DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec_AttributeType](mapCtx, in.AttributeType)
+	out.InterpolationType = direct.Enum_ToProto[pb.DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec_InterpolationType](mapCtx, in.InterpolationType)
+	out.ControlPoints = direct.Slice_ToProto(mapCtx, in.ControlPoints, DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec_ControlPoint_ToProto)
+	return out
+}
+func DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec_ControlPoint_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec_ControlPoint) *krm.DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec_ControlPoint {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec_ControlPoint{}
+	out.AttributeValue = direct.LazyPtr(in.GetAttributeValue())
+	out.BoostAmount = direct.LazyPtr(in.GetBoostAmount())
+	return out
+}
+func DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec_ControlPoint_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec_ControlPoint) *pb.DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec_ControlPoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec_ControlPoint{}
+	out.AttributeValue = direct.ValueOf(in.AttributeValue)
+	out.BoostAmount = direct.ValueOf(in.BoostAmount)
+	return out
+}
+func DataStoreTool_BoostSpecs_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreTool_BoostSpecs) *krm.DataStoreTool_BoostSpecs {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreTool_BoostSpecs{}
+
+	if v := in.GetDataStores(); len(v) != 0 {
+		for i := range v {
+			out.DataStoreRefs = append(out.DataStoreRefs, krmdiscoveryenginev1alpha1.DiscoveryEngineDataStoreRef{External: v[i]})
+		}
+	}
+
+	out.Spec = direct.Slice_FromProto(mapCtx, in.Spec, DataStoreTool_BoostSpec_FromProto)
+	return out
+}
+func DataStoreTool_BoostSpecs_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreTool_BoostSpecs) *pb.DataStoreTool_BoostSpecs {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStoreTool_BoostSpecs{}
+
+	if v := in.DataStoreRefs; len(v) != 0 {
+		for i := range v {
+			out.DataStores = append(out.DataStores, v[i].External)
+		}
+	}
+
+	out.Spec = direct.Slice_ToProto(mapCtx, in.Spec, DataStoreTool_BoostSpec_ToProto)
+	return out
+}
+func DataStoreTool_DataStoreSource_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreTool_DataStoreSource) *krm.DataStoreTool_DataStoreSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreTool_DataStoreSource{}
+	out.Filter = direct.LazyPtr(in.GetFilter())
+	out.DataStore = DataStore_FromProto(mapCtx, in.GetDataStore())
+	return out
+}
+func DataStoreTool_DataStoreSource_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreTool_DataStoreSource) *pb.DataStoreTool_DataStoreSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStoreTool_DataStoreSource{}
+	out.Filter = direct.ValueOf(in.Filter)
+	out.DataStore = DataStore_ToProto(mapCtx, in.DataStore)
+	return out
+}
+func DataStoreTool_DataStoreSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreTool_DataStoreSource) *krm.DataStoreTool_DataStoreSourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreTool_DataStoreSourceObservedState{}
+	// MISSING: Filter
+	out.DataStore = DataStoreObservedState_FromProto(mapCtx, in.GetDataStore())
+	return out
+}
+func DataStoreTool_DataStoreSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreTool_DataStoreSourceObservedState) *pb.DataStoreTool_DataStoreSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStoreTool_DataStoreSource{}
+	// MISSING: Filter
+	out.DataStore = DataStoreObservedState_ToProto(mapCtx, in.DataStore)
+	return out
+}
+func DataStoreTool_EngineSource_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreTool_EngineSource) *krm.DataStoreTool_EngineSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreTool_EngineSource{}
+	if in.GetEngine() != "" {
+		out.EngineRef = &krmdiscoveryenginev1alpha1.DiscoveryEngineEngineRef{External: in.GetEngine()}
+	}
+	out.DataStoreSources = direct.Slice_FromProto(mapCtx, in.DataStoreSources, DataStoreTool_DataStoreSource_FromProto)
+	out.Filter = direct.LazyPtr(in.GetFilter())
+	return out
+}
+func DataStoreTool_EngineSource_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreTool_EngineSource) *pb.DataStoreTool_EngineSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStoreTool_EngineSource{}
+	if in.EngineRef != nil {
+		out.Engine = in.EngineRef.External
+	}
+	out.DataStoreSources = direct.Slice_ToProto(mapCtx, in.DataStoreSources, DataStoreTool_DataStoreSource_ToProto)
+	out.Filter = direct.ValueOf(in.Filter)
+	return out
+}
+func DataStoreTool_EngineSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreTool_EngineSource) *krm.DataStoreTool_EngineSourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreTool_EngineSourceObservedState{}
+	// MISSING: Engine
+	out.DataStoreSources = direct.Slice_FromProto(mapCtx, in.DataStoreSources, DataStoreTool_DataStoreSourceObservedState_FromProto)
+	// MISSING: Filter
+	return out
+}
+func DataStoreTool_EngineSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreTool_EngineSourceObservedState) *pb.DataStoreTool_EngineSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStoreTool_EngineSource{}
+	// MISSING: Engine
+	out.DataStoreSources = direct.Slice_ToProto(mapCtx, in.DataStoreSources, DataStoreTool_DataStoreSourceObservedState_ToProto)
+	// MISSING: Filter
+	return out
+}
+func DataStoreTool_GroundingConfig_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreTool_GroundingConfig) *krm.DataStoreTool_GroundingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreTool_GroundingConfig{}
+	out.GroundingLevel = direct.LazyPtr(in.GetGroundingLevel())
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	return out
+}
+func DataStoreTool_GroundingConfig_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreTool_GroundingConfig) *pb.DataStoreTool_GroundingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStoreTool_GroundingConfig{}
+	out.GroundingLevel = direct.ValueOf(in.GroundingLevel)
+	out.Disabled = direct.ValueOf(in.Disabled)
+	return out
+}
+func DataStoreTool_ModalityConfig_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreTool_ModalityConfig) *krm.DataStoreTool_ModalityConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreTool_ModalityConfig{}
+	out.ModalityType = direct.Enum_FromProto(mapCtx, in.GetModalityType())
+	out.RewriterConfig = DataStoreTool_RewriterConfig_FromProto(mapCtx, in.GetRewriterConfig())
+	out.SummarizationConfig = DataStoreTool_SummarizationConfig_FromProto(mapCtx, in.GetSummarizationConfig())
+	out.GroundingConfig = DataStoreTool_GroundingConfig_FromProto(mapCtx, in.GetGroundingConfig())
+	return out
+}
+func DataStoreTool_ModalityConfig_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreTool_ModalityConfig) *pb.DataStoreTool_ModalityConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStoreTool_ModalityConfig{}
+	out.ModalityType = direct.Enum_ToProto[pb.DataStoreTool_ModalityConfig_ModalityType](mapCtx, in.ModalityType)
+	out.RewriterConfig = DataStoreTool_RewriterConfig_ToProto(mapCtx, in.RewriterConfig)
+	out.SummarizationConfig = DataStoreTool_SummarizationConfig_ToProto(mapCtx, in.SummarizationConfig)
+	out.GroundingConfig = DataStoreTool_GroundingConfig_ToProto(mapCtx, in.GroundingConfig)
+	return out
+}
+func DataStoreTool_RewriterConfig_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreTool_RewriterConfig) *krm.DataStoreTool_RewriterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreTool_RewriterConfig{}
+	out.ModelSettings = ModelSettings_FromProto(mapCtx, in.GetModelSettings())
+	out.Prompt = direct.LazyPtr(in.GetPrompt())
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	return out
+}
+func DataStoreTool_RewriterConfig_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreTool_RewriterConfig) *pb.DataStoreTool_RewriterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStoreTool_RewriterConfig{}
+	out.ModelSettings = ModelSettings_ToProto(mapCtx, in.ModelSettings)
+	out.Prompt = direct.ValueOf(in.Prompt)
+	out.Disabled = direct.ValueOf(in.Disabled)
+	return out
+}
+func DataStoreTool_SummarizationConfig_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreTool_SummarizationConfig) *krm.DataStoreTool_SummarizationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreTool_SummarizationConfig{}
+	out.ModelSettings = ModelSettings_FromProto(mapCtx, in.GetModelSettings())
+	out.Prompt = direct.LazyPtr(in.GetPrompt())
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	return out
+}
+func DataStoreTool_SummarizationConfig_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreTool_SummarizationConfig) *pb.DataStoreTool_SummarizationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStoreTool_SummarizationConfig{}
+	out.ModelSettings = ModelSettings_ToProto(mapCtx, in.ModelSettings)
+	out.Prompt = direct.ValueOf(in.Prompt)
+	out.Disabled = direct.ValueOf(in.Disabled)
+	return out
+}
+func DataStore_ConnectorConfig_FromProto(mapCtx *direct.MapContext, in *pb.DataStore_ConnectorConfig) *krm.DataStore_ConnectorConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStore_ConnectorConfig{}
+	out.Collection = direct.LazyPtr(in.GetCollection())
+	out.CollectionDisplayName = direct.LazyPtr(in.GetCollectionDisplayName())
+	out.DataSource = direct.LazyPtr(in.GetDataSource())
+	return out
+}
+func DataStore_ConnectorConfig_ToProto(mapCtx *direct.MapContext, in *krm.DataStore_ConnectorConfig) *pb.DataStore_ConnectorConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStore_ConnectorConfig{}
+	out.Collection = direct.ValueOf(in.Collection)
+	out.CollectionDisplayName = direct.ValueOf(in.CollectionDisplayName)
+	out.DataSource = direct.ValueOf(in.DataSource)
+	return out
+}
+func EndUserAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.EndUserAuthConfig) *krm.EndUserAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EndUserAuthConfig{}
+	out.OAUTH2AuthCodeConfig = EndUserAuthConfig_OAUTH2AuthCodeConfig_FromProto(mapCtx, in.GetOauth2AuthCodeConfig())
+	out.OAUTH2JwtBearerConfig = EndUserAuthConfig_OAUTH2JwtBearerConfig_FromProto(mapCtx, in.GetOauth2JwtBearerConfig())
+	return out
+}
+func EndUserAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.EndUserAuthConfig) *pb.EndUserAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EndUserAuthConfig{}
+	if oneof := EndUserAuthConfig_OAUTH2AuthCodeConfig_ToProto(mapCtx, in.OAUTH2AuthCodeConfig); oneof != nil {
+		out.AuthConfig = &pb.EndUserAuthConfig_Oauth2AuthCodeConfig_{Oauth2AuthCodeConfig: oneof}
+	}
+	if oneof := EndUserAuthConfig_OAUTH2JwtBearerConfig_ToProto(mapCtx, in.OAUTH2JwtBearerConfig); oneof != nil {
+		out.AuthConfig = &pb.EndUserAuthConfig_Oauth2JwtBearerConfig_{Oauth2JwtBearerConfig: oneof}
+	}
+	return out
+}
+func EndUserAuthConfig_OAUTH2AuthCodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.EndUserAuthConfig_Oauth2AuthCodeConfig) *krm.EndUserAuthConfig_OAUTH2AuthCodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EndUserAuthConfig_OAUTH2AuthCodeConfig{}
+	out.OauthToken = direct.LazyPtr(in.GetOauthToken())
+	return out
+}
+func EndUserAuthConfig_OAUTH2AuthCodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.EndUserAuthConfig_OAUTH2AuthCodeConfig) *pb.EndUserAuthConfig_Oauth2AuthCodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EndUserAuthConfig_Oauth2AuthCodeConfig{}
+	out.OauthToken = direct.ValueOf(in.OauthToken)
+	return out
+}
+func EndUserAuthConfig_OAUTH2JwtBearerConfig_FromProto(mapCtx *direct.MapContext, in *pb.EndUserAuthConfig_Oauth2JwtBearerConfig) *krm.EndUserAuthConfig_OAUTH2JwtBearerConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EndUserAuthConfig_OAUTH2JwtBearerConfig{}
+	out.Issuer = direct.LazyPtr(in.GetIssuer())
+	out.Subject = direct.LazyPtr(in.GetSubject())
+	out.ClientKey = direct.LazyPtr(in.GetClientKey())
+	return out
+}
+func EndUserAuthConfig_OAUTH2JwtBearerConfig_ToProto(mapCtx *direct.MapContext, in *krm.EndUserAuthConfig_OAUTH2JwtBearerConfig) *pb.EndUserAuthConfig_Oauth2JwtBearerConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EndUserAuthConfig_Oauth2JwtBearerConfig{}
+	out.Issuer = direct.ValueOf(in.Issuer)
+	out.Subject = direct.ValueOf(in.Subject)
+	out.ClientKey = direct.ValueOf(in.ClientKey)
 	return out
 }
 func ErrorHandlingSettings_FromProto(mapCtx *direct.MapContext, in *pb.ErrorHandlingSettings) *krm.ErrorHandlingSettings {
@@ -783,6 +1737,260 @@ func ExpressionCondition_ToProto(mapCtx *direct.MapContext, in *krm.ExpressionCo
 	out.Expression = direct.ValueOf(in.Expression)
 	return out
 }
+func FileSearchTool_FromProto(mapCtx *direct.MapContext, in *pb.FileSearchTool) *krm.FileSearchTool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FileSearchTool{}
+	out.CorpusType = direct.Enum_FromProto(mapCtx, in.GetCorpusType())
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	if in.GetFileCorpus() != "" {
+		out.FileCorpusRef = &krmaiplatformv1alpha1.AIPlatformRAGCorpusRef{External: in.GetFileCorpus()}
+	}
+	return out
+}
+func FileSearchTool_ToProto(mapCtx *direct.MapContext, in *krm.FileSearchTool) *pb.FileSearchTool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FileSearchTool{}
+	out.CorpusType = direct.Enum_ToProto[pb.FileSearchTool_CorpusType](mapCtx, in.CorpusType)
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	if in.FileCorpusRef != nil {
+		out.FileCorpus = in.FileCorpusRef.External
+	}
+	return out
+}
+func GoogleSearchTool_FromProto(mapCtx *direct.MapContext, in *pb.GoogleSearchTool) *krm.GoogleSearchTool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GoogleSearchTool{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.ContextURLs = in.ContextUrls
+	out.PreferredDomains = in.PreferredDomains
+	out.ExcludeDomains = in.ExcludeDomains
+	out.PromptConfig = GoogleSearchTool_PromptConfig_FromProto(mapCtx, in.GetPromptConfig())
+	return out
+}
+func GoogleSearchTool_ToProto(mapCtx *direct.MapContext, in *krm.GoogleSearchTool) *pb.GoogleSearchTool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GoogleSearchTool{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	out.ContextUrls = in.ContextURLs
+	out.PreferredDomains = in.PreferredDomains
+	out.ExcludeDomains = in.ExcludeDomains
+	out.PromptConfig = GoogleSearchTool_PromptConfig_ToProto(mapCtx, in.PromptConfig)
+	return out
+}
+func GoogleSearchTool_PromptConfig_FromProto(mapCtx *direct.MapContext, in *pb.GoogleSearchTool_PromptConfig) *krm.GoogleSearchTool_PromptConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GoogleSearchTool_PromptConfig{}
+	out.TextPrompt = direct.LazyPtr(in.GetTextPrompt())
+	out.VoicePrompt = direct.LazyPtr(in.GetVoicePrompt())
+	return out
+}
+func GoogleSearchTool_PromptConfig_ToProto(mapCtx *direct.MapContext, in *krm.GoogleSearchTool_PromptConfig) *pb.GoogleSearchTool_PromptConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GoogleSearchTool_PromptConfig{}
+	out.TextPrompt = direct.ValueOf(in.TextPrompt)
+	out.VoicePrompt = direct.ValueOf(in.VoicePrompt)
+	return out
+}
+func Guardrail_CodeCallback_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail_CodeCallback) *krm.Guardrail_CodeCallback {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Guardrail_CodeCallback{}
+	out.BeforeAgentCallback = Callback_FromProto(mapCtx, in.GetBeforeAgentCallback())
+	out.AfterAgentCallback = Callback_FromProto(mapCtx, in.GetAfterAgentCallback())
+	out.BeforeModelCallback = Callback_FromProto(mapCtx, in.GetBeforeModelCallback())
+	out.AfterModelCallback = Callback_FromProto(mapCtx, in.GetAfterModelCallback())
+	return out
+}
+func Guardrail_CodeCallback_ToProto(mapCtx *direct.MapContext, in *krm.Guardrail_CodeCallback) *pb.Guardrail_CodeCallback {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail_CodeCallback{}
+	out.BeforeAgentCallback = Callback_ToProto(mapCtx, in.BeforeAgentCallback)
+	out.AfterAgentCallback = Callback_ToProto(mapCtx, in.AfterAgentCallback)
+	out.BeforeModelCallback = Callback_ToProto(mapCtx, in.BeforeModelCallback)
+	out.AfterModelCallback = Callback_ToProto(mapCtx, in.AfterModelCallback)
+	return out
+}
+func Guardrail_ContentFilter_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail_ContentFilter) *krm.Guardrail_ContentFilter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Guardrail_ContentFilter{}
+	out.BannedContents = in.BannedContents
+	out.BannedContentsInUserInput = in.BannedContentsInUserInput
+	out.BannedContentsInAgentResponse = in.BannedContentsInAgentResponse
+	out.MatchType = direct.Enum_FromProto(mapCtx, in.GetMatchType())
+	out.DisregardDiacritics = direct.LazyPtr(in.GetDisregardDiacritics())
+	return out
+}
+func Guardrail_ContentFilter_ToProto(mapCtx *direct.MapContext, in *krm.Guardrail_ContentFilter) *pb.Guardrail_ContentFilter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail_ContentFilter{}
+	out.BannedContents = in.BannedContents
+	out.BannedContentsInUserInput = in.BannedContentsInUserInput
+	out.BannedContentsInAgentResponse = in.BannedContentsInAgentResponse
+	out.MatchType = direct.Enum_ToProto[pb.Guardrail_ContentFilter_MatchType](mapCtx, in.MatchType)
+	out.DisregardDiacritics = direct.ValueOf(in.DisregardDiacritics)
+	return out
+}
+func Guardrail_LlmPolicy_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail_LlmPolicy) *krm.Guardrail_LlmPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Guardrail_LlmPolicy{}
+	out.MaxConversationMessages = direct.LazyPtr(in.GetMaxConversationMessages())
+	out.ModelSettings = ModelSettings_FromProto(mapCtx, in.GetModelSettings())
+	out.Prompt = direct.LazyPtr(in.GetPrompt())
+	out.PolicyScope = direct.Enum_FromProto(mapCtx, in.GetPolicyScope())
+	out.FailOpen = direct.LazyPtr(in.GetFailOpen())
+	out.AllowShortUtterance = direct.LazyPtr(in.GetAllowShortUtterance())
+	return out
+}
+func Guardrail_LlmPolicy_ToProto(mapCtx *direct.MapContext, in *krm.Guardrail_LlmPolicy) *pb.Guardrail_LlmPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail_LlmPolicy{}
+	out.MaxConversationMessages = direct.ValueOf(in.MaxConversationMessages)
+	out.ModelSettings = ModelSettings_ToProto(mapCtx, in.ModelSettings)
+	out.Prompt = direct.ValueOf(in.Prompt)
+	out.PolicyScope = direct.Enum_ToProto[pb.Guardrail_LlmPolicy_PolicyScope](mapCtx, in.PolicyScope)
+	out.FailOpen = direct.ValueOf(in.FailOpen)
+	out.AllowShortUtterance = direct.ValueOf(in.AllowShortUtterance)
+	return out
+}
+func Guardrail_LlmPromptSecurity_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail_LlmPromptSecurity) *krm.Guardrail_LlmPromptSecurity {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Guardrail_LlmPromptSecurity{}
+	out.DefaultSettings = Guardrail_LlmPromptSecurity_DefaultSecuritySettings_FromProto(mapCtx, in.GetDefaultSettings())
+	out.CustomPolicy = Guardrail_LlmPolicy_FromProto(mapCtx, in.GetCustomPolicy())
+	out.FailOpen = direct.LazyPtr(in.GetFailOpen())
+	return out
+}
+func Guardrail_LlmPromptSecurity_ToProto(mapCtx *direct.MapContext, in *krm.Guardrail_LlmPromptSecurity) *pb.Guardrail_LlmPromptSecurity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail_LlmPromptSecurity{}
+	if oneof := Guardrail_LlmPromptSecurity_DefaultSecuritySettings_ToProto(mapCtx, in.DefaultSettings); oneof != nil {
+		out.SecurityConfig = &pb.Guardrail_LlmPromptSecurity_DefaultSettings{DefaultSettings: oneof}
+	}
+	if oneof := Guardrail_LlmPolicy_ToProto(mapCtx, in.CustomPolicy); oneof != nil {
+		out.SecurityConfig = &pb.Guardrail_LlmPromptSecurity_CustomPolicy{CustomPolicy: oneof}
+	}
+	out.FailOpen = direct.ValueOf(in.FailOpen)
+	return out
+}
+func Guardrail_LlmPromptSecurityObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail_LlmPromptSecurity) *krm.Guardrail_LlmPromptSecurityObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Guardrail_LlmPromptSecurityObservedState{}
+	out.DefaultSettings = Guardrail_LlmPromptSecurity_DefaultSecuritySettingsObservedState_FromProto(mapCtx, in.GetDefaultSettings())
+	// MISSING: CustomPolicy
+	// MISSING: FailOpen
+	return out
+}
+func Guardrail_LlmPromptSecurityObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Guardrail_LlmPromptSecurityObservedState) *pb.Guardrail_LlmPromptSecurity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail_LlmPromptSecurity{}
+	if oneof := Guardrail_LlmPromptSecurity_DefaultSecuritySettingsObservedState_ToProto(mapCtx, in.DefaultSettings); oneof != nil {
+		out.SecurityConfig = &pb.Guardrail_LlmPromptSecurity_DefaultSettings{DefaultSettings: oneof}
+	}
+	// MISSING: CustomPolicy
+	// MISSING: FailOpen
+	return out
+}
+func Guardrail_LlmPromptSecurity_DefaultSecuritySettings_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail_LlmPromptSecurity_DefaultSecuritySettings) *krm.Guardrail_LlmPromptSecurity_DefaultSecuritySettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Guardrail_LlmPromptSecurity_DefaultSecuritySettings{}
+	// MISSING: DefaultPromptTemplate
+	return out
+}
+func Guardrail_LlmPromptSecurity_DefaultSecuritySettings_ToProto(mapCtx *direct.MapContext, in *krm.Guardrail_LlmPromptSecurity_DefaultSecuritySettings) *pb.Guardrail_LlmPromptSecurity_DefaultSecuritySettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail_LlmPromptSecurity_DefaultSecuritySettings{}
+	// MISSING: DefaultPromptTemplate
+	return out
+}
+func Guardrail_LlmPromptSecurity_DefaultSecuritySettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail_LlmPromptSecurity_DefaultSecuritySettings) *krm.Guardrail_LlmPromptSecurity_DefaultSecuritySettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Guardrail_LlmPromptSecurity_DefaultSecuritySettingsObservedState{}
+	out.DefaultPromptTemplate = direct.LazyPtr(in.GetDefaultPromptTemplate())
+	return out
+}
+func Guardrail_LlmPromptSecurity_DefaultSecuritySettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Guardrail_LlmPromptSecurity_DefaultSecuritySettingsObservedState) *pb.Guardrail_LlmPromptSecurity_DefaultSecuritySettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail_LlmPromptSecurity_DefaultSecuritySettings{}
+	out.DefaultPromptTemplate = direct.ValueOf(in.DefaultPromptTemplate)
+	return out
+}
+func Guardrail_ModelSafety_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail_ModelSafety) *krm.Guardrail_ModelSafety {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Guardrail_ModelSafety{}
+	out.SafetySettings = direct.Slice_FromProto(mapCtx, in.SafetySettings, Guardrail_ModelSafety_SafetySetting_FromProto)
+	return out
+}
+func Guardrail_ModelSafety_ToProto(mapCtx *direct.MapContext, in *krm.Guardrail_ModelSafety) *pb.Guardrail_ModelSafety {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail_ModelSafety{}
+	out.SafetySettings = direct.Slice_ToProto(mapCtx, in.SafetySettings, Guardrail_ModelSafety_SafetySetting_ToProto)
+	return out
+}
+func Guardrail_ModelSafety_SafetySetting_FromProto(mapCtx *direct.MapContext, in *pb.Guardrail_ModelSafety_SafetySetting) *krm.Guardrail_ModelSafety_SafetySetting {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Guardrail_ModelSafety_SafetySetting{}
+	out.Category = direct.Enum_FromProto(mapCtx, in.GetCategory())
+	out.Threshold = direct.Enum_FromProto(mapCtx, in.GetThreshold())
+	return out
+}
+func Guardrail_ModelSafety_SafetySetting_ToProto(mapCtx *direct.MapContext, in *krm.Guardrail_ModelSafety_SafetySetting) *pb.Guardrail_ModelSafety_SafetySetting {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Guardrail_ModelSafety_SafetySetting{}
+	out.Category = direct.Enum_ToProto[pb.Guardrail_ModelSafety_HarmCategory](mapCtx, in.Category)
+	out.Threshold = direct.Enum_ToProto[pb.Guardrail_ModelSafety_HarmBlockThreshold](mapCtx, in.Threshold)
+	return out
+}
 func LanguageSettings_FromProto(mapCtx *direct.MapContext, in *pb.LanguageSettings) *krm.LanguageSettings {
 	if in == nil {
 		return nil
@@ -833,6 +2041,62 @@ func LoggingSettings_ToProto(mapCtx *direct.MapContext, in *krm.LoggingSettings)
 	out.MetricAnalysisSettings = MetricAnalysisSettings_ToProto(mapCtx, in.MetricAnalysisSettings)
 	return out
 }
+func McpTool_FromProto(mapCtx *direct.MapContext, in *pb.McpTool) *krm.McpTool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.McpTool{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.InputSchema = Schema_FromProto(mapCtx, in.GetInputSchema())
+	out.OutputSchema = Schema_FromProto(mapCtx, in.GetOutputSchema())
+	out.ServerAddress = direct.LazyPtr(in.GetServerAddress())
+	out.APIAuthentication = APIAuthentication_FromProto(mapCtx, in.GetApiAuthentication())
+	out.TLSConfig = TLSConfig_FromProto(mapCtx, in.GetTlsConfig())
+	out.ServiceDirectoryConfig = ServiceDirectoryConfig_FromProto(mapCtx, in.GetServiceDirectoryConfig())
+	out.CustomHeaders = in.CustomHeaders
+	return out
+}
+func McpTool_ToProto(mapCtx *direct.MapContext, in *krm.McpTool) *pb.McpTool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.McpTool{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	out.InputSchema = Schema_ToProto(mapCtx, in.InputSchema)
+	out.OutputSchema = Schema_ToProto(mapCtx, in.OutputSchema)
+	out.ServerAddress = direct.ValueOf(in.ServerAddress)
+	out.ApiAuthentication = APIAuthentication_ToProto(mapCtx, in.APIAuthentication)
+	out.TlsConfig = TLSConfig_ToProto(mapCtx, in.TLSConfig)
+	out.ServiceDirectoryConfig = ServiceDirectoryConfig_ToProto(mapCtx, in.ServiceDirectoryConfig)
+	out.CustomHeaders = in.CustomHeaders
+	return out
+}
+func McpToolset_FromProto(mapCtx *direct.MapContext, in *pb.McpToolset) *krm.McpToolset {
+	if in == nil {
+		return nil
+	}
+	out := &krm.McpToolset{}
+	out.ServerAddress = direct.LazyPtr(in.GetServerAddress())
+	out.APIAuthentication = APIAuthentication_FromProto(mapCtx, in.GetApiAuthentication())
+	out.ServiceDirectoryConfig = ServiceDirectoryConfig_FromProto(mapCtx, in.GetServiceDirectoryConfig())
+	out.TLSConfig = TLSConfig_FromProto(mapCtx, in.GetTlsConfig())
+	out.CustomHeaders = in.CustomHeaders
+	return out
+}
+func McpToolset_ToProto(mapCtx *direct.MapContext, in *krm.McpToolset) *pb.McpToolset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.McpToolset{}
+	out.ServerAddress = direct.ValueOf(in.ServerAddress)
+	out.ApiAuthentication = APIAuthentication_ToProto(mapCtx, in.APIAuthentication)
+	out.ServiceDirectoryConfig = ServiceDirectoryConfig_ToProto(mapCtx, in.ServiceDirectoryConfig)
+	out.TlsConfig = TLSConfig_ToProto(mapCtx, in.TLSConfig)
+	out.CustomHeaders = in.CustomHeaders
+	return out
+}
 func MetricAnalysisSettings_FromProto(mapCtx *direct.MapContext, in *pb.MetricAnalysisSettings) *krm.MetricAnalysisSettings {
 	if in == nil {
 		return nil
@@ -867,6 +2131,90 @@ func ModelSettings_ToProto(mapCtx *direct.MapContext, in *krm.ModelSettings) *pb
 	out.Temperature = in.Temperature
 	return out
 }
+func OAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.OAuthConfig) *krm.OAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OAuthConfig{}
+	out.OauthGrantType = direct.Enum_FromProto(mapCtx, in.GetOauthGrantType())
+	out.ClientID = direct.LazyPtr(in.GetClientId())
+	if in.GetClientSecretVersion() != "" {
+		out.ClientSecretVersionRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetClientSecretVersion()}
+	}
+	out.TokenEndpoint = direct.LazyPtr(in.GetTokenEndpoint())
+	out.Scopes = in.Scopes
+	return out
+}
+func OAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.OAuthConfig) *pb.OAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OAuthConfig{}
+	out.OauthGrantType = direct.Enum_ToProto[pb.OAuthConfig_OauthGrantType](mapCtx, in.OauthGrantType)
+	out.ClientId = direct.ValueOf(in.ClientID)
+	if in.ClientSecretVersionRef != nil {
+		out.ClientSecretVersion = in.ClientSecretVersionRef.External
+	}
+	out.TokenEndpoint = direct.ValueOf(in.TokenEndpoint)
+	out.Scopes = in.Scopes
+	return out
+}
+func OpenAPITool_FromProto(mapCtx *direct.MapContext, in *pb.OpenApiTool) *krm.OpenAPITool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OpenAPITool{}
+	out.OpenAPISchema = direct.LazyPtr(in.GetOpenApiSchema())
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.APIAuthentication = APIAuthentication_FromProto(mapCtx, in.GetApiAuthentication())
+	out.TLSConfig = TLSConfig_FromProto(mapCtx, in.GetTlsConfig())
+	out.ServiceDirectoryConfig = ServiceDirectoryConfig_FromProto(mapCtx, in.GetServiceDirectoryConfig())
+	out.IgnoreUnknownFields = direct.LazyPtr(in.GetIgnoreUnknownFields())
+	out.URL = direct.LazyPtr(in.GetUrl())
+	return out
+}
+func OpenAPITool_ToProto(mapCtx *direct.MapContext, in *krm.OpenAPITool) *pb.OpenApiTool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OpenApiTool{}
+	out.OpenApiSchema = direct.ValueOf(in.OpenAPISchema)
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	out.ApiAuthentication = APIAuthentication_ToProto(mapCtx, in.APIAuthentication)
+	out.TlsConfig = TLSConfig_ToProto(mapCtx, in.TLSConfig)
+	out.ServiceDirectoryConfig = ServiceDirectoryConfig_ToProto(mapCtx, in.ServiceDirectoryConfig)
+	out.IgnoreUnknownFields = direct.ValueOf(in.IgnoreUnknownFields)
+	out.Url = direct.ValueOf(in.URL)
+	return out
+}
+func OpenAPIToolset_FromProto(mapCtx *direct.MapContext, in *pb.OpenApiToolset) *krm.OpenAPIToolset {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OpenAPIToolset{}
+	out.OpenAPISchema = direct.LazyPtr(in.GetOpenApiSchema())
+	out.APIAuthentication = APIAuthentication_FromProto(mapCtx, in.GetApiAuthentication())
+	out.TLSConfig = TLSConfig_FromProto(mapCtx, in.GetTlsConfig())
+	out.ServiceDirectoryConfig = ServiceDirectoryConfig_FromProto(mapCtx, in.GetServiceDirectoryConfig())
+	out.IgnoreUnknownFields = direct.LazyPtr(in.GetIgnoreUnknownFields())
+	out.URL = direct.LazyPtr(in.GetUrl())
+	return out
+}
+func OpenAPIToolset_ToProto(mapCtx *direct.MapContext, in *krm.OpenAPIToolset) *pb.OpenApiToolset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OpenApiToolset{}
+	out.OpenApiSchema = direct.ValueOf(in.OpenAPISchema)
+	out.ApiAuthentication = APIAuthentication_ToProto(mapCtx, in.APIAuthentication)
+	out.TlsConfig = TLSConfig_ToProto(mapCtx, in.TLSConfig)
+	out.ServiceDirectoryConfig = ServiceDirectoryConfig_ToProto(mapCtx, in.ServiceDirectoryConfig)
+	out.IgnoreUnknownFields = direct.ValueOf(in.IgnoreUnknownFields)
+	out.Url = direct.ValueOf(in.URL)
+	return out
+}
 func PythonCodeCondition_FromProto(mapCtx *direct.MapContext, in *pb.PythonCodeCondition) *krm.PythonCodeCondition {
 	if in == nil {
 		return nil
@@ -881,6 +2229,46 @@ func PythonCodeCondition_ToProto(mapCtx *direct.MapContext, in *krm.PythonCodeCo
 	}
 	out := &pb.PythonCodeCondition{}
 	out.PythonCode = direct.ValueOf(in.PythonCode)
+	return out
+}
+func PythonFunction_FromProto(mapCtx *direct.MapContext, in *pb.PythonFunction) *krm.PythonFunction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PythonFunction{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.PythonCode = direct.LazyPtr(in.GetPythonCode())
+	// MISSING: Description
+	return out
+}
+func PythonFunction_ToProto(mapCtx *direct.MapContext, in *krm.PythonFunction) *pb.PythonFunction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PythonFunction{}
+	out.Name = direct.ValueOf(in.Name)
+	out.PythonCode = direct.ValueOf(in.PythonCode)
+	// MISSING: Description
+	return out
+}
+func PythonFunctionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PythonFunction) *krm.PythonFunctionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PythonFunctionObservedState{}
+	// MISSING: Name
+	// MISSING: PythonCode
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func PythonFunctionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PythonFunctionObservedState) *pb.PythonFunction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PythonFunction{}
+	// MISSING: Name
+	// MISSING: PythonCode
+	out.Description = direct.ValueOf(in.Description)
 	return out
 }
 func RedactionConfig_FromProto(mapCtx *direct.MapContext, in *pb.RedactionConfig) *krm.RedactionConfig {
@@ -911,6 +2299,62 @@ func RedactionConfig_ToProto(mapCtx *direct.MapContext, in *krm.RedactionConfig)
 	}
 	return out
 }
+func ServiceAccountAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAccountAuthConfig) *krm.ServiceAccountAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceAccountAuthConfig{}
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	out.Scopes = in.Scopes
+	return out
+}
+func ServiceAccountAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.ServiceAccountAuthConfig) *pb.ServiceAccountAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceAccountAuthConfig{}
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+	out.Scopes = in.Scopes
+	return out
+}
+func ServiceAgentIDTokenAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAgentIdTokenAuthConfig) *krm.ServiceAgentIDTokenAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceAgentIDTokenAuthConfig{}
+	return out
+}
+func ServiceAgentIDTokenAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.ServiceAgentIDTokenAuthConfig) *pb.ServiceAgentIdTokenAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceAgentIdTokenAuthConfig{}
+	return out
+}
+func ServiceDirectoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.ServiceDirectoryConfig) *krm.ServiceDirectoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceDirectoryConfig{}
+	if in.GetService() != "" {
+		out.ServiceRef = &krmservicedirectoryv1beta1.ServiceDirectoryServiceRef{External: in.GetService()}
+	}
+	return out
+}
+func ServiceDirectoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.ServiceDirectoryConfig) *pb.ServiceDirectoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceDirectoryConfig{}
+	if in.ServiceRef != nil {
+		out.Service = in.ServiceRef.External
+	}
+	return out
+}
 func SynthesizeSpeechConfig_FromProto(mapCtx *direct.MapContext, in *pb.SynthesizeSpeechConfig) *krm.SynthesizeSpeechConfig {
 	if in == nil {
 		return nil
@@ -929,6 +2373,76 @@ func SynthesizeSpeechConfig_ToProto(mapCtx *direct.MapContext, in *krm.Synthesiz
 	out.SpeakingRate = direct.ValueOf(in.SpeakingRate)
 	return out
 }
+func SystemTool_FromProto(mapCtx *direct.MapContext, in *pb.SystemTool) *krm.SystemTool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SystemTool{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Description
+	return out
+}
+func SystemTool_ToProto(mapCtx *direct.MapContext, in *krm.SystemTool) *pb.SystemTool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SystemTool{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Description
+	return out
+}
+func SystemToolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SystemTool) *krm.SystemToolObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SystemToolObservedState{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func SystemToolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SystemToolObservedState) *pb.SystemTool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SystemTool{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func TLSConfig_FromProto(mapCtx *direct.MapContext, in *pb.TlsConfig) *krm.TLSConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TLSConfig{}
+	out.CACerts = direct.Slice_FromProto(mapCtx, in.CaCerts, TLSConfig_CACert_FromProto)
+	return out
+}
+func TLSConfig_ToProto(mapCtx *direct.MapContext, in *krm.TLSConfig) *pb.TlsConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TlsConfig{}
+	out.CaCerts = direct.Slice_ToProto(mapCtx, in.CACerts, TLSConfig_CACert_ToProto)
+	return out
+}
+func TLSConfig_CACert_FromProto(mapCtx *direct.MapContext, in *pb.TlsConfig_CaCert) *krm.TLSConfig_CACert {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TLSConfig_CACert{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Cert = in.GetCert()
+	return out
+}
+func TLSConfig_CACert_ToProto(mapCtx *direct.MapContext, in *krm.TLSConfig_CACert) *pb.TlsConfig_CaCert {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TlsConfig_CaCert{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Cert = in.Cert
+	return out
+}
 func TimeZoneSettings_FromProto(mapCtx *direct.MapContext, in *pb.TimeZoneSettings) *krm.TimeZoneSettings {
 	if in == nil {
 		return nil
@@ -943,6 +2457,26 @@ func TimeZoneSettings_ToProto(mapCtx *direct.MapContext, in *krm.TimeZoneSetting
 	}
 	out := &pb.TimeZoneSettings{}
 	out.TimeZone = direct.ValueOf(in.TimeZone)
+	return out
+}
+func ToolFakeConfig_FromProto(mapCtx *direct.MapContext, in *pb.ToolFakeConfig) *krm.ToolFakeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ToolFakeConfig{}
+	out.CodeBlock = CodeBlock_FromProto(mapCtx, in.GetCodeBlock())
+	out.EnableFakeMode = direct.LazyPtr(in.GetEnableFakeMode())
+	return out
+}
+func ToolFakeConfig_ToProto(mapCtx *direct.MapContext, in *krm.ToolFakeConfig) *pb.ToolFakeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ToolFakeConfig{}
+	if oneof := CodeBlock_ToProto(mapCtx, in.CodeBlock); oneof != nil {
+		out.ToolResponse = &pb.ToolFakeConfig_CodeBlock{CodeBlock: oneof}
+	}
+	out.EnableFakeMode = direct.ValueOf(in.EnableFakeMode)
 	return out
 }
 func TransferRule_FromProto(mapCtx *direct.MapContext, in *pb.TransferRule) *krm.TransferRule {
@@ -1007,5 +2541,187 @@ func TransferRule_DisablePlannerTransfer_ToProto(mapCtx *direct.MapContext, in *
 	}
 	out := &pb.TransferRule_DisablePlannerTransfer{}
 	out.ExpressionCondition = ExpressionCondition_ToProto(mapCtx, in.ExpressionCondition)
+	return out
+}
+func TriggerAction_FromProto(mapCtx *direct.MapContext, in *pb.TriggerAction) *krm.TriggerAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TriggerAction{}
+	out.RespondImmediately = TriggerAction_RespondImmediately_FromProto(mapCtx, in.GetRespondImmediately())
+	out.TransferAgent = TriggerAction_TransferAgent_FromProto(mapCtx, in.GetTransferAgent())
+	out.GenerativeAnswer = TriggerAction_GenerativeAnswer_FromProto(mapCtx, in.GetGenerativeAnswer())
+	return out
+}
+func TriggerAction_ToProto(mapCtx *direct.MapContext, in *krm.TriggerAction) *pb.TriggerAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TriggerAction{}
+	if oneof := TriggerAction_RespondImmediately_ToProto(mapCtx, in.RespondImmediately); oneof != nil {
+		out.Action = &pb.TriggerAction_RespondImmediately_{RespondImmediately: oneof}
+	}
+	if oneof := TriggerAction_TransferAgent_ToProto(mapCtx, in.TransferAgent); oneof != nil {
+		out.Action = &pb.TriggerAction_TransferAgent_{TransferAgent: oneof}
+	}
+	if oneof := TriggerAction_GenerativeAnswer_ToProto(mapCtx, in.GenerativeAnswer); oneof != nil {
+		out.Action = &pb.TriggerAction_GenerativeAnswer_{GenerativeAnswer: oneof}
+	}
+	return out
+}
+func TriggerAction_GenerativeAnswer_FromProto(mapCtx *direct.MapContext, in *pb.TriggerAction_GenerativeAnswer) *krm.TriggerAction_GenerativeAnswer {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TriggerAction_GenerativeAnswer{}
+	out.Prompt = direct.LazyPtr(in.GetPrompt())
+	return out
+}
+func TriggerAction_GenerativeAnswer_ToProto(mapCtx *direct.MapContext, in *krm.TriggerAction_GenerativeAnswer) *pb.TriggerAction_GenerativeAnswer {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TriggerAction_GenerativeAnswer{}
+	out.Prompt = direct.ValueOf(in.Prompt)
+	return out
+}
+func TriggerAction_RespondImmediately_FromProto(mapCtx *direct.MapContext, in *pb.TriggerAction_RespondImmediately) *krm.TriggerAction_RespondImmediately {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TriggerAction_RespondImmediately{}
+	out.Responses = direct.Slice_FromProto(mapCtx, in.Responses, TriggerAction_Response_FromProto)
+	return out
+}
+func TriggerAction_RespondImmediately_ToProto(mapCtx *direct.MapContext, in *krm.TriggerAction_RespondImmediately) *pb.TriggerAction_RespondImmediately {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TriggerAction_RespondImmediately{}
+	out.Responses = direct.Slice_ToProto(mapCtx, in.Responses, TriggerAction_Response_ToProto)
+	return out
+}
+func TriggerAction_TransferAgent_FromProto(mapCtx *direct.MapContext, in *pb.TriggerAction_TransferAgent) *krm.TriggerAction_TransferAgent {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TriggerAction_TransferAgent{}
+	if in.GetAgent() != "" {
+		out.AgentRef = &krm.CesAgentRef{External: in.GetAgent()}
+	}
+	return out
+}
+func TriggerAction_TransferAgent_ToProto(mapCtx *direct.MapContext, in *krm.TriggerAction_TransferAgent) *pb.TriggerAction_TransferAgent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TriggerAction_TransferAgent{}
+	if in.AgentRef != nil {
+		out.Agent = in.AgentRef.External
+	}
+	return out
+}
+func WidgetTool_FromProto(mapCtx *direct.MapContext, in *pb.WidgetTool) *krm.WidgetTool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WidgetTool{}
+	out.Parameters = Schema_FromProto(mapCtx, in.GetParameters())
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.WidgetType = direct.Enum_FromProto(mapCtx, in.GetWidgetType())
+	if v := direct.Struct_FromProto(mapCtx, in.GetUiConfig()); v != nil {
+		out.UiConfig = *v
+	}
+	out.DataMapping = WidgetTool_DataMapping_FromProto(mapCtx, in.GetDataMapping())
+	return out
+}
+func WidgetTool_ToProto(mapCtx *direct.MapContext, in *krm.WidgetTool) *pb.WidgetTool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WidgetTool{}
+	if oneof := Schema_ToProto(mapCtx, in.Parameters); oneof != nil {
+		out.Input = &pb.WidgetTool_Parameters{Parameters: oneof}
+	}
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	out.WidgetType = direct.Enum_ToProto[pb.WidgetTool_WidgetType](mapCtx, in.WidgetType)
+	out.UiConfig = direct.Struct_ToProto(mapCtx, &in.UiConfig)
+	out.DataMapping = WidgetTool_DataMapping_ToProto(mapCtx, in.DataMapping)
+	return out
+}
+func WidgetToolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WidgetTool) *krm.WidgetToolObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WidgetToolObservedState{}
+	// MISSING: Parameters
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: WidgetType
+	// MISSING: UiConfig
+	out.DataMapping = WidgetTool_DataMappingObservedState_FromProto(mapCtx, in.GetDataMapping())
+	return out
+}
+func WidgetToolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WidgetToolObservedState) *pb.WidgetTool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WidgetTool{}
+	// MISSING: Parameters
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: WidgetType
+	// MISSING: UiConfig
+	out.DataMapping = WidgetTool_DataMappingObservedState_ToProto(mapCtx, in.DataMapping)
+	return out
+}
+func WidgetTool_DataMapping_FromProto(mapCtx *direct.MapContext, in *pb.WidgetTool_DataMapping) *krm.WidgetTool_DataMapping {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WidgetTool_DataMapping{}
+	out.SourceToolName = direct.LazyPtr(in.GetSourceToolName())
+	out.FieldMappings = in.FieldMappings
+	out.PythonFunction = PythonFunction_FromProto(mapCtx, in.GetPythonFunction())
+	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	// MISSING: PythonScript
+	return out
+}
+func WidgetTool_DataMapping_ToProto(mapCtx *direct.MapContext, in *krm.WidgetTool_DataMapping) *pb.WidgetTool_DataMapping {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WidgetTool_DataMapping{}
+	out.SourceToolName = direct.ValueOf(in.SourceToolName)
+	out.FieldMappings = in.FieldMappings
+	out.PythonFunction = PythonFunction_ToProto(mapCtx, in.PythonFunction)
+	out.Mode = direct.Enum_ToProto[pb.WidgetTool_DataMapping_Mode](mapCtx, in.Mode)
+	// MISSING: PythonScript
+	return out
+}
+func WidgetTool_DataMappingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WidgetTool_DataMapping) *krm.WidgetTool_DataMappingObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WidgetTool_DataMappingObservedState{}
+	// MISSING: SourceToolName
+	// MISSING: FieldMappings
+	out.PythonFunction = PythonFunctionObservedState_FromProto(mapCtx, in.GetPythonFunction())
+	// MISSING: Mode
+	// MISSING: PythonScript
+	return out
+}
+func WidgetTool_DataMappingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WidgetTool_DataMappingObservedState) *pb.WidgetTool_DataMapping {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WidgetTool_DataMapping{}
+	// MISSING: SourceToolName
+	// MISSING: FieldMappings
+	out.PythonFunction = PythonFunctionObservedState_ToProto(mapCtx, in.PythonFunction)
+	// MISSING: Mode
+	// MISSING: PythonScript
 	return out
 }

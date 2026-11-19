@@ -56,6 +56,17 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".customTargetTypes[].updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".customTargetTypes[].etag", PlaceholderEtag)
 
+	// Release snapshot normalization
+	replacements.ReplacePath(".deliveryPipelineSnapshot.uid", PlaceholderUID)
+	replacements.ReplacePath(".deliveryPipelineSnapshot.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".deliveryPipelineSnapshot.updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".deliveryPipelineSnapshot.etag", PlaceholderEtag)
+
+	replacements.ReplacePath(".targetSnapshots[].uid", PlaceholderUID)
+	replacements.ReplacePath(".targetSnapshots[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".targetSnapshots[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".targetSnapshots[].etag", PlaceholderEtag)
+
 	replacements.ReplacePath(".rules[].promoteReleaseRule.condition", map[string]interface{}{
 		"targetsPresentCondition": make(map[string]interface{}),
 	})
@@ -78,6 +89,16 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".response.customTargetTypes[].createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".response.customTargetTypes[].updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".response.customTargetTypes[].etag", PlaceholderEtag)
+
+	replacements.ReplacePath(".response.deliveryPipelineSnapshot.uid", PlaceholderUID)
+	replacements.ReplacePath(".response.deliveryPipelineSnapshot.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.deliveryPipelineSnapshot.updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.deliveryPipelineSnapshot.etag", PlaceholderEtag)
+
+	replacements.ReplacePath(".response.targetSnapshots[].uid", PlaceholderUID)
+	replacements.ReplacePath(".response.targetSnapshots[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.targetSnapshots[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.targetSnapshots[].etag", PlaceholderEtag)
 
 	replacements.ReplacePath(".response.rules[].promoteReleaseRule.condition", map[string]interface{}{
 		"targetsPresentCondition": make(map[string]interface{}),

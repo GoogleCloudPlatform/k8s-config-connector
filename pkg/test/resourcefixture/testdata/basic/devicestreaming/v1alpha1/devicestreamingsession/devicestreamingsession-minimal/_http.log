@@ -1,4 +1,5 @@
-POST https://devicestreaming.googleapis.com/v1/projects/${projectId}/deviceSessions?%24alt=json%3Benum-encoding%3Dint&deviceSessionId=session-${uniqueId}
+# Phase: CREATE
+POST https://devicestreaming.googleapis.com/v1/projects/${projectId}/deviceSessions?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}
@@ -27,16 +28,17 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "expireTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/deviceSessions/session-${uniqueId}",
+  "name": "projects/${projectId}/deviceSessions/session-3n6m0w9g5adm9",
   "state": 1
 }
 
 ---
 
-GET https://devicestreaming.googleapis.com/v1/projects/${projectId}/deviceSessions/session-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+# Phase: DELETE
+GET https://devicestreaming.googleapis.com/v1/projects/${projectId}/deviceSessions/session-3n6m0w9g5adm9?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2FdeviceSessions%2Fsession-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2FdeviceSessions%2Fsession-3n6m0w9g5adm9
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -55,19 +57,19 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "expireTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/deviceSessions/session-${uniqueId}",
+  "name": "projects/${projectId}/deviceSessions/session-3n6m0w9g5adm9",
   "state": 2
 }
 
 ---
 
-POST https://devicestreaming.googleapis.com/v1/projects/${projectId}/deviceSessions/session-${uniqueId}:cancel?%24alt=json%3Benum-encoding%3Dint
+POST https://devicestreaming.googleapis.com/v1/projects/${projectId}/deviceSessions/session-3n6m0w9g5adm9:cancel?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2FdeviceSessions%2Fsession-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2FdeviceSessions%2Fsession-3n6m0w9g5adm9
 
 {
-  "name": "projects/${projectId}/deviceSessions/session-${uniqueId}"
+  "name": "projects/${projectId}/deviceSessions/session-3n6m0w9g5adm9"
 }
 
 200 OK

@@ -45,16 +45,18 @@ ${CONTROLLERBUILDER} generate-types \
   --include-skipped-output \
   --prepopulate-resource \
   --resource MigrationCenterImportJob:ImportJob \
+  --resource MigrationCenterReport:Report \
   --resource MigrationCenterReportConfig:ReportConfig
 
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.migrationcenter.v1 \
   --api-version migrationcenter.cnrm.cloud.google.com/v1alpha1 \
   --resource MigrationCenterImportJob:ImportJob \
+  --resource MigrationCenterReport:Report \
   --resource MigrationCenterReportConfig:ReportConfig
 
 ${CONTROLLERBUILDER} generate-mapper \
-  --service google.cloud.migrationcenter.v1 \
+  --service google.cloud.migrationcenter.v1,google.type \
   --api-version migrationcenter.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --prepopulate-resource

@@ -1,0 +1,72 @@
+apiVersion: clouddeploy.cnrm.cloud.google.com/v1alpha1
+kind: CloudDeployRelease
+metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: abandon
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: clouddeployrelease-min-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  parentRef:
+    name: clouddeploydeliverypipeline-${uniqueId}
+  skaffoldConfigURI: gs://${projectId}-clouddeploy-test-bucket-2026/source.tar.gz
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/releases/clouddeployrelease-min-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    condition:
+      releaseReadyCondition:
+        status: true
+      skaffoldSupportedCondition:
+        skaffoldSupportState: SKAFFOLD_SUPPORT_STATE_SUPPORTED
+        status: true
+    createTime: "1970-01-01T00:00:00Z"
+    deliveryPipelineSnapshot:
+      createTime: "1970-01-01T00:00:00Z"
+      description: Test Delivery Pipeline for Release
+      name: projects/${projectNumber}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}
+      serialPipeline:
+        stages:
+        - targetID: clouddeploytarget-${uniqueId}
+      uid: 0123456789abcdef
+      updateTime: "1970-01-01T00:00:00Z"
+    etag: abcdef123456
+    renderState: IN_PROGRESS
+    targetSnapshots:
+    - createTime: "1970-01-01T00:00:00Z"
+      description: Test Target for Release
+      etag: abcdef123456
+      executionConfigs:
+      - artifactStorage: gs://us-central1.deploy-artifacts.${projectId}.appspot.com
+        defaultPool:
+          artifactStorage: gs://us-central1.deploy-artifacts.${projectId}.appspot.com
+          serviceAccount: ${projectNumber}-compute@developer.gserviceaccount.com
+        executionTimeout: 1h0m0s
+        serviceAccount: ${projectNumber}-compute@developer.gserviceaccount.com
+        usages:
+        - RENDER
+        - DEPLOY
+        - VERIFY
+        - PREDEPLOY
+        - POSTDEPLOY
+      labels:
+        cnrm-test: "true"
+        managed-by-cnrm: "true"
+      name: projects/${projectNumber}/locations/us-central1/targets/clouddeploytarget-${uniqueId}
+      run:
+        location: projects/${projectId}/locations/us-central1
+      targetID: clouddeploytarget-${uniqueId}
+      uid: 0123456789abcdef
+      updateTime: "1970-01-01T00:00:00Z"
+    uid: 0123456789abcdef

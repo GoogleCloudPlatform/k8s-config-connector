@@ -1,0 +1,6 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/crossSiteNetworks/computecrosssitenetwork-maximal-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeCrossSiteNetwork
+  name: computecrosssitenetwork-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

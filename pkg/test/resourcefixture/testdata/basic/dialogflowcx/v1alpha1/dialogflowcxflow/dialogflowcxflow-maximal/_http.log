@@ -1,0 +1,416 @@
+# Phase: CREATE
+POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "Maximal flow test",
+  "displayName": "flow-max-${uniqueId}",
+  "nluSettings": {
+    "classificationThreshold": 0.5,
+    "modelTrainingMode": "MODEL_TRAINING_MODE_MANUAL",
+    "modelType": "MODEL_TYPE_STANDARD"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Maximal flow test",
+  "displayName": "flow-max-${uniqueId}",
+  "eventHandlers": [
+    {
+      "event": "sys.no-match-default",
+      "name": "aae6716a-7064-4364-804b-48533fd47b6a",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "event": "sys.no-input-default",
+      "name": "a0e97fb8-d7e8-40ce-92ba-d31b4544312f",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/5914a4bc-506a-42fa-9122-5301e29cb157",
+  "nluSettings": {
+    "classificationThreshold": 0.5,
+    "modelTrainingMode": "MODEL_TRAINING_MODE_MANUAL",
+    "modelType": "MODEL_TYPE_STANDARD"
+  }
+}
+
+---
+
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/5914a4bc-506a-42fa-9122-5301e29cb157?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Maximal flow test",
+  "displayName": "flow-max-${uniqueId}",
+  "eventHandlers": [
+    {
+      "event": "sys.no-match-default",
+      "name": "aae6716a-7064-4364-804b-48533fd47b6a",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "event": "sys.no-input-default",
+      "name": "a0e97fb8-d7e8-40ce-92ba-d31b4544312f",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/5914a4bc-506a-42fa-9122-5301e29cb157",
+  "nluSettings": {
+    "classificationThreshold": 0.5,
+    "modelTrainingMode": "MODEL_TRAINING_MODE_MANUAL",
+    "modelType": "MODEL_TYPE_STANDARD"
+  }
+}
+
+---
+
+# Phase: UPDATE
+PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/5914a4bc-506a-42fa-9122-5301e29cb157?alt=json&updateMask=description%2CnluSettings
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "Updated maximal flow test",
+  "displayName": "flow-max-${uniqueId}",
+  "eventHandlers": [
+    {
+      "event": "sys.no-match-default",
+      "name": "aae6716a-7064-4364-804b-48533fd47b6a",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "event": "sys.no-input-default",
+      "name": "a0e97fb8-d7e8-40ce-92ba-d31b4544312f",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "nluSettings": {
+    "classificationThreshold": 0.6,
+    "modelTrainingMode": "MODEL_TRAINING_MODE_MANUAL",
+    "modelType": "MODEL_TYPE_STANDARD"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Updated maximal flow test",
+  "displayName": "flow-max-${uniqueId}",
+  "eventHandlers": [
+    {
+      "event": "sys.no-match-default",
+      "name": "aae6716a-7064-4364-804b-48533fd47b6a",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "event": "sys.no-input-default",
+      "name": "a0e97fb8-d7e8-40ce-92ba-d31b4544312f",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/5914a4bc-506a-42fa-9122-5301e29cb157",
+  "nluSettings": {
+    "classificationThreshold": 0.6,
+    "modelTrainingMode": "MODEL_TRAINING_MODE_MANUAL",
+    "modelType": "MODEL_TYPE_STANDARD"
+  }
+}
+
+---
+
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/5914a4bc-506a-42fa-9122-5301e29cb157?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Updated maximal flow test",
+  "displayName": "flow-max-${uniqueId}",
+  "eventHandlers": [
+    {
+      "event": "sys.no-match-default",
+      "name": "aae6716a-7064-4364-804b-48533fd47b6a",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "event": "sys.no-input-default",
+      "name": "a0e97fb8-d7e8-40ce-92ba-d31b4544312f",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/5914a4bc-506a-42fa-9122-5301e29cb157",
+  "nluSettings": {
+    "classificationThreshold": 0.6,
+    "modelTrainingMode": "MODEL_TRAINING_MODE_MANUAL",
+    "modelType": "MODEL_TYPE_STANDARD"
+  }
+}
+
+---
+
+# Phase: DELETE
+DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/5914a4bc-506a-42fa-9122-5301e29cb157?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

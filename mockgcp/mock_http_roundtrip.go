@@ -205,7 +205,7 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 		})
 	}
 
-	mockRoundTripper.iamPolicies = newMockIAMPolicies()
+	mockRoundTripper.iamPolicies = newMockIAMPolicies(storage)
 
 	return mockRoundTripper, nil
 }

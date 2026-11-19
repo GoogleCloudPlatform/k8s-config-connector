@@ -1,6 +1,0 @@
-- caisURL: //ces.googleapis.com/projects/${projectId}/locations/global/apps/cesapp-basic
-  group: ces.cnrm.cloud.google.com
-  kind: CESApp
-  name: cesapp-basic
-  namespace: ${uniqueId}
-  version: v1alpha1

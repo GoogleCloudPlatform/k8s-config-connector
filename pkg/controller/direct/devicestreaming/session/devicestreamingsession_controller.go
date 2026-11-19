@@ -117,6 +117,9 @@ type DeviceStreamingSessionAdapter struct {
 var _ directbase.Adapter = &DeviceStreamingSessionAdapter{}
 
 func (a *DeviceStreamingSessionAdapter) Find(ctx context.Context) (bool, error) {
+	if a.id.DeviceSession == "" {
+		return false, nil
+	}
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting DeviceStreamingSession", "name", a.id)
 
@@ -138,9 +141,8 @@ func (a *DeviceStreamingSessionAdapter) Create(ctx context.Context, createOp *di
 	log.V(2).Info("creating DeviceStreamingSession", "name", a.id)
 
 	req := &pb.CreateDeviceSessionRequest{
-		Parent:          a.id.ParentString(),
-		DeviceSessionId: a.id.DeviceSession,
-		DeviceSession:   a.desired,
+		Parent:        a.id.ParentString(),
+		DeviceSession: a.desired,
 	}
 
 	created, err := a.gcpClient.CreateDeviceSession(ctx, req)

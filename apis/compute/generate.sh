@@ -37,6 +37,9 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource \
   --resource ComputeCrossSiteNetwork:CrossSiteNetwork \
+  --resource ComputeInstantSnapshotGroup:InstantSnapshotGroup \
+  --resource ComputeInterconnectAttachmentGroup:InterconnectAttachmentGroup \
+  --resource ComputeInterconnectGroup:InterconnectGroup \
   --include-skipped-output
 
 ${CONTROLLERBUILDER} generate-types \
@@ -61,13 +64,16 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeVMExtensionPolicy:VmExtensionPolicy \
   --resource ComputeNotificationEndpoint:NotificationEndpoint \
   --resource ComputeHealthAggregationPolicy:HealthAggregationPolicy \
+  --resource ComputeGlobalVMExtensionPolicy:GlobalVmExtensionPolicy \
   --include-skipped-output
 
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeHealthCheckService:HealthCheckService \
-  --resource ComputeHealthAggregationPolicy:HealthAggregationPolicy
+  --resource ComputeHealthAggregationPolicy:HealthAggregationPolicy \
+  --resource ComputeInterconnectAttachmentGroup:InterconnectAttachmentGroup \
+  --resource ComputeInterconnectGroup:InterconnectGroup
 
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.compute.v1 \
@@ -87,6 +93,88 @@ ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeNotificationEndpoint:NotificationEndpoint
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeGlobalVMExtensionPolicy:GlobalVmExtensionPolicy \
+  --pattern ComputeGlobalVMExtensionPolicy=projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource \
+  --resource ComputeStoragePool:StoragePool
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeStoragePool:StoragePool \
+  --pattern ComputeStoragePool=projects/{project}/zones/{zone}/storagePools/{storagePool}
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource \
+  --resource ComputeHealthSource:HealthSource
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeHealthSource:HealthSource
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeRolloutPlan:RolloutPlan \
+  --include-skipped-output \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeRolloutPlan:RolloutPlan \
+  --pattern ComputeRolloutPlan="projects/{project}/global/rolloutPlans/{rolloutPlan}"
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeInstanceGroupManagerResizeRequest:InstanceGroupManagerResizeRequest \
+  --include-skipped-output \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeInstanceGroupManagerResizeRequest:InstanceGroupManagerResizeRequest \
+  --pattern ComputeInstanceGroupManagerResizeRequest="projects/{project}/zones/{zone}/instanceGroupManagers/{instanceGroupManager}/resizeRequests/{resizeRequest}"
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource \
+  --resource ComputeCompositeHealthCheck:CompositeHealthCheck
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeCompositeHealthCheck:CompositeHealthCheck
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeLicense:License \
+  --include-skipped-output \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeLicense:License \
+  --pattern ComputeLicense="projects/{project}/global/licenses/{license}"
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.compute.v1 \
@@ -146,7 +234,17 @@ ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output \
-  --prepopulate-resource
+  --prepopulate-resource \
+  --skip-proto GlobalVmExtensionPolicy \
+  --skip-proto GlobalVmExtensionPolicyExtensionPolicy \
+  --skip-proto GlobalVmExtensionPolicyInstanceSelector \
+  --skip-proto GlobalVmExtensionPolicyLabelSelector \
+  --skip-proto GlobalVmExtensionPolicyList \
+  --skip-proto GlobalVmExtensionPolicyRolloutOperation \
+  --skip-proto GlobalVmExtensionPolicyRolloutOperationRolloutInput \
+  --skip-proto GlobalVmExtensionPolicyRolloutOperationRolloutStatus \
+  --skip-proto GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata \
+  --skip-proto GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

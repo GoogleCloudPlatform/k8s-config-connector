@@ -1,0 +1,24 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/interconnectAttachmentGroups/computeinterconnectattachmentgroup-minimal-${uniqueId}
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "configured": {
+    "availabilitySla": {
+      "effectiveSla": "NO_SLA"
+    }
+  },
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated minimal description",
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "intent": {
+    "availabilitySla": "NO_SLA"
+  },
+  "kind": "compute#interconnectAttachmentGroup",
+  "logicalStructure": {},
+  "name": "computeinterconnectattachmentgroup-minimal-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/interconnectAttachmentGroups/computeinterconnectattachmentgroup-minimal-${uniqueId}"
+}

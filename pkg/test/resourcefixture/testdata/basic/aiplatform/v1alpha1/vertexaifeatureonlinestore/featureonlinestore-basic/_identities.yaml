@@ -1,6 +1,6 @@
-- caisURL: //aiplatform.googleapis.com/projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}
+- caisURL: //aiplatform.googleapis.com/projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}
   group: aiplatform.cnrm.cloud.google.com
   kind: VertexAIFeatureOnlineStore
-  name: featureonlinestore-${uniqueId}
+  name: featureonlinestore${uniqueId}
   namespace: ${uniqueId}
   version: v1alpha1

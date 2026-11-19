@@ -1,0 +1,328 @@
+# Phase: CREATE
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/interconnectAttachmentGroups/${interconnectAttachmentGroupID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&interconnect_attachment_group=${interconnectAttachmentGroupID}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/interconnectAttachmentGroups/${interconnectAttachmentGroupID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/interconnectAttachmentGroups/${interconnectAttachmentGroupID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/interconnectAttachmentGroups
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}
+
+{
+  "description": "Initial description",
+  "intent": {
+    "availabilitySla": "PRODUCTION_CRITICAL"
+  },
+  "name": "${interconnectAttachmentGroupID}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${interconnectAttachmentGroupID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/interconnectAttachmentGroups/${interconnectAttachmentGroupID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${interconnectAttachmentGroupID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/interconnectAttachmentGroups/${interconnectAttachmentGroupID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/interconnectAttachmentGroups/${interconnectAttachmentGroupID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&interconnect_attachment_group=${interconnectAttachmentGroupID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "configured": {
+    "availabilitySla": {
+      "effectiveSla": "NO_SLA",
+      "intendedSlaBlockers": [
+        {
+          "blockerType": "NO_ATTACHMENTS",
+          "documentationLink": "https://cloud.google.com/network-connectivity/docs/interconnect/support/fix-sla#no_attachments",
+          "explanation": "There are no attachments in the given group. Configure new attachments, or add existing attachments to the group."
+        }
+      ]
+    }
+  },
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Initial description",
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "intent": {
+    "availabilitySla": "PRODUCTION_CRITICAL"
+  },
+  "kind": "compute#interconnectAttachmentGroup",
+  "logicalStructure": {},
+  "name": "${interconnectAttachmentGroupID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/interconnectAttachmentGroups/${interconnectAttachmentGroupID}"
+}
+
+---
+
+# Phase: UPDATE
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/interconnectAttachmentGroups/${interconnectAttachmentGroupID}?updateMask=description%2Cintent
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&interconnect_attachment_group=${interconnectAttachmentGroupID}
+
+{
+  "description": "Updated description",
+  "intent": {
+    "availabilitySla": "PRODUCTION_NON_CRITICAL"
+  },
+  "name": "${interconnectAttachmentGroupID}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "patch",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${interconnectAttachmentGroupID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/interconnectAttachmentGroups/${interconnectAttachmentGroupID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "patch",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${interconnectAttachmentGroupID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/interconnectAttachmentGroups/${interconnectAttachmentGroupID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/interconnectAttachmentGroups/${interconnectAttachmentGroupID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&interconnect_attachment_group=${interconnectAttachmentGroupID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "configured": {
+    "availabilitySla": {
+      "effectiveSla": "NO_SLA",
+      "intendedSlaBlockers": [
+        {
+          "blockerType": "NO_ATTACHMENTS",
+          "documentationLink": "https://cloud.google.com/network-connectivity/docs/interconnect/support/fix-sla#no_attachments",
+          "explanation": "There are no attachments in the given group. Configure new attachments, or add existing attachments to the group."
+        }
+      ]
+    }
+  },
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "intent": {
+    "availabilitySla": "PRODUCTION_NON_CRITICAL"
+  },
+  "kind": "compute#interconnectAttachmentGroup",
+  "logicalStructure": {},
+  "name": "${interconnectAttachmentGroupID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/interconnectAttachmentGroups/${interconnectAttachmentGroupID}"
+}
+
+---
+
+# Phase: DELETE
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/interconnectAttachmentGroups/${interconnectAttachmentGroupID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&interconnect_attachment_group=${interconnectAttachmentGroupID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${interconnectAttachmentGroupID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/interconnectAttachmentGroups/${interconnectAttachmentGroupID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${interconnectAttachmentGroupID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/interconnectAttachmentGroups/${interconnectAttachmentGroupID}",
+  "user": "user@example.com"
+}

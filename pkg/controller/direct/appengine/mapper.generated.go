@@ -29,6 +29,54 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AppEngineAuthorizedCertificateObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedCertificate) *krmappenginev1alpha1.AppEngineAuthorizedCertificateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.AppEngineAuthorizedCertificateObservedState{}
+	// MISSING: Name
+	out.ID = direct.LazyPtr(in.GetId())
+	out.DomainNames = in.DomainNames
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	out.ManagedCertificate = ManagedCertificate_v1alpha1_FromProto(mapCtx, in.GetManagedCertificate())
+	out.VisibleDomainMappings = in.VisibleDomainMappings
+	out.DomainMappingsCount = direct.LazyPtr(in.GetDomainMappingsCount())
+	return out
+}
+func AppEngineAuthorizedCertificateObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.AppEngineAuthorizedCertificateObservedState) *pb.AuthorizedCertificate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthorizedCertificate{}
+	// MISSING: Name
+	out.Id = direct.ValueOf(in.ID)
+	out.DomainNames = in.DomainNames
+	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
+	out.ManagedCertificate = ManagedCertificate_v1alpha1_ToProto(mapCtx, in.ManagedCertificate)
+	out.VisibleDomainMappings = in.VisibleDomainMappings
+	out.DomainMappingsCount = direct.ValueOf(in.DomainMappingsCount)
+	return out
+}
+func AppEngineAuthorizedCertificateSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedCertificate) *krmappenginev1alpha1.AppEngineAuthorizedCertificateSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.AppEngineAuthorizedCertificateSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.CertificateRawData = CertificateRawData_v1alpha1_FromProto(mapCtx, in.GetCertificateRawData())
+	return out
+}
+func AppEngineAuthorizedCertificateSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.AppEngineAuthorizedCertificateSpec) *pb.AuthorizedCertificate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthorizedCertificate{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.CertificateRawData = CertificateRawData_v1alpha1_ToProto(mapCtx, in.CertificateRawData)
+	return out
+}
 func AppEngineDomainMappingSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DomainMapping) *krmappenginev1alpha1.AppEngineDomainMappingSpec {
 	if in == nil {
 		return nil
@@ -593,6 +641,24 @@ found existing non-generated mapping function "BasicScaling_v1alpha1_ToProto", s
 		return out
 	}
 */
+func CertificateRawData_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CertificateRawData) *krmappenginev1alpha1.CertificateRawData {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.CertificateRawData{}
+	out.PublicCertificate = direct.LazyPtr(in.GetPublicCertificate())
+	out.PrivateKey = direct.LazyPtr(in.GetPrivateKey())
+	return out
+}
+func CertificateRawData_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.CertificateRawData) *pb.CertificateRawData {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateRawData{}
+	out.PublicCertificate = direct.ValueOf(in.PublicCertificate)
+	out.PrivateKey = direct.ValueOf(in.PrivateKey)
+	return out
+}
 func DomainmappingResourceRecords_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ResourceRecord) *krmappenginev1alpha1.DomainmappingResourceRecords {
 	if in == nil {
 		return nil
@@ -689,6 +755,24 @@ func Library_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha
 	out := &pb.Library{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Version = direct.ValueOf(in.Version)
+	return out
+}
+func ManagedCertificate_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ManagedCertificate) *krmappenginev1alpha1.ManagedCertificate {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.ManagedCertificate{}
+	out.LastRenewalTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastRenewalTime())
+	out.Status = direct.Enum_FromProto(mapCtx, in.GetStatus())
+	return out
+}
+func ManagedCertificate_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.ManagedCertificate) *pb.ManagedCertificate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ManagedCertificate{}
+	out.LastRenewalTime = direct.StringTimestamp_ToProto(mapCtx, in.LastRenewalTime)
+	out.Status = direct.Enum_ToProto[pb.ManagementStatus](mapCtx, in.Status)
 	return out
 }
 

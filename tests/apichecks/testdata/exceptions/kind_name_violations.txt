@@ -5,6 +5,10 @@
 [kind-name-violation] kind=ApihubSpec api=apihub message=Spec: expected kind name is APIHubSpec
 [kind-name-violation] kind=CCInsightsQaQuestion api=contactcenterinsights message=QaQuestion: expected kind name is CCInsightsQAQuestion
 [kind-name-violation] kind=CESApp api=ces message=App: the service prefix of API ces (CES) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=CESDeployment api=ces message=Deployment: the service prefix of API ces (CES) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=CESGuardrail api=ces message=Guardrail: the service prefix of API ces (CES) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=CESTool api=ces message=Tool: the service prefix of API ces (CES) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=CESToolset api=ces message=Toolset: the service prefix of API ces (CES) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=CesAgent api=ces message=Agent: the service prefix of API ces (CES) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=CloudBatchResourceAllowance api=batch message=ResourceAllowance: expected kind name is BatchResourceAllowance
 [kind-name-violation] kind=CloudDMSConversionWorkspace api=datamigration message=ConversionWorkspace: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml
@@ -13,7 +17,6 @@
 [kind-name-violation] kind=CloudNumberRegistryIpamAdminScope api=cloudnumberregistry message=IpamAdminScope: expected kind name is CloudNumberRegistryIPAMAdminScope
 [kind-name-violation] kind=CloudcontrolspartnerCustomer api=cloudcontrolspartner message=Customer: the service prefix of API cloudcontrolspartner (Cloudcontrolspartner) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=ComputeOrganizationSecurityPolicyRule api=compute message=FirewallPolicyRule: expected kind name is ComputeFirewallPolicyRule
-[kind-name-violation] kind=ConfigDeployment api=config message=Deployment: expected kind name is ConfigDeploymentDeployment
 [kind-name-violation] kind=ConfigdeliveryVariant api=configdelivery message=Variant: expected kind name is ConfigDeliveryVariant
 [kind-name-violation] kind=DataMigrationMappingRule api=datamigration message=MappingRule: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=DatabaseMigrationConversionWorkspace api=datamigration message=ConversionWorkspace: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml

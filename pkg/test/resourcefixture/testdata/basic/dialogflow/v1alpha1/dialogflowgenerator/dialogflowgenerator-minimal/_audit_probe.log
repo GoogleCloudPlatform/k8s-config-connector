@@ -1,0 +1,14 @@
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/generators/dialogflowgenerator-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "freeFormContext": {
+    "text": "Analyze the conversation and provide recommendations: ${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/global/generators/dialogflowgenerator-min-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

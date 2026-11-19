@@ -1,0 +1,62 @@
+apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1
+kind: DataplexEntity
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: dataplexentity-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  assetRef:
+    name: dataplexasset-${uniqueId}
+  dataPath: gs://dataplexbucket-${uniqueId}/data
+  dataPathPattern: gs://dataplexbucket-${uniqueId}/data/**/*.csv
+  description: Updated maximal description
+  displayName: Updated Maximal Entity
+  format:
+    csv:
+      delimiter: ;
+      encoding: UTF-8
+      headerRows: 0
+    mimeType: text/csv
+  id: entity_maximal_${uniqueId}
+  parentRef:
+    name: dataplexzone-${uniqueId}
+  schema:
+    fields:
+    - description: Primary ID updated
+      mode: REQUIRED
+      name: id
+      type: INT64
+    - description: Item Name updated
+      mode: NULLABLE
+      name: name
+      type: STRING
+    userManaged: true
+  system: CLOUD_STORAGE
+  type: TABLE
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/zones/dataplexzone-${uniqueId}/entities/entity_maximal_${uniqueId}
+  observedGeneration: 2
+  observedState:
+    access:
+      read: DIRECT
+    compatibility:
+      bigquery: {}
+      hiveMetastore:
+        compatible: true
+    createTime: "1970-01-01T00:00:00Z"
+    etag: abcdef123456
+    format:
+      format: CSV
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"

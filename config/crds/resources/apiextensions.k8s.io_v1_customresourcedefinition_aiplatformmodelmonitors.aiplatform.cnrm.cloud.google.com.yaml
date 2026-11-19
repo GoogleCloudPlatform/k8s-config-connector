@@ -1233,11 +1233,11 @@ spec:
                               resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/batchPredictionJobs/{{batchPredictionJobID}}".
                             type: string
                           name:
-                            description: The name of an AIPlatformBatchPredictionJob
+                            description: The name of a AIPlatformBatchPredictionJob
                               resource.
                             type: string
                           namespace:
-                            description: The namespace of an AIPlatformBatchPredictionJob
+                            description: The namespace of a AIPlatformBatchPredictionJob
                               resource.
                             type: string
                         type: object

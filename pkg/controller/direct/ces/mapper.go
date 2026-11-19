@@ -17,8 +17,31 @@ package ces
 import (
 	pb "cloud.google.com/go/ces/apiv1/cespb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/ces/v1alpha1"
+	krmdiscoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
+func DataStore_ToProto(mapCtx *direct.MapContext, in *krm.DataStore) *pb.DataStore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStore{}
+	if in.DataStoreRef != nil {
+		out.Name = in.DataStoreRef.External
+	}
+	return out
+}
+
+func DataStore_FromProto(mapCtx *direct.MapContext, in *pb.DataStore) *krm.DataStore {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStore{}
+	if in.GetName() != "" {
+		out.DataStoreRef = &krmdiscoveryenginev1alpha1.DiscoveryEngineDataStoreRef{External: in.GetName()}
+	}
+	return out
+}
 
 func DataStoreSettings_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreSettings) *pb.DataStoreSettings {
 	if in == nil {
@@ -46,4 +69,24 @@ func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.Schema {
 		return nil
 	}
 	return &krm.Schema{}
+}
+
+func TriggerAction_Response_FromProto(mapCtx *direct.MapContext, in *pb.TriggerAction_Response) *krm.TriggerAction_Response {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TriggerAction_Response{}
+	out.Text = direct.LazyPtr(in.GetText())
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	return out
+}
+
+func TriggerAction_Response_ToProto(mapCtx *direct.MapContext, in *krm.TriggerAction_Response) *pb.TriggerAction_Response {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TriggerAction_Response{}
+	out.Text = direct.ValueOf(in.Text)
+	out.Disabled = direct.ValueOf(in.Disabled)
+	return out
 }

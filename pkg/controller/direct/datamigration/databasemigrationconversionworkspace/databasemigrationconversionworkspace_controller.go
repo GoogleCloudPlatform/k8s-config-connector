@@ -258,6 +258,24 @@ func compareConversionWorkspace(ctx context.Context, actual, desired *pb.Convers
 	}
 	maskedActual.Name = desired.Name
 
+	// GCP defaults displayName to resource ID if not specified by user.
+	if desired.GetDisplayName() == "" {
+		maskedActual.DisplayName = ""
+	}
+
+	// GCP populates internal default global_settings. Only compare settings specified in desired.
+	if desired.GlobalSettings == nil {
+		maskedActual.GlobalSettings = nil
+	} else {
+		filteredActual := make(map[string]string)
+		for k := range desired.GlobalSettings {
+			if v, ok := maskedActual.GlobalSettings[k]; ok {
+				filteredActual[k] = v
+			}
+		}
+		maskedActual.GlobalSettings = filteredActual
+	}
+
 	clonedDesired := proto.Clone(desired).(*pb.ConversionWorkspace)
 
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())

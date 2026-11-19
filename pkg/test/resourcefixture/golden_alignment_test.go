@@ -33,8 +33,6 @@ import (
 )
 
 var mockGCPSkipFixtures = map[string]bool{
-	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-maximal": true,
-	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-minimal": true,
 	// TODO(https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/12388): Align outdated ComposerEnvironment mock logs with real GCP
 	"composer/v1beta1/composerenvironment/composerenvironmentwithkms":         true,
 	"composer/v1beta1/composerenvironment/composerenvironmentwithrefs":        true,
@@ -57,14 +55,11 @@ var realGCPSkipFixtures = map[string]bool{
 	"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-maximal": true,
 	"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-minimal": true,
 	// Tags acquire and project tag key tests have environment-dependent real GCP payloads
-	"tags/v1beta1/tagstagkey/tagkeyacquire":        true,
-	"tags/v1beta1/tagstagvalue/tagvalueacquire":    true,
-	"tags/v1beta1/tagstagkey/tagkeyprojectautogen": true,
-	// NetworkSecurity BackendAuthenticationConfig requires invitation-only early access allowlist.
-	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-maximal": true,
-	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-minimal": true,
-	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect":                                     true,
-	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect-direct":                              true,
+	"tags/v1beta1/tagstagkey/tagkeyacquire":                            true,
+	"tags/v1beta1/tagstagvalue/tagvalueacquire":                        true,
+	"tags/v1beta1/tagstagkey/tagkeyprojectautogen":                     true,
+	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect":        true,
+	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect-direct": true,
 }
 
 func TestGoldenLogAlignment(t *testing.T) {
@@ -413,9 +408,9 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				if method == "POST" && strings.Contains(path, ":generateServiceIdentity") && len(mockEvs) < len(realEvs) {
 					allowed = true
 				}
-				// Allow CancelCustomJob and CancelHyperparameterTuningJob to have fewer calls in mock because job cancellation
-				// in real GCP is an asynchronous operation requiring variable polling iterations.
-				if method == "GRPC" && (strings.HasSuffix(path, "/CancelCustomJob") || strings.HasSuffix(path, "/CancelHyperparameterTuningJob")) && len(mockEvs) < len(realEvs) {
+				// Allow CancelCustomJob, CancelHyperparameterTuningJob, and CreateModelMonitor to have fewer calls in mock because
+				// in real GCP eventual consistency or asynchronous operations require variable polling/retry iterations.
+				if method == "GRPC" && (strings.HasSuffix(path, "/CancelCustomJob") || strings.HasSuffix(path, "/CancelHyperparameterTuningJob") || strings.HasSuffix(path, "/CreateModelMonitor") || strings.HasSuffix(path, "/CancelBatchPredictionJob")) && len(mockEvs) < len(realEvs) {
 					allowed = true
 				}
 				if !allowed {
@@ -552,7 +547,11 @@ func cleanURL(u string) string {
 	}
 	u = regexp.MustCompile(`/instanceGroupManagers/gke-.*-grp`).ReplaceAllString(u, "/instanceGroupManagers/gke-containercluster-normalized-grp")
 	u = regexp.MustCompile(`/contacts/[0-9]+`).ReplaceAllString(u, "/contacts/${contactID}")
+	u = regexp.MustCompile(`/deviceSessions/session-[a-z0-9]+`).ReplaceAllLiteralString(u, "/deviceSessions/session-${uniqueId}")
 	u = regexp.MustCompile(`/agents/[0-9a-fA-F-]+`).ReplaceAllString(u, "/agents/${agentID}")
+	u = regexp.MustCompile(`/revisions/[0-9]+`).ReplaceAllString(u, "/revisions/${qaScorecardRevisionID}")
+	u = regexp.MustCompile(`/teamFolders/[0-9a-fA-F-]+`).ReplaceAllString(u, "/teamFolders/2ba614be-5147-410a-ad89-bab4ff528497")
+	u = regexp.MustCompile(`/webhooks/[0-9a-fA-F-]+`).ReplaceAllString(u, "/webhooks/${webhookID}")
 	return u
 }
 
@@ -647,8 +646,11 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "creationTime")
 		delete(v, "updateTime")
 		delete(v, "updateTimestamp")
+		delete(v, "consistencyMembershipResolutionTime")
+		delete(v, "rolloutOperation")
 		delete(v, "activationUpdateTime")
 		delete(v, "revisionCreateTime")
+		delete(v, "lastRunTime")
 		delete(v, "uid")
 		delete(v, "reconciling")
 		delete(v, "networkCookie")
@@ -664,6 +666,34 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "activityDataRetentionPeriodDays")
 		// WebSecurityScanner targetPlatforms is returned by real GCP (e.g. [1] for App Engine) but not in v1 proto
 		delete(v, "targetPlatforms")
+		// CESApp: retentionWindow is returned by real GCP but not in cespb.ConversationLoggingSettings
+		delete(v, "retentionWindow")
+		// CloudDeployRelease: toolVersions and toolVersionSupportedConditions are returned by real GCP
+		// but are not in the current deploypb.Release protobuf.
+		delete(v, "toolVersions")
+		delete(v, "dockerVersionSupportedCondition")
+		delete(v, "helmVersionSupportedCondition")
+		delete(v, "kptVersionSupportedCondition")
+		delete(v, "kubectlVersionSupportedCondition")
+		delete(v, "kustomizeVersionSupportedCondition")
+		delete(v, "skaffoldVersionSupportedCondition")
+		if dps, ok := v["deliveryPipelineSnapshot"].(map[string]interface{}); ok {
+			delete(dps, "etag")
+		}
+		if tss, ok := v["targetSnapshots"].([]interface{}); ok {
+			for _, ts := range tss {
+				if tsm, ok := ts.(map[string]interface{}); ok {
+					delete(tsm, "etag")
+					if ecs, ok := tsm["executionConfigs"].([]interface{}); ok {
+						for _, ec := range ecs {
+							if ecm, ok := ec.(map[string]interface{}); ok {
+								delete(ecm, "usages")
+							}
+						}
+					}
+				}
+			}
+		}
 		if qm, ok := v["qualityMetadata"].(map[string]interface{}); ok {
 			if agentInfo, ok := qm["agentInfo"].([]interface{}); ok {
 				for _, a := range agentInfo {
@@ -712,6 +742,11 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		// ManagedKafkaConnector state field normalization due to async state transitions in real GCP
 		if _, ok := v["taskRestartPolicy"]; ok {
 			delete(v, "state")
+		}
+
+		// DataplexEntity compatibility bigquery field normalization due to async background scan in real GCP
+		if comp, ok := v["compatibility"].(map[string]interface{}); ok {
+			delete(comp, "bigquery")
 		}
 
 		// Cloud Resource Manager Project fields to normalize alignment differences
@@ -1086,6 +1121,9 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if tie, ok := v["tlsInspectionEnabled"].(bool); ok && !tie {
 			delete(v, "tlsInspectionEnabled")
 		}
+		if tip, ok := v["tlsInspectionPolicy"].(string); ok && tip == "" {
+			delete(v, "tlsInspectionPolicy")
+		}
 		if preview, ok := v["preview"].(bool); ok && !preview {
 			delete(v, "preview")
 		}
@@ -1214,6 +1252,10 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if strings.Contains(v, "/contacts/") {
 			re := regexp.MustCompile(`/contacts/[0-9]+`)
 			v = re.ReplaceAllString(v, "/contacts/${contactID}")
+		}
+		if strings.Contains(v, "/deviceSessions/") {
+			re := regexp.MustCompile(`/deviceSessions/session-[a-z0-9]+`)
+			v = re.ReplaceAllLiteralString(v, "/deviceSessions/session-${uniqueId}")
 		}
 		if strings.Contains(v, "/forwardingRules/") {
 			re := regexp.MustCompile(`/forwardingRules/[^/]+`)
@@ -1370,6 +1412,8 @@ func getPlaceholdersForKind(kind string) []string {
 		return []string{"${datasetID}"}
 	case "DialogflowCXAgent":
 		return []string{"${agentID}"}
+	case "DialogflowCXWebhook", "DialogflowWebhook":
+		return []string{"${agentID}", "${webhookID}"}
 	}
 	return nil
 }
@@ -1495,6 +1539,9 @@ func isDependencyEvent(ev httpEvent, depKinds map[string]string, primaryKind str
 		trimmedSuffix := strings.TrimPrefix(suffix, "/")
 		if strings.Contains(trimmedSuffix, "/") {
 			if kind == "KMSCryptoKey" && strings.HasPrefix(trimmedSuffix, "cryptoKeyVersions/") && primaryKind != "KMSCryptoKeyVersion" {
+				return true
+			}
+			if kind == "StorageBucket" && strings.HasPrefix(trimmedSuffix, "o/") {
 				return true
 			}
 			continue

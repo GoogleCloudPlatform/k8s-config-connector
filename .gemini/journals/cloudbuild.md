@@ -9,3 +9,19 @@
   2. Used `*InstallationStateObservedState` directly in `CloudBuildConnectionObservedState` within `connection_types.go`.
   3. Added the skipped `*ObservedState` corresponding structs to `connection_types.go` as overriding a base type forces the prune-types script to skip its `ObservedState` generation as well.
 - **Impact**: Future agents implementing resources with nested references should know they need to manually copy the structs to `<kind>_types.go`, override the reference fields with `ref` structs, AND also provide the `ObservedState` structs for those overridden types to ensure everything compiles correctly.
+
+### [2026-11-17] Prepopulate Direct Types, Identity, and Judgement Queue for CloudBuildBuild
+- **Context**: Greenfield Step 1a prepopulation for `CloudBuildBuild:Build` (`cloudbuild.cnrm.cloud.google.com/v1alpha1`).
+- **Learnings & Decisions**:
+  1. `Build` in `google.devtools.cloudbuild.v1` defines `CreateBuild` without `UpdateBuild` (one-shot execution), requiring `--allow-non-declarative` in `controllerbuilder generate-types`.
+  2. `google.devtools.cloudbuild.v1.Build` declares two resource patterns: `projects/{project}/builds/{build}` and `projects/{project}/locations/{location}/builds/{build}`. Following CAI (`cloudassetinventory_names.jsonl`) and modern regional URL conventions, explicitly locked in `--pattern CloudBuildBuild=projects/{project}/locations/{location}/builds/{build}` in `generate-identity`.
+  3. Added `CloudBuildBuild` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. Ran `apis/cloudbuild/generate.sh` and confirmed pure mechanical output and idempotency. Recorded expected untriaged missing fields and non-representable refs in `tests/apichecks` exceptions via golden update.
+
+### [2026-11-17] Triage Judgement Queue and Finalize Direct Types for CloudBuildBuild
+- **Context**: Greenfield Step 1b judgement queue triage and type finalization for `CloudBuildBuild:Build` (`cloudbuild.cnrm.cloud.google.com/v1alpha1`).
+- **Learnings & Decisions**:
+  1. **Server-Generated ID & Parent Ref**: Cloud Build assigns build IDs on creation (`Build.id` and `Build.name` are output-only, and `CreateBuildRequest` has no ID parameter). Added server-generated ID comment to `spec.resourceID` so `generate-identity` emits `_ identity.ServerGeneratedIdentity = &CloudBuildBuildIdentity{}`. Replaced `projectRef` with inlined `*parent.ProjectAndLocationRef`.
+  2. **Nested Reference Overrides**: Converted `logsBucket` to `*storagev1beta1.StorageBucketRef`, `serviceAccount` to `*refsv1beta1.IAMServiceAccountRef`, `options.pool.name` to `*cloudbuildv1beta1.CloudBuildWorkerPoolRef`, `secrets[].kmsKeyName` and `availableSecrets.inline[].kmsKeyName` to `*kmsv1beta1.KMSCryptoKeyRef`, `availableSecrets.secretManager[].versionName` and `gitConfig.http.proxySecretVersionName` to `*secretmanagerv1beta1.SecretManagerSecretVersionRef`, and `artifacts.goModules[].repositoryProjectID` to `*refsv1beta1.ProjectRef`.
+  3. **Forked Spec Structs to Prevent Status Ref Leak**: `Source` (`StorageSource`, `RepoSource`, `StorageSourceManifest`) is shared between `Spec.Source` and `Status.ObservedState.SourceProvenance`. Forked the spec structs as `Build_Source`, `Build_StorageSource`, `Build_RepoSource`, and `Build_StorageSourceManifest` with Ref types in `cloudbuildbuild_types.go`, leaving unreferenced scalar versions in `types.generated.go` for status so `TestNoRefsInStatus` passes.
+  4. **Oneof Reference Support in Mapper Generator**: `dependencies[].gitSource.repository.developerConnect` is inside a proto oneof (`repotype`). When mapped to `DeveloperConnectRef`, `mappergenerator.go` previously generated field assignment directly on the struct instead of instantiating the oneof wrapper struct `&pb.Dependency_GitSourceRepository_DeveloperConnect{...}`. Updated `mappergenerator.go` to wrap oneof references.

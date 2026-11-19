@@ -1,0 +1,6 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/rolloutPlans/computerolloutplan-maximal-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeRolloutPlan
+  name: computerolloutplan-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

@@ -70,9 +70,11 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterGeneratorsServer(grpcServer, &generatorsServer{MockService: s})
 	pb.RegisterKnowledgeBasesServer(grpcServer, &knowledgeBasesServer{MockService: s})
 	pb_v2.RegisterConversationDatasetsServer(grpcServer, &conversationDatasetsServer{MockService: s})
+	pb_v2.RegisterCompanionAgentsServer(grpcServer, &companionAgentsServer{MockService: s})
 	cxpb.RegisterWebhooksServer(grpcServer, &webhooksServer{MockService: s})
 	cxpb.RegisterAgentsServer(grpcServer, &cxAgentsServer{MockService: s})
 	cxpb.RegisterPlaybooksServer(grpcServer, &playbooksServer{MockService: s})
+	cxpb.RegisterFlowsServer(grpcServer, &flowsServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -81,9 +83,11 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		grpcpb.RegisterGeneratorsHandler,
 		grpcpb.RegisterKnowledgeBasesHandler,
 		RegisterConversationDatasetsHandler,
+		RegisterCompanionAgentsHandler,
 		RegisterWebhooksHandler,
 		RegisterCXAgentsHandler,
 		RegisterCXPlaybooksHandler,
+		RegisterCXFlowsHandler,
 		s.operations.RegisterOperationsPath("/v2/{prefix=**}/operations/{name}"),
 		s.operations.RegisterOperationsPath("/v2beta1/{prefix=**}/operations/{name}"),
 		s.operations.RegisterOperationsPath("/v2/operations/{name}"),

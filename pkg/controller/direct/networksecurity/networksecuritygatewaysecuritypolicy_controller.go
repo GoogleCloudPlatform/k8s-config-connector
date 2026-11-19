@@ -17,11 +17,11 @@ package networksecurity
 import (
 	"context"
 	"fmt"
-	"time"
+	"strings"
 
+	gcp "cloud.google.com/go/networksecurity/apiv1"
+	pb "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	"google.golang.org/api/option"
-	"google.golang.org/api/transport/grpc"
-	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -36,8 +36,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
-
-	pb "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 )
 
 func init() {
@@ -54,23 +52,19 @@ type gatewaySecurityPolicyModel struct {
 	config config.ControllerConfig
 }
 
-func (m *gatewaySecurityPolicyModel) client(ctx context.Context) (pb.NetworkSecurityClient, longrunningpb.OperationsClient, error) {
+func (m *gatewaySecurityPolicyModel) client(ctx context.Context) (*gcp.Client, error) {
 	var opts []option.ClientOption
-
-	config := m.config
-	opts, err := config.GRPCClientOptions()
+	opts, err := m.config.RESTClientOptions()
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
-	opts = append(opts, option.WithEndpoint("networksecurity.googleapis.com:443"))
-
-	conn, err := grpc.Dial(ctx, opts...)
+	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
 	if err != nil {
-		return nil, nil, fmt.Errorf("dialing networksecurity service: %w", err)
+		return nil, fmt.Errorf("building GatewaySecurityPolicy client: %w", err)
 	}
 
-	return pb.NewNetworkSecurityClient(conn), longrunningpb.NewOperationsClient(conn), nil
+	return gcpClient, nil
 }
 
 func (m *gatewaySecurityPolicyModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
@@ -101,29 +95,41 @@ func (m *gatewaySecurityPolicyModel) AdapterForObject(ctx context.Context, op *d
 		return nil, err
 	}
 
-	gcpClient, operationsClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
 	}
 
 	return &gatewaySecurityPolicyAdapter{
-		gcpClient:        gcpClient,
-		operationsClient: operationsClient,
-		id:               id.(*krm.NetworkSecurityGatewaySecurityPolicyIdentity),
-		desired:          desired,
+		gcpClient: gcpClient,
+		id:        id.(*krm.NetworkSecurityGatewaySecurityPolicyIdentity),
+		desired:   desired,
 	}, nil
 }
 
 func (m *gatewaySecurityPolicyModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	return nil, nil
+	if !strings.HasPrefix(url, "//networksecurity.googleapis.com/") {
+		return nil, nil
+	}
+	id := &krm.NetworkSecurityGatewaySecurityPolicyIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		return nil, nil
+	}
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &gatewaySecurityPolicyAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type gatewaySecurityPolicyAdapter struct {
-	gcpClient        pb.NetworkSecurityClient
-	operationsClient longrunningpb.OperationsClient
-	id               *krm.NetworkSecurityGatewaySecurityPolicyIdentity
-	desired          *pb.GatewaySecurityPolicy
-	actual           *pb.GatewaySecurityPolicy
+	gcpClient *gcp.Client
+	id        *krm.NetworkSecurityGatewaySecurityPolicyIdentity
+	desired   *pb.GatewaySecurityPolicy
+	actual    *pb.GatewaySecurityPolicy
 }
 
 var _ directbase.Adapter = &gatewaySecurityPolicyAdapter{}
@@ -135,7 +141,7 @@ func (a *gatewaySecurityPolicyAdapter) Find(ctx context.Context) (bool, error) {
 	req := &pb.GetGatewaySecurityPolicyRequest{Name: a.id.String()}
 	actual, err := a.gcpClient.GetGatewaySecurityPolicy(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
+		if direct.IsNotFound(err) || direct.IsPermissionDenied(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("getting NetworkSecurityGatewaySecurityPolicy %s: %w", a.id, err)
@@ -160,19 +166,14 @@ func (a *gatewaySecurityPolicyAdapter) Create(ctx context.Context, createOp *dir
 		return fmt.Errorf("creating NetworkSecurityGatewaySecurityPolicy %s: %w", a.id, err)
 	}
 
-	err = a.waitForOperation(ctx, op)
+	created, err := op.Wait(ctx)
 	if err != nil {
 		return fmt.Errorf("NetworkSecurityGatewaySecurityPolicy %s waiting for creation: %w", a.id, err)
 	}
 
-	actual, err := a.gcpClient.GetGatewaySecurityPolicy(ctx, &pb.GetGatewaySecurityPolicyRequest{Name: a.id.String()})
-	if err != nil {
-		return fmt.Errorf("getting NetworkSecurityGatewaySecurityPolicy after creation: %w", err)
-	}
-
 	log.V(2).Info("successfully created NetworkSecurityGatewaySecurityPolicy", "name", a.id)
 
-	return a.updateStatus(ctx, createOp, actual)
+	return a.updateStatus(ctx, createOp, created)
 }
 
 func (a *gatewaySecurityPolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
@@ -202,16 +203,11 @@ func (a *gatewaySecurityPolicyAdapter) Update(ctx context.Context, updateOp *dir
 			return fmt.Errorf("updating NetworkSecurityGatewaySecurityPolicy %s: %w", a.id, err)
 		}
 
-		err = a.waitForOperation(ctx, op)
+		updated, err := op.Wait(ctx)
 		if err != nil {
 			return fmt.Errorf("NetworkSecurityGatewaySecurityPolicy %s waiting for update: %w", a.id, err)
 		}
-
-		actual, err := a.gcpClient.GetGatewaySecurityPolicy(ctx, &pb.GetGatewaySecurityPolicyRequest{Name: a.id.String()})
-		if err != nil {
-			return fmt.Errorf("getting NetworkSecurityGatewaySecurityPolicy after update: %w", err)
-		}
-		latest = actual
+		latest = updated
 	}
 
 	return a.updateStatus(ctx, updateOp, latest)
@@ -262,45 +258,18 @@ func (a *gatewaySecurityPolicyAdapter) Delete(ctx context.Context, deleteOp *dir
 	req := &pb.DeleteGatewaySecurityPolicyRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteGatewaySecurityPolicy(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
+		if direct.IsNotFound(err) || direct.IsPermissionDenied(err) {
 			return true, nil
 		}
 		return false, fmt.Errorf("deleting NetworkSecurityGatewaySecurityPolicy %s: %w", a.id, err)
 	}
 
-	err = a.waitForOperation(ctx, op)
+	err = op.Wait(ctx)
 	if err != nil {
 		return false, fmt.Errorf("NetworkSecurityGatewaySecurityPolicy %s waiting for deletion: %w", a.id, err)
 	}
 
 	return true, nil
-}
-
-func (a *gatewaySecurityPolicyAdapter) waitForOperation(ctx context.Context, op *longrunningpb.Operation) error {
-	if op.Done {
-		if op.GetError() != nil {
-			return fmt.Errorf("operation failed: %s", op.GetError().GetMessage())
-		}
-		return nil
-	}
-
-	for {
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		case <-time.After(5 * time.Second):
-			current, err := a.operationsClient.GetOperation(ctx, &longrunningpb.GetOperationRequest{Name: op.Name})
-			if err != nil {
-				return fmt.Errorf("getting operation %q: %w", op.Name, err)
-			}
-			if current.Done {
-				if current.GetError() != nil {
-					return fmt.Errorf("operation failed: %s", current.GetError().GetMessage())
-				}
-				return nil
-			}
-		}
-	}
 }
 
 func compareGatewaySecurityPolicy(ctx context.Context, actual, desired *pb.GatewaySecurityPolicy) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {

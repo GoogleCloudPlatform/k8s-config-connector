@@ -1,0 +1,534 @@
+# Phase: CREATE
+GET https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/cesapp-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fapps%2Fcesapp-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us/apps/cesapp-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps?%24alt=json%3Benum-encoding%3Dint&appId=cesapp-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus
+
+{
+  "displayName": "cesapp-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.ces.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us/operations/${operationID}"
+}
+
+---
+
+GET https://ces.googleapis.com/v1/projects/${projectId}/locations/us/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.ces.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.ces.v1.App",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "cesapp-${uniqueId}",
+    "etag": "abcdef0123A=",
+    "loggingSettings": {
+      "conversationLoggingSettings": {}
+    },
+    "name": "projects/${projectId}/locations/us/apps/cesapp-${uniqueId}",
+    "predefinedVariableDeclarations": [
+      {
+        "description": "Current time represented in the ISO 8601 format along with its corresponding IANA Time Zone.",
+        "name": "current_date",
+        "schema": {
+          "type": "STRING"
+        }
+      },
+      {
+        "description": "Contains session specific variables like modality, channel, recording control, and language code.",
+        "name": "_session",
+        "schema": {
+          "properties": {
+            "channel": {
+              "type": "STRING"
+            },
+            "language_code": {
+              "type": "STRING"
+            },
+            "modality": {
+              "type": "STRING"
+            },
+            "recording_control": {
+              "type": "STRING"
+            }
+          },
+          "type": "OBJECT"
+        }
+      }
+    ],
+    "timeZoneSettings": {
+      "timeZone": "America/Los_Angeles"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/cesapp-${uniqueId}/guardrails/cesguardrail-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fapps%2Fcesapp-${uniqueId}%2Fguardrails%2Fcesguardrail-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "com.google.apps.framework.request.NotFoundException: Guardrail cesguardrail-max-${uniqueId} does not exist in the app.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/cesapp-${uniqueId}/guardrails?%24alt=json%3Benum-encoding%3Dint&guardrailId=cesguardrail-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus%2Fapps%2Fcesapp-${uniqueId}
+
+{
+  "action": {
+    "respondImmediately": {
+      "responses": [
+        {
+          "text": "This content is blocked by guardrail."
+        }
+      ]
+    }
+  },
+  "contentFilter": {
+    "bannedContents": [
+      "banned_general"
+    ],
+    "bannedContentsInAgentResponse": [
+      "banned_agent"
+    ],
+    "bannedContentsInUserInput": [
+      "banned_user"
+    ],
+    "disregardDiacritics": true,
+    "matchType": 2
+  },
+  "description": "Maximal CESGuardrail for testing",
+  "displayName": "cesguardrail-maximal-${uniqueId}",
+  "enabled": true
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "action": {
+    "respondImmediately": {
+      "responses": [
+        {
+          "text": "This content is blocked by guardrail."
+        }
+      ]
+    }
+  },
+  "contentFilter": {
+    "bannedContents": [
+      "banned_general"
+    ],
+    "bannedContentsInAgentResponse": [
+      "banned_agent"
+    ],
+    "bannedContentsInUserInput": [
+      "banned_user"
+    ],
+    "disregardDiacritics": true,
+    "matchType": 2
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal CESGuardrail for testing",
+  "displayName": "cesguardrail-maximal-${uniqueId}",
+  "enabled": true,
+  "name": "projects/${projectId}/locations/us/apps/cesapp-${uniqueId}/guardrails/cesguardrail-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: UPDATE
+GET https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/cesapp-${uniqueId}/guardrails/cesguardrail-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fapps%2Fcesapp-${uniqueId}%2Fguardrails%2Fcesguardrail-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "action": {
+    "respondImmediately": {
+      "responses": [
+        {
+          "text": "This content is blocked by guardrail."
+        }
+      ]
+    }
+  },
+  "contentFilter": {
+    "bannedContents": [
+      "banned_general"
+    ],
+    "bannedContentsInAgentResponse": [
+      "banned_agent"
+    ],
+    "bannedContentsInUserInput": [
+      "banned_user"
+    ],
+    "disregardDiacritics": true,
+    "matchType": 2
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal CESGuardrail for testing",
+  "displayName": "cesguardrail-maximal-${uniqueId}",
+  "enabled": true,
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us/apps/cesapp-${uniqueId}/guardrails/cesguardrail-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/cesapp-${uniqueId}/guardrails/cesguardrail-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=action%2CcontentFilter%2Cdescription%2CdisplayName%2Cenabled
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: guardrail.name=projects%2F${projectId}%2Flocations%2Fus%2Fapps%2Fcesapp-${uniqueId}%2Fguardrails%2Fcesguardrail-max-${uniqueId}
+
+{
+  "action": {
+    "respondImmediately": {
+      "responses": [
+        {
+          "disabled": true,
+          "text": "Updated blocked content response."
+        }
+      ]
+    }
+  },
+  "contentFilter": {
+    "bannedContents": [
+      "banned_general_updated"
+    ],
+    "bannedContentsInAgentResponse": [
+      "banned_agent_updated"
+    ],
+    "bannedContentsInUserInput": [
+      "banned_user_updated"
+    ],
+    "matchType": 1
+  },
+  "description": "Updated maximal CESGuardrail for testing",
+  "displayName": "cesguardrail-max-updated-${uniqueId}",
+  "name": "projects/${projectId}/locations/us/apps/cesapp-${uniqueId}/guardrails/cesguardrail-max-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "action": {
+    "respondImmediately": {
+      "responses": [
+        {
+          "disabled": true,
+          "text": "Updated blocked content response."
+        }
+      ]
+    }
+  },
+  "contentFilter": {
+    "bannedContents": [
+      "banned_general_updated"
+    ],
+    "bannedContentsInAgentResponse": [
+      "banned_agent_updated"
+    ],
+    "bannedContentsInUserInput": [
+      "banned_user_updated"
+    ],
+    "matchType": 1
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated maximal CESGuardrail for testing",
+  "displayName": "cesguardrail-max-updated-${uniqueId}",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us/apps/cesapp-${uniqueId}/guardrails/cesguardrail-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GET https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/cesapp-${uniqueId}/guardrails/cesguardrail-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fapps%2Fcesapp-${uniqueId}%2Fguardrails%2Fcesguardrail-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "action": {
+    "respondImmediately": {
+      "responses": [
+        {
+          "disabled": true,
+          "text": "Updated blocked content response."
+        }
+      ]
+    }
+  },
+  "contentFilter": {
+    "bannedContents": [
+      "banned_general_updated"
+    ],
+    "bannedContentsInAgentResponse": [
+      "banned_agent_updated"
+    ],
+    "bannedContentsInUserInput": [
+      "banned_user_updated"
+    ],
+    "matchType": 1
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated maximal CESGuardrail for testing",
+  "displayName": "cesguardrail-max-updated-${uniqueId}",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us/apps/cesapp-${uniqueId}/guardrails/cesguardrail-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/cesapp-${uniqueId}/guardrails/cesguardrail-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fapps%2Fcesapp-${uniqueId}%2Fguardrails%2Fcesguardrail-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/cesapp-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fapps%2Fcesapp-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "cesapp-${uniqueId}",
+  "etag": "abcdef0123A=",
+  "loggingSettings": {
+    "conversationLoggingSettings": {}
+  },
+  "name": "projects/${projectId}/locations/us/apps/cesapp-${uniqueId}",
+  "predefinedVariableDeclarations": [
+    {
+      "description": "Current time represented in the ISO 8601 format along with its corresponding IANA Time Zone.",
+      "name": "current_date",
+      "schema": {
+        "type": 1
+      }
+    },
+    {
+      "description": "Contains session specific variables like modality, channel, recording control, and language code.",
+      "name": "_session",
+      "schema": {
+        "properties": {
+          "channel": {
+            "type": 1
+          },
+          "language_code": {
+            "type": 1
+          },
+          "modality": {
+            "type": 1
+          },
+          "recording_control": {
+            "type": 1
+          }
+        },
+        "type": 5
+      }
+    }
+  ],
+  "timeZoneSettings": {
+    "timeZone": "America/Los_Angeles"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/cesapp-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fapps%2Fcesapp-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.ces.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us/operations/${operationID}"
+}
+
+---
+
+GET https://ces.googleapis.com/v1/projects/${projectId}/locations/us/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.ces.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

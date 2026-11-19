@@ -1,6 +1,7 @@
+# Phase: CREATE
 GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeployPolicies%2Fclouddeploydeploypolicy-${uniqueId}
 
 404 Not Found
@@ -25,11 +26,15 @@ X-Xss-Protection: 0
 
 POST https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployPolicies?%24alt=json%3Benum-encoding%3Dint&deployPolicyId=clouddeploydeploypolicy-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
   "description": "Maximal deploy policy",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "rules": [
     {
       "rolloutRestriction": {
@@ -125,7 +130,7 @@ X-Xss-Protection: 0
 
 GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
@@ -153,6 +158,10 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.deploy.v1.DeployPolicy",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Maximal deploy policy",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "name": "projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}",
     "rules": [
       {
@@ -229,9 +238,10 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: UPDATE
 GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeployPolicies%2Fclouddeploydeploypolicy-${uniqueId}
 
 200 OK
@@ -247,6 +257,10 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Maximal deploy policy",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}",
   "rules": [
     {
@@ -324,11 +338,15 @@ X-Xss-Protection: 0
 
 PATCH https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=suspended
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: deploy_policy.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeployPolicies%2Fclouddeploydeploypolicy-${uniqueId}
 
 {
   "description": "Maximal deploy policy",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}",
   "rules": [
     {
@@ -426,7 +444,7 @@ X-Xss-Protection: 0
 
 GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
@@ -454,6 +472,10 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.deploy.v1.DeployPolicy",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Maximal deploy policy",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "name": "projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}",
     "rules": [
       {
@@ -531,9 +553,10 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: DELETE
 GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeployPolicies%2Fclouddeploydeploypolicy-${uniqueId}
 
 200 OK
@@ -549,6 +572,10 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Maximal deploy policy",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}",
   "rules": [
     {
@@ -627,7 +654,7 @@ X-Xss-Protection: 0
 
 DELETE https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeployPolicies%2Fclouddeploydeploypolicy-${uniqueId}
 
 200 OK
@@ -655,7 +682,7 @@ X-Xss-Protection: 0
 
 GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK

@@ -25,15 +25,21 @@ entries:
     group: agentregistry.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: accepted
+    note: triaged all findings; updated parent to inlined *parent.ProjectAndLocationRef, resolved docs link, and verified KRM types, identity, and references
   - kind: AgentRegistryService
     group: agentregistry.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: 'none of these loaded as a page ending in /v1/projects.locations.services: https://docs.cloud.google.com/agent-registry/overview/docs/reference/rest/v1/projects.locations.services'
-    status: open
+    status: resolved
+    resolution: edited
+    note: updated service-docs link to valid cloud.google.com overview page, removed non-existent resource-docs URL and guess annotation
   - kind: AgentRegistryService
     group: agentregistry.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef

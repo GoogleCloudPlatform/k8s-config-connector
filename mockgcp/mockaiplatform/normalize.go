@@ -41,7 +41,7 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.FeatureView", "type.googleapis.com/google.cloud.aiplatform.v1.FeatureView")
 	}
 
-	if strings.Contains(event.URL(), "PipelineService") || strings.Contains(event.URL(), "pipelineJobs") || strings.Contains(event.URL(), "persistentResources") || strings.Contains(event.URL(), "ScheduleService") {
+	if strings.Contains(event.URL(), "PipelineService") || strings.Contains(event.URL(), "pipelineJobs") || strings.Contains(event.URL(), "persistentResources") || strings.Contains(event.URL(), "ScheduleService") || strings.Contains(event.URL(), "MetadataService") || strings.Contains(event.URL(), "contexts") {
 		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata", "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata")
 	}
 
@@ -119,7 +119,7 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		})
 	}
 
-	if strings.Contains(event.URL(), "JobService") || strings.Contains(event.URL(), "customJobs") || strings.Contains(event.URL(), "modelDeploymentMonitoringJobs") {
+	if strings.Contains(event.URL(), "JobService") || strings.Contains(event.URL(), "customJobs") || strings.Contains(event.URL(), "modelDeploymentMonitoringJobs") || strings.Contains(event.URL(), "batchPredictionJobs") {
 		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.UpdateModelDeploymentMonitoringJobOperationMetadata", "type.googleapis.com/google.cloud.aiplatform.v1.UpdateModelDeploymentMonitoringJobOperationMetadata")
 		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata", "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata")
 

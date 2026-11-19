@@ -329,11 +329,19 @@ func HasHTTPCode(err error, code int) bool {
 			return true
 		}
 		// Check for GRPC error code
-		if apiError.HTTPCode() == -1 && grpcStatus.Code(err) == grpcCode.NotFound {
-			return true
+		if apiError.HTTPCode() == -1 {
+			if grpcStatus.Code(err) == grpcCode.NotFound && code == 404 {
+				return true
+			}
+			if grpcStatus.Code(err) == grpcCode.PermissionDenied && code == 403 {
+				return true
+			}
 		}
 	} else if s, ok := grpcStatus.FromError(err); ok {
 		if s.Code() == grpcCode.NotFound && code == 404 {
+			return true
+		}
+		if s.Code() == grpcCode.PermissionDenied && code == 403 {
 			return true
 		}
 		return false

@@ -43,31 +43,86 @@ entries:
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
     status: open
+  - kind: MigrationCenterReport
+    group: migrationcenter.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: triaged all findings; replaced ProjectRef, Location, and guessed ReportConfigRef with spec.parentRef (*MigrationCenterReportConfigRef), moved server-populated state to status.observedState.state, and confirmed client-specified resource ID
+  - kind: MigrationCenterReport
+    group: migrationcenter.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/reportConfigs/{report_config}/reports/{report}" contains ancestor segment(s) reportConfigs/{report_config} with no matching reference or field on MigrationCenterReportSpec
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*MigrationCenterReportConfigRef); removed ProjectRef and Location
+  - kind: MigrationCenterReport
+    group: migrationcenter.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
+    status: resolved
+    resolution: accepted
+    note: CreateReportRequest specifies report_id parameter, so resource ID is client-specified
+  - kind: MigrationCenterReport
+    group: migrationcenter.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/reportConfigs/{report_config}, which already names the location; a reference to it could replace location and the root reference
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*MigrationCenterReportConfigRef); removed ProjectRef and Location
+  - kind: MigrationCenterReport
+    group: migrationcenter.cnrm.cloud.google.com
+    field: .spec.reportConfigRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to MigrationCenterReportConfigRef, read from the reportConfigs segment of projects/{project}/locations/{location}/reportConfigs/{report_config}/reports/{report}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*MigrationCenterReportConfigRef); removed ProjectRef and Location
+  - kind: MigrationCenterReport
+    group: migrationcenter.cnrm.cloud.google.com
+    field: .spec.state
+    reason: possible-status-field-in-spec
+    detail: state was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState
+    status: resolved
+    resolution: edited
+    note: moved server-populated output state to status.observedState.state
   - kind: MigrationCenterReportConfig
     group: migrationcenter.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged all findings; replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef, converted group and preferenceSet to typed KCC references, and confirmed client-specified resource ID
   - kind: MigrationCenterReportConfig
     group: migrationcenter.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
-    status: open
+    status: resolved
+    resolution: accepted
+    note: CreateReportConfigRequest specifies report_config_id parameter, so resource ID is client-specified
   - kind: MigrationCenterReportConfig
     group: migrationcenter.cnrm.cloud.google.com
     field: .spec.groupPreferencesetAssignments[].group
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to migrationcenter.googleapis.com/Group (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to GroupRef (*MigrationCenterGroupRef)
   - kind: MigrationCenterReportConfig
     group: migrationcenter.cnrm.cloud.google.com
     field: .spec.groupPreferencesetAssignments[].preferenceSet
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to migrationcenter.googleapis.com/PreferenceSet (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to PreferenceSetRef (*MigrationCenterPreferenceSetRef)
   - kind: MigrationCenterReportConfig
     group: migrationcenter.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef

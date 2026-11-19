@@ -15,37 +15,12 @@
 package v1alpha1
 
 import (
-	"context"
-	"fmt"
-	"strings"
-
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var GeminiDataAnalyticsConversationGVK = GroupVersion.WithKind("GeminiDataAnalyticsConversation")
-
-var _ refsv1beta1.ExternalNormalizer = &GeminiDataAnalyticsDataAgentRef{}
-
-// GeminiDataAnalyticsDataAgentRef is a reference to a DataAgent.
-type GeminiDataAnalyticsDataAgentRef struct {
-	// A reference to an externally managed DataAgent resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/dataAgents/{{dataAgentID}}".
-	External string `json:"external,omitempty"`
-}
-
-func (r *GeminiDataAnalyticsDataAgentRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External == "" {
-		return "", fmt.Errorf("external is required on DataAgent reference")
-	}
-	// Validate format: projects/{project}/locations/{location}/dataAgents/{dataAgentID}
-	if !strings.HasPrefix(r.External, "projects/") || !strings.Contains(r.External, "/locations/") || !strings.Contains(r.External, "/dataAgents/") {
-		return "", fmt.Errorf("invalid DataAgent external reference format: %q", r.External)
-	}
-	return r.External, nil
-}
 
 // GeminiDataAnalyticsConversationSpec defines the desired state of GeminiDataAnalyticsConversation
 // +kcc:spec:proto=google.cloud.geminidataanalytics.v1beta.Conversation

@@ -33,7 +33,7 @@ if [[ -z "${SKIP_GENERATE_PROTOS:-}" ]]; then
   ./generate-proto.sh
 fi
 
-# Hand-coded KRM types: generate-types is not applicable because Healthcare has no proto definition in googleapis.
+# Hand-coded KRM types: generate-types is not applicable because Healthcare has no proto definition in googleapis (HealthcareConsentStore, HealthcareDICOMStore, HealthcareHL7V2Store).
 
 cd ${REPO_ROOT}
 if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then

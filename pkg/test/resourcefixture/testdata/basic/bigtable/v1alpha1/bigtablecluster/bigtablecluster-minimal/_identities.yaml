@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: bigtable.cnrm.cloud.google.com
+  kind: BigtableInstance
+  name: bigtableinstance-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //bigtable.googleapis.com/projects/${projectId}/instances/bigtableinstance-${uniqueId}/clusters/bigtablecluster-${uniqueId}
+  group: bigtable.cnrm.cloud.google.com
+  kind: BigtableCluster
+  name: bigtablecluster-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

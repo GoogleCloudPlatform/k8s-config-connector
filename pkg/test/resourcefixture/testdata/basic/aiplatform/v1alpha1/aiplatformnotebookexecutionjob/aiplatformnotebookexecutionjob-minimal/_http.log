@@ -1,0 +1,507 @@
+# Phase: CREATE
+GET https://storage.googleapis.com/storage/v1/b/aipnb-min-dep-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a1d813a182
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": []
+  },
+  "location": "us-central1",
+  "name": "aipnb-min-dep-${uniqueId}",
+  "softDeletePolicy": {
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a1d813a404
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "aipnb-min-dep-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/aipnb-min-dep-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/aipnb-min-dep-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a1d813a447
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "aipnb-min-dep-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/aipnb-min-dep-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.NotebookService/GetNotebookExecutionJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/notebookExecutionJobs/aipnb-min-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = NotebookExecutionJob projects/${projectId}/locations/us-central1/notebookExecutionJobs/aipnb-min-${uniqueId} is not found.
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.NotebookService/CreateNotebookExecutionJob
+
+{
+  "notebookExecutionJob": {
+    "customEnvironmentSpec": {
+      "machineSpec": {
+        "machineType": "e2-standard-4"
+      },
+      "networkSpec": {
+        "enableInternetAccess": true
+      },
+      "persistentDiskSpec": {
+        "diskSizeGb": "100",
+        "diskType": "pd-standard"
+      }
+    },
+    "directNotebookSource": {
+      "content": "eyJjZWxscyI6W10sIm1ldGFkYXRhIjp7fSwibmJmb3JtYXQiOjQsIm5iZm9ybWF0X21pbm9yIjoyfQ=="
+    },
+    "displayName": "aipnb-min-${uniqueId}",
+    "gcsOutputUri": "gs://aipnb-min-dep-${uniqueId}",
+    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+  },
+  "notebookExecutionJobId": "aipnb-min-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.CreateNotebookExecutionJobOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/notebookExecutionJobs/aipnb-min-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/notebookExecutionJobs/aipnb-min-${uniqueId}/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.CreateNotebookExecutionJobOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "progressMessage": "NotebookExecutionJob is initializing, waiting for execution to start."
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/notebookExecutionJobs/aipnb-min-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.NotebookExecutionJob",
+    "name": "projects/${projectNumber}/locations/us-central1/notebookExecutionJobs/aipnb-min-${uniqueId}"
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.NotebookService/GetNotebookExecutionJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/notebookExecutionJobs/aipnb-min-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "customEnvironmentSpec": {
+    "machineSpec": {
+      "machineType": "e2-standard-4"
+    },
+    "networkSpec": {
+      "enableInternetAccess": true
+    },
+    "persistentDiskSpec": {
+      "diskSizeGb": "100",
+      "diskType": "pd-standard"
+    }
+  },
+  "directNotebookSource": {},
+  "displayName": "aipnb-min-${uniqueId}",
+  "gcsOutputUri": "gs://aipnb-min-dep-${uniqueId}",
+  "jobState": "JOB_STATE_SUCCEEDED",
+  "name": "projects/${projectNumber}/locations/us-central1/notebookExecutionJobs/aipnb-min-${uniqueId}",
+  "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GRPC /google.cloud.aiplatform.v1.NotebookService/GetNotebookExecutionJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/notebookExecutionJobs/aipnb-min-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "customEnvironmentSpec": {
+    "machineSpec": {
+      "machineType": "e2-standard-4"
+    },
+    "networkSpec": {
+      "enableInternetAccess": true
+    },
+    "persistentDiskSpec": {
+      "diskSizeGb": "100",
+      "diskType": "pd-standard"
+    }
+  },
+  "directNotebookSource": {},
+  "displayName": "aipnb-min-${uniqueId}",
+  "gcsOutputUri": "gs://aipnb-min-dep-${uniqueId}",
+  "jobState": "JOB_STATE_SUCCEEDED",
+  "name": "projects/${projectNumber}/locations/us-central1/notebookExecutionJobs/aipnb-min-${uniqueId}",
+  "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.NotebookService/GetNotebookExecutionJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/notebookExecutionJobs/aipnb-min-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "customEnvironmentSpec": {
+    "machineSpec": {
+      "machineType": "e2-standard-4"
+    },
+    "networkSpec": {
+      "enableInternetAccess": true
+    },
+    "persistentDiskSpec": {
+      "diskSizeGb": "100",
+      "diskType": "pd-standard"
+    }
+  },
+  "directNotebookSource": {},
+  "displayName": "aipnb-min-${uniqueId}",
+  "gcsOutputUri": "gs://aipnb-min-dep-${uniqueId}",
+  "jobState": "JOB_STATE_SUCCEEDED",
+  "name": "projects/${projectNumber}/locations/us-central1/notebookExecutionJobs/aipnb-min-${uniqueId}",
+  "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.NotebookService/DeleteNotebookExecutionJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/notebookExecutionJobs/aipnb-min-${uniqueId}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/aipnb-min-dep-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a1d817bd7d
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "aipnb-min-dep-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/aipnb-min-dep-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/aipnb-min-dep-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a1d817bdae
+
+{
+  "items": [
+    {
+      "bucket": "aipnb-min-dep-${uniqueId}",
+      "contentType": "text/html",
+      "crc32c": "7PnUSQ==",
+      "etag": "abcdef0123A=",
+      "generation": "12345678901234",
+      "id": "aipnb-min-dep-${uniqueId}/aipnb-min-${uniqueId}/content.html/1794626582901673",
+      "kind": "storage#object",
+      "md5Hash": "W68lW54wwjN85ven+sIq2A==",
+      "mediaLink": "https://storage.googleapis.com/download/storage/v1/b/aipnb-min-dep-${uniqueId}/o/aipnb-min-${uniqueId}%2Fcontent.html?generation=1794626582901673\u0026alt=media",
+      "metageneration": "1",
+      "name": "aipnb-min-${uniqueId}/content.html",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/aipnb-min-dep-${uniqueId}/o/aipnb-min-${uniqueId}%2Fcontent.html",
+      "size": "586744",
+      "storageClass": "STANDARD",
+      "timeCreated": "2024-04-01T12:34:56.123456Z",
+      "timeFinalized": "2026-11-14T03:23:02.908Z",
+      "timeStorageClassUpdated": "2026-11-14T03:23:02.908Z",
+      "updated": "2024-04-01T12:34:56.123456Z"
+    },
+    {
+      "bucket": "aipnb-min-dep-${uniqueId}",
+      "contentType": "application/octet-stream",
+      "crc32c": "jjg2cg==",
+      "etag": "abcdef0123A=",
+      "generation": "12345678901234",
+      "id": "aipnb-min-dep-${uniqueId}/aipnb-min-${uniqueId}/content.ipynb/1794626582810539",
+      "kind": "storage#object",
+      "md5Hash": "TxpcdAgLc+iiOFGhZyuIvw==",
+      "mediaLink": "https://storage.googleapis.com/download/storage/v1/b/aipnb-min-dep-${uniqueId}/o/aipnb-min-${uniqueId}%2Fcontent.ipynb?generation=1794626582810539\u0026alt=media",
+      "metageneration": "1",
+      "name": "aipnb-min-${uniqueId}/content.ipynb",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/aipnb-min-dep-${uniqueId}/o/aipnb-min-${uniqueId}%2Fcontent.ipynb",
+      "size": "342",
+      "storageClass": "STANDARD",
+      "timeCreated": "2024-04-01T12:34:56.123456Z",
+      "timeFinalized": "2026-11-14T03:23:02.817Z",
+      "timeStorageClassUpdated": "2026-11-14T03:23:02.817Z",
+      "updated": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "kind": "storage#objects"
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/aipnb-min-dep-${uniqueId}/o/aipnb-min-${uniqueId}%2Fcontent.ipynb?alt=json&generation=1794626582810539&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+204 No Content
+Content-Type: application/json
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a1d817bde8
+
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/aipnb-min-dep-${uniqueId}/o/aipnb-min-${uniqueId}%2Fcontent.html?alt=json&generation=1794626582901673&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+204 No Content
+Content-Type: application/json
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a1d817bdea
+
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/aipnb-min-dep-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a1d817be10
+
+{
+  "kind": "storage#objects"
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/aipnb-min-dep-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+204 No Content
+Content-Type: application/json
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a1d817bffe

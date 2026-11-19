@@ -1,0 +1,15 @@
+GET https://observability.googleapis.com/v1/projects/${projectId}/locations/global/traceScopes/tracescope-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description for observabilitytracescope-maximal",
+  "name": "projects/${projectId}/locations/global/traceScopes/tracescope-max-${uniqueId}",
+  "resourceNames": [
+    "projects/${projectId}"
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

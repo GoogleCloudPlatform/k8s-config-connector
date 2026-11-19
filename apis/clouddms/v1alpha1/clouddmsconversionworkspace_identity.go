@@ -31,7 +31,7 @@ type ConversionWorkspaceIdentity struct {
 }
 
 func (i *ConversionWorkspaceIdentity) String() string {
-	return i.parent.String() + "/conversionworkspaces/" + i.id
+	return i.parent.String() + "/conversionWorkspaces/" + i.id
 }
 
 func (i *ConversionWorkspaceIdentity) ID() string {
@@ -104,8 +104,8 @@ func NewConversionWorkspaceIdentity(ctx context.Context, reader client.Reader, o
 
 func ParseConversionWorkspaceExternal(external string) (parent *ConversionWorkspaceParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "conversionworkspaces" {
-		return nil, "", fmt.Errorf("format of CloudDMSConversionWorkspace external=%q was not known (use projects/{{projectID}}/locations/{{location}}/conversionworkspaces/{{conversionworkspaceID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || (tokens[4] != "conversionworkspaces" && tokens[4] != "conversionWorkspaces") {
+		return nil, "", fmt.Errorf("format of CloudDMSConversionWorkspace external=%q was not known (use projects/{{projectID}}/locations/{{location}}/conversionWorkspaces/{{conversionworkspaceID}})", external)
 	}
 	parent = &ConversionWorkspaceParent{
 		ProjectID: tokens[1],

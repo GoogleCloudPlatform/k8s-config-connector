@@ -273,12 +273,12 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	// 	+    "value": {}
 	// 	   }
 	jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
-		response := obj["response"]
-		if responseMap, ok := response.(map[string]any); ok {
-			if responseMap["@type"] == "type.googleapis.com/google.protobuf.Empty" {
-				value := responseMap["value"]
-				if valueMap, ok := value.(map[string]any); ok && len(valueMap) == 0 {
-					delete(responseMap, "value")
+		for _, field := range []string{"response", "metadata"} {
+			if m, ok := obj[field].(map[string]any); ok {
+				if m["@type"] == "type.googleapis.com/google.protobuf.Empty" {
+					if valueMap, ok := m["value"].(map[string]any); ok && len(valueMap) == 0 {
+						delete(m, "value")
+					}
 				}
 			}
 		}

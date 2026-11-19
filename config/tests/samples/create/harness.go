@@ -968,9 +968,6 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 		if gvk.Group == "dlp.cnrm.cloud.google.com" && gvk.Kind == "DLPConnection" {
 			t.Skip("skipping DLPConnection as the controller is not implemented yet")
 		}
-		if gvk.Group == "ces.cnrm.cloud.google.com" && gvk.Kind == "CESApp" {
-			t.Skip("skipping CESApp as the controller is not implemented yet")
-		}
 	}
 
 	// Note: we don't have the harness yet, we have to look to the env var
@@ -1052,6 +1049,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "asset.cnrm.cloud.google.com", Kind: "AssetFeed"}:
 			case schema.GroupKind{Group: "asset.cnrm.cloud.google.com", Kind: "AssetSavedQuery"}:
 
+			case schema.GroupKind{Group: "backupdr.cnrm.cloud.google.com", Kind: "BackupDRAutoProtectionPolicy"}:
 			case schema.GroupKind{Group: "backupdr.cnrm.cloud.google.com", Kind: "BackupDRBackupPlan"}:
 			case schema.GroupKind{Group: "backupdr.cnrm.cloud.google.com", Kind: "BackupDRBackupVault"}:
 			case schema.GroupKind{Group: "backupdr.cnrm.cloud.google.com", Kind: "BackupDRManagementServer"}:
@@ -1075,6 +1073,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryDatasetAccess"}:
 			case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryTable"}:
 			case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryRoutine"}:
+			case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryRowAccessPolicy"}:
 
 			case schema.GroupKind{Group: "bigqueryanalyticshub.cnrm.cloud.google.com", Kind: "BigQueryAnalyticsHubDataExchange"}:
 			case schema.GroupKind{Group: "bigqueryanalyticshub.cnrm.cloud.google.com", Kind: "BigQueryAnalyticsHubListing"}:
@@ -1110,10 +1109,12 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "clouddeploy.cnrm.cloud.google.com", Kind: "CloudDeployDeployPolicy"}:
 			case schema.GroupKind{Group: "clouddeploy.cnrm.cloud.google.com", Kind: "CloudDeployAutomation"}:
 			case schema.GroupKind{Group: "clouddeploy.cnrm.cloud.google.com", Kind: "CloudDeployCustomTargetType"}:
+			case schema.GroupKind{Group: "clouddeploy.cnrm.cloud.google.com", Kind: "CloudDeployRelease"}:
 
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableAppProfile"}:
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableAuthorizedView"}:
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableBackup"}:
+			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableCluster"}:
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableInstance"}:
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableTable"}:
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableLogicalView"}:
@@ -1161,6 +1162,9 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeHTTPHealthCheck"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeHTTPSHealthCheck"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeInstantSnapshot"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeInstantSnapshotGroup"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeInterconnectGroup"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeInterconnectAttachmentGroup"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeInstance"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeInstanceGroup"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeInstanceGroupManager"}:
@@ -1204,6 +1208,12 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeDiskResourcePolicyAttachment"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeRegionDiskResourcePolicyAttachment"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeVMExtensionPolicy"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeGlobalVMExtensionPolicy"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeStoragePool"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeHealthAggregationPolicy"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeHealthSource"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeCrossSiteNetwork"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeRolloutPlan"}:
 
 			case schema.GroupKind{Group: "container.cnrm.cloud.google.com", Kind: "ContainerCluster"}:
 			case schema.GroupKind{Group: "container.cnrm.cloud.google.com", Kind: "ContainerNodePool"}:
@@ -1238,6 +1248,9 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexMetadataJob"}:
 			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexMetadataFeed"}:
 			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexZone"}:
+			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexAsset"}:
+			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexEntity"}:
+			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexPartition"}:
 			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexTask"}:
 			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexDataTaxonomy"}:
 			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexAspectType"}:
@@ -1258,6 +1271,8 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "dataproc.cnrm.cloud.google.com", Kind: "DataprocSessionTemplate"}:
 			case schema.GroupKind{Group: "dataproc.cnrm.cloud.google.com", Kind: "DataprocAutoscalingPolicy"}:
 			case schema.GroupKind{Group: "dataproc.cnrm.cloud.google.com", Kind: "DataprocWorkflowTemplate"}:
+
+			case schema.GroupKind{Group: "designcenter.cnrm.cloud.google.com", Kind: "DesignCenterSpace"}:
 
 			case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineDataStore"}:
 			case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineSession"}:
@@ -1440,6 +1455,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 
 			case schema.GroupKind{Group: "resourcemanager.cnrm.cloud.google.com", Kind: "Folder"}:
 			case schema.GroupKind{Group: "resourcemanager.cnrm.cloud.google.com", Kind: "Project"}:
+			case schema.GroupKind{Group: "resourcemanager.cnrm.cloud.google.com", Kind: "ResourceManagerTagHold"}:
 
 			case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
 			case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunService"}:
@@ -1493,8 +1509,10 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 
 			case schema.GroupKind{Group: "configdeployment.cnrm.cloud.google.com", Kind: "ConfigDeployment"}:
 			case schema.GroupKind{Group: "configdeployment.cnrm.cloud.google.com", Kind: "ConfigDeploymentGroup"}:
+			case schema.GroupKind{Group: "configdeployment.cnrm.cloud.google.com", Kind: "ConfigPreview"}:
 
 			case schema.GroupKind{Group: "contactcenterinsights.cnrm.cloud.google.com", Kind: "CCInsightsQAScorecard"}:
+			case schema.GroupKind{Group: "contactcenterinsights.cnrm.cloud.google.com", Kind: "CCInsightsQAScorecardRevision"}:
 			case schema.GroupKind{Group: "contactcenterinsights.cnrm.cloud.google.com", Kind: "CCInsightsPhraseMatcher"}:
 			case schema.GroupKind{Group: "contactcenterinsights.cnrm.cloud.google.com", Kind: "CCInsightsView"}:
 			case schema.GroupKind{Group: "contactcenterinsights.cnrm.cloud.google.com", Kind: "CCInsightsConversation"}:
@@ -1537,7 +1555,13 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "aiplatform.cnrm.cloud.google.com", Kind: "AIPlatformHyperparameterTuningJob"}:
 			case schema.GroupKind{Group: "aiplatform.cnrm.cloud.google.com", Kind: "AIPlatformModelDeploymentMonitoringJob"}:
 			case schema.GroupKind{Group: "aiplatform.cnrm.cloud.google.com", Kind: "AIPlatformCachedContent"}:
+			case schema.GroupKind{Group: "aiplatform.cnrm.cloud.google.com", Kind: "AIPlatformExecution"}:
 			case schema.GroupKind{Group: "aiplatform.cnrm.cloud.google.com", Kind: "AIPlatformRAGCorpus"}:
+			case schema.GroupKind{Group: "aiplatform.cnrm.cloud.google.com", Kind: "AIPlatformContext"}:
+			case schema.GroupKind{Group: "aiplatform.cnrm.cloud.google.com", Kind: "AIPlatformArtifact"}:
+			case schema.GroupKind{Group: "aiplatform.cnrm.cloud.google.com", Kind: "AIPlatformNotebookExecutionJob"}:
+			case schema.GroupKind{Group: "aiplatform.cnrm.cloud.google.com", Kind: "AIPlatformModelMonitor"}:
+			case schema.GroupKind{Group: "aiplatform.cnrm.cloud.google.com", Kind: "AIPlatformBatchPredictionJob"}:
 
 			case schema.GroupKind{Group: "videostitcher.cnrm.cloud.google.com", Kind: "VideoStitcherCDNKey"}:
 
@@ -1567,6 +1591,8 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 
 			case schema.GroupKind{Group: "migrationcenter.cnrm.cloud.google.com", Kind: "MigrationCenterGroup"}:
 			case schema.GroupKind{Group: "migrationcenter.cnrm.cloud.google.com", Kind: "MigrationCenterPreferenceSet"}:
+			case schema.GroupKind{Group: "migrationcenter.cnrm.cloud.google.com", Kind: "MigrationCenterReport"}:
+			case schema.GroupKind{Group: "migrationcenter.cnrm.cloud.google.com", Kind: "MigrationCenterReportConfig"}:
 			case schema.GroupKind{Group: "migrationcenter.cnrm.cloud.google.com", Kind: "MigrationCenterSource"}:
 			case schema.GroupKind{Group: "modelarmor.cnrm.cloud.google.com", Kind: "ModelArmorTemplate"}:
 			case schema.GroupKind{Group: "modelarmor.cnrm.cloud.google.com", Kind: "ModelArmorFloorSetting"}:
@@ -1579,7 +1605,10 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "dialogflow.cnrm.cloud.google.com", Kind: "DialogflowConversationDataset"}:
 			case schema.GroupKind{Group: "dialogflow.cnrm.cloud.google.com", Kind: "DialogflowWebhook"}:
 			case schema.GroupKind{Group: "dialogflow.cnrm.cloud.google.com", Kind: "DialogflowPlaybook"}:
+			case schema.GroupKind{Group: "dialogflow.cnrm.cloud.google.com", Kind: "DialogflowCompanionAgent"}:
 			case schema.GroupKind{Group: "dialogflowcx.cnrm.cloud.google.com", Kind: "DialogflowCXAgent"}:
+			case schema.GroupKind{Group: "dialogflowcx.cnrm.cloud.google.com", Kind: "DialogflowCXFlow"}:
+			case schema.GroupKind{Group: "dialogflowcx.cnrm.cloud.google.com", Kind: "DialogflowCXWebhook"}:
 
 			case schema.GroupKind{Group: "securitycenter.cnrm.cloud.google.com", Kind: "SecurityCenterBigQueryExport"}:
 			case schema.GroupKind{Group: "securitycenter.cnrm.cloud.google.com", Kind: "SecurityCenterMuteConfig"}:
@@ -1587,6 +1616,9 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "workloadmanager.cnrm.cloud.google.com", Kind: "WorkloadManagerEvaluation"}:
 			case schema.GroupKind{Group: "devicestreaming.cnrm.cloud.google.com", Kind: "DeviceStreamingSession"}:
 			case schema.GroupKind{Group: "hypercomputecluster.cnrm.cloud.google.com", Kind: "HypercomputeClusterCluster"}:
+			case schema.GroupKind{Group: "ces.cnrm.cloud.google.com", Kind: "CESApp"}:
+			case schema.GroupKind{Group: "ces.cnrm.cloud.google.com", Kind: "CESDeployment"}:
+			case schema.GroupKind{Group: "ces.cnrm.cloud.google.com", Kind: "CESGuardrail"}:
 
 			case schema.GroupKind{Group: "vectorsearch.cnrm.cloud.google.com", Kind: "VectorSearchCollection"}:
 			case schema.GroupKind{Group: "vectorsearch.cnrm.cloud.google.com", Kind: "VectorsearchIndex"}:
@@ -1645,6 +1677,12 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "dlp.cnrm.cloud.google.com", Kind: "DLPContentPolicy"}:
 
 			case schema.GroupKind{Group: "websecurityscanner.cnrm.cloud.google.com", Kind: "WebSecurityScannerScanConfig"}:
+
+			case schema.GroupKind{Group: "observability.cnrm.cloud.google.com", Kind: "ObservabilityTraceScope"}:
+
+			case schema.GroupKind{Group: "ftp.cnrm.cloud.google.com", Kind: "FTPServer"}:
+
+			case schema.GroupKind{Group: "agentidentity.cnrm.cloud.google.com", Kind: "AgentIdentityAuthProvider"}:
 
 			default:
 				t.Skipf("gk %v not suppported by mock gcp %v; skipping", gvk.GroupKind(), testKey)

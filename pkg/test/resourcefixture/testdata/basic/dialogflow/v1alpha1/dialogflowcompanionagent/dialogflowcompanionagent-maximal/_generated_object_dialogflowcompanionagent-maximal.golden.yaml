@@ -1,0 +1,45 @@
+apiVersion: dialogflow.cnrm.cloud.google.com/v1alpha1
+kind: DialogflowCompanionAgent
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: dialogflowcompanionagent-max-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Updated maximal description for companion agent
+  displayName: Updated Max Agent ${uniqueId}
+  location: global
+  projectRef:
+    external: projects/${projectId}
+  skillConfigs:
+  - guidanceSkillConfig:
+      guidanceInstructions:
+      - actions:
+        - description: Lookup order status in system
+        condition: customer asks for status
+        disableSuggestedReply: false
+        displayDetails: Help customer check order status
+        displayName: Order status
+        triggerEvent: AGENT_MESSAGE
+      overarchingGuidance: Always provide accurate information.
+    skillTriggeringEvent: AGENT_MESSAGE
+  - skillTriggeringEvent: AGENT_MESSAGE
+    translationSkillConfig:
+      agentLanguageCode: en-GB
+      customerLanguageCode: fr
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-max-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"

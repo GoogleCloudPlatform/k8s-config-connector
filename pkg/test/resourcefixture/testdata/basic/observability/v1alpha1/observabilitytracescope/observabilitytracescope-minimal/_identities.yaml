@@ -1,0 +1,6 @@
+- caisURL: //observability.googleapis.com/projects/${projectId}/locations/global/traceScopes/observabilitytracescope-min-${uniqueId}
+  group: observability.cnrm.cloud.google.com
+  kind: ObservabilityTraceScope
+  name: observabilitytracescope-min-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

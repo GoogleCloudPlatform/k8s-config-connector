@@ -51,11 +51,8 @@ type AppProfile_MultiClusterRoutingUseAny_RowAffinity struct {
 }
 */
 
-// +kcc:proto=google.bigtable.admin.v2.AppProfile.StandardIsolation
-type AppProfile_StandardIsolation struct {
-	// The priority of requests sent using this app profile.
-	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.StandardIsolation.priority
-	Priority *string `json:"priority,omitempty"`
+// +kcc:proto=google.bigtable.admin.v2.AppProfile.StandardIsolation.MemoryConfig
+type AppProfile_StandardIsolation_MemoryConfig struct {
 }
 
 // +kcc:proto=google.bigtable.admin.v2.BackupInfo

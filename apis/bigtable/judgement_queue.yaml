@@ -1,0 +1,93 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: BigtableCluster
+    group: bigtable.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: finalized direct KRM types, identity, and references for BigtableCluster
+  - kind: BigtableCluster
+    group: bigtable.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/instances/{instance}, and no InstanceRef type exists to point at; add the parent resource first, then model this as a reference
+    status: resolved
+    resolution: edited
+    note: preserved existing spec.instanceRef (bigtablev1beta1.InstanceRef) to maintain CRD backward compatibility; parent has no location
+  - kind: BigtableCluster
+    group: bigtable.cnrm.cloud.google.com
+    field: .spec.clusterConfig.clusterAutoscalingConfig.autoscalingLimits
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change BigtableClusterSpec.ClusterConfig in bigtablecluster_types.go from Cluster_ClusterConfig to Cluster_ClusterConfigWithRequired and run generate.sh again. BigtableCluster is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via Cluster_ClusterConfigWithRequired referencing Cluster_ClusterAutoscalingConfig
+  - kind: BigtableCluster
+    group: bigtable.cnrm.cloud.google.com
+    field: .spec.clusterConfig.clusterAutoscalingConfig.autoscalingLimits.maxServeNodes
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change BigtableClusterSpec.ClusterConfig in bigtablecluster_types.go from Cluster_ClusterConfig to Cluster_ClusterConfigWithRequired and run generate.sh again. BigtableCluster is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via Cluster_ClusterConfigWithRequired referencing Cluster_ClusterAutoscalingConfig and AutoscalingLimits
+  - kind: BigtableCluster
+    group: bigtable.cnrm.cloud.google.com
+    field: .spec.clusterConfig.clusterAutoscalingConfig.autoscalingLimits.minServeNodes
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change BigtableClusterSpec.ClusterConfig in bigtablecluster_types.go from Cluster_ClusterConfig to Cluster_ClusterConfigWithRequired and run generate.sh again. BigtableCluster is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via Cluster_ClusterConfigWithRequired referencing Cluster_ClusterAutoscalingConfig and AutoscalingLimits
+  - kind: BigtableCluster
+    group: bigtable.cnrm.cloud.google.com
+    field: .spec.clusterConfig.clusterAutoscalingConfig.autoscalingTargets
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change BigtableClusterSpec.ClusterConfig in bigtablecluster_types.go from Cluster_ClusterConfig to Cluster_ClusterConfigWithRequired and run generate.sh again. BigtableCluster is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via Cluster_ClusterConfigWithRequired referencing Cluster_ClusterAutoscalingConfig
+  - kind: BigtableCluster
+    group: bigtable.cnrm.cloud.google.com
+    field: .spec.encryptionConfig.kmsKeyName
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to cloudkms.googleapis.com/CryptoKey (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: accepted
+    note: already modeled as kmsKeyRef (*kmsv1beta1.KMSCryptoKeyRef) on Cluster_EncryptionConfig
+  - kind: BigtableCluster
+    group: bigtable.cnrm.cloud.google.com
+    field: .spec.location
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to locations.googleapis.com/Location (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: not-applicable
+    note: locations.googleapis.com/Location is not managed by KCC; kept as plain string
+  - kind: BigtableCluster
+    group: bigtable.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: proto defines a location field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
+    status: resolved
+    resolution: accepted
+    note: kept as plain string specifying the cluster zone; parent BigtableInstance is not regional/zonal
