@@ -14,15 +14,12 @@
 
 // API sources for DesignCenterCatalog, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/547f8fdb4b91dbac70d540b3757520f0608ae356/google/cloud/designcenter/v1/catalog_management.proto
-// +kcc:guess=source-link reason=verify-service-docs-link
-// +kcc:source:service-docs=
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=
+// +kcc:source:service-docs=https://cloud.google.com/application-design-center/docs
+// +kcc:source:resource-docs=https://cloud.google.com/application-design-center/docs/reference/rest/v1/projects.locations.spaces.catalogs
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -33,15 +30,10 @@ var DesignCenterCatalogGVK = GroupVersion.WithKind("DesignCenterCatalog")
 // +kcc:spec:proto=google.cloud.designcenter.v1.Catalog
 // +kcc:required-from-proto
 type DesignCenterCatalogSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/spaces/{space} this resource belongs to.
-	// +kcc:guess
-	// SpaceRef *DesignCenterSpaceRef `json:"spaceRef,omitempty"`
+	// The DesignCenterSpace this DesignCenterCatalog is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *DesignCenterSpaceRef `json:"parentRef"`
 
 	// The DesignCenterCatalog name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
