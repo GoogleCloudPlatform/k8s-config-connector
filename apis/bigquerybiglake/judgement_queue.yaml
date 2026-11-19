@@ -21,6 +21,22 @@
 # file does not have.
 
 entries:
+  - kind: BigLakeHiveCatalog
+    group: bigquerybiglake.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: BigLakeHiveCatalog
+    group: bigquerybiglake.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.catalogs: https://docs.cloud.google.com/products/lakehouse/docs/reference/rest/v1/projects.catalogs, https://docs.cloud.google.com/bigquery/docs/reference/rest/v1/projects.catalogs'
+    status: open
+  - kind: BigLakeHiveCatalog
+    group: bigquerybiglake.cnrm.cloud.google.com
+    field: .spec.locationURI
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
   - kind: BigLakeIcebergCatalog
     group: bigquerybiglake.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
