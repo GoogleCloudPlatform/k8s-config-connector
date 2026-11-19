@@ -547,6 +547,12 @@ services:
     servicePrefix: Logging
     protoPackages:
       - google.logging.v2
+  - api: lustre
+    title: Google Cloud Managed Lustre API
+    servicePrefix: Lustre
+    protoPackages:
+      - google.cloud.lustre.v1
+    reason: approved as proposed (PR #15180)
   - api: managedkafka
     title: Managed Service for Apache Kafka API
     servicePrefix: ManagedKafka
