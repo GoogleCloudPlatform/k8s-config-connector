@@ -16,6 +16,7 @@ package register
 
 import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/accesscontextmanager"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/agentidentity"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/agentregistry"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aiplatform"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aiplatform/vertexaifeatureonlinestore"
@@ -101,6 +102,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataproc"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataproc/dataprocsessiontemplate"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/datastream"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/designcenter"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/developerconnect"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/devicestreaming/session"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dialogflow"
@@ -122,7 +124,9 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/firebase"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/firebasedatabase"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/firebasehosting"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/firebasestorage"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/firestore"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/ftp"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/geminidataanalytics"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/gkebackup"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/gkehub"
@@ -156,6 +160,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/networksecurity/mirroringendpointgroup"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/networkservices"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/notebooks"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/observability"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/oracledatabase"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/orgpolicy"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/osconfig"

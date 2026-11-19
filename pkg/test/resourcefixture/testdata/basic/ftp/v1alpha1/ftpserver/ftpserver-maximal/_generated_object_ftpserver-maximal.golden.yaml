@@ -1,0 +1,46 @@
+apiVersion: ftp.cnrm.cloud.google.com/v1alpha1
+kind: FTPServer
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+    test-label: ftpserver-upd-${uniqueId}
+  name: ftpmax-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  accessType: INTERNAL
+  displayName: ftpmax-upd-${uniqueId}
+  internalConfig:
+    consumerAcceptList:
+    - connectionLimit: 20
+      projectRef:
+        external: projects/${projectId}
+    consumerRejectList:
+    - projectRef:
+        external: projects/1234567890
+  location: us-west1
+  projectRef:
+    external: ${projectId}
+  resourceID: ftpmax-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-west1/servers/ftpmax-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    googleManagedServerCredential:
+      asymmetricAlgorithm: ED25519
+      fingerprint: SHA256:WIFsa2XnMVG2h4DnH0s1dzkpB6ImjgNtX3Lej16cRAk
+    internalConfig:
+      serviceAttachment: projects/occae7b529fb8d693p-tp/regions/us-west1/serviceAttachments/ftpmax-${uniqueId}-psc-service-attachment
+    serviceAgent: p-${projectNumber}-341656619438@gcp-sa-ftp.iam.gserviceaccount.com
+    state: ACTIVE
+    updateTime: "1970-01-01T00:00:00Z"

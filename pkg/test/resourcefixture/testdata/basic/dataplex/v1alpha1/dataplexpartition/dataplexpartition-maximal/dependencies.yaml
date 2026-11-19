@@ -1,0 +1,101 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1
+kind: DataplexLake
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: dataplexlake-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+---
+apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1
+kind: DataplexZone
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: dataplexzone-${uniqueId}
+spec:
+  lakeRef:
+    name: dataplexlake-${uniqueId}
+  type: RAW
+  resourceSpec:
+    locationType: SINGLE_REGION
+---
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: dataplexbucket-${uniqueId}
+spec:
+  location: us-central1
+  uniformBucketLevelAccess: true
+---
+apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1
+kind: DataplexAsset
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: dataplexasset-${uniqueId}
+spec:
+  parentRef:
+    name: dataplexzone-${uniqueId}
+  resourceSpec:
+    type: STORAGE_BUCKET
+    storageBucketRef:
+      name: dataplexbucket-${uniqueId}
+---
+apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1
+kind: DataplexEntity
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: dataplexentity-${uniqueId}
+spec:
+  parentRef:
+    name: dataplexzone-${uniqueId}
+  id: entity_${uniqueId}
+  displayName: Maximal Entity
+  description: Maximal entity description
+  type: TABLE
+  assetRef:
+    name: dataplexasset-${uniqueId}
+  dataPath: gs://dataplexbucket-${uniqueId}/data
+  dataPathPattern: gs://dataplexbucket-${uniqueId}/data/**/*.csv
+  system: CLOUD_STORAGE
+  format:
+    mimeType: text/csv
+    csv:
+      delimiter: ","
+      encoding: UTF-8
+      headerRows: 1
+  schema:
+    userManaged: true
+    fields:
+      - name: id
+        type: INT64
+        mode: REQUIRED
+        description: Primary ID
+      - name: name
+        type: STRING
+        mode: NULLABLE
+        description: Item Name
+    partitionFields:
+      - name: dt
+        type: DATE
+    partitionStyle: HIVE_COMPATIBLE

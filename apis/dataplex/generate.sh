@@ -70,7 +70,8 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DataplexGlossaryCategory:GlossaryCategory \
   --resource DataplexGlossaryTerm:GlossaryTerm \
   --resource DataplexContent:Content \
-  --resource DataplexEnvironment:Environment
+  --resource DataplexEnvironment:Environment \
+  --resource DataplexPartition:Partition
 
 ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${PROTO_OUT} \
@@ -86,7 +87,8 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource DataplexGlossaryCategory:GlossaryCategory \
   --resource DataplexGlossaryTerm:GlossaryTerm \
   --resource DataplexContent:Content \
-  --resource DataplexEnvironment:Environment
+  --resource DataplexEnvironment:Environment \
+  --resource DataplexPartition:Partition
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dataplex.v1 \

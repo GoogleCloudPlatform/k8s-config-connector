@@ -132,6 +132,14 @@ type AppProfile_SingleClusterRouting struct {
 	AllowTransactionalWrites *bool `json:"allowTransactionalWrites,omitempty"`
 }
 
+// We manually override AppProfile_StandardIsolation to exclude the empty MemoryConfig message
+// +kcc:proto=google.bigtable.admin.v2.AppProfile.StandardIsolation
+type AppProfile_StandardIsolation struct {
+	// The priority of requests sent using this app profile.
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.StandardIsolation.priority
+	Priority *string `json:"priority,omitempty"`
+}
+
 func init() {
 	SchemeBuilder.Register(&BigtableAppProfile{}, &BigtableAppProfileList{})
 }

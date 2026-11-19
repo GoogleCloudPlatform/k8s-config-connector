@@ -111,6 +111,12 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 						} else {
 							replacements.ReplaceStringValue(value, "${ipAddress}")
 						}
+					} else if strings.Contains(value, ":") {
+						if strings.HasSuffix(value, ":22") || strings.HasSuffix(value, ":2") {
+							replacements.ReplaceStringValue(value, "${ipAddress}-2")
+						} else {
+							replacements.ReplaceStringValue(value, "${ipAddress}")
+						}
 					}
 				}
 			}

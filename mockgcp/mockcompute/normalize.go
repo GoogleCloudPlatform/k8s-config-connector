@@ -122,6 +122,11 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 			if obj["expireTime"] != nil {
 				obj["expireTime"] = mockgcpregistry.PlaceholderTimestamp
 			}
+			if rs, ok := obj["resourceStatus"].(map[string]any); ok {
+				if rs["consistencyMembershipResolutionTime"] != nil {
+					rs["consistencyMembershipResolutionTime"] = mockgcpregistry.PlaceholderTimestamp
+				}
+			}
 			if obj["labelFingerprint"] != nil {
 				obj["labelFingerprint"] = PlaceholderFingerprint
 			}

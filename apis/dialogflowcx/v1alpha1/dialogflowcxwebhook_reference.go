@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	"context"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -46,6 +47,17 @@ func (r *DialogflowCXWebhookRef) Normalize(ctx context.Context, reader client.Re
 		}
 		name, _, _ := unstructured.NestedString(u.Object, "status", "name")
 		if name != "" {
+			if !strings.Contains(name, "/") {
+				obj, err := common.ToStructuredType[*DialogflowCXWebhook](u)
+				if err == nil {
+					id, err := getIdentityFromDialogflowCXWebhookSpec(ctx, reader, obj)
+					if err == nil {
+						id.Webhook = name
+						return id.String()
+					}
+				}
+				return ""
+			}
 			return name
 		}
 		obj, err := common.ToStructuredType[*DialogflowCXWebhook](u)

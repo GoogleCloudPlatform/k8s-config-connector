@@ -1093,6 +1093,7 @@ func TestCRDObjectTypes(t *testing.T) {
 	// status.observedState in its status struct. Comment it out in the Go types instead.
 	knownInvalidCRDs := map[string]bool{
 		"billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com":                    true, // spec.amount.lastPeriodAmount is an empty object
+		"agentidentityauthproviders.agentidentity.cnrm.cloud.google.com":                true, // GCP known pattern: Empty oneof option (spec.authProviderTypeParams.geAuthProvider)
 		"accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com":   true, // status.observedState is an empty object
 		"aiplatformmodels.aiplatform.cnrm.cloud.google.com":                             true, // status.observedState.supportedExportFormats[] is an empty object
 		"apigeeenvironments.apigee.cnrm.cloud.google.com":                               true, // status.observedState is an empty object
@@ -1122,6 +1123,8 @@ func TestCRDObjectTypes(t *testing.T) {
 		"transcoderjobs.transcoder.cnrm.cloud.google.com":                               true, // spec.config.elementaryStreams[].videoStream.vp9.sdr is an empty object
 		"aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com":                       true, // GCP known pattern: Empty oneof option (spec.indexConfig.bruteForceConfig)
 		"cesagents.ces.cnrm.cloud.google.com":                                           true, // GCP known pattern: Empty oneof option (spec.llmAgent)
+		"cesguardrails.ces.cnrm.cloud.google.com":                                       true, // GCP known pattern: Empty oneof option (spec.llmPromptSecurity.defaultSettings)
+		"cestoolsets.ces.cnrm.cloud.google.com":                                         true, // GCP known pattern: Empty oneof option (spec.mcpToolset.apiAuthentication.serviceAgentIDTokenAuthConfig)
 		"cloudchannelchannelpartnerrepricingconfigs.cloudchannel.cnrm.cloud.google.com": true, // GCP known pattern: Empty oneof option (spec.repricingConfig.channelPartnerGranularity)
 		"cloudchannelcustomerrepricingconfigs.cloudchannel.cnrm.cloud.google.com":       true, // GCP known pattern: Empty oneof option (spec.repricingConfig.channelPartnerGranularity)
 		"datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com":           true, // GCP known pattern: Empty oneof option (spec.oracle.staticServiceIPConnectivity)
@@ -1141,6 +1144,8 @@ func TestCRDObjectTypes(t *testing.T) {
 		"aiplatformnotebookexecutionjobs.aiplatform.cnrm.cloud.google.com":              true, // GCP known pattern: Empty oneof option (spec.workbenchRuntime)
 		"aiplatformragcorpuses.aiplatform.cnrm.cloud.google.com":                        true, // GCP known pattern: Empty oneof option (spec.vectorDbConfig.ragManagedDb.knn)
 		"dlpcontentpolicies.dlp.cnrm.cloud.google.com":                                  true, // GCP known pattern: Empty oneof option (spec.rules[].conditions[].infoTypeCondition.anyInfoType)
+		"cestools.ces.cnrm.cloud.google.com":                                            true, // GCP known pattern: Empty oneof option (spec.openAPITool.apiAuthentication.serviceAgentIDTokenAuthConfig)
+		"clouddeployrollouts.clouddeploy.cnrm.cloud.google.com":                         true, // GCP known pattern: Empty oneof option (status.observedState.phases[].childRolloutJobs.advanceRolloutJobs[].advanceChildRolloutJob)
 	}
 
 	crds, err := crdloader.LoadAllCRDs()

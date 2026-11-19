@@ -1,0 +1,8 @@
+apiVersion: migrationcenter.cnrm.cloud.google.com/v1alpha1
+kind: MigrationCenterReport
+metadata:
+  name: migrationcenterreport-minimal-${uniqueId}
+spec:
+  parentRef:
+    name: migrationcenterreportconfig-minimal-${uniqueId}
+  type: TOTAL_COST_OF_OWNERSHIP

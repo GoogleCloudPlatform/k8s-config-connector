@@ -19,14 +19,25 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"strings"
+	"time"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	appsv1 "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/wait"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/apiutil"
+)
+
+const (
+	// defaultMCLRolloutTimeout allows for pulling the image, and for a few restarts while the
+	// IAM bindings that setup has just created take effect.
+	defaultMCLRolloutTimeout      = 5 * time.Minute
+	defaultMCLRolloutPollInterval = 2 * time.Second
 )
 
 // clusterConfigurer inspects a target GKE cluster and applies multi-cluster HA Kubernetes configuration to it.
@@ -35,9 +46,14 @@ type clusterConfigurer struct {
 	gkeInfo         gkeClusterInfo
 	configConnector *operatorv1beta1.ConfigConnector
 	manifests       *manifestBuilder
+
+	// mclRolloutTimeout and mclRolloutPollInterval control how long apply waits for the MCL
+	// controller before it gives up on enabling multi-cluster leader election.
+	mclRolloutTimeout      time.Duration
+	mclRolloutPollInterval time.Duration
 }
 
-func newClusterConfigurer(ctx context.Context, handle *clusterHandle, leaseName, leaseNamespace, bucket string) (*clusterConfigurer, error) {
+func newClusterConfigurer(ctx context.Context, handle *clusterHandle, mclImage, syncerImage, leaseName, leaseNamespace, bucket string) (*clusterConfigurer, error) {
 	if handle == nil || handle.client == nil {
 		return nil, fmt.Errorf("cluster handle has a nil Kubernetes client")
 	}
@@ -52,60 +68,20 @@ func newClusterConfigurer(ctx context.Context, handle *clusterHandle, leaseName,
 		return nil, err
 	}
 
-	image, err := discoverControllerImage(ctx, handle)
-	if err != nil {
-		return nil, err
-	}
-
-	manifests := newManifestBuilder(gkeInfo.contextName, gkeInfo.gkeCluster(), gkeInfo.project, image, leaseName, leaseNamespace, bucket)
+	// GetMode applies the operator's default: an unset spec.mode means namespaced mode.
+	manifests := newManifestBuilder(gkeInfo.contextName, gkeInfo.gkeCluster(), gkeInfo.project, cc.GetMode(), mclImage, syncerImage, leaseName, leaseNamespace, bucket)
 	return &clusterConfigurer{
-		handle:          handle,
-		gkeInfo:         gkeInfo,
-		configConnector: cc,
-		manifests:       manifests,
+		handle:                 handle,
+		gkeInfo:                gkeInfo,
+		configConnector:        cc,
+		manifests:              manifests,
+		mclRolloutTimeout:      defaultMCLRolloutTimeout,
+		mclRolloutPollInterval: defaultMCLRolloutPollInterval,
 	}, nil
 }
 
-const (
-	controllerManagerNamespace   = "cnrm-system"
-	controllerComponentLabelKey  = "cnrm.cloud.google.com/component"
-	controllerManagerStatefulSet = "cnrm-controller-manager"
-)
-
-func discoverControllerImage(ctx context.Context, handle *clusterHandle) (string, error) {
-	stsList := &appsv1.StatefulSetList{}
-	if err := handle.client.List(
-		ctx,
-		stsList,
-		client.InNamespace(controllerManagerNamespace),
-		client.MatchingLabels{controllerComponentLabelKey: controllerManagerStatefulSet},
-	); err != nil {
-		return "", fmt.Errorf("listing Config Connector controller StatefulSets in namespace %q on cluster %q: %w", controllerManagerNamespace, handle.contextName, err)
-	}
-
-	var fallbackImage string
-	for _, sts := range stsList.Items {
-		for _, container := range sts.Spec.Template.Spec.Containers {
-			if container.Name == "manager" && container.Image != "" {
-				if sts.Name == controllerManagerStatefulSet {
-					return container.Image, nil
-				}
-
-				if fallbackImage == "" {
-					fallbackImage = container.Image
-				}
-			}
-		}
-	}
-
-	if fallbackImage != "" {
-		return fallbackImage, nil
-	}
-
-	return "", fmt.Errorf(
-		"could not find running Config Connector manager container image on cluster %q (expected StatefulSet with label %s=%s in namespace %q); verify Config Connector is installed and healthy",
-		handle.contextName, controllerComponentLabelKey, controllerManagerStatefulSet, controllerManagerNamespace,
-	)
+func (c *clusterConfigurer) setPeerProjects(peerProjects []string) {
+	c.manifests.setPeerProjects(peerProjects)
 }
 
 func (c *clusterConfigurer) apply(ctx context.Context, stdout io.Writer, dryRun bool) error {
@@ -127,6 +103,13 @@ func (c *clusterConfigurer) apply(ctx context.Context, stdout io.Writer, dryRun 
 	}
 	if len(errs) > 0 {
 		return errors.Join(errs...)
+	}
+
+	// Once spec.experiments.multiClusterLease is set, Config Connector reconciles nothing on
+	// this cluster until the MCL controller confirms a leader. So only set it when that
+	// controller runs.
+	if err := c.waitForMCLController(ctx, stdout); err != nil {
+		return err
 	}
 
 	return c.updateConfigConnector(ctx)
@@ -171,6 +154,113 @@ func formatObjectID(k8sClient client.Client, obj client.Object) string {
 	}
 
 	return fmt.Sprintf("%s %q", kind, obj.GetName())
+}
+
+// waitForMCLController waits until the MCL controller's Deployment has rolled out the spec that
+// apply just wrote. If it doesn't within the timeout, the returned error says what its pods are
+// stuck on.
+func (c *clusterConfigurer) waitForMCLController(ctx context.Context, stdout io.Writer) error {
+	key := types.NamespacedName{Namespace: manifestSystemNamespace, Name: mclDeploymentName}
+	if stdout != nil {
+		fmt.Fprintf(stdout, "cluster %q: waiting up to %s for Deployment %q to become available\n", c.handle.contextName, c.mclRolloutTimeout, key.Name)
+	}
+
+	deployment := &appsv1.Deployment{}
+	var pending string
+	err := wait.PollUntilContextTimeout(ctx, c.mclRolloutPollInterval, c.mclRolloutTimeout, true, func(ctx context.Context) (bool, error) {
+		if err := c.handle.client.Get(ctx, key, deployment); err != nil {
+			// Keep the last rollout status when the request only failed because the wait is over.
+			if ctx.Err() == nil {
+				pending = fmt.Sprintf("getting the Deployment failed: %v", err)
+			}
+			return false, nil
+		}
+		var done bool
+		pending, done = deploymentRolloutStatus(deployment)
+		return done, nil
+	})
+	if err == nil {
+		return nil
+	}
+	if ctx.Err() != nil {
+		return fmt.Errorf("waiting for Deployment %q on cluster %q: %w", key.Name, c.handle.contextName, ctx.Err())
+	}
+
+	details := []string{pending}
+	details = append(details, c.describeUnavailablePods(ctx, deployment)...)
+	return fmt.Errorf(
+		"cluster %q: Deployment %q (namespace %q) did not become available within %s, so spec.experiments.multiClusterLease was left unchanged on this cluster: %s",
+		c.handle.contextName, key.Name, key.Namespace, c.mclRolloutTimeout, strings.Join(details, "; "),
+	)
+}
+
+// deploymentRolloutStatus reports whether a Deployment has finished rolling out its current spec,
+// and what it is waiting for otherwise. It follows `kubectl rollout status`.
+func deploymentRolloutStatus(deployment *appsv1.Deployment) (pending string, done bool) {
+	if deployment.Generation > deployment.Status.ObservedGeneration {
+		return "the Deployment controller has not processed the latest spec yet", false
+	}
+
+	wantReplicas := int32(1)
+	if deployment.Spec.Replicas != nil {
+		wantReplicas = *deployment.Spec.Replicas
+	}
+	status := deployment.Status
+	switch {
+	case status.UpdatedReplicas < wantReplicas:
+		return fmt.Sprintf("%d of %d pods run the latest spec", status.UpdatedReplicas, wantReplicas), false
+	case status.Replicas > status.UpdatedReplicas:
+		return fmt.Sprintf("%d pods of an older spec are still terminating", status.Replicas-status.UpdatedReplicas), false
+	case status.AvailableReplicas < status.UpdatedReplicas:
+		return fmt.Sprintf("%d of %d pods are available", status.AvailableReplicas, status.UpdatedReplicas), false
+	}
+	return "", true
+}
+
+// describeUnavailablePods says why the pods of a Deployment aren't running, from the state of
+// their containers.
+func (c *clusterConfigurer) describeUnavailablePods(ctx context.Context, deployment *appsv1.Deployment) []string {
+	if deployment.Spec.Selector == nil {
+		return nil
+	}
+
+	pods := &corev1.PodList{}
+	if err := c.handle.client.List(ctx, pods, client.InNamespace(deployment.Namespace), client.MatchingLabels(deployment.Spec.Selector.MatchLabels)); err != nil {
+		return []string{fmt.Sprintf("listing its pods failed: %v", err)}
+	}
+	if len(pods.Items) == 0 {
+		return []string{"it has no pods"}
+	}
+
+	var details []string
+	for _, pod := range pods.Items {
+		for _, container := range pod.Status.ContainerStatuses {
+			if state := describeContainerState(container); state != "" {
+				details = append(details, fmt.Sprintf("pod %q container %q %s", pod.Name, container.Name, state))
+			}
+		}
+	}
+	return details
+}
+
+func describeContainerState(container corev1.ContainerStatus) string {
+	var state string
+	switch {
+	case container.State.Waiting != nil:
+		state = "is waiting: " + container.State.Waiting.Reason
+		if container.State.Waiting.Message != "" {
+			state += " (" + container.State.Waiting.Message + ")"
+		}
+	case container.State.Terminated != nil:
+		state = fmt.Sprintf("terminated: %s, exit code %d", container.State.Terminated.Reason, container.State.Terminated.ExitCode)
+	default:
+		return ""
+	}
+
+	if last := container.LastTerminationState.Terminated; last != nil {
+		state += fmt.Sprintf("; it last exited with code %d (%s)", last.ExitCode, last.Reason)
+	}
+	return state
 }
 
 func (c *clusterConfigurer) updateConfigConnector(ctx context.Context) error {

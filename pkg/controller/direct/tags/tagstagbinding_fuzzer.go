@@ -21,8 +21,8 @@
 package tags
 
 import (
+	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
-	pb "google.golang.org/genproto/googleapis/cloud/resourcemanager/v3"
 )
 
 func init() {

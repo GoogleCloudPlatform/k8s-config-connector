@@ -1,0 +1,28 @@
+apiVersion: dialogflowcx.cnrm.cloud.google.com/v1alpha1
+kind: DialogflowCXFlow
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: dialogflowcxflow-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Updated minimal flow test
+  displayName: flow-min-${uniqueId}
+  parent: projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf
+  resourceID: 23a423c3-e060-469a-92ad-db344e601c4c
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  name: 23a423c3-e060-469a-92ad-db344e601c4c
+  observedGeneration: 3

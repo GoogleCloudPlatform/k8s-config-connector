@@ -20,6 +20,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - agentidentity.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - agentregistry.cnrm.cloud.google.com
   resources:
   - '*'
@@ -956,6 +968,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - designcenter.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - developerconnect.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1173,6 +1197,18 @@ rules:
   - delete
 - apiGroups:
   - firestore.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ftp.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -1533,6 +1569,18 @@ rules:
   - delete
 - apiGroups:
   - notebooks.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - observability.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

@@ -1,0 +1,13 @@
+apiVersion: agentidentity.cnrm.cloud.google.com/v1alpha1
+kind: AgentIdentityAuthProvider
+metadata:
+  name: authprovider-2lo-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
+  authProviderTypeParams:
+    twoLeggedOauth:
+      clientID: example-2lo-client-id
+      clientSecret: example-2lo-client-secret
+      tokenURL: https://auth.example.com/oauth/token

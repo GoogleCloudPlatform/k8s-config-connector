@@ -22,11 +22,15 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &DeliveryPipelineRef{}
+var (
+	_ refsv1beta1.ExternalNormalizer = &DeliveryPipelineRef{}
+	_ refsv1beta1.Ref                = &DeliveryPipelineRef{}
+)
 
 // DeliveryPipelineRef is a reference to a DeployDeliveryPipeline.
 type DeliveryPipelineRef struct {
@@ -39,6 +43,40 @@ type DeliveryPipelineRef struct {
 
 	// The namespace of a DeployDeliveryPipeline resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refsv1beta1.Register(&DeliveryPipelineRef{}, &CloudDeployDeliveryPipeline{})
+}
+
+func (r *DeliveryPipelineRef) GetGVK() schema.GroupVersionKind {
+	return CloudDeployDeliveryPipelineGVK
+}
+
+func (r *DeliveryPipelineRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *DeliveryPipelineRef) GetExternal() string {
+	return r.External
+}
+
+func (r *DeliveryPipelineRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *DeliveryPipelineRef) ValidateExternal(ref string) error {
+	_, _, err := ParseDeliveryPipelineExternal(ref)
+	return err
+}
+
+func (r *DeliveryPipelineRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on DeployDeliveryPipeline.

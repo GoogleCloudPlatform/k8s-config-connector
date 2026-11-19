@@ -1,0 +1,6 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/crossSiteNetworks/computecrosssitenetwork-minimal-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeCrossSiteNetwork
+  name: computecrosssitenetwork-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

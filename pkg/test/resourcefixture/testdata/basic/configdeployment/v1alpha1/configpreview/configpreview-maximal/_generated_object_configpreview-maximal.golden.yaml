@@ -1,0 +1,68 @@
+apiVersion: configdeployment.cnrm.cloud.google.com/v1alpha1
+kind: ConfigPreview
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+    env: test
+  name: configpreview-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  annotations:
+    note: initial
+  artifactsLocation:
+    bucketRef:
+      external: projects/${projectId}/buckets/${projectId}-bucket-${uniqueId}
+    folder: artifacts
+  location: us-central1
+  previewMode: DEFAULT
+  projectRef:
+    external: ${projectId}
+  providerConfig:
+    sourceType: PROVIDER_SOURCE_UNSPECIFIED
+  serviceAccountRef:
+    external: projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com
+  terraformBlueprint:
+    externalValues:
+      ext_var:
+        deploymentSource:
+          deploymentRef:
+            external: projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}
+          outputName: my_output
+    gitSource:
+      directory: scripts
+      ref: main
+      repo: https://github.com/GoogleCloudPlatform/k8s-config-connector.git
+    inputValues:
+      foo:
+        inputValue:
+          stringValue: bar
+  tfVersionConstraint: =1.3.10
+  workerPoolRef:
+    external: projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/previews/configpreview-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    errorCode: EXTERNAL_VALUE_SOURCE_IMPORT_FAILED
+    errorStatus:
+      code: 400
+      message: 'Failed to import values from an external source: Invalid resource
+        state for "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}":
+        the provided deployment doesn''t exist'
+    logs: gs://${projectId}-bucket-${uniqueId}/artifacts/new-previews/configpreview-${uniqueId}/logs
+    previewArtifacts:
+      artifacts: gs://${projectId}-bucket-${uniqueId}/artifacts/new-previews/configpreview-${uniqueId}/preview_results/artifacts
+      content: gs://${projectId}-bucket-${uniqueId}/artifacts/new-previews/configpreview-${uniqueId}/preview_results/content
+    state: FAILED
+    tfVersion: 1.3.10

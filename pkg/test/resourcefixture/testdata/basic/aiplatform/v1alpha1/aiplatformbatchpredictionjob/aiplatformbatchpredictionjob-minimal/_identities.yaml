@@ -1,0 +1,12 @@
+- caisURL: //storage.googleapis.com/projects/${projectId}/buckets/bpj-min-dep-${uniqueId}
+  group: storage.cnrm.cloud.google.com
+  kind: StorageBucket
+  name: bpj-min-dep-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //aiplatform.googleapis.com/projects/${projectId}/locations/us-central1/batchPredictionJobs/4876965541048221696
+  group: aiplatform.cnrm.cloud.google.com
+  kind: AIPlatformBatchPredictionJob
+  name: bpj-min-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

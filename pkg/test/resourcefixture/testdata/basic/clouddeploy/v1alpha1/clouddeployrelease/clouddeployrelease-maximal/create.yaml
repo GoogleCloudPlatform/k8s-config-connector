@@ -1,0 +1,20 @@
+apiVersion: clouddeploy.cnrm.cloud.google.com/v1alpha1
+kind: CloudDeployRelease
+metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: clouddeployrelease-max-${uniqueId}
+spec:
+  parentRef:
+    name: clouddeploydeliverypipeline-${uniqueId}
+  description: "Maximal test release created by KCC"
+  annotations:
+    env: "staging"
+    team: "devops"
+  skaffoldConfigURI: gs://${projectId}-clouddeploy-test-bucket-2026/source.tar.gz
+  skaffoldConfigPath: "skaffold.yaml"
+  buildArtifacts:
+    - image: "nginx"
+      tag: "nginx:latest"
+  deployParameters:
+    deploy-param-key: "deploy-param-value"

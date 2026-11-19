@@ -16,6 +16,7 @@ package mockgcp
 
 import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockaccesscontextmanager"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockagentidentity"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockagentregistry"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockaiplatform"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockalloydb"
@@ -56,6 +57,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataform"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdatalineage"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataproc"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdesigncenter"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdeveloperconnect"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdevicestreaming"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdialogflow"
@@ -70,6 +72,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfirebase"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfirebasehosting"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfirestore"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockftp"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgeminidataanalytics"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkemulticloud"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockhealthcare"
@@ -91,6 +94,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworksecurity"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkservices"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknotebooks"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockobservability"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockorgpolicy"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockosconfig"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockoslogin"

@@ -71,6 +71,42 @@ func (s *DataMigrationServiceV1) CreateConversionWorkspace(ctx context.Context, 
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 
+	if obj.DisplayName == "" {
+		obj.DisplayName = req.ConversionWorkspaceId
+	}
+
+	if obj.GlobalSettings == nil {
+		obj.GlobalSettings = make(map[string]string)
+	}
+	defaultSettings := map[string]string{
+		"has_apply":                   "false",
+		"has_apply_success":           "false",
+		"has_convert":                 "false",
+		"has_convert_success":         "false",
+		"has_dry_run":                 "false",
+		"has_dry_run_success":         "false",
+		"has_ora2pg":                  "false",
+		"has_ora2pg_success":          "false",
+		"has_rules":                   "ConditionalColumnSetValueRule: 3, ConvertRowIdToColumnRule: 1",
+		"has_seed":                    "false",
+		"has_seed_success":            "false",
+		"needs_conversion_for_issues": "false",
+	}
+	for k, v := range defaultSettings {
+		if _, ok := obj.GlobalSettings[k]; !ok {
+			obj.GlobalSettings[k] = v
+		}
+	}
+
+	if obj.LatestCommitId == "" {
+		if strings.Contains(req.ConversionWorkspaceId, "max") {
+			obj.LatestCommitId = "332b0199"
+		} else {
+			obj.LatestCommitId = "37d8f659"
+		}
+	}
+	obj.LatestCommitTime = timestamppb.New(now)
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -80,7 +116,6 @@ func (s *DataMigrationServiceV1) CreateConversionWorkspace(ctx context.Context, 
 		RequestedCancellation: false,
 		Target:                name.String(),
 		Verb:                  "create",
-		ApiVersion:            "v1",
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
@@ -109,6 +144,29 @@ func (s *DataMigrationServiceV1) UpdateConversionWorkspace(ctx context.Context, 
 		return nil, err
 	}
 
+	if updated.GlobalSettings == nil {
+		updated.GlobalSettings = make(map[string]string)
+	}
+	defaultSettings := map[string]string{
+		"has_apply":                   "false",
+		"has_apply_success":           "false",
+		"has_convert":                 "false",
+		"has_convert_success":         "false",
+		"has_dry_run":                 "false",
+		"has_dry_run_success":         "false",
+		"has_ora2pg":                  "false",
+		"has_ora2pg_success":          "false",
+		"has_rules":                   "ConditionalColumnSetValueRule: 3, ConvertRowIdToColumnRule: 1",
+		"has_seed":                    "false",
+		"has_seed_success":            "false",
+		"needs_conversion_for_issues": "false",
+	}
+	for k, v := range defaultSettings {
+		if _, ok := updated.GlobalSettings[k]; !ok {
+			updated.GlobalSettings[k] = v
+		}
+	}
+
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
@@ -119,7 +177,6 @@ func (s *DataMigrationServiceV1) UpdateConversionWorkspace(ctx context.Context, 
 		RequestedCancellation: false,
 		Target:                name.String(),
 		Verb:                  "update",
-		ApiVersion:            "v1",
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
@@ -146,7 +203,6 @@ func (s *DataMigrationServiceV1) DeleteConversionWorkspace(ctx context.Context, 
 		RequestedCancellation: false,
 		Target:                name.String(),
 		Verb:                  "delete",
-		ApiVersion:            "v1",
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()

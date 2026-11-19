@@ -65,6 +65,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterFutureReservationsServer(grpcServer, &FutureReservationsV1{MockService: s})
 
 	pb.RegisterBackendBucketsServer(grpcServer, &backendBuckets{MockService: s})
+	pb.RegisterCrossSiteNetworksServer(grpcServer, &crossSiteNetworks{MockService: s})
 
 	pb.RegisterExternalVpnGatewaysServer(grpcServer, &externalVPNGateways{MockService: s})
 
@@ -92,6 +93,9 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 	pb.RegisterRegionHealthChecksServer(grpcServer, &RegionalHealthCheckV1{MockService: s})
 	pb.RegisterHealthChecksServer(grpcServer, &GlobalHealthCheckV1{MockService: s})
+
+	pb.RegisterRegionHealthAggregationPoliciesServer(grpcServer, &RegionHealthAggregationPoliciesV1{MockService: s})
+	pb.RegisterRegionHealthSourcesServer(grpcServer, &RegionHealthSourcesV1{MockService: s})
 
 	pb.RegisterBackendServicesServer(grpcServer, &GlobalBackendServicesV1{MockService: s})
 	pb.RegisterRegionBackendServicesServer(grpcServer, &RegionalBackendServicesV1{MockService: s})
@@ -183,6 +187,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	if err := pb.RegisterBackendBucketsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterCrossSiteNetworksHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
@@ -340,6 +347,12 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err := pb.RegisterHealthChecksHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
+	if err := pb.RegisterRegionHealthAggregationPoliciesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterRegionHealthSourcesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
 
 	// for ssl certs and the managedsslcerts
 	if err := pb.RegisterSslCertificatesHandler(ctx, mux.ServeMux, conn); err != nil {
@@ -397,6 +410,15 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 	if err := RegisterGlobalVmExtensionPoliciesHandler(ctx, mux.ServeMux, &GlobalVmExtensionPoliciesV1{MockService: s}); err != nil {
+		return nil, err
+	}
+	if err := RegisterInstantSnapshotGroupsHandler(ctx, mux.ServeMux, &InstantSnapshotGroupsV1{MockService: s}); err != nil {
+		return nil, err
+	}
+	if err := RegisterRegionInstantSnapshotGroupsHandler(ctx, mux.ServeMux, &RegionInstantSnapshotGroupsV1{MockService: s}); err != nil {
+		return nil, err
+	}
+	if err := RegisterGlobalRolloutPlansHandler(ctx, mux.ServeMux, &GlobalRolloutPlansV1{MockService: s}); err != nil {
 		return nil, err
 	}
 

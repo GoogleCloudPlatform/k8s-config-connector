@@ -7,8 +7,8 @@ spec:
     external: ${projectId}
   location: us-central1
   source:
-    engine: MYSQL
-    version: "5.7"
+    engine: ORACLE
+    version: "11"
   destination:
     engine: POSTGRESQL
     version: "14"

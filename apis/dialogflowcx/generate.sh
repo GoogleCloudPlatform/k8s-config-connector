@@ -56,8 +56,14 @@ ${CONTROLLERBUILDER} generate-identity \
   --api-version dialogflowcx.cnrm.cloud.google.com/v1alpha1 \
   --resource DialogflowCXEntityType:EntityType \
   --resource DialogflowCXFlow:Flow \
+  --resource DialogflowCXIntent:Intent \
   --resource DialogflowCXPage:Page \
   --resource DialogflowCXWebhook:Webhook
+
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.dialogflow.cx.v3 \
+  --api-version dialogflowcx.cnrm.cloud.google.com/v1alpha1 \
+  --skip-proto Flow,Fulfillment,EventHandler,ResponseMessage,NluSettings,TransitionRoute,ConditionalCases,SetParameterAction,ConversationSuccess,LiveAgentHandoff,OutputAudioText,PlayAudio,TelephonyTransferCall,Text,Agent,SpeechToTextSettings,Page,Form,Parameter,FillBehavior,Webhook,GenericWebService,ServiceDirectoryConfig,Intent,TrainingPhrase,Part
 
 cd ${REPO_ROOT}
 if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then

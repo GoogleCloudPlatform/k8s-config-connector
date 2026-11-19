@@ -51,6 +51,11 @@ services:
     servicePrefix: AccessContextManager
     protoPackages:
       - google.identity.accesscontextmanager.v1
+  - api: agentidentity
+    title: Enterprise Agent Identity API
+    servicePrefix: AgentIdentity
+    protoPackages:
+      - google.cloud.agentidentity.v1
   - api: agentregistry
     title: Agent Registry API
     servicePrefix: AgentRegistry
@@ -372,6 +377,11 @@ services:
   - api: deploymentmanager
     title: Cloud Deployment Manager V2 API
     servicePrefix: DeploymentManager
+  - api: designcenter
+    title: Application Design Center API
+    servicePrefix: DesignCenter
+    protoPackages:
+      - google.cloud.designcenter.v1
   - api: developerconnect
     title: Developer Connect API
     servicePrefix: DevConnect
@@ -460,10 +470,16 @@ services:
     protoPackages:
       - google.firestore.admin.v1
       - google.firestore.v1
+  - api: ftp
+    title: Cloud FTP API
+    servicePrefix: FTP
+    protoPackages:
+      - google.cloud.ftp.v1
   - api: geminidataanalytics
     title: Gemini Data Analytics API
     servicePrefix: GeminiDataAnalytics
     protoPackages:
+      - google.cloud.geminidataanalytics.v1
       - google.cloud.geminidataanalytics.v1beta
   - api: gkebackup
     title: Backup for GKE API
@@ -607,6 +623,12 @@ services:
     protoPackages:
       - google.cloud.notebooks.v1
       - google.cloud.notebooks.v2
+  - api: observability
+    title: Observability API
+    servicePrefix: Observability
+    protoPackages:
+      - google.cloud.observability.v1
+    reason: approved as proposed (PR #15415)
   - api: oracledatabase
     title: Oracle Database@Google Cloud API
     servicePrefix: OracleDatabase

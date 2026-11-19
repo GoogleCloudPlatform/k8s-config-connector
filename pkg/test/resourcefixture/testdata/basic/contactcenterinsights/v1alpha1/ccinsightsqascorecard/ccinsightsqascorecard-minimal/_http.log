@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -71,12 +72,12 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Scorecard Minimal ${uniqueId}",
   "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/qascorecard-minimal-${uniqueId}",
-  "source": 1,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
+# Phase: DELETE
 DELETE https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}

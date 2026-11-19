@@ -15,6 +15,8 @@
 package mockdevicestreaming
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
@@ -26,5 +28,37 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
-	// No-op for now
+	if !strings.Contains(event.URL(), "devicestreaming.googleapis.com") {
+		return
+	}
+
+	previsitValue := func(val string) {
+		if strings.Contains(val, "/deviceSessions/") {
+			tokens := strings.Split(val, "/")
+			for i := 0; i < len(tokens)-1; i++ {
+				if tokens[i] == "deviceSessions" {
+					id := tokens[i+1]
+					if idx := strings.Index(id, "?"); idx != -1 {
+						id = id[:idx]
+					}
+					if idx := strings.Index(id, ":"); idx != -1 {
+						id = id[:idx]
+					}
+					if strings.HasPrefix(id, "session-") {
+						replacements.ReplaceStringValue(id, "session-${uniqueId}")
+					}
+				}
+			}
+		}
+	}
+
+	previsitValue(event.URL())
+
+	event.VisitRequestStringValues(func(path string, value string) {
+		previsitValue(value)
+	})
+
+	event.VisitResponseStringValues(func(path string, value string) {
+		previsitValue(value)
+	})
 }

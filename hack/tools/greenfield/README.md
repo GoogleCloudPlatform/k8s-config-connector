@@ -102,6 +102,10 @@ Unlike the legacy analysis, it compiles all googleapis protos with `protoc` and 
 
 Kinds are matched to protos through their `+kcc:proto` annotations. TF/DCL kinds have no annotations, so they're matched by name, with a few manual aliases in the script (`MANUAL_KIND_ALIASES`, `MANUAL_KIND_OVERRIDES`).
 
+**Kind names** (`kind`, `predicted_kind`). For a resource that isn't in KCC yet, `kind` is the name a new Kind must have under [`dev/tools/controllerbuilder/serviceprefixes`](../../../dev/tools/controllerbuilder/serviceprefixes): `<service prefix><proto message>`, with the acronyms in `acronyms.yaml` applied to the message words. `sqladmin` + `BackupRun` gives `SQLAdminBackupRun`. This is the name that `TestKindNamesFollowServicePrefixes` in `tests/apichecks` expects. For a resource already in KCC, `kind` is its existing Kind and `predicted_kind` is what the rule gives.
+
+The API's service prefix is found the way that test finds it, from the proto package in `protoPackages`. A package that no `generate.sh` uses yet is matched without its version, then by API name.
+
 **Flags** (`flags`) never change the bucket:
 
 | Flag | Meaning |
@@ -113,6 +117,9 @@ Kinds are matched to protos through their `+kcc:proto` annotations. TF/DCL kinds
 | `review:*` | Why the row needs review. |
 | `deprecated-rpc:*` | Some managing RPCs are deprecated and weren't counted. |
 | `not-in-kcc-pinned-googleapis` | The message isn't in the global googleapis pin (`apis/git.versions`). |
+| `kind-prefix:pending` | The suggested Kind uses a service prefix that's still in `service-prefix-pending.yaml`. The test rejects the Kind until the prefix is approved. |
+| `kind-prefix:unlisted` | The API is in neither service-prefix file, so the prefix is a guess from the API name. Propose one in `service-prefix-pending.yaml`. |
+| `kind-name:repeats-prefix(<Kind>)` | The message starts with the words the prefix ends with (`CloudBuild` + `BuildTrigger`). `<Kind>` says them once (`CloudBuildTrigger`); using it needs a `knownKindNames` entry in the test. |
 
 `first_googleapis_sha` and `first_googleapis_link` point at the earliest KCC googleapis pin whose upstream tree has the message: the global pin first, then the per-service `PROTO_SHA`s in `apis/*/generate.sh`. Each pin is compiled from the full googleapis tree at that commit. This differs from the curated subset that `generate-proto.sh` builds into `.build/`, so a message can be "pinned" here and still need a new glob in `generate-proto.sh` before `generate-types` can see it. Missing pin commits are fetched by SHA (network); pass `--no-fetch-pins` to skip them, in which case they're listed in `meta.skipped_googleapis_pins`.
 
@@ -132,6 +139,7 @@ Kinds are matched to protos through their `+kcc:proto` annotations. TF/DCL kinds
     "googleapis_pins": [{"sha": "...", "used_by": ["global (apis/git.versions)"]}],
     "skipped_googleapis_pins": [],
     "config_fallbacks": [],
+    "kind_naming": {"source": "dev/tools/controllerbuilder/serviceprefixes", "approved_prefixes": 159, "pending_prefixes": 48, "acronyms": 40},
     "counts": {"Google Cloud": {"Fully Manageable": {"net-new": 110}}}
   },
   "resources": [{"id": "...", "bucket": "...", "kcc_status": "...", "api_group": "...", "...": "..."}]
@@ -143,12 +151,26 @@ Kinds are matched to protos through their `+kcc:proto` annotations. TF/DCL kinds
 **Reproducibility.** For the same googleapis and KCC SHAs, both files are byte-for-byte identical:
 - There are no timestamps or local paths.
 - Rows have a total order (API group, bucket, KCC status, id) and every row uses the same fixed key order.
-- The rule data (`coverage_skip.json`, `policy_exclusions.json`, `deprecated_services.json`, `services_acronyms.json`, `cp_resources_list.json`) and the controllerbuilder rules are read from the analyzed KCC tree, not from wherever the script runs.
+- The rule data (`coverage_skip.json`, `policy_exclusions.json`, `deprecated_services.json`, `cp_resources_list.json`, the `serviceprefixes` files) and the controllerbuilder rules are read from the analyzed KCC tree, not from wherever the script runs.
 
 To get identical output on any machine:
 - Pass full SHAs (or check `meta.googleapis_sha` / `meta.kcc_ref`); `LOCAL` uses the working tree as-is.
 - Let the script fetch pins: `meta.skipped_googleapis_pins` must be empty.
-- `meta.config_fallbacks` lists any rule file the analyzed tree didn't have, which then came from the script's directory.
+- `meta.config_fallbacks` lists any rule file the analyzed tree didn't have, which then came from the script's own checkout.
+
+### Checked-in snapshot
+
+[`manageability_list.json`](manageability_list.json) is a checked-in run of this mode, so the list can be read without running the script. Its `meta` block names the googleapis and KCC commits it was generated from.
+
+To update it, run the mode from the repo root without `--output-dir`, which writes next to the script:
+
+```bash
+git -C .build/third_party/googleapis fetch --depth 1 origin master
+python3 hack/tools/greenfield/calculate_coverage.py origin/master LOCAL 20 --manageability \
+    --googleapis-repo .build/third_party/googleapis
+```
+
+Use a checkout with no local changes, so that `meta.kcc_ref` names the commit that was analyzed. Only the JSON is checked in: the `manageability_list.csv` written next to it has the same rows and is ignored by git.
 
 ## Unified Resource Policy
 

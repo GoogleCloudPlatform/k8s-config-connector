@@ -131,7 +131,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableAppProfile"}:
 	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableAuthorizedView"}:
 	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableBackup"}:
-	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableCluster"}:
 	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableGCPolicy"}:
 	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableInstance"}:
 	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableLogicalView"}:
@@ -280,10 +279,8 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "deploymentmanager.cnrm.cloud.google.com", Kind: "DeploymentManagerDeployment"}:
 	case schema.GroupKind{Group: "dialogflow.cnrm.cloud.google.com", Kind: "DialogflowAgent"}:
 	case schema.GroupKind{Group: "dialogflowcx.cnrm.cloud.google.com", Kind: "DialogflowCXEntityType"}:
-	case schema.GroupKind{Group: "dialogflowcx.cnrm.cloud.google.com", Kind: "DialogflowCXFlow"}:
 	case schema.GroupKind{Group: "dialogflowcx.cnrm.cloud.google.com", Kind: "DialogflowCXIntent"}:
 	case schema.GroupKind{Group: "dialogflowcx.cnrm.cloud.google.com", Kind: "DialogflowCXPage"}:
-	case schema.GroupKind{Group: "dialogflowcx.cnrm.cloud.google.com", Kind: "DialogflowCXWebhook"}:
 	case schema.GroupKind{Group: "dialogflow.cnrm.cloud.google.com", Kind: "DialogflowEntityType"}:
 	case schema.GroupKind{Group: "dialogflow.cnrm.cloud.google.com", Kind: "DialogflowFulfillment"}:
 	case schema.GroupKind{Group: "dialogflow.cnrm.cloud.google.com", Kind: "DialogflowIntent"}:

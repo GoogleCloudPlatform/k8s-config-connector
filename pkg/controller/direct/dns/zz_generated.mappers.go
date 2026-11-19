@@ -300,6 +300,7 @@ func ManagedZoneForwardingConfig_ToAPI(mapCtx *direct.MapContext, in *krm.Manage
 	}
 	out := &api.ManagedZoneForwardingConfig{}
 	out.TargetNameServers = direct.Slice_ToProto(mapCtx, in.TargetNameServers, ManagedZoneForwardingConfigNameServerTarget_ToAPI)
+	// MISSING: OutboundEndpoints
 	return out
 }
 
@@ -374,6 +375,7 @@ func PolicyAlternativeNameServerConfig_ToAPI(mapCtx *direct.MapContext, in *krm.
 	}
 	out := &api.PolicyAlternativeNameServerConfig{}
 	out.TargetNameServers = direct.Slice_ToProto(mapCtx, in.TargetNameServers, PolicyTargetNameServers_ToAPI)
+	// MISSING: OutboundEndpoints
 	return out
 }
 

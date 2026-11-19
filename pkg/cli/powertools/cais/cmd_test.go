@@ -264,6 +264,20 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 			}
 
+			// Inject status.externalRef for AIPlatformBatchPredictionJob to simulate a reconciled batch prediction job in static unit tests.
+			if u.GetKind() == "AIPlatformBatchPredictionJob" && u.GroupVersionKind().Group == "aiplatform.cnrm.cloud.google.com" {
+				goldens, _ := filepath.Glob(filepath.Join(dir, "_generated_object_*.golden.yaml"))
+				for _, gPath := range goldens {
+					for _, gu := range parseFixtureYAML(t, gPath, gcpProject) {
+						if gu.GetKind() == u.GetKind() && gu.GetName() == u.GetName() {
+							if extRef, ok, _ := unstructured.NestedString(gu.Object, "status", "externalRef"); ok && extRef != "" {
+								_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+							}
+						}
+					}
+				}
+			}
+
 			// Inject status.externalRef for ResourceManagerTagHold to simulate a reconciled tag hold in static unit tests.
 			if u.GetKind() == "ResourceManagerTagHold" && u.GroupVersionKind().Group == "resourcemanager.cnrm.cloud.google.com" {
 				goldens, _ := filepath.Glob(filepath.Join(dir, "_generated_object_*.golden.yaml"))
@@ -280,6 +294,60 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 
 			// Inject status.externalRef for DataplexEntity to simulate a reconciled entity in static unit tests.
 			if u.GetKind() == "DataplexEntity" && u.GroupVersionKind().Group == "dataplex.cnrm.cloud.google.com" {
+				goldens, _ := filepath.Glob(filepath.Join(dir, "_generated_object_*.golden.yaml"))
+				for _, gPath := range goldens {
+					for _, gu := range parseFixtureYAML(t, gPath, gcpProject) {
+						if gu.GetKind() == u.GetKind() && gu.GetName() == u.GetName() {
+							if extRef, ok, _ := unstructured.NestedString(gu.Object, "status", "externalRef"); ok && extRef != "" {
+								_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+							}
+						}
+					}
+				}
+				if extRef, ok, _ := unstructured.NestedString(u.Object, "status", "externalRef"); !ok || extRef == "" {
+					entityID, _, _ := unstructured.NestedString(u.Object, "spec", "id")
+					if entityID == "" {
+						entityID, _, _ = unstructured.NestedString(u.Object, "spec", "resourceID")
+					}
+					if entityID == "" {
+						entityID = u.GetName()
+					}
+					if parentExt, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "external"); parentExt != "" {
+						extRef = fmt.Sprintf("%s/entities/%s", strings.TrimSuffix(parentExt, "/"), entityID)
+						_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+					} else if parentName, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "name"); parentName != "" {
+						projectID := annotations["cnrm.cloud.google.com/project-id"]
+						location := "us-central1"
+						lakeName := ""
+						for _, other := range kccObjs {
+							if other.GetKind() == "DataplexZone" && other.GetName() == parentName {
+								if lake, _, _ := unstructured.NestedString(other.Object, "spec", "lakeRef", "name"); lake != "" {
+									lakeName = lake
+								}
+								break
+							}
+						}
+						if lakeName != "" {
+							for _, other := range kccObjs {
+								if other.GetKind() == "DataplexLake" && other.GetName() == lakeName {
+									if loc, _, _ := unstructured.NestedString(other.Object, "spec", "location"); loc != "" {
+										location = loc
+									}
+									if proj, _, _ := unstructured.NestedString(other.Object, "spec", "projectRef", "external"); proj != "" {
+										projectID = proj
+									}
+									break
+								}
+							}
+							extRef = fmt.Sprintf("projects/%s/locations/%s/lakes/%s/zones/%s/entities/%s", projectID, location, lakeName, parentName, entityID)
+							_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+						}
+					}
+				}
+			}
+
+			// Inject status.externalRef for DataplexPartition to simulate a reconciled partition in static unit tests.
+			if u.GetKind() == "DataplexPartition" && u.GroupVersionKind().Group == "dataplex.cnrm.cloud.google.com" {
 				goldens, _ := filepath.Glob(filepath.Join(dir, "_generated_object_*.golden.yaml"))
 				for _, gPath := range goldens {
 					for _, gu := range parseFixtureYAML(t, gPath, gcpProject) {
@@ -466,6 +534,26 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 			}
 
+			// Inject status.externalRef for MigrationCenterReportConfig to simulate a reconciled report config in static unit tests.
+			if u.GetKind() == "MigrationCenterReportConfig" && u.GroupVersionKind().Group == "migrationcenter.cnrm.cloud.google.com" {
+				projectID := annotations["cnrm.cloud.google.com/project-id"]
+				if proj, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external"); proj != "" {
+					projectID = strings.TrimPrefix(proj, "projects/")
+				}
+				location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
+				if location == "" {
+					location = "us-central1"
+				}
+				reportConfigID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+				if reportConfigID == "" {
+					reportConfigID = u.GetName()
+				}
+				extRef := fmt.Sprintf("projects/%s/locations/%s/reportConfigs/%s", projectID, location, reportConfigID)
+				if err := unstructured.SetNestedField(u.Object, extRef, "status", "externalRef"); err != nil {
+					t.Fatalf("failed to inject status.externalRef for MigrationCenterReportConfig %s: %v", u.GetName(), err)
+				}
+			}
+
 			// Inject status.externalRef for FinancialServicesInstance to simulate a reconciled instance in static unit tests.
 			if u.GetKind() == "FinancialServicesInstance" && u.GroupVersionKind().Group == "financialservices.cnrm.cloud.google.com" {
 				projectID, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external")
@@ -511,6 +599,54 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				extRef := fmt.Sprintf("projects/%s/locations/%s/metadataStores/%s", projectID, region, storeID)
 				if err := unstructured.SetNestedField(u.Object, extRef, "status", "externalRef"); err != nil {
 					t.Fatalf("failed to inject status.externalRef for VertexAIMetadataStore %s: %v", u.GetName(), err)
+				}
+			}
+
+			// Inject status.externalRef for CESApp to simulate a reconciled app in static unit tests.
+			if u.GetKind() == "CESApp" && u.GroupVersionKind().Group == "ces.cnrm.cloud.google.com" {
+				projectID, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external")
+				projectID = strings.TrimPrefix(projectID, "projects/")
+				if projectID == "" {
+					projectID = annotations["cnrm.cloud.google.com/project-id"]
+				}
+				if projectID == "" {
+					projectID = "mock-project"
+				}
+				location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
+				if location == "" {
+					location = "us"
+				}
+				appID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+				if appID == "" {
+					appID = u.GetName()
+				}
+				extRef := fmt.Sprintf("projects/%s/locations/%s/apps/%s", projectID, location, appID)
+				if err := unstructured.SetNestedField(u.Object, extRef, "status", "externalRef"); err != nil {
+					t.Fatalf("failed to inject status.externalRef for CESApp %s: %v", u.GetName(), err)
+				}
+			}
+
+			// Inject status.externalRef for CloudDeployDeliveryPipeline to simulate a reconciled delivery pipeline in static unit tests.
+			if u.GetKind() == "CloudDeployDeliveryPipeline" && u.GroupVersionKind().Group == "clouddeploy.cnrm.cloud.google.com" {
+				projectID, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external")
+				projectID = strings.TrimPrefix(projectID, "projects/")
+				if projectID == "" {
+					projectID = annotations["cnrm.cloud.google.com/project-id"]
+				}
+				if projectID == "" {
+					projectID = "mock-project"
+				}
+				location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
+				if location == "" {
+					location = "us-central1"
+				}
+				pipelineID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+				if pipelineID == "" {
+					pipelineID = u.GetName()
+				}
+				extRef := fmt.Sprintf("projects/%s/locations/%s/deliveryPipelines/%s", projectID, location, pipelineID)
+				if err := unstructured.SetNestedField(u.Object, extRef, "status", "externalRef"); err != nil {
+					t.Fatalf("failed to inject status.externalRef for CloudDeployDeliveryPipeline %s: %v", u.GetName(), err)
 				}
 			}
 
@@ -731,6 +867,46 @@ func normalizeFixtureKCCObjects(allObjs []*unstructured.Unstructured) []*unstruc
 				instanceID = u.GetName()
 			}
 			extRef := fmt.Sprintf("projects/%s/locations/%s/instances/%s", projectID, location, instanceID)
+			_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+		}
+		if u.GetKind() == "CESApp" && group == "ces.cnrm.cloud.google.com" {
+			projectID, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external")
+			projectID = strings.TrimPrefix(projectID, "projects/")
+			if projectID == "" {
+				projectID = ann["cnrm.cloud.google.com/project-id"]
+			}
+			if projectID == "" {
+				projectID = "mock-project"
+			}
+			location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
+			if location == "" {
+				location = "us"
+			}
+			appID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+			if appID == "" {
+				appID = u.GetName()
+			}
+			extRef := fmt.Sprintf("projects/%s/locations/%s/apps/%s", projectID, location, appID)
+			_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+		}
+		if u.GetKind() == "CloudDeployDeliveryPipeline" && group == "clouddeploy.cnrm.cloud.google.com" {
+			projectID, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external")
+			projectID = strings.TrimPrefix(projectID, "projects/")
+			if projectID == "" {
+				projectID = ann["cnrm.cloud.google.com/project-id"]
+			}
+			if projectID == "" {
+				projectID = "mock-project"
+			}
+			location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
+			if location == "" {
+				location = "us-central1"
+			}
+			pipelineID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+			if pipelineID == "" {
+				pipelineID = u.GetName()
+			}
+			extRef := fmt.Sprintf("projects/%s/locations/%s/deliveryPipelines/%s", projectID, location, pipelineID)
 			_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
 		}
 		kccObjs = append(kccObjs, u)

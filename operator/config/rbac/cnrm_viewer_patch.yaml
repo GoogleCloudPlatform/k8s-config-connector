@@ -805,6 +805,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - ftp.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - geminidataanalytics.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1038,6 +1046,14 @@ rules:
   - watch
 - apiGroups:
   - notebooks.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - observability.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

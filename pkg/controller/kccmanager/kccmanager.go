@@ -102,7 +102,10 @@ type Config struct {
 	// EnableMetricsTransport enables automatic wrapping of HTTP clients with metrics transport
 	EnableMetricsTransport bool
 
-	// Configure manager to participate in leader election if MultiClusterLease is enabled.
+	// MultiClusterLease makes the manager take part in the multi-cluster leader election that
+	// the ConfigConnector object configures in spec.experiments.multiClusterLease. If the
+	// object doesn't configure a lease, the manager runs without leader election. If the
+	// object is missing, New returns an error.
 	MultiClusterLease bool
 
 	// SkipNameValidation bypasses the duplicate controller name check during registration
@@ -133,6 +136,11 @@ type testConfig struct {
 	suppressExitOnLeadershipLoss bool
 }
 
+// setUpMultiClusterLease returns the leader election configuration for the multi-cluster lease
+// that the ConfigConnector object configures, or nil if the object doesn't configure one.
+//
+// It fails closed if the object is missing: whether another cluster leads is then unknown, so
+// it returns an error instead of letting the manager run without leader election.
 func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme *runtime.Scheme, explicitConfig *operatorv1beta1.MultiClusterLeaseSpec, exitOnLeadershipLoss bool) (*leaderelection.LeaderElectionConfig, *operatorv1beta1.MultiClusterLeaseSpec, bool, error) {
 	var leaseSpec *operatorv1beta1.MultiClusterLeaseSpec
 
@@ -152,57 +160,57 @@ func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme
 		klog.Infof("checking for ConfigConnector object")
 		if err := c.Get(ctx, ccName, cc); err != nil {
 			if apierrors.IsNotFound(err) {
-				// If the ConfigConnector object is not found, proceed with default leader election.
-				klog.Infof("ConfigConnector object not found, using default in-cluster leader election")
-				return nil, nil, false, nil
+				return nil, nil, false, fmt.Errorf("ConfigConnector %q not found; refusing to run without leader election", ccName.Name)
 			}
 			return nil, nil, false, fmt.Errorf("error getting ConfigConnector object: %w", err)
 		}
 		klog.Infof("found ConfigConnector object")
-		if cc.Spec.Experiments != nil && cc.Spec.Experiments.MultiClusterLease != nil {
-			klog.Infof("multi-cluster leader election is configured")
-			leaseSpec = cc.Spec.Experiments.MultiClusterLease
+		if cc.Spec.Experiments == nil || cc.Spec.Experiments.MultiClusterLease == nil {
+			// The lease was removed after the operator rendered this pod, and the operator
+			// will replace the pod with one that doesn't ask for multi-cluster leader
+			// election. Don't exit in the meantime: this pod would never become ready, and a
+			// StatefulSet doesn't replace such a pod when its template changes.
+			klog.Warningf("ConfigConnector %q has no spec.experiments.multiClusterLease; running without leader election", ccName.Name)
+			return nil, nil, false, nil
 		}
+		klog.Infof("multi-cluster leader election is configured")
+		leaseSpec = cc.Spec.Experiments.MultiClusterLease
 	}
 
-	if leaseSpec != nil {
-		// This cluster's identity in the election is the resource name of its GKE cluster.
-		identity, err := leaseSpec.CandidateIdentity()
-		if err != nil {
-			return nil, nil, false, fmt.Errorf("invalid multi-cluster lease configuration: %w", err)
-		}
+	// This cluster's identity in the election is the resource name of its GKE cluster.
+	identity, err := leaseSpec.CandidateIdentity()
+	if err != nil {
+		return nil, nil, false, fmt.Errorf("invalid multi-cluster lease configuration: %w", err)
+	}
 
-		// Create a new client for the lock to ensure it uses the correct configuration
-		c, err := crclient.New(restConfig, crclient.Options{Scheme: scheme})
-		if err != nil {
-			return nil, nil, false, fmt.Errorf("error creating client for lock: %w", err)
-		}
+	// Create a new client for the lock to ensure it uses the correct configuration
+	c, err := crclient.New(restConfig, crclient.Options{Scheme: scheme})
+	if err != nil {
+		return nil, nil, false, fmt.Errorf("error creating client for lock: %w", err)
+	}
 
-		lock := mcleclient.New(
-			c,
-			leaseSpec.LeaseName,
-			leaseSpec.Namespace,
-			identity,
-			15*time.Second,
-		)
-		return &leaderelection.LeaderElectionConfig{
-			Lock:          lock,
-			LeaseDuration: 15 * time.Second,
-			RenewDeadline: 10 * time.Second,
-			RetryPeriod:   2 * time.Second,
-			Name:          leaseSpec.LeaseName,
-			Callbacks: leaderelection.LeaderCallbacks{
-				OnStoppedLeading: func() {
-					klog.Info("leaderelection lost")
-					if exitOnLeadershipLoss {
-						klog.FlushAndExit(klog.ExitFlushTimeout, 1)
-					}
-				},
+	lock := mcleclient.New(
+		c,
+		leaseSpec.LeaseName,
+		leaseSpec.Namespace,
+		identity,
+		15*time.Second,
+	)
+	return &leaderelection.LeaderElectionConfig{
+		Lock:          lock,
+		LeaseDuration: 15 * time.Second,
+		RenewDeadline: 10 * time.Second,
+		RetryPeriod:   2 * time.Second,
+		Name:          leaseSpec.LeaseName,
+		Callbacks: leaderelection.LeaderCallbacks{
+			OnStoppedLeading: func() {
+				klog.Info("leaderelection lost")
+				if exitOnLeadershipLoss {
+					klog.FlushAndExit(klog.ExitFlushTimeout, 1)
+				}
 			},
-		}, leaseSpec, exitOnLeadershipLoss, nil
-	}
-
-	return nil, nil, false, nil
+		},
+	}, leaseSpec, exitOnLeadershipLoss, nil
 }
 
 type leaderElectionManager struct {
@@ -211,6 +219,10 @@ type leaderElectionManager struct {
 	mclConfig            *operatorv1beta1.MultiClusterLeaseSpec
 	exitOnLeadershipLoss bool
 	syncerInteg          *SyncerIntegration
+
+	// follower keeps the KRMSyncers pulling from the leader while this cluster is a standby.
+	// It is set if and only if syncerInteg is.
+	follower *leaderFollower
 
 	// onFatal is a callback that is called when the manager encounters a fatal error.
 	// If nil, klog.Fatalf is called.
@@ -226,6 +238,13 @@ func (m *leaderElectionManager) fatal(format string, args ...interface{}) {
 }
 
 func (m *leaderElectionManager) Start(ctx context.Context) error {
+	if m.follower != nil {
+		// Until this cluster leads, keep its KRMSyncers pulling from the leader.
+		followCtx, cancel := context.WithCancel(ctx)
+		defer cancel()
+		go m.follower.run(followCtx)
+	}
+
 	m.leConfig.Callbacks.OnStartedLeading = func(ctx context.Context) {
 		klog.Infof("started leading; identity: %s", m.leConfig.Lock.Identity())
 
@@ -245,6 +264,11 @@ func (m *leaderElectionManager) Start(ctx context.Context) error {
 		}
 
 		if m.syncerInteg != nil {
+			// This cluster no longer pulls from another one. Stop the standby's updates first,
+			// so that one that is still in flight can't resume the KRMSyncers after they are
+			// suspended below.
+			m.follower.stop()
+
 			// Retry up to 5 times with a 2-second delay to handle transient API issues
 			// before we give up and exit.
 			retries := 5
@@ -274,46 +298,37 @@ func (m *leaderElectionManager) Start(ctx context.Context) error {
 			klog.FlushAndExit(klog.ExitFlushTimeout, 1)
 		}
 	}
-	m.leConfig.Callbacks.OnNewLeader = func(identity string) {
-		klog.Infof("observed new leader; identity: %s", identity)
-		if m.syncerInteg != nil {
-			// We use a background context as the main context may be cancelled
-			updateCtx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-			defer cancel()
-
-			// Check if we are the leader. If so, OnStartedLeading handles suspension.
-			myIdentity := m.leConfig.Lock.Identity()
-			if identity == myIdentity {
-				return
-			}
-
-			// The leader's identity is the resource name of its GKE cluster. If it can't be
-			// mapped to a cluster, this cluster can't sync from the leader at all, so exit
-			// rather than keep running with syncers that point at the wrong cluster.
-			leader, err := operatorv1beta1.ParseGKEClusterResourceName(identity)
-			if err != nil {
-				m.fatal("cannot sync from leader %q: %v", identity, err)
-				return
-			}
-
-			// Retry up to 5 times with a 2-second delay to handle transient API issues.
-			// TODO: Consider exiting when every attempt fails, as OnStartedLeading does. The
-			// syncers are only updated when the leader changes, so after a transient failure
-			// (API server unavailable, throttling, timeouts, conflicts) they keep pulling from
-			// the previous leader until the next leader change.
-			retries := 5
-			for i := 0; i < retries; i++ {
-				if err := m.syncerInteg.EnsurePullingFromLeader(updateCtx, leader); err != nil {
-					klog.Errorf("error ensuring syncer is pulling from leader %s (attempt %d/%d): %v", identity, i+1, retries, err)
-					time.Sleep(2 * time.Second)
-				} else {
-					break
-				}
-			}
-		}
-	}
+	m.leConfig.Callbacks.OnNewLeader = m.onNewLeader
 	leaderelection.RunOrDie(ctx, *m.leConfig)
 	return nil
+}
+
+// onNewLeader is called when the leader that this cluster observes changes. On a standby, it
+// makes the KRMSyncers pull from the new leader.
+func (m *leaderElectionManager) onNewLeader(identity string) {
+	klog.Infof("observed new leader; identity: %s", identity)
+	if m.follower == nil {
+		return
+	}
+
+	// No cluster leads, or this one does: there is nothing to pull from. The KRMSyncers stay
+	// as they are; if this cluster leads, OnStartedLeading suspends them.
+	if identity == "" || identity == m.leConfig.Lock.Identity() {
+		m.follower.setLeader(nil)
+		return
+	}
+
+	// The leader's identity is the resource name of its GKE cluster. If it can't be
+	// mapped to a cluster, this cluster can't sync from the leader at all, so exit
+	// rather than keep running with syncers that point at the wrong cluster.
+	leader, err := operatorv1beta1.ParseGKEClusterResourceName(identity)
+	if err != nil {
+		m.fatal("cannot sync from leader %q: %v", identity, err)
+		return
+	}
+
+	// The follower updates the KRMSyncers, and keeps retrying if that fails.
+	m.follower.setLeader(leader)
 }
 
 // Creates a new controller-runtime manager.Manager and starts all of the KCC controllers pointed at the
@@ -510,6 +525,9 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 			mclConfig:            mclConfig,
 			exitOnLeadershipLoss: exitOnLeadershipLoss,
 			syncerInteg:          syncerInteg,
+		}
+		if syncerInteg != nil {
+			leMgr.follower = newLeaderFollower(syncerInteg, mgr.GetEventRecorderFor(leaderFollowerEventSource))
 		}
 		return leMgr, nil
 	}

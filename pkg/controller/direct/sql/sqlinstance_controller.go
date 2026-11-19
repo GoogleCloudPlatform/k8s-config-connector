@@ -786,13 +786,19 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return setStatus(u, status)
 	}
 
-	if upToDate, err := a.CompareLastModifiedCookie(ctx, updateOp, a.actual); err == nil && upToDate {
-		log.V(2).Info("resource is up to date (cookie match)", "name", a.resourceID)
-		status, err := SQLInstanceStatusGCPToKRM(a.actual)
-		if err != nil {
-			return fmt.Errorf("updating SQLInstance status failed: %w", err)
+	// Database version updates must be handled before checking the last modified cookie,
+	// because version strings not yet modeled in the protobuf definition (e.g. newer PostgreSQL/MySQL versions)
+	// unmarshal to SQL_DATABASE_VERSION_UNSPECIFIED (0) in toProto, causing cookie comparisons to falsely match.
+	hasVersionChange := a.desired.Spec.DatabaseVersion != nil && *a.desired.Spec.DatabaseVersion != a.actual.DatabaseVersion
+	if !hasVersionChange {
+		if upToDate, err := a.CompareLastModifiedCookie(ctx, updateOp, a.actual); err == nil && upToDate {
+			log.V(2).Info("resource is up to date (cookie match)", "name", a.resourceID)
+			status, err := SQLInstanceStatusGCPToKRM(a.actual)
+			if err != nil {
+				return fmt.Errorf("updating SQLInstance status failed: %w", err)
+			}
+			return setStatus(u, status)
 		}
-		return setStatus(u, status)
 	}
 
 	// First, handle database version updates
@@ -981,6 +987,9 @@ func (a *sqlInstanceAdapter) SetLastModifiedCookie(ctx context.Context, op direc
 }
 
 func (a *sqlInstanceAdapter) CompareLastModifiedCookie(ctx context.Context, op directbase.Operation, actual *api.DatabaseInstance) (bool, error) {
+	if a.desired.Spec.DatabaseVersion != nil && *a.desired.Spec.DatabaseVersion != actual.DatabaseVersion {
+		return false, nil
+	}
 	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, actual, a.fieldMeta)
 	if err != nil {
 		return false, err

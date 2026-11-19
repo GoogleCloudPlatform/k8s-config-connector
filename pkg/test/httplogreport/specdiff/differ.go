@@ -485,6 +485,7 @@ func jsonContainsExpected(actual, expected any) bool {
 				}
 				continue
 			}
+			eVal = simplifyRefValue(k, eVal)
 			if !jsonContainsExpected(aVal, eVal) {
 				return false
 			}

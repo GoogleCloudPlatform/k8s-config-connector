@@ -80,6 +80,291 @@ entries:
     status: resolved
     resolution: accepted
     note: user-configurable state managed by clients per proto comment; retained in spec.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: triaged all findings; updated parent to inlined *parent.ProjectAndLocationRef, removed top-level labels, verified identity/references, and resolved modelRef, serviceAccountRef, and datasetRef.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: generated AIPlatformBatchPredictionJobIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
+    status: resolved
+    resolution: accepted
+    note: confirmed resource ID is server-generated; CreateBatchPredictionJobRequest has no ID parameter and BatchPredictionJob.name is output-only.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.batchPredictionJobs: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.batchPredictionJobs, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.batchPredictionJobs'
+    status: resolved
+    resolution: edited
+    note: updated to valid cloud.google.com documentation URL and removed guess annotation.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.dedicatedResources.machineSpec.reservationAffinity.reservationAffinityType
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. BatchDedicatedResources in common_types.go is also used by AIPlatformModelMonitor. To enforce it for AIPlatformBatchPredictionJob only, give AIPlatformBatchPredictionJob its own copy of BatchDedicatedResources whose MachineSpec field holds MachineSpecWithRequired, and run generate.sh again. AIPlatformBatchPredictionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: retained existing shared BatchDedicatedResources to preserve schema compatibility with AIPlatformModelMonitor.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.dedicatedResources.machineSpec.reservationAffinity.values
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to compute.googleapis.com/Reservation (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: accepted
+    note: shared ReservationAffinity struct across aiplatform/compute/vertexai resources uses string values for reservation affinity.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyName
+    reason: possible-reference-by-name
+    detail: KMSCryptoKeyRef
+    status: resolved
+    resolution: accepted
+    note: already modeled as KmsKeyRef (*kmsv1beta1.KMSCryptoKeyRef) in shared EncryptionSpec.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCachedContent, AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformModelMonitor, AIPlatformNotebookExecutionJob, AIPlatformNotebookRuntimeTemplate, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformBatchPredictionJob only, give AIPlatformBatchPredictionJob its own copy of EncryptionSpec. AIPlatformBatchPredictionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional in shared EncryptionSpec to avoid breaking existing resources.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.metadata.featureAttributionsSchemaURI
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: GCS URI is not representable as a reference today; remains string.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.metadata.inputs
+    reason: message-map-derived
+    detail: derived as map[string]ExplanationMetadata_InputMetadata from proto google.cloud.aiplatform.v1.ExplanationMetadata.InputMetadata; verify Go type and mapping
+    status: resolved
+    resolution: accepted
+    note: derived map[string]ExplanationMetadata_InputMetadata compiles cleanly.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.metadata.inputs
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationMetadata in aiplatformmodel_types.go is also used by AIPlatformModel, AIPlatformModelMonitor, VertexAITrainingPipeline. +required on ExplanationMetadata.Inputs would apply there too. To enforce it for AIPlatformBatchPredictionJob only, give AIPlatformBatchPredictionJob its own copy of ExplanationMetadata. AIPlatformBatchPredictionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept inputs optional to maintain shared ExplanationMetadata consistency.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.metadata.inputs.KEY.encodedBaselines
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: deferred
+    note: deferred well-known proto type resolution pending team-wide conventions.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.metadata.inputs.KEY.inputBaselines
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: deferred
+    note: deferred well-known proto type resolution pending team-wide conventions.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.metadata.outputs
+    reason: message-map-derived
+    detail: derived as map[string]ExplanationMetadata_OutputMetadata from proto google.cloud.aiplatform.v1.ExplanationMetadata.OutputMetadata; verify Go type and mapping
+    status: resolved
+    resolution: accepted
+    note: derived map[string]ExplanationMetadata_OutputMetadata compiles cleanly.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.metadata.outputs
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationMetadata in aiplatformmodel_types.go is also used by AIPlatformModel, AIPlatformModelMonitor, VertexAITrainingPipeline. +required on ExplanationMetadata.Outputs would apply there too. To enforce it for AIPlatformBatchPredictionJob only, give AIPlatformBatchPredictionJob its own copy of ExplanationMetadata. AIPlatformBatchPredictionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept outputs optional to maintain shared ExplanationMetadata consistency.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.metadata.outputs.KEY.indexDisplayNameMapping
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: deferred
+    note: deferred well-known proto type resolution pending team-wide conventions.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.parameters.examples.exampleGCSSource.gcsSource.uris
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformModel, AIPlatformModelMonitor, VertexAITrainingPipeline. To enforce it for AIPlatformBatchPredictionJob only, give AIPlatformBatchPredictionJob its own copy of ExplanationParameters whose Examples field holds ExamplesWithRequired, and run generate.sh again. AIPlatformBatchPredictionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept uris optional to maintain shared ExplanationParameters consistency.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.parameters.examples.nearestNeighborSearchConfig
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: deferred
+    note: deferred well-known proto type resolution pending team-wide conventions.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.parameters.integratedGradientsAttribution.stepCount
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformModel, AIPlatformModelMonitor, VertexAITrainingPipeline. To enforce it for AIPlatformBatchPredictionJob only, give AIPlatformBatchPredictionJob its own copy of ExplanationParameters whose IntegratedGradientsAttribution field holds IntegratedGradientsAttributionWithRequired, and run generate.sh again. AIPlatformBatchPredictionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: not-applicable
+    note: field sits inside oneof variant integratedGradientsAttribution; kept optional in shared ExplanationParameters.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.parameters.outputIndices
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.ListValue, which was generated as struct ListValue; confirm KRM representation
+    status: resolved
+    resolution: deferred
+    note: deferred well-known proto type resolution pending team-wide conventions.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.parameters.sampledShapleyAttribution.pathCount
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformModel, AIPlatformModelMonitor, VertexAITrainingPipeline. To enforce it for AIPlatformBatchPredictionJob only, give AIPlatformBatchPredictionJob its own copy of ExplanationParameters whose SampledShapleyAttribution field holds SampledShapleyAttributionWithRequired, and run generate.sh again. AIPlatformBatchPredictionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: not-applicable
+    note: field sits inside oneof variant sampledShapleyAttribution; kept optional in shared ExplanationParameters.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.parameters.xraiAttribution.stepCount
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationParameters in recursive_types.go is also used by AIPlatformModel, AIPlatformModelMonitor, VertexAITrainingPipeline. To enforce it for AIPlatformBatchPredictionJob only, give AIPlatformBatchPredictionJob its own copy of ExplanationParameters whose XraiAttribution field holds XraiAttributionWithRequired, and run generate.sh again. AIPlatformBatchPredictionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: not-applicable
+    note: field sits inside oneof variant xraiAttribution; kept optional in shared ExplanationParameters.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputConfig.bigquerySource.inputURI
+    reason: reference-not-representable
+    detail: 'bq-scheme-not-a-gcp-resource-name: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: BigQuery URI is not representable as a reference today; remains string.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputConfig.vertexMultimodalDatasetSource.datasetName
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to aiplatform.googleapis.com/Dataset (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: converted to DatasetRef (*vertexaiv1beta1.VertexAIDatasetRef).
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.model
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to aiplatform.googleapis.com/Model (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: converted to ModelRef (*AIPlatformModelRef).
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelParameters
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: deferred
+    note: deferred well-known proto type resolution pending team-wide conventions.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.outputConfig.bigqueryDestination.outputURI
+    reason: reference-not-representable
+    detail: 'bq-scheme-not-a-gcp-resource-name: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: BigQuery URI is not representable as a reference today; remains string.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.outputConfig.bigqueryDestination.outputURI
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformBatchPredictionJobSpec.OutputConfig in aiplatformbatchpredictionjob_types.go from BatchPredictionJob_OutputConfig to BatchPredictionJob_OutputConfigWithRequired and run generate.sh again. AIPlatformBatchPredictionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: not-applicable
+    note: field sits inside oneof variant bigqueryDestination; kept optional in KRM oneof pattern.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.outputConfig.gcsDestination.outputURIPrefix
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: GCS URI prefix is not representable as a reference today; remains string.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.outputConfig.vertexMultimodalDatasetDestination.bigqueryDestination.outputURI
+    reason: reference-not-representable
+    detail: 'bq-scheme-not-a-gcp-resource-name: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: BigQuery URI is not representable as a reference today; remains string.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.outputConfig.vertexMultimodalDatasetDestination.bigqueryDestination.outputURI
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformBatchPredictionJobSpec.OutputConfig in aiplatformbatchpredictionjob_types.go from BatchPredictionJob_OutputConfig to BatchPredictionJob_OutputConfigWithRequired and run generate.sh again. AIPlatformBatchPredictionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: not-applicable
+    note: field sits inside oneof variant bigqueryDestination; kept optional in KRM oneof pattern.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.serviceAccount
+    reason: possible-reference-by-description
+    detail: the field name ends in serviceAccount
+    status: resolved
+    resolution: edited
+    note: converted to ServiceAccountRef (*refsv1beta1.IAMServiceAccountRef).
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.unmanagedContainerModel.containerSpec.imageURI
+    reason: reference-not-representable
+    detail: 'container-image-uri-not-a-storage-object: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: container image URI is not a KCC resource reference; remains string.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.unmanagedContainerModel.predictSchemata.instanceSchemaURI
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: GCS URI is not representable as a reference today; remains string.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.unmanagedContainerModel.predictSchemata.parametersSchemaURI
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: GCS URI is not representable as a reference today; remains string.
+  - kind: AIPlatformBatchPredictionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.unmanagedContainerModel.predictSchemata.predictionSchemaURI
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: GCS URI is not representable as a reference today; remains string.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
@@ -1275,6 +1560,587 @@ entries:
     status: resolved
     resolution: edited
     note: converted to EndpointRefs ([]vertexaiv1beta1.VertexAIEndpointRef).
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: triaged all entries; updated parentRef to inlined *parent.ProjectAndLocationRef, removed top-level labels, verified docs link, used CustomJobSpecWithRequired for searchTrialJobSpec and trainTrialJobSpec, converted resumeNasJobID to resumeNasJobRef.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: generated AIPlatformNasJobIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
+    status: resolved
+    resolution: accepted
+    note: confirmed server-generated ID; CreateNasJobRequest has no id parameter.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.nasJobs: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.nasJobs, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.nasJobs'
+    status: resolved
+    resolution: edited
+    note: updated resource-docs link to cloud.google.com and removed guess marker.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.enableRestrictedImageTraining
+    reason: deprecated-field
+    detail: the proto marks this field deprecated, so new Kinds leave it out of the Spec. If this Spec still has it, remove it by hand; add it back only if users still need it
+    status: resolved
+    resolution: accepted
+    note: field omitted from spec as deprecated.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyName
+    reason: possible-reference-by-name
+    detail: KMSCryptoKeyRef
+    status: resolved
+    resolution: edited
+    note: modeled as KmsKeyRef on shared EncryptionSpec.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformBatchPredictionJob, AIPlatformCachedContent, AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformModelMonitor, AIPlatformNotebookExecutionJob, AIPlatformNotebookRuntimeTemplate, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of EncryptionSpec. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional to match existing shared EncryptionSpec across aiplatform resources.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: resolved
+    resolution: edited
+    note: replaced projectRef and location with inlined *parent.ProjectAndLocationRef.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.metric.metricID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: resolved
+    resolution: accepted
+    note: string identifier for metric, not a resource reference.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.baseOutputDirectory.outputURIPrefix
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: string field retained.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.baseOutputDirectory.outputURIPrefix
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose BaseOutputDirectory field holds GCSDestinationWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.experiment
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to aiplatform.googleapis.com/Context (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: modeled as typed reference on CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.experimentRun
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to aiplatform.googleapis.com/Context (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: modeled as typed reference on CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.models
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to aiplatform.googleapis.com/Model (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: modeled as typed reference on CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.network
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to compute.googleapis.com/Network (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: modeled as typed reference on CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.persistentResourceID
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to aiplatform.googleapis.com/PersistentResource (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: modeled as typed reference on CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.protectedArtifactLocationID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: resolved
+    resolution: accepted
+    note: location string ID, not a resource reference.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.pscInterfaceConfig.dnsPeeringConfigs[].domain
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in aiplatformpipelinejob_types.go is also used by AIPlatformCustomJob, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformReasoningEngine. +required on DNSPeeringConfig.Domain would apply there too. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of DNSPeeringConfig. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.pscInterfaceConfig.dnsPeeringConfigs[].targetNetworkRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in aiplatformpipelinejob_types.go is also used by AIPlatformCustomJob, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformReasoningEngine. +required on DNSPeeringConfig.TargetNetworkRef would apply there too. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of DNSPeeringConfig. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.pscInterfaceConfig.dnsPeeringConfigs[].targetProjectRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in aiplatformpipelinejob_types.go is also used by AIPlatformCustomJob, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformReasoningEngine. +required on DNSPeeringConfig.TargetProjectRef would apply there too. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of DNSPeeringConfig. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.pscInterfaceConfig.networkAttachment
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to compute.googleapis.com/NetworkAttachment (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: modeled as typed reference on CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.serviceAccount
+    reason: possible-reference-by-description
+    detail: the field name ends in serviceAccount
+    status: resolved
+    resolution: edited
+    note: modeled as ServiceAccountRef on CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.tensorboard
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to aiplatform.googleapis.com/Tensorboard (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: modeled as typed reference on CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.workerPoolSpecs
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpecWithRequired in aiplatformhyperparametertuningjob_types.go is also used by AIPlatformHyperparameterTuningJob. +required on CustomJobSpecWithRequired.WorkerPoolSpecs would apply there too. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpecWithRequired. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.workerPoolSpecs[].containerSpec.env[].name
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.workerPoolSpecs[].containerSpec.env[].value
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.workerPoolSpecs[].containerSpec.imageURI
+    reason: reference-not-representable
+    detail: 'container-image-uri-not-a-storage-object: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: string field retained.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.workerPoolSpecs[].containerSpec.imageURI
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.workerPoolSpecs[].lustreMounts[].filesystem
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.workerPoolSpecs[].lustreMounts[].instanceIP
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.workerPoolSpecs[].lustreMounts[].mountPoint
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.workerPoolSpecs[].lustreMounts[].volumeHandle
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.workerPoolSpecs[].machineSpec.reservationAffinity.reservationAffinityType
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.workerPoolSpecs[].machineSpec.reservationAffinity.values
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to compute.googleapis.com/Reservation (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: accepted
+    note: reservation values kept as string array.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.workerPoolSpecs[].nfsMounts[].mountPoint
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.workerPoolSpecs[].nfsMounts[].path
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.workerPoolSpecs[].nfsMounts[].server
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.workerPoolSpecs[].pythonPackageSpec.executorImageURI
+    reason: reference-not-representable
+    detail: 'container-image-uri-not-a-storage-object: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: string field retained.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.workerPoolSpecs[].pythonPackageSpec.executorImageURI
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. PythonPackageSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob, AIPlatformHyperparameterTuningJob. +required on PythonPackageSpec.ExecutorImageURI would apply there too. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of PythonPackageSpec. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.workerPoolSpecs[].pythonPackageSpec.packageURIs
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. PythonPackageSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob, AIPlatformHyperparameterTuningJob. +required on PythonPackageSpec.PackageURIs would apply there too. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of PythonPackageSpec. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.workerPoolSpecs[].pythonPackageSpec.pythonModule
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. PythonPackageSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob, AIPlatformHyperparameterTuningJob. +required on PythonPackageSpec.PythonModule would apply there too. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of PythonPackageSpec. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.baseOutputDirectory.outputURIPrefix
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: string field retained.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.baseOutputDirectory.outputURIPrefix
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose BaseOutputDirectory field holds GCSDestinationWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.experiment
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to aiplatform.googleapis.com/Context (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: modeled as typed reference on CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.experimentRun
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to aiplatform.googleapis.com/Context (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: modeled as typed reference on CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.models
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to aiplatform.googleapis.com/Model (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: modeled as typed reference on CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.network
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to compute.googleapis.com/Network (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: modeled as typed reference on CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.persistentResourceID
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to aiplatform.googleapis.com/PersistentResource (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: modeled as typed reference on CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.protectedArtifactLocationID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: resolved
+    resolution: accepted
+    note: location string ID, not a resource reference.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.pscInterfaceConfig.dnsPeeringConfigs[].domain
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in aiplatformpipelinejob_types.go is also used by AIPlatformCustomJob, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformReasoningEngine. +required on DNSPeeringConfig.Domain would apply there too. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of DNSPeeringConfig. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.pscInterfaceConfig.dnsPeeringConfigs[].targetNetworkRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in aiplatformpipelinejob_types.go is also used by AIPlatformCustomJob, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformReasoningEngine. +required on DNSPeeringConfig.TargetNetworkRef would apply there too. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of DNSPeeringConfig. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.pscInterfaceConfig.dnsPeeringConfigs[].targetProjectRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in aiplatformpipelinejob_types.go is also used by AIPlatformCustomJob, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformReasoningEngine. +required on DNSPeeringConfig.TargetProjectRef would apply there too. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of DNSPeeringConfig. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.pscInterfaceConfig.networkAttachment
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to compute.googleapis.com/NetworkAttachment (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: modeled as typed reference on CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.serviceAccount
+    reason: possible-reference-by-description
+    detail: the field name ends in serviceAccount
+    status: resolved
+    resolution: edited
+    note: modeled as ServiceAccountRef on CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.tensorboard
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to aiplatform.googleapis.com/Tensorboard (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: modeled as typed reference on CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.workerPoolSpecs
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpecWithRequired in aiplatformhyperparametertuningjob_types.go is also used by AIPlatformHyperparameterTuningJob. +required on CustomJobSpecWithRequired.WorkerPoolSpecs would apply there too. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpecWithRequired. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.workerPoolSpecs[].containerSpec.env[].name
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.workerPoolSpecs[].containerSpec.env[].value
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.workerPoolSpecs[].containerSpec.imageURI
+    reason: reference-not-representable
+    detail: 'container-image-uri-not-a-storage-object: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: string field retained.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.workerPoolSpecs[].containerSpec.imageURI
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.workerPoolSpecs[].lustreMounts[].filesystem
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.workerPoolSpecs[].lustreMounts[].instanceIP
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.workerPoolSpecs[].lustreMounts[].mountPoint
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.workerPoolSpecs[].lustreMounts[].volumeHandle
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.workerPoolSpecs[].machineSpec.reservationAffinity.reservationAffinityType
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.workerPoolSpecs[].machineSpec.reservationAffinity.values
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to compute.googleapis.com/Reservation (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: accepted
+    note: reservation values kept as string array.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.workerPoolSpecs[].nfsMounts[].mountPoint
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.workerPoolSpecs[].nfsMounts[].path
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.workerPoolSpecs[].nfsMounts[].server
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CustomJobSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of CustomJobSpec whose WorkerPoolSpecs field holds WorkerPoolSpecWithRequired, and run generate.sh again. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.workerPoolSpecs[].pythonPackageSpec.executorImageURI
+    reason: reference-not-representable
+    detail: 'container-image-uri-not-a-storage-object: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: string field retained.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.workerPoolSpecs[].pythonPackageSpec.executorImageURI
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. PythonPackageSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob, AIPlatformHyperparameterTuningJob. +required on PythonPackageSpec.ExecutorImageURI would apply there too. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of PythonPackageSpec. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.workerPoolSpecs[].pythonPackageSpec.packageURIs
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. PythonPackageSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob, AIPlatformHyperparameterTuningJob. +required on PythonPackageSpec.PackageURIs would apply there too. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of PythonPackageSpec. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.workerPoolSpecs[].pythonPackageSpec.pythonModule
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. PythonPackageSpec in aiplatformcustomjob_types.go is also used by AIPlatformCustomJob, AIPlatformHyperparameterTuningJob. +required on PythonPackageSpec.PythonModule would apply there too. To enforce it for AIPlatformNasJob only, give AIPlatformNasJob its own copy of PythonPackageSpec. AIPlatformNasJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: enforced via CustomJobSpecWithRequired.
+  - kind: AIPlatformNasJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.nasJobSpec.resumeNasJobID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: resolved
+    resolution: edited
+    note: converted to ResumeNasJobRef (*AIPlatformNasJobRef).
   - kind: AIPlatformNotebookExecutionJob
     group: aiplatform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
@@ -1420,7 +2286,7 @@ entries:
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.encryptionSpec.kmsKeyRef
     reason: required-not-enforced
-    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCachedContent, AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformModelMonitor, AIPlatformNotebookExecutionJob, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformNotebookRuntimeTemplate only, give AIPlatformNotebookRuntimeTemplate its own copy of EncryptionSpec. AIPlatformNotebookRuntimeTemplate is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformBatchPredictionJob, AIPlatformCachedContent, AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformModelMonitor, AIPlatformNasJob, AIPlatformNotebookExecutionJob, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformNotebookRuntimeTemplate only, give AIPlatformNotebookRuntimeTemplate its own copy of EncryptionSpec. AIPlatformNotebookRuntimeTemplate is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: open
   - kind: AIPlatformNotebookRuntimeTemplate
     group: aiplatform.cnrm.cloud.google.com

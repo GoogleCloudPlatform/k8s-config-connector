@@ -61,11 +61,13 @@ ${CONTROLLERBUILDER} generate-types \
   --prepopulate-resource \
   --allow-non-declarative \
   --resource AIPlatformArtifact:Artifact \
+  --resource AIPlatformBatchPredictionJob:BatchPredictionJob \
   --resource AIPlatformCachedContent:CachedContent \
   --resource AIPlatformContext:Context \
   --resource AIPlatformExecution:Execution \
   --resource AIPlatformFeatureView:FeatureView \
   --resource AIPlatformHyperparameterTuningJob:HyperparameterTuningJob \
+  --resource AIPlatformNasJob:NasJob \
   --resource AIPlatformNotebookExecutionJob:NotebookExecutionJob \
   --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate \
   --resource AIPlatformRAGCorpus:RagCorpus
@@ -81,11 +83,13 @@ ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1 \
   --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
   --resource AIPlatformArtifact:Artifact \
+  --resource AIPlatformBatchPredictionJob:BatchPredictionJob \
   --resource AIPlatformCachedContent:CachedContent \
   --resource AIPlatformContext:Context \
   --resource AIPlatformExecution:Execution \
   --resource AIPlatformFeatureView:FeatureView \
   --resource AIPlatformHyperparameterTuningJob:HyperparameterTuningJob \
+  --resource AIPlatformNasJob:NasJob \
   --resource AIPlatformNotebookExecutionJob:NotebookExecutionJob \
   --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate \
   --resource AIPlatformOnlineEvaluator:OnlineEvaluator \

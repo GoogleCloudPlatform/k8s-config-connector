@@ -176,4 +176,45 @@
   5. Verified all 7 HTTP log validation checks pass (`TestCommittedHTTPLogReports/dataplexentity`), unit tests pass, and focused fuzzer passes.
 - **Impact**: Full Greenfield direct controller coverage and verified golden test fixtures for DataplexEntity.
 
+### [2026-11-15] Prepopulate Direct KRM Types, Identity, and Judgement Queue for DataplexPartition
+- **Context**: Prepopulating direct KRM types, IdentityV2, and judgement queue for `DataplexPartition` under `v1alpha1` following Greenfield Step 1a (#15760).
+- **Problem**: `DataplexPartition` (`Partition` in `google.cloud.dataplex.v1.metadata`) has a proto field named `location` (`string location = 3;` representing the Cloud Storage / data storage URI). The resource URL pattern also contains `{location}` (`projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/entities/{entity}/partitions/{partition}`). During mechanical scaffolding (`controllerbuilder generate-types --prepopulate-resource`), `applyParentFields` generated parent field `Location *string` in addition to the proto-derived `Location *string` field, resulting in a duplicate field declaration compile error (`Location redeclared`).
+- **Solution**:
+  1. Updated `applyParentFields` in `dev/tools/controllerbuilder/scaffold/apis.go` to suppress generating parent `LocationField` / `RootRefField` when `cArgs.SpecFields` already declares a field with that name, retaining the judgement queue item for triage in Step 1b. Added unit test in `types_test.go`.
+  2. Added `DataplexPartition:Partition` to `generate-types` and `generate-identity` in `apis/dataplex/generate.sh`.
+  3. Added `DataplexPartition` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. Ran `./apis/dataplex/generate.sh`, generating types, IdentityV2, reference, and CRD.
+  5. Updated `alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...`.
+- **Impact**: All unit tests, conformance tests, and apichecks pass cleanly without manual edits to `dataplexpartition_types.go` or `apis/dataplex/judgement_queue.yaml`.
+
+### [2026-11-15] Triage Judgement Queue and Finalize Direct KRM Types for DataplexPartition
+- **Context**: Triaging judgement queue and finalizing KRM types, identity, and references for `DataplexPartition` under `v1alpha1` (#15776).
+- **Problem**:
+  1. `DataplexPartition` is a child resource under `DataplexEntity` (`projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/entities/{entity}/partitions/{partition}`). Initial mechanical scaffolding generated `projectRef`, while the parent hierarchy needed to be consolidated into a single required immutable `parentRef` (`*DataplexEntityRef`).
+  2. The proto defines `string location = 3;`, which represents the entity data location path within the partition (GCS URI or BigQuery table path). This field is kept as a plain string rather than a location/region reference.
+  3. `CreatePartitionRequest` has no `partition_id` parameter and `Partition.name` is output-only (derived from double-encoded partition values by GCP), conforming to `identity.ServerGeneratedIdentity`.
+  4. `Partition` has no non-deprecated output-only fields, so `ObservedState` is commented out.
+- **Solution**:
+  1. Replaced `projectRef` with `parentRef *DataplexEntityRef` (`+required`, immutable via `self == oldSelf` CEL rule) in `DataplexPartitionSpec`.
+  2. Enforced `+required` on `Location *string` and `Values []string`.
+  3. Regenerated identity, types, CRDs, and mappers via `./apis/dataplex/generate.sh`.
+  4. Triaged all 8 entries for `DataplexPartition` in `apis/dataplex/judgement_queue.yaml` to `status: resolved`.
+  5. Updated `alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks -run TestCRDFieldPresenceInTestsForAlpha`.
+- **Impact**: All unit tests, conformance tests, and apichecks pass cleanly, adhering strictly to Greenfield Step 1b and single-parent standards.
+
+### [2026-11-16] Implement Greenfield DataplexPartition Controller, Fixtures, and Fuzzer
+- **Context**: Greenfield Step 2 implementation for DataplexPartition (direct controller, E2E fixtures, and fuzzer) under issue #15809.
+- **Problem**:
+  1. `obj.Spec.Location` in `DataplexPartition` represents the entity data storage location URI (e.g. `gs://bucket/data/...`), not the GCP region/location. The controller generator defaulted `m.client(ctx, direct.ValueOf(obj.Spec.Location))`. The client must instead be initialized using `id.Location` (extracted from the parent `DataplexEntity` reference).
+  2. GCP Dataplex API does not support an `UpdatePartition` RPC (partitions are immutable). The controller must verify `report.HasDiff()` and return an error if mutable fields are changed, or call `setStatus(u, actual)` when unchanged.
+  3. Parent `DataplexEntity` in dependencies must define `partitionFields` in its schema (e.g. `name: dt`, `type: DATE`) for GCP Dataplex API to accept partition creation.
+- **Solution**:
+  1. Updated `dataplexpartition_controller.go` to use `id.Location` for `m.client`, implemented `AdapterForURL` for export support, and implemented `setStatus` helper for status updates.
+  2. Registered `DataplexPartition` controller in `pkg/controller/resourceconfig/static_config.go`.
+  3. Created `dataplexpartition-minimal` and `dataplexpartition-maximal` E2E test suites with `DataplexLake`, `DataplexZone`, `StorageBucket`, `DataplexAsset`, and `DataplexEntity` (with `partitionFields`) dependencies. Omitted `update.yaml` as the resource is immutable and has no Update RPC.
+  4. Recorded authentic golden HTTP logs and objects against real GCP (`cnrm-barni-4`) using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`.
+  5. Cleared `DataplexPartition` entries from `alpha-missingfields.txt` via `TestCRDFieldPresenceInTestsForAlpha`.
+- **Impact**: Full Greenfield direct controller coverage and verified golden test fixtures for DataplexPartition with 7/7 HTTP lifecycle checks passing.
+
+
 

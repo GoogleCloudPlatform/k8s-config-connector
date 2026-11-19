@@ -82,6 +82,7 @@ deletionProtectionEnabled: boolean
 endpoints:
 - connections:
   - pscAutoConnection:
+      ipVersion: string
       networkRef:
         external: string
         name: string
@@ -200,7 +201,7 @@ zoneDistributionConfig:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.</p>
+            <p>Hours of a day in 24 hour format. Must be greater than or equal to 0 and typically must be less than or equal to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.</p>
         </td>
     </tr>
     <tr>
@@ -210,7 +211,7 @@ zoneDistributionConfig:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Minutes of hour of day. Must be from 0 to 59.</p>
+            <p>Minutes of an hour. Must be greater than or equal to 0 and less than or equal to 59.</p>
         </td>
     </tr>
     <tr>
@@ -220,7 +221,7 @@ zoneDistributionConfig:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.</p>
+            <p>Fractions of seconds, in nanoseconds. Must be greater than or equal to 0 and less than or equal to 999,999,999.</p>
         </td>
     </tr>
     <tr>
@@ -230,7 +231,7 @@ zoneDistributionConfig:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds.</p>
+            <p>Seconds of a minute. Must be greater than or equal to 0 and typically must be less than or equal to 59. An API may allow the value 60 if it allows leap-seconds.</p>
         </td>
     </tr>
     <tr>
@@ -437,6 +438,16 @@ zoneDistributionConfig:
         <td>
             <p><code class="apitype">object</code></p>
             <p>Detailed information of a PSC connection that is created through service connectivity automation.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>endpoints[].connections[].pscAutoConnection.ipVersion</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Optional. Immutable. The IP version used for the PSC auto-created endpoint. If not specified, defaults to IPV4.</p>
         </td>
     </tr>
     <tr>
@@ -696,7 +707,7 @@ zoneDistributionConfig:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.</p>
+            <p>Hours of a day in 24 hour format. Must be greater than or equal to 0 and typically must be less than or equal to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.</p>
         </td>
     </tr>
     <tr>
@@ -706,7 +717,7 @@ zoneDistributionConfig:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Minutes of hour of day. Must be from 0 to 59.</p>
+            <p>Minutes of an hour. Must be greater than or equal to 0 and less than or equal to 59.</p>
         </td>
     </tr>
     <tr>
@@ -716,7 +727,7 @@ zoneDistributionConfig:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.</p>
+            <p>Fractions of seconds, in nanoseconds. Must be greater than or equal to 0 and less than or equal to 999,999,999.</p>
         </td>
     </tr>
     <tr>
@@ -726,7 +737,7 @@ zoneDistributionConfig:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds.</p>
+            <p>Seconds of a minute. Must be greater than or equal to 0 and typically must be less than or equal to 59. An API may allow the value 60 if it allows leap-seconds.</p>
         </td>
     </tr>
     <tr>
@@ -997,6 +1008,7 @@ observedState:
         connectionType: string
         forwardingRule: string
         ipAddress: string
+        ipVersion: string
         port: integer
         pscConnectionID: string
         pscConnectionStatus: string
@@ -1347,6 +1359,13 @@ observedState:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Output only. The IP allocated on the consumer network for the PSC forwarding rule.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.endpoints[].connections[].pscAutoConnection.ipVersion</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The IP version used for the PSC connection.</p>
         </td>
     </tr>
     <tr>

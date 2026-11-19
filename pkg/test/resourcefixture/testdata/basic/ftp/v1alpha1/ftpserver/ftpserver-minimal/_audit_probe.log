@@ -1,0 +1,30 @@
+GET https://ftp.googleapis.com/v1/projects/${projectId}/locations/us-west1/servers/ftpmin-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=SERVER_VIEW_FULL
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "accessType": 1,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "ftpmin-upd-${uniqueId}",
+  "externalConfig": {
+    "allowedCidrBlocks": [
+      "10.0.0.0/8",
+      "192.168.0.0/16"
+    ],
+    "ipAddress": "35.247.50.198"
+  },
+  "googleManagedServerCredential": {
+    "asymmetricAlgorithm": "ED25519",
+    "fingerprint": "SHA256:kA9R1ELsY2Nrq2iDAdcwoACU19eigYolr80hhfpErJk"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-west1/servers/ftpmin-${uniqueId}",
+  "serviceAgent": "p-${projectNumber}-709921764549@gcp-sa-ftp.iam.gserviceaccount.com",
+  "state": 3,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

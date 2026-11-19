@@ -19,8 +19,8 @@
 package firestore
 
 import (
+	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
-	pb "google.golang.org/genproto/googleapis/firestore/admin/v1"
 )
 
 func init() {
@@ -43,8 +43,10 @@ func firestoreIndexFuzzer() fuzztesting.KRMFuzzer {
 
 	f.Unimplemented_NotYetTriaged(".api_scope")
 	f.Unimplemented_NotYetTriaged(".state")
+	f.Unimplemented_NotYetTriaged(".search_index_options")
 	f.Unimplemented_NotYetTriaged(".fields[].order")
 	f.Unimplemented_NotYetTriaged(".fields[].vector_config")
+	f.Unimplemented_NotYetTriaged(".fields[].search_config")
 
 	// We do map array_config, but we can't handle the unspecified value correctly
 	f.Unimplemented_NotYetTriaged(".fields[].array_config")
@@ -53,5 +55,6 @@ func firestoreIndexFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".multikey")
 	f.Unimplemented_NotYetTriaged(".shard_count")
 	f.Unimplemented_NotYetTriaged(".unique")
+	f.Unimplemented_NotYetTriaged(".search_index_options")
 	return f
 }

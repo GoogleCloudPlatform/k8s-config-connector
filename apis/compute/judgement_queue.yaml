@@ -21,6 +21,92 @@
 # file does not have.
 
 entries:
+  - kind: ComputeCompositeHealthCheck
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: accepted
+    note: triaged all findings; finalized direct KRM types, identity, and references
+  - kind: ComputeCompositeHealthCheck
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: resolved
+    resolution: edited
+    note: verified and updated resource-docs link to point to Compute RegionCompositeHealthChecks REST reference
+  - kind: ComputeCompositeHealthCheck
+    group: compute.cnrm.cloud.google.com
+    field: .spec.healthSources
+    reason: possible-reference-by-sibling
+    detail: the name matches ComputeHealthSource, a resource this service declares; confirm whether it should be a reference
+    status: resolved
+    resolution: edited
+    note: converted to healthSourceRefs ([]ComputeHealthSourceRef)
+  - kind: ComputeCompositeHealthCheck
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: resolved
+    resolution: accepted
+    note: kept spec.location as a required string representing region matching Compute conventions
+  - kind: ComputeCompositeHealthCheck
+    group: compute.cnrm.cloud.google.com
+    field: .spec.region
+    reason: location-or-parent-ref
+    detail: proto defines a region field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
+    status: resolved
+    resolution: edited
+    note: removed from spec; region is output-only in proto and moved to status.observedState.region
+  - kind: ComputeCompositeHealthCheck
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; placed in status.observedState.creationTimestamp
+  - kind: ComputeCompositeHealthCheck
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; placed in status.observedState.id
+  - kind: ComputeCompositeHealthCheck
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; placed in status.observedState.kind
+  - kind: ComputeCompositeHealthCheck
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.region
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.region. Move the field to .status.observedState.region if it is confirmed output only. Proto comment: Output only. [Output Only] URL of the region where the composite health check resides. This field applies only to the regional resource. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.'
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved to status.observedState.region
+  - kind: ComputeCompositeHealthCheck
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; placed in status.observedState.selfLink
+  - kind: ComputeCompositeHealthCheck
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; placed in status.observedState.selfLinkWithID
   - kind: ComputeCrossSiteNetwork
     group: compute.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
@@ -428,6 +514,297 @@ entries:
     status: resolved
     resolution: accepted
     note: confirmed output-only; already placed in status.observedState.selfLink
+  - kind: ComputeHealthSource
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: accepted
+    note: triaged all findings; finalized direct KRM types, identity, and references
+  - kind: ComputeHealthSource
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: resolved
+    resolution: edited
+    note: verified and updated resource-docs link to point to Compute RegionHealthSources REST reference
+  - kind: ComputeHealthSource
+    group: compute.cnrm.cloud.google.com
+    field: .spec.healthAggregationPolicy
+    reason: possible-reference-by-sibling
+    detail: the name matches ComputeHealthAggregationPolicy, a resource this service declares; confirm whether it should be a reference
+    status: resolved
+    resolution: edited
+    note: converted to healthAggregationPolicyRef (*ComputeHealthAggregationPolicyRef)
+  - kind: ComputeHealthSource
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: resolved
+    resolution: accepted
+    note: kept spec.location as a required string representing region matching Compute conventions
+  - kind: ComputeHealthSource
+    group: compute.cnrm.cloud.google.com
+    field: .spec.region
+    reason: location-or-parent-ref
+    detail: proto defines a region field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
+    status: resolved
+    resolution: edited
+    note: removed from spec; region is output-only in proto and moved to status.observedState.region
+  - kind: ComputeHealthSource
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; placed in status.observedState.creationTimestamp
+  - kind: ComputeHealthSource
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; placed in status.observedState.id
+  - kind: ComputeHealthSource
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; placed in status.observedState.kind
+  - kind: ComputeHealthSource
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; placed in status.observedState.selfLink
+  - kind: ComputeHealthSource
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; placed in status.observedState.selfLinkWithID
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: triaged parent reference, output-only fields, and resource documentation link
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/zones/{zone}/instanceGroupManagers/{instanceGroupManager}/resizeRequests/{resizeRequest}" contains ancestor segment(s) instanceGroupManagers/{instanceGroupManager} with no matching reference or field on ComputeInstanceGroupManagerResizeRequestSpec
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*computev1beta1.ComputeInstanceGroupManagerRef); removed ProjectRef and Location
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: resolved
+    resolution: edited
+    note: set resource docs link to https://cloud.google.com/compute/docs/reference/rest/v1/instanceGroupManagerResizeRequests
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: resolved
+    resolution: edited
+    note: removed; resource is child of ComputeInstanceGroupManager via spec.parentRef
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .spec.state
+    reason: possible-status-field-in-spec
+    detail: state was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment; moved to status.observedState.state
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .spec.status
+    reason: possible-status-field-in-spec
+    detail: status was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment; moved to status.observedState.status
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .spec.zone
+    reason: location-or-parent-ref
+    detail: proto defines a zone field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
+    status: resolved
+    resolution: edited
+    note: removed from spec; confirmed output-only per proto comment and moved to status.observedState.zone
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; placed in status.observedState.creationTimestamp
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; placed in status.observedState.id
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; placed in status.observedState.kind
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; placed in status.observedState.selfLink
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; placed in status.observedState.selfLinkWithID
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.state. Move the field to .status.observedState.state if it is confirmed output only. Proto comment: [Output only] Current state of the request. Check the State enum for the list of possible values.'
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved to status.observedState.state
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status. Move the field to .status.observedState.status if it is confirmed output only. Proto comment: [Output only] Status of the request.'
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved to status.observedState.status
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.error
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.error. Move the field to .status.observedState.status.error if it is confirmed output only. Proto comment: [Output only] Fatal errors encountered during the queueing or provisioning phases of the ResizeRequest that caused the transition to the FAILED state. Contrary to the last_attempt errors, this field is final and errors are never removed from here, as the ResizeRequest is not going to retry.'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; contained in status.observedState.status
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.error.errors
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.error.errors. Move the field to .status.observedState.status.error.errors if it is confirmed output only. Proto comment: [Output Only] The array of errors encountered while processing this operation.'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; contained in status.observedState.status
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.error.errors[].code
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.error.errors[].code. Move the field to .status.observedState.status.error.errors[].code if it is confirmed output only. Proto comment: [Output Only] The error type identifier for this error.'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; contained in status.observedState.status
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.error.errors[].errorDetails
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.error.errors[].errorDetails. Move the field to .status.observedState.status.error.errors[].errorDetails if it is confirmed output only. Proto comment: [Output Only] An optional list of messages that contain the error details. There is a set of defined message types to use for providing details.The syntax depends on the error code. For example, QuotaExceededInfo will have details when the error code is QUOTA_EXCEEDED.'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; contained in status.observedState.status
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.error.errors[].location
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.error.errors[].location. Move the field to .status.observedState.status.error.errors[].location if it is confirmed output only. Proto comment: [Output Only] Indicates the field in the request that caused the error. This property is optional.'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; contained in status.observedState.status
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.error.errors[].message
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.error.errors[].message. Move the field to .status.observedState.status.error.errors[].message if it is confirmed output only. Proto comment: [Output Only] An optional, human-readable error message.'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; contained in status.observedState.status
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.lastAttempt
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.lastAttempt. Move the field to .status.observedState.status.lastAttempt if it is confirmed output only. Proto comment: [Output only] Information about the last attempt to fulfill the request. The value is temporary since the ResizeRequest can retry, as long as it''s still active and the last attempt value can either be cleared or replaced with a different error. Since ResizeRequest retries infrequently, the value may be stale and no longer show an active problem. The value is cleared when ResizeRequest transitions to the final state (becomes inactive). If the final state is FAILED the error describing it will be storred in the "error" field only.'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; contained in status.observedState.status
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.lastAttempt.error.errors
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.lastAttempt.error.errors. Move the field to .status.observedState.status.lastAttempt.error.errors if it is confirmed output only. Proto comment: [Output Only] The array of errors encountered while processing this operation.'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; contained in status.observedState.status
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.lastAttempt.error.errors[].code
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.lastAttempt.error.errors[].code. Move the field to .status.observedState.status.lastAttempt.error.errors[].code if it is confirmed output only. Proto comment: [Output Only] The error type identifier for this error.'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; contained in status.observedState.status
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.lastAttempt.error.errors[].errorDetails
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.lastAttempt.error.errors[].errorDetails. Move the field to .status.observedState.status.lastAttempt.error.errors[].errorDetails if it is confirmed output only. Proto comment: [Output Only] An optional list of messages that contain the error details. There is a set of defined message types to use for providing details.The syntax depends on the error code. For example, QuotaExceededInfo will have details when the error code is QUOTA_EXCEEDED.'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; contained in status.observedState.status
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.lastAttempt.error.errors[].location
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.lastAttempt.error.errors[].location. Move the field to .status.observedState.status.lastAttempt.error.errors[].location if it is confirmed output only. Proto comment: [Output Only] Indicates the field in the request that caused the error. This property is optional.'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; contained in status.observedState.status
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status.lastAttempt.error.errors[].message
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status.lastAttempt.error.errors[].message. Move the field to .status.observedState.status.lastAttempt.error.errors[].message if it is confirmed output only. Proto comment: [Output Only] An optional, human-readable error message.'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; contained in status.observedState.status
+  - kind: ComputeInstanceGroupManagerResizeRequest
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.zone
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.zone. Move the field to .status.observedState.zone if it is confirmed output only. Proto comment: [Output Only] The URL of a zone where the resize request is located. Populated only for zonal resize requests.'
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved to status.observedState.zone
   - kind: ComputeInstantSnapshot
     group: compute.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
@@ -614,6 +991,131 @@ entries:
     field: .status.observedState.zone
     reason: well-known-output-only-pattern-in-comment
     detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.zone. Move the field to .status.observedState.zone if it is confirmed output only. Proto comment: [Output Only] URL of the zone where the instant snapshot resides. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.'
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved to status.observedState.zone
+  - kind: ComputeInstantSnapshotGroup
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: triaged all findings; finalized direct KRM types, handwritten identity supporting zonal and regional patterns, and references
+  - kind: ComputeInstantSnapshotGroup
+    group: compute.cnrm.cloud.google.com
+    reason: identity-multi-pattern
+    detail: proto message google.cloud.compute.v1.InstantSnapshotGroup declares 2 resource name patterns (projects/{project}/regions/{region}/instantSnapshotGroups/{instantsnapshotgroup}, projects/{project}/zones/{zone}/instantSnapshotGroups/{instantsnapshotgroup}) that tied on ComputeInstantSnapshotGroupSpec; generated identity defaulted to "projects/{project}/regions/{region}/instantSnapshotGroups/{instantsnapshotgroup}" (pass --pattern ComputeInstantSnapshotGroup=<pattern> to override)
+    status: resolved
+    resolution: edited
+    note: promoted to handwritten identity supporting both zonal and regional instant snapshot group patterns matching ComputeInstantSnapshot and ComputeDisk conventions
+  - kind: ComputeInstantSnapshotGroup
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: resolved
+    resolution: edited
+    note: verified and updated resource-docs link to point to Compute InstantSnapshotGroups REST reference
+  - kind: ComputeInstantSnapshotGroup
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: resolved
+    resolution: accepted
+    note: kept spec.location as a required string representing zone or region matching ComputeDisk and ComputeInstantSnapshot pattern
+  - kind: ComputeInstantSnapshotGroup
+    group: compute.cnrm.cloud.google.com
+    field: .spec.region
+    reason: location-or-parent-ref
+    detail: proto defines a region field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
+    status: resolved
+    resolution: edited
+    note: removed from spec; region is output-only in proto and moved to status.observedState.region
+  - kind: ComputeInstantSnapshotGroup
+    group: compute.cnrm.cloud.google.com
+    field: .spec.resourceStatus.sourceInfo.consistencyGroupID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: resolved
+    resolution: not-applicable
+    note: consistencyGroupID is output-only server-set state in observedState
+  - kind: ComputeInstantSnapshotGroup
+    group: compute.cnrm.cloud.google.com
+    field: .spec.status
+    reason: possible-status-field-in-spec
+    detail: status was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState
+    status: resolved
+    resolution: edited
+    note: removed from spec; status is output-only in proto and moved to status.observedState.status
+  - kind: ComputeInstantSnapshotGroup
+    group: compute.cnrm.cloud.google.com
+    field: .spec.zone
+    reason: location-or-parent-ref
+    detail: proto defines a zone field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
+    status: resolved
+    resolution: edited
+    note: removed from spec; zone is output-only in proto and moved to status.observedState.zone
+  - kind: ComputeInstantSnapshotGroup
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.creationTimestamp
+  - kind: ComputeInstantSnapshotGroup
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed id is server-generated uint64 identifier and belongs in observedState
+  - kind: ComputeInstantSnapshotGroup
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed kind is server-set type string compute#instantSnapshotGroup and belongs in observedState
+  - kind: ComputeInstantSnapshotGroup
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.region
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.region. Move the field to .status.observedState.region if it is confirmed output only. Proto comment: Output only. [Output Only] URL of the region where the instant snapshot group resides.'
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved to status.observedState.region
+  - kind: ComputeInstantSnapshotGroup
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.selfLink
+  - kind: ComputeInstantSnapshotGroup
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.selfLinkWithID
+  - kind: ComputeInstantSnapshotGroup
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.status
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.status. Move the field to .status.observedState.status if it is confirmed output only. Proto comment: Output only. [Output Only] Check the Status enum for the list of possible values.'
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved to status.observedState.status
+  - kind: ComputeInstantSnapshotGroup
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.zone
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.zone. Move the field to .status.observedState.zone if it is confirmed output only. Proto comment: Output only. [Output Only] URL of the zone where the instant snapshot group resides.'
     status: resolved
     resolution: edited
     note: confirmed output-only per proto comment and moved to status.observedState.zone
@@ -981,6 +1483,92 @@ entries:
     status: resolved
     resolution: accepted
     note: confirmed server-set output field per proto comments
+  - kind: ComputeLicense
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: triaged spec and observedState fields; dropped location, documented resource docs link, and moved output-only fields to ObservedState
+  - kind: ComputeLicense
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: resolved
+    resolution: edited
+    note: updated resource docs link to https://cloud.google.com/compute/docs/reference/rest/v1/licenses
+  - kind: ComputeLicense
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: resolved
+    resolution: edited
+    note: removed Location as ComputeLicense is a global resource parented by project
+  - kind: ComputeLicense
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.chargesUseFee
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.chargesUseFee. Move the field to .status.observedState.chargesUseFee if it is confirmed output only. Proto comment: [Output Only] Deprecated. This field no longer reflects whether a license charges a usage fee.'
+    status: resolved
+    resolution: edited
+    note: moved output-only chargesUseFee from Spec to ObservedState
+  - kind: ComputeLicense
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only creationTimestamp is server-set in ObservedState
+  - kind: ComputeLicense
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only id is server-set in ObservedState
+  - kind: ComputeLicense
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only kind is server-set in ObservedState
+  - kind: ComputeLicense
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.licenseCode
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.licenseCode. Move the field to .status.observedState.licenseCode if it is confirmed output only. Proto comment: [Output Only] The unique code used to attach this license to images, snapshots, and disks.'
+    status: resolved
+    resolution: edited
+    note: moved output-only licenseCode from Spec to ObservedState
+  - kind: ComputeLicense
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only selfLink is server-set in ObservedState
+  - kind: ComputeLicense
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only selfLinkWithID is server-set in ObservedState
+  - kind: ComputeLicense
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.updateTimestamp
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.updateTimestamp. Move the field to .status.observedState.updateTimestamp if it is confirmed output only. Proto comment: [Output Only] Last update timestamp in RFC3339 text format.'
+    status: resolved
+    resolution: edited
+    note: moved output-only updateTimestamp from Spec to ObservedState
   - kind: ComputeNotificationEndpoint
     group: compute.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
@@ -1051,6 +1639,114 @@ entries:
     status: resolved
     resolution: accepted
     note: confirmed output-only; already placed in status.observedState.selfLink
+  - kind: ComputeRolloutPlan
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: finalized types, resolved references, marked projectRef required, dropped spec.location, and moved output-only number field to status.observedState
+  - kind: ComputeRolloutPlan
+    group: compute.cnrm.cloud.google.com
+    reason: identity-multi-pattern
+    detail: proto message google.cloud.compute.v1.RolloutPlan declares 2 resource name patterns (organizations/{organizationsid}/global/rolloutPlans/{rolloutplan}, projects/{project}/global/rolloutPlans/{rolloutplan}); generated identity uses "projects/{project}/global/rolloutPlans/{rolloutplan}" (pass --pattern ComputeRolloutPlan=<pattern> to override)
+    status: resolved
+    resolution: accepted
+    note: verified projects/{project}/global/rolloutPlans/{rolloutPlan} pattern against compute v1 API
+  - kind: ComputeRolloutPlan
+    group: compute.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/global/rolloutPlans/{rolloutPlan}" contains ancestor segment(s) projects/{project} with no matching reference or field on ComputeRolloutPlanSpec
+    status: resolved
+    resolution: edited
+    note: added +required to spec.projectRef and removed spec.location
+  - kind: ComputeRolloutPlan
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: resolved
+    resolution: edited
+    note: corrected resource-docs to https://cloud.google.com/compute/docs/reference/rest/v1/rolloutPlans
+  - kind: ComputeRolloutPlan
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: resolved
+    resolution: edited
+    note: removed spec.location because ComputeRolloutPlan is a global resource parented by project
+  - kind: ComputeRolloutPlan
+    group: compute.cnrm.cloud.google.com
+    field: .spec.waves[].selectors[].resourceHierarchySelector.includedFolders
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "folders/{folder_id}"
+    status: resolved
+    resolution: edited
+    note: converted to includedFolderRefs ([]refsv1beta1.FolderRef)
+  - kind: ComputeRolloutPlan
+    group: compute.cnrm.cloud.google.com
+    field: .spec.waves[].selectors[].resourceHierarchySelector.includedOrganizations
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "organizations/{organization_id}"
+    status: resolved
+    resolution: edited
+    note: converted to includedOrganizationRefs ([]refsv1beta1.OrganizationRef)
+  - kind: ComputeRolloutPlan
+    group: compute.cnrm.cloud.google.com
+    field: .spec.waves[].selectors[].resourceHierarchySelector.includedProjects
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project_id}"
+    status: resolved
+    resolution: edited
+    note: converted to includedProjectRefs ([]refsv1beta1.ProjectRef)
+  - kind: ComputeRolloutPlan
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only server-set field
+  - kind: ComputeRolloutPlan
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only server-set field
+  - kind: ComputeRolloutPlan
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only server-set field
+  - kind: ComputeRolloutPlan
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only server-set field
+  - kind: ComputeRolloutPlan
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only server-set field
+  - kind: ComputeRolloutPlan
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.waves[].number
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.waves[].number. Move the field to .status.observedState.waves[].number if it is confirmed output only. Proto comment: Output only. The wave number.'
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved to status.observedState.waves[].number
   - kind: ComputeStoragePool
     group: compute.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

@@ -31,6 +31,7 @@ func securitycenterBigQueryExportFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	f.UnimplementedFields.Insert(".name")
+	f.Unimplemented_NotYetTriaged(".deletion_notifications_enabled")
 
 	f.SpecFields.Insert(".dataset")
 	f.SpecFields.Insert(".description")

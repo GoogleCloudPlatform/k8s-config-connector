@@ -1,0 +1,129 @@
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "accessRestriction": 2,
+  "backupMinimumEnforcedRetentionDuration": "100000s",
+  "backupRetentionInheritance": 1,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deletable": true,
+  "description": "",
+  "encryptionConfig": {
+    "kmsKeyName": ""
+  },
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-max-${uniqueId}",
+  "serviceAccount": "vault-${projectNumber}-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
+  "state": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "backupRules": [
+    {
+      "backupRetentionDays": 5,
+      "ruleId": "rule-1",
+      "standardSchedule": {
+        "backupWindow": {
+          "endHourOfDay": 23,
+          "startHourOfDay": 1
+        },
+        "hourlyFrequency": 6,
+        "recurrenceType": 1,
+        "timeZone": "UTC"
+      }
+    }
+  ],
+  "backupVault": "projects/${projectNumber}/locations/us-central1/backupVaults/backupdrbackupvault-max-${uniqueId}",
+  "backupVaultServiceAccount": "vault-${projectNumber}-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Backup plan for autoprotection policy full test",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-max-${uniqueId}",
+  "resourceType": "compute.googleapis.com/Instance",
+  "revisionId": "revision-id-placeholder",
+  "revisionName": "projects/${projectNumber}/locations/us-central1/backupPlans/backupdrbackupplan-max-${uniqueId}/revisions/00000000",
+  "state": 2,
+  "supportedResourceTypes": [
+    "compute.googleapis.com/Instance"
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoProtectionPolicies/backupdrautoprotectionpolicy-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "backupPlanDetails": [
+    {
+      "backupPlan": "projects/${projectNumber}/locations/us-central1/backupPlans/backupdrbackupplan-max-${uniqueId}",
+      "resourceType": "compute.googleapis.com/Instance"
+    }
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "criteria": {
+    "matchingConditions": [
+      {
+        "labelCondition": {
+          "key": "env",
+          "values": [
+            "stage"
+          ]
+        }
+      }
+    ]
+  },
+  "description": "Updated auto protection policy maximal test",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/autoProtectionPolicies/backupdrautoprotectionpolicy-maximal-${uniqueId}",
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectNumber}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Dependent Project",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}",
+  "parent": "organizations/${organizationID}",
+  "projectId": "${projectId}",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

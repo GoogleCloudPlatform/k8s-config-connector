@@ -266,11 +266,17 @@ func (a *APIScaffolder) AddTypeFile(resource options.Resource, prepopulated *Pre
 // items to prepopulated.
 func (a *APIScaffolder) applyParentFields(cArgs *apis.APIArgs, prepopulated *PrepopulateResult) {
 	root, item := a.rootRef(cArgs.ResourcePattern)
+	if hasField(cArgs.SpecFields, "ProjectRef") {
+		root = ""
+	}
 	cArgs.RootRefField = root
 	if item != nil {
 		prepopulated.Judgement = append(prepopulated.Judgement, *item)
 	}
 	location, item := a.locationRef(cArgs.ResourcePattern)
+	if hasField(cArgs.SpecFields, "Location") {
+		location = ""
+	}
 	cArgs.LocationField = location
 	if item != nil {
 		prepopulated.Judgement = append(prepopulated.Judgement, *item)
@@ -286,6 +292,16 @@ func (a *APIScaffolder) applyParentFields(cArgs *apis.APIArgs, prepopulated *Pre
 			prepopulated.Judgement = append(prepopulated.Judgement, *item)
 		}
 	}
+}
+
+func hasField(specFields, fieldName string) bool {
+	prefix := "\t" + fieldName + " "
+	for _, line := range strings.Split(specFields, "\n") {
+		if strings.HasPrefix(line, prefix) {
+			return true
+		}
+	}
+	return false
 }
 
 // ParentJudgement returns the judgement queue items that AddTypeFile records

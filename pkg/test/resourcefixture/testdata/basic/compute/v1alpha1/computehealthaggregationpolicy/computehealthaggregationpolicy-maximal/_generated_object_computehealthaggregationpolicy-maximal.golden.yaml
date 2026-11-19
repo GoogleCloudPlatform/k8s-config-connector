@@ -1,0 +1,36 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha1
+kind: ComputeHealthAggregationPolicy
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: ${healthAggregationPolicyID}
+  namespace: ${uniqueId}
+spec:
+  description: Updated description
+  healthyPercentThreshold: 80
+  location: us-central1
+  minHealthyThreshold: 3
+  policyType: BACKEND_SERVICE_POLICY
+  projectRef:
+    external: ${projectId}
+  resourceID: ${healthAggregationPolicyID}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/regions/us-central1/healthAggregationPolicies/${healthAggregationPolicyID}
+  observedGeneration: 2
+  observedState:
+    creationTimestamp: "1970-01-01T00:00:00Z"
+    id: 1111111111111111
+    kind: compute#healthAggregationPolicy
+    region: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1
+    selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthAggregationPolicies/${healthAggregationPolicyID}
+    selfLinkWithID: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthAggregationPolicies/${healthAggregationPolicyID}

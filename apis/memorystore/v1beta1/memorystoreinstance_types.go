@@ -299,6 +299,11 @@ type PscAutoConnection struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.PscAutoConnection.network
 	// +required
 	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef,omitempty"`
+
+	// Optional. Immutable. The IP version used for the PSC auto-created
+	//  endpoint. If not specified, defaults to IPV4.
+	// +kcc:proto:field=google.cloud.memorystore.v1.PscAutoConnection.ip_version
+	IPVersion *string `json:"ipVersion,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.ZoneDistributionConfig
@@ -420,6 +425,10 @@ type PscAutoConnectionObservedState struct {
 	// Output only. Type of the PSC connection.
 	// +kcc:proto:field=google.cloud.memorystore.v1.PscAutoConnection.connection_type
 	ConnectionType *string `json:"connectionType,omitempty"`
+
+	// Output only. The IP version used for the PSC connection.
+	// +kcc:proto:field=google.cloud.memorystore.v1.PscAutoConnection.ip_version
+	IPVersion *string `json:"ipVersion,omitempty"`
 }
 
 // +genclient
