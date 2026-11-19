@@ -57,6 +57,15 @@
   - Initialized open entries in `apis/designcenter/judgement_queue.yaml` for `DesignCenterCatalogTemplate` (including `untriaged-bulk-generation` with `status: open`).
   - Recorded untriaged missing fields in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 
+### [2026-11-19] Triaging judgement queue and finalizing KRM types for DesignCenterCatalogTemplate
+- **Context**: Triaged `apis/designcenter/judgement_queue.yaml` and finalized KRM types, identity, and reference types for `DesignCenterCatalogTemplate` (Issue #16155).
+- **Resolutions & Findings**:
+  - `location-or-parent-ref`, `parent-ref-guessed`, `identity-root-unknown`: DesignCenterCatalogTemplate is a child resource under DesignCenterCatalog (`projects/{project}/locations/{location}/spaces/{space}/catalogs/{catalog}/templates/{catalog_template}`). Per `judgement/references/PARENT_AND_IDENTITY.md` (Case B), replaced `ProjectRef`, `Location`, and `CatalogRef` with required, immutable `ParentRef *DesignCenterCatalogRef` (`json:"parentRef"`).
+  - `identity-not-in-cai`: Verified template `//designcenter.googleapis.com/projects/{project}/locations/{location}/spaces/{space}/catalogs/{catalog}/templates/{catalog_template}` against proto `google.api.resource` pattern and marked accepted.
+  - `verify-service-docs-link` & `verify-resource-docs-link`: Added service docs `https://cloud.google.com/application-design-center/docs` and REST reference `https://cloud.google.com/application-design-center/docs/reference/rest/v1/projects.locations.spaces.catalogs.templates`.
+  - `untriaged-bulk-generation`: Resolved with resolution `edited`.
+  - Updated golden exceptions in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+
 
 
 
