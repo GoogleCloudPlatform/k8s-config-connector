@@ -15,6 +15,8 @@
 package kubecli
 
 import (
+	"time"
+
 	"github.com/spf13/cobra"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/rest"
@@ -29,6 +31,10 @@ type ClusterOptions struct {
 
 	// Optional Scheme to use when constructing the controller-runtime client.
 	Scheme *runtime.Scheme
+
+	// RequestTimeout bounds individual HTTP requests when the kubeconfig's rest.Config sets no
+	// Timeout.
+	RequestTimeout time.Duration
 
 	// Impersonate is the configuration that RESTClient will use for impersonation.
 	Impersonate *rest.ImpersonationConfig

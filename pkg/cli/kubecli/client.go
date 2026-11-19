@@ -51,6 +51,9 @@ func NewClient(ctx context.Context, options ClusterOptions) (*Client, error) {
 	if options.Impersonate != nil {
 		restConfig.Impersonate = *options.Impersonate
 	}
+	if options.RequestTimeout > 0 && restConfig.Timeout == 0 {
+		restConfig.Timeout = options.RequestTimeout
+	}
 
 	httpClient, err := rest.HTTPClientFor(restConfig)
 	if err != nil {

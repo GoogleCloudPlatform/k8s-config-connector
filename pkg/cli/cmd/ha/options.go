@@ -21,6 +21,7 @@ import (
 	"io"
 	"regexp"
 	"strings"
+	"time"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/kubecli"
@@ -34,7 +35,14 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
-const contextsFlag = "contexts"
+const (
+	contextsFlag = "contexts"
+
+	// defaultClusterRequestTimeout bounds each Kubernetes API request (including lazy RESTMapper
+	// discovery, which runs without a per-call context) so a stalled connection cannot hang an HA
+	// command indefinitely. None of the HA commands use long-lived watches.
+	defaultClusterRequestTimeout = 30 * time.Second
+)
 
 // baseOptions holds shared configuration across `config-connector ha` subcommands.
 type baseOptions struct {
@@ -111,8 +119,9 @@ func buildClusterHandles(ctx context.Context, contexts []string) ([]*clusterHand
 	handles := make([]*clusterHandle, 0, len(contexts))
 	for _, ctxName := range contexts {
 		c, err := kubecli.NewClient(ctx, kubecli.ClusterOptions{
-			Context: ctxName,
-			Scheme:  scheme,
+			Context:        ctxName,
+			Scheme:         scheme,
+			RequestTimeout: defaultClusterRequestTimeout,
 		})
 		if err != nil {
 			errs = append(errs, fmt.Errorf("building kubernetes client for context %q: %w", ctxName, err))
