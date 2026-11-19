@@ -180,6 +180,24 @@ func BigLakeIcebergCatalogSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	out.FederatedCatalogOptions = IcebergCatalog_FederatedCatalogOptions_v1alpha1_ToProto(mapCtx, in.FederatedCatalogOptions)
 	return out
 }
+func BigLakeIcebergNamespaceSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *biglakepb.IcebergNamespace) *krmbigquerybiglakev1alpha1.BigLakeIcebergNamespaceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.BigLakeIcebergNamespaceSpec{}
+	out.Namespace = in.Namespace
+	out.Properties = in.Properties
+	return out
+}
+func BigLakeIcebergNamespaceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.BigLakeIcebergNamespaceSpec) *biglakepb.IcebergNamespace {
+	if in == nil {
+		return nil
+	}
+	out := &biglakepb.IcebergNamespace{}
+	out.Namespace = in.Namespace
+	out.Properties = in.Properties
+	return out
+}
 func BigLakeTableObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table) *krm.BigLakeTableObservedState {
 	if in == nil {
 		return nil
