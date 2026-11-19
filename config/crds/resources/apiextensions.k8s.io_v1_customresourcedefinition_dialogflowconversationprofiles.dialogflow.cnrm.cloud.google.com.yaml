@@ -131,14 +131,41 @@ spec:
                                   description: 'Version of current baseline model.
                                     It will be ignored if [model][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.ConversationModelConfig.model]
                                     is set. Valid versions are: Article Suggestion
-                                    baseline model: - 0.9 - 1.0 (default) Summarization
-                                    baseline model: - 1.0'
+                                    baseline model: - 0.9'
                                   type: string
-                                model:
+                                modelRef:
                                   description: 'Conversation model resource name.
                                     Format: `projects/<Project ID>/conversationModels/<Model
                                     ID>`.'
-                                  type: string
+                                  oneOf:
+                                  - not:
+                                      required:
+                                      - external
+                                    required:
+                                    - name
+                                  - not:
+                                      anyOf:
+                                      - required:
+                                        - name
+                                      - required:
+                                        - namespace
+                                    required:
+                                    - external
+                                  properties:
+                                    external:
+                                      description: A reference to an externally managed
+                                        DialogflowConversationModel resource. Should
+                                        be in the format "projects/{{projectID}}/locations/{{location}}/conversationModels/{{conversationModelID}}".
+                                      type: string
+                                    name:
+                                      description: The name of a DialogflowConversationModel
+                                        resource.
+                                      type: string
+                                    namespace:
+                                      description: The namespace of a DialogflowConversationModel
+                                        resource.
+                                      type: string
+                                  type: object
                               type: object
                             conversationProcessConfig:
                               description: Configs for processing conversation.
@@ -278,16 +305,47 @@ spec:
                                   description: 'Query from knowledgebase. It is used
                                     by: ARTICLE_SUGGESTION, FAQ.'
                                   properties:
-                                    knowledgeBases:
+                                    knowledgeBaseRefs:
                                       description: 'Required. Knowledge bases to query.
                                         Format: `projects/<Project ID>/locations/<Location
                                         ID>/knowledgeBases/<Knowledge Base ID>`. Currently,
                                         at most 5 knowledge bases are supported.'
                                       items:
-                                        type: string
+                                        description: DialogflowKnowledgeBaseRef is
+                                          a reference to a GCP DialogflowKnowledgeBase.
+                                        oneOf:
+                                        - not:
+                                            required:
+                                            - external
+                                          required:
+                                          - name
+                                        - not:
+                                            anyOf:
+                                            - required:
+                                              - name
+                                            - required:
+                                              - namespace
+                                          required:
+                                          - external
+                                        properties:
+                                          external:
+                                            description: A reference to an externally
+                                              managed DialogflowKnowledgeBase resource.
+                                              Should be in the format "projects/{{projectID}}/knowledgeBases/{{knowledgeBaseID}}"
+                                              or "projects/{{projectID}}/locations/{{location}}/knowledgeBases/{{knowledgeBaseID}}".
+                                            type: string
+                                          name:
+                                            description: The name of a DialogflowKnowledgeBase
+                                              resource.
+                                            type: string
+                                          namespace:
+                                            description: The namespace of a DialogflowKnowledgeBase
+                                              resource.
+                                            type: string
+                                        type: object
                                       type: array
                                   required:
-                                  - knowledgeBases
+                                  - knowledgeBaseRefs
                                   type: object
                                 maxResults:
                                   description: Maximum number of results to return.
@@ -336,11 +394,39 @@ spec:
                               type: object
                           type: object
                         type: array
-                      generators:
+                      generatorRefs:
                         description: Optional. List of various generator resource
                           names used in the conversation profile.
                         items:
-                          type: string
+                          description: DialogflowGeneratorRef is a reference to a
+                            GCP DialogflowGenerator.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed DialogflowGenerator
+                                resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/generators/{{generatorID}}".
+                              type: string
+                            name:
+                              description: The name of a DialogflowGenerator resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a DialogflowGenerator
+                                resource.
+                              type: string
+                          type: object
                         type: array
                       groupSuggestionResponses:
                         description: |-
@@ -381,14 +467,41 @@ spec:
                                   description: 'Version of current baseline model.
                                     It will be ignored if [model][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.ConversationModelConfig.model]
                                     is set. Valid versions are: Article Suggestion
-                                    baseline model: - 0.9 - 1.0 (default) Summarization
-                                    baseline model: - 1.0'
+                                    baseline model: - 0.9'
                                   type: string
-                                model:
+                                modelRef:
                                   description: 'Conversation model resource name.
                                     Format: `projects/<Project ID>/conversationModels/<Model
                                     ID>`.'
-                                  type: string
+                                  oneOf:
+                                  - not:
+                                      required:
+                                      - external
+                                    required:
+                                    - name
+                                  - not:
+                                      anyOf:
+                                      - required:
+                                        - name
+                                      - required:
+                                        - namespace
+                                    required:
+                                    - external
+                                  properties:
+                                    external:
+                                      description: A reference to an externally managed
+                                        DialogflowConversationModel resource. Should
+                                        be in the format "projects/{{projectID}}/locations/{{location}}/conversationModels/{{conversationModelID}}".
+                                      type: string
+                                    name:
+                                      description: The name of a DialogflowConversationModel
+                                        resource.
+                                      type: string
+                                    namespace:
+                                      description: The namespace of a DialogflowConversationModel
+                                        resource.
+                                      type: string
+                                  type: object
                               type: object
                             conversationProcessConfig:
                               description: Configs for processing conversation.
@@ -528,16 +641,47 @@ spec:
                                   description: 'Query from knowledgebase. It is used
                                     by: ARTICLE_SUGGESTION, FAQ.'
                                   properties:
-                                    knowledgeBases:
+                                    knowledgeBaseRefs:
                                       description: 'Required. Knowledge bases to query.
                                         Format: `projects/<Project ID>/locations/<Location
                                         ID>/knowledgeBases/<Knowledge Base ID>`. Currently,
                                         at most 5 knowledge bases are supported.'
                                       items:
-                                        type: string
+                                        description: DialogflowKnowledgeBaseRef is
+                                          a reference to a GCP DialogflowKnowledgeBase.
+                                        oneOf:
+                                        - not:
+                                            required:
+                                            - external
+                                          required:
+                                          - name
+                                        - not:
+                                            anyOf:
+                                            - required:
+                                              - name
+                                            - required:
+                                              - namespace
+                                          required:
+                                          - external
+                                        properties:
+                                          external:
+                                            description: A reference to an externally
+                                              managed DialogflowKnowledgeBase resource.
+                                              Should be in the format "projects/{{projectID}}/knowledgeBases/{{knowledgeBaseID}}"
+                                              or "projects/{{projectID}}/locations/{{location}}/knowledgeBases/{{knowledgeBaseID}}".
+                                            type: string
+                                          name:
+                                            description: The name of a DialogflowKnowledgeBase
+                                              resource.
+                                            type: string
+                                          namespace:
+                                            description: The namespace of a DialogflowKnowledgeBase
+                                              resource.
+                                            type: string
+                                        type: object
                                       type: array
                                   required:
-                                  - knowledgeBases
+                                  - knowledgeBaseRefs
                                   type: object
                                 maxResults:
                                   description: Maximum number of results to return.
@@ -586,11 +730,39 @@ spec:
                               type: object
                           type: object
                         type: array
-                      generators:
+                      generatorRefs:
                         description: Optional. List of various generator resource
                           names used in the conversation profile.
                         items:
-                          type: string
+                          description: DialogflowGeneratorRef is a reference to a
+                            GCP DialogflowGenerator.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed DialogflowGenerator
+                                resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/generators/{{generatorID}}".
+                              type: string
+                            name:
+                              description: The name of a DialogflowGenerator resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a DialogflowGenerator
+                                resource.
+                              type: string
+                          type: object
                         type: array
                       groupSuggestionResponses:
                         description: |-
@@ -640,9 +812,9 @@ spec:
                       events.
                     properties:
                       messageFormat:
-                        description: Format of message.
+                        description: Format of cloud pub/sub message.
                         type: string
-                      topic:
+                      topicRef:
                         description: |-
                           Name of the Pub/Sub topic to publish conversation
                            events like
@@ -660,7 +832,32 @@ spec:
                            granted the `Dialogflow Service Agent` role for the topic.
 
                            Format: `projects/<Project ID>/locations/<Location ID>/topics/<Topic ID>`.
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed PubSubTopic
+                              resource. Should be in the format "projects/{{projectID}}/topics/{{topicID}}".
+                            type: string
+                          name:
+                            description: The name of a PubSubTopic resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a PubSubTopic resource.
+                            type: string
+                        type: object
                     type: object
                 type: object
               humanAgentHandoffConfig:
@@ -713,6 +910,12 @@ spec:
                   set for all non en-US languages. This should be a [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt)
                   language tag. Example: "en-US".'
                 type: string
+              location:
+                description: The location that this resource belongs to.
+                type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
               loggingConfig:
                 description: Configuration for logging conversation lifecycle events.
                 properties:
@@ -727,9 +930,9 @@ spec:
                   will be sent in format of [ConversationEvent][google.cloud.dialogflow.v2.ConversationEvent]
                 properties:
                   messageFormat:
-                    description: Format of message.
+                    description: Format of cloud pub/sub message.
                     type: string
-                  topic:
+                  topicRef:
                     description: |-
                       Name of the Pub/Sub topic to publish conversation
                        events like
@@ -747,7 +950,32 @@ spec:
                        granted the `Dialogflow Service Agent` role for the topic.
 
                        Format: `projects/<Project ID>/locations/<Location ID>/topics/<Topic ID>`.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed PubSubTopic
+                          resource. Should be in the format "projects/{{projectID}}/topics/{{topicID}}".
+                        type: string
+                      name:
+                        description: The name of a PubSubTopic resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a PubSubTopic resource.
+                        type: string
+                    type: object
                 type: object
               newRecognitionResultNotificationConfig:
                 description: 'Optional. Configuration for publishing transcription
@@ -757,9 +985,9 @@ spec:
                   - "message_id"'
                 properties:
                   messageFormat:
-                    description: Format of message.
+                    description: Format of cloud pub/sub message.
                     type: string
-                  topic:
+                  topicRef:
                     description: |-
                       Name of the Pub/Sub topic to publish conversation
                        events like
@@ -777,15 +1005,40 @@ spec:
                        granted the `Dialogflow Service Agent` role for the topic.
 
                        Format: `projects/<Project ID>/locations/<Location ID>/topics/<Topic ID>`.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed PubSubTopic
+                          resource. Should be in the format "projects/{{projectID}}/topics/{{topicID}}".
+                        type: string
+                      name:
+                        description: The name of a PubSubTopic resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a PubSubTopic resource.
+                        type: string
+                    type: object
                 type: object
               notificationConfig:
                 description: Configuration for publishing conversation lifecycle events.
                 properties:
                   messageFormat:
-                    description: Format of message.
+                    description: Format of cloud pub/sub message.
                     type: string
-                  topic:
+                  topicRef:
                     description: |-
                       Name of the Pub/Sub topic to publish conversation
                        events like
@@ -803,10 +1056,35 @@ spec:
                        granted the `Dialogflow Service Agent` role for the topic.
 
                        Format: `projects/<Project ID>/locations/<Location ID>/topics/<Topic ID>`.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed PubSubTopic
+                          resource. Should be in the format "projects/{{projectID}}/topics/{{topicID}}".
+                        type: string
+                      name:
+                        description: The name of a PubSubTopic resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a PubSubTopic resource.
+                        type: string
+                    type: object
                 type: object
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -838,14 +1116,39 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The DialogflowConversationProfile name. If not given,
-                  the metadata.name will be used.
+                description: The DialogflowConversationProfile ID. If not given, it
+                  is assigned by the server.
                 type: string
-              securitySettings:
+              securitySettingsRef:
                 description: 'Name of the CX SecuritySettings reference for the agent.
                   Format: `projects/<Project ID>/locations/<Location ID>/securitySettings/<Security
                   Settings ID>`.'
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed DialogflowSecuritySettings
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/securitySettings/{{securitySettingsID}}".
+                    type: string
+                  name:
+                    description: The name of a DialogflowSecuritySettings resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a DialogflowSecuritySettings resource.
+                    type: string
+                type: object
               sttConfig:
                 description: Settings for speech transcription.
                 properties:
@@ -856,8 +1159,7 @@ spec:
                     description: If `true`, Dialogflow returns [SpeechWordInfo][google.cloud.dialogflow.v2.SpeechWordInfo]
                       in [StreamingRecognitionResult][google.cloud.dialogflow.v2.StreamingRecognitionResult]
                       with information about the recognized speech words, e.g. start
-                      and end time offsets. If false or unspecified, Speech doesn't
-                      return any word-level information.
+                      and end time offsets of a speech word.
                     type: boolean
                   languageCode:
                     description: The language of the supplied audio. Dialogflow does
@@ -867,36 +1169,45 @@ spec:
                       the same language.
                     type: string
                   model:
-                    description: |-
-                      Which Speech model to select. Select the
-                       model best suited to your domain to get best results. If a model is not
-                       explicitly specified, then Dialogflow auto-selects a model based on other
-                       parameters in the SpeechToTextConfig and Agent settings.
-                       If enhanced speech model is enabled for the agent and an enhanced
-                       version of the specified model for the language does not exist, then the
-                       speech is recognized using the standard version of the specified model.
-                       Refer to
-                       [Cloud Speech API
-                       documentation](https://cloud.google.com/speech-to-text/docs/basics#select-model)
-                       for more details.
-                       If you specify a model, the following models typically have the best
-                       performance:
-
-                       - phone_call (best for Agent Assist and telephony)
-                       - latest_short (best for Dialogflow non-telephony)
-                       - command_and_search
-
-                       Leave this field unspecified to use
-                       [Agent Speech
-                       settings](https://cloud.google.com/dialogflow/cx/docs/concept/agent#settings-speech)
-                       for model selection.
+                    description: Which model to select for the given speech option.
+                      Select the model best suited to your domain to get best results.
+                      If a model is not explicitly specified, then we resolve to the
+                      best model based on the other settings in the input audio and
+                      speech config. If enhanced speech model is enabled for the agent
+                      and it is not specified in the config, then it resolves to phone_call.
+                      For more information, see [Speech models](https://cloud.google.com/dialogflow/docs/speech-models).
                     type: string
-                  phraseSets:
-                    description: List of names of Cloud Speech phrase sets that are
-                      used for transcription. For phrase set limitations, please refer
-                      to [Cloud Speech API quotas and limits](https://cloud.google.com/speech-to-text/quotas#content).
+                  phraseSetRefs:
+                    description: Optional. List of names of Cloud Speech phrase sets
+                      that are used for natural language collection.
                     items:
-                      type: string
+                      description: PhraseSetRef is a reference to a SpeechPhraseSet.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed SpeechPhraseSet
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/phraseSets/{{phrasesetID}}".
+                          type: string
+                        name:
+                          description: The name of a SpeechPhraseSet resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a SpeechPhraseSet resource.
+                          type: string
+                      type: object
                     type: array
                   sampleRateHertz:
                     description: Sample rate (in Hertz) of the audio content sent
@@ -905,17 +1216,12 @@ spec:
                     format: int32
                     type: integer
                   speechModelVariant:
-                    description: The speech model used in speech to text. `SPEECH_MODEL_VARIANT_UNSPECIFIED`,
-                      `USE_BEST_AVAILABLE` will be treated as `USE_ENHANCED`. It can
-                      be overridden in [AnalyzeContentRequest][google.cloud.dialogflow.v2.AnalyzeContentRequest]
-                      and [StreamingAnalyzeContentRequest][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest]
-                      request. If enhanced model variant is specified and an enhanced
-                      version of the specified model for the language does not exist,
-                      then it would emit an error.
+                    description: Which Speech model to select for speech recognize.
                     type: string
                   useTimeoutBasedEndpointing:
                     description: Use timeout based endpointing, interpreting endpointer
-                      sensitivity as seconds of timeout value.
+                      sensitivity as "time to wait after speech stops before closing
+                      the stream".
                     type: boolean
                 type: object
               timeZone:
@@ -982,6 +1288,7 @@ spec:
                 type: object
             required:
             - displayName
+            - location
             - projectRef
             type: object
           status:

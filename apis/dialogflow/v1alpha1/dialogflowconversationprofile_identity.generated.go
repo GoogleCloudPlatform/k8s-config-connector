@@ -37,12 +37,13 @@ var (
 	_ identity.Resource                = &DialogflowConversationProfile{}
 )
 
-var DialogflowConversationProfileIdentityFormat = gcpurls.Template[DialogflowConversationProfileIdentity]("dialogflow.googleapis.com", "projects/{project}/conversationProfiles/{conversationProfile}")
+var DialogflowConversationProfileIdentityFormat = gcpurls.Template[DialogflowConversationProfileIdentity]("dialogflow.googleapis.com", "projects/{project}/locations/{location}/conversationProfiles/{conversationProfile}")
 
 // DialogflowConversationProfileIdentity is the identity of a GCP DialogflowConversationProfile resource.
 // +k8s:deepcopy-gen=false
 type DialogflowConversationProfileIdentity struct {
 	Project             string
+	Location            string
 	ConversationProfile string
 }
 
@@ -72,7 +73,7 @@ func (i *DialogflowConversationProfileIdentity) Host() string {
 }
 
 func (i *DialogflowConversationProfileIdentity) ParentString() string {
-	return "projects/" + i.Project
+	return "projects/" + i.Project + "/locations/" + i.Location
 }
 
 func getIdentityFromDialogflowConversationProfileSpec(ctx context.Context, reader client.Reader, obj *DialogflowConversationProfile) (*DialogflowConversationProfileIdentity, error) {
@@ -83,8 +84,14 @@ func getIdentityFromDialogflowConversationProfileSpec(ctx context.Context, reade
 		return nil, fmt.Errorf("cannot resolve project: %w", err)
 	}
 
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve location: %w", err)
+	}
+
 	return &DialogflowConversationProfileIdentity{
 		Project:             projectID,
+		Location:            location,
 		ConversationProfile: resourceID,
 	}, nil
 }

@@ -20,7 +20,9 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
+	speechv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/speech/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,10 +33,9 @@ var DialogflowConversationProfileGVK = GroupVersion.WithKind("DialogflowConversa
 // +kcc:spec:proto=google.cloud.dialogflow.v2.ConversationProfile
 // +kcc:required-from-proto
 type DialogflowConversationProfileSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
-	// The DialogflowConversationProfile name. If not given, the metadata.name will be used.
+	// The DialogflowConversationProfile ID. If not given, it is assigned by the server.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// Required. Human readable name for this profile. Max length 1024 bytes.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.ConversationProfile.display_name
@@ -103,7 +104,7 @@ type DialogflowConversationProfileSpec struct {
 	//  Format: `projects/<Project ID>/locations/<Location
 	//  ID>/securitySettings/<Security Settings ID>`.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.ConversationProfile.security_settings
-	SecuritySettings *string `json:"securitySettings,omitempty"`
+	SecuritySettingsRef *DialogflowSecuritySettingsRef `json:"securitySettingsRef,omitempty"`
 
 	// Configuration for Text-to-Speech synthesization.
 	//
@@ -111,6 +112,149 @@ type DialogflowConversationProfileSpec struct {
 	//  synthesization options as well, agent settings overrides the option here.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.ConversationProfile.tts_config
 	TtsConfig *SynthesizeSpeechConfig `json:"ttsConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.NotificationConfig
+type NotificationConfig struct {
+	// Name of the Pub/Sub topic to publish conversation
+	//  events like
+	//  [CONVERSATION_STARTED][google.cloud.dialogflow.v2.ConversationEvent.Type.CONVERSATION_STARTED]
+	//  as serialized
+	//  [ConversationEvent][google.cloud.dialogflow.v2.ConversationEvent] protos.
+	//
+	//  For telephony integration to receive notification, make sure either this
+	//  topic is in the same project as the conversation or you grant
+	//  `service-<Conversation Project
+	//  Number>@gcp-sa-dialogflow.iam.gserviceaccount.com` the `Dialogflow Service
+	//  Agent` role in the topic project.
+	//
+	//  For chat integration to receive notification, make sure API caller has been
+	//  granted the `Dialogflow Service Agent` role for the topic.
+	//
+	//  Format: `projects/<Project ID>/locations/<Location ID>/topics/<Topic ID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.NotificationConfig.topic
+	TopicRef *pubsubv1beta1.PubSubTopicRef `json:"topicRef,omitempty"`
+
+	// Format of cloud pub/sub message.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.NotificationConfig.message_format
+	MessageFormat *string `json:"messageFormat,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.SpeechToTextConfig
+type SpeechToTextConfig struct {
+	// Which Speech model to select for speech recognize.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SpeechToTextConfig.speech_model_variant
+	SpeechModelVariant *string `json:"speechModelVariant,omitempty"`
+
+	// Which model to select for the given speech option.
+	//  Select the model best suited to your domain to get best results. If a
+	//  model is not explicitly specified, then we resolve to the best model
+	//  based on the other settings in the input audio and speech config.
+	//  If enhanced speech model is enabled for the agent and it is not
+	//  specified in the config, then it resolves to phone_call.
+	//  For more information, see
+	//  [Speech models](https://cloud.google.com/dialogflow/docs/speech-models).
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SpeechToTextConfig.model
+	Model *string `json:"model,omitempty"`
+
+	// Optional. List of names of Cloud Speech phrase sets that are used for
+	//  natural language collection.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SpeechToTextConfig.phrase_sets
+	PhraseSetRefs []speechv1beta1.PhraseSetRef `json:"phraseSetRefs,omitempty"`
+
+	// Audio encoding of the audio content to process.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SpeechToTextConfig.audio_encoding
+	AudioEncoding *string `json:"audioEncoding,omitempty"`
+
+	// Sample rate (in Hertz) of the audio content sent in the query.
+	//  Refer to
+	//  [Cloud Speech API
+	//  documentation](https://cloud.google.com/speech-to-text/docs/basics) for
+	//  more details.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SpeechToTextConfig.sample_rate_hertz
+	SampleRateHertz *int32 `json:"sampleRateHertz,omitempty"`
+
+	// The language of the supplied audio. Dialogflow does not do
+	//  translations. See [Language
+	//  Support](https://cloud.google.com/dialogflow/docs/reference/language)
+	//  for a list of the currently supported language codes. Note that queries in
+	//  the same session do not necessarily need to specify the same language.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SpeechToTextConfig.language_code
+	LanguageCode *string `json:"languageCode,omitempty"`
+
+	// If `true`, Dialogflow returns [SpeechWordInfo][google.cloud.dialogflow.v2.SpeechWordInfo] in
+	//  [StreamingRecognitionResult][google.cloud.dialogflow.v2.StreamingRecognitionResult] with information about the recognized speech words, e.g.
+	//  start and end time offsets of a speech word.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SpeechToTextConfig.enable_word_info
+	EnableWordInfo *bool `json:"enableWordInfo,omitempty"`
+
+	// Use timeout based endpointing, interpreting endpointer sensitivity as
+	//  "time to wait after speech stops before closing the stream".
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SpeechToTextConfig.use_timeout_based_endpointing
+	UseTimeoutBasedEndpointing *bool `json:"useTimeoutBasedEndpointing,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig
+type HumanAgentAssistantConfig_SuggestionConfig struct {
+	// Configuration of different suggestion features. One feature can have only
+	//  one config.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.feature_configs
+	FeatureConfigs []HumanAgentAssistantConfig_SuggestionFeatureConfig `json:"featureConfigs,omitempty"`
+
+	// If `group_suggestion_responses` is false, and there are multiple
+	//  `feature_configs` in `event based suggestion` or
+	//  StreamingAnalyzeContent, we will try to deliver suggestions to customers
+	//  as soon as we get new suggestion. Different type of suggestions based on
+	//  the same context will be in  separate Pub/Sub event or
+	//  `StreamingAnalyzeContentResponse`.
+	//
+	//  If `group_suggestion_responses` set to true. All the suggestions to the
+	//  same participant based on the same context will be grouped into a single
+	//  Pub/Sub event or StreamingAnalyzeContentResponse.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.group_suggestion_responses
+	GroupSuggestionResponses *bool `json:"groupSuggestionResponses,omitempty"`
+
+	// Optional. List of various generator resource names used in the
+	//  conversation profile.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.generators
+	GeneratorRefs []DialogflowGeneratorRef `json:"generatorRefs,omitempty"`
+
+	// Optional. When disable_high_latency_features_sync_delivery is true and
+	//  using the AnalyzeContent API, we will not deliver the responses from high
+	//  latency features in the API response. The
+	//  human_agent_assistant_config.notification_config must be configured and
+	//  enable_event_based_suggestion must be set to true to receive the
+	//  responses from high latency features in Pub/Sub. High latency feature(s):
+	//  KNOWLEDGE_ASSIST
+	// +kcc:proto:field=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.disable_high_latency_features_sync_delivery
+	DisableHighLatencyFeaturesSyncDelivery *bool `json:"disableHighLatencyFeaturesSyncDelivery,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.ConversationModelConfig
+type HumanAgentAssistantConfig_ConversationModelConfig struct {
+	// Conversation model resource name. Format: `projects/<Project
+	//  ID>/conversationModels/<Model ID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.ConversationModelConfig.model
+	ModelRef *DialogflowConversationModelRef `json:"modelRef,omitempty"`
+
+	// Version of current baseline model. It will be ignored if
+	//  [model][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.ConversationModelConfig.model]
+	//  is set. Valid versions are:
+	//    Article Suggestion baseline model:
+	//      - 0.9
+	// +kcc:proto:field=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.ConversationModelConfig.baseline_model_version
+	BaselineModelVersion *string `json:"baselineModelVersion,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionQueryConfig.KnowledgeBaseQuerySource
+type HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource struct {
+	// Required. Knowledge bases to query. Format:
+	//  `projects/<Project ID>/locations/<Location
+	//  ID>/knowledgeBases/<Knowledge Base ID>`. Currently, at most 5 knowledge
+	//  bases are supported.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionQueryConfig.KnowledgeBaseQuerySource.knowledge_bases
+	// +required
+	KnowledgeBaseRefs []DialogflowKnowledgeBaseRef `json:"knowledgeBaseRefs,omitempty"`
 }
 
 // DialogflowConversationProfileStatus defines the config connector machine state of DialogflowConversationProfile

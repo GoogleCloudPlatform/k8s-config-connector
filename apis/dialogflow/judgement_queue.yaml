@@ -91,155 +91,207 @@ entries:
     group: dialogflow.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: accepted
+    note: triaged all findings; modelled parent as inlined *parent.ProjectAndLocationRef, converted references, resolved non-reference fields
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     reason: identity-multi-pattern
     detail: proto message google.cloud.dialogflow.v2.ConversationProfile declares 2 resource name patterns (projects/{project}/conversationProfiles/{conversation_profile}, projects/{project}/locations/{location}/conversationProfiles/{conversation_profile}); generated identity uses "projects/{project}/conversationProfiles/{conversation_profile}" (pass --pattern DialogflowConversationProfile=<pattern> to override)
-    status: open
+    status: resolved
+    resolution: edited
+    note: configured --pattern override in generate.sh matching CAIS resource pattern projects/{project}/locations/{location}/conversationProfiles/{conversationProfile}
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: generated DialogflowConversationProfileIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed CreateConversationProfileRequest has no *_id parameter and resource ID is assigned by the server
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.automatedAgentConfig.agent
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: polymorphic target accepts ES or CX agent or environment path; DialogflowEnvironmentRef only models CX environments and cannot represent ES environments or direct agent paths
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.endUserSuggestionConfig.featureConfigs[].conversationModelConfig.model
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/ConversationModel (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to modelRef (*DialogflowConversationModelRef)
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.endUserSuggestionConfig.featureConfigs[].queryConfig.dialogflowQuerySource.agent
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: target requires regional Dialogflow ES agent (projects/*/locations/*/agent); DialogflowAgentRef is global only (projects/*/agent) and DialogflowCXAgent has distinct format (.../agents/*)
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.endUserSuggestionConfig.featureConfigs[].queryConfig.dialogflowQuerySource.humanAgentSideConfig.agent
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: target requires regional Dialogflow ES agent (projects/*/locations/*/agent); DialogflowAgentRef is global only (projects/*/agent) and DialogflowCXAgent has distinct format (.../agents/*)
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.endUserSuggestionConfig.featureConfigs[].queryConfig.documentQuerySource.documents
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Document (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: DialogflowDocument is a non-declarative data-plane document (excluded in nondeclarative.go) with no KCC resource or Ref type
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.endUserSuggestionConfig.featureConfigs[].queryConfig.knowledgeBaseQuerySource.knowledgeBases
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/KnowledgeBase (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to knowledgeBaseRefs ([]DialogflowKnowledgeBaseRef)
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.endUserSuggestionConfig.generators
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Generator (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to generatorRefs ([]DialogflowGeneratorRef)
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.humanAgentSuggestionConfig.featureConfigs[].conversationModelConfig.model
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/ConversationModel (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to modelRef (*DialogflowConversationModelRef)
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.humanAgentSuggestionConfig.featureConfigs[].queryConfig.dialogflowQuerySource.agent
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: target requires regional Dialogflow ES agent (projects/*/locations/*/agent); DialogflowAgentRef is global only (projects/*/agent) and DialogflowCXAgent has distinct format (.../agents/*)
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.humanAgentSuggestionConfig.featureConfigs[].queryConfig.dialogflowQuerySource.humanAgentSideConfig.agent
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: target requires regional Dialogflow ES agent (projects/*/locations/*/agent); DialogflowAgentRef is global only (projects/*/agent) and DialogflowCXAgent has distinct format (.../agents/*)
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.humanAgentSuggestionConfig.featureConfigs[].queryConfig.documentQuerySource.documents
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Document (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: DialogflowDocument is a non-declarative data-plane document (excluded in nondeclarative.go) with no KCC resource or Ref type
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.humanAgentSuggestionConfig.featureConfigs[].queryConfig.knowledgeBaseQuerySource.knowledgeBases
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/KnowledgeBase (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to knowledgeBaseRefs ([]DialogflowKnowledgeBaseRef)
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.humanAgentSuggestionConfig.generators
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Generator (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to generatorRefs ([]DialogflowGeneratorRef)
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentAssistantConfig.notificationConfig.topic
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/<Project"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to topicRef (*pubsubv1beta1.PubSubTopicRef)
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentHandoffConfig.salesforceLiveAgentConfig.buttonID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Salesforce third-party identifier, not a GCP resource reference
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentHandoffConfig.salesforceLiveAgentConfig.deploymentID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Salesforce third-party identifier, not a GCP resource reference
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.humanAgentHandoffConfig.salesforceLiveAgentConfig.organizationID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Salesforce third-party identifier, not a GCP resource reference
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.newMessageEventNotificationConfig.topic
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/<Project"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to topicRef (*pubsubv1beta1.PubSubTopicRef)
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.newRecognitionResultNotificationConfig.topic
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/<Project"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to topicRef (*pubsubv1beta1.PubSubTopicRef)
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.notificationConfig.topic
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/<Project"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to topicRef (*pubsubv1beta1.PubSubTopicRef)
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.securitySettings
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/CXSecuritySettings (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to securitySettingsRef (*DialogflowSecuritySettingsRef)
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.sttConfig.phraseSets
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to speech.googleapis.com/PhraseSet (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to phraseSetRefs ([]speechv1beta1.PhraseSetRef)
   - kind: DialogflowConversationProfile
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.ttsConfig.effectsProfileID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: audio effects profile identifiers (e.g. telephony-class-application), not GCP resource references
   - kind: DialogflowEntityType
     group: dialogflow.cnrm.cloud.google.com
     reason: identity-multi-pattern
