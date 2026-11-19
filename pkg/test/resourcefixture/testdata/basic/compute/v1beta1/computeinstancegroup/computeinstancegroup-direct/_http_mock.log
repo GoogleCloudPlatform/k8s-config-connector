@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 
@@ -627,13 +628,12 @@ X-Xss-Protection: 0
       "autoDelete": true,
       "boot": true,
       "deviceName": "boot",
-      "initializeParams": {
-        "diskType": "zones/us-central1-a/diskTypes/pd-standard",
-        "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
-      },
+      "diskSizeGb": "10",
+      "index": 0,
       "interface": "SCSI",
       "kind": "compute#attachedDisk",
       "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
       "type": "PERSISTENT"
     }
   ],
@@ -654,6 +654,120 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
   "status": "RUNNING",
   "tags": {},
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#disk",
+  "labelFingerprint": "abcdef0123A=",
+  "name": "${instanceID}",
+  "physicalBlockSizeBytes": "4096",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "sourceImageId": "2443108620951880213",
+  "status": "READY",
+  "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
+  "users": [
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instances/${instanceID}"
+  ],
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "disks": [
+    {
+      "autoDelete": true,
+      "boot": true,
+      "deviceName": "boot",
+      "diskSizeGb": "10",
+      "index": 0,
+      "interface": "SCSI",
+      "kind": "compute#attachedDisk",
+      "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
+      "type": "PERSISTENT"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "compute#instance",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "metadata": {},
+  "name": "${instanceID}",
+  "params": {},
+  "scheduling": {
+    "automaticRestart": true,
+    "onHostMaintenance": "MIGRATE"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+  "status": "RUNNING",
+  "tags": {},
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#disk",
+  "labelFingerprint": "abcdef0123A=",
+  "name": "${instanceID}",
+  "physicalBlockSizeBytes": "4096",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "sourceImageId": "2443108620951880213",
+  "status": "READY",
+  "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
+  "users": [
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instances/${instanceID}"
+  ],
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
@@ -906,13 +1020,12 @@ X-Xss-Protection: 0
       "autoDelete": true,
       "boot": true,
       "deviceName": "boot",
-      "initializeParams": {
-        "diskType": "zones/us-central1-a/diskTypes/pd-standard",
-        "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
-      },
+      "diskSizeGb": "10",
+      "index": 0,
       "interface": "SCSI",
       "kind": "compute#attachedDisk",
       "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
       "type": "PERSISTENT"
     }
   ],
@@ -933,6 +1046,120 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
   "status": "RUNNING",
   "tags": {},
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#disk",
+  "labelFingerprint": "abcdef0123A=",
+  "name": "${instanceID}",
+  "physicalBlockSizeBytes": "4096",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "sourceImageId": "2443108620951880213",
+  "status": "READY",
+  "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
+  "users": [
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instances/${instanceID}"
+  ],
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "disks": [
+    {
+      "autoDelete": true,
+      "boot": true,
+      "deviceName": "boot",
+      "diskSizeGb": "10",
+      "index": 0,
+      "interface": "SCSI",
+      "kind": "compute#attachedDisk",
+      "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
+      "type": "PERSISTENT"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "compute#instance",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "metadata": {},
+  "name": "${instanceID}",
+  "params": {},
+  "scheduling": {
+    "automaticRestart": true,
+    "onHostMaintenance": "MIGRATE"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+  "status": "RUNNING",
+  "tags": {},
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#disk",
+  "labelFingerprint": "abcdef0123A=",
+  "name": "${instanceID}",
+  "physicalBlockSizeBytes": "4096",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "sourceImageId": "2443108620951880213",
+  "status": "READY",
+  "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
+  "users": [
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instances/${instanceID}"
+  ],
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
@@ -1213,6 +1440,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: UPDATE
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}
 Content-Type: application/json
 
@@ -1532,6 +1760,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: DELETE
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}
 Content-Type: application/json
 
@@ -1772,13 +2001,12 @@ X-Xss-Protection: 0
       "autoDelete": true,
       "boot": true,
       "deviceName": "boot",
-      "initializeParams": {
-        "diskType": "zones/us-central1-a/diskTypes/pd-standard",
-        "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
-      },
+      "diskSizeGb": "10",
+      "index": 0,
       "interface": "SCSI",
       "kind": "compute#attachedDisk",
       "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
       "type": "PERSISTENT"
     }
   ],
@@ -1799,6 +2027,38 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
   "status": "RUNNING",
   "tags": {},
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#disk",
+  "labelFingerprint": "abcdef0123A=",
+  "name": "${instanceID}",
+  "physicalBlockSizeBytes": "4096",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "sourceImageId": "2443108620951880213",
+  "status": "READY",
+  "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
+  "users": [
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instances/${instanceID}"
+  ],
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
@@ -1884,13 +2144,12 @@ X-Xss-Protection: 0
       "autoDelete": true,
       "boot": true,
       "deviceName": "boot",
-      "initializeParams": {
-        "diskType": "zones/us-central1-a/diskTypes/pd-standard",
-        "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
-      },
+      "diskSizeGb": "10",
+      "index": 0,
       "interface": "SCSI",
       "kind": "compute#attachedDisk",
       "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
       "type": "PERSISTENT"
     }
   ],
@@ -1911,6 +2170,38 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
   "status": "RUNNING",
   "tags": {},
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#disk",
+  "labelFingerprint": "abcdef0123A=",
+  "name": "${instanceID}",
+  "physicalBlockSizeBytes": "4096",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "sourceImageId": "2443108620951880213",
+  "status": "READY",
+  "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
+  "users": [
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instances/${instanceID}"
+  ],
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 

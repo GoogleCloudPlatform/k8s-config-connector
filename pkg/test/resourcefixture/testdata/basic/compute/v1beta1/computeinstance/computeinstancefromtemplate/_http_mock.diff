@@ -1,9 +1,11 @@
-605c605,606
+1d0
+< # Phase: CREATE
+606c605,606
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
 > Content-Type: application/json
-633,741c634
+634,742c634
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a?alt=json&prettyPrint=false
 < 
 < 200 OK
@@ -115,7 +117,7 @@
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances?alt=json&prettyPrint=false&sourceInstanceTemplate=projects%2F${projectId}%2Fglobal%2FinstanceTemplates%2F${instanceTemplateID}
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances
-745,765d637
+746,766d637
 <   "disks": [
 <     {
 <       "autoDelete": true,
@@ -137,7 +139,7 @@
 <     "managed-by-cnrm": "true"
 <   },
 <   "metadata": {},
-767,773c639
+768,774c639
 <   "params": {},
 <   "scheduling": {
 <     "automaticRestart": true,
@@ -147,52 +149,297 @@
 <   "zone": ""
 ---
 >   "zone": "us-west1-a"
-804c670,671
+805c670,671
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-835c702,703
+836,1086c702,703
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
----
-> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
-> Content-Type: application/json
-849,863d716
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
 <   "disks": [
 <     {
 <       "autoDelete": true,
 <       "boot": true,
 <       "deviceName": "boot",
-<       "initializeParams": {
-<         "diskType": "zones/us-west1-a/diskTypes/pd-standard",
-<         "sourceImage": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}"
-<       },
+<       "diskSizeGb": "500",
+<       "index": 0,
 <       "interface": "SCSI",
 <       "kind": "compute#attachedDisk",
 <       "mode": "READ_WRITE",
+<       "source": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/disks/${instanceID}",
 <       "type": "PERSISTENT"
 <     }
 <   ],
-867,872d719
+<   "id": "000000000000000000000",
+<   "kind": "compute#instance",
+<   "labelFingerprint": "abcdef0123A=",
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
 <   "metadata": {},
-874,878d720
+<   "name": "${instanceID}",
 <   "params": {},
 <   "scheduling": {
 <     "automaticRestart": true,
 <     "onHostMaintenance": "MIGRATE"
 <   },
-881,942d722
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+<   "status": "RUNNING",
 <   "tags": {},
 <   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
 < }
 < 
 < ---
 < 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${instanceID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "id": "000000000000000000000",
+<   "kind": "compute#disk",
+<   "labelFingerprint": "abcdef0123A=",
+<   "name": "${instanceID}",
+<   "physicalBlockSizeBytes": "4096",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${instanceID}",
+<   "sourceImage": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+<   "sourceImageId": "${imageID}",
+<   "status": "READY",
+<   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
+<   "users": [
+<     "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/instances/${instanceID}"
+<   ],
+<   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "disks": [
+<     {
+<       "autoDelete": true,
+<       "boot": true,
+<       "deviceName": "boot",
+<       "diskSizeGb": "500",
+<       "index": 0,
+<       "interface": "SCSI",
+<       "kind": "compute#attachedDisk",
+<       "mode": "READ_WRITE",
+<       "source": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/disks/${instanceID}",
+<       "type": "PERSISTENT"
+<     }
+<   ],
+<   "id": "000000000000000000000",
+<   "kind": "compute#instance",
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+<   },
+<   "metadata": {},
+<   "name": "${instanceID}",
+<   "params": {},
+<   "scheduling": {
+<     "automaticRestart": true,
+<     "onHostMaintenance": "MIGRATE"
+<   },
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+<   "status": "RUNNING",
+<   "tags": {},
+<   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${instanceID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "id": "000000000000000000000",
+<   "kind": "compute#disk",
+<   "labelFingerprint": "abcdef0123A=",
+<   "name": "${instanceID}",
+<   "physicalBlockSizeBytes": "4096",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${instanceID}",
+<   "sourceImage": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+<   "sourceImageId": "${imageID}",
+<   "status": "READY",
+<   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
+<   "users": [
+<     "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/instances/${instanceID}"
+<   ],
+<   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+< }
+< 
+< ---
+< 
+< # Phase: UPDATE
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "disks": [
+<     {
+<       "autoDelete": true,
+<       "boot": true,
+<       "deviceName": "boot",
+<       "diskSizeGb": "500",
+<       "index": 0,
+<       "interface": "SCSI",
+<       "kind": "compute#attachedDisk",
+<       "mode": "READ_WRITE",
+<       "source": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/disks/${instanceID}",
+<       "type": "PERSISTENT"
+<     }
+<   ],
+<   "id": "000000000000000000000",
+<   "kind": "compute#instance",
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+<   },
+<   "metadata": {},
+<   "name": "${instanceID}",
+<   "params": {},
+<   "scheduling": {
+<     "automaticRestart": true,
+<     "onHostMaintenance": "MIGRATE"
+<   },
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+<   "status": "RUNNING",
+<   "tags": {},
+<   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${instanceID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "id": "000000000000000000000",
+<   "kind": "compute#disk",
+<   "labelFingerprint": "abcdef0123A=",
+<   "name": "${instanceID}",
+<   "physicalBlockSizeBytes": "4096",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${instanceID}",
+<   "sourceImage": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+<   "sourceImageId": "${imageID}",
+<   "status": "READY",
+<   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
+<   "users": [
+<     "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/instances/${instanceID}"
+<   ],
+<   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
+> Content-Type: application/json
+1100,1113d716
+<   "disks": [
+<     {
+<       "autoDelete": true,
+<       "boot": true,
+<       "deviceName": "boot",
+<       "diskSizeGb": "500",
+<       "index": 0,
+<       "interface": "SCSI",
+<       "kind": "compute#attachedDisk",
+<       "mode": "READ_WRITE",
+<       "source": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/disks/${instanceID}",
+<       "type": "PERSISTENT"
+<     }
+<   ],
+1117,1122d719
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+<   },
+<   "metadata": {},
+1124,1128d720
+<   "params": {},
+<   "scheduling": {
+<     "automaticRestart": true,
+<     "onHostMaintenance": "MIGRATE"
+<   },
+1131d722
+<   "tags": {},
+1137,1198c728
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/stop?alt=json&prettyPrint=false
 < 
 < 200 OK
@@ -249,20 +496,24 @@
 <   "targetId": "${instanceID}",
 <   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
 <   "user": "user@example.com",
-948c728
+<   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+< }
+< 
+< ---
+< 
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setMachineType?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setMachineType
-952c732
+1202c732
 <   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-2"
 ---
 >   "machineType": "zones/us-west1-a/machineTypes/n1-standard-2"
-983c763,764
+1233c763,764
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-1014,1024c795,796
+1264,1274c795,796
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 < 
 < 200 OK
@@ -277,26 +528,25 @@
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setLabels
 > Content-Type: application/json
-1027,1044d798
+1277,1293d798
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
 <   "disks": [
 <     {
 <       "autoDelete": true,
 <       "boot": true,
 <       "deviceName": "boot",
-<       "initializeParams": {
-<         "diskType": "zones/us-west1-a/diskTypes/pd-standard",
-<         "sourceImage": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}"
-<       },
+<       "diskSizeGb": "500",
+<       "index": 0,
 <       "interface": "SCSI",
 <       "kind": "compute#attachedDisk",
 <       "mode": "READ_WRITE",
+<       "source": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/disks/${instanceID}",
 <       "type": "PERSISTENT"
 <     }
 <   ],
 <   "id": "000000000000000000000",
 <   "kind": "compute#instance",
-1048,1062c802,803
+1297,1311c802,803
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
@@ -315,69 +565,185 @@
 ---
 >     "label-one": "value-one"
 >   }
-1065,1068d805
+1314,1317d805
 < ---
 < 
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/start?alt=json&prettyPrint=false
 < 
-1084c821
+1333c821
 <   "operationType": "start",
 ---
 >   "operationType": "setLabels",
-1097c834,835
+1346c834,835
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-1115c853
+1364c853
 <   "operationType": "start",
 ---
 >   "operationType": "setLabels",
-1128c866,867
+1377,1462c866,867
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
----
-> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
-> Content-Type: application/json
-1142,1156d880
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
 <   "disks": [
 <     {
 <       "autoDelete": true,
 <       "boot": true,
 <       "deviceName": "boot",
-<       "initializeParams": {
-<         "diskType": "zones/us-west1-a/diskTypes/pd-standard",
-<         "sourceImage": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}"
-<       },
+<       "diskSizeGb": "500",
+<       "index": 0,
 <       "interface": "SCSI",
 <       "kind": "compute#attachedDisk",
 <       "mode": "READ_WRITE",
+<       "source": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/disks/${instanceID}",
 <       "type": "PERSISTENT"
 <     }
 <   ],
-1162,1163c886
+<   "id": "000000000000000000000",
+<   "kind": "compute#instance",
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
----
->     "label-one": "value-one"
-1165,1166c888
+<   },
 <   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-2",
 <   "metadata": {},
----
->   "machineType": "zones/us-west1-a/machineTypes/n1-standard-2",
-1168,1172d889
+<   "name": "${instanceID}",
 <   "params": {},
 <   "scheduling": {
 <     "automaticRestart": true,
 <     "onHostMaintenance": "MIGRATE"
 <   },
-1175d891
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+<   "status": "RUNNING",
 <   "tags": {},
-1181c897,898
+<   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${instanceID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "id": "000000000000000000000",
+<   "kind": "compute#disk",
+<   "labelFingerprint": "abcdef0123A=",
+<   "name": "${instanceID}",
+<   "physicalBlockSizeBytes": "4096",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${instanceID}",
+<   "sourceImage": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+<   "sourceImageId": "${imageID}",
+<   "status": "READY",
+<   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
+<   "users": [
+<     "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/instances/${instanceID}"
+<   ],
+<   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+< }
+< 
+< ---
+< 
+< # Phase: DELETE
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
+> Content-Type: application/json
+1476,1489d880
+<   "disks": [
+<     {
+<       "autoDelete": true,
+<       "boot": true,
+<       "deviceName": "boot",
+<       "diskSizeGb": "500",
+<       "index": 0,
+<       "interface": "SCSI",
+<       "kind": "compute#attachedDisk",
+<       "mode": "READ_WRITE",
+<       "source": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/disks/${instanceID}",
+<       "type": "PERSISTENT"
+<     }
+<   ],
+1495,1496c886
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+---
+>     "label-one": "value-one"
+1498,1499c888
+<   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-2",
+<   "metadata": {},
+---
+>   "machineType": "zones/us-west1-a/machineTypes/n1-standard-2",
+1501,1505d889
+<   "params": {},
+<   "scheduling": {
+<     "automaticRestart": true,
+<     "onHostMaintenance": "MIGRATE"
+<   },
+1508d891
+<   "tags": {},
+1514,1546c897,898
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${instanceID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "id": "000000000000000000000",
+<   "kind": "compute#disk",
+<   "labelFingerprint": "abcdef0123A=",
+<   "name": "${instanceID}",
+<   "physicalBlockSizeBytes": "4096",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${instanceID}",
+<   "sourceImage": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+<   "sourceImageId": "${imageID}",
+<   "status": "READY",
+<   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
+<   "users": [
+<     "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/instances/${instanceID}"
+<   ],
+<   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+< }
+< 
+< ---
+< 
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
 > Content-Type: application/json
-1211c928,929
+1576c928,929
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
