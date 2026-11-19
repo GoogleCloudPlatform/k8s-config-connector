@@ -48,6 +48,16 @@
   - **E2E Dependencies & Recording**: `DesignCenterCatalog` requires a parent `DesignCenterSpace` in `dependencies.yaml`. Recorded authentic golden logs against real GCP (`cnrm-barni-4`) with `RECORD_AUDIT_PROBE=1 ./hack/record-gcp` for both `designcentercatalog-minimal` and `designcentercatalog-maximal`.
   - **Validation**: 200-seed focused round-trip fuzzer (`TestFocusedMappers/DesignCenterCatalog`), CRD field presence checks, and re-reconciliation passed cleanly.
 
+### [2026-11-19] Prepopulating DesignCenterCatalogTemplate
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for DesignCenterCatalogTemplate (Issue #16143).
+- **Findings & Solution**:
+  - Configured `apis/designcenter/generate.sh` with dedicated `--resource DesignCenterCatalogTemplate:CatalogTemplate` under `generate-types` and `generate-identity`.
+  - Mechanically generated `designcentercatalogtemplate_types.go`, `designcentercatalogtemplate_identity.generated.go`, `designcentercatalogtemplate_reference.generated.go`, `designcentercatalogtemplate_identity_generated_test.go`, CRD manifest, deepcopy, and updated `pkg/controller/direct/designcenter/mapper.generated.go`.
+  - Added `DesignCenterCatalogTemplate` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Initialized open entries in `apis/designcenter/judgement_queue.yaml` for `DesignCenterCatalogTemplate` (including `untriaged-bulk-generation` with `status: open`).
+  - Recorded untriaged missing fields in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+
+
 
 
 

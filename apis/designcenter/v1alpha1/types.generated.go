@@ -19,6 +19,7 @@
 // proto.service: google.cloud.designcenter.v1
 // resource: DesignCenterSpace:Space
 // resource: DesignCenterCatalog:Catalog
+// resource: DesignCenterCatalogTemplate:CatalogTemplate
 
 package v1alpha1
 
@@ -38,6 +39,34 @@ type Catalog struct {
 	// Optional. The catalog description.
 	// +kcc:proto:field=google.cloud.designcenter.v1.Catalog.description
 	Description *string `json:"description,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.designcenter.v1.CatalogTemplate", skipping
+
+// +kcc:proto=google.cloud.designcenter.v1.CatalogTemplate
+type CatalogTemplate struct {
+	// Identifier. The catalog template name in following format:
+	//  `projects/$project/locations/$location/spaces/$space/catalogs/$catalog/templates/$template`
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplate.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The display name of a catalog template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplate.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The catalog template description.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplate.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. The category of the Application Design Center application
+	//  template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplate.template_category
+	TemplateCategory *string `json:"templateCategory,omitempty"`
+
+	// Optional. The Application Design Center application template type.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplate.type
+	Type *string `json:"type,omitempty"`
 }
 */
 
@@ -98,6 +127,28 @@ type CatalogObservedState struct {
 	// Output only. The catalog update timestamp.
 	// +kcc:proto:field=google.cloud.designcenter.v1.Catalog.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.designcenter.v1.CatalogTemplate", skipping
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.CatalogTemplate
+type CatalogTemplateObservedState struct {
+	// Output only. The template revisions UUID.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplate.uuid
+	Uuid *string `json:"uuid,omitempty"`
+
+	// Output only. The catalog template creation timestamp.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplate.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The catalog template update timestamp.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplate.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Latest revision of the template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplate.latest_revision_id
+	LatestRevisionID *string `json:"latestRevisionID,omitempty"`
 }
 */
 

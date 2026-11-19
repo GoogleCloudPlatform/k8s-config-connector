@@ -69,6 +69,54 @@ func DesignCenterCatalogSpec_ToProto(mapCtx *direct.MapContext, in *krm.DesignCe
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
+func DesignCenterCatalogTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CatalogTemplate) *krm.DesignCenterCatalogTemplateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DesignCenterCatalogTemplateObservedState{}
+	// MISSING: Name
+	out.Uuid = direct.LazyPtr(in.GetUuid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.LatestRevisionID = direct.LazyPtr(in.GetLatestRevisionId())
+	return out
+}
+func DesignCenterCatalogTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DesignCenterCatalogTemplateObservedState) *pb.CatalogTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CatalogTemplate{}
+	// MISSING: Name
+	out.Uuid = direct.ValueOf(in.Uuid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.LatestRevisionId = direct.ValueOf(in.LatestRevisionID)
+	return out
+}
+func DesignCenterCatalogTemplateSpec_FromProto(mapCtx *direct.MapContext, in *pb.CatalogTemplate) *krm.DesignCenterCatalogTemplateSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DesignCenterCatalogTemplateSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.TemplateCategory = direct.Enum_FromProto(mapCtx, in.GetTemplateCategory())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+func DesignCenterCatalogTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krm.DesignCenterCatalogTemplateSpec) *pb.CatalogTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CatalogTemplate{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.TemplateCategory = direct.Enum_ToProto[pb.TemplateCategory](mapCtx, in.TemplateCategory)
+	out.Type = direct.Enum_ToProto[pb.TemplateType](mapCtx, in.Type)
+	return out
+}
 func DesignCenterSpaceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Space) *krm.DesignCenterSpaceObservedState {
 	if in == nil {
 		return nil
