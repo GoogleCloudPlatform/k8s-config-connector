@@ -161,7 +161,6 @@ BLOCKED_KINDS=(
     "ComputeCompositeHealthCheck"
     "ComputeHealthCheckService"
     "ComputeInstanceGroupManagerResizeRequest"
-    "ComputeLicense"
     "ComputeNotificationEndpoint"
     "ComputePublicAdvertisedPrefix"
     "ConnectorsConnection"
