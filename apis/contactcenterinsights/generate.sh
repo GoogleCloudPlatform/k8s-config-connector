@@ -56,6 +56,7 @@ ${CONTROLLERBUILDER} generate-types \
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.contactcenterinsights.v1 \
   --api-version contactcenterinsights.cnrm.cloud.google.com/v1alpha1 \
+  --resource CCInsightsIssueModel:IssueModel \
   --resource CCInsightsQaQuestion:QaQuestion \
   --resource CCInsightsQAScorecardRevision:QaScorecardRevision
 

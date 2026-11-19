@@ -833,6 +833,8 @@ type IssueModel struct {
 }
 */
 
+/* found existing non-generated go type "IssueModel_InputDataConfig", skipping
+
 // +kcc:proto=google.cloud.contactcenterinsights.v1.IssueModel.InputDataConfig
 type IssueModel_InputDataConfig struct {
 	// Medium of conversations used in training data. This field is being
@@ -846,6 +848,7 @@ type IssueModel_InputDataConfig struct {
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.IssueModel.InputDataConfig.filter
 	Filter *string `json:"filter,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.contactcenterinsights.v1.IssueModelLabelStats
 type IssueModelLabelStats struct {
@@ -1601,12 +1604,15 @@ type IssueModelObservedState struct {
 }
 */
 
+/* found existing non-generated go type "IssueModel_InputDataConfigObservedState", skipping
+
 // +kcc:observedstate:proto=google.cloud.contactcenterinsights.v1.IssueModel.InputDataConfig
 type IssueModel_InputDataConfigObservedState struct {
 	// Output only. Number of conversations used in training. Output only.
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.IssueModel.InputDataConfig.training_conversations_count
 	TrainingConversationsCount *int64 `json:"trainingConversationsCount,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.contactcenterinsights.v1.PhraseMatcher", skipping
 

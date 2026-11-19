@@ -21,6 +21,17 @@
 # file does not have.
 
 entries:
+  - kind: CCInsightsIssueModel
+    group: contactcenterinsights.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: CCInsightsIssueModel
+    group: contactcenterinsights.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: generated CCInsightsIssueModelIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
+    status: resolved
+    resolution: accepted
   - kind: CCInsightsQAScorecardRevision
     group: contactcenterinsights.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

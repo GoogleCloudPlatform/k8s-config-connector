@@ -1308,7 +1308,7 @@ func IssueModel_InputDataConfig_FromProto(mapCtx *direct.MapContext, in *pb.Issu
 		return nil
 	}
 	out := &krm.IssueModel_InputDataConfig{}
-	out.Medium = direct.Enum_FromProto(mapCtx, in.GetMedium())
+	// MISSING: Medium
 	// MISSING: TrainingConversationsCount
 	out.Filter = direct.LazyPtr(in.GetFilter())
 	return out
@@ -1318,7 +1318,7 @@ func IssueModel_InputDataConfig_ToProto(mapCtx *direct.MapContext, in *krm.Issue
 		return nil
 	}
 	out := &pb.IssueModel_InputDataConfig{}
-	out.Medium = direct.Enum_ToProto[pb.Conversation_Medium](mapCtx, in.Medium)
+	// MISSING: Medium
 	// MISSING: TrainingConversationsCount
 	out.Filter = direct.ValueOf(in.Filter)
 	return out

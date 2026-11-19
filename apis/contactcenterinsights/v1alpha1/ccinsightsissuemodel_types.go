@@ -47,6 +47,21 @@ type CCInsightsIssueModelSpec struct {
 	LanguageCode *string `json:"languageCode,omitempty"`
 }
 
+// +kcc:proto=google.cloud.contactcenterinsights.v1.IssueModel.InputDataConfig
+type IssueModel_InputDataConfig struct {
+	// A filter to reduce the conversations used for training the model to a
+	// specific subset.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.IssueModel.InputDataConfig.filter
+	Filter *string `json:"filter,omitempty"`
+}
+
+// +kcc:proto=google.cloud.contactcenterinsights.v1.IssueModel.InputDataConfig
+type IssueModel_InputDataConfigObservedState struct {
+	// Output only. Number of conversations used in training. Output only.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.IssueModel.InputDataConfig.training_conversations_count
+	TrainingConversationsCount *int64 `json:"trainingConversationsCount,omitempty"`
+}
+
 // CCInsightsIssueModelStatus defines the config connector machine state of CCInsightsIssueModel
 type CCInsightsIssueModelStatus struct {
 	/* Conditions represent the latest available observations of the

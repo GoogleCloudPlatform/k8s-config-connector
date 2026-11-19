@@ -74,11 +74,6 @@ spec:
                     description: A filter to reduce the conversations used for training
                       the model to a specific subset.
                     type: string
-                  medium:
-                    description: Medium of conversations used in training data. This
-                      field is being deprecated. To specify the medium to be used
-                      in training a new issue model, set the `medium` field on `filter`.
-                    type: string
                 type: object
               languageCode:
                 description: Language of the model.
