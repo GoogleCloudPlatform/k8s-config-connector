@@ -37,6 +37,7 @@ var allServices = []string{
 	"anthos.googleapis.com",
 	"anthosconfigmanagement.googleapis.com",
 	"anthospolicycontroller.googleapis.com",
+	"lustre.googleapis.com",
 	"managedkafka.googleapis.com",
 	"memcache.googleapis.com",
 	"migrationcenter.googleapis.com",

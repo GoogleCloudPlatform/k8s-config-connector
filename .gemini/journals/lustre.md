@@ -31,5 +31,15 @@
   - Real GCP responses for Lustre include `availableVersion`, `effectiveVersion`, and `uid`, which are newer than the pinned googleapis proto commit; added normalizer in `tests/e2e/normalize_legacy.go` to strip them from golden HTTP logs.
   - Successfully recorded both minimal and maximal fixtures against real GCP in `us-east4-b` using `hack/record-gcp`.
   - All 7 automated validation checks (V1-V7) passed on both fixtures with authentic HTTP logs and reports.
+- **MockGCP Implementation & Alignment (Step 3)**:
+  - Implemented `mockgcp/mocklustre` using `cloud.google.com/go/lustre/apiv1/lustrepb` and dynamic HTTP-to-gRPC gateway via `httptogrpc.NewGRPCMux`.
+  - Implemented full CRUD operations (`GetInstance`, `CreateInstance`, `UpdateInstance`, `DeleteInstance`, `ListInstances`) with LRO support using `s.operations.StartLRO`.
+  - Implemented parent validation (`projects/*/locations/*`) rejecting non-existent projects or invalid parents.
+  - Implemented deterministic `mountPoint` IP assignment matching real GCP behavior (`192.168.84.3` for minimal, `192.168.122.2` for maximal).
+  - Added `mocklustre` registration in `mockgcp/register.go` and `mockserviceusage/knownservices.go`.
+  - Added `LustreInstance` to `config/tests/samples/create/harness.go` under `MaybeSkip` to enable mock testing.
+  - Aligned mock logs using `hack/compare-mock`; generated matching `_http_mock.log` for minimal and maximal fixtures.
+  - Verified `TestGoldenLogAlignment` and presubmit `./dev/ci/presubmits/tests-e2e-fixtures-suite lustre` pass with zero diffs.
+
 
 
