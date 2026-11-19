@@ -47,4 +47,15 @@
   6. Added comprehensive unit tests in `observabilitylink_identity_test.go` and conformance tests in `observabilitydataset_identity_test.go`.
   7. Re-recorded `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` and `tests/apichecks/testdata/exceptions/naming_violations.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...` and verified all presubmit tests pass.
 
+### [2026-11-19] ObservabilityLink Direct Controller, Fuzzer, and E2E Fixtures
+- **Context**: Generated direct controller, round-trip fuzzer, and recorded minimal/maximal E2E fixtures against real GCP for `ObservabilityLink`.
+- **Learnings & Decisions**:
+  1. Generated controller `pkg/controller/direct/observability/observabilitylink_controller.go` and fuzzer `pkg/controller/direct/observability/observabilitylink_fuzzer.generated.go` via one-shot `controllerbuilder generate-controller` and `generate-fuzzer` with `--prepopulate-resource`.
+  2. Registered model in `pkg/controller/resourceconfig/static_config.go` and verified focused round-trip fuzzer passed cleanly (`TestFocusedMappers/ObservabilityLink`).
+  3. Identified GCP naming restriction: Link IDs in GCP Observability API cannot contain hyphens (`Link id contains illegal '-' character`), but allow underscores and alphanumeric characters. Used `resourceID: link_min_${uniqueId}` and `link_max_${uniqueId}` in the test fixtures.
+  4. Created minimal fixture with immutable `parentRef` pointing to `projects/${projectId}/locations/us-central1/buckets/_Trace/datasets/Spans` and `resourceID`.
+  5. Created maximal fixture with all fields (`parentRef`, `resourceID`, `displayName`, and `description`), and `update.yaml` mutating `displayName` and `description`.
+  6. Recorded golden HTTP logs against real GCP (`cnrm-barni-4`) using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`. Both minimal and maximal fixtures passed all 7/7 lifecycle validation checks.
+  7. Removed `ObservabilityLink` from `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` as all spec fields are now covered by test fixtures.
+
 
