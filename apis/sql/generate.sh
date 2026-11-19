@@ -29,9 +29,29 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
 
+# We compile BlueGreenDeployment using the googleapis pin containing google/cloud/sql/v1/cloud_sql_blue_green_deployments.proto.
+PROTO_SHA="e7513c828b8db536fa12fc5493d541f323aedf90"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+
+# --- v1alpha1 ---
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.sql.v1 \
+  --api-version sql.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource SQLBlueGreenDeployment:BlueGreenDeployment \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.sql.v1 \
+  --api-version sql.cnrm.cloud.google.com/v1alpha1 \
+  --resource SQLBlueGreenDeployment:BlueGreenDeployment
+
+# --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.sql.v1beta4 \
   --api-version sql.cnrm.cloud.google.com/v1beta1  \
@@ -42,9 +62,12 @@ ${CONTROLLERBUILDER} generate-types \
   --prune-unused-types=false
 
 ${CONTROLLERBUILDER} generate-mapper \
-  --service google.cloud.sql.v1beta4 \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.sql.v1beta4,google.cloud.sql.v1 \
   --api-version sql.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output
+  --multiversion \
+  --include-skipped-output \
+  --prepopulate-resource
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
