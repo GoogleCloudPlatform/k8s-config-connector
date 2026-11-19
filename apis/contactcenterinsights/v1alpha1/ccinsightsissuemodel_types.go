@@ -20,7 +20,7 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,14 +31,11 @@ var CCInsightsIssueModelGVK = GroupVersion.WithKind("CCInsightsIssueModel")
 // +kcc:spec:proto=google.cloud.contactcenterinsights.v1.IssueModel
 // +kcc:required-from-proto
 type CCInsightsIssueModelSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// The CCInsightsIssueModel name. If not given, the metadata.name will be used.
+	// Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// The representative name for the issue model.
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.IssueModel.display_name
 	DisplayName *string `json:"displayName,omitempty"`

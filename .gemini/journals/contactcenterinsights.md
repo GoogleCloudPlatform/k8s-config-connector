@@ -98,6 +98,21 @@
   - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via golden recording.
   - Verified `generate.sh` produces zero diff, and all tests in `apis/contactcenterinsights/...`, `pkg/controller/direct/contactcenterinsights/...`, and `tests/apichecks/...` pass cleanly.
 
+### [2026-11-19] CCInsightsIssueModel Greenfield Types Judgement Triage (Step 1b)
+- **Context**: Triaged `judgement_queue.yaml` entries and finalized direct KRM types and identity for `CCInsightsIssueModel` (`google.cloud.contactcenterinsights.v1.IssueModel`).
+- **Parent & Identity Resolution**:
+  - Pattern is `projects/{project}/locations/{location}/issueModels/{issue_model}`.
+  - Replaced separate `projectRef` and `location` fields on `CCInsightsIssueModelSpec` with inlined `*parent.ProjectAndLocationRef`.
+  - Confirmed server-generated identity: `CreateIssueModelRequest` does not accept an `issue_model_id` parameter and `IssueModel.name` is assigned by the server; confirmed `identity.ServerGeneratedIdentity`. Updated doc comment on `ResourceID`.
+- **Field & Mapping Review**:
+  - `deprecated-field` on `.spec.inputDataConfig.medium`: retained `Medium` in `IssueModel_InputDataConfig` to maintain CRD backward compatibility with the existing CRD schema on `master`.
+  - `message-map-derived` on `.status.observedState.trainingStats.issueStats`: verified generated `map[string]IssueModelLabelStats_IssueStats` Go type and mapping.
+- **Queue Triage & Verification**:
+  - Resolved all 5 `judgement_queue.yaml` entries (`untriaged-bulk-generation`, `identity-server-generated-id`, `deprecated-field`, `location-or-parent-ref`, and `message-map-derived`).
+  - Regenerated CRD and deepcopy via `apis/contactcenterinsights/generate.sh`.
+  - Verified `tests/apichecks/...`, `apis/contactcenterinsights/...`, and `pkg/controller/direct/contactcenterinsights/...` pass cleanly.
+
+
 ### [2026-11-14] CCInsightsQAScorecardRevision Greenfield Direct Controller & E2E Fixtures (Step 2)
 - **Context**: Implementing Phase 2 (direct controller, fuzzer, and E2E fixtures recorded against RealGCP) for `CCInsightsQAScorecardRevision`.
 - **GCP API Nuances & Architecture**:

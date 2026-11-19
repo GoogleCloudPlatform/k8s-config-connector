@@ -83,13 +83,16 @@ spec:
                 description: Language of the model.
                 type: string
               location:
-                description: The location of this resource.
+                description: The location that this resource belongs to.
                 type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
               modelType:
                 description: Type of the model.
                 type: string
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -121,8 +124,9 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The CCInsightsIssueModel name. If not given, the metadata.name
-                  will be used.
+                description: Immutable. Optional. The service-generated name of the
+                  resource. Used for acquisition only. Leave unset to create a new
+                  resource.
                 type: string
             required:
             - location
