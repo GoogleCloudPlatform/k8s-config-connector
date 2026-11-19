@@ -20,7 +20,7 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	connectorsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/connectors/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,15 +31,10 @@ var CESToolsetGVK = GroupVersion.WithKind("CESToolset")
 // +kcc:spec:proto=google.cloud.ces.v1.Toolset
 // +kcc:required-from-proto
 type CESToolsetSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/apps/{app} this resource belongs to.
-	// +kcc:guess
-	// AppRef *CESAppRef `json:"appRef,omitempty"`
+	// The CESApp this CESToolset is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *CESAppRef `json:"parentRef"`
 
 	// The CESToolset name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -67,12 +62,6 @@ type CESToolsetSpec struct {
 	// +kcc:proto:field=google.cloud.ces.v1.Toolset.description
 	Description *string `json:"description,omitempty"`
 
-	// ETag used to ensure the object hasn't changed during a read-modify-write
-	//  operation. If the etag is empty, the update will overwrite any concurrent
-	//  changes.
-	// +kcc:proto:field=google.cloud.ces.v1.Toolset.etag
-	Etag *string `json:"etag,omitempty"`
-
 	// Optional. The execution type of the tools in the toolset.
 	// +kcc:proto:field=google.cloud.ces.v1.Toolset.execution_type
 	ExecutionType *string `json:"executionType,omitempty"`
@@ -80,6 +69,34 @@ type CESToolsetSpec struct {
 	// Optional. Configuration for tools behavior in fake mode.
 	// +kcc:proto:field=google.cloud.ces.v1.Toolset.tool_fake_config
 	ToolFakeConfig *ToolFakeConfig `json:"toolFakeConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1.ConnectorToolset
+type ConnectorToolset struct {
+	// Required. The full resource name of the referenced Integration Connectors
+	//  Connection.
+	//  Format:
+	//  `projects/{project}/locations/{location}/connections/{connection}`
+	// +kcc:proto:field=google.cloud.ces.v1.ConnectorToolset.connection
+	// +required
+	ConnectionRef *connectorsv1alpha1.ConnectorsConnectionRef `json:"connectionRef,omitempty"`
+
+	// Optional. Configures how authentication is handled in Integration
+	//  Connectors. By default, an admin authentication is passed in the
+	//  Integration Connectors API requests. You can override it with a different
+	//  end-user authentication config.
+	//  **Note**: The Connection must have authentication override enabled in
+	//  order to specify an EUC configuration here - otherwise, the Toolset
+	//  creation will fail. See:
+	//  https://cloud.google.com/application-integration/docs/configure-connectors-task#configure-authentication-override
+	// +kcc:proto:field=google.cloud.ces.v1.ConnectorToolset.auth_config
+	AuthConfig *EndUserAuthConfig `json:"authConfig,omitempty"`
+
+	// Required. The list of connector actions/entity operations to generate tools
+	//  for.
+	// +kcc:proto:field=google.cloud.ces.v1.ConnectorToolset.connector_actions
+	// +required
+	ConnectorActions []Action `json:"connectorActions,omitempty"`
 }
 
 // CESToolsetStatus defines the config connector machine state of CESToolset
@@ -108,6 +125,12 @@ type CESToolsetObservedState struct {
 	// Output only. Timestamp when the toolset was last updated.
 	// +kcc:proto:field=google.cloud.ces.v1.Toolset.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// ETag used to ensure the object hasn't changed during a read-modify-write
+	//  operation. If the etag is empty, the update will overwrite any concurrent
+	//  changes.
+	// +kcc:proto:field=google.cloud.ces.v1.Toolset.etag
+	Etag *string `json:"etag,omitempty"`
 }
 
 // +genclient

@@ -347,34 +347,6 @@ type CodeBlock struct {
 	PythonCode *string `json:"pythonCode,omitempty"`
 }
 
-// +kcc:proto=google.cloud.ces.v1.ConnectorToolset
-type ConnectorToolset struct {
-	// Required. The full resource name of the referenced Integration Connectors
-	//  Connection.
-	//  Format:
-	//  `projects/{project}/locations/{location}/connections/{connection}`
-	// +kcc:proto:field=google.cloud.ces.v1.ConnectorToolset.connection
-	// +required
-	Connection *string `json:"connection,omitempty"`
-
-	// Optional. Configures how authentication is handled in Integration
-	//  Connectors. By default, an admin authentication is passed in the
-	//  Integration Connectors API requests. You can override it with a different
-	//  end-user authentication config.
-	//  **Note**: The Connection must have authentication override enabled in
-	//  order to specify an EUC configuration here - otherwise, the Toolset
-	//  creation will fail. See:
-	//  https://cloud.google.com/application-integration/docs/configure-connectors-task#configure-authentication-override
-	// +kcc:proto:field=google.cloud.ces.v1.ConnectorToolset.auth_config
-	AuthConfig *EndUserAuthConfig `json:"authConfig,omitempty"`
-
-	// Required. The list of connector actions/entity operations to generate tools
-	//  for.
-	// +kcc:proto:field=google.cloud.ces.v1.ConnectorToolset.connector_actions
-	// +required
-	ConnectorActions []Action `json:"connectorActions,omitempty"`
-}
-
 // +kcc:proto=google.cloud.ces.v1.DataStore.ConnectorConfig
 type DataStore_ConnectorConfig struct {
 	// Resource name of the collection the data store belongs to.

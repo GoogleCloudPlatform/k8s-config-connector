@@ -167,4 +167,18 @@
   3. **Common Tool Fields**: Top-level `executionType` (`SYNCHRONOUS`) and `toolFakeConfig` (`enableFakeMode`, `codeBlock.pythonCode`) are supported on Tool and mutable in-place via `UpdateTool` with `updateMask: googleSearchTool, toolFakeConfig`.
   4. **Audit Probe & E2E Validation**: Golden HTTP logs and audit probes were recorded against real GCP project `cnrm-barni-4` for `cestool-minimal` and `cestool-maximal`, with all 7/7 automated lifecycle checks passing cleanly.
 
+### [2026-11-17] Triaging Judgement Queue and Finalizing Direct KRM Types for CESToolset
+- **Context**: Greenfield Step 1b for `CESToolset` under `ces.cnrm.cloud.google.com/v1alpha1` using `google.cloud.ces.v1` (`Toolset` proto).
+- **Observations & Decisions**:
+  1. **Parent Modeling**: `Toolset` is a child resource of `CESApp` (`projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}`). Replaced `ProjectRef` and `Location` with a single immutable, required `ParentRef *CESAppRef`. `controllerbuilder generate-identity` generated identity conformance helpers parsing `parentRef`.
+  2. **References in Shared Types**:
+     - `spec.connectorToolset`: Inlined `ConnectorToolset` struct into `cestoolset_types.go` and converted `Connection` (`string`) to `ConnectionRef *connectorsv1alpha1.ConnectorsConnectionRef`. `controllerbuilder` automatically pruned `ConnectorToolset` from `types.generated.go`.
+     - `spec.mcpToolset` & `spec.openAPIToolset`: Shared with `CESTool`, already converted to typed KCC references in `types.generated.go` during `CESTool` Step 1b (`APIKeySecretVersionRef`, `ClientSecretVersionRef`, `ServiceAccountRef`, `ServiceRef`).
+  3. **Non-GCP Fields**:
+     - `spec.connectorToolset.connectorActions[].connectionActionID` and `spec.connectorToolset.connectorActions[].entityOperation.entityID`: marked `not-applicable` as connector/entity IDs within third-party connections.
+     - `spec.mcpToolset.apiAuthentication.oauthConfig.clientID` and `spec.openAPIToolset.apiAuthentication.oauthConfig.clientID`: marked `not-applicable` as third-party OAuth client IDs.
+  4. **Etag**: Moved `etag` from `CESToolsetSpec` to `CESToolsetObservedState` and removed `cestoolsets.ces.cnrm.cloud.google.com` from `tests/apichecks/testdata/exceptions/spec_dislike_etag.txt`.
+  5. **Resolved Judgement Queue**: All 18 `CESToolset` entries in `apis/ces/judgement_queue.yaml` are triaged and resolved.
+- **Impact**: All unit tests in `apis/ces/...` and `tests/apichecks` pass cleanly.
+
 
