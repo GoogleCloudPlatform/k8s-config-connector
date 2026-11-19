@@ -1,0 +1,343 @@
+# Phase: CREATE
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/licenses/${licenseID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&license=${licenseID}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/licenses/${licenseID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/licenses/${licenseID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/licenses
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}
+
+{
+  "appendableToDisk": false,
+  "description": "A maximal Compute License for E2E testing",
+  "minimumRetention": {
+    "seconds": "3600"
+  },
+  "multiTenantOnly": true,
+  "name": "${licenseID}",
+  "osLicense": true,
+  "removableFromDisk": false,
+  "resourceRequirements": {
+    "minGuestCpuCount": 2,
+    "minMemoryMb": 4096
+  },
+  "transferable": true
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.licenses.insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${licenseID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/licenses/${licenseID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.licenses.insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${licenseID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/licenses/${licenseID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/licenses/${licenseID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&license=${licenseID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "appendableToDisk": false,
+  "chargesUseFee": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "A maximal Compute License for E2E testing",
+  "id": "000000000000000000000",
+  "kind": "compute#license",
+  "licenseCode": "6897853162713229499",
+  "minimumRetention": {
+    "nanos": 0,
+    "seconds": "3600"
+  },
+  "multiTenantOnly": true,
+  "name": "${licenseID}",
+  "osLicense": true,
+  "removableFromDisk": false,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/licenses/${licenseID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/licenses/${licenseID}",
+  "soleTenantOnly": false,
+  "transferable": true,
+  "updateTimestamp": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: UPDATE
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/licenses/${licenseID}?updateMask=appendable_to_disk%2Cminimum_retention%2Cremovable_from_disk
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&license=${licenseID}
+
+{
+  "appendableToDisk": true,
+  "description": "A maximal Compute License for E2E testing",
+  "minimumRetention": {
+    "nanos": 0,
+    "seconds": "7200"
+  },
+  "multiTenantOnly": true,
+  "name": "${licenseID}",
+  "osLicense": true,
+  "removableFromDisk": true,
+  "resourceRequirements": {
+    "minGuestCpuCount": 2,
+    "minMemoryMb": 4096
+  },
+  "soleTenantOnly": false,
+  "transferable": true
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "update",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${licenseID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/licenses/${licenseID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "update",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${licenseID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/licenses/${licenseID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/licenses/${licenseID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&license=${licenseID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "appendableToDisk": true,
+  "chargesUseFee": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "A maximal Compute License for E2E testing",
+  "id": "000000000000000000000",
+  "kind": "compute#license",
+  "licenseCode": "6897853162713229499",
+  "minimumRetention": {
+    "nanos": 0,
+    "seconds": "7200"
+  },
+  "multiTenantOnly": true,
+  "name": "${licenseID}",
+  "osLicense": true,
+  "removableFromDisk": true,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/licenses/${licenseID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/licenses/${licenseID}",
+  "soleTenantOnly": false,
+  "transferable": true,
+  "updateTimestamp": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/licenses/${licenseID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&license=${licenseID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${licenseID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/licenses/${licenseID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${licenseID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/licenses/${licenseID}",
+  "user": "user@example.com"
+}
