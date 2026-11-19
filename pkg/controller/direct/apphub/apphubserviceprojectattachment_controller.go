@@ -301,8 +301,29 @@ func compareServiceProjectAttachment(ctx context.Context, actual, desired *apphu
 		return nil, fmt.Errorf("resolving actual project: %w", err)
 	}
 
-	if desiredProj != nil && actualProj != nil && desiredProj.ProjectID == actualProj.ProjectID {
-		return &structuredreporting.Diff{}, nil
+	if desiredProj != nil && actualProj != nil {
+		if desiredProj.ProjectID == actualProj.ProjectID {
+			return &structuredreporting.Diff{}, nil
+		}
+
+		// Try to match by project number if one is a number and the other is an ID
+		// We can get the project number from the K8s Project resource status
+		for _, projID := range []string{desiredProj.ProjectID, actualProj.ProjectID} {
+			// Try to find a Project resource with this ID
+			u := &unstructured.Unstructured{}
+			u.SetGroupVersionKind(refs.ProjectGVK)
+			// We don't know the name of the Project resource, but often it's the same as the ID
+			// Or we can list projects. But listing is expensive.
+			// Let's try to get it by name first.
+			if err := reader.Get(ctx, client.ObjectKey{Namespace: namespace, Name: projID}, u); err == nil {
+				projectNumber, _, _ := unstructured.NestedString(u.Object, "status", "number")
+				if projectNumber != "" {
+					if desiredProj.ProjectID == projectNumber || actualProj.ProjectID == projectNumber {
+						return &structuredreporting.Diff{}, nil
+					}
+				}
+			}
+		}
 	}
 
 	diff := &structuredreporting.Diff{}
