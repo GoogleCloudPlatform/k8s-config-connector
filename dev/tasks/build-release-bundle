@@ -184,6 +184,7 @@ BLOCKED_KINDS=(
     "DataplexEntryLink"
     "DataplexEnvironment"
     "DataplexMetadataFeed"
+    "DesignCenterApplicationTemplate"
     "DevConnectConnection"
     "DevConnectInsightsConfig"
     "DeveloperConnectGitRepositoryLink"
