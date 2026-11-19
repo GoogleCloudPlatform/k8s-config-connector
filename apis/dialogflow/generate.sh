@@ -86,7 +86,8 @@ ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --resource DialogflowConversationModel:ConversationModel \
-  --resource DialogflowConversationProfile:ConversationProfile
+  --resource DialogflowConversationProfile:ConversationProfile \
+  --pattern DialogflowConversationProfile=projects/{project}/locations/{location}/conversationProfiles/{conversationProfile}
 
 ${CONTROLLERBUILDER} generate-types \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
@@ -138,25 +139,29 @@ mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/dialogflow/mapper.gen
 rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/dialogflow/" || true
 sed -i 's/package dialogflow/package siptrunk/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/mapper.generated.go"
 
-${CONTROLLERBUILDER} generate-mapper \
-  --service google.cloud.dialogflow.v2 \
-  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
-  --skip-proto Agent,EntityType,Entity \
-  --output-dir "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator"
-mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/mapper.generated.go" || true
-rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow/" || true
-sed -i 's/package dialogflow/package generator/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/mapper.generated.go"
-git checkout -- "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/mapper.generated.go" 2>/dev/null || true
+mkdir -p "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow"
+sed 's/package generator/package dialogflow/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/mapper.generated.go" > "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow/mapper.generated.go"
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
-  --skip-proto Agent,EntityType,Entity \
+  --skip-proto Agent,EntityType,Entity,GeneratorEvaluation,GeneratorEvaluationConfig,SummarizationEvaluationMetrics,EvaluationStatus,SummarySection,SummarizationContext,FewShotExample,GeneratorSuggestion,FreeFormSuggestion,SummarySuggestion,Generator \
+  --output-dir "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator"
+mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/mapper.generated.go" || true
+rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow/" || true
+sed -i 's/package dialogflow/package generator/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/mapper.generated.go"
+
+mkdir -p "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow"
+sed 's/package conversationdataset/package dialogflow/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/mapper.generated.go" > "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow/mapper.generated.go"
+
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.dialogflow.v2 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --skip-proto Agent,EntityType,Entity,GeneratorEvaluation,GeneratorEvaluationConfig,SummarizationEvaluationMetrics,EvaluationStatus,SummarySection,SummarizationContext,FewShotExample,GeneratorSuggestion,FreeFormSuggestion,SummarySuggestion,Generator \
   --output-dir "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset"
 mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/mapper.generated.go" || true
 rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow/" || true
 sed -i 's/package dialogflow/package conversationdataset/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/mapper.generated.go"
-git checkout -- "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/mapper.generated.go" 2>/dev/null || true
 
 cd ${REPO_ROOT}
 if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then

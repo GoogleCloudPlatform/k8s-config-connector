@@ -29,14 +29,14 @@ import (
 
 func TestDialogflowConversationProfileIdentity_Conformance(t *testing.T) {
 	identity.AssertConformance(t, identity.ConformanceCase[DialogflowConversationProfileIdentity]{
-		SampleExternal:        "projects/my-project/locations/us-central1/conversationProfiles/my-conversation-profile",
+		SampleExternal:        "projects/my-project/locations/us-central1/conversationProfiles/my-conversationprofile",
 		WantHost:              "dialogflow.googleapis.com",
 		WantParent:            "projects/my-project/locations/us-central1",
 		ExpectServerGenerated: true,
 		WantIdentity: &DialogflowConversationProfileIdentity{
 			Project:             "my-project",
 			Location:            "us-central1",
-			ConversationProfile: "my-conversation-profile",
+			ConversationProfile: "my-conversationprofile",
 		},
 		Ref: &DialogflowConversationProfileRef{},
 	})
