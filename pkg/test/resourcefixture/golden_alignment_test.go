@@ -552,6 +552,7 @@ func cleanURL(u string) string {
 	u = regexp.MustCompile(`/revisions/[0-9]+`).ReplaceAllString(u, "/revisions/${qaScorecardRevisionID}")
 	u = regexp.MustCompile(`/teamFolders/[0-9a-fA-F-]+`).ReplaceAllString(u, "/teamFolders/2ba614be-5147-410a-ad89-bab4ff528497")
 	u = regexp.MustCompile(`/webhooks/[0-9a-fA-F-]+`).ReplaceAllString(u, "/webhooks/${webhookID}")
+	u = regexp.MustCompile(`/backupRuns/[0-9]+`).ReplaceAllLiteralString(u, "/backupRuns/${backupID}")
 	return u
 }
 
@@ -970,6 +971,16 @@ func normalizeRepresentation(obj interface{}) interface{} {
 					}
 				}
 			}
+		}
+		if kind, ok := v["kind"].(string); ok && kind == "sql#backupRun" {
+			// databaseVersion and maxChargeableBytes are returned by real GCP but not in cloud_sql_resources v1beta4.BackupRun protobuf.
+			delete(v, "databaseVersion")
+			delete(v, "maxChargeableBytes")
+			delete(v, "enqueuedTime")
+			delete(v, "windowStartTime")
+		}
+		if bc, ok := v["backupContext"].(map[string]interface{}); ok {
+			delete(bc, "backupId")
 		}
 		if kind, ok := v["kind"].(string); ok && kind == "compute#backendService" {
 			delete(v, "port")

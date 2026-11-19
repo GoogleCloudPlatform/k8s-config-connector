@@ -112,6 +112,8 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.updateTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.nextRunTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.nextScheduleTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.enqueuedTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.windowStartTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".status.observedState.pairingKey.expireTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.updateTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.expireTime"] = mockgcpregistry.PlaceholderTimestamp

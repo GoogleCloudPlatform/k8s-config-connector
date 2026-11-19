@@ -64,6 +64,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterSqlUsersServiceServer(grpcServer, s.users)
 	pb.RegisterSqlOperationsServiceServer(grpcServer, &sqlOperationsService{MockService: s})
 	pb.RegisterSqlSslCertsServiceServer(grpcServer, &sqlSslCertsServer{MockService: s})
+	pb.RegisterSqlBackupRunsServiceServer(grpcServer, &sqlBackupRunsServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -72,7 +73,8 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb.RegisterSqlInstancesServiceHandler,
 		pb.RegisterSqlUsersServiceHandler,
 		pb.RegisterSqlOperationsServiceHandler,
-		pb.RegisterSqlSslCertsServiceHandler)
+		pb.RegisterSqlSslCertsServiceHandler,
+		pb.RegisterSqlBackupRunsServiceHandler)
 	if err != nil {
 		return nil, err
 	}
@@ -92,5 +94,16 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		}
 	}
 
-	return mux, nil
+	rewriteV1ToV1Beta4 := func(w http.ResponseWriter, r *http.Request) {
+		u := r.URL
+		if strings.HasPrefix(u.Path, "/v1/projects/") {
+			u2 := *u
+			u2.Path = "/sql/v1beta4/projects/" + strings.TrimPrefix(u.Path, "/v1/projects/")
+			r = httpmux.RewriteRequest(r, &u2)
+		}
+
+		mux.ServeHTTP(w, r)
+	}
+
+	return http.HandlerFunc(rewriteV1ToV1Beta4), nil
 }

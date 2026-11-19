@@ -31,6 +31,7 @@ type SQLAdminBackupSpec struct {
 
 	// The SQLInstance that this backup belongs to.
 	// +kubebuilder:validation:Required
+	// +kcc:proto:field=google.cloud.sql.v1.BackupRun.instance
 	InstanceRef *refsv1beta1.SQLInstanceRef `json:"instanceRef"`
 
 	// The location of this resource.
@@ -56,6 +57,7 @@ type SQLAdminBackupSpec struct {
 // +kcc:proto=google.cloud.sql.v1.DiskEncryptionConfiguration
 type DiskEncryptionConfiguration struct {
 	// KMS key used to encrypt the backup.
+	// +kcc:proto:field=google.cloud.sql.v1.DiskEncryptionConfiguration.kms_key_name
 	KMSKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 

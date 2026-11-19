@@ -116,6 +116,7 @@ require (
 	cloud.google.com/go/servicedirectory v1.19.0
 	cloud.google.com/go/spanner v1.96.1
 	cloud.google.com/go/speech v1.35.0
+	cloud.google.com/go/sql v0.7.0
 	cloud.google.com/go/storage v1.62.3
 	cloud.google.com/go/storageinsights v1.8.0
 	cloud.google.com/go/support v1.14.0

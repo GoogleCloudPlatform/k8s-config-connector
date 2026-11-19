@@ -47,12 +47,52 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".serverCaCert.certSerialNumber", "0")
 	replacements.ReplacePath(".serverCaCerts[].certSerialNumber", "0")
 	replacements.ReplacePath(".items[].certSerialNumber", "0")
+
+	// SQLAdminBackup timestamps
+	replacements.ReplacePath(".startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".enqueuedTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".windowStartTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
 	if !isSQLAPI(event) {
 		return
 	}
+
+	// SQLAdminBackup normalization for dynamic backup IDs and timestamps
+	previsitBackup := func(val string) {
+		if strings.Contains(val, "/backupRuns/") {
+			tokens := strings.Split(val, "/")
+			for i := 0; i < len(tokens)-1; i++ {
+				if tokens[i] == "backupRuns" {
+					id := tokens[i+1]
+					if idx := strings.Index(id, "?"); idx != -1 {
+						id = id[:idx]
+					}
+					if isNumeric(id) {
+						replacements.ReplaceStringValue(id, "${backupID}")
+					}
+				}
+			}
+		}
+	}
+
+	previsitBackup(event.URL())
+
+	event.VisitResponseStringValues(func(path string, value string) {
+		previsitBackup(value)
+		if strings.HasSuffix(path, "backupId") && isNumeric(value) {
+			replacements.ReplaceStringValue(value, "${backupID}")
+		}
+		if strings.HasSuffix(path, "enqueuedTime") || strings.HasSuffix(path, "windowStartTime") {
+			replacements.ReplaceStringValue(value, mockgcpregistry.PlaceholderTimestamp)
+		}
+	})
+
+	event.VisitRequestStringValues(func(path string, value string) {
+		previsitBackup(value)
+	})
 
 	var sqlInstance struct {
 		DNSName     string `json:"dnsName"`
@@ -92,4 +132,13 @@ func isSQLAPI(event mockgcpregistry.Event) bool {
 		return true
 	}
 	return false
+}
+
+func isNumeric(s string) bool {
+	for _, c := range s {
+		if c < '0' || c > '9' {
+			return false
+		}
+	}
+	return len(s) > 0
 }
