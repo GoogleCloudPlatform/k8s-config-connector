@@ -215,6 +215,7 @@ func MigrationCenterImportJobObservedState_FromProto(mapCtx *direct.MapContext, 
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.CompleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCompleteTime())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: Labels
 	out.ValidationReport = ValidationReport_FromProto(mapCtx, in.GetValidationReport())
 	out.ExecutionReport = ExecutionReportObservedState_FromProto(mapCtx, in.GetExecutionReport())
 	return out
@@ -229,6 +230,7 @@ func MigrationCenterImportJobObservedState_ToProto(mapCtx *direct.MapContext, in
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.CompleteTime = direct.StringTimestamp_ToProto(mapCtx, in.CompleteTime)
 	out.State = direct.Enum_ToProto[pb.ImportJob_ImportJobState](mapCtx, in.State)
+	// MISSING: Labels
 	if oneof := ValidationReport_ToProto(mapCtx, in.ValidationReport); oneof != nil {
 		out.Report = &pb.ImportJob_ValidationReport{ValidationReport: oneof}
 	}
@@ -244,8 +246,10 @@ func MigrationCenterImportJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Im
 	out := &krm.MigrationCenterImportJobSpec{}
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Labels = in.Labels
-	out.AssetSource = direct.LazyPtr(in.GetAssetSource())
+	// MISSING: Labels
+	if in.GetAssetSource() != "" {
+		out.AssetSourceRef = &krm.MigrationCenterSourceRef{External: in.GetAssetSource()}
+	}
 	return out
 }
 func MigrationCenterImportJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.MigrationCenterImportJobSpec) *pb.ImportJob {
@@ -255,8 +259,10 @@ func MigrationCenterImportJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.Mig
 	out := &pb.ImportJob{}
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Labels = in.Labels
-	out.AssetSource = direct.ValueOf(in.AssetSource)
+	// MISSING: Labels
+	if in.AssetSourceRef != nil {
+		out.AssetSource = in.AssetSourceRef.External
+	}
 	return out
 }
 func MigrationCenterPreferenceSetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PreferenceSet) *krm.MigrationCenterPreferenceSetObservedState {

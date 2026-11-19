@@ -25,24 +25,32 @@ entries:
     group: migrationcenter.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged all findings; replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef, converted assetSource to typed KCC reference, and confirmed client-specified resource ID
   - kind: MigrationCenterImportJob
     group: migrationcenter.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
-    status: open
+    status: resolved
+    resolution: accepted
+    note: CreateImportJobRequest specifies import_job_id parameter, so resource ID is client-specified
   - kind: MigrationCenterImportJob
     group: migrationcenter.cnrm.cloud.google.com
     field: .spec.assetSource
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to migrationcenter.googleapis.com/Source (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to AssetSourceRef (*MigrationCenterSourceRef)
   - kind: MigrationCenterImportJob
     group: migrationcenter.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef
   - kind: MigrationCenterReport
     group: migrationcenter.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

@@ -68,6 +68,10 @@ func (m *modelImportJob) AdapterForObject(ctx context.Context, op *directbase.Ad
 	}
 	id := i.(*krm.MigrationCenterImportJobIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get migrationcenter GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {

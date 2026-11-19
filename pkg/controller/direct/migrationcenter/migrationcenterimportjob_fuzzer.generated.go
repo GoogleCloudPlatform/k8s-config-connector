@@ -42,7 +42,6 @@ func migrationCenterImportJobFuzzer() fuzztesting.KRMFuzzer {
 	// Spec fields
 	f.SpecField(".asset_source")
 	f.SpecField(".display_name")
-	f.SpecField(".labels")
 
 	// Status fields
 	f.StatusField(".complete_time")
@@ -54,6 +53,7 @@ func migrationCenterImportJobFuzzer() fuzztesting.KRMFuzzer {
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	return f
 }

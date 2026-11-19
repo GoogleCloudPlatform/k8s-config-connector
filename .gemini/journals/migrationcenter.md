@@ -68,6 +68,18 @@
   - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` as all spec fields are now tested.
 - **Impact**: Full lifecycle reconciliation for `MigrationCenterReport` verified with authentic GCP audit logs and golden traffic.
 
+### 2026-11-19 Greenfield Step 1b judgement queue triage for MigrationCenterImportJob
+- **Context**: Triaging judgement queue and finalizing direct KRM types, identity, and references for `MigrationCenterImportJob` under `v1alpha1`.
+- **Solution**:
+  - Replaced separate `projectRef` and `location` fields in `MigrationCenterImportJobSpec` with inlined `*parent.ProjectAndLocationRef`.
+  - Removed top-level `labels` field from `MigrationCenterImportJobSpec` (reconciled via standard `metadata.labels`).
+  - Replaced raw `assetSource *string` with strongly-typed `AssetSourceRef *MigrationCenterSourceRef`.
+  - Confirmed client-specified resource ID support (`CreateImportJobRequest` has `import_job_id`), retaining `IdentityV2`.
+  - Resolved all 4 entries for `MigrationCenterImportJob` in `apis/migrationcenter/judgement_queue.yaml`.
+  - Regenerated CRD, deepcopy code, mappers, and updated pre-generated controller and fuzzer in lockstep (`common.NormalizeGreenfieldReferences` emitted in controller, fuzzer updated to cover labels via `Unimplemented_LabelsAnnotations`).
+  - Re-recorded `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` to reflect the updated spec fields.
+- **Impact**: Clean, type-safe API for `MigrationCenterImportJob` with validated reference relationships and complete test passes.
+
 
 
 
