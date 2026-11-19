@@ -1,5 +1,21 @@
 # Compute Service Journals
 
+### [2026-11-19] Greenfield Step 3: Implement MockGCP and Alignment for ComputeCompositeHealthCheck
+- **Context**: Implemented MockGCP support and verified golden log alignment for `ComputeCompositeHealthCheck` (issue #16124) under `compute.cnrm.cloud.google.com/v1alpha1` following Greenfield Step 3 (`kcc-direct-mockgcp-implementer/SKILL.md`).
+- **Mock Implementation & Alignment**:
+  1. **Service Registration**: Registered `RegionCompositeHealthChecksServer` and `RegisterRegionCompositeHealthChecksHandler` in `mockgcp/mockcompute/service.go`.
+  2. **Mock CRUD Handler**: Implemented `mockgcp/mockcompute/computecompositehealthchecks.go` supporting `Get`, `List`, `Insert`, `Patch`, and `Delete` for `RegionCompositeHealthChecksV1`.
+     - Automatic expansion of relative paths for `healthDestination` and `healthSources` to canonical self-link URLs via `ExpandComputeLink(ctx, ...)`.
+     - Generated numeric ID, creation timestamp, kind (`compute#compositeHealthCheck`), and regional self-link URLs.
+     - Regional LRO operations started via `startRegionalLRO` for Insert (`compute.compositeHealthChecks.insert`), Patch (`compute.compositeHealthChecks.patch`), and Delete (`compute.compositeHealthChecks.delete`).
+     - Fingerprint validation and computation via `computeFingerprint`.
+  3. **Harness Allowlist**: Added `ComputeCompositeHealthCheck` to mock GCP supported GroupKinds in `config/tests/samples/create/harness.go`.
+  4. **Golden Alignment & Presubmits**:
+     - Generated `_http_mock.log` for both `computecompositehealthcheck-minimal` and `computecompositehealthcheck-maximal`.
+     - Target resource CRUD traffic matched 100% with real GCP logs without requiring special normalization rules.
+     - Verified `TestGoldenLogAlignment` passed with zero errors.
+     - Verified `./dev/ci/presubmits/tests-e2e-fixtures-suite compute` passed all fixtures cleanly.
+
 ### [2026-11-19] Greenfield Step 1b: Triage judgement queue and finalize direct KRM types and identity for ComputePublicAdvertisedPrefix
 - **Context**: Triaged and finalized direct KRM types, identity, and references for `ComputePublicAdvertisedPrefix` (issue #16083) following Greenfield Step 1b (`judgement/SKILL.md`).
 - **Judgement Queue Resolutions & Learnings**:
