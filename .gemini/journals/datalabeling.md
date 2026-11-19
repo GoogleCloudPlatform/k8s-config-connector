@@ -16,12 +16,3 @@
   3. Ran `dev/tasks/generate-ci-cd-jobs` to generate the new e2e fixtures presubmit and periodic scripts for the new `datalabeling` service.
 - **Impact**: The next agent implementing controller logic for `datalabeling` can immediately rely on the generated types, CRDs, and compiled clients.
 
-### 2026-06-05 Implement direct types for DataLabelingEvaluationJob
-- **Context**: Implementing the initial KRM types, CRD, and IdentityV2 for `DataLabelingEvaluationJob` (datalabeling.cnrm.cloud.google.com/v1alpha1).
-- **Problem**: 
-  1. The instructions requested `google.cloud.datalabeling.v1`, but the only version available under googleapis is `google.cloud.datalabeling.v1beta1`.
-  2. The GCP URL template is `projects/{project}/evaluationJobs/{evaluation_job}`. The `gcpurls.Template` requires that variable names (lowercased) match the CamelCased Go struct fields (lowercased) exactly. If we used `{evaluation_job}` in the template, it would fail to match `EvaluationJob` (lowercased `evaluationjob`) and cause a panic.
-- **Solution**: 
-  1. Changed the generator service to `google.cloud.datalabeling.v1beta1`.
-  2. Used the variable `{evaluationjob}` (without underscore) in the template to map to `EvaluationJob` struct field correctly.
-- **Impact**: Prevented runtime panics on template initialization and ensured successful type generation.
