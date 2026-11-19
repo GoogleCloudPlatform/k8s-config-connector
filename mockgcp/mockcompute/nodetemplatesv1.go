@@ -72,6 +72,10 @@ func (s *NodeTemplatesV1) Insert(ctx context.Context, req *pb.InsertNodeTemplate
 		}
 	}
 
+	if obj.CpuOvercommitType == nil {
+		obj.CpuOvercommitType = PtrTo("NONE")
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
