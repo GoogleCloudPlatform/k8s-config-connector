@@ -69,11 +69,9 @@ spec:
               format:
                 description: Required. The payload format.
                 type: string
-              location:
-                description: The location of this resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The MigrationCenterImportJob this MigrationCenterImportDataFile
+                  is created under.
                 oneOf:
                 - not:
                     required:
@@ -90,28 +88,26 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed MigrationCenterImportJob
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/importJobs/{{importJobID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a MigrationCenterImportJob resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a MigrationCenterImportJob resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The MigrationCenterImportDataFile name. If not given,
                   the metadata.name will be used.
                 type: string
             required:
             - format
-            - location
-            - projectRef
+            - parentRef
             type: object
           status:
             description: MigrationCenterImportDataFileStatus defines the config connector

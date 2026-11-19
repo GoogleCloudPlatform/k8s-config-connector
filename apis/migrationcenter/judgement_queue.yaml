@@ -25,29 +25,39 @@ entries:
     group: migrationcenter.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged all findings; modeled as child resource under MigrationCenterImportJob with required immutable ParentRef (*MigrationCenterImportJobRef), confirmed client-specified resource ID, and verified output-only fields
   - kind: MigrationCenterImportDataFile
     group: migrationcenter.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/importJobs/{import_job}/importDataFiles/{import_data_file}" contains ancestor segment(s) importJobs/{import_job} with no matching reference or field on MigrationCenterImportDataFileSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*MigrationCenterImportJobRef); removed ProjectRef and Location
   - kind: MigrationCenterImportDataFile
     group: migrationcenter.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed CreateImportDataFileRequest requires client-specified import_data_file_id parameter
   - kind: MigrationCenterImportDataFile
     group: migrationcenter.cnrm.cloud.google.com
     field: .spec.importJobRef
     reason: parent-ref-guessed
     detail: emitted as a reference to MigrationCenterImportJobRef, read from the importJobs segment of projects/{project}/locations/{location}/importJobs/{import_job}/importDataFiles/{import_data_file}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*MigrationCenterImportJobRef); removed ProjectRef and Location
   - kind: MigrationCenterImportDataFile
     group: migrationcenter.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/importJobs/{import_job}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*MigrationCenterImportJobRef); removed ProjectRef and Location
   - kind: MigrationCenterImportJob
     group: migrationcenter.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,15 +30,10 @@ var MigrationCenterImportDataFileGVK = GroupVersion.WithKind("MigrationCenterImp
 // +kcc:spec:proto=google.cloud.migrationcenter.v1.ImportDataFile
 // +kcc:required-from-proto
 type MigrationCenterImportDataFileSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/importJobs/{import_job} this resource belongs to.
-	// +kcc:guess
-	// ImportJobRef *MigrationCenterImportJobRef `json:"importJobRef,omitempty"`
+	// The MigrationCenterImportJob this MigrationCenterImportDataFile is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *MigrationCenterImportJobRef `json:"parentRef"`
 
 	// The MigrationCenterImportDataFile name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
