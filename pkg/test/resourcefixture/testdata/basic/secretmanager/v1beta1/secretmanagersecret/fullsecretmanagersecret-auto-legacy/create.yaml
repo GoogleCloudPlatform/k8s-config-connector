@@ -34,9 +34,9 @@ spec:
         name: topic-${uniqueId}
   annotations:
     "foo": secretmanagersecret
-  expireTime: "2025-10-02T15:01:23Z"
+  expireTime: "2035-10-02T15:01:23Z"
   rotation:
-    nextRotationTime: "2025-10-02T15:01:23Z"
+    nextRotationTime: "2035-10-02T15:01:23Z"
     rotationPeriod: "3600s"
   # FR to SecretManagerSecretVersion adding aliases.
   # versionAliases:

@@ -17,6 +17,7 @@ package testcontroller
 import (
 	"context"
 	"fmt"
+	"os"
 	"reflect"
 	"strconv"
 	"strings"
@@ -148,6 +149,12 @@ func ReplaceTestVars(t *testing.T, b []byte, uniqueID string, project testgcp.GC
 	s := string(b)
 	s = strings.Replace(s, "${uniqueId}", uniqueID, -1)
 	s = strings.Replace(s, "${futureTimestamp}", "2035-01-01T10:00:00Z", -1)
+	if os.Getenv("E2E_GCP_TARGET") == "real" && strings.Contains(s, "kind: BigtableBackup") {
+		now := time.Now().UTC().Truncate(time.Hour)
+		s = strings.ReplaceAll(s, "2028-04-30T12:00:00Z", now.AddDate(0, 0, 15).Format(time.RFC3339))
+		s = strings.ReplaceAll(s, "2028-05-30T12:00:00Z", now.AddDate(0, 0, 30).Format(time.RFC3339))
+		s = strings.ReplaceAll(s, "2028-06-30T12:00:00Z", now.AddDate(0, 0, 45).Format(time.RFC3339))
+	}
 	s = strings.Replace(s, "${projectId}", project.ProjectID, -1)
 	if strings.Contains(s, "${projectNumber}") {
 		projectNumber := strconv.FormatInt(project.ProjectNumber, 10)

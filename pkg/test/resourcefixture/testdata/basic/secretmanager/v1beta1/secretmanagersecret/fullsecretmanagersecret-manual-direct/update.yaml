@@ -47,5 +47,5 @@ spec:
   # ttl and expireTime are OneOf. expireTime is tested in the *-full-auto test suite.
   ttl: 110s
   rotation:
-    nextRotationTime: "2025-10-03T15:01:23Z"
+    nextRotationTime: "2035-10-03T15:01:23Z"
     rotationPeriod: "7200s"

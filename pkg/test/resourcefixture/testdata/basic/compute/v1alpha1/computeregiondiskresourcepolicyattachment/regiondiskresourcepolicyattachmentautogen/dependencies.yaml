@@ -34,7 +34,7 @@ metadata:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computedisk-zonal-${uniqueId}
 spec:
-  image: debian-cloud/debian-11
+  image: debian-cloud/debian-12
   projectRef:
     external: ${projectId}
   resourceID: computedisk-zonal-${uniqueId}
