@@ -1,0 +1,11 @@
+apiVersion: migrationcenter.cnrm.cloud.google.com/v1alpha1
+kind: MigrationCenterImportJob
+metadata:
+  name: migrationcenterimportjob-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: Updated Migration Center Import Job
+  assetSourceRef:
+    name: migrationcentersource-importjob-max-${uniqueId}

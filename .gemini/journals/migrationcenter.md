@@ -80,6 +80,17 @@
   - Re-recorded `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` to reflect the updated spec fields.
 - **Impact**: Clean, type-safe API for `MigrationCenterImportJob` with validated reference relationships and complete test passes.
 
+### 2026-11-19 Greenfield Step 2 direct controller, E2E fixtures, and fuzzer for MigrationCenterImportJob
+- **Context**: Implementing Greenfield direct controller, E2E fixtures, and fuzzer for `MigrationCenterImportJob` under `v1alpha1`.
+- **Details**:
+  - Verified direct controller in `pkg/controller/direct/migrationcenter/migrationcenterimportjob_controller.go` adheres to canonical standards (GAPIC REST client, `common.NormalizeGreenfieldReferences` called first in `AdapterForObject`, `IdentityV2` handling, declared-spec diffing via `common.CompareGreenfieldSpec` with `structuredreporting.ReportDiff`, and LRO waiting with status updating).
+  - Round-trip fuzzer in `migrationcenterimportjob_fuzzer.generated.go` covers all proto fields (`asset_source`, `display_name`, `complete_time`, `create_time`, `execution_report`, `state`, `update_time`, `validation_report`, `.name` identity, and `.labels`).
+  - Created minimal and maximal E2E test fixtures with dependency on `MigrationCenterSource`. Maximal fixture exercises `displayName` updates via `update.yaml`.
+  - Recorded golden HTTP logs (`_http.log`), golden objects, and audit probes against real GCP project `cnrm-barni-4` using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`. All 7 automated validation checks passed for both fixtures.
+  - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` to reflect 100% spec field coverage in tests.
+- **Impact**: Full lifecycle reconciliation for `MigrationCenterImportJob` verified with authentic GCP audit logs and golden traffic.
+
+
 
 
 
