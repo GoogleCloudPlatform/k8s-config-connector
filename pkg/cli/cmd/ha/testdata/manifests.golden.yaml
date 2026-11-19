@@ -304,6 +304,7 @@ spec:
         location: us-central1
         name: cluster-a
         project: proj-a
+      leaderEndpointType: Default
       leaseName: kcc-multicluster-lease
       namespace: cnrm-system
       resourceReplicationMode: Status

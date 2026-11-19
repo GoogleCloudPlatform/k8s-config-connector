@@ -43,12 +43,13 @@ type manifestBuilder struct {
 	// peerProjects are the projects of the other clusters in the HA group.
 	peerProjects []string
 	// mode is the mode that Config Connector runs in on this cluster (ConfigConnector.GetMode).
-	mode           string
-	mclImage       string
-	syncerImage    string
-	leaseName      string
-	leaseNamespace string
-	bucket         string
+	mode               string
+	mclImage           string
+	syncerImage        string
+	leaderEndpointType string
+	leaseName          string
+	leaseNamespace     string
+	bucket             string
 }
 
 type controllerComponent struct {
@@ -64,17 +65,18 @@ type controllerComponent struct {
 	container          corev1.Container
 }
 
-func newManifestBuilder(contextName string, gkeCluster operatorv1beta1.GKECluster, project, mode, mclImage, syncerImage, leaseName, leaseNamespace, bucket string) *manifestBuilder {
+func newManifestBuilder(contextName string, gkeCluster operatorv1beta1.GKECluster, project, mode, mclImage, syncerImage, leaderEndpointType, leaseName, leaseNamespace, bucket string) *manifestBuilder {
 	return &manifestBuilder{
-		contextName:    contextName,
-		gkeCluster:     gkeCluster,
-		project:        project,
-		mode:           mode,
-		mclImage:       mclImage,
-		syncerImage:    syncerImage,
-		leaseName:      leaseName,
-		leaseNamespace: leaseNamespace,
-		bucket:         bucket,
+		contextName:        contextName,
+		gkeCluster:         gkeCluster,
+		project:            project,
+		mode:               mode,
+		mclImage:           mclImage,
+		syncerImage:        syncerImage,
+		leaderEndpointType: leaderEndpointType,
+		leaseName:          leaseName,
+		leaseNamespace:     leaseNamespace,
+		bucket:             bucket,
 	}
 }
 
@@ -564,12 +566,12 @@ func (b *manifestBuilder) configureMultiClusterLease(spec *operatorv1beta1.Confi
 	mcl := spec.Experiments.MultiClusterLease
 	mcl.LeaseName = b.leaseName
 	mcl.Namespace = b.leaseNamespace
-	// clusterCandidateIdentity is deprecated and rejected by the ConfigConnector CRD; the
-	// cluster's identity is now derived from gkeCluster.
-	mcl.ClusterCandidateIdentity = ""
 	if mcl.GKECluster == nil {
 		gkeCluster := b.gkeCluster
 		mcl.GKECluster = &gkeCluster
+	}
+	if mcl.LeaderEndpointType == "" && b.leaderEndpointType != "" {
+		mcl.LeaderEndpointType = b.leaderEndpointType
 	}
 	if mcl.ResourceReplicationMode == "" {
 		mcl.ResourceReplicationMode = defaultReplicationMode

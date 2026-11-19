@@ -21,6 +21,7 @@ import (
 	"io"
 	"strings"
 
+	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/version"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -37,15 +38,17 @@ type setupOptions struct {
 	leaseNamespace string
 	// mclImage and syncerImage default to the images of this version of Config Connector; see
 	// defaultImage.
-	mclImage    string
-	syncerImage string
-	yamlOnly    bool
-	dryRun      bool
+	mclImage           string
+	syncerImage        string
+	leaderEndpointType string
+	yamlOnly           bool
+	dryRun             bool
 }
 
 const (
-	defaultLeaseName      = "kcc-multicluster-lease"
-	defaultLeaseNamespace = "cnrm-system"
+	defaultLeaseName          = "kcc-multicluster-lease"
+	defaultLeaseNamespace     = "cnrm-system"
+	defaultLeaderEndpointType = operatorv1beta1.LeaderEndpointTypeDefault
 
 	// The repositories that a Config Connector release publishes the multiclusterlease and
 	// krmsyncer images to.
@@ -55,10 +58,11 @@ const (
 
 func newSetupOptions() setupOptions {
 	return setupOptions{
-		leaseName:      defaultLeaseName,
-		leaseNamespace: defaultLeaseNamespace,
-		mclImage:       defaultImage(defaultMCLImageRepo),
-		syncerImage:    defaultImage(defaultSyncerImageRepo),
+		leaseName:          defaultLeaseName,
+		leaseNamespace:     defaultLeaseNamespace,
+		mclImage:           defaultImage(defaultMCLImageRepo),
+		syncerImage:        defaultImage(defaultSyncerImageRepo),
+		leaderEndpointType: defaultLeaderEndpointType,
 	}
 }
 
@@ -95,14 +99,15 @@ func NewSetupCmd() *cobra.Command {
 }
 
 const (
-	bucketFlag         = "bucket"
-	bucketLocationFlag = "bucket-location"
-	leaseNameFlag      = "lease-name"
-	leaseNamespaceFlag = "lease-namespace"
-	mclImageFlag       = "mcl-image"
-	syncerImageFlag    = "syncer-image"
-	yamlOnlyFlag       = "yaml-only"
-	dryRunFlag         = "dry-run"
+	bucketFlag             = "bucket"
+	bucketLocationFlag     = "bucket-location"
+	leaseNameFlag          = "lease-name"
+	leaseNamespaceFlag     = "lease-namespace"
+	mclImageFlag           = "mcl-image"
+	syncerImageFlag        = "syncer-image"
+	leaderEndpointTypeFlag = "leader-endpoint-type"
+	yamlOnlyFlag           = "yaml-only"
+	dryRunFlag             = "dry-run"
 )
 
 func (o *setupOptions) addFlags(flags *pflag.FlagSet) {
@@ -113,6 +118,7 @@ func (o *setupOptions) addFlags(flags *pflag.FlagSet) {
 	flags.StringVar(&o.leaseNamespace, leaseNamespaceFlag, o.leaseNamespace, "Namespace of the MultiClusterLease object across all clusters.")
 	flags.StringVar(&o.mclImage, mclImageFlag, o.mclImage, "Container image of the MultiClusterLease controller. The default is the multiclusterlease image of this Config Connector version.")
 	flags.StringVar(&o.syncerImage, syncerImageFlag, o.syncerImage, "Container image of the KRM syncer. The default is the krmsyncer image of this Config Connector version.")
+	flags.StringVar(&o.leaderEndpointType, leaderEndpointTypeFlag, o.leaderEndpointType, "The control plane endpoint that standby clusters use to reach the leader's cluster: Default, DNS or PrivateIP.")
 	flags.BoolVar(&o.yamlOnly, yamlOnlyFlag, o.yamlOnly, "If true, print rendered manifests to stdout without applying them.")
 	flags.BoolVar(&o.dryRun, dryRunFlag, o.dryRun, "If true, print planned actions without mutating clusters or GCP resources.")
 }
@@ -129,6 +135,7 @@ func (o *setupOptions) validate() error {
 	o.leaseNamespace = strings.TrimSpace(o.leaseNamespace)
 	o.mclImage = strings.TrimSpace(o.mclImage)
 	o.syncerImage = strings.TrimSpace(o.syncerImage)
+	o.leaderEndpointType = strings.TrimSpace(o.leaderEndpointType)
 
 	if o.bucket == "" {
 		errs = append(errs, fmt.Errorf("--%s is required; specify a GCS bucket name for the multi-cluster lease lock, e.g. --%s=my-kcc-ha-bucket", bucketFlag, bucketFlag))
@@ -160,6 +167,14 @@ func (o *setupOptions) validate() error {
 	}
 	if o.syncerImage == "" {
 		errs = append(errs, fmt.Errorf("--%s cannot be empty; omit the flag to use the default image (%s), or specify the image that runs the KRM syncer", syncerImageFlag, defaultImage(defaultSyncerImageRepo)))
+	}
+
+	if o.leaderEndpointType != "" {
+		switch o.leaderEndpointType {
+		case operatorv1beta1.LeaderEndpointTypeDefault, operatorv1beta1.LeaderEndpointTypeDNS, operatorv1beta1.LeaderEndpointTypePrivateIP:
+		default:
+			errs = append(errs, fmt.Errorf("--%s %q is not a valid endpoint type; use Default, DNS or PrivateIP", leaderEndpointTypeFlag, o.leaderEndpointType))
+		}
 	}
 
 	return errors.Join(errs...)
@@ -218,7 +233,7 @@ func initClusterConfigurers(ctx context.Context, handles []*clusterHandle, opts 
 	configurers := make([]*clusterConfigurer, 0, len(handles))
 	gkeClusters := make([]gkeClusterInfo, 0, len(handles))
 	for _, h := range handles {
-		cfg, err := newClusterConfigurer(ctx, h, opts.mclImage, opts.syncerImage, opts.leaseName, opts.leaseNamespace, opts.bucket)
+		cfg, err := newClusterConfigurer(ctx, h, opts.mclImage, opts.syncerImage, opts.leaderEndpointType, opts.leaseName, opts.leaseNamespace, opts.bucket)
 		if err != nil {
 			errs = append(errs, err)
 			continue
@@ -272,9 +287,40 @@ func renderClusterYAMLs(configurers []*clusterConfigurer, stdout io.Writer) erro
 }
 
 func applyClusterConfigs(ctx context.Context, configurers []*clusterConfigurer, stdout io.Writer, dryRun bool) error {
+	if dryRun {
+		for _, cfg := range configurers {
+			if err := cfg.applyObjects(ctx, stdout, true); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+
+	// 1. Apply CRDs on every cluster.
+	for _, cfg := range configurers {
+		if err := cfg.applyCRDs(ctx, stdout, false); err != nil {
+			return err
+		}
+	}
+
+	// 2. Apply MCL and syncer objects on every cluster.
+	for _, cfg := range configurers {
+		if err := cfg.applyNonCRDObjects(ctx, stdout, false); err != nil {
+			return err
+		}
+	}
+
+	// 3. Wait until both Deployments are Available on every cluster.
+	for _, cfg := range configurers {
+		if err := cfg.waitForDeploymentsAvailable(ctx, stdout); err != nil {
+			return err
+		}
+	}
+
+	// 4. Patch ConfigConnector on every cluster. If anything failed before this, HA stays off on every cluster.
 	var errs []error
 	for _, cfg := range configurers {
-		if err := cfg.apply(ctx, stdout, dryRun); err != nil {
+		if err := cfg.updateConfigConnector(ctx); err != nil {
 			errs = append(errs, err)
 		}
 	}
