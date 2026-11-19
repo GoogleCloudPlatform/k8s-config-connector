@@ -26,6 +26,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl"
 	dclextension "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/extension"
 	dclcontainer "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/extension/container"
@@ -46,6 +47,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
@@ -61,6 +63,10 @@ type immutableFieldsValidatorHandler struct {
 	tfResourceMap         map[string]*tfschema.Resource
 	dclSchemaLoader       dclschemaloader.DCLSchemaLoader
 	serviceMetadataLoader dclmetadata.ServiceMetadataLoader
+
+	// reader reads the ConfigConnector and ConfigConnectorContext objects that decide which
+	// controller reconciles an object. It is nil in some unit tests.
+	reader client.Reader
 }
 
 var (
@@ -70,16 +76,20 @@ var (
 
 func NewImmutableFieldsValidatorHandler(smLoader *servicemappingloader.ServiceMappingLoader, dclSchemaLoader dclschemaloader.DCLSchemaLoader, serviceMetadataLoader dclmetadata.ServiceMetadataLoader) HandlerFunc {
 	return func(mgr manager.Manager) admission.Handler {
-		return &immutableFieldsValidatorHandler{
+		h := &immutableFieldsValidatorHandler{
 			smLoader:              smLoader,
 			tfResourceMap:         provider.ResourceMap(),
 			dclSchemaLoader:       dclSchemaLoader,
 			serviceMetadataLoader: serviceMetadataLoader,
 		}
+		if mgr != nil {
+			h.reader = mgr.GetAPIReader()
+		}
+		return h
 	}
 }
 
-func (a *immutableFieldsValidatorHandler) Handle(_ context.Context, req admission.Request) admission.Response {
+func (a *immutableFieldsValidatorHandler) Handle(ctx context.Context, req admission.Request) admission.Response {
 	if controllerManagerServiceAccountRegex.MatchString(req.AdmissionRequest.UserInfo.Username) {
 		return admission.ValidationResponse(true, "ignore non-user requests")
 	}
@@ -131,10 +141,48 @@ func (a *immutableFieldsValidatorHandler) Handle(_ context.Context, req admissio
 		return allowedResponse
 	}
 
+	// The kind also has a legacy (Terraform or DCL) controller, so the checks below use the legacy
+	// schema. If the Direct controller reconciles this object, fields it updates in place may change.
+	inPlaceUpdates := a.directInPlaceUpdates(ctx, obj)
+
 	if dclmetadata.IsDCLBasedResourceKind(obj.GroupVersionKind(), a.serviceMetadataLoader) {
-		return validateImmutableFieldsForDCLBasedResource(obj, oldObj, spec, oldSpec, a.dclSchemaLoader, a.serviceMetadataLoader)
+		return validateImmutableFieldsForDCLBasedResource(obj, oldObj, spec, oldSpec, a.dclSchemaLoader, a.serviceMetadataLoader, inPlaceUpdates)
 	}
-	return validateImmutableFieldsForTFBasedResource(obj, oldObj, spec, oldSpec, a.smLoader, a.tfResourceMap)
+	return validateImmutableFieldsForTFBasedResource(obj, oldObj, spec, oldSpec, a.smLoader, a.tfResourceMap, inPlaceUpdates)
+}
+
+// directInPlaceUpdates returns the spec fields that may change on obj because the Direct controller
+// reconciles it and updates those fields in place (see registry.WithInPlaceUpdates). It returns nil
+// when the kind declares no such fields or obj is reconciled by another controller.
+func (a *immutableFieldsValidatorHandler) directInPlaceUpdates(ctx context.Context, obj *unstructured.Unstructured) map[string]bool {
+	fields := registry.InPlaceUpdates(obj.GroupVersionKind().GroupKind())
+	if len(fields) == 0 {
+		return nil
+	}
+	reconcilerType, ok := reconcilerTypeForObject(ctx, a.reader, obj)
+	if !ok || reconcilerType != k8s.ReconcilerTypeDirect {
+		return nil
+	}
+	inPlaceUpdates := make(map[string]bool, len(fields))
+	for _, field := range fields {
+		inPlaceUpdates[field] = true
+	}
+	return inPlaceUpdates
+}
+
+// withoutInPlaceUpdates drops the changed fields that the reconciling controller updates in place.
+// Field paths may or may not start with "spec.".
+func withoutInPlaceUpdates(changedFields []string, inPlaceUpdates map[string]bool) []string {
+	if len(inPlaceUpdates) == 0 {
+		return changedFields
+	}
+	var remaining []string
+	for _, field := range changedFields {
+		if !inPlaceUpdates[strings.TrimPrefix(field, "spec.")] {
+			remaining = append(remaining, field)
+		}
+	}
+	return remaining
 }
 
 func validateImmutableStateIntoSpecAnnotation(obj, oldObj *unstructured.Unstructured) error {
@@ -146,7 +194,7 @@ func validateImmutableStateIntoSpecAnnotation(obj, oldObj *unstructured.Unstruct
 	return nil
 }
 
-func validateImmutableFieldsForDCLBasedResource(obj, oldObj *unstructured.Unstructured, spec, oldSpec map[string]interface{}, dclSchemaLoader dclschemaloader.DCLSchemaLoader, serviceMetadataLoader dclmetadata.ServiceMetadataLoader) admission.Response {
+func validateImmutableFieldsForDCLBasedResource(obj, oldObj *unstructured.Unstructured, spec, oldSpec map[string]interface{}, dclSchemaLoader dclschemaloader.DCLSchemaLoader, serviceMetadataLoader dclmetadata.ServiceMetadataLoader, inPlaceUpdates map[string]bool) admission.Response {
 	gvk := obj.GroupVersionKind()
 	schema, err := dclschemaloader.GetDCLSchemaForGVK(gvk, serviceMetadataLoader, dclSchemaLoader)
 	if err != nil {
@@ -176,6 +224,7 @@ func validateImmutableFieldsForDCLBasedResource(obj, oldObj *unstructured.Unstru
 		return admission.Errored(http.StatusInternalServerError,
 			fmt.Errorf("unexpected error: %w", err))
 	}
+	res = withoutInPlaceUpdates(res, inPlaceUpdates)
 	if len(res) != 0 {
 		return admission.Errored(http.StatusForbidden,
 			k8s.NewImmutableFieldsMutationError(res))
@@ -295,7 +344,7 @@ func getQualifiedFieldName(prefix string, fieldName string) string {
 	return qualifiedName
 }
 
-func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstructured, spec, oldSpec map[string]interface{}, smLoader *servicemappingloader.ServiceMappingLoader, tfResourceMap map[string]*tfschema.Resource) admission.Response {
+func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstructured, spec, oldSpec map[string]interface{}, smLoader *servicemappingloader.ServiceMappingLoader, tfResourceMap map[string]*tfschema.Resource, inPlaceUpdates map[string]bool) admission.Response {
 	rc, err := smLoader.GetResourceConfig(obj)
 	if err != nil {
 		return admission.Errored(http.StatusBadRequest,
@@ -329,6 +378,10 @@ func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstruc
 		res := make([]string, 0)
 		for e := fields.Front(); e != nil; e = e.Next() {
 			res = append(res, constructCamelCasePath(e.Value.(string)))
+		}
+		res = withoutInPlaceUpdates(res, inPlaceUpdates)
+		if len(res) == 0 {
+			return allowedResponse
 		}
 		return admission.Errored(http.StatusBadRequest,
 			k8s.NewImmutableFieldsMutationError(res))

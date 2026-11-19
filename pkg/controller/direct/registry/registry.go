@@ -39,6 +39,10 @@ type registration struct {
 
 	supportsIAM              bool
 	externalReferenceFormats []string
+
+	// inPlaceUpdates lists spec fields that the legacy (Terraform or DCL) schema marks
+	// immutable but that this Direct controller updates in place.
+	inPlaceUpdates []string
 }
 
 type ModelFactoryFunc func(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error)
@@ -118,6 +122,26 @@ func WithIAM(externalReferenceFormats ...string) ModelOption {
 		r.supportsIAM = true
 		r.externalReferenceFormats = externalReferenceFormats
 	}
+}
+
+// WithInPlaceUpdates declares spec fields that this Direct controller updates in place even though
+// the kind's legacy (Terraform or DCL) schema marks them immutable. Paths are relative to spec and
+// use the KRM (camelCase) field names, for example "version" or "remoteRepositoryConfig.description".
+// The immutable-fields admission webhook lets these fields change on objects that the Direct
+// controller reconciles. Only declare a field once the controller sends the change to GCP.
+func WithInPlaceUpdates(fieldPaths ...string) ModelOption {
+	return func(r *registration) {
+		r.inPlaceUpdates = append(r.inPlaceUpdates, fieldPaths...)
+	}
+}
+
+// InPlaceUpdates returns the spec fields declared with WithInPlaceUpdates for gk, or nil.
+func InPlaceUpdates(gk schema.GroupKind) []string {
+	registration := singleton.registrations[gk]
+	if registration == nil {
+		return nil
+	}
+	return registration.inPlaceUpdates
 }
 
 func RegisterModel(gvk schema.GroupVersionKind, modelFn ModelFactoryFunc, options ...ModelOption) {
