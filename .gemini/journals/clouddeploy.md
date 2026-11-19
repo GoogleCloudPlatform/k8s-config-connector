@@ -56,5 +56,17 @@
   5. Updated documentation URL in `clouddeployrollout_types.go` to `https://cloud.google.com/deploy/docs/reference/rest/v1/projects.locations.deliveryPipelines.releases.rollouts`.
   6. Added unit tests for `CloudDeployRolloutIdentity` and `GetIdentity` in `clouddeployrollout_identity_test.go`.
 
+### [2026-11-19] Greenfield: MockGCP Implementation and Alignment for CloudDeployRollout
+- **Context**: Implemented MockGCP support and golden log alignment for `CloudDeployRollout` following Greenfield Step 3 (`kcc-direct-mockgcp-implementer`).
+- **Learnings & Observations**:
+  1. Implemented `CreateRollout`, `GetRollout`, and `ListRollouts` in `mockgcp/mockclouddeploy/rollout.go`.
+  2. `CreateRollout` validates the parent release exists in mock storage and returns NotFound (404) if absent.
+  3. Defaulted initial `approvalState` to `DOES_NOT_NEED_APPROVAL`, `state` to `PENDING_RELEASE`, and initialized the stable phase with deploy (PENDING) and verify (DISABLED) deployment jobs matching real GCP API responses.
+  4. Added `CloudDeployRollout` to the mock-supported kinds switch in `config/tests/samples/create/harness.go`.
+  5. Configured rollout array normalization (`.rollouts[]`, `.response.rollouts[]`) in `mockgcp/mockclouddeploy/normalize.go`.
+  6. Generated authentic `_http_mock.log` files and confirmed 0-diff log alignment in `TestGoldenLogAlignment` and 14/14 tests passing in `tests-e2e-fixtures-suite clouddeploy`.
+
+
+
 
 

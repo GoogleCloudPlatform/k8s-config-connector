@@ -680,6 +680,7 @@ func CloudDeployRolloutObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext,
 	return out
 }
 
+/* found existing non-generated mapping function "CloudDeployRolloutSpec_v1alpha1_FromProto", skipping
 func CloudDeployRolloutSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Rollout) *krmclouddeployv1alpha1.CloudDeployRolloutSpec {
 	if in == nil {
 		return nil
@@ -692,7 +693,9 @@ func CloudDeployRolloutSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb
 	// MISSING: TargetID
 	return out
 }
+*/
 
+/* found existing non-generated mapping function "CloudDeployRolloutSpec_v1alpha1_ToProto", skipping
 func CloudDeployRolloutSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.CloudDeployRolloutSpec) *pb.Rollout {
 	if in == nil {
 		return nil
@@ -705,6 +708,7 @@ func CloudDeployRolloutSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmc
 	// MISSING: TargetID
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "CloudDeployTargetObservedState_v1alpha1_FromProto", skipping
 func CloudDeployTargetObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Target) *krmclouddeployv1alpha1.CloudDeployTargetObservedState {

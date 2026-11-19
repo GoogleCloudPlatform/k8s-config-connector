@@ -56,6 +56,12 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".customTargetTypes[].updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".customTargetTypes[].etag", PlaceholderEtag)
 
+	// Array normalization for ListRollouts
+	replacements.ReplacePath(".rollouts[].uid", PlaceholderUID)
+	replacements.ReplacePath(".rollouts[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".rollouts[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".rollouts[].etag", PlaceholderEtag)
+
 	// Release snapshot normalization
 	replacements.ReplacePath(".deliveryPipelineSnapshot.uid", PlaceholderUID)
 	replacements.ReplacePath(".deliveryPipelineSnapshot.createTime", mockgcpregistry.PlaceholderTimestamp)
@@ -89,6 +95,11 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".response.customTargetTypes[].createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".response.customTargetTypes[].updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".response.customTargetTypes[].etag", PlaceholderEtag)
+
+	replacements.ReplacePath(".response.rollouts[].uid", PlaceholderUID)
+	replacements.ReplacePath(".response.rollouts[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.rollouts[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.rollouts[].etag", PlaceholderEtag)
 
 	replacements.ReplacePath(".response.deliveryPipelineSnapshot.uid", PlaceholderUID)
 	replacements.ReplacePath(".response.deliveryPipelineSnapshot.createTime", mockgcpregistry.PlaceholderTimestamp)
