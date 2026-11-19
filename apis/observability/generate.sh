@@ -44,13 +44,15 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version observability.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --resource ObservabilityTraceScope:TraceScope \
+  --resource ObservabilityLink:Link \
   --prepopulate-resource
 
 ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.observability.v1 \
   --api-version observability.cnrm.cloud.google.com/v1alpha1 \
-  --resource ObservabilityTraceScope:TraceScope
+  --resource ObservabilityTraceScope:TraceScope \
+  --resource ObservabilityLink:Link
 
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \

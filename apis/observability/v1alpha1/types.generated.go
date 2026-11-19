@@ -18,8 +18,29 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.observability.v1
 // resource: ObservabilityTraceScope:TraceScope
+// resource: ObservabilityLink:Link
 
 package v1alpha1
+
+/* found existing non-generated go type with proto tag "google.cloud.observability.v1.Link", skipping
+
+// +kcc:proto=google.cloud.observability.v1.Link
+type Link struct {
+	// Identifier. Name of the link. The format is:
+	//
+	//      projects/[PROJECT_ID]/locations/[LOCATION]/buckets/[BUCKET_ID]/datasets/[DATASET_ID]/links/[LINK_ID]
+	// +kcc:proto:field=google.cloud.observability.v1.Link.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. A user friendly display name.
+	// +kcc:proto:field=google.cloud.observability.v1.Link.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. Description of the link.
+	// +kcc:proto:field=google.cloud.observability.v1.Link.description
+	Description *string `json:"description,omitempty"`
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.observability.v1.TraceScope", skipping
 
@@ -46,6 +67,16 @@ type TraceScope struct {
 	//  The maximum length of the description is 8000 characters.
 	// +kcc:proto:field=google.cloud.observability.v1.TraceScope.description
 	Description *string `json:"description,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.observability.v1.Link", skipping
+
+// +kcc:observedstate:proto=google.cloud.observability.v1.Link
+type LinkObservedState struct {
+	// Output only. Create timestamp.
+	// +kcc:proto:field=google.cloud.observability.v1.Link.create_time
+	CreateTime *string `json:"createTime,omitempty"`
 }
 */
 

@@ -261,6 +261,7 @@ BLOCKED_KINDS=(
     "NotebookRuntime"
     "NotebooksRuntime"
     "NotebooksSchedule"
+    "ObservabilityLink"
     "OracleDatabaseAutonomousDatabase"
     "OracleDatabaseCloudExadataInfrastructure"
     "OracleDatabaseCloudVMCluster"
