@@ -947,6 +947,21 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 		}
 	})
 
+	// Specific to Lustre
+	jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
+		if strings.Contains(requestURL, "lustre.googleapis.com") {
+			delete(obj, "availableVersion")
+			delete(obj, "effectiveVersion")
+			delete(obj, "uid")
+			if response, found, _ := unstructured.NestedMap(obj, "response"); found {
+				delete(response, "availableVersion")
+				delete(response, "effectiveVersion")
+				delete(response, "uid")
+				_ = unstructured.SetNestedMap(obj, response, "response")
+			}
+		}
+	})
+
 	addReplacement("creationTime", "123456789")
 	addReplacement("lastModifiedTime", "123456789")
 
