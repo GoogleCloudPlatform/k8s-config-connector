@@ -1,0 +1,51 @@
+apiVersion: sql.cnrm.cloud.google.com/v1alpha1
+kind: SQLBlueGreenDeployment
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: sqlbgd-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Blue-green deployment for major version upgrade
+  location: us-central1
+  projectRef:
+    external: projects/${projectId}
+  requestedConfig:
+    databaseVersion: MYSQL_8_4
+  sourceInstanceRef:
+    name: sqlinstance-maximal-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/blueGreenDeployments/sqlbgd-maximal-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    deploymentMappings:
+    - source:
+        connection: ${projectId}:us-central1:sqlinstance-maximal-${uniqueId}
+        instance: sqlinstance-maximal-${uniqueId}
+        ipMappings:
+        - ipAddress: 10.10.10.10
+      state: UPGRADED
+      target:
+        connection: ${projectId}:us-central1:sqlinstance-maximal-${uniqueId}-green-1c7f532d
+        instance: sqlinstance-maximal-${uniqueId}-green-1c7f532d
+        ipMappings:
+        - ipAddress: 34.70.50.87
+    deploymentTasks:
+      task:
+      - state: SUCCEEDED
+        type: PROVISION
+      - state: SUCCEEDED
+        type: UPGRADE
+    state: SWITCHOVER_READY
+    switchoverTargetInstance: sqlinstance-maximal-${uniqueId}-green-1c7f532d

@@ -1,0 +1,46 @@
+apiVersion: sql.cnrm.cloud.google.com/v1alpha1
+kind: SQLBlueGreenDeployment
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: sqlbgd-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    external: projects/${projectId}
+  sourceInstanceRef:
+    name: sqlinstance-minimal-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/blueGreenDeployments/sqlbgd-minimal-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    deploymentMappings:
+    - source:
+        connection: ${projectId}:us-central1:sqlinstance-minimal-${uniqueId}
+        instance: sqlinstance-minimal-${uniqueId}
+        ipMappings:
+        - ipAddress: 10.10.10.10
+      state: PROVISIONED
+      target:
+        connection: ${projectId}:us-central1:sqlinstance-minimal-${uniqueId}-green-00bd6fd6
+        instance: sqlinstance-minimal-${uniqueId}-green-00bd6fd6
+        ipMappings:
+        - ipAddress: 35.225.195.0
+    deploymentTasks:
+      task:
+      - state: SUCCEEDED
+        type: PROVISION
+    state: SWITCHOVER_READY
+    switchoverTargetInstance: sqlinstance-minimal-${uniqueId}-green-00bd6fd6

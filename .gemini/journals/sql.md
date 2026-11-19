@@ -17,3 +17,12 @@
   3. `CreateBlueGreenDeploymentRequest` has a required `blue_green_deployment_id` client parameter, confirming user-specified ID and conformance with `identity.IdentityV2`.
   4. Selected canonical v1 pattern `projects/{project}/locations/{location}/blueGreenDeployments/{blueGreenDeployment}` to resolve `identity-multi-pattern`.
   5. Removed unverified `resource-docs` link guess as public REST documentation page is not yet live.
+
+### [2026-11-19] Direct Controller, Fuzzer, and E2E Fixtures for SQLBlueGreenDeployment
+- **Context**: Implemented direct controller, fuzzer, and recorded E2E fixtures against real GCP for `SQLBlueGreenDeployment`.
+- **Learnings & Observations**:
+  1. **LRO Polling with SqlOperationsClient**: `BlueGreenDeploymentsClient.CreateBlueGreenDeployment` and `DeleteBlueGreenDeployment` return Cloud SQL Admin operations (`*sqlpb.Operation`). The controller configures `SqlOperationsClient` (`NewSqlOperationsRESTClient`) and polls operation completion (`pollOperation`) until `Operation_DONE`, checking `op.GetError()`.
+  2. **Immutable Resource Reconciliation**: `SQLBlueGreenDeployment` has no `Update` RPC on GCP. In `Update`, the controller validates drift via `common.CompareGreenfieldSpec` and updates status in-place.
+  3. **source_instance Normalization**: GCP returns `sourceInstance` in `GetBlueGreenDeployment` as the short instance ID (`sqlinstance-...`) instead of the full path (`projects/{project}/instances/{instance}`) provided on Create. In `Update`, a normalizer strips the resource prefix so both desired and actual compare as the short instance ID, avoiding false immutable field modification diffs during re-reconciliation.
+  4. **Reference Resolution**: `SourceInstanceRef` (`*refsv1beta1.SQLInstanceRef`) is resolved in `AdapterForObject` via `refsv1beta1.ResolveSQLInstanceRef` to format `External` as `projects/{project}/instances/{instance}`. In `Export`, any unqualified instance name is prefixed with `projects/{project}/instances/` so exported manifests can be re-resolved.
+  5. **Real GCP Fixtures & Prerequisites**: Cloud SQL Blue-Green deployment requires the source `SQLInstance` to have automated backups and binary logging enabled (`settings.backupConfiguration.enabled: true`, `binaryLogEnabled: true`). Minimal and maximal fixtures (`MYSQL_8_0` source, maximal specifying `MYSQL_8_4` target database version) were recorded and verified against real GCP with all validation checks passing.
