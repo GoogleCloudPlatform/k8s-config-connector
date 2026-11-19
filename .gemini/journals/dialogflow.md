@@ -144,3 +144,14 @@
      - `documentQuerySource.documents`: Data-plane knowledge documents.
   5. Triaged all 27 judgement queue entries for DialogflowConversationProfile in `apis/dialogflow/judgement_queue.yaml`.
 - **Impact**: Cleanly finalizes KRM types, identity, references, CRD schema, and generated mappers for DialogflowConversationProfile, passing all tests and apichecks.
+
+### [2026-11-19] DialogflowConversationProfile Direct Controller Implementation (Phase 2)
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `DialogflowConversationProfile` under `dialogflow.cnrm.cloud.google.com/v1alpha1` (Issue #16172).
+- **Details**:
+  1. Isolated `DialogflowConversationProfile` mappers in `pkg/controller/direct/dialogflow/dialogflowconversationprofile_mapper.go` to avoid clobbering CX v3 mappers in `mapper.generated.go` and comply with `TestDirectResourceFileNaming`.
+  2. Direct controller generated using `controllerbuilder generate-controller` with `NewConversationProfilesRESTClient`.
+  3. Fuzzer generated via `generate-fuzzer` and configured with `f.Unimplemented_NotYetTriaged(".sip_config")` and `FilterSpec` to filter unmapped fields from newer protobufs (`sip_config`, `gemini_asr_config`, `session_ttl`, `enable_sentiment_analysis_v3`, `pronunciations`, and suggestion config fields).
+  4. Updated `pkg/controller/resourceconfig/static_config.go` with direct reconciler for DialogflowConversationProfile.
+  5. Implemented minimal and maximal test fixtures under `pkg/test/resourcefixture/testdata/basic/dialogflow/v1alpha1/dialogflowconversationprofile/`. Found that `timeZone` is write-only / immutable in Dialogflow v2 API (`[update_mask]: 'The path is not allowed to update: time_zone'`). Used `displayName` and `loggingConfig.enableStackdriverLogging` for update verification.
+  6. Successfully recorded and verified E2E fixtures against real GCP (`project: cnrm-barni-4`, `location: global`) passing all 7/7 automated validation checks.
+- **Impact**: Enables direct controller reconciliation, roundtrip fuzzing, and authentic real GCP testing for DialogflowConversationProfile.
