@@ -5144,11 +5144,15 @@ func ComputePublicAdvertisedPrefixObservedState_v1alpha1_FromProto(mapCtx *direc
 		return nil
 	}
 	out := &krmcomputev1alpha1.ComputePublicAdvertisedPrefixObservedState{}
+	out.ByoipAPIVersion = in.ByoipApiVersion
 	out.CreationTimestamp = in.CreationTimestamp
 	out.ID = in.Id
 	out.Kind = in.Kind
 	// MISSING: Name
+	out.PublicDelegatedPrefixs = direct.Slice_FromProto(mapCtx, in.PublicDelegatedPrefixs, PublicAdvertisedPrefixPublicDelegatedPrefix_v1alpha1_FromProto)
 	out.SelfLink = in.SelfLink
+	out.SharedSecret = in.SharedSecret
+	out.Status = in.Status
 	return out
 }
 func ComputePublicAdvertisedPrefixObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputePublicAdvertisedPrefixObservedState) *pb.PublicAdvertisedPrefix {
@@ -5156,11 +5160,15 @@ func ComputePublicAdvertisedPrefixObservedState_v1alpha1_ToProto(mapCtx *direct.
 		return nil
 	}
 	out := &pb.PublicAdvertisedPrefix{}
+	out.ByoipApiVersion = in.ByoipAPIVersion
 	out.CreationTimestamp = in.CreationTimestamp
 	out.Id = in.ID
 	out.Kind = in.Kind
 	// MISSING: Name
+	out.PublicDelegatedPrefixs = direct.Slice_ToProto(mapCtx, in.PublicDelegatedPrefixs, PublicAdvertisedPrefixPublicDelegatedPrefix_v1alpha1_ToProto)
 	out.SelfLink = in.SelfLink
+	out.SharedSecret = in.SharedSecret
+	out.Status = in.Status
 	return out
 }
 func ComputePublicAdvertisedPrefixSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PublicAdvertisedPrefix) *krmcomputev1alpha1.ComputePublicAdvertisedPrefixSpec {
@@ -5168,16 +5176,12 @@ func ComputePublicAdvertisedPrefixSpec_v1alpha1_FromProto(mapCtx *direct.MapCont
 		return nil
 	}
 	out := &krmcomputev1alpha1.ComputePublicAdvertisedPrefixSpec{}
-	out.ByoipAPIVersion = in.ByoipApiVersion
 	out.Description = in.Description
 	out.DNSVerificationIP = in.DnsVerificationIp
 	out.Fingerprint = in.Fingerprint
 	out.IPCIDRRange = in.IpCidrRange
 	// MISSING: Name
 	out.PdpScope = in.PdpScope
-	out.PublicDelegatedPrefixs = direct.Slice_FromProto(mapCtx, in.PublicDelegatedPrefixs, PublicAdvertisedPrefixPublicDelegatedPrefix_v1alpha1_FromProto)
-	out.SharedSecret = in.SharedSecret
-	out.Status = in.Status
 	return out
 }
 func ComputePublicAdvertisedPrefixSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputePublicAdvertisedPrefixSpec) *pb.PublicAdvertisedPrefix {
@@ -5185,16 +5189,12 @@ func ComputePublicAdvertisedPrefixSpec_v1alpha1_ToProto(mapCtx *direct.MapContex
 		return nil
 	}
 	out := &pb.PublicAdvertisedPrefix{}
-	out.ByoipApiVersion = in.ByoipAPIVersion
 	out.Description = in.Description
 	out.DnsVerificationIp = in.DNSVerificationIP
 	out.Fingerprint = in.Fingerprint
 	out.IpCidrRange = in.IPCIDRRange
 	// MISSING: Name
 	out.PdpScope = in.PdpScope
-	out.PublicDelegatedPrefixs = direct.Slice_ToProto(mapCtx, in.PublicDelegatedPrefixs, PublicAdvertisedPrefixPublicDelegatedPrefix_v1alpha1_ToProto)
-	out.SharedSecret = in.SharedSecret
-	out.Status = in.Status
 	return out
 }
 

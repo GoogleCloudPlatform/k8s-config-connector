@@ -63,10 +63,6 @@ spec:
             description: ComputePublicAdvertisedPrefixSpec defines the desired state
               of ComputePublicAdvertisedPrefix
             properties:
-              byoipAPIVersion:
-                description: '[Output Only] The version of BYOIP API. Check the ByoipApiVersion
-                  enum for the list of possible values.'
-                type: string
               description:
                 description: An optional description of this resource. Provide this
                   property when you create the resource.
@@ -86,9 +82,6 @@ spec:
               ipCIDRRange:
                 description: The address range, in CIDR format, represented by this
                   public advertised prefix.
-                type: string
-              location:
-                description: The location of this resource.
                 type: string
               pdpScope:
                 description: 'Specifies how child public delegated prefix will be
@@ -132,52 +125,11 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
-              publicDelegatedPrefixs:
-                description: '[Output Only] The list of public delegated prefixes
-                  that exist for this public advertised prefix.'
-                items:
-                  properties:
-                    ipRange:
-                      description: The IP address range of the public delegated prefix
-                      type: string
-                    name:
-                      description: The name of the public delegated prefix
-                      type: string
-                    project:
-                      description: The project number of the public delegated prefix
-                      type: string
-                    region:
-                      description: The region of the public delegated prefix if it
-                        is regional. If absent, the prefix is global.
-                      type: string
-                    status:
-                      description: 'The status of the public delegated prefix. Possible
-                        values are: INITIALIZING: The public delegated prefix is being
-                        initialized and addresses cannot be created yet. ANNOUNCED:
-                        The public delegated prefix is active.'
-                      type: string
-                  type: object
-                type: array
               resourceID:
                 description: The ComputePublicAdvertisedPrefix name. If not given,
                   the metadata.name will be used.
                 type: string
-              sharedSecret:
-                description: '[Output Only] The shared secret to be used for reverse
-                  DNS verification.'
-                type: string
-              status:
-                description: 'The status of the public advertised prefix. Possible
-                  values include: - `INITIAL`: RPKI validation is complete. - `PTR_CONFIGURED`:
-                  User has configured the PTR. - `VALIDATED`: Reverse DNS lookup is
-                  successful. - `REVERSE_DNS_LOOKUP_FAILED`: Reverse DNS lookup failed.
-                  - `PREFIX_CONFIGURATION_IN_PROGRESS`: The prefix is being configured.
-                  - `PREFIX_CONFIGURATION_COMPLETE`: The prefix is fully configured.
-                  - `PREFIX_REMOVAL_IN_PROGRESS`: The prefix is being removed. Check
-                  the Status enum for the list of possible values.'
-                type: string
             required:
-            - location
             - projectRef
             type: object
           status:
@@ -226,6 +178,10 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  byoipAPIVersion:
+                    description: '[Output Only] The version of BYOIP API. Check the
+                      ByoipApiVersion enum for the list of possible values.'
+                    type: string
                   creationTimestamp:
                     description: '[Output Only] Creation timestamp in RFC3339 text
                       format.'
@@ -239,8 +195,51 @@ spec:
                     description: '[Output Only] Type of the resource. Always compute#publicAdvertisedPrefix
                       for public advertised prefixes.'
                     type: string
+                  publicDelegatedPrefixs:
+                    description: '[Output Only] The list of public delegated prefixes
+                      that exist for this public advertised prefix.'
+                    items:
+                      properties:
+                        ipRange:
+                          description: The IP address range of the public delegated
+                            prefix
+                          type: string
+                        name:
+                          description: The name of the public delegated prefix
+                          type: string
+                        project:
+                          description: The project number of the public delegated
+                            prefix
+                          type: string
+                        region:
+                          description: The region of the public delegated prefix if
+                            it is regional. If absent, the prefix is global.
+                          type: string
+                        status:
+                          description: 'The status of the public delegated prefix.
+                            Possible values are: INITIALIZING: The public delegated
+                            prefix is being initialized and addresses cannot be created
+                            yet. ANNOUNCED: The public delegated prefix is active.'
+                          type: string
+                      type: object
+                    type: array
                   selfLink:
                     description: '[Output Only] Server-defined URL for the resource.'
+                    type: string
+                  sharedSecret:
+                    description: '[Output Only] The shared secret to be used for reverse
+                      DNS verification.'
+                    type: string
+                  status:
+                    description: 'The status of the public advertised prefix. Possible
+                      values include: - `INITIAL`: RPKI validation is complete. -
+                      `PTR_CONFIGURED`: User has configured the PTR. - `VALIDATED`:
+                      Reverse DNS lookup is successful. - `REVERSE_DNS_LOOKUP_FAILED`:
+                      Reverse DNS lookup failed. - `PREFIX_CONFIGURATION_IN_PROGRESS`:
+                      The prefix is being configured. - `PREFIX_CONFIGURATION_COMPLETE`:
+                      The prefix is fully configured. - `PREFIX_REMOVAL_IN_PROGRESS`:
+                      The prefix is being removed. Check the Status enum for the list
+                      of possible values.'
                     type: string
                 type: object
             type: object
