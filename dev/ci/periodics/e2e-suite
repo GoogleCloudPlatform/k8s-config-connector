@@ -39,6 +39,12 @@ fi
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 
+# Cloud IoT was shut down in August 2023; skip execution since the API has been retired.
+if [[ "${SERVICE}" == "cloudiot" ]]; then
+  echo "Cloud IoT product was shut down in August 2023: skipping periodic E2E tests for cloudiot."
+  exit 0
+fi
+
 export ONLY_TEST_APIGROUPS="${SERVICE}.cnrm.cloud.google.com"
 
 extra_services="${SERVICE}.googleapis.com"
@@ -58,7 +64,7 @@ case "${SERVICE}" in
   "cloudids") extra_services="ids.googleapis.com" ;;
   "cloudiot") extra_services="" ;;
   "cloudquota") extra_services="cloudquotas.googleapis.com" ;;
-  "colab") extra_services="aiplatform.googleapis.com" ;;
+  "colab") extra_services="aiplatform.googleapis.com compute.googleapis.com dataform.googleapis.com notebooks.googleapis.com" ;;
   "configdelivery") extra_services="configdelivery.googleapis.com anthos.googleapis.com" ;;
   "containerattached") extra_services="gkemulticloud.googleapis.com" ;;
   "dialogflowcx") extra_services="dialogflow.googleapis.com" ;;
@@ -76,5 +82,11 @@ case "${SERVICE}" in
 esac
 
 export EXTRA_GCP_SERVICES="${extra_services}"
+
+if [[ "${E2E_SUITE_DRY_RUN:-}" == "1" ]]; then
+  echo "ONLY_TEST_APIGROUPS=${ONLY_TEST_APIGROUPS}"
+  echo "EXTRA_GCP_SERVICES=${EXTRA_GCP_SERVICES}"
+  exit 0
+fi
 
 dev/ci/periodics/_create_project_and_run_e2e
