@@ -716,6 +716,30 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 			}
 
+			// Inject status.externalRef for DesignCenterSpace to simulate a reconciled space in static unit tests.
+			if u.GetKind() == "DesignCenterSpace" && u.GroupVersionKind().Group == "designcenter.cnrm.cloud.google.com" {
+				projectID, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external")
+				projectID = strings.TrimPrefix(projectID, "projects/")
+				if projectID == "" {
+					projectID = annotations["cnrm.cloud.google.com/project-id"]
+				}
+				if projectID == "" {
+					projectID = "mock-project"
+				}
+				location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
+				if location == "" {
+					location = "us-central1"
+				}
+				spaceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+				if spaceID == "" {
+					spaceID = u.GetName()
+				}
+				extRef := fmt.Sprintf("projects/%s/locations/%s/spaces/%s", projectID, location, spaceID)
+				if err := unstructured.SetNestedField(u.Object, extRef, "status", "externalRef"); err != nil {
+					t.Fatalf("failed to inject status.externalRef for DesignCenterSpace %s: %v", u.GetName(), err)
+				}
+			}
+
 			// If the identity is server-generated, and not specified, inject a spec.resourceID value.
 			gk := u.GroupVersionKind().GroupKind()
 			if obj, err := kccscheme.NewObject(gk); err == nil {
@@ -1022,6 +1046,26 @@ func normalizeFixtureKCCObjects(allObjs []*unstructured.Unstructured) []*unstruc
 					_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
 				}
 			}
+		}
+		if u.GetKind() == "DesignCenterSpace" && group == "designcenter.cnrm.cloud.google.com" {
+			projectID, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external")
+			projectID = strings.TrimPrefix(projectID, "projects/")
+			if projectID == "" {
+				projectID = ann["cnrm.cloud.google.com/project-id"]
+			}
+			if projectID == "" {
+				projectID = "mock-project"
+			}
+			location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
+			if location == "" {
+				location = "us-central1"
+			}
+			spaceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+			if spaceID == "" {
+				spaceID = u.GetName()
+			}
+			extRef := fmt.Sprintf("projects/%s/locations/%s/spaces/%s", projectID, location, spaceID)
+			_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
 		}
 		kccObjs = append(kccObjs, u)
 	}

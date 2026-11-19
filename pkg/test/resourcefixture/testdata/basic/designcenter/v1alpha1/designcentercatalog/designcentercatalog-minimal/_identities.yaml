@@ -1,0 +1,12 @@
+- caisURL: //designcenter.googleapis.com/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}
+  group: designcenter.cnrm.cloud.google.com
+  kind: DesignCenterSpace
+  name: dc-space-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //designcenter.googleapis.com/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/designcentercatalog-minimal-${uniqueId}
+  group: designcenter.cnrm.cloud.google.com
+  kind: DesignCenterCatalog
+  name: designcentercatalog-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
