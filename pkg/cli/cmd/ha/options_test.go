@@ -16,6 +16,7 @@ package ha
 
 import (
 	"context"
+	"net"
 	"os"
 	"path/filepath"
 	"strings"
@@ -74,10 +75,19 @@ func TestBuildClusterHandles(t *testing.T) {
 
 func useTestKubeconfig(t *testing.T, contextNames ...string) {
 	t.Helper()
+	// Bind and immediately close an ephemeral loopback port so no local cluster on :6443 can
+	// answer the test's requests.
+	ln, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		t.Fatalf("allocating closed loopback port: %v", err)
+	}
+	closedServer := "https://" + ln.Addr().String()
+	_ = ln.Close()
+
 	var b strings.Builder
 	b.WriteString("apiVersion: v1\nkind: Config\nclusters:\n")
 	for _, name := range contextNames {
-		b.WriteString("- name: " + name + "\n  cluster:\n    server: https://127.0.0.1:6443\n")
+		b.WriteString("- name: " + name + "\n  cluster:\n    server: " + closedServer + "\n")
 	}
 	b.WriteString("contexts:\n")
 	for _, name := range contextNames {
