@@ -17,13 +17,13 @@ package redis
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 
 	"google.golang.org/api/option"
 
 	api "cloud.google.com/go/redis/cluster/apiv1"
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
-	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -58,8 +58,9 @@ var _ directbase.Model = &redisClusterModel{}
 type redisClusterAdapter struct {
 	id *krm.RedisClusterIdentity
 
-	desired *pb.Cluster
-	actual  *pb.Cluster
+	desired    *pb.Cluster
+	desiredKRM *krm.RedisClusterSpec
+	actual     *pb.Cluster
 
 	clustersClient *api.CloudRedisClusterClient
 }
@@ -136,6 +137,7 @@ func (m *redisClusterModel) AdapterForObject(ctx context.Context, op *directbase
 	return &redisClusterAdapter{
 		id:             id.(*krm.RedisClusterIdentity),
 		desired:        desired,
+		desiredKRM:     &obj.Spec,
 		clustersClient: gcpClient,
 	}, nil
 }
@@ -272,24 +274,23 @@ func (a *redisClusterAdapter) Update(ctx context.Context, updateOp *directbase.U
 	log := klog.FromContext(ctx)
 	log.V(0).Info("updating object", "u", u)
 
-	diffs, err := compareRedisCluster(ctx, a.actual, a.desired)
+	diffRes, err := compareRedisCluster(ctx, a.desiredKRM, a.actual)
 	if err != nil {
 		return fmt.Errorf("comparing actual and desired RedisCluster: %w", err)
 	}
 
 	var latest *pb.Cluster
-	if diffs.HasDiff() {
-		diffs.Object = u
-		structuredreporting.ReportDiff(ctx, diffs)
+	if !diffRes.Empty() {
+		diffRes.Diff.Object = u
+		structuredreporting.ReportDiff(ctx, diffRes.Diff)
 
 		// exactly 1 update_mask field must be specified per update request
 
-		for _, field := range diffs.Fields {
-			if field.ProtoFieldDescriptor == nil {
-				return fmt.Errorf("unexpected diff field without proto descriptor: %s", field.ID)
-			}
-			path := string(field.ProtoFieldDescriptor.Name())
+		// Sort the paths so the update calls are made in a stable order.
+		paths := append([]string(nil), diffRes.FieldMask.GetPaths()...)
+		sort.Strings(paths)
 
+		for _, path := range paths {
 			req := &pb.UpdateClusterRequest{
 				Cluster: a.desired,
 			}
@@ -334,34 +335,31 @@ func (a *redisClusterAdapter) Update(ctx context.Context, updateOp *directbase.U
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
-func compareRedisCluster(ctx context.Context, actual, desired *pb.Cluster) (*structuredreporting.Diff, error) {
-	var maskedActual *pb.Cluster
-	{
-		// A "trick" to only compare spec fields - round trip via the spec
-		mapCtx := &direct.MapContext{}
-		spec := RedisClusterSpec_FromProto(mapCtx, actual)
-		if mapCtx.Err() != nil {
-			return nil, mapCtx.Err()
-		}
-		maskedActual = RedisClusterSpec_ToProto(mapCtx, spec)
-		if mapCtx.Err() != nil {
-			return nil, mapCtx.Err()
-		}
-	}
-
-	maskedActual = populateDefaults(maskedActual)
-	desired = populateDefaults(proto.CloneOf(desired))
-
-	// If CrossClusterReplicationConfig is unspecified, use the actual value as default
-	if desired.CrossClusterReplicationConfig == nil {
-		desired.CrossClusterReplicationConfig = maskedActual.CrossClusterReplicationConfig
-	}
-
-	diffs, _, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
-	if err != nil {
-		return nil, err
-	}
-	return diffs, nil
+// compareRedisCluster compares only the fields specified in the desired spec; fields
+// left unset in the spec (e.g. clusterEndpoints) keep their live value.
+func compareRedisCluster(ctx context.Context, desired *krm.RedisClusterSpec, actual *pb.Cluster) (*common.SpecDiffResult[*pb.Cluster], error) {
+	return common.CompareSpecifiedSpec(
+		ctx,
+		desired,
+		actual,
+		RedisClusterSpec_FromProto,
+		RedisClusterSpec_ToProto,
+		func(ctx context.Context, cluster *pb.Cluster) error {
+			// Mask out some fields in the persistenceConfig, to accommodate KRM "discriminated union" semantics
+			switch cluster.GetPersistenceConfig().GetMode() {
+			case pb.ClusterPersistenceConfig_DISABLED:
+				cluster.PersistenceConfig.AofConfig = nil
+				cluster.PersistenceConfig.RdbConfig = nil
+			case pb.ClusterPersistenceConfig_RDB:
+				cluster.PersistenceConfig.AofConfig = nil
+			case pb.ClusterPersistenceConfig_AOF:
+				cluster.PersistenceConfig.RdbConfig = nil
+			}
+			populateDefaults(cluster)
+			return nil
+		},
+		false, // fineGrained: update masks are per top-level field
+	)
 }
 
 func populateDefaults(cluster *pb.Cluster) *pb.Cluster {
