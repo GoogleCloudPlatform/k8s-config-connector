@@ -643,6 +643,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "requestedCancellation")
 		delete(v, "endTime")
 		delete(v, "statusMessage")
+		delete(v, "completeTime")
 		delete(v, "createTime")
 		delete(v, "create-time")
 		delete(v, "creationTime")

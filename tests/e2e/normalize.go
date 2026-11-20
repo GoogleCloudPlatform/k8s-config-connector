@@ -107,6 +107,9 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.lastModifiedTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.createTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.createTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.completeTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.initialGenerator.createTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.initialGenerator.updateTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".status.observedState.lastUsedTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.endTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.updateTime"] = mockgcpregistry.PlaceholderTime
@@ -1720,6 +1723,16 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		visitor.ReplacePath(".response.revisionCreateTime", mockgcpregistry.PlaceholderTimestamp)
 		visitor.ReplacePath(".revisionId", "revision-id-placeholder")
 		visitor.ReplacePath(".response.revisionId", "revision-id-placeholder")
+	}
+
+	// Dialogflow
+	{
+		visitor.ReplacePath(".completeTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.completeTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".initialGenerator.createTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".initialGenerator.updateTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.initialGenerator.createTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.initialGenerator.updateTime", mockgcpregistry.PlaceholderTimestamp)
 	}
 
 	// DocumentAI

@@ -74,12 +74,8 @@ func DialogflowGeneratorEvaluationObservedState_FromProto(mapCtx *direct.MapCont
 		out.SummarizationMetrics = SummarizationEvaluationMetricsObservedState_FromProto(mapCtx, summarizationMetrics)
 	}
 	out.EvaluationStatus = EvaluationStatusObservedState_FromProto(mapCtx, in.GetEvaluationStatus())
-	if in.SatisfiesPzs != nil {
-		out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
-	}
-	if in.SatisfiesPzi != nil {
-		out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
-	}
+	out.SatisfiesPzs = in.SatisfiesPzs
+	out.SatisfiesPzi = in.SatisfiesPzi
 	return out
 }
 

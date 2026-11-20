@@ -179,3 +179,17 @@
   8. Implemented dedicated direct mappers in `pkg/controller/direct/dialogflow/dialogflowgeneratorevaluation_mapper.go` conforming to `TestDirectResourceFileNaming` and preserved existing controller mappers with zero diff.
   9. Resolved all 37 judgement queue entries in `apis/dialogflow/judgement_queue.yaml` and placed `DialogflowGeneratorEvaluation` on `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
 - **Impact**: Cleanly scaffolds and finalizes direct KRM types, IdentityV2 conformance, references, CRD schema, and isolated direct mappers for `DialogflowGeneratorEvaluation`.
+
+### [2026-11-20] DialogflowGeneratorEvaluation Direct Controller Implementation (Phase 2)
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `DialogflowGeneratorEvaluation` under `dialogflow.cnrm.cloud.google.com/v1alpha1` (Issue #16227).
+- **Details**:
+  1. Generated direct controller (`pkg/controller/direct/dialogflow/dialogflowgeneratorevaluation_controller.go`) and roundtrip fuzzer (`pkg/controller/direct/dialogflow/dialogflowgeneratorevaluation_fuzzer.generated.go`) via one-shot `controllerbuilder generate-controller` and `generate-fuzzer` using `--prepopulate-resource`. Neither was added to `apis/dialogflow/generate.sh`.
+  2. Fixed fuzzer roundtrip zero-value preservation in `pkg/controller/direct/dialogflow/dialogflowgeneratorevaluation_mapper.go`: preserved `SatisfiesPzs` and `SatisfiesPzi` pointer values (`out.SatisfiesPzs = in.SatisfiesPzs`) instead of calling `direct.LazyPtr(in.GetSatisfiesPzs())`, which dropped `false` zero-values.
+  3. Controller conforms to Greenfield invariants: calls `common.NormalizeGreenfieldReferences(ctx, reader, obj, nil)` before `obj.GetIdentity(ctx, reader)` in `AdapterForObject`. In `Create`, waits on `op.Wait(ctx)` without suppressing errors, followed by a post-LRO `Get` to fetch the complete `GeneratorEvaluation` and update `status.ObservedState` and `status.externalRef`.
+  4. Updated `pkg/controller/resourceconfig/static_config.go` with direct reconciler for DialogflowGeneratorEvaluation via `python3 dev/tasks/generate_static_config.py`.
+  5. Implemented minimal and maximal test fixtures under `pkg/test/resourcefixture/testdata/basic/dialogflow/v1alpha1/dialogflowgeneratorevaluation/` with prerequisite `DialogflowGenerator` and `StorageBucket` in `dependencies.yaml`.
+  6. Added timestamp normalization rules for `completeTime`, `initialGenerator.createTime`, and `initialGenerator.updateTime` in `tests/e2e/normalize.go`, `tests/e2e/httplog.go`, `tests/e2e/normalize_legacy.go`, and `pkg/test/resourcefixture/golden_alignment_test.go`.
+  7. Recorded and verified E2E fixtures passing all 7/7 automated validation checks in `_http_report.md` without modifying test harness validator logic.
+  8. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha` to reflect covered spec fields.
+- **Impact**: Enables direct controller reconciliation, roundtrip fuzzing, and authentic real GCP testing for DialogflowGeneratorEvaluation.
+

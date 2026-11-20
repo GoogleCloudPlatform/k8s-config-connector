@@ -238,6 +238,14 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addSetStringReplacement(".response.versionCreateTime", "2024-04-01T12:34:56.123456Z")
 	addSetStringReplacement(".response.versionUpdateTime", "2024-04-01T12:34:56.123456Z")
 
+	// Specific to Dialogflow
+	addReplacement("completeTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("response.completeTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("initialGenerator.createTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("initialGenerator.updateTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("response.initialGenerator.createTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("response.initialGenerator.updateTime", "2024-04-01T12:34:56.123456Z")
+
 	// Specific to Sql
 	addReplacement("serverCaCert.cert", "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n")
 	addReplacement("serverCaCert.commonName", "common-name")

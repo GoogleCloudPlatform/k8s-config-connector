@@ -306,6 +306,20 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 			}
 
+			// Inject status.externalRef for DialogflowGeneratorEvaluation to simulate a reconciled generator evaluation in static unit tests.
+			if u.GetKind() == "DialogflowGeneratorEvaluation" && u.GroupVersionKind().Group == "dialogflow.cnrm.cloud.google.com" {
+				goldens, _ := filepath.Glob(filepath.Join(dir, "_generated_object_*.golden.yaml"))
+				for _, gPath := range goldens {
+					for _, gu := range parseFixtureYAML(t, gPath, gcpProject) {
+						if gu.GetKind() == u.GetKind() && gu.GetName() == u.GetName() {
+							if extRef, ok, _ := unstructured.NestedString(gu.Object, "status", "externalRef"); ok && extRef != "" {
+								_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+							}
+						}
+					}
+				}
+			}
+
 			// Inject status.externalRef for ResourceManagerTagHold to simulate a reconciled tag hold in static unit tests.
 			if u.GetKind() == "ResourceManagerTagHold" && u.GroupVersionKind().Group == "resourcemanager.cnrm.cloud.google.com" {
 				goldens, _ := filepath.Glob(filepath.Join(dir, "_generated_object_*.golden.yaml"))
