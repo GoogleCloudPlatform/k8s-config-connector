@@ -155,3 +155,13 @@
   5. Implemented minimal and maximal test fixtures under `pkg/test/resourcefixture/testdata/basic/dialogflow/v1alpha1/dialogflowconversationprofile/`. Found that `timeZone` is write-only / immutable in Dialogflow v2 API (`[update_mask]: 'The path is not allowed to update: time_zone'`). Used `displayName` and `loggingConfig.enableStackdriverLogging` for update verification.
   6. Successfully recorded and verified E2E fixtures against real GCP (`project: cnrm-barni-4`, `location: global`) passing all 7/7 automated validation checks.
 - **Impact**: Enables direct controller reconciliation, roundtrip fuzzing, and authentic real GCP testing for DialogflowConversationProfile.
+
+### [2026-11-20] DialogflowConversationProfile MockGCP Implementation and Alignment (Phase 3)
+- **Context**: Implementing MockGCP service handler and aligning golden logs for DialogflowConversationProfile (Issue #16190).
+- **Details**:
+  1. Implemented `conversationProfilesServer` in `mockgcp/mockdialogflow/conversationprofile.go` supporting `GetConversationProfile`, `CreateConversationProfile`, `UpdateConversationProfile`, `DeleteConversationProfile`, and `ListConversationProfiles`.
+  2. Registered `pb.RegisterConversationProfilesServer` and `grpcpb.RegisterConversationProfilesHandler` in `mockgcp/mockdialogflow/service.go`.
+  3. Added `DialogflowConversationProfile` to supported mock GroupKinds in `config/tests/samples/create/harness.go`.
+  4. Handled default values (`languageCode: "en-US"`, conditional initialization of empty notification and assistant config blocks, and `createTime` omission on update responses) matching authentic GCP behavior.
+  5. Successfully aligned and verified minimal and maximal test fixtures with `hack/compare-mock` and `TestGoldenLogAlignment`, with `_http_mock.log` matching `_http.log` cleanly. Passed `./dev/ci/presubmits/tests-e2e-fixtures-suite dialogflow`.
+- **Impact**: Enables hermetic mock testing and end-to-end reconciliation for DialogflowConversationProfile without requiring live GCP access.
