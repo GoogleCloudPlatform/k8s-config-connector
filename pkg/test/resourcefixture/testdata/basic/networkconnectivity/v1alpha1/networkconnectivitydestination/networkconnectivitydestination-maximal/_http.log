@@ -1,0 +1,520 @@
+# Phase: CREATE
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs?alt=json&multicloudDataTransferConfigId=nc-mcdt-${uniqueId}&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/europe-west1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.MulticloudDataTransferConfig",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networkconnectivity.v1.DataTransferService/GetDestination
+
+{
+  "name": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}/destinations/nc-dest-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}/destinations/nc-dest-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.networkconnectivity.v1.DataTransferService/CreateDestination
+
+{
+  "destination": {
+    "description": "Initial destination description",
+    "endpoints": [
+      {
+        "asn": "16509",
+        "csp": "aws"
+      }
+    ],
+    "ipPrefix": "203.0.113.0/24"
+  },
+  "destinationId": "nc-dest-${uniqueId}",
+  "parent": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}/destinations/nc-dest-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}/destinations/nc-dest-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.Destination",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Initial destination description",
+    "endpoints": [
+      {
+        "asn": "16509",
+        "csp": "aws",
+        "state": "VALID",
+        "updateTime": "2026-11-04T11:59:39.105103911Z"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "ipPrefix": "203.0.113.0/24",
+    "name": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}/destinations/nc-dest-${uniqueId}",
+    "stateTimeline": {
+      "states": [
+        {
+          "effectiveTime": "2026-11-05T08:00:00Z",
+          "state": "ADDING"
+        }
+      ]
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+# Phase: UPDATE
+GRPC /google.cloud.networkconnectivity.v1.DataTransferService/GetDestination
+
+{
+  "name": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}/destinations/nc-dest-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Initial destination description",
+  "endpoints": [
+    {
+      "asn": "16509",
+      "csp": "aws",
+      "state": "VALID",
+      "updateTime": "2026-11-04T11:59:39.105103911Z"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "ipPrefix": "203.0.113.0/24",
+  "name": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}/destinations/nc-dest-${uniqueId}",
+  "stateTimeline": {
+    "states": [
+      {
+        "effectiveTime": "2026-11-05T08:00:00Z",
+        "state": "ADDING"
+      }
+    ]
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networkconnectivity.v1.DataTransferService/UpdateDestination
+
+{
+  "destination": {
+    "description": "Updated destination description",
+    "endpoints": [
+      {
+        "asn": "16509",
+        "csp": "aws"
+      }
+    ],
+    "ipPrefix": "203.0.113.0/24",
+    "name": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}/destinations/nc-dest-${uniqueId}"
+  },
+  "updateMask": "description"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}/destinations/nc-dest-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}/destinations/nc-dest-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.Destination",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated destination description",
+    "endpoints": [
+      {
+        "asn": "16509",
+        "csp": "aws",
+        "state": "VALID",
+        "updateTime": "2026-11-04T11:59:39.105103911Z"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "ipPrefix": "203.0.113.0/24",
+    "name": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}/destinations/nc-dest-${uniqueId}",
+    "stateTimeline": {
+      "states": [
+        {
+          "effectiveTime": "2026-11-05T08:00:00Z",
+          "state": "ADDING"
+        }
+      ]
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+# Phase: DELETE
+GRPC /google.cloud.networkconnectivity.v1.DataTransferService/GetDestination
+
+{
+  "name": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}/destinations/nc-dest-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated destination description",
+  "endpoints": [
+    {
+      "asn": "16509",
+      "csp": "aws",
+      "state": "VALID",
+      "updateTime": "2026-11-04T11:59:39.105103911Z"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "ipPrefix": "203.0.113.0/24",
+  "name": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}/destinations/nc-dest-${uniqueId}",
+  "stateTimeline": {
+    "states": [
+      {
+        "effectiveTime": "2026-11-05T08:00:00Z",
+        "state": "ADDING"
+      }
+    ]
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networkconnectivity.v1.DataTransferService/GetDestination
+
+{
+  "name": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}/destinations/nc-dest-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated destination description",
+  "endpoints": [
+    {
+      "asn": "16509",
+      "csp": "aws",
+      "state": "VALID",
+      "updateTime": "2026-11-04T11:59:39.105103911Z"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "ipPrefix": "203.0.113.0/24",
+  "name": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}/destinations/nc-dest-${uniqueId}",
+  "stateTimeline": {
+    "states": [
+      {
+        "effectiveTime": "2026-11-05T08:00:00Z",
+        "state": "ADDING"
+      }
+    ]
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networkconnectivity.v1.DataTransferService/DeleteDestination
+
+{
+  "name": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}/destinations/nc-dest-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}/destinations/nc-dest-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}/destinations/nc-dest-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/europe-west1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
