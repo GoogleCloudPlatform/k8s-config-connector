@@ -67,7 +67,7 @@ spec:
   maxActive: 1
 
   defaults:
-    labels: [manual-validate]
+    labels: [validate]
 
   steps:
     - id: validate

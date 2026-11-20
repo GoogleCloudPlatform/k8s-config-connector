@@ -98,7 +98,7 @@ fi
 
 gh label create "${BATCH_LABEL}" -R "${REPO}" --color 0E8A16 \
   --description "validate batch" >/dev/null 2>&1 || true
-gh label create manual-validate -R "${REPO}" --color 0E8A16 \
+gh label create validate -R "${REPO}" --color 0E8A16 \
   --description "Manual validation of a controller against real GCP" >/dev/null 2>&1 || true
 URL="$(gh issue create -R "${REPO}" --title "${TITLE}" --label "${FANOUT_LABEL}" --label "${BATCH_LABEL}" --body-file "${BODY}")"
 say "opened ${URL}"

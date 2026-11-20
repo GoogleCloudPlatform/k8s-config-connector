@@ -456,7 +456,7 @@ Opened by `.agents/verify-changes.md` from `hack/manual-validate/changed_kinds.p
 ## Fan-out
 ```yaml
 title: "Verify {{{{.item.name}}}} ({report['base']}..{report['head']})"
-labels: [manual-validate]
+labels: [validate]
 group: 1
 create: lazy
 window: {{start: 2, max: 3}}
