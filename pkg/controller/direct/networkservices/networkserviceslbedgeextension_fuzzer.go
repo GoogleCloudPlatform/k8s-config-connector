@@ -49,6 +49,10 @@ func lbEdgeExtensionFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_LabelsAnnotations(".labels")
 
 	f.SpecField(".extension_chains[].extensions[].service")
+	f.Unimplemented_NotYetTriaged(".extension_chains[].extensions[].forward_attributes")
+	f.Unimplemented_NotYetTriaged(".extension_chains[].extensions[].request_body_send_mode")
+	f.Unimplemented_NotYetTriaged(".extension_chains[].extensions[].response_body_send_mode")
+	f.Unimplemented_NotYetTriaged(".extension_chains[].extensions[].observability_mode")
 
 	return f
 }

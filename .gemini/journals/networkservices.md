@@ -43,3 +43,16 @@
   4. Created minimal and maximal test fixtures and recorded golden traffic (`_http.log`) and probe audits (`_audit_probe.log`) against live GCP with `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`.
 - **Impact**: Fully functional direct controller for `NetworkServicesServiceLBPolicy` verified against real GCP with golden logs and fuzz testing.
 
+### [2026-11-06] Prepopulating KRM Types, Identity, and Judgement Queue for NetworkServicesAgentGateway
+- **Context**: Prepopulating direct KRM types, identity, reference, and `judgement_queue.yaml` for `NetworkServicesAgentGateway` (Issue #15165).
+- **Problem**:
+  1. `cloud.google.com/go/networkservices` in `go.mod` was pinned to `v0.6.0`, which did not contain `AgentGateway` pb types or `ResourceUris` field on `AgentGateway_SelfManaged`.
+  2. Updating `cloud.google.com/go/networkservices` to `latest` (v1.8.1) failed because it forced transitively updating other Google Cloud SDKs whose newer transitive `genproto` dependency conflicted with legacy modules (`billing`, `firestore`, `tags`, etc.).
+- **Solution**:
+  1. Updated `cloud.google.com/go/networkservices` specifically to `v1.4.0` in `go.mod`, which introduced full `AgentGateway` support without conflicting with pinned dependencies.
+  2. Added `--prepopulate-resource` and `--resource NetworkServicesAgentGateway:AgentGateway` to `generate-types` and `generate-identity` in `apis/networkservices/generate.sh`.
+  3. Added `NetworkServicesAgentGateway` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. Ran `apis/networkservices/generate.sh` and updated test golden exception files (`alpha-missingfields.txt` and `spec_dislike_etag.txt`).
+- **Impact**: Cleanly scaffolds `NetworkServicesAgentGateway` with complete KRM types, IdentityV2, reference, and judgement queue for Step 1b triage.
+
+
