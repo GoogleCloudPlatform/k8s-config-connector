@@ -37,13 +37,15 @@ ${CONTROLLERBUILDER} generate-types \
   --include-skipped-output \
   --resource LustreInstance:Instance \
   --resource LustreMirror:Mirror \
+  --resource LustreDirectoryPolicy:DirectoryPolicy \
   --prepopulate-resource
 
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.lustre.v1 \
   --api-version lustre.cnrm.cloud.google.com/v1alpha1 \
   --resource LustreInstance:Instance \
-  --resource LustreMirror:Mirror
+  --resource LustreMirror:Mirror \
+  --resource LustreDirectoryPolicy:DirectoryPolicy
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.lustre.v1 \

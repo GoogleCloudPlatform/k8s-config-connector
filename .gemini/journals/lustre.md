@@ -68,7 +68,30 @@
   - Re-recorded `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
   - All unit tests and apichecks pass.
 
+## Resource: LustreDirectoryPolicy
+- Kind: `LustreDirectoryPolicy`
+- Proto Message: `google.cloud.lustre.v1.DirectoryPolicy`
+- Service: `lustre`
+- API Version: `lustre.cnrm.cloud.google.com/v1alpha1`
 
+## Notes & Findings
+- **Initial Greenfield Prepopulation (Step 1a)**:
+  - Proto definitions are provided via the overlay in `mockgcp/apis/google/cloud/lustre/v1/` and `cloud.google.com/go/lustre` v1.3.1.
+  - Ran `generate-types`, `generate-identity`, and `generate-mapper` with `--prepopulate-resource`.
+  - Identity pattern: `projects/{project}/locations/{location}/instances/{instance}/directoryPolicies/{directory_policy}`.
+  - Added `LustreDirectoryPolicy` in alphabetical order to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Updated `apis/lustre/judgement_queue.yaml` with open findings (including `untriaged-bulk-generation`).
+  - Recorded missing fields in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+  - Regenerated round-trip fuzzer for `LustreInstance` using one-shot `controllerbuilder generate-fuzzer --prepopulate-resource` to account for new fields introduced in `lustrepb` v1.3.1.
+  - Unit tests and apichecks pass cleanly.
+- **Judgement Queue Triage & Finalization (Step 1b)**:
+  - Modeled parent reference as required, immutable `spec.parentRef` (`*LustreInstanceRef`) on `LustreDirectoryPolicySpec`, removing separate `ProjectRef`, `Location`, and guessed `InstanceRef`.
+  - Removed unverified `resource-docs` link (and `+kcc:guess=source-link` annotation) as public REST reference page is not available.
+  - Accepted `identity-not-in-cai` matching proto resource pattern `projects/{project}/locations/{location}/instances/{instance}/directoryPolicies/{directory_policy}`.
+  - Regenerated identity (`lustredirectorypolicy_identity.generated.go`), deepcopy, and CRD manifest (`config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_lustredirectorypolicies.lustre.cnrm.cloud.google.com.yaml`).
+  - Resolved all open entries for `LustreDirectoryPolicy` in `apis/lustre/judgement_queue.yaml`.
+  - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` to reflect replacement of `projectRef`/`location` with `parentRef`.
+  - All unit tests and apichecks pass cleanly.
 
 
 
