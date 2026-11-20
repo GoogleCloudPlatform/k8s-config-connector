@@ -24,6 +24,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -79,28 +80,19 @@ func getIdentityFromVMwareEngineLoggingServerSpec(ctx context.Context, reader cl
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	if obj.Spec.ParentRef == nil {
+		return nil, fmt.Errorf("spec.parentRef is required")
 	}
-
-	location, err := refs.GetLocation(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location: %w", err)
+	parentRef := *obj.Spec.ParentRef
+	if err := parentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, fmt.Errorf("resolving spec.parentRef: %w", err)
 	}
-
-	// +kcc:guess reason=identity-root-unknown
-	privateCloud := ""
-	if privateCloud == "" {
-		return nil, fmt.Errorf("cannot resolve private_cloud for VMwareEngineLoggingServer")
+	parsed := &VMwareEngineLoggingServerIdentity{}
+	if err := parsed.FromExternal(strings.TrimSuffix(parentRef.GetExternal(), "/") + "/loggingServers" + "/" + resourceID); err != nil {
+		return nil, fmt.Errorf("parsing spec.parentRef external=%q: %w", parentRef.GetExternal(), err)
 	}
-
-	return &VMwareEngineLoggingServerIdentity{
-		Project:       projectID,
-		Location:      location,
-		PrivateCloud:  privateCloud,
-		LoggingServer: resourceID,
-	}, nil
+	parsed.LoggingServer = resourceID
+	return parsed, nil
 }
 
 func (obj *VMwareEngineLoggingServer) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
