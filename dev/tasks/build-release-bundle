@@ -189,7 +189,6 @@ BLOCKED_KINDS=(
     "DialogflowConversationModel"
     "DialogflowEnvironment"
     "DialogflowFlow"
-    "DialogflowGeneratorEvaluation"
     "DialogflowPage"
     "DialogflowSecuritySettings"
     "DialogflowSipTrunk"
