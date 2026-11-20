@@ -18,12 +18,32 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.discoveryengine.v1
 // resource: DiscoveryEngineWidgetConfig:WidgetConfig
+// resource: DiscoveryEngineACLConfig:AclConfig
 
 package v1alpha1
 
 import (
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
+
+/* found existing non-generated go type with proto tag "google.cloud.discoveryengine.v1.AclConfig", skipping
+
+// +kcc:proto=google.cloud.discoveryengine.v1.AclConfig
+type AclConfig struct {
+	// Immutable. The full resource name of the acl configuration.
+	//  Format:
+	//  `projects/{project}/locations/{location}/aclConfig`.
+	//
+	//  This field must be a UTF-8 encoded string with a length limit of 1024
+	//  characters.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AclConfig.name
+	Name *string `json:"name,omitempty"`
+
+	// Identity provider config.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AclConfig.idp_config
+	IdpConfig *IdpConfig `json:"idpConfig,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.discoveryengine.v1.DataConnector.ConnectorMetadata
 type DataConnector_ConnectorMetadata struct {
@@ -50,6 +70,25 @@ type DataConnector_ConnectorMetadata struct {
 	//  or a custom note that can be set for the connector.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataConnector.ConnectorMetadata.note
 	Note *string `json:"note,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.IdpConfig
+type IdpConfig struct {
+	// Identity provider type configured.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.IdpConfig.idp_type
+	IdpType *string `json:"idpType,omitempty"`
+
+	// External Identity provider config.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.IdpConfig.external_idp_config
+	ExternalIdpConfig *IdpConfig_ExternalIdpConfig `json:"externalIdpConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.IdpConfig.ExternalIdpConfig
+type IdpConfig_ExternalIdpConfig struct {
+	// Workforce pool name.
+	//  Example: "locations/global/workforcePools/pool_id"
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.IdpConfig.ExternalIdpConfig.workforce_pool_name
+	WorkforcePoolName *string `json:"workforcePoolName,omitempty"`
 }
 
 // +kcc:proto=google.cloud.discoveryengine.v1.WidgetConfig.AccessSettings
