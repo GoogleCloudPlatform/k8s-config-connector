@@ -41,5 +41,24 @@
   - Aligned mock logs using `hack/compare-mock`; generated matching `_http_mock.log` for minimal and maximal fixtures.
   - Verified `TestGoldenLogAlignment` and presubmit `./dev/ci/presubmits/tests-e2e-fixtures-suite lustre` pass with zero diffs.
 
+## Resource: LustreMirror
+- Kind: `LustreMirror`
+- Proto Message: `google.cloud.lustre.v1.Mirror`
+- Service: `lustre`
+- API Version: `lustre.cnrm.cloud.google.com/v1alpha1`
+
+## Notes & Findings
+- **Initial Greenfield Prepopulation (Step 1a)**:
+  - Mirror protos (`mirror.proto` and newer `instance.proto`/`lustre.proto`) are in `cloud.google.com/go/lustre@v1.3.1`, but newer than the pinned googleapis commit (`1765b559c4`).
+  - Added proto overlay under `mockgcp/apis/google/cloud/lustre/v1/` and registered it in `dev/tools/controllerbuilder/generate-proto.sh` and `kccProtoOverrides` in `dev/tools/controllerbuilder/pkg/sourcelinks/sourcelinks.go`.
+  - Upgraded `cloud.google.com/go/lustre` to `v1.3.1` in `go.mod`.
+  - Updated `apis/lustre/generate.sh` to include `LustreMirror:Mirror` in `generate-types` and `generate-identity`.
+  - Added `LustreMirror` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Added open review items in `apis/lustre/judgement_queue.yaml` for Step 1b triage.
+  - Regenerated `LustreInstance` fuzzer using `controllerbuilder generate-fuzzer` to mark newly exposed proto fields from the v1.3.1 upgrade as `f.Unimplemented_NotYetTriaged`.
+  - Updated golden exception `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+  - All tests and apichecks pass.
+
+
 
 

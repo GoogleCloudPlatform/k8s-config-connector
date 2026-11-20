@@ -30,6 +30,22 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func GCSPath_FromProto(mapCtx *direct.MapContext, in *pb.GcsPath) *krm.GCSPath {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GCSPath{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	return out
+}
+func GCSPath_ToProto(mapCtx *direct.MapContext, in *krm.GCSPath) *pb.GcsPath {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GcsPath{}
+	out.Uri = direct.ValueOf(in.URI)
+	return out
+}
 func LustreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.LustreInstanceObservedState {
 	if in == nil {
 		return nil
@@ -42,6 +58,17 @@ func LustreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Ins
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: Labels
 	// MISSING: GKESupportEnabled
+	// MISSING: KMSKey
+	// MISSING: StateReason
+	// MISSING: PlacementPolicy
+	// MISSING: AccessRulesOptions
+	// MISSING: Uid
+	// MISSING: MaintenancePolicy
+	// MISSING: UpcomingMaintenanceSchedule
+	// MISSING: DynamicTierOptions
+	// MISSING: AvailableVersion
+	// MISSING: TargetVersion
+	// MISSING: EffectiveVersion
 	return out
 }
 func LustreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LustreInstanceObservedState) *pb.Instance {
@@ -56,6 +83,17 @@ func LustreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Lust
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: Labels
 	// MISSING: GKESupportEnabled
+	// MISSING: KMSKey
+	// MISSING: StateReason
+	// MISSING: PlacementPolicy
+	// MISSING: AccessRulesOptions
+	// MISSING: Uid
+	// MISSING: MaintenancePolicy
+	// MISSING: UpcomingMaintenanceSchedule
+	// MISSING: DynamicTierOptions
+	// MISSING: AvailableVersion
+	// MISSING: TargetVersion
+	// MISSING: EffectiveVersion
 	return out
 }
 func LustreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.LustreInstanceSpec {
@@ -73,6 +111,17 @@ func LustreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *k
 	// MISSING: Labels
 	out.PerUnitStorageThroughput = direct.LazyPtr(in.GetPerUnitStorageThroughput())
 	// MISSING: GKESupportEnabled
+	// MISSING: KMSKey
+	// MISSING: StateReason
+	// MISSING: PlacementPolicy
+	// MISSING: AccessRulesOptions
+	// MISSING: Uid
+	// MISSING: MaintenancePolicy
+	// MISSING: UpcomingMaintenanceSchedule
+	// MISSING: DynamicTierOptions
+	// MISSING: AvailableVersion
+	// MISSING: TargetVersion
+	// MISSING: EffectiveVersion
 	return out
 }
 func LustreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.LustreInstanceSpec) *pb.Instance {
@@ -90,5 +139,84 @@ func LustreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.LustreInstanc
 	// MISSING: Labels
 	out.PerUnitStorageThroughput = direct.ValueOf(in.PerUnitStorageThroughput)
 	// MISSING: GKESupportEnabled
+	// MISSING: KMSKey
+	// MISSING: StateReason
+	// MISSING: PlacementPolicy
+	// MISSING: AccessRulesOptions
+	// MISSING: Uid
+	// MISSING: MaintenancePolicy
+	// MISSING: UpcomingMaintenanceSchedule
+	// MISSING: DynamicTierOptions
+	// MISSING: AvailableVersion
+	// MISSING: TargetVersion
+	// MISSING: EffectiveVersion
+	return out
+}
+func LustreMirrorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Mirror) *krm.LustreMirrorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LustreMirrorObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func LustreMirrorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LustreMirrorObservedState) *pb.Mirror {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Mirror{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Uid = direct.ValueOf(in.Uid)
+	out.State = direct.Enum_ToProto[pb.Mirror_State](mapCtx, in.State)
+	return out
+}
+func LustreMirrorSpec_FromProto(mapCtx *direct.MapContext, in *pb.Mirror) *krm.LustreMirrorSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LustreMirrorSpec{}
+	// MISSING: Name
+	out.GCSPath = GCSPath_FromProto(mapCtx, in.GetGcsPath())
+	out.LustrePath = LustrePath_FromProto(mapCtx, in.GetLustrePath())
+	out.Direction = direct.Enum_FromProto(mapCtx, in.GetDirection())
+	out.DeletedFilesRetained = direct.LazyPtr(in.GetDeletedFilesRetained())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	return out
+}
+func LustreMirrorSpec_ToProto(mapCtx *direct.MapContext, in *krm.LustreMirrorSpec) *pb.Mirror {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Mirror{}
+	// MISSING: Name
+	out.GcsPath = GCSPath_ToProto(mapCtx, in.GCSPath)
+	out.LustrePath = LustrePath_ToProto(mapCtx, in.LustrePath)
+	out.Direction = direct.Enum_ToProto[pb.Mirror_Direction](mapCtx, in.Direction)
+	out.DeletedFilesRetained = direct.ValueOf(in.DeletedFilesRetained)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	return out
+}
+func LustrePath_FromProto(mapCtx *direct.MapContext, in *pb.LustrePath) *krm.LustrePath {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LustrePath{}
+	out.Path = direct.LazyPtr(in.GetPath())
+	return out
+}
+func LustrePath_ToProto(mapCtx *direct.MapContext, in *krm.LustrePath) *pb.LustrePath {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LustrePath{}
+	out.Path = direct.ValueOf(in.Path)
 	return out
 }

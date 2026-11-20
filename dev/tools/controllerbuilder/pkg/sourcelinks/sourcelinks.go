@@ -196,6 +196,7 @@ var kccProtoOverrides = map[string]bool{
 	"google/cloud/biglake/v1/iceberg_rest_catalog.proto":  true,
 	"google/cloud/config/v1/config.proto":                 true,
 	"google/cloud/dataplex/v1/catalog.proto":              true,
+	"google/cloud/lustre/v1/mirror.proto":                 true,
 	"google/logging/v2/logging_config.proto":              true,
 	"google/privacy/dlp/v2/dlp.proto":                     true,
 }
