@@ -24,6 +24,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 type ImagesV1 struct {
@@ -168,6 +169,11 @@ func (s *ImagesV1) Patch(ctx context.Context, req *pb.PatchImageRequest) (*pb.Op
 		return nil, err
 	}
 
+	obj, err = applyImagePatch(obj, req.GetImageResource())
+	if err != nil {
+		return nil, err
+	}
+
 	if obj.DiskSizeGb == nil {
 		obj.DiskSizeGb = PtrTo(int64(500))
 	}
@@ -189,6 +195,45 @@ func (s *ImagesV1) Patch(ctx context.Context, req *pb.PatchImageRequest) (*pb.Op
 	})
 }
 
+// patchableImageFields are the Image fields that images.patch can change.
+var patchableImageFields = map[protoreflect.Name]bool{
+	"architecture":        true,
+	"deletion_protection": true,
+	"description":         true,
+	"family":              true,
+}
+
+// applyImagePatch applies an images.patch body to a copy of stored, the way real GCE does:
+//   - A body that changes any field other than patchableImageFields is rejected with
+//     "Updating '<field>' is not supported.". Fields sent with their stored value are accepted.
+//   - A body that contains labels is rejected even when the labels are unchanged, because labels
+//     can only be changed with images.setLabels.
+//
+// GCE reports a changed field before it reports labels, so the checks run in that order.
+func applyImagePatch(stored, patch *pb.Image) (*pb.Image, error) {
+	updated := proto.CloneOf(stored)
+	src, dst, old := patch.ProtoReflect(), updated.ProtoReflect(), stored.ProtoReflect()
+	fields := src.Descriptor().Fields()
+	for i := 0; i < fields.Len(); i++ {
+		fd := fields.Get(i)
+		if !src.Has(fd) || fd.Name() == "labels" {
+			continue
+		}
+		if patchableImageFields[fd.Name()] {
+			dst.Set(fd, src.Get(fd))
+			continue
+		}
+		if !src.Get(fd).Equal(old.Get(fd)) {
+			return nil, status.Errorf(codes.InvalidArgument, "Invalid value for field 'resource.%s': '%v'. Updating '%s' is not supported.",
+				fd.JSONName(), src.Get(fd).Interface(), fd.JSONName())
+		}
+	}
+	if len(patch.GetLabels()) != 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "Invalid value for field 'resource.labels': ''. Updating 'labels' is not supported.")
+	}
+	return updated, nil
+}
+
 func (s *ImagesV1) SetLabels(ctx context.Context, req *pb.SetLabelsImageRequest) (*pb.Operation, error) {
 	name, err := s.parseImageName(req.GetProject(), req.GetResource())
 	if err != nil {
@@ -202,6 +247,11 @@ func (s *ImagesV1) SetLabels(ctx context.Context, req *pb.SetLabelsImageRequest)
 			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
 		}
 		return nil, err
+	}
+
+	// Like GCE, refuse a stale fingerprint so that a lost update is caught.
+	if req.GetGlobalSetLabelsRequestResource().GetLabelFingerprint() != obj.GetLabelFingerprint() {
+		return nil, status.Errorf(codes.FailedPrecondition, "Labels fingerprint either invalid or resource labels have changed")
 	}
 
 	if s.pendingLabels == nil {
