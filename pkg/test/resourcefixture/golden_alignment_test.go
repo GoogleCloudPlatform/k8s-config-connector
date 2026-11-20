@@ -680,6 +680,51 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "kubectlVersionSupportedCondition")
 		delete(v, "kustomizeVersionSupportedCondition")
 		delete(v, "skaffoldVersionSupportedCondition")
+		if v["kind"] == "compute#backendService" {
+			if iap, ok := v["iap"].(map[string]interface{}); ok {
+				delete(iap, "oauth2ClientSecret")
+			}
+			if backends, ok := v["backends"].([]interface{}); ok && len(backends) > 1 {
+				seen := make(map[string]bool)
+				var uniqueBackends []interface{}
+				for _, b := range backends {
+					if bm, ok := b.(map[string]interface{}); ok {
+						if group, ok := bm["group"].(string); ok {
+							normGroup := group
+							if idx := strings.Index(normGroup, "projects/"); idx != -1 {
+								normGroup = normGroup[idx:]
+							}
+							if !seen[normGroup] {
+								seen[normGroup] = true
+								uniqueBackends = append(uniqueBackends, b)
+							}
+							continue
+						}
+					}
+					uniqueBackends = append(uniqueBackends, b)
+				}
+				v["backends"] = uniqueBackends
+			}
+			if healthChecks, ok := v["healthChecks"].([]interface{}); ok && len(healthChecks) > 1 {
+				seen := make(map[string]bool)
+				var uniqueHCs []interface{}
+				for _, hc := range healthChecks {
+					if hcs, ok := hc.(string); ok {
+						normHC := hcs
+						if idx := strings.Index(normHC, "projects/"); idx != -1 {
+							normHC = normHC[idx:]
+						}
+						if !seen[normHC] {
+							seen[normHC] = true
+							uniqueHCs = append(uniqueHCs, hc)
+						}
+						continue
+					}
+					uniqueHCs = append(uniqueHCs, hc)
+				}
+				v["healthChecks"] = uniqueHCs
+			}
+		}
 		if dps, ok := v["deliveryPipelineSnapshot"].(map[string]interface{}); ok {
 			delete(dps, "etag")
 		}

@@ -98,7 +98,21 @@ func (s *GlobalBackendServicesV1) Update(ctx context.Context, req *pb.UpdateBack
 	}
 
 	// TODO: Implement helper to implement the full rules here
-	proto.Merge(obj, req.GetBackendServiceResource())
+	reqResource := req.GetBackendServiceResource()
+	if reqResource.HealthChecks != nil {
+		obj.HealthChecks = nil
+	}
+	if reqResource.Backends != nil {
+		obj.Backends = nil
+	}
+	if reqResource.CustomRequestHeaders != nil {
+		obj.CustomRequestHeaders = nil
+	}
+	if reqResource.CustomResponseHeaders != nil {
+		obj.CustomResponseHeaders = nil
+	}
+	proto.Merge(obj, reqResource)
+	s.populateBackendServiceDefaults(ctx, obj)
 
 	obj.Fingerprint = PtrTo(computeFingerprint(obj))
 
