@@ -32,6 +32,13 @@ Usage:
   hack/manual-validate/changed_kinds.py --since "7 days ago"
   hack/manual-validate/changed_kinds.py --base <ref> [--head origin/master] --format json
   hack/manual-validate/changed_kinds.py --since "1 day ago" --format items   # fan-out item lines
+  hack/manual-validate/changed_kinds.py --base <sha> --format title          # a batch issue's title
+  hack/manual-validate/changed_kinds.py --base <sha> --format issue          # a batch issue's body
+
+--format issue writes a complete fan-out parent: the spec (window, child labels), the task (one
+kcc-manual-validate issue graph per Kind, with what changed), the items, the final aggregation
+step, the report, and a marker with the window's commits (BATCH_MARKER) that the next batch
+starts from. .agents/verify-changes.md opens it daily.
 """
 
 import argparse
@@ -364,7 +371,7 @@ def scout(repo, base, head, mechanical_threshold, sample):
                     picked += 1
 
     results.sort(key=lambda r: (CLASS_ORDER.index(r["class"]), r["kind"]))
-    return {"base": base[:10], "head": head[:10], "commits": len(commits),
+    return {"base": base[:10], "head": head[:10], "base_sha": base, "head_sha": head, "commits": len(commits),
             "mechanical_commits": mechanical_commits, "kinds": results}
 
 
@@ -405,6 +412,93 @@ def render_md(report, window):
     return "\n".join(out) + "\n"
 
 
+# Must match the `change` param's pattern in .agents/graphs/kcc-manual-validate.yaml.
+ITEM_LINE_DROP = re.compile(r"[^A-Za-z0-9 *:;,.()#_/-]")
+BATCH_LABEL = "manual-validate/batch"
+BATCH_MARKER = "<!-- manual-validate-batch base={base} head={head} -->"
+BATCH_MARKER_RE = re.compile(r"<!-- manual-validate-batch base=([0-9a-f]+) head=([0-9a-f]+) -->")
+
+
+def item_line(r):
+    """A fan-out checklist line: the bold name is the item's key; the rest says what changed.
+    It becomes the kcc-manual-validate graph's `change` param, so it keeps only the characters
+    that param's pattern allows (ITEM_LINE_ALLOWED) and its length."""
+    prs = " ".join(f"#{p}" for p in r["prs"])
+    text = f"**{r['kind']}** - {r['class']}: {r['why']}" + (f" ({prs})" if prs else "")
+    text = ITEM_LINE_DROP.sub("", text)
+    return text if len(text) <= 400 else text[:397] + "..."
+
+
+def render_title(report):
+    return f"Verify changed Kinds {report['base']}..{report['head']}"
+
+
+def render_issue(report, window):
+    sel = [r for r in report["kinds"] if r["selected"]]
+    base, head = report["base_sha"], report["head_sha"]
+    items = "\n".join(f"- [ ] {item_line(r)}" for r in sel)
+    # No headings inside the report: the fan-out reads the body's ## sections as the spec.
+    scout = re.sub(r"^#+ (.*)$", r"**\1**", render_md(report, window), flags=re.M)
+    return f"""Human-style validation, against real GCP, of every Kind whose controller changed on master in
+{report['base']}..{report['head']} ({report['commits']} commits). One child per Kind runs the
+`kcc-manual-validate` issue graph: it writes or extends `hack/manual-validate/<kind>/validate.sh` for
+what changed, runs it, and reports. The final child aggregates the reports.
+
+Opened by `.agents/verify-changes.md` from `hack/manual-validate/changed_kinds.py`.
+
+<details><summary>Change scout report</summary>
+
+{scout}
+</details>
+
+{BATCH_MARKER.format(base=base, head=head)}
+
+## Fan-out
+```yaml
+title: "Verify {{{{.item.name}}}} ({report['base']}..{report['head']})"
+labels: [manual-validate]
+group: 1
+create: lazy
+window: {{start: 2, max: 3}}
+checkpoints: []
+```
+
+## Task
+Validate the {{{{.item.name}}}} controller against real GCP, focusing on what changed on master in
+{report['base']}..{report['head']}: {{{{.item.line}}}}
+
+```factory-graph
+graph: kcc-manual-validate
+params:
+  kind: "{{{{.item.name}}}}"
+  change: "{{{{.item.line}}}}"
+  base: "{base}"
+  head: "{head}"
+```
+
+## Items
+{items}
+
+## Finally
+Write the verification report for this batch. Make no commit: your final answer is the report, and it is
+posted on this issue.
+
+1. This issue says which issue it is `Part of`: that is the batch. Read the batch's progress comment
+   (`gh issue view <batch> --comments`, the comment headed "Fan-out progress"): it lists every child
+   issue and its PR.
+2. For each child (one per Kind): `gh issue view <child> --comments`, then the PR its graph opened
+   (`gh pr view <pr> --comments`) if any. Each validation step ends with a REPORT summary: the verdict,
+   the number of checks passed and failed, and any controller bugs found. A child closed with no PR
+   reported in its closing comment instead.
+3. Answer with:
+   - one line: N Kinds, how many PASS, FAIL, not run (and why);
+   - a table: Kind | change | verdict | checks (passed/failed) | new checks added | controller bugs | PR;
+   - every FAIL and controller bug, each with its evidence as the child reported it;
+   - what could not be checked out of band, per Kind.
+   Do not re-run anything; report only what the children reported.
+"""
+
+
 def yn(b):
     return "yes" if b else "no"
 
@@ -419,7 +513,7 @@ def main(argv=None):
     p.add_argument("--mechanical-threshold", type=int, default=8,
                    help="a commit changing code of this many Kinds or more is a bulk change")
     p.add_argument("--sample", type=int, default=1, help="Kinds to sample from each bulk commit")
-    p.add_argument("--format", choices=("md", "json", "items"), default="md")
+    p.add_argument("--format", choices=("md", "json", "items", "title", "issue"), default="md")
     a = p.parse_args(argv)
 
     base, head = resolve_range(a.repo, a.base, a.head, a.since)
@@ -431,7 +525,11 @@ def main(argv=None):
     elif a.format == "items":
         for r in report["kinds"]:
             if r["selected"]:
-                print(f"- [ ] {r['kind']}")
+                print(f"- [ ] {item_line(r)}")
+    elif a.format == "title":
+        print(render_title(report))
+    elif a.format == "issue":
+        sys.stdout.write(render_issue(report, window))
     else:
         sys.stdout.write(render_md(report, window))
 

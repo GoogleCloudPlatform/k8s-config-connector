@@ -152,5 +152,32 @@ class ScoutTest(unittest.TestCase):
         self.assertFalse(got["FooGadget"]["selected"])
 
 
+class BatchIssueTest(unittest.TestCase):
+    ROW = {"kind": "FooWidget", "class": "fields", "why": 'fields added: size; "quoted" {x}\\n',
+           "prs": [11, 12], "fields": {}, "commits": [], "mechanical_from": [], "has_fixture": True,
+           "has_script": False, "released": True, "controller": "direct", "selected": True}
+
+    def test_item_line_fits_the_graph_param(self):
+        line = ck.item_line(self.ROW)
+        self.assertTrue(line.startswith("**FooWidget** - fields: fields added: size;"))
+        self.assertRegex(line, r"^[A-Za-z0-9 *:;,.()#_/-]{0,400}$")
+        self.assertTrue(line.endswith("(#11 #12)"))
+        long = dict(self.ROW, why="x" * 1000)
+        self.assertLessEqual(len(ck.item_line(long)), 400)
+
+    def test_issue(self):
+        report = {"base": "a" * 10, "head": "b" * 10, "base_sha": "a" * 40, "head_sha": "b" * 40,
+                  "commits": 3, "mechanical_commits": [], "kinds": [self.ROW]}
+        body = ck.render_issue(report, "since 1 day ago")
+        m = ck.BATCH_MARKER_RE.search(body)
+        self.assertEqual(m.groups(), ("a" * 40, "b" * 40))
+        headings = [l for l in body.splitlines() if l.startswith("#")]
+        self.assertEqual(headings, ["## Fan-out", "## Task", "## Items", "## Finally"])
+        self.assertIn("graph: kcc-manual-validate", body)
+        self.assertIn('kind: "{{.item.name}}"', body)
+        self.assertIn("- [ ] " + ck.item_line(self.ROW), body)
+        self.assertEqual(ck.render_title(report), "Verify changed Kinds aaaaaaaaaa..bbbbbbbbbb")
+
+
 if __name__ == "__main__":
     unittest.main()
