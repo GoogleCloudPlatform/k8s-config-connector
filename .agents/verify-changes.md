@@ -33,9 +33,9 @@ and you make no code changes: one script decides everything and opens at most on
    ```
 
    It fetches `master`, finds the previous "Verify changed Kinds" batch (label
-   `manual-validate/batch`), runs `hack/manual-validate/changed_kinds.py` on the commits since that
+   `validate/batch`), runs `hack/manual-validate/changed_kinds.py` on the commits since that
    batch's head, and, if any Kind is worth verifying and no issue with the same title exists, opens
-   the batch issue labelled `overseer/fanout` and `manual-validate/batch`. The issue's body is the
+   the batch issue labelled `overseer/fanout` and `validate/batch`. The issue's body is the
    complete fan-out spec; do not edit it.
 
 2. Report what it printed (its lines start with `open-batch:`): the window, the Kinds selected, and

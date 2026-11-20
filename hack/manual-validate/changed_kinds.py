@@ -414,7 +414,7 @@ def render_md(report, window):
 
 # Must match the `change` param's pattern in .agents/graphs/kcc-manual-validate.yaml.
 ITEM_LINE_DROP = re.compile(r"[^A-Za-z0-9 *:;,.()#_/-]")
-BATCH_LABEL = "manual-validate/batch"
+BATCH_LABEL = "validate/batch"
 BATCH_MARKER = "<!-- manual-validate-batch base={base} head={head} -->"
 BATCH_MARKER_RE = re.compile(r"<!-- manual-validate-batch base=([0-9a-f]+) head=([0-9a-f]+) -->")
 

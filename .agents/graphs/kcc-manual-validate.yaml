@@ -81,6 +81,10 @@ spec:
         .gemini/skills/manual-validate-controller/SKILL.md: every check must compare the applied
         object with a value read from GCP outside KCC (REST, gcloud/bq, audit logs), never KCC
         status; the change named in the PR description must be covered; cleanup must leak-check.
+        The tests are cumulative: compare with the script and fixtures/ on master - no existing
+        check or fixture variant may be removed or weakened, unless the API itself removed or
+        changed what it checks and the PR description says so. The PR's report must cover the
+        default fixture and every variant under fixtures/.
         The PR must not touch the controller, the types, or any test fixture or golden file.
       body: |
         Validate the {{ .Params.kind }} controller against real GCP, the way a person would, and
@@ -108,19 +112,35 @@ spec:
              compared to the value read from GCP after create, and changed in the update phase if it
              is mutable. A removed field: check the script no longer sets it and the resource still
              works.
+           - **The tests are cumulative: add, never replace.** Keep every existing check and every
+             fixture variant under `fixtures/` as it is. Change or remove one only when the API itself
+             removed or changed what it checks (a field removed in this change), and say which and
+             why in the PR description. Previous batches built this script; it must still check
+             everything it checked before, plus this change.
            - Never edit test fixtures, golden files, `_http.log`, the controller or the types.
-        3. **Run it** from a clean start, in this sandbox's project:
-           `GCP_PROJECT_ID="${GCP_PROJECT_ID}" hack/manual-validate/<kind lowercase>/validate.sh`
-           (allow 30 minutes or more). It writes `artifactz/manual-validation/<Kind>/<time>/REPORT.md`.
+        3. **Run it** from a clean start, in this sandbox's project, once with the default fixture
+           and once per variant under `hack/manual-validate/<kind lowercase>/fixtures/`:
+           ```bash
+           GCP_PROJECT_ID="${GCP_PROJECT_ID}" hack/manual-validate/<kind lowercase>/validate.sh
+           for v in hack/manual-validate/<kind lowercase>/fixtures/*/; do
+             [ -d "$v" ] || continue
+             FIXTURE_DIR="$v" GCP_PROJECT_ID="${GCP_PROJECT_ID}" hack/manual-validate/<kind lowercase>/validate.sh
+           done
+           ```
+           (allow 30 minutes or more per run). Each run writes its own
+           `artifactz/manual-validation/<Kind>/<time>/REPORT.md`.
            A failure caused by the script (wrong URL, jq path, eventual consistency) is yours to fix
            and re-run, at most 3 times. A failure caused by the controller is a finding: keep the
            check, do not weaken it.
         4. **Report.** Commit only the script and any fixture variants (never `artifactz/` or
            `.build/`). Put the summary in the PR description (or, with no commit, in your answer):
-           - `Verdict: PASS|FAIL - N passed, M failed`, and the run's start and end time;
-           - the REPORT table's rows (phase, check, result, detail), with email addresses and the
-             project number removed;
-           - which checks are new for this change;
+           - `Verdict: PASS|FAIL - N passed, M failed` for each run (the default fixture and each
+             variant, by name), with its start and end time; the overall verdict is FAIL if any run
+             failed;
+           - each run's REPORT table rows (phase, check, result, detail), with email addresses and
+             the project number removed;
+           - which checks and variants are new for this change, and any existing check changed or
+             removed because the API changed (with why);
            - **Controller bugs**: each failure the controller caused, with the check and the values
              it saw; or "none";
            - what could not be checked out of band, and why.

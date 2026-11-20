@@ -29,7 +29,7 @@ set -o nounset
 set -o pipefail
 
 REPO="${REPO:-GoogleCloudPlatform/k8s-config-connector}"
-BATCH_LABEL="manual-validate/batch"
+BATCH_LABEL="validate/batch"
 FANOUT_LABEL="${FANOUT_LABEL:-overseer/fanout}"
 DRY_RUN=0
 [[ "${1:-}" == "--dry-run" ]] && DRY_RUN=1
@@ -95,7 +95,7 @@ if [[ "${DRY_RUN}" == "1" ]]; then
 fi
 
 gh label create "${BATCH_LABEL}" -R "${REPO}" --color 0E8A16 \
-  --description "A daily manual-validation batch (hack/manual-validate/open-batch.sh)" >/dev/null 2>&1 || true
+  --description "validate batch" >/dev/null 2>&1 || true
 gh label create manual-validate -R "${REPO}" --color 0E8A16 \
   --description "Manual validation of a controller against real GCP" >/dev/null 2>&1 || true
 URL="$(gh issue create -R "${REPO}" --title "${TITLE}" --label "${FANOUT_LABEL}" --label "${BATCH_LABEL}" --body-file "${BODY}")"
