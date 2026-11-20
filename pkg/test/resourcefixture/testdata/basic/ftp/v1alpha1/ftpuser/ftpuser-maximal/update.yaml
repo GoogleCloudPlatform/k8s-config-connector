@@ -1,0 +1,22 @@
+apiVersion: ftp.cnrm.cloud.google.com/v1alpha1
+kind: FTPUser
+metadata:
+  name: ftpumax-${uniqueId}
+  labels:
+    test-label: ftpuser-upd-${uniqueId}
+spec:
+  resourceID: ftpumax-${uniqueId}
+  parentRef:
+    name: ftpserv-max-${uniqueId}
+  customerServiceAccountRef:
+    name: ftpsa-max-${uniqueId}
+  userCredentials:
+  - credentialName: cred-max-upd
+    credentialType: PUBLIC_KEY
+    sshPublicKeyBody: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILDTXQTace+X3/UzfTakKH89APZsbgFD3+ig1pI2rjMd"
+  storageDirectoryMappings:
+  - bucketRef:
+      name: ftpbucket-max-${uniqueId}
+    bucketPrefix: "downloads"
+    directory: "/home/user-upd"
+    permission: READ_ONLY

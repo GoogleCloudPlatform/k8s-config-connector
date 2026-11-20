@@ -874,6 +874,30 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 			}
 
+			// Inject status.externalRef for FTPServer to simulate a reconciled server in static unit tests.
+			if u.GetKind() == "FTPServer" && u.GroupVersionKind().Group == "ftp.cnrm.cloud.google.com" {
+				projectID, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external")
+				projectID = strings.TrimPrefix(projectID, "projects/")
+				if projectID == "" {
+					projectID = annotations["cnrm.cloud.google.com/project-id"]
+				}
+				if projectID == "" {
+					projectID = "mock-project"
+				}
+				location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
+				if location == "" {
+					location = "us-central1"
+				}
+				serverID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+				if serverID == "" {
+					serverID = u.GetName()
+				}
+				extRef := fmt.Sprintf("projects/%s/locations/%s/servers/%s", projectID, location, serverID)
+				if err := unstructured.SetNestedField(u.Object, extRef, "status", "externalRef"); err != nil {
+					t.Fatalf("failed to inject status.externalRef for FTPServer %s: %v", u.GetName(), err)
+				}
+			}
+
 			// If the identity is server-generated, and not specified, inject a spec.resourceID value.
 			gk := u.GroupVersionKind().GroupKind()
 			if obj, err := kccscheme.NewObject(gk); err == nil {
@@ -1282,6 +1306,26 @@ func normalizeFixtureKCCObjects(allObjs []*unstructured.Unstructured) []*unstruc
 				importJobID = u.GetName()
 			}
 			extRef := fmt.Sprintf("projects/%s/locations/%s/importJobs/%s", projectID, location, importJobID)
+			_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+		}
+		if u.GetKind() == "FTPServer" && group == "ftp.cnrm.cloud.google.com" {
+			projectID, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external")
+			projectID = strings.TrimPrefix(projectID, "projects/")
+			if projectID == "" {
+				projectID = ann["cnrm.cloud.google.com/project-id"]
+			}
+			if projectID == "" {
+				projectID = "mock-project"
+			}
+			location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
+			if location == "" {
+				location = "us-central1"
+			}
+			serverID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+			if serverID == "" {
+				serverID = u.GetName()
+			}
+			extRef := fmt.Sprintf("projects/%s/locations/%s/servers/%s", projectID, location, serverID)
 			_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
 		}
 		kccObjs = append(kccObjs, u)

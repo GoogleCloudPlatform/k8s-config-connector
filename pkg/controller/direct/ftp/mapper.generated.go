@@ -334,19 +334,24 @@ func StorageDirectoryMapping_FromProto(mapCtx *direct.MapContext, in *pb.Storage
 	out.Permission = direct.Enum_FromProto(mapCtx, in.GetPermission())
 	return out
 }
-func StorageDirectoryMapping_ToProto(mapCtx *direct.MapContext, in *krm.StorageDirectoryMapping) *pb.StorageDirectoryMapping {
-	if in == nil {
-		return nil
+
+/*
+found existing non-generated mapping function "StorageDirectoryMapping_ToProto", skipping
+
+	func StorageDirectoryMapping_ToProto(mapCtx *direct.MapContext, in *krm.StorageDirectoryMapping) *pb.StorageDirectoryMapping {
+		if in == nil {
+			return nil
+		}
+		out := &pb.StorageDirectoryMapping{}
+		if in.BucketRef != nil {
+			out.Bucket = in.BucketRef.External
+		}
+		out.BucketPrefix = direct.ValueOf(in.BucketPrefix)
+		out.Directory = direct.ValueOf(in.Directory)
+		out.Permission = direct.Enum_ToProto[pb.StorageDirectoryMapping_Permission](mapCtx, in.Permission)
+		return out
 	}
-	out := &pb.StorageDirectoryMapping{}
-	if in.BucketRef != nil {
-		out.Bucket = in.BucketRef.External
-	}
-	out.BucketPrefix = direct.ValueOf(in.BucketPrefix)
-	out.Directory = direct.ValueOf(in.Directory)
-	out.Permission = direct.Enum_ToProto[pb.StorageDirectoryMapping_Permission](mapCtx, in.Permission)
-	return out
-}
+*/
 func UserCredential_FromProto(mapCtx *direct.MapContext, in *pb.UserCredential) *krm.UserCredential {
 	if in == nil {
 		return nil

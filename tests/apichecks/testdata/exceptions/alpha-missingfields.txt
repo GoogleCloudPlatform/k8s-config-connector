@@ -5389,15 +5389,6 @@
 [missing_field] crd=firestorefields.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.indexConfig.indexes[].fields[].vectorConfig.flat" is not set in unstructured objects
 [missing_field] crd=firestorefields.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.indexConfig.indexes[].multikey" is not set in unstructured objects
 [missing_field] crd=firestorefields.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.indexConfig.indexes[].shardCount" is not set in unstructured objects
-[missing_field] crd=ftpusers.ftp.cnrm.cloud.google.com version=v1alpha1: field ".spec.customerServiceAccountRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=ftpusers.ftp.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=ftpusers.ftp.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDirectoryMappings[].bucketPrefix" is not set in unstructured objects
-[missing_field] crd=ftpusers.ftp.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDirectoryMappings[].bucketRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=ftpusers.ftp.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDirectoryMappings[].directory" is not set in unstructured objects
-[missing_field] crd=ftpusers.ftp.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDirectoryMappings[].permission" is not set in unstructured objects
-[missing_field] crd=ftpusers.ftp.cnrm.cloud.google.com version=v1alpha1: field ".spec.userCredentials[].credentialName" is not set in unstructured objects
-[missing_field] crd=ftpusers.ftp.cnrm.cloud.google.com version=v1alpha1: field ".spec.userCredentials[].credentialType" is not set in unstructured objects
-[missing_field] crd=ftpusers.ftp.cnrm.cloud.google.com version=v1alpha1: field ".spec.userCredentials[].sshPublicKeyBody" is not set in unstructured objects
 [missing_field] crd=geminidataanalyticsdataagents.geminidataanalytics.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigqueryAgentAnalyticsEnabled" is not set in unstructured objects
 [missing_field] crd=geminidataanalyticsdataagents.geminidataanalytics.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigqueryAgentAnalyticsTable.datasetID" is not set in unstructured objects
 [missing_field] crd=geminidataanalyticsdataagents.geminidataanalytics.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigqueryAgentAnalyticsTable.projectID" is not set in unstructured objects

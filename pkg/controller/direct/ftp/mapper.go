@@ -15,10 +15,35 @@
 package ftp
 
 import (
+	"strings"
+
 	ftppb "cloud.google.com/go/ftp/apiv1/ftppb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/ftp/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
+func StorageDirectoryMapping_ToProto(mapCtx *direct.MapContext, in *krm.StorageDirectoryMapping) *ftppb.StorageDirectoryMapping {
+	if in == nil {
+		return nil
+	}
+	out := &ftppb.StorageDirectoryMapping{}
+	if in.BucketRef != nil {
+		bucket := in.BucketRef.External
+		if idx := strings.LastIndex(bucket, "/buckets/"); idx != -1 {
+			bucket = bucket[idx+len("/buckets/"):]
+		} else if strings.HasPrefix(bucket, "gs://") {
+			bucket = strings.TrimPrefix(bucket, "gs://")
+			bucket = strings.TrimSuffix(bucket, "/")
+		} else if bucket == "" && in.BucketRef.Name != "" {
+			bucket = in.BucketRef.Name
+		}
+		out.Bucket = bucket
+	}
+	out.BucketPrefix = direct.ValueOf(in.BucketPrefix)
+	out.Directory = direct.ValueOf(in.Directory)
+	out.Permission = direct.Enum_ToProto[ftppb.StorageDirectoryMapping_Permission](mapCtx, in.Permission)
+	return out
+}
 
 func InternalServerConfig_AllowedConsumer_ToProto(mapCtx *direct.MapContext, in *krm.InternalServerConfig_AllowedConsumer) *ftppb.InternalServerConfig_AllowedConsumer {
 	if in == nil {

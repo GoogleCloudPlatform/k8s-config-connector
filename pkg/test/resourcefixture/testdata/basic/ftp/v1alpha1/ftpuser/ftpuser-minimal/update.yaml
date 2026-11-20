@@ -1,0 +1,18 @@
+apiVersion: ftp.cnrm.cloud.google.com/v1alpha1
+kind: FTPUser
+metadata:
+  name: ftpumin-${uniqueId}
+spec:
+  parentRef:
+    name: ftpserv-min-${uniqueId}
+  customerServiceAccountRef:
+    name: ftpsa-min-${uniqueId}
+  userCredentials:
+  - credentialName: cred1
+    credentialType: PUBLIC_KEY
+    sshPublicKeyBody: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHim2opOwxlv6qeSHf0HnRTHF6tlsOWUfOM2CbLBz3sH"
+  storageDirectoryMappings:
+  - bucketRef:
+      name: ftpbucket-min-${uniqueId}
+    directory: "/home/user"
+    permission: READ_WRITE

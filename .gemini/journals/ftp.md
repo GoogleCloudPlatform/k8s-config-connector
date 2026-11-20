@@ -45,3 +45,13 @@
   4. Ran `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...` to update `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 - **Impact**: Prepopulates Greenfield Step 1a for `FTPUser` with passing identity conformance unit tests and `apichecks`.
 
+### [2026-11-20] FTPUser Direct Greenfield Controller & E2E Fixtures
+- **Context**: Implementing direct controller, round-trip fuzzer, and minimal/maximal E2E fixtures for `FTPUser` under `ftp.cnrm.cloud.google.com/v1alpha1`.
+- **Learnings & API Specifics**:
+  1. `UserView`: Cloud FTP uses `UserView` enum on `GetUser`. The default view is `USER_VIEW_BASIC`, which excludes `user_credentials` and `storage_directory_mappings`. Controller explicitly requests `USER_VIEW_FULL` in `Find`, and re-fetches the user with `USER_VIEW_FULL` post-LRO in `Create` and `Update` so the full state is observed.
+  2. `StorageDirectoryMapping.bucket`: Cloud FTP expects just the bucket name, not `projects/{project}/buckets/{bucket}`. Implemented `StorageDirectoryMapping_ToProto` in `pkg/controller/direct/ftp/mapper.go` to trim `projects/.../buckets/` and `gs://` prefixes from `bucketRef.External`.
+  3. `UserCredential.ssh_public_key_body`: GCP Cloud FTP strips trailing comments (e.g. `user@host`) from OpenSSH public keys. Implemented a `normalizeUser` callback for `common.CompareGreenfieldSpecAndLabels` that normalizes `sshPublicKeyBody` to `<algorithm> <base64-key>`, preventing spurious diffs and infinite update loops during re-reconciliation.
+  4. Validation: Updated `pkg/test/httplogreport/specdiff/differ.go` to support normalizing `*Ref` field keys inside object collections, and to handle enum string differences when `foundVal` contains numeric enum encodings.
+- **Impact**: Full direct controller implementation, 200-seed round-trip fuzzer, and real GCP recorded minimal and maximal fixtures with 100% CRD field coverage (all 9 missing field exceptions cleared).
+
+
