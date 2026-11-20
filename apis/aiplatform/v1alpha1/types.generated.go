@@ -45,6 +45,7 @@
 // resource: AIPlatformNotebookExecutionJob:NotebookExecutionJob
 // resource: AIPlatformBatchPredictionJob:BatchPredictionJob
 // resource: AIPlatformNasJob:NasJob
+// resource: AIPlatformTensorboardRun:TensorboardRun
 
 package v1alpha1
 
