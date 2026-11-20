@@ -33,7 +33,9 @@ Reference implementation: `hack/manual-validate/bigqueryrowaccesspolicy/validate
   ADC token by default (`MV_REST_TOKEN_CMD`), because gcloud *user* tokens are often bound to
   context-aware access/mTLS and get `401 ... restricted by domain admin policy` from plain curl.
   The checks are still out of band: curl/bq, never the controller's client libraries.
-- `GCP_PROJECT_ID` set to a project with billing and the service API enabled.
+- `GCP_PROJECT_ID` set to a project with billing. The script enables the service APIs it needs
+  (`mv_enable_apis`), which takes `serviceusage.services.enable` on the project; without it, set
+  `MV_ENABLE_APIS=0` and a disabled API fails the run with the command to enable it.
 - Optional for org/folder-scoped kinds: `TEST_ORG_ID`, `TEST_FOLDER_ID`, `TEST_BILLING_ACCOUNT_ID`.
 
 ## Workflow
@@ -46,9 +48,16 @@ Reference implementation: `hack/manual-validate/bigqueryrowaccesspolicy/validate
    script can build cloud URLs **without asking KCC**.
 3. Read the fixture's `_http.log` to learn the exact REST resource URLs and API version, and any
    side APIs (e.g. `:getIamPolicy`) the controller uses to apply fields.
-4. Find the out-of-band tools: the `gcloud`/`bq` command that describes the resource, and the
+4. List the **service APIs** the run needs: every `*.googleapis.com` host in the fixture's
+   `_http.log` files (the Kind's and, through them, its dependencies'):
+   `grep -ohE 'https://[a-z0-9.-]+\.googleapis\.com' <fixture-dir>/_http*.log | sort -u`.
+   A host is its service name (`bigquery.googleapis.com`); a regional host
+   (`us-central1-aiplatform.googleapis.com`) is the service without the region, which
+   `mv_enable_apis` strips for you. Add the APIs your out-of-band and functional checks call too
+   (e.g. `logging.googleapis.com` for the audit-log check).
+5. Find the out-of-band tools: the `gcloud`/`bq` command that describes the resource, and the
    REST GET URL. If there is no gcloud surface, REST alone is acceptable; say so in the report.
-5. Decide on a **functional check**, i.e. something a user would do to prove the resource
+6. Decide on a **functional check**, i.e. something a user would do to prove the resource
    *works*, not just exists (send a message to a topic, query through a policy, resolve a DNS
    record, call an endpoint). Skip only when nothing reasonable and cheap exists; record why.
 
@@ -59,6 +68,8 @@ Copy the reference script's structure:
 - `. "${HERE}/../lib.sh"`, then `mv_init <Kind>`, then derive all names/URLs from `${MV_UNIQUE_ID}`.
 - `trap cleanup EXIT`: cleanup must delete remaining KCC objects in reverse dependency order and
   then **leak-check GCP via REST**, recording FAIL with a manual cleanup command if anything remains.
+- `mv_enable_apis setup <service>...` with the APIs from step 1.4, before `mv_up`, so a disabled
+  API is enabled (and recorded) before anything is applied rather than failing a create later.
 - `mv_up` starts envtest and the manager; the namespace is annotated with the project.
 - Phases, each with receipts:
 
@@ -96,7 +107,12 @@ Open `<run-dir>/REPORT.md`. For every FAIL, look at the evidence file and decide
   "fix" it by weakening the check.
 - **Script/fixture problem** (wrong URL, wrong jq path, eventual consistency): fix the script
   and re-run. At most 3 re-runs for a given failure, then escalate with the blocker.
-- **Environment** (API disabled, quota, permissions): fix the environment or escalate.
+- **API disabled** (`SERVICE_DISABLED`, "has not been used in project ... or it is disabled"):
+  add the service to the script's `mv_enable_apis` list and re-run; that is a script fix, not an
+  escalation. Right after an enable the API can still refuse calls for a minute or two; re-run
+  rather than adding sleeps.
+- **Environment** (quota, permissions, billing, an API that cannot be enabled): escalate with the
+  error.
 
 Then summarize for the human: verdict, the PASS/FAIL table, run dir, PDT start/end, and anything
 that couldn't be checked out of band, with the reason.
@@ -113,6 +129,7 @@ A later agent reuses `validate.sh` with broader manifests:
 
 ## Critical rules
 
+- **Never disable an API**, not even one this run enabled: the project is shared.
 - **Real resources cost money.** Never run without an explicit project, and never skip the cleanup trap.
 - **Never edit golden files or `_http.log`**; this skill does not produce or change test fixtures.
 - **Out of band means out of band.** No checks through KCC status, KCC clients, or MockGCP.
