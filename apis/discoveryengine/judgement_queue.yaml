@@ -21,6 +21,33 @@
 # file does not have.
 
 entries:
+  - kind: DiscoveryEngineAssistant
+    group: discoveryengine.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: DiscoveryEngineAssistant
+    group: discoveryengine.cnrm.cloud.google.com
+    reason: empty-observedstate
+    detail: nothing was generated into status.observedState; the proto probably marks no field OUTPUT_ONLY, so output fields landed in the Spec. Decide what belongs in status
+    status: open
+  - kind: DiscoveryEngineAssistant
+    group: discoveryengine.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/assistants/{assistant}" contains ancestor segment(s) collections/{collection}, engines/{engine} with no matching reference or field on DiscoveryEngineAssistantSpec
+    status: open
+  - kind: DiscoveryEngineAssistant
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .spec.engineRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to DiscoveryEngineEngineRef, read from the engines segment of projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/assistants/{assistant}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: DiscoveryEngineAssistant
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/collections/{collection}/engines/{engine}, which already names the location; a reference to it could replace location and the root reference
+    status: open
   - kind: DiscoveryEngineWidgetConfig
     group: discoveryengine.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
