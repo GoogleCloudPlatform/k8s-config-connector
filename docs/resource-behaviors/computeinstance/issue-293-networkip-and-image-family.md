@@ -34,14 +34,15 @@ Issue 293 reports ComputeInstances that fail or keep re-applying after creation 
 
 | Test | What it asserts | Before fix | After fix ([#16232](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/16232)) |
 | --- | --- | --- | --- |
-| `networkIpRef by name` | ComputeAddress name reference, live IP. No immutable change, no diff, label-only update. | PASS | Expected PASS |
-| `networkIpRef.external IP` | Literal IP in `networkIpRef.external`. Same assertions. | PASS | Expected PASS |
-| `networkIpRef.external address selfLink` | Address selfLink that resolves to the live IP. Same assertions. | FAIL: immutable `networkInterface.0.NetworkIp` error | Expected PASS |
-| `networkIpRef.external address path` | Address path that resolves to the live IP. Same assertions. | FAIL: immutable `networkInterface.0.NetworkIp` error | Expected PASS |
-| `networkIpRef.external address selfLink, networkRef.external path` | Address selfLink with the network written as a relative path (the mock shape). Same assertions. | FAIL: perpetual `network_interface.0.network_ip` diff | Expected PASS |
-| `sourceImageRef COS family shorthand` | `cos-cloud/cos-81-lts` against the live COS image. Same assertions. | PASS | Expected PASS |
-| `sourceImageRef COS family path` | `projects/cos-cloud/global/images/family/cos-81-lts` against the live COS image. Same assertions. | PASS | Expected PASS |
-| `control: sourceImageRef different COS family` | Spec changes to `cos-cloud/cos-85-lts`. Must require replacement, with `bootDisk.0.InitializeParams.0.Image` as the immutable field. | PASS | Expected PASS |
+| `networkIpRef by name` | ComputeAddress name reference, live IP. No immutable change, no diff, label-only update. | PASS | PASS |
+| `networkIpRef.external IP` | Literal IP in `networkIpRef.external`. Same assertions. | PASS | PASS |
+| `networkIpRef.external address selfLink` | Address selfLink that resolves to the live IP. Same assertions. | FAIL: immutable `networkInterface.0.NetworkIp` error | PASS |
+| `networkIpRef.external address path` | Address path that resolves to the live IP. Same assertions. | FAIL: immutable `networkInterface.0.NetworkIp` error | PASS |
+| `networkIpRef.external address selfLink, networkRef.external path` | Address selfLink with the network written as a relative path (the mock shape). Same assertions. | FAIL: perpetual `network_interface.0.network_ip` diff | PASS |
+| `control: networkIpRef.external different address selfLink` | Address selfLink that resolves to a different IP than the live one. Must require replacement, with `networkInterface.0.NetworkIp` as the immutable field. | Not run | PASS |
+| `sourceImageRef COS family shorthand` | `cos-cloud/cos-81-lts` against the live COS image. Same assertions. | PASS | PASS |
+| `sourceImageRef COS family path` | `projects/cos-cloud/global/images/family/cos-81-lts` against the live COS image. Same assertions. | PASS | PASS |
+| `control: sourceImageRef different COS family` | Spec changes to `cos-cloud/cos-85-lts`. Must require replacement, with `bootDisk.0.InitializeParams.0.Image` as the immutable field. | PASS | PASS |
 
 Go's `-run` pattern replaces spaces in subtest names with underscores, for example `TestComputeInstanceIssue293/networkIpRef.external_address_path`.
 
@@ -51,10 +52,10 @@ The fixtures are in [`pkg/test/resourcefixture/testdata/basic/compute/v1beta1/co
 
 | Fixture | What it asserts | Before fix | After fix ([#16232](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/16232)) |
 | --- | --- | --- | --- |
-| `computeinstance-293-networkip-ip` | Create with a literal `networkIpRef.external`, then a label update. Re-reconciliation makes no changes. | PASS | Expected PASS |
-| `computeinstance-293-cos-family` | Create with `cos-cloud/cos-121-lts`, then the `projects/cos-cloud/global/images/family/cos-121-lts` path. No immutable error. | PASS | Expected PASS |
-| `computeinstance-293-networkip-addresspath` | `networkIpRef.external` as an address path, then a label update. | FAIL: terminal `UpdateFailed` immutable-field error | Expected PASS |
-| `computeinstance-293-networkip-addressselflink` | `networkIpRef.external` as an address selfLink, with the no-diff re-reconcile check. | FAIL: `re-reconciliation found changes to apply` on `network_interface.0.network_ip` | Expected PASS |
+| `computeinstance-293-networkip-ip` | Create with a literal `networkIpRef.external`, then a label update. Re-reconciliation makes no changes. | PASS | PASS |
+| `computeinstance-293-cos-family` | Create with `cos-cloud/cos-121-lts`, then the `projects/cos-cloud/global/images/family/cos-121-lts` path. No immutable error. | PASS | PASS |
+| `computeinstance-293-networkip-addresspath` | `networkIpRef.external` as an address path, then a label update. | FAIL: terminal `UpdateFailed` immutable-field error | PASS |
+| `computeinstance-293-networkip-addressselflink` | `networkIpRef.external` as an address selfLink, with the no-diff re-reconcile check. | FAIL: `re-reconciliation found changes to apply` on `network_interface.0.network_ip` | PASS |
 
 The two failing fixtures show different symptoms for the same underlying cause, because the mock stores the network differently from real GCP. See [the e2e test pattern notes](../../patterns/e2e_test.md#re-reconciliation-checks) for the checks that produce these failures.
 
@@ -102,4 +103,10 @@ CI's unit-tests job excludes `./tests/e2e` (see `dev/ci/presubmits/unit-tests`),
 
 ## Status
 
-Fix pending in [#16232](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/16232).
+The fix landed in [#16232](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/16232). The Terraform provider's `forceNewIfNetworkIPNotUpdatable` now handles regional address references as follows:
+
+* **Lookup:** for an existing instance whose live `network_ip` is an IP, and whose network, subnetwork, and subnetwork project are unchanged, a regional address reference in `networkIpRef.external` is resolved with `addresses.get`. If it resolves to the live IP, the `network_ip` diff is cleared. Literal IPs, creation, and network changes do not trigger a lookup. Global address references are not resolved.
+* **A to B:** an address that resolves to an IP other than the live one is still an immutable change.
+* **Errors:** if the lookup fails, the reconcile fails with an explicit error, `network_interface.N.network_ip: resolving address "<ref>": <cause>`. Before, such a spec hit the misleading immutable-field error or a perpetual diff.
+
+See [Network IP references](../../../scripts/generate-google3-docs/resource-reference/generated/resource-docs/compute/computeinstance.md#network-ip-references) in the ComputeInstance reference for the accepted forms and the permission the lookup needs.

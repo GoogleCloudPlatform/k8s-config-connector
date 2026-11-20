@@ -16,6 +16,9 @@ package tf
 
 import (
 	"context"
+	"fmt"
+	"io"
+	"net/http"
 	"sort"
 	"strings"
 	"testing"
@@ -28,6 +31,7 @@ import (
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 	tfresource "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
@@ -36,19 +40,52 @@ import (
 // once a ComputeInstance exists, reconciling an unchanged (or label-only changed) spec must not
 // report an immutable-field change or a perpetual diff, however networkIpRef / sourceImageRef are spelled.
 const (
-	issue293Project      = "test-project"
-	issue293NetworkURL   = "https://www.googleapis.com/compute/v1/projects/test-project/global/networks/default"
-	issue293AddressURL   = "https://www.googleapis.com/compute/v1/projects/test-project/regions/us-central1/addresses/addr"
-	issue293AddressPath  = "projects/test-project/regions/us-central1/addresses/addr"
-	issue293AddressIP    = "10.128.0.42"
-	issue293LiveCOSImage = "https://www.googleapis.com/compute/v1/projects/cos-cloud/global/images/cos-81-12871-1196-0"
-	issue293LiveDebian   = "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010"
+	issue293Project         = "test-project"
+	issue293NetworkURL      = "https://www.googleapis.com/compute/v1/projects/test-project/global/networks/default"
+	issue293AddressURL      = "https://www.googleapis.com/compute/v1/projects/test-project/regions/us-central1/addresses/addr"
+	issue293AddressPath     = "projects/test-project/regions/us-central1/addresses/addr"
+	issue293OtherAddressURL = "https://www.googleapis.com/compute/v1/projects/test-project/regions/us-central1/addresses/other"
+	issue293AddressIP       = "10.128.0.42"
+	issue293OtherAddressIP  = "10.128.0.99"
+	issue293LiveCOSImage    = "https://www.googleapis.com/compute/v1/projects/cos-cloud/global/images/cos-81-12871-1196-0"
+	issue293LiveDebian      = "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010"
 	// The boot disk image field, as named by tfresource.ImmutableFieldsFromDiff.
 	issue293ImageField = "bootDisk.0.InitializeParams.0.Image"
+	// The network IP field, as named by tfresource.ImmutableFieldsFromDiff.
+	issue293NetworkIPField = "networkInterface.0.NetworkIp"
 )
+
+// fakeComputeAddresses answers the regional address lookups the provider makes to resolve a
+// networkIpRef.external address reference. Addresses "addr" and "other" are known; everything else is a 404.
+// The path match hard-codes project test-project and region us-central1, the only project and region the
+// ComputeInstance fixtures in this test use.
+type fakeComputeAddresses struct{}
+
+func (fakeComputeAddresses) RoundTrip(req *http.Request) (*http.Response, error) {
+	if req.Method == http.MethodGet && strings.Contains(req.URL.Path, "/projects/test-project/regions/us-central1/addresses/") {
+		name := req.URL.Path[strings.LastIndex(req.URL.Path, "/")+1:]
+		if ip := map[string]string{"addr": issue293AddressIP, "other": issue293OtherAddressIP}[name]; ip != "" {
+			return jsonResponse(http.StatusOK, fmt.Sprintf(`{"name":%q,"address":%q,"addressType":"INTERNAL"}`, name, ip)), nil
+		}
+	}
+	return jsonResponse(http.StatusNotFound, `{"error":{"code":404,"message":"not found","status":"NOT_FOUND"}}`), nil
+}
+
+func jsonResponse(status int, body string) *http.Response {
+	return &http.Response{
+		StatusCode: status,
+		Header:     http.Header{"Content-Type": []string{"application/json"}},
+		Body:       io.NopCloser(strings.NewReader(body)),
+	}
+}
 
 func TestComputeInstanceIssue293(t *testing.T) {
 	ctx := context.Background()
+	savedTransformer := transport_tpg.DefaultHTTPClientTransformer
+	transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+		return &http.Client{Transport: fakeComputeAddresses{}}
+	}
+	t.Cleanup(func() { transport_tpg.DefaultHTTPClientTransformer = savedTransformer })
 	provider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	smLoader, err := servicemappingloader.New()
 	if err != nil {
@@ -102,19 +139,20 @@ func TestComputeInstanceIssue293(t *testing.T) {
 			sourceImage: debianSource, liveImage: issue293LiveDebian},
 		{name: "networkIpRef.external IP", networkRef: networkByName, networkIPRef: addressIP,
 			sourceImage: debianSource, liveImage: issue293LiveDebian},
-		// Real GCP returns the network as a full URL, so the live state holds a full URL here. The
-		// address selfLink differs from the live IP, so the diff requires replacement and fails as an
-		// immutable-field change. The mock returns networkInterfaces[].network as sent (a relative path),
-		// which is why the networkRef.external row below behaves differently. Both fail until #293 is fixed.
+		// Real GCP returns the network as a full URL, so the live state holds a full URL here. The address
+		// selfLink resolves to the live IP, so the provider treats network_ip as unchanged and the spec is a no-op.
 		{name: "networkIpRef.external address selfLink", networkRef: networkByName, networkIPRef: map[string]interface{}{"external": issue293AddressURL},
 			sourceImage: debianSource, liveImage: issue293LiveDebian},
 		{name: "networkIpRef.external address path", networkRef: networkByName, networkIPRef: map[string]interface{}{"external": issue293AddressPath},
 			sourceImage: debianSource, liveImage: issue293LiveDebian},
-		// Same address as above, but networkRef.external is a relative path, as the mock stores it. The network
-		// string is then unchanged by forceNewIfNetworkIPNotUpdatable's raw-string check, so no ForceNew is set and
-		// the network_ip diff persists on every reconcile (a perpetual diff instead of an immutable error).
+		// Same address as above, but networkRef.external is a relative path, as the mock stores it. The address
+		// reference is still resolved to the live IP, so the network_ip diff is cleared rather than persisting.
 		{name: "networkIpRef.external address selfLink, networkRef.external path", networkRef: map[string]interface{}{"external": "projects/test-project/global/networks/default"}, networkIPRef: map[string]interface{}{"external": issue293AddressURL},
 			sourceImage: debianSource, liveImage: issue293LiveDebian},
+		// The address selfLink resolves to a different IP than the live one, so the change is real and the
+		// instance must be replaced (the network_ip stays immutable).
+		{name: "control: networkIpRef.external different address selfLink", networkRef: networkByName, networkIPRef: map[string]interface{}{"external": issue293OtherAddressURL},
+			sourceImage: debianSource, liveImage: issue293LiveDebian, wantImmutableField: issue293NetworkIPField},
 		{name: "sourceImageRef COS family shorthand", networkRef: networkByName, networkIPRef: addressIP,
 			sourceImage: cosSource, liveImage: issue293LiveCOSImage},
 		{name: "sourceImageRef COS family path", networkRef: networkByName, networkIPRef: addressIP,

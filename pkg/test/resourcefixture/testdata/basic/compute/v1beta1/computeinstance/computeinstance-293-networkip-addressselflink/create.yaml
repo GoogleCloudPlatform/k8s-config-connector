@@ -27,11 +27,9 @@ spec:
     initializeParams:
       sourceImageRef:
         external: debian-cloud/debian-11
-  # Why this fixture fails differently from the unit test: the mock returns networkInterfaces[].network as sent (a
-  # relative path), so forceNewIfNetworkIPNotUpdatable sees a raw-string network change, sets no ForceNew, and the
-  # network_ip diff persists on every reconcile (caught by the re-reconciliation check). The unit test uses real-GCP
-  # shaped live state (network as a full URL), where the same address causes an immutable-field error instead.
-  # Both fail until #293 is fixed.
+  # The mock returns networkInterfaces[].network as sent (a relative path), while the unit test uses real-GCP shaped
+  # live state (network as a full URL). The address selfLink is resolved to the live IP in both cases, so the
+  # re-reconciliation check sees no diff.
   networkInterface:
   - networkRef:
       name: default
