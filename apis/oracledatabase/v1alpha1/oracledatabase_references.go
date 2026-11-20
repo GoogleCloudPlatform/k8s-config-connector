@@ -42,11 +42,13 @@ type OracleDatabaseODBNetworkRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/odbNetworks/{{odbNetwork}}".
 	External string `json:"external,omitempty"`
 
+	/* NOTYET
 	// The name of an OracleDatabaseODBNetwork resource.
 	Name string `json:"name,omitempty"`
 
 	// The namespace of an OracleDatabaseODBNetwork resource.
 	Namespace string `json:"namespace,omitempty"`
+	*/
 }
 
 func init() {
@@ -58,10 +60,7 @@ func (r *OracleDatabaseODBNetworkRef) GetGVK() schema.GroupVersionKind {
 }
 
 func (r *OracleDatabaseODBNetworkRef) GetNamespacedName() types.NamespacedName {
-	return types.NamespacedName{
-		Name:      r.Name,
-		Namespace: r.Namespace,
-	}
+	return types.NamespacedName{}
 }
 
 func (r *OracleDatabaseODBNetworkRef) GetExternal() string {
@@ -70,8 +69,6 @@ func (r *OracleDatabaseODBNetworkRef) GetExternal() string {
 
 func (r *OracleDatabaseODBNetworkRef) SetExternal(ref string) {
 	r.External = ref
-	r.Name = ""
-	r.Namespace = ""
 }
 
 var OracleDatabaseODBNetworkIdentityFormat = gcpurls.Template[OracleDatabaseODBNetworkIdentity]("oracledatabase.googleapis.com", "projects/{project}/locations/{location}/odbNetworks/{odbNetwork}")
@@ -117,7 +114,10 @@ func (r *OracleDatabaseODBNetworkRef) ParseExternalToIdentity() (identity.Identi
 }
 
 func (r *OracleDatabaseODBNetworkRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refs.Normalize(ctx, reader, r, defaultNamespace)
+	if r.External == "" {
+		return fmt.Errorf("external reference must be specified for %s", OracleDatabaseODBNetworkRefGVK.Kind)
+	}
+	return r.ValidateExternal(r.External)
 }
 
 // --- OracleDatabaseODBSubnetRef ---
@@ -136,11 +136,13 @@ type OracleDatabaseODBSubnetRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/odbNetworks/{{odbNetwork}}/odbSubnets/{{odbSubnet}}".
 	External string `json:"external,omitempty"`
 
+	/* NOTYET
 	// The name of an OracleDatabaseODBSubnet resource.
 	Name string `json:"name,omitempty"`
 
 	// The namespace of an OracleDatabaseODBSubnet resource.
 	Namespace string `json:"namespace,omitempty"`
+	*/
 }
 
 func init() {
@@ -152,10 +154,7 @@ func (r *OracleDatabaseODBSubnetRef) GetGVK() schema.GroupVersionKind {
 }
 
 func (r *OracleDatabaseODBSubnetRef) GetNamespacedName() types.NamespacedName {
-	return types.NamespacedName{
-		Name:      r.Name,
-		Namespace: r.Namespace,
-	}
+	return types.NamespacedName{}
 }
 
 func (r *OracleDatabaseODBSubnetRef) GetExternal() string {
@@ -164,8 +163,6 @@ func (r *OracleDatabaseODBSubnetRef) GetExternal() string {
 
 func (r *OracleDatabaseODBSubnetRef) SetExternal(ref string) {
 	r.External = ref
-	r.Name = ""
-	r.Namespace = ""
 }
 
 var OracleDatabaseODBSubnetIdentityFormat = gcpurls.Template[OracleDatabaseODBSubnetIdentity]("oracledatabase.googleapis.com", "projects/{project}/locations/{location}/odbNetworks/{odbNetwork}/odbSubnets/{odbSubnet}")
@@ -212,7 +209,10 @@ func (r *OracleDatabaseODBSubnetRef) ParseExternalToIdentity() (identity.Identit
 }
 
 func (r *OracleDatabaseODBSubnetRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refs.Normalize(ctx, reader, r, defaultNamespace)
+	if r.External == "" {
+		return fmt.Errorf("external reference must be specified for %s", OracleDatabaseODBSubnetRefGVK.Kind)
+	}
+	return r.ValidateExternal(r.External)
 }
 
 // --- OracleDatabaseExascaleDBStorageVaultRef ---
@@ -231,11 +231,13 @@ type OracleDatabaseExascaleDBStorageVaultRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/exascaleDbStorageVaults/{{exascaleDbStorageVault}}".
 	External string `json:"external,omitempty"`
 
+	/* NOTYET
 	// The name of an OracleDatabaseExascaleDBStorageVault resource.
 	Name string `json:"name,omitempty"`
 
 	// The namespace of an OracleDatabaseExascaleDBStorageVault resource.
 	Namespace string `json:"namespace,omitempty"`
+	*/
 }
 
 func init() {
@@ -247,10 +249,7 @@ func (r *OracleDatabaseExascaleDBStorageVaultRef) GetGVK() schema.GroupVersionKi
 }
 
 func (r *OracleDatabaseExascaleDBStorageVaultRef) GetNamespacedName() types.NamespacedName {
-	return types.NamespacedName{
-		Name:      r.Name,
-		Namespace: r.Namespace,
-	}
+	return types.NamespacedName{}
 }
 
 func (r *OracleDatabaseExascaleDBStorageVaultRef) GetExternal() string {
@@ -259,8 +258,6 @@ func (r *OracleDatabaseExascaleDBStorageVaultRef) GetExternal() string {
 
 func (r *OracleDatabaseExascaleDBStorageVaultRef) SetExternal(ref string) {
 	r.External = ref
-	r.Name = ""
-	r.Namespace = ""
 }
 
 var OracleDatabaseExascaleDBStorageVaultIdentityFormat = gcpurls.Template[OracleDatabaseExascaleDBStorageVaultIdentity]("oracledatabase.googleapis.com", "projects/{project}/locations/{location}/exascaleDbStorageVaults/{exascaleDbStorageVault}")
@@ -306,5 +303,8 @@ func (r *OracleDatabaseExascaleDBStorageVaultRef) ParseExternalToIdentity() (ide
 }
 
 func (r *OracleDatabaseExascaleDBStorageVaultRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refs.Normalize(ctx, reader, r, defaultNamespace)
+	if r.External == "" {
+		return fmt.Errorf("external reference must be specified for %s", OracleDatabaseExascaleDBStorageVaultRefGVK.Kind)
+	}
+	return r.ValidateExternal(r.External)
 }

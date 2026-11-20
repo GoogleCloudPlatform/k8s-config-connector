@@ -67,30 +67,10 @@ spec:
               backupOdbSubnetRef:
                 description: Required. Immutable. The backup OdbSubnet associated
                   with the ExadbVmCluster.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
                 properties:
                   external:
                     description: A reference to an externally managed OracleDatabaseODBSubnet
                       resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/odbNetworks/{{odbNetwork}}/odbSubnets/{{odbSubnet}}".
-                    type: string
-                  name:
-                    description: The name of an OracleDatabaseODBSubnet resource.
-                    type: string
-                  namespace:
-                    description: The namespace of an OracleDatabaseODBSubnet resource.
                     type: string
                 type: object
               displayName:
@@ -110,59 +90,19 @@ spec:
               odbNetworkRef:
                 description: Optional. Immutable. The OdbNetwork associated with the
                   ExadbVmCluster.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
                 properties:
                   external:
                     description: A reference to an externally managed OracleDatabaseODBNetwork
                       resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/odbNetworks/{{odbNetwork}}".
                     type: string
-                  name:
-                    description: The name of an OracleDatabaseODBNetwork resource.
-                    type: string
-                  namespace:
-                    description: The namespace of an OracleDatabaseODBNetwork resource.
-                    type: string
                 type: object
               odbSubnetRef:
                 description: Required. Immutable. The OdbSubnet associated with the
                   ExadbVmCluster for IP allocation.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
                 properties:
                   external:
                     description: A reference to an externally managed OracleDatabaseODBSubnet
                       resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/odbNetworks/{{odbNetwork}}/odbSubnets/{{odbSubnet}}".
-                    type: string
-                  name:
-                    description: The name of an OracleDatabaseODBSubnet resource.
-                    type: string
-                  namespace:
-                    description: The namespace of an OracleDatabaseODBSubnet resource.
                     type: string
                 type: object
               projectRef:
@@ -237,32 +177,10 @@ spec:
                   exascaleDbStorageVaultRef:
                     description: Required. Immutable. The ExascaleDbStorageVault associated
                       with the ExadbVmCluster.
-                    oneOf:
-                    - not:
-                        required:
-                        - external
-                      required:
-                      - name
-                    - not:
-                        anyOf:
-                        - required:
-                          - name
-                        - required:
-                          - namespace
-                      required:
-                      - external
                     properties:
                       external:
                         description: A reference to an externally managed OracleDatabaseExascaleDBStorageVault
                           resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/exascaleDbStorageVaults/{{exascaleDbStorageVault}}".
-                        type: string
-                      name:
-                        description: The name of an OracleDatabaseExascaleDBStorageVault
-                          resource.
-                        type: string
-                      namespace:
-                        description: The namespace of an OracleDatabaseExascaleDBStorageVault
-                          resource.
                         type: string
                     type: object
                   gridImageID:
