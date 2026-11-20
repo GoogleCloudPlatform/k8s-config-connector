@@ -108,3 +108,37 @@ func (s *MockService) parseCatalogName(name string) (*catalogName, error) {
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
+
+type catalogTemplateName struct {
+	Project         *projects.ProjectData
+	Location        string
+	Space           string
+	Catalog         string
+	CatalogTemplate string
+}
+
+func (n *catalogTemplateName) String() string {
+	return fmt.Sprintf("projects/%s/locations/%s/spaces/%s/catalogs/%s/templates/%s", n.Project.ID, n.Location, n.Space, n.Catalog, n.CatalogTemplate)
+}
+
+func (n *catalogTemplateName) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s/spaces/%s/catalogs/%s", n.Project.ID, n.Location, n.Space, n.Catalog)
+}
+
+func (s *MockService) parseCatalogTemplateName(name string) (*catalogTemplateName, error) {
+	tokens := strings.Split(name, "/")
+	if len(tokens) == 10 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "spaces" && tokens[6] == "catalogs" && tokens[8] == "templates" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+		return &catalogTemplateName{
+			Project:         project,
+			Location:        tokens[3],
+			Space:           tokens[5],
+			Catalog:         tokens[7],
+			CatalogTemplate: tokens[9],
+		}, nil
+	}
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
