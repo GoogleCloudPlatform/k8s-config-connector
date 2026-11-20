@@ -74,6 +74,15 @@
   - **E2E Dependencies & Recording**: `DesignCenterCatalogTemplate` requires an ancestor chain of `DesignCenterSpace` and `DesignCenterCatalog` in `dependencies.yaml`. Recorded authentic golden logs against real GCP (`cnrm-barni-4`) with `RECORD_AUDIT_PROBE=1 ./hack/record-gcp` for both `designcentercatalogtemplate-minimal` and `designcentercatalogtemplate-maximal`.
   - **Validation**: 200-seed focused round-trip fuzzer (`TestFocusedMappers/DesignCenterCatalogTemplate`), CRD field presence checks, and re-reconciliation passed cleanly.
 
+### [2026-11-19] Prepopulating DesignCenterApplicationTemplate
+- **Context**: Prepopulating direct KRM types, identity, reference, mapper, and judgement queue for `DesignCenterApplicationTemplate` (Issue #16161).
+- **Generation & Mapper Setup**:
+  - Added `--resource DesignCenterApplicationTemplate:ApplicationTemplate` to `generate-types` and `generate-identity` in `apis/designcenter/generate.sh`.
+  - Appended `google.cloud.apphub.v1` to `--service` on `generate-mapper` in `apis/designcenter/generate.sh` to automatically emit mappers for AppHub types referenced in `AppHubApplicationParameters` (`Scope`, `Attributes`, `Criticality`, `Environment`, `ContactInfo`).
+  - Added `pkg/controller/direct/designcenter/designcenterapplicationtemplate_mapper.go` with minimal helper mappers for `*structpb.Value` and `*Metadata` messages (`TFBlueprintMetadata`, `TerraformBlueprintUiMetadata`) which are skipped by `controllerbuilder`'s `*Metadata` heuristic.
+  - Added `DesignCenterApplicationTemplate` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Added `designcenterapplicationtemplates.designcenter.cnrm.cloud.google.com` to `knownInvalidCRDs` in `tests/apichecks/crds_test.go` due to empty object schema under `status.observedState.templateMetadata.uiMetadata.terraformUiInput.terraformUiInputs[*]`.
+  - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` and `recursivetypes.txt` with golden output for `DesignCenterApplicationTemplate`.
 
 
 
