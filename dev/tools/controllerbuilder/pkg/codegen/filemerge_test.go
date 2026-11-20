@@ -220,9 +220,10 @@ type PrunedSpec struct{}
 	}
 
 	pkgDecls := packageDeclarations{
-		types:     map[string]bool{"HandwrittenType": true},
-		protoTags: map[string]bool{"google.cloud.foo.v1.ClaimedProto": true},
-		funcs:     map[string]bool{"Handwritten_FromProto": true},
+		types:             map[string]bool{"HandwrittenType": true},
+		protoTags:         map[string]bool{"google.cloud.foo.v1.ClaimedProto": true, "google.cloud.foo.v1.SpecOnlyClaimed": true},
+		observedProtoTags: map[string]bool{"google.cloud.foo.v1.ClaimedProto": true, "google.cloud.foo.v1.ObservedOnlyClaimed": true},
+		funcs:             map[string]bool{"Handwritten_FromProto": true},
 	}
 
 	validKRM := f.resolveValidKRMTypes(nil)
@@ -251,6 +252,16 @@ type PrunedSpec struct{}
 			name:  "active base struct whose protoFQN is claimed in handwritten file is dropped",
 			block: generatedBlock{name: "ClaimedProtoObservedState", kind: "type", protoFQN: "google.cloud.foo.v1.ClaimedProto", isObservedState: true},
 			want:  false,
+		},
+		{
+			name:  "observedstate struct kept when handwritten file only claims spec proto tag",
+			block: generatedBlock{name: "SpecOnlyClaimedObservedState", kind: "type", protoFQN: "google.cloud.foo.v1.SpecOnlyClaimed", isObservedState: true},
+			want:  true,
+		},
+		{
+			name:  "spec struct kept when handwritten file only claims observedstate proto tag",
+			block: generatedBlock{name: "ObservedOnlyClaimed", kind: "type", protoFQN: "google.cloud.foo.v1.ObservedOnlyClaimed", isObservedState: false},
+			want:  true,
 		},
 		{
 			name:  "commented type is kept even if handwritten type exists",

@@ -120,7 +120,7 @@ type protoTagComment struct {
 // non-forked +kcc:*proto annotations into protoTagged (mapping protoFullName to the raw line).
 // Hand-authored variant structs whose Go type name differs from the proto message's base Go name
 // co-exist alongside the generator's base struct and do not claim ownership in protoTagged.
-func scanFileDeclarations(content string, typeNames map[string]bool, protoTagged map[string]string) {
+func scanFileDeclarations(content string, typeNames map[string]bool, protoTagged map[string]string, observedProtoTagged ...map[string]string) {
 	var pending []protoTagComment
 	for _, raw := range strings.Split(content, "\n") {
 		trimmed := strings.TrimSpace(raw)
@@ -137,8 +137,12 @@ func scanFileDeclarations(content string, typeNames map[string]bool, protoTagged
 				typeNames[name] = true
 			}
 			for _, p := range pending {
+				targetMap := protoTagged
+				if len(observedProtoTagged) > 0 && (p.annotationKind == KCCProtoMessageAnnotationObservedState || p.annotationKind == KCCProtoMessageAnnotationStatus) {
+					targetMap = observedProtoTagged[0]
+				}
 				if p.annotationKind != KCCProtoMessageAnnotationMisc || isBaseProtoStructName(name, p.protoMessage) {
-					protoTagged[p.protoMessage] = p.line
+					targetMap[p.protoMessage] = p.line
 				}
 			}
 			pending = nil
@@ -146,13 +150,21 @@ func scanFileDeclarations(content string, typeNames map[string]bool, protoTagged
 		}
 		if trimmed != "" && !strings.HasPrefix(trimmed, "//") {
 			for _, p := range pending {
-				protoTagged[p.protoMessage] = p.line
+				targetMap := protoTagged
+				if len(observedProtoTagged) > 0 && (p.annotationKind == KCCProtoMessageAnnotationObservedState || p.annotationKind == KCCProtoMessageAnnotationStatus) {
+					targetMap = observedProtoTagged[0]
+				}
+				targetMap[p.protoMessage] = p.line
 			}
 			pending = nil
 		}
 	}
 	for _, p := range pending {
-		protoTagged[p.protoMessage] = p.line
+		targetMap := protoTagged
+		if len(observedProtoTagged) > 0 && (p.annotationKind == KCCProtoMessageAnnotationObservedState || p.annotationKind == KCCProtoMessageAnnotationStatus) {
+			targetMap = observedProtoTagged[0]
+		}
+		targetMap[p.protoMessage] = p.line
 	}
 }
 
@@ -411,7 +423,7 @@ func (g *generatorBase) findTypeDeclaration(goTypeName string, srcDir string, sk
 	return nil, nil
 }
 
-func (g *generatorBase) findTypeDeclarationWithProtoTag(protoTag string, srcDir string, skipGenerated bool) (*string, error) {
+func (g *generatorBase) findTypeDeclarationWithProtoTag(protoTag string, srcDir string, skipGenerated bool, annotationKinds ...string) (*string, error) {
 	files, err := os.ReadDir(srcDir)
 	if err != nil {
 		return nil, fmt.Errorf("reading directory %q: %w", srcDir, err)
@@ -431,9 +443,16 @@ func (g *generatorBase) findTypeDeclarationWithProtoTag(protoTag string, srcDir 
 		}
 
 		for _, line := range strings.Split(string(b), "\n") {
-			if proto, ok := GetProtoMessageFromAnnotation(line); ok {
+			if proto, kind, ok := GetProtoMessageAndKindFromAnnotation(line); ok {
 				if proto == protoTag {
-					return &line, nil
+					if len(annotationKinds) == 0 {
+						return &line, nil
+					}
+					for _, ak := range annotationKinds {
+						if kind == ak {
+							return &line, nil
+						}
+					}
 				}
 			}
 		}
