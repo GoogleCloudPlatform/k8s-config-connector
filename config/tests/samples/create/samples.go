@@ -351,6 +351,12 @@ func preflightCheckAPIs(ctx context.Context, h *Harness, resources []*unstructur
 var httpCodeRegex = regexp.MustCompile(`\b(400|401|403)\b`)
 
 func isTerminalError(reason, message string) (bool, string) {
+	// KCC does not retry its way out of an immutable-field mutation: the spec must change first.
+	// This rule intentionally applies to all fixtures/samples, not just ComputeInstance: an
+	// immutable-field UpdateFailed never resolves on its own, so waiting for it only times out.
+	if reason == k8s.UpdateFailed && strings.Contains(message, "cannot make changes to immutable field(s)") {
+		return true, "Immutable field change"
+	}
 	match := httpCodeRegex.FindString(message)
 	switch match {
 	case "400":

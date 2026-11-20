@@ -59,6 +59,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
 	k8scontrollertype "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cais"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cais/caistesting"
@@ -554,6 +555,10 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 					harnessOptions = append(harnessOptions, buildCRDFilter(keepCRDs))
 				}
 
+				// Record Terraform diffs, so the re-reconciliation check can assert there is nothing left to apply.
+				diffs := &diffRecorder{}
+				ctx := structuredreporting.ContextWithListener(ctx, diffs)
+
 				// Create test harness
 				var h *create.Harness
 				if os.Getenv("E2E_GCP_TARGET") == "vcr" {
@@ -750,12 +755,41 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 					h.Events.SetPhase("RERECONCILE")
 
 					oldGeneration := getGeneration(h, primaryResource)
+					// The check only covers Terraform reconciles. For ComputeInstance the harness also runs a direct-controller
+					// scenario (ForceDirectController), which has no Terraform reconcile to wait for, so it keeps the fixed pause.
+					assertNoDiff := ShouldAssertNoDiffOnRereconcile(testName) && !options.ForceDirectController
+					primaryKey := reconcileKey(primaryResource.GetKind(), primaryResource.GetNamespace(), primaryResource.GetName())
+					diffsBefore := diffs.Count()
+					reconcilesBefore := diffs.Reconciles(primaryKey)
 					touchObject(h, primaryResource)
-					// Pause to allow re-reconciliation
-					// (annotations don't change the generation, so we can't wait for observedGeneration)
-					time.Sleep(2 * time.Second)
+					if assertNoDiff {
+						// Wait for the Terraform reconcile that follows the touch to end, so its diffs are recorded.
+						// RequiresNew/immutable errors return before the diff is reported (pkg/controller/tf/controller.go).
+						// They surface here as an "ended with an error" reconcile, and also through the terminal-error path.
+						start := time.Now()
+						end, ok := diffs.WaitForReconcileAfter(primaryKey, reconcilesBefore, 30*time.Second)
+						if !ok {
+							t.Errorf("FAIL: timed out after 30s waiting for a Terraform reconcile of %s to end after the touch", primaryKey)
+						} else if reason := end.notEvaluatedReason(); reason != "" {
+							t.Errorf("FAIL: the Terraform reconcile of %s after the touch did not run through to diff evaluation (%s); the no-diff check cannot pass", primaryKey, reason)
+						} else {
+							h.Log("re-reconciliation finished", "object", primaryKey, "waited", time.Since(start).String())
+						}
+					} else {
+						// Pause to allow re-reconciliation
+						// (annotations don't change the generation, so we can't wait for observedGeneration)
+						time.Sleep(2 * time.Second)
+					}
 
 					eventsAfter := h.Events.GetHTTPEvents()
+					if assertNoDiff {
+						for _, diff := range diffs.Since(diffsBefore) {
+							if !strings.HasPrefix(diff, primaryKey+":") {
+								continue
+							}
+							t.Errorf("FAIL: re-reconciliation found changes to apply (re-applied on every reconcile): %s", diff)
+						}
+					}
 
 					h.Events.SetHTTPEvents(eventsBefore)
 					h.Events.SetPhase(prevPhase)
