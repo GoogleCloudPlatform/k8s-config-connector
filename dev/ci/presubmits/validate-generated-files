@@ -33,8 +33,10 @@ fi
 make generate
 
 changed_files=$(git diff --name-only)
-if [[ -n "${changed_files}" ]]; then
+added_files=$(git ls-files --others --exclude-standard apis/)
+if [[ -n "${changed_files}" || -n "${added_files}" ]]; then
   echo "ERROR: Generated code out-of-date. Please run 'make generate' and update your PR."
   git diff
+  git ls-files --others --exclude-standard apis/
   exit 1
 fi
