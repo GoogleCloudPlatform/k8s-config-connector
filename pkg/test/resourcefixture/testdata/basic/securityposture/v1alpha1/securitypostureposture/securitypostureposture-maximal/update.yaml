@@ -1,0 +1,26 @@
+apiVersion: securityposture.cnrm.cloud.google.com/v1alpha1
+kind: SecurityposturePosture
+metadata:
+  name: posture-max-${uniqueId}
+spec:
+  organizationRef:
+    external: organizations/${TEST_ORG_ID}
+  location: global
+  state: DRAFT
+  description: "Updated maximal security posture description"
+  annotations:
+    owner: "security-team-updated"
+    environment: "staging"
+  policySets:
+    - policySetID: set-1
+      description: "Updated policy set description"
+      policies:
+        - policyID: policy-sha-1
+          description: "Updated ensure BigQuery table CMEK is enabled"
+          complianceStandards:
+            - standard: "CIS-Google-Cloud-Computing-Foundations-Benchmark"
+              control: "1.2"
+          constraint:
+            securityHealthAnalyticsModule:
+              moduleName: BIGQUERY_TABLE_CMEK_DISABLED
+              moduleEnablementState: DISABLED

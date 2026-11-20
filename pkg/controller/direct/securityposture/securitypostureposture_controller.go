@@ -62,15 +62,15 @@ func (m *modelPosture) AdapterForObject(ctx context.Context, op *directbase.Adap
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	i, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
 	id := i.(*krm.SecurityposturePostureIdentity)
-
-	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
 
 	// Get securityposture GCP client
 	gcpClient, err := m.client(ctx)
@@ -208,6 +208,7 @@ func (a *PostureAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		req := &securityposturepb.UpdatePostureRequest{
 			UpdateMask: updateMask,
 			Posture:    resource,
+			RevisionId: a.actual.GetRevisionId(),
 		}
 		op, err := a.gcpClient.UpdatePosture(ctx, req)
 		if err != nil {
