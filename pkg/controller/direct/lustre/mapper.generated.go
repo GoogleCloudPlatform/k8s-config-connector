@@ -46,6 +46,46 @@ func GCSPath_ToProto(mapCtx *direct.MapContext, in *krm.GCSPath) *pb.GcsPath {
 	out.Uri = direct.ValueOf(in.URI)
 	return out
 }
+func LustreDirectoryPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DirectoryPolicy) *krm.LustreDirectoryPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LustreDirectoryPolicyObservedState{}
+	// MISSING: Name
+	out.LustreProjectID = direct.LazyPtr(in.GetLustreProjectId())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func LustreDirectoryPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LustreDirectoryPolicyObservedState) *pb.DirectoryPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DirectoryPolicy{}
+	// MISSING: Name
+	out.LustreProjectId = direct.ValueOf(in.LustreProjectID)
+	out.Uid = direct.ValueOf(in.Uid)
+	out.State = direct.Enum_ToProto[pb.DirectoryPolicy_State](mapCtx, in.State)
+	return out
+}
+func LustreDirectoryPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.DirectoryPolicy) *krm.LustreDirectoryPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LustreDirectoryPolicySpec{}
+	// MISSING: Name
+	out.DirectoryPath = direct.LazyPtr(in.GetDirectoryPath())
+	return out
+}
+func LustreDirectoryPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.LustreDirectoryPolicySpec) *pb.DirectoryPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DirectoryPolicy{}
+	// MISSING: Name
+	out.DirectoryPath = direct.ValueOf(in.DirectoryPath)
+	return out
+}
 func LustreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.LustreInstanceObservedState {
 	if in == nil {
 		return nil

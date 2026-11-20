@@ -19,6 +19,7 @@
 // proto.service: google.cloud.lustre.v1
 // resource: LustreInstance:Instance
 // resource: LustreMirror:Mirror
+// resource: LustreDirectoryPolicy:DirectoryPolicy
 
 package v1alpha1
 
@@ -67,6 +68,24 @@ type AccessRulesOptions_AccessRule struct {
 	// Required. Squash mode for the access rule.
 	// +kcc:proto:field=google.cloud.lustre.v1.AccessRulesOptions.AccessRule.squash_mode
 	SquashMode *string `json:"squashMode,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.lustre.v1.DirectoryPolicy", skipping
+
+// +kcc:proto=google.cloud.lustre.v1.DirectoryPolicy
+type DirectoryPolicy struct {
+	// Immutable. Identifier. The resource name of the directory policy.
+	//  DirectoryPolicy names have the form
+	//  `projects/{project}/locations/{location}/instances/{instance}/directoryPolicies/{id}`.
+	//  {id} is user provided.
+	// +kcc:proto:field=google.cloud.lustre.v1.DirectoryPolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Immutable. The lustre instance filesystem full path of the
+	//  directory. It must start with a slash. e.g. /lustre/testFolder
+	// +kcc:proto:field=google.cloud.lustre.v1.DirectoryPolicy.directory_path
+	DirectoryPath *string `json:"directoryPath,omitempty"`
 }
 */
 
@@ -328,6 +347,27 @@ type TimeOfDay struct {
 	// Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
 	// +kcc:proto:field=google.type.TimeOfDay.nanos
 	Nanos *int32 `json:"nanos,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.lustre.v1.DirectoryPolicy", skipping
+
+// +kcc:observedstate:proto=google.cloud.lustre.v1.DirectoryPolicy
+type DirectoryPolicyObservedState struct {
+	// Output only. The lustre project ID assigned for the directory by the
+	//  service. This read-only ID can be used to manage quotas. See more details
+	//  in
+	//  https://docs.cloud.google.com/managed-lustre/docs/file-system-quotas#set_quotas
+	// +kcc:proto:field=google.cloud.lustre.v1.DirectoryPolicy.lustre_project_id
+	LustreProjectID *int64 `json:"lustreProjectID,omitempty"`
+
+	// Output only. Unique ID of the resource.
+	// +kcc:proto:field=google.cloud.lustre.v1.DirectoryPolicy.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. The current state of the directory policy.
+	// +kcc:proto:field=google.cloud.lustre.v1.DirectoryPolicy.state
+	State *string `json:"state,omitempty"`
 }
 */
 
