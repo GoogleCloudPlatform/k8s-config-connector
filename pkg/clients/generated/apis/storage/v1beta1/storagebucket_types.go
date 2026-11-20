@@ -125,9 +125,37 @@ type BucketCustomPlacementConfig struct {
 	DataLocations []string `json:"dataLocations"`
 }
 
+type BucketCustomerManagedEncryptionEnforcementConfig struct {
+	/* Whether this encryption type is allowed for new objects. Supported values are "NotRestricted" and "FullyRestricted". */
+	RestrictionMode string `json:"restrictionMode"`
+}
+
+type BucketCustomerSuppliedEncryptionEnforcementConfig struct {
+	/* Whether this encryption type is allowed for new objects. Supported values are "NotRestricted" and "FullyRestricted". */
+	RestrictionMode string `json:"restrictionMode"`
+}
+
 type BucketEncryption struct {
+	/* Controls whether new objects can be encrypted with customer-managed encryption keys (CMEK). If omitted, the existing configuration is preserved. */
+	// +optional
+	CustomerManagedEncryptionEnforcementConfig *BucketCustomerManagedEncryptionEnforcementConfig `json:"customerManagedEncryptionEnforcementConfig,omitempty"`
+
+	/* Controls whether new objects can be encrypted with customer-supplied encryption keys (CSEK). If omitted, the existing configuration is preserved. */
+	// +optional
+	CustomerSuppliedEncryptionEnforcementConfig *BucketCustomerSuppliedEncryptionEnforcementConfig `json:"customerSuppliedEncryptionEnforcementConfig,omitempty"`
+
+	/* Controls whether new objects can be encrypted with Google-managed encryption keys (GMEK). If omitted, the existing configuration is preserved. */
+	// +optional
+	GoogleManagedEncryptionEnforcementConfig *BucketGoogleManagedEncryptionEnforcementConfig `json:"googleManagedEncryptionEnforcementConfig,omitempty"`
+
 	/* A reference to the KMS Crypto Key that will be used to encrypt objects inserted into this bucket. */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+	// +optional
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+}
+
+type BucketGoogleManagedEncryptionEnforcementConfig struct {
+	/* Whether this encryption type is allowed for new objects. Supported values are "NotRestricted" and "FullyRestricted". */
+	RestrictionMode string `json:"restrictionMode"`
 }
 
 type BucketIpFilter struct {
