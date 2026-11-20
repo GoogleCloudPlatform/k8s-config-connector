@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,15 +30,10 @@ var DiscoveryEngineWidgetConfigGVK = GroupVersion.WithKind("DiscoveryEngineWidge
 // +kcc:spec:proto=google.cloud.discoveryengine.v1.WidgetConfig
 // +kcc:required-from-proto
 type DiscoveryEngineWidgetConfigSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/dataStores/{data_store} this resource belongs to.
-	// +kcc:guess
-	// DataStoreRef *DiscoveryEngineDataStoreRef `json:"dataStoreRef,omitempty"`
+	// The DiscoveryEngineDataStore that this DiscoveryEngineWidgetConfig belongs to.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *DiscoveryEngineDataStoreRef `json:"parentRef"`
 
 	// The DiscoveryEngineWidgetConfig name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -210,6 +204,28 @@ type DiscoveryEngineWidgetConfigList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DiscoveryEngineWidgetConfig `json:"items"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.WidgetConfig.DataStoreUiConfig
+type WidgetConfig_DataStoreUiConfig struct {
+	// The DataStore this UI config applies to.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.WidgetConfig.DataStoreUiConfig.name
+	DataStoreRef *DiscoveryEngineDataStoreRef `json:"dataStoreRef,omitempty"`
+
+	// Facet fields that store the mapping of fields to end user widget
+	//  appearance.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.WidgetConfig.DataStoreUiConfig.facet_field
+	FacetField []WidgetConfig_FacetField `json:"facetField,omitempty"`
+
+	// The key is the UI component. Mock. Currently supported `title`,
+	//  `thumbnail`, `url`, `custom1`, `custom2`, `custom3`.
+	//
+	//  The value is the name of the field along with its device visibility.
+	//
+	//  The 3 custom fields are optional and can be added or removed. `title`,
+	//  `thumbnail`, `url` are required UI components that cannot be removed.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.WidgetConfig.DataStoreUiConfig.fields_ui_components_map
+	FieldsUiComponentsMap map[string]WidgetConfig_UiComponentField `json:"fieldsUiComponentsMap,omitempty"`
 }
 
 func init() {
