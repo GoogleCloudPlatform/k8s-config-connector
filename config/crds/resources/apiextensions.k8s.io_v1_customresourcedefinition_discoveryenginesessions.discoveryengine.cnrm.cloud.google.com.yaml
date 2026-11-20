@@ -158,6 +158,10 @@ spec:
                          Only set if the answer generation (/answer API call) happened in this
                          turn.
                       type: string
+                    live:
+                      description: Optional. Indicates whether this turn is a live
+                        turn.
+                      type: boolean
                     query:
                       description: Optional. The user query. May not be set if this
                         turn is merely regenerating an answer to a different turn
@@ -613,9 +617,85 @@ spec:
                               items:
                                 type: string
                               type: array
+                            connectorDisplayNames:
+                              additionalProperties:
+                                type: string
+                              description: Output only. Maps an internal connector
+                                agent name (the machine identifier embedded in tool
+                                names, e.g. `custom_mcp_<fingerprint>_agent`) to the
+                                connector's human-readable display name. Populated
+                                at serving time for custom MCP / agent gateway connectors
+                                so user-facing surfaces (e.g. the tool-call chip)
+                                can show the connector name instead of its internal
+                                identifier. Empty when there are no such connectors.
+                              type: object
+                            customerPolicyEnforcementResult:
+                              description: Optional. The field contains information
+                                about the various policy checks' results like the
+                                banned phrases or the Model Armor checks. This field
+                                is populated only if the assist call was skipped due
+                                to a policy violation.
+                              properties:
+                                policyResults:
+                                  description: Customer policy enforcement results.
+                                    Populated only if the assist call was skipped
+                                    due to a policy violation. It contains results
+                                    from those filters that blocked the processing
+                                    of the query.
+                                  items:
+                                    properties:
+                                      bannedPhraseEnforcementResult:
+                                        description: The policy enforcement result
+                                          for the banned phrase policy.
+                                        properties:
+                                          bannedPhrases:
+                                            description: The banned phrases that were
+                                              found in the query or the answer.
+                                            items:
+                                              type: string
+                                            type: array
+                                        type: object
+                                      modelArmorEnforcementResult:
+                                        description: The policy enforcement result
+                                          for the Model Armor policy.
+                                        properties:
+                                          error:
+                                            description: The error returned by Model
+                                              Armor if the policy enforcement failed
+                                              for some reason.
+                                            properties:
+                                              code:
+                                                description: The status code, which
+                                                  should be an enum value of [google.rpc.Code][google.rpc.Code].
+                                                format: int32
+                                                type: integer
+                                              message:
+                                                description: A developer-facing error
+                                                  message, which should be in English.
+                                                  Any user-facing error message should
+                                                  be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details]
+                                                  field, or localized by the client.
+                                                type: string
+                                            type: object
+                                          modelArmorViolation:
+                                            description: The Model Armor violation
+                                              that was found.
+                                            type: string
+                                        type: object
+                                    type: object
+                                  type: array
+                                verdict:
+                                  description: Final verdict of the customer policy
+                                    enforcement. If only one policy blocked the processing,
+                                    the verdict is BLOCK.
+                                  type: string
+                                violationSource:
+                                  description: Output only. The source of the violation.
+                                  type: string
+                              type: object
                             name:
                               description: |-
-                                Immutable. Resource name of the `AssistAnswer`.
+                                Immutable. Identifier. Resource name of the `AssistAnswer`.
                                  Format:
                                  `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/sessions/{session}/assistAnswers/{assist_answer}`
 
@@ -626,10 +706,74 @@ spec:
                               description: Replies of the assistant.
                               items:
                                 properties:
+                                  createTime:
+                                    description: The time when the reply was created.
+                                    type: string
                                   groundedContent:
                                     description: Possibly grounded response text or
                                       media from the assistant.
                                     properties:
+                                      citationMetadata:
+                                        description: Source attribution of the generated
+                                          content. See also https://cloud.google.com/vertex-ai/generative-ai/docs/learn/overview#citation_check
+                                        properties:
+                                          citations:
+                                            description: Output only. List of citations.
+                                            items:
+                                              properties:
+                                                endIndex:
+                                                  description: Output only. End index
+                                                    into the content.
+                                                  format: int32
+                                                  type: integer
+                                                license:
+                                                  description: Output only. License
+                                                    of the attribution.
+                                                  type: string
+                                                publicationDate:
+                                                  description: Output only. Publication
+                                                    date of the attribution.
+                                                  properties:
+                                                    day:
+                                                      description: Day of a month.
+                                                        Must be from 1 to 31 and valid
+                                                        for the year and month, or
+                                                        0 to specify a year by itself
+                                                        or a year and month where
+                                                        the day isn't significant.
+                                                      format: int32
+                                                      type: integer
+                                                    month:
+                                                      description: Month of a year.
+                                                        Must be from 1 to 12, or 0
+                                                        to specify a year without
+                                                        a month and day.
+                                                      format: int32
+                                                      type: integer
+                                                    year:
+                                                      description: Year of the date.
+                                                        Must be from 1 to 9999, or
+                                                        0 to specify a date without
+                                                        a year.
+                                                      format: int32
+                                                      type: integer
+                                                  type: object
+                                                startIndex:
+                                                  description: Output only. Start
+                                                    index into the content.
+                                                  format: int32
+                                                  type: integer
+                                                title:
+                                                  description: Output only. Title
+                                                    of the attribution.
+                                                  type: string
+                                                uri:
+                                                  description: Output only. Url reference
+                                                    of the attribution.
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
                                       content:
                                         description: The content.
                                         properties:
@@ -699,6 +843,15 @@ spec:
                                               text.
                                             items:
                                               properties:
+                                                chunkMetadata:
+                                                  description: Output only. Generic
+                                                    structured chunk metadata from
+                                                    upstream data source connectors.
+                                                  x-kubernetes-preserve-unknown-fields: true
+                                                codeSnippet:
+                                                  description: Chunk of code snippet
+                                                    from the referenced document.
+                                                  type: string
                                                 content:
                                                   description: Referenced text content.
                                                   type: string
@@ -717,6 +870,12 @@ spec:
                                                         actual website, in which case
                                                         this will contain the domain
                                                         name of the target site.
+                                                      type: string
+                                                    language:
+                                                      type: string
+                                                    mimeType:
+                                                      description: The mime type of
+                                                        the document. https://www.iana.org/assignments/media-types/media-types.xhtml.
                                                       type: string
                                                     pageIdentifier:
                                                       description: Page identifier.
@@ -764,6 +923,28 @@ spec:
                                                 text:
                                                   description: The text segment itself.
                                                   type: string
+                                              type: object
+                                            type: array
+                                          visualSegments:
+                                            description: Grounding information for
+                                              parts of the visual content.
+                                            items:
+                                              properties:
+                                                contentID:
+                                                  description: The content id of the
+                                                    visual segment. In order to display
+                                                    the citation of the visual element,
+                                                    this content_id needs to match
+                                                    with the `grounded_content.content_metadata.content_id`
+                                                    field.
+                                                  type: string
+                                                referenceIndices:
+                                                  description: References for the
+                                                    visual segment.
+                                                  items:
+                                                    format: int32
+                                                    type: integer
+                                                  type: array
                                               type: object
                                             type: array
                                         type: object

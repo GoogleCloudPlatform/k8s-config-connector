@@ -67,10 +67,6 @@ spec:
                 description: KMS key resource name which will be used to encrypt resources
                   `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
                 type: string
-              kmsKeyVersion:
-                description: KMS key version resource name which will be used to encrypt
-                  resources `<kms_key>/cryptoKeyVersions/{keyVersion}`.
-                type: string
               location:
                 description: The location of this resource.
                 type: string
@@ -176,6 +172,10 @@ spec:
                   isDefault:
                     description: Output only. The default CmekConfig for the Customer.
                     type: boolean
+                  kmsKeyVersion:
+                    description: Output only. KMS key version resource name which
+                      will be used to encrypt resources `<kms_key>/cryptoKeyVersions/{keyVersion}`.
+                    type: string
                   lastRotationTimestampMicros:
                     description: Output only. The timestamp of the last key rotation.
                     format: int64
