@@ -1,0 +1,218 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: servicedirectoryendpoints.servicedirectory.cnrm.cloud.google.com
+spec:
+  group: servicedirectory.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ServiceDirectoryEndpoint
+    listKind: ServiceDirectoryEndpointList
+    plural: servicedirectoryendpoints
+    shortNames:
+    - gcpservicedirectoryendpoint
+    - gcpservicedirectoryendpoints
+    singular: servicedirectoryendpoint
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: ServiceDirectoryEndpoint is the Schema for the ServiceDirectoryEndpoint
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ServiceDirectoryEndpointSpec defines the desired state of
+              ServiceDirectoryEndpoint
+            properties:
+              address:
+                description: |-
+                  Optional. An IPv4 or IPv6 address. Service Directory rejects bad addresses
+                   like:
+
+                   *   `8.8.8`
+                   *   `8.8.8.8:53`
+                   *   `test:bad:address`
+                   *   `[::1]`
+                   *   `[::1]:8080`
+
+                   Limited to 45 characters.
+                type: string
+              location:
+                description: The location of this resource.
+                type: string
+              metadata:
+                additionalProperties:
+                  type: string
+                description: |-
+                  Optional. Metadata for the endpoint. This data can be consumed by service
+                   clients.
+
+                   Restrictions:
+
+                   *   The entire metadata dictionary may contain up to 512 characters,
+                       spread accoss all key-value pairs. Metadata that goes beyond this
+                       limit are rejected
+                   *   Valid metadata keys have two segments: an optional prefix and name,
+                       separated by a slash (/). The name segment is required and must be 63
+                       characters or less, beginning and ending with an alphanumeric character
+                       ([a-z0-9A-Z]) with dashes (-), underscores (_), dots (.), and
+                       alphanumerics between. The prefix is optional. If specified, the prefix
+                       must be a DNS subdomain: a series of DNS labels separated by dots (.),
+                       not longer than 253 characters in total, followed by a slash (/).
+                       Metadata that fails to meet these requirements are rejected
+
+                   Note: This field is equivalent to the `annotations` field in the v1 API.
+                   They have the same syntax and read/write to the same location in Service
+                   Directory.
+                type: object
+              network:
+                description: |-
+                  Immutable. The Google Compute Engine network (VPC) of the endpoint in the
+                   format `projects/<project number>/locations/global/networks/*`.
+
+                   The project must be specified by project number (project id is rejected).
+                   Incorrectly formatted networks are rejected, but no other validation
+                   is performed on this field (ex. network or project existence, reachability,
+                   or permissions).
+                type: string
+              port:
+                description: Optional. Service Directory rejects values outside of
+                  `[0, 65535]`.
+                format: int32
+                type: integer
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The ServiceDirectoryEndpoint name. If not given, the
+                  metadata.name will be used.
+                type: string
+            required:
+            - location
+            type: object
+          status:
+            description: ServiceDirectoryEndpointStatus defines the config connector
+              machine state of ServiceDirectoryEndpoint
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ServiceDirectoryEndpoint resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. The timestamp when the endpoint was
+                      created.
+                    type: string
+                  uid:
+                    description: |-
+                      Output only. A globally unique identifier (in UUID4 format) for this
+                       endpoint.
+                    type: string
+                  updateTime:
+                    description: Output only. The timestamp when the endpoint was
+                      last updated.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

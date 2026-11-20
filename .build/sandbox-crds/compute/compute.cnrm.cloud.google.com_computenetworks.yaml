@@ -1,0 +1,292 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: computenetworks.compute.cnrm.cloud.google.com
+spec:
+  group: compute.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ComputeNetwork
+    listKind: ComputeNetworkList
+    plural: computenetworks
+    shortNames:
+    - gcpcomputenetwork
+    - gcpcomputenetworks
+    singular: computenetwork
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: ComputeNetwork is the Schema for the ComputeNetwork API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ComputeNetworkSpec defines the desired state of ComputeNetwork
+            properties:
+              IPv4Range:
+                description: 'Deprecated in favor of subnet mode networks. The range
+                  of internal addresses that are legal on this network. This range
+                  is a CIDR specification, for example: 192.168.0.0/16. Provided by
+                  the client when the network is created.'
+                type: string
+              autoCreateSubnetworks:
+                description: Must be set to create a VPC network. If not set, a legacy
+                  network is created. When set to true, the VPC network is created
+                  in auto mode. When set to false, the VPC network is created in custom
+                  mode. An auto mode VPC network starts with one subnet per region.
+                  Each subnet has a predetermined range as described in Auto mode
+                  VPC network IP ranges. For custom mode VPC networks, you can add
+                  subnets using the subnetworks insert method.
+                type: boolean
+              creationTimestamp:
+                description: '[Output Only] Creation timestamp in RFC3339 text format.'
+                type: string
+              description:
+                description: An optional description of this resource. Provide this
+                  field when you create the resource.
+                type: string
+              enableUlaInternalIPV6:
+                description: Enable ULA internal ipv6 on this network. Enabling this
+                  feature will assign a /48 from google defined ULA prefix fd20::/20.
+                  .
+                type: boolean
+              firewallPolicy:
+                description: '[Output Only] URL of the firewall policy the network
+                  is associated with.'
+                type: string
+              gatewayIPv4:
+                description: '[Output Only] The gateway address for default routing
+                  out of the network, selected by Google Cloud.'
+                type: string
+              id:
+                description: '[Output Only] The unique identifier for the resource.
+                  This identifier is defined by the server.'
+                format: int64
+                type: integer
+              internalIPV6Range:
+                description: When enabling ula internal ipv6, caller optionally can
+                  specify the /48 range they want from the google defined ULA prefix
+                  fd20::/20. The input must be a valid /48 ULA IPv6 address and must
+                  be within the fd20::/20. Operation will fail if the speficied /48
+                  is already in used by another resource. If the field is not speficied,
+                  then a /48 range will be randomly allocated from fd20::/20 and returned
+                  via this field. .
+                type: string
+              kind:
+                description: '[Output Only] Type of the resource. Always compute#network
+                  for networks.'
+                type: string
+              location:
+                description: The location of this resource.
+                type: string
+              mtu:
+                description: Maximum Transmission Unit in bytes. The minimum value
+                  for this field is 1300 and the maximum value is 8896. The suggested
+                  value is 1500, which is the default MTU used on the Internet, or
+                  8896 if you want to use Jumbo frames. If unspecified, the value
+                  defaults to 1460.
+                format: int32
+                type: integer
+              networkFirewallPolicyEnforcementOrder:
+                description: |-
+                  The network firewall policy enforcement order. Can be either AFTER_CLASSIC_FIREWALL or BEFORE_CLASSIC_FIREWALL. Defaults to AFTER_CLASSIC_FIREWALL if the field is not specified.
+                   Check the NetworkFirewallPolicyEnforcementOrder enum for the list of possible values.
+                type: string
+              networkProfile:
+                description: 'A full or partial URL of the network profile to apply
+                  to this network. This field can be set only at resource creation
+                  time. For example, the following are valid URLs: - https://www.googleapis.com/compute/{api_version}/projects/{project_id}/global/networkProfiles/{network_profile_name}
+                  - projects/{project_id}/global/networkProfiles/{network_profile_name}'
+                type: string
+              params:
+                description: Input only. [Input Only] Additional params passed with
+                  the request, but not persisted as part of resource payload.
+                properties:
+                  resourceManagerTags:
+                    additionalProperties:
+                      type: string
+                    description: 'Tag keys/values directly bound to this resource.
+                      Tag keys and values have the same definition as resource manager
+                      tags. The field is allowed for INSERT only. The keys/values
+                      to set on the resource should be specified in either ID { :
+                      } or Namespaced format { : }. For example the following are
+                      valid inputs: * {"tagKeys/333" : "tagValues/444", "tagKeys/123"
+                      : "tagValues/456"} * {"123/environment" : "production", "345/abc"
+                      : "xyz"} Note: * Invalid combinations of ID & namespaced format
+                      is not supported. For instance: {"123/environment" : "tagValues/444"}
+                      is invalid.'
+                    type: object
+                type: object
+              peerings:
+                description: '[Output Only] A list of network peerings for the resource.'
+                items: {}
+                type: array
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The ComputeNetwork name. If not given, the metadata.name
+                  will be used.
+                type: string
+              routingConfig:
+                description: The network-level routing configuration for this network.
+                  Used by Cloud Router to determine what type of network-wide routing
+                  behavior to enforce.
+                properties:
+                  bgpAlwaysCompareMed:
+                    description: Enable comparison of Multi-Exit Discriminators (MED)
+                      across routes with different neighbor ASNs when using the STANDARD
+                      BGP best path selection algorithm.
+                    type: boolean
+                  bgpBestPathSelectionMode:
+                    description: |-
+                      The BGP best path selection algorithm to be employed within this network for dynamic routes learned by Cloud Routers. Can be LEGACY (default) or STANDARD.
+                       Check the BgpBestPathSelectionMode enum for the list of possible values.
+                    type: string
+                  bgpInterRegionCost:
+                    description: |-
+                      Allows to define a preferred approach for handling inter-region cost in the selection process when using the STANDARD BGP best path selection algorithm. Can be DEFAULT or ADD_COST_TO_MED.
+                       Check the BgpInterRegionCost enum for the list of possible values.
+                    type: string
+                  effectiveBGPAlwaysCompareMed:
+                    description: '[Output Only] Effective value of the bgp_always_compare_med
+                      field.'
+                    type: boolean
+                  effectiveBGPInterRegionCost:
+                    description: |-
+                      [Output Only] Effective value of the bgp_inter_region_cost field.
+                       Check the EffectiveBgpInterRegionCost enum for the list of possible values.
+                    type: string
+                  routingMode:
+                    description: |-
+                      The network-wide routing mode to use. If set to REGIONAL, this network's Cloud Routers will only advertise routes with subnets of this network in the same region as the router. If set to GLOBAL, this network's Cloud Routers will advertise routes with all subnets of this network, across regions.
+                       Check the RoutingMode enum for the list of possible values.
+                    type: string
+                type: object
+              selfLink:
+                description: '[Output Only] Server-defined URL for the resource.'
+                type: string
+              selfLinkWithID:
+                description: '[Output Only] Server-defined URL for this resource with
+                  the resource id.'
+                type: string
+              subnetworks:
+                description: '[Output Only] Server-defined fully-qualified URLs for
+                  all subnetworks in this VPC network.'
+                items:
+                  type: string
+                type: array
+            required:
+            - location
+            type: object
+          status:
+            description: ComputeNetworkStatus defines the config connector machine
+              state of ComputeNetwork
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ComputeNetwork resource in
+                  GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
