@@ -1,0 +1,472 @@
+# Phase: CREATE
+GET https://storage.googleapis.com/storage/v1/b/${projectId}-ns-min-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": true
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": []
+  },
+  "location": "us-central1",
+  "name": "${projectId}-ns-min-${uniqueId}",
+  "storageClass": "STANDARD"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "${projectId}-ns-min-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/${projectId}-ns-min-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/${projectId}-ns-min-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "${projectId}-ns-min-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/${projectId}-ns-min-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.biglake.v1.IcebergCatalogService/GetIcebergCatalog
+
+{
+  "name": "projects/${projectId}/catalogs/biglakeicebergcatalog-ns-min-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Catalog biglakeicebergcatalog-ns-min-${uniqueId} does not exist.
+
+{}
+
+---
+
+GRPC /google.cloud.biglake.v1.IcebergCatalogService/CreateIcebergCatalog
+
+{
+  "iceberg-catalog-id": "biglakeicebergcatalog-ns-min-${uniqueId}",
+  "icebergCatalog": {
+    "catalog-type": "CATALOG_TYPE_BIGLAKE",
+    "default-location": "gs://${projectId}-ns-min-${uniqueId}"
+  },
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "catalog-type": "CATALOG_TYPE_BIGLAKE",
+  "create-time": "2024-04-01T12:34:56.123456Z",
+  "credential-mode": "CREDENTIAL_MODE_END_USER",
+  "default-location": "gs://${projectId}-ns-min-${uniqueId}",
+  "name": "projects/${projectId}/catalogs/biglakeicebergcatalog-ns-min-${uniqueId}",
+  "restricted-locations-config": {
+    "restricted-locations": [
+      "gs://${projectId}-ns-min-${uniqueId}"
+    ]
+  },
+  "storage-regions": [
+    "us-central1"
+  ],
+  "update-time": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+POST https://biglake.googleapis.com/iceberg/v1/restcatalog/v1/projects/${projectId}/catalogs/biglakeicebergcatalog-ns-min-${uniqueId}/namespaces?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Fcatalogs%2Fbiglakeicebergcatalog-ns-min-${uniqueId}
+
+{
+  "namespace": [
+    "nsmin${uniqueId}"
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "namespace": [
+    "nsmin${uniqueId}"
+  ]
+}
+
+---
+
+# Phase: UPDATE
+GET https://biglake.googleapis.com/iceberg/v1/restcatalog/v1/projects/${projectId}/catalogs/biglakeicebergcatalog-ns-min-${uniqueId}/namespaces/nsmin${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fcatalogs%2Fbiglakeicebergcatalog-ns-min-${uniqueId}%2Fnamespaces%2Fnsmin${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "namespace": [
+    "nsmin${uniqueId}"
+  ],
+  "properties": {
+    "location": "gs://${projectId}-ns-min-${uniqueId}/nsmin${uniqueId}"
+  }
+}
+
+---
+
+PATCH https://biglake.googleapis.com/iceberg/v1/restcatalog/v1/projects/${projectId}/catalogs/biglakeicebergcatalog-ns-min-${uniqueId}/namespaces/nsmin${uniqueId}/properties?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fcatalogs%2Fbiglakeicebergcatalog-ns-min-${uniqueId}%2Fnamespaces%2Fnsmin${uniqueId}
+
+{
+  "updates": {
+    "description": "updated minimal namespace"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "added": [
+    "description"
+  ],
+  "missing": [],
+  "removed": []
+}
+
+---
+
+GET https://biglake.googleapis.com/iceberg/v1/restcatalog/v1/projects/${projectId}/catalogs/biglakeicebergcatalog-ns-min-${uniqueId}/namespaces/nsmin${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fcatalogs%2Fbiglakeicebergcatalog-ns-min-${uniqueId}%2Fnamespaces%2Fnsmin${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "namespace": [
+    "nsmin${uniqueId}"
+  ],
+  "properties": {
+    "description": "updated minimal namespace",
+    "location": "gs://${projectId}-ns-min-${uniqueId}/nsmin${uniqueId}"
+  }
+}
+
+---
+
+# Phase: DELETE
+DELETE https://biglake.googleapis.com/iceberg/v1/restcatalog/v1/projects/${projectId}/catalogs/biglakeicebergcatalog-ns-min-${uniqueId}/namespaces/nsmin${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fcatalogs%2Fbiglakeicebergcatalog-ns-min-${uniqueId}%2Fnamespaces%2Fnsmin${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GRPC /google.cloud.biglake.v1.IcebergCatalogService/GetIcebergCatalog
+
+{
+  "name": "projects/${projectId}/catalogs/biglakeicebergcatalog-ns-min-${uniqueId}"
+}
+
+OK
+
+{
+  "catalog-type": "CATALOG_TYPE_BIGLAKE",
+  "create-time": "2024-04-01T12:34:56.123456Z",
+  "credential-mode": "CREDENTIAL_MODE_END_USER",
+  "default-location": "gs://${projectId}-ns-min-${uniqueId}",
+  "federated-catalog-options": {},
+  "name": "projects/${projectId}/catalogs/biglakeicebergcatalog-ns-min-${uniqueId}",
+  "replicas": [
+    {
+      "region": "us-central1"
+    }
+  ],
+  "restricted-locations-config": {
+    "restricted-locations": [
+      "gs://${projectId}-ns-min-${uniqueId}"
+    ]
+  },
+  "storage-regions": [
+    "us-central1"
+  ],
+  "update-time": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.biglake.v1.IcebergCatalogService/GetIcebergCatalog
+
+{
+  "name": "projects/${projectId}/catalogs/biglakeicebergcatalog-ns-min-${uniqueId}"
+}
+
+OK
+
+{
+  "catalog-type": "CATALOG_TYPE_BIGLAKE",
+  "create-time": "2024-04-01T12:34:56.123456Z",
+  "credential-mode": "CREDENTIAL_MODE_END_USER",
+  "default-location": "gs://${projectId}-ns-min-${uniqueId}",
+  "federated-catalog-options": {},
+  "name": "projects/${projectId}/catalogs/biglakeicebergcatalog-ns-min-${uniqueId}",
+  "replicas": [
+    {
+      "region": "us-central1"
+    }
+  ],
+  "restricted-locations-config": {
+    "restricted-locations": [
+      "gs://${projectId}-ns-min-${uniqueId}"
+    ]
+  },
+  "storage-regions": [
+    "us-central1"
+  ],
+  "update-time": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.biglake.v1.IcebergCatalogService/DeleteIcebergCatalog
+
+{
+  "name": "projects/${projectId}/catalogs/biglakeicebergcatalog-ns-min-${uniqueId}"
+}
+
+OK
+
+{}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/${projectId}-ns-min-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "${projectId}-ns-min-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/${projectId}-ns-min-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/${projectId}-ns-min-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "kind": "storage#objects",
+  "prefixes": [
+    "testfolder",
+    "testmanagedfolder"
+  ]
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/${projectId}-ns-min-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+204 No Content
+Content-Type: application/json
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
