@@ -122,6 +122,11 @@ Otherwise, the schemas must be kept in sync and any messages with extra fields a
 							Optional:    true,
 							Description: `When true, use the topic's schema as the columns to write to in BigQuery, if it exists.`,
 						},
+						"use_table_schema": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Description: `When true, use the BigQuery table's schema as the columns to write to in BigQuery.`,
+						},
 						"write_metadata": {
 							Type:     schema.TypeBool,
 							Optional: true,
@@ -1012,6 +1017,8 @@ func flattenPubsubSubscriptionBigqueryConfig(v interface{}, d *schema.ResourceDa
 		flattenPubsubSubscriptionBigqueryConfigTable(original["table"], d, config)
 	transformed["use_topic_schema"] =
 		flattenPubsubSubscriptionBigqueryConfigUseTopicSchema(original["useTopicSchema"], d, config)
+	transformed["use_table_schema"] =
+		flattenPubsubSubscriptionBigqueryConfigUseTableSchema(original["useTableSchema"], d, config)
 	transformed["write_metadata"] =
 		flattenPubsubSubscriptionBigqueryConfigWriteMetadata(original["writeMetadata"], d, config)
 	transformed["drop_unknown_fields"] =
@@ -1023,6 +1030,10 @@ func flattenPubsubSubscriptionBigqueryConfigTable(v interface{}, d *schema.Resou
 }
 
 func flattenPubsubSubscriptionBigqueryConfigUseTopicSchema(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenPubsubSubscriptionBigqueryConfigUseTableSchema(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
@@ -1350,6 +1361,13 @@ func expandPubsubSubscriptionBigqueryConfig(v interface{}, d tpgresource.Terrafo
 		transformed["useTopicSchema"] = transformedUseTopicSchema
 	}
 
+	transformedUseTableSchema, err := expandPubsubSubscriptionBigqueryConfigUseTableSchema(original["use_table_schema"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedUseTableSchema); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["useTableSchema"] = transformedUseTableSchema
+	}
+
 	transformedWriteMetadata, err := expandPubsubSubscriptionBigqueryConfigWriteMetadata(original["write_metadata"], d, config)
 	if err != nil {
 		return nil, err
@@ -1372,6 +1390,10 @@ func expandPubsubSubscriptionBigqueryConfigTable(v interface{}, d tpgresource.Te
 }
 
 func expandPubsubSubscriptionBigqueryConfigUseTopicSchema(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandPubsubSubscriptionBigqueryConfigUseTableSchema(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
