@@ -536,6 +536,21 @@ All system labels in v1 now have a corresponding field in v2 RevisionTemplate.`,
 							Optional:    true,
 							Description: `Email address of the IAM service account associated with the revision of the service. The service account represents the identity of the running revision, and determines what permissions the revision has. If not provided, the revision will use the project's default service account.`,
 						},
+						"service_mesh": {
+							Type:        schema.TypeList,
+							Optional:    true,
+							Description: `Optional. Specifies the service mesh configuration for this Cloud Run service.`,
+							MaxItems:    1,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"mesh": {
+										Type:        schema.TypeString,
+										Required:    true,
+										Description: `The mesh resource name.`,
+									},
+								},
+							},
+						},
 						"session_affinity": {
 							Type:        schema.TypeBool,
 							Optional:    true,
@@ -1619,6 +1634,8 @@ func flattenCloudRunV2ServiceTemplate(v interface{}, d *schema.ResourceData, con
 		flattenCloudRunV2ServiceTemplateTimeout(original["timeout"], d, config)
 	transformed["service_account"] =
 		flattenCloudRunV2ServiceTemplateServiceAccount(original["serviceAccount"], d, config)
+	transformed["service_mesh"] =
+		flattenCloudRunV2ServiceTemplateServiceMesh(original["serviceMesh"], d, config)
 	transformed["containers"] =
 		flattenCloudRunV2ServiceTemplateContainers(original["containers"], d, config)
 	transformed["volumes"] =
@@ -1756,6 +1773,24 @@ func flattenCloudRunV2ServiceTemplateTimeout(v interface{}, d *schema.ResourceDa
 }
 
 func flattenCloudRunV2ServiceTemplateServiceAccount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenCloudRunV2ServiceTemplateServiceMesh(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["mesh"] =
+		flattenCloudRunV2ServiceTemplateServiceMeshMesh(original["mesh"], d, config)
+	return []interface{}{transformed}
+}
+
+func flattenCloudRunV2ServiceTemplateServiceMeshMesh(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
@@ -2961,6 +2996,12 @@ func expandCloudRunV2ServiceTemplate(v interface{}, d tpgresource.TerraformResou
 	} else if val := reflect.ValueOf(transformedServiceAccount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["serviceAccount"] = transformedServiceAccount
 	}
+	transformedServiceMesh, err := expandCloudRunV2ServiceTemplateServiceMesh(original["service_mesh"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedServiceMesh); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["serviceMesh"] = transformedServiceMesh
+	}
 
 	transformedContainers, err := expandCloudRunV2ServiceTemplateContainers(original["containers"], d, config)
 	if err != nil {
@@ -3161,6 +3202,29 @@ func expandCloudRunV2ServiceTemplateTimeout(v interface{}, d tpgresource.Terrafo
 }
 
 func expandCloudRunV2ServiceTemplateServiceAccount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudRunV2ServiceTemplateServiceMesh(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedMesh, err := expandCloudRunV2ServiceTemplateServiceMeshMesh(original["mesh"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedMesh); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["mesh"] = transformedMesh
+	}
+
+	return transformed, nil
+}
+
+func expandCloudRunV2ServiceTemplateServiceMeshMesh(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
