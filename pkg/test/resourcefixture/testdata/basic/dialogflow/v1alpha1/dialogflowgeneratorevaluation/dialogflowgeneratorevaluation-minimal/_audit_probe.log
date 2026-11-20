@@ -1,0 +1,111 @@
+GET https://storage.googleapis.com/storage/v1/b/${projectId}-df-eval-min-${uniqueId}?alt=json&prettyPrint=false
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: UploadServer
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "${projectId}-df-eval-min-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/${projectId}-df-eval-min-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/generators/dialogflowgenerator-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/global/generators/dialogflowgenerator-${uniqueId}",
+  "summarizationContext": {
+    "summarizationSections": [
+      {
+        "type": 1
+      }
+    ],
+    "version": "6.0"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/generators/dialogflowgenerator-${uniqueId}/evaluations/MTk1NzUzNzUxNjc0MzU1NzEz?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "completeTime": "2026-11-20T14:02:54.203705681Z",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "evaluationStatus": {
+    "done": true,
+    "pipelineStatus": {
+      "code": 5,
+      "message": "No qualified conversations found for evaluation."
+    }
+  },
+  "generatorEvaluationConfig": {
+    "inputDataConfig": {
+      "agentAssistInputDataConfig": {
+        "endTime": "2024-01-02T00:00:00Z",
+        "startTime": "2024-01-01T00:00:00Z"
+      },
+      "sampleSize": 10
+    },
+    "outputGcsBucketPath": "gs://${projectId}-df-eval-min-${uniqueId}/eval",
+    "summarizationConfig": {
+      "evaluatorVersion": "2.0"
+    }
+  },
+  "initialGenerator": {
+    "createTime": "2026-11-20T14:02:50.391918058Z",
+    "name": "projects/${projectId}/locations/global/generators/dialogflowgenerator-${uniqueId}",
+    "summarizationContext": {
+      "summarizationSections": [
+        {
+          "type": 1
+        }
+      ],
+      "version": "6.0"
+    },
+    "updateTime": "2026-11-20T14:02:50.391918058Z"
+  },
+  "name": "projects/${projectId}/locations/global/generators/dialogflowgenerator-${uniqueId}/evaluations/MTk1NzUzNzUxNjc0MzU1NzEz",
+  "satisfiesPzi": true,
+  "satisfiesPzs": false,
+  "summarizationMetrics": {}
+}

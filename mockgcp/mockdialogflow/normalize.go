@@ -29,6 +29,12 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".completeTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.completeTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".initialGenerator.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".initialGenerator.updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.initialGenerator.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.initialGenerator.updateTime", mockgcpregistry.PlaceholderTimestamp)
 
 	replacements.TransformObject(".error", func(m map[string]any) {
 		delete(m, "errors")

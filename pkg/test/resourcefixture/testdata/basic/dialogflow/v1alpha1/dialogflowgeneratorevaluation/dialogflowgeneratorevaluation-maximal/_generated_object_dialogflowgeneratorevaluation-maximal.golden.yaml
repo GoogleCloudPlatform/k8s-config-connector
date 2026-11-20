@@ -1,0 +1,60 @@
+apiVersion: dialogflow.cnrm.cloud.google.com/v1alpha1
+kind: DialogflowGeneratorEvaluation
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: dfgeneratoreval-max-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: Maximal Generator Evaluation ${uniqueId}
+  generatorEvaluationConfig:
+    inputDataConfig:
+      agentAssistInputDataConfig:
+        endTime: "2024-01-02T00:00:00Z"
+        startTime: "2024-01-01T00:00:00Z"
+      sampleSize: 10
+      summaryGenerationOption: ALWAYS_GENERATE
+    outputGCSBucketPath: gs://${projectId}-df-eval-max-${uniqueId}/eval
+    summarizationConfig:
+      evaluatorVersion: "2.0"
+  initialGenerator:
+    description: Maximal Dialogflow Generator ${uniqueId}
+    inferenceParameter:
+      maxOutputTokens: 200
+      temperature: 0.5
+      topK: 30
+      topP: 0.9
+    publishedModel: text-bison
+    summarizationContext:
+      summarizationSections:
+      - type: SITUATION
+    triggerEvent: END_OF_UTTERANCE
+  parentRef:
+    name: dialogflowgenerator-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/generators/dialogflowgenerator-${uniqueId}/evaluations/MTI2MTg0NzU5MjY5Mzg3MTQxMTM
+  observedGeneration: 1
+  observedState:
+    completeTime: "1970-01-01T00:00:00Z"
+    createTime: "1970-01-01T00:00:00Z"
+    evaluationStatus:
+      done: true
+      pipelineStatus:
+        code: 5
+        message: No qualified conversations found for evaluation.
+    initialGenerator:
+      createTime: "1970-01-01T00:00:00Z"
+      updateTime: "1970-01-01T00:00:00Z"
+    satisfiesPzi: true
+    satisfiesPzs: false
+    summarizationMetrics: {}

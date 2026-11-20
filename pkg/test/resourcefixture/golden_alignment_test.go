@@ -553,6 +553,7 @@ func cleanURL(u string) string {
 	u = regexp.MustCompile(`/teamFolders/[0-9a-fA-F-]+`).ReplaceAllString(u, "/teamFolders/2ba614be-5147-410a-ad89-bab4ff528497")
 	u = regexp.MustCompile(`/webhooks/[0-9a-fA-F-]+`).ReplaceAllString(u, "/webhooks/${webhookID}")
 	u = regexp.MustCompile(`/backupRuns/[0-9]+`).ReplaceAllLiteralString(u, "/backupRuns/${backupID}")
+	u = regexp.MustCompile(`/evaluations/[0-9a-zA-Z=_-]+`).ReplaceAllString(u, "/evaluations/${evaluationID}")
 	return u
 }
 
@@ -560,6 +561,10 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 	if realJSON == "" && mockJSON == "" {
 		return
 	}
+
+	evalRegex := regexp.MustCompile(`/evaluations/[0-9a-zA-Z=_-]+`)
+	realJSON = evalRegex.ReplaceAllString(realJSON, "/evaluations/${evaluationID}")
+	mockJSON = evalRegex.ReplaceAllString(mockJSON, "/evaluations/${evaluationID}")
 
 	// Normalize any UUIDs to dummy UUID to align real and mock logs
 	uuidRegex := regexp.MustCompile(`[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}`)
@@ -643,6 +648,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "requestedCancellation")
 		delete(v, "endTime")
 		delete(v, "statusMessage")
+		delete(v, "completeTime")
 		delete(v, "createTime")
 		delete(v, "create-time")
 		delete(v, "creationTime")

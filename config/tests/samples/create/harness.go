@@ -1622,6 +1622,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "dialogflow.cnrm.cloud.google.com", Kind: "DialogflowWebhook"}:
 			case schema.GroupKind{Group: "dialogflow.cnrm.cloud.google.com", Kind: "DialogflowPlaybook"}:
 			case schema.GroupKind{Group: "dialogflow.cnrm.cloud.google.com", Kind: "DialogflowCompanionAgent"}:
+			case schema.GroupKind{Group: "dialogflow.cnrm.cloud.google.com", Kind: "DialogflowGeneratorEvaluation"}:
 			case schema.GroupKind{Group: "dialogflowcx.cnrm.cloud.google.com", Kind: "DialogflowCXAgent"}:
 			case schema.GroupKind{Group: "dialogflowcx.cnrm.cloud.google.com", Kind: "DialogflowCXFlow"}:
 			case schema.GroupKind{Group: "dialogflowcx.cnrm.cloud.google.com", Kind: "DialogflowCXWebhook"}:

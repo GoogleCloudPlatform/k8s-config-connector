@@ -256,6 +256,12 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	// Specific to cloudbuild
 	addReplacement("metadata.completeTime", "2024-04-01T12:34:56.123456Z")
 
+	// Specific to Dialogflow
+	addReplacement("completeTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("response.completeTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("initialGenerator.createTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("initialGenerator.updateTime", "2024-04-01T12:34:56.123456Z")
+
 	// Specific to spanner
 	addReplacement("metadata.startTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")

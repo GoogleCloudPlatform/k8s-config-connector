@@ -4327,21 +4327,8 @@
 [missing_field] crd=dialogflowfulfillments.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.requestHeaders" is not set in unstructured objects
 [missing_field] crd=dialogflowfulfillments.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.uri" is not set in unstructured objects
 [missing_field] crd=dialogflowfulfillments.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.username" is not set in unstructured objects
-[missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.generatorEvaluationConfig.inputDataConfig.agentAssistInputDataConfig.endTime" is not set in unstructured objects
-[missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.generatorEvaluationConfig.inputDataConfig.agentAssistInputDataConfig.startTime" is not set in unstructured objects
 [missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.generatorEvaluationConfig.inputDataConfig.datasetInputDataConfig.datasetRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.generatorEvaluationConfig.inputDataConfig.sampleSize" is not set in unstructured objects
-[missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.generatorEvaluationConfig.inputDataConfig.summaryGenerationOption" is not set in unstructured objects
-[missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.generatorEvaluationConfig.outputGCSBucketPath" is not set in unstructured objects
-[missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.generatorEvaluationConfig.summarizationConfig.evaluatorVersion" is not set in unstructured objects
-[missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.initialGenerator.description" is not set in unstructured objects
 [missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.initialGenerator.freeFormContext.text" is not set in unstructured objects
-[missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.initialGenerator.inferenceParameter.maxOutputTokens" is not set in unstructured objects
-[missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.initialGenerator.inferenceParameter.temperature" is not set in unstructured objects
-[missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.initialGenerator.inferenceParameter.topK" is not set in unstructured objects
-[missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.initialGenerator.inferenceParameter.topP" is not set in unstructured objects
-[missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.initialGenerator.publishedModel" is not set in unstructured objects
 [missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.initialGenerator.summarizationContext.fewShotExamples[].conversationContext.messageEntries[].createTime" is not set in unstructured objects
 [missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.initialGenerator.summarizationContext.fewShotExamples[].conversationContext.messageEntries[].languageCode" is not set in unstructured objects
 [missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.initialGenerator.summarizationContext.fewShotExamples[].conversationContext.messageEntries[].role" is not set in unstructured objects
@@ -4356,10 +4343,7 @@
 [missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.initialGenerator.summarizationContext.outputLanguageCode" is not set in unstructured objects
 [missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.initialGenerator.summarizationContext.summarizationSections[].definition" is not set in unstructured objects
 [missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.initialGenerator.summarizationContext.summarizationSections[].key" is not set in unstructured objects
-[missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.initialGenerator.summarizationContext.summarizationSections[].type" is not set in unstructured objects
 [missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.initialGenerator.summarizationContext.version" is not set in unstructured objects
-[missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.initialGenerator.triggerEvent" is not set in unstructured objects
-[missing_field] crd=dialogflowgeneratorevaluations.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].conversationContext.messageEntries[].createTime" is not set in unstructured objects
 [missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].conversationContext.messageEntries[].languageCode" is not set in unstructured objects
 [missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].conversationContext.messageEntries[].role" is not set in unstructured objects

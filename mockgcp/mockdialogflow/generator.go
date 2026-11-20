@@ -67,6 +67,14 @@ func (s *MockService) parseGeneratorName(name string) (*generatorName, error) {
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid, expected format projects/{project}/locations/{location}/generators/{generator}", name)
 }
 
+func populateGeneratorDefaults(obj *pb.Generator) {
+	if sc := obj.GetSummarizationContext(); sc != nil {
+		if sc.Version == "" {
+			sc.Version = "6.0"
+		}
+	}
+}
+
 func (s *generatorsServer) GetGenerator(ctx context.Context, req *pb.GetGeneratorRequest) (*pb.Generator, error) {
 	name, err := s.parseGeneratorName(req.Name)
 	if err != nil {
@@ -82,6 +90,8 @@ func (s *generatorsServer) GetGenerator(ctx context.Context, req *pb.GetGenerato
 		}
 		return nil, err
 	}
+
+	populateGeneratorDefaults(obj)
 
 	return obj, nil
 }
@@ -107,6 +117,8 @@ func (s *generatorsServer) CreateGenerator(ctx context.Context, req *pb.CreateGe
 	now := timestamppb.Now()
 	obj.CreateTime = now
 	obj.UpdateTime = now
+
+	populateGeneratorDefaults(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -159,6 +171,8 @@ func (s *generatorsServer) UpdateGenerator(ctx context.Context, req *pb.UpdateGe
 	}
 
 	obj.UpdateTime = timestamppb.Now()
+
+	populateGeneratorDefaults(obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
