@@ -1,0 +1,238 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package google.iam.v1;
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/longrunning/operations.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "cloud.google.com/go/iam/apiv1/iampb;iampb";
+option java_multiple_files = true;
+option java_outer_classname = "WorkloadIdentityPoolNamespaceProto";
+option java_package = "com.google.iam.v1";
+
+// Manages WorkloadIdentityPoolNamespaces.
+service WorkloadIdentityPoolNamespaces {
+  option (google.api.default_host) = "iam.googleapis.com";
+  option (google.api.oauth_scopes) = "https://www.googleapis.com/auth/cloud-platform";
+
+  // Gets an individual WorkloadIdentityPoolNamespace.
+  rpc GetWorkloadIdentityPoolNamespace(GetWorkloadIdentityPoolNamespaceRequest) returns (WorkloadIdentityPoolNamespace) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/workloadIdentityPools/*/namespaces/*}"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Creates a new WorkloadIdentityPoolNamespace in a WorkloadIdentityPool.
+  rpc CreateWorkloadIdentityPoolNamespace(CreateWorkloadIdentityPoolNamespaceRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*/workloadIdentityPools/*}/namespaces"
+      body: "workload_identity_pool_namespace"
+    };
+    option (google.api.method_signature) = "parent,workload_identity_pool_namespace,workload_identity_pool_namespace_id";
+    option (google.longrunning.operation_info) = {
+      response_type: "WorkloadIdentityPoolNamespace"
+      metadata_type: "WorkloadIdentityPoolOperationMetadata"
+    };
+  }
+
+  // Updates an existing WorkloadIdentityPoolNamespace in a WorkloadIdentityPool.
+  rpc UpdateWorkloadIdentityPoolNamespace(UpdateWorkloadIdentityPoolNamespaceRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{workload_identity_pool_namespace.name=projects/*/locations/*/workloadIdentityPools/*/namespaces/*}"
+      body: "workload_identity_pool_namespace"
+    };
+    option (google.api.method_signature) = "workload_identity_pool_namespace,update_mask";
+    option (google.longrunning.operation_info) = {
+      response_type: "WorkloadIdentityPoolNamespace"
+      metadata_type: "WorkloadIdentityPoolOperationMetadata"
+    };
+  }
+
+  // Deletes a WorkloadIdentityPoolNamespace.
+  rpc DeleteWorkloadIdentityPoolNamespace(DeleteWorkloadIdentityPoolNamespaceRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/workloadIdentityPools/*/namespaces/*}"
+    };
+    option (google.api.method_signature) = "name";
+    option (google.longrunning.operation_info) = {
+      response_type: "WorkloadIdentityPoolNamespace"
+      metadata_type: "WorkloadIdentityPoolOperationMetadata"
+    };
+  }
+
+  // Undeletes a WorkloadIdentityPoolNamespace, as long as it was deleted fewer than 30 days ago.
+  rpc UndeleteWorkloadIdentityPoolNamespace(UndeleteWorkloadIdentityPoolNamespaceRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{name=projects/*/locations/*/workloadIdentityPools/*/namespaces/*}:undelete"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+    option (google.longrunning.operation_info) = {
+      response_type: "WorkloadIdentityPoolNamespace"
+      metadata_type: "WorkloadIdentityPoolOperationMetadata"
+    };
+  }
+
+  // Lists all non-deleted WorkloadIdentityPoolNamespaces in a workload identity pool.
+  rpc ListWorkloadIdentityPoolNamespaces(ListWorkloadIdentityPoolNamespacesRequest) returns (ListWorkloadIdentityPoolNamespacesResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*/workloadIdentityPools/*}/namespaces"
+    };
+    option (google.api.method_signature) = "parent";
+  }
+}
+
+// Represents a namespace for a workload identity pool.
+message WorkloadIdentityPoolNamespace {
+  option (google.api.resource) = {
+    type: "iam.googleapis.com/WorkloadIdentityPoolNamespace"
+    pattern: "projects/{project}/locations/{location}/workloadIdentityPools/{workload_identity_pool}/namespaces/{workload_identity_pool_namespace}"
+  };
+
+  // The current state of the namespace.
+  enum State {
+    // State unspecified.
+    STATE_UNSPECIFIED = 0;
+
+    // The namespace is active.
+    ACTIVE = 1;
+
+    // The namespace is soft-deleted. Soft-deleted namespaces are permanently deleted after approximately 30 days.
+    DELETED = 2;
+  }
+
+  // Identifier. The resource name of the namespace.
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
+
+  // Optional. A description of the namespace. Cannot exceed 256 characters.
+  string description = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Output only. The state of the namespace.
+  State state = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Optional. Whether the namespace is disabled.
+  bool disabled = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // Output only. Time after which the namespace will be permanently purged and cannot be recovered.
+  google.protobuf.Timestamp expire_time = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The Google Cloud service that owns this namespace.
+  OwnerService owner_service = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
+}
+
+// The Google Cloud service that owns this namespace.
+message OwnerService {
+  // Required. The service agent principal subject, e.g. "serviceAccount:service-1234@gcp-sa-gkehub.iam.gserviceaccount.com".
+  string principal_subject = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Request message for GetWorkloadIdentityPoolNamespace.
+message GetWorkloadIdentityPoolNamespaceRequest {
+  // Required. The name of the namespace to retrieve.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "iam.googleapis.com/WorkloadIdentityPoolNamespace"
+    }
+  ];
+}
+
+// Request message for CreateWorkloadIdentityPoolNamespace.
+message CreateWorkloadIdentityPoolNamespaceRequest {
+  // Required. The parent resource to create the namespace in.
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "iam.googleapis.com/WorkloadIdentityPool"
+    }
+  ];
+
+  // Required. The namespace to create.
+  WorkloadIdentityPoolNamespace workload_identity_pool_namespace = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // Required. The ID to use for the namespace.
+  string workload_identity_pool_namespace_id = 3 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Request message for UpdateWorkloadIdentityPoolNamespace.
+message UpdateWorkloadIdentityPoolNamespaceRequest {
+  // Required. The namespace to update.
+  WorkloadIdentityPoolNamespace workload_identity_pool_namespace = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // Required. The list of fields to update.
+  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Request message for DeleteWorkloadIdentityPoolNamespace.
+message DeleteWorkloadIdentityPoolNamespaceRequest {
+  // Required. The name of the namespace to delete.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "iam.googleapis.com/WorkloadIdentityPoolNamespace"
+    }
+  ];
+}
+
+// Request message for UndeleteWorkloadIdentityPoolNamespace.
+message UndeleteWorkloadIdentityPoolNamespaceRequest {
+  // Required. The name of the namespace to undelete.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "iam.googleapis.com/WorkloadIdentityPoolNamespace"
+    }
+  ];
+}
+
+// Request message for ListWorkloadIdentityPoolNamespaces.
+message ListWorkloadIdentityPoolNamespacesRequest {
+  // Required. The parent resource to list namespaces for.
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "iam.googleapis.com/WorkloadIdentityPool"
+    }
+  ];
+
+  // The maximum number of namespaces to return.
+  int32 page_size = 2;
+
+  // A page token, received from a previous `ListWorkloadIdentityPoolNamespaces` call.
+  string page_token = 3;
+
+  // Whether to return soft-deleted namespaces.
+  bool show_deleted = 4;
+}
+
+// Response message for ListWorkloadIdentityPoolNamespaces.
+message ListWorkloadIdentityPoolNamespacesResponse {
+  // A list of namespaces.
+  repeated WorkloadIdentityPoolNamespace workload_identity_pool_namespaces = 1;
+
+  // A token, which can be sent as `page_token` to retrieve the next page.
+  string next_page_token = 2;
+}
+
+// Metadata for long-running WorkloadIdentityPool operations.
+message WorkloadIdentityPoolOperationMetadata {}

@@ -9,7 +9,7 @@ This skill guides an automated agent through running and debugging Config Connec
 
 ## Presubmit Scripts Overview
 
-All presubmits run in GitHub Actions, generated from `dev/ci/presubmits/`. Each script in `dev/ci/presubmits/` maps 1:1 to a CI job.
+All presubmits run in GitHub Actions. Matrix presubmits are consolidated into generic runner scripts (e.g. `dev/ci/presubmits/tests-e2e-fixtures-suite <service>`). **Do not add individual CI presubmit scripts** (such as `dev/ci/presubmits/tests-e2e-fixtures-<service>` or `tests-e2e-fixtures-<kind>`).
 
 If a specific CI presubmit fails, run the corresponding script locally to diagnose and fix the failure.
 

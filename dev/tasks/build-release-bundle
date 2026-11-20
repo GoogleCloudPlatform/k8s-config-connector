@@ -225,6 +225,7 @@ BLOCKED_KINDS=(
     "HypercomputeClusterCluster"
     "IAMAccessPolicy"
     "IAMPrincipalAccessBoundaryPolicy"
+    "IAMWorkloadIdentityPoolNamespace"
     "IAPTunnelDestGroup"
     "InfraManagerDeploymentGroup"
     "KMSEKMConnection"
