@@ -521,6 +521,13 @@ spec:
                       This is not applicable to MULTI_ZONE, and would be ignored for
                       MULTI_ZONE clusters.
                     type: string
+                  zones:
+                    description: Optional. Specify the zones of a multi-zone cluster
+                      where Redis Cluster allocates resources. This flag isn't applicable
+                      for single-zone clusters.
+                    items:
+                      type: string
+                    type: array
                 type: object
             required:
             - location
@@ -872,6 +879,18 @@ spec:
                     description: Output only. System assigned, unique identifier for
                       the cluster.
                     type: string
+                  zoneDistributionConfig:
+                    description: Output only. This config will be used to determine
+                      how the customer wants us to distribute cluster resources within
+                      the region.
+                    properties:
+                      activeZones:
+                        description: Output only. The exact list of zones where the
+                          cluster currently has active VMs.
+                        items:
+                          type: string
+                        type: array
+                    type: object
                 type: object
             type: object
         type: object
@@ -1374,6 +1393,13 @@ spec:
                       This is not applicable to MULTI_ZONE, and would be ignored for
                       MULTI_ZONE clusters.
                     type: string
+                  zones:
+                    description: Optional. Specify the zones of a multi-zone cluster
+                      where Redis Cluster allocates resources. This flag isn't applicable
+                      for single-zone clusters.
+                    items:
+                      type: string
+                    type: array
                 type: object
             required:
             - location
@@ -1725,6 +1751,18 @@ spec:
                     description: Output only. System assigned, unique identifier for
                       the cluster.
                     type: string
+                  zoneDistributionConfig:
+                    description: Output only. This config will be used to determine
+                      how the customer wants us to distribute cluster resources within
+                      the region.
+                    properties:
+                      activeZones:
+                        description: Output only. The exact list of zones where the
+                          cluster currently has active VMs.
+                        items:
+                          type: string
+                        type: array
+                    type: object
                 type: object
             type: object
         type: object
