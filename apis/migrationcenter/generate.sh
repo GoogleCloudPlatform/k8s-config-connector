@@ -44,6 +44,7 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version migrationcenter.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --prepopulate-resource \
+  --resource MigrationCenterImportDataFile:ImportDataFile \
   --resource MigrationCenterImportJob:ImportJob \
   --resource MigrationCenterReport:Report \
   --resource MigrationCenterReportConfig:ReportConfig
@@ -51,6 +52,7 @@ ${CONTROLLERBUILDER} generate-types \
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.migrationcenter.v1 \
   --api-version migrationcenter.cnrm.cloud.google.com/v1alpha1 \
+  --resource MigrationCenterImportDataFile:ImportDataFile \
   --resource MigrationCenterImportJob:ImportJob \
   --resource MigrationCenterReport:Report \
   --resource MigrationCenterReportConfig:ReportConfig

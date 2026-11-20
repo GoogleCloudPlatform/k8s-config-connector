@@ -90,8 +90,23 @@
   - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` to reflect 100% spec field coverage in tests.
 - **Impact**: Full lifecycle reconciliation for `MigrationCenterImportJob` verified with authentic GCP audit logs and golden traffic.
 
+### 2026-11-19 Greenfield Step 1a prepopulate types, identity, and judgement queue for MigrationCenterImportDataFile
+- **Context**: Prepopulating direct KRM types, identity, references, and `judgement_queue.yaml` for `MigrationCenterImportDataFile` under `v1alpha1`.
+- **Details**:
+  - Added `MigrationCenterImportDataFile:ImportDataFile` to `generate-types` and `generate-identity` in `apis/migrationcenter/generate.sh`.
+  - Added `MigrationCenterImportDataFile` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Ran `apis/migrationcenter/generate.sh` to scaffold `migrationcenterimportdatafile_types.go`, identity, reference, CRD, and entries in `apis/migrationcenter/judgement_queue.yaml`.
+  - Recorded untriaged fields in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+- **Impact**: Mechanical prepopulation complete with clean compilation, passing unit tests, and passing `apichecks`.
 
-
-
-
+### 2026-11-19 Greenfield Step 1b judgement queue triage for MigrationCenterImportDataFile
+- **Context**: Triaging judgement queue and finalizing direct KRM types, identity, and references for `MigrationCenterImportDataFile` under `v1alpha1`.
+- **Solution**:
+  - Modeled `MigrationCenterImportDataFile` as a child resource under `MigrationCenterImportJob` (`projects/{project}/locations/{location}/importJobs/{import_job}/importDataFiles/{import_data_file}`). Replaced `projectRef`, `location`, and guessed `importJobRef` with a required, immutable `ParentRef *MigrationCenterImportJobRef` (`json:"parentRef"`) per `PARENT_AND_IDENTITY.md` (Case B).
+  - Confirmed client-specified resource ID support (`CreateImportDataFileRequest` has required `import_data_file_id`), retaining `IdentityV2`.
+  - Verified output-only fields (`create_time`, `state`, and `upload_file_info`) are properly located in `MigrationCenterImportDataFileObservedState`.
+  - Resolved all 5 entries for `MigrationCenterImportDataFile` in `apis/migrationcenter/judgement_queue.yaml` including `untriaged-bulk-generation`.
+  - Regenerated CRD, deepcopy code, identity, and mappers via `apis/migrationcenter/generate.sh`.
+  - Re-recorded golden exceptions in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+- **Impact**: Clean, type-safe API for `MigrationCenterImportDataFile` ready for Phase 2 direct controller implementation.
 
