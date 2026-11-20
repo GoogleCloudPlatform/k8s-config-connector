@@ -1,0 +1,32 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: abandon
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+    test.cnrm.cloud.google.com/reconcile-cookie: (removed)
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  name: iampolicy-sample-project
+  namespace: ${projectId}
+spec:
+  bindings:
+  - members:
+    - serviceAccount:iampartialpolicy-dep-project-b@iampartialpolicy-dep-project.iam.gserviceaccount.com
+    - serviceAccount:iampartialpolicy-dep-project-a@iampartialpolicy-dep-project.iam.gserviceaccount.com
+    role: roles/storage.admin
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    name: iampartialpolicy-dep-project
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 1

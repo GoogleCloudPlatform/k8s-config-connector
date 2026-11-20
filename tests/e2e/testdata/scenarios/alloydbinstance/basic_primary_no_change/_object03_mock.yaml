@@ -1,0 +1,28 @@
+apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
+kind: ServiceNetworkingConnection
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  name: servicenetworkingconnection-${uniqueId}
+  namespace: ${projectId}
+spec:
+  networkRef:
+    name: computenetwork-${uniqueId}
+  reservedPeeringRanges:
+  - name: computeaddress-${uniqueId}
+  service: servicenetworking.googleapis.com
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 1
+  peering: servicenetworking-googleapis-com
