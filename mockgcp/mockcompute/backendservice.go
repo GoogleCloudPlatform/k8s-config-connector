@@ -74,4 +74,10 @@ func (s *MockService) populateBackendServiceDefaults(ctx context.Context, obj *p
 	for i, hc := range obj.HealthChecks {
 		obj.HealthChecks[i] = ExpandComputeLink(ctx, hc)
 	}
+
+	if obj.StrongSessionAffinityCookie != nil && obj.StrongSessionAffinityCookie.Ttl != nil {
+		if obj.StrongSessionAffinityCookie.Ttl.Nanos == nil {
+			obj.StrongSessionAffinityCookie.Ttl.Nanos = PtrTo(int32(0))
+		}
+	}
 }

@@ -500,6 +500,10 @@ type ComputeBackendServiceSpec struct {
 	// +kcc:proto:field=google.cloud.compute.v1.BackendService.session_affinity
 	SessionAffinity *string `json:"sessionAffinity,omitempty"`
 
+	// Describes the HTTP cookie used for stateful session affinity. This field is applicable and required if the sessionAffinity is set to STRONG_COOKIE_AFFINITY.
+	// +kcc:proto:field=google.cloud.compute.v1.BackendService.strong_session_affinity_cookie
+	StrongSessionAffinityCookie *BackendServiceHttpCookie `json:"strongSessionAffinityCookie,omitempty"`
+
 	// subsetting cannot be specified with haPolicy.
 	// +kcc:proto:field=google.cloud.compute.v1.BackendService.subsetting
 	Subsetting *Subsetting `json:"subsetting,omitempty"`

@@ -1058,7 +1058,7 @@ func ComputeBackendServiceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 	// MISSING: ServiceBindings
 	// MISSING: ServiceLbPolicy
 	out.SessionAffinity = in.SessionAffinity
-	// MISSING: StrongSessionAffinityCookie
+	out.StrongSessionAffinityCookie = BackendServiceHttpCookie_v1beta1_FromProto(mapCtx, in.GetStrongSessionAffinityCookie())
 	out.Subsetting = Subsetting_v1beta1_FromProto(mapCtx, in.GetSubsetting())
 	out.TimeoutSec = in.TimeoutSec
 	// MISSING: TLSSettings
@@ -1127,7 +1127,7 @@ found existing non-generated mapping function "ComputeBackendServiceSpec_v1beta1
 		// MISSING: ServiceBindings
 		// MISSING: ServiceLbPolicy
 		out.SessionAffinity = in.SessionAffinity
-		// MISSING: StrongSessionAffinityCookie
+		out.StrongSessionAffinityCookie = BackendServiceHttpCookie_v1beta1_ToProto(mapCtx, in.StrongSessionAffinityCookie)
 		out.Subsetting = Subsetting_v1beta1_ToProto(mapCtx, in.Subsetting)
 		out.TimeoutSec = in.TimeoutSec
 		// MISSING: TLSSettings

@@ -1074,6 +1074,34 @@ spec:
                   [Session Affinity](https://cloud.google.com/load-balancing/docs/backend-service#session_affinity).
                   sessionAffinity cannot be specified with haPolicy.'
                 type: string
+              strongSessionAffinityCookie:
+                description: Describes the HTTP cookie used for stateful session affinity.
+                  This field is applicable and required if the sessionAffinity is
+                  set to STRONG_COOKIE_AFFINITY.
+                properties:
+                  name:
+                    description: Name of the cookie.
+                    type: string
+                  path:
+                    description: Path to set for the cookie.
+                    type: string
+                  ttl:
+                    description: Lifetime of the cookie.
+                    properties:
+                      nanos:
+                        description: Span of time that's a fraction of a second at
+                          nanosecond resolution. Must be from 0 to 999,999,999 inclusive.
+                        format: int32
+                        type: integer
+                      seconds:
+                        description: Span of time at a resolution of a second. Must
+                          be from 0 to 315,576,000,000 inclusive.
+                        format: int64
+                        type: integer
+                    required:
+                    - seconds
+                    type: object
+                type: object
               subsetting:
                 description: subsetting cannot be specified with haPolicy.
                 properties:

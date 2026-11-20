@@ -346,6 +346,7 @@ func ComputeBackendServiceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 
 	out.SecuritySettings = SecuritySettings_v1beta1_ToProto(mapCtx, in.SecuritySettings)
 	out.SessionAffinity = in.SessionAffinity
+	out.StrongSessionAffinityCookie = BackendServiceStrongSessionAffinityCookie_v1beta1_ToProto(mapCtx, in.StrongSessionAffinityCookie)
 	out.Subsetting = Subsetting_v1beta1_ToProto(mapCtx, in.Subsetting)
 	out.TimeoutSec = in.TimeoutSec
 
@@ -412,6 +413,7 @@ func ComputeBackendServiceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 
 	out.SecuritySettings = SecuritySettings_v1beta1_FromProto(mapCtx, in.SecuritySettings)
 	out.SessionAffinity = in.SessionAffinity
+	out.StrongSessionAffinityCookie = BackendServiceStrongSessionAffinityCookie_v1beta1_FromProto(mapCtx, in.StrongSessionAffinityCookie)
 	out.Subsetting = Subsetting_v1beta1_FromProto(mapCtx, in.Subsetting)
 	out.TimeoutSec = in.TimeoutSec
 
@@ -659,6 +661,28 @@ func BackendServiceHttpCookie_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 
 // BackendServiceHttpCookie_v1beta1_FromProto maps pb.ConsistentHashLoadBalancerSettingsHttpCookie to BackendServiceHttpCookie.
 func BackendServiceHttpCookie_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ConsistentHashLoadBalancerSettingsHttpCookie) *krm.BackendServiceHttpCookie {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendServiceHttpCookie{}
+	out.Name = in.Name
+	out.Path = in.Path
+	out.Ttl = BackendServiceDuration_v1beta1_FromProto(mapCtx, in.Ttl)
+	return out
+}
+
+func BackendServiceStrongSessionAffinityCookie_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendServiceHttpCookie) *pb.BackendServiceHttpCookie {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendServiceHttpCookie{}
+	out.Name = in.Name
+	out.Path = in.Path
+	out.Ttl = BackendServiceDuration_v1beta1_ToProto(mapCtx, in.Ttl)
+	return out
+}
+
+func BackendServiceStrongSessionAffinityCookie_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendServiceHttpCookie) *krm.BackendServiceHttpCookie {
 	if in == nil {
 		return nil
 	}

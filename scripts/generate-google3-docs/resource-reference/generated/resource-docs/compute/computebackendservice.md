@@ -235,6 +235,12 @@ securitySettings:
   subjectAltNames:
   - string
 sessionAffinity: string
+strongSessionAffinityCookie:
+  name: string
+  path: string
+  ttl:
+    nanos: integer
+    seconds: integer
 subsetting:
   policy: string
 timeoutSec: integer
@@ -1872,6 +1878,66 @@ Allowed value: The `selfLink` field of a `ComputeHealthCheck` resource.</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>Type of session affinity to use. The default is NONE. Only NONE and HEADER_FIELD are supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true. For more details, see: [Session Affinity](https://cloud.google.com/load-balancing/docs/backend-service#session_affinity). sessionAffinity cannot be specified with haPolicy.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>strongSessionAffinityCookie</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Describes the HTTP cookie used for stateful session affinity. This field is applicable and required if the sessionAffinity is set to STRONG_COOKIE_AFFINITY.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>strongSessionAffinityCookie.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Name of the cookie.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>strongSessionAffinityCookie.path</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Path to set for the cookie.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>strongSessionAffinityCookie.ttl</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Lifetime of the cookie.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>strongSessionAffinityCookie.ttl.nanos</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Span of time that's a fraction of a second at nanosecond resolution. Must be from 0 to 999,999,999 inclusive.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>strongSessionAffinityCookie.ttl.seconds</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive.</p>
         </td>
     </tr>
     <tr>
