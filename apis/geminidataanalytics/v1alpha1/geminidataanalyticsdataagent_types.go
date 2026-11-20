@@ -52,6 +52,15 @@ type GeminiDataAnalyticsDataAgentSpec struct {
 	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DataAgent.description
 	Description *string `json:"description,omitempty"`
 
+	// Optional. Labels to help users filter related agents.
+	//  For example, "sales", "business", "etl", and so on.
+	//  Note labels are used only for filtering and not for policies.
+	//  See the [labels
+	//  documentation](https://cloud.google.com/resource-manager/docs/labels-overview)
+	//  for more details on label usage.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DataAgent.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
 	// Optional. Customer managed encryption key (CMEK) to use for encrypting the
 	//  DataAgent resources. Cloud KMS CryptoKeys must reside in the same location
 	//  as the DataAgent. The expected format is

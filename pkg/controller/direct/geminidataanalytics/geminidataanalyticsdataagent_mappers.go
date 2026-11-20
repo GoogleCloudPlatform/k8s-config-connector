@@ -30,6 +30,7 @@ func GeminiDataAnalyticsDataAgentSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	}
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
 	if in.KMSKeyRef != nil && in.KMSKeyRef.External != "" {
 		out.KmsKey = direct.LazyPtr(in.KMSKeyRef.External)
 	}

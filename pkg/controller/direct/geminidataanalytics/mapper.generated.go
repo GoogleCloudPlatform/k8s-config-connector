@@ -673,7 +673,6 @@ func GeminiDataAnalyticsDataAgentObservedState_FromProto(mapCtx *direct.MapConte
 	out := &krm.GeminiDataAnalyticsDataAgentObservedState{}
 	out.DataAnalyticsAgent = DataAnalyticsAgentObservedState_FromProto(mapCtx, in.GetDataAnalyticsAgent())
 	// MISSING: Name
-	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
@@ -689,7 +688,6 @@ func GeminiDataAnalyticsDataAgentObservedState_ToProto(mapCtx *direct.MapContext
 		out.Type = &geminidataanalyticspb.DataAgent_DataAnalyticsAgent{DataAnalyticsAgent: oneof}
 	}
 	// MISSING: Name
-	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
@@ -705,7 +703,7 @@ func GeminiDataAnalyticsDataAgentSpec_FromProto(mapCtx *direct.MapContext, in *g
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: Labels
+	out.Labels = in.Labels
 	if in.GetKmsKey() != "" {
 		out.KMSKeyRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
 	}

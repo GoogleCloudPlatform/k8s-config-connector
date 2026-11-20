@@ -1227,6 +1227,13 @@ func (in *GeminiDataAnalyticsDataAgentSpec) DeepCopyInto(out *GeminiDataAnalytic
 		*out = new(string)
 		**out = **in
 	}
+	if in.Labels != nil {
+		in, out := &in.Labels, &out.Labels
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
 	if in.KMSKeyRef != nil {
 		in, out := &in.KMSKeyRef, &out.KMSKeyRef
 		*out = new(kmsv1beta1.KMSCryptoKeyRef)

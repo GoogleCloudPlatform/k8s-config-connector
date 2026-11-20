@@ -42,7 +42,7 @@
 - **Solution**:
   1. Replaced separate `ProjectRef` and `Location` in `GeminiDataAnalyticsDataAgentSpec` with inlined `*parent.ProjectAndLocationRef`.
   2. Converted `KMSKey *string` to `KMSKeyRef *kmsv1beta1.KMSCryptoKeyRef`.
-  3. Removed top-level `Labels` from `GeminiDataAnalyticsDataAgentSpec` (reconciled via `metadata.labels`).
+  3. Kept `Labels` in `GeminiDataAnalyticsDataAgentSpec` per maintainer review feedback.
   4. Added service documentation URL `https://cloud.google.com/conversational-analytics/docs/overview`.
   5. Resolved all 37 entries in `apis/geminidataanalytics/judgement_queue.yaml`.
   6. Implemented handwritten `GeminiDataAnalyticsDataAgentSpec_ToProto` in `pkg/controller/direct/geminidataanalytics/geminidataanalyticsdataagent_mappings.go` to safely assign `out.KmsKey = direct.LazyPtr(in.KMSKeyRef.External)` without out-of-scope `controllerbuilder` modifications.

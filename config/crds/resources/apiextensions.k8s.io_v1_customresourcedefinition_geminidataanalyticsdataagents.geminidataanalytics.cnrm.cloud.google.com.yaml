@@ -1734,6 +1734,15 @@ spec:
                     description: The namespace of a KMSCryptoKey resource.
                     type: string
                 type: object
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Labels to help users filter related agents.
+                  For example, "sales", "business", "etl", and so on. Note labels
+                  are used only for filtering and not for policies. See the [labels
+                  documentation](https://cloud.google.com/resource-manager/docs/labels-overview)
+                  for more details on label usage.
+                type: object
               location:
                 description: The location that this resource belongs to.
                 type: string

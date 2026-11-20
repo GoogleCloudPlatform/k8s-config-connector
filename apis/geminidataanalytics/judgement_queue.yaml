@@ -27,7 +27,7 @@ entries:
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
     status: resolved
     resolution: edited
-    note: triaged judgement queue, updated parent to ProjectAndLocationRef, added KMSKeyRef, removed spec.labels, added service docs link, confirmed non-GCP-reference fields
+    note: triaged judgement queue, updated parent to ProjectAndLocationRef, added KMSKeyRef, kept spec.labels, added service docs link, confirmed non-GCP-reference fields
   - kind: GeminiDataAnalyticsDataAgent
     group: geminidataanalytics.cnrm.cloud.google.com
     reason: verify-service-docs-link
