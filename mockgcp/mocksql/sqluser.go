@@ -102,6 +102,22 @@ func (s *sqlUsersService) Insert(ctx context.Context, req *pb.SqlUsersInsertRequ
 	obj.Instance = name.Instance
 	obj.Kind = "sql#user"
 
+	if instanceName, err := s.buildInstanceName(req.GetProject(), req.GetInstance()); err == nil {
+		instance := &pb.DatabaseInstance{}
+		if err := s.storage.Get(ctx, instanceName.String(), instance); err == nil {
+			if strings.Contains(instance.GetDatabaseVersion().String(), "MYSQL") && obj.GetType() == pb.User_CLOUD_IAM_GROUP {
+				if obj.GetHost() == "" {
+					obj.Host = "%"
+				}
+				if parts := strings.Split(obj.GetName(), "@"); len(parts) == 2 {
+					obj.Name = parts[0] + "@" + strings.ToLower(parts[1])
+					name.UserName = obj.Name
+					fqn = name.String()
+				}
+			}
+		}
+	}
+
 	populateUserDefaults(obj)
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
@@ -212,6 +228,12 @@ func (s *MockService) buildUserName(projectID, instanceName, userName string) (*
 }
 
 func populateUserDefaults(obj *pb.User) {
+	if obj.GetType() == pb.User_CLOUD_IAM_GROUP {
+		if obj.IamStatus == nil {
+			obj.IamStatus = PtrTo("ACTIVE")
+		}
+		return
+	}
 	if obj.PasswordPolicy == nil {
 		obj.PasswordPolicy = &pb.UserPasswordValidationPolicy{Status: &pb.PasswordStatus{}}
 	} else {
