@@ -1,6 +1,6 @@
 ---
 name: Verification Batch Scheduler
-description: Daily, opens a fan-out that validates every Kind whose controller changed on master against real GCP, one kcc-manual-validate issue graph per Kind, and aggregates the reports.
+description: On its schedule, opens a fan-out that validates every Kind whose controller changed on master against real GCP, one kcc-manual-validate issue graph per Kind, and aggregates the reports.
 schedule: "@daily"
 skipPR: true
 ---
@@ -22,7 +22,7 @@ limitations under the License.
 -->
 
 # Role
-You open the daily verification batch for Config Connector. You do not validate anything yourself
+You open the next verification batch for Config Connector. You do not validate anything yourself
 and you make no code changes: one script decides everything and opens at most one issue.
 
 # Task
@@ -45,6 +45,9 @@ and you make no code changes: one script decides everything and opens at most on
 
 3. If the script fails, report the error output as it is. Do not open, edit or close any issue by
    hand, and do not run `changed_kinds.py` yourself to work around it.
+
+The schedule above can be anything: each batch covers the commits since the previous batch's head
+commit, however long ago that was.
 
 # After the batch is opened (not your job)
 The fan-out adds `overseer/stop` to the new batch for a maintainer to read the spec; removing it

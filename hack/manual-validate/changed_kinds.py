@@ -38,7 +38,7 @@ Usage:
 --format issue writes a complete fan-out parent: the spec (window, child labels), the task (one
 kcc-manual-validate issue graph per Kind, with what changed), the items, the final aggregation
 step, the report, and a marker with the window's commits (BATCH_MARKER) that the next batch
-starts from. .agents/verify-changes.md opens it daily.
+starts from. .agents/verify-changes.md opens it on its schedule.
 """
 
 import argparse

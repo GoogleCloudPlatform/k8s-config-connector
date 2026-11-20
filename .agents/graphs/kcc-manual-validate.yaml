@@ -14,7 +14,7 @@
 
 # Issue graph for validating one Kind's controller the way a person would, against real GCP,
 # focused on what changed in a window of master. The children of a "Verify changed Kinds" batch
-# (opened daily by .agents/verify-changes.md from hack/manual-validate/changed_kinds.py) start it:
+# (opened on a schedule by .agents/verify-changes.md from hack/manual-validate/changed_kinds.py) start it:
 #
 #   ```factory-graph
 #   graph: kcc-manual-validate

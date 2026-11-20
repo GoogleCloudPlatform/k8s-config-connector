@@ -14,15 +14,16 @@
 # limitations under the License.
 
 # Opens the next "Verify changed Kinds" batch: a fan-out issue with one kcc-manual-validate issue
-# graph per Kind changed on master since the previous batch. Run daily by .agents/verify-changes.md;
-# safe to run by hand and to re-run (it opens nothing twice).
+# graph per Kind changed on master since the previous batch. Run by .agents/verify-changes.md on
+# whatever schedule it has; safe to run by hand and to re-run (it opens nothing twice).
 #
 #   hack/manual-validate/open-batch.sh             # open the batch issue
 #   hack/manual-validate/open-batch.sh --dry-run   # print what it would open
 #
 # Needs git, python3 and gh (authenticated, with triage access to the repository).
-# The window starts at the previous batch's head (the marker in its body), so consecutive batches
-# neither miss nor repeat commits; with no previous batch it is the last day.
+# The window starts at the previous batch's head commit (the marker in its body), whenever that
+# batch was opened, so consecutive batches neither miss nor repeat commits at any schedule. With no
+# previous batch it is FIRST_SINCE (a git date, default "1 day ago").
 
 set -o errexit
 set -o nounset
@@ -31,6 +32,7 @@ set -o pipefail
 REPO="${REPO:-GoogleCloudPlatform/k8s-config-connector}"
 BATCH_LABEL="validate/batch"
 FANOUT_LABEL="${FANOUT_LABEL:-overseer/fanout}"
+FIRST_SINCE="${FIRST_SINCE:-1 day ago}"
 DRY_RUN=0
 [[ "${1:-}" == "--dry-run" ]] && DRY_RUN=1
 
@@ -65,8 +67,8 @@ if [[ -n "${PREV_HEAD}" ]] && git merge-base --is-ancestor "${PREV_HEAD}" "${HEA
   RANGE=(--base "${PREV_HEAD}")
   say "window: previous batch head ${PREV_HEAD:0:10} .. ${HEAD_SHA:0:10}"
 else
-  RANGE=(--since "1 day ago")
-  say "no previous batch found; window: the last day .. ${HEAD_SHA:0:10}"
+  RANGE=(--since "${FIRST_SINCE}")
+  say "no previous batch found; window: since ${FIRST_SINCE} .. ${HEAD_SHA:0:10}"
 fi
 
 ITEMS="$(python3 "${SCOUT}" "${RANGE[@]}" --head "${HEAD_SHA}" --format items)"
