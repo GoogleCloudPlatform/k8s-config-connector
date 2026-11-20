@@ -142,3 +142,30 @@ spec:
 		})
 	}
 }
+
+func TestData_IsNonDeletable(t *testing.T) {
+	tests := []struct {
+		kind string
+		want bool
+	}{
+		{kind: "APIQuotaPreference", want: true},
+		{kind: "APIQuotaAdjusterSettings", want: true},
+		{kind: "DiscoveryEngineUserStore", want: true},
+		{kind: "FirestoreField", want: true},
+		{kind: "IAPSettings", want: true},
+		{kind: "StorageControlFolderIntelligenceConfig", want: true},
+		{kind: "APIKeysKey", want: false},
+		{kind: "PrivateCACertificateAuthority", want: false},
+		{kind: "SecretManagerSecretVersion", want: false},
+		{kind: "ServiceNetworkingConnection", want: false},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.kind, func(t *testing.T) {
+			d := &Data{PrimaryCreate: &KRMResource{Kind: tc.kind}}
+			if got := d.IsNonDeletable(); got != tc.want {
+				t.Errorf("IsNonDeletable() for %q = %v, want %v", tc.kind, got, tc.want)
+			}
+		})
+	}
+}

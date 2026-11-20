@@ -462,7 +462,14 @@ func matchesDepTokenInURLOrBody(e *logparser.Entry, uPath, depName string, dep, 
 		}
 	}
 	suffix := uPath[idx+len(depName):]
-	if suffix == "" || suffix == "/" || strings.HasPrefix(suffix, ":") {
+	if strings.HasPrefix(suffix, ":") {
+		rawVerb := strings.TrimPrefix(suffix, ":")
+		if actionVerbTargetsChildPrimary(rawVerb, primaryKind, primaryGroup, depKind, depGroup) {
+			return false
+		}
+		return true
+	}
+	if suffix == "" || suffix == "/" {
 		return true
 	}
 	if strings.HasPrefix(suffix, "/operations") || strings.HasPrefix(suffix, "/locations") || strings.HasPrefix(suffix, "/regions") || strings.HasPrefix(suffix, "/zones") || strings.HasPrefix(suffix, "/global") {
@@ -478,7 +485,55 @@ func matchesDepTokenInURLOrBody(e *logparser.Entry, uPath, depName string, dep, 
 	if !isIAMPrimary && strings.HasPrefix(suffix, "/iam") {
 		return true
 	}
+	if e.Request.Method == "POST" && actionVerbTargetsChildPrimary(trimmedSuffix, primaryKind, primaryGroup, depKind, depGroup) {
+		return false
+	}
 	return !urlTargetsKindCollection(uPath, primaryKind, primaryGroup)
+}
+
+func actionVerbTargetsChildPrimary(rawVerb, primaryKind, primaryGroup, depKind, depGroup string) bool {
+	if rawVerb == "" {
+		return false
+	}
+	if primaryKind == "ServiceNetworkingConnection" && depKind == "ComputeNetwork" && strings.EqualFold(rawVerb, "removePeering") {
+		return true
+	}
+	shortPrim := strings.ToLower(trimKindServicePrefix(primaryKind, primaryGroup))
+	shortDep := strings.ToLower(trimKindServicePrefix(depKind, depGroup))
+	if shortPrim == "" || shortPrim == shortDep || !strings.HasPrefix(shortPrim, shortDep) {
+		return false
+	}
+	childTerm := strings.TrimPrefix(shortPrim, shortDep)
+	if childTerm == "" {
+		return false
+	}
+	tokens := splitCamelCaseLower(rawVerb)
+	for _, tok := range tokens {
+		if tok == childTerm {
+			return true
+		}
+	}
+	if len(tokens) == 1 && len(childTerm) >= 4 {
+		lowerVerb := tokens[0]
+		return strings.HasPrefix(lowerVerb, childTerm) || strings.HasSuffix(lowerVerb, childTerm)
+	}
+	return false
+}
+
+func splitCamelCaseLower(s string) []string {
+	if s == "" {
+		return nil
+	}
+	var out []string
+	start := 0
+	for i := 1; i < len(s); i++ {
+		if s[i] >= 'A' && s[i] <= 'Z' && (s[i-1] >= 'a' && s[i-1] <= 'z' || (i+1 < len(s) && s[i+1] >= 'a' && s[i+1] <= 'z')) {
+			out = append(out, strings.ToLower(s[start:i]))
+			start = i
+		}
+	}
+	out = append(out, strings.ToLower(s[start:]))
+	return out
 }
 
 func matchesDepCollection(uPath string, dep *fixture.KRMResource, primary *fixture.KRMResource) bool {

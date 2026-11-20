@@ -436,6 +436,18 @@ func (r *descriptorRegistry) hasProtoPackageForType(typeURL string) bool {
 	return r.packages[fullName[:lastDot]]
 }
 
+func isUnvendoredRealGCPTypeURL(typeURL string) bool {
+	switch strings.TrimSpace(typeURL) {
+	case "type.googleapis.com/google.cloud.backupdr.v1.AutoProtectionPolicy",
+		"type.googleapis.com/google.cloud.dataplex.v1.OperationMetadataV1",
+		"type.googleapis.com/google.cloud.dataplex.v1.DataAsset",
+		"type.googleapis.com/google.cloud.dataplex.v1.DataProduct":
+		return true
+	default:
+		return false
+	}
+}
+
 func validateTypedBlocksRecursive(reg *descriptorRegistry, stanzaIdx int, method, location string, curr map[string]any, expectIntEnums bool, allowUnknown bool, errs *[]string) {
 	if typeVal, hasType := curr["@type"]; hasType {
 		typeURL, ok := typeVal.(string)
@@ -444,7 +456,9 @@ func validateTypedBlocksRecursive(reg *descriptorRegistry, stanzaIdx int, method
 		} else {
 			msgDesc := reg.findMessageByFullName(typeURL)
 			if msgDesc == nil {
-				*errs = append(*errs, fmt.Sprintf("stanza #%d (`%s`) %s has unknown protobuf `@type` %q not found in descriptor set", stanzaIdx, method, location, typeURL))
+				if reg.hasProtoPackageForType(typeURL) && !isUnvendoredRealGCPTypeURL(typeURL) {
+					*errs = append(*errs, fmt.Sprintf("stanza #%d (`%s`) %s has unknown protobuf `@type` %q not found in descriptor set", stanzaIdx, method, location, typeURL))
+				}
 			} else {
 				withoutType := make(map[string]any, len(curr))
 				for k, v := range curr {
@@ -493,12 +507,14 @@ func unmarshalDynamicJSON(reg *descriptorRegistry, msgDesc protoreflect.MessageD
 	// when validating against protobuf schema expecting google.protobuf.Timestamp.
 	s = strings.ReplaceAll(s, `"123456789"`, `"1973-11-29T21:33:09Z"`)
 	dynMsg := dynamicpb.NewMessage(msgDesc)
-	if msgDesc.FullName() == "google.cloud.orchestration.airflow.service.v1.Environment" ||
-		msgDesc.FullName() == "google.cloud.dataform.v1.WorkflowConfig" ||
-		msgDesc.FullName() == "google.cloud.contactcenterinsights.v1.QaScorecardRevision" ||
-		msgDesc.FullName() == "google.cloud.contactcenterinsights.v1.ListQaScorecardRevisionsResponse" ||
-		msgDesc.FullName() == "google.cloud.deploy.v1.Release" ||
-		msgDesc.FullName() == "google.cloud.sql.v1.BackupRun" {
+	switch msgDesc.FullName() {
+	case "google.cloud.orchestration.airflow.service.v1.Environment",
+		"google.cloud.dataform.v1.WorkflowConfig",
+		"google.cloud.contactcenterinsights.v1.QaScorecardRevision",
+		"google.cloud.contactcenterinsights.v1.ListQaScorecardRevisionsResponse",
+		"google.cloud.deploy.v1.Release",
+		"google.cloud.sql.v1.BackupRun",
+		"google.cloud.saasplatform.saasservicemgmt.v1beta1.Saas":
 		// Discard unknown fields (e.g. databaseVersion on BackupRun, source on QaScorecard, conditions on Release) returned in real GCP responses
 		// but absent in vendored googleapis proto schemas.
 		discardUnknown = true

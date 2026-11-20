@@ -21,6 +21,7 @@ import (
 	"reflect"
 	"sort"
 	"strings"
+	"time"
 	"unicode"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/httplogreport/classifier"
@@ -61,7 +62,21 @@ func (d *Differ) Compute() []Item {
 	if d.fix == nil || d.fix.PrimaryCreate == nil || d.fix.PrimaryUpdate == nil {
 		return []Item{}
 	}
-	diffs := DiffObjects(d.fix.PrimaryCreate.Obj, d.fix.PrimaryUpdate.Obj)
+	rawDiffs := DiffObjects(d.fix.PrimaryCreate.Obj, d.fix.PrimaryUpdate.Obj)
+	if len(rawDiffs) == 0 {
+		return []Item{}
+	}
+
+	var diffs []Item
+	for _, item := range rawDiffs {
+		// When a test runs with non-SSA create, omitting a field or map key in update.yaml
+		// does not remove it from the Kubernetes object in kube-apiserver (it remains in GoldenObj).
+		// Skip such retained fields so we do not falsely blame the controller for not clearing them.
+		if item.UpdateVal == nil && d.fix.GoldenObj != nil && goldenObjectRetainsValue(d.fix.GoldenObj, item.Path, item.CreateVal) {
+			continue
+		}
+		diffs = append(diffs, item)
+	}
 	if len(diffs) == 0 {
 		return []Item{}
 	}
@@ -69,6 +84,57 @@ func (d *Differ) Compute() []Item {
 	d.populateUpdateCoverage(diffs)
 	d.populateFinalStateCoverage(diffs)
 	return diffs
+}
+
+func goldenObjectRetainsValue(goldenObj *unstructured.Unstructured, diffPath string, createVal any) bool {
+	if goldenObj == nil || createVal == nil {
+		return false
+	}
+	val, found := lookupExactGoldenField(goldenObj.Object, diffPath)
+	if !found || val == nil {
+		return false
+	}
+	parts := strings.Split(diffPath, ".")
+	if last := parts[len(parts)-1]; strings.HasSuffix(last, "Ref") {
+		val = simplifyRefValue(last, val)
+	}
+	return ValuesMatch(val, createVal)
+}
+
+func lookupExactGoldenField(obj map[string]any, diffPath string) (any, bool) {
+	if obj == nil || diffPath == "" {
+		return nil, false
+	}
+	if strings.HasPrefix(diffPath, "metadata.labels.") {
+		labelKey := strings.TrimPrefix(diffPath, "metadata.labels.")
+		labels, found, err := unstructured.NestedMap(obj, "metadata", "labels")
+		if err != nil || !found {
+			return nil, false
+		}
+		v, ok := labels[labelKey]
+		return v, ok
+	}
+	return lookupExactDottedSegments(obj, strings.Split(diffPath, "."))
+}
+
+func lookupExactDottedSegments(curr any, segments []string) (any, bool) {
+	if len(segments) == 0 {
+		return curr, true
+	}
+	m, ok := curr.(map[string]any)
+	if !ok || m == nil {
+		return nil, false
+	}
+	if joined := strings.Join(segments, "."); joined != segments[0] {
+		if v, exists := m[joined]; exists {
+			return v, true
+		}
+	}
+	v, exists := m[segments[0]]
+	if !exists {
+		return nil, false
+	}
+	return lookupExactDottedSegments(v, segments[1:])
 }
 
 // DiffObjects computes the deterministic list of field changes between createObj and updateObj
@@ -322,6 +388,7 @@ func responseBodiesMatchDiffItem(bodies []map[string]any, item Item) (bool, stri
 	}
 
 	foundIncompatibleAtPath := false
+	foundNonRedactedMismatch := false
 	for _, body := range bodies {
 		if foundVal, ok := findValueForDiffPath(body, item.Path); ok {
 			if item.UpdateVal == nil {
@@ -329,12 +396,16 @@ func responseBodiesMatchDiffItem(bodies []map[string]any, item Item) (bool, stri
 					return true, "Yes"
 				}
 				foundIncompatibleAtPath = true
+				foundNonRedactedMismatch = true
 				continue
 			}
 			if valuesCompatible(foundVal, item.UpdateVal, item.CreateVal, item.Path) {
 				return true, "Yes"
 			}
 			foundIncompatibleAtPath = true
+			if !isRedactedOrEmptySecretValue(foundVal) {
+				foundNonRedactedMismatch = true
+			}
 		} else if isZeroOrEmptyValue(item.UpdateVal) {
 			return true, "Yes"
 		}
@@ -342,6 +413,10 @@ func responseBodiesMatchDiffItem(bodies []map[string]any, item Item) (bool, stri
 		if !foundIncompatibleAtPath && item.UpdateVal != nil && containsLeafValue(body, item.Path, item.UpdateVal) {
 			return true, "Yes"
 		}
+	}
+
+	if item.SentInUpdateRPC && !foundNonRedactedMismatch && isWriteOnlyFieldPath(item.Path, item.UpdateVal) {
+		return true, "Yes (write-only)"
 	}
 
 	if foundIncompatibleAtPath || !item.SentInUpdateRPC {
@@ -407,12 +482,85 @@ func lookupNormalizedSegments(curr any, segments []string) (any, bool) {
 	}
 
 	target := normalizeKey(segments[0])
-	for k, v := range m {
+	keys := make([]string, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+
+	for _, k := range keys {
 		if normalizeKey(k) == target {
-			return lookupNormalizedSegments(v, segments[1:])
+			if val, found := lookupNormalizedSegments(m[k], segments[1:]); found {
+				return val, true
+			}
+		}
+	}
+	if strings.HasSuffix(segments[0], "Ref") {
+		for _, k := range keys {
+			if refKeysMatch(target, normalizeKey(k)) {
+				if val, found := lookupNormalizedSegments(m[k], segments[1:]); found {
+					return val, true
+				}
+			}
 		}
 	}
 	return nil, false
+}
+
+func refKeysMatch(normRefKey, normProtoKey string) bool {
+	if normRefKey == "" || normProtoKey == "" {
+		return false
+	}
+	trimAffixes := func(s string) string {
+		for _, p := range []string{"kms", "gcp", "cloud"} {
+			if strings.HasPrefix(s, p) && len(s)-len(p) >= 3 {
+				s = strings.TrimPrefix(s, p)
+			}
+		}
+		for _, suf := range []string{"name", "id", "uri", "url", "path"} {
+			if strings.HasSuffix(s, suf) && len(s)-len(suf) >= 3 {
+				s = strings.TrimSuffix(s, suf)
+			}
+		}
+		return s
+	}
+	a := trimAffixes(normRefKey)
+	b := trimAffixes(normProtoKey)
+	return a != "" && a == b
+}
+
+func isWriteOnlyFieldPath(diffPath string, expectedVal any) bool {
+	switch expectedVal.(type) {
+	case bool, int, int32, int64, float32, float64:
+		return false
+	}
+	leaf := strings.ToLower(lastMeaningfulPathSegment(diffPath))
+	if leaf == "" || strings.HasSuffix(leaf, "ref") {
+		return false
+	}
+	return strings.HasSuffix(leaf, "password") ||
+		strings.HasSuffix(leaf, "passphrase") ||
+		strings.HasSuffix(leaf, "privatekey") ||
+		strings.HasSuffix(leaf, "secret") ||
+		strings.HasSuffix(leaf, "secretkey") ||
+		strings.HasSuffix(leaf, "apikey") ||
+		strings.HasSuffix(leaf, "token")
+}
+
+func isRedactedOrEmptySecretValue(v any) bool {
+	if v == nil {
+		return true
+	}
+	s, ok := v.(string)
+	if !ok {
+		return false
+	}
+	trimmed := strings.TrimSpace(s)
+	if trimmed == "" || strings.Trim(trimmed, "*") == "" {
+		return true
+	}
+	lower := strings.ToLower(trimmed)
+	return lower == "redacted" || lower == "[redacted]" || lower == "<redacted>"
 }
 
 func valuesCompatible(foundVal, expectedVal, createVal any, diffPath string) bool {
@@ -441,7 +589,7 @@ func valuesCompatible(foundVal, expectedVal, createVal any, diffPath string) boo
 	fStr, fIsStr := foundVal.(string)
 	eStr, eIsStr := expectedVal.(string)
 	if fIsStr && eIsStr {
-		if fStr == "**********" {
+		if len(fStr) > 0 && strings.Trim(fStr, "*") == "" {
 			return true
 		}
 		fl := strings.ToLower(fStr)
@@ -462,6 +610,9 @@ func jsonContainsExpected(actual, expected any) bool {
 		return false
 	}
 	if aMap, aOk := actual.(map[string]any); aOk {
+		if eSlice, eIsSlice := expected.([]any); eIsSlice {
+			return mapContainsKeyedSlice(aMap, eSlice)
+		}
 		eMap, eOk := expected.(map[string]any)
 		if !eOk {
 			return false
@@ -510,7 +661,66 @@ func jsonContainsExpected(actual, expected any) bool {
 	if isNumericValue(expected) && isEnumLikeString(actual) {
 		return true
 	}
-	return fmt.Sprintf("%v", actual) == fmt.Sprintf("%v", expected)
+	return ValuesMatch(actual, expected)
+}
+
+func mapContainsKeyedSlice(actualMap map[string]any, expectedSlice []any) bool {
+	if len(expectedSlice) == 0 {
+		return len(actualMap) == 0
+	}
+	if len(actualMap) != len(expectedSlice) {
+		return false
+	}
+	seen := make(map[string]struct{}, len(expectedSlice))
+	for _, elem := range expectedSlice {
+		elemMap, ok := elem.(map[string]any)
+		if !ok {
+			return false
+		}
+		var keyField, keyVal string
+		for _, kField := range []string{"id", "name", "key"} {
+			if s, isStr := elemMap[kField].(string); isStr && s != "" {
+				keyField = kField
+				keyVal = s
+				break
+			}
+		}
+		if keyVal == "" {
+			return false
+		}
+		if _, dup := seen[keyVal]; dup {
+			return false
+		}
+		seen[keyVal] = struct{}{}
+		actualElem, exists := actualMap[keyVal]
+		if !exists {
+			return false
+		}
+		if actualElemMap, isMap := actualElem.(map[string]any); isMap {
+			expectedForCompare := elemMap
+			if _, hasKeyInActual := actualElemMap[keyField]; !hasKeyInActual {
+				stripped := make(map[string]any, len(elemMap))
+				for k, v := range elemMap {
+					if k != keyField {
+						stripped[k] = v
+					}
+				}
+				expectedForCompare = stripped
+			}
+			if !jsonContainsExpected(actualElemMap, expectedForCompare) {
+				return false
+			}
+			continue
+		}
+		if valField, hasVal := elemMap["value"]; hasVal && len(elemMap) == 2 {
+			if !jsonContainsExpected(actualElem, valField) {
+				return false
+			}
+			continue
+		}
+		return false
+	}
+	return true
 }
 
 func isNumericValue(v any) bool {
@@ -628,7 +838,8 @@ func updateMaskCoversPath(mask []string, diffPath string) bool {
 		}
 		match := true
 		for i, mp := range mParts {
-			if normalizeKey(mp) != normParts[i] {
+			nmp := normalizeKey(mp)
+			if nmp != normParts[i] && !(strings.HasSuffix(parts[i], "Ref") && refKeysMatch(normParts[i], nmp)) {
 				match = false
 				break
 			}
@@ -680,7 +891,7 @@ func lastMeaningfulPathSegment(path string) string {
 // IsClientSideKRMField returns true if path is a KCC-internal policy field not sent to GCP APIs.
 func IsClientSideKRMField(path string) bool {
 	switch path {
-	case "spec.deletionPolicy", "spec.skipDelete", "spec.retainOnDelete", "spec.managementPolicy":
+	case "spec.deletionPolicy", "spec.skipDelete", "spec.retainOnDelete", "spec.managementPolicy", "spec.resourceID":
 		return true
 	}
 	return false
@@ -701,6 +912,11 @@ func ValuesMatch(a, b any) bool {
 	bStr := fmt.Sprintf("%v", b)
 	if aStr == bStr {
 		return true
+	}
+	if aDur, errA := time.ParseDuration(aStr); errA == nil {
+		if bDur, errB := time.ParseDuration(bStr); errB == nil && aDur == bDur {
+			return true
+		}
 	}
 	aj, err1 := json.Marshal(a)
 	bj, err2 := json.Marshal(b)

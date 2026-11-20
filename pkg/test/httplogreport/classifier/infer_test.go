@@ -261,6 +261,227 @@ DELETE https://dataplex.googleapis.com/v1/projects/p/locations/l/glossaries/dpg-
 				"DataplexGlossaryTerm",
 			},
 		},
+		{
+			name: "ComputeNetworkPeering /addPeering and /removePeering stay primary while network stays dependency",
+			fix: &fixture.Data{
+				PrimaryCreate: &fixture.KRMResource{
+					Kind:  "ComputeNetworkPeering",
+					Group: "compute.cnrm.cloud.google.com",
+					Name:  "peering-1",
+				},
+				Dependencies: []*fixture.KRMResource{
+					{
+						Kind:  "ComputeNetwork",
+						Group: "compute.cnrm.cloud.google.com",
+						Name:  "net-1",
+					},
+				},
+			},
+			rawLog: `POST https://compute.googleapis.com/compute/v1/projects/p/global/networks?alt=json
+Content-Type: application/json
+
+{"name": "net-1"}
+
+200 OK
+
+{}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/p/global/networks/net-1/addPeering?alt=json
+Content-Type: application/json
+
+{"networkPeering": {"name": "peering-1"}}
+
+200 OK
+
+{}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/p/global/networks/net-1/removePeering?alt=json
+Content-Type: application/json
+
+{"name": "peering-1"}
+
+200 OK
+
+{}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/p/global/networks/net-1?alt=json
+
+200 OK
+
+{}
+`,
+			wantPhases: []string{
+				logparser.PhaseCreate,
+				logparser.PhaseCreate,
+				logparser.PhaseDelete,
+				logparser.PhaseDelete,
+			},
+			wantRoles: []string{
+				RoleDependency,
+				RolePrimary,
+				RolePrimary,
+				RoleDependency,
+			},
+			wantKinds: []string{
+				"ComputeNetwork",
+				"ComputeNetworkPeering",
+				"ComputeNetworkPeering",
+				"ComputeNetwork",
+			},
+		},
+		{
+			name: "ServiceNetworkingConnection /removePeering stays primary",
+			fix: &fixture.Data{
+				PrimaryCreate: &fixture.KRMResource{
+					Kind:  "ServiceNetworkingConnection",
+					Group: "servicenetworking.cnrm.cloud.google.com",
+					Name:  "conn-1",
+				},
+				Dependencies: []*fixture.KRMResource{
+					{
+						Kind:  "ComputeNetwork",
+						Group: "compute.cnrm.cloud.google.com",
+						Name:  "net-1",
+					},
+				},
+			},
+			rawLog: `POST https://compute.googleapis.com/compute/v1/projects/p/global/networks?alt=json
+Content-Type: application/json
+
+{"name": "net-1"}
+
+200 OK
+
+{}
+
+---
+
+PATCH https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections/-?force=true
+Content-Type: application/json
+
+{"network": "projects/p/global/networks/net-1"}
+
+200 OK
+
+{}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/p/global/networks/net-1/removePeering?alt=json
+Content-Type: application/json
+
+{"name": "servicenetworking-googleapis-com"}
+
+200 OK
+
+{}
+`,
+			wantPhases: []string{
+				logparser.PhaseCreate,
+				logparser.PhaseCreate,
+				logparser.PhaseDelete,
+			},
+			wantRoles: []string{
+				RoleDependency,
+				RolePrimary,
+				RolePrimary,
+			},
+			wantKinds: []string{
+				"ComputeNetwork",
+				"ServiceNetworkingConnection",
+				"ServiceNetworkingConnection",
+			},
+		},
+		{
+			name: "parent :verb matches camelCase childTerm without substring collisions",
+			fix: &fixture.Data{
+				PrimaryCreate: &fixture.KRMResource{
+					Kind:  "ComputeRouterNat",
+					Group: "compute.cnrm.cloud.google.com",
+					Name:  "nat-1",
+				},
+				Dependencies: []*fixture.KRMResource{
+					{
+						Kind:  "ComputeRouter",
+						Group: "compute.cnrm.cloud.google.com",
+						Name:  "router-1",
+					},
+				},
+			},
+			rawLog: `POST https://compute.googleapis.com/v1/projects/p/regions/us-central1/routers/router-1:terminate
+Content-Type: application/json
+
+{}
+
+200 OK
+
+{}
+
+---
+
+POST https://compute.googleapis.com/v1/projects/p/regions/us-central1/routers/router-1/routerNats
+Content-Type: application/json
+
+{"name": "nat-1"}
+
+200 OK
+
+{}
+`,
+			wantPhases: []string{
+				logparser.PhaseCreate,
+				logparser.PhaseCreate,
+			},
+			wantRoles: []string{
+				RoleDependency,
+				RolePrimary,
+			},
+			wantKinds: []string{
+				"ComputeRouter",
+				"ComputeRouterNat",
+			},
+		},
+		{
+			name: "parent /verb with acronym transition matches camelCase childTerm",
+			fix: &fixture.Data{
+				PrimaryCreate: &fixture.KRMResource{
+					Kind:  "ComputeNetworkPeering",
+					Group: "compute.cnrm.cloud.google.com",
+					Name:  "peering-1",
+				},
+				Dependencies: []*fixture.KRMResource{
+					{
+						Kind:  "ComputeNetwork",
+						Group: "compute.cnrm.cloud.google.com",
+						Name:  "net-1",
+					},
+				},
+			},
+			rawLog: `POST https://compute.googleapis.com/compute/v1/projects/p/global/networks/net-1/addVPCPeering?alt=json
+Content-Type: application/json
+
+{"networkPeering": {"name": "peering-1"}}
+
+200 OK
+
+{}
+`,
+			wantPhases: []string{
+				logparser.PhaseCreate,
+			},
+			wantRoles: []string{
+				RolePrimary,
+			},
+			wantKinds: []string{
+				"ComputeNetworkPeering",
+			},
+		},
 	}
 
 	for _, tc := range tests {
