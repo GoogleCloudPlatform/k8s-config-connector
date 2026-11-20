@@ -19,14 +19,15 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+var _ refsv1beta1.Ref = &DiscoveryEngineDataStoreRef{}
+var _ refsv1beta1.ExternalRef = &DiscoveryEngineDataStoreRef{}
 var _ refsv1beta1.ExternalNormalizer = &DiscoveryEngineDataStoreRef{}
 
 // DiscoveryEngineDataStoreRef is a reference to a DiscoveryEngineDataStore.
@@ -40,6 +41,45 @@ type DiscoveryEngineDataStoreRef struct {
 
 	// The namespace of a DiscoveryEngineDataStore resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refsv1beta1.Register(&DiscoveryEngineDataStoreRef{}, &DiscoveryEngineDataStore{})
+}
+
+func (r *DiscoveryEngineDataStoreRef) GetGVK() schema.GroupVersionKind {
+	return DiscoveryEngineDataStoreGVK
+}
+
+func (r *DiscoveryEngineDataStoreRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Namespace: r.Namespace,
+		Name:      r.Name,
+	}
+}
+
+func (r *DiscoveryEngineDataStoreRef) GetExternal() string {
+	return r.External
+}
+
+func (r *DiscoveryEngineDataStoreRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *DiscoveryEngineDataStoreRef) ValidateExternal(ref string) error {
+	_, err := ParseDiscoveryEngineDataStoreExternal(ref)
+	return err
+}
+
+func (r *DiscoveryEngineDataStoreRef) ParseExternalToIdentity() (identity.Identity, error) {
+	return ParseDiscoveryEngineDataStoreExternal(r.External)
+}
+
+// Normalize ensures the "External" reference (in string format) is set.
+func (r *DiscoveryEngineDataStoreRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
 }
 
 // DiscoveryEngineDataStoreID is a reference to a DiscoveryEngineDataStore.
@@ -65,28 +105,10 @@ func (r *DiscoveryEngineDataStoreRef) NormalizedExternal(ctx context.Context, re
 		return r.External, nil
 	}
 
-	// From the Config Connector object
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	if key.Namespace == "" {
-		key.Namespace = defaultNamespace
+	// Delegate to the standard Normalize helper
+	if err := r.Normalize(ctx, reader, defaultNamespace); err != nil {
+		return "", err
 	}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(DiscoveryEngineDataStoreGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", DiscoveryEngineDataStoreGVK, key, err)
-	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = actualExternalRef
 	return r.External, nil
 }
 
@@ -168,6 +190,15 @@ func (p *CollectionLink) String() string {
 
 func (p *DiscoveryEngineDataStoreID) String() string {
 	return p.CollectionLink.String() + "/dataStores/" + p.DataStore
+}
+
+func (p *DiscoveryEngineDataStoreID) FromExternal(ref string) error {
+	id, err := ParseDiscoveryEngineDataStoreExternal(ref)
+	if err != nil {
+		return err
+	}
+	*p = *id
+	return nil
 }
 
 func ParseDiscoveryEngineDataStoreExternal(external string) (*DiscoveryEngineDataStoreID, error) {

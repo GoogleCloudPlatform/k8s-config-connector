@@ -184,34 +184,6 @@ type WidgetConfig_DataStoreComponent struct {
 }
 */
 
-// +kcc:proto=google.cloud.discoveryengine.v1.WidgetConfig.DataStoreUiConfig
-type WidgetConfig_DataStoreUiConfig struct {
-	// The name of the data store. It should be data store resource name
-	//  Format:
-	//  `projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}`.
-	//  For APIs under
-	//  [WidgetService][google.cloud.discoveryengine.v1.WidgetService], such as
-	//  [WidgetService.LookupWidgetConfig][google.cloud.discoveryengine.v1.WidgetService.LookupWidgetConfig],
-	//  the project number and location part is erased in this field.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.WidgetConfig.DataStoreUiConfig.name
-	Name *string `json:"name,omitempty"`
-
-	// Facet fields that store the mapping of fields to end user widget
-	//  appearance.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.WidgetConfig.DataStoreUiConfig.facet_field
-	FacetField []WidgetConfig_FacetField `json:"facetField,omitempty"`
-
-	// The key is the UI component. Mock. Currently supported `title`,
-	//  `thumbnail`, `url`, `custom1`, `custom2`, `custom3`.
-	//
-	//  The value is the name of the field along with its device visibility.
-	//
-	//  The 3 custom fields are optional and can be added or removed. `title`,
-	//  `thumbnail`, `url` are required UI components that cannot be removed.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.WidgetConfig.DataStoreUiConfig.fields_ui_components_map
-	FieldsUiComponentsMap map[string]WidgetConfig_UiComponentField `json:"fieldsUiComponentsMap,omitempty"`
-}
-
 // +kcc:proto=google.cloud.discoveryengine.v1.WidgetConfig.FacetField
 type WidgetConfig_FacetField struct {
 	// Required. Registered field name. The format is `field.abc`.
