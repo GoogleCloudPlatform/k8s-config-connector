@@ -18,6 +18,7 @@ package mockserviceusage
 // services not on the list give an error.
 var allServices = []string{
 	"accesscontextmanager.googleapis.com",
+	"agentregistry.googleapis.com",
 	"apigee.googleapis.com",
 	"appengine.googleapis.com",
 	"beyondcorp.googleapis.com",
