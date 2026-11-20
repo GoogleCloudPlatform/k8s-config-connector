@@ -31,7 +31,7 @@ vet: ## Run go vet against code.
 .PHONY: test
 test: fmt vet ## Run tests.
 	export KUBEBUILDER_ASSETS=$$(setup-envtest use -p path); \
-	go test ./... -coverprofile cover.out
+	go test -race ./... -coverprofile cover.out
 
 .PHONY: build
 build: fmt vet ## Build manager binary.
@@ -84,7 +84,7 @@ undeploy:
 
 .PHONY: test-integration
 test-integration: manifests generate
-	go test -v ./controllers/...
+	go test -race -v ./controllers/...
 
 ##@ Optional Integration Tests via Kind (Requires Kubeconfig)
 #.PHONY: kind-up-all

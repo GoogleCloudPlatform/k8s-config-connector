@@ -1,0 +1,8 @@
+apiVersion: e2e.gkelabs.io/v1alpha1
+kind: TestCRD
+metadata:
+  name: integration-test
+  namespace: default
+spec:
+  # Differs from the source; spec.foo is not in syncFields and must be kept.
+  foo: "dest-value"

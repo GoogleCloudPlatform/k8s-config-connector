@@ -24,7 +24,10 @@ import (
 	"github.com/stretchr/testify/require"
 	"io"
 	"k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/api/meta"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/apimachinery/pkg/util/yaml"
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
@@ -34,7 +37,9 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
+	"sigs.k8s.io/controller-runtime/pkg/metrics"
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
+	"slices"
 	"testing"
 	"time"
 )
@@ -121,6 +126,146 @@ func TestKRMSyncerIntegration(t *testing.T) {
 			runTestCase(t, ctx, k8sClientA, k8sClientB, filepath.Join(casesDir, caseName))
 		})
 	}
+
+	// This manager uses the default resync period (about 10h), so these tests
+	// rely on the KRMSyncer event filter alone.
+	t.Run("spec-change-without-resync", func(t *testing.T) {
+		testSpecChangeWithoutResync(t, ctx, k8sClientA)
+	})
+	t.Run("status-writes-do-not-rerun-setup", func(t *testing.T) {
+		testStatusWritesDoNotRerunSetup(t, ctx, k8sClientA)
+	})
+}
+
+// testSpecChangeWithoutResync verifies that a spec change (suspend) is set up
+// and reported right away, without waiting for a periodic resync.
+func testSpecChangeWithoutResync(t *testing.T, ctx context.Context, c client.Client) {
+	syncer := newTestSyncer("spec-change-syncer", "spec")
+	require.NoError(t, c.Create(ctx, syncer))
+	defer func() { _ = c.Delete(ctx, syncer) }()
+	waitForReady(t, ctx, c, syncer, "True", krmv1alpha1.ReasonSyncing, 1)
+
+	setSuspend := func(suspend bool) {
+		t.Helper()
+		require.NoError(t, c.Get(ctx, client.ObjectKeyFromObject(syncer), syncer))
+		syncer.Spec.Suspend = suspend
+		require.NoError(t, c.Update(ctx, syncer))
+	}
+	setSuspend(true)
+	waitForReady(t, ctx, c, syncer, "True", krmv1alpha1.ReasonSuspended, 2)
+	setSuspend(false)
+	waitForReady(t, ctx, c, syncer, "True", krmv1alpha1.ReasonSyncing, 3)
+}
+
+// testStatusWritesDoNotRerunSetup verifies that status writes (here, as
+// objects start failing) do not trigger KRMSyncer reconciles.
+func testStatusWritesDoNotRerunSetup(t *testing.T, ctx context.Context, c client.Client) {
+	// Status mode, and no destination objects: every TestCRD fails to sync.
+	syncer := newTestSyncer("status-writes-syncer", "status")
+	require.NoError(t, c.Create(ctx, syncer))
+	defer func() { _ = c.Delete(ctx, syncer) }()
+	waitForReady(t, ctx, c, syncer, "True", krmv1alpha1.ReasonSyncing, 1)
+
+	// Wait for KRMSyncer reconciles (e.g. retries of earlier cases) to settle.
+	reconciles := krmSyncerReconciles(t)
+	settled := time.Now()
+	for time.Since(settled) < 5*time.Second {
+		time.Sleep(500 * time.Millisecond)
+		if n := krmSyncerReconciles(t); n != reconciles {
+			reconciles, settled = n, time.Now()
+		}
+	}
+
+	// Each new failing object changes status.failedObjects: a status write.
+	var objs []*unstructured.Unstructured
+	defer func() {
+		for _, obj := range objs {
+			_ = c.Delete(ctx, obj)
+		}
+	}()
+	for i := 1; i <= 3; i++ {
+		obj := &unstructured.Unstructured{Object: map[string]any{
+			"apiVersion": "e2e.gkelabs.io/v1alpha1",
+			"kind":       "TestCRD",
+			"metadata":   map[string]any{"name": fmt.Sprintf("status-writes-%d", i), "namespace": "default"},
+			"spec":       map[string]any{"foo": "bar"},
+		}}
+		require.NoError(t, c.Create(ctx, obj))
+		objs = append(objs, obj)
+		waitForFailedObjects(t, ctx, c, syncer, int32(i))
+	}
+	assert.Equal(t, reconciles, krmSyncerReconciles(t), "status writes must not trigger KRMSyncer reconciles")
+}
+
+// newTestSyncer returns a Push mode KRMSyncer of TestCRDs to cluster B.
+func newTestSyncer(name, syncField string) *krmv1alpha1.KRMSyncer {
+	return &krmv1alpha1.KRMSyncer{
+		ObjectMeta: metav1.ObjectMeta{Name: name, Namespace: "default"},
+		Spec: krmv1alpha1.KRMSyncerSpec{
+			Mode: krmv1alpha1.ModePush,
+			Remote: &krmv1alpha1.RemoteConfig{GKECluster: &krmv1alpha1.GKECluster{
+				Project: "test-project", Location: "us-central1", Name: "cluster-b",
+			}},
+			Rules: []krmv1alpha1.ResourceRule{{
+				Group: "e2e.gkelabs.io", Version: "v1alpha1", Kind: "TestCRD", SyncFields: []string{syncField},
+			}},
+		},
+	}
+}
+
+// waitForReady waits (at most 10s, much less than a resync) until syncer is
+// Ready with status and reason, for generation.
+func waitForReady(t *testing.T, ctx context.Context, c client.Client, syncer *krmv1alpha1.KRMSyncer, status metav1.ConditionStatus, reason string, generation int64) {
+	t.Helper()
+	var last krmv1alpha1.KRMSyncerStatus
+	err := wait.PollUntilContextTimeout(ctx, 100*time.Millisecond, 10*time.Second, true, func(ctx context.Context) (bool, error) {
+		got := &krmv1alpha1.KRMSyncer{}
+		if err := c.Get(ctx, client.ObjectKeyFromObject(syncer), got); err != nil {
+			return false, nil
+		}
+		last = got.Status
+		ready := meta.FindStatusCondition(got.Status.Conditions, krmv1alpha1.ConditionReady)
+		return got.Generation == generation && got.Status.ObservedGeneration == generation &&
+			ready != nil && ready.Status == status && ready.Reason == reason, nil
+	})
+	require.NoError(t, err, "want Ready=%s/%s at generation %d, last status: %+v", status, reason, generation, last)
+}
+
+// waitForFailedObjects waits until syncer reports want failed objects.
+func waitForFailedObjects(t *testing.T, ctx context.Context, c client.Client, syncer *krmv1alpha1.KRMSyncer, want int32) {
+	t.Helper()
+	var last int32
+	err := wait.PollUntilContextTimeout(ctx, 100*time.Millisecond, 30*time.Second, true, func(ctx context.Context) (bool, error) {
+		got := &krmv1alpha1.KRMSyncer{}
+		if err := c.Get(ctx, client.ObjectKeyFromObject(syncer), got); err != nil {
+			return false, nil
+		}
+		last = got.Status.FailedObjects
+		return last == want, nil
+	})
+	require.NoError(t, err, "want failedObjects=%d, last: %d", want, last)
+}
+
+// krmSyncerReconciles returns the number of KRMSyncer reconciles so far
+// (controller_runtime_reconcile_total for the krmsyncer controller).
+func krmSyncerReconciles(t *testing.T) float64 {
+	t.Helper()
+	families, err := metrics.Registry.Gather()
+	require.NoError(t, err)
+	var total float64
+	for _, family := range families {
+		if family.GetName() != "controller_runtime_reconcile_total" {
+			continue
+		}
+		for _, m := range family.GetMetric() {
+			for _, label := range m.GetLabel() {
+				if label.GetName() == "controller" && label.GetValue() == "krmsyncer" {
+					total += m.GetCounter().GetValue()
+				}
+			}
+		}
+	}
+	return total
 }
 
 func runTestCase(t *testing.T, ctx context.Context, clientA, clientB client.Client, caseDir string) {
@@ -149,24 +294,17 @@ func runTestCase(t *testing.T, ctx context.Context, clientA, clientB client.Clie
 	}
 
 	// Read all Resources from object.yaml
-	objectPath := "../integration/testdata/object.yaml"
-	createBytes, err := os.ReadFile(objectPath)
-	require.NoError(t, err)
+	resources := readObjects(t, "../integration/testdata/object.yaml")
 
-	resources := []*unstructured.Unstructured{}
-	decoder := yaml.NewYAMLOrJSONDecoder(bytes.NewReader(createBytes), 4096)
-	for {
-		res := &unstructured.Unstructured{}
-		if err := decoder.Decode(res); err != nil {
-			if err == io.EOF {
-				break
-			}
-			require.NoError(t, err)
+	// Read the expected Destination Resources from expected.yaml
+	expectedResources := make(map[string]*unstructured.Unstructured)
+	expectedPath := filepath.Join(caseDir, "expected.yaml")
+	if _, err := os.Stat(expectedPath); err == nil {
+		for _, exp := range readObjects(t, expectedPath) {
+			// Use Kind/Name as key to be safe, although names are unique here
+			key := fmt.Sprintf("%s/%s", exp.GetKind(), exp.GetName())
+			expectedResources[key] = exp
 		}
-		if res.Object == nil {
-			continue
-		}
-		resources = append(resources, res)
 	}
 
 	// Clean up Resources at end of test
@@ -176,6 +314,32 @@ func runTestCase(t *testing.T, ctx context.Context, clientA, clientB client.Clie
 			_ = clientB.Delete(ctx, r) // Cleanup on both just in case
 		}
 	}()
+
+	// Status-mode syncers (syncFields without "spec") only update objects that
+	// already exist on the destination. For those, pre-create (without status)
+	// the expected resources in Destination. If the case provides a
+	// destination.yaml, those objects are used (e.g. with spec values that
+	// differ from the source, to verify that fields outside syncFields are not
+	// synced); otherwise the source objects from object.yaml are copied.
+	destinationPath := filepath.Join(caseDir, "destination.yaml")
+	if _, err := os.Stat(destinationPath); err == nil {
+		for _, destObj := range readObjects(t, destinationPath) {
+			t.Logf("Creating Resource %s/%s in Destination Cluster...", destObj.GetKind(), destObj.GetName())
+			unstructured.RemoveNestedField(destObj.Object, "status")
+			require.NoError(t, destClient.Create(ctx, destObj))
+		}
+	} else if isStatusMode(syncer) {
+		for _, resource := range resources {
+			key := fmt.Sprintf("%s/%s", resource.GetKind(), resource.GetName())
+			if _, ok := expectedResources[key]; !ok {
+				continue
+			}
+			t.Logf("Creating Resource %s in Destination Cluster...", key)
+			destObj := resource.DeepCopy()
+			unstructured.RemoveNestedField(destObj.Object, "status")
+			require.NoError(t, destClient.Create(ctx, destObj))
+		}
+	}
 
 	// Apply All Resources in Source
 	for _, resource := range resources {
@@ -201,28 +365,6 @@ func runTestCase(t *testing.T, ctx context.Context, clientA, clientB client.Clie
 	time.Sleep(2 * time.Second)
 
 	// Verify Output
-	expectedPath := filepath.Join(caseDir, "expected.yaml")
-	expectedBytes, err := os.ReadFile(expectedPath)
-	expectedResources := make(map[string]*unstructured.Unstructured)
-	if err == nil && len(expectedBytes) > 0 {
-		expDecoder := yaml.NewYAMLOrJSONDecoder(bytes.NewReader(expectedBytes), 4096)
-		for {
-			exp := &unstructured.Unstructured{}
-			if err := expDecoder.Decode(exp); err != nil {
-				if err == io.EOF {
-					break
-				}
-				require.NoError(t, err)
-			}
-			if exp.Object == nil {
-				continue
-			}
-			// Use Kind/Name as key to be safe, although names are unique here
-			key := fmt.Sprintf("%s/%s", exp.GetKind(), exp.GetName())
-			expectedResources[key] = exp
-		}
-	}
-
 	for _, resource := range resources {
 		key := fmt.Sprintf("%s/%s", resource.GetKind(), resource.GetName())
 		expected, shouldExist := expectedResources[key]
@@ -249,6 +391,96 @@ func runTestCase(t *testing.T, ctx context.Context, clientA, clientB client.Clie
 			assert.True(t, errors.IsNotFound(err), "Resource %s should NOT exist in Destination Cluster", key)
 		}
 	}
+
+	// Verify the KRMSyncer status, if the case provides syncer-status.yaml.
+	statusPath := filepath.Join(caseDir, "syncer-status.yaml")
+	if _, err := os.Stat(statusPath); err == nil {
+		verifySyncerStatus(t, ctx, clientA, syncer, statusPath)
+	}
+}
+
+// verifySyncerStatus waits until the status of syncer matches the expected
+// status in path: failedObjects, and the type, status, reason and (if set)
+// message of each expected condition. observedGeneration must match the
+// KRMSyncer generation.
+func verifySyncerStatus(t *testing.T, ctx context.Context, c client.Client, syncer *krmv1alpha1.KRMSyncer, path string) {
+	t.Helper()
+	b, err := os.ReadFile(path)
+	require.NoError(t, err)
+	want := krmv1alpha1.KRMSyncerStatus{}
+	require.NoError(t, yaml.Unmarshal(b, &want))
+
+	t.Logf("Verifying KRMSyncer status...")
+	var mismatch string
+	err = wait.PollUntilContextTimeout(ctx, 200*time.Millisecond, 30*time.Second, true, func(ctx context.Context) (bool, error) {
+		got := &krmv1alpha1.KRMSyncer{}
+		if err := c.Get(ctx, client.ObjectKeyFromObject(syncer), got); err != nil {
+			mismatch = err.Error()
+			return false, nil
+		}
+		mismatch = syncerStatusMismatch(want, got)
+		return mismatch == "", nil
+	})
+	require.NoError(t, err, "KRMSyncer status mismatch: %s", mismatch)
+}
+
+// syncerStatusMismatch describes how the status of got differs from want, or
+// returns "" if it matches.
+func syncerStatusMismatch(want krmv1alpha1.KRMSyncerStatus, got *krmv1alpha1.KRMSyncer) string {
+	if got.Status.ObservedGeneration != got.Generation {
+		return fmt.Sprintf("observedGeneration is %d, want %d", got.Status.ObservedGeneration, got.Generation)
+	}
+	if got.Status.FailedObjects != want.FailedObjects {
+		return fmt.Sprintf("failedObjects is %d, want %d", got.Status.FailedObjects, want.FailedObjects)
+	}
+	for _, w := range want.Conditions {
+		g := meta.FindStatusCondition(got.Status.Conditions, w.Type)
+		switch {
+		case g == nil:
+			return fmt.Sprintf("condition %s is not set", w.Type)
+		case g.Status != w.Status || g.Reason != w.Reason:
+			return fmt.Sprintf("condition %s is %s/%s (%q), want %s/%s", w.Type, g.Status, g.Reason, g.Message, w.Status, w.Reason)
+		case w.Message != "" && g.Message != w.Message:
+			return fmt.Sprintf("condition %s message is %q, want %q", w.Type, g.Message, w.Message)
+		case g.ObservedGeneration != got.Generation:
+			return fmt.Sprintf("condition %s observedGeneration is %d, want %d", w.Type, g.ObservedGeneration, got.Generation)
+		}
+	}
+	return ""
+}
+
+// isStatusMode reports whether no rule of the syncer syncs the full spec, i.e.
+// the syncer only updates objects that already exist on the destination.
+func isStatusMode(syncer *krmv1alpha1.KRMSyncer) bool {
+	for _, rule := range syncer.Spec.Rules {
+		if slices.Contains(rule.SyncFields, "spec") {
+			return false
+		}
+	}
+	return true
+}
+
+// readObjects decodes all objects from a multi-document YAML file.
+func readObjects(t *testing.T, path string) []*unstructured.Unstructured {
+	b, err := os.ReadFile(path)
+	require.NoError(t, err)
+
+	objs := []*unstructured.Unstructured{}
+	decoder := yaml.NewYAMLOrJSONDecoder(bytes.NewReader(b), 4096)
+	for {
+		obj := &unstructured.Unstructured{}
+		if err := decoder.Decode(obj); err != nil {
+			if err == io.EOF {
+				break
+			}
+			require.NoError(t, err)
+		}
+		if obj.Object == nil {
+			continue
+		}
+		objs = append(objs, obj)
+	}
+	return objs
 }
 
 // staticConfigProvider resolves every remote cluster to a fixed envtest cluster.

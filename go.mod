@@ -145,7 +145,7 @@ require (
 	github.com/cenkalti/backoff v2.2.1+incompatible
 	github.com/fatih/color v1.18.0
 	github.com/ghodss/yaml v1.0.0
-	github.com/gke-labs/kube-etl/syncer v0.0.0-20261027010125-063e4a30cf84
+	github.com/gke-labs/kube-etl/syncer v0.0.0-20261119222216-f95b5633fae1
 	github.com/gke-labs/multicluster-leader-election v0.0.0-20260219060047-1ae5cb16f27e
 	github.com/go-logr/logr v1.4.4
 	github.com/go-logr/zapr v1.3.0

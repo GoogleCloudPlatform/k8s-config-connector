@@ -160,7 +160,7 @@ require (
 	github.com/gammazero/deque v0.0.0-20190521012701-46e4ffb7a622 // indirect
 	github.com/gammazero/workerpool v0.0.0-20190608213748-0ed5e40ec55e // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
-	github.com/gke-labs/kube-etl/syncer v0.0.0-20261027010125-063e4a30cf84 // indirect
+	github.com/gke-labs/kube-etl/syncer v0.0.0-20261119222216-f95b5633fae1 // indirect
 	github.com/gke-labs/multicluster-leader-election v0.0.0-20260219060047-1ae5cb16f27e // indirect
 	github.com/go-jose/go-jose/v4 v4.1.9 // indirect
 	github.com/go-logr/logr v1.4.4 // indirect

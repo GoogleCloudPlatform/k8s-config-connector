@@ -3,6 +3,9 @@ kind: KCCResource
 metadata:
   name: test-pull-glob
   namespace: default
+spec:
+  foo: "initial-value"
+  resourceID: "generated-id"
 status:
   bar: "initial-status"
 ---
@@ -11,5 +14,8 @@ kind: FakeObject
 metadata:
   name: glob-test
   namespace: default
+spec:
+  foo: "initial-value"
+  resourceID: "generated-id"
 status:
   bar: "initial-status"

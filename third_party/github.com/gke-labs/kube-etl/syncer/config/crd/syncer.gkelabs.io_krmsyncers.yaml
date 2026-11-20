@@ -140,7 +140,9 @@ spec:
             description: KRMSyncerStatus defines the observed state.
             properties:
               conditions:
-                description: Conditions of the Syncer.
+                description: |-
+                  Conditions of the Syncer. The Ready condition reports whether the
+                  syncer is syncing.
                 items:
                   description: Condition contains details for one aspect of the current
                     state of this API Resource.
@@ -196,6 +198,19 @@ spec:
                   - type
                   type: object
                 type: array
+              failedObjects:
+                description: |-
+                  FailedObjects is the number of objects whose latest sync attempt for
+                  this KRMSyncer failed. An object is counted from its first failed
+                  attempt until it syncs successfully.
+                format: int32
+                type: integer
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the generation of the spec that the status
+                  reflects.
+                format: int64
+                type: integer
             type: object
         type: object
     served: true
