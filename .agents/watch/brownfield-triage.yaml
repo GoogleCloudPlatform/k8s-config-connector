@@ -44,7 +44,7 @@
 name: brownfield-triage
 description: Check whether a brownfield kind should be migrated, and comment and label it
 on: issue
-order: 3
+order: 4
 when:
   labels:
     all: [overseer/triage, workflow/brownfield]
