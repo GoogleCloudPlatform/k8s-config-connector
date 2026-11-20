@@ -88,14 +88,6 @@ spec:
                 required:
                 - uri
                 type: object
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. Labels to apply to the mirror.
-                type: object
-              location:
-                description: The location of this resource.
-                type: string
               lustrePath:
                 description: Required. Immutable. The Managed Lustre directory to
                   mirror to. Must be an absolute path starting with `/`, for example
@@ -109,8 +101,8 @@ spec:
                       the default must already exist on the file system.
                     type: string
                 type: object
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The LustreInstance this LustreMirror is created under.
                 oneOf:
                 - not:
                     required:
@@ -127,20 +119,19 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed LustreInstance
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a LustreInstance resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a LustreInstance resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The LustreMirror name. If not given, the metadata.name
                   will be used.
@@ -148,9 +139,8 @@ spec:
             required:
             - direction
             - gcsPath
-            - location
             - lustrePath
-            - projectRef
+            - parentRef
             type: object
           status:
             description: LustreMirrorStatus defines the config connector machine state

@@ -58,6 +58,16 @@
   - Regenerated `LustreInstance` fuzzer using `controllerbuilder generate-fuzzer` to mark newly exposed proto fields from the v1.3.1 upgrade as `f.Unimplemented_NotYetTriaged`.
   - Updated golden exception `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
   - All tests and apichecks pass.
+- **Judgement Queue Triage & Finalization (Step 1b)**:
+  - Modeled parent reference as required, immutable `spec.parentRef` (`*LustreInstanceRef`) on `LustreMirrorSpec`, removing separate `ProjectRef`, `Location`, and guessed `InstanceRef`.
+  - Removed top-level `spec.labels` as labels are managed via `metadata.labels`.
+  - Accepted non-representable `spec.gcsPath` and `spec.gcsPath.uri` (decomposable `gs://` bucket URI not expressible as a typed reference).
+  - Accepted `identity-not-in-cai` matching proto resource pattern `projects/{project}/locations/{location}/instances/{instance}/mirrors/{mirror}`.
+  - Regenerated identity (`lustremirror_identity.generated.go`), deepcopy, mappers (`pkg/controller/direct/lustre/mapper.generated.go`), and CRD manifest (`config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_lustremirrors.lustre.cnrm.cloud.google.com.yaml`).
+  - Resolved all open entries for `LustreMirror` in `apis/lustre/judgement_queue.yaml`.
+  - Re-recorded `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+  - All unit tests and apichecks pass.
+
 
 
 

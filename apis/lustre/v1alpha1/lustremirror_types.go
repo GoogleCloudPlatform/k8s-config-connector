@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,15 +30,10 @@ var LustreMirrorGVK = GroupVersion.WithKind("LustreMirror")
 // +kcc:spec:proto=google.cloud.lustre.v1.Mirror
 // +kcc:required-from-proto
 type LustreMirrorSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/instances/{instance} this resource belongs to.
-	// +kcc:guess
-	// InstanceRef *LustreInstanceRef `json:"instanceRef,omitempty"`
+	// The LustreInstance this LustreMirror is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *LustreInstanceRef `json:"parentRef"`
 
 	// The LustreMirror name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -71,10 +65,6 @@ type LustreMirrorSpec struct {
 	// Optional. Description of the mirror.
 	// +kcc:proto:field=google.cloud.lustre.v1.Mirror.description
 	Description *string `json:"description,omitempty"`
-
-	// Optional. Labels to apply to the mirror.
-	// +kcc:proto:field=google.cloud.lustre.v1.Mirror.labels
-	Labels map[string]string `json:"labels,omitempty"`
 }
 
 // LustreMirrorStatus defines the config connector machine state of LustreMirror

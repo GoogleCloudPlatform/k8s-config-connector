@@ -158,6 +158,7 @@ func LustreMirrorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Mirro
 	}
 	out := &krm.LustreMirrorObservedState{}
 	// MISSING: Name
+	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.Uid = direct.LazyPtr(in.GetUid())
@@ -170,6 +171,7 @@ func LustreMirrorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Lustre
 	}
 	out := &pb.Mirror{}
 	// MISSING: Name
+	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.Uid = direct.ValueOf(in.Uid)
@@ -187,7 +189,7 @@ func LustreMirrorSpec_FromProto(mapCtx *direct.MapContext, in *pb.Mirror) *krm.L
 	out.Direction = direct.Enum_FromProto(mapCtx, in.GetDirection())
 	out.DeletedFilesRetained = direct.LazyPtr(in.GetDeletedFilesRetained())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Labels = in.Labels
+	// MISSING: Labels
 	return out
 }
 func LustreMirrorSpec_ToProto(mapCtx *direct.MapContext, in *krm.LustreMirrorSpec) *pb.Mirror {
@@ -201,7 +203,7 @@ func LustreMirrorSpec_ToProto(mapCtx *direct.MapContext, in *krm.LustreMirrorSpe
 	out.Direction = direct.Enum_ToProto[pb.Mirror_Direction](mapCtx, in.Direction)
 	out.DeletedFilesRetained = direct.ValueOf(in.DeletedFilesRetained)
 	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
+	// MISSING: Labels
 	return out
 }
 func LustrePath_FromProto(mapCtx *direct.MapContext, in *pb.LustrePath) *krm.LustrePath {
