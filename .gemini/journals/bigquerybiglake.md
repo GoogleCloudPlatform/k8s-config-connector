@@ -108,3 +108,17 @@
   9. Aligned mock behavior with authentic real GCP golden logs using `hack/compare-mock`. Generated `_http_mock.log` for both `biglakeicebergnamespace-minimal` and `biglakeicebergnamespace-maximal`.
   10. Verified `TestGoldenLogAlignment` passes with zero discrepancies and `./dev/ci/presubmits/tests-e2e-fixtures-suite bigquerybiglake` passes all 8 test fixtures.
 - **Impact**: Greenfield Step 3 complete; `BigLakeIcebergNamespace` MockGCP implementation and golden log alignment verified.
+
+### [2026-11-20] Greenfield Step 1b: Triage judgement queue and finalize direct KRM types and identity for BigLakeHiveCatalog
+- **Context**: Triaging `apis/bigquerybiglake/judgement_queue.yaml` and finalizing direct KRM types, identity, and references for `BigLakeHiveCatalog` (Issue #16212).
+- **Details**:
+  1. Triaged and resolved all 3 entries in `apis/bigquerybiglake/judgement_queue.yaml` for `BigLakeHiveCatalog`.
+  2. Maintained the canonical identity pattern `projects/{project}/catalogs/{catalog}` (configured via `--pattern BigLakeHiveCatalog=projects/{project}/catalogs/{catalog}` in `generate.sh`), parented directly by required `ProjectRef` on `BigLakeHiveCatalogSpec`.
+  3. Confirmed template format `//biglake.googleapis.com/projects/{}/catalogs/{}` was already registered in `pkg/gcpurls/registry_test.go` and verified `TestRegisteredTemplatesMatchCAI` passes.
+  4. Updated resource-docs URL in `biglakehivecatalog_types.go` to `https://cloud.google.com/bigquery/docs/manage-open-source-metadata`, removed the guess annotation, and resolved `verify-resource-docs-link`.
+  5. Resolved non-representable GCS path `.spec.locationURI` (`gs://bucket/path/to/catalog`) as accepted since KCC cannot express composite bucket/path references today.
+  6. Added `// +required` to `ProjectRef` on `BigLakeHiveCatalogSpec`.
+  7. Added comprehensive unit tests in `biglakehivecatalog_identity_test.go` covering `FromExternal` and `GetIdentity` (with explicit `resourceID`, `metadata.name` fallback, and status drift error).
+  8. Resolved `untriaged-bulk-generation` (`edited`).
+  9. Verified `./apis/bigquerybiglake/generate.sh` idempotency and confirmed all unit tests and `apichecks` pass cleanly.
+- **Impact**: Greenfield Step 1b complete; `BigLakeHiveCatalog` types, identity, references, CRD, and judgement queue triaged and fully verified.

@@ -15,8 +15,7 @@
 // API sources for BigLakeHiveCatalog, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/biglake/hive/v1/hive_metastore.proto
 // +kcc:source:service-docs=https://cloud.google.com/products/lakehouse
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/products/lakehouse/docs/reference/rest/v1/projects.catalogs
+// +kcc:source:resource-docs=https://cloud.google.com/bigquery/docs/manage-open-source-metadata
 
 package v1alpha1
 
@@ -33,6 +32,7 @@ var BigLakeHiveCatalogGVK = GroupVersion.WithKind("BigLakeHiveCatalog")
 // +kcc:required-from-proto
 type BigLakeHiveCatalogSpec struct {
 	// The project that this resource belongs to.
+	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The BigLakeHiveCatalog name. If not given, the metadata.name will be used.

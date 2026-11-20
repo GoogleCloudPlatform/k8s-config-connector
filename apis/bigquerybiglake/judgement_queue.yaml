@@ -25,18 +25,24 @@ entries:
     group: bigquerybiglake.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged BigLakeHiveCatalog; verified projects/{project}/catalogs/{catalog} pattern parented by required ProjectRef, updated resource-docs link, accepted non-representable GCS locationURI, and verified IdentityV2 and mappers
   - kind: BigLakeHiveCatalog
     group: bigquerybiglake.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: 'none of these loaded as a page ending in /v1/projects.catalogs: https://docs.cloud.google.com/products/lakehouse/docs/reference/rest/v1/projects.catalogs, https://docs.cloud.google.com/bigquery/docs/reference/rest/v1/projects.catalogs'
-    status: open
+    status: resolved
+    resolution: edited
+    note: updated resource-docs URL to https://cloud.google.com/bigquery/docs/manage-open-source-metadata
   - kind: BigLakeHiveCatalog
     group: bigquerybiglake.cnrm.cloud.google.com
     field: .spec.locationURI
     reason: reference-not-representable
     detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: gcs path decomposable as bucketref plus path stays string
   - kind: BigLakeIcebergCatalog
     group: bigquerybiglake.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
