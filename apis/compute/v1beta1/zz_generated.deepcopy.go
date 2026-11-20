@@ -1388,6 +1388,11 @@ func (in *ComputeBackendServiceSpec) DeepCopyInto(out *ComputeBackendServiceSpec
 		*out = new(string)
 		**out = **in
 	}
+	if in.StrongSessionAffinityCookie != nil {
+		in, out := &in.StrongSessionAffinityCookie, &out.StrongSessionAffinityCookie
+		*out = new(BackendServiceHttpCookie)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Subsetting != nil {
 		in, out := &in.Subsetting, &out.Subsetting
 		*out = new(Subsetting)

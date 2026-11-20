@@ -154,6 +154,12 @@ securitySettings:
   subjectAltNames:
   - string
 sessionAffinity: string
+strongSessionAffinityCookie:
+  name: string
+  path: string
+  ttl:
+    nanos: integer
+    seconds: integer
 subsetting:
   policy: string
 timeoutSec: integer
