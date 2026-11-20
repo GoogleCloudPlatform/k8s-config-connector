@@ -147,7 +147,7 @@ type AccessContextManagerServicePerimeterEgressPolicy struct {
 type AccessContextManagerServicePerimeterEgressFrom struct {
 	/* (Optional) A list of identities that are allowed access through this
 	EgressPolicy. Should be in the format of email address. The email
-	address should represent individual user or service account only. */
+	address should represent an individual user, service account, or Google group. */
 	// +optional
 	Identities []AccessContextManagerServicePerimeterIdentity `json:"identities,omitempty"`
 
@@ -162,6 +162,10 @@ type AccessContextManagerServicePerimeterIdentity struct {
 	/* A reference to an IAMServiceAccount resource. */
 	// +optional
 	ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
+
+	/* A Google group identity, in the format of a Google Groups email address. */
+	// +optional
+	Group *string `json:"group,omitempty"`
 
 	/* A user identity, should represent individual user or service account only. */
 	// +optional
@@ -238,7 +242,7 @@ type AccessContextManagerServicePerimeterIngressPolicy struct {
 type AccessContextManagerServicePerimeterIngressFrom struct {
 	/* (Optional) A list of identities that are allowed access through this
 	ingress policy. Should be in the format of email address. The email
-	address should represent individual user or service account only. */
+	address should represent an individual user, service account, or Google group. */
 	// +optional
 	Identities []AccessContextManagerServicePerimeterIdentity `json:"identities,omitempty"`
 

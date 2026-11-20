@@ -39,7 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type ServiceperimeterEgressFrom struct {
-	/* (Optional) A list of identities that are allowed access through this EgressPolicy. Should be in the format of email address. The email address should represent individual user or service account only. */
+	/* (Optional) A list of identities that are allowed access through this EgressPolicy. Should be in the format of email address. The email address should represent an individual user, service account, or Google group. */
 	// +optional
 	Identities []ServiceperimeterIdentities `json:"identities,omitempty"`
 
@@ -73,6 +73,10 @@ type ServiceperimeterEgressTo struct {
 }
 
 type ServiceperimeterIdentities struct {
+	/* A Google group identity, in the format of a Google Groups email address. */
+	// +optional
+	Group *string `json:"group,omitempty"`
+
 	/* A reference to an IAMServiceAccount resource. */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
@@ -83,7 +87,7 @@ type ServiceperimeterIdentities struct {
 }
 
 type ServiceperimeterIngressFrom struct {
-	/* (Optional) A list of identities that are allowed access through this ingress policy. Should be in the format of email address. The email address should represent individual user or service account only. */
+	/* (Optional) A list of identities that are allowed access through this ingress policy. Should be in the format of email address. The email address should represent an individual user, service account, or Google group. */
 	// +optional
 	Identities []ServiceperimeterIdentities `json:"identities,omitempty"`
 
