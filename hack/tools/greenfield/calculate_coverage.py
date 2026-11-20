@@ -767,8 +767,10 @@ def run_gap_analysis(googleapis_sha, kcc_sha, k, update_gap, resources_list, goo
 # Manageability mode (--manageability)
 #
 # Classifies every resource in googleapis as Fully Manageable, Partially
-# Manageable (no DELETE / no CREATE), Needs review or Dropped, and every
-# v1alpha1 TF/DCL kind without a googleapis match as Brownfield. Each dropped
+# Manageable (no DELETE / no CREATE), Needs review or Dropped, by what its API
+# can do. What KCC has for it is recorded next to that (kcc_status,
+# kcc_stability) and never drops a resource. KCC kinds that no googleapis
+# resource maps to are listed too, so every kind is on the list. Each dropped
 # row carries the reason and a link (GitHub permalink) to the rule or data that
 # dropped it. See README.md ("Manageability Mode") for the rules.
 #
@@ -786,6 +788,16 @@ GREENFIELD_REL = "hack/tools/greenfield"
 ND_REL = "dev/tools/controllerbuilder/pkg/commands/generatetypes/nondeclarative.go"
 DEP_REL = "dev/tools/controllerbuilder/pkg/commands/generatetypes/deprecated.go"
 SERVICE_PREFIXES_REL = "dev/tools/controllerbuilder/serviceprefixes"
+CRD_REL = "config/crds/resources"
+STATIC_CONFIG_REL = "pkg/controller/resourceconfig/static_config.go"
+DIRECT_CONTROLLERS_REL = "pkg/controller/direct"
+APIS_REL = "apis"
+# Rule data next to this script (GREENFIELD_REL) that the list is computed from.
+RULE_FILES = ("coverage_skip.json", "policy_exclusions.json", "deprecated_services.json", "cp_resources_list.json")
+# Every file of the KCC tree that the list is computed from. meta.kcc_ref is the newest commit that changed one
+# of them (see kcc_input_commit), so the list only changes when its inputs do. Read them through kcc_input_path.
+KCC_INPUT_PATHS = (APIS_REL, CRD_REL, DIRECT_CONTROLLERS_REL, STATIC_CONFIG_REL, ND_REL, DEP_REL,
+                   SERVICE_PREFIXES_REL) + tuple("%s/%s" % (GREENFIELD_REL, f) for f in RULE_FILES)
 # Mirrors isNonGAProto in dev/tools/controllerbuilder/pkg/commands/generatetypes/generatetypescommand.go.
 NONGA_SEGMENT_RE = re.compile(r"(?i)^v[0-9]+[a-z0-9]*(alpha|beta)[a-z0-9]*$")
 VERSION_SEGMENT_RE = re.compile(r"^v\d+[a-z0-9]*$")
@@ -798,25 +810,32 @@ BUCKET_FM = "Fully Manageable"
 BUCKET_PM_NO_DELETE = "Partially Manageable: no DELETE"
 BUCKET_PM_NO_CREATE = "Partially Manageable: no CREATE"
 BUCKET_REVIEW = "Needs review"
-BUCKET_BROWNFIELD = "Brownfield (no googleapis resource)"
+BUCKET_NO_GOOGLEAPIS = "No googleapis resource"
 BUCKET_DROPPED = "Dropped"
-BUCKET_ORDER = [BUCKET_FM, BUCKET_PM_NO_DELETE, BUCKET_PM_NO_CREATE, BUCKET_REVIEW, BUCKET_BROWNFIELD, BUCKET_DROPPED]
+BUCKET_ORDER = [BUCKET_FM, BUCKET_PM_NO_DELETE, BUCKET_PM_NO_CREATE, BUCKET_REVIEW, BUCKET_NO_GOOGLEAPIS,
+                BUCKET_DROPPED]
+# kcc_status: how far KCC is with a resource. It doesn't depend on the version the kind serves (kcc_stability).
 STATUS_NET_NEW = "net-new"
-STATUS_BROWNFIELD = "brownfield (v1alpha1 TF/DCL)"
+STATUS_BROWNFIELD = "brownfield (TF/DCL)"
 STATUS_TYPES_ONLY = "in progress (types only)"
 STATUS_DIRECT = "implemented (direct)"
-STATUS_V1BETA1 = "v1beta1"
-STATUS_ORDER = [STATUS_NET_NEW, STATUS_BROWNFIELD, STATUS_TYPES_ONLY, STATUS_DIRECT, STATUS_V1BETA1]
+STATUS_OTHER = "implemented (other controller)"
+STATUS_ORDER = [STATUS_NET_NEW, STATUS_BROWNFIELD, STATUS_TYPES_ONLY, STATUS_DIRECT, STATUS_OTHER]
+STATUS_SHORT = {STATUS_NET_NEW: "net-new", STATUS_BROWNFIELD: "brownfield", STATUS_TYPES_ONLY: "types-only",
+                STATUS_DIRECT: "direct", STATUS_OTHER: "other-ctrl"}
+# kcc_stability: a kind is stable when it serves v1beta1, and alpha when it only serves v1alpha1. Empty for net-new.
+STABILITY_STABLE = "stable"
+STABILITY_ALPHA = "alpha"
 # Drop reasons in precedence order; policy:<reason> drops (policy_exclusions.json) sort last.
-DROP_ORDER = ["skip-list", "example-api", "deprecated", "non-ga-only", "v1beta1-brownfield", "no-crud", "read-only",
+DROP_ORDER = ["skip-list", "example-api", "deprecated", "non-ga-only", "no-crud", "read-only",
               "nondeclarative:pattern", "nondeclarative:bulk-rpc"]
 
 MANAGEABILITY_COLUMNS = [
-    "id", "bucket", "kcc_status", "api_group", "api_family", "kind", "resource_type", "service", "api_area", "layer",
-    "ops", "flags", "drop_reason", "drop_detail", "drop_link", "all_drop_reasons", "server_generated_id",
-    "nondeclarative_go", "kcc_kinds", "kcc_match", "kcc_link", "in_cp_list", "proto_message", "proto_link",
-    "other_packages", "patterns", "in_local_googleapis", "first_googleapis_sha", "first_googleapis_link", "rpcs",
-    "unannotated", "ga", "predicted_kind",
+    "id", "bucket", "kcc_status", "kcc_stability", "api_group", "api_family", "kind", "resource_type", "service",
+    "api_area", "layer", "ops", "flags", "drop_reason", "drop_detail", "drop_link", "all_drop_reasons",
+    "server_generated_id", "nondeclarative_go", "kcc_kinds", "kcc_match", "kcc_link", "in_cp_list", "proto_message",
+    "proto_link", "other_packages", "patterns", "in_local_googleapis", "first_googleapis_sha", "first_googleapis_link",
+    "rpcs", "unannotated", "ga", "predicted_kind",
 ]
 
 # API groups: Google Cloud is google.cloud.* plus the Cloud APIs whose protos live in other packages.
@@ -866,6 +885,10 @@ MANUAL_KIND_OVERRIDES = {
     "cloudfunctions.googleapis.com/CloudFunction": ["CloudFunctionsFunction"],  # Cloud Functions v1
     "cloudfunctions.googleapis.com/Function": ["CloudFunctions2Function"],  # Cloud Functions v2
 }
+# KCC kinds that are never matched to a googleapis resource by name. They set the IAM allow policy of another
+# resource (getIamPolicy/setIamPolicy), which no API declares as a resource of its own: IAMPolicy is not the
+# deny policy google.iam.v2.Policy. They are listed under BUCKET_NO_GOOGLEAPIS like every unmatched kind.
+KCC_ONLY_KINDS = frozenset(["IAMAuditConfig", "IAMPartialPolicy", "IAMPolicy", "IAMPolicyMember"])
 # googleapis service -> KCC API group prefixes, used to find TF/DCL kinds (which have no +kcc:proto annotations).
 MATCH_SERVICE_ALIASES = {
     "cloudresourcemanager": ["resourcemanager", "tags"], "analyticshub": ["bigqueryanalyticshub"],
@@ -1075,6 +1098,32 @@ def resolve_commit(repo, sha):
     return git_output(repo, "rev-parse", "--verify", "--quiet", sha + "^{commit}")
 
 
+def kcc_input_path(kcc_dir, rel):
+    """Path of a KCC file or directory that the list is computed from. It must be declared in KCC_INPUT_PATHS."""
+    if not any(rel == p or rel.startswith(p + "/") for p in KCC_INPUT_PATHS):
+        raise ValueError("%s is read from the KCC tree but isn't in KCC_INPUT_PATHS" % rel)
+    return os.path.join(kcc_dir, rel)
+
+
+def kcc_input_commit(kcc_dir):
+    """Returns (commit, uncommitted): the KCC commit the list is built from, and the inputs that differ from it.
+
+    The commit is the newest one that changed a file in KCC_INPUT_PATHS, not HEAD. Both have the same inputs, so
+    GitHub links to either show the same lines. This one stays the same when a commit only touches other files,
+    such as the commit that checks the generated list in: running the script again on that commit rewrites
+    nothing. `uncommitted` lists inputs with local changes or not yet tracked, which no commit can link to.
+    """
+    paths = list(KCC_INPUT_PATHS)
+    head = git_output(kcc_dir, "rev-parse", "HEAD")
+    commit = git_output(kcc_dir, "log", "-1", "--format=%H", "HEAD", "--", *paths)
+    if not commit or subprocess.run(["git", "-C", kcc_dir, "diff", "--quiet", commit, "HEAD", "--"] + paths,
+                                    capture_output=True).returncode != 0:
+        commit = head
+    changed = git_output(kcc_dir, "diff", "--name-only", "HEAD", "--", *paths).splitlines()
+    untracked = git_output(kcc_dir, "ls-files", "--others", "--exclude-standard", "--", *paths).splitlines()
+    return commit, sorted(set(changed + untracked))
+
+
 def export_googleapis_protos(repo, sha, temp_dir):
     """Exports the .proto files of googleapis@sha with `git archive` (the clone's checkout is not touched)."""
     full = resolve_commit(repo, sha)
@@ -1153,7 +1202,7 @@ def compile_descriptor_set(proto_root, out_pb):
 def collect_googleapis_pins(kcc_dir):
     """Returns [(sha, users)]: the global pin (apis/git.versions) first, then per-service pins in apis/*/generate.sh."""
     pins = []
-    versions = os.path.join(kcc_dir, "apis", "git.versions")
+    versions = kcc_input_path(kcc_dir, APIS_REL + "/git.versions")
     if os.path.exists(versions):
         with open(versions) as f:
             for line in f:
@@ -1161,7 +1210,7 @@ def collect_googleapis_pins(kcc_dir):
                 if m:
                     pins.append((m.group(1), ["global (apis/git.versions)"]))
     per_service = defaultdict(set)
-    apis_dir = os.path.join(kcc_dir, "apis")
+    apis_dir = kcc_input_path(kcc_dir, APIS_REL)
     if os.path.isdir(apis_dir):
         for svc in sorted(os.listdir(apis_dir)):
             path = os.path.join(apis_dir, svc, "generate.sh")
@@ -1310,7 +1359,7 @@ class ManageabilityClassifier:
                 self.svcs_by_file[fd["name"]].append(s)
 
     def _kcc_text(self, rel):
-        path = os.path.join(self.kcc_dir, rel)
+        path = kcc_input_path(self.kcc_dir, rel)
         return _read_text(path) if os.path.exists(path) else ""
 
     def _load_rules(self):
@@ -1381,7 +1430,7 @@ class ManageabilityClassifier:
         self.prefix_by_pkg, self.prefix_by_family, self.prefix_by_api, self.kind_acronyms = {}, {}, {}, {}
         self.kind_naming = {"source": "", "approved_prefixes": 0, "pending_prefixes": 0, "acronyms": 0}
         files = ("service-prefixes.yaml", "service-prefix-pending.yaml", "acronyms.yaml")
-        prefixes_dir = os.path.join(self.kcc_dir, SERVICE_PREFIXES_REL)
+        prefixes_dir = kcc_input_path(self.kcc_dir, SERVICE_PREFIXES_REL)
         if not all(os.path.exists(os.path.join(prefixes_dir, f)) for f in files):
             prefixes_dir = SERVICE_PREFIXES_DIR
             if not all(os.path.exists(os.path.join(prefixes_dir, f)) for f in files):
@@ -1408,7 +1457,7 @@ class ManageabilityClassifier:
                             "acronyms": len(self.kind_acronyms)}
 
     def _config_path(self, fname):
-        path = os.path.join(self.kcc_dir, GREENFIELD_REL, fname)
+        path = kcc_input_path(self.kcc_dir, "%s/%s" % (GREENFIELD_REL, fname))
         if os.path.exists(path):
             return path
         path = os.path.join(self.script_dir, fname)
@@ -1470,31 +1519,40 @@ class ManageabilityClassifier:
 
     def _load_kcc_inventory(self):
         self.crd = {}
-        crd_dir = os.path.join(self.kcc_dir, "config", "crds", "resources")
+        crd_dir = kcc_input_path(self.kcc_dir, CRD_REL)
         for fname in sorted(os.listdir(crd_dir)) if os.path.isdir(crd_dir) else []:
             txt = _read_text(os.path.join(crd_dir, fname))
             g = re.search(r"^  group: (\S+)", txt, re.M)
             k = re.search(r"^    kind: (\S+)", txt, re.M)
             if g and k:
+                # A version is "  - name: v1beta1", or "    name: v1beta1" when it isn't the item's first key.
                 self.crd[k.group(1)] = {
-                    "group": g.group(1), "file": "config/crds/resources/" + fname,
-                    "versions": set(re.findall(r"^    name: (v\d+(?:alpha|beta)?\d*)\s*$", txt, re.M)),
+                    "group": g.group(1), "file": "%s/%s" % (CRD_REL, fname),
+                    "versions": set(re.findall(r"^  (?:- |  )name: (v\d+(?:alpha|beta)?\d*)\s*$", txt, re.M)),
                     "tf": 'cnrm.cloud.google.com/tf2crd: "true"' in txt,
                     "dcl": 'cnrm.cloud.google.com/dcl2crd: "true"' in txt}
+        unversioned = sorted(kind for kind, c in self.crd.items() if not c["versions"])
+        if unversioned:
+            print("[WARN] no version could be read from the CRDs of: %s" % ", ".join(unversioned))
         self.static = {}
         for m in re.finditer(r'\{Group: "([^"]+)", Kind: "([^"]+)"\}:\s*\{DefaultController: k8s\.ReconcilerType(\w+), '
                              r'SupportedControllers: \[\]k8s\.ReconcilerType\{([^}]*)\}',
-                             self._kcc_text("pkg/controller/resourceconfig/static_config.go")):
+                             self._kcc_text(STATIC_CONFIG_REL)):
             self.static[m.group(2)] = (m.group(3), set(re.findall(r"ReconcilerType(\w+)", m.group(4))))
+        # Rows are built from CRDs, so a kind that only static_config.go knows about would be left off the list.
+        without_crd = sorted(set(self.static) - set(self.crd))
+        if without_crd:
+            print("[WARN] kinds in %s without a CRD are not on the list: %s"
+                  % (STATIC_CONFIG_REL, ", ".join(without_crd)))
         self.registered = set()
-        for root, _, names in os.walk(os.path.join(self.kcc_dir, "pkg", "controller", "direct")):
+        for root, _, names in os.walk(kcc_input_path(self.kcc_dir, DIRECT_CONTROLLERS_REL)):
             for n in names:
                 if n.endswith(".go"):
                     for m in re.finditer(r"RegisterModel\((?:[a-z0-9]+\.)?(\w+?)GVK", _read_text(os.path.join(root, n))):
                         self.registered.add(m.group(1))
         # +kcc:proto annotations on <Kind>Spec / <Kind>ObservedState give exact proto -> kind matches.
         self.proto_to_kinds, self.annotated_kinds = defaultdict(set), set()
-        for root, _, names in os.walk(os.path.join(self.kcc_dir, "apis")):
+        for root, _, names in os.walk(kcc_input_path(self.kcc_dir, APIS_REL)):
             for n in names:
                 if not n.endswith("_types.go"):
                     continue
@@ -1734,6 +1792,29 @@ class ManageabilityClassifier:
         c = self.crd.get(kind, {})
         return "tf" if c.get("tf") else ("dcl" if c.get("dcl") else "none")
 
+    def kind_label(self, kind):
+        """A kind as shown in kcc_kinds, with the versions it serves and its controller: SQLUser(v1beta1,terraform)."""
+        return "%s(%s,%s)" % (kind, "/".join(sorted(self.crd[kind]["versions"])), self.kind_controller(kind))
+
+    def kcc_support(self, kinds):
+        """Returns (kcc_status, kcc_stability, the kinds they describe) for the KCC kinds of one resource.
+
+        A kind is stable when it serves a version that isn't alpha (v1beta1). When a resource has stable kinds,
+        only they count: a stable TF kind next to an alpha direct kind is stable brownfield, not direct.
+        """
+        stable = sorted(k for k in kinds if any("alpha" not in v for v in self.crd[k]["versions"]))
+        described = stable or sorted(kinds)
+        controllers = {self.kind_controller(k) for k in described}
+        if "direct" in controllers:
+            status = STATUS_DIRECT
+        elif controllers - {"terraform", "dcl", "tf", "none"}:
+            status = STATUS_OTHER  # a controller of its own, like the IAM policy kinds
+        elif controllers - {"none"}:
+            status = STATUS_BROWNFIELD
+        else:
+            status = STATUS_TYPES_ONLY
+        return status, STABILITY_STABLE if stable else STABILITY_ALPHA, described
+
     def heuristic_kinds(self, service, name, pkg):
         variants = {service, service + "s"}
         if _family(pkg).startswith("google.cloud.dialogflow.cx"):
@@ -1749,6 +1830,8 @@ class ManageabilityClassifier:
         out = set()
         for g in (v for v in variants if v in self.kcc_groups):
             for kind in self.kcc_groups[g]:
+                if kind in KCC_ONLY_KINDS:
+                    continue
                 kn = _norm(kind)
                 if kn in names or kn == predicted or any(kn.startswith(p) and kn[len(p):] in names for p in prefixes):
                     out.add(kind)
@@ -1816,18 +1899,23 @@ class ManageabilityClassifier:
     # --- classification -----------------------------------------------------------
     def classify(self):
         records = []
+        self.matched_kinds = set()
         global_pin = self.pins[0][0] if self.pins else None
         for R in self.universe():
             records.append(self._classify_one(R, global_pin))
-        matched = {k for r in records for k in re.findall(r"(\w+)\(", r["kcc_kinds"])}
+        # Every KCC kind is on the list: the ones no googleapis resource maps to get a row of their own. They are
+        # sub-objects of another resource, kinds of APIs that publish no protos, kinds that only exist in KCC
+        # (KCC_ONLY_KINDS), and resources that the protos don't declare as one.
         for kind, c in sorted(self.crd.items()):
-            if kind in matched or c["versions"] != {"v1alpha1"} or self.kind_controller(kind) not in ("terraform", "dcl", "tf"):
+            if kind in self.matched_kinds:
                 continue
+            status, stability, _ = self.kcc_support([kind])
+            flags = (["brownfield"] if status == STATUS_BROWNFIELD else []) + ["not-in-googleapis"]
             rec = {col: "" for col in MANAGEABILITY_COLUMNS}
             rec.update(id="(no googleapis resource) " + kind, service=c["group"].split(".")[0], predicted_kind=kind,
-                       kind=kind, kcc_kinds="%s(v1alpha1,%s)" % (kind, self.kind_controller(kind)),
-                       kcc_status=STATUS_BROWNFIELD, bucket=BUCKET_BROWNFIELD, kcc_link=self.kcc_link(c["file"]),
-                       api_group=API_GROUP_CLOUD, ga=None, flags="brownfield; not-in-googleapis")
+                       kind=kind, kcc_kinds=self.kind_label(kind), kcc_status=status, kcc_stability=stability,
+                       bucket=BUCKET_NO_GOOGLEAPIS, kcc_link=self.kcc_link(c["file"]), api_group=API_GROUP_CLOUD,
+                       ga=None, flags="; ".join(flags))
             records.append(rec)
         return records
 
@@ -1862,12 +1950,11 @@ class ManageabilityClassifier:
         if R["type"] in MANUAL_KIND_OVERRIDES:
             kinds = {k for k in MANUAL_KIND_OVERRIDES[R["type"]] if k in self.crd}
             match = "manual"
-        rec["kcc_kinds"] = ";".join(sorted("%s(%s,%s)" % (k, "/".join(sorted(self.crd[k]["versions"])),
-                                                          self.kind_controller(k)) for k in kinds))
+        self.matched_kinds |= kinds
+        rec["kcc_kinds"] = ";".join(sorted(self.kind_label(k) for k in kinds))
         rec["kcc_match"] = match
-        v1beta1 = sorted(k for k in kinds if "v1beta1" in self.crd[k]["versions"])
         if not kinds:
-            rec["kcc_status"], rec["kind"], rec["kcc_link"] = STATUS_NET_NEW, predicted, ""
+            rec["kcc_status"], rec["kcc_stability"], rec["kind"], rec["kcc_link"] = STATUS_NET_NEW, "", predicted, ""
             # The Kind is only a suggestion here: say when it can't be used as it is.
             if prefix_status != "approved":
                 flags.append("kind-prefix:" + prefix_status)
@@ -1875,11 +1962,10 @@ class ManageabilityClassifier:
             if once:
                 flags.append("kind-name:repeats-prefix(%s)" % once)
         else:
-            controllers = {self.kind_controller(k) for k in kinds}
-            rec["kcc_status"] = (STATUS_V1BETA1 if v1beta1 else STATUS_DIRECT if "direct" in controllers else
-                                 STATUS_BROWNFIELD if controllers & {"terraform", "dcl", "tf"} else STATUS_TYPES_ONLY)
-            rec["kind"] = sorted(kinds)[0]
-            rec["kcc_link"] = self.kcc_link(self.crd[(v1beta1 or sorted(kinds))[0]]["file"])
+            # What KCC has is recorded here and never drops the row: the bucket only says what the API can do.
+            rec["kcc_status"], rec["kcc_stability"], described = self.kcc_support(kinds)
+            rec["kind"] = described[0]
+            rec["kcc_link"] = self.kcc_link(self.crd[described[0]]["file"])
         rec["in_cp_list"] = "yes" if (("res", ("%s/%s" % (service, singularize_name(name))).lower()) in self.cp_keys
                                       or ("kind", _norm(rec["kind"])) in self.cp_keys) else ""
 
@@ -1904,10 +1990,6 @@ class ManageabilityClassifier:
         if not R["is_ga"]:
             drops.append(("non-ga-only", "only defined in non-GA package %s (generate-types rejects without "
                                          "--allow-non-ga-proto)" % pkg, rec["proto_link"]))
-        # D4 v1beta1 brownfield
-        if v1beta1:
-            drops.append(("v1beta1-brownfield", "served by v1beta1 KCC kind %s" % ", ".join(v1beta1),
-                          self.kcc_link(self.crd[v1beta1[0]]["file"])))
 
         # Operations
         ops, deprecated_rpcs = self.ops_for(pkg, name, patterns, collection, R["plural"], R["synthesized"])
@@ -2018,10 +2100,12 @@ def _sorted_rows(records):
     return [{col: r.get(col, "") for col in MANAGEABILITY_COLUMNS} for r in rows]
 
 
-def manageability_counts(rows):
+def manageability_counts(rows, stable_only=False):
+    """Rows per API group, bucket and KCC status. stable_only counts the rows that a stable KCC kind serves."""
     counts = {}
     for group in API_GROUP_ORDER:
-        c = Counter((r["bucket"], r["kcc_status"]) for r in rows if r["api_group"] == group)
+        c = Counter((r["bucket"], r["kcc_status"]) for r in rows if r["api_group"] == group
+                    and (not stable_only or r["kcc_stability"] == STABILITY_STABLE))
         counts[group] = {b: {s: c[(b, s)] for s in STATUS_ORDER if c[(b, s)]}
                          for b in BUCKET_ORDER if any(c[(b, s)] for s in STATUS_ORDER)}
     return counts
@@ -2031,7 +2115,8 @@ def write_manageability_outputs(records, out_dir, meta):
     """Writes manageability_list.json/.csv. Both are byte-for-byte reproducible for the same SHA inputs."""
     os.makedirs(out_dir, exist_ok=True)
     rows = _sorted_rows(records)
-    doc = {"meta": dict(meta, counts=manageability_counts(rows)), "resources": rows}
+    doc = {"meta": dict(meta, counts=manageability_counts(rows), stable_counts=manageability_counts(rows, True)),
+           "resources": rows}
     json_path = os.path.join(out_dir, "manageability_list.json")
     with open(json_path, "w", newline="\n") as f:
         json.dump(doc, f, indent=1)
@@ -2044,16 +2129,26 @@ def write_manageability_outputs(records, out_dir, meta):
     return json_path, csv_path
 
 
-def print_manageability_summary(records, k):
+def print_manageability_summary(records, k, kcc_kinds):
     width = max(len(b) for b in BUCKET_ORDER)
+    header = "%-*s %s  total" % (width, "bucket", " ".join("%11s" % STATUS_SHORT[s] for s in STATUS_ORDER))
     for group in API_GROUP_ORDER:
-        counts = Counter((r["bucket"], r["kcc_status"]) for r in records if r["api_group"] == group)
-        print("\n--- %s (bucket x KCC status) ---" % group)
-        print("%-*s %s  total" % (width, "bucket", " ".join("%13s" % s.split(" ")[0] for s in STATUS_ORDER)))
-        for b in BUCKET_ORDER:
-            vals = [counts.get((b, s), 0) for s in STATUS_ORDER]
-            if sum(vals):
-                print("%-*s %s  %5d" % (width, b, " ".join("%13s" % (v or "") for v in vals), sum(vals)))
+        rows = [r for r in records if r["api_group"] == group]
+        stable = [r for r in rows if r["kcc_stability"] == STABILITY_STABLE]
+        for title, part in (("%s (bucket x KCC status)" % group, rows),
+                            ("%s: of those, the rows a stable (v1beta1) KCC kind serves" % group, stable)):
+            if not part:
+                continue
+            counts = Counter((r["bucket"], r["kcc_status"]) for r in part)
+            print("\n--- %s ---" % title)
+            print(header)
+            for b in BUCKET_ORDER:
+                vals = [counts.get((b, s), 0) for s in STATUS_ORDER]
+                if sum(vals):
+                    print("%-*s %s  %5d" % (width, b, " ".join("%11s" % (v or "") for v in vals), sum(vals)))
+    print("\nKCC kinds: all %d are on the list, %d on a googleapis resource and %d under \"%s\"." % (
+        kcc_kinds["total"], kcc_kinds["with_googleapis_resource"], kcc_kinds["without_googleapis_resource"],
+        BUCKET_NO_GOOGLEAPIS))
     print("\n--- Drop reasons (Google Cloud / Other Google APIs) ---")
     dropped = [r for r in records if r["bucket"] == BUCKET_DROPPED]
     for reason, n in Counter(r["drop_reason"] for r in dropped).most_common():
@@ -2107,22 +2202,29 @@ def run_manageability(googleapis_sha, proto_root, googleapis_repo, kcc_dir, kcc_
         ordered = sorted(pins, key=lambda p: (p[3], p[0]))
     pins = [(sha, users, names) for sha, users, names, _ in ordered]
 
-    # Only trust HEAD when kcc_dir is the root of its own git checkout (not a snapshot nested in another repo).
+    # Only trust git when kcc_dir is the root of its own checkout (not a snapshot nested in another repo).
     top = git_output(kcc_dir, "rev-parse", "--show-toplevel")
     is_root = bool(top) and os.path.realpath(top) == os.path.realpath(kcc_dir)
-    kcc_ref = (git_output(kcc_dir, "rev-parse", "HEAD") if is_root else "") or (
-        kcc_sha if kcc_sha.upper() != "LOCAL" else "master")
+    kcc_ref, uncommitted = kcc_input_commit(kcc_dir) if is_root else ("", [])
+    kcc_ref = kcc_ref or (kcc_sha if kcc_sha.upper() != "LOCAL" else "master")
+    if uncommitted:
+        print("[WARN] %d input file(s) have uncommitted changes (%s%s). Links into them may show other lines, and the "
+              "list will change once they are committed: commit them, then run this again."
+              % (len(uncommitted), ", ".join(uncommitted[:5]), ", ..." if len(uncommitted) > 5 else ""))
     script_dir = os.path.dirname(os.path.abspath(__file__))
     classifier = ManageabilityClassifier(files, full_sha, proto_root, kcc_dir, kcc_ref, script_dir, pins,
                                          GitBlobReader(googleapis_repo))
     records = classifier.classify()
+    matched = len(classifier.matched_kinds)
+    kcc_kinds = {"total": len(classifier.crd), "with_googleapis_resource": matched,
+                 "without_googleapis_resource": len(classifier.crd) - matched}
     # No timestamps or local paths: the JSON only depends on the inputs it records here.
-    meta = {"schema_version": 1, "googleapis_sha": full_sha, "kcc_ref": kcc_ref,
+    meta = {"schema_version": 2, "googleapis_sha": full_sha, "kcc_ref": kcc_ref, "kcc_uncommitted_inputs": uncommitted,
             "googleapis_pins": [{"sha": sha, "used_by": users} for sha, users, _ in pins],
             "skipped_googleapis_pins": skipped, "config_fallbacks": sorted(set(classifier.config_fallbacks)),
-            "kind_naming": classifier.kind_naming}
+            "kind_naming": classifier.kind_naming, "kcc_kinds": kcc_kinds}
     json_path, csv_path = write_manageability_outputs(records, out_dir, meta)
-    print_manageability_summary(records, k)
+    print_manageability_summary(records, k, kcc_kinds)
     print("\n[SAVED] Manageability list written to %s and %s" % (json_path, csv_path))
 
 
