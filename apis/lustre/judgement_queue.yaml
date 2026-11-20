@@ -25,34 +25,46 @@ entries:
     group: lustre.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled spec.parentRef (*LustreInstanceRef), removed ProjectRef and Location, resolved docs link and identity
   - kind: LustreDirectoryPolicy
     group: lustre.cnrm.cloud.google.com
     reason: identity-not-in-cai
     detail: template "//lustre.googleapis.com/projects/{project}/locations/{location}/instances/{instance}/directoryPolicies/{directory_policy}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
-    status: open
+    status: resolved
+    resolution: accepted
+    note: verified template against proto google.api.resource pattern
   - kind: LustreDirectoryPolicy
     group: lustre.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/instances/{instance}/directoryPolicies/{directory_policy}" contains ancestor segment(s) instances/{instance} with no matching reference or field on LustreDirectoryPolicySpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*LustreInstanceRef); removed ProjectRef and Location
   - kind: LustreDirectoryPolicy
     group: lustre.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: 'none of these loaded as a page ending in /v1/projects.locations.instances.directoryPolicies: https://docs.cloud.google.com/managed-lustre/docs/reference/rest/v1/projects.locations.instances.directoryPolicies'
-    status: open
+    status: resolved
+    resolution: edited
+    note: removed unverified resource-docs link as public REST page does not exist; removed guess marker
   - kind: LustreDirectoryPolicy
     group: lustre.cnrm.cloud.google.com
     field: .spec.instanceRef
     reason: parent-ref-guessed
     detail: emitted as a reference to LustreInstanceRef, read from the instances segment of projects/{project}/locations/{location}/instances/{instance}/directoryPolicies/{directory_policy}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*LustreInstanceRef); removed ProjectRef and Location
   - kind: LustreDirectoryPolicy
     group: lustre.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/instances/{instance}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*LustreInstanceRef); removed ProjectRef and Location
   - kind: LustreInstance
     group: lustre.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

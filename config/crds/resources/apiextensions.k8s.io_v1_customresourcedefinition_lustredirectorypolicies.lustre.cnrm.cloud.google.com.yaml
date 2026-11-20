@@ -66,11 +66,9 @@ spec:
                 description: Required. Immutable. The lustre instance filesystem full
                   path of the directory. It must start with a slash. e.g. /lustre/testFolder
                 type: string
-              location:
-                description: The location of this resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The LustreInstance this LustreDirectoryPolicy is created
+                  under.
                 oneOf:
                 - not:
                     required:
@@ -87,28 +85,26 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed LustreInstance
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a LustreInstance resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a LustreInstance resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The LustreDirectoryPolicy name. If not given, the metadata.name
                   will be used.
                 type: string
             required:
             - directoryPath
-            - location
-            - projectRef
+            - parentRef
             type: object
           status:
             description: LustreDirectoryPolicyStatus defines the config connector
