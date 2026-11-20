@@ -246,6 +246,8 @@ func (a *PluginInstanceAdapter) Export(ctx context.Context) (*unstructured.Unstr
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+	obj.Spec.ParentRef = &krm.APIHubPluginRef{External: a.id.ParentString()}
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.Instance)
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
