@@ -33,7 +33,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 PROTO_SHA="665784f816da130b27edb566694b2441d0cfddf2"
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 
-NEW_PROTO_SHA="4d40dcbbad29b0ad0927d748796c6bb207a277de"
+NEW_PROTO_SHA="6a1db32dc52fd9421c1743dc8f5faa7a15e518d1"
 NEW_PROTO_OUT="${REPO_ROOT}/.build/googleapis-${NEW_PROTO_SHA}.pb"
 
 # Unset SKIP_GENERATE_PROTOS so this specific script fetches the proto

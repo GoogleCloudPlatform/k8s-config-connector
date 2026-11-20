@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // API sources for DiscoveryEngineACLConfig, recorded by generate-types:
-// +kcc:source:proto=https://github.com/googleapis/googleapis/blob/4d40dcbbad29b0ad0927d748796c6bb207a277de/google/cloud/discoveryengine/v1/acl_config.proto
+// +kcc:source:proto=https://github.com/googleapis/googleapis/blob/6a1db32dc52fd9421c1743dc8f5faa7a15e518d1/google/cloud/discoveryengine/v1/acl_config.proto
 // +kcc:source:service-docs=https://cloud.google.com/generative-ai-app-builder/docs/
 // +kcc:guess=source-link reason=verify-resource-docs-link
 // +kcc:source:resource-docs=https://docs.cloud.google.com/generative-ai-app-builder/docs/reference/rest/v1/projects.locations.aclConfig
