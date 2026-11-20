@@ -1,4 +1,14 @@
-# Updating the DCL (declarative-resource-client-library)
+# [DEPRECATED] Updating the DCL (declarative-resource-client-library)
+
+> [!WARNING]
+> **This document has been deprecated and moved.**
+> Please refer to the updated playbook: **[docs/develop-resources/scenarios/dcl-field-and-resource.md](../develop-resources/scenarios/dcl-field-and-resource.md)**.
+>
+> Config Connector is actively prioritizing the [Direct reconciliation approach](../develop-resources/README.md). New resources and fields should be developed as Direct controllers wherever possible.
+
+---
+
+### Archived Content (For Reference Only)
 
 Approximately 25% of Config Connector resources leverage the [DCL](https://github.com/GoogleCloudPlatform/declarative-resource-client-library) library. Periodically, we need to update this dependency to incorporate new fields for existing resources and address bug fixes.
 
