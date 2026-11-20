@@ -38,6 +38,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/tf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/unmanageddetector"
+	kccworkqueue "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/workqueue"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpwatch"
@@ -74,6 +75,7 @@ type defaultControllerOptions struct {
 	cccSettings                      *operatorv1beta1.ResourceSettings
 	ccSettings                       *operatorv1beta1.ResourceSettings
 	maxConcurrentReconcilesOverrides map[schema.GroupKind]int
+	usePriorityQueue                 bool
 }
 
 func (o *defaultControllerOptions) maxConcurrentReconcilesForGVK(gvk schema.GroupVersionKind) int {
@@ -94,22 +96,35 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 	// We use mgr.GetAPIReader() because the manager's cache is not started yet.
 	// This results in a direct API call, which is acceptable for this one-time startup operation.
 	c := mgr.GetAPIReader()
+	regOpts, err := determineDefaultControllerOptions(ctx, c, scopedNamespace)
+	if err != nil {
+		return err
+	}
 
+	if err := add(mgr, rd, registerDefaultControllers(ctx, regOpts), opt); err != nil {
+		return fmt.Errorf("error adding default registration controller: %w", err)
+	}
+	return nil
+}
+
+func determineDefaultControllerOptions(ctx context.Context, c client.Reader, scopedNamespace string) (*defaultControllerOptions, error) {
 	// The `cccSettings` and `ccSettings` are fetched only once when `AddDefaultControllers` is called
 	// (typically at startup). This means any changes to `ConfigConnector` or `ConfigConnectorContext`
 	// resources at runtime will not be reflected until the manager process is restarted.
 	var cccSettings *operatorv1beta1.ResourceSettings
 	var cccMaxConcurrentReconcilesOverrides map[string]int
+	var cccUsePriorityQueue *bool
 	if scopedNamespace != "" {
 		ccc := &operatorv1beta1.ConfigConnectorContext{}
 		if err := c.Get(ctx, types.NamespacedName{Namespace: scopedNamespace, Name: operatorv1beta1.ConfigConnectorContextAllowedName}, ccc); err != nil {
 			if !errors.IsNotFound(err) {
-				return fmt.Errorf("error getting ConfigConnectorContext in %q: %w", scopedNamespace, err)
+				return nil, fmt.Errorf("error getting ConfigConnectorContext in %q: %w", scopedNamespace, err)
 			}
 			fmt.Printf("ConfigConnectorContext not found in %s\n", scopedNamespace)
 		} else if ccc.Spec.Experiments != nil {
 			cccSettings = ccc.Spec.Experiments.ResourceSettings
 			cccMaxConcurrentReconcilesOverrides = ccc.Spec.Experiments.MaxConcurrentReconcilesOverrides
+			cccUsePriorityQueue = ccc.Spec.Experiments.UsePriorityQueue
 			fmt.Printf("Found CCC Settings in %s: %v\n", scopedNamespace, cccSettings)
 		}
 	} else {
@@ -118,21 +133,31 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 
 	var ccSettings *operatorv1beta1.ResourceSettings
 	var ccMaxConcurrentReconcilesOverrides map[string]int
+	var ccUsePriorityQueue *bool
 	cc := &operatorv1beta1.ConfigConnector{}
 	if err := c.Get(ctx, types.NamespacedName{Name: operatorv1beta1.ConfigConnectorAllowedName}, cc); err != nil {
 		if !errors.IsNotFound(err) {
-			return fmt.Errorf("error getting ConfigConnector: %w", err)
+			return nil, fmt.Errorf("error getting ConfigConnector: %w", err)
 		}
 	} else if cc.Spec.Experiments != nil {
 		ccSettings = cc.Spec.Experiments.ResourceSettings
 		ccMaxConcurrentReconcilesOverrides = cc.Spec.Experiments.MaxConcurrentReconcilesOverrides
+		ccUsePriorityQueue = cc.Spec.Experiments.UsePriorityQueue
+	}
+
+	usePriorityQueue := false
+	if ccUsePriorityQueue != nil && *ccUsePriorityQueue {
+		usePriorityQueue = true
+	}
+	if cccUsePriorityQueue != nil {
+		usePriorityQueue = *cccUsePriorityQueue
 	}
 
 	if ccSettings != nil && cccSettings != nil {
 		ccInclusive := ccSettings.Mode == operatorv1beta1.ResourceSettingsModeInclude
 		cccInclusive := cccSettings.Mode == operatorv1beta1.ResourceSettingsModeInclude
 		if ccInclusive != cccInclusive {
-			return fmt.Errorf("conflict: ConfigConnector and ConfigConnectorContext cannot mix inclusive (mode: include) and exclusive (mode: exclude) modes")
+			return nil, fmt.Errorf("conflict: ConfigConnector and ConfigConnectorContext cannot mix inclusive (mode: include) and exclusive (mode: exclude) modes")
 		}
 	} else if (ccSettings == nil || ccSettings.Mode != operatorv1beta1.ResourceSettingsModeInclude) && (cccSettings != nil && cccSettings.Mode == operatorv1beta1.ResourceSettingsModeInclude) {
 		log.FromContext(ctx).Info("Warning: Inclusive mode enabled via ConfigConnectorContext, but ConfigConnector has no explicit ResourceSettings. Please update ConfigConnector to Inclusive mode for consistency.")
@@ -145,12 +170,9 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 		cccSettings:                      cccSettings,
 		ccSettings:                       ccSettings,
 		maxConcurrentReconcilesOverrides: mergeMaxConcurrentReconcilesOverrides(ctx, ccMaxConcurrentReconcilesOverrides, cccMaxConcurrentReconcilesOverrides),
+		usePriorityQueue:                 usePriorityQueue,
 	}
-
-	if err := add(mgr, rd, registerDefaultControllers(ctx, regOpts), opt); err != nil {
-		return fmt.Errorf("error adding default registration controller: %w", err)
-	}
-	return nil
+	return regOpts, nil
 }
 
 // AddDeletionDefender creates the registration controller with the deletion-defender factory,
@@ -376,6 +398,7 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, cr
 		//DependencyTracker: r.dependencyTracker,
 		SkipNameValidation:      r.SkipNameValidation,
 		MaxConcurrentReconciles: maxConcurrentReconciles,
+		UsePriorityQueue:        opts.usePriorityQueue,
 	}
 
 	// todo acpana house in KCC mgr flag
@@ -453,9 +476,11 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, cr
 								DCLConfig:          r.dclConfig,
 								DCLConverter:       r.dclConverter,
 								SkipNameValidation: r.SkipNameValidation,
+								UsePriorityQueue:   opts.usePriorityQueue,
 							},
 						},
 						SkipNameValidation: r.SkipNameValidation,
+						UsePriorityQueue:   opts.usePriorityQueue,
 					}
 					reconcilers.Direct, err = directbase.NewReconciler(r.mgr, nil, nil, gvk, model, deps)
 					if err != nil {
@@ -467,6 +492,9 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, cr
 			opt := crcontroller.Options{
 				SkipNameValidation:      ptr.To(r.SkipNameValidation),
 				MaxConcurrentReconciles: maxConcurrentReconciles,
+			}
+			if opts.usePriorityQueue {
+				opt.NewQueue = kccworkqueue.NewQueueFunc(nil)
 			}
 			if err := parent.Add(r.mgr, gvk, reconcilers, opt); err != nil {
 				return nil, fmt.Errorf("error adding parent controller for %v to a manager: %w", crd.Spec.Names.Kind, err)

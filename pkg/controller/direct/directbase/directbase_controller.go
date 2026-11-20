@@ -30,6 +30,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceactuation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
+	kccworkqueue "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/workqueue"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
@@ -102,6 +103,7 @@ func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.Ge
 		defaulters:         deps.Defaulters,
 		iamDeps:            deps.IAMAdapterDeps,
 		SkipNameValidation: deps.SkipNameValidation,
+		UsePriorityQueue:   deps.UsePriorityQueue,
 		rateLimiter:        ratelimiter.NewDynamicRateLimiter(),
 	}
 	return &r, nil
@@ -114,10 +116,19 @@ func add(mgr manager.Manager, r *DirectReconciler) error {
 
 	predicateList := []predicate.Predicate{kccpredicate.UnderlyingResourceOutOfSyncPredicate{}}
 
+	ctrlOpts := crcontroller.Options{
+		MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles,
+		SkipNameValidation:      ptr.To(r.SkipNameValidation),
+		RateLimiter:             ratelimiter.NewRateLimiter(),
+	}
+	if r.UsePriorityQueue {
+		ctrlOpts.NewQueue = kccworkqueue.NewQueueFunc(ctrlOpts.RateLimiter)
+	}
+
 	controllerBuilder := builder.
 		ControllerManagedBy(mgr).
 		Named(r.controllerName).
-		WithOptions(crcontroller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, SkipNameValidation: ptr.To(r.SkipNameValidation), RateLimiter: ratelimiter.NewRateLimiter()}).
+		WithOptions(ctrlOpts).
 		WatchesRawSource(
 			source.TypedChannel(r.immediateReconcileRequests, &handler.EnqueueRequestForObject{})).
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicateList...))
@@ -164,6 +175,7 @@ type Deps struct {
 	IAMAdapterDeps *IAMAdapterDeps
 
 	SkipNameValidation bool
+	UsePriorityQueue   bool
 }
 
 // TODO(kcc-team): we want to remove these in the future
@@ -198,6 +210,7 @@ type DirectReconciler struct {
 	reconcilePredicate predicate.Predicate
 
 	SkipNameValidation bool
+	UsePriorityQueue   bool
 
 	rateLimiter *ratelimiter.DynamicRateLimiter
 }

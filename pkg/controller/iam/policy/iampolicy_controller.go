@@ -33,6 +33,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceactuation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
+	kccworkqueue "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/workqueue"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
@@ -86,6 +87,9 @@ func Add(mgr manager.Manager, deps *kontroller.Deps) error {
 	opt := controller.Options{
 		SkipNameValidation:      ptr.To(deps.SkipNameValidation),
 		MaxConcurrentReconciles: deps.MaxConcurrentReconciles,
+	}
+	if deps.UsePriorityQueue {
+		opt.NewQueue = kccworkqueue.NewQueueFunc(nil)
 	}
 	return add(mgr, reconciler, opt)
 }

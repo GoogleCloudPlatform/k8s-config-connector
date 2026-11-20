@@ -42,12 +42,14 @@ type CanonicalResourceSettings struct {
 type CanonicalCCConfig struct {
 	ResourceSettings                 *CanonicalResourceSettings `json:"resourceSettings,omitempty"`
 	MaxConcurrentReconcilesOverrides map[string]int             `json:"maxConcurrentReconcilesOverrides,omitempty"`
+	UsePriorityQueue                 *bool                      `json:"usePriorityQueue,omitempty"`
 }
 
 // CanonicalCCCConfig is hashed to produce "cnrm.cloud.google.com/ccc-config-hash".
 type CanonicalCCCConfig struct {
 	ResourceSettings                 *CanonicalResourceSettings `json:"resourceSettings,omitempty"`
 	MaxConcurrentReconcilesOverrides map[string]int             `json:"maxConcurrentReconcilesOverrides,omitempty"`
+	UsePriorityQueue                 *bool                      `json:"usePriorityQueue,omitempty"`
 }
 
 // ComputeCCConfigHash returns a deterministic SHA-256 hex digest for the restart-dependent
@@ -59,8 +61,9 @@ func ComputeCCConfigHash(cc *corev1beta1.ConfigConnector) string {
 	cfg := CanonicalCCConfig{
 		ResourceSettings:                 canonicalizeResourceSettings(cc.Spec.Experiments.ResourceSettings),
 		MaxConcurrentReconcilesOverrides: canonicalizeMaxConcurrentReconcilesOverrides(cc.Spec.Experiments.MaxConcurrentReconcilesOverrides),
+		UsePriorityQueue:                 cc.Spec.Experiments.UsePriorityQueue,
 	}
-	if cfg.ResourceSettings == nil && len(cfg.MaxConcurrentReconcilesOverrides) == 0 {
+	if cfg.ResourceSettings == nil && len(cfg.MaxConcurrentReconcilesOverrides) == 0 && cfg.UsePriorityQueue == nil {
 		return ""
 	}
 	data, err := json.Marshal(cfg)
@@ -80,8 +83,9 @@ func ComputeCCCConfigHash(ccc *corev1beta1.ConfigConnectorContext) string {
 	cfg := CanonicalCCCConfig{
 		ResourceSettings:                 canonicalizeResourceSettings(ccc.Spec.Experiments.ResourceSettings),
 		MaxConcurrentReconcilesOverrides: canonicalizeMaxConcurrentReconcilesOverrides(ccc.Spec.Experiments.MaxConcurrentReconcilesOverrides),
+		UsePriorityQueue:                 ccc.Spec.Experiments.UsePriorityQueue,
 	}
-	if cfg.ResourceSettings == nil && len(cfg.MaxConcurrentReconcilesOverrides) == 0 {
+	if cfg.ResourceSettings == nil && len(cfg.MaxConcurrentReconcilesOverrides) == 0 && cfg.UsePriorityQueue == nil {
 		return ""
 	}
 	data, err := json.Marshal(cfg)

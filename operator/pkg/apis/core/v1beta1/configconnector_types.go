@@ -84,6 +84,10 @@ type CCExperiments struct {
 	// for a given resource kind. Keyed by Kind.group (e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: 50).
 	// +optional
 	MaxConcurrentReconcilesOverrides map[string]int `json:"maxConcurrentReconcilesOverrides,omitempty"`
+
+	// UsePriorityQueue enables the starvation-bounded priority work queue across controllers.
+	// +optional
+	UsePriorityQueue *bool `json:"usePriorityQueue,omitempty"`
 }
 
 type ResourceSettingsMode string
