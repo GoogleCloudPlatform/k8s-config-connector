@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // API sources for DiscoveryEngineCMEKConfig, recorded by generate-types:
-// +kcc:source:proto=https://github.com/googleapis/googleapis/blob/665784f816da130b27edb566694b2441d0cfddf2/google/cloud/discoveryengine/v1/cmek_config_service.proto
+// +kcc:source:proto=https://github.com/googleapis/googleapis/blob/6a1db32dc52fd9421c1743dc8f5faa7a15e518d1/google/cloud/discoveryengine/v1/cmek_config_service.proto
 // +kcc:source:service-docs=https://cloud.google.com/generative-ai-app-builder/docs/
 // +kcc:guess=source-link reason=verify-resource-docs-link
 // +kcc:source:resource-docs=https://docs.cloud.google.com/generative-ai-app-builder/docs/reference/rest/v1/projects.locations.cmekConfig
@@ -45,11 +45,6 @@ type DiscoveryEngineCMEKConfigSpec struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.kms_key
 	KMSKey *string `json:"kmsKey,omitempty"`
 
-	// KMS key version resource name which will be used to encrypt resources
-	//  `<kms_key>/cryptoKeyVersions/{keyVersion}`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.kms_key_version
-	KMSKeyVersion *string `json:"kmsKeyVersion,omitempty"`
-
 	// Optional. Single-regional CMEKs that are required for some VAIS features.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.single_region_keys
 	SingleRegionKeys []SingleRegionKeyWithRequired `json:"singleRegionKeys,omitempty"`
@@ -74,6 +69,12 @@ type DiscoveryEngineCMEKConfigStatus struct {
 // DiscoveryEngineCMEKConfigObservedState is the state of the DiscoveryEngineCMEKConfig resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.discoveryengine.v1.CmekConfig
 type DiscoveryEngineCMEKConfigObservedState struct {
+	// Output only. KMS key version resource name which will be used to encrypt
+	//  resources
+	//  `<kms_key>/cryptoKeyVersions/{keyVersion}`.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.kms_key_version
+	KMSKeyVersion *string `json:"kmsKeyVersion,omitempty"`
+
 	// Output only. The states of the CmekConfig.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.state
 	State *string `json:"state,omitempty"`

@@ -30,7 +30,7 @@ fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-PROTO_SHA="665784f816da130b27edb566694b2441d0cfddf2"
+PROTO_SHA="6a1db32dc52fd9421c1743dc8f5faa7a15e518d1"
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 
 NEW_PROTO_SHA="6a1db32dc52fd9421c1743dc8f5faa7a15e518d1"

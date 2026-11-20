@@ -482,8 +482,10 @@ func AssistAnswer_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistAns
 	out := &krmdiscoveryenginev1alpha1.AssistAnswer{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: ConnectorDisplayNames
 	out.Replies = direct.Slice_FromProto(mapCtx, in.Replies, AssistAnswer_Reply_v1alpha1_FromProto)
 	out.AssistSkippedReasons = direct.EnumSlice_FromProto(mapCtx, in.AssistSkippedReasons)
+	out.CustomerPolicyEnforcementResult = AssistAnswer_CustomerPolicyEnforcementResult_v1alpha1_FromProto(mapCtx, in.GetCustomerPolicyEnforcementResult())
 	return out
 }
 func AssistAnswer_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.AssistAnswer) *pb.AssistAnswer {
@@ -493,8 +495,10 @@ func AssistAnswer_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryen
 	out := &pb.AssistAnswer{}
 	out.Name = direct.ValueOf(in.Name)
 	out.State = direct.Enum_ToProto[pb.AssistAnswer_State](mapCtx, in.State)
+	// MISSING: ConnectorDisplayNames
 	out.Replies = direct.Slice_ToProto(mapCtx, in.Replies, AssistAnswer_Reply_v1alpha1_ToProto)
 	out.AssistSkippedReasons = direct.EnumSlice_ToProto[pb.AssistAnswer_AssistSkippedReason](mapCtx, in.AssistSkippedReasons)
+	out.CustomerPolicyEnforcementResult = AssistAnswer_CustomerPolicyEnforcementResult_v1alpha1_ToProto(mapCtx, in.CustomerPolicyEnforcementResult)
 	return out
 }
 func AssistAnswerObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistAnswer) *krmdiscoveryenginev1alpha1.AssistAnswerObservedState {
@@ -504,8 +508,10 @@ func AssistAnswerObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in 
 	out := &krmdiscoveryenginev1alpha1.AssistAnswerObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.ConnectorDisplayNames = in.ConnectorDisplayNames
 	out.Replies = direct.Slice_FromProto(mapCtx, in.Replies, AssistAnswer_ReplyObservedState_v1alpha1_FromProto)
 	out.AssistSkippedReasons = direct.EnumSlice_FromProto(mapCtx, in.AssistSkippedReasons)
+	out.CustomerPolicyEnforcementResult = AssistAnswer_CustomerPolicyEnforcementResultObservedState_v1alpha1_FromProto(mapCtx, in.GetCustomerPolicyEnforcementResult())
 	return out
 }
 func AssistAnswerObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.AssistAnswerObservedState) *pb.AssistAnswer {
@@ -515,8 +521,116 @@ func AssistAnswerObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	out := &pb.AssistAnswer{}
 	out.Name = direct.ValueOf(in.Name)
 	out.State = direct.Enum_ToProto[pb.AssistAnswer_State](mapCtx, in.State)
+	out.ConnectorDisplayNames = in.ConnectorDisplayNames
 	out.Replies = direct.Slice_ToProto(mapCtx, in.Replies, AssistAnswer_ReplyObservedState_v1alpha1_ToProto)
 	out.AssistSkippedReasons = direct.EnumSlice_ToProto[pb.AssistAnswer_AssistSkippedReason](mapCtx, in.AssistSkippedReasons)
+	out.CustomerPolicyEnforcementResult = AssistAnswer_CustomerPolicyEnforcementResultObservedState_v1alpha1_ToProto(mapCtx, in.CustomerPolicyEnforcementResult)
+	return out
+}
+func AssistAnswer_CustomerPolicyEnforcementResult_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistAnswer_CustomerPolicyEnforcementResult) *krmdiscoveryenginev1alpha1.AssistAnswer_CustomerPolicyEnforcementResult {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.AssistAnswer_CustomerPolicyEnforcementResult{}
+	out.Verdict = direct.Enum_FromProto(mapCtx, in.GetVerdict())
+	out.PolicyResults = direct.Slice_FromProto(mapCtx, in.PolicyResults, AssistAnswer_CustomerPolicyEnforcementResult_PolicyEnforcementResult_v1alpha1_FromProto)
+	// MISSING: ViolationSource
+	return out
+}
+func AssistAnswer_CustomerPolicyEnforcementResult_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.AssistAnswer_CustomerPolicyEnforcementResult) *pb.AssistAnswer_CustomerPolicyEnforcementResult {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AssistAnswer_CustomerPolicyEnforcementResult{}
+	out.Verdict = direct.Enum_ToProto[pb.AssistAnswer_CustomerPolicyEnforcementResult_Verdict](mapCtx, in.Verdict)
+	out.PolicyResults = direct.Slice_ToProto(mapCtx, in.PolicyResults, AssistAnswer_CustomerPolicyEnforcementResult_PolicyEnforcementResult_v1alpha1_ToProto)
+	// MISSING: ViolationSource
+	return out
+}
+func AssistAnswer_CustomerPolicyEnforcementResultObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistAnswer_CustomerPolicyEnforcementResult) *krmdiscoveryenginev1alpha1.AssistAnswer_CustomerPolicyEnforcementResultObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.AssistAnswer_CustomerPolicyEnforcementResultObservedState{}
+	out.Verdict = direct.Enum_FromProto(mapCtx, in.GetVerdict())
+	out.PolicyResults = direct.Slice_FromProto(mapCtx, in.PolicyResults, AssistAnswer_CustomerPolicyEnforcementResult_PolicyEnforcementResult_v1alpha1_FromProto)
+	out.ViolationSource = direct.Enum_FromProto(mapCtx, in.GetViolationSource())
+	return out
+}
+func AssistAnswer_CustomerPolicyEnforcementResultObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.AssistAnswer_CustomerPolicyEnforcementResultObservedState) *pb.AssistAnswer_CustomerPolicyEnforcementResult {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AssistAnswer_CustomerPolicyEnforcementResult{}
+	out.Verdict = direct.Enum_ToProto[pb.AssistAnswer_CustomerPolicyEnforcementResult_Verdict](mapCtx, in.Verdict)
+	out.PolicyResults = direct.Slice_ToProto(mapCtx, in.PolicyResults, AssistAnswer_CustomerPolicyEnforcementResult_PolicyEnforcementResult_v1alpha1_ToProto)
+	out.ViolationSource = direct.Enum_ToProto[pb.AssistAnswer_CustomerPolicyEnforcementResult_ViolationSource](mapCtx, in.ViolationSource)
+	return out
+}
+func AssistAnswer_CustomerPolicyEnforcementResult_BannedPhraseEnforcementResult_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistAnswer_CustomerPolicyEnforcementResult_BannedPhraseEnforcementResult) *krmdiscoveryenginev1alpha1.AssistAnswer_CustomerPolicyEnforcementResult_BannedPhraseEnforcementResult {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.AssistAnswer_CustomerPolicyEnforcementResult_BannedPhraseEnforcementResult{}
+	out.BannedPhrases = in.BannedPhrases
+	return out
+}
+func AssistAnswer_CustomerPolicyEnforcementResult_BannedPhraseEnforcementResult_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.AssistAnswer_CustomerPolicyEnforcementResult_BannedPhraseEnforcementResult) *pb.AssistAnswer_CustomerPolicyEnforcementResult_BannedPhraseEnforcementResult {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AssistAnswer_CustomerPolicyEnforcementResult_BannedPhraseEnforcementResult{}
+	out.BannedPhrases = in.BannedPhrases
+	return out
+}
+func AssistAnswer_CustomerPolicyEnforcementResult_ModelArmorEnforcementResult_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistAnswer_CustomerPolicyEnforcementResult_ModelArmorEnforcementResult) *krmdiscoveryenginev1alpha1.AssistAnswer_CustomerPolicyEnforcementResult_ModelArmorEnforcementResult {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.AssistAnswer_CustomerPolicyEnforcementResult_ModelArmorEnforcementResult{}
+	out.ModelArmorViolation = direct.LazyPtr(in.GetModelArmorViolation())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	return out
+}
+func AssistAnswer_CustomerPolicyEnforcementResult_ModelArmorEnforcementResult_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.AssistAnswer_CustomerPolicyEnforcementResult_ModelArmorEnforcementResult) *pb.AssistAnswer_CustomerPolicyEnforcementResult_ModelArmorEnforcementResult {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AssistAnswer_CustomerPolicyEnforcementResult_ModelArmorEnforcementResult{}
+	if oneof := AssistAnswer_CustomerPolicyEnforcementResult_ModelArmorEnforcementResult_ModelArmorViolation_ToProto(mapCtx, in.ModelArmorViolation); oneof != nil {
+		out.Result = oneof
+	}
+	if oneof := direct.Status_ToProto(mapCtx, in.Error); oneof != nil {
+		out.Result = &pb.AssistAnswer_CustomerPolicyEnforcementResult_ModelArmorEnforcementResult_Error{Error: oneof}
+	}
+	return out
+}
+func AssistAnswer_CustomerPolicyEnforcementResult_ModelArmorEnforcementResult_ModelArmorViolation_ToProto(mapCtx *direct.MapContext, in *string) *pb.AssistAnswer_CustomerPolicyEnforcementResult_ModelArmorEnforcementResult_ModelArmorViolation {
+	if in == nil {
+		return nil
+	}
+	return &pb.AssistAnswer_CustomerPolicyEnforcementResult_ModelArmorEnforcementResult_ModelArmorViolation{ModelArmorViolation: *in}
+}
+func AssistAnswer_CustomerPolicyEnforcementResult_PolicyEnforcementResult_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistAnswer_CustomerPolicyEnforcementResult_PolicyEnforcementResult) *krmdiscoveryenginev1alpha1.AssistAnswer_CustomerPolicyEnforcementResult_PolicyEnforcementResult {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.AssistAnswer_CustomerPolicyEnforcementResult_PolicyEnforcementResult{}
+	out.BannedPhraseEnforcementResult = AssistAnswer_CustomerPolicyEnforcementResult_BannedPhraseEnforcementResult_v1alpha1_FromProto(mapCtx, in.GetBannedPhraseEnforcementResult())
+	out.ModelArmorEnforcementResult = AssistAnswer_CustomerPolicyEnforcementResult_ModelArmorEnforcementResult_v1alpha1_FromProto(mapCtx, in.GetModelArmorEnforcementResult())
+	return out
+}
+func AssistAnswer_CustomerPolicyEnforcementResult_PolicyEnforcementResult_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.AssistAnswer_CustomerPolicyEnforcementResult_PolicyEnforcementResult) *pb.AssistAnswer_CustomerPolicyEnforcementResult_PolicyEnforcementResult {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AssistAnswer_CustomerPolicyEnforcementResult_PolicyEnforcementResult{}
+	if oneof := AssistAnswer_CustomerPolicyEnforcementResult_BannedPhraseEnforcementResult_v1alpha1_ToProto(mapCtx, in.BannedPhraseEnforcementResult); oneof != nil {
+		out.EnforcementResult = &pb.AssistAnswer_CustomerPolicyEnforcementResult_PolicyEnforcementResult_BannedPhraseEnforcementResult{BannedPhraseEnforcementResult: oneof}
+	}
+	if oneof := AssistAnswer_CustomerPolicyEnforcementResult_ModelArmorEnforcementResult_v1alpha1_ToProto(mapCtx, in.ModelArmorEnforcementResult); oneof != nil {
+		out.EnforcementResult = &pb.AssistAnswer_CustomerPolicyEnforcementResult_PolicyEnforcementResult_ModelArmorEnforcementResult{ModelArmorEnforcementResult: oneof}
+	}
 	return out
 }
 func AssistAnswer_Reply_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistAnswer_Reply) *krmdiscoveryenginev1alpha1.AssistAnswer_Reply {
@@ -525,6 +639,7 @@ func AssistAnswer_Reply_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Ass
 	}
 	out := &krmdiscoveryenginev1alpha1.AssistAnswer_Reply{}
 	out.GroundedContent = AssistantGroundedContent_v1alpha1_FromProto(mapCtx, in.GetGroundedContent())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	return out
 }
 func AssistAnswer_Reply_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.AssistAnswer_Reply) *pb.AssistAnswer_Reply {
@@ -535,6 +650,7 @@ func AssistAnswer_Reply_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdisco
 	if oneof := AssistantGroundedContent_v1alpha1_ToProto(mapCtx, in.GroundedContent); oneof != nil {
 		out.Reply = &pb.AssistAnswer_Reply_GroundedContent{GroundedContent: oneof}
 	}
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	return out
 }
 func AssistAnswer_ReplyObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistAnswer_Reply) *krmdiscoveryenginev1alpha1.AssistAnswer_ReplyObservedState {
@@ -543,6 +659,7 @@ func AssistAnswer_ReplyObservedState_v1alpha1_FromProto(mapCtx *direct.MapContex
 	}
 	out := &krmdiscoveryenginev1alpha1.AssistAnswer_ReplyObservedState{}
 	out.GroundedContent = AssistantGroundedContentObservedState_v1alpha1_FromProto(mapCtx, in.GetGroundedContent())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	return out
 }
 func AssistAnswer_ReplyObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.AssistAnswer_ReplyObservedState) *pb.AssistAnswer_Reply {
@@ -553,6 +670,7 @@ func AssistAnswer_ReplyObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext,
 	if oneof := AssistantGroundedContentObservedState_v1alpha1_ToProto(mapCtx, in.GroundedContent); oneof != nil {
 		out.Reply = &pb.AssistAnswer_Reply_GroundedContent{GroundedContent: oneof}
 	}
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	return out
 }
 func AssistantContent_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistantContent) *krmdiscoveryenginev1alpha1.AssistantContent {
@@ -790,6 +908,7 @@ func AssistantGroundedContent_v1alpha1_FromProto(mapCtx *direct.MapContext, in *
 	out := &krmdiscoveryenginev1alpha1.AssistantGroundedContent{}
 	out.TextGroundingMetadata = AssistantGroundedContent_TextGroundingMetadata_v1alpha1_FromProto(mapCtx, in.GetTextGroundingMetadata())
 	out.Content = AssistantContent_v1alpha1_FromProto(mapCtx, in.GetContent())
+	// MISSING: CitationMetadata
 	return out
 }
 func AssistantGroundedContent_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.AssistantGroundedContent) *pb.AssistantGroundedContent {
@@ -801,6 +920,7 @@ func AssistantGroundedContent_v1alpha1_ToProto(mapCtx *direct.MapContext, in *kr
 		out.Metadata = &pb.AssistantGroundedContent_TextGroundingMetadata_{TextGroundingMetadata: oneof}
 	}
 	out.Content = AssistantContent_v1alpha1_ToProto(mapCtx, in.Content)
+	// MISSING: CitationMetadata
 	return out
 }
 func AssistantGroundedContentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistantGroundedContent) *krmdiscoveryenginev1alpha1.AssistantGroundedContentObservedState {
@@ -808,8 +928,9 @@ func AssistantGroundedContentObservedState_v1alpha1_FromProto(mapCtx *direct.Map
 		return nil
 	}
 	out := &krmdiscoveryenginev1alpha1.AssistantGroundedContentObservedState{}
-	out.TextGroundingMetadata = AssistantGroundedContent_TextGroundingMetadata_v1alpha1_FromProto(mapCtx, in.GetTextGroundingMetadata())
+	out.TextGroundingMetadata = AssistantGroundedContent_TextGroundingMetadataObservedState_v1alpha1_FromProto(mapCtx, in.GetTextGroundingMetadata())
 	out.Content = AssistantContentObservedState_v1alpha1_FromProto(mapCtx, in.GetContent())
+	out.CitationMetadata = CitationMetadataObservedState_v1alpha1_FromProto(mapCtx, in.GetCitationMetadata())
 	return out
 }
 func AssistantGroundedContentObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.AssistantGroundedContentObservedState) *pb.AssistantGroundedContent {
@@ -817,10 +938,79 @@ func AssistantGroundedContentObservedState_v1alpha1_ToProto(mapCtx *direct.MapCo
 		return nil
 	}
 	out := &pb.AssistantGroundedContent{}
-	if oneof := AssistantGroundedContent_TextGroundingMetadata_v1alpha1_ToProto(mapCtx, in.TextGroundingMetadata); oneof != nil {
+	if oneof := AssistantGroundedContent_TextGroundingMetadataObservedState_v1alpha1_ToProto(mapCtx, in.TextGroundingMetadata); oneof != nil {
 		out.Metadata = &pb.AssistantGroundedContent_TextGroundingMetadata_{TextGroundingMetadata: oneof}
 	}
 	out.Content = AssistantContentObservedState_v1alpha1_ToProto(mapCtx, in.Content)
+	out.CitationMetadata = CitationMetadataObservedState_v1alpha1_ToProto(mapCtx, in.CitationMetadata)
+	return out
+}
+func AssistantGroundedContent_TextGroundingMetadata_ReferenceObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistantGroundedContent_TextGroundingMetadata_Reference) *krmdiscoveryenginev1alpha1.AssistantGroundedContent_TextGroundingMetadata_ReferenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.AssistantGroundedContent_TextGroundingMetadata_ReferenceObservedState{}
+	out.Content = direct.LazyPtr(in.GetContent())
+	out.CodeSnippet = direct.LazyPtr(in.GetCodeSnippet())
+	out.DocumentMetadata = AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata_v1alpha1_FromProto(mapCtx, in.GetDocumentMetadata())
+	if v := direct.Struct_FromProto(mapCtx, in.GetChunkMetadata()); v != nil {
+		out.ChunkMetadata = *v
+	}
+	return out
+}
+func AssistantGroundedContent_TextGroundingMetadata_ReferenceObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.AssistantGroundedContent_TextGroundingMetadata_ReferenceObservedState) *pb.AssistantGroundedContent_TextGroundingMetadata_Reference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AssistantGroundedContent_TextGroundingMetadata_Reference{}
+	out.Content = direct.ValueOf(in.Content)
+	out.CodeSnippet = direct.ValueOf(in.CodeSnippet)
+	out.DocumentMetadata = AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata_v1alpha1_ToProto(mapCtx, in.DocumentMetadata)
+	out.ChunkMetadata = direct.Struct_ToProto(mapCtx, &in.ChunkMetadata)
+	return out
+}
+func AssistantGroundedContent_TextGroundingMetadata_VisualSegment_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistantGroundedContent_TextGroundingMetadata_VisualSegment) *krmdiscoveryenginev1alpha1.AssistantGroundedContent_TextGroundingMetadata_VisualSegment {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.AssistantGroundedContent_TextGroundingMetadata_VisualSegment{}
+	out.ReferenceIndices = in.ReferenceIndices
+	out.ContentID = direct.LazyPtr(in.GetContentId())
+	return out
+}
+func AssistantGroundedContent_TextGroundingMetadata_VisualSegment_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.AssistantGroundedContent_TextGroundingMetadata_VisualSegment) *pb.AssistantGroundedContent_TextGroundingMetadata_VisualSegment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AssistantGroundedContent_TextGroundingMetadata_VisualSegment{}
+	out.ReferenceIndices = in.ReferenceIndices
+	out.ContentId = direct.ValueOf(in.ContentID)
+	return out
+}
+func CitationObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Citation) *krmdiscoveryenginev1alpha1.CitationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.CitationObservedState{}
+	out.StartIndex = direct.LazyPtr(in.GetStartIndex())
+	out.EndIndex = direct.LazyPtr(in.GetEndIndex())
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.License = direct.LazyPtr(in.GetLicense())
+	out.PublicationDate = Date_v1alpha1_FromProto(mapCtx, in.GetPublicationDate())
+	return out
+}
+func CitationObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.CitationObservedState) *pb.Citation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Citation{}
+	out.StartIndex = direct.ValueOf(in.StartIndex)
+	out.EndIndex = direct.ValueOf(in.EndIndex)
+	out.Uri = direct.ValueOf(in.URI)
+	out.Title = direct.ValueOf(in.Title)
+	out.License = direct.ValueOf(in.License)
+	out.PublicationDate = Date_v1alpha1_ToProto(mapCtx, in.PublicationDate)
 	return out
 }
 func CmekConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CmekConfig) *krmdiscoveryenginev1alpha1.CmekConfig {
@@ -1137,6 +1327,7 @@ func DiscoveryEngineCMEKConfigObservedState_v1alpha1_FromProto(mapCtx *direct.Ma
 	}
 	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineCMEKConfigObservedState{}
 	// MISSING: Name
+	out.KMSKeyVersion = direct.LazyPtr(in.GetKmsKeyVersion())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.IsDefault = direct.LazyPtr(in.GetIsDefault())
 	out.LastRotationTimestampMicros = direct.LazyPtr(in.GetLastRotationTimestampMicros())
@@ -1149,6 +1340,7 @@ func DiscoveryEngineCMEKConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapC
 	}
 	out := &pb.CmekConfig{}
 	// MISSING: Name
+	out.KmsKeyVersion = direct.ValueOf(in.KMSKeyVersion)
 	out.State = direct.Enum_ToProto[pb.CmekConfig_State](mapCtx, in.State)
 	out.IsDefault = direct.ValueOf(in.IsDefault)
 	out.LastRotationTimestampMicros = direct.ValueOf(in.LastRotationTimestampMicros)
@@ -1162,7 +1354,6 @@ func DiscoveryEngineCMEKConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext,
 	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineCMEKConfigSpec{}
 	// MISSING: Name
 	out.KMSKey = direct.LazyPtr(in.GetKmsKey())
-	out.KMSKeyVersion = direct.LazyPtr(in.GetKmsKeyVersion())
 	out.SingleRegionKeys = direct.Slice_FromProto(mapCtx, in.SingleRegionKeys, SingleRegionKeyWithRequired_v1alpha1_FromProto)
 	return out
 }
@@ -1173,7 +1364,6 @@ func DiscoveryEngineCMEKConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 	out := &pb.CmekConfig{}
 	// MISSING: Name
 	out.KmsKey = direct.ValueOf(in.KMSKey)
-	out.KmsKeyVersion = direct.ValueOf(in.KMSKeyVersion)
 	out.SingleRegionKeys = direct.Slice_ToProto(mapCtx, in.SingleRegionKeys, SingleRegionKeyWithRequired_v1alpha1_ToProto)
 	return out
 }
@@ -1282,7 +1472,13 @@ func DiscoveryEngineDataStoreObservedState_v1alpha1_FromProto(mapCtx *direct.Map
 	// MISSING: DocumentProcessingConfig
 	// MISSING: StartingSchema
 	// MISSING: HealthcareFhirConfig
+	// MISSING: ServingConfigDataStore
 	// MISSING: IdentityMappingStore
+	// MISSING: IsInfobotFaqDataStore
+	// MISSING: FederatedSearchConfig
+	// MISSING: ConfigurableBillingApproach
+	// MISSING: ConfigurableBillingApproachUpdateTime
+	// MISSING: DataProtectionPolicy
 	return out
 }
 func DiscoveryEngineDataStoreObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineDataStoreObservedState) *pb.DataStore {
@@ -1302,7 +1498,13 @@ func DiscoveryEngineDataStoreObservedState_v1alpha1_ToProto(mapCtx *direct.MapCo
 	// MISSING: DocumentProcessingConfig
 	// MISSING: StartingSchema
 	// MISSING: HealthcareFhirConfig
+	// MISSING: ServingConfigDataStore
 	// MISSING: IdentityMappingStore
+	// MISSING: IsInfobotFaqDataStore
+	// MISSING: FederatedSearchConfig
+	// MISSING: ConfigurableBillingApproach
+	// MISSING: ConfigurableBillingApproachUpdateTime
+	// MISSING: DataProtectionPolicy
 	return out
 }
 func DiscoveryEngineDataStoreSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DataStore) *krmdiscoveryenginev1alpha1.DiscoveryEngineDataStoreSpec {
@@ -1324,7 +1526,13 @@ func DiscoveryEngineDataStoreSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, 
 	// MISSING: DocumentProcessingConfig
 	// MISSING: StartingSchema
 	// MISSING: HealthcareFhirConfig
+	// MISSING: ServingConfigDataStore
 	// MISSING: IdentityMappingStore
+	// MISSING: IsInfobotFaqDataStore
+	// MISSING: FederatedSearchConfig
+	// MISSING: ConfigurableBillingApproach
+	// MISSING: ConfigurableBillingApproachUpdateTime
+	// MISSING: DataProtectionPolicy
 	return out
 }
 func DiscoveryEngineDataStoreSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineDataStoreSpec) *pb.DataStore {
@@ -1346,7 +1554,13 @@ func DiscoveryEngineDataStoreSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	// MISSING: DocumentProcessingConfig
 	// MISSING: StartingSchema
 	// MISSING: HealthcareFhirConfig
+	// MISSING: ServingConfigDataStore
 	// MISSING: IdentityMappingStore
+	// MISSING: IsInfobotFaqDataStore
+	// MISSING: FederatedSearchConfig
+	// MISSING: ConfigurableBillingApproach
+	// MISSING: ConfigurableBillingApproachUpdateTime
+	// MISSING: DataProtectionPolicy
 	return out
 }
 func DiscoveryEngineDataStoreTargetSiteObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TargetSite) *krmdiscoveryenginev1alpha1.DiscoveryEngineDataStoreTargetSiteObservedState {
@@ -1416,7 +1630,20 @@ func DiscoveryEngineEngineSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in 
 	out.SolutionType = direct.Enum_FromProto(mapCtx, in.GetSolutionType())
 	out.IndustryVertical = direct.Enum_FromProto(mapCtx, in.GetIndustryVertical())
 	out.CommonConfig = Engine_CommonConfig_v1alpha1_FromProto(mapCtx, in.GetCommonConfig())
+	// MISSING: KnowledgeGraphConfig
+	// MISSING: AppType
 	out.DisableAnalytics = direct.LazyPtr(in.GetDisableAnalytics())
+	// MISSING: SessionConfig
+	// MISSING: Features
+	// MISSING: CmekConfig
+	// MISSING: ConfigurableBillingApproach
+	// MISSING: ModelConfigs
+	// MISSING: ObservabilityConfig
+	// MISSING: ConnectorTenantInfo
+	// MISSING: AgentGatewaySetting
+	// MISSING: MarketplaceAgentVisibility
+	// MISSING: ProcurementContactEmails
+	// MISSING: AssociatedAgentRegistry
 	return out
 }
 func DiscoveryEngineEngineSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineEngineSpec) *pb.Engine {
@@ -1440,7 +1667,20 @@ func DiscoveryEngineEngineSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	out.SolutionType = direct.Enum_ToProto[pb.SolutionType](mapCtx, in.SolutionType)
 	out.IndustryVertical = direct.Enum_ToProto[pb.IndustryVertical](mapCtx, in.IndustryVertical)
 	out.CommonConfig = Engine_CommonConfig_v1alpha1_ToProto(mapCtx, in.CommonConfig)
+	// MISSING: KnowledgeGraphConfig
+	// MISSING: AppType
 	out.DisableAnalytics = direct.ValueOf(in.DisableAnalytics)
+	// MISSING: SessionConfig
+	// MISSING: Features
+	// MISSING: CmekConfig
+	// MISSING: ConfigurableBillingApproach
+	// MISSING: ModelConfigs
+	// MISSING: ObservabilityConfig
+	// MISSING: ConnectorTenantInfo
+	// MISSING: AgentGatewaySetting
+	// MISSING: MarketplaceAgentVisibility
+	// MISSING: ProcurementContactEmails
+	// MISSING: AssociatedAgentRegistry
 	return out
 }
 func DiscoveryEngineIdentityMappingStoreObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.IdentityMappingStore) *krmdiscoveryenginev1alpha1.DiscoveryEngineIdentityMappingStoreObservedState {
@@ -1649,6 +1889,7 @@ func DiscoveryEngineSessionObservedState_v1alpha1_FromProto(mapCtx *direct.MapCo
 	// MISSING: Labels
 	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	// MISSING: PendingAsyncAssistOperationID
 	return out
 }
 func DiscoveryEngineSessionObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineSessionObservedState) *pb.Session {
@@ -1661,6 +1902,7 @@ func DiscoveryEngineSessionObservedState_v1alpha1_ToProto(mapCtx *direct.MapCont
 	// MISSING: Labels
 	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	// MISSING: PendingAsyncAssistOperationID
 	return out
 }
 func DiscoveryEngineSessionSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Session) *krmdiscoveryenginev1alpha1.DiscoveryEngineSessionSpec {
@@ -1675,6 +1917,7 @@ func DiscoveryEngineSessionSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 	out.Turns = direct.Slice_FromProto(mapCtx, in.Turns, Session_Turn_v1alpha1_FromProto)
 	// MISSING: Labels
 	out.IsPinned = direct.LazyPtr(in.GetIsPinned())
+	// MISSING: PendingAsyncAssistOperationID
 	return out
 }
 func DiscoveryEngineSessionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineSessionSpec) *pb.Session {
@@ -1689,6 +1932,7 @@ func DiscoveryEngineSessionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	out.Turns = direct.Slice_ToProto(mapCtx, in.Turns, Session_Turn_v1alpha1_ToProto)
 	// MISSING: Labels
 	out.IsPinned = direct.ValueOf(in.IsPinned)
+	// MISSING: PendingAsyncAssistOperationID
 	return out
 }
 func DiscoveryEngineSitemapObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Sitemap) *krmdiscoveryenginev1alpha1.DiscoveryEngineSitemapObservedState {
@@ -1859,6 +2103,7 @@ func Engine_SearchEngineConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in 
 	}
 	out := &krmdiscoveryenginev1alpha1.Engine_SearchEngineConfig{}
 	out.SearchTier = direct.Enum_FromProto(mapCtx, in.GetSearchTier())
+	out.RequiredSubscriptionTier = direct.Enum_FromProto(mapCtx, in.GetRequiredSubscriptionTier())
 	out.SearchAddOns = direct.EnumSlice_FromProto(mapCtx, in.SearchAddOns)
 	return out
 }
@@ -1868,6 +2113,7 @@ func Engine_SearchEngineConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	}
 	out := &pb.Engine_SearchEngineConfig{}
 	out.SearchTier = direct.Enum_ToProto[pb.SearchTier](mapCtx, in.SearchTier)
+	out.RequiredSubscriptionTier = direct.Enum_ToProto[pb.SubscriptionTier](mapCtx, in.RequiredSubscriptionTier)
 	out.SearchAddOns = direct.EnumSlice_ToProto[pb.SearchAddOn](mapCtx, in.SearchAddOns)
 	return out
 }
@@ -2159,6 +2405,7 @@ func Session_Turn_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Session_T
 	// MISSING: DetailedAnswer
 	// MISSING: DetailedAssistAnswer
 	out.QueryConfig = in.QueryConfig
+	out.Live = direct.LazyPtr(in.GetLive())
 	return out
 }
 func Session_Turn_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.Session_Turn) *pb.Session_Turn {
@@ -2171,6 +2418,7 @@ func Session_Turn_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryen
 	// MISSING: DetailedAnswer
 	// MISSING: DetailedAssistAnswer
 	out.QueryConfig = in.QueryConfig
+	out.Live = direct.ValueOf(in.Live)
 	return out
 }
 func Session_TurnObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Session_Turn) *krmdiscoveryenginev1alpha1.Session_TurnObservedState {
@@ -2183,6 +2431,7 @@ func Session_TurnObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in 
 	out.DetailedAnswer = AnswerObservedState_v1alpha1_FromProto(mapCtx, in.GetDetailedAnswer())
 	out.DetailedAssistAnswer = AssistAnswerObservedState_v1alpha1_FromProto(mapCtx, in.GetDetailedAssistAnswer())
 	// MISSING: QueryConfig
+	// MISSING: Live
 	return out
 }
 func Session_TurnObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.Session_TurnObservedState) *pb.Session_Turn {
@@ -2195,6 +2444,7 @@ func Session_TurnObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	out.DetailedAnswer = AnswerObservedState_v1alpha1_ToProto(mapCtx, in.DetailedAnswer)
 	out.DetailedAssistAnswer = AssistAnswerObservedState_v1alpha1_ToProto(mapCtx, in.DetailedAssistAnswer)
 	// MISSING: QueryConfig
+	// MISSING: Live
 	return out
 }
 func SingleRegionKey_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SingleRegionKey) *krmdiscoveryenginev1alpha1.SingleRegionKey {
