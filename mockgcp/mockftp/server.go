@@ -267,6 +267,19 @@ func (s *CloudFtpServer) DeleteServer(ctx context.Context, req *pb.DeleteServerR
 
 	fqn := name.String()
 
+	userKind := (&pb.User{}).ProtoReflect().Descriptor()
+	userPrefix := fqn + "/users/"
+	var userFound bool
+	if err := s.storage.List(ctx, userKind, storage.ListOptions{Prefix: userPrefix}, func(obj proto.Message) error {
+		userFound = true
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	if userFound {
+		return nil, status.Errorf(codes.FailedPrecondition, "cannot delete server with active users")
+	}
+
 	oldObj := &pb.Server{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
 		if status.Code(err) == codes.NotFound {
