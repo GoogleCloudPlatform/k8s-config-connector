@@ -20,3 +20,20 @@
 
 - **Omission of ExternalRef**:
   Since `externalRef` was not in the baseline CRD, we omitted `ExternalRef` from the KRM `ComputeAddressStatus` Go struct to preserve 100% identical CRD schema.
+
+## Observations
+
+1. **generate.sh Configuration**:
+   - Configured `apis/compute/generate.sh` to include `--resource ComputeAddress:Address` in the `generate-types` call for `v1beta1`.
+   - Consolidated `generate-mapper` is run at the very end with `--multiversion` targeting `v1beta1`.
+
+2. **Types File Hand-Written Handling**:
+   - The type definition file `apis/compute/v1beta1/computeaddress_types.go` already existed in a hand-written form.
+   - The `generate-types` script successfully parsed this file, detected the `// +kcc:proto=google.cloud.compute.v1.Address` tags, and outputted comments skipping generation of duplicates in `types.generated.go`.
+
+3. **Schema Compatibility**:
+   - Ran `dev/tasks/diff-crds` which showed zero diffs between the baseline CRD schema and the generated schema for `ComputeAddress`.
+   - This ensures absolute backward compatibility and safety for existing users.
+
+4. **Integration**:
+   - `pkg/controller/direct/compute/computeaddress_mappings.go` already defines the mapper methods marked with `// +generated:mapper` which maps `pb.Address` with the `krm.ComputeAddressSpec` and `Status` fields.
