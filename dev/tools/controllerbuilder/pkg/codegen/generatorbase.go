@@ -423,7 +423,7 @@ func (g *generatorBase) findTypeDeclaration(goTypeName string, srcDir string, sk
 	return nil, nil
 }
 
-func (g *generatorBase) findTypeDeclarationWithProtoTag(protoTag string, srcDir string, skipGenerated bool, annotationKinds ...string) (*string, error) {
+func (g *generatorBase) findTypeDeclarationWithProtoTag(protoTag string, srcDir string, skipGenerated bool) (*string, error) {
 	files, err := os.ReadDir(srcDir)
 	if err != nil {
 		return nil, fmt.Errorf("reading directory %q: %w", srcDir, err)
@@ -443,16 +443,9 @@ func (g *generatorBase) findTypeDeclarationWithProtoTag(protoTag string, srcDir 
 		}
 
 		for _, line := range strings.Split(string(b), "\n") {
-			if proto, kind, ok := GetProtoMessageAndKindFromAnnotation(line); ok {
+			if proto, ok := GetProtoMessageFromAnnotation(line); ok {
 				if proto == protoTag {
-					if len(annotationKinds) == 0 {
-						return &line, nil
-					}
-					for _, ak := range annotationKinds {
-						if kind == ak {
-							return &line, nil
-						}
-					}
+					return &line, nil
 				}
 			}
 		}
