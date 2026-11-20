@@ -211,7 +211,6 @@ BLOCKED_KINDS=(
     "FinancialServicesInstance"
     "FinancialServicesModel"
     "FinancialServicesPredictionResult"
-    "FTPUser"
     "GDCHardwareManagementHardware"
     "GeminiDataAnalyticsConversation"
     "GeminiDataAnalyticsDataAgent"
