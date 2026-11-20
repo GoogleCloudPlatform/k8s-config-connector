@@ -1,0 +1,85 @@
+GET https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/cesapp-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "cesapp-${uniqueId}",
+  "etag": "abcdef0123A=",
+  "loggingSettings": {
+    "conversationLoggingSettings": {
+      "retentionWindow": "31536000s"
+    }
+  },
+  "modelSettings": {
+    "model": "gemini-3.5-flash"
+  },
+  "name": "projects/${projectId}/locations/us/apps/cesapp-${uniqueId}",
+  "predefinedVariableDeclarations": [
+    {
+      "description": "Current time represented in the ISO 8601 format along with its corresponding IANA Time Zone.",
+      "name": "current_date",
+      "schema": {
+        "type": 1
+      }
+    },
+    {
+      "description": "Contains session specific variables like modality, channel, recording control, and language code.",
+      "name": "_session",
+      "schema": {
+        "properties": {
+          "channel": {
+            "type": 1
+          },
+          "language_code": {
+            "type": 1
+          },
+          "modality": {
+            "type": 1
+          },
+          "recording_control": {
+            "type": 1
+          }
+        },
+        "type": 5
+      }
+    }
+  ],
+  "timeZoneSettings": {
+    "timeZone": "America/Los_Angeles"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/cesapp-${uniqueId}/toolsets/cestoolset-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated maximal CESToolset fixture",
+  "displayName": "cestoolset-maximal-updated-${uniqueId}",
+  "etag": "abcdef0123A=",
+  "executionType": 1,
+  "name": "projects/${projectId}/locations/us/apps/cesapp-${uniqueId}/toolsets/cestoolset-max-${uniqueId}",
+  "openApiToolset": {
+    "apiAuthentication": {
+      "bearerTokenConfig": {
+        "token": "$context.variables.updated_auth_token"
+      }
+    },
+    "openApiSchema": "openapi: 3.0.0\ninfo:\n  title: Maximal Toolset API Updated\n  version: 1.0.1\nservers:\n  - url: https://api.example.com\npaths:\n  /items:\n    get:\n      operationId: listItems\n      summary: List items updated\n      responses:\n        '200':\n          description: Successful updated response\n"
+  },
+  "toolFakeConfig": {
+    "codeBlock": {
+      "pythonCode": "def fake_tool_call(tool, input, callback_context):\n  return None\n"
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
