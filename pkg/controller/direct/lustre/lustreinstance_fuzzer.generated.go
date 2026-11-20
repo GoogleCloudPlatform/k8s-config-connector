@@ -57,7 +57,18 @@ func lustreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_LabelsAnnotations(".labels")
 
 	// Unimplemented / Not Yet Triaged fields
+	f.Unimplemented_NotYetTriaged(".access_rules_options")
+	f.Unimplemented_NotYetTriaged(".available_version")
+	f.Unimplemented_NotYetTriaged(".dynamic_tier_options")
+	f.Unimplemented_NotYetTriaged(".effective_version")
 	f.Unimplemented_NotYetTriaged(".gke_support_enabled")
+	f.Unimplemented_NotYetTriaged(".kms_key")
+	f.Unimplemented_NotYetTriaged(".maintenance_policy")
+	f.Unimplemented_NotYetTriaged(".placement_policy")
+	f.Unimplemented_NotYetTriaged(".state_reason")
+	f.Unimplemented_NotYetTriaged(".target_version")
+	f.Unimplemented_NotYetTriaged(".uid")
+	f.Unimplemented_NotYetTriaged(".upcoming_maintenance_schedule")
 
 	return f
 }

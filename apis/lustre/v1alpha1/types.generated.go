@@ -18,8 +18,77 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.lustre.v1
 // resource: LustreInstance:Instance
+// resource: LustreMirror:Mirror
 
 package v1alpha1
+
+/* unreachable type AccessRulesOptions
+// +kcc:proto=google.cloud.lustre.v1.AccessRulesOptions
+type AccessRulesOptions struct {
+	// Optional. The access rules for the instance.
+	// +kcc:proto:field=google.cloud.lustre.v1.AccessRulesOptions.access_rules
+	AccessRules []AccessRulesOptions_AccessRule `json:"accessRules,omitempty"`
+
+	// Required. The squash mode for the default access rule.
+	// +kcc:proto:field=google.cloud.lustre.v1.AccessRulesOptions.default_squash_mode
+	DefaultSquashMode *string `json:"defaultSquashMode,omitempty"`
+
+	// Optional. The user squash UID for the default access rule.
+	//  This user squash UID applies to all root users connecting from clients
+	//  that are not matched by any of the access rules. If not set, the default
+	//  is 0 (no UID squash).
+	// +kcc:proto:field=google.cloud.lustre.v1.AccessRulesOptions.default_squash_uid
+	DefaultSquashUid *int32 `json:"defaultSquashUid,omitempty"`
+
+	// Optional. The user squash GID for the default access rule.
+	//  This user squash GID applies to all root users connecting from clients
+	//  that are not matched by any of the access rules. If not set, the default
+	//  is 0 (no GID squash).
+	// +kcc:proto:field=google.cloud.lustre.v1.AccessRulesOptions.default_squash_gid
+	DefaultSquashGid *int32 `json:"defaultSquashGid,omitempty"`
+}
+*/
+
+/* unreachable type AccessRulesOptions_AccessRule
+// +kcc:proto=google.cloud.lustre.v1.AccessRulesOptions.AccessRule
+type AccessRulesOptions_AccessRule struct {
+	// Required. The name of the access rule policy group.
+	//  Must be 16 characters or less and include only alphanumeric characters
+	//  or '_'.
+	// +kcc:proto:field=google.cloud.lustre.v1.AccessRulesOptions.AccessRule.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The IP address ranges to which to apply this access rule.
+	//  Accepts non-overlapping CIDR ranges (e.g., `192.168.1.0/24`) and IP
+	//  addresses (e.g., `192.168.1.0`).
+	// +kcc:proto:field=google.cloud.lustre.v1.AccessRulesOptions.AccessRule.ip_address_ranges
+	IPAddressRanges []string `json:"ipAddressRanges,omitempty"`
+
+	// Required. Squash mode for the access rule.
+	// +kcc:proto:field=google.cloud.lustre.v1.AccessRulesOptions.AccessRule.squash_mode
+	SquashMode *string `json:"squashMode,omitempty"`
+}
+*/
+
+/* unreachable type DynamicTierOptions
+// +kcc:proto=google.cloud.lustre.v1.DynamicTierOptions
+type DynamicTierOptions struct {
+	// Required. Immutable. The dynamic tier mode of the instance.
+	// +kcc:proto:field=google.cloud.lustre.v1.DynamicTierOptions.mode
+	Mode *string `json:"mode,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.lustre.v1.GcsPath
+type GCSPath struct {
+	// Required. The URI to a Cloud Storage bucket, or a path within a bucket,
+	//  using the format `gs://<bucket_name>/<optional_path_inside_bucket>/`. If a
+	//  path inside the bucket is specified, it must end with a forward slash
+	//  (`/`).
+	// +kcc:proto:field=google.cloud.lustre.v1.GcsPath.uri
+	// +required
+	URI *string `json:"uri,omitempty"`
+}
 
 /* found existing non-generated go type with proto tag "google.cloud.lustre.v1.Instance", skipping
 
@@ -36,7 +105,9 @@ type Instance struct {
 	Filesystem *string `json:"filesystem,omitempty"`
 
 	// Required. The storage capacity of the instance in gibibytes (GiB). Allowed
-	//  values are from `18000` to `954000`, in increments of 9000.
+	//  values depend on the `perUnitStorageThroughput`. See [Performance
+	//  tiers](https://docs.cloud.google.com/managed-lustre/docs/performance-tiers)
+	//  for specific minimums, maximums, and step sizes for each performance tier.
 	// +kcc:proto:field=google.cloud.lustre.v1.Instance.capacity_gib
 	CapacityGib *int64 `json:"capacityGib,omitempty"`
 
@@ -54,16 +125,209 @@ type Instance struct {
 	// +kcc:proto:field=google.cloud.lustre.v1.Instance.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
-	// Required. The throughput of the instance in MB/s/TiB.
-	//  Valid values are 125, 250, 500, 1000.
+	// Optional. The throughput of the instance in MBps per TiB. Valid values are
+	//  0, 125, 250, 500, 1000. See [Performance
+	//  tiers](https://docs.cloud.google.com/managed-lustre/docs/performance-tiers)
+	//  for more information.
+	//
+	//  If the instance is using the Dynamic tier, this field must not be set or
+	//  must be set to zero.
 	// +kcc:proto:field=google.cloud.lustre.v1.Instance.per_unit_storage_throughput
 	PerUnitStorageThroughput *int64 `json:"perUnitStorageThroughput,omitempty"`
 
-	// Optional. Indicates whether you want to enable support for GKE clients. By
-	//  default, GKE clients are not supported. Deprecated. No longer required for
-	//  GKE instance creation.
+	// Optional. Deprecated: No longer required for GKE instance creation.
+	//  Indicates whether you want to enable support for GKE clients. By default,
+	//  GKE clients are not supported.
 	// +kcc:proto:field=google.cloud.lustre.v1.Instance.gke_support_enabled
 	GKESupportEnabled *bool `json:"gkeSupportEnabled,omitempty"`
+
+	// Optional. Immutable. The Cloud KMS key name to use for data encryption.
+	//  If not set, the instance will use Google-managed encryption keys.
+	//  If set, the instance will use customer-managed encryption keys.
+	//  The key must be in the same region as the instance.
+	//  The key format is:
+	//  projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{key}
+	// +kcc:proto:field=google.cloud.lustre.v1.Instance.kms_key
+	KMSKey *string `json:"kmsKey,omitempty"`
+
+	// Optional. The placement policy name for the instance in the format of
+	//  projects/{project}/locations/{location}/resourcePolicies/{resource_policy}
+	// +kcc:proto:field=google.cloud.lustre.v1.Instance.placement_policy
+	PlacementPolicy *string `json:"placementPolicy,omitempty"`
+
+	// Optional. The access rules options for the instance.
+	// +kcc:proto:field=google.cloud.lustre.v1.Instance.access_rules_options
+	AccessRulesOptions *AccessRulesOptions `json:"accessRulesOptions,omitempty"`
+
+	// Optional. The maintenance policy for the instance to determine when to
+	//  allow or exclude the instance from maintenance updates.
+	// +kcc:proto:field=google.cloud.lustre.v1.Instance.maintenance_policy
+	MaintenancePolicy *MaintenancePolicy `json:"maintenancePolicy,omitempty"`
+
+	// Optional. Immutable. Specifies whether the instance is on the Dynamic tier.
+	//  See [Performance
+	//  tiers](https://docs.cloud.google.com/managed-lustre/docs/performance-tiers)
+	//  for more information.
+	// +kcc:proto:field=google.cloud.lustre.v1.Instance.dynamic_tier_options
+	DynamicTierOptions *DynamicTierOptions `json:"dynamicTierOptions,omitempty"`
+
+	// Optional. The target version of the instance. Setting this field triggers a
+	//  self-service update to the specified version.
+	//  Format: `Lustre_YYYYMMDD.NN_pXX` or `latest`
+	// +kcc:proto:field=google.cloud.lustre.v1.Instance.target_version
+	TargetVersion *string `json:"targetVersion,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.lustre.v1.LustrePath
+type LustrePath struct {
+	// Optional. The root directory path to the Managed Lustre file system. Must
+	//  start with
+	//  `/`. Default is `/`. If you're importing data into Managed Lustre, any
+	//  path other than the default must already exist on the file system.
+	// +kcc:proto:field=google.cloud.lustre.v1.LustrePath.path
+	Path *string `json:"path,omitempty"`
+}
+
+/* unreachable type MaintenancePolicy
+// +kcc:proto=google.cloud.lustre.v1.MaintenancePolicy
+type MaintenancePolicy struct {
+	// Required. The weekly maintenance windows for the instance. Currently
+	//  limited to 1 window.
+	// +kcc:proto:field=google.cloud.lustre.v1.MaintenancePolicy.weekly_maintenance_windows
+	WeeklyMaintenanceWindows []MaintenancePolicy_WeeklyMaintenanceWindow `json:"weeklyMaintenanceWindows,omitempty"`
+
+	// Optional. The exclusion windows for the instance. Currently limited to 1
+	//  window.
+	// +kcc:proto:field=google.cloud.lustre.v1.MaintenancePolicy.maintenance_exclusion_window
+	MaintenanceExclusionWindow []MaintenancePolicy_MaintenanceExclusionWindow `json:"maintenanceExclusionWindow,omitempty"`
+}
+*/
+
+/* unreachable type MaintenancePolicy_MaintenanceExclusionWindow
+// +kcc:proto=google.cloud.lustre.v1.MaintenancePolicy.MaintenanceExclusionWindow
+type MaintenancePolicy_MaintenanceExclusionWindow struct {
+	// Required. Start date of the exclusion period in UTC time zone. This date
+	//  is inclusive.
+	// +kcc:proto:field=google.cloud.lustre.v1.MaintenancePolicy.MaintenanceExclusionWindow.start_date
+	StartDate *Date `json:"startDate,omitempty"`
+
+	// Required. End date of the exclusion period in UTC time zone. This date is
+	//  inclusive.
+	// +kcc:proto:field=google.cloud.lustre.v1.MaintenancePolicy.MaintenanceExclusionWindow.end_date
+	EndDate *Date `json:"endDate,omitempty"`
+
+	// Required. Time in UTC when the exclusion window starts on start_date and
+	//  ends on end_date. This can be:
+	//  * Full time OR
+	//  * All zeros for 00:00:00 UTC
+	// +kcc:proto:field=google.cloud.lustre.v1.MaintenancePolicy.MaintenanceExclusionWindow.time
+	Time *TimeOfDay `json:"time,omitempty"`
+}
+*/
+
+/* unreachable type MaintenancePolicy_WeeklyMaintenanceWindow
+// +kcc:proto=google.cloud.lustre.v1.MaintenancePolicy.WeeklyMaintenanceWindow
+type MaintenancePolicy_WeeklyMaintenanceWindow struct {
+	// Required. Day of the week for the maintenance window.
+	// +kcc:proto:field=google.cloud.lustre.v1.MaintenancePolicy.WeeklyMaintenanceWindow.day_of_week
+	DayOfWeek *string `json:"dayOfWeek,omitempty"`
+
+	// Required. Start time of the maintenance window in UTC time zone.
+	// +kcc:proto:field=google.cloud.lustre.v1.MaintenancePolicy.WeeklyMaintenanceWindow.start_time
+	StartTime *TimeOfDay `json:"startTime,omitempty"`
+}
+*/
+
+/* unreachable type MaintenanceSchedule
+// +kcc:proto=google.cloud.lustre.v1.MaintenanceSchedule
+type MaintenanceSchedule struct {
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.lustre.v1.Mirror", skipping
+
+// +kcc:proto=google.cloud.lustre.v1.Mirror
+type Mirror struct {
+	// Identifier. Name of the mirror.
+	//  Format:
+	//  `projects/{project}/locations/{location}/instances/{instance}/mirrors/{mirror}`
+	// +kcc:proto:field=google.cloud.lustre.v1.Mirror.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Immutable. The URI to a Cloud Storage bucket, or a path within a
+	//  bucket, using the format `gs://{BUCKET_NAME}/{OPTIONAL_PATH}/`. If a path
+	//  inside the bucket is specified, it must end with a forward slash (`/`).
+	// +kcc:proto:field=google.cloud.lustre.v1.Mirror.gcs_path
+	GCSPath *GCSPath `json:"gcsPath,omitempty"`
+
+	// Required. Immutable. The Managed Lustre directory to mirror to. Must be an
+	//  absolute path starting with `/`, for example `/data` or `/data/subdir`.
+	//  Defaults to the root directory, `/`. If the specified directory doesn't
+	//  exist, it is created.
+	// +kcc:proto:field=google.cloud.lustre.v1.Mirror.lustre_path
+	LustrePath *LustrePath `json:"lustrePath,omitempty"`
+
+	// Required. Immutable. Represents the direction of the mirror.
+	// +kcc:proto:field=google.cloud.lustre.v1.Mirror.direction
+	Direction *string `json:"direction,omitempty"`
+
+	// Optional. If `true`, files are not deleted from Managed Lustre when the
+	//  source files are deleted from Cloud Storage. Default is `false`.
+	// +kcc:proto:field=google.cloud.lustre.v1.Mirror.deleted_files_retained
+	DeletedFilesRetained *bool `json:"deletedFilesRetained,omitempty"`
+
+	// Optional. Description of the mirror.
+	// +kcc:proto:field=google.cloud.lustre.v1.Mirror.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Labels to apply to the mirror.
+	// +kcc:proto:field=google.cloud.lustre.v1.Mirror.labels
+	Labels map[string]string `json:"labels,omitempty"`
+}
+*/
+
+/* unreachable type Date
+// +kcc:proto=google.type.Date
+type Date struct {
+	// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
+	//  a year.
+	// +kcc:proto:field=google.type.Date.year
+	Year *int32 `json:"year,omitempty"`
+
+	// Month of a year. Must be from 1 to 12, or 0 to specify a year without a
+	//  month and day.
+	// +kcc:proto:field=google.type.Date.month
+	Month *int32 `json:"month,omitempty"`
+
+	// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
+	//  to specify a year by itself or a year and month where the day isn't
+	//  significant.
+	// +kcc:proto:field=google.type.Date.day
+	Day *int32 `json:"day,omitempty"`
+}
+*/
+
+/* unreachable type TimeOfDay
+// +kcc:proto=google.type.TimeOfDay
+type TimeOfDay struct {
+	// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
+	//  to allow the value "24:00:00" for scenarios like business closing time.
+	// +kcc:proto:field=google.type.TimeOfDay.hours
+	Hours *int32 `json:"hours,omitempty"`
+
+	// Minutes of hour of day. Must be from 0 to 59.
+	// +kcc:proto:field=google.type.TimeOfDay.minutes
+	Minutes *int32 `json:"minutes,omitempty"`
+
+	// Seconds of minutes of the time. Must normally be from 0 to 59. An API may
+	//  allow the value 60 if it allows leap-seconds.
+	// +kcc:proto:field=google.type.TimeOfDay.seconds
+	Seconds *int32 `json:"seconds,omitempty"`
+
+	// Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
+	// +kcc:proto:field=google.type.TimeOfDay.nanos
+	Nanos *int32 `json:"nanos,omitempty"`
 }
 */
 
@@ -87,5 +351,66 @@ type InstanceObservedState struct {
 	// Output only. Timestamp when the instance was last updated.
 	// +kcc:proto:field=google.cloud.lustre.v1.Instance.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The reason why the instance is in a certain state (e.g.
+	//  SUSPENDED).
+	// +kcc:proto:field=google.cloud.lustre.v1.Instance.state_reason
+	StateReason *string `json:"stateReason,omitempty"`
+
+	// Output only. Unique ID of the resource.
+	//  This is unrelated to the access rules which allow specifying the root
+	//  squash uid.
+	// +kcc:proto:field=google.cloud.lustre.v1.Instance.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. Date and time of upcoming maintenance for the instance, if a
+	//  maintenance policy is set.
+	// +kcc:proto:field=google.cloud.lustre.v1.Instance.upcoming_maintenance_schedule
+	UpcomingMaintenanceSchedule *MaintenanceScheduleObservedState `json:"upcomingMaintenanceSchedule,omitempty"`
+
+	// Output only. The available version that this instance can be upgraded to.
+	//  Format: `Lustre_YYYYMMDD.NN_pXX`
+	// +kcc:proto:field=google.cloud.lustre.v1.Instance.available_version
+	AvailableVersion *string `json:"availableVersion,omitempty"`
+
+	// Output only. The effective version of the instance.
+	//  Format: `Lustre_YYYYMMDD.NN_pXX`
+	// +kcc:proto:field=google.cloud.lustre.v1.Instance.effective_version
+	EffectiveVersion *string `json:"effectiveVersion,omitempty"`
+}
+*/
+
+/* unreachable type MaintenanceScheduleObservedState
+// +kcc:observedstate:proto=google.cloud.lustre.v1.MaintenanceSchedule
+type MaintenanceScheduleObservedState struct {
+	// Output only. The scheduled start time for the maintenance.
+	// +kcc:proto:field=google.cloud.lustre.v1.MaintenanceSchedule.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Output only. The scheduled end time for the maintenance.
+	// +kcc:proto:field=google.cloud.lustre.v1.MaintenanceSchedule.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.lustre.v1.Mirror", skipping
+
+// +kcc:observedstate:proto=google.cloud.lustre.v1.Mirror
+type MirrorObservedState struct {
+	// Output only. [Output only] Create time stamp.
+	// +kcc:proto:field=google.cloud.lustre.v1.Mirror.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. [Output only] Update time stamp.
+	// +kcc:proto:field=google.cloud.lustre.v1.Mirror.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Unique ID of the resource.
+	// +kcc:proto:field=google.cloud.lustre.v1.Mirror.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. [Output only] The current state of the mirror.
+	// +kcc:proto:field=google.cloud.lustre.v1.Mirror.state
+	State *string `json:"state,omitempty"`
 }
 */

@@ -36,12 +36,14 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version lustre.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --resource LustreInstance:Instance \
+  --resource LustreMirror:Mirror \
   --prepopulate-resource
 
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.lustre.v1 \
   --api-version lustre.cnrm.cloud.google.com/v1alpha1 \
-  --resource LustreInstance:Instance
+  --resource LustreInstance:Instance \
+  --resource LustreMirror:Mirror
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.lustre.v1 \
