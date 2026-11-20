@@ -26,8 +26,8 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &CloudSupportSupportEventSubscriptionIdentity{}
-	_ identity.Resource   = &CloudSupportSupportEventSubscription{}
+	_ identity.ServerGeneratedIdentity = &CloudSupportSupportEventSubscriptionIdentity{}
+	_ identity.Resource                = &CloudSupportSupportEventSubscription{}
 )
 
 var CloudSupportSupportEventSubscriptionIdentityFormat = gcpurls.Template[CloudSupportSupportEventSubscriptionIdentity]("cloudsupport.googleapis.com", "organizations/{organization}/supportEventSubscriptions/{supportEventSubscription}")
@@ -37,6 +37,10 @@ var CloudSupportSupportEventSubscriptionIdentityFormat = gcpurls.Template[CloudS
 type CloudSupportSupportEventSubscriptionIdentity struct {
 	Organization             string
 	SupportEventSubscription string
+}
+
+func (i *CloudSupportSupportEventSubscriptionIdentity) HasIdentitySpecified() bool {
+	return i.SupportEventSubscription != ""
 }
 
 func (i *CloudSupportSupportEventSubscriptionIdentity) String() string {
@@ -65,10 +69,9 @@ func (i *CloudSupportSupportEventSubscriptionIdentity) ParentString() string {
 }
 
 func getIdentityFromCloudSupportSupportEventSubscriptionSpec(ctx context.Context, reader client.Reader, obj *CloudSupportSupportEventSubscription) (*CloudSupportSupportEventSubscriptionIdentity, error) {
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
+	// For CloudSupportSupportEventSubscription, resourceID is optional / server-generated.
+	// We retrieve it directly from Spec.ResourceID to avoid falling back to GetName().
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
 	var organizationID string
 	if obj.Spec.OrganizationRef != nil {
@@ -106,10 +109,19 @@ func (obj *CloudSupportSupportEventSubscription) GetIdentity(ctx context.Context
 			return nil, err
 		}
 
+		if specIdentity.SupportEventSubscription == "" {
+			specIdentity.SupportEventSubscription = statusIdentity.SupportEventSubscription
+		}
+
 		if statusIdentity.String() != specIdentity.String() {
 			return nil, fmt.Errorf("cannot change CloudSupportSupportEventSubscription identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
 
 	return specIdentity, nil
+}
+
+// ExternalIdentifier implements the identity.ExternalIdentifier interface.
+func (obj *CloudSupportSupportEventSubscription) ExternalIdentifier() *string {
+	return obj.Status.ExternalRef
 }

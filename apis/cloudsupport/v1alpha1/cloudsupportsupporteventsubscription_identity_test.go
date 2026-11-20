@@ -129,7 +129,7 @@ func TestCloudSupportSupportEventSubscription_GetIdentity(t *testing.T) {
 		t.Errorf("GetIdentity() = %q, want %q", id.String(), expectedID)
 	}
 
-	// Test case 2: ResourceID is not set (should default to k8s metadata.name)
+	// Test case 2: ResourceID is not set (initially empty before creation)
 	subscriptionObjWithDefaultID := &CloudSupportSupportEventSubscription{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "my-subscription-k8s-name",
@@ -146,8 +146,25 @@ func TestCloudSupportSupportEventSubscription_GetIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error getting identity: %v", err)
 	}
-	expectedDefaultID := "organizations/123456789/supportEventSubscriptions/my-subscription-k8s-name"
-	if id.String() != expectedDefaultID {
-		t.Errorf("GetIdentity() = %q, want %q", id.String(), expectedDefaultID)
+	subscriptionId, ok := id.(*CloudSupportSupportEventSubscriptionIdentity)
+	if !ok {
+		t.Fatalf("expected *CloudSupportSupportEventSubscriptionIdentity, got %T", id)
+	}
+	if subscriptionId.HasIdentitySpecified() {
+		t.Errorf("expected HasIdentitySpecified() == false, got true")
+	}
+	if subscriptionId.SupportEventSubscription != "" {
+		t.Errorf("expected empty SupportEventSubscription before creation, got %q", subscriptionId.SupportEventSubscription)
+	}
+
+	// Test case 3: ResourceID is not set, but status.externalRef is populated after creation
+	extRef := "organizations/123456789/supportEventSubscriptions/server-gen-12345"
+	subscriptionObjWithDefaultID.Status.ExternalRef = &extRef
+	id, err = subscriptionObjWithDefaultID.GetIdentity(ctx, nil)
+	if err != nil {
+		t.Fatalf("unexpected error getting identity with externalRef: %v", err)
+	}
+	if id.String() != extRef {
+		t.Errorf("GetIdentity() = %q, want %q", id.String(), extRef)
 	}
 }
