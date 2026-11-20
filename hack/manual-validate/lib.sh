@@ -291,6 +291,40 @@ mv_cli() {
   return ${rc}
 }
 
+# mv_enable_apis PHASE SERVICE...
+# Makes sure each service API (e.g. bigquery.googleapis.com) is enabled in GCP_PROJECT_ID before
+# anything is applied: an API already enabled is recorded as such; a disabled one is enabled with
+# `gcloud services enable` (needs serviceusage.services.enable) and recorded as enabled by this run.
+# A regional endpoint host (us-central1-aiplatform.googleapis.com) is taken as its service
+# (aiplatform.googleapis.com). With MV_ENABLE_APIS=0 it only checks, and a disabled API is a FAIL.
+# APIs are never disabled again: the project is shared.
+mv_enable_apis() {
+  local phase="$1" svc label out enabled
+  shift
+  for svc in "$@"; do
+    svc="$(echo "${svc}" | sed -E 's#^https?://##; s#/.*$##; s#^[a-z]+-[a-z]+[0-9]+-##')"
+    label="api-${svc%%.*}"
+    out="cloud/${phase}-${label}.txt"
+    enabled="$(gcloud services list --enabled --project "${GCP_PROJECT_ID}" \
+      --filter="config.name=${svc}" --format='value(config.name)' 2>"${MV_RUN_DIR}/${out}" || true)"
+    if [[ "${enabled}" == "${svc}" ]]; then
+      echo "${svc} is enabled in ${GCP_PROJECT_ID}" >>"${MV_RUN_DIR}/${out}"
+      mv_record "${phase}" "API ${svc} enabled" INFO "${out}" "already enabled"
+    elif [[ "${MV_ENABLE_APIS:-1}" == "0" ]]; then
+      mv_record "${phase}" "API ${svc} enabled" FAIL "${out}" \
+        "disabled in ${GCP_PROJECT_ID} and MV_ENABLE_APIS=0: gcloud services enable ${svc} --project ${GCP_PROJECT_ID}"
+      return 1
+    elif mv_cli "${phase}" "${label}" -- gcloud services enable "${svc}" --project "${GCP_PROJECT_ID}"; then
+      MV_ENABLED_APIS="${MV_ENABLED_APIS:-}${MV_ENABLED_APIS:+ }${svc}"
+      mv_record "${phase}" "API ${svc} enabled" INFO "${out}" "enabled by this run"
+    else
+      mv_record "${phase}" "API ${svc} enabled" FAIL "${out}" \
+        "could not enable it (serviceusage.services.enable?): $(tail -2 "${MV_RUN_DIR}/${out}" | tr '\n' ' ')"
+      return 1
+    fi
+  done
+}
+
 # mv_expect_http PHASE CHECK EXPECTED_CODE ACTUAL_CODE EVIDENCE
 mv_expect_http() {
   local phase="$1" check="$2" want="$3" got="$4" ev="$5"
@@ -371,6 +405,7 @@ mv_report() {
   fail="$(awk -F'\t' '$4=="FAIL"' "${MV_RUN_DIR}/results.tsv" | wc -l | tr -d ' ')"
   verdict="PASS"
   [[ "${fail}" != "0" ]] && verdict="FAIL"
+  echo "apis_enabled_by_run: ${MV_ENABLED_APIS:-none}" >>"${MV_RUN_DIR}/env.yaml"
   echo "finished_utc: $(mv_ts_utc)" >>"${MV_RUN_DIR}/env.yaml"
   echo "finished_pdt: $(mv_ts_pdt)" >>"${MV_RUN_DIR}/env.yaml"
   {

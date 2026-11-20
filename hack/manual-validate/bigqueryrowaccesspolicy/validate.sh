@@ -100,6 +100,8 @@ grantee_members() {
 }
 
 # ---------------------------------------------------------------------------
+# Every API the controller, the dependencies and the out-of-band checks call.
+mv_enable_apis setup bigquery.googleapis.com logging.googleapis.com
 mv_up
 
 # --- Phase: dependencies -----------------------------------------------------
