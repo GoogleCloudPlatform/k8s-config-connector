@@ -728,6 +728,8 @@ jobs:
         shard: ${{ fromJSON(needs.plan-tests.outputs.unit_tests_json) }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
       - name: Free up disk space
         run: dev/tasks/free-disk-space-on-github-actions-runner
 # zizmor: ignore[unpinned-uses]
@@ -739,6 +741,7 @@ jobs:
           SHARD_SPEC: ${{ matrix.shard }}
           ARTIFACTS: /tmp/artifacts
           UNIT_TEST_PATTERNS: ${{ needs.plan-tests.outputs.unit_packages }}
+          BASE_COMMIT: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: ${{ !cancelled() }}
