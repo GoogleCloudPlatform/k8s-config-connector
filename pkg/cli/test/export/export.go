@@ -22,8 +22,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/asset/export"
 )
 
+// NewTemporaryBucketAndObjectName creates a temporary bucket in the default project.
 func NewTemporaryBucketAndObjectName(t *testing.T, httpClient *http.Client) (string, string) {
-	bucketName, objectName, err := export.NewTemporaryBucketAndObjectName(context.TODO(), httpClient)
+	bucketName, objectName, err := export.NewTemporaryBucketAndObjectName(context.TODO(), httpClient, "")
 	if err != nil {
 		t.Fatalf("unexpected error creating new temporary bucket: %v", err)
 	}
