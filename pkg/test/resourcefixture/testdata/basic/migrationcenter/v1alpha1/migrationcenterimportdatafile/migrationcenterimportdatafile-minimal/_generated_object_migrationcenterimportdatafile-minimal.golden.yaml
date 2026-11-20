@@ -1,0 +1,33 @@
+apiVersion: migrationcenter.cnrm.cloud.google.com/v1alpha1
+kind: MigrationCenterImportDataFile
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: migrationcenterimportdatafile-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  format: IMPORT_JOB_FORMAT_RVTOOLS_XLSX
+  parentRef:
+    name: migrationcenterimportjob-idf-min-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-min-${uniqueId}/importDataFiles/migrationcenterimportdatafile-minimal-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    state: ACTIVE
+    uploadFileInfo:
+      headers:
+        Content-Type: application/octet-stream
+        x-goog-content-length-range: 0,104857600
+      signedURI: https://storage.googleapis.com/${projectNumber}_us-central1_import_payloads/migrationcenterimportjob-idf-min-${uniqueId}_4c505736/in/migrationcenterimportdatafile-minimal-${uniqueId}_6589d6ee?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=service-${projectNumber}%40gcp-sa-migcenter.iam.gserviceaccount.com%2F20261120%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20261120T015258Z&X-Goog-Expires=43199&X-Goog-Signature=4d285899b63ada43c804a79b11db1f7577ec5b51969979f651c38297ee42ee770c36d72d78a9ac8e46f3fede79c8660b770866bf6050e430cf47e1e828b38350a509e75429babcf91552a902ba9d9f1975620fe7b85eca268ed30f7ebd03fc31487125ff5d6b47dbb2424e73721146588768393954c8799ef81e72549a6b80cd68145cdf647ef427c6e5042107ae9650acfc103939413b441f97d63d583371e47096d8ccd7f7e960b4cd928b8f7c5b254ba82fa0f17b8b89d46ceb90ff48dc6e5f3c2ee47963e54641819b80361f0647e97b4c5cd0a84610438d387ef49298158204c3fc5c1b04c3e5703c1449cf596367211bce7e8f3b86bee5efa90285220c&X-Goog-SignedHeaders=content-type%3Bhost%3Bx-goog-content-length-range
+      uriExpirationTime: "2026-11-20T13:52:58.180187231Z"
