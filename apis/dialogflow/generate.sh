@@ -94,13 +94,15 @@ ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource \
-  --resource DialogflowCompanionAgent:CompanionAgent
+  --resource DialogflowCompanionAgent:CompanionAgent \
+  --resource DialogflowGeneratorEvaluation:GeneratorEvaluation
 
 ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
-  --resource DialogflowCompanionAgent:CompanionAgent
+  --resource DialogflowCompanionAgent:CompanionAgent \
+  --resource DialogflowGeneratorEvaluation:GeneratorEvaluation
 
 ${CONTROLLERBUILDER} generate-types \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
@@ -137,19 +139,25 @@ mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/dialogflow/mapper.gen
 rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/dialogflow/" || true
 sed -i 's/package dialogflow/package siptrunk/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/mapper.generated.go"
 
+mkdir -p "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow"
+sed 's/package generator/package dialogflow/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/mapper.generated.go" > "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow/mapper.generated.go"
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
-  --skip-proto Agent,EntityType,Entity \
+  --skip-proto Agent,EntityType,Entity,GeneratorEvaluation,GeneratorEvaluationConfig,SummarizationEvaluationMetrics,EvaluationStatus,SummarySection,SummarizationContext,FewShotExample,GeneratorSuggestion,FreeFormSuggestion,SummarySuggestion,Generator \
   --output-dir "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator"
 mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/mapper.generated.go" || true
 rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow/" || true
 sed -i 's/package dialogflow/package generator/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/mapper.generated.go"
 
+mkdir -p "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow"
+sed 's/package conversationdataset/package dialogflow/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/mapper.generated.go" > "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow/mapper.generated.go"
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
-  --skip-proto Agent,EntityType,Entity \
+  --skip-proto Agent,EntityType,Entity,GeneratorEvaluation,GeneratorEvaluationConfig,SummarizationEvaluationMetrics,EvaluationStatus,SummarySection,SummarizationContext,FewShotExample,GeneratorSuggestion,FreeFormSuggestion,SummarySuggestion,Generator \
   --output-dir "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset"
 mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/mapper.generated.go" || true
 rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow/" || true

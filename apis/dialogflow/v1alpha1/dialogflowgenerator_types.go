@@ -22,6 +22,17 @@ import (
 
 var DialogflowGeneratorGVK = GroupVersion.WithKind("DialogflowGenerator")
 
+// +kcc:proto=google.cloud.dialogflow.v2.GeneratorSuggestion
+type GeneratorSuggestion struct {
+	// Optional. Free form suggestion.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.free_form_suggestion
+	FreeFormSuggestion *FreeFormSuggestion `json:"freeFormSuggestion,omitempty"`
+
+	// Optional. Suggested summary.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.summary_suggestion
+	SummarySuggestion *SummarySuggestion `json:"summarySuggestion,omitempty"`
+}
+
 // DialogflowGeneratorSpec defines the desired state of DialogflowGenerator
 // +kcc:spec:proto=google.cloud.dialogflow.v2.Generator
 type DialogflowGeneratorSpec struct {

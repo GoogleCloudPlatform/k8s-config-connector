@@ -26,6 +26,7 @@
 // resource: DialogflowConversationModel:ConversationModel
 // resource: DialogflowConversationProfile:ConversationProfile
 // resource: DialogflowCompanionAgent:CompanionAgent
+// resource: DialogflowGeneratorEvaluation:GeneratorEvaluation
 // resource: DialogflowEnvironment:Environment
 // resource: DialogflowPlaybook:Playbook
 // resource: DialogflowTransitionRouteGroup:TransitionRouteGroup
@@ -35,6 +36,7 @@
 package v1alpha1
 
 import (
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
@@ -807,25 +809,6 @@ type ResponseMessage_Text struct {
 	Text []string `json:"text,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.ToolCall
-type ToolCall struct {
-	// Required. The [tool][google.cloud.dialogflow.cx.v3.Tool] associated with
-	//  this call. Format:
-	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ToolCall.tool
-	// +required
-	Tool *string `json:"tool,omitempty"`
-
-	// Required. The name of the tool's action associated with this call.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ToolCall.action
-	// +required
-	Action *string `json:"action,omitempty"`
-
-	// Optional. The action's input parameters.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ToolCall.input_parameters
-	InputParameters apiextensionsv1.JSON `json:"inputParameters,omitempty"`
-}
-
 // +kcc:proto=google.cloud.dialogflow.cx.v3.TransitionRoute
 type TransitionRoute struct {
 
@@ -1097,6 +1080,132 @@ type Webhook_ServiceDirectoryConfig struct {
 	GenericWebService *Webhook_GenericWebService `json:"genericWebService,omitempty"`
 }
 
+/* unreachable type AgentCoachingContext
+// +kcc:proto=google.cloud.dialogflow.v2.AgentCoachingContext
+type AgentCoachingContext struct {
+	// Optional. The overarching guidance for the agent coaching. This should be
+	//  set only for v1.5 and later versions.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingContext.overarching_guidance
+	OverarchingGuidance *string `json:"overarchingGuidance,omitempty"`
+
+	// Optional. Customized instructions for agent coaching.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingContext.instructions
+	Instructions []AgentCoachingInstruction `json:"instructions,omitempty"`
+
+	// Optional. Version of the feature. If not set, default to latest version.
+	//  Current candidates are ["1.2"].
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingContext.version
+	Version *string `json:"version,omitempty"`
+
+	// Optional. Output language code.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingContext.output_language_code
+	OutputLanguageCode *string `json:"outputLanguageCode,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingInstruction
+// +kcc:proto=google.cloud.dialogflow.v2.AgentCoachingInstruction
+type AgentCoachingInstruction struct {
+	// Optional. Display name for the instruction.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The detailed description of this instruction.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.display_details
+	DisplayDetails *string `json:"displayDetails,omitempty"`
+
+	// Optional. The condition of the instruction. For example, "the customer
+	//  wants to cancel an order".  If the users want the instruction to be
+	//  triggered unconditionally, the condition can be empty.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.condition
+	Condition *string `json:"condition,omitempty"`
+
+	// Optional. The action that human agent should take. For example, "apologize
+	//  for the slow shipping". If the users only want to use agent coaching for
+	//  intent detection, agent_action can be empty
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.agent_action
+	AgentAction *string `json:"agentAction,omitempty"`
+
+	// Optional. The action that system should take. For example,
+	//  "call GetOrderTime with order_number={order number provided by the
+	//  customer}". If the users don't have plugins or don't want to trigger
+	//  plugins, the system_action can be empty
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.system_action
+	SystemAction *string `json:"systemAction,omitempty"`
+
+	// Optional. The event that should trigger this instruction.
+	//  If UNSPECIFIED, the instruction triggering will be same as the generator's
+	//  trigger_event.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.triggering_event
+	TriggeringEvent *string `json:"triggeringEvent,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingInstruction_DuplicateCheckResult
+// +kcc:proto=google.cloud.dialogflow.v2.AgentCoachingInstruction.DuplicateCheckResult
+type AgentCoachingInstruction_DuplicateCheckResult struct {
+}
+*/
+
+/* unreachable type AgentCoachingInstruction_DuplicateCheckResult_DuplicateSuggestion
+// +kcc:proto=google.cloud.dialogflow.v2.AgentCoachingInstruction.DuplicateCheckResult.DuplicateSuggestion
+type AgentCoachingInstruction_DuplicateCheckResult_DuplicateSuggestion struct {
+}
+*/
+
+/* unreachable type AgentCoachingSuggestion
+// +kcc:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion
+type AgentCoachingSuggestion struct {
+	// Optional. Instructions applicable based on the current context.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.applicable_instructions
+	ApplicableInstructions []AgentCoachingInstruction `json:"applicableInstructions,omitempty"`
+
+	// Optional. Suggested actions for the agent to take.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.agent_action_suggestions
+	AgentActionSuggestions []AgentCoachingSuggestion_AgentActionSuggestion `json:"agentActionSuggestions,omitempty"`
+
+	// Optional. Sample response for the Agent.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.sample_responses
+	SampleResponses []AgentCoachingSuggestion_SampleResponse `json:"sampleResponses,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingSuggestion_AgentActionSuggestion
+// +kcc:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion.AgentActionSuggestion
+type AgentCoachingSuggestion_AgentActionSuggestion struct {
+	// Optional. The suggested action for the agent.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.AgentActionSuggestion.agent_action
+	AgentAction *string `json:"agentAction,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingSuggestion_DuplicateCheckResult
+// +kcc:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion.DuplicateCheckResult
+type AgentCoachingSuggestion_DuplicateCheckResult struct {
+}
+*/
+
+/* unreachable type AgentCoachingSuggestion_DuplicateCheckResult_DuplicateSuggestion
+// +kcc:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion.DuplicateCheckResult.DuplicateSuggestion
+type AgentCoachingSuggestion_DuplicateCheckResult_DuplicateSuggestion struct {
+}
+*/
+
+/* unreachable type AgentCoachingSuggestion_SampleResponse
+// +kcc:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion.SampleResponse
+type AgentCoachingSuggestion_SampleResponse struct {
+	// Optional. Sample response for Agent in text.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.SampleResponse.response_text
+	ResponseText *string `json:"responseText,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingSuggestion_Sources
+// +kcc:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion.Sources
+type AgentCoachingSuggestion_Sources struct {
+}
+*/
+
 // +kcc:proto=google.cloud.dialogflow.v2.ArticleSuggestionModelMetadata
 type ArticleSuggestionModelMetadata struct {
 	// Optional. Type of the article suggestion model. If not provided, model_type
@@ -1135,6 +1244,34 @@ type AutomatedAgentConfig struct {
 	// +kcc:proto:field=google.cloud.dialogflow.v2.AutomatedAgentConfig.session_ttl
 	SessionTTL *string `json:"sessionTTL,omitempty"`
 }
+
+/* unreachable type CesAppSpec
+// +kcc:proto=google.cloud.dialogflow.v2.CesAppSpec
+type CesAppSpec struct {
+	// Optional. Format: `projects/<Project ID>/locations/<Location ID>/apps/<app
+	//  ID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.CesAppSpec.ces_app
+	CesApp *string `json:"cesApp,omitempty"`
+
+	// Optional. Indicates whether the app requires human confirmation.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.CesAppSpec.confirmation_requirement
+	ConfirmationRequirement *string `json:"confirmationRequirement,omitempty"`
+
+	// Optional. Only applicable for CompanionAgent.
+	//  Indicates whether the ces app is enabled in proactive mode.
+	//  At least one of `proactive_enabled` or `reactive_enabled` should be
+	//  true; otherwise, the ces app will be ignored.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.CesAppSpec.proactive_enabled
+	ProactiveEnabled *bool `json:"proactiveEnabled,omitempty"`
+
+	// Optional. Only applicable for CompanionAgent.
+	//  Indicates whether the ces app is enabled in reactive mode.
+	//  At least one of `proactive_enabled` or `reactive_enabled` should be
+	//  true; otherwise, the ces app will be ignored.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.CesAppSpec.reactive_enabled
+	ReactiveEnabled *bool `json:"reactiveEnabled,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.dialogflow.v2.CompanionAgent.GuidanceSkillConfig
 type CompanionAgent_GuidanceSkillConfig struct {
@@ -1200,6 +1337,12 @@ type ConversationInfo struct {
 	LanguageCode *string `json:"languageCode,omitempty"`
 }
 
+/* unreachable type EvaluationStatus
+// +kcc:proto=google.cloud.dialogflow.v2.EvaluationStatus
+type EvaluationStatus struct {
+}
+*/
+
 // +kcc:proto=google.cloud.dialogflow.v2.FewShotExample
 type FewShotExample struct {
 	// Optional. Conversation transcripts.
@@ -1244,16 +1387,115 @@ type GCSSources struct {
 	Uris []string `json:"uris,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.GeneratorSuggestion
-type GeneratorSuggestion struct {
-	// Optional. Free form suggestion.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.free_form_suggestion
-	FreeFormSuggestion *FreeFormSuggestion `json:"freeFormSuggestion,omitempty"`
+/* unreachable type Generator
+// +kcc:proto=google.cloud.dialogflow.v2.Generator
+type Generator struct {
 
-	// Optional. Suggested summary.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.summary_suggestion
-	SummarySuggestion *SummarySuggestion `json:"summarySuggestion,omitempty"`
+	// Optional. Human readable description of the generator.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.description
+	Description *string `json:"description,omitempty"`
+
+	// Input of free from generator to LLM.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.free_form_context
+	FreeFormContext *FreeFormContext `json:"freeFormContext,omitempty"`
+
+	// Input of prebuilt Agent Coaching feature.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.agent_coaching_context
+	AgentCoachingContext *AgentCoachingContext `json:"agentCoachingContext,omitempty"`
+
+	// Input of prebuilt Summarization feature.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.summarization_context
+	SummarizationContext *SummarizationContext `json:"summarizationContext,omitempty"`
+
+	// Optional. Inference parameters for this generator.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.inference_parameter
+	InferenceParameter *InferenceParameter `json:"inferenceParameter,omitempty"`
+
+	// Optional. The trigger event of the generator. It defines when the generator
+	//  is triggered in a conversation.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.trigger_event
+	TriggerEvent *string `json:"triggerEvent,omitempty"`
+
+	// Optional. The published Large Language Model name.
+	//  * To use the latest model version, specify the model name without version
+	//    number. Example: `text-bison`
+	//  * To use a stable model version, specify the version number as well.
+	//    Example: `text-bison@002`.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.published_model
+	PublishedModel *string `json:"publishedModel,omitempty"`
+
+	// Optional. Resource names of the tools that the generator can choose from.
+	//  Format: `projects/<Project ID>/locations/<Location ID>/tools/<tool ID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.tools
+	Tools []string `json:"tools,omitempty"`
+
+	// Optional. Configuration for suggestion deduping. This is only applicable to
+	//  AI Coach feature.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.suggestion_deduping_config
+	SuggestionDedupingConfig *SuggestionDedupingConfig `json:"suggestionDedupingConfig,omitempty"`
+
+	// Optional. List of CES toolset specs that the generator can choose from.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.toolset_tools
+	ToolsetTools []ToolsetTool `json:"toolsetTools,omitempty"`
+
+	// Optional. List of CES tool specs that the generator can choose from.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.ces_tool_specs
+	CesToolSpecs []CesToolSpec `json:"cesToolSpecs,omitempty"`
+
+	// Optional. Deprecated: Use `ces_tool_specs` instead.
+	//  List of CES app specs that the generator can choose from.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.ces_app_specs
+	CesAppSpecs []CesAppSpec `json:"cesAppSpecs,omitempty"`
 }
+*/
+
+// +kcc:proto=google.cloud.dialogflow.v2.GeneratorEvaluationConfig
+type GeneratorEvaluationConfig struct {
+	// Required. The config/source of input data.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorEvaluationConfig.input_data_config
+	// +required
+	InputDataConfig *GeneratorEvaluationConfig_InputDataConfig `json:"inputDataConfig,omitempty"`
+
+	// Required. The output Cloud Storage bucket path to store eval files, e.g.
+	//  per_summary_accuracy_score report. This path is provided by customer and
+	//  files stored in it are visible to customer, no internal data should be
+	//  stored in this path.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorEvaluationConfig.output_gcs_bucket_path
+	// +required
+	OutputGCSBucketPath *string `json:"outputGCSBucketPath,omitempty"`
+
+	// Evaluation configs for summarization generator.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorEvaluationConfig.summarization_config
+	SummarizationConfig *GeneratorEvaluationConfig_SummarizationConfig `json:"summarizationConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.GeneratorEvaluationConfig.AgentAssistInputDataConfig
+type GeneratorEvaluationConfig_AgentAssistInputDataConfig struct {
+	// Required. The start of the time range for conversations to be evaluated.
+	//  Only conversations created at or after this timestamp will be sampled.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorEvaluationConfig.AgentAssistInputDataConfig.start_time
+	// +required
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Required. The end of the time range for conversations to be evaluated.
+	//  Only conversations ended at or before this timestamp will be sampled.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorEvaluationConfig.AgentAssistInputDataConfig.end_time
+	// +required
+	EndTime *string `json:"endTime,omitempty"`
+}
+
+/* unreachable type GeneratorSuggestion_ToolCallInfo
+// +kcc:proto=google.cloud.dialogflow.v2.GeneratorSuggestion.ToolCallInfo
+type GeneratorSuggestion_ToolCallInfo struct {
+	// Required. Request for a tool call.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.ToolCallInfo.tool_call
+	ToolCall *ToolCall `json:"toolCall,omitempty"`
+
+	// Required. Response for a tool call.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.ToolCallInfo.tool_call_result
+	ToolCallResult *ToolCallResult `json:"toolCallResult,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.dialogflow.v2.GuidanceInstruction
 type GuidanceInstruction struct {
@@ -1694,6 +1936,20 @@ type SmartReplyModelMetadata struct {
 	TrainingModelType *string `json:"trainingModelType,omitempty"`
 }
 
+/* unreachable type SuggestionDedupingConfig
+// +kcc:proto=google.cloud.dialogflow.v2.SuggestionDedupingConfig
+type SuggestionDedupingConfig struct {
+	// Optional. Whether to enable suggestion deduping.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SuggestionDedupingConfig.enable_deduping
+	EnableDeduping *bool `json:"enableDeduping,omitempty"`
+
+	// Optional. The threshold for similarity between two suggestions.
+	//  Acceptable value is [0.0, 1.0], default to 0.8
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SuggestionDedupingConfig.similarity_threshold
+	SimilarityThreshold *float32 `json:"similarityThreshold,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.dialogflow.v2.SuggestionFeature
 type SuggestionFeature struct {
 	// Type of Human Agent Assistant API feature to request.
@@ -1723,6 +1979,84 @@ type SummarizationContext struct {
 	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationContext.output_language_code
 	OutputLanguageCode *string `json:"outputLanguageCode,omitempty"`
 }
+
+/* unreachable type SummarizationEvaluationMetrics
+// +kcc:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics
+type SummarizationEvaluationMetrics struct {
+}
+*/
+
+/* unreachable type SummarizationEvaluationMetrics_AccuracyDecomposition
+// +kcc:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.AccuracyDecomposition
+type SummarizationEvaluationMetrics_AccuracyDecomposition struct {
+}
+*/
+
+/* unreachable type SummarizationEvaluationMetrics_AdherenceDecomposition
+// +kcc:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.AdherenceDecomposition
+type SummarizationEvaluationMetrics_AdherenceDecomposition struct {
+}
+*/
+
+/* unreachable type SummarizationEvaluationMetrics_AdherenceRubric
+// +kcc:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.AdherenceRubric
+type SummarizationEvaluationMetrics_AdherenceRubric struct {
+}
+*/
+
+/* unreachable type SummarizationEvaluationMetrics_CompletenessRubric
+// +kcc:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.CompletenessRubric
+type SummarizationEvaluationMetrics_CompletenessRubric struct {
+}
+*/
+
+/* unreachable type SummarizationEvaluationMetrics_ConversationDetail
+// +kcc:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.ConversationDetail
+type SummarizationEvaluationMetrics_ConversationDetail struct {
+}
+*/
+
+/* unreachable type SummarizationEvaluationMetrics_ConversationDetail_MetricDetail
+// +kcc:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.ConversationDetail.MetricDetail
+type SummarizationEvaluationMetrics_ConversationDetail_MetricDetail struct {
+}
+*/
+
+/* unreachable type SummarizationEvaluationMetrics_ConversationDetail_MetricDetail_SectionDetail
+// +kcc:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.ConversationDetail.MetricDetail.SectionDetail
+type SummarizationEvaluationMetrics_ConversationDetail_MetricDetail_SectionDetail struct {
+}
+*/
+
+/* unreachable type SummarizationEvaluationMetrics_Decomposition
+// +kcc:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.Decomposition
+type SummarizationEvaluationMetrics_Decomposition struct {
+}
+*/
+
+/* unreachable type SummarizationEvaluationMetrics_EvaluationResult
+// +kcc:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.EvaluationResult
+type SummarizationEvaluationMetrics_EvaluationResult struct {
+}
+*/
+
+/* unreachable type SummarizationEvaluationMetrics_OverallScoresByMetric
+// +kcc:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.OverallScoresByMetric
+type SummarizationEvaluationMetrics_OverallScoresByMetric struct {
+}
+*/
+
+/* unreachable type SummarizationEvaluationMetrics_SectionToken
+// +kcc:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.SectionToken
+type SummarizationEvaluationMetrics_SectionToken struct {
+}
+*/
+
+/* unreachable type SummarizationEvaluationMetrics_SummarizationEvaluationResult
+// +kcc:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.SummarizationEvaluationResult
+type SummarizationEvaluationMetrics_SummarizationEvaluationResult struct {
+}
+*/
 
 // +kcc:proto=google.cloud.dialogflow.v2.SummarizationSection
 type SummarizationSection struct {
@@ -1801,6 +2135,69 @@ type SynthesizeSpeechConfig struct {
 	// +kcc:proto:field=google.cloud.dialogflow.v2.SynthesizeSpeechConfig.voice
 	Voice *VoiceSelectionParams `json:"voice,omitempty"`
 }
+
+/* unreachable type ToolCallResult
+// +kcc:proto=google.cloud.dialogflow.v2.ToolCallResult
+type ToolCallResult struct {
+	// Optional. The [tool][google.cloud.dialogflow.v2.Tool] associated with
+	//  this call. Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/tools/<ToolID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.tool
+	Tool *string `json:"tool,omitempty"`
+
+	// Optional. CES toolset name for this call.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/toolsets/ToolsetID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.ces_toolset
+	CesToolset *string `json:"cesToolset,omitempty"`
+
+	// Optional. CES tool name for this call.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/tools/<ToolID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.ces_tool
+	CesTool *string `json:"cesTool,omitempty"`
+
+	// Optional. CES app name for this call.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.ces_app
+	CesApp *string `json:"cesApp,omitempty"`
+
+	// Optional. The name of the tool's action associated with this call.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.action
+	Action *string `json:"action,omitempty"`
+
+	// Optional. The tool call's error.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.error
+	Error *ToolCallResult_Error `json:"error,omitempty"`
+
+	// Optional. Only populated if the response content is not utf-8 encoded.
+	//  (by definition byte fields are base64 encoded).
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.raw_content
+	RawContent []byte `json:"rawContent,omitempty"`
+
+	// Optional. Only populated if the response content is utf-8 encoded.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.content
+	Content *string `json:"content,omitempty"`
+
+	// Optional. The answer record associated with this tool call result.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.answer_record
+	AnswerRecord *string `json:"answerRecord,omitempty"`
+}
+*/
+
+/* unreachable type ToolCallResult_Error
+// +kcc:proto=google.cloud.dialogflow.v2.ToolCallResult.Error
+type ToolCallResult_Error struct {
+	// Optional. The error message of the function.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.Error.message
+	Message *string `json:"message,omitempty"`
+
+	// Optional. Specifies whether the tool call is retryable.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.Error.retryable
+	Retryable *bool `json:"retryable,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.dialogflow.v2.VoiceSelectionParams
 type VoiceSelectionParams struct {
@@ -2083,3 +2480,473 @@ type TransitionRouteObservedState struct {
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TransitionRoute.trigger_fulfillment
 	TriggerFulfillment *FulfillmentObservedState `json:"triggerFulfillment,omitempty"`
 }
+
+/* unreachable type AgentCoachingContextObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.AgentCoachingContext
+type AgentCoachingContextObservedState struct {
+	// Optional. Customized instructions for agent coaching.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingContext.instructions
+	Instructions []AgentCoachingInstructionObservedState `json:"instructions,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingInstructionObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.AgentCoachingInstruction
+type AgentCoachingInstructionObservedState struct {
+	// Output only. Duplication check for the AgentCoachingInstruction.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.duplicate_check_result
+	DuplicateCheckResult *AgentCoachingInstruction_DuplicateCheckResultObservedState `json:"duplicateCheckResult,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingInstruction_DuplicateCheckResultObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.AgentCoachingInstruction.DuplicateCheckResult
+type AgentCoachingInstruction_DuplicateCheckResultObservedState struct {
+	// Output only. The duplicate suggestions.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.DuplicateCheckResult.duplicate_suggestions
+	DuplicateSuggestions []AgentCoachingInstruction_DuplicateCheckResult_DuplicateSuggestionObservedState `json:"duplicateSuggestions,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingInstruction_DuplicateCheckResult_DuplicateSuggestionObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.AgentCoachingInstruction.DuplicateCheckResult.DuplicateSuggestion
+type AgentCoachingInstruction_DuplicateCheckResult_DuplicateSuggestionObservedState struct {
+	// Output only. The answer record id of the past duplicate suggestion.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.DuplicateCheckResult.DuplicateSuggestion.answer_record
+	AnswerRecord *string `json:"answerRecord,omitempty"`
+
+	// Output only. The index of the duplicate suggestion in the past
+	//  suggestion list.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.DuplicateCheckResult.DuplicateSuggestion.suggestion_index
+	SuggestionIndex *int32 `json:"suggestionIndex,omitempty"`
+
+	// Output only. The similarity score of between the past and current
+	//  suggestion.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.DuplicateCheckResult.DuplicateSuggestion.similarity_score
+	SimilarityScore *float32 `json:"similarityScore,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingSuggestionObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion
+type AgentCoachingSuggestionObservedState struct {
+	// Optional. Instructions applicable based on the current context.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.applicable_instructions
+	ApplicableInstructions []AgentCoachingInstructionObservedState `json:"applicableInstructions,omitempty"`
+
+	// Optional. Suggested actions for the agent to take.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.agent_action_suggestions
+	AgentActionSuggestions []AgentCoachingSuggestion_AgentActionSuggestionObservedState `json:"agentActionSuggestions,omitempty"`
+
+	// Optional. Sample response for the Agent.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.sample_responses
+	SampleResponses []AgentCoachingSuggestion_SampleResponseObservedState `json:"sampleResponses,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingSuggestion_AgentActionSuggestionObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion.AgentActionSuggestion
+type AgentCoachingSuggestion_AgentActionSuggestionObservedState struct {
+	// Output only. Sources for the agent action suggestion.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.AgentActionSuggestion.sources
+	Sources *AgentCoachingSuggestion_SourcesObservedState `json:"sources,omitempty"`
+
+	// Output only. Duplicate check result for the agent action suggestion.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.AgentActionSuggestion.duplicate_check_result
+	DuplicateCheckResult *AgentCoachingSuggestion_DuplicateCheckResultObservedState `json:"duplicateCheckResult,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingSuggestion_DuplicateCheckResultObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion.DuplicateCheckResult
+type AgentCoachingSuggestion_DuplicateCheckResultObservedState struct {
+	// Output only. The duplicate suggestions.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.DuplicateCheckResult.duplicate_suggestions
+	DuplicateSuggestions []AgentCoachingSuggestion_DuplicateCheckResult_DuplicateSuggestionObservedState `json:"duplicateSuggestions,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingSuggestion_DuplicateCheckResult_DuplicateSuggestionObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion.DuplicateCheckResult.DuplicateSuggestion
+type AgentCoachingSuggestion_DuplicateCheckResult_DuplicateSuggestionObservedState struct {
+	// Output only. The answer record id of the past duplicate suggestion.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.DuplicateCheckResult.DuplicateSuggestion.answer_record
+	AnswerRecord *string `json:"answerRecord,omitempty"`
+
+	// Output only. Sources for the suggestion.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.DuplicateCheckResult.DuplicateSuggestion.sources
+	Sources *AgentCoachingSuggestion_SourcesObservedState `json:"sources,omitempty"`
+
+	// Output only. The index of the duplicate suggestion in the past
+	//  suggestion list.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.DuplicateCheckResult.DuplicateSuggestion.suggestion_index
+	SuggestionIndex *int32 `json:"suggestionIndex,omitempty"`
+
+	// Output only. The similarity score of between the past and current
+	//  suggestion.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.DuplicateCheckResult.DuplicateSuggestion.similarity_score
+	SimilarityScore *float32 `json:"similarityScore,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingSuggestion_SampleResponseObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion.SampleResponse
+type AgentCoachingSuggestion_SampleResponseObservedState struct {
+	// Output only. Sources for the Sample Response.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.SampleResponse.sources
+	Sources *AgentCoachingSuggestion_SourcesObservedState `json:"sources,omitempty"`
+
+	// Output only. Duplicate check result for the sample response.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.SampleResponse.duplicate_check_result
+	DuplicateCheckResult *AgentCoachingSuggestion_DuplicateCheckResultObservedState `json:"duplicateCheckResult,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingSuggestion_SourcesObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion.Sources
+type AgentCoachingSuggestion_SourcesObservedState struct {
+	// Output only. Source instruction indexes for the suggestion. This is the
+	//  index of the applicable_instructions field.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.Sources.instruction_indexes
+	InstructionIndexes []int32 `json:"instructionIndexes,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.EvaluationStatus
+type EvaluationStatusObservedState struct {
+	// Output only. If the value is `false`, it means the evaluation is still in
+	//  progress. If `true`, the operation is completed, and either `error` or
+	//  `response` is available.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.EvaluationStatus.done
+	Done *bool `json:"done,omitempty"`
+
+	// Output only. The error result of the evaluation in case of failure in
+	//  evaluation pipeline.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.EvaluationStatus.pipeline_status
+	PipelineStatus *common.Status `json:"pipelineStatus,omitempty"`
+}
+
+/* unreachable type FewShotExampleObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.FewShotExample
+type FewShotExampleObservedState struct {
+	// Required. Example output of the model.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.FewShotExample.output
+	Output *GeneratorSuggestionObservedState `json:"output,omitempty"`
+}
+*/
+
+/* unreachable type GeneratorObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.Generator
+type GeneratorObservedState struct {
+	// Output only. Identifier. The resource name of the generator. Format:
+	//  `projects/<Project ID>/locations/<Location ID>/generators/<Generator ID>`
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.name
+	Name *string `json:"name,omitempty"`
+
+	// Input of prebuilt Agent Coaching feature.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.agent_coaching_context
+	AgentCoachingContext *AgentCoachingContextObservedState `json:"agentCoachingContext,omitempty"`
+
+	// Input of prebuilt Summarization feature.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.summarization_context
+	SummarizationContext *SummarizationContextObservedState `json:"summarizationContext,omitempty"`
+
+	// Output only. Creation time of this generator.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Update time of this generator.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* unreachable type GeneratorSuggestionObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.GeneratorSuggestion
+type GeneratorSuggestionObservedState struct {
+	// Optional. Suggestion to coach the agent.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.agent_coaching_suggestion
+	AgentCoachingSuggestion *AgentCoachingSuggestionObservedState `json:"agentCoachingSuggestion,omitempty"`
+
+	// Optional. List of request and response for tool calls executed.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.tool_call_info
+	ToolCallInfo []GeneratorSuggestion_ToolCallInfoObservedState `json:"toolCallInfo,omitempty"`
+}
+*/
+
+/* unreachable type GeneratorSuggestion_ToolCallInfoObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.GeneratorSuggestion.ToolCallInfo
+type GeneratorSuggestion_ToolCallInfoObservedState struct {
+	// Required. Request for a tool call.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.ToolCallInfo.tool_call
+	ToolCall *ToolCallObservedState `json:"toolCall,omitempty"`
+
+	// Required. Response for a tool call.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.ToolCallInfo.tool_call_result
+	ToolCallResult *ToolCallResultObservedState `json:"toolCallResult,omitempty"`
+}
+*/
+
+/* unreachable type SummarizationContextObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.SummarizationContext
+type SummarizationContextObservedState struct {
+	// Optional. List of few shot examples.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationContext.few_shot_examples
+	FewShotExamples []FewShotExampleObservedState `json:"fewShotExamples,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics
+type SummarizationEvaluationMetricsObservedState struct {
+	// Output only. A list of evaluation results per conversation(&summary),
+	//  metric and section.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.summarization_evaluation_results
+	SummarizationEvaluationResults []SummarizationEvaluationMetrics_SummarizationEvaluationResultObservedState `json:"summarizationEvaluationResults,omitempty"`
+
+	// Output only. User bucket uri for merged evaluation score and aggregation
+	//  score csv.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.summarization_evaluation_merged_results_uri
+	SummarizationEvaluationMergedResultsURI *string `json:"summarizationEvaluationMergedResultsURI,omitempty"`
+
+	// Output only. A list of aggregated(average) scores per metric section.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.overall_metrics
+	OverallMetrics []SummarizationEvaluationMetrics_OverallScoresByMetricObservedState `json:"overallMetrics,omitempty"`
+
+	// Output only. Overall token per section. This is an aggregated(sum) result
+	//  of input token of summary acorss all conversations that are selected for
+	//  summarization evaluation.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.overall_section_tokens
+	OverallSectionTokens []SummarizationEvaluationMetrics_SectionTokenObservedState `json:"overallSectionTokens,omitempty"`
+
+	// Output only. List of conversation details.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.conversation_details
+	ConversationDetails []SummarizationEvaluationMetrics_ConversationDetailObservedState `json:"conversationDetails,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.AccuracyDecomposition
+type SummarizationEvaluationMetrics_AccuracyDecompositionObservedState struct {
+	// Output only. The breakdown point of the summary.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.AccuracyDecomposition.point
+	Point *string `json:"point,omitempty"`
+
+	// Output only. The accuracy reasoning of the breakdown point.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.AccuracyDecomposition.accuracy_reasoning
+	AccuracyReasoning *string `json:"accuracyReasoning,omitempty"`
+
+	// Output only. Whether the breakdown point is accurate or not.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.AccuracyDecomposition.is_accurate
+	IsAccurate *bool `json:"isAccurate,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.AdherenceDecomposition
+type SummarizationEvaluationMetrics_AdherenceDecompositionObservedState struct {
+	// Output only. The breakdown point of the given instructions.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.AdherenceDecomposition.point
+	Point *string `json:"point,omitempty"`
+
+	// Output only. The adherence reasoning of the breakdown point.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.AdherenceDecomposition.adherence_reasoning
+	AdherenceReasoning *string `json:"adherenceReasoning,omitempty"`
+
+	// Output only. Whether the breakdown point is adherent or not.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.AdherenceDecomposition.is_adherent
+	IsAdherent *bool `json:"isAdherent,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.AdherenceRubric
+type SummarizationEvaluationMetrics_AdherenceRubricObservedState struct {
+	// Output only. The question generated from instruction that used to
+	//  evaluate summary.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.AdherenceRubric.question
+	Question *string `json:"question,omitempty"`
+
+	// Output only. The reasoning of the rubric question is addressed or not.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.AdherenceRubric.reasoning
+	Reasoning *string `json:"reasoning,omitempty"`
+
+	// Output only. A boolean that indicates whether the rubric question is
+	//  addressed or not.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.AdherenceRubric.is_addressed
+	IsAddressed *bool `json:"isAddressed,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.CompletenessRubric
+type SummarizationEvaluationMetrics_CompletenessRubricObservedState struct {
+	// Output only. The question generated from instruction that used to
+	//  evaluate summary.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.CompletenessRubric.question
+	Question *string `json:"question,omitempty"`
+
+	// Output only. A boolean that indicates whether the rubric question is
+	//  addressed or not.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.CompletenessRubric.is_addressed
+	IsAddressed *bool `json:"isAddressed,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.ConversationDetail
+type SummarizationEvaluationMetrics_ConversationDetailObservedState struct {
+	// Output only. Conversation transcript that used for summarization
+	//  evaluation as a reference.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.ConversationDetail.message_entries
+	MessageEntries []MessageEntry `json:"messageEntries,omitempty"`
+
+	// Output only. Summary sections that used for summarization evaluation as a
+	//  reference.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.ConversationDetail.summary_sections
+	SummarySections []SummarySuggestion_SummarySectionObservedState `json:"summarySections,omitempty"`
+
+	// Output only. List of metric details.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.ConversationDetail.metric_details
+	MetricDetails []SummarizationEvaluationMetrics_ConversationDetail_MetricDetailObservedState `json:"metricDetails,omitempty"`
+
+	// Output only. Conversation level token count per section. This is an
+	//  aggregated(sum) result of input token of summary acorss all metrics for a
+	//  single conversation.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.ConversationDetail.section_tokens
+	SectionTokens []SummarizationEvaluationMetrics_SectionTokenObservedState `json:"sectionTokens,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.ConversationDetail.MetricDetail
+type SummarizationEvaluationMetrics_ConversationDetail_MetricDetailObservedState struct {
+	// Output only. Metrics name. e.g. accuracy, adherence, completeness.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.ConversationDetail.MetricDetail.metric
+	Metric *string `json:"metric,omitempty"`
+
+	// Output only. Aggregated(average) score on this metric across all
+	//  sections.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.ConversationDetail.MetricDetail.score
+	Score *float32 `json:"score,omitempty"`
+
+	// Output only. List of section details.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.ConversationDetail.MetricDetail.section_details
+	SectionDetails []SummarizationEvaluationMetrics_ConversationDetail_MetricDetail_SectionDetailObservedState `json:"sectionDetails,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.ConversationDetail.MetricDetail.SectionDetail
+type SummarizationEvaluationMetrics_ConversationDetail_MetricDetail_SectionDetailObservedState struct {
+	// Output only. The name of the summary instruction.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.ConversationDetail.MetricDetail.SectionDetail.section
+	Section *string `json:"section,omitempty"`
+
+	// Output only. Aggregated(average) score on this section across all
+	//  evaluation results. Either decompositions or rubrics.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.ConversationDetail.MetricDetail.SectionDetail.score
+	Score *float32 `json:"score,omitempty"`
+
+	// Output only. Summary for this section
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.ConversationDetail.MetricDetail.SectionDetail.section_summary
+	SectionSummary *string `json:"sectionSummary,omitempty"`
+
+	// Output only. List of evaluation result. The list only contains one
+	//  kind of the evaluation result.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.ConversationDetail.MetricDetail.SectionDetail.evaluation_results
+	EvaluationResults []SummarizationEvaluationMetrics_EvaluationResultObservedState `json:"evaluationResults,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.Decomposition
+type SummarizationEvaluationMetrics_DecompositionObservedState struct {
+	// only available for accuracy metric.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.Decomposition.accuracy_decomposition
+	AccuracyDecomposition *SummarizationEvaluationMetrics_AccuracyDecompositionObservedState `json:"accuracyDecomposition,omitempty"`
+
+	// only available for adherence metric.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.Decomposition.adherence_decomposition
+	AdherenceDecomposition *SummarizationEvaluationMetrics_AdherenceDecompositionObservedState `json:"adherenceDecomposition,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.EvaluationResult
+type SummarizationEvaluationMetrics_EvaluationResultObservedState struct {
+	// Only available for accuracy metric.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.EvaluationResult.accuracy_decomposition
+	AccuracyDecomposition *SummarizationEvaluationMetrics_AccuracyDecompositionObservedState `json:"accuracyDecomposition,omitempty"`
+
+	// Only available for adherence metric.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.EvaluationResult.adherence_rubric
+	AdherenceRubric *SummarizationEvaluationMetrics_AdherenceRubricObservedState `json:"adherenceRubric,omitempty"`
+
+	// Only available for completeness metric.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.EvaluationResult.completeness_rubric
+	CompletenessRubric *SummarizationEvaluationMetrics_CompletenessRubricObservedState `json:"completenessRubric,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.OverallScoresByMetric
+type SummarizationEvaluationMetrics_OverallScoresByMetricObservedState struct {
+	// Output only. Metric name. e.g. accuracy, adherence, completeness.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.OverallScoresByMetric.metric
+	Metric *string `json:"metric,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.SectionToken
+type SummarizationEvaluationMetrics_SectionTokenObservedState struct {
+	// Output only. The name of the summary instruction.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.SectionToken.section
+	Section *string `json:"section,omitempty"`
+
+	// Output only. Token count.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.SectionToken.token_count
+	TokenCount *int64 `json:"tokenCount,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.SummarizationEvaluationResult
+type SummarizationEvaluationMetrics_SummarizationEvaluationResultObservedState struct {
+	// Output only. conversation session id
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.SummarizationEvaluationResult.session_id
+	SessionID *string `json:"sessionID,omitempty"`
+
+	// Output only. metric name, e.g. accuracy, completeness, adherence, etc.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.SummarizationEvaluationResult.metric
+	Metric *string `json:"metric,omitempty"`
+
+	// Output only. section/task name, e.g. action, situation, etc
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.SummarizationEvaluationResult.section
+	Section *string `json:"section,omitempty"`
+
+	// Output only. score calculated from decompositions
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.SummarizationEvaluationResult.score
+	Score *float32 `json:"score,omitempty"`
+
+	// Output only. Summary of this section
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.SummarizationEvaluationResult.section_summary
+	SectionSummary *string `json:"sectionSummary,omitempty"`
+
+	// Output only. List of decompostion details
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.SummarizationEvaluationResult.decompositions
+	Decompositions []SummarizationEvaluationMetrics_DecompositionObservedState `json:"decompositions,omitempty"`
+
+	// Output only. List of evaluation results.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationEvaluationMetrics.SummarizationEvaluationResult.evaluation_results
+	EvaluationResults []SummarizationEvaluationMetrics_EvaluationResultObservedState `json:"evaluationResults,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.SummarySuggestion.SummarySection
+type SummarySuggestion_SummarySectionObservedState struct {
+	// Required. Name of the section.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarySuggestion.SummarySection.section
+	Section *string `json:"section,omitempty"`
+
+	// Required. Summary text for the section.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarySuggestion.SummarySection.summary
+	Summary *string `json:"summary,omitempty"`
+}
+
+/* unreachable type ToolCallObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.ToolCall
+type ToolCallObservedState struct {
+	// Output only. Create time of the tool call.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCall.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. State of the tool call.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCall.state
+	State *string `json:"state,omitempty"`
+}
+*/
+
+/* unreachable type ToolCallResultObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.ToolCallResult
+type ToolCallResultObservedState struct {
+	// Output only. Create time of the tool call result.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+}
+*/

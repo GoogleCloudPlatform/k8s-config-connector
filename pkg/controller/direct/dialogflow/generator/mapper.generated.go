@@ -40,6 +40,7 @@ func AutomatedAgentConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutomatedA
 	out.SessionTTL = direct.StringDuration_FromProto(mapCtx, in.GetSessionTtl())
 	return out
 }
+
 func AutomatedAgentConfig_ToProto(mapCtx *direct.MapContext, in *krm.AutomatedAgentConfig) *pb.AutomatedAgentConfig {
 	if in == nil {
 		return nil
@@ -49,6 +50,7 @@ func AutomatedAgentConfig_ToProto(mapCtx *direct.MapContext, in *krm.AutomatedAg
 	out.SessionTtl = direct.StringDuration_ToProto(mapCtx, in.SessionTTL)
 	return out
 }
+
 func ConversationContext_FromProto(mapCtx *direct.MapContext, in *pb.ConversationContext) *krm.ConversationContext {
 	if in == nil {
 		return nil
@@ -57,6 +59,7 @@ func ConversationContext_FromProto(mapCtx *direct.MapContext, in *pb.Conversatio
 	out.MessageEntries = direct.Slice_FromProto(mapCtx, in.MessageEntries, MessageEntry_FromProto)
 	return out
 }
+
 func ConversationContext_ToProto(mapCtx *direct.MapContext, in *krm.ConversationContext) *pb.ConversationContext {
 	if in == nil {
 		return nil
@@ -65,6 +68,7 @@ func ConversationContext_ToProto(mapCtx *direct.MapContext, in *krm.Conversation
 	out.MessageEntries = direct.Slice_ToProto(mapCtx, in.MessageEntries, MessageEntry_ToProto)
 	return out
 }
+
 func ConversationInfo_FromProto(mapCtx *direct.MapContext, in *pb.ConversationInfo) *krm.ConversationInfo {
 	if in == nil {
 		return nil
@@ -73,6 +77,7 @@ func ConversationInfo_FromProto(mapCtx *direct.MapContext, in *pb.ConversationIn
 	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
 	return out
 }
+
 func ConversationInfo_ToProto(mapCtx *direct.MapContext, in *krm.ConversationInfo) *pb.ConversationInfo {
 	if in == nil {
 		return nil
@@ -81,6 +86,7 @@ func ConversationInfo_ToProto(mapCtx *direct.MapContext, in *krm.ConversationInf
 	out.LanguageCode = direct.ValueOf(in.LanguageCode)
 	return out
 }
+
 func DialogflowConversationDatasetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConversationDataset) *krm.DialogflowConversationDatasetObservedState {
 	if in == nil {
 		return nil
@@ -95,6 +101,7 @@ func DialogflowConversationDatasetObservedState_FromProto(mapCtx *direct.MapCont
 	out.SatisfiesPzs = in.SatisfiesPzs
 	return out
 }
+
 func DialogflowConversationDatasetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowConversationDatasetObservedState) *pb.ConversationDataset {
 	if in == nil {
 		return nil
@@ -109,6 +116,7 @@ func DialogflowConversationDatasetObservedState_ToProto(mapCtx *direct.MapContex
 	out.SatisfiesPzs = in.SatisfiesPzs
 	return out
 }
+
 func DialogflowConversationDatasetSpec_FromProto(mapCtx *direct.MapContext, in *pb.ConversationDataset) *krm.DialogflowConversationDatasetSpec {
 	if in == nil {
 		return nil
@@ -119,6 +127,7 @@ func DialogflowConversationDatasetSpec_FromProto(mapCtx *direct.MapContext, in *
 	out.Description = direct.LazyPtr(in.GetDescription())
 	return out
 }
+
 func DialogflowConversationDatasetSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowConversationDatasetSpec) *pb.ConversationDataset {
 	if in == nil {
 		return nil
@@ -129,6 +138,7 @@ func DialogflowConversationDatasetSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
+
 func DialogflowConversationModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConversationModel) *krm.DialogflowConversationModelObservedState {
 	if in == nil {
 		return nil
@@ -141,6 +151,7 @@ func DialogflowConversationModelObservedState_FromProto(mapCtx *direct.MapContex
 	out.SatisfiesPzi = in.SatisfiesPzi
 	return out
 }
+
 func DialogflowConversationModelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowConversationModelObservedState) *pb.ConversationModel {
 	if in == nil {
 		return nil
@@ -153,6 +164,7 @@ func DialogflowConversationModelObservedState_ToProto(mapCtx *direct.MapContext,
 	out.SatisfiesPzi = in.SatisfiesPzi
 	return out
 }
+
 func DialogflowConversationModelSpec_FromProto(mapCtx *direct.MapContext, in *pb.ConversationModel) *krm.DialogflowConversationModelSpec {
 	if in == nil {
 		return nil
@@ -166,6 +178,7 @@ func DialogflowConversationModelSpec_FromProto(mapCtx *direct.MapContext, in *pb
 	out.SmartReplyModelMetadata = SmartReplyModelMetadata_FromProto(mapCtx, in.GetSmartReplyModelMetadata())
 	return out
 }
+
 func DialogflowConversationModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowConversationModelSpec) *pb.ConversationModel {
 	if in == nil {
 		return nil
@@ -183,6 +196,7 @@ func DialogflowConversationModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.
 	}
 	return out
 }
+
 func DialogflowConversationProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConversationProfile) *krm.DialogflowConversationProfileObservedState {
 	if in == nil {
 		return nil
@@ -193,6 +207,7 @@ func DialogflowConversationProfileObservedState_FromProto(mapCtx *direct.MapCont
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
+
 func DialogflowConversationProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowConversationProfileObservedState) *pb.ConversationProfile {
 	if in == nil {
 		return nil
@@ -203,6 +218,7 @@ func DialogflowConversationProfileObservedState_ToProto(mapCtx *direct.MapContex
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
+
 func DialogflowConversationProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.ConversationProfile) *krm.DialogflowConversationProfileSpec {
 	if in == nil {
 		return nil
@@ -226,6 +242,7 @@ func DialogflowConversationProfileSpec_FromProto(mapCtx *direct.MapContext, in *
 	out.TtsConfig = SynthesizeSpeechConfig_FromProto(mapCtx, in.GetTtsConfig())
 	return out
 }
+
 func DialogflowConversationProfileSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowConversationProfileSpec) *pb.ConversationProfile {
 	if in == nil {
 		return nil
@@ -249,6 +266,7 @@ func DialogflowConversationProfileSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	out.TtsConfig = SynthesizeSpeechConfig_ToProto(mapCtx, in.TtsConfig)
 	return out
 }
+
 func DialogflowGeneratorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Generator) *krm.DialogflowGeneratorObservedState {
 	if in == nil {
 		return nil
@@ -259,6 +277,7 @@ func DialogflowGeneratorObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
+
 func DialogflowGeneratorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowGeneratorObservedState) *pb.Generator {
 	if in == nil {
 		return nil
@@ -269,6 +288,7 @@ func DialogflowGeneratorObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
+
 func DialogflowGeneratorSpec_FromProto(mapCtx *direct.MapContext, in *pb.Generator) *krm.DialogflowGeneratorSpec {
 	if in == nil {
 		return nil
@@ -283,6 +303,7 @@ func DialogflowGeneratorSpec_FromProto(mapCtx *direct.MapContext, in *pb.Generat
 	out.PublishedModel = direct.LazyPtr(in.GetPublishedModel())
 	return out
 }
+
 func DialogflowGeneratorSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowGeneratorSpec) *pb.Generator {
 	if in == nil {
 		return nil
@@ -303,12 +324,14 @@ func DialogflowGeneratorSpec_ToProto(mapCtx *direct.MapContext, in *krm.Dialogfl
 	}
 	return out
 }
+
 func DialogflowGeneratorSpec_PublishedModel_ToProto(mapCtx *direct.MapContext, in *string) *pb.Generator_PublishedModel {
 	if in == nil {
 		return nil
 	}
 	return &pb.Generator_PublishedModel{PublishedModel: *in}
 }
+
 func DialogflowKnowledgeBaseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KnowledgeBase) *krm.DialogflowKnowledgeBaseObservedState {
 	if in == nil {
 		return nil
@@ -317,6 +340,7 @@ func DialogflowKnowledgeBaseObservedState_FromProto(mapCtx *direct.MapContext, i
 	out.Name = direct.LazyPtr(in.GetName())
 	return out
 }
+
 func DialogflowKnowledgeBaseObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowKnowledgeBaseObservedState) *pb.KnowledgeBase {
 	if in == nil {
 		return nil
@@ -325,6 +349,7 @@ func DialogflowKnowledgeBaseObservedState_ToProto(mapCtx *direct.MapContext, in 
 	out.Name = direct.ValueOf(in.Name)
 	return out
 }
+
 func DialogflowKnowledgeBaseSpec_FromProto(mapCtx *direct.MapContext, in *pb.KnowledgeBase) *krm.DialogflowKnowledgeBaseSpec {
 	if in == nil {
 		return nil
@@ -334,6 +359,7 @@ func DialogflowKnowledgeBaseSpec_FromProto(mapCtx *direct.MapContext, in *pb.Kno
 	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
 	return out
 }
+
 func DialogflowKnowledgeBaseSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowKnowledgeBaseSpec) *pb.KnowledgeBase {
 	if in == nil {
 		return nil
@@ -343,6 +369,7 @@ func DialogflowKnowledgeBaseSpec_ToProto(mapCtx *direct.MapContext, in *krm.Dial
 	out.LanguageCode = direct.ValueOf(in.LanguageCode)
 	return out
 }
+
 func FewShotExample_FromProto(mapCtx *direct.MapContext, in *pb.FewShotExample) *krm.FewShotExample {
 	if in == nil {
 		return nil
@@ -354,6 +381,7 @@ func FewShotExample_FromProto(mapCtx *direct.MapContext, in *pb.FewShotExample) 
 	out.Output = GeneratorSuggestion_FromProto(mapCtx, in.GetOutput())
 	return out
 }
+
 func FewShotExample_ToProto(mapCtx *direct.MapContext, in *krm.FewShotExample) *pb.FewShotExample {
 	if in == nil {
 		return nil
@@ -367,6 +395,7 @@ func FewShotExample_ToProto(mapCtx *direct.MapContext, in *krm.FewShotExample) *
 	out.Output = GeneratorSuggestion_ToProto(mapCtx, in.Output)
 	return out
 }
+
 func FreeFormContext_FromProto(mapCtx *direct.MapContext, in *pb.FreeFormContext) *krm.FreeFormContext {
 	if in == nil {
 		return nil
@@ -375,6 +404,7 @@ func FreeFormContext_FromProto(mapCtx *direct.MapContext, in *pb.FreeFormContext
 	out.Text = direct.LazyPtr(in.GetText())
 	return out
 }
+
 func FreeFormContext_ToProto(mapCtx *direct.MapContext, in *krm.FreeFormContext) *pb.FreeFormContext {
 	if in == nil {
 		return nil
@@ -383,6 +413,7 @@ func FreeFormContext_ToProto(mapCtx *direct.MapContext, in *krm.FreeFormContext)
 	out.Text = direct.ValueOf(in.Text)
 	return out
 }
+
 func FreeFormSuggestion_FromProto(mapCtx *direct.MapContext, in *pb.FreeFormSuggestion) *krm.FreeFormSuggestion {
 	if in == nil {
 		return nil
@@ -391,6 +422,7 @@ func FreeFormSuggestion_FromProto(mapCtx *direct.MapContext, in *pb.FreeFormSugg
 	out.Response = direct.LazyPtr(in.GetResponse())
 	return out
 }
+
 func FreeFormSuggestion_ToProto(mapCtx *direct.MapContext, in *krm.FreeFormSuggestion) *pb.FreeFormSuggestion {
 	if in == nil {
 		return nil
@@ -399,6 +431,7 @@ func FreeFormSuggestion_ToProto(mapCtx *direct.MapContext, in *krm.FreeFormSugge
 	out.Response = direct.ValueOf(in.Response)
 	return out
 }
+
 func GCSSources_FromProto(mapCtx *direct.MapContext, in *pb.GcsSources) *krm.GCSSources {
 	if in == nil {
 		return nil
@@ -407,6 +440,7 @@ func GCSSources_FromProto(mapCtx *direct.MapContext, in *pb.GcsSources) *krm.GCS
 	out.Uris = in.Uris
 	return out
 }
+
 func GCSSources_ToProto(mapCtx *direct.MapContext, in *krm.GCSSources) *pb.GcsSources {
 	if in == nil {
 		return nil
@@ -415,6 +449,7 @@ func GCSSources_ToProto(mapCtx *direct.MapContext, in *krm.GCSSources) *pb.GcsSo
 	out.Uris = in.Uris
 	return out
 }
+
 func GeneratorSuggestion_FromProto(mapCtx *direct.MapContext, in *pb.GeneratorSuggestion) *krm.GeneratorSuggestion {
 	if in == nil {
 		return nil
@@ -424,6 +459,7 @@ func GeneratorSuggestion_FromProto(mapCtx *direct.MapContext, in *pb.GeneratorSu
 	out.SummarySuggestion = SummarySuggestion_FromProto(mapCtx, in.GetSummarySuggestion())
 	return out
 }
+
 func GeneratorSuggestion_ToProto(mapCtx *direct.MapContext, in *krm.GeneratorSuggestion) *pb.GeneratorSuggestion {
 	if in == nil {
 		return nil
@@ -437,6 +473,7 @@ func GeneratorSuggestion_ToProto(mapCtx *direct.MapContext, in *krm.GeneratorSug
 	}
 	return out
 }
+
 func HumanAgentAssistantConfig_FromProto(mapCtx *direct.MapContext, in *pb.HumanAgentAssistantConfig) *krm.HumanAgentAssistantConfig {
 	if in == nil {
 		return nil
@@ -448,6 +485,7 @@ func HumanAgentAssistantConfig_FromProto(mapCtx *direct.MapContext, in *pb.Human
 	out.MessageAnalysisConfig = HumanAgentAssistantConfig_MessageAnalysisConfig_FromProto(mapCtx, in.GetMessageAnalysisConfig())
 	return out
 }
+
 func HumanAgentAssistantConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig) *pb.HumanAgentAssistantConfig {
 	if in == nil {
 		return nil
@@ -459,6 +497,7 @@ func HumanAgentAssistantConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanA
 	out.MessageAnalysisConfig = HumanAgentAssistantConfig_MessageAnalysisConfig_ToProto(mapCtx, in.MessageAnalysisConfig)
 	return out
 }
+
 func HumanAgentAssistantConfig_ConversationModelConfig_FromProto(mapCtx *direct.MapContext, in *pb.HumanAgentAssistantConfig_ConversationModelConfig) *krm.HumanAgentAssistantConfig_ConversationModelConfig {
 	if in == nil {
 		return nil
@@ -470,6 +509,7 @@ func HumanAgentAssistantConfig_ConversationModelConfig_FromProto(mapCtx *direct.
 	out.BaselineModelVersion = direct.LazyPtr(in.GetBaselineModelVersion())
 	return out
 }
+
 func HumanAgentAssistantConfig_ConversationModelConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_ConversationModelConfig) *pb.HumanAgentAssistantConfig_ConversationModelConfig {
 	if in == nil {
 		return nil
@@ -481,6 +521,7 @@ func HumanAgentAssistantConfig_ConversationModelConfig_ToProto(mapCtx *direct.Ma
 	out.BaselineModelVersion = direct.ValueOf(in.BaselineModelVersion)
 	return out
 }
+
 func HumanAgentAssistantConfig_ConversationProcessConfig_FromProto(mapCtx *direct.MapContext, in *pb.HumanAgentAssistantConfig_ConversationProcessConfig) *krm.HumanAgentAssistantConfig_ConversationProcessConfig {
 	if in == nil {
 		return nil
@@ -489,6 +530,7 @@ func HumanAgentAssistantConfig_ConversationProcessConfig_FromProto(mapCtx *direc
 	out.RecentSentencesCount = direct.LazyPtr(in.GetRecentSentencesCount())
 	return out
 }
+
 func HumanAgentAssistantConfig_ConversationProcessConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_ConversationProcessConfig) *pb.HumanAgentAssistantConfig_ConversationProcessConfig {
 	if in == nil {
 		return nil
@@ -497,6 +539,7 @@ func HumanAgentAssistantConfig_ConversationProcessConfig_ToProto(mapCtx *direct.
 	out.RecentSentencesCount = direct.ValueOf(in.RecentSentencesCount)
 	return out
 }
+
 func HumanAgentAssistantConfig_MessageAnalysisConfig_FromProto(mapCtx *direct.MapContext, in *pb.HumanAgentAssistantConfig_MessageAnalysisConfig) *krm.HumanAgentAssistantConfig_MessageAnalysisConfig {
 	if in == nil {
 		return nil
@@ -506,6 +549,7 @@ func HumanAgentAssistantConfig_MessageAnalysisConfig_FromProto(mapCtx *direct.Ma
 	out.EnableSentimentAnalysis = direct.LazyPtr(in.GetEnableSentimentAnalysis())
 	return out
 }
+
 func HumanAgentAssistantConfig_MessageAnalysisConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_MessageAnalysisConfig) *pb.HumanAgentAssistantConfig_MessageAnalysisConfig {
 	if in == nil {
 		return nil
@@ -515,6 +559,7 @@ func HumanAgentAssistantConfig_MessageAnalysisConfig_ToProto(mapCtx *direct.MapC
 	out.EnableSentimentAnalysis = direct.ValueOf(in.EnableSentimentAnalysis)
 	return out
 }
+
 func HumanAgentAssistantConfig_SuggestionConfig_FromProto(mapCtx *direct.MapContext, in *pb.HumanAgentAssistantConfig_SuggestionConfig) *krm.HumanAgentAssistantConfig_SuggestionConfig {
 	if in == nil {
 		return nil
@@ -532,6 +577,7 @@ func HumanAgentAssistantConfig_SuggestionConfig_FromProto(mapCtx *direct.MapCont
 	out.DisableHighLatencyFeaturesSyncDelivery = direct.LazyPtr(in.GetDisableHighLatencyFeaturesSyncDelivery())
 	return out
 }
+
 func HumanAgentAssistantConfig_SuggestionConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_SuggestionConfig) *pb.HumanAgentAssistantConfig_SuggestionConfig {
 	if in == nil {
 		return nil
@@ -549,6 +595,7 @@ func HumanAgentAssistantConfig_SuggestionConfig_ToProto(mapCtx *direct.MapContex
 	out.DisableHighLatencyFeaturesSyncDelivery = direct.ValueOf(in.DisableHighLatencyFeaturesSyncDelivery)
 	return out
 }
+
 func HumanAgentAssistantConfig_SuggestionFeatureConfig_FromProto(mapCtx *direct.MapContext, in *pb.HumanAgentAssistantConfig_SuggestionFeatureConfig) *krm.HumanAgentAssistantConfig_SuggestionFeatureConfig {
 	if in == nil {
 		return nil
@@ -566,6 +613,7 @@ func HumanAgentAssistantConfig_SuggestionFeatureConfig_FromProto(mapCtx *direct.
 	out.ConversationProcessConfig = HumanAgentAssistantConfig_ConversationProcessConfig_FromProto(mapCtx, in.GetConversationProcessConfig())
 	return out
 }
+
 func HumanAgentAssistantConfig_SuggestionFeatureConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_SuggestionFeatureConfig) *pb.HumanAgentAssistantConfig_SuggestionFeatureConfig {
 	if in == nil {
 		return nil
@@ -583,6 +631,7 @@ func HumanAgentAssistantConfig_SuggestionFeatureConfig_ToProto(mapCtx *direct.Ma
 	out.ConversationProcessConfig = HumanAgentAssistantConfig_ConversationProcessConfig_ToProto(mapCtx, in.ConversationProcessConfig)
 	return out
 }
+
 func HumanAgentAssistantConfig_SuggestionQueryConfig_FromProto(mapCtx *direct.MapContext, in *pb.HumanAgentAssistantConfig_SuggestionQueryConfig) *krm.HumanAgentAssistantConfig_SuggestionQueryConfig {
 	if in == nil {
 		return nil
@@ -598,6 +647,7 @@ func HumanAgentAssistantConfig_SuggestionQueryConfig_FromProto(mapCtx *direct.Ma
 	out.ContextSize = direct.LazyPtr(in.GetContextSize())
 	return out
 }
+
 func HumanAgentAssistantConfig_SuggestionQueryConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_SuggestionQueryConfig) *pb.HumanAgentAssistantConfig_SuggestionQueryConfig {
 	if in == nil {
 		return nil
@@ -619,6 +669,7 @@ func HumanAgentAssistantConfig_SuggestionQueryConfig_ToProto(mapCtx *direct.MapC
 	out.ContextSize = direct.ValueOf(in.ContextSize)
 	return out
 }
+
 func HumanAgentAssistantConfig_SuggestionQueryConfig_ContextFilterSettings_FromProto(mapCtx *direct.MapContext, in *pb.HumanAgentAssistantConfig_SuggestionQueryConfig_ContextFilterSettings) *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_ContextFilterSettings {
 	if in == nil {
 		return nil
@@ -629,6 +680,7 @@ func HumanAgentAssistantConfig_SuggestionQueryConfig_ContextFilterSettings_FromP
 	out.DropIvrMessages = direct.LazyPtr(in.GetDropIvrMessages())
 	return out
 }
+
 func HumanAgentAssistantConfig_SuggestionQueryConfig_ContextFilterSettings_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_ContextFilterSettings) *pb.HumanAgentAssistantConfig_SuggestionQueryConfig_ContextFilterSettings {
 	if in == nil {
 		return nil
@@ -639,6 +691,7 @@ func HumanAgentAssistantConfig_SuggestionQueryConfig_ContextFilterSettings_ToPro
 	out.DropIvrMessages = direct.ValueOf(in.DropIvrMessages)
 	return out
 }
+
 func HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_FromProto(mapCtx *direct.MapContext, in *pb.HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource) *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource {
 	if in == nil {
 		return nil
@@ -648,6 +701,7 @@ func HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_FromP
 	out.HumanAgentSideConfig = HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_HumanAgentSideConfig_FromProto(mapCtx, in.GetHumanAgentSideConfig())
 	return out
 }
+
 func HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource) *pb.HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource {
 	if in == nil {
 		return nil
@@ -657,6 +711,7 @@ func HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_ToPro
 	out.HumanAgentSideConfig = HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_HumanAgentSideConfig_ToProto(mapCtx, in.HumanAgentSideConfig)
 	return out
 }
+
 func HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_HumanAgentSideConfig_FromProto(mapCtx *direct.MapContext, in *pb.HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_HumanAgentSideConfig) *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_HumanAgentSideConfig {
 	if in == nil {
 		return nil
@@ -665,6 +720,7 @@ func HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_Human
 	out.Agent = direct.LazyPtr(in.GetAgent())
 	return out
 }
+
 func HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_HumanAgentSideConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_HumanAgentSideConfig) *pb.HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_HumanAgentSideConfig {
 	if in == nil {
 		return nil
@@ -673,6 +729,7 @@ func HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_Human
 	out.Agent = direct.ValueOf(in.Agent)
 	return out
 }
+
 func HumanAgentAssistantConfig_SuggestionQueryConfig_DocumentQuerySource_FromProto(mapCtx *direct.MapContext, in *pb.HumanAgentAssistantConfig_SuggestionQueryConfig_DocumentQuerySource) *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_DocumentQuerySource {
 	if in == nil {
 		return nil
@@ -681,6 +738,7 @@ func HumanAgentAssistantConfig_SuggestionQueryConfig_DocumentQuerySource_FromPro
 	out.Documents = in.Documents
 	return out
 }
+
 func HumanAgentAssistantConfig_SuggestionQueryConfig_DocumentQuerySource_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_DocumentQuerySource) *pb.HumanAgentAssistantConfig_SuggestionQueryConfig_DocumentQuerySource {
 	if in == nil {
 		return nil
@@ -689,6 +747,7 @@ func HumanAgentAssistantConfig_SuggestionQueryConfig_DocumentQuerySource_ToProto
 	out.Documents = in.Documents
 	return out
 }
+
 func HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource_FromProto(mapCtx *direct.MapContext, in *pb.HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource) *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource {
 	if in == nil {
 		return nil
@@ -703,6 +762,7 @@ func HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource_Fr
 
 	return out
 }
+
 func HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource) *pb.HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource {
 	if in == nil {
 		return nil
@@ -717,6 +777,7 @@ func HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource_To
 
 	return out
 }
+
 func HumanAgentAssistantConfig_SuggestionQueryConfig_Sections_FromProto(mapCtx *direct.MapContext, in *pb.HumanAgentAssistantConfig_SuggestionQueryConfig_Sections) *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_Sections {
 	if in == nil {
 		return nil
@@ -725,6 +786,7 @@ func HumanAgentAssistantConfig_SuggestionQueryConfig_Sections_FromProto(mapCtx *
 	out.SectionTypes = direct.EnumSlice_FromProto(mapCtx, in.SectionTypes)
 	return out
 }
+
 func HumanAgentAssistantConfig_SuggestionQueryConfig_Sections_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_Sections) *pb.HumanAgentAssistantConfig_SuggestionQueryConfig_Sections {
 	if in == nil {
 		return nil
@@ -733,6 +795,7 @@ func HumanAgentAssistantConfig_SuggestionQueryConfig_Sections_ToProto(mapCtx *di
 	out.SectionTypes = direct.EnumSlice_ToProto[pb.HumanAgentAssistantConfig_SuggestionQueryConfig_Sections_SectionType](mapCtx, in.SectionTypes)
 	return out
 }
+
 func HumanAgentAssistantConfig_SuggestionTriggerSettings_FromProto(mapCtx *direct.MapContext, in *pb.HumanAgentAssistantConfig_SuggestionTriggerSettings) *krm.HumanAgentAssistantConfig_SuggestionTriggerSettings {
 	if in == nil {
 		return nil
@@ -742,6 +805,7 @@ func HumanAgentAssistantConfig_SuggestionTriggerSettings_FromProto(mapCtx *direc
 	out.OnlyEndUser = direct.LazyPtr(in.GetOnlyEndUser())
 	return out
 }
+
 func HumanAgentAssistantConfig_SuggestionTriggerSettings_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_SuggestionTriggerSettings) *pb.HumanAgentAssistantConfig_SuggestionTriggerSettings {
 	if in == nil {
 		return nil
@@ -751,6 +815,7 @@ func HumanAgentAssistantConfig_SuggestionTriggerSettings_ToProto(mapCtx *direct.
 	out.OnlyEndUser = direct.ValueOf(in.OnlyEndUser)
 	return out
 }
+
 func HumanAgentHandoffConfig_FromProto(mapCtx *direct.MapContext, in *pb.HumanAgentHandoffConfig) *krm.HumanAgentHandoffConfig {
 	if in == nil {
 		return nil
@@ -760,6 +825,7 @@ func HumanAgentHandoffConfig_FromProto(mapCtx *direct.MapContext, in *pb.HumanAg
 	out.SalesforceLiveAgentConfig = HumanAgentHandoffConfig_SalesforceLiveAgentConfig_FromProto(mapCtx, in.GetSalesforceLiveAgentConfig())
 	return out
 }
+
 func HumanAgentHandoffConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentHandoffConfig) *pb.HumanAgentHandoffConfig {
 	if in == nil {
 		return nil
@@ -773,6 +839,7 @@ func HumanAgentHandoffConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAge
 	}
 	return out
 }
+
 func HumanAgentHandoffConfig_LivePersonConfig_FromProto(mapCtx *direct.MapContext, in *pb.HumanAgentHandoffConfig_LivePersonConfig) *krm.HumanAgentHandoffConfig_LivePersonConfig {
 	if in == nil {
 		return nil
@@ -781,6 +848,7 @@ func HumanAgentHandoffConfig_LivePersonConfig_FromProto(mapCtx *direct.MapContex
 	out.AccountNumber = direct.LazyPtr(in.GetAccountNumber())
 	return out
 }
+
 func HumanAgentHandoffConfig_LivePersonConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentHandoffConfig_LivePersonConfig) *pb.HumanAgentHandoffConfig_LivePersonConfig {
 	if in == nil {
 		return nil
@@ -789,6 +857,7 @@ func HumanAgentHandoffConfig_LivePersonConfig_ToProto(mapCtx *direct.MapContext,
 	out.AccountNumber = direct.ValueOf(in.AccountNumber)
 	return out
 }
+
 func HumanAgentHandoffConfig_SalesforceLiveAgentConfig_FromProto(mapCtx *direct.MapContext, in *pb.HumanAgentHandoffConfig_SalesforceLiveAgentConfig) *krm.HumanAgentHandoffConfig_SalesforceLiveAgentConfig {
 	if in == nil {
 		return nil
@@ -800,6 +869,7 @@ func HumanAgentHandoffConfig_SalesforceLiveAgentConfig_FromProto(mapCtx *direct.
 	out.EndpointDomain = direct.LazyPtr(in.GetEndpointDomain())
 	return out
 }
+
 func HumanAgentHandoffConfig_SalesforceLiveAgentConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentHandoffConfig_SalesforceLiveAgentConfig) *pb.HumanAgentHandoffConfig_SalesforceLiveAgentConfig {
 	if in == nil {
 		return nil
@@ -811,6 +881,7 @@ func HumanAgentHandoffConfig_SalesforceLiveAgentConfig_ToProto(mapCtx *direct.Ma
 	out.EndpointDomain = direct.ValueOf(in.EndpointDomain)
 	return out
 }
+
 func InferenceParameter_FromProto(mapCtx *direct.MapContext, in *pb.InferenceParameter) *krm.InferenceParameter {
 	if in == nil {
 		return nil
@@ -822,6 +893,7 @@ func InferenceParameter_FromProto(mapCtx *direct.MapContext, in *pb.InferencePar
 	out.TopP = in.TopP
 	return out
 }
+
 func InferenceParameter_ToProto(mapCtx *direct.MapContext, in *krm.InferenceParameter) *pb.InferenceParameter {
 	if in == nil {
 		return nil
@@ -833,6 +905,7 @@ func InferenceParameter_ToProto(mapCtx *direct.MapContext, in *krm.InferencePara
 	out.TopP = in.TopP
 	return out
 }
+
 func InputConfig_FromProto(mapCtx *direct.MapContext, in *pb.InputConfig) *krm.InputConfig {
 	if in == nil {
 		return nil
@@ -841,6 +914,7 @@ func InputConfig_FromProto(mapCtx *direct.MapContext, in *pb.InputConfig) *krm.I
 	out.GCSSource = GCSSources_FromProto(mapCtx, in.GetGcsSource())
 	return out
 }
+
 func InputConfig_ToProto(mapCtx *direct.MapContext, in *krm.InputConfig) *pb.InputConfig {
 	if in == nil {
 		return nil
@@ -851,6 +925,7 @@ func InputConfig_ToProto(mapCtx *direct.MapContext, in *krm.InputConfig) *pb.Inp
 	}
 	return out
 }
+
 func InputDataset_FromProto(mapCtx *direct.MapContext, in *pb.InputDataset) *krm.InputDataset {
 	if in == nil {
 		return nil
@@ -859,6 +934,7 @@ func InputDataset_FromProto(mapCtx *direct.MapContext, in *pb.InputDataset) *krm
 	out.Dataset = direct.LazyPtr(in.GetDataset())
 	return out
 }
+
 func InputDataset_ToProto(mapCtx *direct.MapContext, in *krm.InputDataset) *pb.InputDataset {
 	if in == nil {
 		return nil
@@ -867,6 +943,7 @@ func InputDataset_ToProto(mapCtx *direct.MapContext, in *krm.InputDataset) *pb.I
 	out.Dataset = direct.ValueOf(in.Dataset)
 	return out
 }
+
 func LoggingConfig_FromProto(mapCtx *direct.MapContext, in *pb.LoggingConfig) *krm.LoggingConfig {
 	if in == nil {
 		return nil
@@ -875,6 +952,7 @@ func LoggingConfig_FromProto(mapCtx *direct.MapContext, in *pb.LoggingConfig) *k
 	out.EnableStackdriverLogging = direct.LazyPtr(in.GetEnableStackdriverLogging())
 	return out
 }
+
 func LoggingConfig_ToProto(mapCtx *direct.MapContext, in *krm.LoggingConfig) *pb.LoggingConfig {
 	if in == nil {
 		return nil
@@ -883,6 +961,7 @@ func LoggingConfig_ToProto(mapCtx *direct.MapContext, in *krm.LoggingConfig) *pb
 	out.EnableStackdriverLogging = direct.ValueOf(in.EnableStackdriverLogging)
 	return out
 }
+
 func MessageEntry_FromProto(mapCtx *direct.MapContext, in *pb.MessageEntry) *krm.MessageEntry {
 	if in == nil {
 		return nil
@@ -894,6 +973,7 @@ func MessageEntry_FromProto(mapCtx *direct.MapContext, in *pb.MessageEntry) *krm
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	return out
 }
+
 func MessageEntry_ToProto(mapCtx *direct.MapContext, in *krm.MessageEntry) *pb.MessageEntry {
 	if in == nil {
 		return nil
@@ -905,6 +985,7 @@ func MessageEntry_ToProto(mapCtx *direct.MapContext, in *krm.MessageEntry) *pb.M
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	return out
 }
+
 func NotificationConfig_FromProto(mapCtx *direct.MapContext, in *pb.NotificationConfig) *krm.NotificationConfig {
 	if in == nil {
 		return nil
@@ -916,6 +997,7 @@ func NotificationConfig_FromProto(mapCtx *direct.MapContext, in *pb.Notification
 	out.MessageFormat = direct.Enum_FromProto(mapCtx, in.GetMessageFormat())
 	return out
 }
+
 func NotificationConfig_ToProto(mapCtx *direct.MapContext, in *krm.NotificationConfig) *pb.NotificationConfig {
 	if in == nil {
 		return nil
@@ -927,6 +1009,7 @@ func NotificationConfig_ToProto(mapCtx *direct.MapContext, in *krm.NotificationC
 	out.MessageFormat = direct.Enum_ToProto[pb.NotificationConfig_MessageFormat](mapCtx, in.MessageFormat)
 	return out
 }
+
 func SpeechToTextConfig_FromProto(mapCtx *direct.MapContext, in *pb.SpeechToTextConfig) *krm.SpeechToTextConfig {
 	if in == nil {
 		return nil
@@ -948,6 +1031,7 @@ func SpeechToTextConfig_FromProto(mapCtx *direct.MapContext, in *pb.SpeechToText
 	out.UseTimeoutBasedEndpointing = direct.LazyPtr(in.GetUseTimeoutBasedEndpointing())
 	return out
 }
+
 func SpeechToTextConfig_ToProto(mapCtx *direct.MapContext, in *krm.SpeechToTextConfig) *pb.SpeechToTextConfig {
 	if in == nil {
 		return nil
@@ -969,6 +1053,7 @@ func SpeechToTextConfig_ToProto(mapCtx *direct.MapContext, in *krm.SpeechToTextC
 	out.UseTimeoutBasedEndpointing = direct.ValueOf(in.UseTimeoutBasedEndpointing)
 	return out
 }
+
 func SuggestionFeature_FromProto(mapCtx *direct.MapContext, in *pb.SuggestionFeature) *krm.SuggestionFeature {
 	if in == nil {
 		return nil
@@ -977,6 +1062,7 @@ func SuggestionFeature_FromProto(mapCtx *direct.MapContext, in *pb.SuggestionFea
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	return out
 }
+
 func SuggestionFeature_ToProto(mapCtx *direct.MapContext, in *krm.SuggestionFeature) *pb.SuggestionFeature {
 	if in == nil {
 		return nil
@@ -985,6 +1071,7 @@ func SuggestionFeature_ToProto(mapCtx *direct.MapContext, in *krm.SuggestionFeat
 	out.Type = direct.Enum_ToProto[pb.SuggestionFeature_Type](mapCtx, in.Type)
 	return out
 }
+
 func SummarizationContext_FromProto(mapCtx *direct.MapContext, in *pb.SummarizationContext) *krm.SummarizationContext {
 	if in == nil {
 		return nil
@@ -996,6 +1083,7 @@ func SummarizationContext_FromProto(mapCtx *direct.MapContext, in *pb.Summarizat
 	out.OutputLanguageCode = direct.LazyPtr(in.GetOutputLanguageCode())
 	return out
 }
+
 func SummarizationContext_ToProto(mapCtx *direct.MapContext, in *krm.SummarizationContext) *pb.SummarizationContext {
 	if in == nil {
 		return nil
@@ -1007,6 +1095,7 @@ func SummarizationContext_ToProto(mapCtx *direct.MapContext, in *krm.Summarizati
 	out.OutputLanguageCode = direct.ValueOf(in.OutputLanguageCode)
 	return out
 }
+
 func SummarizationSection_FromProto(mapCtx *direct.MapContext, in *pb.SummarizationSection) *krm.SummarizationSection {
 	if in == nil {
 		return nil
@@ -1017,6 +1106,7 @@ func SummarizationSection_FromProto(mapCtx *direct.MapContext, in *pb.Summarizat
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	return out
 }
+
 func SummarizationSection_ToProto(mapCtx *direct.MapContext, in *krm.SummarizationSection) *pb.SummarizationSection {
 	if in == nil {
 		return nil
@@ -1027,6 +1117,7 @@ func SummarizationSection_ToProto(mapCtx *direct.MapContext, in *krm.Summarizati
 	out.Type = direct.Enum_ToProto[pb.SummarizationSection_Type](mapCtx, in.Type)
 	return out
 }
+
 func SummarizationSectionList_FromProto(mapCtx *direct.MapContext, in *pb.SummarizationSectionList) *krm.SummarizationSectionList {
 	if in == nil {
 		return nil
@@ -1035,6 +1126,7 @@ func SummarizationSectionList_FromProto(mapCtx *direct.MapContext, in *pb.Summar
 	out.SummarizationSections = direct.Slice_FromProto(mapCtx, in.SummarizationSections, SummarizationSection_FromProto)
 	return out
 }
+
 func SummarizationSectionList_ToProto(mapCtx *direct.MapContext, in *krm.SummarizationSectionList) *pb.SummarizationSectionList {
 	if in == nil {
 		return nil
@@ -1043,6 +1135,7 @@ func SummarizationSectionList_ToProto(mapCtx *direct.MapContext, in *krm.Summari
 	out.SummarizationSections = direct.Slice_ToProto(mapCtx, in.SummarizationSections, SummarizationSection_ToProto)
 	return out
 }
+
 func SummarySuggestion_FromProto(mapCtx *direct.MapContext, in *pb.SummarySuggestion) *krm.SummarySuggestion {
 	if in == nil {
 		return nil
@@ -1051,6 +1144,7 @@ func SummarySuggestion_FromProto(mapCtx *direct.MapContext, in *pb.SummarySugges
 	out.SummarySections = direct.Slice_FromProto(mapCtx, in.SummarySections, SummarySuggestion_SummarySection_FromProto)
 	return out
 }
+
 func SummarySuggestion_ToProto(mapCtx *direct.MapContext, in *krm.SummarySuggestion) *pb.SummarySuggestion {
 	if in == nil {
 		return nil
@@ -1059,6 +1153,7 @@ func SummarySuggestion_ToProto(mapCtx *direct.MapContext, in *krm.SummarySuggest
 	out.SummarySections = direct.Slice_ToProto(mapCtx, in.SummarySections, SummarySuggestion_SummarySection_ToProto)
 	return out
 }
+
 func SummarySuggestion_SummarySection_FromProto(mapCtx *direct.MapContext, in *pb.SummarySuggestion_SummarySection) *krm.SummarySuggestion_SummarySection {
 	if in == nil {
 		return nil
@@ -1068,6 +1163,7 @@ func SummarySuggestion_SummarySection_FromProto(mapCtx *direct.MapContext, in *p
 	out.Summary = direct.LazyPtr(in.GetSummary())
 	return out
 }
+
 func SummarySuggestion_SummarySection_ToProto(mapCtx *direct.MapContext, in *krm.SummarySuggestion_SummarySection) *pb.SummarySuggestion_SummarySection {
 	if in == nil {
 		return nil
@@ -1077,6 +1173,7 @@ func SummarySuggestion_SummarySection_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Summary = direct.ValueOf(in.Summary)
 	return out
 }
+
 func SynthesizeSpeechConfig_FromProto(mapCtx *direct.MapContext, in *pb.SynthesizeSpeechConfig) *krm.SynthesizeSpeechConfig {
 	if in == nil {
 		return nil
@@ -1089,6 +1186,7 @@ func SynthesizeSpeechConfig_FromProto(mapCtx *direct.MapContext, in *pb.Synthesi
 	out.Voice = VoiceSelectionParams_FromProto(mapCtx, in.GetVoice())
 	return out
 }
+
 func SynthesizeSpeechConfig_ToProto(mapCtx *direct.MapContext, in *krm.SynthesizeSpeechConfig) *pb.SynthesizeSpeechConfig {
 	if in == nil {
 		return nil
@@ -1101,6 +1199,7 @@ func SynthesizeSpeechConfig_ToProto(mapCtx *direct.MapContext, in *krm.Synthesiz
 	out.Voice = VoiceSelectionParams_ToProto(mapCtx, in.Voice)
 	return out
 }
+
 func VoiceSelectionParams_FromProto(mapCtx *direct.MapContext, in *pb.VoiceSelectionParams) *krm.VoiceSelectionParams {
 	if in == nil {
 		return nil
@@ -1110,6 +1209,7 @@ func VoiceSelectionParams_FromProto(mapCtx *direct.MapContext, in *pb.VoiceSelec
 	out.SsmlGender = direct.Enum_FromProto(mapCtx, in.GetSsmlGender())
 	return out
 }
+
 func VoiceSelectionParams_ToProto(mapCtx *direct.MapContext, in *krm.VoiceSelectionParams) *pb.VoiceSelectionParams {
 	if in == nil {
 		return nil

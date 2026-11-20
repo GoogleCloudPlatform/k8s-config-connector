@@ -21,8 +21,28 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.ToolCall
+type ToolCall struct {
+	// Required. The [tool][google.cloud.dialogflow.cx.v3.Tool] associated with
+	//  this call. Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ToolCall.tool
+	// +required
+	Tool *string `json:"tool,omitempty"`
+
+	// Required. The name of the tool's action associated with this call.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ToolCall.action
+	// +required
+	Action *string `json:"action,omitempty"`
+
+	// Optional. The action's input parameters.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ToolCall.input_parameters
+	InputParameters apiextensionsv1.JSON `json:"inputParameters,omitempty"`
+}
 
 var DialogflowPlaybookGVK = GroupVersion.WithKind("DialogflowPlaybook")
 
