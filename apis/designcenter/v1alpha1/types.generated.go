@@ -370,18 +370,18 @@ type DeveloperConnectConfig struct {
 	GitRepositoryLink *string `json:"gitRepositoryLink,omitempty"`
 }
 
+/* found existing non-generated go type "DeveloperConnectSourceConfig", skipping
+
 // +kcc:proto=google.cloud.designcenter.v1.DeveloperConnectSourceConfig
 type DeveloperConnectSourceConfig struct {
 	// Required. The Developer Connect Git repository link, formatted as
-	//  `projects/*/locations/*/connections/*/gitRepositoryLinks/*`.
+	//  `projects/* /locations/* /connections/* /gitRepositoryLinks/*`.
 	// +kcc:proto:field=google.cloud.designcenter.v1.DeveloperConnectSourceConfig.developer_connect_repo_uri
-	// +required
 	DeveloperConnectRepoURI *string `json:"developerConnectRepoURI,omitempty"`
 
 	// Required. The reference (for example, a branch, tag, or commit SHA) from
 	//  which the content should be read.
 	// +kcc:proto:field=google.cloud.designcenter.v1.DeveloperConnectSourceConfig.reference
-	// +required
 	Reference *GitReference `json:"reference,omitempty"`
 
 	// Required. The sub-directory within the repository from which to read
@@ -389,9 +389,9 @@ type DeveloperConnectSourceConfig struct {
 	//  dir1/dir2. To read content from the root dir, provide "/" as the value of
 	//  the field.
 	// +kcc:proto:field=google.cloud.designcenter.v1.DeveloperConnectSourceConfig.dir
-	// +required
 	Dir *string `json:"dir,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "DisplayVariable", skipping
 

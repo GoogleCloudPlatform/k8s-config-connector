@@ -14,34 +14,50 @@
 
 // API sources for DesignCenterCatalogTemplateRevision, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/547f8fdb4b91dbac70d540b3757520f0608ae356/google/cloud/designcenter/v1/catalog_management.proto
-// +kcc:guess=source-link reason=verify-service-docs-link
-// +kcc:source:service-docs=
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=
+// +kcc:source:service-docs=https://cloud.google.com/application-design-center/docs
+// +kcc:source:resource-docs=https://cloud.google.com/application-design-center/docs/reference/rest/v1/projects.locations.spaces.catalogs.templates.revisions
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	developerconnectv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/developerconnect/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var DesignCenterCatalogTemplateRevisionGVK = GroupVersion.WithKind("DesignCenterCatalogTemplateRevision")
 
+// +kcc:proto=google.cloud.designcenter.v1.DeveloperConnectSourceConfig
+type DeveloperConnectSourceConfig struct {
+	// Required. The Developer Connect Git repository link, formatted as
+	//  `projects/*/locations/*/connections/*/gitRepositoryLinks/*`.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeveloperConnectSourceConfig.developer_connect_repo_uri
+	// +required
+	DeveloperConnectRepoRef *developerconnectv1alpha1.DeveloperConnectGitRepositoryLinkRef `json:"developerConnectRepoRef,omitempty"`
+
+	// Required. The reference (for example, a branch, tag, or commit SHA) from
+	//  which the content should be read.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeveloperConnectSourceConfig.reference
+	// +required
+	Reference *GitReference `json:"reference,omitempty"`
+
+	// Required. The sub-directory within the repository from which to read
+	//  content. The path must be relative to the repository's root such as
+	//  dir1/dir2. To read content from the root dir, provide "/" as the value of
+	//  the field.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeveloperConnectSourceConfig.dir
+	// +required
+	Dir *string `json:"dir,omitempty"`
+}
+
 // DesignCenterCatalogTemplateRevisionSpec defines the desired state of DesignCenterCatalogTemplateRevision
 // +kcc:spec:proto=google.cloud.designcenter.v1.CatalogTemplateRevision
 // +kcc:required-from-proto
 type DesignCenterCatalogTemplateRevisionSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/spaces/{space}/catalogs/{catalog}/templates/{catalog_template} this resource belongs to.
-	// +kcc:guess
-	// TemplateRef *DesignCenterCatalogTemplateRef `json:"templateRef,omitempty"`
+	// The DesignCenterCatalogTemplate this DesignCenterCatalogTemplateRevision is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *DesignCenterCatalogTemplateRef `json:"parentRef"`
 
 	// The DesignCenterCatalogTemplateRevision name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

@@ -17,9 +17,38 @@ package designcenter
 import (
 	pb "cloud.google.com/go/designcenter/apiv1/designcenterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/designcenter/v1alpha1"
+	developerconnectv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/developerconnect/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/structpb"
 )
+
+func DeveloperConnectSourceConfig_FromProto(mapCtx *direct.MapContext, in *pb.DeveloperConnectSourceConfig) *krm.DeveloperConnectSourceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DeveloperConnectSourceConfig{}
+	if in.GetDeveloperConnectRepoUri() != "" {
+		out.DeveloperConnectRepoRef = &developerconnectv1alpha1.DeveloperConnectGitRepositoryLinkRef{
+			External: in.GetDeveloperConnectRepoUri(),
+		}
+	}
+	out.Reference = GitReference_FromProto(mapCtx, in.GetReference())
+	out.Dir = direct.LazyPtr(in.GetDir())
+	return out
+}
+
+func DeveloperConnectSourceConfig_ToProto(mapCtx *direct.MapContext, in *krm.DeveloperConnectSourceConfig) *pb.DeveloperConnectSourceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DeveloperConnectSourceConfig{}
+	if in.DeveloperConnectRepoRef != nil {
+		out.DeveloperConnectRepoUri = in.DeveloperConnectRepoRef.External
+	}
+	out.Reference = GitReference_ToProto(mapCtx, in.Reference)
+	out.Dir = direct.ValueOf(in.Dir)
+	return out
+}
 
 func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
 	if in == nil {

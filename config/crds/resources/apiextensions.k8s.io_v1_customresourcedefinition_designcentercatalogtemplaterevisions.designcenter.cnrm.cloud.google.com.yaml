@@ -119,10 +119,37 @@ spec:
                 description: Optional. Configuration for fetching content from source
                   code repository such as GitHub or Bitbucket through Developer Connect.
                 properties:
-                  developerConnectRepoURI:
+                  developerConnectRepoRef:
                     description: Required. The Developer Connect Git repository link,
                       formatted as `projects/*/locations/*/connections/*/gitRepositoryLinks/*`.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed DeveloperConnectGitRepositoryLink
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/connections/{{connectionID}}/gitRepositoryLinks/{{gitRepositoryLinkID}}".
+                        type: string
+                      name:
+                        description: The name of a DeveloperConnectGitRepositoryLink
+                          resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a DeveloperConnectGitRepositoryLink
+                          resource.
+                        type: string
+                    type: object
                   dir:
                     description: Required. The sub-directory within the repository
                       from which to read content. The path must be relative to the
@@ -147,7 +174,7 @@ spec:
                         type: string
                     type: object
                 required:
-                - developerConnectRepoURI
+                - developerConnectRepoRef
                 - dir
                 - reference
                 type: object
@@ -181,9 +208,6 @@ spec:
                 - refTag
                 - repo
                 type: object
-              location:
-                description: The location of this resource.
-                type: string
               metadataInput:
                 description: Optional. Metadata input.
                 properties:
@@ -479,8 +503,9 @@ spec:
                 required:
                 - uri
                 type: object
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The DesignCenterCatalogTemplate this DesignCenterCatalogTemplateRevision
+                  is created under.
                 oneOf:
                 - not:
                     required:
@@ -497,20 +522,19 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed DesignCenterCatalogTemplate
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/spaces/{{spaceID}}/catalogs/{{catalogID}}/templates/{{catalogTemplateID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a DesignCenterCatalogTemplate resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a DesignCenterCatalogTemplate resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The DesignCenterCatalogTemplateRevision name. If not
                   given, the metadata.name will be used.
@@ -520,8 +544,7 @@ spec:
                   type.
                 type: string
             required:
-            - location
-            - projectRef
+            - parentRef
             type: object
           status:
             description: DesignCenterCatalogTemplateRevisionStatus defines the config

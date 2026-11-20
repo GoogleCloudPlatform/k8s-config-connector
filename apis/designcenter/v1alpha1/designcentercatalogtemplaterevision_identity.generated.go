@@ -24,6 +24,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -81,42 +82,19 @@ func getIdentityFromDesignCenterCatalogTemplateRevisionSpec(ctx context.Context,
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	if obj.Spec.ParentRef == nil {
+		return nil, fmt.Errorf("spec.parentRef is required")
 	}
-
-	location, err := refs.GetLocation(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location: %w", err)
+	parentRef := *obj.Spec.ParentRef
+	if err := parentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, fmt.Errorf("resolving spec.parentRef: %w", err)
 	}
-
-	// +kcc:guess reason=identity-root-unknown
-	space := ""
-	if space == "" {
-		return nil, fmt.Errorf("cannot resolve space for DesignCenterCatalogTemplateRevision")
+	parsed := &DesignCenterCatalogTemplateRevisionIdentity{}
+	if err := parsed.FromExternal(strings.TrimSuffix(parentRef.GetExternal(), "/") + "/revisions" + "/" + resourceID); err != nil {
+		return nil, fmt.Errorf("parsing spec.parentRef external=%q: %w", parentRef.GetExternal(), err)
 	}
-
-	// +kcc:guess reason=identity-root-unknown
-	catalog := ""
-	if catalog == "" {
-		return nil, fmt.Errorf("cannot resolve catalog for DesignCenterCatalogTemplateRevision")
-	}
-
-	// +kcc:guess reason=identity-root-unknown
-	catalogTemplate := ""
-	if catalogTemplate == "" {
-		return nil, fmt.Errorf("cannot resolve catalog_template for DesignCenterCatalogTemplateRevision")
-	}
-
-	return &DesignCenterCatalogTemplateRevisionIdentity{
-		Project:         projectID,
-		Location:        location,
-		Space:           space,
-		Catalog:         catalog,
-		CatalogTemplate: catalogTemplate,
-		Revision:        resourceID,
-	}, nil
+	parsed.Revision = resourceID
+	return parsed, nil
 }
 
 func (obj *DesignCenterCatalogTemplateRevision) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {

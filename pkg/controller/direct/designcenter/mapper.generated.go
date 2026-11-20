@@ -598,29 +598,33 @@ func DeveloperConnectConfig_ToProto(mapCtx *direct.MapContext, in *krm.Developer
 	return out
 }
 
+/* found existing non-generated mapping function "DeveloperConnectSourceConfig_FromProto", skipping
 func DeveloperConnectSourceConfig_FromProto(mapCtx *direct.MapContext, in *pb.DeveloperConnectSourceConfig) *krm.DeveloperConnectSourceConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krm.DeveloperConnectSourceConfig{}
-	out.DeveloperConnectRepoURI = direct.LazyPtr(in.GetDeveloperConnectRepoUri())
+	// MISSING: DeveloperConnectRepoURI
 	out.Reference = GitReference_FromProto(mapCtx, in.GetReference())
 	out.Dir = direct.LazyPtr(in.GetDir())
 	// MISSING: FetchedCommitSha
 	return out
 }
+*/
 
+/* found existing non-generated mapping function "DeveloperConnectSourceConfig_ToProto", skipping
 func DeveloperConnectSourceConfig_ToProto(mapCtx *direct.MapContext, in *krm.DeveloperConnectSourceConfig) *pb.DeveloperConnectSourceConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.DeveloperConnectSourceConfig{}
-	out.DeveloperConnectRepoUri = direct.ValueOf(in.DeveloperConnectRepoURI)
+	// MISSING: DeveloperConnectRepoURI
 	out.Reference = GitReference_ToProto(mapCtx, in.Reference)
 	out.Dir = direct.ValueOf(in.Dir)
 	// MISSING: FetchedCommitSha
 	return out
 }
+*/
 
 func DeveloperConnectSourceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DeveloperConnectSourceConfig) *krm.DeveloperConnectSourceConfigObservedState {
 	if in == nil {
