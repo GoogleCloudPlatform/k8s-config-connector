@@ -53,7 +53,7 @@ func AIPlatformNotebookExecutionJobSpec_FromProto(mapCtx *direct.MapContext, in 
 		}
 	}
 	out.KernelName = direct.LazyPtr(in.GetKernelName())
-	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	out.EncryptionSpec = EncryptionSpecWithRequired_FromProto(mapCtx, in.GetEncryptionSpec())
 	return out
 }
 
@@ -99,6 +99,6 @@ func AIPlatformNotebookExecutionJobSpec_ToProto(mapCtx *direct.MapContext, in *k
 		out.ScheduleResourceName = in.ScheduleRef.External
 	}
 	out.KernelName = direct.ValueOf(in.KernelName)
-	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	out.EncryptionSpec = EncryptionSpecWithRequired_ToProto(mapCtx, in.EncryptionSpec)
 	return out
 }

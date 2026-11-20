@@ -199,8 +199,8 @@ func explanationSpecWithRequired_v1_FromProto(mapCtx *direct.MapContext, in *pb.
 		return nil
 	}
 	out := &krm.ExplanationSpecWithRequired{}
-	out.Parameters = ExplanationParameters_FromProto(mapCtx, in.GetParameters())
-	out.Metadata = ExplanationMetadata_FromProto(mapCtx, in.GetMetadata())
+	out.Parameters = ExplanationParametersWithRequired_FromProto(mapCtx, in.GetParameters())
+	out.Metadata = ExplanationMetadataWithRequired_FromProto(mapCtx, in.GetMetadata())
 	return out
 }
 
@@ -209,7 +209,7 @@ func explanationSpecWithRequired_v1_ToProto(mapCtx *direct.MapContext, in *krm.E
 		return nil
 	}
 	out := &pb.ExplanationSpec{}
-	out.Parameters = ExplanationParameters_ToProto(mapCtx, in.Parameters)
-	out.Metadata = ExplanationMetadata_ToProto(mapCtx, in.Metadata)
+	out.Parameters = ExplanationParametersWithRequired_ToProto(mapCtx, in.Parameters)
+	out.Metadata = ExplanationMetadataWithRequired_ToProto(mapCtx, in.Metadata)
 	return out
 }

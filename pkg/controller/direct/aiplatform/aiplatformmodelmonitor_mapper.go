@@ -52,7 +52,7 @@ func ExplanationSpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.Expl
 	}
 	out := &aiplatformpb.ExplanationSpec{}
 	if in.Parameters != nil {
-		v1Params := ExplanationParameters_ToProto(mapCtx, in.Parameters)
+		v1Params := ExplanationParametersWithRequired_ToProto(mapCtx, in.Parameters)
 		if v1Params != nil {
 			bytes, err := proto.Marshal(v1Params)
 			if err != nil {
@@ -68,7 +68,7 @@ func ExplanationSpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.Expl
 		}
 	}
 	if in.Metadata != nil {
-		v1Meta := ExplanationMetadata_ToProto(mapCtx, in.Metadata)
+		v1Meta := ExplanationMetadataWithRequired_ToProto(mapCtx, in.Metadata)
 		if v1Meta != nil {
 			bytes, err := proto.Marshal(v1Meta)
 			if err != nil {
@@ -100,7 +100,7 @@ func ExplanationSpecWithRequired_FromProto(mapCtx *direct.MapContext, in *aiplat
 			if err := proto.Unmarshal(bytes, v1Params); err != nil {
 				mapCtx.Errorf("unmarshaling explanation parameters: %w", err)
 			} else {
-				out.Parameters = ExplanationParameters_FromProto(mapCtx, v1Params)
+				out.Parameters = ExplanationParametersWithRequired_FromProto(mapCtx, v1Params)
 			}
 		}
 	}
@@ -113,10 +113,46 @@ func ExplanationSpecWithRequired_FromProto(mapCtx *direct.MapContext, in *aiplat
 			if err := proto.Unmarshal(bytes, v1Meta); err != nil {
 				mapCtx.Errorf("unmarshaling explanation metadata: %w", err)
 			} else {
-				out.Metadata = ExplanationMetadata_FromProto(mapCtx, v1Meta)
+				out.Metadata = ExplanationMetadataWithRequired_FromProto(mapCtx, v1Meta)
 			}
 		}
 	}
+	return out
+}
+
+func ExplanationMetadataWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationMetadata) *krm.ExplanationMetadataWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExplanationMetadataWithRequired{}
+	out.Inputs = make(map[string]*krm.ExplanationMetadata_InputMetadata)
+	for k, v := range in.Inputs {
+		out.Inputs[k] = ExplanationMetadata_InputMetadata_FromProto(mapCtx, v)
+	}
+	out.Outputs = make(map[string]*krm.ExplanationMetadata_OutputMetadata)
+	for k, v := range in.Outputs {
+		out.Outputs[k] = ExplanationMetadata_OutputMetadata_FromProto(mapCtx, v)
+	}
+	out.FeatureAttributionsSchemaURI = direct.LazyPtr(in.FeatureAttributionsSchemaUri)
+	out.LatentSpaceSource = direct.LazyPtr(in.LatentSpaceSource)
+	return out
+}
+
+func ExplanationMetadataWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationMetadataWithRequired) *pb.ExplanationMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExplanationMetadata{}
+	out.Inputs = make(map[string]*pb.ExplanationMetadata_InputMetadata)
+	for k, v := range in.Inputs {
+		out.Inputs[k] = ExplanationMetadata_InputMetadata_ToProto(mapCtx, v)
+	}
+	out.Outputs = make(map[string]*pb.ExplanationMetadata_OutputMetadata)
+	for k, v := range in.Outputs {
+		out.Outputs[k] = ExplanationMetadata_OutputMetadata_ToProto(mapCtx, v)
+	}
+	out.FeatureAttributionsSchemaUri = direct.ValueOf(in.FeatureAttributionsSchemaURI)
+	out.LatentSpaceSource = direct.ValueOf(in.LatentSpaceSource)
 	return out
 }
 
@@ -173,6 +209,59 @@ func BatchDedicatedResources_FromProto(mapCtx *direct.MapContext, in *aiplatform
 	return out
 }
 
+func BatchDedicatedResourcesWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.BatchDedicatedResourcesWithRequired) *aiplatformpb.BatchDedicatedResources {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.BatchDedicatedResources{}
+	if in.MachineSpec != nil {
+		v1MachineSpec := MachineSpecWithRequired_ToProto(mapCtx, in.MachineSpec)
+		if v1MachineSpec != nil {
+			bytes, err := proto.Marshal(v1MachineSpec)
+			if err != nil {
+				mapCtx.Errorf("marshaling machineSpec: %w", err)
+			} else {
+				v1beta1MachineSpec := &aiplatformpb.MachineSpec{}
+				if err := proto.Unmarshal(bytes, v1beta1MachineSpec); err != nil {
+					mapCtx.Errorf("unmarshaling machineSpec: %w", err)
+				} else {
+					out.MachineSpec = v1beta1MachineSpec
+				}
+			}
+		}
+	}
+	out.StartingReplicaCount = direct.ValueOf(in.StartingReplicaCount)
+	out.MaxReplicaCount = direct.ValueOf(in.MaxReplicaCount)
+	out.FlexStart = FlexStart_ToProto(mapCtx, in.FlexStart)
+	out.Spot = direct.ValueOf(in.Spot)
+	return out
+}
+
+func BatchDedicatedResourcesWithRequired_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.BatchDedicatedResources) *krm.BatchDedicatedResourcesWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BatchDedicatedResourcesWithRequired{}
+	if in.GetMachineSpec() != nil {
+		bytes, err := proto.Marshal(in.GetMachineSpec())
+		if err != nil {
+			mapCtx.Errorf("marshaling machineSpec: %w", err)
+		} else {
+			v1MachineSpec := &pb.MachineSpec{}
+			if err := proto.Unmarshal(bytes, v1MachineSpec); err != nil {
+				mapCtx.Errorf("unmarshaling machineSpec: %w", err)
+			} else {
+				out.MachineSpec = MachineSpecWithRequired_FromProto(mapCtx, v1MachineSpec)
+			}
+		}
+	}
+	out.StartingReplicaCount = direct.LazyPtr(in.GetStartingReplicaCount())
+	out.MaxReplicaCount = direct.LazyPtr(in.GetMaxReplicaCount())
+	out.FlexStart = FlexStart_FromProto(mapCtx, in.GetFlexStart())
+	out.Spot = direct.LazyPtr(in.GetSpot())
+	return out
+}
+
 func ModelMonitoringObjectiveSpec_DataDriftSpec_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringObjectiveSpec_DataDriftSpec) *aiplatformpb.ModelMonitoringObjectiveSpec_DataDriftSpec {
 	if in == nil {
 		return nil
@@ -206,6 +295,23 @@ func ModelMonitoringObjectiveSpec_FeatureAttributionSpec_ToProto(mapCtx *direct.
 		}
 	}
 	out.BatchExplanationDedicatedResources = BatchDedicatedResources_ToProto(mapCtx, in.BatchExplanationDedicatedResources)
+	return out
+}
+
+func ModelMonitoringObjectiveSpec_FeatureAttributionSpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringObjectiveSpec_FeatureAttributionSpecWithRequired) *aiplatformpb.ModelMonitoringObjectiveSpec_FeatureAttributionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringObjectiveSpec_FeatureAttributionSpec{}
+	out.Features = in.Features
+	out.DefaultAlertCondition = ModelMonitoringAlertCondition_ToProto(mapCtx, in.DefaultAlertCondition)
+	if in.FeatureAlertConditions != nil {
+		out.FeatureAlertConditions = make(map[string]*aiplatformpb.ModelMonitoringAlertCondition, len(in.FeatureAlertConditions))
+		for k, v := range in.FeatureAlertConditions {
+			out.FeatureAlertConditions[k] = ModelMonitoringAlertCondition_ToProto(mapCtx, &v)
+		}
+	}
+	out.BatchExplanationDedicatedResources = BatchDedicatedResourcesWithRequired_ToProto(mapCtx, in.BatchExplanationDedicatedResources)
 	return out
 }
 
@@ -366,7 +472,7 @@ func AIPlatformModelMonitorSpec_FromProto(mapCtx *direct.MapContext, in *aiplatf
 		return nil
 	}
 	out := &krm.AIPlatformModelMonitorSpec{}
-	out.TabularObjective = ModelMonitoringObjectiveSpec_TabularObjective_FromProto(mapCtx, in.GetTabularObjective())
+	out.TabularObjective = ModelMonitoringObjectiveSpec_TabularObjectiveWithRequired_FromProto(mapCtx, in.GetTabularObjective())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.ModelMonitoringTarget = ModelMonitor_ModelMonitoringTarget_FromProto(mapCtx, in.GetModelMonitoringTarget())
 	out.TrainingDataset = ModelMonitoringInput_FromProto(mapCtx, in.GetTrainingDataset())
@@ -375,7 +481,7 @@ func AIPlatformModelMonitorSpec_FromProto(mapCtx *direct.MapContext, in *aiplatf
 	out.ExplanationSpec = ExplanationSpecWithRequired_FromProto(mapCtx, in.GetExplanationSpec())
 	out.ModelMonitoringSchema = ModelMonitoringSchema_FromProto(mapCtx, in.GetModelMonitoringSchema())
 	if in.GetEncryptionSpec() != nil {
-		out.EncryptionSpec = &krm.EncryptionSpec{}
+		out.EncryptionSpec = &krm.EncryptionSpecWithRequired{}
 		if in.GetEncryptionSpec().GetKmsKeyName() != "" {
 			out.EncryptionSpec.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetEncryptionSpec().GetKmsKeyName()}
 		}
@@ -388,7 +494,7 @@ func AIPlatformModelMonitorSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPla
 		return nil
 	}
 	out := &aiplatformpb.ModelMonitor{}
-	if oneof := ModelMonitoringObjectiveSpec_TabularObjective_ToProto(mapCtx, in.TabularObjective); oneof != nil {
+	if oneof := ModelMonitoringObjectiveSpec_TabularObjectiveWithRequired_ToProto(mapCtx, in.TabularObjective); oneof != nil {
 		out.DefaultObjective = &aiplatformpb.ModelMonitor_TabularObjective{TabularObjective: oneof}
 	}
 	out.DisplayName = direct.ValueOf(in.DisplayName)

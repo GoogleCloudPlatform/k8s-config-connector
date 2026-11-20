@@ -105,6 +105,8 @@ spec:
                         description: The namespace of a KMSCryptoKey resource.
                         type: string
                     type: object
+                required:
+                - kmsKeyRef
                 type: object
               labels:
                 additionalProperties:

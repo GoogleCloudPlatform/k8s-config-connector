@@ -238,6 +238,8 @@ spec:
                          Useful to set for multi-turn conversations, otherwise can be left blank
                          or unset.
                       type: string
+                  required:
+                  - parts
                   type: object
                 type: array
               displayName:
@@ -281,6 +283,8 @@ spec:
                         description: The namespace of a KMSCryptoKey resource.
                         type: string
                     type: object
+                required:
+                - kmsKeyRef
                 type: object
               expireTime:
                 description: Timestamp of when this resource is considered expired.
@@ -532,6 +536,8 @@ spec:
                        Useful to set for multi-turn conversations, otherwise can be left blank
                        or unset.
                     type: string
+                required:
+                - parts
                 type: object
               toolConfig:
                 description: Optional. Input only. Immutable. Tool config. This config

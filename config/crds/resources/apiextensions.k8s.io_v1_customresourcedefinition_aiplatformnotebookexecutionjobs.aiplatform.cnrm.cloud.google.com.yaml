@@ -313,6 +313,8 @@ spec:
                         description: The namespace of a KMSCryptoKey resource.
                         type: string
                     type: object
+                required:
+                - kmsKeyRef
                 type: object
               executionTimeout:
                 description: Max running time of the execution job in seconds (default

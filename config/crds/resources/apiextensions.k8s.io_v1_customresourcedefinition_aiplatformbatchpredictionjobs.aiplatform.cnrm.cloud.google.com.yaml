@@ -470,8 +470,8 @@ spec:
                           [instance][google.cloud.aiplatform.v1.ExplainRequest.instances].
                         type: object
                       latentSpaceSource:
-                        description: Name of the source to generate embeddings for
-                          example based explanations.
+                        description: Points to a YAML file stored on Google Cloud
+                          Storage describing the format of the [ExplanationMetadata.latent_space_source].
                         type: string
                       outputs:
                         additionalProperties:
@@ -537,6 +537,9 @@ spec:
 
                           Currently only one key is allowed.
                         type: object
+                    required:
+                    - inputs
+                    - outputs
                     type: object
                   parameters:
                     description: Required. Parameters that configure explaining of
@@ -565,6 +568,8 @@ spec:
                                     items:
                                       type: string
                                     type: array
+                                required:
+                                - uris
                                 type: object
                             type: object
                           nearestNeighborSearchConfig:
@@ -710,6 +715,8 @@ spec:
                                Valid range of its value is [1, 100], inclusively.
                             format: int32
                             type: integer
+                        required:
+                        - stepCount
                         type: object
                       sampledShapleyAttribution:
                         description: 'An attribution method that approximates Shapley
@@ -726,6 +733,8 @@ spec:
                                Valid range of its value is [1, 50], inclusively.
                             format: int32
                             type: integer
+                        required:
+                        - pathCount
                         type: object
                       topK:
                         description: If populated, returns attributions for top K
@@ -838,6 +847,8 @@ spec:
                                Valid range of its value is [1, 100], inclusively.
                             format: int32
                             type: integer
+                        required:
+                        - stepCount
                         type: object
                     type: object
                 required:
