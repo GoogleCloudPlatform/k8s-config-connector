@@ -74,6 +74,19 @@
   - **E2E Dependencies & Recording**: `DesignCenterCatalogTemplate` requires an ancestor chain of `DesignCenterSpace` and `DesignCenterCatalog` in `dependencies.yaml`. Recorded authentic golden logs against real GCP (`cnrm-barni-4`) with `RECORD_AUDIT_PROBE=1 ./hack/record-gcp` for both `designcentercatalogtemplate-minimal` and `designcentercatalogtemplate-maximal`.
   - **Validation**: 200-seed focused round-trip fuzzer (`TestFocusedMappers/DesignCenterCatalogTemplate`), CRD field presence checks, and re-reconciliation passed cleanly.
 
+### [2026-11-20] Prepopulating DesignCenterCatalogTemplateRevision
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for DesignCenterCatalogTemplateRevision (Issue #16238).
+- **Findings & Solution**:
+  - Configured `apis/designcenter/generate.sh` with dedicated `--resource DesignCenterCatalogTemplateRevision:CatalogTemplateRevision` under `generate-types` and `generate-identity`.
+  - Added handwritten mapper helper functions in `pkg/controller/direct/designcenter/designcentercatalogtemplaterevision_mapper.go` for `*Metadata` messages skipped by `generate-mapper` (`TfBlueprintMetadataObservedState`, `HelmChartMetadataObservedState`, `InferredMetadataObservedState`, `TerraformBlueprintUiMetadataObservedState`) and `Value_ToProto` for `structpb.Value`.
+  - Mechanically generated `designcentercatalogtemplaterevision_types.go`, `designcentercatalogtemplaterevision_identity.generated.go`, `designcentercatalogtemplaterevision_reference.generated.go`, `designcentercatalogtemplaterevision_identity_generated_test.go`, CRD manifest, deepcopy, and updated `pkg/controller/direct/designcenter/mapper.generated.go`.
+  - Added `DesignCenterCatalogTemplateRevision` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Initialized open entries in `apis/designcenter/judgement_queue.yaml` for `DesignCenterCatalogTemplateRevision` (including `untriaged-bulk-generation` with `status: open`).
+  - Added `designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com` to `knownInvalidCRDs` in `tests/apichecks/crds_test.go` due to empty object schema from `TerraformUiInputs` map value type.
+  - Defined recursive types `ListValue` and `DisplayVariable` in `designcentercatalogtemplaterevision_types.go` with kubebuilder unknown fields annotations (`+kubebuilder:validation:items:XPreserveUnknownFields`, `+kubebuilder:validation:items:Type=object` on `ListValue.Values`, and `+kubebuilder:pruning:PreserveUnknownFields`, `+kubebuilder:validation:Schemaless`, `+kubebuilder:validation:XPreserveUnknownFields`, `+kubebuilder:validation:Type=object` on `DisplayVariable.Properties`) so `controller-gen` outputs valid OpenAPI schemas that satisfy Kubernetes OpenAPI v3 validation in envtest (`TestPreview`).
+  - Recorded untriaged missing fields in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`, recursive types in `recursivetypes.txt`, and not representable refs in `refs_not_representable.txt`.
+
+
 
 
 
