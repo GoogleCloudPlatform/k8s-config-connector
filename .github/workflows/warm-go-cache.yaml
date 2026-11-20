@@ -1,0 +1,56 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Keeps the dev/actions/cache-go cache (Go modules + build cache + envtest assets)
+# populated on the default branch.
+#
+# GitHub Actions caches are scoped by ref: a run can restore caches saved on its own
+# ref or on the default branch, but not caches saved by other PRs or merge-queue
+# branches. ci-presubmit does not run on pushes to master, so without this workflow no
+# master-scoped cache ever exists and ~90% of cache-go steps in PR and merge-queue
+# runs miss and spend ~12 minutes rebuilding.
+#
+# With lookup-only, a run where the cache already exists finishes in well under a minute
+# without downloading it; a miss (e.g. after a go.mod/go.sum change or an eviction)
+# prebuilds once and saves the cache on master.
+
+name: warm-go-cache
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: ["master"]
+  schedule:
+    # Re-warm periodically in case the master cache was evicted (10 GB repo limit).
+    - cron: "23 */6 * * *"
+  workflow_dispatch: {}
+
+concurrency:
+  group: warm-go-cache-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  warm-go-cache:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+# zizmor: ignore[unpinned-uses]
+      - uses: ./dev/actions/cache-go
+        with:
+          lookup-only: 'true'

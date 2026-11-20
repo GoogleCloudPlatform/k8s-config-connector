@@ -22,6 +22,13 @@ inputs:
     description: 'Go version file'
     required: false
     default: 'go.mod'
+  lookup-only:
+    description: >-
+      If 'true', only check whether the cache entry exists instead of downloading it.
+      On a miss the dependencies are still prebuilt and the cache is saved. Used by the
+      warm-go-cache workflow to populate the default-branch cache cheaply.
+    required: false
+    default: 'false'
 
 runs:
   using: 'composite'
@@ -51,6 +58,10 @@ runs:
     # restoring a previous cache can cause old/removed dependency versions and dead build
     # artifacts to accumulate in GOMODCACHE and GOCACHE indefinitely, leading to massive cache bloat.
     # By omitting 'restore-keys', we cleanly rebuild from scratch on a cache miss, keeping the cache minimal.
+    #
+    # Cache scoping: a run can only restore caches saved on its own ref or on the default
+    # branch. Caches saved by pull_request / merge_group runs are not shareable, so
+    # .github/workflows/warm-go-cache.yaml saves this cache on master for everyone else.
     - name: Cache Go modules and build cache
       id: cache-deps
       uses: actions/cache@v6
@@ -60,6 +71,7 @@ runs:
           ${{ steps.go-env.outputs.GOCACHE }}
           ~/.local/share/kubebuilder-envtest
         key: go-deps-v7-${{ runner.os }}-${{ steps.deps-hash.outputs.hash }}
+        lookup-only: ${{ inputs.lookup-only }}
 
     - name: Prebuild dependencies on cache miss
       if: steps.cache-deps.outputs.cache-hit != 'true'
