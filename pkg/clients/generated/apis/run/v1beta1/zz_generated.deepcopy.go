@@ -1223,6 +1223,11 @@ func (in *RunServiceSpec) DeepCopyInto(out *RunServiceSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.InvokerIamDisabled != nil {
+		in, out := &in.InvokerIamDisabled, &out.InvokerIamDisabled
+		*out = new(bool)
+		**out = **in
+	}
 	if in.LaunchStage != nil {
 		in, out := &in.LaunchStage, &out.LaunchStage
 		*out = new(string)
