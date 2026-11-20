@@ -17,8 +17,8 @@ package testcontroller
 import (
 	"context"
 	"fmt"
-	"os"
 	"reflect"
+	"regexp"
 	"strconv"
 	"strings"
 	"testing"
@@ -144,17 +144,31 @@ func WaitForUnstructDeleteToFinish(t *testing.T, kubeClient client.Client, origU
 	}
 }
 
+// futureTimestampDaysRegex matches the ${futureTimestampDays:N} placeholder.
+var futureTimestampDaysRegex = regexp.MustCompile(`\$\{futureTimestampDays:(\d+)\}`)
+
+// replaceFutureTimestampDays replaces ${futureTimestampDays:N} with an RFC3339 timestamp N days after now
+// (in UTC, truncated to the hour). Use it for fields that GCP only accepts within a window relative to the
+// current time (e.g. BigtableBackup expireTime, which must be at most 90 days out); the fixed
+// ${futureTimestamp} cannot be used for those. Because the value changes on every run, the corresponding
+// fields must be normalized (see the mockgcp normalize.go files).
+func replaceFutureTimestampDays(s string, now time.Time) string {
+	base := now.UTC().Truncate(time.Hour)
+	return futureTimestampDaysRegex.ReplaceAllStringFunc(s, func(match string) string {
+		days, err := strconv.Atoi(futureTimestampDaysRegex.FindStringSubmatch(match)[1])
+		if err != nil {
+			return match
+		}
+		return base.AddDate(0, 0, days).Format(time.RFC3339)
+	})
+}
+
 // ReplaceTestVars replaces all occurrences of placeholder strings e.g. ${uniqueId} in a given byte slice.
 func ReplaceTestVars(t *testing.T, b []byte, uniqueID string, project testgcp.GCPProject) []byte {
 	s := string(b)
 	s = strings.Replace(s, "${uniqueId}", uniqueID, -1)
 	s = strings.Replace(s, "${futureTimestamp}", "2035-01-01T10:00:00Z", -1)
-	if os.Getenv("E2E_GCP_TARGET") == "real" && strings.Contains(s, "kind: BigtableBackup") {
-		now := time.Now().UTC().Truncate(time.Hour)
-		s = strings.ReplaceAll(s, "2028-04-30T12:00:00Z", now.AddDate(0, 0, 15).Format(time.RFC3339))
-		s = strings.ReplaceAll(s, "2028-05-30T12:00:00Z", now.AddDate(0, 0, 30).Format(time.RFC3339))
-		s = strings.ReplaceAll(s, "2028-06-30T12:00:00Z", now.AddDate(0, 0, 45).Format(time.RFC3339))
-	}
+	s = replaceFutureTimestampDays(s, time.Now())
 	s = strings.Replace(s, "${projectId}", project.ProjectID, -1)
 	if strings.Contains(s, "${projectNumber}") {
 		projectNumber := strconv.FormatInt(project.ProjectNumber, 10)

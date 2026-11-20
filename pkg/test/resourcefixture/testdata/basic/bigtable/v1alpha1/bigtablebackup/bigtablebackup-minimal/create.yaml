@@ -21,4 +21,4 @@ spec:
     external: projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}
   sourceTableRef:
     name: bigtabletable-dep-${uniqueId}
-  expireTime: "2028-05-30T12:00:00Z"
+  expireTime: "${futureTimestampDays:30}"
