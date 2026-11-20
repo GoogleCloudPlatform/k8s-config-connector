@@ -3774,7 +3774,6 @@
 [missing_field] crd=dialogflowconversationmodels.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.smartReplyModelMetadata.trainingModelType" is not set in unstructured objects
 [missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.automatedAgentConfig.agent" is not set in unstructured objects
 [missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.automatedAgentConfig.sessionTTL" is not set in unstructured objects
-[missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.humanAgentAssistantConfig.endUserSuggestionConfig.disableHighLatencyFeaturesSyncDelivery" is not set in unstructured objects
 [missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.humanAgentAssistantConfig.endUserSuggestionConfig.featureConfigs[].conversationModelConfig.baselineModelVersion" is not set in unstructured objects
 [missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.humanAgentAssistantConfig.endUserSuggestionConfig.featureConfigs[].conversationModelConfig.modelRef" is not set; neither 'external' nor 'name' are set
@@ -3834,16 +3833,12 @@
 [missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.humanAgentHandoffConfig.salesforceLiveAgentConfig.deploymentID" is not set in unstructured objects
 [missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.humanAgentHandoffConfig.salesforceLiveAgentConfig.endpointDomain" is not set in unstructured objects
 [missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.humanAgentHandoffConfig.salesforceLiveAgentConfig.organizationID" is not set in unstructured objects
-[missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.languageCode" is not set in unstructured objects
-[missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.loggingConfig.enableStackdriverLogging" is not set in unstructured objects
 [missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.newMessageEventNotificationConfig.messageFormat" is not set in unstructured objects
 [missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.newMessageEventNotificationConfig.topicRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.newRecognitionResultNotificationConfig.messageFormat" is not set in unstructured objects
 [missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.newRecognitionResultNotificationConfig.topicRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.notificationConfig.messageFormat" is not set in unstructured objects
 [missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.notificationConfig.topicRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.securitySettingsRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.sttConfig.audioEncoding" is not set in unstructured objects
 [missing_field] crd=dialogflowconversationprofiles.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.sttConfig.enableWordInfo" is not set in unstructured objects

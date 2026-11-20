@@ -1,0 +1,164 @@
+# Phase: CREATE
+POST https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/conversationProfiles?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "displayName": "conv-profile-max-${uniqueId}",
+  "languageCode": "en-US",
+  "loggingConfig": {
+    "enableStackdriverLogging": true
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "conv-profile-max-${uniqueId}",
+  "humanAgentAssistantConfig": {
+    "notificationConfig": {}
+  },
+  "languageCode": "en-US",
+  "loggingConfig": {
+    "enableStackdriverLogging": true
+  },
+  "name": "projects/${projectId}/locations/global/conversationProfiles/HtnzaOUwRTaVeS7PEaMQMw",
+  "newMessageEventNotificationConfig": {},
+  "notificationConfig": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: UPDATE
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/conversationProfiles/HtnzaOUwRTaVeS7PEaMQMw?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FconversationProfiles%2FHtnzaOUwRTaVeS7PEaMQMw
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "conv-profile-max-${uniqueId}",
+  "humanAgentAssistantConfig": {
+    "notificationConfig": {}
+  },
+  "languageCode": "en-US",
+  "loggingConfig": {
+    "enableStackdriverLogging": true
+  },
+  "name": "projects/${projectId}/locations/global/conversationProfiles/HtnzaOUwRTaVeS7PEaMQMw",
+  "newMessageEventNotificationConfig": {},
+  "notificationConfig": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/conversationProfiles/HtnzaOUwRTaVeS7PEaMQMw?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2CloggingConfig
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: conversation_profile.name=projects%2F${projectId}%2Flocations%2Fglobal%2FconversationProfiles%2FHtnzaOUwRTaVeS7PEaMQMw
+
+{
+  "displayName": "conv-profile-max-${uniqueId}-updated",
+  "humanAgentAssistantConfig": {
+    "notificationConfig": {}
+  },
+  "languageCode": "en-US",
+  "loggingConfig": {},
+  "name": "projects/${projectId}/locations/global/conversationProfiles/HtnzaOUwRTaVeS7PEaMQMw",
+  "newMessageEventNotificationConfig": {},
+  "notificationConfig": {}
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "conv-profile-max-${uniqueId}-updated",
+  "humanAgentAssistantConfig": {
+    "notificationConfig": {}
+  },
+  "languageCode": "en-US",
+  "name": "projects/${projectId}/locations/global/conversationProfiles/HtnzaOUwRTaVeS7PEaMQMw",
+  "newMessageEventNotificationConfig": {},
+  "notificationConfig": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/conversationProfiles/HtnzaOUwRTaVeS7PEaMQMw?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FconversationProfiles%2FHtnzaOUwRTaVeS7PEaMQMw
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "conv-profile-max-${uniqueId}-updated",
+  "humanAgentAssistantConfig": {
+    "notificationConfig": {}
+  },
+  "languageCode": "en-US",
+  "name": "projects/${projectId}/locations/global/conversationProfiles/HtnzaOUwRTaVeS7PEaMQMw",
+  "newMessageEventNotificationConfig": {},
+  "notificationConfig": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/conversationProfiles/HtnzaOUwRTaVeS7PEaMQMw?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FconversationProfiles%2FHtnzaOUwRTaVeS7PEaMQMw
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

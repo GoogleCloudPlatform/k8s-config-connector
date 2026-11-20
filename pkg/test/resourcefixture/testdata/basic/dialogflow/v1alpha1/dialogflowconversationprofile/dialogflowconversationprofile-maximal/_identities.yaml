@@ -1,0 +1,6 @@
+- caisURL: //dialogflow.googleapis.com/projects/${projectId}/locations/global/conversationProfiles/HtnzaOUwRTaVeS7PEaMQMw
+  group: dialogflow.cnrm.cloud.google.com
+  kind: DialogflowConversationProfile
+  name: dialogflowconversationprofile-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

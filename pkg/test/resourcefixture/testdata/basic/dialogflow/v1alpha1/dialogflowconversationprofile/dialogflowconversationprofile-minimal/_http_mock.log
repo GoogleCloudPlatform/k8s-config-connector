@@ -1,0 +1,128 @@
+# Phase: CREATE
+POST https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/conversationProfiles?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "displayName": "conv-profile-min-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "conv-profile-min-${uniqueId}",
+  "languageCode": "en-US",
+  "name": "projects/${projectId}/locations/global/conversationProfiles/0GNsyoseSV-sTsFkBspSKA",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: UPDATE
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/conversationProfiles/0GNsyoseSV-sTsFkBspSKA?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FconversationProfiles%2F0GNsyoseSV-sTsFkBspSKA
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "conv-profile-min-${uniqueId}",
+  "languageCode": "en-US",
+  "name": "projects/${projectId}/locations/global/conversationProfiles/0GNsyoseSV-sTsFkBspSKA",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/conversationProfiles/0GNsyoseSV-sTsFkBspSKA?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: conversation_profile.name=projects%2F${projectId}%2Flocations%2Fglobal%2FconversationProfiles%2F0GNsyoseSV-sTsFkBspSKA
+
+{
+  "displayName": "conv-profile-min-${uniqueId}-updated",
+  "languageCode": "en-US",
+  "name": "projects/${projectId}/locations/global/conversationProfiles/0GNsyoseSV-sTsFkBspSKA"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "conv-profile-min-${uniqueId}-updated",
+  "languageCode": "en-US",
+  "name": "projects/${projectId}/locations/global/conversationProfiles/0GNsyoseSV-sTsFkBspSKA",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/conversationProfiles/0GNsyoseSV-sTsFkBspSKA?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FconversationProfiles%2F0GNsyoseSV-sTsFkBspSKA
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "conv-profile-min-${uniqueId}-updated",
+  "languageCode": "en-US",
+  "name": "projects/${projectId}/locations/global/conversationProfiles/0GNsyoseSV-sTsFkBspSKA",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/conversationProfiles/0GNsyoseSV-sTsFkBspSKA?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FconversationProfiles%2F0GNsyoseSV-sTsFkBspSKA
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
