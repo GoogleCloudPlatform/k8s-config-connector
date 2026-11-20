@@ -1,0 +1,74 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: DiscoveryEngineWidgetConfig
+    group: discoveryengine.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: DiscoveryEngineWidgetConfig
+    group: discoveryengine.cnrm.cloud.google.com
+    reason: identity-multi-pattern
+    detail: proto message google.cloud.discoveryengine.v1.WidgetConfig declares 3 resource name patterns (projects/{project}/locations/{location}/dataStores/{data_store}/widgetConfigs/{widget_config}, projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/widgetConfigs/{widget_config}, projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/widgetConfigs/{widget_config}) that tied on DiscoveryEngineWidgetConfigSpec; generated identity defaulted to "projects/{project}/locations/{location}/dataStores/{data_store}/widgetConfigs/{widget_config}" (pass --pattern DiscoveryEngineWidgetConfig=<pattern> to override)
+    status: open
+  - kind: DiscoveryEngineWidgetConfig
+    group: discoveryengine.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/dataStores/{data_store}/widgetConfigs/{widget_config}" contains ancestor segment(s) dataStores/{data_store} with no matching reference or field on DiscoveryEngineWidgetConfigSpec
+    status: open
+  - kind: DiscoveryEngineWidgetConfig
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .spec.dataStoreRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to DiscoveryEngineDataStoreRef, read from the dataStores segment of projects/{project}/locations/{location}/dataStores/{data_store}/widgetConfigs/{widget_config}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: DiscoveryEngineWidgetConfig
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/dataStores/{data_store}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: DiscoveryEngineWidgetConfig
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .spec.uiSettings.dataStoreUiConfigs[].fieldsUiComponentsMap
+    reason: message-map-derived
+    detail: derived as map[string]WidgetConfig_UiComponentField from proto google.cloud.discoveryengine.v1.WidgetConfig.UIComponentField; verify Go type and mapping
+    status: open
+  - kind: DiscoveryEngineWidgetConfig
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .spec.uiSettings.dataStoreUiConfigs[].name
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}"
+    status: open
+  - kind: DiscoveryEngineWidgetConfig
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .status.observedState.uiSettings.features
+    reason: unsupported-field-type
+    detail: unsupported map type with key string and value enum
+    status: open
+  - kind: DiscoveryEngineWidgetConfig
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .status.observedState.uiSettings.modelConfigs
+    reason: unsupported-field-type
+    detail: unsupported map type with key string and value enum
+    status: open
