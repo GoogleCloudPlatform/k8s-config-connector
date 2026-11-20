@@ -66,6 +66,15 @@
   - `untriaged-bulk-generation`: Resolved with resolution `edited`.
   - Updated golden exceptions in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 
+### [2026-11-19] Greenfield: Implement direct controller, E2E fixtures, and fuzzer for DesignCenterCatalogTemplate
+- **Context**: Implemented direct controller, round-trip fuzzer, and minimal/maximal E2E fixtures for `DesignCenterCatalogTemplate` (Issue #16169).
+- **Findings & Solutions**:
+  - **Generation**: Generated direct controller (`pkg/controller/direct/designcenter/designcentercatalogtemplate_controller.go`) and fuzzer (`pkg/controller/direct/designcenter/designcentercatalogtemplate_fuzzer.generated.go`) with one-shot `controllerbuilder` commands without modifying `apis/designcenter/generate.sh`.
+  - **Operations**: `CreateCatalogTemplate`, `GetCatalogTemplate`, and `UpdateCatalogTemplate` are synchronous operations, while `DeleteCatalogTemplate` returns an LRO. The generated controller handles waiting for delete LRO completion.
+  - **E2E Dependencies & Recording**: `DesignCenterCatalogTemplate` requires an ancestor chain of `DesignCenterSpace` and `DesignCenterCatalog` in `dependencies.yaml`. Recorded authentic golden logs against real GCP (`cnrm-barni-4`) with `RECORD_AUDIT_PROBE=1 ./hack/record-gcp` for both `designcentercatalogtemplate-minimal` and `designcentercatalogtemplate-maximal`.
+  - **Validation**: 200-seed focused round-trip fuzzer (`TestFocusedMappers/DesignCenterCatalogTemplate`), CRD field presence checks, and re-reconciliation passed cleanly.
+
+
 
 
 

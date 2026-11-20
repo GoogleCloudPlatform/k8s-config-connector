@@ -1,0 +1,441 @@
+# Phase: CREATE
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces?%24alt=json%3Benum-encoding%3Dint&spaceId=dc-space-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}%2Fcatalogs%2Fdc-catalog-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs?%24alt=json%3Benum-encoding%3Dint&catalogId=dc-catalog-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "dc-catalog-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/designcentercatalogtemplate-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}%2Fcatalogs%2Fdc-catalog-${uniqueId}%2Ftemplates%2Fdesigncentercatalogtemplate-maximal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/designcentercatalogtemplate-maximal-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates?%24alt=json%3Benum-encoding%3Dint&catalogTemplateId=designcentercatalogtemplate-maximal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}%2Fcatalogs%2Fdc-catalog-${uniqueId}
+
+{
+  "description": "Maximal catalog template description for testing",
+  "displayName": "Maximal Catalog Template Display Name",
+  "templateCategory": 1,
+  "type": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal catalog template description for testing",
+  "displayName": "Maximal Catalog Template Display Name",
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/designcentercatalogtemplate-maximal-${uniqueId}",
+  "templateCategory": 1,
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uuid": "dc-space-${uniqueId}-designcentercatalogtemplate-max-nfmpq0"
+}
+
+---
+
+# Phase: UPDATE
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/designcentercatalogtemplate-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}%2Fcatalogs%2Fdc-catalog-${uniqueId}%2Ftemplates%2Fdesigncentercatalogtemplate-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal catalog template description for testing",
+  "displayName": "Maximal Catalog Template Display Name",
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/designcentercatalogtemplate-maximal-${uniqueId}",
+  "templateCategory": 1,
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uuid": "dc-space-${uniqueId}-designcentercatalogtemplate-max-nfmpq0"
+}
+
+---
+
+PATCH https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/designcentercatalogtemplate-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName%2Ctype
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: catalog_template.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}%2Fcatalogs%2Fdc-catalog-${uniqueId}%2Ftemplates%2Fdesigncentercatalogtemplate-maximal-${uniqueId}
+
+{
+  "description": "Maximal catalog template description updated for testing",
+  "displayName": "Maximal Catalog Template Display Name Updated",
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/designcentercatalogtemplate-maximal-${uniqueId}",
+  "templateCategory": 1,
+  "type": 2
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal catalog template description updated for testing",
+  "displayName": "Maximal Catalog Template Display Name Updated",
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/designcentercatalogtemplate-maximal-${uniqueId}",
+  "templateCategory": 1,
+  "type": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uuid": "dc-space-${uniqueId}-designcentercatalogtemplate-max-nfmpq0"
+}
+
+---
+
+# Phase: DELETE
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/designcentercatalogtemplate-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}%2Fcatalogs%2Fdc-catalog-${uniqueId}%2Ftemplates%2Fdesigncentercatalogtemplate-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal catalog template description updated for testing",
+  "displayName": "Maximal Catalog Template Display Name Updated",
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/designcentercatalogtemplate-maximal-${uniqueId}",
+  "templateCategory": 1,
+  "type": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uuid": "dc-space-${uniqueId}-designcentercatalogtemplate-max-nfmpq0"
+}
+
+---
+
+DELETE https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/designcentercatalogtemplate-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}%2Fcatalogs%2Fdc-catalog-${uniqueId}%2Ftemplates%2Fdesigncentercatalogtemplate-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.designcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/designcentercatalogtemplate-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.designcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/designcentercatalogtemplate-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}%2Fcatalogs%2Fdc-catalog-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "dc-catalog-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}%2Fcatalogs%2Fdc-catalog-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.designcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.designcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

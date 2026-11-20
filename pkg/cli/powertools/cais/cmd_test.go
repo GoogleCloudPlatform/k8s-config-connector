@@ -754,6 +754,58 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 			}
 
+			// Inject status.externalRef for DesignCenterCatalog to simulate a reconciled catalog in static unit tests.
+			if u.GetKind() == "DesignCenterCatalog" && u.GroupVersionKind().Group == "designcenter.cnrm.cloud.google.com" {
+				if extRef, ok, _ := unstructured.NestedString(u.Object, "status", "externalRef"); !ok || extRef == "" {
+					catalogID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+					if catalogID == "" {
+						catalogID = u.GetName()
+					}
+					var extRef string
+					if parentExt, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "external"); parentExt != "" {
+						extRef = fmt.Sprintf("%s/catalogs/%s", strings.TrimSuffix(parentExt, "/"), catalogID)
+					} else if parentName, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "name"); parentName != "" {
+						for _, other := range kccObjs {
+							if other.GetKind() == "DesignCenterSpace" && other.GetName() == parentName {
+								if otherExt, ok, _ := unstructured.NestedString(other.Object, "status", "externalRef"); ok && otherExt != "" {
+									extRef = fmt.Sprintf("%s/catalogs/%s", strings.TrimSuffix(otherExt, "/"), catalogID)
+								} else {
+									projectID, _, _ := unstructured.NestedString(other.Object, "spec", "projectRef", "external")
+									projectID = strings.TrimPrefix(projectID, "projects/")
+									if projectID == "" {
+										otherAnn := other.GetAnnotations()
+										if otherAnn != nil {
+											projectID = otherAnn["cnrm.cloud.google.com/project-id"]
+										}
+									}
+									if projectID == "" {
+										projectID = annotations["cnrm.cloud.google.com/project-id"]
+									}
+									if projectID == "" {
+										projectID = "mock-project"
+									}
+									location, _, _ := unstructured.NestedString(other.Object, "spec", "location")
+									if location == "" {
+										location = "us-central1"
+									}
+									spaceID, _, _ := unstructured.NestedString(other.Object, "spec", "resourceID")
+									if spaceID == "" {
+										spaceID = other.GetName()
+									}
+									extRef = fmt.Sprintf("projects/%s/locations/%s/spaces/%s/catalogs/%s", projectID, location, spaceID, catalogID)
+								}
+								break
+							}
+						}
+					}
+					if extRef != "" {
+						if err := unstructured.SetNestedField(u.Object, extRef, "status", "externalRef"); err != nil {
+							t.Fatalf("failed to inject status.externalRef for DesignCenterCatalog %s: %v", u.GetName(), err)
+						}
+					}
+				}
+			}
+
 			// If the identity is server-generated, and not specified, inject a spec.resourceID value.
 			gk := u.GroupVersionKind().GroupKind()
 			if obj, err := kccscheme.NewObject(gk); err == nil {
@@ -1080,6 +1132,54 @@ func normalizeFixtureKCCObjects(allObjs []*unstructured.Unstructured) []*unstruc
 			}
 			extRef := fmt.Sprintf("projects/%s/locations/%s/spaces/%s", projectID, location, spaceID)
 			_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+		}
+		if u.GetKind() == "DesignCenterCatalog" && group == "designcenter.cnrm.cloud.google.com" {
+			if extRef, ok, _ := unstructured.NestedString(u.Object, "status", "externalRef"); !ok || extRef == "" {
+				catalogID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+				if catalogID == "" {
+					catalogID = u.GetName()
+				}
+				var extRef string
+				if parentExt, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "external"); parentExt != "" {
+					extRef = fmt.Sprintf("%s/catalogs/%s", strings.TrimSuffix(parentExt, "/"), catalogID)
+				} else if parentName, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "name"); parentName != "" {
+					for _, other := range allObjs {
+						if other.GetKind() == "DesignCenterSpace" && other.GetName() == parentName {
+							if otherExt, ok, _ := unstructured.NestedString(other.Object, "status", "externalRef"); ok && otherExt != "" {
+								extRef = fmt.Sprintf("%s/catalogs/%s", strings.TrimSuffix(otherExt, "/"), catalogID)
+							} else {
+								projectID, _, _ := unstructured.NestedString(other.Object, "spec", "projectRef", "external")
+								projectID = strings.TrimPrefix(projectID, "projects/")
+								if projectID == "" {
+									otherAnn := other.GetAnnotations()
+									if otherAnn != nil {
+										projectID = otherAnn["cnrm.cloud.google.com/project-id"]
+									}
+								}
+								if projectID == "" {
+									projectID = ann["cnrm.cloud.google.com/project-id"]
+								}
+								if projectID == "" {
+									projectID = "mock-project"
+								}
+								location, _, _ := unstructured.NestedString(other.Object, "spec", "location")
+								if location == "" {
+									location = "us-central1"
+								}
+								spaceID, _, _ := unstructured.NestedString(other.Object, "spec", "resourceID")
+								if spaceID == "" {
+									spaceID = other.GetName()
+								}
+								extRef = fmt.Sprintf("projects/%s/locations/%s/spaces/%s/catalogs/%s", projectID, location, spaceID, catalogID)
+							}
+							break
+						}
+					}
+				}
+				if extRef != "" {
+					_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+				}
+			}
 		}
 		kccObjs = append(kccObjs, u)
 	}

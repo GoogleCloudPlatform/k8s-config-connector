@@ -1279,6 +1279,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 
 			case schema.GroupKind{Group: "designcenter.cnrm.cloud.google.com", Kind: "DesignCenterSpace"}:
 			case schema.GroupKind{Group: "designcenter.cnrm.cloud.google.com", Kind: "DesignCenterCatalog"}:
+			case schema.GroupKind{Group: "designcenter.cnrm.cloud.google.com", Kind: "DesignCenterCatalogTemplate"}:
 
 			case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineDataStore"}:
 			case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineSession"}:
