@@ -1,0 +1,579 @@
+# Phase: CREATE
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/sources/migrationcentersource-idf-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fsources%2Fmigrationcentersource-idf-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/sources/migrationcentersource-idf-max-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/sources?%24alt=json%3Benum-encoding%3Dint&sourceId=migrationcentersource-idf-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/sources/migrationcentersource-idf-max-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/sources/migrationcentersource-idf-max-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.Source",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/sources/migrationcentersource-idf-max-${uniqueId}",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/sources/migrationcentersource-idf-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fsources%2Fmigrationcentersource-idf-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/sources/migrationcentersource-idf-max-${uniqueId}",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FimportJobs%2Fmigrationcenterimportjob-idf-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/importJobs?%24alt=json%3Benum-encoding%3Dint&importJobId=migrationcenterimportjob-idf-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "assetSource": "projects/${projectId}/locations/us-central1/sources/migrationcentersource-idf-max-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.ImportJob",
+    "assetSource": "projects/${projectNumber}/locations/us-central1/sources/migrationcentersource-idf-max-${uniqueId}",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}",
+    "state": "IMPORT_JOB_STATE_PENDING",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}/importDataFiles/migrationcenterimportdatafile-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FimportJobs%2Fmigrationcenterimportjob-idf-max-${uniqueId}%2FimportDataFiles%2Fmigrationcenterimportdatafile-maximal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}/importDataFiles/migrationcenterimportdatafile-maximal-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}/importDataFiles?%24alt=json%3Benum-encoding%3Dint&importDataFileId=migrationcenterimportdatafile-maximal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2FimportJobs%2Fmigrationcenterimportjob-idf-max-${uniqueId}
+
+{
+  "displayName": "Maximal Import Data File",
+  "format": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}/importDataFiles/migrationcenterimportdatafile-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}/importDataFiles/migrationcenterimportdatafile-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.ImportDataFile",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Maximal Import Data File",
+    "format": "IMPORT_JOB_FORMAT_RVTOOLS_XLSX",
+    "name": "projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}/importDataFiles/migrationcenterimportdatafile-maximal-${uniqueId}",
+    "state": "ACTIVE",
+    "uploadFileInfo": {
+      "headers": {
+        "Content-Type": "application/octet-stream",
+        "x-goog-content-length-range": "0,104857600"
+      },
+      "signedUri": "https://storage.googleapis.com/${projectNumber}_us-central1_import_payloads/migrationcenterimportjob-idf-max-${uniqueId}_f0fb790b/in/migrationcenterimportdatafile-maximal-${uniqueId}_5236e7f2?X-Goog-Algorithm=GOOG4-RSA-SHA256\u0026X-Goog-Credential=service-${projectNumber}%40gcp-sa-migcenter.iam.gserviceaccount.com%2F20261120%2Fauto%2Fstorage%2Fgoog4_request\u0026X-Goog-Date=20261120T015613Z\u0026X-Goog-Expires=43199\u0026X-Goog-Signature=27af1b2684221d625868d51caad974ecb2527fcbee0a2791efa233f887d120948d8e9911c09ccbce778d2d15a9ef27d98d976c4be647ae5d6bc042cc658f0641d01e1ca0be19a9fe01fb3e74a372283ca133bff6796ff2e84c0631c08cebd92182c9865e92d9ab466bd5b8cf71c8d9520ef3b621ce8a9cb67df911147865d31d8514c9e3cbcc7abff31bae1ec28db41aa493f1c7b84c050d884b5d7bbe31f46e54db50133e44e0ec86e9b472e7d042d58bfb77f33c18370c4ea7c675054876897ea866eea1224edd09cce753af313ed5e4684c3ff07680593a7ed0e4278016a63cee833d2c05129b91a8144db698c0857c676dbdd17f4ef063aa6689a4a954e1\u0026X-Goog-SignedHeaders=content-type%3Bhost%3Bx-goog-content-length-range",
+      "uriExpirationTime": "2026-11-20T13:56:13.713533621Z"
+    }
+  }
+}
+
+---
+
+# Phase: DELETE
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}/importDataFiles/migrationcenterimportdatafile-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FimportJobs%2Fmigrationcenterimportjob-idf-max-${uniqueId}%2FimportDataFiles%2Fmigrationcenterimportdatafile-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Maximal Import Data File",
+  "format": 1,
+  "name": "projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}/importDataFiles/migrationcenterimportdatafile-maximal-${uniqueId}",
+  "state": 2,
+  "uploadFileInfo": {
+    "headers": {
+      "Content-Type": "application/octet-stream",
+      "x-goog-content-length-range": "0,104857600"
+    },
+    "signedUri": "https://storage.googleapis.com/${projectNumber}_us-central1_import_payloads/migrationcenterimportjob-idf-max-${uniqueId}_f0fb790b/in/migrationcenterimportdatafile-maximal-${uniqueId}_5236e7f2?X-Goog-Algorithm=GOOG4-RSA-SHA256\u0026X-Goog-Credential=service-${projectNumber}%40gcp-sa-migcenter.iam.gserviceaccount.com%2F20261120%2Fauto%2Fstorage%2Fgoog4_request\u0026X-Goog-Date=20261120T015613Z\u0026X-Goog-Expires=43199\u0026X-Goog-Signature=27af1b2684221d625868d51caad974ecb2527fcbee0a2791efa233f887d120948d8e9911c09ccbce778d2d15a9ef27d98d976c4be647ae5d6bc042cc658f0641d01e1ca0be19a9fe01fb3e74a372283ca133bff6796ff2e84c0631c08cebd92182c9865e92d9ab466bd5b8cf71c8d9520ef3b621ce8a9cb67df911147865d31d8514c9e3cbcc7abff31bae1ec28db41aa493f1c7b84c050d884b5d7bbe31f46e54db50133e44e0ec86e9b472e7d042d58bfb77f33c18370c4ea7c675054876897ea866eea1224edd09cce753af313ed5e4684c3ff07680593a7ed0e4278016a63cee833d2c05129b91a8144db698c0857c676dbdd17f4ef063aa6689a4a954e1\u0026X-Goog-SignedHeaders=content-type%3Bhost%3Bx-goog-content-length-range",
+    "uriExpirationTime": "2026-11-20T13:56:13.713533621Z"
+  }
+}
+
+---
+
+DELETE https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}/importDataFiles/migrationcenterimportdatafile-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FimportJobs%2Fmigrationcenterimportjob-idf-max-${uniqueId}%2FimportDataFiles%2Fmigrationcenterimportdatafile-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}/importDataFiles/migrationcenterimportdatafile-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}/importDataFiles/migrationcenterimportdatafile-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FimportJobs%2Fmigrationcenterimportjob-idf-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "assetSource": "projects/${projectId}/locations/us-central1/sources/migrationcentersource-idf-max-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FimportJobs%2Fmigrationcenterimportjob-idf-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/sources/migrationcentersource-idf-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fsources%2Fmigrationcentersource-idf-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/sources/migrationcentersource-idf-max-${uniqueId}",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/sources/migrationcentersource-idf-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fsources%2Fmigrationcentersource-idf-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/sources/migrationcentersource-idf-max-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/sources/migrationcentersource-idf-max-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

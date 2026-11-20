@@ -1,0 +1,9 @@
+apiVersion: migrationcenter.cnrm.cloud.google.com/v1alpha1
+kind: MigrationCenterImportDataFile
+metadata:
+  name: migrationcenterimportdatafile-maximal-${uniqueId}
+spec:
+  parentRef:
+    name: migrationcenterimportjob-idf-max-${uniqueId}
+  displayName: Maximal Import Data File
+  format: IMPORT_JOB_FORMAT_RVTOOLS_XLSX

@@ -610,6 +610,26 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 			}
 
+			// Inject status.externalRef for MigrationCenterImportJob to simulate a reconciled import job in static unit tests.
+			if u.GetKind() == "MigrationCenterImportJob" && u.GroupVersionKind().Group == "migrationcenter.cnrm.cloud.google.com" {
+				projectID := annotations["cnrm.cloud.google.com/project-id"]
+				if proj, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external"); proj != "" {
+					projectID = strings.TrimPrefix(proj, "projects/")
+				}
+				location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
+				if location == "" {
+					location = "us-central1"
+				}
+				importJobID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+				if importJobID == "" {
+					importJobID = u.GetName()
+				}
+				extRef := fmt.Sprintf("projects/%s/locations/%s/importJobs/%s", projectID, location, importJobID)
+				if err := unstructured.SetNestedField(u.Object, extRef, "status", "externalRef"); err != nil {
+					t.Fatalf("failed to inject status.externalRef for MigrationCenterImportJob %s: %v", u.GetName(), err)
+				}
+			}
+
 			// Inject status.externalRef for FinancialServicesInstance to simulate a reconciled instance in static unit tests.
 			if u.GetKind() == "FinancialServicesInstance" && u.GroupVersionKind().Group == "financialservices.cnrm.cloud.google.com" {
 				projectID, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external")
@@ -1243,6 +1263,25 @@ func normalizeFixtureKCCObjects(allObjs []*unstructured.Unstructured) []*unstruc
 				catalogID = u.GetName()
 			}
 			extRef := fmt.Sprintf("projects/%s/catalogs/%s", projectID, catalogID)
+			_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+		}
+		if u.GetKind() == "MigrationCenterImportJob" && group == "migrationcenter.cnrm.cloud.google.com" {
+			projectID := ann["cnrm.cloud.google.com/project-id"]
+			if proj, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external"); proj != "" {
+				projectID = strings.TrimPrefix(proj, "projects/")
+			}
+			if projectID == "" {
+				projectID = "mock-project"
+			}
+			location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
+			if location == "" {
+				location = "us-central1"
+			}
+			importJobID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+			if importJobID == "" {
+				importJobID = u.GetName()
+			}
+			extRef := fmt.Sprintf("projects/%s/locations/%s/importJobs/%s", projectID, location, importJobID)
 			_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
 		}
 		kccObjs = append(kccObjs, u)

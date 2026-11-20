@@ -1,0 +1,8 @@
+apiVersion: migrationcenter.cnrm.cloud.google.com/v1alpha1
+kind: MigrationCenterImportDataFile
+metadata:
+  name: migrationcenterimportdatafile-minimal-${uniqueId}
+spec:
+  parentRef:
+    name: migrationcenterimportjob-idf-min-${uniqueId}
+  format: IMPORT_JOB_FORMAT_RVTOOLS_XLSX

@@ -1,0 +1,34 @@
+apiVersion: migrationcenter.cnrm.cloud.google.com/v1alpha1
+kind: MigrationCenterImportDataFile
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: migrationcenterimportdatafile-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: Maximal Import Data File
+  format: IMPORT_JOB_FORMAT_RVTOOLS_XLSX
+  parentRef:
+    name: migrationcenterimportjob-idf-max-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/importJobs/migrationcenterimportjob-idf-max-${uniqueId}/importDataFiles/migrationcenterimportdatafile-maximal-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    state: ACTIVE
+    uploadFileInfo:
+      headers:
+        Content-Type: application/octet-stream
+        x-goog-content-length-range: 0,104857600
+      signedURI: https://storage.googleapis.com/${projectNumber}_us-central1_import_payloads/migrationcenterimportjob-idf-max-${uniqueId}_f0fb790b/in/migrationcenterimportdatafile-maximal-${uniqueId}_5236e7f2?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=service-${projectNumber}%40gcp-sa-migcenter.iam.gserviceaccount.com%2F20261120%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20261120T015613Z&X-Goog-Expires=43199&X-Goog-Signature=27af1b2684221d625868d51caad974ecb2527fcbee0a2791efa233f887d120948d8e9911c09ccbce778d2d15a9ef27d98d976c4be647ae5d6bc042cc658f0641d01e1ca0be19a9fe01fb3e74a372283ca133bff6796ff2e84c0631c08cebd92182c9865e92d9ab466bd5b8cf71c8d9520ef3b621ce8a9cb67df911147865d31d8514c9e3cbcc7abff31bae1ec28db41aa493f1c7b84c050d884b5d7bbe31f46e54db50133e44e0ec86e9b472e7d042d58bfb77f33c18370c4ea7c675054876897ea866eea1224edd09cce753af313ed5e4684c3ff07680593a7ed0e4278016a63cee833d2c05129b91a8144db698c0857c676dbdd17f4ef063aa6689a4a954e1&X-Goog-SignedHeaders=content-type%3Bhost%3Bx-goog-content-length-range
+      uriExpirationTime: "2026-11-20T13:56:13.713533621Z"
