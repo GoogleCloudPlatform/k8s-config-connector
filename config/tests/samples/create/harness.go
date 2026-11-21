@@ -1709,6 +1709,22 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			}
 		}
 	}
+	if gcpTarget == "real" {
+		for _, resource := range resources {
+			gvk := resource.GroupVersionKind()
+			switch gvk.GroupKind() {
+			case schema.GroupKind{Group: "cloudiot.cnrm.cloud.google.com", Kind: "CloudIoTDeviceRegistry"},
+				schema.GroupKind{Group: "cloudiot.cnrm.cloud.google.com", Kind: "CloudIoTDevice"},
+				schema.GroupKind{Group: "backupdr.cnrm.cloud.google.com", Kind: "BackupDRManagementServer"},
+				schema.GroupKind{Group: "beyondcorp.cnrm.cloud.google.com", Kind: "BeyondCorpAppConnector"},
+				schema.GroupKind{Group: "beyondcorp.cnrm.cloud.google.com", Kind: "BeyondCorpAppConnection"},
+				schema.GroupKind{Group: "beyondcorp.cnrm.cloud.google.com", Kind: "BeyondCorpAppGateway"},
+				schema.GroupKind{Group: "tpu.cnrm.cloud.google.com", Kind: "TPUNode"},
+				schema.GroupKind{Group: "sourcerepo.cnrm.cloud.google.com", Kind: "SourceRepoRepository"}:
+				t.Skipf("gk %v uses a retired or discontinued GCP API/SKU on real GCP (%v); skipping", gvk.GroupKind(), testKey)
+			}
+		}
+	}
 	if gcpTarget == "vcr" {
 		// TODO(yuhou): use a cleaner way(resource kind) to manage the allow list for vcr
 		name := filepath.Base(testKey)

@@ -14,7 +14,7 @@ spec:
   clusterRef:
     external: projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}
   expireTime: "2025-10-03T15:01:23Z"
-  hotToStandardTime: "2028-05-30T12:00:00Z"
+  hotToStandardTime: "2024-04-01T12:34:56.123456Z"
   sourceTableRef:
     name: bigtabletable-dep-${uniqueId}
 status:

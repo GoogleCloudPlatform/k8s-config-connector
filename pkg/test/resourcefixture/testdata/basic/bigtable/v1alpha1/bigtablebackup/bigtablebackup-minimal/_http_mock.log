@@ -304,7 +304,7 @@ GRPC /google.bigtable.admin.v2.BigtableTableAdmin/CreateBackup
 
 {
   "backup": {
-    "expireTime": "2028-05-30T12:00:00Z",
+    "expireTime": "2024-04-01T12:34:56.123456Z",
     "sourceTable": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}"
   },
   "backupId": "bigtablebackup-${uniqueId}",

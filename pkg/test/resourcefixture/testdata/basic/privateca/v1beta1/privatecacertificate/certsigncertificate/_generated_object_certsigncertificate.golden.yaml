@@ -1,0 +1,265 @@
+apiVersion: privateca.cnrm.cloud.google.com/v1beta1
+kind: PrivateCACertificate
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+    key: value
+    value: key
+  name: privatecacertificate-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  caPoolRef:
+    name: privatecacapool-${uniqueId}
+  certificateAuthorityRef:
+    name: privatecacertificateauthority-${uniqueId}
+  config:
+    publicKey:
+      format: PEM
+      key: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUF2NndlQzFhVDE2bDJxUzZxZFljeQo3Qk9qelA3VHdUOXpVQWlGaFdwTDI1NkdScUM4eVFSZHFNc2k2OFEvLzc2MklVeXUvcWFIYkVnUThXUm1RZFZWCkdEbHhrQmZyQS9pWEIyZGd1anE4amgwSFdJVjJldjNUZXJWM2FVd3ZZVWxyb3docTAyN1NYOVUxaGJ1ZmRHQ00KdUtzSGlGMDVFcmdOdkV1UjhYQWtlSi9ZVjJEVjIrc1JxK1dnOXk0UndVWWJkY2hkRnR5MWQ1U1gvczBZcXN3Zwp5T0c5Vm9DZFI3YmFGMjJ1Z2hWUjQ0YVJtKzgzbWd0cUFaNE0rUnBlN0pHUnNVR1kvcFIzOTFUb2kwczhFbjE1CkpHaUFocVgyVzBVby9GWlpyeTN5dXFSZmRIWUVOQitBRHV5VE1UclVhS1p2N2V1YTBsVEJ6NW9vbTNqU0YzZ3YKSTdTUW9MZEsvamhFVk9PcTQxSWpCOEQ2MFNnZDY5YkQ3eVRJNTE2eXZaL3MzQXlLelc2ZjZLbmpkYkNjWktLVAowR0FlUE5MTmhEWWZTbEE5YndKOEhRUzJGZW5TcFNUQXJLdkdpVnJzaW5KdU5qYlFkUHVRSGNwV2Y5eDFtM0dSClRNdkYrVE5ZTS9scDdJTDJWTWJKUmZXUHkxaVd4bTlGMVlyNmRrSFZvTFA3b2NZa05SSG9QTHV0NUU2SUZKdEsKbFZJMk5uZVVZSkduWVNPKzF4UFY5VHFsSmVNTndyM3VGTUFOOE4vb0IzZjRXV3d1UllnUjBMNWcyQStMdngrZwpiYmRsK1RiLzBDTmZzbGZTdURyRlY4WjRuNmdWd2I5WlBHbE5IQ3ZucVJmTFVwUkZKd21SN1VZdnppL0U3clhKCkVEa0srdGNuUGt6Mkp0amRMS1I3cVZjQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQ==
+    subjectConfig:
+      subject:
+        commonName: san1.example.com
+        countryCode: us
+        locality: mountain view
+        organization: google
+        organizationalUnit: enterprise
+        postalCode: "94109"
+        province: california
+        streetAddress: 1600 amphitheatre parkway
+      subjectAltName:
+        dnsNames:
+        - san1.example.com
+        emailAddresses:
+        - test_example@google.com
+        ipAddresses:
+        - 127.0.0.1
+        uris:
+        - http://www.ietf.org/rfc/rfc3986.txt
+    x509Config:
+      additionalExtensions:
+      - critical: false
+        objectId:
+          objectIdPath:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 5
+        value: d3d3LmV4YW1wbGUuY29t
+      aiaOcspServers:
+      - www.example.com
+      caOptions:
+        isCa: true
+        maxIssuerPathLength: 100
+      keyUsage:
+        baseKeyUsage:
+          certSign: true
+          contentCommitment: true
+          crlSign: true
+          dataEncipherment: true
+          digitalSignature: true
+          encipherOnly: true
+          keyAgreement: true
+          keyEncipherment: true
+        extendedKeyUsage:
+          clientAuth: true
+          codeSigning: true
+          emailProtection: true
+          ocspSigning: true
+          serverAuth: true
+          timeStamping: true
+        unknownExtendedKeyUsages:
+        - objectIdPath:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 5
+      policyIds:
+      - objectIdPath:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 5
+  lifetime: 860s
+  location: us-central1
+  projectRef:
+    external: projects/${projectId}
+  resourceID: privatecacertificate-${uniqueId}
+status:
+  certificateDescription:
+    authorityKeyId:
+      keyId: 7f137ea13fd3d81b47d0a53fd5f8eff381ca8b4d
+    certFingerprint:
+      sha256Hash: afe62dd7efc65e100382da2d7b995a56a50d512e82035335bc556219d213e8e8
+    publicKey:
+      key: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUF2NndlQzFhVDE2bDJxUzZxZFljeQo3Qk9qelA3VHdUOXpVQWlGaFdwTDI1NkdScUM4eVFSZHFNc2k2OFEvLzc2MklVeXUvcWFIYkVnUThXUm1RZFZWCkdEbHhrQmZyQS9pWEIyZGd1anE4amgwSFdJVjJldjNUZXJWM2FVd3ZZVWxyb3docTAyN1NYOVUxaGJ1ZmRHQ00KdUtzSGlGMDVFcmdOdkV1UjhYQWtlSi9ZVjJEVjIrc1JxK1dnOXk0UndVWWJkY2hkRnR5MWQ1U1gvczBZcXN3Zwp5T0c5Vm9DZFI3YmFGMjJ1Z2hWUjQ0YVJtKzgzbWd0cUFaNE0rUnBlN0pHUnNVR1kvcFIzOTFUb2kwczhFbjE1CkpHaUFocVgyVzBVby9GWlpyeTN5dXFSZmRIWUVOQitBRHV5VE1UclVhS1p2N2V1YTBsVEJ6NW9vbTNqU0YzZ3YKSTdTUW9MZEsvamhFVk9PcTQxSWpCOEQ2MFNnZDY5YkQ3eVRJNTE2eXZaL3MzQXlLelc2ZjZLbmpkYkNjWktLVAowR0FlUE5MTmhEWWZTbEE5YndKOEhRUzJGZW5TcFNUQXJLdkdpVnJzaW5KdU5qYlFkUHVRSGNwV2Y5eDFtM0dSClRNdkYrVE5ZTS9scDdJTDJWTWJKUmZXUHkxaVd4bTlGMVlyNmRrSFZvTFA3b2NZa05SSG9QTHV0NUU2SUZKdEsKbFZJMk5uZVVZSkduWVNPKzF4UFY5VHFsSmVNTndyM3VGTUFOOE4vb0IzZjRXV3d1UllnUjBMNWcyQStMdngrZwpiYmRsK1RiLzBDTmZzbGZTdURyRlY4WjRuNmdWd2I5WlBHbE5IQ3ZucVJmTFVwUkZKd21SN1VZdnppL0U3clhKCkVEa0srdGNuUGt6Mkp0amRMS1I3cVZjQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=
+    subjectDescription:
+      hexSerialNumber: fce93a2860dae8fd376ab473d85d97ba02d112
+      lifetime: 860s
+      notAfterTime: "2026-11-20T23:43:43Z"
+      notBeforeTime: "2026-11-20T23:29:24Z"
+      subject:
+        commonName: san1.example.com
+        countryCode: us
+        locality: mountain view
+        organization: google
+        organizationalUnit: enterprise
+        postalCode: "94109"
+        province: california
+        streetAddress: 1600 amphitheatre parkway
+      subjectAltName:
+        dnsNames:
+        - san1.example.com
+        emailAddresses:
+        - test_example@google.com
+        ipAddresses:
+        - 127.0.0.1
+        uris:
+        - http://www.ietf.org/rfc/rfc3986.txt
+    subjectKeyId:
+      keyId: fb5ed937dee401c96f501d44664874f2ea2fa1e3
+    x509Description:
+      additionalExtensions:
+      - objectId:
+          objectIdPath:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 5
+        value: d3d3LmV4YW1wbGUuY29t
+      aiaOcspServers:
+      - www.example.com
+      caOptions:
+        isCa: true
+        maxIssuerPathLength: 100
+      keyUsage:
+        baseKeyUsage:
+          certSign: true
+          contentCommitment: true
+          crlSign: true
+          dataEncipherment: true
+          digitalSignature: true
+          encipherOnly: true
+          keyAgreement: true
+          keyEncipherment: true
+        extendedKeyUsage:
+          clientAuth: true
+          codeSigning: true
+          emailProtection: true
+          ocspSigning: true
+          serverAuth: true
+          timeStamping: true
+        unknownExtendedKeyUsages:
+        - objectIdPath:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 5
+      policyIds:
+      - objectIdPath:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 5
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  createTime: "1970-01-01T00:00:00Z"
+  issuerCertificateAuthority: projects/${projectNumber}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}
+  observedGeneration: 2
+  pemCertificate: |
+    -----BEGIN CERTIFICATE-----
+    MIIG5zCCBM+gAwIBAgIUAPzpOihg2uj9N2q0c9hdl7oC0RIwDQYJKoZIhvcNAQEL
+    BQAwNTEQMA4GA1UEChMHRXhhbXBsZTEhMB8GA1UEAxMYbXktY2VydGlmaWNhdGUt
+    YXV0aG9yaXR5MB4XDTI2MTEyMDIzMjkyNFoXDTI2MTEyMDIzNDM0M1owga8xCzAJ
+    BgNVBAYTAnVzMRMwEQYDVQQIEwpjYWxpZm9ybmlhMRYwFAYDVQQHEw1tb3VudGFp
+    biB2aWV3MSIwIAYDVQQJExkxNjAwIGFtcGhpdGhlYXRyZSBwYXJrd2F5MQ4wDAYD
+    VQQREwU5NDEwOTEPMA0GA1UEChMGZ29vZ2xlMRMwEQYDVQQLEwplbnRlcnByaXNl
+    MRkwFwYDVQQDExBzYW4xLmV4YW1wbGUuY29tMIICIjANBgkqhkiG9w0BAQEFAAOC
+    Ag8AMIICCgKCAgEAv6weC1aT16l2qS6qdYcy7BOjzP7TwT9zUAiFhWpL256GRqC8
+    yQRdqMsi68Q//762IUyu/qaHbEgQ8WRmQdVVGDlxkBfrA/iXB2dgujq8jh0HWIV2
+    ev3TerV3aUwvYUlrowhq027SX9U1hbufdGCMuKsHiF05ErgNvEuR8XAkeJ/YV2DV
+    2+sRq+Wg9y4RwUYbdchdFty1d5SX/s0YqswgyOG9VoCdR7baF22ughVR44aRm+83
+    mgtqAZ4M+Rpe7JGRsUGY/pR391Toi0s8En15JGiAhqX2W0Uo/FZZry3yuqRfdHYE
+    NB+ADuyTMTrUaKZv7eua0lTBz5oom3jSF3gvI7SQoLdK/jhEVOOq41IjB8D60Sgd
+    69bD7yTI516yvZ/s3AyKzW6f6KnjdbCcZKKT0GAePNLNhDYfSlA9bwJ8HQS2FenS
+    pSTArKvGiVrsinJuNjbQdPuQHcpWf9x1m3GRTMvF+TNYM/lp7IL2VMbJRfWPy1iW
+    xm9F1Yr6dkHVoLP7ocYkNRHoPLut5E6IFJtKlVI2NneUYJGnYSO+1xPV9TqlJeMN
+    wr3uFMAN8N/oB3f4WWwuRYgR0L5g2A+Lvx+gbbdl+Tb/0CNfslfSuDrFV8Z4n6gV
+    wb9ZPGlNHCvnqRfLUpRFJwmR7UYvzi/E7rXJEDkK+tcnPkz2JtjdLKR7qVcCAwEA
+    AaOCAXIwggFuMA4GA1UdDwEB/wQEAwIA/zBMBgNVHSUERTBDBggrBgEFBQcDAQYI
+    KwYBBQUHAwIGCCsGAQUFBwMDBggrBgEFBQcDBAYIKwYBBQUHAwgGCCsGAQUFBwMJ
+    BgUqAwQFBTASBgNVHRMBAf8ECDAGAQH/AgFkMB0GA1UdDgQWBBT7Xtk33uQByW9Q
+    HURmSHTy6i+h4zAfBgNVHSMEGDAWgBR/E36hP9PYG0fQpT/V+O/zgcqLTTArBggr
+    BgEFBQcBAQQfMB0wGwYIKwYBBQUHMAGGD3d3dy5leGFtcGxlLmNvbTBfBgNVHREE
+    WDBWghBzYW4xLmV4YW1wbGUuY29tgRd0ZXN0X2V4YW1wbGVAZ29vZ2xlLmNvbYcE
+    fwAAAYYjaHR0cDovL3d3dy5pZXRmLm9yZy9yZmMvcmZjMzk4Ni50eHQwEgYDVR0g
+    BAswCTAHBgUqAwQFBTAYBgUqAwQFBQQPd3d3LmV4YW1wbGUuY29tMA0GCSqGSIb3
+    DQEBCwUAA4ICAQAI9oTC//+BAby3iP9NItLy3aio1zFan+vq1+/qyG05MdnjHxB1
+    bK3VdoUs61TUUKsufoOtVwD2umR9RxKqM3A4EolyxEOf/jVtM1+FyqOWyQMqi/N5
+    peWr9Ct5o9caTcfkCABe8HbTD+DuLkztvzoTUeOKOscKW4ya1Vm6z/lf5V/Ch8Ut
+    ieII5P2043QTAlymRR+inBMX2VA3rC7OfgoUwEDmvMVrm3TFl/1pW/2BszGEgzJT
+    O8YB9o5rrPVqWUpoqESJjLttfHAVUJIklQ/AkXM5UrryEMY0qf0M2LHWpdU7yAau
+    Vc+U7nSKB/cOPCJhAsOIb9zKXKfU5u+VHw57ZI5kv5ldAwDVnFfO4jy8senGv1a6
+    D5hADFMNmOXilLw5wH547+ydH/OlSQK/QvYSvDqKUv+58U08MIy1Cc1O6YgU6cVO
+    JIY20CJPpu16bhJIybHx+pJa66Ik5hDPfllDf7JDegkmz9EAw8llTeMkNzKKP8sw
+    W5MeQzgbB+Ejwc/UsP9on2hgsxfw1RzcYpgF+Ix3yL+c9HFQShKhW+65q7sxCOBE
+    09fW94guH3LnbLQo+hZXGfR5tT9Spi1oM6TW+PuEibb0CcO/1RYDDYsVmBCllS1B
+    EHNADbSd+s1+a+6HqRzqz+mucLRMDlBu3G8aR86vHd5FA7a5+p0fqwOdGA==
+    -----END CERTIFICATE-----
+  pemCertificateChain:
+  - |
+    -----BEGIN CERTIFICATE-----
+    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
+    egxjB4BX5RYicpsjmJByBfTaRIPl3QccVSGwmJM=
+    -----END CERTIFICATE-----
+  updateTime: "1970-01-01T00:00:00Z"

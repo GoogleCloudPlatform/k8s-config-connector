@@ -1,6 +1,7 @@
+# Phase: CREATE
 GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupVaults%2Fbackupdrbackupvault-full-${uniqueId}
 
 404 Not Found
@@ -25,14 +26,14 @@ X-Xss-Protection: 0
 
 POST https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults?%24alt=json%3Benum-encoding%3Dint&backupVaultId=backupdrbackupvault-full-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
   "accessRestriction": 2,
   "backupMinimumEnforcedRetentionDuration": "86400s",
   "description": "This is a full backup vault",
-  "effectiveTime": "2025-08-17T10:00:00Z",
+  "effectiveTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
     "custom-label": "foo",
@@ -66,7 +67,7 @@ X-Xss-Protection: 0
 
 GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
@@ -97,7 +98,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletable": true,
     "description": "This is a full backup vault",
-    "effectiveTime": "2025-08-17T10:00:00Z",
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
     "labels": {
       "cnrm-test": "true",
@@ -115,9 +116,10 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: UPDATE
 GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupVaults%2Fbackupdrbackupvault-full-${uniqueId}
 
 200 OK
@@ -136,7 +138,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletable": true,
   "description": "This is a full backup vault",
-  "effectiveTime": "2025-08-17T10:00:00Z",
+  "effectiveTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
@@ -155,14 +157,14 @@ X-Xss-Protection: 0
 
 PATCH https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=backupMinimumEnforcedRetentionDuration%2Cdescription%2Clabels
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: backup_vault.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupVaults%2Fbackupdrbackupvault-full-${uniqueId}
 
 {
   "accessRestriction": 2,
   "backupMinimumEnforcedRetentionDuration": "86500s",
   "description": "This is an updated full backup vault",
-  "effectiveTime": "2025-08-17T10:00:00Z",
+  "effectiveTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "labels": {
     "another-label": "another-value",
@@ -199,7 +201,7 @@ X-Xss-Protection: 0
 
 GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
@@ -230,7 +232,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletable": true,
     "description": "This is an updated full backup vault",
-    "effectiveTime": "2025-08-17T10:00:00Z",
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
     "labels": {
       "another-label": "another-value",
@@ -251,7 +253,7 @@ X-Xss-Protection: 0
 
 GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupVaults%2Fbackupdrbackupvault-full-${uniqueId}
 
 200 OK
@@ -270,7 +272,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletable": true,
   "description": "This is an updated full backup vault",
-  "effectiveTime": "2025-08-17T10:00:00Z",
+  "effectiveTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "labels": {
     "another-label": "another-value",
@@ -288,9 +290,10 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: DELETE
 DELETE https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupVaults%2Fbackupdrbackupvault-full-${uniqueId}
 
 200 OK
@@ -318,7 +321,7 @@ X-Xss-Protection: 0
 
 GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK

@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-${uniqueId}?alt=json
 Content-Type: application/json
 
@@ -395,7 +396,7 @@ Content-Type: application/json
     "automatic": {}
   },
   "rotation": {
-    "nextRotationTime": "2025-10-02T15:01:23Z",
+    "nextRotationTime": "2035-10-02T15:01:23Z",
     "rotationPeriod": "3600s"
   },
   "topics": [
@@ -432,7 +433,7 @@ X-Xss-Protection: 0
     "automatic": {}
   },
   "rotation": {
-    "nextRotationTime": "2025-10-02T15:01:23Z",
+    "nextRotationTime": "2035-10-02T15:01:23Z",
     "rotationPeriod": "3600s"
   },
   "topics": [
@@ -474,7 +475,7 @@ X-Xss-Protection: 0
     "automatic": {}
   },
   "rotation": {
-    "nextRotationTime": "2025-10-02T15:01:23Z",
+    "nextRotationTime": "2035-10-02T15:01:23Z",
     "rotationPeriod": "3600s"
   },
   "topics": [
@@ -486,6 +487,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: UPDATE
 PATCH https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json&updateMask=labels%2Cannotations%2Ctopics%2CexpireTime%2Crotation
 Content-Type: application/json
 
@@ -505,7 +507,7 @@ Content-Type: application/json
     "automatic": {}
   },
   "rotation": {
-    "nextRotationTime": "2025-10-03T15:01:23Z",
+    "nextRotationTime": "2035-10-03T15:01:23Z",
     "rotationPeriod": "3600s"
   },
   "topics": [
@@ -544,7 +546,7 @@ X-Xss-Protection: 0
     "automatic": {}
   },
   "rotation": {
-    "nextRotationTime": "2025-10-03T15:01:23Z",
+    "nextRotationTime": "2035-10-03T15:01:23Z",
     "rotationPeriod": "3600s"
   },
   "topics": [
@@ -588,7 +590,7 @@ X-Xss-Protection: 0
     "automatic": {}
   },
   "rotation": {
-    "nextRotationTime": "2025-10-03T15:01:23Z",
+    "nextRotationTime": "2035-10-03T15:01:23Z",
     "rotationPeriod": "3600s"
   },
   "topics": [
@@ -600,6 +602,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: DELETE
 DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json
 Content-Type: application/json
 

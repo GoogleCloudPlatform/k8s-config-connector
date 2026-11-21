@@ -98,6 +98,30 @@ func TestValuesCompatible(t *testing.T) {
 			diffPath: "spec.columnLayout.columns",
 			want:     true,
 		},
+		{
+			name:        "futureTimestampDays placeholder matches normalized timestamp",
+			foundVal:    "2024-04-01T12:34:56.123456Z",
+			expectedVal: "${futureTimestampDays:45}",
+			createVal:   "${futureTimestampDays:30}",
+			diffPath:    "spec.expireTime",
+			want:        true,
+		},
+		{
+			name:        "futureTimestampDays placeholder does not match empty value",
+			foundVal:    "",
+			expectedVal: "${futureTimestampDays:45}",
+			createVal:   "${futureTimestampDays:30}",
+			diffPath:    "spec.expireTime",
+			want:        false,
+		},
+		{
+			name:        "other placeholders are still compared literally",
+			foundVal:    "something-else",
+			expectedVal: "${uniqueId}",
+			createVal:   nil,
+			diffPath:    "spec.displayName",
+			want:        false,
+		},
 	}
 
 	for _, tc := range tests {

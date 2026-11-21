@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 
@@ -96,7 +97,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12?alt=json&prettyPrint=false
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -114,17 +115,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found",
+        "message": "The resource 'projects/debian-cloud/global/images/debian-12' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found"
+    "message": "The resource 'projects/debian-cloud/global/images/debian-12' was not found"
   }
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-12?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -137,10 +138,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "family": "debian-11",
+  "family": "debian-12",
   "kind": "compute#image",
-  "name": "debian-11-bullseye-v20231010",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "name": "debian-12-bookworm-v20261023",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12-bookworm-v20261023",
   "status": "READY"
 }
 
@@ -158,7 +159,7 @@ Content-Type: application/json
         "boot": true,
         "initializeParams": {
           "diskType": "pd-standard",
-          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
         },
         "interface": "SCSI",
         "mode": "READ_WRITE",
@@ -294,7 +295,7 @@ X-Xss-Protection: 0
         "index": 0,
         "initializeParams": {
           "diskType": "pd-standard",
-          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
         },
         "interface": "SCSI",
         "kind": "compute#attachedDisk",
@@ -330,7 +331,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12?alt=json&prettyPrint=false
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -348,17 +349,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found",
+        "message": "The resource 'projects/debian-cloud/global/images/debian-12' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found"
+    "message": "The resource 'projects/debian-cloud/global/images/debian-12' was not found"
   }
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-12?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -371,10 +372,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "family": "debian-11",
+  "family": "debian-12",
   "kind": "compute#image",
-  "name": "debian-11-bullseye-v20231010",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "name": "debian-12-bookworm-v20261023",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12-bookworm-v20261023",
   "status": "READY"
 }
 
@@ -479,7 +480,7 @@ X-Xss-Protection: 0
         "index": 0,
         "initializeParams": {
           "diskType": "pd-standard",
-          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
         },
         "interface": "SCSI",
         "kind": "compute#attachedDisk",
@@ -526,7 +527,7 @@ Content-Type: application/json
       "deviceName": "boot",
       "initializeParams": {
         "diskType": "zones/us-central1-a/diskTypes/pd-standard",
-        "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+        "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
       },
       "interface": "SCSI",
       "kind": "compute#attachedDisk",
@@ -629,7 +630,7 @@ X-Xss-Protection: 0
       "deviceName": "boot",
       "initializeParams": {
         "diskType": "zones/us-central1-a/diskTypes/pd-standard",
-        "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+        "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
       },
       "interface": "SCSI",
       "kind": "compute#attachedDisk",
@@ -758,7 +759,7 @@ X-Xss-Protection: 0
         "index": 0,
         "initializeParams": {
           "diskType": "pd-standard",
-          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
         },
         "interface": "SCSI",
         "kind": "compute#attachedDisk",
@@ -805,7 +806,7 @@ Content-Type: application/json
       "deviceName": "boot",
       "initializeParams": {
         "diskType": "zones/us-central1-a/diskTypes/pd-standard",
-        "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+        "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
       },
       "interface": "SCSI",
       "kind": "compute#attachedDisk",
@@ -908,7 +909,7 @@ X-Xss-Protection: 0
       "deviceName": "boot",
       "initializeParams": {
         "diskType": "zones/us-central1-a/diskTypes/pd-standard",
-        "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+        "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
       },
       "interface": "SCSI",
       "kind": "compute#attachedDisk",
@@ -1296,6 +1297,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: UPDATE
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}?alt=json&prettyPrint=false
 
 200 OK
@@ -1607,6 +1609,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: DELETE
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}?alt=json&prettyPrint=false
 
 200 OK
@@ -1765,7 +1768,7 @@ X-Xss-Protection: 0
       "deviceName": "boot",
       "initializeParams": {
         "diskType": "zones/us-central1-a/diskTypes/pd-standard",
-        "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+        "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
       },
       "interface": "SCSI",
       "kind": "compute#attachedDisk",
@@ -1877,7 +1880,7 @@ X-Xss-Protection: 0
       "deviceName": "boot",
       "initializeParams": {
         "diskType": "zones/us-central1-a/diskTypes/pd-standard",
-        "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+        "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
       },
       "interface": "SCSI",
       "kind": "compute#attachedDisk",

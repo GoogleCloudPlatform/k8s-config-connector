@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -272,6 +273,7 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast3/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/${networkID}",
@@ -337,7 +339,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
@@ -356,17 +358,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found",
+        "message": "The resource 'projects/debian-cloud/global/images/debian-12' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found"
+    "message": "The resource 'projects/debian-cloud/global/images/debian-12' was not found"
   }
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-12?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -380,16 +382,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "family": "debian-11",
+  "family": "debian-12",
   "kind": "compute#image",
-  "name": "debian-11-bullseye-v20231010",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "name": "debian-12-bookworm-v20261117",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12-bookworm-v20261117",
   "status": "READY"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
@@ -408,17 +410,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found",
+        "message": "The resource 'projects/debian-cloud/global/images/debian-12' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found"
+    "message": "The resource 'projects/debian-cloud/global/images/debian-12' was not found"
   }
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-12?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -432,16 +434,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "family": "debian-11",
+  "family": "debian-12",
   "kind": "compute#image",
-  "name": "debian-11-bullseye-v20231010",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "name": "debian-12-bookworm-v20261117",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12-bookworm-v20261117",
   "status": "READY"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
@@ -460,17 +462,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found",
+        "message": "The resource 'projects/debian-cloud/global/images/debian-12' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found"
+    "message": "The resource 'projects/debian-cloud/global/images/debian-12' was not found"
   }
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-12?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -484,10 +486,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "family": "debian-11",
+  "family": "debian-12",
   "kind": "compute#image",
-  "name": "debian-11-bullseye-v20231010",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "name": "debian-12-bookworm-v20261117",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12-bookworm-v20261117",
   "status": "READY"
 }
 
@@ -506,7 +508,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
         "boot": true,
         "initializeParams": {
           "diskType": "pd-standard",
-          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
         },
         "interface": "SCSI",
         "mode": "READ_WRITE",
@@ -517,7 +519,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
         "deviceName": "disk-a",
         "initializeParams": {
           "diskType": "pd-standard",
-          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
         },
         "interface": "SCSI",
         "mode": "READ_WRITE",
@@ -528,7 +530,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
         "deviceName": "disk-b",
         "initializeParams": {
           "diskType": "pd-standard",
-          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
         },
         "interface": "SCSI",
         "mode": "READ_WRITE",
@@ -574,7 +576,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${instanceTemplateID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
   "user": "user@example.com"
 }
 
@@ -605,37 +607,8 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${instanceTemplateID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
   "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found"
-  }
 }
 
 ---
@@ -655,6 +628,7 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "id": "000000000000000000000",
   "kind": "compute#instanceTemplate",
   "name": "${instanceTemplateID}",
@@ -663,11 +637,11 @@ X-Xss-Protection: 0
       {
         "autoDelete": true,
         "boot": true,
-        "deviceName": "boot",
+        "deviceName": "persistent-disk-0",
         "index": 0,
         "initializeParams": {
           "diskType": "pd-standard",
-          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
         },
         "interface": "SCSI",
         "kind": "compute#attachedDisk",
@@ -677,10 +651,10 @@ X-Xss-Protection: 0
       {
         "autoDelete": true,
         "deviceName": "disk-a",
-        "index": 0,
+        "index": 1,
         "initializeParams": {
           "diskType": "pd-standard",
-          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
         },
         "interface": "SCSI",
         "kind": "compute#attachedDisk",
@@ -690,10 +664,10 @@ X-Xss-Protection: 0
       {
         "autoDelete": true,
         "deviceName": "disk-b",
-        "index": 0,
+        "index": 2,
         "initializeParams": {
           "diskType": "pd-standard",
-          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
         },
         "interface": "SCSI",
         "kind": "compute#attachedDisk",
@@ -707,29 +681,30 @@ X-Xss-Protection: 0
     },
     "machineType": "n1-standard-1",
     "metadata": {
-      "fingerprint": "1B2M2Y8AsgTpgAmY7PhCfg==",
+      "fingerprint": "x4iOk7cA2GY=",
       "kind": "compute#metadata"
     },
     "networkInterfaces": [
       {
         "kind": "compute#networkInterface",
         "name": "nic0",
-        "network": "projects/${projectId}/global/networks/${networkID}"
+        "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
       }
     ],
     "scheduling": {
       "automaticRestart": true,
       "onHostMaintenance": "MIGRATE",
-      "preemptible": false
+      "preemptible": false,
+      "provisioningModel": "STANDARD"
     },
     "tags": {}
   },
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
@@ -748,17 +723,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found",
+        "message": "The resource 'projects/debian-cloud/global/images/debian-12' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found"
+    "message": "The resource 'projects/debian-cloud/global/images/debian-12' was not found"
   }
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-12?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -772,16 +747,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "family": "debian-11",
+  "family": "debian-12",
   "kind": "compute#image",
-  "name": "debian-11-bullseye-v20231010",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "name": "debian-12-bookworm-v20261117",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12-bookworm-v20261117",
   "status": "READY"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
@@ -800,17 +775,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found",
+        "message": "The resource 'projects/debian-cloud/global/images/debian-12' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found"
+    "message": "The resource 'projects/debian-cloud/global/images/debian-12' was not found"
   }
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-12?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -824,16 +799,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "family": "debian-11",
+  "family": "debian-12",
   "kind": "compute#image",
-  "name": "debian-11-bullseye-v20231010",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "name": "debian-12-bookworm-v20261117",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12-bookworm-v20261117",
   "status": "READY"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
@@ -852,17 +827,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found",
+        "message": "The resource 'projects/debian-cloud/global/images/debian-12' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found"
+    "message": "The resource 'projects/debian-cloud/global/images/debian-12' was not found"
   }
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-12?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -876,10 +851,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "family": "debian-11",
+  "family": "debian-12",
   "kind": "compute#image",
-  "name": "debian-11-bullseye-v20231010",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "name": "debian-12-bookworm-v20261117",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12-bookworm-v20261117",
   "status": "READY"
 }
 
@@ -927,7 +902,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     }
   ],
   "baseInstanceName": "app",
-  "instanceTemplate": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
   "name": "${instanceGroupManagerID}",
   "targetSize": 3,
   "updatePolicy": {
@@ -956,7 +931,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "insert",
+  "operationType": "compute.instanceGroupManagers.insert",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -989,7 +964,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "insert",
+  "operationType": "compute.instanceGroupManagers.insert",
   "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -1019,38 +994,99 @@ X-Xss-Protection: 0
 {
   "autoHealingPolicies": [
     {
-      "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+      "healthCheck": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/healthChecks/${healthCheckID}",
       "initialDelaySec": 300
     }
   ],
   "baseInstanceName": "app",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "currentActions": {
+    "abandoning": 1,
+    "creating": 1,
+    "creatingWithoutRetries": 1,
+    "deleting": 1,
+    "none": 1,
+    "recreating": 1,
+    "refreshing": 1,
+    "restarting": 1,
+    "restartingInPlace": 1,
+    "resuming": 1,
+    "starting": 1,
+    "stopping": 1,
+    "suspending": 1,
+    "verifying": 1
+  },
+  "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
-  "instanceTemplate": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupManagerID}",
+  "instanceLifecyclePolicy": {
+    "defaultActionOnFailure": "REPAIR",
+    "forceUpdateOnRepair": "NO",
+    "onFailedHealthCheck": "DEFAULT_ACTION"
+  },
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
   "kind": "compute#instanceGroupManager",
+  "listManagedInstancesResults": "PAGELESS",
   "name": "${instanceGroupManagerID}",
+  "satisfiesPzs": true,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
+  "serviceAccount": "${projectNumber}@cloudservices.gserviceaccount.com",
+  "standbyPolicy": {
+    "mode": "MANUAL"
+  },
   "status": {
-    "isStable": true
+    "allInstancesConfig": {
+      "effective": true
+    },
+    "isStable": false,
+    "stateful": {
+      "hasStatefulConfig": false,
+      "isStateful": false,
+      "perInstanceConfigs": {
+        "allEffective": true
+      }
+    },
+    "versionTarget": {
+      "isReached": true
+    }
   },
   "targetSize": 3,
+  "targetSizePolicy": {
+    "mode": "INDIVIDUAL"
+  },
+  "targetStoppedSize": 0,
+  "targetSuspendedSize": 0,
   "updatePolicy": {
     "maxSurge": {
+      "calculated": 3,
       "fixed": 3
     },
     "maxUnavailable": {
+      "calculated": 3,
       "fixed": 3
     },
-    "minimalAction": "RESTART"
+    "minReadySec": 0,
+    "minimalAction": "RESTART",
+    "replacementMethod": "SUBSTITUTE",
+    "type": "OPPORTUNISTIC"
   },
+  "versions": [
+    {
+      "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+      "targetSize": {
+        "calculated": 3
+      }
+    }
+  ],
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers/${autoscalerID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers/${autoscalerID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&autoscaler=${autoscalerID}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -1078,9 +1114,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a
 
 {
   "autoscalingPolicy": {
@@ -1094,8 +1131,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "mode": "ON"
   },
   "name": "${autoscalerID}",
-  "target": "https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
-  "zone": "projects/${projectId}/global/zones/us-central1-a"
+  "target": "projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
+  "zone": "us-central1-a"
 }
 
 200 OK
@@ -1113,7 +1150,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "insert",
+  "operationType": "compute.autoscalers.insert",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -1126,8 +1163,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1145,7 +1184,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "insert",
+  "operationType": "compute.autoscalers.insert",
   "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -1158,9 +1197,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers/${autoscalerID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers/${autoscalerID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&autoscaler=${autoscalerID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1189,15 +1229,17 @@ X-Xss-Protection: 0
   "name": "${autoscalerID}",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers/${autoscalerID}",
   "status": "ACTIVE",
-  "target": "https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
 
-PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers?alt=json&autoscaler=${autoscalerID}
+# Phase: UPDATE
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers?autoscaler=${autoscalerID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a
 
 {
   "autoscalingPolicy": {
@@ -1210,9 +1252,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "minNumReplicas": 2,
     "mode": "ON"
   },
-  "name": "${autoscalerID}",
-  "target": "https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
-  "zone": "projects/${projectId}/global/zones/us-central1-a"
+  "target": "projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
+  "zone": "us-central1-a"
 }
 
 200 OK
@@ -1230,7 +1271,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "update",
+  "operationType": "compute.autoscalers.patch",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -1243,8 +1284,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1262,7 +1305,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "update",
+  "operationType": "compute.autoscalers.patch",
   "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -1275,9 +1318,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers/${autoscalerID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers/${autoscalerID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&autoscaler=${autoscalerID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1306,15 +1350,17 @@ X-Xss-Protection: 0
   "name": "${autoscalerID}",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers/${autoscalerID}",
   "status": "ACTIVE",
-  "target": "https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
-  "zone": "projects/${projectId}/global/zones/us-central1-a"
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers/${autoscalerID}?alt=json
+# Phase: DELETE
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers/${autoscalerID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&autoscaler=${autoscalerID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1344,8 +1390,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1393,30 +1441,90 @@ X-Xss-Protection: 0
 {
   "autoHealingPolicies": [
     {
-      "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+      "healthCheck": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/healthChecks/${healthCheckID}",
       "initialDelaySec": 300
     }
   ],
   "baseInstanceName": "app",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "currentActions": {
+    "abandoning": 1,
+    "creating": 1,
+    "creatingWithoutRetries": 1,
+    "deleting": 1,
+    "none": 1,
+    "recreating": 1,
+    "refreshing": 1,
+    "restarting": 1,
+    "restartingInPlace": 1,
+    "resuming": 1,
+    "starting": 1,
+    "stopping": 1,
+    "suspending": 1,
+    "verifying": 1
+  },
+  "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
-  "instanceTemplate": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupManagerID}",
+  "instanceLifecyclePolicy": {
+    "defaultActionOnFailure": "REPAIR",
+    "forceUpdateOnRepair": "NO",
+    "onFailedHealthCheck": "DEFAULT_ACTION"
+  },
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
   "kind": "compute#instanceGroupManager",
+  "listManagedInstancesResults": "PAGELESS",
   "name": "${instanceGroupManagerID}",
+  "satisfiesPzs": true,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
+  "serviceAccount": "${projectNumber}@cloudservices.gserviceaccount.com",
+  "standbyPolicy": {
+    "mode": "MANUAL"
+  },
   "status": {
-    "isStable": true
+    "allInstancesConfig": {
+      "effective": true
+    },
+    "isStable": false,
+    "stateful": {
+      "hasStatefulConfig": false,
+      "isStateful": false,
+      "perInstanceConfigs": {
+        "allEffective": true
+      }
+    },
+    "versionTarget": {
+      "isReached": true
+    }
   },
   "targetSize": 3,
+  "targetSizePolicy": {
+    "mode": "INDIVIDUAL"
+  },
+  "targetStoppedSize": 0,
+  "targetSuspendedSize": 0,
   "updatePolicy": {
     "maxSurge": {
+      "calculated": 3,
       "fixed": 3
     },
     "maxUnavailable": {
+      "calculated": 3,
       "fixed": 3
     },
-    "minimalAction": "RESTART"
+    "minReadySec": 0,
+    "minimalAction": "RESTART",
+    "replacementMethod": "SUBSTITUTE",
+    "type": "OPPORTUNISTIC"
   },
+  "versions": [
+    {
+      "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+      "targetSize": {
+        "calculated": 3
+      }
+    }
+  ],
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
@@ -1441,7 +1549,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "delete",
+  "operationType": "compute.instanceGroupManagers.delete",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -1474,7 +1582,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "delete",
+  "operationType": "compute.instanceGroupManagers.delete",
   "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -1520,7 +1628,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-404 Not Found
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1531,17 +1639,140 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 404,
-    "errors": [
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#instanceTemplate",
+  "name": "${instanceTemplateID}",
+  "properties": {
+    "disks": [
       {
-        "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found",
-        "reason": "notFound"
+        "autoDelete": true,
+        "boot": true,
+        "deviceName": "persistent-disk-0",
+        "index": 0,
+        "initializeParams": {
+          "diskType": "pd-standard",
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
+        },
+        "interface": "SCSI",
+        "kind": "compute#attachedDisk",
+        "mode": "READ_WRITE",
+        "type": "PERSISTENT"
+      },
+      {
+        "autoDelete": true,
+        "deviceName": "disk-a",
+        "index": 1,
+        "initializeParams": {
+          "diskType": "pd-standard",
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
+        },
+        "interface": "SCSI",
+        "kind": "compute#attachedDisk",
+        "mode": "READ_WRITE",
+        "type": "PERSISTENT"
+      },
+      {
+        "autoDelete": true,
+        "deviceName": "disk-b",
+        "index": 2,
+        "initializeParams": {
+          "diskType": "pd-standard",
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
+        },
+        "interface": "SCSI",
+        "kind": "compute#attachedDisk",
+        "mode": "READ_WRITE",
+        "type": "PERSISTENT"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found"
-  }
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "machineType": "n1-standard-1",
+    "metadata": {
+      "fingerprint": "x4iOk7cA2GY=",
+      "kind": "compute#metadata"
+    },
+    "networkInterfaces": [
+      {
+        "kind": "compute#networkInterface",
+        "name": "nic0",
+        "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
+      }
+    ],
+    "scheduling": {
+      "automaticRestart": true,
+      "onHostMaintenance": "MIGRATE",
+      "preemptible": false,
+      "provisioningModel": "STANDARD"
+    },
+    "tags": {}
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${instanceTemplateID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${instanceTemplateID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "user": "user@example.com"
 }
 
 ---

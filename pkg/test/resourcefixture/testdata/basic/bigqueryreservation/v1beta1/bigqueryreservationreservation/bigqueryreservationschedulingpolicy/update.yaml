@@ -29,4 +29,4 @@ spec:
   slotCapacity: 0
   schedulingPolicy:
     concurrency: 10
-    maxSlots: 20
+    maxSlots: 200

@@ -2,47 +2,62 @@
   {
     "controller": "tf",
     "isNewObject": true,
-    "resource": "ComputeNetwork/computenetwork-${uniqueId}",
+    "resource": "ComputeAutoscaler/computeautoscaler-${uniqueId}",
     "fields": [
       {
-        "id": "auto_create_subnetworks",
-        "old": "",
-        "new": "true"
+        "id": "autoscaling_policy.#",
+        "old": "0",
+        "new": "1"
       },
       {
-        "id": "delete_default_routes_on_create",
+        "id": "autoscaling_policy.0.cooldown_period",
         "old": "",
-        "new": "false"
+        "new": "60"
       },
       {
-        "id": "description",
-        "old": "",
-        "new": "Network for the project"
+        "id": "autoscaling_policy.0.cpu_utilization.#",
+        "old": "0",
+        "new": "1"
       },
       {
-        "id": "gateway_ipv4",
+        "id": "autoscaling_policy.0.cpu_utilization.0.predictive_method",
+        "old": "",
+        "new": "NONE"
+      },
+      {
+        "id": "autoscaling_policy.0.cpu_utilization.0.target",
+        "old": "",
+        "new": "0.6"
+      },
+      {
+        "id": "autoscaling_policy.0.max_replicas",
+        "old": "",
+        "new": "5"
+      },
+      {
+        "id": "autoscaling_policy.0.min_replicas",
+        "old": "",
+        "new": "1"
+      },
+      {
+        "id": "autoscaling_policy.0.mode",
+        "old": "",
+        "new": "ON"
+      },
+      {
+        "id": "autoscaling_policy.0.scale_down_control.#",
         "old": "",
         "new": ""
       },
       {
-        "id": "internal_ipv6_range",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "mtu",
+        "id": "creation_timestamp",
         "old": "",
         "new": ""
       },
       {
         "id": "name",
         "old": "",
-        "new": "computenetwork-${uniqueId}"
-      },
-      {
-        "id": "network_firewall_policy_enforcement_order",
-        "old": "",
-        "new": "AFTER_CLASSIC_FIREWALL"
+        "new": "computeautoscaler-${uniqueId}"
       },
       {
         "id": "project",
@@ -50,14 +65,19 @@
         "new": "${projectId}"
       },
       {
-        "id": "routing_mode",
+        "id": "self_link",
         "old": "",
         "new": ""
       },
       {
-        "id": "self_link",
+        "id": "target",
         "old": "",
-        "new": ""
+        "new": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/computeinstancegroupmanager-${uniqueId}"
+      },
+      {
+        "id": "zone",
+        "old": "",
+        "new": "us-central1-a"
       }
     ]
   },
@@ -139,562 +159,9 @@
     ]
   },
   {
-    "controller": "tf",
+    "controller": "dcl",
     "isNewObject": true,
-    "resource": "ComputeNetwork/computenetwork-${uniqueId}",
-    "fields": [
-      {
-        "id": "auto_create_subnetworks",
-        "old": "",
-        "new": "true"
-      },
-      {
-        "id": "delete_default_routes_on_create",
-        "old": "",
-        "new": "false"
-      },
-      {
-        "id": "description",
-        "old": "",
-        "new": "Network for the project"
-      },
-      {
-        "id": "gateway_ipv4",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "internal_ipv6_range",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "mtu",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "name",
-        "old": "",
-        "new": "computenetwork-${uniqueId}"
-      },
-      {
-        "id": "network_firewall_policy_enforcement_order",
-        "old": "",
-        "new": "AFTER_CLASSIC_FIREWALL"
-      },
-      {
-        "id": "project",
-        "old": "",
-        "new": "${projectId}"
-      },
-      {
-        "id": "routing_mode",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "self_link",
-        "old": "",
-        "new": ""
-      }
-    ]
-  },
-  {
-    "controller": "tf",
-    "isNewObject": true,
-    "resource": "ComputeNetwork/computenetwork-${uniqueId}",
-    "fields": [
-      {
-        "id": "auto_create_subnetworks",
-        "old": "",
-        "new": "true"
-      },
-      {
-        "id": "delete_default_routes_on_create",
-        "old": "",
-        "new": "false"
-      },
-      {
-        "id": "description",
-        "old": "",
-        "new": "Network for the project"
-      },
-      {
-        "id": "gateway_ipv4",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "internal_ipv6_range",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "mtu",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "name",
-        "old": "",
-        "new": "computenetwork-${uniqueId}"
-      },
-      {
-        "id": "network_firewall_policy_enforcement_order",
-        "old": "",
-        "new": "AFTER_CLASSIC_FIREWALL"
-      },
-      {
-        "id": "project",
-        "old": "",
-        "new": "${projectId}"
-      },
-      {
-        "id": "routing_mode",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "self_link",
-        "old": "",
-        "new": ""
-      }
-    ]
-  },
-  {
-    "controller": "tf",
-    "isNewObject": true,
-    "resource": "ComputeNetwork/computenetwork-${uniqueId}",
-    "fields": [
-      {
-        "id": "auto_create_subnetworks",
-        "old": "",
-        "new": "true"
-      },
-      {
-        "id": "delete_default_routes_on_create",
-        "old": "",
-        "new": "false"
-      },
-      {
-        "id": "description",
-        "old": "",
-        "new": "Network for the project"
-      },
-      {
-        "id": "gateway_ipv4",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "internal_ipv6_range",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "mtu",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "name",
-        "old": "",
-        "new": "computenetwork-${uniqueId}"
-      },
-      {
-        "id": "network_firewall_policy_enforcement_order",
-        "old": "",
-        "new": "AFTER_CLASSIC_FIREWALL"
-      },
-      {
-        "id": "project",
-        "old": "",
-        "new": "${projectId}"
-      },
-      {
-        "id": "routing_mode",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "self_link",
-        "old": "",
-        "new": ""
-      }
-    ]
-  },
-  {
-    "controller": "tf",
-    "isNewObject": true,
-    "resource": "ComputeNetwork/computenetwork-${uniqueId}",
-    "fields": [
-      {
-        "id": "auto_create_subnetworks",
-        "old": "",
-        "new": "true"
-      },
-      {
-        "id": "delete_default_routes_on_create",
-        "old": "",
-        "new": "false"
-      },
-      {
-        "id": "description",
-        "old": "",
-        "new": "Network for the project"
-      },
-      {
-        "id": "gateway_ipv4",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "internal_ipv6_range",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "mtu",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "name",
-        "old": "",
-        "new": "computenetwork-${uniqueId}"
-      },
-      {
-        "id": "network_firewall_policy_enforcement_order",
-        "old": "",
-        "new": "AFTER_CLASSIC_FIREWALL"
-      },
-      {
-        "id": "project",
-        "old": "",
-        "new": "${projectId}"
-      },
-      {
-        "id": "routing_mode",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "self_link",
-        "old": "",
-        "new": ""
-      }
-    ]
-  },
-  {
-    "controller": "tf",
-    "isNewObject": true,
-    "resource": "ComputeNetwork/computenetwork-${uniqueId}",
-    "fields": [
-      {
-        "id": "auto_create_subnetworks",
-        "old": "",
-        "new": "true"
-      },
-      {
-        "id": "delete_default_routes_on_create",
-        "old": "",
-        "new": "false"
-      },
-      {
-        "id": "description",
-        "old": "",
-        "new": "Network for the project"
-      },
-      {
-        "id": "gateway_ipv4",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "internal_ipv6_range",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "mtu",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "name",
-        "old": "",
-        "new": "computenetwork-${uniqueId}"
-      },
-      {
-        "id": "network_firewall_policy_enforcement_order",
-        "old": "",
-        "new": "AFTER_CLASSIC_FIREWALL"
-      },
-      {
-        "id": "project",
-        "old": "",
-        "new": "${projectId}"
-      },
-      {
-        "id": "routing_mode",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "self_link",
-        "old": "",
-        "new": ""
-      }
-    ]
-  },
-  {
-    "controller": "tf",
-    "isNewObject": true,
-    "resource": "ComputeNetwork/computenetwork-${uniqueId}",
-    "fields": [
-      {
-        "id": "auto_create_subnetworks",
-        "old": "",
-        "new": "true"
-      },
-      {
-        "id": "delete_default_routes_on_create",
-        "old": "",
-        "new": "false"
-      },
-      {
-        "id": "description",
-        "old": "",
-        "new": "Network for the project"
-      },
-      {
-        "id": "gateway_ipv4",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "internal_ipv6_range",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "mtu",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "name",
-        "old": "",
-        "new": "computenetwork-${uniqueId}"
-      },
-      {
-        "id": "network_firewall_policy_enforcement_order",
-        "old": "",
-        "new": "AFTER_CLASSIC_FIREWALL"
-      },
-      {
-        "id": "project",
-        "old": "",
-        "new": "${projectId}"
-      },
-      {
-        "id": "routing_mode",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "self_link",
-        "old": "",
-        "new": ""
-      }
-    ]
-  },
-  {
-    "controller": "tf",
-    "isNewObject": true,
-    "resource": "ComputeNetwork/computenetwork-${uniqueId}",
-    "fields": [
-      {
-        "id": "auto_create_subnetworks",
-        "old": "",
-        "new": "true"
-      },
-      {
-        "id": "delete_default_routes_on_create",
-        "old": "",
-        "new": "false"
-      },
-      {
-        "id": "description",
-        "old": "",
-        "new": "Network for the project"
-      },
-      {
-        "id": "gateway_ipv4",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "internal_ipv6_range",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "mtu",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "name",
-        "old": "",
-        "new": "computenetwork-${uniqueId}"
-      },
-      {
-        "id": "network_firewall_policy_enforcement_order",
-        "old": "",
-        "new": "AFTER_CLASSIC_FIREWALL"
-      },
-      {
-        "id": "project",
-        "old": "",
-        "new": "${projectId}"
-      },
-      {
-        "id": "routing_mode",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "self_link",
-        "old": "",
-        "new": ""
-      }
-    ]
-  },
-  {
-    "controller": "tf",
-    "isNewObject": true,
-    "resource": "ComputeNetwork/computenetwork-${uniqueId}",
-    "fields": [
-      {
-        "id": "auto_create_subnetworks",
-        "old": "",
-        "new": "true"
-      },
-      {
-        "id": "delete_default_routes_on_create",
-        "old": "",
-        "new": "false"
-      },
-      {
-        "id": "description",
-        "old": "",
-        "new": "Network for the project"
-      },
-      {
-        "id": "gateway_ipv4",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "internal_ipv6_range",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "mtu",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "name",
-        "old": "",
-        "new": "computenetwork-${uniqueId}"
-      },
-      {
-        "id": "network_firewall_policy_enforcement_order",
-        "old": "",
-        "new": "AFTER_CLASSIC_FIREWALL"
-      },
-      {
-        "id": "project",
-        "old": "",
-        "new": "${projectId}"
-      },
-      {
-        "id": "routing_mode",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "self_link",
-        "old": "",
-        "new": ""
-      }
-    ]
-  },
-  {
-    "controller": "tf",
-    "isNewObject": true,
-    "resource": "ComputeNetwork/computenetwork-${uniqueId}",
-    "fields": [
-      {
-        "id": "auto_create_subnetworks",
-        "old": "",
-        "new": "true"
-      },
-      {
-        "id": "delete_default_routes_on_create",
-        "old": "",
-        "new": "false"
-      },
-      {
-        "id": "description",
-        "old": "",
-        "new": "Network for the project"
-      },
-      {
-        "id": "gateway_ipv4",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "internal_ipv6_range",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "mtu",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "name",
-        "old": "",
-        "new": "computenetwork-${uniqueId}"
-      },
-      {
-        "id": "network_firewall_policy_enforcement_order",
-        "old": "",
-        "new": "AFTER_CLASSIC_FIREWALL"
-      },
-      {
-        "id": "project",
-        "old": "",
-        "new": "${projectId}"
-      },
-      {
-        "id": "routing_mode",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "self_link",
-        "old": "",
-        "new": ""
-      }
-    ]
+    "resource": "ComputeInstanceGroupManager/computeinstancegroupmanager-${uniqueId}"
   },
   {
     "controller": "tf",
@@ -754,7 +221,7 @@
       {
         "id": "disk.0.source_image",
         "old": "",
-        "new": "debian-cloud/debian-11"
+        "new": "debian-cloud/debian-12"
       },
       {
         "id": "disk.0.type",
@@ -804,7 +271,7 @@
       {
         "id": "disk.1.source_image",
         "old": "",
-        "new": "debian-cloud/debian-11"
+        "new": "debian-cloud/debian-12"
       },
       {
         "id": "disk.1.type",
@@ -854,7 +321,7 @@
       {
         "id": "disk.2.source_image",
         "old": "",
-        "new": "debian-cloud/debian-11"
+        "new": "debian-cloud/debian-12"
       },
       {
         "id": "disk.2.type",
@@ -964,69 +431,49 @@
     ]
   },
   {
-    "controller": "dcl",
-    "isNewObject": true,
-    "resource": "ComputeInstanceGroupManager/computeinstancegroupmanager-${uniqueId}"
-  },
-  {
     "controller": "tf",
     "isNewObject": true,
-    "resource": "ComputeAutoscaler/computeautoscaler-${uniqueId}",
+    "resource": "ComputeNetwork/computenetwork-${uniqueId}",
     "fields": [
       {
-        "id": "autoscaling_policy.#",
-        "old": "0",
-        "new": "1"
-      },
-      {
-        "id": "autoscaling_policy.0.cooldown_period",
+        "id": "auto_create_subnetworks",
         "old": "",
-        "new": "60"
+        "new": "true"
       },
       {
-        "id": "autoscaling_policy.0.cpu_utilization.#",
-        "old": "0",
-        "new": "1"
-      },
-      {
-        "id": "autoscaling_policy.0.cpu_utilization.0.predictive_method",
+        "id": "delete_default_routes_on_create",
         "old": "",
-        "new": "NONE"
+        "new": "false"
       },
       {
-        "id": "autoscaling_policy.0.cpu_utilization.0.target",
+        "id": "description",
         "old": "",
-        "new": "0.6"
+        "new": "Network for the project"
       },
       {
-        "id": "autoscaling_policy.0.max_replicas",
-        "old": "",
-        "new": "5"
-      },
-      {
-        "id": "autoscaling_policy.0.min_replicas",
-        "old": "",
-        "new": "1"
-      },
-      {
-        "id": "autoscaling_policy.0.mode",
-        "old": "",
-        "new": "ON"
-      },
-      {
-        "id": "autoscaling_policy.0.scale_down_control.#",
+        "id": "gateway_ipv4",
         "old": "",
         "new": ""
       },
       {
-        "id": "creation_timestamp",
+        "id": "internal_ipv6_range",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "mtu",
         "old": "",
         "new": ""
       },
       {
         "id": "name",
         "old": "",
-        "new": "computeautoscaler-${uniqueId}"
+        "new": "computenetwork-${uniqueId}"
+      },
+      {
+        "id": "network_firewall_policy_enforcement_order",
+        "old": "",
+        "new": "AFTER_CLASSIC_FIREWALL"
       },
       {
         "id": "project",
@@ -1034,19 +481,14 @@
         "new": "${projectId}"
       },
       {
-        "id": "self_link",
+        "id": "routing_mode",
         "old": "",
         "new": ""
       },
       {
-        "id": "target",
+        "id": "self_link",
         "old": "",
-        "new": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/computeinstancegroupmanager-${uniqueId}"
-      },
-      {
-        "id": "zone",
-        "old": "",
-        "new": "us-central1-a"
+        "new": ""
       }
     ]
   }
