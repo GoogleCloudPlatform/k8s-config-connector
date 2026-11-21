@@ -49,4 +49,13 @@
   7. Re-recorded `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` for `GeminiDataAnalyticsDataAgent`.
 - **Impact**: Greenfield Step 1b is complete with all tests passing, CRD schema cleanly updated, and all judgement queue entries resolved.
 
+### 2026-11-21 Implement Direct Controller, Fuzzer, and E2E Fixtures for GeminiDataAnalyticsDataAgent
+- **Context**: Implementing Greenfield Step 2 (Direct Controller, Fuzzer, and E2E Fixtures) for `GeminiDataAnalyticsDataAgent`.
+- **Learnings**:
+  1. `GeminiDataAnalyticsDataAgent` operates under `location: global`. Regional endpoints like `us-central1` reject create requests with `Write access to project ... was denied`, whereas `locations/global` accepts the request and returns an LRO.
+  2. Controller and fuzzer were deterministically generated using `controllerbuilder generate-controller` and `generate-fuzzer` with `--proto-source-path` pointing to the pinned proto SHA `e7513c828b8db536fa12fc5493d541f323aedf90`.
+  3. `dataAnalyticsAgent` requires non-empty `datasourceReferences` (which also validate access to real GCP BigQuery tables if configured). The minimal and maximal fixtures test standalone DataAgent configuration with mutable fields `displayName`, `description`, and `labels`.
+  4. E2E fixtures (`geminidataanalyticsdataagent-minimal` and `geminidataanalyticsdataagent-maximal`) were recorded against real GCP with `RECORD_AUDIT_PROBE=1` and passed all 7/7 lifecycle checks and re-reconciliation.
+- **Impact**: Full direct controller implementation and fuzzer with passing round-trip fuzz tests and authentic golden logs recorded against real GCP.
+
 

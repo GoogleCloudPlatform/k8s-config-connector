@@ -21,11 +21,13 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
-	pb "cloud.google.com/go/geminidataanalytics/apiv1beta/geminidataanalyticspb"
+	pb "cloud.google.com/go/geminidataanalytics/apiv1/geminidataanalyticspb"
+	pb_v1beta "cloud.google.com/go/geminidataanalytics/apiv1beta/geminidataanalyticspb"
 )
 
 func init() {
@@ -37,6 +39,9 @@ type MockService struct {
 	*common.MockEnvironment
 	storage storage.Storage
 
+	operations *operations.Operations
+
+	v1     *GeminiDataAnalyticsV1
 	v1beta *GeminiDataAnalyticsV1beta
 }
 
@@ -45,7 +50,9 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
+		operations:      operations.NewOperationsService(storage),
 	}
+	s.v1 = &GeminiDataAnalyticsV1{MockService: s}
 	s.v1beta = &GeminiDataAnalyticsV1beta{MockService: s}
 	return s
 }
@@ -55,7 +62,8 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterDataChatServiceServer(grpcServer, s.v1beta)
+	pb_v1beta.RegisterDataChatServiceServer(grpcServer, s.v1beta)
+	pb.RegisterDataAgentServiceServer(grpcServer, s.v1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -64,7 +72,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
 
-	grpcMux.AddService(pb.NewDataChatServiceClient(conn))
+	grpcMux.AddService(pb_v1beta.NewDataChatServiceClient(conn))
+	grpcMux.AddService(pb.NewDataAgentServiceClient(conn))
+
+	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
 	return grpcMux, nil
 }
