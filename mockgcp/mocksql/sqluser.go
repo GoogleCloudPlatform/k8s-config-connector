@@ -61,6 +61,12 @@ func (s *sqlUsersService) List(ctx context.Context, req *pb.SqlUsersListRequest)
 		return nil, err
 	}
 
+	// Like real GCP, reject user operations on an instance that is not running.
+	instance := &pb.DatabaseInstance{}
+	if err := s.storage.Get(ctx, name.String(), instance); err == nil && instance.GetState() == pb.DatabaseInstance_FAILED {
+		return nil, status.Errorf(codes.InvalidArgument, "Invalid request: Invalid request since instance is not running.")
+	}
+
 	ret := &pb.UsersListResponse{}
 	ret.Kind = "sql#usersList"
 
