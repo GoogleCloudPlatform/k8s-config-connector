@@ -29,8 +29,13 @@ and you make no code changes: one script decides everything and opens at most on
 1. From the repository root, run exactly:
 
    ```bash
-   hack/manual-validate/open-batch.sh
+   AUTO_MERGE=1 hack/manual-validate/open-batch.sh
    ```
+
+   `AUTO_MERGE=1` opts the batch in to auto-merge: its children are labelled `overseer/auto-merge`,
+   so their PRs merge on their own once graded `overseer/assessment/good` and green
+   (`.agents/watch/merge-validate-kind.yaml`). To open batches whose PRs wait for people, change it
+   to `AUTO_MERGE=0` here.
 
    It fetches `master`, finds the previous "Verify changed Kinds" batch (label
    `validate-kind/batch`), runs `hack/manual-validate/changed_kinds.py` on the commits since that
