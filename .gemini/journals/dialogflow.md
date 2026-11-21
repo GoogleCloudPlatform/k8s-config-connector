@@ -54,6 +54,16 @@
   4. Recorded `dialogflowconversationdataset-minimal` and `dialogflowconversationdataset-maximal` fixtures against real GCP.
 - **Impact**: Fully enables management and reconciliation of `DialogflowConversationDataset` resources via direct controller.
 
+### [2026-11-05] DialogflowTool Greenfield Types and Identity Prepopulation
+- **Context**: Prepopulating initial direct KRM types, identity, and `judgement_queue.yaml` for `DialogflowTool` under `apis/dialogflow/v1alpha1` (Issue #14945).
+- **Problem**: 
+  - `Tool_DataStoreTool_FallbackPrompt` in `Tool` proto is an empty struct message, causing `TestCRDObjectTypes` in `apichecks` to fail with "object at v1alpha1.spec.dataStoreSpec.fallbackPrompt is missing properties, additionalProperties, or x-kubernetes-preserve-unknown-fields".
+- **Solution**:
+  - Configured `apis/dialogflow/generate.sh` to include `DialogflowTool:Tool` under `google.cloud.dialogflow.cx.v3`.
+  - Added `"dialogflowtools.dialogflow.cnrm.cloud.google.com": true` with comment `// GCP known pattern: Empty oneof option (spec.dataStoreSpec.fallbackPrompt)` to `knownInvalidCRDs` in `tests/apichecks/crds_test.go`.
+  - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks -run TestCRDFieldPresenceInTestsForAlpha`.
+- **Impact**: Provides deterministic type generation, IdentityV2, reference definitions, CRD, and judgement queue entry for `DialogflowTool`, completing Greenfield Step 1a.
+
 ### [2026-10-19] DialogflowWebhook Direct Controller Implementation (Phase 2)
 - **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `DialogflowWebhook` under `dialogflow.cnrm.cloud.google.com/v1alpha1` (Issue #14087).
 - **Problem**:
