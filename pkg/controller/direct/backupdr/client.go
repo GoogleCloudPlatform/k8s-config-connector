@@ -14,6 +14,7 @@
 
 // +tool:controller-client
 // proto.service: google.cloud.backupdr.v1.BackupDR
+// proto.service: google.cloud.compute.v1.Instances
 
 package backupdr
 
@@ -22,6 +23,7 @@ import (
 	"fmt"
 
 	api "cloud.google.com/go/backupdr/apiv1"
+	gcpcompute "cloud.google.com/go/compute/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 )
 
@@ -44,6 +46,18 @@ func (m *gcpClient) newBackupDRClient(ctx context.Context) (*api.Client, error) 
 	client, err := api.NewRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building backupdr client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newComputeInstancesClient(ctx context.Context) (*gcpcompute.InstancesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := gcpcompute.NewInstancesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute instances client: %w", err)
 	}
 	return client, err
 }
