@@ -108,6 +108,10 @@ type ClusterAddonsConfig struct {
 	/* The status of the Parallelstore CSI driver addon, which allows the usage of Parallelstore instance as volumes. Defaults to disabled; set enabled = true to enable. */
 	// +optional
 	ParallelstoreCsiDriverConfig *ClusterParallelstoreCsiDriverConfig `json:"parallelstoreCsiDriverConfig,omitempty"`
+
+	/* The status of the Ray Operator addon, which enables management of Ray AI/ML jobs on GKE. Defaults to disabled; set enabled = true to enable. */
+	// +optional
+	RayOperatorConfig *ClusterRayOperatorConfig `json:"rayOperatorConfig,omitempty"`
 }
 
 type ClusterAdvancedDatapathObservabilityConfig struct {
@@ -1001,6 +1005,29 @@ type ClusterNotificationConfig struct {
 
 type ClusterParallelstoreCsiDriverConfig struct {
 	Enabled bool `json:"enabled"`
+}
+
+type ClusterRayClusterLoggingConfig struct {
+	/* Enable log collection for Ray clusters. */
+	Enabled bool `json:"enabled"`
+}
+
+type ClusterRayClusterMonitoringConfig struct {
+	/* Enable metrics collection for Ray clusters. */
+	Enabled bool `json:"enabled"`
+}
+
+type ClusterRayOperatorConfig struct {
+	/* Whether the Ray Operator addon is enabled for this cluster. */
+	Enabled bool `json:"enabled"`
+
+	/* Logging configuration for Ray clusters. */
+	// +optional
+	RayClusterLoggingConfig *ClusterRayClusterLoggingConfig `json:"rayClusterLoggingConfig,omitempty"`
+
+	/* Monitoring configuration for Ray clusters. */
+	// +optional
+	RayClusterMonitoringConfig *ClusterRayClusterMonitoringConfig `json:"rayClusterMonitoringConfig,omitempty"`
 }
 
 type ClusterPassword struct {

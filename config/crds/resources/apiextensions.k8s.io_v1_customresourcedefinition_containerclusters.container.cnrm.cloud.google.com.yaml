@@ -207,6 +207,36 @@ spec:
                     required:
                     - enabled
                     type: object
+                  rayOperatorConfig:
+                    description: The status of the Ray Operator addon, which enables
+                      management of Ray AI/ML jobs on GKE. Defaults to disabled; set
+                      enabled = true to enable.
+                    properties:
+                      enabled:
+                        description: Whether the Ray Operator addon is enabled for
+                          this cluster.
+                        type: boolean
+                      rayClusterLoggingConfig:
+                        description: Logging configuration for Ray clusters.
+                        properties:
+                          enabled:
+                            description: Enable log collection for Ray clusters.
+                            type: boolean
+                        required:
+                        - enabled
+                        type: object
+                      rayClusterMonitoringConfig:
+                        description: Monitoring configuration for Ray clusters.
+                        properties:
+                          enabled:
+                            description: Enable metrics collection for Ray clusters.
+                            type: boolean
+                        required:
+                        - enabled
+                        type: object
+                    required:
+                    - enabled
+                    type: object
                 type: object
               allowNetAdmin:
                 description: Enable NET_ADMIN for this cluster.

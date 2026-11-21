@@ -202,7 +202,7 @@ func AddonsConfig_FromProto(mapCtx *direct.MapContext, in *pb.AddonsConfig) *krm
 	// MISSING: StatefulHaConfig
 	// MISSING: ParallelstoreCsiDriverConfig
 	// (near miss): "ParallelstoreCsiDriverConfig" vs "ParallelstoreCSIDriverConfig"
-	// MISSING: RayOperatorConfig
+	out.RayOperatorConfig = RayOperatorConfig_FromProto(mapCtx, in.GetRayOperatorConfig())
 	// MISSING: HighScaleCheckpointingConfig
 	// MISSING: LustreCsiDriverConfig
 	return out
@@ -229,7 +229,7 @@ func AddonsConfig_ToProto(mapCtx *direct.MapContext, in *krm.AddonsConfig) *pb.A
 	// MISSING: StatefulHaConfig
 	// MISSING: ParallelstoreCsiDriverConfig
 	// (near miss): "ParallelstoreCsiDriverConfig" vs "ParallelstoreCSIDriverConfig"
-	// MISSING: RayOperatorConfig
+	out.RayOperatorConfig = RayOperatorConfig_ToProto(mapCtx, in.RayOperatorConfig)
 	// MISSING: HighScaleCheckpointingConfig
 	// MISSING: LustreCsiDriverConfig
 	return out
@@ -2577,6 +2577,58 @@ func RangeInfo_ToProto(mapCtx *direct.MapContext, in *krm.RangeInfo) *pb.RangeIn
 	out := &pb.RangeInfo{}
 	out.RangeName = direct.ValueOf(in.RangeName)
 	out.Utilization = direct.ValueOf(in.Utilization)
+	return out
+}
+func RayClusterLoggingConfig_FromProto(mapCtx *direct.MapContext, in *pb.RayClusterLoggingConfig) *krm.RayClusterLoggingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RayClusterLoggingConfig{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	return out
+}
+func RayClusterLoggingConfig_ToProto(mapCtx *direct.MapContext, in *krm.RayClusterLoggingConfig) *pb.RayClusterLoggingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RayClusterLoggingConfig{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	return out
+}
+func RayClusterMonitoringConfig_FromProto(mapCtx *direct.MapContext, in *pb.RayClusterMonitoringConfig) *krm.RayClusterMonitoringConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RayClusterMonitoringConfig{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	return out
+}
+func RayClusterMonitoringConfig_ToProto(mapCtx *direct.MapContext, in *krm.RayClusterMonitoringConfig) *pb.RayClusterMonitoringConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RayClusterMonitoringConfig{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	return out
+}
+func RayOperatorConfig_FromProto(mapCtx *direct.MapContext, in *pb.RayOperatorConfig) *krm.RayOperatorConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RayOperatorConfig{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.RayClusterLoggingConfig = RayClusterLoggingConfig_FromProto(mapCtx, in.GetRayClusterLoggingConfig())
+	out.RayClusterMonitoringConfig = RayClusterMonitoringConfig_FromProto(mapCtx, in.GetRayClusterMonitoringConfig())
+	return out
+}
+func RayOperatorConfig_ToProto(mapCtx *direct.MapContext, in *krm.RayOperatorConfig) *pb.RayOperatorConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RayOperatorConfig{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	out.RayClusterLoggingConfig = RayClusterLoggingConfig_ToProto(mapCtx, in.RayClusterLoggingConfig)
+	out.RayClusterMonitoringConfig = RayClusterMonitoringConfig_ToProto(mapCtx, in.RayClusterMonitoringConfig)
 	return out
 }
 func ReleaseChannel_FromProto(mapCtx *direct.MapContext, in *pb.ReleaseChannel) *krm.ReleaseChannel {
