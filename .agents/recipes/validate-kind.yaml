@@ -95,11 +95,37 @@ start:
         2. Follow the description's instructions to write or extend
            `hack/manual-validate/<kind>/validate.sh` (and any fixture variants under its `fixtures/`)
            for what changed.
-        3. **Run it yourself, as often as you need**, and fix what is wrong with the *script*: wrong
-           URLs or jq paths, an API to add to `mv_enable_apis`, eventual consistency, a dependency
-           that is not ready. Read the REPORT.md each run writes. A failure the controller causes is
-           a finding: keep the check as it is and note it. Stop when the script runs through and
-           every FAIL left is the controller's.
+        3. **Run it yourself, as often as you need, until the script is valid.** You are making a
+           correct test, not a passing one: how many checks pass is not your goal and never your
+           stopping point.
+
+           The script is **valid** when one run, from a clean start:
+           - goes through every phase (setup, dependencies, create, update, steady, delete,
+             teardown, cleanup) without aborting;
+           - checks every spec field the manifests set, each by comparing the value from the
+             applied object with a value read from GCP outside KCC (REST, gcloud/bq, audit logs);
+           - has evidence (a receipt file) behind every PASS and every FAIL;
+           - leaves nothing behind in GCP (its leak check passes).
+           A valid script may report FAILs: a FAIL is the controller's when the script asked the
+           right question and GCP answered differently from the spec.
+
+           Between runs you may fix **only the script's own mistakes**, each one you can show from
+           the receipts: a wrong URL or API version (check it with `gcloud ... describe` or the
+           fixture's `_http.log`), a wrong jq path (check it against the saved response), a
+           missing API (`mv_enable_apis`), a dependency not ready yet, eventual consistency (wait
+           with `mv_wait_http` / `mv_wait_ready`, which poll a bounded time - no blind sleeps).
+
+           You must **not**, to make a FAIL go away:
+           - change an expected value to what GCP returned, or compare a cloud value with itself;
+           - remove, skip or loosen a check, or record it as INFO instead of PASS/FAIL;
+           - retry or sleep until a persistent mismatch happens to read differently;
+           - edit the controller, the types, test fixtures, golden files or `_http.log`.
+           A FAIL you cannot show is the script's mistake stays, and you report it as a controller
+           finding.
+
+           Keep a short log in {{ output "iterations.md" }}: for each run, what failed and, for
+           each script change you made, the receipt that shows it was the script's mistake. Stop
+           when the script is valid - whatever it reports - or after 5 runs, and say which.
         4. Commit the script and fixture variants (never `artifactz/` or `.build/`). If the script
            already covered the change and needed nothing, make no commit.
 
@@ -151,6 +177,8 @@ start:
             **Controller bugs**: each failure the controller caused, with the check and the values
             the receipts show - or "none".
             What could not be checked out of band, and why.
+            The script changes you made between your runs, each with why it was the script's
+            mistake (from {{ output "iterations.md" }}).
 
             Fixes #{{ .Inputs.issue_number }}
 
@@ -229,6 +257,7 @@ start:
 
 outputs:
   - receipts.md
+  - iterations.md
   - summary.yaml
   - change.yaml
 
