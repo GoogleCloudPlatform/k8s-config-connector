@@ -1,0 +1,52 @@
+apiVersion: vmwareengine.cnrm.cloud.google.com/v1alpha1
+kind: VMwareEngineCluster
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: vmwareenginecluster-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  autoscalingSettings:
+    autoscalingPolicies:
+      policy-1:
+        consumedMemoryThresholds:
+          scaleIn: 25
+          scaleOut: 85
+        cpuThresholds:
+          scaleIn: 25
+          scaleOut: 85
+        grantedMemoryThresholds:
+          scaleIn: 25
+          scaleOut: 85
+        nodeTypeID: standard-72
+        scaleOutSize: 1
+        storageThresholds:
+          scaleIn: 25
+          scaleOut: 85
+    coolDownPeriod: 3600s
+    maxClusterNodeCount: 10
+    minClusterNodeCount: 3
+  nodeTypeConfigs:
+    standard-72:
+      nodeCount: 3
+      nodeTypeID: standard-72
+  parentRef:
+    name: vmwareengineprivatecloud-maximal-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    state: ACTIVE
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
