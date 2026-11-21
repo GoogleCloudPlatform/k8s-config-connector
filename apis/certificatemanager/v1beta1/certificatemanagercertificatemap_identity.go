@@ -29,18 +29,23 @@ var (
 	_ identity.Resource   = &CertificateManagerCertificateMap{}
 )
 
-var CertificateManagerCertificateMapIdentityFormat = gcpurls.Template[CertificateManagerCertificateMapIdentity]("certificatemanager.googleapis.com", "projects/{project}/locations/global/certificateMaps/{certificatemap}")
+var CertificateManagerCertificateMapIdentityFormat = gcpurls.Template[CertificateManagerCertificateMapIdentity]("certificatemanager.googleapis.com", "projects/{project}/locations/{location}/certificateMaps/{certificatemap}")
 
 // +k8s:deepcopy-gen=false
 
 // CertificateManagerCertificateMapIdentity is the identity of a GCP CertificateManagerCertificateMap resource.
 type CertificateManagerCertificateMapIdentity struct {
 	Project        string
+	Location       string
 	CertificateMap string
 }
 
 func (i *CertificateManagerCertificateMapIdentity) String() string {
-	return CertificateManagerCertificateMapIdentityFormat.ToString(*i)
+	val := *i
+	if val.Location == "" {
+		val.Location = "global"
+	}
+	return CertificateManagerCertificateMapIdentityFormat.ToString(val)
 }
 
 func (i *CertificateManagerCertificateMapIdentity) FromExternal(ref string) error {
@@ -71,8 +76,14 @@ func getIdentityFromCertificateManagerCertificateMapSpec(ctx context.Context, re
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
+	location := "global"
+	if obj.Spec.Location != nil && *obj.Spec.Location != "" {
+		location = *obj.Spec.Location
+	}
+
 	identity := &CertificateManagerCertificateMapIdentity{
 		Project:        projectID,
+		Location:       location,
 		CertificateMap: resourceID,
 	}
 	return identity, nil

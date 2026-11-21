@@ -36,6 +36,16 @@ func TestCertificateManagerCertificateMapIdentity_FromExternal(t *testing.T) {
 			ref:  "projects/my-project/locations/global/certificateMaps/my-certmap",
 			want: &CertificateManagerCertificateMapIdentity{
 				Project:        "my-project",
+				Location:       "global",
+				CertificateMap: "my-certmap",
+			},
+		},
+		{
+			name: "valid regional reference",
+			ref:  "projects/my-project/locations/us-central1/certificateMaps/my-certmap",
+			want: &CertificateManagerCertificateMapIdentity{
+				Project:        "my-project",
+				Location:       "us-central1",
 				CertificateMap: "my-certmap",
 			},
 		},
@@ -49,6 +59,7 @@ func TestCertificateManagerCertificateMapIdentity_FromExternal(t *testing.T) {
 			ref:  "https://certificatemanager.googleapis.com/projects/my-project/locations/global/certificateMaps/my-certmap",
 			want: &CertificateManagerCertificateMapIdentity{
 				Project:        "my-project",
+				Location:       "global",
 				CertificateMap: "my-certmap",
 			},
 		},
@@ -57,6 +68,7 @@ func TestCertificateManagerCertificateMapIdentity_FromExternal(t *testing.T) {
 			ref:  "//certificatemanager.googleapis.com/projects/my-project/locations/global/certificateMaps/my-certmap",
 			want: &CertificateManagerCertificateMapIdentity{
 				Project:        "my-project",
+				Location:       "global",
 				CertificateMap: "my-certmap",
 			},
 		},
