@@ -705,7 +705,7 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 						}
 
 						// Try to export the resource (and compare against golden file)
-						exportedYAML := exportResource(h, obj, &exportOptions{
+						exportedYAML, exportState := exportResource(h, obj, &exportOptions{
 							DisableDirectExport: options.FallbackToOldController,
 						})
 
@@ -715,7 +715,8 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 						}
 						expectedPath := filepath.Join(fixture.AbsoluteSourceDir, fileName)
 
-						if exportedYAML != "" {
+						switch exportState {
+						case exportOK:
 							exportedObj := &unstructured.Unstructured{}
 							if err := yaml.Unmarshal([]byte(exportedYAML), exportedObj); err != nil {
 								t.Fatalf("FAIL: error from yaml.Unmarshal: %v", err)
@@ -737,8 +738,14 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 							}
 
 							h.CompareGoldenFile(expectedPath, string(got), IgnoreComments)
-						} else {
+						case exportUnsupported:
 							h.AssertGoldenFileNotFound(expectedPath)
+						case exportFailed:
+							// Never delete existing golden files on export failure when WRITE_GOLDEN_OUTPUT=1,
+							// while still catching regressions when a golden file exists for the resource.
+							if _, err := os.Stat(expectedPath); err == nil {
+								t.Errorf("FAIL: export did not produce output for existing golden file %q", expectedPath)
+							}
 						}
 					}
 				}

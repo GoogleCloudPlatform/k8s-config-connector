@@ -37,7 +37,15 @@ type exportOptions struct {
 	DisableDirectExport bool
 }
 
-func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *exportOptions) string {
+type exportStatus int
+
+const (
+	exportOK exportStatus = iota
+	exportUnsupported
+	exportFailed
+)
+
+func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *exportOptions) (string, exportStatus) {
 	// Fetch the reconciled object from the API server to get the populated status fields (such as status.name)
 	u := &unstructured.Unstructured{}
 	u.SetGroupVersionKind(obj.GroupVersionKind())
@@ -200,10 +208,16 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 	case schema.GroupKind{Group: "secretmanager.cnrm.cloud.google.com", Kind: "SecretManagerSecret"}:
 		exportURI = "//secretmanager.googleapis.com/projects/" + projectID + "/secrets/" + resourceID
 
+	case schema.GroupKind{Group: "secretmanager.cnrm.cloud.google.com", Kind: "SecretManagerSecretVersion"}:
+		// Skip running export.Execute because the SecretVersion servicemappings has a broken marker
+		// where idTemplateCanBeUsedToMatchResourceName is false so Execute always fails.
+		// https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/3530c83a5e0d331640ec2160675d80336fad9c53/config/servicemappings/secretmanager.yaml#L79
+		return "", exportUnsupported
+
 	case schema.GroupKind{Group: "servicedirectory.cnrm.cloud.google.com", Kind: "ServiceDirectoryNamespace"}:
 		exportURI = resolveCAISURI(h, obj)
 
-	case schema.GroupKind{Group: "servicenetworking.cnrm.cloud.google.com", Kind: "ServiceNetworkingPeeredDnsDomain"}:
+	case schema.GroupKind{Group: "servicenetworking.cnrm.cloud.google.com", Kind: "ServiceNetworkingPeeredDNSDomain"}:
 		network := resolveNetwork(h, obj)
 		exportURI = fmt.Sprintf("//servicenetworking.googleapis.com/services/servicenetworking.googleapis.com/projects/%s/global/networks/%s/peeredDnsDomains/{resourceID}", network.Project, network.Network)
 
@@ -212,10 +226,13 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 
 	case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
 		exportURI = "//serviceusage.googleapis.com/projects/" + projectID + "/services/" + resourceID
+
+	default:
+		return "", exportUnsupported
 	}
 
 	if exportURI == "" {
-		return ""
+		return "", exportFailed
 	}
 
 	if strings.Contains(exportURI, "{projectID}") {
@@ -270,32 +287,33 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 	outputPath := filepath.Join(outputDir, "export.yaml")
 	exportParams.Output = outputPath
 	exportParams.URI = exportURI
-	switch gvk.Kind {
-	case "SecretManagerSecretVersion":
-		// Skip run export.Execute because the SecretVersion servicemappings has a broken marker
-		// that the `idTemplateCanBeUsedToMatchResourceName` is false so the Execute always fails.
-		// https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/3530c83a5e0d331640ec2160675d80336fad9c53/config/servicemappings/secretmanager.yaml#L79
-		break
-	default:
-		h.Logf("exporting resource %q", exportURI)
-		if err := export.Execute(h.Ctx, &exportParams); err != nil {
-			if options.DisableDirectExport {
-				h.Logf("ignoring error from export.Execute of %q under fallback/old controller: %v", exportURI, err)
-			} else {
-				h.Errorf("error from export.Execute of %q: %v", exportURI, err)
-			}
-			return ""
+
+	h.Logf("exporting resource %q", exportURI)
+	if err := export.Execute(h.Ctx, &exportParams); err != nil {
+		if options.DisableDirectExport {
+			h.Logf("ignoring error from export.Execute of %q under fallback/old controller: %v", exportURI, err)
+		} else {
+			h.Errorf("error from export.Execute of %q: %v", exportURI, err)
 		}
+		return "", exportFailed
 	}
 
 	outputBytes := h.MustReadFile(outputPath)
 	output := string(outputBytes)
-	return output
+	if output == "" {
+		if options.DisableDirectExport {
+			h.Logf("ignoring empty output from export.Execute of %q under fallback/old controller", exportURI)
+		} else {
+			h.Errorf("export of %q produced empty output", exportURI)
+		}
+		return "", exportFailed
+	}
+	return output, exportOK
 }
 
 func exportResourceAsUnstructured(h *create.Harness, obj *unstructured.Unstructured) *unstructured.Unstructured {
-	s := exportResource(h, obj, &exportOptions{})
-	if s == "" {
+	s, status := exportResource(h, obj, &exportOptions{})
+	if status != exportOK || s == "" {
 		return nil
 	}
 	// TODO: Why are we outputing this prefix?
