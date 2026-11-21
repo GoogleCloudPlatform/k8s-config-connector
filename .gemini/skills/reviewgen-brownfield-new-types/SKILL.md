@@ -53,17 +53,50 @@ Please respect the following review criteria and invariants when reviewing.
     *   [Kubernetes Resource Management Design Proposal](https://github.com/kubernetes/design-proposals-archive/blob/main/architecture/resource-management.md)
     *   [Kubernetes API Conventions](https://github.com/kubernetes/community/blob/main/contributors/devel/sig-architecture/api-conventions.md)
 
+## 7. Scope Boundaries (Step 1 vs Step 2)
+* **Step 1 (`step/types`) PRs**:
+  - Must ONLY contain KRM Go types (`_types.go`), `types.generated.go`, `zz_generated.deepcopy.go`, `groupversion_info.go`, `doc.go`, `apis/<service>/generate.sh` (`generate-types`), and regenerated CRD YAML.
+  - **FAIL** if the PR contains mappers (`mapper.generated.go`, `mappers.go`) or controller code under `pkg/controller/direct/`. Mappers belong in Step 3 (Fuzzer) / Step 5 (Controller).
+  - **FAIL** if the PR contains identity or reference files (`_identity.go`, `_reference.go`). Identity belongs in Step 2.
+  - **FAIL** if the PR contains committed internal journal files or changes under `.gemini/skills/`.
+* **Step 2 (`step/identity`) PRs**:
+  - Must ONLY contain identity and reference files (`_identity.go`, `_reference.go`), `generate.sh` (`generate-identity`), and CAIS test output (`_identities.yaml`).
+  - **FAIL** if the PR contains mappers or controller reconciliation code.
+  - **FAIL** if the PR contains committed internal journal files or changes under `.gemini/skills/`.
+
+## 8. Code Quality, Style & Design Practices
+Pay attention to race conditions, edge cases, and input/output correctness. Once correctness is verified, ensure code adheres to the architecture, style, and code health principles defined in [reviewgen-code-health](file:///.gemini/skills/reviewgen-code-health/SKILL.md) (`.gemini/skills/reviewgen-code-health/SKILL.md`):
+* **Single Responsibility per File** (1 File = 1 Concept/Struct; Arrange-Act-Assert in tests).
+* **Treat Files as Private by Default** (Strict encapsulation; no cross-file private field access or global helper reaching).
+* **No Feature Envy on Data Structs** (Value and reference structs contain only data and validation).
+* **Own Collaborators via Constructor** (Wire dependencies in constructor rather than method threading).
+* **Depth-First Call-Tree Ordering (Stepdown Rule)** (Place private helpers directly below their caller in call order).
+* **Colocate Constants with First Caller** (Declare constants immediately above the function using them).
+* **Orchestrator vs. Leaf Method Granularity** (Single level of abstraction for orchestrators; avoid over-shredding leaves).
+* **No `(nil, nil)` Return Contracts** (Return valid value or descriptive error).
+
+## 9. PR Description & Metadata
+* **Release Note Block**: Verify that the PR description includes a release note block set to `NONE`:
+  ```release-note
+  NONE
+  ```
+  Fail or flag if the release note block is missing or not set to `NONE`.
+
 # Review Comment Template
 When proposing changes or stating LGTM, format the review description as follows:
 
 ```markdown
 ### KCC Auto-Review Results
 * **Trigger criteria matched**: [Yes/No]
+* **Scope Check**: [Pass/Fail] - (Confirm no mappers or out-of-step files included)
+* **Release Note Check**: [Pass/Fail] - (Confirm release-note block is set to NONE)
 * **API Version Check**: [Pass/Fail] - (Specify paths/versions checked)
 * **Go Type Pointers**: [Pass/Fail] - (List any non-pointer primitives found)
 * **Schema Compatibility**: [Pass/Fail] - (List any diff-crds issues)
-* **References/Identity**: [Pass/Fail] - (List any missing resource references)
+* **References/Identity**: [Pass/Fail] - (List any missing resource references or out-of-step identity files)
+* **Code Quality & Design**: [Pass/Fail] - (Check single responsibility, encapsulation, Stepdown ordering, no feature envy, no (nil, nil))
 
 #### Detailed Findings / Actions Required:
 1. [Specify file, line number, and exact issue]
 ```
+
