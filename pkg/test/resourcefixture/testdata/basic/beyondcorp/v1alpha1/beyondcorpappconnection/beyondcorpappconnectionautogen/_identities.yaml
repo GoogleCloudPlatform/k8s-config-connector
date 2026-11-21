@@ -4,10 +4,10 @@
   name: beyondcorpappconnector-${uniqueId}
   namespace: ${uniqueId}
   version: v1alpha1
-- caisURL: //iam.googleapis.com/projects/${projectId}/serviceAccounts/iamserviceaccount${uniqueId}
+- caisURL: //iam.googleapis.com/projects/${projectId}/serviceAccounts/sa-${uniqueId}
   group: iam.cnrm.cloud.google.com
   kind: IAMServiceAccount
-  name: iamserviceaccount-${uniqueId}
+  name: sa-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
 - caisURL: //beyondcorp.googleapis.com/projects/${projectId}/locations/us-central1/appConnections/beyondcorpappconnection${uniqueId}
