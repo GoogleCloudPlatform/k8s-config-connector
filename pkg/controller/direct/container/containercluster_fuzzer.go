@@ -208,7 +208,6 @@ func containerClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".node_config.flex_start")
 	f.Unimplemented_NotYetTriaged(".node_config.gpu_direct_config")
 	f.Unimplemented_NotYetTriaged(".node_config.gvnic")
-	f.Unimplemented_NotYetTriaged(".node_config.kubelet_config.allowed_unsafe_sysctls")
 	f.Unimplemented_NotYetTriaged(".node_config.kubelet_config.container_log_max_files")
 	f.Unimplemented_NotYetTriaged(".node_config.kubelet_config.container_log_max_size")
 	f.Unimplemented_NotYetTriaged(".node_config.kubelet_config.crash_loop_back_off")

@@ -330,6 +330,7 @@ func KubeletConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeKubeletConfig
 	out.ImageGcHighThresholdPercent = direct.LazyPtr(int(in.GetImageGcHighThresholdPercent()))
 	out.ImageMinimumGcAge = direct.LazyPtr(in.GetImageMinimumGcAge())
 	out.ImageMaximumGcAge = direct.LazyPtr(in.GetImageMaximumGcAge())
+	out.AllowedUnsafeSysctls = in.AllowedUnsafeSysctls
 	return out
 }
 
@@ -346,6 +347,7 @@ func KubeletConfig_ToProto(mapCtx *direct.MapContext, in *krm.KubeletConfig) *pb
 	out.ImageGcHighThresholdPercent = int32(direct.ValueOf(in.ImageGcHighThresholdPercent))
 	out.ImageMinimumGcAge = direct.ValueOf(in.ImageMinimumGcAge)
 	out.ImageMaximumGcAge = direct.ValueOf(in.ImageMaximumGcAge)
+	out.AllowedUnsafeSysctls = in.AllowedUnsafeSysctls
 	return out
 }
 
