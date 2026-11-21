@@ -25,6 +25,7 @@ import (
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
@@ -53,7 +54,7 @@ type clusterConfigurer struct {
 	mclRolloutPollInterval time.Duration
 }
 
-func newClusterConfigurer(ctx context.Context, handle *clusterHandle, mclImage, syncerImage, leaseName, leaseNamespace, bucket string) (*clusterConfigurer, error) {
+func newClusterConfigurer(ctx context.Context, handle *clusterHandle, mclImage, syncerImage, leaderEndpointType, leaseName, leaseNamespace, bucket string) (*clusterConfigurer, error) {
 	if handle == nil || handle.client == nil {
 		return nil, fmt.Errorf("cluster handle has a nil Kubernetes client")
 	}
@@ -68,8 +69,18 @@ func newClusterConfigurer(ctx context.Context, handle *clusterHandle, mclImage, 
 		return nil, err
 	}
 
+	expectedCluster := gkeInfo.gkeCluster()
+	if mcl := multiClusterLeaseSpec(cc); mcl != nil && mcl.GKECluster != nil {
+		if *mcl.GKECluster != expectedCluster {
+			return nil, fmt.Errorf(
+				"cluster %q: ConfigConnector is already configured with gkeCluster %q; cannot overwrite with %q",
+				handle.contextName, mcl.GKECluster.ResourceName(), expectedCluster.ResourceName(),
+			)
+		}
+	}
+
 	// GetMode applies the operator's default: an unset spec.mode means namespaced mode.
-	manifests := newManifestBuilder(gkeInfo.contextName, gkeInfo.gkeCluster(), gkeInfo.project, cc.GetMode(), mclImage, syncerImage, leaseName, leaseNamespace, bucket)
+	manifests := newManifestBuilder(gkeInfo.contextName, expectedCluster, gkeInfo.project, cc.GetMode(), mclImage, syncerImage, leaderEndpointType, leaseName, leaseNamespace, bucket)
 	return &clusterConfigurer{
 		handle:                 handle,
 		gkeInfo:                gkeInfo,
@@ -85,6 +96,58 @@ func (c *clusterConfigurer) setPeerProjects(peerProjects []string) {
 }
 
 func (c *clusterConfigurer) apply(ctx context.Context, stdout io.Writer, dryRun bool) error {
+	if dryRun {
+		return c.applyObjects(ctx, stdout, true)
+	}
+
+	if err := c.applyObjects(ctx, stdout, false); err != nil {
+		return err
+	}
+
+	if err := c.waitForDeploymentsAvailable(ctx, stdout); err != nil {
+		return err
+	}
+
+	return c.updateConfigConnector(ctx)
+}
+
+func (c *clusterConfigurer) applyCRDs(ctx context.Context, stdout io.Writer, dryRun bool) error {
+	if dryRun {
+		return nil
+	}
+	var errs []error
+	for _, obj := range buildCRDObjects() {
+		if err := upsertObject(ctx, c.handle.client.Client, obj); err != nil {
+			errs = append(errs, fmt.Errorf("applying %s on cluster %q: %w", formatObjectID(c.handle.client.Client, obj), c.handle.contextName, err))
+		}
+	}
+	return errors.Join(errs...)
+}
+
+func (c *clusterConfigurer) applyNonCRDObjects(ctx context.Context, stdout io.Writer, dryRun bool) error {
+	objs := c.manifests.buildClusterObjects()
+	// Filter out CRDs
+	var nonCRDObjs []client.Object
+	for _, obj := range objs {
+		if _, isCRD := obj.(*apiextensionsv1.CustomResourceDefinition); !isCRD {
+			nonCRDObjs = append(nonCRDObjs, obj)
+		}
+	}
+
+	if dryRun {
+		return nil
+	}
+
+	var errs []error
+	for _, obj := range nonCRDObjs {
+		if err := upsertObject(ctx, c.handle.client.Client, obj); err != nil {
+			errs = append(errs, fmt.Errorf("applying %s on cluster %q: %w", formatObjectID(c.handle.client.Client, obj), c.handle.contextName, err))
+		}
+	}
+	return errors.Join(errs...)
+}
+
+func (c *clusterConfigurer) applyObjects(ctx context.Context, stdout io.Writer, dryRun bool) error {
 	objs := c.manifests.buildClusterObjects()
 	if dryRun {
 		if stdout != nil {
@@ -95,24 +158,10 @@ func (c *clusterConfigurer) apply(ctx context.Context, stdout io.Writer, dryRun 
 		return nil
 	}
 
-	var errs []error
-	for _, obj := range objs {
-		if err := upsertObject(ctx, c.handle.client.Client, obj); err != nil {
-			errs = append(errs, fmt.Errorf("applying %s on cluster %q: %w", formatObjectID(c.handle.client.Client, obj), c.handle.contextName, err))
-		}
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
-	}
-
-	// Once spec.experiments.multiClusterLease is set, Config Connector reconciles nothing on
-	// this cluster until the MCL controller confirms a leader. So only set it when that
-	// controller runs.
-	if err := c.waitForMCLController(ctx, stdout); err != nil {
+	if err := c.applyCRDs(ctx, stdout, false); err != nil {
 		return err
 	}
-
-	return c.updateConfigConnector(ctx)
+	return c.applyNonCRDObjects(ctx, stdout, false)
 }
 
 func upsertObject(ctx context.Context, k8sClient client.Client, obj client.Object) error {
@@ -156,11 +205,21 @@ func formatObjectID(k8sClient client.Client, obj client.Object) string {
 	return fmt.Sprintf("%s %q", kind, obj.GetName())
 }
 
-// waitForMCLController waits until the MCL controller's Deployment has rolled out the spec that
-// apply just wrote. If it doesn't within the timeout, the returned error says what its pods are
+// waitForDeploymentsAvailable waits until both the MCL controller's and Syncer's Deployments have rolled out the specs that
+// setup wrote. If either doesn't within the timeout, the returned error says what its pods are
 // stuck on.
-func (c *clusterConfigurer) waitForMCLController(ctx context.Context, stdout io.Writer) error {
-	key := types.NamespacedName{Namespace: manifestSystemNamespace, Name: mclDeploymentName}
+func (c *clusterConfigurer) waitForDeploymentsAvailable(ctx context.Context, stdout io.Writer) error {
+	deployments := []string{mclDeploymentName, syncerDeploymentName}
+	for _, depName := range deployments {
+		if err := c.waitForDeploymentAvailable(ctx, depName, stdout); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (c *clusterConfigurer) waitForDeploymentAvailable(ctx context.Context, name string, stdout io.Writer) error {
+	key := types.NamespacedName{Namespace: manifestSystemNamespace, Name: name}
 	if stdout != nil {
 		fmt.Fprintf(stdout, "cluster %q: waiting up to %s for Deployment %q to become available\n", c.handle.contextName, c.mclRolloutTimeout, key.Name)
 	}
@@ -192,6 +251,10 @@ func (c *clusterConfigurer) waitForMCLController(ctx context.Context, stdout io.
 		"cluster %q: Deployment %q (namespace %q) did not become available within %s, so spec.experiments.multiClusterLease was left unchanged on this cluster: %s",
 		c.handle.contextName, key.Name, key.Namespace, c.mclRolloutTimeout, strings.Join(details, "; "),
 	)
+}
+
+func (c *clusterConfigurer) waitForMCLController(ctx context.Context, stdout io.Writer) error {
+	return c.waitForDeploymentAvailable(ctx, mclDeploymentName, stdout)
 }
 
 // deploymentRolloutStatus reports whether a Deployment has finished rolling out its current spec,
@@ -276,7 +339,7 @@ func (c *clusterConfigurer) updateConfigConnector(ctx context.Context) error {
 
 	if cc.Spec.Experiments == nil || cc.Spec.Experiments.MultiClusterLease == nil {
 		return fmt.Errorf(
-			"ConfigConnector %q on cluster %q silently dropped spec.experiments.multiClusterLease during update; the cluster's ConfigConnector CRD schema is too old (requires KCC v1.148.0+)",
+			"ConfigConnector %q on cluster %q silently dropped spec.experiments.multiClusterLease during update; the cluster's ConfigConnector CRD schema is too old (requires KCC v1.162.0+)",
 			cc.Name, c.handle.contextName,
 		)
 	}
