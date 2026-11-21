@@ -1127,6 +1127,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"cestoolsets.ces.cnrm.cloud.google.com":                                         true, // GCP known pattern: Empty oneof option (spec.mcpToolset.apiAuthentication.serviceAgentIDTokenAuthConfig)
 		"cloudchannelchannelpartnerrepricingconfigs.cloudchannel.cnrm.cloud.google.com": true, // GCP known pattern: Empty oneof option (spec.repricingConfig.channelPartnerGranularity)
 		"cloudchannelcustomerrepricingconfigs.cloudchannel.cnrm.cloud.google.com":       true, // GCP known pattern: Empty oneof option (spec.repricingConfig.channelPartnerGranularity)
+		"clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com":                     true, // GCP known pattern: Empty oneof option (spec.oracle.staticServiceIPConnectivity)
 		"datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com":           true, // GCP known pattern: Empty oneof option (spec.oracle.staticServiceIPConnectivity)
 		"dialogflowplaybooks.dialogflow.cnrm.cloud.google.com":                          true, // GCP known pattern: Empty oneof option (spec.handlers[].lifecycleHandler.fulfillment.messages[].knowledgeInfoCard)
 		"dialogflowtransitionroutegroups.dialogflow.cnrm.cloud.google.com":              true, // GCP known pattern: Empty oneof option (spec.transitionRoutes[].triggerFulfillment.messages[].knowledgeInfoCard)
