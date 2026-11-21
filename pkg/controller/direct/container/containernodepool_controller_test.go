@@ -740,9 +740,87 @@ func TestNormalizeNodePool_Subnetwork(t *testing.T) {
 
 func TestContainerNodePool_NormalizeNodePool_Autoscaling(t *testing.T) {
 	ctx := context.Background()
-	adapter := &nodePoolAdapter{}
 
-	t.Run("autoscaling present sets enabled to true", func(t *testing.T) {
+	t.Run("autoscaling present with nil enabled in desiredKRM defaults to true", func(t *testing.T) {
+		adapter := &nodePoolAdapter{
+			desiredKRM: &krm.ContainerNodePool{
+				Spec: krm.ContainerNodePoolSpec{
+					Autoscaling: &krm.NodePoolAutoscaling{
+						MinNodeCount: direct.LazyPtr(int32(1)),
+						MaxNodeCount: direct.LazyPtr(int32(5)),
+					},
+				},
+			},
+		}
+		pbNodePool := &pb.NodePool{
+			Autoscaling: &pb.NodePoolAutoscaling{
+				MinNodeCount: 1,
+				MaxNodeCount: 5,
+			},
+		}
+		if err := adapter.normalizeNodePool(ctx, pbNodePool); err != nil {
+			t.Fatalf("unexpected error normalizing: %v", err)
+		}
+		if !pbNodePool.GetAutoscaling().GetEnabled() {
+			t.Errorf("expected Autoscaling.Enabled to be true, got false")
+		}
+	})
+
+	t.Run("autoscaling present with enabled=true in desiredKRM sets enabled to true", func(t *testing.T) {
+		adapter := &nodePoolAdapter{
+			desiredKRM: &krm.ContainerNodePool{
+				Spec: krm.ContainerNodePoolSpec{
+					Autoscaling: &krm.NodePoolAutoscaling{
+						Enabled:      direct.PtrTo(true),
+						MinNodeCount: direct.LazyPtr(int32(1)),
+						MaxNodeCount: direct.LazyPtr(int32(5)),
+					},
+				},
+			},
+		}
+		pbNodePool := &pb.NodePool{
+			Autoscaling: &pb.NodePoolAutoscaling{
+				Enabled:      true,
+				MinNodeCount: 1,
+				MaxNodeCount: 5,
+			},
+		}
+		if err := adapter.normalizeNodePool(ctx, pbNodePool); err != nil {
+			t.Fatalf("unexpected error normalizing: %v", err)
+		}
+		if !pbNodePool.GetAutoscaling().GetEnabled() {
+			t.Errorf("expected Autoscaling.Enabled to be true, got false")
+		}
+	})
+
+	t.Run("autoscaling present with enabled=false in desiredKRM sets enabled to false", func(t *testing.T) {
+		adapter := &nodePoolAdapter{
+			desiredKRM: &krm.ContainerNodePool{
+				Spec: krm.ContainerNodePoolSpec{
+					Autoscaling: &krm.NodePoolAutoscaling{
+						Enabled:      direct.PtrTo(false),
+						MinNodeCount: direct.LazyPtr(int32(1)),
+						MaxNodeCount: direct.LazyPtr(int32(5)),
+					},
+				},
+			},
+		}
+		pbNodePool := &pb.NodePool{
+			Autoscaling: &pb.NodePoolAutoscaling{
+				MinNodeCount: 1,
+				MaxNodeCount: 5,
+			},
+		}
+		if err := adapter.normalizeNodePool(ctx, pbNodePool); err != nil {
+			t.Fatalf("unexpected error normalizing: %v", err)
+		}
+		if pbNodePool.GetAutoscaling().GetEnabled() {
+			t.Errorf("expected Autoscaling.Enabled to be false, got true")
+		}
+	})
+
+	t.Run("autoscaling present with nil desiredKRM defaults to true", func(t *testing.T) {
+		adapter := &nodePoolAdapter{}
 		pbNodePool := &pb.NodePool{
 			Autoscaling: &pb.NodePoolAutoscaling{
 				MinNodeCount: 1,
@@ -758,6 +836,7 @@ func TestContainerNodePool_NormalizeNodePool_Autoscaling(t *testing.T) {
 	})
 
 	t.Run("autoscaling nil is not touched", func(t *testing.T) {
+		adapter := &nodePoolAdapter{}
 		pbNodePool := &pb.NodePool{}
 		if err := adapter.normalizeNodePool(ctx, pbNodePool); err != nil {
 			t.Fatalf("unexpected error normalizing: %v", err)
@@ -766,6 +845,61 @@ func TestContainerNodePool_NormalizeNodePool_Autoscaling(t *testing.T) {
 			t.Errorf("expected Autoscaling to remain nil, got %v", pbNodePool.GetAutoscaling())
 		}
 	})
+}
+
+func TestContainerNodePool_Update_AutoscalingDisabled(t *testing.T) {
+	ctx := context.Background()
+
+	desiredKRM := &krm.ContainerNodePool{
+		Spec: krm.ContainerNodePoolSpec{
+			Autoscaling: &krm.NodePoolAutoscaling{
+				Enabled:      direct.PtrTo(false),
+				MinNodeCount: direct.LazyPtr(int32(1)),
+				MaxNodeCount: direct.LazyPtr(int32(3)),
+			},
+		},
+	}
+
+	actualProto := &pb.NodePool{
+		Autoscaling: &pb.NodePoolAutoscaling{
+			Enabled:      true,
+			MinNodeCount: 1,
+			MaxNodeCount: 3,
+		},
+	}
+
+	adapter := &nodePoolAdapter{
+		id: &krm.ContainerNodePoolIdentity{
+			Project:  "test-project",
+			Location: "us-central1-a",
+			Cluster:  "test-cluster",
+			NodePool: "test-pool",
+		},
+		desiredKRM: desiredKRM,
+		actual:     actualProto,
+	}
+
+	diffRes, err := common.CompareSpecifiedSpec(
+		ctx,
+		&desiredKRM.Spec,
+		actualProto,
+		ContainerNodePoolSpec_FromProto,
+		ContainerNodePoolSpec_ToProto,
+		adapter.normalizeNodePool,
+		true,
+	)
+	if err != nil {
+		t.Fatalf("unexpected error comparing specs: %v", err)
+	}
+
+	if !diffRes.HasPathWithPrefix("autoscaling") {
+		t.Fatalf("expected diff on autoscaling, got paths: %v", diffRes.FieldMask.GetPaths())
+	}
+
+	as := diffRes.MergedDesired.GetAutoscaling()
+	if as != nil && as.GetEnabled() {
+		t.Errorf("expected Autoscaling to be nil or disabled in mergedDesired, got %v", as)
+	}
 }
 
 func TestContainerNodePool_Update_SwapDisabled(t *testing.T) {
