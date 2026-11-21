@@ -407,6 +407,9 @@ func matchesPrimaryResourceDirectly(e *logparser.Entry, primary *fixture.KRMReso
 		if _, query, hasQuery := strings.Cut(e.Request.URL, "?"); hasQuery && strings.Contains(query, tok) {
 			return true
 		}
+		if e.IsMutation() && e.Request.Body != "" && strings.Contains(e.Request.Body, tok) {
+			return true
+		}
 	}
 	return false
 }

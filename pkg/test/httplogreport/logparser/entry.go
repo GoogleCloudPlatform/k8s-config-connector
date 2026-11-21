@@ -122,6 +122,10 @@ func (e *Entry) IsDelete() bool {
 			strings.HasSuffix(uPath, "/delete") {
 			return true
 		}
+		origSeg := e.ExtractResourceIDSegment()
+		if origSeg == "delete" || (strings.HasPrefix(origSeg, "delete") && len(origSeg) > 6 && origSeg[6] >= 'A' && origSeg[6] <= 'Z') {
+			return true
+		}
 	}
 	if e.Request.Method == "GRPC" {
 		parts := strings.Split(e.Request.URL, "/")
