@@ -1,0 +1,79 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: 'Resource Migration'
+description: 'Track migrating an existing Terraform- or DCL-based resource to a Direct controller'
+title: 'ai:migrate: <Kind> to Direct controller'
+labels: ['direct-migration', 'overseer', 'workflow/migrate']
+body:
+- id: 'use-case-desc'
+  type: 'textarea'
+  attributes:
+    label: 'Generic Use-Case Description'
+    description: 'Provide a generic description of the migration task. Do NOT include internal tracker IDs (e.g. b/<id>), internal URLs, or customer names.'
+    placeholder: 'Describe the resource being migrated to Direct controller...'
+  validations:
+    required: true
+
+- id: 'target-resource-kind'
+  type: 'input'
+  attributes:
+    label: 'Target Resource Kind'
+    description: 'The KCC resource Kind to be migrated (e.g. ComputeAddress, DataprocCluster).'
+    placeholder: '<Kind>'
+  validations:
+    required: true
+
+- id: 'source-archetype'
+  type: 'dropdown'
+  attributes:
+    label: 'Source Controller Archetype'
+    description: 'The legacy controller archetype currently managing this resource.'
+    options:
+      - Terraform-Based
+      - DCL-Based
+  validations:
+    required: true
+
+- id: 'gcp-api-doc'
+  type: 'input'
+  attributes:
+    label: 'GCP API Documentation Link'
+    description: 'Public GCP API reference documentation URL.'
+    placeholder: 'https://cloud.google.com/<service>/docs/reference/rest/...'
+  validations:
+    required: true
+
+- type: 'checkboxes'
+  id: 'parity-verification'
+  attributes:
+    label: 'Field Parity Verification'
+    options:
+      - label: 'Field parity verified via dual-controller golden comparison'
+
+- type: 'checkboxes'
+  id: 'migration-phases'
+  attributes:
+    label: 'Migration Phases'
+    description: 'Multi-phase deliverables tracked across sequential PRs.'
+    options:
+      - label: 'Phase 1: Direct KRM Types, CRDs, Identity & References (maintaining 100% field parity)'
+      - label: 'Phase 2: Direct Controller, Mappers, Registration & Fuzzer'
+      - label: 'Phase 3: Dual-Controller Registration & Golden Test Comparison'
+      - label: 'Phase 4: MockGCP & E2E Test Fixtures Alignment'
+
+- type: 'markdown'
+  attributes:
+    value: |
+      Workflow reference: https://raw.githubusercontent.com/GoogleCloudPlatform/k8s-config-connector/master/.agents/workflows/kcc-direct-migration-tracker.txt
