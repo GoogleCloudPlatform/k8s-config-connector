@@ -1,0 +1,32 @@
+apiVersion: beyondcorp.cnrm.cloud.google.com/v1alpha1
+kind: BeyondCorpAppGateway
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: beyondcorpappgateway-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: Sample Gateway
+  hostType: GCP_REGIONAL_MIG
+  projectRef:
+    external: ${projectId}
+  region: us-central1
+  resourceID: beyondcorpappgateway${uniqueId}
+  type: TCP_PROXY
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 1
+  state: CREATED
+  uri: //beyondcorp.googleapis.com/projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}
