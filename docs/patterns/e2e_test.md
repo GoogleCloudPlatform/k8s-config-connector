@@ -109,6 +109,24 @@ Alternatively, you can run a single fixture using `dev/tasks/run-e2e` by specify
 RUN_TESTS='TestAllInSeries/fixtures/<testname>$' dev/tasks/run-e2e
 ```
 
+### Re-reconciliation checks
+
+After a fixture's create and update steps pass, the harness "touches" the primary object and checks what the re-reconciliation did.
+
+*   **Write check (default).** `ShouldTestRereconiliation` in `tests/e2e/ratcheting.go` decides whether the check runs for a resource. A re-reconciliation that makes any write call to GCP fails the test. Read calls are allowed.
+*   **No-diff check (opt-in).** `ShouldAssertNoDiffOnRereconcile` in `tests/e2e/ratcheting.go` matches test names by prefix. It currently matches only `computeinstance-293*`. It also fails a fixture when the Terraform controller still finds changes to apply after the touch, even if applying them makes no write calls (a perpetual diff).
+*   **How to opt in.** Add the test name's prefix to `ShouldAssertNoDiffOnRereconcile`. The fixture must also pass `ShouldTestRereconiliation`, because the no-diff check only runs inside that branch of `tests/e2e/unified_test.go`.
+*   **Terraform only.** The no-diff check is skipped for `ForceDirectController` runs, which keep a fixed 2-second pause instead.
+*   **Waiting.** The check waits up to 30 seconds for the Terraform reconcile that starts after the touch to end (`diffRecorder.WaitForReconcileAfter`). If that times out, the test fails with `timed out after 30s waiting for a Terraform reconcile ... to end after the touch`.
+*   **The reconcile must run through to diff evaluation.** If that reconcile ends with an error, is requeued, or is skipped (for example, with `cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"`), the test fails with `did not run through to diff evaluation`. Without this rule, the check could pass without checking anything.
+*   **Diffs fail the test.** Any diff recorded for the object fails the test with `re-reconciliation found changes to apply (re-applied on every reconcile)`.
+
+For a worked example, see [ComputeInstance issue 293](../resource-behaviors/computeinstance/issue-293-networkip-and-image-family.md).
+
+### Terminal errors
+
+`isTerminalError` in `config/tests/samples/create/samples.go` treats an `UpdateFailed` condition whose message contains `cannot make changes to immutable field(s)` as a terminal error. This applies to all fixtures and samples. The wait for Ready then fails with `terminal error (Immutable field change)` as soon as the condition is observed. Without this rule, the fixture would keep waiting until the subtest timeout, which is 5 minutes for the mock target (`subtestTimeout` in `tests/e2e/unified_test.go`). An immutable-field error does not resolve on its own, so waiting only delays the failure.
+
 ## Tips
 
 *   Use `${uniqueId}` in names to avoid collisions.

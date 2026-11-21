@@ -103,6 +103,10 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehttpshealthcheck
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehttpshealthcheck/computehttpshealthcheck-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeimage/computeimage
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeimage/computeimage-direct
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstance/computeinstance-293-cos-family
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstance/computeinstance-293-networkip-addresspath
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstance/computeinstance-293-networkip-addressselflink
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstance/computeinstance-293-networkip-ip
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstance/computeinstancebasicexample
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstance/computeinstancebasicexample-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstance/computeinstancefromtemplate
