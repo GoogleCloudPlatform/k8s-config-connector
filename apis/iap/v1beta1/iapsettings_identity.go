@@ -92,12 +92,12 @@ func buildIAPSettingsIDFromParent(ctx context.Context, reader client.Reader, obj
 	if err != nil {
 		return "", err
 	}
-	return parent.buildIAPSettingsID(ctx, reader, obj.GetNamespace())
+	return parent.buildIAPSettingsID(ctx, reader, obj)
 }
 
 // parentReference is an interface that all parent reference types must implement
 type parentReference interface {
-	buildIAPSettingsID(ctx context.Context, reader client.Reader, namespace string) (string, error)
+	buildIAPSettingsID(ctx context.Context, reader client.Reader, obj *IAPSettings) (string, error)
 }
 
 // OrganizationParent represents organization-level settings
@@ -105,8 +105,8 @@ type OrganizationParent struct {
 	Ref *refsv1beta1.OrganizationRef
 }
 
-func (p OrganizationParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, namespace string) (string, error) {
-	organization, err := refsv1beta1.ResolveOrganization(ctx, reader, nil, p.Ref)
+func (p OrganizationParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, obj *IAPSettings) (string, error) {
+	organization, err := refsv1beta1.ResolveOrganization(ctx, reader, obj, p.Ref)
 	if err != nil {
 		return "", err
 	}
@@ -118,8 +118,8 @@ type FolderParent struct {
 	Ref *refsv1beta1.FolderRef
 }
 
-func (p FolderParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, namespace string) (string, error) {
-	folder, err := refsv1beta1.ResolveFolder(ctx, reader, nil, p.Ref)
+func (p FolderParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, obj *IAPSettings) (string, error) {
+	folder, err := refsv1beta1.ResolveFolder(ctx, reader, obj, p.Ref)
 	if err != nil {
 		return "", err
 	}
@@ -131,8 +131,8 @@ type ProjectParent struct {
 	Ref *refsv1beta1.ProjectRef
 }
 
-func (p ProjectParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, namespace string) (string, error) {
-	project, err := refsv1beta1.ResolveProject(ctx, reader, namespace, p.Ref)
+func (p ProjectParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, obj *IAPSettings) (string, error) {
+	project, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), p.Ref)
 	if err != nil {
 		return "", err
 	}
@@ -144,8 +144,8 @@ type ProjectWebParent struct {
 	ProjectRef *refsv1beta1.ProjectRef
 }
 
-func (p ProjectWebParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, namespace string) (string, error) {
-	project, err := refsv1beta1.ResolveProject(ctx, reader, namespace, p.ProjectRef)
+func (p ProjectWebParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, obj *IAPSettings) (string, error) {
+	project, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), p.ProjectRef)
 	if err != nil {
 		return "", err
 	}
@@ -159,15 +159,15 @@ type ComputeServiceParent struct {
 	ServiceRef *computev1beta1.ComputeBackendServiceRef
 }
 
-func (p ComputeServiceParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, namespace string) (string, error) {
-	project, err := refsv1beta1.ResolveProject(ctx, reader, namespace, p.ProjectRef)
+func (p ComputeServiceParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, obj *IAPSettings) (string, error) {
+	project, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), p.ProjectRef)
 	if err != nil {
 		return "", err
 	}
 
 	if p.Region != nil {
 		if p.ServiceRef != nil {
-			external, err := p.ServiceRef.NormalizedExternal(ctx, reader, namespace)
+			external, err := p.ServiceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 			if err != nil {
 				return "", err
 			}
@@ -181,7 +181,7 @@ func (p ComputeServiceParent) buildIAPSettingsID(ctx context.Context, reader cli
 	}
 
 	if p.ServiceRef != nil {
-		external, err := p.ServiceRef.NormalizedExternal(ctx, reader, namespace)
+		external, err := p.ServiceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 		if err != nil {
 			return "", err
 		}
@@ -203,25 +203,25 @@ type AppEngineParent struct {
 	VersionRef     *refsv1beta1.AppEngineVersionRef
 }
 
-func (p AppEngineParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, namespace string) (string, error) {
-	project, err := refsv1beta1.ResolveProject(ctx, reader, namespace, p.ProjectRef)
+func (p AppEngineParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, obj *IAPSettings) (string, error) {
+	project, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), p.ProjectRef)
 	if err != nil {
 		return "", err
 	}
 
-	appID, err := refsv1beta1.ResolveAppEngineApplicationID(ctx, reader, namespace, p.ApplicationRef)
+	appID, err := refsv1beta1.ResolveAppEngineApplicationID(ctx, reader, obj.GetNamespace(), p.ApplicationRef)
 	if err != nil {
 		return "", err
 	}
 
 	if p.ServiceRef != nil {
-		serviceID, err := refsv1beta1.ResolveAppEngineServiceID(ctx, reader, namespace, p.ServiceRef)
+		serviceID, err := refsv1beta1.ResolveAppEngineServiceID(ctx, reader, obj.GetNamespace(), p.ServiceRef)
 		if err != nil {
 			return "", err
 		}
 
 		if p.VersionRef != nil {
-			versionID, err := refsv1beta1.ResolveAppEngineVersionID(ctx, reader, namespace, p.VersionRef)
+			versionID, err := refsv1beta1.ResolveAppEngineVersionID(ctx, reader, obj.GetNamespace(), p.VersionRef)
 			if err != nil {
 				return "", err
 			}
