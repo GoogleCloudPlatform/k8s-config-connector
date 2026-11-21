@@ -166,7 +166,6 @@ func BackupDRBackupPlanObservedState_v1beta1_FromProto(mapCtx *direct.MapContext
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	// MISSING: Etag
 	out.BackupVaultServiceAccount = direct.LazyPtr(in.GetBackupVaultServiceAccount())
-	// MISSING: LogRetentionDays
 	// MISSING: SupportedResourceTypes
 	// MISSING: RevisionID
 	// MISSING: RevisionName
@@ -184,7 +183,6 @@ func BackupDRBackupPlanObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	out.State = direct.Enum_ToProto[pb.BackupPlan_State](mapCtx, in.State)
 	// MISSING: Etag
 	out.BackupVaultServiceAccount = direct.ValueOf(in.BackupVaultServiceAccount)
-	// MISSING: LogRetentionDays
 	// MISSING: SupportedResourceTypes
 	// MISSING: RevisionID
 	// MISSING: RevisionName
@@ -206,7 +204,7 @@ func BackupDRBackupPlanSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	if in.GetBackupVault() != "" {
 		out.BackupVaultRef = &krm.BackupVaultRef{External: in.GetBackupVault()}
 	}
-	// MISSING: LogRetentionDays
+	out.LogRetentionDays = direct.LazyPtr(in.GetLogRetentionDays())
 	// MISSING: SupportedResourceTypes
 	// MISSING: RevisionID
 	// MISSING: RevisionName
@@ -229,7 +227,7 @@ func BackupDRBackupPlanSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.B
 	if in.BackupVaultRef != nil {
 		out.BackupVault = in.BackupVaultRef.External
 	}
-	// MISSING: LogRetentionDays
+	out.LogRetentionDays = direct.ValueOf(in.LogRetentionDays)
 	// MISSING: SupportedResourceTypes
 	// MISSING: RevisionID
 	// MISSING: RevisionName
