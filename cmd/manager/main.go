@@ -28,6 +28,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	controllermetrics "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/identity/hook"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/profiler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
@@ -65,6 +67,7 @@ func main() {
 		skipNameValidation  bool
 		syncingMode         string
 		metricsBindAddress  string
+		identityHookSocket  string
 	)
 	// metricsOptions controls standard controller-runtime metrics versus OpenCensus/Default metrics.
 	// This is configured via the METRICS_VERSION=v2 environment variable.
@@ -84,6 +87,7 @@ func main() {
 	flag.StringVar(&leaderElectionMode, "leader-election-type", "disabled", "Leader election mode. One of: disabled, multicluster. With multicluster, the manager takes the lease from spec.experiments.multiClusterLease of the ConfigConnector object, and exits at startup if the object is missing.")
 	flag.BoolVar(&skipNameValidation, "skip-name-validation", false, "option to bypass the global controller name registry in controller-runtime; false by default")
 	flag.StringVar(&syncingMode, "syncing-mode", "disabled", "Enable integration with the KRMSyncer for suspending sync operations. One of: disabled, pull. Must be used with multi-cluster leader election.")
+	flag.StringVar(&identityHookSocket, "identity-hook-socket", "", "Unix socket of a credentials hook that picks the GCP credentials for each KRM object; see pkg/gcp/identity/hook. If unset, the default credentials are used.")
 	profiler.AddFlag(flag.CommandLine)
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
 	flag.Parse()
@@ -141,8 +145,15 @@ func main() {
 
 	// Set client site rate limiter to optimize the configconnector re-reconciliation performance.
 	ratelimiter.SetMasterRateLimiter(restCfg, rateLimitQps, rateLimitBurst)
+
+	var identityResolver identity.Resolver
+	if identityHookSocket != "" {
+		logger.Info("Using the credentials hook for GCP credentials", "socket", identityHookSocket)
+		identityResolver = hook.NewResolver(identityHookSocket)
+	}
+
 	logger.Info("Creating the manager")
-	mgr, err := newManager(ctx, restCfg, scopedNamespace, userProjectOverride, billingProject, multiClusterElection, skipNameValidation, enableSyncing, metricsBindAddress)
+	mgr, err := newManager(ctx, restCfg, scopedNamespace, userProjectOverride, billingProject, multiClusterElection, skipNameValidation, enableSyncing, metricsBindAddress, identityResolver)
 	if err != nil {
 		logging.Fatal(err, "error creating the manager")
 	}
@@ -198,7 +209,7 @@ func main() {
 	logging.ExitInfo("main.go finished execution; exiting ...")
 }
 
-func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string, multiclusterlease bool, skipNameValidation bool, enableSyncing bool, metricsBindAddress string) (manager.Manager, error) {
+func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string, multiclusterlease bool, skipNameValidation bool, enableSyncing bool, metricsBindAddress string, identityResolver identity.Resolver) (manager.Manager, error) {
 	krmtotf.SetUserAgentForTerraformProvider()
 
 	opts := manager.Options{
@@ -218,6 +229,7 @@ func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace strin
 		SyncerIntegration:  enableSyncing,
 		SkipNameValidation: skipNameValidation,
 		ScopedNamespace:    scopedNamespace,
+		IdentityResolver:   identityResolver,
 	}
 
 	controllersCfg.UserProjectOverride = userProjectOverride

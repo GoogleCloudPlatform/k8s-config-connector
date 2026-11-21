@@ -25,9 +25,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/logger"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 
+	"cloud.google.com/go/auth/httptransport"
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	"golang.org/x/oauth2/google"
 	"k8s.io/klog/v2"
@@ -39,21 +41,36 @@ type Options struct {
 	config.ControllerConfig
 }
 
-func newConfigAndClient(ctx context.Context, opt Options) (*dcl.Config, *http.Client, error) {
+// NewConfigAndClient is New, and also returns the HTTP client of the config;
+// see ForCredentials.
+func NewConfigAndClient(ctx context.Context, opt Options) (*dcl.Config, *http.Client, error) {
 	if opt.UserAgent == "" {
 		opt.UserAgent = gcp.KCCUserAgent()
 	}
 
 	if opt.HTTPClient == nil {
-		httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
-		if err != nil {
-			return nil, nil, fmt.Errorf("error creating the http client to be used by DCL: %w", err)
+		if opt.IdentityResolver != nil {
+			// Authenticated below.
+			opt.HTTPClient = &http.Client{}
+		} else {
+			httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
+			if err != nil {
+				return nil, nil, fmt.Errorf("error creating the http client to be used by DCL: %w", err)
+			}
+			opt.HTTPClient = httpClient
 		}
-		opt.HTTPClient = httpClient
 	}
 
 	if opt.EnableMetricsTransport {
 		opt.HTTPClient.Transport = transport.NewMetricsTransport(opt.HTTPClient.Transport)
+	}
+
+	if opt.IdentityResolver != nil {
+		httpClient := *opt.HTTPClient
+		if err := httptransport.AddAuthorizationMiddleware(&httpClient, identity.NewAuthCredentials()); err != nil {
+			return nil, nil, fmt.Errorf("error adding authentication to the http client to be used by DCL: %w", err)
+		}
+		opt.HTTPClient = &httpClient
 	}
 
 	configOptions := []dcl.ConfigOption{
@@ -84,7 +101,7 @@ func newConfigAndClient(ctx context.Context, opt Options) (*dcl.Config, *http.Cl
 }
 
 func New(ctx context.Context, opt Options) (*dcl.Config, error) {
-	dclConfig, _, err := newConfigAndClient(ctx, opt)
+	dclConfig, _, err := NewConfigAndClient(ctx, opt)
 	if err != nil {
 		return nil, err
 	}
@@ -125,11 +142,21 @@ func NewConfigAndClientForIntegrationTest() (*dcl.Config, *http.Client) {
 		opt.HTTPClient = &http.Client{Transport: t}
 	}
 
-	config, httpClient, err := newConfigAndClient(ctx, opt)
+	config, httpClient, err := NewConfigAndClient(ctx, opt)
 	if err != nil {
 		klog.Fatalf("error from NewForIntegrationTest: %v", err)
 	}
 	return config, httpClient
+}
+
+// ForCredentials returns a copy of dclConfig that sends requests made without a
+// context from identity.ForObject with creds. The DCL makes some calls without
+// the caller's context, such as when it reads a BillingBudgetsBudget's
+// projects. client is dclConfig's HTTP client, from NewConfigAndClient.
+func ForCredentials(dclConfig *dcl.Config, client *http.Client, creds *identity.Credentials) *dcl.Config {
+	bound := *client
+	bound.Transport = identity.BindCredentials(client.Transport, creds)
+	return dclConfig.Clone(dcl.WithHTTPClient(&bound))
 }
 
 func CopyAndModifyForKind(dclConfig *dcl.Config, kind string) *dcl.Config {

@@ -366,7 +366,7 @@ func (r *TestReconciler) newReconcilerForObject(u *unstructured.Unstructured) re
 		return reconciler
 	case k8s.ReconcilerTypeDCL:
 		// Create DCL reconciler.
-		reconciler, err := dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
+		reconciler, err := dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, nil, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
 		if err != nil {
 			r.t.Fatalf("error creating reconciler: %v", err)
 		}

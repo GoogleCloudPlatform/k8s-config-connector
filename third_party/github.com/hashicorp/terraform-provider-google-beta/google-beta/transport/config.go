@@ -20,7 +20,6 @@ import (
 
 	grpc_logrus "github.com/grpc-ecosystem/go-grpc-middleware/logging/logrus"
 
-	"github.com/hashicorp/go-cleanhttp"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/logging"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/sirupsen/logrus"
@@ -1330,54 +1329,18 @@ func (c *Config) LoadAndValidate(ctx context.Context) error {
 
 	c.tokenSource = tokenSource
 
-	oauth2Client := cleanhttp.DefaultClient()
-	if OAuth2HTTPClientTransformer != nil {
-		oauth2Client = OAuth2HTTPClientTransformer(ctx, oauth2Client)
-	}
-	cleanCtx := context.WithValue(ctx, oauth2.HTTPClient, oauth2Client)
-
-	// 1. MTLS TRANSPORT/CLIENT - sets up proper auth headers
-	client, _, err := transport.NewHTTPClient(cleanCtx, option.WithTokenSource(tokenSource))
-	if err != nil {
-		return err
-	}
-	if DefaultHTTPClientTransformer != nil {
-		client = DefaultHTTPClientTransformer(ctx, client)
-	}
-
 	// Userinfo is fetched before request logging is enabled to reduce additional noise.
 	err = c.logGoogleIdentities()
 	if err != nil {
 		return err
 	}
 
-	// 2. Logging Transport - ensure we log HTTP requests to GCP APIs.
-	loggingTransport := logging.NewTransport("Google", client.Transport)
-
-	// 3. Retry Transport - retries common temporary errors
-	// Keep order for wrapping logging so we log each retried request as well.
-	// This value should be used if needed to create shallow copies with additional retry predicates.
-	// See ClientWithAdditionalRetries
-	retryTransport := NewTransportWithDefaultRetries(loggingTransport)
-
-	// 4. Header Transport - outer wrapper to inject additional headers we want to apply
-	// before making requests
-	headerTransport := NewTransportWithHeaders(retryTransport)
-	if c.RequestReason != "" {
-		headerTransport.Set("X-Goog-Request-Reason", c.RequestReason)
+	// Config Connector: the client chain lives in newHTTPClient so that
+	// CopyWithTokenSource builds the same chain for other identities.
+	client, err := c.newHTTPClient(ctx, tokenSource)
+	if err != nil {
+		return err
 	}
-
-	// Ensure $userProject is set for all HTTP requests using the client if specified by the provider config
-	// See https://cloud.google.com/apis/docs/system-parameters
-	if c.UserProjectOverride && c.BillingProject != "" {
-		headerTransport.Set("X-Goog-User-Project", c.BillingProject)
-	}
-
-	// Set final transport value.
-	client.Transport = headerTransport
-
-	// This timeout is a timeout per HTTP request, not per logical operation.
-	client.Timeout = c.synchronousTimeout()
 
 	c.Client = client
 	c.Context = ctx

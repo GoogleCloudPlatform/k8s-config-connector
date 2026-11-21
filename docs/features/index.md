@@ -18,6 +18,7 @@ This page provides a guide to the most common configuration and management tasks
 ## Advanced Configuration
 
 *   **[Opt-in to Experimental Controllers](optin.md)**: Test new "Direct" controllers before they become the default.
+*   **[Use a Per-object Credentials Hook](credentials-hook.md)**: Obtain credentials from a local process for each reconciled object.
 *   **[Configure Rate Limiting](ratelimit.md)**: Adjust the rate at which Config Connector calls Google Cloud APIs.
 *   **[Manage Container Resources](containerresource.md)**: Configure the memory and CPU limits for the Config Connector pods.
 

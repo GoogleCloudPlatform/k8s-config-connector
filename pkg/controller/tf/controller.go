@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceactuation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leaser"
@@ -42,6 +43,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	tfresource "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/resource"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/tfidentity"
 	"github.com/go-logr/logr"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
@@ -204,6 +206,10 @@ func (r *Reconciler) DoReconcile(ctx context.Context, req reconcile.Request) (re
 		r.logger.V(2).Info("Skipping reconcile as nothing has changed and 0 reconcile period is set", "resource", req.NamespacedName)
 		return reconcile.Result{}, nil
 	}
+	ctx, err = identity.ForObject(ctx, identity.Target{GroupKind: r.schemaRef.GVK.GroupKind(), Object: u})
+	if err != nil {
+		return reconcile.Result{}, err
+	}
 
 	sm, err := r.smLoader.GetServiceMapping(u.GroupVersionKind().Group)
 	if err != nil {
@@ -259,10 +265,14 @@ func (r *Reconciler) DoReconcile(ctx context.Context, req reconcile.Request) (re
 		return reconcile.Result{}, r.HandlePreActuationTransformFailed(ctx, &resource.Resource, fmt.Errorf("error applying pre-actuation transformation to resource '%v': %w", req.NamespacedName.String(), err))
 	}
 
-	meta, err := cloneAndChangeContext(ctx, r.provider.Meta(), r.controllerName)
+	provider, err := tfidentity.Provider(ctx, r.provider)
+	if err != nil {
+		return reconcile.Result{}, err
+	}
+	meta, err := cloneAndChangeContext(ctx, provider.Meta(), r.controllerName)
 	if err != nil {
 		log.FromContext(ctx).Error(err, "error cloning and changing context; metrics may not show up")
-		meta = r.provider.Meta()
+		meta = provider.Meta()
 	}
 
 	requeue, err := r.sync(ctx, resource, meta)
