@@ -181,4 +181,12 @@
   5. **Resolved Judgement Queue**: All 18 `CESToolset` entries in `apis/ces/judgement_queue.yaml` are triaged and resolved.
 - **Impact**: All unit tests in `apis/ces/...` and `tests/apichecks` pass cleanly.
 
+### [2026-11-20] Direct Controller, Fuzzer, and E2E Fixtures for CESToolset
+- **Context**: Implementing Greenfield Step 2 direct controller, fuzzer, and recording real-GCP E2E fixtures for `CESToolset` (`ces.cnrm.cloud.google.com/v1alpha1`).
+- **Learnings & Service Behaviors**:
+  1. **Synchronous REST CRUD**: Similar to `CESTool`, `CESToolset` CRUD operations (`CreateToolset`, `UpdateToolset`, `GetToolset`, `DeleteToolset`) in `ces.googleapis.com/v1` are synchronous REST calls returning `*cespb.Toolset` or `*emptypb.Empty` directly without LRO handling.
+  2. **OpenAPI Schema Server URL Requirement**: When using `openAPIToolset`, real GCP API validates that the OpenAPI specification string contains a non-empty `servers` block with at least one URL (e.g. `servers: [ - url: https://example.com ]`). Omitting the servers block results in HTTP 400 Bad Request (`"No server URL found in the Open API specification."`).
+  3. **Field Mutability**: `displayName`, `description`, `toolFakeConfig` (`enableFakeMode`), and `openAPIToolset` (`openAPISchema`, `ignoreUnknownFields`, `apiAuthentication.bearerTokenConfig.token`) update in-place cleanly via `UpdateToolset` with `updateMask: description, displayName, openApiToolset, toolFakeConfig`.
+  4. **Audit Probe & E2E Validation**: Golden HTTP logs and audit probes were recorded against real GCP project `cnrm-barni-4` for `cestoolset-minimal` and `cestoolset-maximal`, with all 7/7 automated lifecycle checks passing cleanly.
+
 

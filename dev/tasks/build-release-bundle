@@ -131,7 +131,6 @@ BLOCKED_KINDS=(
     "CertificateManagerTrustConfig"
     "CesAgent"
     "CESTool"
-    "CESToolset"
     "ChronicleDataAccessLabel"
     "ChronicleDataAccessScope"
     "ChronicleDataTable"
