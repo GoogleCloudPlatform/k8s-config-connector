@@ -25,8 +25,7 @@
 #   4. run - the recipe writes change.yaml: the summary, then receipts.md verbatim with its sha256,
 #      so the PR carries the clean run's evidence as the script wrote it.
 # With no commit (the script already covered the change) the same goes on the issue as a comment,
-# and the issue's <!-- factory:no-change ok --> closes it. The batch's final child (its body says
-# "Every item of #N is done") gets the batch report instead, as its comment.
+# and the issue's <!-- factory:no-change ok --> closes it.
 name: validate-kind
 label: Validate (Kind)
 timeout: 4h
@@ -82,16 +81,10 @@ start:
 
         Comments on the issue from its maintainers, if any, are in `$TASK_DIR/comments.md`.
 
-        **If the description has a line "Every item of #N is done."**, this issue is the batch's final
-        step: follow its instructions to write the batch report, write the report (Markdown) to
-        {{ output "report.md" }}, write the word `report` to {{ output "mode" }}, make no commit, and
-        stop here.
-
-        Otherwise, validate the Kind the description names:
+        Validate the Kind the description names:
 
         1. Write the Kind's name in lower case (e.g. `biglakeicebergnamespace`, the directory name
-           under `hack/manual-validate/`) to {{ output "kind" }}, and the word `validate` to
-           {{ output "mode" }}.
+           under `hack/manual-validate/`) to {{ output "kind" }}.
         2. Follow the description's instructions to write or extend
            `hack/manual-validate/<kind>/validate.sh` (and any fixture variants under its `fixtures/`)
            for what changed. As in the reference script, it takes its fixture from `FIXTURE_DIR`
@@ -138,8 +131,6 @@ start:
     # the agent. The agent's own runs are set aside first; every run here is bundled.
     - run: |
         set -uo pipefail
-        mode="$(tr -d '[:space:]' <"$TASK_DIR/mode" 2>/dev/null || true)"
-        if [ "${mode}" != "validate" ]; then exit 0; fi
         kind="$(tr -d '[:space:]' <"$TASK_DIR/kind" 2>/dev/null || true)"
         script="hack/manual-validate/${kind}/validate.sh"
         if ! printf '%s' "${kind}" | grep -qE '^[a-z0-9]+$' || [ ! -f "${script}" ]; then
@@ -178,9 +169,7 @@ start:
         } >"$TASK_DIR/receipts.md"
 
     - ask: |
-        If {{ output "mode" }} says `report`, write nothing more: say so in a line.
-
-        Otherwise read {{ output "receipts.md" }}: the receipts of the recipe's clean re-run of your
+        Read {{ output "receipts.md" }}: the receipts of the recipe's clean re-run of your
         committed script (the default fixture and each variant). They, not your own runs, are the
         result. Write the pull request's title and summary to {{ output "summary.yaml" }}, as YAML in
         EXACTLY this structure:
@@ -240,11 +229,6 @@ start:
         def write(change):
             with open(os.path.join(task, "change.yaml"), "w") as f:
                 yaml.safe_dump({"change": change}, f, sort_keys=False, allow_unicode=True, width=1000)
-
-        mode = read("mode").strip()
-        if mode == "report":
-            write({"comment": Literal(read("report.md").strip() or "No report was written.")})
-            raise SystemExit(0)
 
         receipts = read("receipts.md")
         sha = hashlib.sha256(receipts.encode()).hexdigest()
