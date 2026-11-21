@@ -20,6 +20,10 @@ This skill provides a structured workflow for running end-to-end tests against r
     - **ONLY re-run `hack/record-gcp` if**:
       * You explicitly modified test manifest YAMLs (`create.yaml`, `update.yaml`, `dependencies.yaml`).
       * You modified the controller's GCP API request payloads or endpoints to send different requests to live GCP.
+*   **Fixture Manifest Standards (`update.yaml`, `dependencies.yaml`, `spec.resourceID`)**:
+    - **`update.yaml`**: Mandatory if the resource defines any mutable spec fields and an Update RPC. Omitting `update.yaml` on mutable resources blocks PR approval.
+    - **`dependencies.yaml`**: Mandatory if the test fixture references any other KCC resources via `*Ref`.
+    - **`spec.resourceID`**: Do NOT specify `spec.resourceID` in test fixtures when its value matches `metadata.name`. `spec.resourceID` is a KCC-specific acquisition field and provides no testing value for controller/mapper logic against live GCP.
 *   **Cost and Token Protection for Slow Resources**: Resources that take >10 minutes to provision/delete (such as `NetworkSecurity`, `ContainerCluster`, `ContainerNodePool`, `SQLInstance`, `ComposerEnvironment`) must NEVER be repeatedly re-recorded. Re-running slow tests burns significant agent time and quota.
 *   **Handling record-gcp Failures**: If `record-gcp` fails due to live GCP provisioning errors (e.g., resolving IP address range conflicts, missing dependencies, API/service enablement, or configuration schema issues), debug and fix the configuration. If it still fails after 3 distinct retry attempts, the bot must halt, escalate the failure to the human reviewer, and clearly explain the blocker/error in a comment.
 

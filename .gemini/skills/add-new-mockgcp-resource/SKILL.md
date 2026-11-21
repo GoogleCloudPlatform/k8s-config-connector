@@ -153,6 +153,8 @@ Please use the skill .gemini/skills/match-mockgcp-with-realgcp/SKILL.md to align
 
 ## Tips
 
+*   **No Standalone Unit Tests in MockGCP**: Do NOT write unit tests (`*_test.go`) inside `mockgcp/mock<service>/`. Mock services are verified through the E2E fixtures runner (`hack/compare-mock` and `./dev/ci/presubmits/tests-e2e-fixtures-suite <service>`). Standalone Go unit tests inside mock packages are unnecessary and will fail review.
+*   **Dependency Hygiene**: Check `git diff mockgcp/go.mod` and ensure no unrelated indirect dependencies or `replace` directives are introduced.
 *   Use `httptogrpc` to avoid compiling protos if possible.
 *   Follow established patterns in `mockfirestore` or other existing mocks.
 *   For Terraform-based resources, check the provider code to understand how fields are flattened/expanded.

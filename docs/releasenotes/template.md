@@ -16,6 +16,9 @@
 # 7. If a resource is listed in "Reconciliation Improvements" (e.g. opt-in direct reconciler), it MUST NOT be mentioned in "New Alpha Resources".
 # 8. Only release note resources whose controllers have been merged.
 # 9. Do NOT include resources whose Kind is in BLOCKED_KINDS in dev/tasks/build-release-bundle; their CRDs are excluded from the release bundle. Verify with `./dev/tasks/gather-release-notes <previous_tag> <current_tag> --check-notes <this file>`.
+# 10. Do NOT link to /config-connector/docs/reference/resource-docs/... for v1alpha1 resources (reference docs only exist for v1beta1/v1).
+# 11. Classify new fields under "New Fields", not "Bug Fixes".
+# 12. Verify external Google Cloud product documentation URLs are valid and do not 404.
 
 ** This version is not yet released; this document is gathering release notes
 for the future release **

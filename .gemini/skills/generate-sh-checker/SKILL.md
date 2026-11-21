@@ -83,7 +83,9 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
       --multiversion
 
     cd ${REPO_ROOT}
-    dev/tasks/generate-crds
+    if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+      dev/tasks/generate-crds
+    fi
 
     go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/<SERVICE_NAME>/
     ```
