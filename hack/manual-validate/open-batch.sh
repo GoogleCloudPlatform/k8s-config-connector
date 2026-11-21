@@ -30,7 +30,8 @@ set -o nounset
 set -o pipefail
 
 REPO="${REPO:-GoogleCloudPlatform/k8s-config-connector}"
-BATCH_LABEL="validate/batch"
+BATCH_LABEL="validate-kind/batch"
+CHILD_LABEL="overseer/validate-kind"
 FANOUT_LABEL="${FANOUT_LABEL:-overseer/fanout}"
 FIRST_SINCE="${FIRST_SINCE:-1 day ago}"
 DRY_RUN=0
@@ -98,7 +99,7 @@ fi
 
 gh label create "${BATCH_LABEL}" -R "${REPO}" --color 0E8A16 \
   --description "validate batch" >/dev/null 2>&1 || true
-gh label create validate -R "${REPO}" --color 0E8A16 \
+gh label create "${CHILD_LABEL}" -R "${REPO}" --color 0E8A16 \
   --description "Manual validation of a controller against real GCP" >/dev/null 2>&1 || true
 URL="$(gh issue create -R "${REPO}" --title "${TITLE}" --label "${FANOUT_LABEL}" --label "${BATCH_LABEL}" --body-file "${BODY}")"
 say "opened ${URL}"
