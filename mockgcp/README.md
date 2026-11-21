@@ -118,6 +118,10 @@ and it normally logs an error like "foo not set" (in this case, simply add that 
 
    Example command: `E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=mock GOLDEN_REQUEST_CHECKS=1 WRITE_GOLDEN_OUTPUT=1 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/test-name`.
 
+## Service-specific notes
+
+- [mockcompute](mockcompute/README.md): behaviour beyond plain CRUD (public images, networkIP references, boot disks).
+
 ## Appendix
 
 ### Generating proto

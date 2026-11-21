@@ -9,6 +9,8 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"net"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -70,10 +72,70 @@ var (
 // holds up to par.
 func forceNewIfNetworkIPNotUpdatable(ctx context.Context, d *schema.ResourceDiff, meta interface{}) error {
 	// separate func to allow unit testing
-	return forceNewIfNetworkIPNotUpdatableFunc(d)
+	return forceNewIfNetworkIPNotUpdatableFunc(d, newNetworkIPAddressResolver(ctx, meta))
 }
 
-func forceNewIfNetworkIPNotUpdatableFunc(d tpgresource.TerraformResourceDiff) error {
+// newNetworkIPAddressResolver returns a resolver that looks up regional addresses with addresses.get.
+// The compute client is only created when a lookup is needed.
+func newNetworkIPAddressResolver(ctx context.Context, meta interface{}) networkIPAddressResolver {
+	return func(project, region, name string) (string, error) {
+		config, ok := meta.(*transport_tpg.Config)
+		if !ok {
+			return "", fmt.Errorf("cannot look up the address with addresses.get: provider meta has type %T, want *transport_tpg.Config", meta)
+		}
+		svc := config.NewComputeClient(config.UserAgent)
+		if svc == nil {
+			return "", fmt.Errorf("cannot look up the address with addresses.get: failed to create the Compute API client (NewComputeClient logged the cause)")
+		}
+		address, err := svc.Addresses.Get(project, region, name).Context(ctx).Do()
+		if err != nil {
+			return "", err
+		}
+		return address.Address, nil
+	}
+}
+
+// KCC (GoogleCloudPlatform/k8s-config-connector#293): networkIpRef.external may be an address selfLink or path; GCE stores the resolved IP.
+var networkIPAddressRefRegexp = regexp.MustCompile(`(?:^|/)projects/([^/]+)/regions/([^/]+)/addresses/([^/]+)$`)
+
+// networkIPAddressResolver returns the IP of the regional address with the given project, region and name.
+type networkIPAddressResolver func(project, region, name string) (string, error)
+
+// networkIPAddressRefMatchesIP reports whether newValue is a regional address reference whose IP is oldIP.
+// The resolver is only called when oldIP is a bare IP and newValue is an address reference.
+func networkIPAddressRefMatchesIP(oldIP, newValue string, resolve networkIPAddressResolver) (bool, error) {
+	if net.ParseIP(oldIP) == nil {
+		return false, nil
+	}
+	match := networkIPAddressRefRegexp.FindStringSubmatch(newValue)
+	if match == nil {
+		return false, nil
+	}
+	resolved, err := resolve(match[1], match[2], match[3])
+	if err != nil {
+		return false, fmt.Errorf("resolving address %q: %w", newValue, err)
+	}
+	// Compare parsed addresses so different spellings of the same IPv6 address match.
+	resolvedIP := net.ParseIP(resolved)
+	return resolvedIP != nil && resolvedIP.Equal(net.ParseIP(oldIP)), nil
+}
+
+// networkInterfaceNetworkChanged reports whether the network, subnetwork or subnetwork_project of a network interface
+// change. The network and subnetwork fields compare self links and resource names, so the same network spelled
+// differently is not a change.
+func networkInterfaceNetworkChanged(d tpgresource.TerraformResourceDiff, prefix string) bool {
+	return !selfLinkOrNameUnchanged(d, prefix+".network") || !selfLinkOrNameUnchanged(d, prefix+".subnetwork") ||
+		d.HasChange(prefix+".subnetwork_project")
+}
+
+func selfLinkOrNameUnchanged(d tpgresource.TerraformResourceDiff, key string) bool {
+	oldValue, newValue := d.GetChange(key)
+	oldString, _ := oldValue.(string)
+	newString, _ := newValue.(string)
+	return tpgresource.CompareSelfLinkOrResourceName("", oldString, newString, nil)
+}
+
+func forceNewIfNetworkIPNotUpdatableFunc(d tpgresource.TerraformResourceDiff, resolveAddress networkIPAddressResolver) error {
 	oldCount, newCount := d.GetChange("network_interface.#")
 	if oldCount.(int) != newCount.(int) {
 		return nil
@@ -86,6 +148,23 @@ func forceNewIfNetworkIPNotUpdatableFunc(d tpgresource.TerraformResourceDiff) er
 		subnetworkProjectKey := prefix + ".subnetwork_project"
 		networkIPKey := prefix + ".network_ip"
 		if d.HasChange(networkIPKey) {
+			// When the network also moves, network_ip is left to the update (in-place network moves patch NetworkIP
+			// with the address reference), so the address is only resolved for an unchanged network.
+			if !networkInterfaceNetworkChanged(d, prefix) {
+				oldNetworkIP, newNetworkIP := d.GetChange(networkIPKey)
+				oldIP, _ := oldNetworkIP.(string)
+				newValue, _ := newNetworkIP.(string)
+				matches, err := networkIPAddressRefMatchesIP(oldIP, newValue, resolveAddress)
+				if err != nil {
+					return fmt.Errorf("%s: %w", networkIPKey, err)
+				}
+				if matches {
+					if err := d.Clear(networkIPKey); err != nil {
+						return err
+					}
+					continue
+				}
+			}
 			if !d.HasChange(networkKey) && !d.HasChange(subnetworkKey) && !d.HasChange(subnetworkProjectKey) {
 				if err := d.ForceNew(networkIPKey); err != nil {
 					return err

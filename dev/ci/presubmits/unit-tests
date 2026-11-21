@@ -60,3 +60,12 @@ else
 fi
 
 go test -test.count=1 -parallel 2 -v ${UNIT_TEST_PACKAGES}
+
+# third_party/.../terraform-provider-google-beta is a separate module (go.mod replace), so `go list ./...` above never
+# includes it. Run the non-acceptance unit tests of its compute service, which KCC patches; acceptance tests (TestAcc*)
+# need TF_ACC and real GCP. Changes under third_party/ always get a full plan (dev/tasks/plan-tests), so this runs only on
+# unscoped runs, and only on the first shard to keep CI time low.
+if [[ -z "${UNIT_TEST_PATTERNS:-}" && ( -z "${SHARD_NUM:-}" || "${SHARD_NUM}" == "1" ) ]]; then
+  echo "Running terraform-provider-google-beta compute unit tests..."
+  GOWORK=off go test -test.count=1 -v -skip '^TestAcc' github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute
+fi
