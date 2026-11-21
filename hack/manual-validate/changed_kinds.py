@@ -36,8 +36,8 @@ Usage:
   hack/manual-validate/changed_kinds.py --base <sha> --format issue          # a batch issue's body
 
 --format issue writes a complete fan-out parent: the spec (window, child labels), the task (one
-plain issue per Kind, with what changed and the instructions), the items, the final aggregation
-step, the report, and a marker with the window's commits (BATCH_MARKER) that the next batch
+plain issue per Kind, with what changed and the instructions), the items, the scout report, and a
+marker with the window's commits (BATCH_MARKER) that the next batch
 starts from. .agents/verify-changes.md opens it on its schedule.
 """
 
@@ -443,40 +443,9 @@ is `hack/manual-validate/bigqueryrowaccesspolicy/validate.sh`.
      mutable. A removed field: check the script no longer sets it and the resource still works.
    - **The tests are cumulative: add, never replace.** Keep every existing check and every
      fixture variant as it is. Change or remove one only when the API itself removed or changed
-     what it checks, and say which and why in the PR description.
+     what it checks, and say which and why in your summary.
    - Never edit test fixtures, golden files, `_http.log`, the controller or the types.
-3. **Run it** from a clean start, in this sandbox's project, once with the default fixture and
-   once per variant under `hack/manual-validate/<kind lowercase>/fixtures/`:
-   ```bash
-   GCP_PROJECT_ID="${GCP_PROJECT_ID}" hack/manual-validate/<kind lowercase>/validate.sh
-   for v in hack/manual-validate/<kind lowercase>/fixtures/*/; do
-     [ -d "$v" ] || continue
-     FIXTURE_DIR="$v" GCP_PROJECT_ID="${GCP_PROJECT_ID}" hack/manual-validate/<kind lowercase>/validate.sh
-   done
-   ```
-   Allow 30 minutes or more per run. A failure caused by the script (wrong URL, jq path,
-   eventual consistency, an API to add to `mv_enable_apis`) is yours to fix and re-run, at most
-   3 times. A failure caused by the controller is a finding: keep the check, do not weaken it.
-4. **Report.** Commit only the script and any fixture variants (never `artifactz/` or `.build/`),
-   and put in the PR description:
-   - `Verdict: PASS|FAIL - N passed, M failed` for each run (the default fixture and each variant,
-     by name), with its start and end time; the overall verdict is FAIL if any run failed;
-   - each run's REPORT table rows (phase, check, result, detail), with email addresses and the
-     project number removed;
-   - which checks and variants are new for this change, and any existing check changed or removed
-     because the API changed (with why);
-   - **Controller bugs**: each failure the controller caused, with the check and the values it
-     saw; or "none";
-   - what could not be checked out of band, and why.
-   If the controller is broken for this change, say so plainly; do not fix it here.
-
-   **If the script already covers this change** (nothing to add), still run it as in step 3, make
-   no commit, and answer with the same report: that closes this issue as completed.
-
-When creating the PR, include the release note block set to NONE:
-```release-note
-NONE
-```
+3. **If the script already covers this change** (nothing to add), make no commit.
 
 # Review Instructions
 
@@ -486,8 +455,9 @@ with a value read from GCP outside KCC (REST, gcloud/bq, audit logs), never KCC 
 named in the PR description must be covered; cleanup must leak-check. The tests are cumulative:
 compare with the script and fixtures/ on master - no existing check or fixture variant may be
 removed or weakened, unless the API itself removed or changed what it checks and the PR description
-says so. The report must cover the default fixture and every variant under fixtures/. The PR must
-not touch the controller, the types, or any test fixture or golden file.
+says so. The receipts in the PR description must cover the default fixture and every variant under
+fixtures/. The PR must not touch the controller, the types,
+or any test fixture or golden file.
 
 __MARKER__"""
 BATCH_MARKER = "<!-- manual-validate-batch base={base} head={head} -->"
@@ -519,7 +489,7 @@ def render_issue(report, window):
     return f"""Human-style validation, against real GCP, of every Kind whose controller changed on master in
 {report['base']}..{report['head']} ({report['commits']} commits). One child per Kind runs the
 plain issue (labelled `validate`): its agent writes or extends `hack/manual-validate/<kind>/validate.sh`
-for what changed, runs it, and reports in its PR. The final child aggregates the reports.
+for what changed, runs it, and reports in its PR. The batch closes once every child is closed.
 
 Opened by `.agents/verify-changes.md` from `hack/manual-validate/changed_kinds.py`.
 
@@ -545,26 +515,6 @@ checkpoints: []
 
 ## Items
 {items}
-
-## Finally
-Write the verification report for this batch. Make no commit: your final answer is the report, and it is
-posted on this issue.
-
-1. This issue says which issue it is `Part of`: that is the batch. Read the batch's progress comment
-   (`gh issue view <batch> --comments`, the comment headed "Fan-out progress"): it lists every child
-   issue and its PR.
-2. For each child (one per Kind): `gh issue view <child> --comments`, then the PR its graph opened
-   (`gh pr view <pr> --comments`) if any. Each validation step ends with a REPORT summary: the verdict,
-   the number of checks passed and failed, and any controller bugs found. A child closed with no PR
-   reported in its closing comment instead.
-3. Answer with:
-   - one line: N Kinds, how many PASS, FAIL, not run (and why);
-   - a table: Kind | change | verdict | checks (passed/failed) | new checks added | controller bugs | PR;
-   - every FAIL and controller bug, each with its evidence as the child reported it;
-   - what could not be checked out of band, per Kind.
-   Do not re-run anything; report only what the children reported.
-
-{NO_CHANGE_MARKER}
 """
 
 

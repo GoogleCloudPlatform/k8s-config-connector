@@ -52,4 +52,4 @@ commit, however long ago that was.
 # After the batch is opened (not your job)
 The fan-out starts the children at once, two or three at a time: one plain issue per Kind, labelled
 `validate`, whose agent writes or extends that Kind's `hack/manual-validate/<kind>/validate.sh`, runs
-it against real GCP and reports in its PR. The final child aggregates their reports on the batch.
+it against real GCP and reports in its PR. The batch closes once every child is closed.

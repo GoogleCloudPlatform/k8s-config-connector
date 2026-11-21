@@ -1,0 +1,248 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# validate-kind: one Kind of a "Verify changed Kinds" batch (.agents/watch/validate-kind.yaml).
+#
+# Like assess-controller, judgement and evidence are separate steps:
+#   1. ask - the agent writes or extends hack/manual-validate/<kind>/validate.sh for the change and
+#      runs it as often as it needs, fixing the *script* until it works (the goal is a correct
+#      test, not a passing one: a controller failure is a finding), then commits it;
+#   2. run - the recipe re-runs the committed script from a clean start (the default fixture and
+#      every variant) and bundles that run's receipts into receipts.md - the agent does not touch
+#      them;
+#   3. ask - the agent writes change.yaml (the PR's title and description) from receipts.md;
+#   4. the factory attaches receipts.md to the PR verbatim, with its size and sha256
+#      (task-output.comment.attach, as assess-controller attaches its capture), so the PR carries
+#      the clean run's evidence as the script wrote it.
+# With no commit (the script already covered the change) change.yaml says why, the comment on the
+# issue carries the same receipts, and the issue's <!-- factory:no-change ok --> closes it.
+name: validate-kind
+label: Validate (Kind)
+timeout: 4h
+on: [issue]
+as: coder
+task-type: fix
+
+inputs:
+  labels:
+    description: Labels for the PR, comma-separated; open-pr adds them
+  draft:
+    description: Whether open-pr opens the PR as a draft, true or false
+    default: "true"
+
+context: |
+  You validate a Config Connector (KCC) controller against real GCP the way a careful person would,
+  with `.gemini/skills/manual-validate-controller/SKILL.md`. You write the test; the recipe re-runs
+  it for the record. Your goal is a correct test, not a passing one: a failure the controller causes
+  is a finding to report, never a check to weaken.
+
+  Commit messages name no agent: no `Co-authored-by` (or other) trailer for yourself or any AI.
+
+  You commit, and that is all you write. Do NOT run `git push`, do NOT open, edit or comment on pull
+  requests or issues, and do NOT add labels: factory pushes your commits and opens the pull request
+  from what you write. Do NOT edit the controller, the types, test fixtures, golden files or
+  `_http.log`.
+
+  The repository is checked out in the current directory, on the branch you work on, made from the
+  latest default branch. `gh` is authenticated, to read issues and pull requests. Do not run
+  `git config --global`. The sandbox's GCP project is in `$GCP_PROJECT_ID`, and gcloud, bq and
+  Application Default Credentials are set up for it.
+
+start:
+  steps:
+    - uses: setup-git
+    - uses: setup-fork
+    - run: sleep 5 # lib.sh's HACK: avoid git lock issues
+    - uses: configure-engine
+    - uses: checkout-default-branch
+    - run: |
+        git checkout -B "issue-${INPUT_ISSUE_NUMBER}-$(date +%s)"
+        git symbolic-ref --short HEAD > "$TASK_DIR/branch"
+        git rev-parse HEAD > "$TASK_DIR/base"
+    - uses: issue-comments
+
+    - ask: |
+        <issue_url>{{ .Inputs.issue_url }}</issue_url>
+        <issue_number>{{ .Inputs.issue_number }}</issue_number>
+        <issue_title>{{ .Inputs.issue_title }}</issue_title>
+        <issue_description>
+        {{ .Inputs.issue_body }}
+        </issue_description>
+
+        Comments on the issue from its maintainers, if any, are in `$TASK_DIR/comments.md`.
+
+        Validate the Kind the description names:
+
+        1. Write the Kind's name in lower case (e.g. `biglakeicebergnamespace`, the directory name
+           under `hack/manual-validate/`) to {{ output "kind" }}.
+        2. Follow the description's instructions to write or extend
+           `hack/manual-validate/<kind>/validate.sh` (and any fixture variants under its `fixtures/`)
+           for what changed. As in the reference script, it takes its fixture from `FIXTURE_DIR`
+           (defaulting to the test fixture) and records it as `fixture_dir` in the run's `env.yaml`:
+           the recipe runs every variant that way and checks each run used it.
+        3. **Run it yourself, as often as you need, until the script is valid.** You are making a
+           correct test, not a passing one: how many checks pass is not your goal and never your
+           stopping point.
+
+           The script is **valid** when one run, from a clean start:
+           - goes through every phase (setup, dependencies, create, update, steady, delete,
+             teardown, cleanup) without aborting;
+           - checks every spec field the manifests set, each by comparing the value from the
+             applied object with a value read from GCP outside KCC (REST, gcloud/bq, audit logs);
+           - has evidence (a receipt file) behind every PASS and every FAIL;
+           - leaves nothing behind in GCP (its leak check passes).
+           A valid script may report FAILs: a FAIL is the controller's when the script asked the
+           right question and GCP answered differently from the spec.
+
+           Between runs you may fix **only the script's own mistakes**, each one you can show from
+           the receipts: a wrong URL or API version (check it with `gcloud ... describe` or the
+           fixture's `_http.log`), a wrong jq path (check it against the saved response), a
+           missing API (`mv_enable_apis`), a dependency not ready yet, eventual consistency (wait
+           with `mv_wait_http` / `mv_wait_ready`, which poll a bounded time - no blind sleeps).
+
+           You must **not**, to make a FAIL go away:
+           - change an expected value to what GCP returned, or compare a cloud value with itself;
+           - remove, skip or loosen a check, or record it as INFO instead of PASS/FAIL;
+           - retry or sleep until a persistent mismatch happens to read differently;
+           - edit the controller, the types, test fixtures, golden files or `_http.log`.
+           A FAIL you cannot show is the script's mistake stays, and you report it as a controller
+           finding.
+
+           Keep a short log in {{ output "iterations.md" }}: for each run, what failed and, for
+           each script change you made, the receipt that shows it was the script's mistake. Stop
+           when the script is valid - whatever it reports - or after 5 runs, and say which.
+        4. Commit the script and fixture variants (never `artifactz/` or `.build/`). If the script
+           already covered the change and needed nothing, make no commit.
+
+        Then say in a few lines what you wrote, what you ran, and what you found. The recipe now
+        re-runs your committed script from a clean start for the receipts.
+
+    # The receipts: the committed script, re-run from a clean start by the recipe, untouched by
+    # the agent. The agent's own runs are set aside first; every run here is bundled.
+    - run: |
+        set -uo pipefail
+        kind="$(tr -d '[:space:]' <"$TASK_DIR/kind" 2>/dev/null || true)"
+        script="hack/manual-validate/${kind}/validate.sh"
+        if ! printf '%s' "${kind}" | grep -qE '^[a-z0-9]+$' || [ ! -f "${script}" ]; then
+          printf '# Validation receipts\n\nNo script to run: `%s` does not exist.\n' "${script}" >"$TASK_DIR/receipts.md"
+          exit 0
+        fi
+        dirty="$(git status --porcelain --untracked-files=no)"
+        if [ -d artifactz/manual-validation ]; then
+          mv artifactz/manual-validation "artifactz/manual-validation.agent-$(date +%s)"
+        fi
+        bash "${script}" >"$TASK_DIR/clean-run-default.log" 2>&1 || true
+        # A variant only counts if the script really ran it: each run records the fixture it used
+        # (fixture_dir in its env.yaml, as the reference script does).
+        notes=""
+        for v in "hack/manual-validate/${kind}/fixtures"/*/; do
+          [ -d "${v}" ] || continue
+          before="$(ls -1d artifactz/manual-validation/*/*/ 2>/dev/null | sort)"
+          FIXTURE_DIR="${v}" bash "${script}" >>"$TASK_DIR/clean-run-variants.log" 2>&1 || true
+          run="$(comm -13 <(printf '%s\n' "${before}") <(ls -1d artifactz/manual-validation/*/*/ 2>/dev/null | sort) | tail -1)"
+          used="$(sed -n 's/^fixture_dir: *//p' "${run}env.yaml" 2>/dev/null | head -1)"
+          if [ -z "${run}" ]; then
+            notes="${notes}- variant \`${v}\`: no run directory was written\n"
+          elif [ "${used%/}" != "${v%/}" ]; then
+            notes="${notes}- variant \`${v}\` was NOT run: the script used \`${used:-an unrecorded fixture}\` (it must take its fixture from FIXTURE_DIR and record it as fixture_dir)\n"
+          fi
+        done
+        {
+          bash hack/manual-validate/bundle-receipts.sh artifactz/manual-validation
+          if [ -n "${notes}" ]; then
+            printf '\n> **Fixture variants not run as asked:**\n>\n'
+            printf '%b' "${notes}" | sed 's/^/> /'
+          fi
+          if [ -n "${dirty}" ]; then
+            printf '\n> The working tree had uncommitted changes when these runs started:\n```\n%s\n```\n' "${dirty}"
+          fi
+        } >"$TASK_DIR/receipts.md"
+
+    - ask: |
+        Read {{ output "receipts.md" }}: the receipts of the recipe's clean re-run of your committed
+        script (the default fixture and each variant). They, not your own runs, are the result; the
+        factory attaches them to the pull request (or the issue comment) as they are, so do not
+        paste them.
+
+        Write the pull request's title and description to {{ output "change.yaml" }}, as YAML in
+        EXACTLY this structure, with nothing else in the file:
+
+        Keep it short - a reviewer reads it in seconds; the attached receipts carry every check:
+
+        change:
+          title: "hack/manual-validate: <add|extend> <Kind> validation"
+          body: |
+            <One line: what the script now covers, and for which change (e.g. "New script for the
+            new direct controller" or "Checks the new spec.foo field on create and update").>
+
+            **Result: PASS** (37 passed, 0 failed)      <- or **FAIL**; one line per run, from the receipts
+            **Controller bugs:** none                   <- or one line each: field, expected, got
+            **Not checked:** <one line, or "nothing">
+            **Script fixes during the run:** <one line, or "none">
+
+            Fixes #{{ .Inputs.issue_number }}
+
+            ```release-note
+            NONE
+            ```
+
+        No tables, no restating the receipts, nothing else. If you made no commit (the script
+        already covered the change), write instead:
+
+        change:
+          comment: |
+            Script already covers this change; re-run from a clean start.
+
+            **Result: PASS** (37 passed, 0 failed)      <- as above
+            **Controller bugs:** none
+            **Not checked:** <one line, or "nothing">
+
+        Rules:
+        - The body MUST contain a line of exactly the form `Fixes #{{ .Inputs.issue_number }}`, on
+          its own line: merging the PR closes the issue only then.
+        - Write `change.comment` only if you made no commit, and `change.title`/`body` only if you
+          did.
+        {{- if eq .Inputs.disclose "true" }}
+        - The body or comment states that it was generated by an AI coding agent.
+        {{- else }}
+        - Do not say anywhere that an agent or AI wrote this.
+        {{- end }}
+
+        Write the whole file with your file tool, then say in a line that it is written.
+      expects: change.yaml
+
+    - uses: push
+
+outputs:
+  - receipts.md
+  - iterations.md
+  - change.yaml
+
+task-output:
+  kind: Change
+  on-finish: open-pr
+  from: change.yaml
+  preview: spec.body
+  # The clean re-run's receipts, copied by the factory - not the agent - into the PR body (or the
+  # no-change comment), with their size and sha256. (Needs a factory whose open-pr carries
+  # attachments, gke-labs/gemini-for-kubernetes-development#2276.)
+  comment:
+    attach: [receipts.md]
+  actions:
+    - verb: edit
+      field: spec
+      format: yaml
+    - verb: open-pr
+      label: Open PR
+    - verb: reject
