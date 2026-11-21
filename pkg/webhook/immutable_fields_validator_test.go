@@ -16,12 +16,15 @@ package webhook
 
 import (
 	"container/list"
+	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"reflect"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
+	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
@@ -32,16 +35,24 @@ import (
 	testservicemetadataloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemetadataloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
+	"github.com/google/go-cmp/cmp"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/provider"
 	"github.com/nasa9084/go-openapi"
 	admissionv1 "k8s.io/api/admission/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	k8sschema "k8s.io/apimachinery/pkg/runtime/schema"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/client/fake"
+	"sigs.k8s.io/controller-runtime/pkg/client/interceptor"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 	"sigs.k8s.io/yaml"
+
+	// Registers the Direct controllers, including the fields they update in place.
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 func TestChangesOnImmutableFields(t *testing.T) {
@@ -1525,7 +1536,7 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			dclSchemaMap := make(map[string]*openapi.Schema)
 			dclSchemaMap[dclSchemaKey] = tc.schema
 			dclSchemaLoader := testdclschemaloader.New(dclSchemaMap)
-			actual := validateImmutableFieldsForDCLBasedResource(tc.obj, tc.oldObj, tc.spec, tc.oldSpec, dclSchemaLoader, smLoader)
+			actual := validateImmutableFieldsForDCLBasedResource(tc.obj, tc.oldObj, tc.spec, tc.oldSpec, dclSchemaLoader, smLoader, nil)
 			if !testutil.Equals(t, actual, tc.response) {
 				t.Fatalf("got: %v, but want: %v", actual, tc.response)
 			}
@@ -2599,5 +2610,300 @@ func TestDirectResourcesAlwaysAllowed(t *testing.T) {
 		if response.Allowed != true {
 			t.Fatalf("unexpected value for Allowed: got '%v', want 'true'", response.Allowed)
 		}
+	}
+}
+
+// newDocumentAIProcessorDefaultVersion returns a DocumentAIProcessorDefaultVersion: Direct by
+// default, and its Direct controller declares spec.version as updated in place.
+func newDocumentAIProcessorDefaultVersion(resourceID, version string) *unstructured.Unstructured {
+	return &unstructured.Unstructured{Object: map[string]any{
+		"apiVersion": "documentai.cnrm.cloud.google.com/v1alpha1",
+		"kind":       "DocumentAIProcessorDefaultVersion",
+		"metadata":   map[string]any{"name": "test-object", "namespace": "test-namespace"},
+		"spec":       map[string]any{"resourceID": resourceID, "version": version},
+	}}
+}
+
+// newArtifactRegistryRepository returns a remote ArtifactRegistryRepository: Terraform by default,
+// and its Direct controller declares no fields as updated in place.
+func newArtifactRegistryRepository(annotations map[string]string, format, remoteDescription string) *unstructured.Unstructured {
+	u := &unstructured.Unstructured{Object: map[string]any{
+		"apiVersion": "artifactregistry.cnrm.cloud.google.com/v1beta1",
+		"kind":       "ArtifactRegistryRepository",
+		"metadata":   map[string]any{"name": "test-object", "namespace": "test-namespace"},
+		"spec": map[string]any{
+			"location": "us-central1",
+			"format":   format,
+			"mode":     "REMOTE_REPOSITORY",
+			"remoteRepositoryConfig": map[string]any{
+				"description":      remoteDescription,
+				"dockerRepository": map[string]any{"publicRepository": "DOCKER_HUB"},
+			},
+		},
+	}}
+	u.SetAnnotations(annotations)
+	return u
+}
+
+// newControllerOverridesReader returns a fake reader holding a namespaced-mode ConfigConnector and a
+// ConfigConnectorContext in namespace with the given controllerOverrides.
+func newControllerOverridesReader(t *testing.T, namespace string, overrides map[string]k8s.ReconcilerType) client.Reader {
+	t.Helper()
+	scheme := runtime.NewScheme()
+	if err := operatorv1beta1.AddToScheme(scheme); err != nil {
+		t.Fatalf("adding operator types to scheme: %v", err)
+	}
+	cc := &operatorv1beta1.ConfigConnector{
+		ObjectMeta: metav1.ObjectMeta{Name: operatorv1beta1.ConfigConnectorAllowedName},
+		Spec:       operatorv1beta1.ConfigConnectorSpec{Mode: "namespaced"},
+	}
+	ccc := &operatorv1beta1.ConfigConnectorContext{
+		ObjectMeta: metav1.ObjectMeta{Namespace: namespace, Name: operatorv1beta1.ConfigConnectorContextAllowedName},
+		Spec: operatorv1beta1.ConfigConnectorContextSpec{
+			GoogleServiceAccount: "kcc@test-project.iam.gserviceaccount.com",
+			Experiments:          &operatorv1beta1.Experiments{ControllerOverrides: overrides},
+		},
+	}
+	return fake.NewClientBuilder().WithScheme(scheme).WithObjects(cc, ccc).Build()
+}
+
+func TestImmutableFieldsForObjectsReconciledByDirect(t *testing.T) {
+	const processor = "projects/123/locations/us/processors/abc"
+	const oldVersion = processor + "/processorVersions/v1"
+	const newVersion = processor + "/processorVersions/v2"
+	directAnnotation := map[string]string{k8s.AlphaReconcilerAnnotation: "direct"}
+	unreadableRouting := fake.NewClientBuilder().WithInterceptorFuncs(interceptor.Funcs{
+		Get: func(context.Context, client.WithWatch, client.ObjectKey, client.Object, ...client.GetOption) error {
+			return apierrors.NewForbidden(k8sschema.GroupResource{Group: "core.cnrm.cloud.google.com", Resource: "configconnectors"}, "", errors.New("RBAC: access denied"))
+		},
+	}).Build()
+	tests := []struct {
+		name   string
+		reader client.Reader
+		oldObj *unstructured.Unstructured
+		newObj *unstructured.Unstructured
+		// wantFields are the fields reported as immutable. nil means the update is allowed.
+		wantFields []string
+	}{
+		{
+			name:   "declared field of a Direct object",
+			oldObj: newDocumentAIProcessorDefaultVersion(processor, oldVersion),
+			newObj: newDocumentAIProcessorDefaultVersion(processor, newVersion),
+		},
+		{
+			name: "declared field of an object routed to Terraform",
+			reader: newControllerOverridesReader(t, "test-namespace", map[string]k8s.ReconcilerType{
+				"DocumentAIProcessorDefaultVersion.documentai.cnrm.cloud.google.com": k8s.ReconcilerTypeTerraform,
+			}),
+			oldObj:     newDocumentAIProcessorDefaultVersion(processor, oldVersion),
+			newObj:     newDocumentAIProcessorDefaultVersion(processor, newVersion),
+			wantFields: []string{"version"},
+		},
+		{
+			name:       "declared field when the routing can't be read",
+			reader:     unreadableRouting,
+			oldObj:     newDocumentAIProcessorDefaultVersion(processor, oldVersion),
+			newObj:     newDocumentAIProcessorDefaultVersion(processor, newVersion),
+			wantFields: []string{"version"},
+		},
+		{
+			name:       "resource ID of a Direct object",
+			oldObj:     newDocumentAIProcessorDefaultVersion(processor, oldVersion),
+			newObj:     newDocumentAIProcessorDefaultVersion(processor+"x", oldVersion),
+			wantFields: []string{k8s.ResourceIDFieldPath},
+		},
+		{
+			name:       "undeclared field of a Direct object",
+			oldObj:     newArtifactRegistryRepository(directAnnotation, "DOCKER", "v1"),
+			newObj:     newArtifactRegistryRepository(directAnnotation, "DOCKER", "v2"),
+			wantFields: []string{"remoteRepositoryConfig.description"},
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			h := newImmutableFieldsValidatorHandler(t)(nil).(*immutableFieldsValidatorHandler)
+			h.reader = tc.reader
+			oldRaw, err := tc.oldObj.MarshalJSON()
+			if err != nil {
+				t.Fatalf("marshaling old object: %v", err)
+			}
+			newRaw, err := tc.newObj.MarshalJSON()
+			if err != nil {
+				t.Fatalf("marshaling new object: %v", err)
+			}
+			req := admission.Request{AdmissionRequest: admissionv1.AdmissionRequest{
+				Operation: admissionv1.Update,
+				OldObject: runtime.RawExtension{Raw: oldRaw},
+				Object:    runtime.RawExtension{Raw: newRaw},
+			}}
+
+			resp := h.Handle(t.Context(), req)
+
+			kind := tc.newObj.GetKind()
+			wantAllowed := tc.wantFields == nil
+			if resp.Allowed != wantAllowed {
+				t.Fatalf("Handle(update of %v) allowed = %v, want %v (result: %v)", kind, resp.Allowed, wantAllowed, resp.Result)
+			}
+			if !wantAllowed {
+				wantMessage := k8s.NewImmutableFieldsMutationError(tc.wantFields).Error()
+				if resp.Result.Message != wantMessage {
+					t.Errorf("Handle(update of %v) message = %q, want %q", kind, resp.Result.Message, wantMessage)
+				}
+			}
+		})
+	}
+}
+
+func TestImmutableFieldsWithInPlaceUpdatesForTFBasedResource(t *testing.T) {
+	smLoader, err := servicemappingloader.New()
+	if err != nil {
+		t.Fatalf("creating service mapping loader: %v", err)
+	}
+	tfResourceMap := provider.ResourceMap()
+	oldObj := newArtifactRegistryRepository(nil, "DOCKER", "v1")
+	tests := []struct {
+		name           string
+		newObj         *unstructured.Unstructured
+		inPlaceUpdates map[string]bool
+		want           admission.Response
+	}{
+		{
+			name:           "declared field changes",
+			newObj:         newArtifactRegistryRepository(nil, "DOCKER", "v2"),
+			inPlaceUpdates: map[string]bool{"remoteRepositoryConfig.description": true},
+			want:           allowedResponse,
+		},
+		{
+			name:           "declared and undeclared fields change",
+			newObj:         newArtifactRegistryRepository(nil, "MAVEN", "v2"),
+			inPlaceUpdates: map[string]bool{"remoteRepositoryConfig.description": true},
+			want:           admission.Errored(http.StatusBadRequest, k8s.NewImmutableFieldsMutationError([]string{"format"})),
+		},
+		{
+			name:   "no fields declared",
+			newObj: newArtifactRegistryRepository(nil, "DOCKER", "v2"),
+			want:   admission.Errored(http.StatusBadRequest, k8s.NewImmutableFieldsMutationError([]string{"remoteRepositoryConfig.description"})),
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			spec := getSpecFromUnstructed(t, tc.newObj)
+			oldSpec := getSpecFromUnstructed(t, oldObj)
+
+			got := validateImmutableFieldsForTFBasedResource(tc.newObj, oldObj, spec, oldSpec, smLoader, tfResourceMap, tc.inPlaceUpdates)
+
+			if !testutil.Equals(t, got, tc.want) {
+				t.Errorf("validateImmutableFieldsForTFBasedResource() with in-place updates %v = %v, want %v", tc.inPlaceUpdates, got, tc.want)
+			}
+		})
+	}
+}
+
+func TestImmutableFieldsWithInPlaceUpdatesForDCLBasedResource(t *testing.T) {
+	immutableString := &openapi.Schema{Type: "string", Extension: map[string]any{"x-kubernetes-immutable": true}}
+	dclSchema := &openapi.Schema{
+		Type: "object",
+		Properties: map[string]*openapi.Schema{
+			"fieldA": immutableString,
+			"fieldB": immutableString,
+			"nestedObject": {
+				Type:       "object",
+				Properties: map[string]*openapi.Schema{"nestedField": immutableString},
+			},
+		},
+		Extension: map[string]any{"x-dcl-parent-container": "project"},
+	}
+	newTest1Bar := func() *unstructured.Unstructured {
+		return &unstructured.Unstructured{Object: map[string]any{
+			"apiVersion": "test1.cnrm.cloud.google.com/v1alpha1",
+			"kind":       "Test1Bar",
+			"metadata":   map[string]any{"annotations": map[string]any{k8s.ProjectIDAnnotation: "my-project-1"}},
+		}}
+	}
+	oldSpec := map[string]any{"fieldA": "a1", "fieldB": "b1", "nestedObject": map[string]any{"nestedField": "n1"}}
+	tests := []struct {
+		name           string
+		spec           map[string]any
+		inPlaceUpdates map[string]bool
+		want           admission.Response
+	}{
+		{
+			name:           "declared field changes",
+			spec:           map[string]any{"fieldA": "a2", "fieldB": "b1", "nestedObject": map[string]any{"nestedField": "n1"}},
+			inPlaceUpdates: map[string]bool{"fieldA": true},
+			want:           allowedResponse,
+		},
+		{
+			name:           "declared nested field changes",
+			spec:           map[string]any{"fieldA": "a1", "fieldB": "b1", "nestedObject": map[string]any{"nestedField": "n2"}},
+			inPlaceUpdates: map[string]bool{"nestedObject.nestedField": true},
+			want:           allowedResponse,
+		},
+		{
+			name:           "declared and undeclared fields change",
+			spec:           map[string]any{"fieldA": "a2", "fieldB": "b2", "nestedObject": map[string]any{"nestedField": "n1"}},
+			inPlaceUpdates: map[string]bool{"fieldA": true},
+			want:           admission.Errored(http.StatusForbidden, k8s.NewImmutableFieldsMutationError([]string{"spec.fieldB"})),
+		},
+		{
+			name: "no fields declared",
+			spec: map[string]any{"fieldA": "a2", "fieldB": "b1", "nestedObject": map[string]any{"nestedField": "n1"}},
+			want: admission.Errored(http.StatusForbidden, k8s.NewImmutableFieldsMutationError([]string{"spec.fieldA"})),
+		},
+	}
+	smLoader := dclmetadata.NewFromServiceList(testservicemetadataloader.FakeServiceMetadataWithHierarchicalResources())
+	dclSchemaLoader := testdclschemaloader.New(map[string]*openapi.Schema{
+		testdclschemaloader.DCLSchemaKeyForGVK(t, newTest1Bar().GroupVersionKind(), smLoader): dclSchema,
+	})
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			got := validateImmutableFieldsForDCLBasedResource(newTest1Bar(), newTest1Bar(), tc.spec, oldSpec, dclSchemaLoader, smLoader, tc.inPlaceUpdates)
+
+			if !testutil.Equals(t, got, tc.want) {
+				t.Errorf("validateImmutableFieldsForDCLBasedResource() with in-place updates %v = %v, want %v", tc.inPlaceUpdates, got, tc.want)
+			}
+		})
+	}
+}
+
+func TestWithoutInPlaceUpdates(t *testing.T) {
+	tests := []struct {
+		name           string
+		changedFields  []string
+		inPlaceUpdates map[string]bool
+		want           []string
+	}{
+		{
+			name:          "no fields declared",
+			changedFields: []string{"version", "format"},
+			want:          []string{"version", "format"},
+		},
+		{
+			name:           "declared fields are dropped",
+			changedFields:  []string{"version", "format"},
+			inPlaceUpdates: map[string]bool{"version": true},
+			want:           []string{"format"},
+		},
+		{
+			name:           "paths that start with spec",
+			changedFields:  []string{"spec.version", "spec.remoteRepositoryConfig.description", "spec.format"},
+			inPlaceUpdates: map[string]bool{"version": true, "remoteRepositoryConfig.description": true},
+			want:           []string{"spec.format"},
+		},
+		{
+			name:           "all fields declared",
+			changedFields:  []string{"version"},
+			inPlaceUpdates: map[string]bool{"version": true},
+			want:           nil,
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			got := withoutInPlaceUpdates(tc.changedFields, tc.inPlaceUpdates)
+
+			if diff := cmp.Diff(tc.want, got); diff != "" {
+				t.Errorf("withoutInPlaceUpdates(%v, %v) mismatch (-want +got):\n%s", tc.changedFields, tc.inPlaceUpdates, diff)
+			}
+		})
 	}
 }

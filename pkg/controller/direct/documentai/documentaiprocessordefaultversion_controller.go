@@ -42,7 +42,9 @@ var (
 )
 
 func init() {
-	registry.RegisterModel(krmv1alpha1.DocumentAIProcessorDefaultVersionGVK, NewProcessorDefaultVersionModel, registry.CannotBeDeleted())
+	registry.RegisterModel(krmv1alpha1.DocumentAIProcessorDefaultVersionGVK, NewProcessorDefaultVersionModel, registry.CannotBeDeleted(),
+		// Update calls SetDefaultProcessorVersion, so spec.version changes in place.
+		registry.WithInPlaceUpdates("version"))
 }
 
 func NewProcessorDefaultVersionModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
