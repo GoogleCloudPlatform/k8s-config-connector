@@ -47,9 +47,7 @@ func (s *TagBindingsServer) normalizeParent(parent string) (string, error) {
 	}
 
 	tokens := strings.Split(path, "/")
-	// Real GCP preserves the project ID (rather than converting to project number)
-	// for BigQuery Dataset TagBinding parent links (//bigquery.googleapis.com/projects/{projectId}/datasets/{datasetId}).
-	if !(service == "bigquery.googleapis.com" && len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "datasets") {
+	if !shouldPreserveProjectID(service, tokens) {
 		for i, token := range tokens {
 			if token == "projects" && i+1 < len(tokens) {
 				projectIDOrNumber := tokens[i+1]
@@ -74,6 +72,20 @@ func (s *TagBindingsServer) normalizeParent(parent string) (string, error) {
 		service = "cloudresourcemanager.googleapis.com"
 	}
 	return "//" + service + "/" + strings.Join(tokens, "/"), nil
+}
+
+// shouldPreserveProjectID reports whether real GCP preserves the project ID (rather than
+// converting to project number) for specific service TagBinding parent links.
+func shouldPreserveProjectID(service string, tokens []string) bool {
+	// BigQuery Dataset: //bigquery.googleapis.com/projects/{projectId}/datasets/{datasetId}
+	if service == "bigquery.googleapis.com" && len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "datasets" {
+		return true
+	}
+	// Cloud SQL Instance: //sqladmin.googleapis.com/projects/{projectId}/instances/{instanceId}
+	if service == "sqladmin.googleapis.com" && len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "instances" {
+		return true
+	}
+	return false
 }
 
 func (s *TagBindingsServer) CreateTagBinding(ctx context.Context, req *pb.CreateTagBindingRequest) (*lropb.Operation, error) {
