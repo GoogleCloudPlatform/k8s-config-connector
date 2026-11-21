@@ -134,7 +134,15 @@ func (s *sqlUsersService) Update(ctx context.Context, req *pb.SqlUsersUpdateRequ
 		return nil, err
 	}
 
+	existingRoles := obj.GetDatabaseRoles()
+
 	obj = proto.CloneOf(req.GetBody())
+
+	// body.database_roles is ignored on update; the roles come from the
+	// request's database_roles, added to the existing roles unless
+	// revoke_existing_roles is set (sqladmin v1beta4 users.update).
+	obj.DatabaseRoles = updatedDatabaseRoles(existingRoles, req.GetDatabaseRoles(), req.GetRevokeExistingRoles())
+
 	populateUserDefaults(obj)
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
@@ -209,6 +217,28 @@ func (s *MockService) buildUserName(projectID, instanceName, userName string) (*
 		Instance: instanceName,
 		UserName: userName,
 	}, nil
+}
+
+// updatedDatabaseRoles returns the user's roles after an update: the
+// requested roles, plus the existing ones unless revokeExisting is set.
+func updatedDatabaseRoles(existing, requested []string, revokeExisting bool) []string {
+	var roles []string
+	seen := map[string]bool{}
+	add := func(role string) {
+		if !seen[role] {
+			seen[role] = true
+			roles = append(roles, role)
+		}
+	}
+	if !revokeExisting {
+		for _, role := range existing {
+			add(role)
+		}
+	}
+	for _, role := range requested {
+		add(role)
+	}
+	return roles
 }
 
 func populateUserDefaults(obj *pb.User) {
