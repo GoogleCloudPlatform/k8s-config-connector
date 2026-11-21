@@ -424,10 +424,7 @@ NO_CHANGE_MARKER = "<!-- factory:no-change ok -->"
 # heading inside it: the fan-out reads the parent's `## ` headings as its sections.
 TASK_TEMPLATE = """Validate the {{.item.name}} controller against real GCP, the way a person would, and leave a
 reusable script. Follow `.gemini/skills/manual-validate-controller/SKILL.md`; the reference script
-is `hack/manual-validate/bigqueryrowaccesspolicy/validate.sh`. The validate-kind recipe
-(`.agents/recipes/validate-kind.yaml`) runs this issue: you write the script and run it until it
-works; the recipe then re-runs it from a clean start, puts that run's receipts on the PR, and asks
-you for the summary.
+is `hack/manual-validate/bigqueryrowaccesspolicy/validate.sh`.
 
 **What changed** (master __BASE_SHORT__..__HEAD_SHORT__): {{.item.line}}
 
@@ -448,8 +445,7 @@ you for the summary.
      fixture variant as it is. Change or remove one only when the API itself removed or changed
      what it checks, and say which and why in your summary.
    - Never edit test fixtures, golden files, `_http.log`, the controller or the types.
-3. **If the script already covers this change** (nothing to add), make no commit: the recipe
-   re-runs it, and the issue is closed with the receipts.
+3. **If the script already covers this change** (nothing to add), make no commit.
 
 # Review Instructions
 
@@ -459,8 +455,8 @@ with a value read from GCP outside KCC (REST, gcloud/bq, audit logs), never KCC 
 named in the PR description must be covered; cleanup must leak-check. The tests are cumulative:
 compare with the script and fixtures/ on master - no existing check or fixture variant may be
 removed or weakened, unless the API itself removed or changed what it checks and the PR description
-says so. The receipts in the PR description are the recipe's clean re-run; they must cover the
-default fixture and every variant under fixtures/. The PR must not touch the controller, the types,
+says so. The receipts in the PR description must cover the default fixture and every variant under
+fixtures/. The PR must not touch the controller, the types,
 or any test fixture or golden file.
 
 __MARKER__"""
