@@ -36,7 +36,7 @@ Usage:
   hack/manual-validate/changed_kinds.py --base <sha> --format issue          # a batch issue's body
 
 --format issue writes a complete fan-out parent: the spec (window, child labels), the task (one
-kcc-manual-validate issue graph per Kind, with what changed), the items, the final aggregation
+plain issue per Kind, with what changed and the instructions), the items, the final aggregation
 step, the report, and a marker with the window's commits (BATCH_MARKER) that the next batch
 starts from. .agents/verify-changes.md opens it on its schedule.
 """
@@ -412,17 +412,92 @@ def render_md(report, window):
     return "\n".join(out) + "\n"
 
 
-# Must match the `change` param's pattern in .agents/graphs/kcc-manual-validate.yaml.
+# The item line goes into each child's task text: no quotes, backslashes or braces (template syntax).
 ITEM_LINE_DROP = re.compile(r"[^A-Za-z0-9 *:;,.()#_/-]")
 BATCH_LABEL = "validate/batch"
+# A child whose script already covers its change makes no commit; with this marker in its body
+# the factory closes it as completed (rather than leaving it open), so the fan-out goes on.
+NO_CHANGE_MARKER = "<!-- factory:no-change ok -->"
+
+# The batch's ## Task: what each child (one plain issue per Kind) does. __BASE__/__HEAD__ are the
+# window; {{.item.name}} and {{.item.line}} are filled in by the fan-out for each child. No `## `
+# heading inside it: the fan-out reads the parent's `## ` headings as its sections.
+TASK_TEMPLATE = """Validate the {{.item.name}} controller against real GCP, the way a person would, and leave a
+reusable script. Follow `.gemini/skills/manual-validate-controller/SKILL.md`; the reference script
+is `hack/manual-validate/bigqueryrowaccesspolicy/validate.sh`.
+
+**What changed** (master __BASE_SHORT__..__HEAD_SHORT__): {{.item.line}}
+
+1. **Read the change.** `git log --oneline __BASE__..__HEAD__ -- apis pkg/controller/direct`
+   and `git diff __BASE__..__HEAD__` on {{.item.name}}'s files (its `*_types.go`, controller,
+   mapper, identity). Note every spec field added, removed or changed, and any changed behaviour
+   (create, update, delete, how a field is sent).
+2. **Write or extend the script** `hack/manual-validate/<kind lowercase>/validate.sh`:
+   - It does not exist: write it from the Kind's `-maximal` (or `-full`) fixture under
+     `pkg/test/resourcefixture/testdata/`, as the skill describes, including `mv_enable_apis`
+     for every API it needs.
+   - It exists: extend it so the change is checked - a new or changed field is set in the
+     manifest the script applies (a fixture variant under
+     `hack/manual-validate/<kind lowercase>/fixtures/` if the test fixture does not set it),
+     compared to the value read from GCP after create, and changed in the update phase if it is
+     mutable. A removed field: check the script no longer sets it and the resource still works.
+   - **The tests are cumulative: add, never replace.** Keep every existing check and every
+     fixture variant as it is. Change or remove one only when the API itself removed or changed
+     what it checks, and say which and why in the PR description.
+   - Never edit test fixtures, golden files, `_http.log`, the controller or the types.
+3. **Run it** from a clean start, in this sandbox's project, once with the default fixture and
+   once per variant under `hack/manual-validate/<kind lowercase>/fixtures/`:
+   ```bash
+   GCP_PROJECT_ID="${GCP_PROJECT_ID}" hack/manual-validate/<kind lowercase>/validate.sh
+   for v in hack/manual-validate/<kind lowercase>/fixtures/*/; do
+     [ -d "$v" ] || continue
+     FIXTURE_DIR="$v" GCP_PROJECT_ID="${GCP_PROJECT_ID}" hack/manual-validate/<kind lowercase>/validate.sh
+   done
+   ```
+   Allow 30 minutes or more per run. A failure caused by the script (wrong URL, jq path,
+   eventual consistency, an API to add to `mv_enable_apis`) is yours to fix and re-run, at most
+   3 times. A failure caused by the controller is a finding: keep the check, do not weaken it.
+4. **Report.** Commit only the script and any fixture variants (never `artifactz/` or `.build/`),
+   and put in the PR description:
+   - `Verdict: PASS|FAIL - N passed, M failed` for each run (the default fixture and each variant,
+     by name), with its start and end time; the overall verdict is FAIL if any run failed;
+   - each run's REPORT table rows (phase, check, result, detail), with email addresses and the
+     project number removed;
+   - which checks and variants are new for this change, and any existing check changed or removed
+     because the API changed (with why);
+   - **Controller bugs**: each failure the controller caused, with the check and the values it
+     saw; or "none";
+   - what could not be checked out of band, and why.
+   If the controller is broken for this change, say so plainly; do not fix it here.
+
+   **If the script already covers this change** (nothing to add), still run it as in step 3, make
+   no commit, and answer with the same report: that closes this issue as completed.
+
+When creating the PR, include the release note block set to NONE:
+```release-note
+NONE
+```
+
+# Review Instructions
+
+Review `hack/manual-validate/<kind lowercase>/validate.sh` with
+`.gemini/skills/manual-validate-controller/SKILL.md`: every check must compare the applied object
+with a value read from GCP outside KCC (REST, gcloud/bq, audit logs), never KCC status; the change
+named in the PR description must be covered; cleanup must leak-check. The tests are cumulative:
+compare with the script and fixtures/ on master - no existing check or fixture variant may be
+removed or weakened, unless the API itself removed or changed what it checks and the PR description
+says so. The report must cover the default fixture and every variant under fixtures/. The PR must
+not touch the controller, the types, or any test fixture or golden file.
+
+__MARKER__"""
 BATCH_MARKER = "<!-- manual-validate-batch base={base} head={head} -->"
 BATCH_MARKER_RE = re.compile(r"<!-- manual-validate-batch base=([0-9a-f]+) head=([0-9a-f]+) -->")
 
 
 def item_line(r):
     """A fan-out checklist line: the bold name is the item's key; the rest says what changed.
-    It becomes the kcc-manual-validate graph's `change` param, so it keeps only the characters
-    that param's pattern allows (ITEM_LINE_ALLOWED) and its length."""
+    It is put into each child's task text, so it keeps only plain characters (ITEM_LINE_DROP) and
+    a bounded length."""
     prs = " ".join(f"#{p}" for p in r["prs"])
     text = f"**{r['kind']}** - {r['class']}: {r['why']}" + (f" ({prs})" if prs else "")
     text = ITEM_LINE_DROP.sub("", text)
@@ -437,12 +512,14 @@ def render_issue(report, window):
     sel = [r for r in report["kinds"] if r["selected"]]
     base, head = report["base_sha"], report["head_sha"]
     items = "\n".join(f"- [ ] {item_line(r)}" for r in sel)
+    task = (TASK_TEMPLATE.replace("__BASE_SHORT__", report["base"]).replace("__HEAD_SHORT__", report["head"])
+            .replace("__BASE__", base).replace("__HEAD__", head).replace("__MARKER__", NO_CHANGE_MARKER))
     # No headings inside the report: the fan-out reads the body's ## sections as the spec.
     scout = re.sub(r"^#+ (.*)$", r"**\1**", render_md(report, window), flags=re.M)
     return f"""Human-style validation, against real GCP, of every Kind whose controller changed on master in
 {report['base']}..{report['head']} ({report['commits']} commits). One child per Kind runs the
-`kcc-manual-validate` issue graph: it writes or extends `hack/manual-validate/<kind>/validate.sh` for
-what changed, runs it, and reports. The final child aggregates the reports.
+plain issue (labelled `validate`): its agent writes or extends `hack/manual-validate/<kind>/validate.sh`
+for what changed, runs it, and reports in its PR. The final child aggregates the reports.
 
 Opened by `.agents/verify-changes.md` from `hack/manual-validate/changed_kinds.py`.
 
@@ -464,17 +541,7 @@ checkpoints: []
 ```
 
 ## Task
-Validate the {{{{.item.name}}}} controller against real GCP, focusing on what changed on master in
-{report['base']}..{report['head']}: {{{{.item.line}}}}
-
-```factory-graph
-graph: kcc-manual-validate
-params:
-  kind: "{{{{.item.name}}}}"
-  change: "{{{{.item.line}}}}"
-  base: "{base}"
-  head: "{head}"
-```
+{task}
 
 ## Items
 {items}
@@ -496,6 +563,8 @@ posted on this issue.
    - every FAIL and controller bug, each with its evidence as the child reported it;
    - what could not be checked out of band, per Kind.
    Do not re-run anything; report only what the children reported.
+
+{NO_CHANGE_MARKER}
 """
 
 

@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Opens the next "Verify changed Kinds" batch: a fan-out issue with one kcc-manual-validate issue
-# graph per Kind changed on master since the previous batch. Run by .agents/verify-changes.md on
+# Opens the next "Verify changed Kinds" batch: a fan-out issue with one plain issue per Kind changed
+# on master since the previous batch (its task: write or extend and run the Kind's validate.sh). Run by .agents/verify-changes.md on
 # whatever schedule it has; safe to run by hand and to re-run (it opens nothing twice).
 #
 #   hack/manual-validate/open-batch.sh             # open the batch issue
@@ -44,7 +44,7 @@ HEAD_SHA="$(git rev-parse FETCH_HEAD)"
 
 # The harness and the graph must be on master: the children run them.
 for f in hack/manual-validate/lib.sh hack/manual-validate/changed_kinds.py \
-  .agents/graphs/kcc-manual-validate.yaml .gemini/skills/manual-validate-controller/SKILL.md; do
+  .gemini/skills/manual-validate-controller/SKILL.md; do
   if ! git cat-file -e "FETCH_HEAD:${f}" 2>/dev/null; then
     say "${f} is not on master yet; nothing to do"
     exit 0

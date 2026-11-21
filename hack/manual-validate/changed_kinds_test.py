@@ -171,10 +171,19 @@ class BatchIssueTest(unittest.TestCase):
         body = ck.render_issue(report, "since 1 day ago")
         m = ck.BATCH_MARKER_RE.search(body)
         self.assertEqual(m.groups(), ("a" * 40, "b" * 40))
-        headings = [l for l in body.splitlines() if l.startswith("#")]
+        # The fan-out reads `## ` headings as its sections (a `# ` one inside the task is fine).
+        headings = [l for l in body.splitlines() if l.startswith("## ")]
         self.assertEqual(headings, ["## Fan-out", "## Task", "## Items", "## Finally"])
-        self.assertIn("graph: kcc-manual-validate", body)
-        self.assertIn('kind: "{{.item.name}}"', body)
+        self.assertNotIn("factory-graph", body)  # children are plain issues
+        task = body.split("## Task", 1)[1].split("## Items", 1)[0]
+        self.assertIn("Validate the {{.item.name}} controller", task)
+        self.assertIn("aaaaaaaaaa..bbbbbbbbbb", task)
+        self.assertIn("git diff " + "a" * 40 + ".." + "b" * 40, task)
+        self.assertIn("# Review Instructions", task)
+        self.assertTrue(task.rstrip().endswith(ck.NO_CHANGE_MARKER))
+        self.assertNotIn("__", task)  # every placeholder filled in
+        finally_section = body.split("## Finally", 1)[1]
+        self.assertTrue(finally_section.rstrip().endswith(ck.NO_CHANGE_MARKER))
         self.assertIn("- [ ] " + ck.item_line(self.ROW), body)
         self.assertEqual(ck.render_title(report), "Verify changed Kinds aaaaaaaaaa..bbbbbbbbbb")
 
