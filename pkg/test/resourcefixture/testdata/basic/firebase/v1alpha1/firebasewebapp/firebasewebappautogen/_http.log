@@ -1,0 +1,103 @@
+# Phase: CREATE
+POST https://firebase.googleapis.com/v1beta1/projects/${projectId}/webApps?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "displayName": "Display Name Basic"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "operations/workflows/YWI3Mjk3Y2QtOWE4ZC00NmNmLWE3NjMtMzgxNDQ3ZGE0NTc1"
+}
+
+---
+
+GET https://firebase.googleapis.com/v1beta1/operations/workflows/YWI3Mjk3Y2QtOWE4ZC00NmNmLWE3NjMtMzgxNDQ3ZGE0NTc1?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "operations/workflows/YWI3Mjk3Y2QtOWE4ZC00NmNmLWE3NjMtMzgxNDQ3ZGE0NTc1"
+}
+
+---
+
+GET https://firebase.googleapis.com/v1beta1/operations/workflows/YWI3Mjk3Y2QtOWE4ZC00NmNmLWE3NjMtMzgxNDQ3ZGE0NTc1?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/workflows/YWI3Mjk3Y2QtOWE4ZC00NmNmLWE3NjMtMzgxNDQ3ZGE0NTc1",
+  "response": {
+    "@type": "type.googleapis.com/google.firebase.service.v1beta1.WebApp",
+    "apiKeyId": "647489ca-09d1-4295-b1c5-7d156b5804e5",
+    "appId": "1:${projectNumber}:web:d845db9c6118f7948b7d90",
+    "displayName": "Display Name Basic",
+    "etag": "abcdef0123A=",
+    "expireTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/webApps/1:${projectNumber}:web:d845db9c6118f7948b7d90",
+    "projectId": "${projectId}",
+    "state": "ACTIVE",
+    "webId": "MGEzYWJkY2EtZDQ3OS00Y2VjLTgxNjktNzA1YTdhOTZjY2E4"
+  }
+}
+
+---
+
+GET https://firebase.googleapis.com/v1beta1/projects/${projectId}/webApps/1:${projectNumber}:web:d845db9c6118f7948b7d90?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "apiKeyId": "647489ca-09d1-4295-b1c5-7d156b5804e5",
+  "appId": "1:${projectNumber}:web:d845db9c6118f7948b7d90",
+  "displayName": "Display Name Basic",
+  "etag": "abcdef0123A=",
+  "expireTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/webApps/1:${projectNumber}:web:d845db9c6118f7948b7d90",
+  "projectId": "${projectId}",
+  "state": "ACTIVE",
+  "webId": "MGEzYWJkY2EtZDQ3OS00Y2VjLTgxNjktNzA1YTdhOTZjY2E4"
+}

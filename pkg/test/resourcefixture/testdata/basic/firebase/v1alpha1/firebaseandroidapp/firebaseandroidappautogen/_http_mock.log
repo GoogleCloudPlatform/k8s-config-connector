@@ -1,0 +1,130 @@
+# Phase: CREATE
+POST https://firebase.googleapis.com/v1beta1/projects/${projectId}/androidApps?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "displayName": "Display Name Basic",
+  "packageName": "android.package.app${uniqueId}",
+  "sha1Hashes": [
+    "2145bdf698b8715039bd0e83f2069bed435ac21c"
+  ],
+  "sha256Hashes": [
+    "2145bdf698b8715039bd0e83f2069bed435ac21ca1b2c3d4e5f6123456789abc"
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "operations/workflows/ZTE1YTc1ZDgtMTM3Yy00YTMzLTgzNzUtY2E0NGFjN2EzYTkw"
+}
+
+---
+
+GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZTE1YTc1ZDgtMTM3Yy00YTMzLTgzNzUtY2E0NGFjN2EzYTkw?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/workflows/ZTE1YTc1ZDgtMTM3Yy00YTMzLTgzNzUtY2E0NGFjN2EzYTkw",
+  "response": {
+    "@type": "type.googleapis.com/google.firebase.service.v1beta1.AndroidApp",
+    "apiKeyId": "6d1ee53e-9817-4331-ac63-7fdfba6d5e07",
+    "appId": "1:${projectNumber}:android:e0ec16c940d75f1d8b7d90",
+    "displayName": "Display Name Basic",
+    "etag": "abcdef0123A=",
+    "expireTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/androidApps/1:${projectNumber}:android:e0ec16c940d75f1d8b7d90",
+    "packageName": "android.package.app${uniqueId}",
+    "projectId": "${projectId}",
+    "sha1Hashes": [
+      "2145bdf698b8715039bd0e83f2069bed435ac21c"
+    ],
+    "sha256Hashes": [
+      "2145bdf698b8715039bd0e83f2069bed435ac21ca1b2c3d4e5f6123456789abc"
+    ],
+    "state": "ACTIVE"
+  }
+}
+
+---
+
+GET https://firebase.googleapis.com/v1beta1/projects/${projectId}/androidApps/1:${projectNumber}:android:e0ec16c940d75f1d8b7d90?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "apiKeyId": "6d1ee53e-9817-4331-ac63-7fdfba6d5e07",
+  "appId": "1:${projectNumber}:android:e0ec16c940d75f1d8b7d90",
+  "displayName": "Display Name Basic",
+  "etag": "abcdef0123A=",
+  "expireTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/androidApps/1:${projectNumber}:android:e0ec16c940d75f1d8b7d90",
+  "packageName": "android.package.app${uniqueId}",
+  "projectId": "${projectId}",
+  "sha1Hashes": [
+    "2145bdf698b8715039bd0e83f2069bed435ac21c"
+  ],
+  "sha256Hashes": [
+    "2145bdf698b8715039bd0e83f2069bed435ac21ca1b2c3d4e5f6123456789abc"
+  ],
+  "state": "ACTIVE"
+}
+
+---
+
+# Phase: DELETE
+POST https://firebase.googleapis.com/v1beta1/projects/${projectId}/androidApps/1:${projectNumber}:android:e0ec16c940d75f1d8b7d90:remove?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "immediate": true
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.firebase.service.v1beta1.OperationMetadata"
+  }
+}

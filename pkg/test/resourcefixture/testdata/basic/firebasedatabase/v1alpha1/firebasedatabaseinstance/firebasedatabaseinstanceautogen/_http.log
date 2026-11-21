@@ -1,0 +1,123 @@
+# Phase: CREATE
+GET https://firebasedatabase.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances/rtdb${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Namespace does not exist.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://firebasedatabase.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances?alt=json&databaseId=rtdb${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "type": "USER_DATABASE"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "databaseUrl": "https://rtdb${uniqueId}.firebaseio.com",
+  "name": "projects/${projectNumber}/locations/us-central1/instances/rtdb${uniqueId}",
+  "project": "projects/${projectNumber}",
+  "state": "ACTIVE",
+  "type": "USER_DATABASE"
+}
+
+---
+
+GET https://firebasedatabase.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances/rtdb${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "databaseUrl": "https://rtdb${uniqueId}.firebaseio.com",
+  "name": "projects/${projectNumber}/locations/us-central1/instances/rtdb${uniqueId}",
+  "project": "projects/${projectNumber}",
+  "state": "ACTIVE",
+  "type": "USER_DATABASE"
+}
+
+---
+
+# Phase: DELETE
+POST https://firebasedatabase.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances/rtdb${uniqueId}:disable?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "databaseUrl": "https://rtdb${uniqueId}.firebaseio.com",
+  "name": "projects/${projectNumber}/locations/us-central1/instances/rtdb${uniqueId}",
+  "project": "projects/${projectNumber}",
+  "state": "DISABLED",
+  "type": "USER_DATABASE"
+}
+
+---
+
+DELETE https://firebasedatabase.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances/rtdb${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "databaseUrl": "https://rtdb${uniqueId}.firebaseio.com",
+  "name": "projects/${projectNumber}/locations/us-central1/instances/rtdb${uniqueId}",
+  "project": "projects/${projectNumber}",
+  "state": "DELETED",
+  "type": "USER_DATABASE"
+}
