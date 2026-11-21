@@ -23,7 +23,9 @@ description: Validate one Kind against real GCP - the agent writes and runs its 
 on: issue
 order: 15
 when:
-  labels: {all: [validate], none: [validate/batch]}
+  # The trigger label (every batch child carries it) is what the watcher's issue listing narrows
+  # on; without it the rule only saw issues another rule's listing brought in.
+  labels: {all: [validate, "{{trigger}}"], none: [validate/batch]}
   author: [pool, owner, member, collaborator]
   fanout: false
   graph: false
