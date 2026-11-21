@@ -28,13 +28,16 @@ import (
 // building a new one on every event.
 type remoteClientCache struct {
 	provider RemoteConfigProvider
+	// remotes records the reachability of each remote from the responses to
+	// the client's requests (RemoteUnreachable). May be nil.
+	remotes *remoteHealthTracker
 
 	mu      sync.Mutex
 	clients map[string]client.Client
 }
 
-func newRemoteClientCache(provider RemoteConfigProvider) *remoteClientCache {
-	return &remoteClientCache{provider: provider, clients: make(map[string]client.Client)}
+func newRemoteClientCache(provider RemoteConfigProvider, remotes *remoteHealthTracker) *remoteClientCache {
+	return &remoteClientCache{provider: provider, remotes: remotes, clients: make(map[string]client.Client)}
 }
 
 // get returns the client for the remote of a KRMSyncer, creating it on first use.
@@ -54,6 +57,7 @@ func (c *remoteClientCache) get(ctx context.Context, namespace string, remote *k
 	if err != nil {
 		return nil, err
 	}
+	restConfig.Wrap(c.remotes.get(key).wrap)
 	cl, err := client.New(restConfig, client.Options{})
 	if err != nil {
 		return nil, err

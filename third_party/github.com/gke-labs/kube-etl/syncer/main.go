@@ -58,6 +58,8 @@ func main() {
 func run(ctx context.Context) error {
 	var syncPeriod time.Duration
 	flag.DurationVar(&syncPeriod, "sync-period", 0, "The minimum frequency at which watched resources are reconciled (0 or negative disables periodic sync)")
+	var maxConcurrentReconciles int
+	flag.IntVar(&maxConcurrentReconciles, "max-concurrent-reconciles", krmSyncer.DefaultMaxConcurrentReconciles, "Maximum number of concurrent reconciles for dynamic controllers.")
 
 	// Configure logging
 	klogFlagSet := goflag.NewFlagSet("klog", goflag.ExitOnError)
@@ -69,6 +71,10 @@ func run(ctx context.Context) error {
 
 	ctx = klog.NewContext(ctx, setupLog)
 	ctrl.SetLogger(klog.NewKlogr())
+
+	if maxConcurrentReconciles < 1 {
+		return fmt.Errorf("--max-concurrent-reconciles must be at least 1, got %d", maxConcurrentReconciles)
+	}
 
 	var syncPeriodOpt *time.Duration
 	if syncPeriod > 0 {
@@ -94,10 +100,11 @@ func run(ctx context.Context) error {
 	// Create and set up the SyncerReconciler
 	setupLog.Info("Creating SyncerReconciler")
 	if err = (&krmSyncer.KRMSyncerReconciler{
-		Client:     mgr.GetClient(),
-		Scheme:     mgr.GetScheme(),
-		Manager:    mgr,
-		SyncPeriod: syncPeriodOpt,
+		Client:                  mgr.GetClient(),
+		Scheme:                  mgr.GetScheme(),
+		Manager:                 mgr,
+		SyncPeriod:              syncPeriodOpt,
+		MaxConcurrentReconciles: maxConcurrentReconciles,
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "Syncer")
 		return err

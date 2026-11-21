@@ -1,0 +1,6 @@
+# Expected KRMSyncer status: suspended by spec.suspend.
+conditions:
+- type: Ready
+  status: "True"
+  reason: Suspended
+  message: Sync is suspended by spec.suspend

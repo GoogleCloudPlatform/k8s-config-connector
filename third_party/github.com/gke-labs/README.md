@@ -5,7 +5,7 @@ Copies of the two Go modules that Config Connector's multi-cluster leader electi
 | Directory | Module | Version | Upstream source |
 |---|---|---|---|
 | `multicluster-leader-election/` | `github.com/gke-labs/multicluster-leader-election` | `v0.0.0-20260219060047-1ae5cb16f27e` | [gke-labs/multicluster-leader-election@1ae5cb16f27e](https://github.com/gke-labs/multicluster-leader-election/tree/1ae5cb16f27e) |
-| `kube-etl/syncer/` | `github.com/gke-labs/kube-etl/syncer` | `v0.0.0-20261027010125-063e4a30cf84` | [gke-labs/kube-etl@063e4a30cf84, `syncer/`](https://github.com/gke-labs/kube-etl/tree/063e4a30cf84/syncer) |
+| `kube-etl/syncer/` | `github.com/gke-labs/kube-etl/syncer` | `v0.0.0-20261119222216-f95b5633fae1` | [gke-labs/kube-etl@f95b5633fae1, `syncer/`](https://github.com/gke-labs/kube-etl/tree/f95b5633fae1/syncer) |
 
 - **Wiring.** `go.mod` and `mockgcp/go.mod` replace both modules with these directories. Their `require` lines keep the upstream version that each copy was taken from.
 - **Two builds of the same code:**

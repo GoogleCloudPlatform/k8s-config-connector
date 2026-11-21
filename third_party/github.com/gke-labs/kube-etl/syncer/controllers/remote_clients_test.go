@@ -47,7 +47,7 @@ func (p *countingProvider) RESTConfig(_ context.Context, _ string, _ *krmv1alpha
 func TestRemoteClientCache(t *testing.T) {
 	ctx := t.Context()
 	p := &countingProvider{}
-	c := newRemoteClientCache(p)
+	c := newRemoteClientCache(p, nil)
 
 	dflt := gkeRemote("p", "us-central1", "c")
 	dns := gkeRemote("p", "us-central1", "c")
@@ -67,7 +67,7 @@ func TestRemoteClientCache(t *testing.T) {
 
 	// Errors are returned and not cached.
 	failing := &countingProvider{fail: true}
-	fc := newRemoteClientCache(failing)
+	fc := newRemoteClientCache(failing, nil)
 	_, err = fc.get(ctx, "ns1", dflt)
 	assert.Error(t, err)
 	_, err = fc.get(ctx, "ns1", dflt)

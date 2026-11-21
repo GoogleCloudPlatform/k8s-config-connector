@@ -5,7 +5,7 @@ module github.com/gke-labs/kube-etl/syncer
 // The toolchain directive is the Go release used to build the syncer (see deploy.sh).
 go 1.26.0
 
-toolchain go1.27.3
+toolchain go1.27.4
 
 require (
 	github.com/prometheus/client_golang v1.22.0
