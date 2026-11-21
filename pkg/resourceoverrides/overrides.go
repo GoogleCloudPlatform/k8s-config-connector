@@ -243,4 +243,5 @@ func init() {
 	Handler.Register(GetPrivateCACAPoolResourceOverrides())
 	Handler.Register(GetAppEngineStandardAppVersionResourceOverrides())
 	Handler.Register(GetAppEngineFlexibleAppVersionResourceOverrides())
+	Handler.Register(GetAppEngineServiceSplitTrafficResourceOverrides())
 }
