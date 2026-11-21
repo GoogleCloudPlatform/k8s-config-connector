@@ -94,7 +94,7 @@ ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.discoveryengine.v1 \
   --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
   --resource DiscoveryEngineWidgetConfig:WidgetConfig \
-  --pattern DiscoveryEngineWidgetConfig="projects/{project}/locations/{location}/dataStores/{dataStore}/widgetConfigs/{widgetConfig}"
+  --pattern DiscoveryEngineWidgetConfig="projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}/widgetConfigs/{widgetConfig}"
 
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \

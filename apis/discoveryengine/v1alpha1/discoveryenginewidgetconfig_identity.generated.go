@@ -38,13 +38,14 @@ var (
 	_ identity.Resource   = &DiscoveryEngineWidgetConfig{}
 )
 
-var DiscoveryEngineWidgetConfigIdentityFormat = gcpurls.Template[DiscoveryEngineWidgetConfigIdentity]("discoveryengine.googleapis.com", "projects/{project}/locations/{location}/dataStores/{dataStore}/widgetConfigs/{widgetConfig}")
+var DiscoveryEngineWidgetConfigIdentityFormat = gcpurls.Template[DiscoveryEngineWidgetConfigIdentity]("discoveryengine.googleapis.com", "projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}/widgetConfigs/{widgetConfig}")
 
 // DiscoveryEngineWidgetConfigIdentity is the identity of a GCP DiscoveryEngineWidgetConfig resource.
 // +k8s:deepcopy-gen=false
 type DiscoveryEngineWidgetConfigIdentity struct {
 	Project      string
 	Location     string
+	Collection   string
 	DataStore    string
 	WidgetConfig string
 }
@@ -71,7 +72,7 @@ func (i *DiscoveryEngineWidgetConfigIdentity) Host() string {
 }
 
 func (i *DiscoveryEngineWidgetConfigIdentity) ParentString() string {
-	return "projects/" + i.Project + "/locations/" + i.Location + "/dataStores/" + i.DataStore
+	return "projects/" + i.Project + "/locations/" + i.Location + "/collections/" + i.Collection + "/dataStores/" + i.DataStore
 }
 
 func getIdentityFromDiscoveryEngineWidgetConfigSpec(ctx context.Context, reader client.Reader, obj *DiscoveryEngineWidgetConfig) (*DiscoveryEngineWidgetConfigIdentity, error) {
