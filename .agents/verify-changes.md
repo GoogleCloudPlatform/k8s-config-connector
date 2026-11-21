@@ -1,6 +1,6 @@
 ---
 name: Verification Batch Scheduler
-description: On its schedule, opens a fan-out that validates every Kind whose controller changed on master against real GCP, one kcc-manual-validate issue graph per Kind, and aggregates the reports.
+description: On its schedule, opens a fan-out that validates every Kind whose controller changed on master against real GCP, one plain issue per Kind that writes or extends and runs its validate.sh, and aggregates the reports.
 schedule: "@daily"
 skipPR: true
 ---
@@ -50,6 +50,6 @@ The schedule above can be anything: each batch covers the commits since the prev
 commit, however long ago that was.
 
 # After the batch is opened (not your job)
-The fan-out adds `overseer/stop` to the new batch for a maintainer to read the spec; removing it
-starts the children, two or three at a time. Each child runs the `kcc-manual-validate` graph
-(`.agents/graphs/kcc-manual-validate.yaml`); the final child aggregates their reports on the batch.
+The fan-out starts the children at once, two or three at a time: one plain issue per Kind, labelled
+`validate`, whose agent writes or extends that Kind's `hack/manual-validate/<kind>/validate.sh`, runs
+it against real GCP and reports in its PR. The final child aggregates their reports on the batch.
