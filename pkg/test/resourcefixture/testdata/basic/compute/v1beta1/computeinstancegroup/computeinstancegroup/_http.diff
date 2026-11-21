@@ -1,91 +1,62 @@
-941c941,942
+739c739
+<       "networkIP": "10.128.0.11",
+---
+>       "networkIP": "10.128.0.112",
+915c915
+<       "networkIP": "10.128.0.11",
+---
+>       "networkIP": "10.128.0.112",
+1324c1324
+<       "networkIP": "10.128.0.114",
+---
+>       "networkIP": "10.128.0.113",
+1500c1500
+<       "networkIP": "10.128.0.114",
+---
+>       "networkIP": "10.128.0.113",
+1603c1603,1604
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}
 > Content-Type: application/json
-969c970
+1631c1632
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups
-984c985,986
+1646c1647,1648
 <   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 ---
 >   "network": "projects/${projectId}/global/networks/${networkID}",
 >   "zone": "us-central1-a"
-1015c1017,1018
+1677c1679,1680
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
 > Content-Type: application/json
-1046c1049
+1708c1711
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/addInstances?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/addInstances
-1052c1055
+1714c1717
 <       "instance": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}"
 ---
 >       "instance": "projects/${projectId}/zones/us-central1-a/instances/${instanceID}"
-1055c1058
+1717c1720
 <       "instance": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}"
 ---
 >       "instance": "projects/${projectId}/zones/us-central1-a/instances/${instanceID}"
-1088c1091,1092
-< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+1751c1754,1755
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
 > Content-Type: application/json
-1119c1123,1124
-< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}?alt=json&prettyPrint=false
----
-> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}
-> Content-Type: application/json
-1155c1160
-< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/listInstances?alt=json&prettyPrint=false
----
-> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/listInstances
-1159c1164,1166
-<   "instanceState": "ALL"
----
->   "instanceGroup": "${instanceGroupID}",
->   "project": "${projectId}",
->   "zone": "us-central1-a"
-1209c1216,1217
-< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}?alt=json&prettyPrint=false
----
-> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}
-> Content-Type: application/json
-1245c1253
-< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/listInstances?alt=json&prettyPrint=false
----
-> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/listInstances
-1249c1257,1259
-<   "instanceState": "ALL"
----
->   "instanceGroup": "${instanceGroupID}",
->   "project": "${projectId}",
->   "zone": "us-central1-a"
-1299c1309,1323
-< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}?alt=json&prettyPrint=false
----
-> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/setNamedPorts
-> Content-Type: application/json
-> 
-> {
->   "namedPorts": [
->     {
->       "name": "https",
->       "port": 8443
->     },
->     {
->       "name": "fred",
->       "port": 8555
->     }
->   ]
-> }
-1312,1313d1335
+1764,1766c1768
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "description": "",
 <   "fingerprint": "abcdef0123A=",
-1315,1329c1337,1347
+---
+>   "endTime": "2024-04-01T12:34:56.123456Z",
+1768,1783c1770,1780
 <   "kind": "compute#instanceGroup",
 <   "name": "${instanceGroupID}",
 <   "namedPorts": [
@@ -101,33 +72,42 @@
 <   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
 <   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}",
 <   "size": 2,
+<   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
 ---
 >   "insertTime": "2024-04-01T12:34:56.123456Z",
 >   "kind": "compute#operation",
 >   "name": "${operationID}",
->   "operationType": "setNamedPorts",
->   "progress": 0,
+>   "operationType": "compute.instanceGroups.addInstances",
+>   "progress": 100,
 >   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
 >   "startTime": "2024-04-01T12:34:56.123456Z",
->   "status": "RUNNING",
+>   "status": "DONE",
 >   "targetId": "${instanceGroupID}",
 >   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}",
 >   "user": "user@example.com",
-1335c1353
+1789c1786
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/listInstances?alt=json&prettyPrint=false
 ---
-> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
-1338,1341d1355
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}
+1792,1843d1788
 < {
 <   "instanceState": "ALL"
 < }
 < 
-1352a1367
->   "endTime": "2024-04-01T12:34:56.123456Z",
-1354,1384c1369,1380
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
 <   "items": [
 <     {
-<       "instance": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+<       "instance": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
 <       "namedPorts": [
 <         {
 <           "name": "http",
@@ -141,7 +121,7 @@
 <       "status": "RUNNING"
 <     },
 <     {
-<       "instance": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+<       "instance": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
 <       "namedPorts": [
 <         {
 <           "name": "http",
@@ -156,62 +136,172 @@
 <     }
 <   ],
 <   "kind": "compute#instanceGroupsListInstances"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}?alt=json&prettyPrint=false
+< 
+1880c1825
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/listInstances?alt=json&prettyPrint=false
 ---
->   "insertTime": "2024-04-01T12:34:56.123456Z",
->   "kind": "compute#operation",
->   "name": "${operationID}",
->   "operationType": "setNamedPorts",
->   "progress": 100,
->   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
->   "startTime": "2024-04-01T12:34:56.123456Z",
->   "status": "DONE",
->   "targetId": "${instanceGroupID}",
->   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}",
->   "user": "user@example.com",
->   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
-1389c1385
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/listInstances
+1884c1829,1831
+<   "instanceState": "ALL"
+---
+>   "instanceGroup": "${instanceGroupID}",
+>   "project": "${projectId}",
+>   "zone": "us-central1-a"
+1900c1847
+<       "instance": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+---
+>       "instance": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+1914c1861
+<       "instance": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+---
+>       "instance": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+1934c1881,1882
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}
+> Content-Type: application/json
+1972c1920
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/listInstances?alt=json&prettyPrint=false
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/listInstances
+1976c1924,1926
+<   "instanceState": "ALL"
+---
+>   "instanceGroup": "${instanceGroupID}",
+>   "project": "${projectId}",
+>   "zone": "us-central1-a"
+1992c1942
+<       "instance": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+---
+>       "instance": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+2006c1956
+<       "instance": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+---
+>       "instance": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+2025c1975
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/removeInstances?alt=json&prettyPrint=false
 ---
-> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/removeInstances
-1428c1424,1425
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/setNamedPorts
+2029c1979,1983
+<   "instances": [
+---
+>   "namedPorts": [
+>     {
+>       "name": "https",
+>       "port": 8443
+>     },
+2031c1985,1986
+<       "instance": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instances/${instanceID}"
+---
+>       "name": "fred",
+>       "port": 8555
+2051c2006
+<   "operationType": "compute.instanceGroups.removeInstances",
+---
+>   "operationType": "compute.instanceGroups.setNamedPorts",
+2064c2019,2020
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
 > Content-Type: application/json
-1459c1456
+2082c2038
+<   "operationType": "compute.instanceGroups.removeInstances",
+---
+>   "operationType": "compute.instanceGroups.setNamedPorts",
+2095c2051
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/setNamedPorts?alt=json&prettyPrint=false
 ---
-> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}
-1462,1474d1458
-< {
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/removeInstances
+2099,2103c2055
 <   "namedPorts": [
 <     {
 <       "name": "https",
 <       "port": 8443
 <     },
-<     {
+---
+>   "instances": [
+2105,2106c2057
 <       "name": "fred",
 <       "port": 8555
-<     }
-<   ]
-< }
-< 
-1485a1470,1471
->   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
->   "fingerprint": "abcdef0123A=",
-1487,1497c1473,1487
-<   "insertTime": "2024-04-01T12:34:56.123456Z",
-<   "kind": "compute#operation",
-<   "name": "${operationID}",
-<   "operationType": "setNamedPorts",
-<   "progress": 0,
-<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
-<   "startTime": "2024-04-01T12:34:56.123456Z",
-<   "status": "RUNNING",
-<   "targetId": "${instanceGroupID}",
-<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}",
-<   "user": "user@example.com",
 ---
+>       "instance": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}"
+2126c2077
+<   "operationType": "compute.instanceGroups.setNamedPorts",
+---
+>   "operationType": "compute.instanceGroups.removeInstances",
+2139c2090,2091
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
+> Content-Type: application/json
+2157c2109
+<   "operationType": "compute.instanceGroups.setNamedPorts",
+---
+>   "operationType": "compute.instanceGroups.removeInstances",
+2170c2122,2123
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}
+> Content-Type: application/json
+2208c2161
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/listInstances?alt=json&prettyPrint=false
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/listInstances
+2212c2165,2167
+<   "instanceState": "ALL"
+---
+>   "instanceGroup": "${instanceGroupID}",
+>   "project": "${projectId}",
+>   "zone": "us-central1-a"
+2228c2183
+<       "instance": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+---
+>       "instance": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+2248c2203,2204
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}
+> Content-Type: application/json
+2286c2242
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/listInstances?alt=json&prettyPrint=false
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/listInstances
+2290c2246,2248
+<   "instanceState": "ALL"
+---
+>   "instanceGroup": "${instanceGroupID}",
+>   "project": "${projectId}",
+>   "zone": "us-central1-a"
+2306c2264
+<       "instance": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+---
+>       "instance": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+2325c2283,2364
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+>   "description": "",
+>   "fingerprint": "abcdef0123A=",
+>   "id": "000000000000000000000",
 >   "kind": "compute#instanceGroup",
 >   "name": "${instanceGroupID}",
 >   "namedPorts": [
@@ -227,9 +317,12 @@
 >   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
 >   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}",
 >   "size": 1,
-1503c1493,1500
-< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
----
+>   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
+>   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+> }
+> 
+> ---
+> 
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/listInstances
 > Content-Type: application/json
 > 
@@ -238,22 +331,18 @@
 >   "project": "${projectId}",
 >   "zone": "us-central1-a"
 > }
-1516d1512
-<   "endTime": "2024-04-01T12:34:56.123456Z",
-1518,1529c1514,1530
-<   "insertTime": "2024-04-01T12:34:56.123456Z",
-<   "kind": "compute#operation",
-<   "name": "${operationID}",
-<   "operationType": "setNamedPorts",
-<   "progress": 100,
-<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
-<   "startTime": "2024-04-01T12:34:56.123456Z",
-<   "status": "DONE",
-<   "targetId": "${instanceGroupID}",
-<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}",
-<   "user": "user@example.com",
-<   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
----
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
 >   "items": [
 >     {
 >       "instance": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
@@ -271,43 +360,22 @@
 >     }
 >   ],
 >   "kind": "compute#instanceGroupsListInstances"
-1534c1535,1536
-< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}?alt=json&prettyPrint=false
----
-> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}
-> Content-Type: application/json
-1570c1572
-< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/listInstances?alt=json&prettyPrint=false
----
-> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/listInstances
-1574c1576,1578
-<   "instanceState": "ALL"
----
->   "instanceGroup": "${instanceGroupID}",
->   "project": "${projectId}",
->   "zone": "us-central1-a"
-1610c1614,1615
-< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}?alt=json&prettyPrint=false
----
-> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}
-> Content-Type: application/json
-1646c1651
-< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/listInstances?alt=json&prettyPrint=false
----
-> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/listInstances
-1650c1655,1657
-<   "instanceState": "ALL"
----
->   "instanceGroup": "${instanceGroupID}",
->   "project": "${projectId}",
->   "zone": "us-central1-a"
-1686c1693,1694
-< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}?alt=json&prettyPrint=false
----
+> }
+> 
+> ---
+> 
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}
 > Content-Type: application/json
-1716c1724,1725
+2355c2394,2395
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
 > Content-Type: application/json
+2459c2499
+<       "networkIP": "10.128.0.114",
+---
+>       "networkIP": "10.128.0.113",
+2696c2736
+<       "networkIP": "10.128.0.11",
+---
+>       "networkIP": "10.128.0.112",

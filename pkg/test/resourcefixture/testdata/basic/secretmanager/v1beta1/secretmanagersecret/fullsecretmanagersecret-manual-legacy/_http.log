@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
 
@@ -337,7 +338,7 @@ X-Xss-Protection: 0
   "done": true,
   "name": "operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/mockgcp.api.serviceusage.v1beta1.ServiceIdentity",
+    "@type": "type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity",
     "email": "service-${projectNumber}@gcp-sa-secretmanager.iam.gserviceaccount.com",
     "uniqueId": "12345678"
   }
@@ -661,7 +662,7 @@ Content-Type: application/json
     }
   },
   "rotation": {
-    "nextRotationTime": "2025-10-02T15:01:23Z",
+    "nextRotationTime": "2035-10-02T15:01:23Z",
     "rotationPeriod": "3600s"
   },
   "topics": [
@@ -708,7 +709,7 @@ X-Xss-Protection: 0
     }
   },
   "rotation": {
-    "nextRotationTime": "2025-10-02T15:01:23Z",
+    "nextRotationTime": "2035-10-02T15:01:23Z",
     "rotationPeriod": "3600s"
   },
   "topics": [
@@ -720,6 +721,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: UPDATE
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 
@@ -759,7 +761,7 @@ X-Xss-Protection: 0
     }
   },
   "rotation": {
-    "nextRotationTime": "2025-10-02T15:01:23Z",
+    "nextRotationTime": "2035-10-02T15:01:23Z",
     "rotationPeriod": "3600s"
   },
   "topics": [
@@ -801,7 +803,7 @@ Content-Type: application/json
     }
   },
   "rotation": {
-    "nextRotationTime": "2025-10-03T15:01:23Z",
+    "nextRotationTime": "2035-10-03T15:01:23Z",
     "rotationPeriod": "3600s"
   },
   "topics": [
@@ -849,7 +851,7 @@ X-Xss-Protection: 0
     }
   },
   "rotation": {
-    "nextRotationTime": "2025-10-03T15:01:23Z",
+    "nextRotationTime": "2035-10-03T15:01:23Z",
     "rotationPeriod": "3600s"
   },
   "topics": [
@@ -902,7 +904,7 @@ X-Xss-Protection: 0
     }
   },
   "rotation": {
-    "nextRotationTime": "2025-10-03T15:01:23Z",
+    "nextRotationTime": "2035-10-03T15:01:23Z",
     "rotationPeriod": "3600s"
   },
   "topics": [
@@ -914,6 +916,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: DELETE
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 
@@ -955,7 +958,7 @@ X-Xss-Protection: 0
     }
   },
   "rotation": {
-    "nextRotationTime": "2025-10-03T15:01:23Z",
+    "nextRotationTime": "2035-10-03T15:01:23Z",
     "rotationPeriod": "3600s"
   },
   "topics": [

@@ -44,7 +44,7 @@ spec:
   machineType: n1-standard-1
   disk:
   - sourceImageRef:
-      external: debian-cloud/debian-12
+      external: debian-cloud/debian-11
     boot: true
   networkInterface:
   - networkRef:

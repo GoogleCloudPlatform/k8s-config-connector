@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -32,7 +33,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
   "accessRestriction": 2,
   "backupMinimumEnforcedRetentionDuration": "86400s",
   "description": "This is a full backup vault",
-  "effectiveTime": "2025-08-17T10:00:00Z",
+  "effectiveTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
     "custom-label": "foo",
@@ -52,10 +53,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
     "verb": "create"
   },
@@ -86,6 +89,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
     "verb": "create"
   },
@@ -94,17 +98,15 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.backupdr.v1.BackupVault",
     "accessRestriction": "WITHIN_ORGANIZATION",
     "backupMinimumEnforcedRetentionDuration": "86400s",
+    "backupRetentionInheritance": "INHERIT_VAULT_RETENTION",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletable": true,
     "description": "This is a full backup vault",
-    "effectiveTime": "2025-08-17T10:00:00Z",
-    "etag": "abcdef0123A=",
-    "labels": {
-      "cnrm-test": "true",
-      "custom-label": "foo",
-      "label-key": "label-value",
-      "managed-by-cnrm": "true"
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "encryptionConfig": {
+      "kmsKeyName": ""
     },
+    "etag": "abcdef0123A=",
     "name": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
     "serviceAccount": "vault-${projectNumber}-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
     "state": "ACTIVE",
@@ -115,6 +117,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: UPDATE
 GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -133,10 +136,14 @@ X-Xss-Protection: 0
 {
   "accessRestriction": 2,
   "backupMinimumEnforcedRetentionDuration": "86400s",
+  "backupRetentionInheritance": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletable": true,
   "description": "This is a full backup vault",
-  "effectiveTime": "2025-08-17T10:00:00Z",
+  "effectiveTime": "2024-04-01T12:34:56.123456Z",
+  "encryptionConfig": {
+    "kmsKeyName": ""
+  },
   "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
@@ -162,7 +169,7 @@ X-Goog-Request-Params: backup_vault.name=projects%2F${projectId}%2Flocations%2Fu
   "accessRestriction": 2,
   "backupMinimumEnforcedRetentionDuration": "86500s",
   "description": "This is an updated full backup vault",
-  "effectiveTime": "2025-08-17T10:00:00Z",
+  "effectiveTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "labels": {
     "another-label": "another-value",
@@ -185,10 +192,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
     "verb": "update"
   },
@@ -219,6 +228,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
     "verb": "update"
   },
@@ -227,18 +237,15 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.backupdr.v1.BackupVault",
     "accessRestriction": "WITHIN_ORGANIZATION",
     "backupMinimumEnforcedRetentionDuration": "86500s",
+    "backupRetentionInheritance": "INHERIT_VAULT_RETENTION",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletable": true,
     "description": "This is an updated full backup vault",
-    "effectiveTime": "2025-08-17T10:00:00Z",
-    "etag": "abcdef0123A=",
-    "labels": {
-      "another-label": "another-value",
-      "cnrm-test": "true",
-      "custom-label": "bar",
-      "label-key": "label-value",
-      "managed-by-cnrm": "true"
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "encryptionConfig": {
+      "kmsKeyName": ""
     },
+    "etag": "abcdef0123A=",
     "name": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
     "serviceAccount": "vault-${projectNumber}-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
     "state": "ACTIVE",
@@ -267,10 +274,14 @@ X-Xss-Protection: 0
 {
   "accessRestriction": 2,
   "backupMinimumEnforcedRetentionDuration": "86500s",
+  "backupRetentionInheritance": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletable": true,
   "description": "This is an updated full backup vault",
-  "effectiveTime": "2025-08-17T10:00:00Z",
+  "effectiveTime": "2024-04-01T12:34:56.123456Z",
+  "encryptionConfig": {
+    "kmsKeyName": ""
+  },
   "etag": "abcdef0123A=",
   "labels": {
     "another-label": "another-value",
@@ -288,6 +299,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: DELETE
 DELETE https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -304,10 +316,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
     "verb": "delete"
   },
@@ -338,6 +352,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
     "verb": "delete"
   },

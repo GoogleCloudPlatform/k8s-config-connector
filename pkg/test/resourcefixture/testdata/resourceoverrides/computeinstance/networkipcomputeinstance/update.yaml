@@ -27,7 +27,7 @@ spec:
   bootDisk:
     initializeParams:
       sourceImageRef:
-        external: debian-cloud/debian-12
+        external: debian-cloud/debian-11
   networkInterface:
   - subnetworkRef:
       name: default

@@ -40,6 +40,19 @@ var mockGCPSkipFixtures = map[string]bool{
 	"container/v1beta1/containernodepool/containernodepool-windowsnodeconfig": true,
 	// AlloyDB restore continuous backup test relies on pre-existing resources in external project KCC_ALLOYDB_TEST_PROJECT
 	"alloydb/v1beta1/alloydbcluster/restorecontinuesbackupalloydbcluster": true,
+	// TODO(b/587468180): These fixtures were re-recorded against real GCP (retired debian-11 image,
+	// expired timestamps); align mockgcp with the new real logs and remove these entries.
+	"backupdr/v1beta1/backupdrbackupplanassociation/backupdrbackupplanassociation-minimal":                 true,
+	"backupdr/v1beta1/backupdrbackupvault/backupdrbackupvault-full":                                        true,
+	"compute/v1alpha1/computeautoscaler/computeautoscalerbasic":                                            true,
+	"compute/v1alpha1/computeautoscaler/computeautoscalerbasic-direct":                                     true,
+	"compute/v1alpha1/computeregiondiskresourcepolicyattachment/regiondiskresourcepolicyattachmentautogen": true,
+	"compute/v1beta1/computebackendservice/globalcomputebackendservice":                                    true,
+	"compute/v1beta1/computebackendservice/regionalcomputebackendservice":                                  true,
+	"compute/v1beta1/computeinstancegroup/computeinstancegroup":                                            true,
+	"compute/v1beta1/computeinstancegroup/computeinstancegroup-direct":                                     true,
+	"discoveryengine/v1alpha1/discoveryengineuserstore/discoveryengineuserstore-maximal":                   true,
+	"networkconnectivity/v1beta1/networkconnectivityspoke":                                                 true,
 }
 
 var realGCPSkipFixtures = map[string]bool{

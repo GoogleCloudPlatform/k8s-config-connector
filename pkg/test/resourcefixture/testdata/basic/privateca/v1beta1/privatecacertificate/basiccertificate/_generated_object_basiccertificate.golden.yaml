@@ -1,0 +1,179 @@
+apiVersion: privateca.cnrm.cloud.google.com/v1beta1
+kind: PrivateCACertificate
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+    key: value
+    value: key
+  name: privatecacertificate-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  caPoolRef:
+    name: privatecacapool-${uniqueId}
+  certificateAuthorityRef:
+    name: privatecacertificateauthority-${uniqueId}
+  config:
+    publicKey:
+      format: PEM
+      key: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUF2NndlQzFhVDE2bDJxUzZxZFljeQo3Qk9qelA3VHdUOXpVQWlGaFdwTDI1NkdScUM4eVFSZHFNc2k2OFEvLzc2MklVeXUvcWFIYkVnUThXUm1RZFZWCkdEbHhrQmZyQS9pWEIyZGd1anE4amgwSFdJVjJldjNUZXJWM2FVd3ZZVWxyb3docTAyN1NYOVUxaGJ1ZmRHQ00KdUtzSGlGMDVFcmdOdkV1UjhYQWtlSi9ZVjJEVjIrc1JxK1dnOXk0UndVWWJkY2hkRnR5MWQ1U1gvczBZcXN3Zwp5T0c5Vm9DZFI3YmFGMjJ1Z2hWUjQ0YVJtKzgzbWd0cUFaNE0rUnBlN0pHUnNVR1kvcFIzOTFUb2kwczhFbjE1CkpHaUFocVgyVzBVby9GWlpyeTN5dXFSZmRIWUVOQitBRHV5VE1UclVhS1p2N2V1YTBsVEJ6NW9vbTNqU0YzZ3YKSTdTUW9MZEsvamhFVk9PcTQxSWpCOEQ2MFNnZDY5YkQ3eVRJNTE2eXZaL3MzQXlLelc2ZjZLbmpkYkNjWktLVAowR0FlUE5MTmhEWWZTbEE5YndKOEhRUzJGZW5TcFNUQXJLdkdpVnJzaW5KdU5qYlFkUHVRSGNwV2Y5eDFtM0dSClRNdkYrVE5ZTS9scDdJTDJWTWJKUmZXUHkxaVd4bTlGMVlyNmRrSFZvTFA3b2NZa05SSG9QTHV0NUU2SUZKdEsKbFZJMk5uZVVZSkduWVNPKzF4UFY5VHFsSmVNTndyM3VGTUFOOE4vb0IzZjRXV3d1UllnUjBMNWcyQStMdngrZwpiYmRsK1RiLzBDTmZzbGZTdURyRlY4WjRuNmdWd2I5WlBHbE5IQ3ZucVJmTFVwUkZKd21SN1VZdnppL0U3clhKCkVEa0srdGNuUGt6Mkp0amRMS1I3cVZjQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQ==
+    subjectConfig:
+      subject:
+        commonName: san1.example.com
+      subjectAltName:
+        dnsNames:
+        - san1.example.com
+        emailAddresses:
+        - test_example@google.com
+        ipAddresses:
+        - 127.0.0.1
+        uris:
+        - http://www.ietf.org/rfc/rfc3986.txt
+    x509Config:
+      caOptions:
+        isCa: false
+      keyUsage:
+        baseKeyUsage:
+          crlSign: true
+        extendedKeyUsage:
+          serverAuth: true
+  lifetime: 860s
+  location: us-central1
+  projectRef:
+    external: projects/${projectId}
+  resourceID: privatecacertificate-${uniqueId}
+  subjectMode: DEFAULT
+status:
+  certificateDescription:
+    authorityKeyId:
+      keyId: 0d86a53eeb459f7336aa08a83b7917f8369a7220
+    certFingerprint:
+      sha256Hash: c7465d071388f096510be3cda357482157464f1cb2a52e98b20c5481a533a416
+    publicKey:
+      key: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUF2NndlQzFhVDE2bDJxUzZxZFljeQo3Qk9qelA3VHdUOXpVQWlGaFdwTDI1NkdScUM4eVFSZHFNc2k2OFEvLzc2MklVeXUvcWFIYkVnUThXUm1RZFZWCkdEbHhrQmZyQS9pWEIyZGd1anE4amgwSFdJVjJldjNUZXJWM2FVd3ZZVWxyb3docTAyN1NYOVUxaGJ1ZmRHQ00KdUtzSGlGMDVFcmdOdkV1UjhYQWtlSi9ZVjJEVjIrc1JxK1dnOXk0UndVWWJkY2hkRnR5MWQ1U1gvczBZcXN3Zwp5T0c5Vm9DZFI3YmFGMjJ1Z2hWUjQ0YVJtKzgzbWd0cUFaNE0rUnBlN0pHUnNVR1kvcFIzOTFUb2kwczhFbjE1CkpHaUFocVgyVzBVby9GWlpyeTN5dXFSZmRIWUVOQitBRHV5VE1UclVhS1p2N2V1YTBsVEJ6NW9vbTNqU0YzZ3YKSTdTUW9MZEsvamhFVk9PcTQxSWpCOEQ2MFNnZDY5YkQ3eVRJNTE2eXZaL3MzQXlLelc2ZjZLbmpkYkNjWktLVAowR0FlUE5MTmhEWWZTbEE5YndKOEhRUzJGZW5TcFNUQXJLdkdpVnJzaW5KdU5qYlFkUHVRSGNwV2Y5eDFtM0dSClRNdkYrVE5ZTS9scDdJTDJWTWJKUmZXUHkxaVd4bTlGMVlyNmRrSFZvTFA3b2NZa05SSG9QTHV0NUU2SUZKdEsKbFZJMk5uZVVZSkduWVNPKzF4UFY5VHFsSmVNTndyM3VGTUFOOE4vb0IzZjRXV3d1UllnUjBMNWcyQStMdngrZwpiYmRsK1RiLzBDTmZzbGZTdURyRlY4WjRuNmdWd2I5WlBHbE5IQ3ZucVJmTFVwUkZKd21SN1VZdnppL0U3clhKCkVEa0srdGNuUGt6Mkp0amRMS1I3cVZjQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=
+    subjectDescription:
+      hexSerialNumber: d16cf4dc1d72dffc218b1c7ef475af3dbd7cc5
+      lifetime: 860s
+      notAfterTime: "2026-11-21T00:14:40Z"
+      notBeforeTime: "2026-11-21T00:00:21Z"
+      subject:
+        commonName: san1.example.com
+      subjectAltName:
+        dnsNames:
+        - san1.example.com
+        emailAddresses:
+        - test_example@google.com
+        ipAddresses:
+        - 127.0.0.1
+        uris:
+        - http://www.ietf.org/rfc/rfc3986.txt
+    subjectKeyId:
+      keyId: fb5ed937dee401c96f501d44664874f2ea2fa1e3
+    x509Description:
+      additionalExtensions:
+      - objectId:
+          objectIdPath:
+          - 1
+          - 7
+        value: c3RyaW5nCg==
+      aiaOcspServers:
+      - string
+      caOptions:
+        isCa: false
+        maxIssuerPathLength: 7
+      keyUsage:
+        baseKeyUsage:
+          crlSign: true
+        unknownExtendedKeyUsages:
+        - objectIdPath:
+          - 1
+          - 7
+      policyIds:
+      - objectIdPath:
+        - 1
+        - 7
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  createTime: "1970-01-01T00:00:00Z"
+  issuerCertificateAuthority: projects/${projectNumber}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}
+  observedGeneration: 2
+  pemCertificate: |
+    -----BEGIN CERTIFICATE-----
+    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
+    -----END CERTIFICATE-----
+  pemCertificateChain:
+  - |
+    -----BEGIN CERTIFICATE-----
+    MIIFijCCA3KgAwIBAgIUANpYe/4JH6GY6ls1T2S3wQs4w1wwDQYJKoZIhvcNAQEL
+    BQAwNTEQMA4GA1UEChMHRXhhbXBsZTEhMB8GA1UEAxMYbXktY2VydGlmaWNhdGUt
+    YXV0aG9yaXR5MB4XDTI2MTEyMTAwMDAxM1oXDTI2MTEyMjAwMDAxMlowNTEQMA4G
+    A1UEChMHRXhhbXBsZTEhMB8GA1UEAxMYbXktY2VydGlmaWNhdGUtYXV0aG9yaXR5
+    MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAzrETGIsEb5KciBi7PJK6
+    TVo+524ZpsCuqFRIk3Zl4hdW1ZpZkohxne+lfBN8XuGtZQzIdwiVAJlwEUAsX716
+    SRKvJXERy8rsyfkb9UVdw6Xk8ffhtOlmHM+LjPhfKucLoN0QrebY5T5OvTvtWY+s
+    yVTdto6MwO7XRCrzwZ9JSAD6i4j48CvvDwnh6VYMCF2Iw4oy1WnMG94F5JUqKAzR
+    RbcbPIXYkNqCXDOvKK/72JMMXBYDojZ+PBCzi10NKfxvibolNa7bTQLxlZ5CToD5
+    ezqf+todL/w1Fn89XR9jhdw+z1RSZBqOiXaJwtOzSDkHketfXGR/njbUt1z9YkIe
+    W1ACXrQ7U6N8Q6GPtyK+A0knWMgL5Sm0ODPInSD7Fvmgsws5BPILekESkvwnS+6p
+    wPWQUtYeXaNWSs8neO9+vtmny77sr/Bp+nDNRqWsYu2+5c5IMPczNhJ987clTuzQ
+    WvqqE7mECYkTAHj8SPloYChnLMGyUjvU6KW6FMwVE38YJcJdi+ZQM5kKf726VbJJ
+    mtEh+j2rQ+2MhubF0gcqYxF+4WsI0/fMlhmHI/HD7z4yJgHN8KZ/QNXeWVEjpRHr
+    tsL1ltgo7OxeP+SMlnyKJ5S5MMfVR3z71lhhuzP8sReZftw8hbxkPyyRmxYso5Qw
+    Dhgb4YYtM7dU2RR8k/eHHHECAwEAAaOBkTCBjjAOBgNVHQ8BAf8EBAMCAQYwEwYD
+    VR0lBAwwCgYIKwYBBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUDYal
+    PutFn3M2qgioO3kX+DaaciAwHwYDVR0jBBgwFoAUDYalPutFn3M2qgioO3kX+Daa
+    ciAwFgYDVR0RBA8wDYILZXhhbXBsZS5jb20wDQYJKoZIhvcNAQELBQADggIBACbr
+    TVlXJeQGT6uNsHGpcPteCvoDCBXi4CjBHtQ7bz/GfLdu4NAIYCY5kpwPmElGzHb7
+    et54fbtYjAZrCJZWBXTETML9MHJ9ao6mQ0fop4SOjuGRLMCRlf/ot4tsVb0oH7Mc
+    rvLCdytXsgEs44hg0j2P+lFQQ64odkoH5NwbeJWuOiE38Fc+5gB2tlyLn+yjaXy0
+    RnvPOwacCuPXPUMR5ZLVNfJDhoYd1zafjbty//H1soVkHt/BLm3U6LauOF8PMjUR
+    x8SFTFIgP8U06LNoT/L2a/Bo6bX3mAPW/pFQOGpeIckl75/sankwbQDzwyM4r9eH
+    qy3+nBk8FKYlhPtUDMz11MryTz28yYM4ZiVEU+bstL1kjJHmACihKtbERu8OD0gP
+    7NdpwSdEdkos5br3xuzpaNQwMkPfKWb5h5WNsdySyzHKrQY0soKFRUHwmlw4EDYS
+    Mpe/5b6d6e2N/56/mivlpvQi7K9/1cyh65xMSZsMPcSAIRnytGp94BGcRzzq8D/Z
+    8rKBfZm5TDFGVUwJK5W6mhGfSsSEatavwNCOcRXPPPMJXJZmrlG1KFnHxmOkswWN
+    b8osmlStF+b+h1/jC/U/F8eWUvwF960IbuACJ4LKHkljlFZnvJ/+k4d+1jybSAyC
+    SR2PwueunLN0+f76y8chPM8eeZVaYNTB3gqAY0jA
+    -----END CERTIFICATE-----
+  updateTime: "1970-01-01T00:00:00Z"

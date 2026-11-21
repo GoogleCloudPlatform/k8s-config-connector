@@ -21,7 +21,7 @@ spec:
   resourceID: bigqueryreservationreservation${uniqueId}
   schedulingPolicy:
     concurrency: 10
-    maxSlots: 20
+    maxSlots: 200
   slotCapacity: 0
 status:
   conditions:

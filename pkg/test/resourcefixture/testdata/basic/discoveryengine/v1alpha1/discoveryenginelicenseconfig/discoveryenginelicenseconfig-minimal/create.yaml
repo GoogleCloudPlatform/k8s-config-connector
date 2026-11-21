@@ -11,6 +11,6 @@ spec:
   subscriptionTier: SUBSCRIPTION_TIER_NOTEBOOK_LM
   subscriptionTerm: SUBSCRIPTION_TERM_ONE_MONTH
   startDate:
-    year: 2028
+    year: 2026
     month: 8
     day: 15
