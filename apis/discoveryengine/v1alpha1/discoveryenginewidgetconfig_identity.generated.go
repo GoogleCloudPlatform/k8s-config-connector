@@ -24,6 +24,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -37,13 +38,14 @@ var (
 	_ identity.Resource   = &DiscoveryEngineWidgetConfig{}
 )
 
-var DiscoveryEngineWidgetConfigIdentityFormat = gcpurls.Template[DiscoveryEngineWidgetConfigIdentity]("discoveryengine.googleapis.com", "projects/{project}/locations/{location}/dataStores/{dataStore}/widgetConfigs/{widgetConfig}")
+var DiscoveryEngineWidgetConfigIdentityFormat = gcpurls.Template[DiscoveryEngineWidgetConfigIdentity]("discoveryengine.googleapis.com", "projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}/widgetConfigs/{widgetConfig}")
 
 // DiscoveryEngineWidgetConfigIdentity is the identity of a GCP DiscoveryEngineWidgetConfig resource.
 // +k8s:deepcopy-gen=false
 type DiscoveryEngineWidgetConfigIdentity struct {
 	Project      string
 	Location     string
+	Collection   string
 	DataStore    string
 	WidgetConfig string
 }
@@ -70,7 +72,7 @@ func (i *DiscoveryEngineWidgetConfigIdentity) Host() string {
 }
 
 func (i *DiscoveryEngineWidgetConfigIdentity) ParentString() string {
-	return "projects/" + i.Project + "/locations/" + i.Location + "/dataStores/" + i.DataStore
+	return "projects/" + i.Project + "/locations/" + i.Location + "/collections/" + i.Collection + "/dataStores/" + i.DataStore
 }
 
 func getIdentityFromDiscoveryEngineWidgetConfigSpec(ctx context.Context, reader client.Reader, obj *DiscoveryEngineWidgetConfig) (*DiscoveryEngineWidgetConfigIdentity, error) {
@@ -79,28 +81,19 @@ func getIdentityFromDiscoveryEngineWidgetConfigSpec(ctx context.Context, reader 
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	if obj.Spec.ParentRef == nil {
+		return nil, fmt.Errorf("spec.parentRef is required")
 	}
-
-	location, err := refs.GetLocation(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location: %w", err)
+	parentRef := *obj.Spec.ParentRef
+	if err := parentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, fmt.Errorf("resolving spec.parentRef: %w", err)
 	}
-
-	// +kcc:guess reason=identity-root-unknown
-	dataStore := ""
-	if dataStore == "" {
-		return nil, fmt.Errorf("cannot resolve data_store for DiscoveryEngineWidgetConfig")
+	parsed := &DiscoveryEngineWidgetConfigIdentity{}
+	if err := parsed.FromExternal(strings.TrimSuffix(parentRef.GetExternal(), "/") + "/widgetConfigs" + "/" + resourceID); err != nil {
+		return nil, fmt.Errorf("parsing spec.parentRef external=%q: %w", parentRef.GetExternal(), err)
 	}
-
-	return &DiscoveryEngineWidgetConfigIdentity{
-		Project:      projectID,
-		Location:     location,
-		DataStore:    dataStore,
-		WidgetConfig: resourceID,
-	}, nil
+	parsed.WidgetConfig = resourceID
+	return parsed, nil
 }
 
 func (obj *DiscoveryEngineWidgetConfig) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
