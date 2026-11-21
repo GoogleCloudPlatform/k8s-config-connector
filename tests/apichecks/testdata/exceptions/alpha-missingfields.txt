@@ -6130,12 +6130,6 @@
 [missing_field] crd=logginglogscopes.logging.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=lustredirectorypolicies.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.directoryPath" is not set in unstructured objects
 [missing_field] crd=lustredirectorypolicies.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=lustremirrors.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.deletedFilesRetained" is not set in unstructured objects
-[missing_field] crd=lustremirrors.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=lustremirrors.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.direction" is not set in unstructured objects
-[missing_field] crd=lustremirrors.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcsPath.uri" is not set in unstructured objects
-[missing_field] crd=lustremirrors.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.lustrePath.path" is not set in unstructured objects
-[missing_field] crd=lustremirrors.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.config" is not set in unstructured objects
 [missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcpConfig.secretPaths[].external" is not set in unstructured objects
 [missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcpConfig.secretPaths[].name" is not set in unstructured objects
