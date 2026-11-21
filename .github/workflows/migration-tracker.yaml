@@ -61,8 +61,8 @@ jobs:
             BRANCH_NAME="automation/migration-tracker-update"
             git checkout -b $BRANCH_NAME
             
-            git add dev/migration-tracker/data.json dev/migration-tracker/MIGRATION_STATUS.md
-            git commit -m "Update migration tracker data.json and MIGRATION_STATUS.md"
+            git add dev/migration-tracker/data.json dev/migration-tracker/MIGRATION_STATUS.md dev/migration-tracker/migration_history.json
+            git commit -m "Update migration tracker data.json, MIGRATION_STATUS.md, and migration_history.json"
             
             # Push the branch to origin (force push to overwrite previous automation branch)
             git push -f origin $BRANCH_NAME
