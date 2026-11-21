@@ -26,7 +26,7 @@ package backupdr
 import (
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
 	krmbackupdrv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
+	krmbackupdrv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
 	monthpb "google.golang.org/genproto/googleapis/type/month"
@@ -82,11 +82,11 @@ func BackupDRAutoProtectionPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext
 	out.Criteria = Criteria_v1alpha1_ToProto(mapCtx, in.Criteria)
 	return out
 }
-func BackupDRBackupPlanAssociationObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlanAssociation) *krm.BackupDRBackupPlanAssociationObservedState {
+func BackupDRBackupPlanAssociationObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlanAssociation) *krmbackupdrv1beta1.BackupDRBackupPlanAssociationObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupDRBackupPlanAssociationObservedState{}
+	out := &krmbackupdrv1beta1.BackupDRBackupPlanAssociationObservedState{}
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -98,7 +98,7 @@ func BackupDRBackupPlanAssociationObservedState_v1beta1_FromProto(mapCtx *direct
 	// MISSING: BackupPlanRevisionName
 	return out
 }
-func BackupDRBackupPlanAssociationObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupPlanAssociationObservedState) *pb.BackupPlanAssociation {
+func BackupDRBackupPlanAssociationObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.BackupDRBackupPlanAssociationObservedState) *pb.BackupPlanAssociation {
 	if in == nil {
 		return nil
 	}
@@ -116,16 +116,16 @@ func BackupDRBackupPlanAssociationObservedState_v1beta1_ToProto(mapCtx *direct.M
 }
 
 /* found existing non-generated mapping function "BackupDRBackupPlanAssociationSpec_v1beta1_FromProto", skipping
-func BackupDRBackupPlanAssociationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlanAssociation) *krm.BackupDRBackupPlanAssociationSpec {
+func BackupDRBackupPlanAssociationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlanAssociation) *krmbackupdrv1beta1.BackupDRBackupPlanAssociationSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupDRBackupPlanAssociationSpec{}
+	out := &krmbackupdrv1beta1.BackupDRBackupPlanAssociationSpec{}
 	// MISSING: Name
 	out.ResourceType = direct.LazyPtr(in.GetResourceType())
 	out.Resource = direct.LazyPtr(in.GetResource())
 	if in.GetBackupPlan() != "" {
-		out.BackupPlanRef = &krm.BackupPlanRef{External: in.GetBackupPlan()}
+		out.BackupPlanRef = &krmbackupdrv1beta1.BackupPlanRef{External: in.GetBackupPlan()}
 	}
 	// MISSING: CloudSQLInstanceBackupPlanAssociationProperties
 	// MISSING: BackupPlanRevisionID
@@ -137,7 +137,7 @@ func BackupDRBackupPlanAssociationSpec_v1beta1_FromProto(mapCtx *direct.MapConte
 /*
 found existing non-generated mapping function "BackupDRBackupPlanAssociationSpec_v1beta1_ToProto", skipping
 
-	func BackupDRBackupPlanAssociationSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupPlanAssociationSpec) *pb.BackupPlanAssociation {
+	func BackupDRBackupPlanAssociationSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.BackupDRBackupPlanAssociationSpec) *pb.BackupPlanAssociation {
 		if in == nil {
 			return nil
 		}
@@ -154,11 +154,11 @@ found existing non-generated mapping function "BackupDRBackupPlanAssociationSpec
 		return out
 	}
 */
-func BackupDRBackupPlanObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan) *krm.BackupDRBackupPlanObservedState {
+func BackupDRBackupPlanObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan) *krmbackupdrv1beta1.BackupDRBackupPlanObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupDRBackupPlanObservedState{}
+	out := &krmbackupdrv1beta1.BackupDRBackupPlanObservedState{}
 	// MISSING: Name
 	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -172,7 +172,7 @@ func BackupDRBackupPlanObservedState_v1beta1_FromProto(mapCtx *direct.MapContext
 	// MISSING: RevisionName
 	return out
 }
-func BackupDRBackupPlanObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupPlanObservedState) *pb.BackupPlan {
+func BackupDRBackupPlanObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.BackupDRBackupPlanObservedState) *pb.BackupPlan {
 	if in == nil {
 		return nil
 	}
@@ -192,11 +192,11 @@ func BackupDRBackupPlanObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, 
 }
 
 /* found existing non-generated mapping function "BackupDRBackupPlanSpec_v1beta1_FromProto", skipping
-func BackupDRBackupPlanSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan) *krm.BackupDRBackupPlanSpec {
+func BackupDRBackupPlanSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan) *krmbackupdrv1beta1.BackupDRBackupPlanSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupDRBackupPlanSpec{}
+	out := &krmbackupdrv1beta1.BackupDRBackupPlanSpec{}
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
 	// MISSING: Labels
@@ -204,7 +204,7 @@ func BackupDRBackupPlanSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.ResourceType = direct.LazyPtr(in.GetResourceType())
 	// MISSING: Etag
 	if in.GetBackupVault() != "" {
-		out.BackupVaultRef = &krm.BackupVaultRef{External: in.GetBackupVault()}
+		out.BackupVaultRef = &krmbackupdrv1beta1.BackupVaultRef{External: in.GetBackupVault()}
 	}
 	// MISSING: LogRetentionDays
 	// MISSING: SupportedResourceTypes
@@ -215,7 +215,7 @@ func BackupDRBackupPlanSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 */
 
 /* found existing non-generated mapping function "BackupDRBackupPlanSpec_v1beta1_ToProto", skipping
-func BackupDRBackupPlanSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupPlanSpec) *pb.BackupPlan {
+func BackupDRBackupPlanSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.BackupDRBackupPlanSpec) *pb.BackupPlan {
 	if in == nil {
 		return nil
 	}
@@ -238,11 +238,11 @@ func BackupDRBackupPlanSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.B
 */
 
 /* found existing non-generated mapping function "BackupDRBackupVaultObservedState_v1beta1_FromProto", skipping
-func BackupDRBackupVaultObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupDRBackupVaultObservedState {
+func BackupDRBackupVaultObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krmbackupdrv1beta1.BackupDRBackupVaultObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupDRBackupVaultObservedState{}
+	out := &krmbackupdrv1beta1.BackupDRBackupVaultObservedState{}
 	// MISSING: Name
 	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -262,7 +262,7 @@ func BackupDRBackupVaultObservedState_v1beta1_FromProto(mapCtx *direct.MapContex
 /*
 found existing non-generated mapping function "BackupDRBackupVaultObservedState_v1beta1_ToProto", skipping
 
-	func BackupDRBackupVaultObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupVaultObservedState) *pb.BackupVault {
+	func BackupDRBackupVaultObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.BackupDRBackupVaultObservedState) *pb.BackupVault {
 		if in == nil {
 			return nil
 		}
@@ -282,11 +282,11 @@ found existing non-generated mapping function "BackupDRBackupVaultObservedState_
 		return out
 	}
 */
-func BackupDRBackupVaultSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupDRBackupVaultSpec {
+func BackupDRBackupVaultSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krmbackupdrv1beta1.BackupDRBackupVaultSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupDRBackupVaultSpec{}
+	out := &krmbackupdrv1beta1.BackupDRBackupVaultSpec{}
 	// MISSING: Name
 	out.Description = in.Description
 	// MISSING: Labels
@@ -299,7 +299,7 @@ func BackupDRBackupVaultSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb
 }
 
 /* found existing non-generated mapping function "BackupDRBackupVaultSpec_v1beta1_ToProto", skipping
-func BackupDRBackupVaultSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupVaultSpec) *pb.BackupVault {
+func BackupDRBackupVaultSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.BackupDRBackupVaultSpec) *pb.BackupVault {
 	if in == nil {
 		return nil
 	}
@@ -401,6 +401,58 @@ func BackupDRManagementServerSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	// MISSING: SatisfiesPzi
 	return out
 }
+func BackupDRRestoreVerificationPlanObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RestoreVerificationPlan) *krmbackupdrv1alpha1.BackupDRRestoreVerificationPlanObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmbackupdrv1alpha1.BackupDRRestoreVerificationPlanObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func BackupDRRestoreVerificationPlanObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.BackupDRRestoreVerificationPlanObservedState) *pb.RestoreVerificationPlan {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RestoreVerificationPlan{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	out.State = direct.Enum_ToProto[pb.RestoreVerificationPlan_State](mapCtx, in.State)
+	return out
+}
+func BackupDRRestoreVerificationPlanSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RestoreVerificationPlan) *krmbackupdrv1alpha1.BackupDRRestoreVerificationPlanSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmbackupdrv1alpha1.BackupDRRestoreVerificationPlanSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: Labels
+	out.Schedule = direct.LazyPtr(in.GetSchedule())
+	out.TimeZone = direct.LazyPtr(in.GetTimeZone())
+	out.SuccessCleanupRule = RestoreVerificationCleanupRule_v1alpha1_FromProto(mapCtx, in.GetSuccessCleanupRule())
+	out.FailureCleanupRule = RestoreVerificationCleanupRule_v1alpha1_FromProto(mapCtx, in.GetFailureCleanupRule())
+	return out
+}
+func BackupDRRestoreVerificationPlanSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.BackupDRRestoreVerificationPlanSpec) *pb.RestoreVerificationPlan {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RestoreVerificationPlan{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: Labels
+	out.Schedule = direct.ValueOf(in.Schedule)
+	out.TimeZone = direct.ValueOf(in.TimeZone)
+	out.SuccessCleanupRule = RestoreVerificationCleanupRule_v1alpha1_ToProto(mapCtx, in.SuccessCleanupRule)
+	out.FailureCleanupRule = RestoreVerificationCleanupRule_v1alpha1_ToProto(mapCtx, in.FailureCleanupRule)
+	return out
+}
 func BackupPlanDetail_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlanDetail) *krmbackupdrv1alpha1.BackupPlanDetail {
 	if in == nil {
 		return nil
@@ -423,17 +475,17 @@ func BackupPlanDetail_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupd
 	}
 	return out
 }
-func BackupRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupRule) *krm.BackupRule {
+func BackupRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupRule) *krmbackupdrv1beta1.BackupRule {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupRule{}
+	out := &krmbackupdrv1beta1.BackupRule{}
 	out.RuleID = direct.LazyPtr(in.GetRuleId())
 	out.BackupRetentionDays = direct.LazyPtr(in.GetBackupRetentionDays())
 	out.StandardSchedule = StandardSchedule_v1beta1_FromProto(mapCtx, in.GetStandardSchedule())
 	return out
 }
-func BackupRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackupRule) *pb.BackupRule {
+func BackupRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.BackupRule) *pb.BackupRule {
 	if in == nil {
 		return nil
 	}
@@ -445,16 +497,16 @@ func BackupRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackupRule) *
 	}
 	return out
 }
-func BackupWindow_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupWindow) *krm.BackupWindow {
+func BackupWindow_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupWindow) *krmbackupdrv1beta1.BackupWindow {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupWindow{}
+	out := &krmbackupdrv1beta1.BackupWindow{}
 	out.StartHourOfDay = direct.LazyPtr(in.GetStartHourOfDay())
 	out.EndHourOfDay = direct.LazyPtr(in.GetEndHourOfDay())
 	return out
 }
-func BackupWindow_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackupWindow) *pb.BackupWindow {
+func BackupWindow_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.BackupWindow) *pb.BackupWindow {
 	if in == nil {
 		return nil
 	}
@@ -606,13 +658,31 @@ func PolicyEvaluationSummaryObservedState_v1alpha1_ToProto(mapCtx *direct.MapCon
 	out.FailedResourceCount = direct.ValueOf(in.FailedResourceCount)
 	return out
 }
-
-/* found existing non-generated mapping function "RuleConfigInfoObservedState_v1beta1_FromProto", skipping
-func RuleConfigInfoObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RuleConfigInfo) *krm.RuleConfigInfoObservedState {
+func RestoreVerificationCleanupRule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RestoreVerificationCleanupRule) *krmbackupdrv1alpha1.RestoreVerificationCleanupRule {
 	if in == nil {
 		return nil
 	}
-	out := &krm.RuleConfigInfoObservedState{}
+	out := &krmbackupdrv1alpha1.RestoreVerificationCleanupRule{}
+	out.CleanupDelay = direct.StringDuration_FromProto(mapCtx, in.GetCleanupDelay())
+	out.SkipCleanup = in.SkipCleanup
+	return out
+}
+func RestoreVerificationCleanupRule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.RestoreVerificationCleanupRule) *pb.RestoreVerificationCleanupRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RestoreVerificationCleanupRule{}
+	out.CleanupDelay = direct.StringDuration_ToProto(mapCtx, in.CleanupDelay)
+	out.SkipCleanup = in.SkipCleanup
+	return out
+}
+
+/* found existing non-generated mapping function "RuleConfigInfoObservedState_v1beta1_FromProto", skipping
+func RuleConfigInfoObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RuleConfigInfo) *krmbackupdrv1beta1.RuleConfigInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmbackupdrv1beta1.RuleConfigInfoObservedState{}
 	out.RuleID = direct.LazyPtr(in.GetRuleId())
 	out.LastBackupState = direct.Enum_FromProto(mapCtx, in.GetLastBackupState())
 	out.LastBackupError = direct.Status_FromProto(mapCtx, in.GetLastBackupError())
@@ -624,7 +694,7 @@ func RuleConfigInfoObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in
 /*
 found existing non-generated mapping function "RuleConfigInfoObservedState_v1beta1_ToProto", skipping
 
-	func RuleConfigInfoObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RuleConfigInfoObservedState) *pb.RuleConfigInfo {
+	func RuleConfigInfoObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.RuleConfigInfoObservedState) *pb.RuleConfigInfo {
 		if in == nil {
 			return nil
 		}
@@ -636,11 +706,11 @@ found existing non-generated mapping function "RuleConfigInfoObservedState_v1bet
 		return out
 	}
 */
-func StandardSchedule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.StandardSchedule) *krm.StandardSchedule {
+func StandardSchedule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.StandardSchedule) *krmbackupdrv1beta1.StandardSchedule {
 	if in == nil {
 		return nil
 	}
-	out := &krm.StandardSchedule{}
+	out := &krmbackupdrv1beta1.StandardSchedule{}
 	out.RecurrenceType = direct.Enum_FromProto(mapCtx, in.GetRecurrenceType())
 	out.HourlyFrequency = direct.LazyPtr(in.GetHourlyFrequency())
 	out.DaysOfWeek = direct.EnumSlice_FromProto(mapCtx, in.DaysOfWeek)
@@ -651,7 +721,7 @@ func StandardSchedule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Standa
 	out.TimeZone = direct.LazyPtr(in.GetTimeZone())
 	return out
 }
-func StandardSchedule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.StandardSchedule) *pb.StandardSchedule {
+func StandardSchedule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.StandardSchedule) *pb.StandardSchedule {
 	if in == nil {
 		return nil
 	}
@@ -666,16 +736,16 @@ func StandardSchedule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Standar
 	out.TimeZone = direct.ValueOf(in.TimeZone)
 	return out
 }
-func WeekDayOfMonth_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.WeekDayOfMonth) *krm.WeekDayOfMonth {
+func WeekDayOfMonth_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.WeekDayOfMonth) *krmbackupdrv1beta1.WeekDayOfMonth {
 	if in == nil {
 		return nil
 	}
-	out := &krm.WeekDayOfMonth{}
+	out := &krmbackupdrv1beta1.WeekDayOfMonth{}
 	out.WeekOfMonth = direct.Enum_FromProto(mapCtx, in.GetWeekOfMonth())
 	out.DayOfWeek = direct.Enum_FromProto(mapCtx, in.GetDayOfWeek())
 	return out
 }
-func WeekDayOfMonth_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.WeekDayOfMonth) *pb.WeekDayOfMonth {
+func WeekDayOfMonth_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.WeekDayOfMonth) *pb.WeekDayOfMonth {
 	if in == nil {
 		return nil
 	}
