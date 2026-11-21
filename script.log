@@ -1,0 +1,1879 @@
+Gathering all defined kinds from config/crds/resources...
+Found 444 unique kinds in CRD definitions.
+
+Analyzing experiments/conductor/branches-all.yaml for missing or invalid kinds, proto paths, and proto messages...
+
+Entry accessapproval-accessapprovalsettings has an invalid kind: AccessApprovalAccessApprovalSettings
+Entry accesscontextmanager-accesscontextmanageraccesslevelconditions has a missing kind.
+Entry accesscontextmanager-accesscontextmanagerauthorizedorgs has a missing kind.
+Entry accesscontextmanager-accesscontextmanagersupportedservices has a missing kind.
+Entry accesscontextmanager-accesscontextmanageraccesslevel specifies a proto message AccessLevel that was not found in google/identity/accesscontextmanager/v1/access_context_manager.proto
+Entry accesscontextmanager-accesscontextmanageraccesspolicy specifies a proto message AccessPolicy that was not found in google/identity/accesscontextmanager/v1/access_context_manager.proto
+Entry accesscontextmanager-accesscontextmanagerserviceperimeter specifies a proto message ServicePerimeter that was not found in google/identity/accesscontextmanager/v1/access_context_manager.proto
+Entry accesscontextmanager-accesscontextmanagerserviceperimeterresource specifies a proto message ServicePerimeter that was not found in google/identity/accesscontextmanager/v1/access_context_manager.proto
+Entry accesscontextmanager-accesscontextmanagergcpuseraccessbindings has an invalid kind: IdentityGcpUserAccessBinding
+Entry activedirectory-domains has a missing kind.
+Entry activedirectory-operations has a missing kind.
+Entry activedirectory-peerings has a missing kind.
+Entry advisorynotifications-notification has an invalid kind: AdvisoryNotificationsNotification
+Entry advisorynotifications-settings has an invalid kind: AdvisoryNotificationsSettings
+Entry ai-customjobs has a missing kind.
+Entry ai-endpoints has a missing kind.
+Entry ai-hptuningjobs has a missing kind.
+Entry ai-indexendpoints has a missing kind.
+Entry ai-indexes has a missing kind.
+Entry ai-modelmonitoringjobs has a missing kind.
+Entry ai-persistentresources has a missing kind.
+Entry ai-tensorboards has a missing kind.
+Entry ai-cachedcontent has an invalid kind: AICachedContent
+Entry ai-cachedcontent specifies a proto message CachedContent that was not found in google/ai/generativelanguage/v1beta/cache_service.proto
+Entry ai-chunk has an invalid kind: AIChunk
+Entry ai-chunk specifies a proto message Chunk that was not found in google/ai/generativelanguage/v1beta/cache_service.proto
+Entry ai-corpus has an invalid kind: AICorpus
+Entry ai-corpus specifies a proto message Corpus that was not found in google/ai/generativelanguage/v1beta/cache_service.proto
+Entry ai-document has an invalid kind: AIDocument
+Entry ai-document specifies a proto message Document that was not found in google/ai/generativelanguage/v1beta/cache_service.proto
+Entry ai-file has an invalid kind: AIFile
+Entry ai-file specifies a proto message File that was not found in google/ai/generativelanguage/v1beta/file_service.proto
+Entry ai-model has an invalid kind: AIModel
+Entry ai-model specifies a proto message Model that was not found in google/ai/generativelanguage/v1/model_service.proto
+Entry ai-permission has an invalid kind: AIPermission
+Entry ai-permission specifies a proto message Permission that was not found in google/ai/generativelanguage/v1beta3/permission_service.proto
+Entry ai-tunedmodel has an invalid kind: AITunedModel
+Entry ai-tunedmodel specifies a proto message TunedModel that was not found in google/ai/generativelanguage/v1beta3/discuss_service.proto
+Entry aiplatform-jobs has a missing kind.
+Entry aiplatform-local has a missing kind.
+Entry aiplatform-operations has a missing kind.
+Entry aiplatform-versions has a missing kind.
+Entry aiplatform-annotation has an invalid kind: AIPlatformAnnotation
+Entry aiplatform-annotation specifies a proto message Annotation that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-annotationspec has an invalid kind: AIPlatformAnnotationSpec
+Entry aiplatform-annotationspec specifies a proto message AnnotationSpec that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-artifact has an invalid kind: AIPlatformArtifact
+Entry aiplatform-artifact specifies a proto message Artifact that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-batchpredictionjob has an invalid kind: AIPlatformBatchPredictionJob
+Entry aiplatform-batchpredictionjob specifies a proto message BatchPredictionJob that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-cachedcontent has an invalid kind: AIPlatformCachedContent
+Entry aiplatform-cachedcontent specifies a proto message CachedContent that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-context has an invalid kind: AIPlatformContext
+Entry aiplatform-context specifies a proto message Context that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-customjob has an invalid kind: AIPlatformCustomJob
+Entry aiplatform-customjob specifies a proto message CustomJob that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-dataitem has an invalid kind: AIPlatformDataItem
+Entry aiplatform-datalabelingjob has an invalid kind: AIPlatformDataLabelingJob
+Entry aiplatform-datalabelingjob specifies a proto message DataLabelingJob that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-dataset has an invalid kind: AIPlatformDataset
+Entry aiplatform-dataset specifies a proto message Dataset that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-datasetversion has an invalid kind: AIPlatformDatasetVersion
+Entry aiplatform-datasetversion specifies a proto message DatasetVersion that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-deploymentresourcepool has an invalid kind: AIPlatformDeploymentResourcePool
+Entry aiplatform-deploymentresourcepool specifies a proto message DeploymentResourcePool that was not found in google/cloud/aiplatform/v1/deployment_resource_pool_service.proto
+Entry aiplatform-endpoint has an invalid kind: AIPlatformEndpoint
+Entry aiplatform-endpoint specifies a proto message Endpoint that was not found in google/cloud/aiplatform/v1/endpoint_service.proto
+Entry aiplatform-entitytype has an invalid kind: AIPlatformEntityType
+Entry aiplatform-entitytype specifies a proto message EntityType that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-execution has an invalid kind: AIPlatformExecution
+Entry aiplatform-execution specifies a proto message Execution that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-extension has an invalid kind: AIPlatformExtension
+Entry aiplatform-extension specifies a proto message Extension that was not found in google/cloud/aiplatform/v1beta1/extension_execution_service.proto
+Entry aiplatform-feature has an invalid kind: AIPlatformFeature
+Entry aiplatform-feature specifies a proto message Feature that was not found in google/cloud/aiplatform/v1/feature_online_store_admin_service.proto
+Entry aiplatform-featuregroup has an invalid kind: AIPlatformFeatureGroup
+Entry aiplatform-featuregroup specifies a proto message FeatureGroup that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-featuremonitor has an invalid kind: AIPlatformFeatureMonitor
+Entry aiplatform-featuremonitor specifies a proto message FeatureMonitor that was not found in google/cloud/aiplatform/v1beta1/dataset_service.proto
+Entry aiplatform-featuremonitorjob has an invalid kind: AIPlatformFeatureMonitorJob
+Entry aiplatform-featuremonitorjob specifies a proto message FeatureMonitorJob that was not found in google/cloud/aiplatform/v1beta1/dataset_service.proto
+Entry aiplatform-featureonlinestore has an invalid kind: AIPlatformFeatureOnlineStore
+Entry aiplatform-featureonlinestore specifies a proto message FeatureOnlineStore that was not found in google/cloud/aiplatform/v1/feature_online_store_admin_service.proto
+Entry aiplatform-featureview has an invalid kind: AIPlatformFeatureView
+Entry aiplatform-featureview specifies a proto message FeatureView that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-featureviewsync has an invalid kind: AIPlatformFeatureViewSync
+Entry aiplatform-featureviewsync specifies a proto message FeatureViewSync that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-featurestore has an invalid kind: AIPlatformFeaturestore
+Entry aiplatform-featurestore specifies a proto message Featurestore that was not found in google/cloud/aiplatform/v1/featurestore_online_service.proto
+Entry aiplatform-hyperparametertuningjob has an invalid kind: AIPlatformHyperparameterTuningJob
+Entry aiplatform-hyperparametertuningjob specifies a proto message HyperparameterTuningJob that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-index has an invalid kind: AIPlatformIndex
+Entry aiplatform-index specifies a proto message Index that was not found in google/cloud/aiplatform/v1/index_endpoint_service.proto
+Entry aiplatform-indexendpoint has an invalid kind: AIPlatformIndexEndpoint
+Entry aiplatform-indexendpoint specifies a proto message IndexEndpoint that was not found in google/cloud/aiplatform/v1/index_endpoint_service.proto
+Entry aiplatform-metadataschema has an invalid kind: AIPlatformMetadataSchema
+Entry aiplatform-metadataschema specifies a proto message MetadataSchema that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-metadatastore has an invalid kind: AIPlatformMetadataStore
+Entry aiplatform-metadatastore specifies a proto message MetadataStore that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-modeldeploymentmonitoringjob has an invalid kind: AIPlatformModelDeploymentMonitoringJob
+Entry aiplatform-modeldeploymentmonitoringjob specifies a proto message ModelDeploymentMonitoringJob that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-modelevaluation has an invalid kind: AIPlatformModelEvaluation
+Entry aiplatform-modelevaluation specifies a proto message ModelEvaluation that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-modelevaluationslice has an invalid kind: AIPlatformModelEvaluationSlice
+Entry aiplatform-modelevaluationslice specifies a proto message ModelEvaluationSlice that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-modelmonitor has an invalid kind: AIPlatformModelMonitor
+Entry aiplatform-modelmonitor specifies a proto message ModelMonitor that was not found in google/cloud/aiplatform/v1beta1/model_monitoring_service.proto
+Entry aiplatform-modelmonitoringjob has an invalid kind: AIPlatformModelMonitoringJob
+Entry aiplatform-modelmonitoringjob specifies a proto message ModelMonitoringJob that was not found in google/cloud/aiplatform/v1beta1/dataset_service.proto
+Entry aiplatform-nasjob has an invalid kind: AIPlatformNasJob
+Entry aiplatform-nasjob specifies a proto message NasJob that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-nastrialdetail has an invalid kind: AIPlatformNasTrialDetail
+Entry aiplatform-nastrialdetail specifies a proto message NasTrialDetail that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-notebookexecutionjob has an invalid kind: AIPlatformNotebookExecutionJob
+Entry aiplatform-notebookexecutionjob specifies a proto message NotebookExecutionJob that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-notebookruntime has an invalid kind: AIPlatformNotebookRuntime
+Entry aiplatform-notebookruntime specifies a proto message NotebookRuntime that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-notebookruntimetemplate has an invalid kind: AIPlatformNotebookRuntimeTemplate
+Entry aiplatform-notebookruntimetemplate specifies a proto message NotebookRuntimeTemplate that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-persistentresource has an invalid kind: AIPlatformPersistentResource
+Entry aiplatform-persistentresource specifies a proto message PersistentResource that was not found in google/cloud/aiplatform/v1/persistent_resource_service.proto
+Entry aiplatform-pipelinejob has an invalid kind: AIPlatformPipelineJob
+Entry aiplatform-pipelinejob specifies a proto message PipelineJob that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-publishermodel has an invalid kind: AIPlatformPublisherModel
+Entry aiplatform-publishermodel specifies a proto message PublisherModel that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-ragcorpus has an invalid kind: AIPlatformRagCorpus
+Entry aiplatform-ragcorpus specifies a proto message RagCorpus that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-ragfile has an invalid kind: AIPlatformRagFile
+Entry aiplatform-ragfile specifies a proto message RagFile that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-reasoningengine has an invalid kind: AIPlatformReasoningEngine
+Entry aiplatform-reasoningengine specifies a proto message ReasoningEngine that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-savedquery has an invalid kind: AIPlatformSavedQuery
+Entry aiplatform-savedquery specifies a proto message SavedQuery that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-schedule has an invalid kind: AIPlatformSchedule
+Entry aiplatform-schedule specifies a proto message Schedule that was not found in google/cloud/aiplatform/v1/schedule_service.proto
+Entry aiplatform-specialistpool has an invalid kind: AIPlatformSpecialistPool
+Entry aiplatform-specialistpool specifies a proto message SpecialistPool that was not found in google/cloud/aiplatform/v1/specialist_pool_service.proto
+Entry aiplatform-study has an invalid kind: AIPlatformStudy
+Entry aiplatform-study specifies a proto message Study that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-tensorboard has an invalid kind: AIPlatformTensorboard
+Entry aiplatform-tensorboard specifies a proto message Tensorboard that was not found in google/cloud/aiplatform/v1/tensorboard_service.proto
+Entry aiplatform-tensorboardexperiment has an invalid kind: AIPlatformTensorboardExperiment
+Entry aiplatform-tensorboardexperiment specifies a proto message TensorboardExperiment that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-tensorboardrun has an invalid kind: AIPlatformTensorboardRun
+Entry aiplatform-tensorboardrun specifies a proto message TensorboardRun that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-tensorboardtimeseries has an invalid kind: AIPlatformTensorboardTimeSeries
+Entry aiplatform-tensorboardtimeseries specifies a proto message TensorboardTimeSeries that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-trainingpipeline has an invalid kind: AIPlatformTrainingPipeline
+Entry aiplatform-trainingpipeline specifies a proto message TrainingPipeline that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-trial has an invalid kind: AIPlatformTrial
+Entry aiplatform-trial specifies a proto message Trial that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry aiplatform-tuningjob has an invalid kind: AIPlatformTuningJob
+Entry aiplatform-tuningjob specifies a proto message TuningJob that was not found in google/cloud/aiplatform/v1/dataset_service.proto
+Entry alloydb-alloydbinstance has a missing kind.
+Entry alloydb-backup has an invalid kind: AlloydbBackup
+Entry alloydb-backup specifies a proto message Backup that was not found in google/cloud/alloydb/v1/service.proto
+Entry alloydb-cluster has an invalid kind: AlloydbCluster
+Entry alloydb-connectioninfo has an invalid kind: AlloydbConnectionInfo
+Entry alloydb-connectioninfo specifies a proto message ConnectionInfo that was not found in google/cloud/alloydb/v1/service.proto
+Entry alloydb-database has an invalid kind: AlloydbDatabase
+Entry alloydb-database specifies a proto message Database that was not found in google/cloud/alloydb/v1/service.proto
+Entry alloydb-instance has an invalid kind: AlloydbInstance
+Entry alloydb-supporteddatabaseflag has an invalid kind: AlloydbSupportedDatabaseFlag
+Entry alloydb-supporteddatabaseflag specifies a proto message SupportedDatabaseFlag that was not found in google/cloud/alloydb/v1/service.proto
+Entry alloydb-user has an invalid kind: AlloydbUser
+Entry alloydb-user specifies a proto message User that was not found in google/cloud/alloydb/v1/service.proto
+Entry analytics-account has an invalid kind: AnalyticsAccount
+Entry analytics-account specifies a proto message Account that was not found in google/analytics/admin/v1beta/analytics_admin.proto
+Entry analytics-accountsummary has an invalid kind: AnalyticsAccountSummary
+Entry analytics-accountsummary specifies a proto message AccountSummary that was not found in google/analytics/admin/v1beta/analytics_admin.proto
+Entry analytics-audienceexport has an invalid kind: AnalyticsAudienceExport
+Entry analytics-conversionevent has an invalid kind: AnalyticsConversionEvent
+Entry analytics-conversionevent specifies a proto message ConversionEvent that was not found in google/analytics/admin/v1beta/analytics_admin.proto
+Entry analytics-customdimension has an invalid kind: AnalyticsCustomDimension
+Entry analytics-customdimension specifies a proto message CustomDimension that was not found in google/analytics/admin/v1beta/analytics_admin.proto
+Entry analytics-custommetric has an invalid kind: AnalyticsCustomMetric
+Entry analytics-custommetric specifies a proto message CustomMetric that was not found in google/analytics/admin/v1beta/analytics_admin.proto
+Entry analytics-dataretentionsettings has an invalid kind: AnalyticsDataRetentionSettings
+Entry analytics-dataretentionsettings specifies a proto message DataRetentionSettings that was not found in google/analytics/admin/v1beta/analytics_admin.proto
+Entry analytics-datasharingsettings has an invalid kind: AnalyticsDataSharingSettings
+Entry analytics-datasharingsettings specifies a proto message DataSharingSettings that was not found in google/analytics/admin/v1beta/analytics_admin.proto
+Entry analytics-datastream has an invalid kind: AnalyticsDataStream
+Entry analytics-datastream specifies a proto message DataStream that was not found in google/analytics/admin/v1beta/analytics_admin.proto
+Entry analytics-firebaselink has an invalid kind: AnalyticsFirebaseLink
+Entry analytics-firebaselink specifies a proto message FirebaseLink that was not found in google/analytics/admin/v1beta/analytics_admin.proto
+Entry analytics-googleadslink has an invalid kind: AnalyticsGoogleAdsLink
+Entry analytics-googleadslink specifies a proto message GoogleAdsLink that was not found in google/analytics/admin/v1beta/analytics_admin.proto
+Entry analytics-keyevent has an invalid kind: AnalyticsKeyEvent
+Entry analytics-keyevent specifies a proto message KeyEvent that was not found in google/analytics/admin/v1beta/analytics_admin.proto
+Entry analytics-measurementprotocolsecret has an invalid kind: AnalyticsMeasurementProtocolSecret
+Entry analytics-measurementprotocolsecret specifies a proto message MeasurementProtocolSecret that was not found in google/analytics/admin/v1beta/analytics_admin.proto
+Entry analytics-metadata has an invalid kind: AnalyticsMetadata
+Entry analytics-property has an invalid kind: AnalyticsProperty
+Entry analytics-property specifies a proto message Property that was not found in google/analytics/admin/v1beta/analytics_admin.proto
+Entry api-quotainfo has an invalid kind: APIQuotaInfo
+Entry api-quotainfo specifies a proto message QuotaInfo that was not found in google/api/cloudquotas/v1/cloudquotas.proto
+Entry api-quotapreference specifies a proto message QuotaPreference that was not found in google/api/cloudquotas/v1/cloudquotas.proto
+Entry api-service has an invalid kind: APIService
+Entry api-service specifies a proto message Service that was not found in google/api/serviceusage/v1/serviceusage.proto
+Entry apigateway-apigatewayapiconfigs has a missing kind.
+Entry apigateway-apigatewayapis has a missing kind.
+Entry apigateway-apigatewaygateways has a missing kind.
+Entry apigateway-api specifies a proto message Api that was not found in google/cloud/apigateway/v1/apigateway_service.proto
+Entry apigateway-apiconfig specifies a proto message ApiConfig that was not found in google/cloud/apigateway/v1/apigateway_service.proto
+Entry apigateway-gateway specifies a proto message Gateway that was not found in google/cloud/apigateway/v1/apigateway_service.proto
+Entry apigateway-operation has an invalid kind: APIGatewayOperation
+Entry apigateway-operation specifies a proto message Gateway that was not found in google/cloud/apigateway/v1/apigateway_service.proto
+Entry apigee-apigeeaddonsconfigs has a missing kind.
+Entry apigee-apigeeendpointattachments has a missing kind.
+Entry apigee-apigeeenvgroupattachments has a missing kind.
+Entry apigee-apigeeenvgroups has a missing kind.
+Entry apigee-apigeeenvironments has a missing kind.
+Entry apigee-apigeeinstanceattachments has a missing kind.
+Entry apigee-apigeeinstances has a missing kind.
+Entry apigee-apigeenataddresses has a missing kind.
+Entry apigee-apigeeorganizations has a missing kind.
+Entry apigee-apigeesyncauthorizations has a missing kind.
+Entry apigeeregistry-application has a missing kind.
+Entry apigeeregistry-developer has a missing kind.
+Entry apigeeregistry-environment has a missing kind.
+Entry apigeeregistry-organization has a missing kind.
+Entry apigeeregistry-product has a missing kind.
+Entry apigeeregistry-api has an invalid kind: APIgeeRegistryApi
+Entry apigeeregistry-api specifies a proto message Api that was not found in google/cloud/apigeeregistry/v1/provisioning_service.proto
+Entry apigeeregistry-apideployment has an invalid kind: APIgeeRegistryApiDeployment
+Entry apigeeregistry-apideployment specifies a proto message ApiDeployment that was not found in google/cloud/apigeeregistry/v1/provisioning_service.proto
+Entry apigeeregistry-apispec has an invalid kind: APIgeeRegistryApiSpec
+Entry apigeeregistry-apispec specifies a proto message ApiSpec that was not found in google/cloud/apigeeregistry/v1/provisioning_service.proto
+Entry apigeeregistry-apiversion has an invalid kind: APIgeeRegistryApiVersion
+Entry apigeeregistry-apiversion specifies a proto message ApiVersion that was not found in google/cloud/apigeeregistry/v1/provisioning_service.proto
+Entry apigeeregistry-artifact has an invalid kind: APIgeeRegistryArtifact
+Entry apigeeregistry-artifact specifies a proto message Artifact that was not found in google/cloud/apigeeregistry/v1/provisioning_service.proto
+Entry apigeeregistry-instance has an invalid kind: APIgeeRegistryInstance
+Entry apihub-apihubinstance has an invalid kind: APIHubAPIHubInstance
+Entry apihub-apihubinstance specifies a proto message ApiHubInstance that was not found in google/cloud/apihub/v1/apihub_service.proto
+Entry apihub-apioperation has an invalid kind: APIHubAPIOperation
+Entry apihub-apioperation specifies a proto message ApiOperation that was not found in google/cloud/apihub/v1/apihub_service.proto
+Entry apihub-api has an invalid kind: APIHubApi
+Entry apihub-attribute has an invalid kind: APIHubAttribute
+Entry apihub-attribute specifies a proto message Attribute that was not found in google/cloud/apihub/v1/apihub_service.proto
+Entry apihub-definition has an invalid kind: APIHubDefinition
+Entry apihub-definition specifies a proto message Definition that was not found in google/cloud/apihub/v1/apihub_service.proto
+Entry apihub-dependency has an invalid kind: APIHubDependency
+Entry apihub-dependency specifies a proto message Dependency that was not found in google/cloud/apihub/v1/apihub_service.proto
+Entry apihub-deployment has an invalid kind: APIHubDeployment
+Entry apihub-deployment specifies a proto message Deployment that was not found in google/cloud/apihub/v1/apihub_service.proto
+Entry apihub-externalapi has an invalid kind: APIHubExternalAPI
+Entry apihub-externalapi specifies a proto message ExternalApi that was not found in google/cloud/apihub/v1/apihub_service.proto
+Entry apihub-hostprojectregistration has an invalid kind: APIHubHostProjectRegistration
+Entry apihub-plugin has an invalid kind: APIHubPlugin
+Entry apihub-plugin specifies a proto message Plugin that was not found in google/cloud/apihub/v1/apihub_service.proto
+Entry apihub-runtimeprojectattachment has an invalid kind: APIHubRuntimeProjectAttachment
+Entry apihub-spec has an invalid kind: APIHubSpec
+Entry apihub-spec specifies a proto message Spec that was not found in google/cloud/apihub/v1/apihub_service.proto
+Entry apihub-styleguide has an invalid kind: APIHubStyleGuide
+Entry apihub-styleguide specifies a proto message StyleGuide that was not found in google/cloud/apihub/v1/apihub_service.proto
+Entry apihub-version has an invalid kind: APIHubVersion
+Entry apihub-version specifies a proto message Version that was not found in google/cloud/apihub/v1/apihub_service.proto
+Entry apikeys-apikeyskeys has a missing kind.
+Entry appengine-appenginedomainmappings has a missing kind.
+Entry appengine-appenginefirewallrules has a missing kind.
+Entry appengine-appengineflexibleappversions has a missing kind.
+Entry appengine-appengineservicesplittraffics has a missing kind.
+Entry appengine-appenginestandardappversion has a missing kind.
+Entry appengine-log has a missing kind.
+Entry appengine-operation has a missing kind.
+Entry appengine-region has a missing kind.
+Entry appengine-runtime has a missing kind.
+Entry appengine-service has a missing kind.
+Entry appengine-version has a missing kind.
+Entry appengine-instance has an invalid kind: AppEngineInstance
+Entry appengine-instance specifies a proto message Instance that was not found in google/appengine/v1/appengine.proto
+Entry appengine-sslcertificate has an invalid kind: AppEngineSSLCertificate
+Entry apphub-locations has a missing kind.
+Entry apphub-operations has a missing kind.
+Entry apphub-serviceprojects has a missing kind.
+Entry apphub-versions has a missing kind.
+Entry apphub-applications specifies a proto message Application that was not found in google/cloud/apphub/v1/apphub_service.proto
+Entry apphub-discoveredservice specifies a proto message DiscoveredService that was not found in google/cloud/apphub/v1/apphub_service.proto
+Entry apphub-discoveredworkload specifies a proto message DiscoveredWorkload that was not found in google/cloud/apphub/v1/apphub_service.proto
+Entry apphub-service has an invalid kind: AppHubService
+Entry apphub-service specifies a proto message Service that was not found in google/cloud/apphub/v1/apphub_service.proto
+Entry apphub-serviceprojectattachment has an invalid kind: AppHubServiceProjectAttachment
+Entry apphub-serviceprojectattachment specifies a proto message ServiceProjectAttachment that was not found in google/cloud/apphub/v1/apphub_service.proto
+Entry apphub-workload has an invalid kind: AppHubWorkload
+Entry apphub-workload specifies a proto message Workload that was not found in google/cloud/apphub/v1/apphub_service.proto
+Entry artifactregistry-aptartifact has an invalid kind: ArtifactRegistryAptArtifact
+Entry artifactregistry-aptartifact specifies a proto message AptArtifact that was not found in google/devtools/artifactregistry/v1/service.proto
+Entry artifactregistry-attachment has an invalid kind: ArtifactRegistryAttachment
+Entry artifactregistry-attachment specifies a proto message Attachment that was not found in google/devtools/artifactregistry/v1/service.proto
+Entry artifactregistry-dockerimage has an invalid kind: ArtifactRegistryDockerImage
+Entry artifactregistry-dockerimage specifies a proto message DockerImage that was not found in google/devtools/artifactregistry/v1/service.proto
+Entry artifactregistry-file has an invalid kind: ArtifactRegistryFile
+Entry artifactregistry-file specifies a proto message File that was not found in google/devtools/artifactregistry/v1/service.proto
+Entry artifactregistry-genericartifact has an invalid kind: ArtifactRegistryGenericArtifact
+Entry artifactregistry-genericartifact specifies a proto message GenericArtifact that was not found in google/devtools/artifactregistry/v1/service.proto
+Entry artifactregistry-mavenartifact has an invalid kind: ArtifactRegistryMavenArtifact
+Entry artifactregistry-mavenartifact specifies a proto message MavenArtifact that was not found in google/devtools/artifactregistry/v1/service.proto
+Entry artifactregistry-npmpackage has an invalid kind: ArtifactRegistryNpmPackage
+Entry artifactregistry-npmpackage specifies a proto message NpmPackage that was not found in google/devtools/artifactregistry/v1/service.proto
+Entry artifactregistry-package has an invalid kind: ArtifactRegistryPackage
+Entry artifactregistry-package specifies a proto message Package that was not found in google/devtools/artifactregistry/v1/service.proto
+Entry artifactregistry-projectsettings has an invalid kind: ArtifactRegistryProjectSettings
+Entry artifactregistry-projectsettings specifies a proto message ProjectSettings that was not found in google/devtools/artifactregistry/v1/service.proto
+Entry artifactregistry-pythonpackage has an invalid kind: ArtifactRegistryPythonPackage
+Entry artifactregistry-pythonpackage specifies a proto message PythonPackage that was not found in google/devtools/artifactregistry/v1/service.proto
+Entry artifactregistry-repository specifies a proto message Repository that was not found in google/devtools/artifactregistry/v1/service.proto
+Entry artifactregistry-rule has an invalid kind: ArtifactRegistryRule
+Entry artifactregistry-rule specifies a proto message Rule that was not found in google/devtools/artifactregistry/v1/service.proto
+Entry artifactregistry-tag has an invalid kind: ArtifactRegistryTag
+Entry artifactregistry-tag specifies a proto message Tag that was not found in google/devtools/artifactregistry/v1/service.proto
+Entry artifactregistry-vpcscconfig has an invalid kind: ArtifactRegistryVPCSCConfig
+Entry artifactregistry-vpcscconfig specifies a proto message VPCSCConfig that was not found in google/devtools/artifactregistry/v1/service.proto
+Entry artifactregistry-version has an invalid kind: ArtifactRegistryVersion
+Entry artifactregistry-version specifies a proto message Version that was not found in google/devtools/artifactregistry/v1/service.proto
+Entry artifactregistry-yumartifact has an invalid kind: ArtifactRegistryYumArtifact
+Entry artifactregistry-yumartifact specifies a proto message YumArtifact that was not found in google/devtools/artifactregistry/v1/service.proto
+Entry asset-operations has a missing kind.
+Entry asset-asset has an invalid kind: AssetAsset
+Entry asset-asset specifies a proto message Asset that was not found in google/cloud/asset/v1/asset_service.proto
+Entry assuredworkloads-operation has a missing kind.
+Entry assuredworkloads-violation has an invalid kind: AssuredWorkloadsViolation
+Entry assuredworkloads-workload has an invalid kind: AssuredWorkloadsWorkload
+Entry auth-applicationdefault has a missing kind.
+Entry auth-enterprisecertificateconfig has a missing kind.
+Entry automl-annotationspec has an invalid kind: AutoMLAnnotationSpec
+Entry automl-annotationspec specifies a proto message AnnotationSpec that was not found in google/cloud/automl/v1/prediction_service.proto
+Entry automl-columnspec has an invalid kind: AutoMLColumnSpec
+Entry automl-columnspec specifies a proto message ColumnSpec that was not found in google/cloud/automl/v1beta1/prediction_service.proto
+Entry automl-dataset has an invalid kind: AutoMLDataset
+Entry automl-dataset specifies a proto message Dataset that was not found in google/cloud/automl/v1/prediction_service.proto
+Entry automl-model has an invalid kind: AutoMLModel
+Entry automl-model specifies a proto message Model that was not found in google/cloud/automl/v1/prediction_service.proto
+Entry automl-modelevaluation has an invalid kind: AutoMLModelEvaluation
+Entry automl-modelevaluation specifies a proto message ModelEvaluation that was not found in google/cloud/automl/v1/prediction_service.proto
+Entry automl-tablespec has an invalid kind: AutoMLTableSpec
+Entry automl-tablespec specifies a proto message TableSpec that was not found in google/cloud/automl/v1beta1/prediction_service.proto
+Entry backupdr-backup has an invalid kind: BackupDRBackup
+Entry backupdr-backup specifies a proto message Backup that was not found in google/cloud/backupdr/v1/backupdr.proto
+Entry backupdr-backupplan specifies a proto message BackupPlan that was not found in google/cloud/backupdr/v1/backupdr.proto
+Entry backupdr-backupplanassociation specifies a proto message BackupPlanAssociation that was not found in google/cloud/backupdr/v1/backupdr.proto
+Entry backupdr-backupvault specifies a proto message BackupVault that was not found in google/cloud/backupdr/v1/backupdr.proto
+Entry backupdr-datasource has an invalid kind: BackupDRDataSource
+Entry backupdr-datasource specifies a proto message DataSource that was not found in google/cloud/backupdr/v1/backupdr.proto
+Entry baremetalsolution-operation has a missing kind.
+Entry baremetalsolution-instance has an invalid kind: BareMetalSolutionInstance
+Entry baremetalsolution-instance specifies a proto message Instance that was not found in google/cloud/baremetalsolution/v2/baremetalsolution.proto
+Entry baremetalsolution-instanceconfig has an invalid kind: BareMetalSolutionInstanceConfig
+Entry baremetalsolution-instanceconfig specifies a proto message InstanceConfig that was not found in google/cloud/baremetalsolution/v2/baremetalsolution.proto
+Entry baremetalsolution-instancequota has an invalid kind: BareMetalSolutionInstanceQuota
+Entry baremetalsolution-instancequota specifies a proto message InstanceQuota that was not found in google/cloud/baremetalsolution/v2/baremetalsolution.proto
+Entry baremetalsolution-lun has an invalid kind: BareMetalSolutionLun
+Entry baremetalsolution-lun specifies a proto message Lun that was not found in google/cloud/baremetalsolution/v2/baremetalsolution.proto
+Entry baremetalsolution-nfsshare has an invalid kind: BareMetalSolutionNFSShare
+Entry baremetalsolution-network has an invalid kind: BareMetalSolutionNetwork
+Entry baremetalsolution-network specifies a proto message Network that was not found in google/cloud/baremetalsolution/v2/baremetalsolution.proto
+Entry baremetalsolution-networkconfig has an invalid kind: BareMetalSolutionNetworkConfig
+Entry baremetalsolution-networkconfig specifies a proto message NetworkConfig that was not found in google/cloud/baremetalsolution/v2/baremetalsolution.proto
+Entry baremetalsolution-osimage has an invalid kind: BareMetalSolutionOSImage
+Entry baremetalsolution-osimage specifies a proto message OSImage that was not found in google/cloud/baremetalsolution/v2/baremetalsolution.proto
+Entry baremetalsolution-provisioningconfig has an invalid kind: BareMetalSolutionProvisioningConfig
+Entry baremetalsolution-provisioningconfig specifies a proto message ProvisioningConfig that was not found in google/cloud/baremetalsolution/v2/baremetalsolution.proto
+Entry baremetalsolution-provisioningquota has an invalid kind: BareMetalSolutionProvisioningQuota
+Entry baremetalsolution-provisioningquota specifies a proto message ProvisioningQuota that was not found in google/cloud/baremetalsolution/v2/baremetalsolution.proto
+Entry baremetalsolution-sshkey has an invalid kind: BareMetalSolutionSSHKey
+Entry baremetalsolution-servernetworktemplate has an invalid kind: BareMetalSolutionServerNetworkTemplate
+Entry baremetalsolution-servernetworktemplate specifies a proto message ServerNetworkTemplate that was not found in google/cloud/baremetalsolution/v2/baremetalsolution.proto
+Entry baremetalsolution-volume has an invalid kind: BareMetalSolutionVolume
+Entry baremetalsolution-volume specifies a proto message Volume that was not found in google/cloud/baremetalsolution/v2/baremetalsolution.proto
+Entry baremetalsolution-volumeconfig has an invalid kind: BareMetalSolutionVolumeConfig
+Entry baremetalsolution-volumeconfig specifies a proto message VolumeConfig that was not found in google/cloud/baremetalsolution/v2/baremetalsolution.proto
+Entry baremetalsolution-volumesnapshot has an invalid kind: BareMetalSolutionVolumeSnapshot
+Entry baremetalsolution-volumesnapshot specifies a proto message VolumeSnapshot that was not found in google/cloud/baremetalsolution/v2/baremetalsolution.proto
+Entry batch-job specifies a proto message Job that was not found in google/cloud/batch/v1/batch.proto
+Entry batch-task specifies a proto message Task that was not found in google/cloud/batch/v1/batch.proto
+Entry batch-taskgroup has an invalid kind: BatchTaskGroup
+Entry batch-taskgroup specifies a proto message TaskGroup that was not found in google/cloud/batch/v1/batch.proto
+Entry beyondcorp-app has a missing kind.
+Entry beyondcorp-beyondcorpappconnections has a missing kind.
+Entry beyondcorp-beyondcorpappconnectors has a missing kind.
+Entry beyondcorp-beyondcorpappgateways has a missing kind.
+Entry beyondcorp-clientconnectorservice has an invalid kind: BeyondCorpClientConnectorService
+Entry beyondcorp-clientgateway has an invalid kind: BeyondCorpClientGateway
+Entry bigquery-bigquerydatasetaccesses has a missing kind.
+Entry bigquery-datasets has a missing kind.
+Entry bigquery-jobs has a missing kind.
+Entry bigquery-assignment has an invalid kind: BigqueryAssignment
+Entry bigquery-bireservation has an invalid kind: BigqueryBiReservation
+Entry bigquery-capacitycommitment has an invalid kind: BigqueryCapacityCommitment
+Entry bigquery-catalog has an invalid kind: BigqueryCatalog
+Entry bigquery-connection has an invalid kind: BigqueryConnection
+Entry bigquery-dataexchange has an invalid kind: BigqueryDataExchange
+Entry bigquery-datapolicy has an invalid kind: BigqueryDataPolicy
+Entry bigquery-datasource has an invalid kind: BigqueryDataSource
+Entry bigquery-database has an invalid kind: BigqueryDatabase
+Entry bigquery-listing has an invalid kind: BigqueryListing
+Entry bigquery-migrationsubtask has an invalid kind: BigqueryMigrationSubtask
+Entry bigquery-migrationsubtask specifies a proto message MigrationSubtask that was not found in google/cloud/bigquery/migration/v2/migration_service.proto
+Entry bigquery-migrationworkflow has an invalid kind: BigqueryMigrationWorkflow
+Entry bigquery-migrationworkflow specifies a proto message MigrationWorkflow that was not found in google/cloud/bigquery/migration/v2/migration_service.proto
+Entry bigquery-readsession has an invalid kind: BigqueryReadSession
+Entry bigquery-readsession specifies a proto message ReadSession that was not found in google/cloud/bigquery/storage/v1/storage.proto
+Entry bigquery-readstream has an invalid kind: BigqueryReadStream
+Entry bigquery-readstream specifies a proto message ReadStream that was not found in google/cloud/bigquery/storage/v1/storage.proto
+Entry bigquery-reservation has an invalid kind: BigqueryReservation
+Entry bigquery-stream has an invalid kind: BigqueryStream
+Entry bigquery-subscription has an invalid kind: BigquerySubscription
+Entry bigquery-table has an invalid kind: BigqueryTable
+Entry bigquery-transferconfig has an invalid kind: BigqueryTransferConfig
+Entry bigquery-transferconfig specifies a proto message TransferConfig that was not found in google/cloud/bigquery/datatransfer/v1/datatransfer.proto
+Entry bigquery-transferrun has an invalid kind: BigqueryTransferRun
+Entry bigquery-transferrun specifies a proto message TransferRun that was not found in google/cloud/bigquery/datatransfer/v1/datatransfer.proto
+Entry bigquery-writestream has an invalid kind: BigqueryWriteStream
+Entry bigquery-writestream specifies a proto message WriteStream that was not found in google/cloud/bigquery/storage/v1/storage.proto
+Entry bigqueryanalyticshub-bigqueryanalyticshubdataexchanges has a missing kind.
+Entry bigqueryanalyticshub-bigqueryanalyticshublistings has a missing kind.
+Entry bigqueryconnection-bigqueryconnectionconnections has a missing kind.
+Entry bigquerydatapolicy-bigquerydatapolicydatapolicies has a missing kind.
+Entry bigquerydatatransfer-bigquerydatatransferconfigs has a missing kind.
+Entry bigqueryreservation-bigqueryreservationcapacitycommitments has a missing kind.
+Entry bigqueryreservation-bigqueryreservationreservations has a missing kind.
+Entry bigtable-appprofile specifies a proto message AppProfile that was not found in google/bigtable/admin/v2/bigtable_instance_admin.proto
+Entry bigtable-authorizedview specifies a proto message AuthorizedView that was not found in google/bigtable/admin/v2/bigtable_table_admin.proto
+Entry bigtable-backup specifies a proto message Backup that was not found in google/bigtable/admin/v2/bigtable_table_admin.proto
+Entry bigtable-cluster specifies a proto message Cluster that was not found in google/bigtable/admin/v2/bigtable_instance_admin.proto
+Entry bigtable-bigtablegcpolicy specifies a proto message AppProfile that was not found in google/bigtable/admin/v2/bigtable_instance_admin.proto
+Entry bigtable-hottablet has an invalid kind: BigtableHotTablet
+Entry bigtable-hottablet specifies a proto message HotTablet that was not found in google/bigtable/admin/v2/bigtable_instance_admin.proto
+Entry bigtable-bigtableinstance specifies a proto message Instance that was not found in google/bigtable/admin/v2/bigtable_instance_admin.proto
+Entry bigtable-snapshot has an invalid kind: BigtableSnapshot
+Entry bigtable-snapshot specifies a proto message Snapshot that was not found in google/bigtable/admin/v2/bigtable_instance_admin.proto
+Entry billing-projects has a missing kind.
+Entry billing-billingaccount has an invalid kind: BillingBillingAccount
+Entry billing-budget has an invalid kind: BillingBudget
+Entry billing-budget specifies a proto message Budget that was not found in google/cloud/billing/budgets/v1/budget_service.proto
+Entry billing-projectbillinginfo has an invalid kind: BillingProjectBillingInfo
+Entry billing-sku has an invalid kind: BillingSKU
+Entry billing-sku specifies a proto message Sku that was not found in google/cloud/billing/v1/cloud_billing.proto
+Entry billing-service has an invalid kind: BillingService
+Entry billing-service specifies a proto message Service that was not found in google/cloud/billing/v1/cloud_billing.proto
+Entry billingbudgets-billingbudgetsbudgets has a missing kind.
+Entry binaryauthorization-binaryauthorizationattestors has a missing kind.
+Entry binaryauthorization-binaryauthorizationpolicies has a missing kind.
+Entry binaryauthorization-attestor specifies a proto message Attestor that was not found in google/cloud/binaryauthorization/v1/service.proto
+Entry binaryauthorization-policy specifies a proto message Policy that was not found in google/cloud/binaryauthorization/v1/service.proto
+Entry blockchainnodeengine-blockchainnode has an invalid kind: BlockchainNodeEngineBlockchainNode
+Entry certificatemanager-certificatemanagerdnsauthorizations has a missing kind.
+Entry certificatemanager-maps has a missing kind.
+Entry certificatemanager-certificateissuanceconfig has an invalid kind: CertificateManagerCertificateIssuanceConfig
+Entry certificatemanager-certificateissuanceconfig specifies a proto message CertificateIssuanceConfig that was not found in google/cloud/certificatemanager/v1/certificate_manager.proto
+Entry certificatemanager-dnsauthorization has an invalid kind: CertificateManagerDnsAuthorization
+Entry certificatemanager-trustconfig has an invalid kind: CertificateManagerTrustConfig
+Entry certificatemanager-trustconfig specifies a proto message TrustConfig that was not found in google/cloud/certificatemanager/v1/certificate_manager.proto
+Entry channel-billingaccount has an invalid kind: ChannelBillingAccount
+Entry channel-billingaccount specifies a proto message BillingAccount that was not found in google/cloud/channel/v1/reports_service.proto
+Entry channel-channelpartnerlink has an invalid kind: ChannelChannelPartnerLink
+Entry channel-channelpartnerlink specifies a proto message ChannelPartnerLink that was not found in google/cloud/channel/v1/reports_service.proto
+Entry channel-channelpartnerrepricingconfig has an invalid kind: ChannelChannelPartnerRepricingConfig
+Entry channel-channelpartnerrepricingconfig specifies a proto message ChannelPartnerRepricingConfig that was not found in google/cloud/channel/v1/reports_service.proto
+Entry channel-customer has an invalid kind: ChannelCustomer
+Entry channel-customer specifies a proto message Customer that was not found in google/cloud/channel/v1/reports_service.proto
+Entry channel-customerrepricingconfig has an invalid kind: ChannelCustomerRepricingConfig
+Entry channel-customerrepricingconfig specifies a proto message CustomerRepricingConfig that was not found in google/cloud/channel/v1/reports_service.proto
+Entry channel-entitlement has an invalid kind: ChannelEntitlement
+Entry channel-entitlement specifies a proto message Entitlement that was not found in google/cloud/channel/v1/reports_service.proto
+Entry channel-offer has an invalid kind: ChannelOffer
+Entry channel-offer specifies a proto message Offer that was not found in google/cloud/channel/v1/reports_service.proto
+Entry channel-product has an invalid kind: ChannelProduct
+Entry channel-product specifies a proto message Product that was not found in google/cloud/channel/v1/reports_service.proto
+Entry channel-report has an invalid kind: ChannelReport
+Entry channel-reportjob has an invalid kind: ChannelReportJob
+Entry channel-sku has an invalid kind: ChannelSku
+Entry channel-sku specifies a proto message Sku that was not found in google/cloud/channel/v1/reports_service.proto
+Entry channel-skugroup has an invalid kind: ChannelSkuGroup
+Entry channel-skugroup specifies a proto message SkuGroup that was not found in google/cloud/channel/v1/reports_service.proto
+Entry cloudasset-cloudassetfolderfeeds has a missing kind.
+Entry cloudasset-cloudassetorganizationfeeds has a missing kind.
+Entry cloudasset-cloudassetprojectfeeds has a missing kind.
+Entry cloudbuild-workerpools has a missing kind.
+Entry cloudbuild-build has an invalid kind: CloudBuildBuild
+Entry cloudbuild-buildtrigger has an invalid kind: CloudBuildBuildTrigger
+Entry cloudbuild-connection has an invalid kind: CloudBuildConnection
+Entry cloudbuild-githubenterpriseconfig has an invalid kind: CloudBuildGitHubEnterpriseConfig
+Entry cloudbuild-repository has an invalid kind: CloudBuildRepository
+Entry cloudcontrolspartner-accessapprovalrequest has an invalid kind: CloudControlsPartnerAccessApprovalRequest
+Entry cloudcontrolspartner-accessapprovalrequest specifies a proto message AccessApprovalRequest that was not found in google/cloud/cloudcontrolspartner/v1/core.proto
+Entry cloudcontrolspartner-customer has an invalid kind: CloudControlsPartnerCustomer
+Entry cloudcontrolspartner-customer specifies a proto message Customer that was not found in google/cloud/cloudcontrolspartner/v1/core.proto
+Entry cloudcontrolspartner-ekmconnection has an invalid kind: CloudControlsPartnerEkmConnection
+Entry cloudcontrolspartner-ekmconnection specifies a proto message EkmConnections that was not found in google/cloud/cloudcontrolspartner/v1/core.proto
+Entry cloudcontrolspartner-partner has an invalid kind: CloudControlsPartnerPartner
+Entry cloudcontrolspartner-partner specifies a proto message Partner that was not found in google/cloud/cloudcontrolspartner/v1/core.proto
+Entry cloudcontrolspartner-partnerpermission has an invalid kind: CloudControlsPartnerPartnerPermission
+Entry cloudcontrolspartner-partnerpermission specifies a proto message PartnerPermissions that was not found in google/cloud/cloudcontrolspartner/v1/core.proto
+Entry cloudcontrolspartner-violation has an invalid kind: CloudControlsPartnerViolation
+Entry cloudcontrolspartner-violation specifies a proto message Violation that was not found in google/cloud/cloudcontrolspartner/v1/core.proto
+Entry cloudcontrolspartner-workload has an invalid kind: CloudControlsPartnerWorkload
+Entry cloudcontrolspartner-workload specifies a proto message Workload that was not found in google/cloud/cloudcontrolspartner/v1/core.proto
+Entry clouddeploy-customtargettype has an invalid kind: CloudDeployCustomTargetType
+Entry clouddms-objects has a missing kind.
+Entry clouddms-operations has a missing kind.
+Entry clouddms-connectionprofile has an invalid kind: CloudDMSConnectionProfile
+Entry clouddms-connectionprofile specifies a proto message ConnectionProfile that was not found in google/cloud/clouddms/v1/clouddms.proto
+Entry clouddms-conversionworkspace specifies a proto message ConversionWorkspace that was not found in google/cloud/clouddms/v1/clouddms.proto
+Entry clouddms-mappingrule has an invalid kind: CloudDMSMappingRule
+Entry clouddms-mappingrule specifies a proto message MappingRule that was not found in google/cloud/clouddms/v1/clouddms.proto
+Entry clouddms-migrationjob has an invalid kind: CloudDMSMigrationJob
+Entry clouddms-migrationjob specifies a proto message MigrationJob that was not found in google/cloud/clouddms/v1/clouddms.proto
+Entry clouddms-privateconnection specifies a proto message PrivateConnection that was not found in google/cloud/clouddms/v1/clouddms.proto
+Entry clouderrorreporting-errorgroup has an invalid kind: CloudErrorReportingErrorGroup
+Entry clouderrorreporting-errorgroup specifies a proto message ErrorGroup that was not found in google/devtools/clouderrorreporting/v1beta1/error_group_service.proto
+Entry cloudfunctions-cloudfunctionsfunctions has a missing kind.
+Entry cloudfunctions2-cloudfunctions2functions has a missing kind.
+Entry cloudidentity-cloudidentitymembership has a missing kind.
+Entry cloudiot-cloudiotdeviceregistries has a missing kind.
+Entry cloudiot-cloudiotdevices has a missing kind.
+Entry cloudprofiler-profile has an invalid kind: CloudProfilerProfile
+Entry cloudscheduler-cloudschedulerjobs has a missing kind.
+Entry cloudtasks-cloudtasksqueues has a missing kind.
+Entry cloudtrace-span has an invalid kind: CloudTraceSpan
+Entry cloudtrace-span specifies a proto message Span that was not found in google/devtools/cloudtrace/v2/tracing.proto
+Entry colab-execution has an invalid kind: ColabExecution
+Entry colab-schedule has an invalid kind: ColabSchedule
+Entry commerce-licensepool has an invalid kind: CommerceLicensePool
+Entry commerce-order has an invalid kind: CommerceOrder
+Entry commerce-order specifies a proto message Order that was not found in google/cloud/commerce/consumer/procurement/v1/license_management_service.proto
+Entry components-repositories has a missing kind.
+Entry composer-environments has a missing kind.
+Entry composer-operations has a missing kind.
+Entry compute-computeautoscalers has a missing kind.
+Entry compute-computebackendbucketsignedurlkeys has a missing kind.
+Entry compute-computebackendservicesignedurlkeys has a missing kind.
+Entry compute-computediskresourcepolicyattachment has a missing kind.
+Entry compute-computefirewallpolicyassociation has a missing kind.
+Entry compute-computeglobalnetworkendpointgroups has a missing kind.
+Entry compute-computeglobalnetworkendpoints has a missing kind.
+Entry compute-computeinstancegroupmanager has a missing kind.
+Entry compute-computeinstancegroupnamedport has a missing kind.
+Entry compute-computenetworkendpoints has a missing kind.
+Entry compute-computenetworkfirewallpolicyrules has a missing kind.
+Entry compute-computenetworkpeeringroutesconfig has a missing kind.
+Entry compute-computenetworksvpcaccessconnectors has a missing kind.
+Entry compute-computenetworksvpcaccesslocations has a missing kind.
+Entry compute-computeorganizationsecuritypolicy has a missing kind.
+Entry compute-computeorganizationsecuritypolicyassociations has a missing kind.
+Entry compute-computeorganizationsecuritypolicyrules has a missing kind.
+Entry compute-computeperinstanceconfigs has a missing kind.
+Entry compute-computeregionautoscalers has a missing kind.
+Entry compute-computeregiondiskresourcepolicyattachments has a missing kind.
+Entry compute-computeregionperinstanceconfigs has a missing kind.
+Entry compute-computeregionsslpolicy has a missing kind.
+Entry compute-osloginsshkey has a missing kind.
+Entry compute-projectinfo has a missing kind.
+Entry compute-commitment has an invalid kind: ComputeCommitment
+Entry compute-computedisksbulk has an invalid kind: ComputeDisksBulk
+Entry compute-computeinstantsnapshot has an invalid kind: ComputeInstantSnapshot
+Entry compute-computepublicadvertisedprefix has an invalid kind: ComputePublicAdvertisedPrefix
+Entry compute-computepublicdelegatedprefix has an invalid kind: ComputePublicDelegatedPrefix
+Entry compute-computesnapshotsetting has an invalid kind: ComputeSnapshotSetting
+Entry compute-computestoragepool has an invalid kind: ComputeStoragePool
+Entry compute-computemanagedsslcertificate has an invalid kind: SslCertificate
+Entry confidentialcomputing-challenge has an invalid kind: ConfidentialComputingChallenge
+Entry config-configurations has a missing kind.
+Entry config-deployment has an invalid kind: ConfigDeployment
+Entry config-preview has an invalid kind: ConfigPreview
+Entry config-resource has an invalid kind: ConfigResource
+Entry config-revision has an invalid kind: ConfigRevision
+Entry config-terraformversion has an invalid kind: ConfigTerraformVersion
+Entry configcontroller-configcontrollerinstances has a missing kind.
+Entry connectors-connection has an invalid kind: ConnectorsConnection
+Entry connectors-connection specifies a proto message Connection that was not found in google/cloud/connectors/v1/connectors_service.proto
+Entry connectors-connectionschemametadata has an invalid kind: ConnectorsConnectionSchemaMetadata
+Entry connectors-connectionschemametadata specifies a proto message ConnectionSchemaMetadata that was not found in google/cloud/connectors/v1/connectors_service.proto
+Entry connectors-connector has an invalid kind: ConnectorsConnector
+Entry connectors-connector specifies a proto message Connector that was not found in google/cloud/connectors/v1/connectors_service.proto
+Entry connectors-connectorversion has an invalid kind: ConnectorsConnectorVersion
+Entry connectors-connectorversion specifies a proto message ConnectorVersion that was not found in google/cloud/connectors/v1/connectors_service.proto
+Entry connectors-provider has an invalid kind: ConnectorsProvider
+Entry connectors-provider specifies a proto message Provider that was not found in google/cloud/connectors/v1/connectors_service.proto
+Entry connectors-runtimeconfig has an invalid kind: ConnectorsRuntimeConfig
+Entry connectors-runtimeconfig specifies a proto message RuntimeConfig that was not found in google/cloud/connectors/v1/connectors_service.proto
+Entry connectors-settings has an invalid kind: ConnectorsSettings
+Entry connectors-settings specifies a proto message Settings that was not found in google/cloud/connectors/v1/connectors_service.proto
+Entry contactcenterinsights-analysis has an invalid kind: ContactCenterInsightsAnalysis
+Entry contactcenterinsights-analysis specifies a proto message Analysis that was not found in google/cloud/contactcenterinsights/v1/contact_center_insights.proto
+Entry contactcenterinsights-analysisrule has an invalid kind: ContactCenterInsightsAnalysisRule
+Entry contactcenterinsights-analysisrule specifies a proto message AnalysisRule that was not found in google/cloud/contactcenterinsights/v1/contact_center_insights.proto
+Entry contactcenterinsights-conversation has an invalid kind: ContactCenterInsightsConversation
+Entry contactcenterinsights-encryptionspec has an invalid kind: ContactCenterInsightsEncryptionSpec
+Entry contactcenterinsights-encryptionspec specifies a proto message EncryptionSpec that was not found in google/cloud/contactcenterinsights/v1/contact_center_insights.proto
+Entry contactcenterinsights-feedbacklabel has an invalid kind: ContactCenterInsightsFeedbackLabel
+Entry contactcenterinsights-feedbacklabel specifies a proto message FeedbackLabel that was not found in google/cloud/contactcenterinsights/v1/contact_center_insights.proto
+Entry contactcenterinsights-issue has an invalid kind: ContactCenterInsightsIssue
+Entry contactcenterinsights-issuemodel has an invalid kind: ContactCenterInsightsIssueModel
+Entry contactcenterinsights-issuemodel specifies a proto message IssueModel that was not found in google/cloud/contactcenterinsights/v1/contact_center_insights.proto
+Entry contactcenterinsights-phrasematcher has an invalid kind: ContactCenterInsightsPhraseMatcher
+Entry contactcenterinsights-phrasematcher specifies a proto message PhraseMatcher that was not found in google/cloud/contactcenterinsights/v1/contact_center_insights.proto
+Entry contactcenterinsights-qaquestion has an invalid kind: ContactCenterInsightsQaQuestion
+Entry contactcenterinsights-qascorecard has an invalid kind: ContactCenterInsightsQaScorecard
+Entry contactcenterinsights-qascorecard specifies a proto message QaScorecard that was not found in google/cloud/contactcenterinsights/v1/contact_center_insights.proto
+Entry ContactCenterInsightsQaScorecardResult has an invalid kind: google/cloud/contactcenterinsights/v1/contact_center_insights.proto
+Entry ContactCenterInsightsQaScorecardResult specifies a non-existent proto-path: QaScorecardResult
+Entry contactcenterinsights-qascorecardrevision has an invalid kind: ContactCenterInsightsQaScorecardRevision
+Entry contactcenterinsights-qascorecardrevision specifies a proto message QaScorecardRevision that was not found in google/cloud/contactcenterinsights/v1/contact_center_insights.proto
+Entry contactcenterinsights-settings has an invalid kind: ContactCenterInsightsSettings
+Entry contactcenterinsights-settings specifies a proto message Settings that was not found in google/cloud/contactcenterinsights/v1/contact_center_insights.proto
+Entry contactcenterinsights-view has an invalid kind: ContactCenterInsightsView
+Entry contactcenterinsights-view specifies a proto message View that was not found in google/cloud/contactcenterinsights/v1/contact_center_insights.proto
+Entry container-containerbaremetaladminclusters has a missing kind.
+Entry container-containerbaremetalnodepools has a missing kind.
+Entry container-containerfleet has a missing kind.
+Entry containeranalysis-containeranalysisnotes has a missing kind.
+Entry containeranalysis-containeranalysisoccurrences has a missing kind.
+Entry containerattached-containerattachedcluster specifies a non-existent proto-path: cloud/gkemulticloud/v1/attached_resources.proto
+Entry contentwarehouse-document has an invalid kind: ContentWarehouseDocument
+Entry contentwarehouse-documentlink has an invalid kind: ContentWarehouseDocumentLink
+Entry contentwarehouse-documentschema has an invalid kind: ContentWarehouseDocumentSchema
+Entry contentwarehouse-documentschema specifies a proto message DocumentSchema that was not found in google/cloud/contentwarehouse/v1/document_schema_service.proto
+Entry contentwarehouse-ruleset has an invalid kind: ContentWarehouseRuleSet
+Entry contentwarehouse-ruleset specifies a proto message RuleSet that was not found in google/cloud/contentwarehouse/v1/ruleset_service.proto
+Entry contentwarehouse-synonymset has an invalid kind: ContentWarehouseSynonymSet
+Entry contentwarehouse-synonymset specifies a proto message SynonymSet that was not found in google/cloud/contentwarehouse/v1/synonymset_service.proto
+Entry datacatalog-datacatalogentries has a missing kind.
+Entry datacatalog-datacatalogentrygroups has a missing kind.
+Entry datacatalog-datacatalogtags has a missing kind.
+Entry datacatalog-datacatalogtagtemplates has a missing kind.
+Entry datacatalog-datacatalogtaxonomies has a missing kind.
+Entry datacatalog-lineageevent has an invalid kind: DataCatalogLineageEvent
+Entry datacatalog-process has an invalid kind: DataCatalogProcess
+Entry datacatalog-run has an invalid kind: DataCatalogRun
+Entry datacatalog-tag specifies a proto message Tag that was not found in google/cloud/datacatalog/v1/datacatalog.proto
+Entry datacatalog-tagtemplate specifies a proto message TagTemplate that was not found in google/cloud/datacatalog/v1/datacatalog.proto
+Entry datacatalog-tagtemplatefield has an invalid kind: DataCatalogTagTemplateField
+Entry datacatalog-tagtemplatefield specifies a proto message TagTemplateField that was not found in google/cloud/datacatalog/v1/datacatalog.proto
+Entry datacatalog-taxonomy specifies a proto message Taxonomy that was not found in google/cloud/datacatalog/v1/datacatalog.proto
+Entry dataflow-dataflowsnapshots has a missing kind.
+Entry dataform-compilationresult has an invalid kind: DataformCompilationResult
+Entry dataform-releaseconfig has an invalid kind: DataformReleaseConfig
+Entry dataform-workflowconfig has an invalid kind: DataformWorkflowConfig
+Entry dataform-workflowinvocation has an invalid kind: DataformWorkflowInvocation
+Entry dataform-workspace has an invalid kind: DataformWorkspace
+Entry datafusion-datafusioninstances has a missing kind.
+Entry datafusion-namespace has an invalid kind: DataFusionNamespace
+Entry datalabeling-annotateddataset has an invalid kind: DataLabelingAnnotatedDataset
+Entry datalabeling-annotateddataset specifies a proto message AnnotatedDataset that was not found in google/cloud/datalabeling/v1beta1/data_labeling_service.proto
+Entry datalabeling-annotationspecset has an invalid kind: DataLabelingAnnotationSpecSet
+Entry datalabeling-annotationspecset specifies a proto message AnnotationSpecSet that was not found in google/cloud/datalabeling/v1beta1/data_labeling_service.proto
+Entry datalabeling-dataitem has an invalid kind: DataLabelingDataItem
+Entry datalabeling-dataitem specifies a proto message DataItem that was not found in google/cloud/datalabeling/v1beta1/data_labeling_service.proto
+Entry datalabeling-dataset has an invalid kind: DataLabelingDataset
+Entry datalabeling-dataset specifies a proto message Dataset that was not found in google/cloud/datalabeling/v1beta1/data_labeling_service.proto
+Entry datalabeling-evaluation has an invalid kind: DataLabelingEvaluation
+Entry datalabeling-evaluation specifies a proto message Evaluation that was not found in google/cloud/datalabeling/v1beta1/data_labeling_service.proto
+Entry datalabeling-evaluationjob has an invalid kind: DataLabelingEvaluationJob
+Entry datalabeling-evaluationjob specifies a proto message EvaluationJob that was not found in google/cloud/datalabeling/v1beta1/data_labeling_service.proto
+Entry datalabeling-example has an invalid kind: DataLabelingExample
+Entry datalabeling-instruction has an invalid kind: DataLabelingInstruction
+Entry datalabeling-instruction specifies a proto message Instruction that was not found in google/cloud/datalabeling/v1beta1/data_labeling_service.proto
+Entry dataplex-action has an invalid kind: DataplexAction
+Entry dataplex-action specifies a proto message Action that was not found in google/cloud/dataplex/v1/catalog.proto
+Entry dataplex-aspecttype has an invalid kind: DataplexAspectType
+Entry dataplex-asset has an invalid kind: DataplexAsset
+Entry dataplex-content has an invalid kind: DataplexContent
+Entry dataplex-dataattribute has an invalid kind: DataplexDataAttribute
+Entry dataplex-dataattribute specifies a proto message DataAttribute that was not found in google/cloud/dataplex/v1/catalog.proto
+Entry dataplex-dataattributebinding has an invalid kind: DataplexDataAttributeBinding
+Entry dataplex-dataattributebinding specifies a proto message DataAttributeBinding that was not found in google/cloud/dataplex/v1/catalog.proto
+Entry dataplex-datascan has an invalid kind: DataplexDataScan
+Entry dataplex-datascanjob has an invalid kind: DataplexDataScanJob
+Entry dataplex-datascanjob specifies a proto message DataScanJob that was not found in google/cloud/dataplex/v1/catalog.proto
+Entry dataplex-datataxonomy has an invalid kind: DataplexDataTaxonomy
+Entry dataplex-entity has an invalid kind: DataplexEntity
+Entry dataplex-entity specifies a proto message Entity that was not found in google/cloud/dataplex/v1/catalog.proto
+Entry dataplex-entry has an invalid kind: DataplexEntry
+Entry dataplex-environment has an invalid kind: DataplexEnvironment
+Entry dataplex-job has an invalid kind: DataplexJob
+Entry dataplex-job specifies a proto message Job that was not found in google/cloud/dataplex/v1/catalog.proto
+Entry dataplex-metadatajob has an invalid kind: DataplexMetadataJob
+Entry dataplex-partition has an invalid kind: DataplexPartition
+Entry dataplex-partition specifies a proto message Partition that was not found in google/cloud/dataplex/v1/catalog.proto
+Entry dataplex-session has an invalid kind: DataplexSession
+Entry dataplex-session specifies a proto message Session that was not found in google/cloud/dataplex/v1/catalog.proto
+Entry dataproc-clusters has a missing kind.
+Entry dataproc-dataprocautoscalingpolicies has a missing kind.
+Entry dataproc-dataprocclusters has a missing kind.
+Entry dataproc-dataprocworkflowtemplates has a missing kind.
+Entry dataproc-jobs has a missing kind.
+Entry dataproc-operations has a missing kind.
+Entry dataproc-nodegroup specifies a proto message NodeGroup that was not found in google/cloud/dataproc/v1/node_groups.proto
+Entry dataproc-session has an invalid kind: DataprocSession
+Entry dataproc-sessiontemplate has an invalid kind: DataprocSessionTemplate
+Entry datastore-datastoreindexes has a missing kind.
+Entry datastream-datastreamconnectionprofiles has a missing kind.
+Entry datastream-datastreamprivateconnections has a missing kind.
+Entry datastream-datastreamstreams has a missing kind.
+Entry datastream-locations has a missing kind.
+Entry datastream-connectionprofile specifies a proto message ConnectionProfile that was not found in google/cloud/datastream/v1/datastream.proto
+Entry datastream-privateconnection specifies a proto message PrivateConnection that was not found in google/cloud/datastream/v1/datastream.proto
+Entry datastream-route specifies a proto message Route that was not found in google/cloud/datastream/v1/datastream.proto
+Entry datastream-stream specifies a proto message Stream that was not found in google/cloud/datastream/v1/datastream.proto
+Entry deploy-automation has an invalid kind: DeployAutomation
+Entry deploy-automationrun has an invalid kind: DeployAutomationRun
+Entry deploy-config has an invalid kind: DeployConfig
+Entry deploy-jobrun has an invalid kind: DeployJobRun
+Entry deploy-release has an invalid kind: DeployRelease
+Entry deploy-rollout has an invalid kind: DeployRollout
+Entry deploy-target has an invalid kind: DeployTarget
+Entry deploymentmanager-deploymentmanagerdeployments has a missing kind.
+Entry developerconnect-operations has a missing kind.
+Entry developerconnect-connection has an invalid kind: DeveloperConnectConnection
+Entry developerconnect-gitrepositorylink has an invalid kind: DeveloperConnectGitRepositoryLink
+Entry dialogflow-dialogflowagents has a missing kind.
+Entry dialogflow-dialogflowentitytypes has a missing kind.
+Entry dialogflow-dialogflowfulfillments has a missing kind.
+Entry dialogflow-dialogflowintents has a missing kind.
+Entry dialogflow-agentvalidationresult has an invalid kind: DialogflowAgentValidationResult
+Entry dialogflow-answerrecord has an invalid kind: DialogflowAnswerRecord
+Entry dialogflow-changelog has an invalid kind: DialogflowChangelog
+Entry dialogflow-context has an invalid kind: DialogflowContext
+Entry dialogflow-continuoustestresult has an invalid kind: DialogflowContinuousTestResult
+Entry dialogflow-continuoustestresult specifies a proto message ContinuousTestResult that was not found in google/cloud/dialogflow/cx/v3/agent.proto
+Entry dialogflow-conversation has an invalid kind: DialogflowConversation
+Entry dialogflow-conversationdataset has an invalid kind: DialogflowConversationDataset
+Entry dialogflow-conversationmodel has an invalid kind: DialogflowConversationModel
+Entry dialogflow-conversationmodelevaluation has an invalid kind: DialogflowConversationModelEvaluation
+Entry dialogflow-conversationmodelevaluation specifies a proto message ConversationModelEvaluation that was not found in google/cloud/dialogflow/v2/agent.proto
+Entry dialogflow-conversationprofile has an invalid kind: DialogflowConversationProfile
+Entry dialogflow-deployment has an invalid kind: DialogflowDeployment
+Entry dialogflow-document has an invalid kind: DialogflowDocument
+Entry dialogflow-encryptionspec has an invalid kind: DialogflowEncryptionSpec
+Entry dialogflow-environment has an invalid kind: DialogflowEnvironment
+Entry dialogflow-example has an invalid kind: DialogflowExample
+Entry dialogflow-experiment has an invalid kind: DialogflowExperiment
+Entry dialogflow-flow has an invalid kind: DialogflowFlow
+Entry dialogflow-flowvalidationresult has an invalid kind: DialogflowFlowValidationResult
+Entry dialogflow-flowvalidationresult specifies a proto message FlowValidationResult that was not found in google/cloud/dialogflow/cx/v3/agent.proto
+Entry dialogflow-generativesettings has an invalid kind: DialogflowGenerativeSettings
+Entry dialogflow-generativesettings specifies a proto message GenerativeSettings that was not found in google/cloud/dialogflow/cx/v3/agent.proto
+Entry dialogflow-generator has an invalid kind: DialogflowGenerator
+Entry dialogflow-knowledgebase has an invalid kind: DialogflowKnowledgeBase
+Entry dialogflow-message has an invalid kind: DialogflowMessage
+Entry dialogflow-message specifies a proto message Message that was not found in google/cloud/dialogflow/v2/agent.proto
+Entry dialogflow-page has an invalid kind: DialogflowPage
+Entry dialogflow-participant has an invalid kind: DialogflowParticipant
+Entry dialogflow-playbook has an invalid kind: DialogflowPlaybook
+Entry dialogflow-playbookversion has an invalid kind: DialogflowPlaybookVersion
+Entry dialogflow-playbookversion specifies a proto message PlaybookVersion that was not found in google/cloud/dialogflow/cx/v3beta1/agent.proto
+Entry dialogflow-securitysettings has an invalid kind: DialogflowSecuritySettings
+Entry dialogflow-sessionentitytype has an invalid kind: DialogflowSessionEntityType
+Entry dialogflow-siptrunk has an invalid kind: DialogflowSipTrunk
+Entry dialogflow-testcase has an invalid kind: DialogflowTestCase
+Entry dialogflow-testcaseresult has an invalid kind: DialogflowTestCaseResult
+Entry dialogflow-testcaseresult specifies a proto message TestCaseResult that was not found in google/cloud/dialogflow/cx/v3/agent.proto
+Entry dialogflow-tool has an invalid kind: DialogflowTool
+Entry dialogflow-transitionroutegroup has an invalid kind: DialogflowTransitionRouteGroup
+Entry dialogflow-version has an invalid kind: DialogflowVersion
+Entry dialogflow-webhook has an invalid kind: DialogflowWebhook
+Entry dialogflowcx-dialogflowcxagents has a missing kind.
+Entry dialogflowcx-dialogflowcxentitytypes has a missing kind.
+Entry dialogflowcx-dialogflowcxflows has a missing kind.
+Entry dialogflowcx-dialogflowcxintents has a missing kind.
+Entry dialogflowcx-dialogflowcxpages has a missing kind.
+Entry dialogflowcx-dialogflowcxwebhooks has a missing kind.
+Entry discoveryengine-discoveryenginedatastores has a missing kind.
+Entry discoveryengine-discoveryenginedatastoretargetsites has a missing kind.
+Entry discoveryengine-discoveryengineengines has a missing kind.
+Entry discoveryengine-answer has an invalid kind: DiscoveryEngineAnswer
+Entry discoveryengine-answer specifies a proto message Answer that was not found in google/cloud/discoveryengine/v1/completion_service.proto
+Entry discoveryengine-chunk has an invalid kind: DiscoveryEngineChunk
+Entry discoveryengine-chunk specifies a proto message Chunk that was not found in google/cloud/discoveryengine/v1/completion_service.proto
+Entry discoveryengine-control has an invalid kind: DiscoveryEngineControl
+Entry discoveryengine-control specifies a proto message Control that was not found in google/cloud/discoveryengine/v1/control_service.proto
+Entry discoveryengine-conversation has an invalid kind: DiscoveryEngineConversation
+Entry discoveryengine-conversation specifies a proto message Conversation that was not found in google/cloud/discoveryengine/v1/conversational_search_service.proto
+Entry discoveryengine-customtuningmodel has an invalid kind: DiscoveryEngineCustomTuningModel
+Entry discoveryengine-customtuningmodel specifies a proto message CustomTuningModel that was not found in google/cloud/discoveryengine/v1/completion_service.proto
+Entry discoveryengine-datastore specifies a proto message DataStore that was not found in google/cloud/discoveryengine/v1/data_store_service.proto
+Entry discoveryengine-document has an invalid kind: DiscoveryEngineDocument
+Entry discoveryengine-documentprocessingconfig has an invalid kind: DiscoveryEngineDocumentProcessingConfig
+Entry discoveryengine-documentprocessingconfig specifies a proto message DocumentProcessingConfig that was not found in google/cloud/discoveryengine/v1/completion_service.proto
+Entry discoveryengine-engine specifies a proto message Engine that was not found in google/cloud/discoveryengine/v1/engine_service.proto
+Entry discoveryengine-evaluation has an invalid kind: DiscoveryEngineEvaluation
+Entry discoveryengine-groundingconfig has an invalid kind: DiscoveryEngineGroundingConfig
+Entry discoveryengine-groundingconfig specifies a proto message GroundingConfig that was not found in google/cloud/discoveryengine/v1beta/completion_service.proto
+Entry discoveryengine-project has an invalid kind: DiscoveryEngineProject
+Entry discoveryengine-project specifies a proto message Project that was not found in google/cloud/discoveryengine/v1/project_service.proto
+Entry discoveryengine-samplequery has an invalid kind: DiscoveryEngineSampleQuery
+Entry discoveryengine-samplequery specifies a proto message SampleQuery that was not found in google/cloud/discoveryengine/v1beta/sample_query_service.proto
+Entry discoveryengine-samplequeryset has an invalid kind: DiscoveryEngineSampleQuerySet
+Entry discoveryengine-samplequeryset specifies a proto message SampleQuerySet that was not found in google/cloud/discoveryengine/v1beta/sample_query_set_service.proto
+Entry discoveryengine-schema has an invalid kind: DiscoveryEngineSchema
+Entry discoveryengine-schema specifies a proto message Schema that was not found in google/cloud/discoveryengine/v1/schema_service.proto
+Entry discoveryengine-servingconfig has an invalid kind: DiscoveryEngineServingConfig
+Entry discoveryengine-servingconfig specifies a proto message ServingConfig that was not found in google/cloud/discoveryengine/v1beta/serving_config_service.proto
+Entry discoveryengine-session has an invalid kind: DiscoveryEngineSession
+Entry discoveryengine-session specifies a proto message Session that was not found in google/cloud/discoveryengine/v1/completion_service.proto
+Entry discoveryengine-sitesearchengine has an invalid kind: DiscoveryEngineSiteSearchEngine
+Entry discoveryengine-sitesearchengine specifies a proto message SiteSearchEngine that was not found in google/cloud/discoveryengine/v1/site_search_engine_service.proto
+Entry discoveryengine-sitemap has an invalid kind: DiscoveryEngineSitemap
+Entry discoveryengine-sitemap specifies a proto message Sitemap that was not found in google/cloud/discoveryengine/v1beta/completion_service.proto
+Entry discoveryengine-targetsite has an invalid kind: DiscoveryEngineTargetSite
+Entry discoveryengine-targetsite specifies a proto message TargetSite that was not found in google/cloud/discoveryengine/v1/completion_service.proto
+Entry dlp-dlpdeidentifytemplates has a missing kind.
+Entry dlp-dlpinspecttemplates has a missing kind.
+Entry dlp-dlpjobtriggers has a missing kind.
+Entry dlp-dlpstoredinfotypes has a missing kind.
+Entry dns-dnsresponsepolicies has a missing kind.
+Entry dns-dnsresponsepolicyrules has a missing kind.
+Entry documentai-documentaiprocessordefaultversions has a missing kind.
+Entry documentai-documentaiprocessors has a missing kind.
+Entry documentai-dataset has an invalid kind: DocumentAIDataset
+Entry documentai-datasetschema has an invalid kind: DocumentAIDatasetSchema
+Entry documentai-datasetschema specifies a proto message DatasetSchema that was not found in google/cloud/documentai/v1beta3/document_processor_service.proto
+Entry documentai-evaluation has an invalid kind: DocumentAIEvaluation
+Entry documentai-evaluation specifies a proto message Evaluation that was not found in google/cloud/documentai/v1/document_processor_service.proto
+Entry documentai-processor specifies a proto message Processor that was not found in google/cloud/documentai/v1/document_processor_service.proto
+Entry documentai-processortype has an invalid kind: DocumentAIProcessorType
+Entry documentai-processortype specifies a proto message ProcessorType that was not found in google/cloud/documentai/v1/document_processor_service.proto
+Entry documentai-processorversion specifies a proto message ProcessorVersion that was not found in google/cloud/documentai/v1/document_processor_service.proto
+Entry domains-registration has an invalid kind: DomainsRegistration
+Entry edgecache-keysets has a missing kind.
+Entry edgecache-origins has a missing kind.
+Entry edgecache-services has a missing kind.
+Entry edgecontainer-operations has a missing kind.
+Entry edgecontainer-regions has a missing kind.
+Entry edgecontainer-zones has a missing kind.
+Entry edgecontainer-edgecontainercluster specifies a proto message Cluster that was not found in google/cloud/edgecontainer/v1/service.proto
+Entry edgecontainer-machine specifies a proto message Machine that was not found in google/cloud/edgecontainer/v1/service.proto
+Entry edgecontainer-edgecontainernodepool specifies a proto message NodePool that was not found in google/cloud/edgecontainer/v1/service.proto
+Entry edgecontainer-edgecontainervpnconnection specifies a proto message VpnConnection that was not found in google/cloud/edgecontainer/v1/service.proto
+Entry edgenetwork-operations has a missing kind.
+Entry edgenetwork-interconnect has an invalid kind: EdgeNetworkInterconnect
+Entry edgenetwork-interconnect specifies a proto message Interconnect that was not found in google/cloud/edgenetwork/v1/service.proto
+Entry edgenetwork-interconnectattachment has an invalid kind: EdgeNetworkInterconnectAttachment
+Entry edgenetwork-interconnectattachment specifies a proto message InterconnectAttachment that was not found in google/cloud/edgenetwork/v1/service.proto
+Entry edgenetwork-router has an invalid kind: EdgeNetworkRouter
+Entry edgenetwork-router specifies a proto message Router that was not found in google/cloud/edgenetwork/v1/service.proto
+Entry edgenetwork-edgenetworksubnet specifies a proto message Subnet that was not found in google/cloud/edgenetwork/v1/service.proto
+Entry edgenetwork-zone has an invalid kind: EdgeNetworkZone
+Entry edgenetwork-zone specifies a proto message Zone that was not found in google/cloud/edgenetwork/v1/service.proto
+Entry endpoints-services has a missing kind.
+Entry enterpriseknowledgegraph-entityreconciliationjob has an invalid kind: EnterpriseKnowledgeGraphEntityReconciliationJob
+Entry essentialcontacts-essentialcontactscontacts has a missing kind.
+Entry eventarc-auditlogsprovider has a missing kind.
+Entry eventarc-eventarctriggers has a missing kind.
+Entry eventarc-locations has a missing kind.
+Entry eventarc-channel specifies a proto message Channel that was not found in google/cloud/eventarc/v1/eventarc.proto
+Entry eventarc-channelconnection has an invalid kind: EventarcChannelConnection
+Entry eventarc-channelconnection specifies a proto message ChannelConnection that was not found in google/cloud/eventarc/v1/eventarc.proto
+Entry eventarc-enrollment has an invalid kind: EventarcEnrollment
+Entry eventarc-enrollment specifies a proto message Enrollment that was not found in google/cloud/eventarc/v1/eventarc.proto
+Entry eventarc-googleapisource has an invalid kind: EventarcGoogleApiSource
+Entry eventarc-googleapisource specifies a proto message GoogleApiSource that was not found in google/cloud/eventarc/v1/eventarc.proto
+Entry eventarc-googlechannelconfig specifies a proto message GoogleChannelConfig that was not found in google/cloud/eventarc/v1/eventarc.proto
+Entry eventarc-messagebus has an invalid kind: EventarcMessageBus
+Entry eventarc-messagebus specifies a proto message MessageBus that was not found in google/cloud/eventarc/v1/eventarc.proto
+Entry eventarc-pipeline has an invalid kind: EventarcPipeline
+Entry eventarc-pipeline specifies a proto message Pipeline that was not found in google/cloud/eventarc/v1/eventarc.proto
+Entry eventarc-provider has an invalid kind: EventarcProvider
+Entry eventarc-provider specifies a proto message Provider that was not found in google/cloud/eventarc/v1/eventarc.proto
+Entry eventarc-trigger specifies a proto message Trigger that was not found in google/cloud/eventarc/v1/eventarc.proto
+Entry example-book has an invalid kind: ExampleBook
+Entry example-shelf has an invalid kind: ExampleShelf
+Entry filestore-filestorebackups has a missing kind.
+Entry filestore-filestoreinstances has a missing kind.
+Entry filestore-filestoresnapshots has a missing kind.
+Entry filestore-location has a missing kind.
+Entry filestore-operation has a missing kind.
+Entry filestore-region has a missing kind.
+Entry filestore-zone has a missing kind.
+Entry filestore-share has an invalid kind: FilestoreShare
+Entry firebase-firebaseandroidapps has a missing kind.
+Entry firebase-firebaseprojects has a missing kind.
+Entry firebase-firebasewebapps has a missing kind.
+Entry firebasedatabase-firebasedatabaseinstances has a missing kind.
+Entry firebasehosting-firebasehostingchannels has a missing kind.
+Entry firebasehosting-firebasehostingsites has a missing kind.
+Entry firebasestorage-firebasestoragebucket has a missing kind.
+Entry firestore-location has a missing kind.
+Entry firestore-operation has a missing kind.
+Entry firestore-backup has an invalid kind: FirestoreBackup
+Entry firestore-backup specifies a proto message Backup that was not found in google/firestore/admin/v1/firestore_admin.proto
+Entry firestore-backupschedule has an invalid kind: FirestoreBackupSchedule
+Entry firestore-backupschedule specifies a proto message BackupSchedule that was not found in google/firestore/admin/v1/firestore_admin.proto
+Entry firestore-database specifies a proto message Database that was not found in google/firestore/admin/v1/firestore_admin.proto
+Entry firestore-field has an invalid kind: FirestoreField
+Entry firestore-field specifies a proto message Field that was not found in google/firestore/admin/v1/firestore_admin.proto
+Entry firestore-firestoreindex specifies a proto message Index that was not found in google/firestore/admin/v1/firestore_admin.proto
+Entry functions-eventtype has a missing kind.
+Entry functions-log has a missing kind.
+Entry functions-runtime has a missing kind.
+Entry functions-cloudfunction has an invalid kind: FunctionsCloudFunction
+Entry functions-function has an invalid kind: FunctionsFunction
+Entry gemini-coderepositoryindexes has a missing kind.
+Entry gemini-coderepositoryindexesrepositorygroups has a missing kind.
+Entry gkebackup-gkebackupbackupplans has a missing kind.
+Entry gkebackup-backup specifies a proto message Backup that was not found in google/cloud/gkebackup/v1/gkebackup.proto
+Entry gkebackup-backupplan specifies a proto message BackupPlan that was not found in google/cloud/gkebackup/v1/gkebackup.proto
+Entry gkebackup-restore specifies a proto message Restore that was not found in google/cloud/gkebackup/v1/gkebackup.proto
+Entry gkebackup-restoreplan specifies a proto message RestorePlan that was not found in google/cloud/gkebackup/v1/gkebackup.proto
+Entry gkehub-gkehubfeaturememberships has a missing kind.
+Entry gkehub-gkehubfeatures has a missing kind.
+Entry gkehub-gkehubmemberships has a missing kind.
+Entry gkehub-feature specifies a proto message Feature that was not found in google/cloud/gkehub/v1/service.proto
+Entry gkehub-membership specifies a proto message Membership that was not found in google/cloud/gkehub/v1/service.proto
+Entry gkemulticloud-attachedcluster has an invalid kind: GkeMultiCloudAttachedCluster
+Entry gkemulticloud-attachedcluster specifies a proto message AttachedCluster that was not found in google/cloud/gkemulticloud/v1/attached_service.proto
+Entry gkemulticloud-attachedserverconfig has an invalid kind: GkeMultiCloudAttachedServerConfig
+Entry gkemulticloud-attachedserverconfig specifies a proto message AttachedServerConfig that was not found in google/cloud/gkemulticloud/v1/attached_service.proto
+Entry gkemulticloud-awscluster has an invalid kind: GkeMultiCloudAwsCluster
+Entry gkemulticloud-awscluster specifies a proto message AwsCluster that was not found in google/cloud/gkemulticloud/v1/aws_service.proto
+Entry gkemulticloud-awsnodepool has an invalid kind: GkeMultiCloudAwsNodePool
+Entry gkemulticloud-awsnodepool specifies a proto message AwsNodePool that was not found in google/cloud/gkemulticloud/v1/attached_service.proto
+Entry gkemulticloud-awsserverconfig has an invalid kind: GkeMultiCloudAwsServerConfig
+Entry gkemulticloud-awsserverconfig specifies a proto message AwsServerConfig that was not found in google/cloud/gkemulticloud/v1/attached_service.proto
+Entry gkemulticloud-azureclient has an invalid kind: GkeMultiCloudAzureClient
+Entry gkemulticloud-azureclient specifies a proto message AzureClient that was not found in google/cloud/gkemulticloud/v1/attached_service.proto
+Entry gkemulticloud-azurecluster has an invalid kind: GkeMultiCloudAzureCluster
+Entry gkemulticloud-azurecluster specifies a proto message AzureCluster that was not found in google/cloud/gkemulticloud/v1/azure_service.proto
+Entry gkemulticloud-azurenodepool has an invalid kind: GkeMultiCloudAzureNodePool
+Entry gkemulticloud-azurenodepool specifies a proto message AzureNodePool that was not found in google/cloud/gkemulticloud/v1/attached_service.proto
+Entry gkemulticloud-azureserverconfig has an invalid kind: GkeMultiCloudAzureServerConfig
+Entry gkemulticloud-azureserverconfig specifies a proto message AzureServerConfig that was not found in google/cloud/gkemulticloud/v1/attached_service.proto
+Entry gsuiteaddons-authorization has an invalid kind: GSuiteAddonsAuthorization
+Entry gsuiteaddons-deployment has an invalid kind: GSuiteAddonsDeployment
+Entry gsuiteaddons-installstatus has an invalid kind: GSuiteAddonsInstallStatus
+Entry healthcare-healthcareconsentstores has a missing kind.
+Entry healthcare-healthcaredatasets has a missing kind.
+Entry healthcare-healthcaredicomstores has a missing kind.
+Entry healthcare-healthcarefhirstores has a missing kind.
+Entry healthcare-healthcarehl7v2stores has a missing kind.
+Entry hybrididentity-auth has a missing kind.
+Entry iam-auditconfig has a missing kind.
+Entry iam-iampolicy has a missing kind.
+Entry iam-oauthclient has a missing kind.
+Entry iam-partialpolicy has a missing kind.
+Entry iam-policy has a missing kind.
+Entry iam-policymember has a missing kind.
+Entry iam-role has a missing kind.
+Entry iam-simulator has a missing kind.
+Entry iam-workforcepool has a missing kind.
+Entry iam-policybinding has an invalid kind: IAMPolicyBinding
+Entry iam-policybinding specifies a proto message PolicyBinding that was not found in google/iam/v3/policy_bindings_service.proto
+Entry iam-principalaccessboundarypolicy has an invalid kind: IAMPrincipalAccessBoundaryPolicy
+Entry iam-principalaccessboundarypolicy specifies a proto message PrincipalAccessBoundaryPolicy that was not found in google/iam/v3/policy_bindings_service.proto
+Entry iap-iapbrands has a missing kind.
+Entry iap-iapidentityawareproxyclients has a missing kind.
+Entry iap-iapsettings has a missing kind.
+Entry iap-oauthbrands has a missing kind.
+Entry iap-oauthclients has a missing kind.
+Entry iap-settings has a missing kind.
+Entry iap-tcp has a missing kind.
+Entry iap-web has a missing kind.
+Entry iap-tunneldestgroup has an invalid kind: IAPTunnelDestGroup
+Entry identity-group has a missing kind.
+Entry identityplatform-identityplatformconfigs has a missing kind.
+Entry identityplatform-identityplatformdefaultsupportedidpconfigs has a missing kind.
+Entry identityplatform-identityplatforminboundsamlconfigs has a missing kind.
+Entry identityplatform-identityplatformoauthidpconfigs has a missing kind.
+Entry identityplatform-identityplatformprojectdefaultconfigs has a missing kind.
+Entry identityplatform-identityplatformtenantdefaultsupportedidpconfigs has a missing kind.
+Entry identityplatform-identityplatformtenantinboundsamlconfigs has a missing kind.
+Entry identityplatform-identityplatformtenantoauthidpconfigs has a missing kind.
+Entry identityplatform-identityplatformtenants has a missing kind.
+Entry ids-endpoint has an invalid kind: IDSEndpoint
+Entry immersivestream-xrcontent has an invalid kind: ImmersiveStreamXRContent
+Entry immersivestream-xrinstance has an invalid kind: ImmersiveStreamXRInstance
+Entry inframanager-deployments has a missing kind.
+Entry inframanager-previews has a missing kind.
+Entry iot-device has an invalid kind: IoTDevice
+Entry iot-device specifies a proto message Device that was not found in google/cloud/iot/v1/device_manager.proto
+Entry iot-deviceregistry has an invalid kind: IoTDeviceRegistry
+Entry iot-deviceregistry specifies a proto message DeviceRegistry that was not found in google/cloud/iot/v1/device_manager.proto
+Entry kms-inventory has a missing kind.
+Entry kms-keyringimportjob has a missing kind.
+Entry kms-kmsecretciphertext has a missing kind.
+Entry kms-location has a missing kind.
+Entry kms-autokeyconfig specifies a proto message AutokeyConfig that was not found in google/cloud/kms/v1/autokey.proto
+Entry kms-cryptokey specifies a proto message CryptoKey that was not found in google/cloud/kms/v1/autokey.proto
+Entry kms-cryptokeyversion specifies a proto message CryptoKeyVersion that was not found in google/cloud/kms/v1/autokey.proto
+Entry kms-ekmconnection has an invalid kind: KMSEKMConnection
+Entry kms-ekmconfig has an invalid kind: KMSEkmConfig
+Entry kms-ekmconfig specifies a proto message EkmConfig that was not found in google/cloud/kms/v1/autokey.proto
+Entry kms-keyring specifies a proto message KeyRing that was not found in google/cloud/kms/v1/autokey.proto
+Entry kms-protectedresource has an invalid kind: KMSProtectedResource
+Entry kms-protectedresource specifies a proto message ProtectedResource that was not found in google/cloud/kms/inventory/v1/key_dashboard_service.proto
+Entry kms-protectedresourcessummary has an invalid kind: KMSProtectedResourcesSummary
+Entry kms-protectedresourcessummary specifies a proto message ProtectedResourcesSummary that was not found in google/cloud/kms/inventory/v1/key_dashboard_service.proto
+Entry kms-publickey has an invalid kind: KMSPublicKey
+Entry kms-publickey specifies a proto message PublicKey that was not found in google/cloud/kms/v1/autokey.proto
+Entry logging-buckets has a missing kind.
+Entry logging-logs has a missing kind.
+Entry logging-metrics has a missing kind.
+Entry logging-resourcedescriptors has a missing kind.
+Entry logging-scopes has a missing kind.
+Entry logging-sinks has a missing kind.
+Entry logging-views has a missing kind.
+Entry logging-cmeksettings has an invalid kind: LoggingCmekSettings
+Entry logging-cmeksettings specifies a proto message CmekSettings that was not found in google/logging/v2/logging.proto
+Entry logging-link specifies a proto message Link that was not found in google/logging/v2/logging.proto
+Entry logging-logbucket specifies a proto message LogBucket that was not found in google/logging/v2/logging.proto
+Entry logging-logentry has an invalid kind: LoggingLogEntry
+Entry logging-logentry specifies a proto message LogEntry that was not found in google/logging/v2/logging.proto
+Entry logging-logexclusion specifies a proto message LogExclusion that was not found in google/logging/v2/logging.proto
+Entry logging-logmetric specifies a proto message LogMetric that was not found in google/logging/v2/logging.proto
+Entry logging-logsink specifies a proto message LogSink that was not found in google/logging/v2/logging.proto
+Entry logging-logview specifies a proto message LogView that was not found in google/logging/v2/logging.proto
+Entry logging-settings has an invalid kind: LoggingSettings
+Entry logging-settings specifies a proto message Settings that was not found in google/logging/v2/logging.proto
+Entry looker-instances has a missing kind.
+Entry managedidentities-domain has an invalid kind: ManagedIdentitiesDomain
+Entry managedidentities-domain specifies a proto message Domain that was not found in google/cloud/managedidentities/v1/managed_identities_service.proto
+Entry managedkafka-cluster specifies a proto message Cluster that was not found in google/cloud/managedkafka/v1/managed_kafka.proto
+Entry managedkafka-consumergroup specifies a proto message ConsumerGroup that was not found in google/cloud/managedkafka/v1/managed_kafka.proto
+Entry managedkafka-topic specifies a proto message Topic that was not found in google/cloud/managedkafka/v1/managed_kafka.proto
+Entry memcache-operations has a missing kind.
+Entry memcache-regions has a missing kind.
+Entry memorystore-memorystoreinstances has a missing kind.
+Entry memorystore-operations has a missing kind.
+Entry memorystore-certificateauthority has an invalid kind: MemorystoreCertificateAuthority
+Entry metastore-locations has a missing kind.
+Entry metastore-operations has a missing kind.
+Entry metastore-federation specifies a proto message Federation that was not found in google/cloud/metastore/v1/metastore.proto
+Entry metastore-metadataimport has an invalid kind: MetastoreMetadataImport
+Entry migration-vmsimageimport has a missing kind.
+Entry migration-vmsmachineimageimport has a missing kind.
+Entry migrationcenter-asset has an invalid kind: MigrationCenterAsset
+Entry migrationcenter-errorframe has an invalid kind: MigrationCenterErrorFrame
+Entry migrationcenter-group has an invalid kind: MigrationCenterGroup
+Entry migrationcenter-importdatafile has an invalid kind: MigrationCenterImportDataFile
+Entry migrationcenter-importjob has an invalid kind: MigrationCenterImportJob
+Entry migrationcenter-preferenceset has an invalid kind: MigrationCenterPreferenceSet
+Entry migrationcenter-report has an invalid kind: MigrationCenterReport
+Entry migrationcenter-reportconfig has an invalid kind: MigrationCenterReportConfig
+Entry migrationcenter-settings has an invalid kind: MigrationCenterSettings
+Entry migrationcenter-source has an invalid kind: MigrationCenterSource
+Entry mlengine-jobs has a missing kind.
+Entry mlengine-mlenginemodels has a missing kind.
+Entry mlengine-models has a missing kind.
+Entry mlengine-versions has a missing kind.
+Entry modelarmor-floorsetting has an invalid kind: ModelArmorFloorSetting
+Entry modelarmor-template has an invalid kind: ModelArmorTemplate
+Entry monitoring-alertpolicies has a missing kind.
+Entry monitoring-metricdescriptor has a missing kind.
+Entry monitoring-uptime has a missing kind.
+Entry monitoring-alertchart has an invalid kind: MonitoringAlertChart
+Entry monitoring-alertchart specifies a proto message AlertChart that was not found in google/monitoring/dashboard/v1/dashboards_service.proto
+Entry monitoring-alertpolicy specifies a proto message AlertPolicy that was not found in google/monitoring/v3/alert_service.proto
+Entry monitoring-dashboard specifies a proto message Dashboard that was not found in google/monitoring/dashboard/v1/dashboards_service.proto
+Entry monitoring-group specifies a proto message Group that was not found in google/monitoring/v3/group_service.proto
+Entry monitoring-metricsscope has an invalid kind: MonitoringMetricsScope
+Entry monitoring-metricsscope specifies a proto message MetricsScope that was not found in google/monitoring/metricsscope/v1/metrics_scopes.proto
+Entry monitoring-monitoredproject specifies a proto message MonitoredProject that was not found in google/monitoring/metricsscope/v1/metrics_scopes.proto
+Entry monitoring-notificationchannel specifies a proto message NotificationChannel that was not found in google/monitoring/v3/notification_service.proto
+Entry monitoring-notificationchanneldescriptor has an invalid kind: MonitoringNotificationChannelDescriptor
+Entry monitoring-notificationchanneldescriptor specifies a proto message NotificationChannelDescriptor that was not found in google/monitoring/v3/alert_service.proto
+Entry monitoring-service specifies a proto message Service that was not found in google/monitoring/v3/service_service.proto
+Entry monitoring-servicelevelobjective specifies a proto message ServiceLevelObjective that was not found in google/monitoring/v3/alert_service.proto
+Entry monitoring-snooze has an invalid kind: MonitoringSnooze
+Entry monitoring-snooze specifies a proto message Snooze that was not found in google/monitoring/v3/snooze_service.proto
+Entry monitoring-uptimecheckconfig specifies a proto message UptimeCheckConfig that was not found in google/monitoring/v3/alert_service.proto
+Entry netapp-operation has a missing kind.
+Entry netapp-activedirectory has an invalid kind: NetAppActiveDirectory
+Entry netapp-activedirectory specifies a proto message ActiveDirectory that was not found in google/cloud/netapp/v1/cloud_netapp_service.proto
+Entry netapp-backuppolicy specifies a proto message BackupPolicy that was not found in google/cloud/netapp/v1/cloud_netapp_service.proto
+Entry netapp-backupvault specifies a proto message BackupVault that was not found in google/cloud/netapp/v1/cloud_netapp_service.proto
+Entry netapp-kmsconfig has an invalid kind: NetAppKmsConfig
+Entry netapp-kmsconfig specifies a proto message KmsConfig that was not found in google/cloud/netapp/v1/cloud_netapp_service.proto
+Entry netapp-quotarule has an invalid kind: NetAppQuotaRule
+Entry netapp-quotarule specifies a proto message QuotaRule that was not found in google/cloud/netapp/v1/cloud_netapp_service.proto
+Entry netapp-replication has an invalid kind: NetAppReplication
+Entry netapp-replication specifies a proto message Replication that was not found in google/cloud/netapp/v1/cloud_netapp_service.proto
+Entry netapp-snapshot has an invalid kind: NetAppSnapshot
+Entry netapp-snapshot specifies a proto message Snapshot that was not found in google/cloud/netapp/v1/cloud_netapp_service.proto
+Entry netapp-storagepool has an invalid kind: NetAppStoragePool
+Entry netapp-storagepool specifies a proto message StoragePool that was not found in google/cloud/netapp/v1/cloud_netapp_service.proto
+Entry netapp-volume has an invalid kind: NetAppVolume
+Entry netapp-volume specifies a proto message Volume that was not found in google/cloud/netapp/v1/cloud_netapp_service.proto
+Entry networkconnectivity-internalranges has a missing kind.
+Entry networkconnectivity-locations has a missing kind.
+Entry networkconnectivity-networkconnectivityhubs has a missing kind.
+Entry networkconnectivity-networkconnectivityserviceconnectionpolicies has a missing kind.
+Entry networkconnectivity-networkconnectivityspokes has a missing kind.
+Entry networkconnectivity-operations has a missing kind.
+Entry networkconnectivity-regionalendpoints has a missing kind.
+Entry networkconnectivity-group has an invalid kind: NetworkConnectivityGroup
+Entry networkconnectivity-policybasedroute has an invalid kind: NetworkConnectivityPolicyBasedRoute
+Entry networkconnectivity-policybasedroute specifies a proto message PolicyBasedRoute that was not found in google/cloud/networkconnectivity/v1/hub.proto
+Entry networkconnectivity-route has an invalid kind: NetworkConnectivityRoute
+Entry networkconnectivity-routetable has an invalid kind: NetworkConnectivityRouteTable
+Entry networkmanagement-networkmanagementconnectivitytests has a missing kind.
+Entry networkmanagement-operation has a missing kind.
+Entry networkmanagement-vpcflowlogsconfig has an invalid kind: NetworkManagementVPCFlowLogsConfig
+Entry networksecurity-addressgroups has a missing kind.
+Entry networksecurity-firewallendpointassociations has a missing kind.
+Entry networksecurity-firewallendpoints has a missing kind.
+Entry networksecurity-gatewaysecuritypolicies has a missing kind.
+Entry networksecurity-mirroringdeploymentgroups has a missing kind.
+Entry networksecurity-mirroringdeployments has a missing kind.
+Entry networksecurity-mirroringendpointgroupassociations has a missing kind.
+Entry networksecurity-mirroringendpointgroups has a missing kind.
+Entry networksecurity-networksecurityauthorizationpolicies has a missing kind.
+Entry networksecurity-networksecurityclienttlspolicies has a missing kind.
+Entry networksecurity-networksecurityservertlspolicies has a missing kind.
+Entry networksecurity-orgaddressgroups has a missing kind.
+Entry networksecurity-securityprofilegroups has a missing kind.
+Entry networksecurity-securityprofiles has a missing kind.
+Entry networksecurity-tlsinspectionpolicies has a missing kind.
+Entry networksecurity-urllists has a missing kind.
+Entry networksecurity-authorizationpolicy specifies a proto message AuthorizationPolicy that was not found in google/cloud/networksecurity/v1/network_security.proto
+Entry networksecurity-clienttlspolicy specifies a proto message ClientTlsPolicy that was not found in google/cloud/networksecurity/v1/network_security.proto
+Entry networksecurity-servertlspolicy specifies a proto message ServerTlsPolicy that was not found in google/cloud/networksecurity/v1/network_security.proto
+Entry networkservices-networkservicesedgecachekeysets has a missing kind.
+Entry networkservices-networkservicesedgecacheorigins has a missing kind.
+Entry networkservices-networkservicesedgecacheservices has a missing kind.
+Entry networkservices-networkservicesendpointpolicies has a missing kind.
+Entry networkservices-networkservicesgateways has a missing kind.
+Entry networkservices-networkservicesgrpcroutes has a missing kind.
+Entry networkservices-networkserviceshttproutes has a missing kind.
+Entry networkservices-networkservicesmeshes has a missing kind.
+Entry networkservices-networkservicestcproutes has a missing kind.
+Entry networkservices-networkservicestlsroutes has a missing kind.
+Entry networkservices-routeviews has a missing kind.
+Entry networkservices-servicelbpolicies has a missing kind.
+Entry networkservices-endpointpolicy specifies a proto message EndpointPolicy that was not found in google/cloud/networkservices/v1/dep.proto
+Entry networkservices-gateway specifies a proto message Gateway that was not found in google/cloud/networkservices/v1/dep.proto
+Entry networkservices-grpcroute has an invalid kind: NetworkServicesGrpcRoute
+Entry networkservices-grpcroute specifies a proto message GrpcRoute that was not found in google/cloud/networkservices/v1/dep.proto
+Entry networkservices-httproute has an invalid kind: NetworkServicesHttpRoute
+Entry networkservices-httproute specifies a proto message HttpRoute that was not found in google/cloud/networkservices/v1/dep.proto
+Entry networkservices-lbrouteextension has an invalid kind: NetworkServicesLbRouteExtension
+Entry networkservices-lbtrafficextension has an invalid kind: NetworkServicesLbTrafficExtension
+Entry networkservices-mesh specifies a proto message Mesh that was not found in google/cloud/networkservices/v1/dep.proto
+Entry networkservices-servicebinding specifies a proto message ServiceBinding that was not found in google/cloud/networkservices/v1/dep.proto
+Entry networkservices-tcproute has an invalid kind: NetworkServicesTcpRoute
+Entry networkservices-tcproute specifies a proto message TcpRoute that was not found in google/cloud/networkservices/v1/dep.proto
+Entry networkservices-tlsroute has an invalid kind: NetworkServicesTlsRoute
+Entry networkservices-tlsroute specifies a proto message TlsRoute that was not found in google/cloud/networkservices/v1/dep.proto
+Entry notebooks-notebooksenvironments has a missing kind.
+Entry notebooks-execution has an invalid kind: NotebooksExecution
+Entry notebooks-execution specifies a proto message Execution that was not found in google/cloud/notebooks/v1/managed_service.proto
+Entry notebooks-instance has an invalid kind: NotebooksInstance
+Entry notebooks-instance specifies a proto message Instance that was not found in google/cloud/notebooks/v2/service.proto
+Entry notebooks-runtime has an invalid kind: NotebooksRuntime
+Entry notebooks-schedule has an invalid kind: NotebooksSchedule
+Entry notebooks-schedule specifies a proto message Schedule that was not found in google/cloud/notebooks/v1/managed_service.proto
+Entry oracledatabase-operations has a missing kind.
+Entry oracledatabase-autonomousdatabase has an invalid kind: OracleDatabaseAutonomousDatabase
+Entry oracledatabase-autonomousdatabase specifies a proto message AutonomousDatabase that was not found in google/cloud/oracledatabase/v1/oracledatabase.proto
+Entry oracledatabase-autonomousdatabasebackup has an invalid kind: OracleDatabaseAutonomousDatabaseBackup
+Entry oracledatabase-autonomousdatabasebackup specifies a proto message AutonomousDatabaseBackup that was not found in google/cloud/oracledatabase/v1/oracledatabase.proto
+Entry oracledatabase-autonomousdatabasecharacterset has an invalid kind: OracleDatabaseAutonomousDatabaseCharacterSet
+Entry oracledatabase-autonomousdatabasecharacterset specifies a proto message AutonomousDatabaseCharacterSet that was not found in google/cloud/oracledatabase/v1/oracledatabase.proto
+Entry oracledatabase-autonomousdbversion has an invalid kind: OracleDatabaseAutonomousDbVersion
+Entry oracledatabase-autonomousdbversion specifies a proto message AutonomousDbVersion that was not found in google/cloud/oracledatabase/v1/oracledatabase.proto
+Entry oracledatabase-cloudexadatainfrastructure has an invalid kind: OracleDatabaseCloudExadataInfrastructure
+Entry oracledatabase-cloudexadatainfrastructure specifies a proto message CloudExadataInfrastructure that was not found in google/cloud/oracledatabase/v1/oracledatabase.proto
+Entry oracledatabase-cloudvmcluster has an invalid kind: OracleDatabaseCloudVmCluster
+Entry oracledatabase-cloudvmcluster specifies a proto message CloudVmCluster that was not found in google/cloud/oracledatabase/v1/oracledatabase.proto
+Entry oracledatabase-dbnode has an invalid kind: OracleDatabaseDbNode
+Entry oracledatabase-dbnode specifies a proto message DbNode that was not found in google/cloud/oracledatabase/v1/oracledatabase.proto
+Entry oracledatabase-dbserver has an invalid kind: OracleDatabaseDbServer
+Entry oracledatabase-dbserver specifies a proto message DbServer that was not found in google/cloud/oracledatabase/v1/oracledatabase.proto
+Entry oracledatabase-dbsystemshape has an invalid kind: OracleDatabaseDbSystemShape
+Entry oracledatabase-dbsystemshape specifies a proto message DbSystemShape that was not found in google/cloud/oracledatabase/v1/oracledatabase.proto
+Entry oracledatabase-entitlement has an invalid kind: OracleDatabaseEntitlement
+Entry oracledatabase-entitlement specifies a proto message Entitlement that was not found in google/cloud/oracledatabase/v1/oracledatabase.proto
+Entry oracledatabase-giversion has an invalid kind: OracleDatabaseGiVersion
+Entry oracledatabase-giversion specifies a proto message GiVersion that was not found in google/cloud/oracledatabase/v1/oracledatabase.proto
+Entry orchestration-environment has an invalid kind: OrchestrationEnvironment
+Entry orchestration-userworkloadsconfigmap has an invalid kind: OrchestrationUserWorkloadsConfigMap
+Entry orchestration-userworkloadssecret has an invalid kind: OrchestrationUserWorkloadsSecret
+Entry orgpolicy-orgpolicycustomconstraints has a missing kind.
+Entry orgpolicy-constraint has an invalid kind: OrgPolicyConstraint
+Entry orgpolicy-constraint specifies a proto message Constraint that was not found in google/cloud/orgpolicy/v2/orgpolicy.proto
+Entry orgpolicy-customconstraint specifies a proto message CustomConstraint that was not found in google/cloud/orgpolicy/v2/orgpolicy.proto
+Entry osconfig-osconfigguestpolicies has a missing kind.
+Entry osconfig-osconfigospolicyassignments has a missing kind.
+Entry osconfig-osconfigpatchdeployments has a missing kind.
+Entry osconfig-projectfeaturesettings has a missing kind.
+Entry osconfig-guestpolicy specifies a proto message GuestPolicy that was not found in google/cloud/osconfig/v1beta/osconfig_service.proto
+Entry osconfig-inventory has an invalid kind: OSConfigInventory
+Entry osconfig-inventory specifies a proto message Inventory that was not found in google/cloud/osconfig/v1/osconfig_service.proto
+Entry osconfig-ospolicyassignment specifies a proto message OSPolicyAssignment that was not found in google/cloud/osconfig/v1/osconfig_service.proto
+Entry osconfig-ospolicyassignmentreport has an invalid kind: OSConfigOSPolicyAssignmentReport
+Entry osconfig-ospolicyassignmentreport specifies a proto message OSPolicyAssignmentReport that was not found in google/cloud/osconfig/v1/osconfig_service.proto
+Entry osconfig-patchdeployment specifies a proto message PatchDeployment that was not found in google/cloud/osconfig/v1/osconfig_service.proto
+Entry osconfig-patchjob has an invalid kind: OSConfigPatchJob
+Entry osconfig-patchjob specifies a proto message PatchJob that was not found in google/cloud/osconfig/v1/osconfig_service.proto
+Entry osconfig-vulnerabilityreport has an invalid kind: OSConfigVulnerabilityReport
+Entry osconfig-vulnerabilityreport specifies a proto message VulnerabilityReport that was not found in google/cloud/osconfig/v1/osconfig_service.proto
+Entry oslogin-posixaccount has an invalid kind: OSLoginPosixAccount
+Entry oslogin-sshpublickey has an invalid kind: OSLoginSshPublicKey
+Entry parallelstore-location has a missing kind.
+Entry parallelstore-operation has a missing kind.
+Entry parallelstore-instance has an invalid kind: ParallelstoreInstance
+Entry parametermanager-parameter has an invalid kind: ParameterManagerParameter
+Entry parametermanager-parameterversion has an invalid kind: ParameterManagerParameterVersion
+Entry paymentgateway-accountmanagertransaction has an invalid kind: PaymentGatewayAccountManagerTransaction
+Entry paymentgateway-complaint has an invalid kind: PaymentGatewayComplaint
+Entry paymentgateway-complaint specifies a proto message Complaint that was not found in google/cloud/paymentgateway/issuerswitch/v1/participants.proto
+Entry paymentgateway-complainttransaction has an invalid kind: PaymentGatewayComplaintTransaction
+Entry paymentgateway-complainttransaction specifies a proto message ComplaintTransaction that was not found in google/cloud/paymentgateway/issuerswitch/v1/participants.proto
+Entry paymentgateway-dispute has an invalid kind: PaymentGatewayDispute
+Entry paymentgateway-dispute specifies a proto message Dispute that was not found in google/cloud/paymentgateway/issuerswitch/v1/participants.proto
+Entry paymentgateway-financialtransaction has an invalid kind: PaymentGatewayFinancialTransaction
+Entry paymentgateway-financialtransaction specifies a proto message FinancialTransaction that was not found in google/cloud/paymentgateway/issuerswitch/v1/participants.proto
+Entry paymentgateway-managedaccount has an invalid kind: PaymentGatewayManagedAccount
+Entry paymentgateway-mandatetransaction has an invalid kind: PaymentGatewayMandateTransaction
+Entry paymentgateway-mandatetransaction specifies a proto message MandateTransaction that was not found in google/cloud/paymentgateway/issuerswitch/v1/participants.proto
+Entry paymentgateway-metadatatransaction has an invalid kind: PaymentGatewayMetadataTransaction
+Entry paymentgateway-metadatatransaction specifies a proto message MetadataTransaction that was not found in google/cloud/paymentgateway/issuerswitch/v1/participants.proto
+Entry paymentgateway-rule has an invalid kind: PaymentGatewayRule
+Entry paymentgateway-rule specifies a proto message Rule that was not found in google/cloud/paymentgateway/issuerswitch/v1/participants.proto
+Entry paymentgateway-rulemetadata has an invalid kind: PaymentGatewayRuleMetadata
+Entry paymentgateway-rulemetadata specifies a proto message RuleMetadata that was not found in google/cloud/paymentgateway/issuerswitch/v1/participants.proto
+Entry paymentgateway-rulemetadatavalue has an invalid kind: PaymentGatewayRuleMetadataValue
+Entry paymentgateway-rulemetadatavalue specifies a proto message RuleMetadataValue that was not found in google/cloud/paymentgateway/issuerswitch/v1/participants.proto
+Entry policysimulator-replay has an invalid kind: PolicySimulatorReplay
+Entry policysimulator-replayresult has an invalid kind: PolicySimulatorReplayResult
+Entry privacy-columndataprofile has an invalid kind: PrivacyColumnDataProfile
+Entry privacy-connection has an invalid kind: PrivacyConnection
+Entry privacy-deidentifytemplate has an invalid kind: PrivacyDeidentifyTemplate
+Entry privacy-discoveryconfig has an invalid kind: PrivacyDiscoveryConfig
+Entry privacy-dlpjob has an invalid kind: PrivacyDlpJob
+Entry privacy-filestoredataprofile has an invalid kind: PrivacyFileStoreDataProfile
+Entry privacy-finding has an invalid kind: PrivacyFinding
+Entry privacy-inspecttemplate has an invalid kind: PrivacyInspectTemplate
+Entry privacy-jobtrigger has an invalid kind: PrivacyJobTrigger
+Entry privacy-projectdataprofile has an invalid kind: PrivacyProjectDataProfile
+Entry privacy-storedinfotype has an invalid kind: PrivacyStoredInfoType
+Entry privacy-tabledataprofile has an invalid kind: PrivacyTableDataProfile
+Entry privateca-privatecacapools has a missing kind.
+Entry privateca-privatecacertificates has a missing kind.
+Entry privateca-privatecacertificatetemplates has a missing kind.
+Entry privateca-privatecacertificateauthorities has an invalid kind: SecurityCertificateAuthority
+Entry privateca-privatecacertificateauthorities specifies a proto message CertificateAuthority that was not found in google/cloud/security/privateca/v1/service.proto
+Entry privatecatalog-catalog has an invalid kind: PrivateCatalogCatalog
+Entry privatecatalog-product has an invalid kind: PrivateCatalogProduct
+Entry privatecatalog-version has an invalid kind: PrivateCatalogVersion
+Entry privilegedaccessmanager-entitlements has an invalid kind: google/cloud/privilegedaccessmanager/v1/privilegedaccessmanager.proto
+Entry privilegedaccessmanager-operations has a missing kind.
+Entry privilegedaccessmanager-grant has an invalid kind: PrivilegedAccessManagerGrant
+Entry pubsub-liteoperations has a missing kind.
+Entry rapidmigrationassessment-annotation has an invalid kind: RapidMigrationAssessmentAnnotation
+Entry rapidmigrationassessment-annotation specifies a proto message Annotation that was not found in google/cloud/rapidmigrationassessment/v1/rapidmigrationassessment.proto
+Entry rapidmigrationassessment-collector has an invalid kind: RapidMigrationAssessmentCollector
+Entry rapidmigrationassessment-collector specifies a proto message Collector that was not found in google/cloud/rapidmigrationassessment/v1/rapidmigrationassessment.proto
+Entry recaptchaenterprise-recaptchaenterprisekeys has a missing kind.
+Entry recaptchaenterprise-assessment has an invalid kind: ReCAPTCHAEnterpriseAssessment
+Entry recaptchaenterprise-key has an invalid kind: ReCAPTCHAEnterpriseKey
+Entry recaptchaenterprise-metrics has an invalid kind: ReCAPTCHAEnterpriseMetrics
+Entry recaptchaenterprise-relatedaccountgroup has an invalid kind: ReCAPTCHAEnterpriseRelatedAccountGroup
+Entry recaptchaenterprise-relatedaccountgroupmembership has an invalid kind: ReCAPTCHAEnterpriseRelatedAccountGroupMembership
+Entry recommender-insight has an invalid kind: RecommenderInsight
+Entry recommender-insighttype has an invalid kind: RecommenderInsightType
+Entry recommender-insighttype specifies a proto message InsightType that was not found in google/cloud/recommender/v1beta1/recommender_service.proto
+Entry recommender-insighttypeconfig has an invalid kind: RecommenderInsightTypeConfig
+Entry recommender-recommendation has an invalid kind: RecommenderRecommendation
+Entry recommender-recommenderconfig has an invalid kind: RecommenderRecommenderConfig
+Entry recommender-recommendertype has an invalid kind: RecommenderRecommenderType
+Entry recommender-recommendertype specifies a proto message RecommenderType that was not found in google/cloud/recommender/v1beta1/recommender_service.proto
+Entry redis-operations has a missing kind.
+Entry redis-regions has a missing kind.
+Entry redis-zones has a missing kind.
+Entry redis-backup has an invalid kind: RedisBackup
+Entry redis-backupcollection has an invalid kind: RedisBackupCollection
+Entry redis-certificateauthority has an invalid kind: RedisCertificateAuthority
+Entry remoteworkers-botsession has an invalid kind: RemoteWorkersBotSession
+Entry resourcemanager-orgpolicies has a missing kind.
+Entry resourcemanager-tags has a missing kind.
+Entry resourcemanager-organization has an invalid kind: ResourceManagerOrganization
+Entry resourcemanager-tagbinding has an invalid kind: ResourceManagerTagBinding
+Entry resourcemanager-taghold has an invalid kind: ResourceManagerTagHold
+Entry resourcemanager-tagkey has an invalid kind: ResourceManagerTagKey
+Entry resourcemanager-tagvalue has an invalid kind: ResourceManagerTagValue
+Entry resourcesettings-setting has an invalid kind: ResourceSettingsSetting
+Entry resourcesettings-setting specifies a non-existent proto-path: google/cloud/resourcesettings/v1/resource_settings.proto
+Entry resultstore-action has an invalid kind: ResultStoreAction
+Entry resultstore-action specifies a proto message Action that was not found in google/devtools/resultstore/v2/resultstore_download.proto
+Entry resultstore-configuration has an invalid kind: ResultStoreConfiguration
+Entry resultstore-configuration specifies a proto message Configuration that was not found in google/devtools/resultstore/v2/resultstore_download.proto
+Entry resultstore-configuredtarget has an invalid kind: ResultStoreConfiguredTarget
+Entry resultstore-configuredtarget specifies a proto message ConfiguredTarget that was not found in google/devtools/resultstore/v2/resultstore_download.proto
+Entry resultstore-downloadmetadata has an invalid kind: ResultStoreDownloadMetadata
+Entry resultstore-downloadmetadata specifies a proto message DownloadMetadata that was not found in google/devtools/resultstore/v2/resultstore_download.proto
+Entry resultstore-fileset has an invalid kind: ResultStoreFileSet
+Entry resultstore-fileset specifies a proto message FileSet that was not found in google/devtools/resultstore/v2/resultstore_download.proto
+Entry resultstore-invocation has an invalid kind: ResultStoreInvocation
+Entry resultstore-invocation specifies a proto message Invocation that was not found in google/devtools/resultstore/v2/resultstore_download.proto
+Entry resultstore-target has an invalid kind: ResultStoreTarget
+Entry resultstore-target specifies a proto message Target that was not found in google/devtools/resultstore/v2/resultstore_download.proto
+Entry resultstore-uploadmetadata has an invalid kind: ResultStoreUploadMetadata
+Entry resultstore-uploadmetadata specifies a proto message UploadMetadata that was not found in google/devtools/resultstore/v2/resultstore_download.proto
+Entry retail-alertconfig has an invalid kind: RetailAlertConfig
+Entry retail-alertconfig specifies a proto message AlertConfig that was not found in google/cloud/retail/v2beta/analytics_service.proto
+Entry retail-attributesconfig has an invalid kind: RetailAttributesConfig
+Entry retail-attributesconfig specifies a proto message AttributesConfig that was not found in google/cloud/retail/v2/analytics_service.proto
+Entry retail-catalog has an invalid kind: RetailCatalog
+Entry retail-catalog specifies a proto message Catalog that was not found in google/cloud/retail/v2/catalog_service.proto
+Entry retail-completionconfig has an invalid kind: RetailCompletionConfig
+Entry retail-completionconfig specifies a proto message CompletionConfig that was not found in google/cloud/retail/v2/analytics_service.proto
+Entry retail-control has an invalid kind: RetailControl
+Entry retail-control specifies a proto message Control that was not found in google/cloud/retail/v2/control_service.proto
+Entry retail-model has an invalid kind: RetailModel
+Entry retail-model specifies a proto message Model that was not found in google/cloud/retail/v2/model_service.proto
+Entry retail-product has an invalid kind: RetailProduct
+Entry retail-product specifies a proto message Product that was not found in google/cloud/retail/v2/product_service.proto
+Entry retail-servingconfig has an invalid kind: RetailServingConfig
+Entry retail-servingconfig specifies a proto message ServingConfig that was not found in google/cloud/retail/v2/serving_config_service.proto
+Entry run-domainmappings has a missing kind.
+Entry run-regions has a missing kind.
+Entry run-execution has an invalid kind: RunExecution
+Entry run-revision has an invalid kind: RunRevision
+Entry run-task has an invalid kind: RunTask
+Entry scheduler-job has an invalid kind: SchedulerJob
+Entry scheduler-job specifies a proto message Job that was not found in google/cloud/scheduler/v1/cloudscheduler.proto
+Entry secretmanager-secret specifies a proto message Secret that was not found in google/cloud/secretmanager/v1/service.proto
+Entry secretmanager-secretversion specifies a proto message SecretVersion that was not found in google/cloud/secretmanager/v1/service.proto
+Entry secretmanager-topic has an invalid kind: SecretManagerTopic
+Entry secretmanager-topic specifies a proto message Topic that was not found in google/cloud/secretmanager/v1/service.proto
+Entry secrets-location has a missing kind.
+Entry secrets-replication has a missing kind.
+Entry secrets-secret has an invalid kind: SecretsSecret
+Entry secrets-secret specifies a proto message Secret that was not found in google/cloud/secrets/v1beta1/service.proto
+Entry secrets-secretversion has an invalid kind: SecretsSecretVersion
+Entry secrets-secretversion specifies a proto message SecretVersion that was not found in google/cloud/secrets/v1beta1/service.proto
+Entry securesourcemanager-securesourcemanagerinstances has a missing kind.
+Entry securesourcemanager-securesourcemanagerrepositories has a missing kind.
+Entry securesourcemanager-branchrule has an invalid kind: SecureSourceManagerBranchRule
+Entry security-capool has an invalid kind: SecurityCaPool
+Entry security-capool specifies a proto message CaPool that was not found in google/cloud/security/privateca/v1/service.proto
+Entry security-certificate has an invalid kind: SecurityCertificate
+Entry security-certificate specifies a proto message Certificate that was not found in google/cloud/security/privateca/v1/service.proto
+Entry security-certificaterevocationlist has an invalid kind: SecurityCertificateRevocationList
+Entry security-certificaterevocationlist specifies a proto message CertificateRevocationList that was not found in google/cloud/security/privateca/v1/service.proto
+Entry security-certificatetemplate has an invalid kind: SecurityCertificateTemplate
+Entry security-certificatetemplate specifies a proto message CertificateTemplate that was not found in google/cloud/security/privateca/v1/service.proto
+Entry security-externalaccountkey has an invalid kind: SecurityExternalAccountKey
+Entry security-externalaccountkey specifies a proto message ExternalAccountKey that was not found in google/cloud/security/publicca/v1/service.proto
+Entry security-reusableconfig has an invalid kind: SecurityReusableConfig
+Entry security-reusableconfig specifies a proto message ReusableConfig that was not found in google/cloud/security/privateca/v1beta1/service.proto
+Entry securitycenter-custommodules has a missing kind.
+Entry securitycenter-iacvalidationreports has a missing kind.
+Entry securitycenter-manage has a missing kind.
+Entry securitycenter-notifications has a missing kind.
+Entry securitycenter-operations has a missing kind.
+Entry securitycenter-posturedeployments has a missing kind.
+Entry securitycenter-postures has a missing kind.
+Entry securitycenter-posturetemplates has a missing kind.
+Entry securitycenter-asset has an invalid kind: SecurityCenterAsset
+Entry securitycenter-asset specifies a proto message Asset that was not found in google/cloud/securitycenter/v1/securitycenter_service.proto
+Entry securitycenter-attackpath has an invalid kind: SecurityCenterAttackPath
+Entry securitycenter-attackpath specifies a proto message AttackPath that was not found in google/cloud/securitycenter/v2/securitycenter_service.proto
+Entry securitycenter-bigqueryexport has an invalid kind: SecurityCenterBigQueryExport
+Entry securitycenter-bigqueryexport specifies a proto message BigQueryExport that was not found in google/cloud/securitycenter/v2/securitycenter_service.proto
+Entry securitycenter-componentsettings has an invalid kind: SecurityCenterComponentSettings
+Entry securitycenter-componentsettings specifies a proto message ComponentSettings that was not found in google/cloud/securitycenter/settings/v1beta1/securitycenter_settings_service.proto
+Entry securitycenter-effectiveeventthreatdetectioncustommodule has an invalid kind: SecurityCenterEffectiveEventThreatDetectionCustomModule
+Entry securitycenter-effectiveeventthreatdetectioncustommodule specifies a proto message EffectiveEventThreatDetectionCustomModule that was not found in google/cloud/securitycenter/v1/securitycenter_service.proto
+Entry securitycenter-effectivesecurityhealthanalyticscustommodule has an invalid kind: SecurityCenterEffectiveSecurityHealthAnalyticsCustomModule
+Entry securitycenter-effectivesecurityhealthanalyticscustommodule specifies a proto message EffectiveSecurityHealthAnalyticsCustomModule that was not found in google/cloud/securitycenter/v1/securitycenter_service.proto
+Entry securitycenter-eventthreatdetectioncustommodule has an invalid kind: SecurityCenterEventThreatDetectionCustomModule
+Entry securitycenter-eventthreatdetectioncustommodule specifies a proto message EventThreatDetectionCustomModule that was not found in google/cloud/securitycenter/v1/securitycenter_service.proto
+Entry securitycenter-externalsystem has an invalid kind: SecurityCenterExternalSystem
+Entry securitycenter-externalsystem specifies a proto message ExternalSystem that was not found in google/cloud/securitycenter/v2/securitycenter_service.proto
+Entry securitycenter-finding has an invalid kind: SecurityCenterFinding
+Entry securitycenter-finding specifies a proto message Finding that was not found in google/cloud/securitycenter/v2/securitycenter_service.proto
+Entry securitycenter-muteconfig has an invalid kind: SecurityCenterMuteConfig
+Entry securitycenter-muteconfig specifies a proto message MuteConfig that was not found in google/cloud/securitycenter/v2/securitycenter_service.proto
+Entry securitycenter-notificationconfig specifies a proto message NotificationConfig that was not found in google/cloud/securitycenter/v2/securitycenter_service.proto
+Entry securitycenter-orgpolicy has an invalid kind: SecurityCenterOrgPolicy
+Entry securitycenter-orgpolicy specifies a proto message OrgPolicy that was not found in google/cloud/securitycenter/v2/securitycenter_service.proto
+Entry securitycenter-organizationsettings has an invalid kind: SecurityCenterOrganizationSettings
+Entry securitycenter-organizationsettings specifies a proto message OrganizationSettings that was not found in google/cloud/securitycenter/v1/securitycenter_service.proto
+Entry securitycenter-resourcevalueconfig has an invalid kind: SecurityCenterResourceValueConfig
+Entry securitycenter-resourcevalueconfig specifies a proto message ResourceValueConfig that was not found in google/cloud/securitycenter/v2/securitycenter_service.proto
+Entry securitycenter-securityhealthanalyticscustommodule has an invalid kind: SecurityCenterSecurityHealthAnalyticsCustomModule
+Entry securitycenter-securityhealthanalyticscustommodule specifies a proto message SecurityHealthAnalyticsCustomModule that was not found in google/cloud/securitycenter/v1/securitycenter_service.proto
+Entry securitycenter-securitymarks has an invalid kind: SecurityCenterSecurityMarks
+Entry securitycenter-securitymarks specifies a proto message SecurityMarks that was not found in google/cloud/securitycenter/v2/securitycenter_service.proto
+Entry securitycenter-serviceaccount has an invalid kind: SecurityCenterServiceAccount
+Entry securitycenter-settings has an invalid kind: SecurityCenterSettings
+Entry securitycenter-settings specifies a proto message Settings that was not found in google/cloud/securitycenter/settings/v1beta1/securitycenter_settings_service.proto
+Entry securitycenter-simulation has an invalid kind: SecurityCenterSimulation
+Entry securitycenter-simulation specifies a proto message Simulation that was not found in google/cloud/securitycenter/v2/securitycenter_service.proto
+Entry securitycenter-source specifies a proto message Source that was not found in google/cloud/securitycenter/v2/securitycenter_service.proto
+Entry securitycenter-valuedresource has an invalid kind: SecurityCenterValuedResource
+Entry securitycenter-valuedresource specifies a proto message ValuedResource that was not found in google/cloud/securitycenter/v2/securitycenter_service.proto
+Entry securitycentermanagement-effectiveeventthreatdetectioncustommodule has an invalid kind: SecurityCentermanagementEffectiveEventThreatDetectionCustomModule
+Entry securitycentermanagement-effectivesecurityhealthanalyticscustommodule has an invalid kind: SecurityCentermanagementEffectiveSecurityHealthAnalyticsCustomModule
+Entry securitycentermanagement-eventthreatdetectioncustommodule has an invalid kind: SecurityCentermanagementEventThreatDetectionCustomModule
+Entry securitycentermanagement-securitycenterservice has an invalid kind: SecurityCentermanagementSecurityCenterService
+Entry securitycentermanagement-securityhealthanalyticscustommodule has an invalid kind: SecurityCentermanagementSecurityHealthAnalyticsCustomModule
+Entry securitycentermanagement-simulatedfinding has an invalid kind: SecurityCentermanagementSimulatedFinding
+Entry securityposture-posture has an invalid kind: SecurityPosturePosture
+Entry securityposture-posturedeployment has an invalid kind: SecurityPosturePostureDeployment
+Entry securityposture-posturetemplate has an invalid kind: SecurityPosturePostureTemplate
+Entry servicedirectory-location has a missing kind.
+Entry servicedirectory-servicedirectoryendpoint specifies a proto message Endpoint that was not found in google/cloud/servicedirectory/v1/lookup_service.proto
+Entry servicedirectory-servicedirectorynamespace specifies a proto message Namespace that was not found in google/cloud/servicedirectory/v1/lookup_service.proto
+Entry servicedirectory-servicedirectoryservice specifies a proto message Service that was not found in google/cloud/servicedirectory/v1/lookup_service.proto
+Entry servicehealth-event has an invalid kind: ServiceHealthEvent
+Entry servicehealth-event specifies a proto message Event that was not found in google/cloud/servicehealth/v1/event_service.proto
+Entry servicehealth-organizationevent has an invalid kind: ServiceHealthOrganizationEvent
+Entry servicehealth-organizationevent specifies a proto message OrganizationEvent that was not found in google/cloud/servicehealth/v1/event_service.proto
+Entry servicehealth-organizationimpact has an invalid kind: ServiceHealthOrganizationImpact
+Entry servicehealth-organizationimpact specifies a proto message OrganizationImpact that was not found in google/cloud/servicehealth/v1/event_service.proto
+Entry api-key has an invalid kind: APIKey
+Entry api-key specifies a proto message Key that was not found in google/api/apikeys/v2/apikeys.proto
+Entry serviceusage-serviceusageconsumerquotaoverrides has a missing kind.
+Entry shell-environment has an invalid kind: ShellEnvironment
+Entry spanner-row has a missing kind.
+Entry spanner-sample has a missing kind.
+Entry spanner-backup has an invalid kind: SpannerBackup
+Entry spanner-databaserole has an invalid kind: SpannerDatabaseRole
+Entry spanner-instancepartition has an invalid kind: SpannerInstancePartition
+Entry spanner-session has an invalid kind: SpannerSession
+Entry speech-config has an invalid kind: SpeechConfig
+Entry sql-sqlinstances has a missing kind.
+Entry sql-sqldatabase specifies a non-existent proto-path: cloud/sql/v1beta4/cloud_sql_resources.proto
+Entry sql-sqlsslcert specifies a non-existent proto-path: cloud/sql/v1beta4/cloud_sql_resources.proto
+Entry sql-sqluser specifies a non-existent proto-path: cloud/sql/v1beta4/cloud_sql_users.proto
+Entry storage-hmac has a missing kind.
+Entry storage-hmackey has a missing kind.
+Entry storage-insight has a missing kind.
+Entry storage-object has a missing kind.
+Entry storage-operation has a missing kind.
+Entry storage-storagelayout has an invalid kind: StorageStorageLayout
+Entry storageinsights-reportconfig has an invalid kind: StorageInsightsReportConfig
+Entry storageinsights-reportdetail has an invalid kind: StorageInsightsReportDetail
+Entry storagetransfer-agents has a missing kind.
+Entry storagetransfer-storagetransferagentpools has a missing kind.
+Entry storagetransfer-storagetransferjobs has a missing kind.
+Entry storagetransfer-agentpool specifies a proto message AgentPool that was not found in google/storagetransfer/v1/transfer.proto
+Entry support-attachment has an invalid kind: SupportAttachment
+Entry support-attachment specifies a proto message Attachment that was not found in google/cloud/support/v2/attachment_service.proto
+Entry support-case has an invalid kind: SupportCase
+Entry support-case specifies a proto message Case that was not found in google/cloud/support/v2/attachment_service.proto
+Entry support-comment has an invalid kind: SupportComment
+Entry support-comment specifies a proto message Comment that was not found in google/cloud/support/v2/comment_service.proto
+Entry tags-tagslocationtagbindings has a missing kind.
+Entry talent-company has an invalid kind: TalentCompany
+Entry talent-company specifies a proto message Company that was not found in google/cloud/talent/v4/company_service.proto
+Entry talent-job has an invalid kind: TalentJob
+Entry talent-tenant has an invalid kind: TalentTenant
+Entry talent-tenant specifies a proto message Tenant that was not found in google/cloud/talent/v4/tenant_service.proto
+Entry tasks-cmekconfig has a missing kind.
+Entry tasks-locations has a missing kind.
+Entry tasks-queue specifies a proto message Queue that was not found in google/cloud/tasks/v2/cloudtasks.proto
+Entry tasks-task has an invalid kind: TasksTask
+Entry tasks-task specifies a proto message Task that was not found in google/cloud/tasks/v2/cloudtasks.proto
+Entry telcoautomation-operations has a missing kind.
+Entry telcoautomation-blueprint has an invalid kind: TelcoAutomationBlueprint
+Entry telcoautomation-deployment has an invalid kind: TelcoAutomationDeployment
+Entry telcoautomation-edgeslm has an invalid kind: TelcoAutomationEdgeSlm
+Entry telcoautomation-hydrateddeployment has an invalid kind: TelcoAutomationHydratedDeployment
+Entry telcoautomation-orchestrationcluster has an invalid kind: TelcoAutomationOrchestrationCluster
+Entry telcoautomation-publicblueprint has an invalid kind: TelcoAutomationPublicBlueprint
+Entry testing-devicesession has an invalid kind: TestingDeviceSession
+Entry testing-devicesession specifies a proto message DeviceSession that was not found in google/devtools/testing/v1/application_details.proto
+Entry timeseriesinsights-dataset has an invalid kind: TimeseriesInsightsDataSet
+Entry tpu-executiongroup has a missing kind.
+Entry tpu-topology has a missing kind.
+Entry tpu-version has a missing kind.
+Entry tpu-vm has a missing kind.
+Entry tpu-acceleratortype has an invalid kind: TPUAcceleratorType
+Entry tpu-queuedresource has an invalid kind: TPUQueuedResource
+Entry tpu-runtimeversion has an invalid kind: TPURuntimeVersion
+Entry tpu-tensorflowversion has an invalid kind: TPUTensorFlowVersion
+Entry translation-adaptivemtdataset has an invalid kind: TranslationAdaptiveMtDataset
+Entry translation-adaptivemtdataset specifies a non-existent proto-path: AdaptiveMtDataset
+Entry translation-adaptivemtfile has an invalid kind: TranslationAdaptiveMtFile
+Entry translation-adaptivemtfile specifies a non-existent proto-path: AdaptiveMtFile
+Entry translation-adaptivemtsentence has an invalid kind: TranslationAdaptiveMtSentence
+Entry translation-adaptivemtsentence specifies a non-existent proto-path: AdaptiveMtSentence
+Entry translation-dataset has an invalid kind: TranslationDataset
+Entry translation-dataset specifies a non-existent proto-path: Dataset
+Entry translation-example has an invalid kind: TranslationExample
+Entry translation-example specifies a non-existent proto-path: Example
+Entry translation-glossary has an invalid kind: TranslationGlossary
+Entry translation-glossary specifies a non-existent proto-path: Glossary
+Entry translation-glossaryentry has an invalid kind: TranslationGlossaryEntry
+Entry translation-glossaryentry specifies a non-existent proto-path: GlossaryEntry
+Entry translation-model has an invalid kind: TranslationModel
+Entry translation-model specifies a non-existent proto-path: Model
+Entry vertexai-vertexaifeaturestoreentitytypefeatures has a missing kind.
+Entry vertexai-vertexaifeaturestoreentitytypes has a missing kind.
+Entry vertexai-vertexaifeaturestores has a missing kind.
+Entry vertexai-vertexaiindexendpoint has a missing kind.
+Entry vertexai-vertexaimetadatastores has a missing kind.
+Entry vertexai-vertexaitensorboards has a missing kind.
+Entry video-asset has an invalid kind: VideoAsset
+Entry video-asset specifies a proto message Asset that was not found in google/cloud/video/livestream/v1/service.proto
+Entry video-cdnkey has an invalid kind: VideoCdnKey
+Entry video-cdnkey specifies a proto message CdnKey that was not found in google/cloud/video/stitcher/v1/video_stitcher_service.proto
+Entry video-channel has an invalid kind: VideoChannel
+Entry video-clip has an invalid kind: VideoClip
+Entry video-clip specifies a proto message Clip that was not found in google/cloud/video/livestream/v1/service.proto
+Entry video-event has an invalid kind: VideoEvent
+Entry video-event specifies a proto message Event that was not found in google/cloud/video/livestream/v1/service.proto
+Entry video-input has an invalid kind: VideoInput
+Entry video-input specifies a proto message Input that was not found in google/cloud/video/livestream/v1/service.proto
+Entry video-job has an invalid kind: VideoJob
+Entry video-job specifies a proto message Job that was not found in google/cloud/video/transcoder/v1/services.proto
+Entry video-jobtemplate has an invalid kind: VideoJobTemplate
+Entry video-jobtemplate specifies a proto message JobTemplate that was not found in google/cloud/video/transcoder/v1/services.proto
+Entry video-liveadtagdetail has an invalid kind: VideoLiveAdTagDetail
+Entry video-liveadtagdetail specifies a proto message LiveAdTagDetail that was not found in google/cloud/video/stitcher/v1/video_stitcher_service.proto
+Entry video-liveconfig has an invalid kind: VideoLiveConfig
+Entry video-liveconfig specifies a proto message LiveConfig that was not found in google/cloud/video/stitcher/v1/video_stitcher_service.proto
+Entry video-livesession has an invalid kind: VideoLiveSession
+Entry video-livesession specifies a proto message LiveSession that was not found in google/cloud/video/stitcher/v1/video_stitcher_service.proto
+Entry video-pool has an invalid kind: VideoPool
+Entry video-pool specifies a proto message Pool that was not found in google/cloud/video/livestream/v1/service.proto
+Entry video-slate has an invalid kind: VideoSlate
+Entry video-slate specifies a proto message Slate that was not found in google/cloud/video/stitcher/v1/video_stitcher_service.proto
+Entry video-vodadtagdetail has an invalid kind: VideoVodAdTagDetail
+Entry video-vodadtagdetail specifies a proto message VodAdTagDetail that was not found in google/cloud/video/stitcher/v1/video_stitcher_service.proto
+Entry video-vodconfig has an invalid kind: VideoVodConfig
+Entry video-vodconfig specifies a proto message VodConfig that was not found in google/cloud/video/stitcher/v1/video_stitcher_service.proto
+Entry video-vodsession has an invalid kind: VideoVodSession
+Entry video-vodsession specifies a proto message VodSession that was not found in google/cloud/video/stitcher/v1/video_stitcher_service.proto
+Entry video-vodstitchdetail has an invalid kind: VideoVodStitchDetail
+Entry video-vodstitchdetail specifies a proto message VodStitchDetail that was not found in google/cloud/video/stitcher/v1/video_stitcher_service.proto
+Entry vision-product has an invalid kind: VisionProduct
+Entry vision-productset has an invalid kind: VisionProductSet
+Entry vision-productset specifies a proto message ProductSet that was not found in google/cloud/vision/v1/image_annotator.proto
+Entry vision-referenceimage has an invalid kind: VisionReferenceImage
+Entry vision-referenceimage specifies a proto message ReferenceImage that was not found in google/cloud/vision/v1/image_annotator.proto
+Entry visionai-analysis has an invalid kind: VisionAIAnalysis
+Entry visionai-analysis specifies a proto message Analysis that was not found in google/cloud/visionai/v1/health_service.proto
+Entry visionai-annotation has an invalid kind: VisionAIAnnotation
+Entry visionai-annotation specifies a proto message Annotation that was not found in google/cloud/visionai/v1/health_service.proto
+Entry visionai-application has an invalid kind: VisionAIApplication
+Entry visionai-application specifies a proto message Application that was not found in google/cloud/visionai/v1/health_service.proto
+Entry visionai-asset has an invalid kind: VisionAIAsset
+Entry visionai-asset specifies a proto message Asset that was not found in google/cloud/visionai/v1/health_service.proto
+Entry visionai-channel has an invalid kind: VisionAIChannel
+Entry visionai-channel specifies a proto message Channel that was not found in google/cloud/visionai/v1/health_service.proto
+Entry visionai-cluster has an invalid kind: VisionAICluster
+Entry visionai-collection has an invalid kind: VisionAICollection
+Entry visionai-collection specifies a proto message Collection that was not found in google/cloud/visionai/v1/health_service.proto
+Entry visionai-corpus has an invalid kind: VisionAICorpus
+Entry visionai-corpus specifies a proto message Corpus that was not found in google/cloud/visionai/v1/health_service.proto
+Entry visionai-dataschema has an invalid kind: VisionAIDataSchema
+Entry visionai-dataschema specifies a proto message DataSchema that was not found in google/cloud/visionai/v1/health_service.proto
+Entry visionai-draft has an invalid kind: VisionAIDraft
+Entry visionai-draft specifies a proto message Draft that was not found in google/cloud/visionai/v1/health_service.proto
+Entry visionai-event has an invalid kind: VisionAIEvent
+Entry visionai-event specifies a proto message Event that was not found in google/cloud/visionai/v1/health_service.proto
+Entry visionai-index has an invalid kind: VisionAIIndex
+Entry visionai-index specifies a proto message Index that was not found in google/cloud/visionai/v1/health_service.proto
+Entry visionai-indexendpoint has an invalid kind: VisionAIIndexEndpoint
+Entry visionai-indexendpoint specifies a proto message IndexEndpoint that was not found in google/cloud/visionai/v1/health_service.proto
+Entry visionai-instance has an invalid kind: VisionAIInstance
+Entry visionai-instance specifies a proto message Instance that was not found in google/cloud/visionai/v1/health_service.proto
+Entry visionai-operator has an invalid kind: VisionAIOperator
+Entry visionai-operator specifies a proto message Operator that was not found in google/cloud/visionai/v1/health_service.proto
+Entry visionai-process has an invalid kind: VisionAIProcess
+Entry visionai-process specifies a proto message Process that was not found in google/cloud/visionai/v1/health_service.proto
+Entry visionai-processor has an invalid kind: VisionAIProcessor
+Entry visionai-processor specifies a proto message Processor that was not found in google/cloud/visionai/v1/health_service.proto
+Entry visionai-searchconfig has an invalid kind: VisionAISearchConfig
+Entry visionai-searchconfig specifies a proto message SearchConfig that was not found in google/cloud/visionai/v1/health_service.proto
+Entry visionai-searchhypernym has an invalid kind: VisionAISearchHypernym
+Entry visionai-searchhypernym specifies a proto message SearchHypernym that was not found in google/cloud/visionai/v1/health_service.proto
+Entry visionai-series has an invalid kind: VisionAISeries
+Entry visionai-series specifies a proto message Series that was not found in google/cloud/visionai/v1/health_service.proto
+Entry visionai-stream has an invalid kind: VisionAIStream
+Entry visionai-stream specifies a proto message Stream that was not found in google/cloud/visionai/v1/streaming_service.proto
+Entry vmmigration-clonejob has an invalid kind: VMMigrationCloneJob
+Entry vmmigration-cutoverjob has an invalid kind: VMMigrationCutoverJob
+Entry vmmigration-datacenterconnector has an invalid kind: VMMigrationDatacenterConnector
+Entry vmmigration-group has an invalid kind: VMMigrationGroup
+Entry vmmigration-migratingvm has an invalid kind: VMMigrationMigratingVm
+Entry vmmigration-replicationcycle has an invalid kind: VMMigrationReplicationCycle
+Entry vmmigration-source has an invalid kind: VMMigrationSource
+Entry vmmigration-targetproject has an invalid kind: VMMigrationTargetProject
+Entry vmmigration-utilizationreport has an invalid kind: VMMigrationUtilizationReport
+Entry vmwareengine-cluster has an invalid kind: VMwareEngineCluster
+Entry vmwareengine-cluster specifies a proto message Cluster that was not found in google/cloud/vmwareengine/v1/vmwareengine.proto
+Entry vmwareengine-dnsforwarding has an invalid kind: VMwareEngineDNSForwarding
+Entry vmwareengine-dnsforwarding specifies a proto message DnsForwarding that was not found in google/cloud/vmwareengine/v1/vmwareengine.proto
+Entry vmwareengine-externaladdress specifies a proto message ExternalAddress that was not found in google/cloud/vmwareengine/v1/vmwareengine.proto
+Entry vmwareengine-hcxactivationkey has an invalid kind: VMwareEngineHcxActivationKey
+Entry vmwareengine-hcxactivationkey specifies a proto message HcxActivationKey that was not found in google/cloud/vmwareengine/v1/vmwareengine.proto
+Entry vmwareengine-loggingserver has an invalid kind: VMwareEngineLoggingServer
+Entry vmwareengine-loggingserver specifies a proto message LoggingServer that was not found in google/cloud/vmwareengine/v1/vmwareengine.proto
+Entry vmwareengine-managementdnszonebinding has an invalid kind: VMwareEngineManagementDnsZoneBinding
+Entry vmwareengine-managementdnszonebinding specifies a proto message ManagementDnsZoneBinding that was not found in google/cloud/vmwareengine/v1/vmwareengine.proto
+Entry vmwareengine-networkpeering specifies a proto message NetworkPeering that was not found in google/cloud/vmwareengine/v1/vmwareengine.proto
+Entry vmwareengine-networkpolicy specifies a proto message NetworkPolicy that was not found in google/cloud/vmwareengine/v1/vmwareengine.proto
+Entry vmwareengine-node has an invalid kind: VMwareEngineNode
+Entry vmwareengine-node specifies a proto message Node that was not found in google/cloud/vmwareengine/v1/vmwareengine.proto
+Entry vmwareengine-privatecloud specifies a proto message PrivateCloud that was not found in google/cloud/vmwareengine/v1/vmwareengine.proto
+Entry vmwareengine-privateconnection has an invalid kind: VMwareEnginePrivateConnection
+Entry vmwareengine-privateconnection specifies a proto message PrivateConnection that was not found in google/cloud/vmwareengine/v1/vmwareengine.proto
+Entry vmwareengine-subnet has an invalid kind: VMwareEngineSubnet
+Entry vmwareengine-subnet specifies a proto message Subnet that was not found in google/cloud/vmwareengine/v1/vmwareengine.proto
+Entry websecurityscanner-finding has an invalid kind: WebSecurityScannerFinding
+Entry websecurityscanner-finding specifies a proto message Finding that was not found in google/cloud/websecurityscanner/v1/web_security_scanner.proto
+Entry websecurityscanner-scanconfig has an invalid kind: WebSecurityScannerScanConfig
+Entry websecurityscanner-scanconfig specifies a proto message ScanConfig that was not found in google/cloud/websecurityscanner/v1beta/web_security_scanner.proto
+Entry websecurityscanner-scanrun has an invalid kind: WebSecurityScannerScanRun
+Entry websecurityscanner-scanrun specifies a proto message ScanRun that was not found in google/cloud/websecurityscanner/v1beta/web_security_scanner.proto
+Entry workstations-workstation has an invalid kind: WorkstationsWorkstation
+Entry workstations-workstationcluster has an invalid kind: WorkstationsWorkstationCluster
+Entry workstations-workstationconfig has an invalid kind: WorkstationsWorkstationConfig
+
+--------------------------------------------------
+Summary: Entries with invalid kinds (sorted by proto field count)
+--------------------------------------------------
+Fields: 0     Name: compute-computesnapshotsetting
+Fields: 0     Name: recaptchaenterprise-relatedaccountgroup
+Fields: accesscontextmanager-accesscontextmanagergcpuseraccessbindings Name: 
+Fields: aiplatform-dataitem Name: 
+Fields: alloydb-cluster Name: 
+Fields: alloydb-instance Name: 
+Fields: apihub-api Name: 
+Fields: contactcenterinsights-conversation Name: 
+Fields: contactcenterinsights-issue Name: 
+Fields: contactcenterinsights-qaquestion Name: 
+Fields: contentwarehouse-document Name: 
+Fields: datalabeling-example Name: 
+Fields: dataproc-session Name: 
+Fields: discoveryengine-document Name: 
+Fields: discoveryengine-evaluation Name: 
+Fields: documentai-dataset Name: 
+Fields: talent-job Name: 
+Fields: video-channel Name: 
+Fields: visionai-cluster Name: 
+Fields: 1     Name: bigquery-stream
+Fields: 1     Name: iap-tunneldestgroup
+Fields: 1     Name: migrationcenter-settings
+Fields: 1     Name: redis-backupcollection
+Fields: 1     Name: spanner-databaserole
+Fields: 1     Name: speech-config
+Fields: 2     Name: apihub-hostprojectregistration
+Fields: 2     Name: apihub-runtimeprojectattachment
+Fields: 2     Name: baremetalsolution-sshkey
+Fields: 2     Name: channel-reportjob
+Fields: 2     Name: datafusion-namespace
+Fields: 2     Name: dialogflow-agentvalidationresult
+Fields: 2     Name: dialogflow-encryptionspec
+Fields: 2     Name: example-shelf
+Fields: 2     Name: gsuiteaddons-installstatus
+Fields: 2     Name: orchestration-userworkloadsconfigmap
+Fields: 2     Name: orchestration-userworkloadssecret
+Fields: 2     Name: recaptchaenterprise-relatedaccountgroupmembership
+Fields: 2     Name: securitycenter-serviceaccount
+Fields: 2     Name: tpu-runtimeversion
+Fields: 2     Name: tpu-tensorflowversion
+Fields: 3     Name: advisorynotifications-settings
+Fields: 3     Name: deploy-config
+Fields: 3     Name: dialogflow-answerrecord
+Fields: 3     Name: dialogflow-context
+Fields: 3     Name: dialogflow-knowledgebase
+Fields: 3     Name: dialogflow-transitionroutegroup
+Fields: 3     Name: gsuiteaddons-authorization
+Fields: 3     Name: privacy-storedinfotype
+Fields: 3     Name: recaptchaenterprise-metrics
+Fields: 3     Name: tpu-acceleratortype
+Fields: 4     Name: analytics-metadata
+Fields: 4     Name: bigquery-bireservation
+Fields: 4     Name: bigquery-catalog
+Fields: 4     Name: billing-projectbillinginfo
+Fields: 4     Name: channel-report
+Fields: 4     Name: commerce-licensepool
+Fields: 4     Name: datacatalog-lineageevent
+Fields: 4     Name: datacatalog-process
+Fields: 4     Name: dataform-workspace
+Fields: 4     Name: dialogflow-siptrunk
+Fields: 4     Name: example-book
+Fields: 4     Name: gsuiteaddons-deployment
+Fields: 4     Name: memorystore-certificateauthority
+Fields: 4     Name: migrationcenter-errorframe
+Fields: 4     Name: oslogin-sshpublickey
+Fields: 4     Name: parametermanager-parameterversion
+Fields: 4     Name: privacy-connection
+Fields: 4     Name: redis-certificateauthority
+Fields: 4     Name: resourcemanager-tagbinding
+Fields: 5     Name: advisorynotifications-notification
+Fields: 5     Name: billing-billingaccount
+Fields: 5     Name: confidentialcomputing-challenge
+Fields: 5     Name: policysimulator-replayresult
+Fields: 5     Name: privatecatalog-catalog
+Fields: 5     Name: privatecatalog-version
+Fields: 5     Name: resourcemanager-taghold
+Fields: 5     Name: vmmigration-group
+Fields: 5     Name: vmmigration-targetproject
+Fields: 6     Name: accessapproval-accessapprovalsettings
+Fields: 6     Name: dataplex-entry
+Fields: 6     Name: dialogflow-sessionentitytype
+Fields: 6     Name: migrationcenter-group
+Fields: 6     Name: migrationcenter-preferenceset
+Fields: 6     Name: migrationcenter-reportconfig
+Fields: 6     Name: parametermanager-parameter
+Fields: 6     Name: privacy-deidentifytemplate
+Fields: 6     Name: privacy-inspecttemplate
+Fields: 6     Name: privatecatalog-product
+Fields: 6     Name: recommender-insighttypeconfig
+Fields: 6     Name: recommender-recommenderconfig
+Fields: 6     Name: spanner-session
+Fields: 6     Name: telcoautomation-publicblueprint
+Fields: 7     Name: cloudbuild-repository
+Fields: 7     Name: cloudprofiler-profile
+Fields: 7     Name: dialogflow-conversationdataset
+Fields: 7     Name: dialogflow-generator
+Fields: 7     Name: networkconnectivity-routetable
+Fields: 7     Name: paymentgateway-accountmanagertransaction
+Fields: 7     Name: remoteworkers-botsession
+Fields: 7     Name: resourcemanager-tagvalue
+Fields: 7     Name: securitycentermanagement-effectivesecurityhealthanalyticscustommodule
+Fields: 7     Name: securityposture-posturetemplate
+Fields: 7     Name: storage-storagelayout
+Fields: 7     Name: telcoautomation-hydrateddeployment
+Fields: 7     Name: vision-product
+Fields: 7     Name: vmmigration-source
+Fields: 8     Name: bigquery-database
+Fields: 8     Name: bigquery-datapolicy
+Fields: 8     Name: cloudbuild-githubenterpriseconfig
+Fields: 8     Name: compute-computestoragepool
+Fields: 8     Name: dialogflow-changelog
+Fields: 8     Name: dialogflow-testcase
+Fields: 8     Name: migrationcenter-asset
+Fields: 8     Name: networkservices-lbrouteextension
+Fields: 8     Name: networkservices-lbtrafficextension
+Fields: 8     Name: privacy-projectdataprofile
+Fields: 8     Name: resourcemanager-tagkey
+Fields: 9     Name: appengine-sslcertificate
+Fields: 9     Name: bigquery-table
+Fields: 9     Name: compute-computemanagedsslcertificate
+Fields: 9     Name: config-terraformversion
+Fields: 9     Name: dataplex-datataxonomy
+Fields: 9     Name: dialogflow-deployment
+Fields: 9     Name: dialogflow-page
+Fields: 9     Name: dialogflow-participant
+Fields: 9     Name: enterpriseknowledgegraph-entityreconciliationjob
+Fields: 9     Name: migrationcenter-importdatafile
+Fields: 9     Name: networkconnectivity-group
+Fields: 9     Name: securitycentermanagement-effectiveeventthreatdetectioncustommodule
+Fields: 9     Name: storageinsights-reportconfig
+Fields: 9     Name: storageinsights-reportdetail
+Fields: 10    Name: analytics-audienceexport
+Fields: 10    Name: bigquery-dataexchange
+Fields: 10    Name: clouddeploy-customtargettype
+Fields: 10    Name: contentwarehouse-documentlink
+Fields: 10    Name: dataform-releaseconfig
+Fields: 10    Name: dialogflow-environment
+Fields: 10    Name: dialogflow-version
+Fields: 10    Name: recaptchaenterprise-key
+Fields: 10    Name: securitycentermanagement-securityhealthanalyticscustommodule
+Fields: 11    Name: compute-computeinstantsnapshot
+Fields: 11    Name: datacatalog-run
+Fields: 11    Name: dataform-workflowconfig
+Fields: 11    Name: dataproc-sessiontemplate
+Fields: 11    Name: developerconnect-gitrepositorylink
+Fields: 11    Name: dialogflow-example
+Fields: 11    Name: oslogin-posixaccount
+Fields: 11    Name: recaptchaenterprise-assessment
+Fields: 11    Name: resourcemanager-organization
+Fields: 12    Name: dataform-workflowinvocation
+Fields: 12    Name: deploy-automation
+Fields: 12    Name: dialogflow-flow
+Fields: 12    Name: filestore-share
+Fields: 12    Name: kms-ekmconnection
+Fields: 12    Name: modelarmor-floorsetting
+Fields: 12    Name: privacy-finding
+Fields: 12    Name: securitycentermanagement-eventthreatdetectioncustommodule
+Fields: 12    Name: securityposture-posture
+Fields: 12    Name: telcoautomation-orchestrationcluster
+Fields: 13    Name: beyondcorp-clientgateway
+Fields: 13    Name: bigquery-connection
+Fields: 13    Name: certificatemanager-dnsauthorization
+Fields: 13    Name: cloudbuild-connection
+Fields: 13    Name: dataform-compilationresult
+Fields: 13    Name: securitycentermanagement-securitycenterservice
+Fields: 13    Name: shell-environment
+Fields: 13    Name: spanner-instancepartition
+Fields: 14    Name: bigquery-assignment
+Fields: 14    Name: migrationcenter-report
+Fields: 14    Name: paymentgateway-managedaccount
+Fields: 14    Name: timeseriesinsights-dataset
+Fields: 14    Name: vmmigration-replicationcycle
+Fields: 15    Name: apigeeregistry-instance
+Fields: 15    Name: compute-computepublicdelegatedprefix
+Fields: 15    Name: dataplex-content
+Fields: 15    Name: dialogflow-conversationprofile
+Fields: 15    Name: networkconnectivity-route
+Fields: 15    Name: parallelstore-instance
+Fields: 15    Name: policysimulator-replay
+Fields: 15    Name: telcoautomation-edgeslm
+Fields: 16    Name: config-resource
+Fields: 16    Name: dialogflow-playbook
+Fields: 16    Name: orchestration-environment
+Fields: 16    Name: privacy-jobtrigger
+Fields: 16    Name: securesourcemanager-branchrule
+Fields: 16    Name: telcoautomation-blueprint
+Fields: 16    Name: vmmigration-clonejob
+Fields: 17    Name: migrationcenter-importjob
+Fields: 17    Name: telcoautomation-deployment
+Fields: 18    Name: colab-execution
+Fields: 18    Name: compute-computepublicadvertisedprefix
+Fields: 18    Name: deploy-target
+Fields: 18    Name: developerconnect-connection
+Fields: 18    Name: metastore-metadataimport
+Fields: 18    Name: privacy-discoveryconfig
+Fields: 18    Name: recommender-recommendation
+Fields: 18    Name: spanner-backup
+Fields: 18    Name: vmmigration-cutoverjob
+Fields: 18    Name: vmmigration-utilizationreport
+Fields: 18    Name: workstations-workstation
+Fields: 19    Name: functions-function
+Fields: 19    Name: modelarmor-template
+Fields: 19    Name: privacy-dlpjob
+Fields: 19    Name: tpu-queuedresource
+Fields: 19    Name: vmmigration-datacenterconnector
+Fields: 20    Name: bigquery-reservation
+Fields: 20    Name: dialogflow-conversationmodel
+Fields: 20    Name: migrationcenter-source
+Fields: 20    Name: redis-backup
+Fields: 20    Name: workstations-workstationcluster
+Fields: 21    Name: cloudbuild-buildtrigger
+Fields: 21    Name: dataplex-datascan
+Fields: 21    Name: deploy-jobrun
+Fields: 21    Name: ids-endpoint
+Fields: 22    Name: beyondcorp-clientconnectorservice
+Fields: 22    Name: domains-registration
+Fields: 22    Name: securityposture-posturedeployment
+Fields: 23    Name: bigquery-subscription
+Fields: 23    Name: dialogflow-document
+Fields: 23    Name: notebooks-runtime
+Fields: 25    Name: bigquery-capacitycommitment
+Fields: 25    Name: bigquery-datasource
+Fields: 25    Name: colab-schedule
+Fields: 25    Name: dataplex-environment
+Fields: 25    Name: deploy-automationrun
+Fields: 25    Name: recommender-insight
+Fields: 25    Name: securitycentermanagement-simulatedfinding
+Fields: 26    Name: baremetalsolution-nfsshare
+Fields: 26    Name: networkmanagement-vpcflowlogsconfig
+Fields: 27    Name: dialogflow-securitysettings
+Fields: 27    Name: run-execution
+Fields: 28    Name: assuredworkloads-violation
+Fields: 29    Name: privacy-filestoredataprofile
+Fields: 29    Name: run-task
+Fields: 29    Name: vmmigration-migratingvm
+Fields: 31    Name: config-revision
+Fields: 31    Name: run-revision
+Fields: 32    Name: dataplex-aspecttype
+Fields: 32    Name: privacy-tabledataprofile
+Fields: 34    Name: dialogflow-conversation
+Fields: 35    Name: config-preview
+Fields: 37    Name: dialogflow-webhook
+Fields: 42    Name: config-deployment
+Fields: 44    Name: privacy-columndataprofile
+Fields: 45    Name: dialogflow-experiment
+Fields: 45    Name: functions-cloudfunction
+Fields: 47    Name: deploy-rollout
+Fields: 48    Name: dataplex-metadatajob
+Fields: 49    Name: compute-commitment
+Fields: 49    Name: deploy-release
+Fields: 49    Name: privilegedaccessmanager-grant
+Fields: 50    Name: assuredworkloads-workload
+Fields: 53    Name: blockchainnodeengine-blockchainnode
+Fields: 55    Name: bigquery-listing
+Fields: 55    Name: cloudbuild-build
+Fields: 55    Name: workstations-workstationconfig
+Fields: 61    Name: dataplex-asset
+Fields: 67    Name: dialogflow-tool
+--------------------------------------------------
+
+Analysis complete.
