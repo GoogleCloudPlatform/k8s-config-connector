@@ -18,14 +18,49 @@ import (
 	"context"
 	"fmt"
 
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // TODO: move to apis/appengine when we implement the AppEngine resource
 
+var (
+	_ Ref = &AppEngineApplicationRef{}
+	_ Ref = &AppEngineServiceRef{}
+	_ Ref = &AppEngineVersionRef{}
+)
+
 type AppEngineApplicationRef struct {
 	// Format: projects/{projects_id}/iap_web/appengine-{app_id}
 	External string `json:"external,omitempty"`
+}
+
+func (r *AppEngineApplicationRef) GetGVK() schema.GroupVersionKind {
+	return schema.GroupVersionKind{Group: "appengine.cnrm.cloud.google.com", Version: "v1beta1", Kind: "AppEngineApplication"}
+}
+
+func (r *AppEngineApplicationRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{}
+}
+
+func (r *AppEngineApplicationRef) GetExternal() string {
+	return r.External
+}
+
+func (r *AppEngineApplicationRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *AppEngineApplicationRef) ValidateExternal(ref string) error {
+	if ref == "" {
+		return fmt.Errorf("invalid AppEngineApplicationRef: must specify external")
+	}
+	return nil
+}
+
+func (r *AppEngineApplicationRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return r.ValidateExternal(r.External)
 }
 
 type AppEngineServiceRef struct {
@@ -33,9 +68,63 @@ type AppEngineServiceRef struct {
 	External string `json:"external,omitempty"`
 }
 
+func (r *AppEngineServiceRef) GetGVK() schema.GroupVersionKind {
+	return schema.GroupVersionKind{Group: "appengine.cnrm.cloud.google.com", Version: "v1beta1", Kind: "AppEngineService"}
+}
+
+func (r *AppEngineServiceRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{}
+}
+
+func (r *AppEngineServiceRef) GetExternal() string {
+	return r.External
+}
+
+func (r *AppEngineServiceRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *AppEngineServiceRef) ValidateExternal(ref string) error {
+	if ref == "" {
+		return fmt.Errorf("invalid AppEngineServiceRef: must specify external")
+	}
+	return nil
+}
+
+func (r *AppEngineServiceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return r.ValidateExternal(r.External)
+}
+
 type AppEngineVersionRef struct {
 	// Format: projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}/version/{version_id}
 	External string `json:"external,omitempty"`
+}
+
+func (r *AppEngineVersionRef) GetGVK() schema.GroupVersionKind {
+	return schema.GroupVersionKind{Group: "appengine.cnrm.cloud.google.com", Version: "v1beta1", Kind: "AppEngineVersion"}
+}
+
+func (r *AppEngineVersionRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{}
+}
+
+func (r *AppEngineVersionRef) GetExternal() string {
+	return r.External
+}
+
+func (r *AppEngineVersionRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *AppEngineVersionRef) ValidateExternal(ref string) error {
+	if ref == "" {
+		return fmt.Errorf("invalid AppEngineVersionRef: must specify external")
+	}
+	return nil
+}
+
+func (r *AppEngineVersionRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return r.ValidateExternal(r.External)
 }
 
 func ResolveAppEngineApplicationID(ctx context.Context, reader client.Reader, otherNamespace string, ref *AppEngineApplicationRef) (string, error) {
