@@ -178,17 +178,18 @@ start:
         Write the pull request's title and description to {{ output "change.yaml" }}, as YAML in
         EXACTLY this structure, with nothing else in the file:
 
+        Keep it short - a reviewer reads it in seconds; the attached receipts carry every check:
+
         change:
-          title: "hack/manual-validate: <what you did> for <Kind>"
+          title: "hack/manual-validate: <add|extend> <Kind> validation"
           body: |
-            What was validated and for which change; which checks and variants are new; any
-            existing check changed or removed because the API changed (with why).
-            The verdict of each run, as the receipts say (PASS/FAIL, passed/failed).
-            **Controller bugs**: each failure the controller caused, with the check and the values
-            the receipts show - or "none".
-            What could not be checked out of band, and why.
-            The script changes you made between your runs, each with why it was the script's
-            mistake (from {{ output "iterations.md" }}).
+            <One line: what the script now covers, and for which change (e.g. "New script for the
+            new direct controller" or "Checks the new spec.foo field on create and update").>
+
+            **Result: PASS** (37 passed, 0 failed)      <- or **FAIL**; one line per run, from the receipts
+            **Controller bugs:** none                   <- or one line each: field, expected, got
+            **Not checked:** <one line, or "nothing">
+            **Script fixes during the run:** <one line, or "none">
 
             Fixes #{{ .Inputs.issue_number }}
 
@@ -196,11 +197,16 @@ start:
             NONE
             ```
 
-        If you made no commit (the script already covered the change), write instead:
+        No tables, no restating the receipts, nothing else. If you made no commit (the script
+        already covered the change), write instead:
 
         change:
           comment: |
-            The same summary, saying the script already covered the change and was re-run.
+            Script already covers this change; re-run from a clean start.
+
+            **Result: PASS** (37 passed, 0 failed)      <- as above
+            **Controller bugs:** none
+            **Not checked:** <one line, or "nothing">
 
         Rules:
         - The body MUST contain a line of exactly the form `Fixes #{{ .Inputs.issue_number }}`, on
