@@ -19,9 +19,9 @@ metadata:
 spec:
   projectRef:
     external: ${projectId}
-  location: us-central1
+  location: global
   agentRefs:
-  - external: projects/${projectId}/locations/us-central1/dataAgents/dataagent-max-${uniqueId}
+  - external: projects/${projectId}/locations/global/dataAgents/dataagent-max-${uniqueId}
   labels:
     env: test
     owner: devteam
