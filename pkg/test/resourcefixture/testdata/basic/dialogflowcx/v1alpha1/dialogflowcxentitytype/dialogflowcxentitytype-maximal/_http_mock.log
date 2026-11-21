@@ -1,0 +1,264 @@
+# Phase: CREATE
+POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/entityTypes?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "autoExpansionMode": "AUTO_EXPANSION_MODE_DEFAULT",
+  "displayName": "entitytype-max-${uniqueId}",
+  "entities": [
+    {
+      "synonyms": [
+        "synonym1",
+        "synonym2"
+      ],
+      "value": "value1"
+    },
+    {
+      "synonyms": [
+        "synonym3",
+        "synonym4"
+      ],
+      "value": "value2"
+    }
+  ],
+  "excludedPhrases": [
+    {
+      "value": "excluded1"
+    }
+  ],
+  "kind": "KIND_MAP",
+  "redact": true
+}
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoExpansionMode": "AUTO_EXPANSION_MODE_DEFAULT",
+  "displayName": "entitytype-max-${uniqueId}",
+  "entities": [
+    {
+      "synonyms": [
+        "synonym1",
+        "synonym2"
+      ],
+      "value": "value1"
+    },
+    {
+      "synonyms": [
+        "synonym3",
+        "synonym4"
+      ],
+      "value": "value2"
+    }
+  ],
+  "excludedPhrases": [
+    {
+      "value": "excluded1"
+    }
+  ],
+  "kind": "KIND_MAP",
+  "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/entityTypes/df4e8490-e1ba-4035-99de-ba3fdd265a33",
+  "redact": true
+}
+
+---
+
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/entityTypes/df4e8490-e1ba-4035-99de-ba3fdd265a33?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoExpansionMode": "AUTO_EXPANSION_MODE_DEFAULT",
+  "displayName": "entitytype-max-${uniqueId}",
+  "entities": [
+    {
+      "synonyms": [
+        "synonym1",
+        "synonym2"
+      ],
+      "value": "value1"
+    },
+    {
+      "synonyms": [
+        "synonym3",
+        "synonym4"
+      ],
+      "value": "value2"
+    }
+  ],
+  "excludedPhrases": [
+    {
+      "value": "excluded1"
+    }
+  ],
+  "kind": "KIND_MAP",
+  "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/entityTypes/df4e8490-e1ba-4035-99de-ba3fdd265a33",
+  "redact": true
+}
+
+---
+
+# Phase: UPDATE
+PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/entityTypes/df4e8490-e1ba-4035-99de-ba3fdd265a33?alt=json&updateMask=entities%2CexcludedPhrases%2CenableFuzzyExtraction
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "autoExpansionMode": "AUTO_EXPANSION_MODE_DEFAULT",
+  "displayName": "entitytype-max-${uniqueId}",
+  "enableFuzzyExtraction": true,
+  "entities": [
+    {
+      "synonyms": [
+        "synonym1",
+        "synonym2",
+        "synonym3"
+      ],
+      "value": "value1"
+    },
+    {
+      "synonyms": [
+        "synonym3",
+        "synonym4"
+      ],
+      "value": "value2"
+    }
+  ],
+  "excludedPhrases": [
+    {
+      "value": "excluded1"
+    },
+    {
+      "value": "excluded2"
+    }
+  ],
+  "kind": "KIND_MAP",
+  "redact": true
+}
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoExpansionMode": "AUTO_EXPANSION_MODE_DEFAULT",
+  "displayName": "entitytype-max-${uniqueId}",
+  "enableFuzzyExtraction": true,
+  "entities": [
+    {
+      "synonyms": [
+        "synonym1",
+        "synonym2",
+        "synonym3"
+      ],
+      "value": "value1"
+    },
+    {
+      "synonyms": [
+        "synonym3",
+        "synonym4"
+      ],
+      "value": "value2"
+    }
+  ],
+  "excludedPhrases": [
+    {
+      "value": "excluded1"
+    },
+    {
+      "value": "excluded2"
+    }
+  ],
+  "kind": "KIND_MAP",
+  "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/entityTypes/df4e8490-e1ba-4035-99de-ba3fdd265a33",
+  "redact": true
+}
+
+---
+
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/entityTypes/df4e8490-e1ba-4035-99de-ba3fdd265a33?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoExpansionMode": "AUTO_EXPANSION_MODE_DEFAULT",
+  "displayName": "entitytype-max-${uniqueId}",
+  "enableFuzzyExtraction": true,
+  "entities": [
+    {
+      "synonyms": [
+        "synonym1",
+        "synonym2",
+        "synonym3"
+      ],
+      "value": "value1"
+    },
+    {
+      "synonyms": [
+        "synonym3",
+        "synonym4"
+      ],
+      "value": "value2"
+    }
+  ],
+  "excludedPhrases": [
+    {
+      "value": "excluded1"
+    },
+    {
+      "value": "excluded2"
+    }
+  ],
+  "kind": "KIND_MAP",
+  "name": "projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/entityTypes/df4e8490-e1ba-4035-99de-ba3fdd265a33",
+  "redact": true
+}
+
+---
+
+# Phase: DELETE
+DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/entityTypes/df4e8490-e1ba-4035-99de-ba3fdd265a33?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

@@ -77,6 +77,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	cxpb.RegisterAgentsServer(grpcServer, &cxAgentsServer{MockService: s})
 	cxpb.RegisterPlaybooksServer(grpcServer, &playbooksServer{MockService: s})
 	cxpb.RegisterFlowsServer(grpcServer, &flowsServer{MockService: s})
+	cxpb.RegisterEntityTypesServer(grpcServer, &entityTypesServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -92,6 +93,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		RegisterCXAgentsHandler,
 		RegisterCXPlaybooksHandler,
 		RegisterCXFlowsHandler,
+		RegisterCXEntityTypesHandler,
 		s.operations.RegisterOperationsPath("/v2/{prefix=**}/operations/{name}"),
 		s.operations.RegisterOperationsPath("/v2beta1/{prefix=**}/operations/{name}"),
 		s.operations.RegisterOperationsPath("/v2/operations/{name}"),

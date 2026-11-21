@@ -201,6 +201,23 @@ func TestGetIdentity(t *testing.T) {
 			},
 		},
 		{
+			name: "spec without resourceID, resolved from short status.name (e.g. Terraform provider)",
+			obj: &DialogflowCXEntityType{
+				Spec: DialogflowCXEntityTypeSpec{
+					Parent: common.LazyPtr("projects/my-project/locations/us-central1/agents/my-agent"),
+				},
+				Status: DialogflowCXEntityTypeStatus{
+					Name: common.LazyPtr("server-id-short"),
+				},
+			},
+			want: &DialogflowCXEntityTypeIdentity{
+				Project:    "my-project",
+				Location:   "us-central1",
+				Agent:      "my-agent",
+				EntityType: "server-id-short",
+			},
+		},
+		{
 			name: "drift detection error when spec resourceID does not match status",
 			obj: &DialogflowCXEntityType{
 				Spec: DialogflowCXEntityTypeSpec{
@@ -209,6 +226,19 @@ func TestGetIdentity(t *testing.T) {
 				},
 				Status: DialogflowCXEntityTypeStatus{
 					ExternalRef: common.LazyPtr("projects/my-project/locations/us-central1/agents/my-agent/entityTypes/different-id"),
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "drift detection error when spec resourceID does not match short status.name",
+			obj: &DialogflowCXEntityType{
+				Spec: DialogflowCXEntityTypeSpec{
+					Parent:     common.LazyPtr("projects/my-project/locations/us-central1/agents/my-agent"),
+					ResourceID: common.LazyPtr("spec-id"),
+				},
+				Status: DialogflowCXEntityTypeStatus{
+					Name: common.LazyPtr("different-id"),
 				},
 			},
 			wantErr: true,
@@ -330,6 +360,25 @@ func TestDialogflowCXEntityTypeRef_Normalize(t *testing.T) {
 		},
 	}
 
+	readyObjWithShortName := &DialogflowCXEntityType{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "ready-short-name",
+			Namespace: "test-ns",
+		},
+		Spec: DialogflowCXEntityTypeSpec{
+			Parent: common.LazyPtr("projects/my-project/locations/us-central1/agents/my-agent"),
+		},
+		Status: DialogflowCXEntityTypeStatus{
+			Conditions: []k8sv1alpha1.Condition{
+				{
+					Type:   "Ready",
+					Status: "True",
+				},
+			},
+			Name: common.LazyPtr("entity-short"),
+		},
+	}
+
 	readyObjWithSpecOnly := &DialogflowCXEntityType{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "ready-spec",
@@ -369,7 +418,7 @@ func TestDialogflowCXEntityTypeRef_Normalize(t *testing.T) {
 
 	fakeClient := fake.NewClientBuilder().
 		WithScheme(scheme).
-		WithObjects(readyObjWithExternalRef, readyObjWithName, readyObjWithSpecOnly, notReadyObj).
+		WithObjects(readyObjWithExternalRef, readyObjWithName, readyObjWithShortName, readyObjWithSpecOnly, notReadyObj).
 		Build()
 
 	tests := []struct {
@@ -415,6 +464,16 @@ func TestDialogflowCXEntityTypeRef_Normalize(t *testing.T) {
 			defaultNamespace: "test-ns",
 			wantErr:          false,
 			wantExternal:     "projects/my-project/locations/us-central1/agents/my-agent/entityTypes/entity-2",
+		},
+		{
+			name: "by name and namespace when ready with short status.name",
+			ref: &DialogflowCXEntityTypeRef{
+				Name:      "ready-short-name",
+				Namespace: "test-ns",
+			},
+			defaultNamespace: "test-ns",
+			wantErr:          false,
+			wantExternal:     "projects/my-project/locations/us-central1/agents/my-agent/entityTypes/entity-short",
 		},
 		{
 			name: "by name and namespace when ready with spec fallback",
