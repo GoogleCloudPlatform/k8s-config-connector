@@ -22,7 +22,9 @@
 #      every variant) and bundles that run's receipts into receipts.md - the agent does not touch
 #      them;
 #   3. ask - the agent writes change.yaml (the PR's title and description) from receipts.md;
-#   4. the factory attaches receipts.md to the PR verbatim, with its size and sha256
+#   4. the recipe labels the PR overseer/assessment/good or /poor from the clean re-run, mechanically
+#      (every run PASS with no failure, every variant run, only this Kind's validation files changed);
+#   5. the factory attaches receipts.md to the PR verbatim, with its size and sha256
 #      (task-output.comment.attach, as assess-controller attaches its capture), so the PR carries
 #      the clean run's evidence as the script wrote it.
 # With no commit (the script already covered the change) change.yaml says why, the comment on the
@@ -158,7 +160,31 @@ start:
             notes="${notes}- variant \`${v}\` was NOT run: the script used \`${used:-an unrecorded fixture}\` (it must take its fixture from FIXTURE_DIR and record it as fixture_dir)\n"
           fi
         done
+        # The grade, mechanical: good only if there was a clean run, every run passed with no
+        # failure, every variant ran, and the commits touch only this Kind's validation files.
+        grade=good
+        why=""
+        runs=0
+        for d in artifactz/manual-validation/*/*/; do
+          [ -d "${d}" ] || continue
+          runs=$((runs + 1))
+          if [ ! -f "${d}REPORT.md" ]; then
+            grade=poor; why="${why}- run \`${d}\` left no REPORT.md\n"
+          elif ! grep -qE '^\*\*Verdict: PASS\*\* \([0-9]+ passed, 0 failed\)' "${d}REPORT.md"; then
+            grade=poor; why="${why}- run \`${d}\`: $(grep -m1 -E '^\*\*Verdict' "${d}REPORT.md" || echo 'no verdict')\n"
+          fi
+        done
+        if [ "${runs}" -eq 0 ]; then grade=poor; why="${why}- no clean run\n"; fi
+        if [ -n "${notes}" ]; then grade=poor; why="${why}- a fixture variant was not run as asked\n"; fi
+        outside="$(git diff --name-only "$(cat "$TASK_DIR/base")"..HEAD | grep -v "^hack/manual-validate/${kind}/" || true)"
+        if [ -n "${outside}" ]; then
+          grade=poor; why="${why}- the commits change files outside hack/manual-validate/${kind}/: $(echo ${outside})\n"
+        fi
+        printf '%s\n' "${grade}" >"$TASK_DIR/grade"
         {
+          printf '**Grade: %s**' "${grade}"
+          if [ -n "${why}" ]; then printf '\n\n'; printf '%b' "${why}"; else printf ' - every run passed, every variant ran, and only this Kind'"'"'s validation files changed.'; fi
+          printf '\n\n'
           bash hack/manual-validate/bundle-receipts.sh artifactz/manual-validation
           if [ -n "${notes}" ]; then
             printf '\n> **Fixture variants not run as asked:**\n>\n'
@@ -221,6 +247,30 @@ start:
 
         Write the whole file with your file tool, then say in a line that it is written.
       expects: change.yaml
+
+    # The PR's assessment label, from the clean re-run's grade - never from the agent: any
+    # overseer/assessment/* label in change.yaml is dropped first. merge-validate-kind merges a PR
+    # labelled overseer/assessment/good (and overseer/auto-merge, from the batch).
+    - run: |
+        set -euo pipefail
+        python3 - <<'PY'
+        import os, yaml
+        task = os.environ["TASK_DIR"]
+        path = os.path.join(task, "change.yaml")
+        doc = yaml.safe_load(open(path)) or {}
+        change = doc.get("change") or {}
+        if "title" not in change:
+            raise SystemExit(0)  # no PR: nothing to label
+        grade_file = os.path.join(task, "grade")
+        grade = open(grade_file).read().strip() if os.path.exists(grade_file) else "poor"
+        if grade not in ("good", "poor"):
+            grade = "poor"
+        labels = [l for l in (change.get("labels") or []) if not str(l).startswith("overseer/assessment/")]
+        change["labels"] = labels + [f"overseer/assessment/{grade}"]
+        doc["change"] = change
+        with open(path, "w") as f:
+            yaml.safe_dump(doc, f, sort_keys=False, allow_unicode=True, width=1000)
+        PY
 
     - uses: push
 

@@ -1,0 +1,53 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Merges a validate-kind PR (a Kind's validation script from a verification batch) that is opted
+# in and graded good. The validate-kind recipe grades it mechanically from its clean re-run:
+# overseer/assessment/good only if every run passed with no failure, every fixture variant ran,
+# and the PR changes nothing but that Kind's hack/manual-validate/<kind>/ files. A FAIL - a
+# controller finding - is graded poor and left to people. overseer/auto-merge is the opt-in, off by
+# default: add it to the labels line of a batch's ## Fan-out section (or to a child issue - PRs
+# inherit their issue's labels).
+name: merge-validate-kind
+description: Merge a validate-kind PR opted in and graded good by its clean re-run, with green checks
+on: pr
+order: 82
+when:
+  labels:
+    all: [overseer/auto-merge, overseer/validate-kind, overseer/ready-for-human, overseer/assessment/good]
+    none: [do-not-merge/hold, overseer/stop]
+  checks: green
+  mergeable: true
+  draft: false
+  changes-requested: false
+run:
+  recipe: merge
+  inputs:
+    # The approving review. prow reads commands in it, one per line, at the start of the line.
+    message: |
+      /lgtm
+      /approve
+
+      Approved for merge by the overseer: this validation PR meets the criteria for approval - its clean re-run passed every check (graded good by validate-kind), it changes only its Kind's hack/manual-validate files, its checks are green, and it is mergeable.
+policy:
+  # As merge-controller: no dedupe, so a merge the queue drops runs again after the cooldown; a new
+  # head ends the wait at once; give up after 6 runs at one head.
+  cooldown:
+    success: 30m
+    failure: 20m
+    reset-on: [head]
+  give-up:
+    attempts: 6
+    since: [head, pause]
+    comment: Pausing auto-merge after 6 attempts at this head. Take overseer/stop off to let the overseer try again, or merge it by hand.

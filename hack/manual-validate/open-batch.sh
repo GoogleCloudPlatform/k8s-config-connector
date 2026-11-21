@@ -34,6 +34,11 @@ BATCH_LABEL="validate-kind/batch"
 CHILD_LABEL="overseer/validate-kind"
 FANOUT_LABEL="${FANOUT_LABEL:-overseer/fanout}"
 FIRST_SINCE="${FIRST_SINCE:-1 day ago}"
+# Off by default: a batch's children are not labelled overseer/auto-merge, so merge-validate-kind
+# leaves their PRs to people. To opt a batch in, add overseer/auto-merge to the `labels:` line of
+# its ## Fan-out section (children created after that carry it, and their PRs inherit it); for a
+# child already created, label the child. AUTO_MERGE=1 opens a batch opted in from the start.
+AUTO_MERGE="${AUTO_MERGE:-0}"
 DRY_RUN=0
 [[ "${1:-}" == "--dry-run" ]] && DRY_RUN=1
 
@@ -80,7 +85,9 @@ if [[ -z "${ITEMS}" ]]; then
 fi
 TITLE="$(python3 "${SCOUT}" "${RANGE[@]}" --head "${HEAD_SHA}" --format title)"
 BODY="$(mktemp)"
-python3 "${SCOUT}" "${RANGE[@]}" --head "${HEAD_SHA}" --format issue >"${BODY}"
+ISSUE_FLAGS=()
+[[ "${AUTO_MERGE}" == "1" ]] && ISSUE_FLAGS=(--auto-merge)
+python3 "${SCOUT}" "${RANGE[@]}" --head "${HEAD_SHA}" --format issue ${ISSUE_FLAGS[@]+"${ISSUE_FLAGS[@]}"} >"${BODY}"
 
 EXISTING="$(gh issue list -R "${REPO}" --state all --search "\"${TITLE}\" in:title" \
   --json number,title --jq "[.[] | select(.title == \"${TITLE}\")][0].number // empty")"
