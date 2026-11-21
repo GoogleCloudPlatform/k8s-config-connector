@@ -29,6 +29,7 @@ require (
 	cloud.google.com/go/backupdr v1.20.0
 	cloud.google.com/go/batch v1.19.0
 	cloud.google.com/go/beyondcorp v1.7.0
+	cloud.google.com/go/biglake v1.6.1
 	cloud.google.com/go/bigquery v1.86.0
 	cloud.google.com/go/bigtable v1.58.0
 	cloud.google.com/go/billing v1.26.0
@@ -47,10 +48,11 @@ require (
 	cloud.google.com/go/dataproc/v2 v2.28.0
 	cloud.google.com/go/datastream v1.20.0
 	cloud.google.com/go/deploy v1.32.0
+	cloud.google.com/go/designcenter v0.1.0
 	cloud.google.com/go/developerconnect v1.1.0
 	cloud.google.com/go/devicestreaming v1.0.0
 	cloud.google.com/go/dialogflow v1.87.0
-	cloud.google.com/go/discoveryengine v1.32.0
+	cloud.google.com/go/discoveryengine v1.38.0
 	cloud.google.com/go/dlp v1.38.0
 	cloud.google.com/go/documentai v1.51.0
 	cloud.google.com/go/edgecontainer v1.9.0
@@ -69,6 +71,7 @@ require (
 	cloud.google.com/go/licensemanager v1.1.0
 	cloud.google.com/go/logging v1.21.0
 	cloud.google.com/go/longrunning v1.5.0
+	cloud.google.com/go/lustre v1.3.1
 	cloud.google.com/go/managedkafka v0.8.1
 	cloud.google.com/go/maps v1.43.0
 	cloud.google.com/go/memcache v1.16.0
@@ -95,6 +98,7 @@ require (
 	cloud.google.com/go/securitycenter v1.49.0
 	cloud.google.com/go/securitycentermanagement v1.6.0
 	cloud.google.com/go/speech v1.35.0
+	cloud.google.com/go/sql v0.7.0
 	cloud.google.com/go/storage v1.62.3
 	cloud.google.com/go/storageinsights v1.8.0
 	cloud.google.com/go/vectorsearch v1.3.0
@@ -134,9 +138,9 @@ require (
 	cloud.google.com/go/auth v0.24.1-0.20261001053825-dbc26066f70a // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.3.0 // indirect
 	cloud.google.com/go/compute/metadata v0.10.0 // indirect
+	cloud.google.com/go/config v1.15.1 // indirect
 	cloud.google.com/go/pubsub/v2 v2.5.1 // indirect
 	cloud.google.com/go/resourcemanager v1.15.0 // indirect
-	cloud.google.com/go/sql v0.7.0 // indirect
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0 // indirect
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.62.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.35.0 // indirect

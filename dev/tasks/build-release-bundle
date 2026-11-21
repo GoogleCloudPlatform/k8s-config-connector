@@ -196,6 +196,7 @@ BLOCKED_KINDS=(
     "DialogflowTool"
     "DialogflowTransitionRouteGroup"
     "DialogflowWebhook"
+    "DiscoveryEngineCMEKConfig"
     "DiscoveryEngineIdentityMappingStore"
     "DiscoveryEngineWidgetConfig"
     "DLPConnection"

@@ -166,17 +166,13 @@ spec:
                       Mapping Store.
                     properties:
                       kmsKey:
-                        description: KMS key resource name which will be used to encrypt
-                          resources `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
+                        description: KMS key resource name.
                         type: string
                       kmsKeyVersion:
-                        description: KMS key version resource name which will be used
-                          to encrypt resources `<kms_key>/cryptoKeyVersions/{keyVersion}`.
+                        description: KMS key version resource name.
                         type: string
                       name:
-                        description: Required. The name of the CmekConfig of the form
-                          `projects/{project}/locations/{location}/cmekConfig` or
-                          `projects/{project}/locations/{location}/cmekConfigs/{cmek_config}`.
+                        description: Required. The name of the CmekConfig.
                         type: string
                       singleRegionKeys:
                         description: Optional. Single-regional CMEKs that are required

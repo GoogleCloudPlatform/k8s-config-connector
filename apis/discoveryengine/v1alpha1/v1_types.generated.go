@@ -26,10 +26,14 @@
 // resource: DiscoveryEngineSession:Session
 // resource: DiscoveryEngineSitemap:Sitemap
 // resource: DiscoveryEngineSchema:Schema
+// resource: DiscoveryEngineCMEKConfig:CmekConfig
 
 package v1alpha1
 
-import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+)
 
 /* unreachable type AdvancedSiteSearchConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.AdvancedSiteSearchConfig
@@ -41,6 +45,31 @@ type AdvancedSiteSearchConfig struct {
 	// If set true, automatic refresh is disabled for the DataStore.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.AdvancedSiteSearchConfig.disable_automatic_refresh
 	DisableAutomaticRefresh *bool `json:"disableAutomaticRefresh,omitempty"`
+}
+*/
+
+/* unreachable type AgentGatewaySetting
+// +kcc:proto=google.cloud.discoveryengine.v1.AgentGatewaySetting
+type AgentGatewaySetting struct {
+	// Optional. The default egress agent gateway to use, when this setting is
+	//  applied to a Gemini Enterprise resource.
+	//
+	//  The deployment mode must be GOOGLE_MANAGED, and the governed access path
+	//  must be AGENT_TO_ANYWHERE.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AgentGatewaySetting.default_egress_agent_gateway
+	DefaultEgressAgentGateway *AgentGatewaySetting_AgentGatewayReference `json:"defaultEgressAgentGateway,omitempty"`
+}
+*/
+
+/* unreachable type AgentGatewaySetting_AgentGatewayReference
+// +kcc:proto=google.cloud.discoveryengine.v1.AgentGatewaySetting.AgentGatewayReference
+type AgentGatewaySetting_AgentGatewayReference struct {
+	// Required. Immutable. The resource name of the agent gateway.
+	//
+	//  Expected format:
+	//  `projects/{project_number}/locations/{location}/agentGateways/{agent_gateway}`.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AgentGatewaySetting.AgentGatewayReference.name
+	Name *string `json:"name,omitempty"`
 }
 */
 
@@ -93,10 +122,6 @@ type Answer struct {
 	//  cases. If nothing is skipped, this field is not set.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.answer_skipped_reasons
 	AnswerSkippedReasons []string `json:"answerSkippedReasons,omitempty"`
-
-	// Optional. Safety ratings.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.safety_ratings
-	SafetyRatings []SafetyRating `json:"safetyRatings,omitempty"`
 }
 */
 
@@ -404,7 +429,7 @@ type Answer_Step_Action_SearchAction struct {
 
 // +kcc:proto=google.cloud.discoveryengine.v1.AssistAnswer
 type AssistAnswer struct {
-	// Immutable. Resource name of the `AssistAnswer`.
+	// Immutable. Identifier. Resource name of the `AssistAnswer`.
 	//  Format:
 	//  `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/sessions/{session}/assistAnswers/{assist_answer}`
 	//
@@ -424,6 +449,57 @@ type AssistAnswer struct {
 	// Reasons for not answering the assist call.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.assist_skipped_reasons
 	AssistSkippedReasons []string `json:"assistSkippedReasons,omitempty"`
+
+	// Optional. The field contains information about the various policy checks'
+	//  results like the banned phrases or the Model Armor checks. This field is
+	//  populated only if the assist call was skipped due to a policy violation.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.customer_policy_enforcement_result
+	CustomerPolicyEnforcementResult *AssistAnswer_CustomerPolicyEnforcementResult `json:"customerPolicyEnforcementResult,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.AssistAnswer.CustomerPolicyEnforcementResult
+type AssistAnswer_CustomerPolicyEnforcementResult struct {
+	// Final verdict of the customer policy enforcement. If only one policy
+	//  blocked the processing, the verdict is BLOCK.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.CustomerPolicyEnforcementResult.verdict
+	Verdict *string `json:"verdict,omitempty"`
+
+	// Customer policy enforcement results.
+	//  Populated only if the assist call was skipped due to a policy
+	//  violation. It contains results from those filters that blocked the
+	//  processing of the query.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.CustomerPolicyEnforcementResult.policy_results
+	PolicyResults []AssistAnswer_CustomerPolicyEnforcementResult_PolicyEnforcementResult `json:"policyResults,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.AssistAnswer.CustomerPolicyEnforcementResult.BannedPhraseEnforcementResult
+type AssistAnswer_CustomerPolicyEnforcementResult_BannedPhraseEnforcementResult struct {
+	// The banned phrases that were found in the query or the answer.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.CustomerPolicyEnforcementResult.BannedPhraseEnforcementResult.banned_phrases
+	BannedPhrases []string `json:"bannedPhrases,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.AssistAnswer.CustomerPolicyEnforcementResult.ModelArmorEnforcementResult
+type AssistAnswer_CustomerPolicyEnforcementResult_ModelArmorEnforcementResult struct {
+	// The Model Armor violation that was found.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.CustomerPolicyEnforcementResult.ModelArmorEnforcementResult.model_armor_violation
+	ModelArmorViolation *string `json:"modelArmorViolation,omitempty"`
+
+	// The error returned by Model Armor if the policy enforcement failed
+	//  for some reason.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.CustomerPolicyEnforcementResult.ModelArmorEnforcementResult.error
+	Error *common.Status `json:"error,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.AssistAnswer.CustomerPolicyEnforcementResult.PolicyEnforcementResult
+type AssistAnswer_CustomerPolicyEnforcementResult_PolicyEnforcementResult struct {
+	// The policy enforcement result for the banned phrase policy.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.CustomerPolicyEnforcementResult.PolicyEnforcementResult.banned_phrase_enforcement_result
+	BannedPhraseEnforcementResult *AssistAnswer_CustomerPolicyEnforcementResult_BannedPhraseEnforcementResult `json:"bannedPhraseEnforcementResult,omitempty"`
+
+	// The policy enforcement result for the Model Armor policy.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.CustomerPolicyEnforcementResult.PolicyEnforcementResult.model_armor_enforcement_result
+	ModelArmorEnforcementResult *AssistAnswer_CustomerPolicyEnforcementResult_ModelArmorEnforcementResult `json:"modelArmorEnforcementResult,omitempty"`
 }
 
 // +kcc:proto=google.cloud.discoveryengine.v1.AssistAnswer.Reply
@@ -431,6 +507,10 @@ type AssistAnswer_Reply struct {
 	// Possibly grounded response text or media from the assistant.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.Reply.grounded_content
 	GroundedContent *AssistantGroundedContent `json:"groundedContent,omitempty"`
+
+	// The time when the reply was created.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.Reply.create_time
+	CreateTime *string `json:"createTime,omitempty"`
 }
 
 // +kcc:proto=google.cloud.discoveryengine.v1.AssistantContent
@@ -522,6 +602,10 @@ type AssistantGroundedContent_TextGroundingMetadata struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.segments
 	Segments []AssistantGroundedContent_TextGroundingMetadata_Segment `json:"segments,omitempty"`
 
+	// Grounding information for parts of the visual content.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.visual_segments
+	VisualSegments []AssistantGroundedContent_TextGroundingMetadata_VisualSegment `json:"visualSegments,omitempty"`
+
 	// References for the grounded text.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.references
 	References []AssistantGroundedContent_TextGroundingMetadata_Reference `json:"references,omitempty"`
@@ -533,6 +617,10 @@ type AssistantGroundedContent_TextGroundingMetadata_Reference struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.Reference.content
 	Content *string `json:"content,omitempty"`
 
+	// Chunk of code snippet from the referenced document.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.Reference.code_snippet
+	CodeSnippet *string `json:"codeSnippet,omitempty"`
+
 	// Document metadata.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.Reference.document_metadata
 	DocumentMetadata *AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata `json:"documentMetadata,omitempty"`
@@ -540,6 +628,9 @@ type AssistantGroundedContent_TextGroundingMetadata_Reference struct {
 
 // +kcc:proto=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.Reference.DocumentMetadata
 type AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata struct {
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.Reference.DocumentMetadata.language
+	Language *string `json:"language,omitempty"`
+
 	// Document resource name.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.Reference.DocumentMetadata.document
 	Document *string `json:"document,omitempty"`
@@ -562,6 +653,11 @@ type AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata s
 	//  this will contain the domain name of the target site.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.Reference.DocumentMetadata.domain
 	Domain *string `json:"domain,omitempty"`
+
+	// The mime type of the document.
+	//  https://www.iana.org/assignments/media-types/media-types.xhtml.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.Reference.DocumentMetadata.mime_type
+	MimeType *string `json:"mimeType,omitempty"`
 }
 
 // +kcc:proto=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.Segment
@@ -589,28 +685,30 @@ type AssistantGroundedContent_TextGroundingMetadata_Segment struct {
 	Text *string `json:"text,omitempty"`
 }
 
-// +kcc:proto=google.cloud.discoveryengine.v1.CmekConfig
-type CmekConfig struct {
-	// Required. The name of the CmekConfig of the form
-	//  `projects/{project}/locations/{location}/cmekConfig` or
-	//  `projects/{project}/locations/{location}/cmekConfigs/{cmek_config}`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.name
-	Name *string `json:"name,omitempty"`
+// +kcc:proto=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.VisualSegment
+type AssistantGroundedContent_TextGroundingMetadata_VisualSegment struct {
+	// References for the visual segment.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.VisualSegment.reference_indices
+	ReferenceIndices []int32 `json:"referenceIndices,omitempty"`
 
-	// KMS key resource name which will be used to encrypt resources
-	//  `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.kms_key
-	KMSKey *string `json:"kmsKey,omitempty"`
-
-	// KMS key version resource name which will be used to encrypt resources
-	//  `<kms_key>/cryptoKeyVersions/{keyVersion}`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.kms_key_version
-	KMSKeyVersion *string `json:"kmsKeyVersion,omitempty"`
-
-	// Optional. Single-regional CMEKs that are required for some VAIS features.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.single_region_keys
-	SingleRegionKeys []SingleRegionKey `json:"singleRegionKeys,omitempty"`
+	// The content id of the visual segment. In order to display the citation
+	//  of the visual element, this content_id needs to match with the
+	//  `grounded_content.content_metadata.content_id` field.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.VisualSegment.content_id
+	ContentID *string `json:"contentID,omitempty"`
 }
+
+/* unreachable type Citation
+// +kcc:proto=google.cloud.discoveryengine.v1.Citation
+type Citation struct {
+}
+*/
+
+/* unreachable type CitationMetadata
+// +kcc:proto=google.cloud.discoveryengine.v1.CitationMetadata
+type CitationMetadata struct {
+}
+*/
 
 // +kcc:proto=google.cloud.discoveryengine.v1.Condition
 type Condition struct {
@@ -759,6 +857,26 @@ type ConversationMessage struct {
 	Reply *Reply `json:"reply,omitempty"`
 }
 
+/* unreachable type DataProtectionPolicy
+// +kcc:proto=google.cloud.discoveryengine.v1.DataProtectionPolicy
+type DataProtectionPolicy struct {
+	// Optional. Specifies the sensitive data protection policy for the connector
+	//  source.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataProtectionPolicy.sensitive_data_protection_policy
+	SensitiveDataProtectionPolicy *DataProtectionPolicy_SensitiveDataProtectionPolicy `json:"sensitiveDataProtectionPolicy,omitempty"`
+}
+*/
+
+/* unreachable type DataProtectionPolicy_SensitiveDataProtectionPolicy
+// +kcc:proto=google.cloud.discoveryengine.v1.DataProtectionPolicy.SensitiveDataProtectionPolicy
+type DataProtectionPolicy_SensitiveDataProtectionPolicy struct {
+	// Optional. Specifies the resource name of the Sensitive Data Protection
+	//  content policy.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataProtectionPolicy.SensitiveDataProtectionPolicy.policy
+	Policy *string `json:"policy,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.discoveryengine.v1.DataStore.BillingEstimation
 type DataStore_BillingEstimation struct {
 	// Data size for structured data in terms of bytes.
@@ -786,6 +904,140 @@ type DataStore_BillingEstimation struct {
 	WebsiteDataUpdateTime *string `json:"websiteDataUpdateTime,omitempty"`
 }
 
+/* unreachable type DataStore_FederatedSearchConfig
+// +kcc:proto=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig
+type DataStore_FederatedSearchConfig struct {
+	// AlloyDB config. If set, this DataStore is connected to AlloyDB.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.alloy_db_config
+	AlloyDbConfig *DataStore_FederatedSearchConfig_AlloyDbConfig `json:"alloyDbConfig,omitempty"`
+
+	// Third Party OAuth config. If set, this DataStore is connected to a
+	//  third party application.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.third_party_oauth_config
+	ThirdPartyOauthConfig *DataStore_FederatedSearchConfig_ThirdPartyOauthConfig `json:"thirdPartyOauthConfig,omitempty"`
+
+	// NotebookLM config. If set, this DataStore is connected to
+	//  NotebookLM Enterprise.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.notebooklm_config
+	NotebooklmConfig *DataStore_FederatedSearchConfig_NotebooklmConfig `json:"notebooklmConfig,omitempty"`
+}
+*/
+
+/* unreachable type DataStore_FederatedSearchConfig_AlloyDbConfig
+// +kcc:proto=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.AlloyDbConfig
+type DataStore_FederatedSearchConfig_AlloyDbConfig struct {
+	// Required. Configuration for connecting to AlloyDB.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.AlloyDbConfig.alloydb_connection_config
+	AlloydbConnectionConfig *DataStore_FederatedSearchConfig_AlloyDbConfig_AlloyDbConnectionConfig `json:"alloydbConnectionConfig,omitempty"`
+
+	// Optional. Configuration for Magic.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.AlloyDbConfig.alloydb_ai_nl_config
+	AlloydbAiNlConfig *DataStore_FederatedSearchConfig_AlloyDbConfig_AlloyDbAiNaturalLanguageConfig `json:"alloydbAiNlConfig,omitempty"`
+
+	// Optional. Fields to be returned in the search results. If empty, all
+	//  fields will be returned.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.AlloyDbConfig.returned_fields
+	ReturnedFields []string `json:"returnedFields,omitempty"`
+}
+*/
+
+/* unreachable type DataStore_FederatedSearchConfig_AlloyDbConfig_AlloyDbAiNaturalLanguageConfig
+// +kcc:proto=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.AlloyDbConfig.AlloyDbAiNaturalLanguageConfig
+type DataStore_FederatedSearchConfig_AlloyDbConfig_AlloyDbAiNaturalLanguageConfig struct {
+	// Optional. AlloyDb AI NL config id, i.e. the value that was used for
+	//  calling `SELECT alloydb_ai_nl.g_create_configuration(...)`. Can be
+	//  empty.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.AlloyDbConfig.AlloyDbAiNaturalLanguageConfig.nl_config_id
+	NlConfigID *string `json:"nlConfigID,omitempty"`
+}
+*/
+
+/* unreachable type DataStore_FederatedSearchConfig_AlloyDbConfig_AlloyDbConnectionConfig
+// +kcc:proto=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.AlloyDbConfig.AlloyDbConnectionConfig
+type DataStore_FederatedSearchConfig_AlloyDbConfig_AlloyDbConnectionConfig struct {
+	// Required. The AlloyDB instance to connect to.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.AlloyDbConfig.AlloyDbConnectionConfig.instance
+	Instance *string `json:"instance,omitempty"`
+
+	// Required. The AlloyDB database to connect to.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.AlloyDbConfig.AlloyDbConnectionConfig.database
+	Database *string `json:"database,omitempty"`
+
+	// Required. Database user.
+	//
+	//  If auth_mode = END_USER_ACCOUNT, it can be unset. In that case,
+	//  the user will be inferred on the AlloyDB side, based on the
+	//  authenticated user.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.AlloyDbConfig.AlloyDbConnectionConfig.user
+	User *string `json:"user,omitempty"`
+
+	// Required. Database password.
+	//
+	//  If auth_mode = END_USER_ACCOUNT, it can be unset. In that case,
+	//  the password will be inferred on the AlloyDB side, based on the
+	//  authenticated user.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.AlloyDbConfig.AlloyDbConnectionConfig.password
+	Password *string `json:"password,omitempty"`
+
+	// Optional. Auth mode.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.AlloyDbConfig.AlloyDbConnectionConfig.auth_mode
+	AuthMode *string `json:"authMode,omitempty"`
+
+	// Optional. If true, enable PSVS for AlloyDB.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.AlloyDbConfig.AlloyDbConnectionConfig.enable_psvs
+	EnablePsvs *bool `json:"enablePsvs,omitempty"`
+}
+*/
+
+/* unreachable type DataStore_FederatedSearchConfig_NotebooklmConfig
+// +kcc:proto=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.NotebooklmConfig
+type DataStore_FederatedSearchConfig_NotebooklmConfig struct {
+	// Required. Search config name.
+	//
+	//  Format: projects/-*-/locations/global/notebookLmSearchConfigs/-*
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.NotebooklmConfig.search_config
+	SearchConfig *string `json:"searchConfig,omitempty"`
+
+	// Optional. Restricts this data store to the given notebooks. When empty,
+	//  the data store covers every notebook the querying user can access,
+	//  which is the existing behaviour.
+	//
+	//  Each entry is a full notebook resource name, such as
+	//  `projects/-*-/locations/-*-/notebooks/-*`.
+	//
+	//  Scoping is enforced on results as well as requested upstream, so a
+	//  notebook outside this list cannot appear in a search response through
+	//  this data store even if the backend returns one.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.NotebooklmConfig.notebooks
+	Notebooks []string `json:"notebooks,omitempty"`
+}
+*/
+
+/* unreachable type DataStore_FederatedSearchConfig_ThirdPartyOauthConfig
+// +kcc:proto=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.ThirdPartyOauthConfig
+type DataStore_FederatedSearchConfig_ThirdPartyOauthConfig struct {
+	// Optional. The type of the application. E.g., "jira", "box", etc.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.ThirdPartyOauthConfig.app_name
+	AppName *string `json:"appName,omitempty"`
+
+	// Optional. The instance name identifying the 3P app, e.g.,
+	//  "<tenant>-my". This is different from the instance_uri which is the
+	//  full URL of the 3P app e.g., "https://<tenant>-my.sharepoint.com".
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataStore.FederatedSearchConfig.ThirdPartyOauthConfig.instance_name
+	InstanceName *string `json:"instanceName,omitempty"`
+}
+*/
+
+/* unreachable type DataStore_ServingConfigDataStore
+// +kcc:proto=google.cloud.discoveryengine.v1.DataStore.ServingConfigDataStore
+type DataStore_ServingConfigDataStore struct {
+	// Optional. If set true, the DataStore will not be available for serving
+	//  search requests.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataStore.ServingConfigDataStore.disabled_for_serving
+	DisabledForServing *bool `json:"disabledForServing,omitempty"`
+}
+*/
+
 /* unreachable type DocumentProcessingConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.DocumentProcessingConfig
 type DocumentProcessingConfig struct {
@@ -806,8 +1058,23 @@ type DocumentProcessingConfig struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.DocumentProcessingConfig.default_parsing_config
 	DefaultParsingConfig *DocumentProcessingConfig_ParsingConfig `json:"defaultParsingConfig,omitempty"`
 
-	// TODO: unsupported map type with key string and value message
-
+	// Map from file type to override the default parsing configuration based on
+	//  the file type. Supported keys:
+	//
+	//  * `pdf`: Override parsing config for PDF files, either digital parsing, ocr
+	//  parsing or layout parsing is supported.
+	//  * `html`: Override parsing config for HTML files, only digital parsing and
+	//  layout parsing are supported.
+	//  * `docx`: Override parsing config for DOCX files, only digital parsing and
+	//  layout parsing are supported.
+	//  * `pptx`: Override parsing config for PPTX files, only digital parsing and
+	//  layout parsing are supported.
+	//  * `xlsm`: Override parsing config for XLSM files, only digital parsing and
+	//  layout parsing are supported.
+	//  * `xlsx`: Override parsing config for XLSX files, only digital parsing and
+	//  layout parsing are supported.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DocumentProcessingConfig.parsing_config_overrides
+	ParsingConfigOverrides map[string]DocumentProcessingConfig_ParsingConfig `json:"parsingConfigOverrides,omitempty"`
 }
 */
 
@@ -876,6 +1143,10 @@ type DocumentProcessingConfig_ParsingConfig_LayoutParsingConfig struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ParsingConfig.LayoutParsingConfig.enable_image_annotation
 	EnableImageAnnotation *bool `json:"enableImageAnnotation,omitempty"`
 
+	// Optional. If true, the pdf layout will be refined using an LLM.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ParsingConfig.LayoutParsingConfig.enable_llm_layout_parsing
+	EnableLlmLayoutParsing *bool `json:"enableLlmLayoutParsing,omitempty"`
+
 	// Optional. Contains the required structure types to extract from the
 	//  document. Supported values:
 	//
@@ -893,7 +1164,12 @@ type DocumentProcessingConfig_ParsingConfig_LayoutParsingConfig struct {
 
 	// Optional. List of HTML ids to exclude from the parsed content.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ParsingConfig.LayoutParsingConfig.exclude_html_ids
-	ExcludeHTMLIds []string `json:"excludeHTMLIds,omitempty"`
+	ExcludeHTMLIDs []string `json:"excludeHTMLIDs,omitempty"`
+
+	// Optional. If true, the processed document will be made available for
+	//  the GetProcessedDocument API.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ParsingConfig.LayoutParsingConfig.enable_get_processed_document
+	EnableGetProcessedDocument *bool `json:"enableGetProcessedDocument,omitempty"`
 }
 */
 
@@ -1008,6 +1284,64 @@ type Engine_CommonConfig struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.CommonConfig.company_name
 	CompanyName *string `json:"companyName,omitempty"`
 }
+
+/* unreachable type Engine_KnowledgeGraphConfig
+// +kcc:proto=google.cloud.discoveryengine.v1.Engine.KnowledgeGraphConfig
+type Engine_KnowledgeGraphConfig struct {
+	// Whether to enable the Cloud Knowledge Graph for the engine.
+	//
+	//  Defaults to false if not specified.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.KnowledgeGraphConfig.enable_cloud_knowledge_graph
+	EnableCloudKnowledgeGraph *bool `json:"enableCloudKnowledgeGraph,omitempty"`
+
+	// Specify entity types to support.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.KnowledgeGraphConfig.cloud_knowledge_graph_types
+	CloudKnowledgeGraphTypes []string `json:"cloudKnowledgeGraphTypes,omitempty"`
+
+	// Whether to enable the Private Knowledge Graph for the engine.
+	//
+	//  Defaults to false if not specified.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.KnowledgeGraphConfig.enable_private_knowledge_graph
+	EnablePrivateKnowledgeGraph *bool `json:"enablePrivateKnowledgeGraph,omitempty"`
+
+	// Specify entity types to support.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.KnowledgeGraphConfig.private_knowledge_graph_types
+	PrivateKnowledgeGraphTypes []string `json:"privateKnowledgeGraphTypes,omitempty"`
+
+	// Optional. Feature config for the Knowledge Graph.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.KnowledgeGraphConfig.feature_config
+	FeatureConfig *Engine_KnowledgeGraphConfig_FeatureConfig `json:"featureConfig,omitempty"`
+}
+*/
+
+/* unreachable type Engine_KnowledgeGraphConfig_FeatureConfig
+// +kcc:proto=google.cloud.discoveryengine.v1.Engine.KnowledgeGraphConfig.FeatureConfig
+type Engine_KnowledgeGraphConfig_FeatureConfig struct {
+	// Whether to disable the private KG query understanding for the engine.
+	//
+	//  Defaults to false if not specified.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.KnowledgeGraphConfig.FeatureConfig.disable_private_kg_query_understanding
+	DisablePrivateKgQueryUnderstanding *bool `json:"disablePrivateKgQueryUnderstanding,omitempty"`
+
+	// Whether to disable the private KG enrichment for the engine.
+	//
+	//  Defaults to false if not specified.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.KnowledgeGraphConfig.FeatureConfig.disable_private_kg_enrichment
+	DisablePrivateKgEnrichment *bool `json:"disablePrivateKgEnrichment,omitempty"`
+
+	// Whether to disable the private KG auto complete for the engine.
+	//
+	//  Defaults to false if not specified.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.KnowledgeGraphConfig.FeatureConfig.disable_private_kg_auto_complete
+	DisablePrivateKgAutoComplete *bool `json:"disablePrivateKgAutoComplete,omitempty"`
+
+	// Whether to disable the private KG for query UI chips.
+	//
+	//  Defaults to false if not specified.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.KnowledgeGraphConfig.FeatureConfig.disable_private_kg_query_ui_chips
+	DisablePrivateKgQueryUiChips *bool `json:"disablePrivateKgQueryUiChips,omitempty"`
+}
+*/
 
 /* unreachable type Engine_MediaRecommendationEngineConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig
@@ -1135,6 +1469,17 @@ type Engine_SearchEngineConfig struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.SearchEngineConfig.search_tier
 	SearchTier *string `json:"searchTier,omitempty"`
 
+	// Optional. The required subscription tier of this engine.
+	//
+	//  If the required subscription tier is search, user with higher license
+	//  tier like assist can still access the standalone app associated with this
+	//  engine.
+	//
+	//  Web grounding feature is only available on the app if it is set as
+	//  [SubscriptionTier.SUBSCRIPTION_TIER_SEARCH_AND_ASSISTANT][google.cloud.discoveryengine.v1.SubscriptionTier.SUBSCRIPTION_TIER_SEARCH_AND_ASSISTANT].
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.SearchEngineConfig.required_subscription_tier
+	RequiredSubscriptionTier *string `json:"requiredSubscriptionTier,omitempty"`
+
 	// The add-on that this search engine enables.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.SearchEngineConfig.search_add_ons
 	SearchAddOns []string `json:"searchAddOns,omitempty"`
@@ -1158,6 +1503,15 @@ type HealthcareFhirConfig struct {
 	//  volume.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.HealthcareFhirConfig.enable_static_indexing_for_batch_ingestion
 	EnableStaticIndexingForBatchIngestion *bool `json:"enableStaticIndexingForBatchIngestion,omitempty"`
+
+	// Optional. Names of the Group resources to use as a basis for the initial
+	//  patient filter, in format
+	//  `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}/fhirStores/{fhir_store_id}/fhir/Group/{group_id}`.
+	//  The filter group must be a FHIR resource name of
+	//  type Group, and the filter will be constructed from the direct members of
+	//  the group which are Patient resources.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.HealthcareFhirConfig.initial_filter_groups
+	InitialFilterGroups []string `json:"initialFilterGroups,omitempty"`
 }
 */
 
@@ -1169,6 +1523,21 @@ type NaturalLanguageQueryUnderstandingConfig struct {
 	//  [NaturalLanguageQueryUnderstandingConfig.Mode.DISABLED][google.cloud.discoveryengine.v1.NaturalLanguageQueryUnderstandingConfig.Mode.DISABLED].
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.NaturalLanguageQueryUnderstandingConfig.mode
 	Mode *string `json:"mode,omitempty"`
+}
+*/
+
+/* unreachable type ObservabilityConfig
+// +kcc:proto=google.cloud.discoveryengine.v1.ObservabilityConfig
+type ObservabilityConfig struct {
+	// Optional. Enables observability. If `false`, all other flags are ignored.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.ObservabilityConfig.observability_enabled
+	ObservabilityEnabled *bool `json:"observabilityEnabled,omitempty"`
+
+	// Optional. Enables sensitive logging. Sensitive logging includes customer
+	//  core content (e.g. prompts, responses). If `false`, will sanitize all
+	//  sensitive fields.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.ObservabilityConfig.sensitive_logging_enabled
+	SensitiveLoggingEnabled *bool `json:"sensitiveLoggingEnabled,omitempty"`
 }
 */
 
@@ -1189,6 +1558,27 @@ type Reply struct {
 /* unreachable type SafetyRating
 // +kcc:proto=google.cloud.discoveryengine.v1.SafetyRating
 type SafetyRating struct {
+}
+*/
+
+/* unreachable type Schema
+// +kcc:proto=google.cloud.discoveryengine.v1.Schema
+type Schema struct {
+	// The structured representation of the schema.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Schema.struct_schema
+	StructSchema apiextensionsv1.JSON `json:"structSchema,omitempty"`
+
+	// The JSON representation of the schema.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Schema.json_schema
+	JsonSchema *string `json:"jsonSchema,omitempty"`
+
+	// Immutable. The full resource name of the schema, in the format of
+	//  `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/schemas/{schema}`.
+	//
+	//  This field must be a UTF-8 encoded string with a length limit of 1024
+	//  characters.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Schema.name
+	Name *string `json:"name,omitempty"`
 }
 */
 
@@ -1360,7 +1750,34 @@ type Session_Turn struct {
 	//  functionality.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Session.Turn.query_config
 	QueryConfig map[string]string `json:"queryConfig,omitempty"`
+
+	// Optional. Indicates whether this turn is a live turn.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Session.Turn.live
+	Live *bool `json:"live,omitempty"`
 }
+
+/* unreachable type SessionConfig
+// +kcc:proto=google.cloud.discoveryengine.v1.SessionConfig
+type SessionConfig struct {
+	// Optional. Session management policy that defines who will manage the
+	//  session.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SessionConfig.session_management_policy
+	SessionManagementPolicy *string `json:"sessionManagementPolicy,omitempty"`
+
+	// Optional. The TTL for the session. If unset, the default value is 60 days.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SessionConfig.session_ttl
+	SessionTTL *SessionConfig_SessionTTL `json:"sessionTTL,omitempty"`
+}
+*/
+
+/* unreachable type SessionConfig_SessionTTL
+// +kcc:proto=google.cloud.discoveryengine.v1.SessionConfig.SessionTtl
+type SessionConfig_SessionTTL struct {
+	// Defines the number of days for session TTL.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SessionConfig.SessionTtl.days
+	Days *int32 `json:"days,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.discoveryengine.v1.SingleRegionKey
 type SingleRegionKey struct {
@@ -1368,6 +1785,16 @@ type SingleRegionKey struct {
 	//  encrypt resources
 	//  `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.SingleRegionKey.kms_key
+	KMSKey *string `json:"kmsKey,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.SingleRegionKey
+type SingleRegionKeyWithRequired struct {
+	// Required. Single-regional kms key resource name which will be used to
+	//  encrypt resources
+	//  `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SingleRegionKey.kms_key
+	// +required
 	KMSKey *string `json:"kmsKey,omitempty"`
 }
 
@@ -1408,29 +1835,6 @@ type TextInput struct {
 	Context *ConversationContext `json:"context,omitempty"`
 }
 
-// +kcc:proto=google.cloud.discoveryengine.v1.WorkspaceConfig
-type WorkspaceConfig struct {
-	// The Google Workspace data source.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.WorkspaceConfig.type
-	Type *string `json:"type,omitempty"`
-
-	// Obfuscated Dasher customer ID.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.WorkspaceConfig.dasher_customer_id
-	DasherCustomerID *string `json:"dasherCustomerID,omitempty"`
-
-	// Optional. The super admin service account for the workspace that will be
-	//  used for access token generation. For now we only use it for Native Google
-	//  Drive connector data ingestion.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.WorkspaceConfig.super_admin_service_account
-	SuperAdminServiceAccount *string `json:"superAdminServiceAccount,omitempty"`
-
-	// Optional. The super admin email address for the workspace that will be used
-	//  for access token generation. For now we only use it for Native Google Drive
-	//  connector data ingestion.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.WorkspaceConfig.super_admin_email_address
-	SuperAdminEmailAddress *string `json:"superAdminEmailAddress,omitempty"`
-}
-
 // +kcc:observedstate:proto=google.cloud.discoveryengine.v1.Answer
 type AnswerObservedState struct {
 	// Immutable. Fully qualified name
@@ -1457,7 +1861,7 @@ type AnswerObservedState struct {
 
 	// Optional. Grounding supports.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.grounding_supports
-	GroundingSupports []Answer_GroundingSupport `json:"groundingSupports,omitempty"`
+	GroundingSupports []Answer_GroundingSupportObservedState `json:"groundingSupports,omitempty"`
 
 	// References.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.references
@@ -1491,6 +1895,37 @@ type AnswerObservedState struct {
 	// Optional. Safety ratings.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.safety_ratings
 	SafetyRatings []SafetyRatingObservedState `json:"safetyRatings,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.Answer.GroundingSupport
+type Answer_GroundingSupportObservedState struct {
+	// Required. Index indicates the start of the claim, measured in bytes
+	//  (UTF-8 unicode).
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.GroundingSupport.start_index
+	StartIndex *int64 `json:"startIndex,omitempty"`
+
+	// Required. End of the claim, exclusive.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.GroundingSupport.end_index
+	EndIndex *int64 `json:"endIndex,omitempty"`
+
+	// A score in the range of [0, 1] describing how grounded is a specific
+	//  claim by the references.
+	//  Higher value means that the claim is better supported by the reference
+	//  chunks.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.GroundingSupport.grounding_score
+	GroundingScore *float64 `json:"groundingScore,omitempty"`
+
+	// Indicates that this claim required grounding check. When the
+	//  system decided this claim didn't require attribution/grounding check,
+	//  this field is set to false. In that case, no grounding check was
+	//  done for the claim and therefore `grounding_score`, `sources` is not
+	//  returned.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.GroundingSupport.grounding_check_required
+	GroundingCheckRequired *bool `json:"groundingCheckRequired,omitempty"`
+
+	// Optional. Citation sources for the claim.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.GroundingSupport.sources
+	Sources []Answer_CitationSource `json:"sources,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.discoveryengine.v1.Answer.Reference
@@ -1527,21 +1962,237 @@ type Answer_Reference_StructuredDocumentInfoObservedState struct {
 	URI *string `json:"uri,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.AssistAnswer
+type AssistAnswerObservedState struct {
+	// Immutable. Identifier. Resource name of the `AssistAnswer`.
+	//  Format:
+	//  `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/sessions/{session}/assistAnswers/{assist_answer}`
+	//
+	//  This field must be a UTF-8 encoded string with a length limit of 1024
+	//  characters.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.name
+	Name *string `json:"name,omitempty"`
+
+	// State of the answer generation.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Maps an internal connector agent name (the machine identifier
+	//  embedded in tool names, e.g. `custom_mcp_<fingerprint>_agent`) to the
+	//  connector's human-readable display name. Populated at serving time for
+	//  custom MCP / agent gateway connectors so user-facing surfaces (e.g. the
+	//  tool-call chip) can show the connector name instead of its internal
+	//  identifier. Empty when there are no such connectors.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.connector_display_names
+	ConnectorDisplayNames map[string]string `json:"connectorDisplayNames,omitempty"`
+
+	// Replies of the assistant.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.replies
+	Replies []AssistAnswer_ReplyObservedState `json:"replies,omitempty"`
+
+	// Reasons for not answering the assist call.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.assist_skipped_reasons
+	AssistSkippedReasons []string `json:"assistSkippedReasons,omitempty"`
+
+	// Optional. The field contains information about the various policy checks'
+	//  results like the banned phrases or the Model Armor checks. This field is
+	//  populated only if the assist call was skipped due to a policy violation.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.customer_policy_enforcement_result
+	CustomerPolicyEnforcementResult *AssistAnswer_CustomerPolicyEnforcementResultObservedState `json:"customerPolicyEnforcementResult,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.AssistAnswer.CustomerPolicyEnforcementResult
+type AssistAnswer_CustomerPolicyEnforcementResultObservedState struct {
+	// Final verdict of the customer policy enforcement. If only one policy
+	//  blocked the processing, the verdict is BLOCK.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.CustomerPolicyEnforcementResult.verdict
+	Verdict *string `json:"verdict,omitempty"`
+
+	// Customer policy enforcement results.
+	//  Populated only if the assist call was skipped due to a policy
+	//  violation. It contains results from those filters that blocked the
+	//  processing of the query.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.CustomerPolicyEnforcementResult.policy_results
+	PolicyResults []AssistAnswer_CustomerPolicyEnforcementResult_PolicyEnforcementResult `json:"policyResults,omitempty"`
+
+	// Output only. The source of the violation.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.CustomerPolicyEnforcementResult.violation_source
+	ViolationSource *string `json:"violationSource,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.AssistAnswer.Reply
+type AssistAnswer_ReplyObservedState struct {
+	// Possibly grounded response text or media from the assistant.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.Reply.grounded_content
+	GroundedContent *AssistantGroundedContentObservedState `json:"groundedContent,omitempty"`
+
+	// The time when the reply was created.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistAnswer.Reply.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.AssistantContent
+type AssistantContentObservedState struct {
+	// Inline text.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantContent.text
+	Text *string `json:"text,omitempty"`
+
+	// Inline binary data.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantContent.inline_data
+	InlineData *AssistantContent_BlobObservedState `json:"inlineData,omitempty"`
+
+	// A file, e.g., an audio summary.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantContent.file
+	File *AssistantContent_FileObservedState `json:"file,omitempty"`
+
+	// Code generated by the model that is meant to be executed.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantContent.executable_code
+	ExecutableCode *AssistantContent_ExecutableCodeObservedState `json:"executableCode,omitempty"`
+
+	// Result of executing an ExecutableCode.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantContent.code_execution_result
+	CodeExecutionResult *AssistantContent_CodeExecutionResultObservedState `json:"codeExecutionResult,omitempty"`
+
+	// The producer of the content. Can be "model" or "user".
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantContent.role
+	Role *string `json:"role,omitempty"`
+
+	// Optional. Indicates if the part is thought from the model.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantContent.thought
+	Thought *bool `json:"thought,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.AssistantContent.Blob
+type AssistantContent_BlobObservedState struct {
+	// Required. The media type (MIME type) of the generated data.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantContent.Blob.mime_type
+	MimeType *string `json:"mimeType,omitempty"`
+
+	// Required. Raw bytes.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantContent.Blob.data
+	Data []byte `json:"data,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.AssistantContent.CodeExecutionResult
+type AssistantContent_CodeExecutionResultObservedState struct {
+	// Required. Outcome of the code execution.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantContent.CodeExecutionResult.outcome
+	Outcome *string `json:"outcome,omitempty"`
+
+	// Optional. Contains stdout when code execution is successful, stderr or
+	//  other description otherwise.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantContent.CodeExecutionResult.output
+	Output *string `json:"output,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.AssistantContent.ExecutableCode
+type AssistantContent_ExecutableCodeObservedState struct {
+	// Required. The code content. Currently only supports Python.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantContent.ExecutableCode.code
+	Code *string `json:"code,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.AssistantContent.File
+type AssistantContent_FileObservedState struct {
+	// Required. The media type (MIME type) of the file.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantContent.File.mime_type
+	MimeType *string `json:"mimeType,omitempty"`
+
+	// Required. The file ID.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantContent.File.file_id
+	FileID *string `json:"fileID,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.AssistantGroundedContent
+type AssistantGroundedContentObservedState struct {
+	// Metadata for grounding based on text sources.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.text_grounding_metadata
+	TextGroundingMetadata *AssistantGroundedContent_TextGroundingMetadataObservedState `json:"textGroundingMetadata,omitempty"`
+
+	// The content.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.content
+	Content *AssistantContentObservedState `json:"content,omitempty"`
+
+	// Source attribution of the generated content. See also
+	//  https://cloud.google.com/vertex-ai/generative-ai/docs/learn/overview#citation_check
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.citation_metadata
+	CitationMetadata *CitationMetadataObservedState `json:"citationMetadata,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata
+type AssistantGroundedContent_TextGroundingMetadataObservedState struct {
+	// Grounding information for parts of the text.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.segments
+	Segments []AssistantGroundedContent_TextGroundingMetadata_Segment `json:"segments,omitempty"`
+
+	// Grounding information for parts of the visual content.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.visual_segments
+	VisualSegments []AssistantGroundedContent_TextGroundingMetadata_VisualSegment `json:"visualSegments,omitempty"`
+
+	// References for the grounded text.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.references
+	References []AssistantGroundedContent_TextGroundingMetadata_ReferenceObservedState `json:"references,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.Reference
+type AssistantGroundedContent_TextGroundingMetadata_ReferenceObservedState struct {
+	// Referenced text content.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.Reference.content
+	Content *string `json:"content,omitempty"`
+
+	// Chunk of code snippet from the referenced document.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.Reference.code_snippet
+	CodeSnippet *string `json:"codeSnippet,omitempty"`
+
+	// Document metadata.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.Reference.document_metadata
+	DocumentMetadata *AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata `json:"documentMetadata,omitempty"`
+
+	// Output only. Generic structured chunk metadata from upstream data
+	//  source connectors.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.AssistantGroundedContent.TextGroundingMetadata.Reference.chunk_metadata
+	ChunkMetadata apiextensionsv1.JSON `json:"chunkMetadata,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.Citation
+type CitationObservedState struct {
+	// Output only. Start index into the content.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Citation.start_index
+	StartIndex *int32 `json:"startIndex,omitempty"`
+
+	// Output only. End index into the content.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Citation.end_index
+	EndIndex *int32 `json:"endIndex,omitempty"`
+
+	// Output only. Url reference of the attribution.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Citation.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Output only. Title of the attribution.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Citation.title
+	Title *string `json:"title,omitempty"`
+
+	// Output only. License of the attribution.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Citation.license
+	License *string `json:"license,omitempty"`
+
+	// Output only. Publication date of the attribution.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Citation.publication_date
+	PublicationDate *Date `json:"publicationDate,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.CitationMetadata
+type CitationMetadataObservedState struct {
+	// Output only. List of citations.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.CitationMetadata.citations
+	Citations []CitationObservedState `json:"citations,omitempty"`
+}
+
 /* unreachable type CmekConfigObservedState
 // +kcc:observedstate:proto=google.cloud.discoveryengine.v1.CmekConfig
 type CmekConfigObservedState struct {
-	// Required. The name of the CmekConfig of the form
-	//  `projects/{project}/locations/{location}/cmekConfig` or
-	//  `projects/{project}/locations/{location}/cmekConfigs/{cmek_config}`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.name
-	Name *string `json:"name,omitempty"`
-
-	// KMS key resource name which will be used to encrypt resources
-	//  `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.kms_key
-	KMSKey *string `json:"kmsKey,omitempty"`
-
-	// KMS key version resource name which will be used to encrypt resources
+	// Output only. KMS key version resource name which will be used to encrypt
+	//  resources
 	//  `<kms_key>/cryptoKeyVersions/{keyVersion}`.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.kms_key_version
 	KMSKeyVersion *string `json:"kmsKeyVersion,omitempty"`
@@ -1557,10 +2208,6 @@ type CmekConfigObservedState struct {
 	// Output only. The timestamp of the last key rotation.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.last_rotation_timestamp_micros
 	LastRotationTimestampMicros *int64 `json:"lastRotationTimestampMicros,omitempty"`
-
-	// Optional. Single-regional CMEKs that are required for some VAIS features.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.single_region_keys
-	SingleRegionKeys []SingleRegionKey `json:"singleRegionKeys,omitempty"`
 
 	// Output only. Whether the NotebookLM Corpus is ready to be used.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.notebooklm_state
@@ -1635,5 +2282,27 @@ type Session_TurnObservedState struct {
 	//  is set to true, this field will be populated when getting assistant
 	//  session.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Session.Turn.detailed_assist_answer
-	DetailedAssistAnswer *AssistAnswer `json:"detailedAssistAnswer,omitempty"`
+	DetailedAssistAnswer *AssistAnswerObservedState `json:"detailedAssistAnswer,omitempty"`
 }
+
+/* unreachable type SingleRegionKeyObservedState
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.SingleRegionKey
+type SingleRegionKeyObservedState struct {
+	// Required. Single-regional kms key resource name which will be used to
+	//  encrypt resources
+	//  `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SingleRegionKey.kms_key
+	KMSKey *string `json:"kmsKey,omitempty"`
+}
+*/
+
+/* unreachable type WorkspaceConfigObservedState
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.WorkspaceConfig
+type WorkspaceConfigObservedState struct {
+	// Output only. Obfuscated Dasher customer ID. Derived by the server from
+	//  the project's GCP organization at data store creation time; any value
+	//  supplied in the request payload is ignored.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.WorkspaceConfig.dasher_customer_id
+	DasherCustomerID *string `json:"dasherCustomerID,omitempty"`
+}
+*/

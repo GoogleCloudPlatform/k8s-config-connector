@@ -30,7 +30,7 @@ fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-PROTO_SHA="665784f816da130b27edb566694b2441d0cfddf2"
+PROTO_SHA="6a1db32dc52fd9421c1743dc8f5faa7a15e518d1"
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 
 # Unset SKIP_GENERATE_PROTOS so this specific script fetches the proto
@@ -56,8 +56,16 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DiscoveryEngineConversation:Conversation \
   --resource DiscoveryEngineSession:Session \
   --resource DiscoveryEngineSitemap:Sitemap \
-  --resource DiscoveryEngineSchema:Schema
+  --resource DiscoveryEngineSchema:Schema \
+  --resource DiscoveryEngineCMEKConfig:CmekConfig \
+  --prepopulate-resource
 mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1_types.generated.go
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.discoveryengine.v1 \
+  --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+  --resource DiscoveryEngineCMEKConfig:CmekConfig
 
 ${CONTROLLERBUILDER} generate-types \
   --proto-source-path ${PROTO_OUT} \
