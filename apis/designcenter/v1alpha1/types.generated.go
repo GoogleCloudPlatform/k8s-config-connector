@@ -95,7 +95,8 @@ type Scope struct {
 }
 */
 
-/* unreachable type AlternateDefault
+/* found existing non-generated go type "AlternateDefault", skipping
+
 // +kcc:proto=google.cloud.designcenter.v1.AlternateDefault
 type AlternateDefault struct {
 }
@@ -452,7 +453,8 @@ type DisplayVariable struct {
 }
 */
 
-/* unreachable type DisplayVariableToggle
+/* found existing non-generated go type "DisplayVariableToggle", skipping
+
 // +kcc:proto=google.cloud.designcenter.v1.DisplayVariableToggle
 type DisplayVariableToggle struct {
 }
@@ -500,9 +502,12 @@ type GitSource struct {
 	RefTag *string `json:"refTag,omitempty"`
 }
 
+/* found existing non-generated go type "HelmChartInput", skipping
+
 // +kcc:proto=google.cloud.designcenter.v1.HelmChartInput
 type HelmChartInput struct {
 }
+*/
 
 /* unreachable type HelmChartMetadata
 // +kcc:proto=google.cloud.designcenter.v1.HelmChartMetadata
@@ -1029,9 +1034,12 @@ type TerraformUiInput struct {
 }
 */
 
+/* found existing non-generated go type "TerraformUiInputDisplayVariable", skipping
+
 // +kcc:proto=google.cloud.designcenter.v1.TerraformUiInputDisplayVariable
 type TerraformUiInputDisplayVariable struct {
 }
+*/
 
 /* unreachable type TerraformUiOutput
 // +kcc:proto=google.cloud.designcenter.v1.TerraformUiOutput
@@ -1039,9 +1047,12 @@ type TerraformUiOutput struct {
 }
 */
 
+/* found existing non-generated go type "TerraformUiOutputDisplay", skipping
+
 // +kcc:proto=google.cloud.designcenter.v1.TerraformUiOutputDisplay
 type TerraformUiOutputDisplay struct {
 }
+*/
 
 // +kcc:proto=google.cloud.designcenter.v1.TerraformVariableValidation
 type TerraformVariableValidation struct {
@@ -1055,7 +1066,8 @@ type TerraformVariableValidation struct {
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 }
 
-/* unreachable type ValueLabel
+/* found existing non-generated go type "ValueLabel", skipping
+
 // +kcc:proto=google.cloud.designcenter.v1.ValueLabel
 type ValueLabel struct {
 }

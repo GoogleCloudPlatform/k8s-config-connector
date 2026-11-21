@@ -5,7 +5,9 @@
 [recursive_type] package=apis/dataplex/v1alpha1: AspectType_MetadataTemplate -> AspectType_MetadataTemplate
 [recursive_type] package=apis/dataplex/v1alpha1: Schema_SchemaField -> Schema_SchemaField
 [recursive_type] package=apis/designcenter/v1alpha1: DisplayVariable -> DisplayVariable
+[recursive_type] package=apis/designcenter/v1alpha1: HelmChartInput -> HelmChartInput
 [recursive_type] package=apis/designcenter/v1alpha1: ListValue -> Value -> ListValue
+[recursive_type] package=apis/designcenter/v1alpha1: TerraformUiInputDisplayVariable -> TerraformUiInputDisplayVariable
 [recursive_type] package=apis/dialogflow/v1alpha1: Fulfillment_ConditionalCases -> Fulfillment_ConditionalCases_Case -> Fulfillment_ConditionalCases_Case_CaseContent -> Fulfillment_ConditionalCases
 [recursive_type] package=apis/dialogflow/v1alpha1: InlineSchema -> TypeSchema -> InlineSchema
 [recursive_type] package=apis/dialogflow/v1alpha1: ListValue -> Value -> ListValue

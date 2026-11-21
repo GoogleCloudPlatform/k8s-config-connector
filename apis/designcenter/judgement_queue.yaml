@@ -323,7 +323,7 @@ entries:
     detail: derived as map[string]HelmChartInput from proto google.cloud.designcenter.v1.HelmChartInput; verify Go type and mapping
     status: resolved
     resolution: accepted
-    note: verified map[string]HelmChartInput type and mapper
+    note: defined HelmChartInput in designcentercatalogtemplaterevision_types.go with output-only proto fields to populate CRD schema
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.helmChartMetadata.helmOutput[].value
@@ -349,7 +349,7 @@ entries:
     detail: derived as map[string]TerraformUiInputDisplayVariable from proto google.cloud.designcenter.v1.TerraformUiInputDisplayVariable; verify Go type and mapping
     status: resolved
     resolution: accepted
-    note: verified map[string]TerraformUiInputDisplayVariable type and mapper
+    note: defined TerraformUiInputDisplayVariable in designcentercatalogtemplaterevision_types.go with output-only proto fields to populate CRD schema
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.inferredMetadata.templateMetadata.uiMetadata.terraformUiOutput.terraformUiOutputs
@@ -357,7 +357,7 @@ entries:
     detail: derived as map[string]TerraformUiOutputDisplay from proto google.cloud.designcenter.v1.TerraformUiOutputDisplay; verify Go type and mapping
     status: resolved
     resolution: accepted
-    note: verified map[string]TerraformUiOutputDisplay type and mapper
+    note: defined TerraformUiOutputDisplay in designcentercatalogtemplaterevision_types.go with output-only proto fields to populate CRD schema
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.templateMetadata.terraformInput[].defaultValue
@@ -377,7 +377,7 @@ entries:
     detail: derived as map[string]TerraformUiInputDisplayVariable from proto google.cloud.designcenter.v1.TerraformUiInputDisplayVariable; verify Go type and mapping
     status: resolved
     resolution: accepted
-    note: verified map[string]TerraformUiInputDisplayVariable type and mapper
+    note: defined TerraformUiInputDisplayVariable in designcentercatalogtemplaterevision_types.go with output-only proto fields to populate CRD schema
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.templateMetadata.uiMetadata.terraformUiOutput.terraformUiOutputs
@@ -385,7 +385,7 @@ entries:
     detail: derived as map[string]TerraformUiOutputDisplay from proto google.cloud.designcenter.v1.TerraformUiOutputDisplay; verify Go type and mapping
     status: resolved
     resolution: accepted
-    note: verified map[string]TerraformUiOutputDisplay type and mapper
+    note: defined TerraformUiOutputDisplay in designcentercatalogtemplaterevision_types.go with output-only proto fields to populate CRD schema
   - kind: DesignCenterSpace
     group: designcenter.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

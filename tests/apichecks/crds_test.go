@@ -1146,7 +1146,6 @@ func TestCRDObjectTypes(t *testing.T) {
 		"dlpcontentpolicies.dlp.cnrm.cloud.google.com":                                  true, // GCP known pattern: Empty oneof option (spec.rules[].conditions[].infoTypeCondition.anyInfoType)
 		"cestools.ces.cnrm.cloud.google.com":                                            true, // GCP known pattern: Empty oneof option (spec.openAPITool.apiAuthentication.serviceAgentIDTokenAuthConfig)
 		"clouddeployrollouts.clouddeploy.cnrm.cloud.google.com":                         true, // GCP known pattern: Empty oneof option (status.observedState.phases[].childRolloutJobs.advanceRolloutJobs[].advanceChildRolloutJob)
-		"designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com":       true, // status.observedState.inferredMetadata.templateMetadata.uiMetadata.terraformUiInput.terraformUiInputs[*] is an empty object
 	}
 
 	crds, err := crdloader.LoadAllCRDs()

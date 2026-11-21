@@ -293,3 +293,144 @@ type ListValue struct {
 	// +kubebuilder:validation:items:Type=object
 	Values []Value `json:"values,omitempty"`
 }
+
+// +kcc:proto=google.cloud.designcenter.v1.AlternateDefault
+type AlternateDefault struct {
+	// Output only. Type of alternate default.
+	// +kcc:proto:field=google.cloud.designcenter.v1.AlternateDefault.type
+	Type *string `json:"type,omitempty"`
+
+	// Output only. Value of the alternate default.
+	// +kcc:proto:field=google.cloud.designcenter.v1.AlternateDefault.value
+	Value *Value `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.cloud.designcenter.v1.ValueLabel
+type ValueLabel struct {
+	// Output only. Value of the enum.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ValueLabel.value
+	Value *string `json:"value,omitempty"`
+
+	// Output only. Label of the enum.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ValueLabel.label
+	Label *string `json:"label,omitempty"`
+}
+
+// +kcc:proto=google.cloud.designcenter.v1.DisplayVariableToggle
+type DisplayVariableToggle struct {
+	// Output only. The name of the variable used to toggle the display of another
+	//  variable.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DisplayVariableToggle.variable
+	Variable *string `json:"variable,omitempty"`
+
+	// Output only. The value of the variable used to toggle the display of
+	//  another variable.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DisplayVariableToggle.variable_values
+	VariableValues []string `json:"variableValues,omitempty"`
+
+	// Output only. The type of the variable used to toggle the display of another
+	//  variable.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DisplayVariableToggle.variable_type
+	VariableType *string `json:"variableType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.designcenter.v1.TerraformUiInputDisplayVariable
+type TerraformUiInputDisplayVariable struct {
+	// Output only. Display name of the input.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformUiInputDisplayVariable.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Output only. Title of the input.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformUiInputDisplayVariable.title
+	Title *string `json:"title,omitempty"`
+
+	// Output only. Alternate defaults for the input.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformUiInputDisplayVariable.alternate_defaults
+	AlternateDefaults []AlternateDefault `json:"alternateDefaults,omitempty"`
+
+	// Output only. Regex based validation rules for the variable.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformUiInputDisplayVariable.regex_validation
+	RegexValidation *string `json:"regexValidation,omitempty"`
+
+	// Output only. Minimum value for numeric types.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformUiInputDisplayVariable.min
+	Min *float32 `json:"min,omitempty"`
+
+	// Output only. Maximum value for numeric types.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformUiInputDisplayVariable.max
+	Max *float32 `json:"max,omitempty"`
+
+	// Output only. Text describing the validation rules for the property.
+	//  Typically shown after an invalid input. Optional. UTF-8 text. No markup. At
+	//  most 128 characters.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformUiInputDisplayVariable.validation
+	Validation *string `json:"validation,omitempty"`
+
+	// Output only. Labels for enum values.
+	//  Values must be UTF-8 text with no markup, and at most 64 characters.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformUiInputDisplayVariable.enum_value_labels
+	EnumValueLabels []ValueLabel `json:"enumValueLabels,omitempty"`
+
+	// Output only. Indicates the "advanced" level of the input property. Level 0
+	//  (default) will always be shown. Level 1 corresponds to one expansion (user
+	//  clicks "show advanced options" or "more options"). Higher levels correspond
+	//  to further expansions, or they may be collapsed to level 1 by the UI
+	//  implementation.
+	//  Optional.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformUiInputDisplayVariable.level
+	Level *int32 `json:"level,omitempty"`
+
+	// Output only. Property subtext, displayed below the title.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformUiInputDisplayVariable.subtext
+	Subtext *string `json:"subtext,omitempty"`
+
+	// Output only. Variables used to toggle the display of another variable.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformUiInputDisplayVariable.toggle_using_variables
+	ToggleUsingVariables []DisplayVariableToggle `json:"toggleUsingVariables,omitempty"`
+
+	// Output only. A map that defines all fields of the input variable.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformUiInputDisplayVariable.properties
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
+	// +kubebuilder:validation:XPreserveUnknownFields
+	// +kubebuilder:validation:Type=object
+	Properties map[string]TerraformUiInputDisplayVariable `json:"properties,omitempty"`
+}
+
+// +kcc:proto=google.cloud.designcenter.v1.TerraformUiOutputDisplay
+type TerraformUiOutputDisplay struct {
+	// Output only. Visibility of the output.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformUiOutputDisplay.visibility
+	Visibility *string `json:"visibility,omitempty"`
+}
+
+// +kcc:proto=google.cloud.designcenter.v1.HelmChartInput
+type HelmChartInput struct {
+	// Output only. Input variable name present in Helm Chart values.yaml
+	// +kcc:proto:field=google.cloud.designcenter.v1.HelmChartInput.helm_input_variable
+	HelmInputVariable *string `json:"helmInputVariable,omitempty"`
+
+	// Output only. Input variable description.
+	// +kcc:proto:field=google.cloud.designcenter.v1.HelmChartInput.description
+	Description *string `json:"description,omitempty"`
+
+	// Output only. Input data type.
+	// +kcc:proto:field=google.cloud.designcenter.v1.HelmChartInput.type
+	Type *string `json:"type,omitempty"`
+
+	// Output only. The default value of the input variable.
+	// +kcc:proto:field=google.cloud.designcenter.v1.HelmChartInput.default_value
+	DefaultValue *Value `json:"defaultValue,omitempty"`
+
+	// Output only. Indicates if input is required.
+	// +kcc:proto:field=google.cloud.designcenter.v1.HelmChartInput.is_required
+	IsRequired *bool `json:"isRequired,omitempty"`
+
+	// Output only. Contains details of nested inputs.
+	// +kcc:proto:field=google.cloud.designcenter.v1.HelmChartInput.nested_inputs
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
+	// +kubebuilder:validation:XPreserveUnknownFields
+	// +kubebuilder:validation:Type=object
+	NestedInputs map[string]HelmChartInput `json:"nestedInputs,omitempty"`
+}

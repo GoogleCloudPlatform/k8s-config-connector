@@ -1301,6 +1301,57 @@ spec:
                               type: boolean
                             nestedInputs:
                               additionalProperties:
+                                properties:
+                                  defaultValue:
+                                    description: Output only. The default value of
+                                      the input variable.
+                                    properties:
+                                      boolValue:
+                                        description: Represents a boolean value.
+                                        type: boolean
+                                      listValue:
+                                        description: Represents a repeated `Value`.
+                                        properties:
+                                          values:
+                                            description: Repeated field of dynamically
+                                              typed values.
+                                            items:
+                                              type: object
+                                              x-kubernetes-preserve-unknown-fields: true
+                                            type: array
+                                        type: object
+                                      nullValue:
+                                        description: Represents a null value.
+                                        type: string
+                                      numberValue:
+                                        description: Represents a double value.
+                                        type: number
+                                      stringValue:
+                                        description: Represents a string value.
+                                        type: string
+                                      structValue:
+                                        description: Represents a structured value.
+                                        x-kubernetes-preserve-unknown-fields: true
+                                    type: object
+                                  description:
+                                    description: Output only. Input variable description.
+                                    type: string
+                                  helmInputVariable:
+                                    description: Output only. Input variable name
+                                      present in Helm Chart values.yaml
+                                    type: string
+                                  isRequired:
+                                    description: Output only. Indicates if input is
+                                      required.
+                                    type: boolean
+                                  nestedInputs:
+                                    description: Output only. Contains details of
+                                      nested inputs.
+                                    type: object
+                                    x-kubernetes-preserve-unknown-fields: true
+                                  type:
+                                    description: Output only. Input data type.
+                                    type: string
                                 type: object
                               description: Output only. Contains details of nested
                                 inputs.
@@ -1575,6 +1626,141 @@ spec:
                                 properties:
                                   terraformUiInputs:
                                     additionalProperties:
+                                      properties:
+                                        alternateDefaults:
+                                          description: Output only. Alternate defaults
+                                            for the input.
+                                          items:
+                                            properties:
+                                              type:
+                                                description: Output only. Type of
+                                                  alternate default.
+                                                type: string
+                                              value:
+                                                description: Output only. Value of
+                                                  the alternate default.
+                                                properties:
+                                                  boolValue:
+                                                    description: Represents a boolean
+                                                      value.
+                                                    type: boolean
+                                                  listValue:
+                                                    description: Represents a repeated
+                                                      `Value`.
+                                                    properties:
+                                                      values:
+                                                        description: Repeated field
+                                                          of dynamically typed values.
+                                                        items:
+                                                          type: object
+                                                          x-kubernetes-preserve-unknown-fields: true
+                                                        type: array
+                                                    type: object
+                                                  nullValue:
+                                                    description: Represents a null
+                                                      value.
+                                                    type: string
+                                                  numberValue:
+                                                    description: Represents a double
+                                                      value.
+                                                    type: number
+                                                  stringValue:
+                                                    description: Represents a string
+                                                      value.
+                                                    type: string
+                                                  structValue:
+                                                    description: Represents a structured
+                                                      value.
+                                                    x-kubernetes-preserve-unknown-fields: true
+                                                type: object
+                                            type: object
+                                          type: array
+                                        displayName:
+                                          description: Output only. Display name of
+                                            the input.
+                                          type: string
+                                        enumValueLabels:
+                                          description: Output only. Labels for enum
+                                            values. Values must be UTF-8 text with
+                                            no markup, and at most 64 characters.
+                                          items:
+                                            properties:
+                                              label:
+                                                description: Output only. Label of
+                                                  the enum.
+                                                type: string
+                                              value:
+                                                description: Output only. Value of
+                                                  the enum.
+                                                type: string
+                                            type: object
+                                          type: array
+                                        level:
+                                          description: Output only. Indicates the
+                                            "advanced" level of the input property.
+                                            Level 0 (default) will always be shown.
+                                            Level 1 corresponds to one expansion (user
+                                            clicks "show advanced options" or "more
+                                            options"). Higher levels correspond to
+                                            further expansions, or they may be collapsed
+                                            to level 1 by the UI implementation. Optional.
+                                          format: int32
+                                          type: integer
+                                        max:
+                                          description: Output only. Maximum value
+                                            for numeric types.
+                                          type: number
+                                        min:
+                                          description: Output only. Minimum value
+                                            for numeric types.
+                                          type: number
+                                        properties:
+                                          description: Output only. A map that defines
+                                            all fields of the input variable.
+                                          type: object
+                                          x-kubernetes-preserve-unknown-fields: true
+                                        regexValidation:
+                                          description: Output only. Regex based validation
+                                            rules for the variable.
+                                          type: string
+                                        subtext:
+                                          description: Output only. Property subtext,
+                                            displayed below the title.
+                                          type: string
+                                        title:
+                                          description: Output only. Title of the input.
+                                          type: string
+                                        toggleUsingVariables:
+                                          description: Output only. Variables used
+                                            to toggle the display of another variable.
+                                          items:
+                                            properties:
+                                              variable:
+                                                description: Output only. The name
+                                                  of the variable used to toggle the
+                                                  display of another variable.
+                                                type: string
+                                              variableType:
+                                                description: Output only. The type
+                                                  of the variable used to toggle the
+                                                  display of another variable.
+                                                type: string
+                                              variableValues:
+                                                description: Output only. The value
+                                                  of the variable used to toggle the
+                                                  display of another variable.
+                                                items:
+                                                  type: string
+                                                type: array
+                                            type: object
+                                          type: array
+                                        validation:
+                                          description: Output only. Text describing
+                                            the validation rules for the property.
+                                            Typically shown after an invalid input.
+                                            Optional. UTF-8 text. No markup. At most
+                                            128 characters.
+                                          type: string
                                       type: object
                                     description: Output only. Terraform UI inputs.
                                     type: object
@@ -1588,6 +1774,11 @@ spec:
                                     type: string
                                   terraformUiOutputs:
                                     additionalProperties:
+                                      properties:
+                                        visibility:
+                                          description: Output only. Visibility of
+                                            the output.
+                                          type: string
                                       type: object
                                     description: Output only. Visibility of the output.
                                     type: object
@@ -1871,6 +2062,137 @@ spec:
                             properties:
                               terraformUiInputs:
                                 additionalProperties:
+                                  properties:
+                                    alternateDefaults:
+                                      description: Output only. Alternate defaults
+                                        for the input.
+                                      items:
+                                        properties:
+                                          type:
+                                            description: Output only. Type of alternate
+                                              default.
+                                            type: string
+                                          value:
+                                            description: Output only. Value of the
+                                              alternate default.
+                                            properties:
+                                              boolValue:
+                                                description: Represents a boolean
+                                                  value.
+                                                type: boolean
+                                              listValue:
+                                                description: Represents a repeated
+                                                  `Value`.
+                                                properties:
+                                                  values:
+                                                    description: Repeated field of
+                                                      dynamically typed values.
+                                                    items:
+                                                      type: object
+                                                      x-kubernetes-preserve-unknown-fields: true
+                                                    type: array
+                                                type: object
+                                              nullValue:
+                                                description: Represents a null value.
+                                                type: string
+                                              numberValue:
+                                                description: Represents a double value.
+                                                type: number
+                                              stringValue:
+                                                description: Represents a string value.
+                                                type: string
+                                              structValue:
+                                                description: Represents a structured
+                                                  value.
+                                                x-kubernetes-preserve-unknown-fields: true
+                                            type: object
+                                        type: object
+                                      type: array
+                                    displayName:
+                                      description: Output only. Display name of the
+                                        input.
+                                      type: string
+                                    enumValueLabels:
+                                      description: Output only. Labels for enum values.
+                                        Values must be UTF-8 text with no markup,
+                                        and at most 64 characters.
+                                      items:
+                                        properties:
+                                          label:
+                                            description: Output only. Label of the
+                                              enum.
+                                            type: string
+                                          value:
+                                            description: Output only. Value of the
+                                              enum.
+                                            type: string
+                                        type: object
+                                      type: array
+                                    level:
+                                      description: Output only. Indicates the "advanced"
+                                        level of the input property. Level 0 (default)
+                                        will always be shown. Level 1 corresponds
+                                        to one expansion (user clicks "show advanced
+                                        options" or "more options"). Higher levels
+                                        correspond to further expansions, or they
+                                        may be collapsed to level 1 by the UI implementation.
+                                        Optional.
+                                      format: int32
+                                      type: integer
+                                    max:
+                                      description: Output only. Maximum value for
+                                        numeric types.
+                                      type: number
+                                    min:
+                                      description: Output only. Minimum value for
+                                        numeric types.
+                                      type: number
+                                    properties:
+                                      description: Output only. A map that defines
+                                        all fields of the input variable.
+                                      type: object
+                                      x-kubernetes-preserve-unknown-fields: true
+                                    regexValidation:
+                                      description: Output only. Regex based validation
+                                        rules for the variable.
+                                      type: string
+                                    subtext:
+                                      description: Output only. Property subtext,
+                                        displayed below the title.
+                                      type: string
+                                    title:
+                                      description: Output only. Title of the input.
+                                      type: string
+                                    toggleUsingVariables:
+                                      description: Output only. Variables used to
+                                        toggle the display of another variable.
+                                      items:
+                                        properties:
+                                          variable:
+                                            description: Output only. The name of
+                                              the variable used to toggle the display
+                                              of another variable.
+                                            type: string
+                                          variableType:
+                                            description: Output only. The type of
+                                              the variable used to toggle the display
+                                              of another variable.
+                                            type: string
+                                          variableValues:
+                                            description: Output only. The value of
+                                              the variable used to toggle the display
+                                              of another variable.
+                                            items:
+                                              type: string
+                                            type: array
+                                        type: object
+                                      type: array
+                                    validation:
+                                      description: Output only. Text describing the
+                                        validation rules for the property. Typically
+                                        shown after an invalid input. Optional. UTF-8
+                                        text. No markup. At most 128 characters.
+                                      type: string
                                   type: object
                                 description: Output only. Terraform UI inputs.
                                 type: object
@@ -1884,6 +2206,11 @@ spec:
                                 type: string
                               terraformUiOutputs:
                                 additionalProperties:
+                                  properties:
+                                    visibility:
+                                      description: Output only. Visibility of the
+                                        output.
+                                      type: string
                                   type: object
                                 description: Output only. Visibility of the output.
                                 type: object

@@ -33,6 +33,26 @@ import (
 	structpb "google.golang.org/protobuf/types/known/structpb"
 )
 
+func AlternateDefault_FromProto(mapCtx *direct.MapContext, in *pb.AlternateDefault) *krm.AlternateDefault {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlternateDefault{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Value = Value_FromProto(mapCtx, in.GetValue())
+	return out
+}
+
+func AlternateDefault_ToProto(mapCtx *direct.MapContext, in *krm.AlternateDefault) *pb.AlternateDefault {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlternateDefault{}
+	out.Type = direct.Enum_ToProto[pb.DisplayVariableAlternateType](mapCtx, in.Type)
+	out.Value = Value_ToProto(mapCtx, in.Value)
+	return out
+}
+
 func AlternateDefaultInput_FromProto(mapCtx *direct.MapContext, in *pb.AlternateDefaultInput) *krm.AlternateDefaultInput {
 	if in == nil {
 		return nil
@@ -697,6 +717,28 @@ func DisplayVariable_ToProto(mapCtx *direct.MapContext, in *krm.DisplayVariable)
 			out.Properties[k] = DisplayVariable_ToProto(mapCtx, &v)
 		}
 	}
+	return out
+}
+
+func DisplayVariableToggle_FromProto(mapCtx *direct.MapContext, in *pb.DisplayVariableToggle) *krm.DisplayVariableToggle {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DisplayVariableToggle{}
+	out.Variable = direct.LazyPtr(in.GetVariable())
+	out.VariableValues = in.VariableValues
+	out.VariableType = direct.Enum_FromProto(mapCtx, in.GetVariableType())
+	return out
+}
+
+func DisplayVariableToggle_ToProto(mapCtx *direct.MapContext, in *krm.DisplayVariableToggle) *pb.DisplayVariableToggle {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DisplayVariableToggle{}
+	out.Variable = direct.ValueOf(in.Variable)
+	out.VariableValues = in.VariableValues
+	out.VariableType = direct.Enum_ToProto[pb.DisplayVariableToggle_ToggleVariableType](mapCtx, in.VariableType)
 	return out
 }
 
@@ -1794,7 +1836,7 @@ func TerraformUiOutputDisplay_FromProto(mapCtx *direct.MapContext, in *pb.Terraf
 		return nil
 	}
 	out := &krm.TerraformUiOutputDisplay{}
-	// MISSING: Visibility
+	out.Visibility = direct.Enum_FromProto(mapCtx, in.GetVisibility())
 	return out
 }
 
@@ -1803,7 +1845,7 @@ func TerraformUiOutputDisplay_ToProto(mapCtx *direct.MapContext, in *krm.Terrafo
 		return nil
 	}
 	out := &pb.TerraformUiOutputDisplay{}
-	// MISSING: Visibility
+	out.Visibility = direct.Enum_ToProto[pb.DisplayVariableVisibility](mapCtx, in.Visibility)
 	return out
 }
 
@@ -1856,6 +1898,26 @@ func TerraformVariableValidation_ToProto(mapCtx *direct.MapContext, in *krm.Terr
 	out := &pb.TerraformVariableValidation{}
 	out.Condition = direct.ValueOf(in.Condition)
 	out.ErrorMessage = direct.ValueOf(in.ErrorMessage)
+	return out
+}
+
+func ValueLabel_FromProto(mapCtx *direct.MapContext, in *pb.ValueLabel) *krm.ValueLabel {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ValueLabel{}
+	out.Value = direct.LazyPtr(in.GetValue())
+	out.Label = direct.LazyPtr(in.GetLabel())
+	return out
+}
+
+func ValueLabel_ToProto(mapCtx *direct.MapContext, in *krm.ValueLabel) *pb.ValueLabel {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ValueLabel{}
+	out.Value = direct.ValueOf(in.Value)
+	out.Label = direct.ValueOf(in.Label)
 	return out
 }
 
