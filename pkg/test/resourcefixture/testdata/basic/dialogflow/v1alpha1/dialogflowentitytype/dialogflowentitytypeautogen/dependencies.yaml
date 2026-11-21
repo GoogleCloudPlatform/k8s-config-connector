@@ -16,10 +16,11 @@ apiVersion: dialogflow.cnrm.cloud.google.com/v1alpha1
 kind: DialogflowAgent
 metadata:
   annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: dialogflowagent-${uniqueId}
 spec:
   defaultLanguageCode: en
   displayName: example_agent
-  resourceID: dialogflowagent${uniqueId}
+  resourceID: ${projectId}
   timeZone: America/New_York

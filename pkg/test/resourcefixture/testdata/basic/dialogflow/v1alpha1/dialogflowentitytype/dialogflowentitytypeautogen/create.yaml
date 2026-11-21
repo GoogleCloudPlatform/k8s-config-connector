@@ -17,7 +17,7 @@ kind: DialogflowEntityType
 metadata:
   name: dialogflowentitytype-${uniqueId}
 spec:
-  displayName: ""
+  displayName: et-${uniqueId}
   entities:
   - synonyms:
     - synonym1
