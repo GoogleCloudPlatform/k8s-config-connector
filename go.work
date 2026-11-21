@@ -6,6 +6,7 @@ use (
 	.
 	./dev/tools/controllerbuilder
 	./dev/tools/crd-mcp-server
+	./dev/tools/kcc-migrate
 	./experiments/kompanion
 	./experiments/kubectl-plan
 	./experiments/tools/licensescan
