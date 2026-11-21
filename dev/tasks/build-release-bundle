@@ -214,7 +214,6 @@ BLOCKED_KINDS=(
     "FTPUser"
     "GDCHardwareManagementHardware"
     "GeminiDataAnalyticsConversation"
-    "GeminiDataAnalyticsDataAgent"
     "GKEBackupBackupChannel"
     "GKEHubFleet"
     "GKEMulticloudAttachedCluster"
