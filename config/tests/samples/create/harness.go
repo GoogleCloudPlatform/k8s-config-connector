@@ -1616,6 +1616,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "rapidmigrationassessment.cnrm.cloud.google.com", Kind: "RapidMigrationAssessmentCollector"}:
 			case schema.GroupKind{Group: "billingbudgets.cnrm.cloud.google.com", Kind: "BillingBudgetsBudget"}:
 
+			case schema.GroupKind{Group: "dialogflow.cnrm.cloud.google.com", Kind: "DialogflowAgent"}:
 			case schema.GroupKind{Group: "dialogflow.cnrm.cloud.google.com", Kind: "DialogflowSipTrunk"}:
 			case schema.GroupKind{Group: "dialogflow.cnrm.cloud.google.com", Kind: "DialogflowGenerator"}:
 			case schema.GroupKind{Group: "dialogflow.cnrm.cloud.google.com", Kind: "DialogflowKnowledgeBase"}:

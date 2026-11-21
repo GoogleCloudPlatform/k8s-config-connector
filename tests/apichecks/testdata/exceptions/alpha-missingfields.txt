@@ -3733,17 +3733,8 @@
 [missing_field] crd=devicestreamingsessions.devicestreaming.cnrm.cloud.google.com version=v1alpha1: field ".spec.androidDevice.locale" is not set in unstructured objects
 [missing_field] crd=devicestreamingsessions.devicestreaming.cnrm.cloud.google.com version=v1alpha1: field ".spec.androidDevice.orientation" is not set in unstructured objects
 [missing_field] crd=devicestreamingsessions.devicestreaming.cnrm.cloud.google.com version=v1alpha1: field ".spec.expireTime" is not set in unstructured objects
-[missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiVersion" is not set in unstructured objects
 [missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.avatarUri" is not set in unstructured objects
-[missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.classificationThreshold" is not set in unstructured objects
-[missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultLanguageCode" is not set in unstructured objects
-[missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.enableLogging" is not set in unstructured objects
-[missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.matchMode" is not set in unstructured objects
-[missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.supportedLanguageCodes[]" is not set in unstructured objects
 [missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.tier" is not set in unstructured objects
-[missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeZone" is not set in unstructured objects
 [missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.cesToolSpecs[].cesToolRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.cesToolSpecs[].confirmationRequirement" is not set in unstructured objects
 [missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.skillConfigs[].guidanceSkillConfig.knowledgeSource" is not set in unstructured objects
