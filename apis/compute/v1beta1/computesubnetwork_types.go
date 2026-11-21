@@ -103,7 +103,7 @@ type ComputeSubnetworkSpec struct {
 	SecondaryIPRanges []SubnetworkSecondaryRange `json:"secondaryIpRange,omitempty"`
 
 	// The stack type for this subnet to identify whether the IPv6 feature is enabled or not.
-	// If not specified IPV4_ONLY will be used. Possible values: ["IPV4_ONLY", "IPV4_IPV6"].
+	// If not specified IPV4_ONLY will be used. Possible values: ["IPV4_ONLY", "IPV4_IPV6", "IPV6_ONLY"].
 	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.stack_type
 	StackType *string `json:"stackType,omitempty"`
 }

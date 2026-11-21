@@ -456,7 +456,7 @@ stackType: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The stack type for this subnet to identify whether the IPv6 feature is enabled or not. If not specified IPV4_ONLY will be used. Possible values: ["IPV4_ONLY", "IPV4_IPV6"].</p>
+            <p>The stack type for this subnet to identify whether the IPv6 feature is enabled or not. If not specified IPV4_ONLY will be used. Possible values: ["IPV4_ONLY", "IPV4_IPV6", "IPV6_ONLY"].</p>
         </td>
     </tr>
 </tbody>
