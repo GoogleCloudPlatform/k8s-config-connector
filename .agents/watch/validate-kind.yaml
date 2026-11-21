@@ -1,0 +1,50 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# A "Verify changed Kinds" batch child (labelled validate, opened by the fan-out from
+# hack/manual-validate/open-batch.sh) runs the validate-kind recipe instead of factory's fix: the
+# agent writes or extends the Kind's validate.sh and runs it until the script works, then the
+# recipe re-runs it from a clean start and puts that run's receipts on the PR. The batch's final
+# child (also labelled validate) gets the same recipe, which writes the batch report instead.
+# Order 15 is before factory's fix (20); a recipe rule takes the item, so fix does not run on it.
+name: validate-kind
+description: Validate one Kind against real GCP - the agent writes and runs its script, the recipe re-runs it for the receipts
+on: issue
+order: 15
+when:
+  labels: {all: [validate], none: [validate/batch]}
+  author: [pool, owner, member, collaborator]
+  fanout: false
+  graph: false
+  linked-pr: none
+  connected-pr: none
+run:
+  recipe: validate-kind
+  apply: open-pr
+  inputs:
+    draft: "false"
+    labels: "{{pr-labels}}"
+  on-start:
+    assign: "{{bot}}"
+    unassign: "{{watcher}}"
+    comment: "AI Factory started validating this Kind against real GCP in a sandbox."
+policy:
+  dedupe: update
+  cooldown: {success: 10m, failure: 20m}
+  give-up:
+    attempts: 3
+    since: [human, pause]
+    failed: true
+    comment: Pausing after 3 failed validation runs.
+  phase: 3

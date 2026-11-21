@@ -424,7 +424,10 @@ NO_CHANGE_MARKER = "<!-- factory:no-change ok -->"
 # heading inside it: the fan-out reads the parent's `## ` headings as its sections.
 TASK_TEMPLATE = """Validate the {{.item.name}} controller against real GCP, the way a person would, and leave a
 reusable script. Follow `.gemini/skills/manual-validate-controller/SKILL.md`; the reference script
-is `hack/manual-validate/bigqueryrowaccesspolicy/validate.sh`.
+is `hack/manual-validate/bigqueryrowaccesspolicy/validate.sh`. The validate-kind recipe
+(`.agents/recipes/validate-kind.yaml`) runs this issue: you write the script and run it until it
+works; the recipe then re-runs it from a clean start, puts that run's receipts on the PR, and asks
+you for the summary.
 
 **What changed** (master __BASE_SHORT__..__HEAD_SHORT__): {{.item.line}}
 
@@ -443,40 +446,10 @@ is `hack/manual-validate/bigqueryrowaccesspolicy/validate.sh`.
      mutable. A removed field: check the script no longer sets it and the resource still works.
    - **The tests are cumulative: add, never replace.** Keep every existing check and every
      fixture variant as it is. Change or remove one only when the API itself removed or changed
-     what it checks, and say which and why in the PR description.
+     what it checks, and say which and why in your summary.
    - Never edit test fixtures, golden files, `_http.log`, the controller or the types.
-3. **Run it** from a clean start, in this sandbox's project, once with the default fixture and
-   once per variant under `hack/manual-validate/<kind lowercase>/fixtures/`:
-   ```bash
-   GCP_PROJECT_ID="${GCP_PROJECT_ID}" hack/manual-validate/<kind lowercase>/validate.sh
-   for v in hack/manual-validate/<kind lowercase>/fixtures/*/; do
-     [ -d "$v" ] || continue
-     FIXTURE_DIR="$v" GCP_PROJECT_ID="${GCP_PROJECT_ID}" hack/manual-validate/<kind lowercase>/validate.sh
-   done
-   ```
-   Allow 30 minutes or more per run. A failure caused by the script (wrong URL, jq path,
-   eventual consistency, an API to add to `mv_enable_apis`) is yours to fix and re-run, at most
-   3 times. A failure caused by the controller is a finding: keep the check, do not weaken it.
-4. **Report.** Commit only the script and any fixture variants (never `artifactz/` or `.build/`),
-   and put in the PR description:
-   - `Verdict: PASS|FAIL - N passed, M failed` for each run (the default fixture and each variant,
-     by name), with its start and end time; the overall verdict is FAIL if any run failed;
-   - each run's REPORT table rows (phase, check, result, detail), with email addresses and the
-     project number removed;
-   - which checks and variants are new for this change, and any existing check changed or removed
-     because the API changed (with why);
-   - **Controller bugs**: each failure the controller caused, with the check and the values it
-     saw; or "none";
-   - what could not be checked out of band, and why.
-   If the controller is broken for this change, say so plainly; do not fix it here.
-
-   **If the script already covers this change** (nothing to add), still run it as in step 3, make
-   no commit, and answer with the same report: that closes this issue as completed.
-
-When creating the PR, include the release note block set to NONE:
-```release-note
-NONE
-```
+3. **If the script already covers this change** (nothing to add), make no commit: the recipe
+   re-runs it, and the issue is closed with the receipts.
 
 # Review Instructions
 
@@ -486,8 +459,9 @@ with a value read from GCP outside KCC (REST, gcloud/bq, audit logs), never KCC 
 named in the PR description must be covered; cleanup must leak-check. The tests are cumulative:
 compare with the script and fixtures/ on master - no existing check or fixture variant may be
 removed or weakened, unless the API itself removed or changed what it checks and the PR description
-says so. The report must cover the default fixture and every variant under fixtures/. The PR must
-not touch the controller, the types, or any test fixture or golden file.
+says so. The receipts in the PR description are the recipe's clean re-run; they must cover the
+default fixture and every variant under fixtures/. The PR must not touch the controller, the types,
+or any test fixture or golden file.
 
 __MARKER__"""
 BATCH_MARKER = "<!-- manual-validate-batch base={base} head={head} -->"
