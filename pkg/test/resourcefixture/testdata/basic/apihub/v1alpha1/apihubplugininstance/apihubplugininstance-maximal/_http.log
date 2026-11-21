@@ -1,0 +1,569 @@
+# Phase: CREATE
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fplugins%2Fapihubplugin-${uniqueId}
+
+500 Internal Server Error
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 500,
+    "message": "An internal error has occurred (d4497216-3c95-4f92-8fbb-9ebbd94a39c9)",
+    "status": "INTERNAL"
+  }
+}
+
+---
+
+POST https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/plugins?%24alt=json%3Benum-encoding%3Dint&pluginId=apihubplugin-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "actionsConfig": [
+    {
+      "displayName": "Sample Action",
+      "id": "sample-action",
+      "triggerMode": 3
+    },
+    {
+      "displayName": "Action 1",
+      "id": "action-1",
+      "triggerMode": 3
+    }
+  ],
+  "displayName": "Plugin Dependency ${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}",
+  "pluginCategory": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "actionsConfig": [
+    {
+      "displayName": "Sample Action",
+      "id": "sample-action",
+      "triggerMode": 3
+    },
+    {
+      "displayName": "Action 1",
+      "id": "action-1",
+      "triggerMode": 3
+    }
+  ],
+  "configTemplate": {
+    "authConfigTemplate": {
+      "serviceAccount": {}
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Plugin Dependency ${uniqueId}",
+  "documentation": {},
+  "hostingService": {},
+  "name": "projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}",
+  "ownershipType": 2,
+  "pluginCategory": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}/instances/apihubplugininstance-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fplugins%2Fapihubplugin-${uniqueId}%2Finstances%2Fapihubplugininstance-maximal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}/instances/apihubplugininstance-maximal-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}/instances?%24alt=json%3Benum-encoding%3Dint&pluginInstanceId=apihubplugininstance-maximal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2Fplugins%2Fapihubplugin-${uniqueId}
+
+{
+  "actions": [
+    {
+      "actionId": "action-1",
+      "curationConfig": {
+        "curationType": 1
+      }
+    }
+  ],
+  "displayName": "Maximal Plugin Instance ${uniqueId}",
+  "sourceProjectId": "${projectId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.apihub.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}/instances/apihubplugininstance-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.apihub.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}/instances/apihubplugininstance-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.apihub.v1main.PluginInstance",
+    "actions": [
+      {
+        "actionId": "action-1",
+        "curationConfig": {
+          "curationType": "DEFAULT_CURATION_FOR_API_METADATA"
+        },
+        "hubInstanceAction": {
+          "currentExecutionState": "NOT_RUNNING",
+          "lastExecution": {
+            "endTime": "0001-01-01T00:00:00Z",
+            "startTime": "0001-01-01T00:00:00Z"
+          }
+        },
+        "state": "ENABLED"
+      },
+      {
+        "actionId": "sample-action",
+        "curationConfig": {},
+        "hubInstanceAction": {
+          "lastExecution": {
+            "endTime": "0001-01-01T00:00:00Z",
+            "startTime": "0001-01-01T00:00:00Z"
+          }
+        },
+        "state": "DISABLED"
+      }
+    ],
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Maximal Plugin Instance ${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}/instances/apihubplugininstance-maximal-${uniqueId}",
+    "sourceProjectId": "${projectId}",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}/instances/apihubplugininstance-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fplugins%2Fapihubplugin-${uniqueId}%2Finstances%2Fapihubplugininstance-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "actions": [
+    {
+      "actionId": "action-1",
+      "curationConfig": {
+        "curationType": 1
+      },
+      "hubInstanceAction": {
+        "currentExecutionState": 2,
+        "lastExecution": {
+          "endTime": "0001-01-01T00:00:00Z",
+          "startTime": "0001-01-01T00:00:00Z"
+        }
+      },
+      "state": 1
+    },
+    {
+      "actionId": "sample-action",
+      "curationConfig": {},
+      "hubInstanceAction": {
+        "lastExecution": {
+          "endTime": "0001-01-01T00:00:00Z",
+          "startTime": "0001-01-01T00:00:00Z"
+        }
+      },
+      "state": 2
+    }
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Maximal Plugin Instance ${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}/instances/apihubplugininstance-maximal-${uniqueId}",
+  "sourceProjectId": "${projectId}",
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: UPDATE
+PATCH https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}/instances/apihubplugininstance-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: plugin_instance.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fplugins%2Fapihubplugin-${uniqueId}%2Finstances%2Fapihubplugininstance-maximal-${uniqueId}
+
+{
+  "actions": [
+    {
+      "actionId": "action-1",
+      "curationConfig": {
+        "curationType": 1
+      }
+    }
+  ],
+  "displayName": "Updated Maximal Plugin Instance ${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}/instances/apihubplugininstance-maximal-${uniqueId}",
+  "sourceProjectId": "${projectId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "actions": [
+    {
+      "actionId": "action-1",
+      "curationConfig": {
+        "curationType": 1
+      },
+      "hubInstanceAction": {
+        "currentExecutionState": 2,
+        "lastExecution": {
+          "endTime": "0001-01-01T00:00:00Z",
+          "startTime": "0001-01-01T00:00:00Z"
+        }
+      },
+      "state": 1
+    },
+    {
+      "actionId": "sample-action",
+      "curationConfig": {},
+      "hubInstanceAction": {
+        "lastExecution": {
+          "endTime": "0001-01-01T00:00:00Z",
+          "startTime": "0001-01-01T00:00:00Z"
+        }
+      },
+      "state": 2
+    }
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Updated Maximal Plugin Instance ${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}/instances/apihubplugininstance-maximal-${uniqueId}",
+  "sourceProjectId": "${projectId}",
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}/instances/apihubplugininstance-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fplugins%2Fapihubplugin-${uniqueId}%2Finstances%2Fapihubplugininstance-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "actions": [
+    {
+      "actionId": "action-1",
+      "curationConfig": {
+        "curationType": 1
+      },
+      "hubInstanceAction": {
+        "currentExecutionState": 2,
+        "lastExecution": {
+          "endTime": "0001-01-01T00:00:00Z",
+          "startTime": "0001-01-01T00:00:00Z"
+        }
+      },
+      "state": 1
+    },
+    {
+      "actionId": "sample-action",
+      "curationConfig": {},
+      "hubInstanceAction": {
+        "lastExecution": {
+          "endTime": "0001-01-01T00:00:00Z",
+          "startTime": "0001-01-01T00:00:00Z"
+        }
+      },
+      "state": 2
+    }
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Updated Maximal Plugin Instance ${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}/instances/apihubplugininstance-maximal-${uniqueId}",
+  "sourceProjectId": "${projectId}",
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}/instances/apihubplugininstance-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fplugins%2Fapihubplugin-${uniqueId}%2Finstances%2Fapihubplugininstance-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.apihub.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}/instances/apihubplugininstance-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.apihub.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}/instances/apihubplugininstance-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fplugins%2Fapihubplugin-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "actionsConfig": [
+    {
+      "displayName": "Sample Action",
+      "id": "sample-action",
+      "triggerMode": 3
+    },
+    {
+      "displayName": "Action 1",
+      "id": "action-1",
+      "triggerMode": 3
+    }
+  ],
+  "configTemplate": {
+    "authConfigTemplate": {
+      "serviceAccount": {}
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Plugin Dependency ${uniqueId}",
+  "documentation": {},
+  "hostingService": {},
+  "name": "projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}",
+  "ownershipType": 2,
+  "pluginCategory": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fplugins%2Fapihubplugin-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.apihub.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.apihub.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

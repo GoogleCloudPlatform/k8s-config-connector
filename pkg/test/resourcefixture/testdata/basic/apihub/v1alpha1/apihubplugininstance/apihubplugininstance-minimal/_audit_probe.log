@@ -1,0 +1,40 @@
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}/instances/apihubplugininstance-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "actions": [
+    {
+      "actionId": "action-1",
+      "curationConfig": {},
+      "hubInstanceAction": {
+        "lastExecution": {
+          "endTime": "0001-01-01T00:00:00Z",
+          "startTime": "0001-01-01T00:00:00Z"
+        }
+      },
+      "state": 2
+    },
+    {
+      "actionId": "sample-action",
+      "curationConfig": {
+        "curationType": 1
+      },
+      "hubInstanceAction": {
+        "currentExecutionState": 2,
+        "lastExecution": {
+          "endTime": "0001-01-01T00:00:00Z",
+          "startTime": "0001-01-01T00:00:00Z"
+        }
+      },
+      "state": 1
+    }
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Updated Minimal Plugin Instance ${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}/instances/apihubplugininstance-minimal-${uniqueId}",
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

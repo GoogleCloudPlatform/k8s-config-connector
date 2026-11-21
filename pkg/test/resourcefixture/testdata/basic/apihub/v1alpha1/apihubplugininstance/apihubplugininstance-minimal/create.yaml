@@ -1,0 +1,12 @@
+apiVersion: apihub.cnrm.cloud.google.com/v1alpha1
+kind: APIHubPluginInstance
+metadata:
+  name: apihubplugininstance-minimal-${uniqueId}
+spec:
+  parentRef:
+    name: apihubplugin-${uniqueId}
+  displayName: "Minimal Plugin Instance ${uniqueId}"
+  actions:
+    - actionID: "sample-action"
+      curationConfig:
+        curationType: "DEFAULT_CURATION_FOR_API_METADATA"
