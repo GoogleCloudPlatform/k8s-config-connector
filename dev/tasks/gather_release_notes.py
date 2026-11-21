@@ -23,11 +23,18 @@ and its extracted release note (or NONE).
 Kinds listed in BLOCKED_KINDS in dev/tasks/build-release-bundle (as of the ending
 tag) are excluded from the release bundle and must not be release noted. The report
 flags PRs that mention them, and --check-notes verifies that a drafted release notes
-file does not mention any of them.
+file:
+  1. Does not mention any kind in BLOCKED_KINDS at the ending tag.
+  2. Does not link to non-existent /config-connector/docs/reference/resource-docs/...
+     pages (such as v1alpha1-only resources that lack generated reference docs).
+  3. Does not contain broken external HTTP(S) links (HTTP 4xx/5xx or soft-404 pages),
+     unless --offline is set.
 """
 
 import argparse
+import concurrent.futures
 import csv
+import html
 import json
 import os
 import re
@@ -35,6 +42,10 @@ import shutil
 import signal
 import subprocess
 import sys
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
 
 # Safely handle pipe termination (e.g. piping into head or less)
 if hasattr(signal, "SIGPIPE"):
@@ -176,31 +187,327 @@ def make_blocked_kinds_matcher(blocked_kinds: list[str]):
     return find_blocked_kinds
 
 
-def check_notes_file(path: str, find_blocked_kinds, num_blocked_kinds: int, ref: str) -> int:
-    """Reports each line of a drafted release notes file that mentions a blocked kind.
+# Generated Config Connector resource reference docs directory. Only Beta (v1beta1)
+# and GA (v1) resources have generated pages here; v1alpha1-only resources do not.
+RESOURCE_DOCS_DIR = (
+    "scripts/generate-google3-docs/resource-reference/generated/resource-docs"
+)
 
-    Returns the process exit code: 0 if no blocked kind is mentioned, 1 otherwise.
+RESOURCE_DOC_URL_RE = re.compile(
+    r"^https?://(?:docs\.)?cloud\.google\.com/config-connector/docs/reference/resource-docs"
+    r"(?:/([^\s#?]*))?(?:[?#].*)?$",
+    re.IGNORECASE,
+)
+
+_INLINE_BRACKETED_LINK_RE = re.compile(r"\]\(\s*<(https?://[^>\s]+)>[^)]*\)")
+_INLINE_LINK_RE = re.compile(
+    r"\]\(\s*(https?://(?:[^\s()]+|\([^\s()]*\))+)(?:\s+[\"'][^\"']*[\"'])?\s*\)"
+)
+_REF_LINK_DEF_RE = re.compile(r"^\s*\[[^\]]+\]:\s*<?(https?://[^\s>]+)>?")
+_INLINE_CODE_SPAN_RE = re.compile(r"`[^`]*`")
+_BARE_URL_RE = re.compile(r"https?://[^\s<>]+")
+
+_SCRIPT_STYLE_COMMENT_RE = re.compile(
+    r"<!--.*?-->|<script\b[^>]*>.*?</script>|<style\b[^>]*>.*?</style>",
+    re.IGNORECASE | re.DOTALL,
+)
+_TITLE_TAG_RE = re.compile(r"<title\b[^>]*>(.*?)</title>", re.IGNORECASE | re.DOTALL)
+_H1_TAG_RE = re.compile(r"<h1\b[^>]*>(.*?)</h1>", re.IGNORECASE | re.DOTALL)
+_HTML_TAG_RE = re.compile(r"<[^>]+>")
+
+_SOFT_404_PRIMARY_TITLES = frozenset({
+    "404",
+    "404 not found",
+    "404. page not found",
+    "404 page not found",
+    "page not found",
+    "not found",
+    "error 404 (not found)!!1",
+    "404. that's an error.",
+    "404. that\u2019s an error.",
+})
+_SOFT_404_H1_STRINGS = frozenset({
+    "sorry, we can't find that page",
+    "sorry, we can\u2019t find that page",
+    "page not found",
+    "404. page not found",
+    "404 page not found",
+})
+
+_URL_CHECK_USER_AGENT = "Mozilla/5.0 (compatible; kcc-release-notes-checker/1.0)"
+_TRANSIENT_HTTP_CODES = frozenset({429, 500, 502, 503, 504})
+
+
+def parse_resource_doc_slugs(ls_tree_output: str) -> set[str]:
+    """Parses `<service>/<resource>` slugs from `git ls-tree` output under RESOURCE_DOCS_DIR."""
+    prefix = f"{RESOURCE_DOCS_DIR}/"
+    slugs = set()
+    for raw_line in ls_tree_output.splitlines():
+        line = raw_line.strip()
+        if line.startswith(prefix) and line.endswith(".md"):
+            slug = line[len(prefix) : -len(".md")].strip("/")
+            if slug:
+                slugs.add(slug)
+    return slugs
+
+
+def load_resource_doc_slugs(ref: str) -> set[str]:
+    """Returns `<service>/<resource>` slugs generated under RESOURCE_DOCS_DIR at `ref`.
+
+    Raises subprocess.CalledProcessError if `ref` cannot be inspected.
+    """
+    output = subprocess.check_output(
+        ["git", "ls-tree", "-r", "--name-only", ref, RESOURCE_DOCS_DIR],
+        text=True,
+        stderr=subprocess.DEVNULL,
+    )
+    return parse_resource_doc_slugs(output)
+
+
+def _strip_trailing_url_punct(url: str) -> str:
+    """Strips trailing sentence punctuation and unmatched closing brackets/parens from a bare URL."""
+    while url and url[-1] in ".,;:!?'\"`>]}":
+        url = url[:-1]
+    while url.endswith(")") and url.count(")") > url.count("("):
+        url = url[:-1]
+    return url
+
+
+def extract_urls_from_line(line: str) -> list[str]:
+    """Extracts HTTP(S) URLs from a single Markdown line, ignoring inline code spans."""
+    ref_match = _REF_LINK_DEF_RE.match(line)
+    if ref_match:
+        return [ref_match.group(1)]
+
+    urls: list[str] = []
+
+    def _collect(match: re.Match) -> str:
+        urls.append(match.group(1))
+        return "]()"
+
+    remaining = _INLINE_BRACKETED_LINK_RE.sub(_collect, line)
+    remaining = _INLINE_LINK_RE.sub(_collect, remaining)
+    # Strip inline code spans so literal code examples (e.g. `http://localhost:8080`) are ignored.
+    remaining = _INLINE_CODE_SPAN_RE.sub(" ", remaining)
+
+    for match in _BARE_URL_RE.finditer(remaining):
+        cleaned = _strip_trailing_url_punct(match.group(0))
+        if cleaned and cleaned not in ("http://", "https://"):
+            urls.append(cleaned)
+
+    return urls
+
+
+def extract_urls_from_markdown(text: str) -> list[tuple[int, str]]:
+    """Returns `(lineno, url)` pairs from Markdown text, ignoring HTML comments and fenced code blocks."""
+    # Preserve line numbers when removing multi-line HTML comments.
+    without_comments = re.sub(
+        r"<!--.*?-->",
+        lambda m: "\n" * m.group(0).count("\n"),
+        text,
+        flags=re.DOTALL,
+    )
+    results: list[tuple[int, str]] = []
+    in_fence = False
+    fence_marker = ""
+
+    for lineno, line in enumerate(without_comments.splitlines(), start=1):
+        stripped = line.lstrip()
+        fence_match = re.match(r"^(`{3,}|~{3,})", stripped)
+        if fence_match:
+            marker = fence_match.group(1)
+            if not in_fence:
+                in_fence = True
+                fence_marker = marker[0] * len(marker)
+            elif stripped.startswith(fence_marker):
+                in_fence = False
+                fence_marker = ""
+            continue
+        if in_fence:
+            continue
+
+        for url in extract_urls_from_line(line):
+            results.append((lineno, url))
+
+    return results
+
+
+def check_resource_doc_url(url: str, valid_slugs: set[str]) -> tuple[bool, str | None]:
+    """Checks whether `url` is a KCC `resource-docs` URL and validates its slug.
+
+    Returns `(is_resource_doc_url, error_message_or_none)`.
+    """
+    match = RESOURCE_DOC_URL_RE.match(url)
+    if not match:
+        return False, None
+
+    slug = (match.group(1) or "").strip("/")
+    if slug in valid_slugs:
+        return True, None
+
+    target_desc = f"{RESOURCE_DOCS_DIR}/{slug}.md" if slug else RESOURCE_DOCS_DIR
+    return (
+        True,
+        f"no generated Config Connector reference doc '{target_desc}' "
+        "(v1alpha1-only resources do not have resource-docs pages; remove the link "
+        "and render the Kind as a plain code span)",
+    )
+
+
+def detect_soft_404(html_body: str) -> str | None:
+    """Detects HTTP 200 soft-404 pages (e.g. cloud.google.com '404. Page Not Found')."""
+    if not html_body:
+        return None
+
+    cleaned = _SCRIPT_STYLE_COMMENT_RE.sub(" ", html_body)
+
+    for raw_title in _TITLE_TAG_RE.findall(cleaned):
+        norm_title = " ".join(html.unescape(_HTML_TAG_RE.sub(" ", raw_title)).split())
+        if not norm_title:
+            continue
+        primary = re.split(r"\s+[|·—–-]\s+", norm_title, maxsplit=1)[0].strip().lower()
+        if primary in _SOFT_404_PRIMARY_TITLES:
+            return f"HTTP 200 soft-404 (title: '{norm_title}')"
+
+    for raw_h1 in _H1_TAG_RE.findall(cleaned):
+        norm_h1 = " ".join(html.unescape(_HTML_TAG_RE.sub(" ", raw_h1)).split())
+        if norm_h1.lower() in _SOFT_404_H1_STRINGS:
+            return f"HTTP 200 soft-404 (h1: '{norm_h1}')"
+
+    return None
+
+
+def check_remote_url(url: str, timeout: float = 15.0, urlopen=urllib.request.urlopen) -> str | None:
+    """Fetches `url` and returns an error description if it returns 4xx/5xx or a soft-404."""
+    parsed = urllib.parse.urlsplit(url)
+    request_url = urllib.parse.urlunsplit(
+        (parsed.scheme, parsed.netloc, parsed.path, parsed.query, "")
+    )
+    req = urllib.request.Request(
+        request_url,
+        headers={
+            "User-Agent": _URL_CHECK_USER_AGENT,
+            "Accept": "text/html,application/xhtml+xml,*/*;q=0.8",
+        },
+    )
+
+    attempts = 2
+    for attempt in range(attempts):
+        try:
+            with urlopen(req, timeout=timeout) as resp:
+                status = getattr(resp, "status", None) or resp.getcode()
+                if status and status >= 400:
+                    return f"HTTP {status}"
+                body_bytes = resp.read(131072)
+                body_text = body_bytes.decode("utf-8", errors="ignore")
+                return detect_soft_404(body_text)
+        except urllib.error.HTTPError as e:
+            if e.code in _TRANSIENT_HTTP_CODES and attempt + 1 < attempts:
+                time.sleep(0.5)
+                continue
+            return f"HTTP {e.code} ({e.reason})"
+        except (urllib.error.URLError, TimeoutError, OSError) as e:
+            if attempt + 1 < attempts:
+                time.sleep(0.5)
+                continue
+            reason = getattr(e, "reason", e)
+            return f"request failed ({reason})"
+
+    return None
+
+
+def check_notes_file(
+    path: str,
+    find_blocked_kinds,
+    num_blocked_kinds: int,
+    ref: str,
+    valid_resource_doc_slugs: set[str] | None = None,
+    check_remote_urls: bool = False,
+    url_checker=check_remote_url,
+) -> int:
+    """Validates a drafted release notes file for blocked kinds and broken links.
+
+    Returns the process exit code: 0 if all checks pass, 1 otherwise.
     """
     with open(path, encoding="utf-8") as f:
-        lines = f.read().splitlines()
+        content = f.read()
+    lines = content.splitlines()
 
-    violations = []
+    failed = False
+
+    blocked_violations = []
     for lineno, line in enumerate(lines, start=1):
         kinds = find_blocked_kinds(line)
         if kinds:
-            violations.append(f"  {path}:{lineno}: {', '.join(kinds)}: {line.strip()}")
+            blocked_violations.append(f"  {path}:{lineno}: {', '.join(kinds)}: {line.strip()}")
 
-    if not violations:
-        print(f"OK: {path} mentions none of the {num_blocked_kinds} kinds blocked at '{ref}'.")
-        return 0
+    if blocked_violations:
+        print(
+            f"ERROR: {path} mentions kinds listed in BLOCKED_KINDS in {RELEASE_BUNDLE_SCRIPT} at '{ref}'.\n"
+            "Their CRDs are excluded from the release bundle; remove these entries from the release notes:",
+            file=sys.stderr,
+        )
+        print("\n".join(blocked_violations), file=sys.stderr)
+        failed = True
 
-    print(
-        f"ERROR: {path} mentions kinds listed in BLOCKED_KINDS in {RELEASE_BUNDLE_SCRIPT} at '{ref}'.\n"
-        "Their CRDs are excluded from the release bundle; remove these entries from the release notes:",
-        file=sys.stderr,
-    )
-    print("\n".join(violations), file=sys.stderr)
-    return 1
+    extracted_urls = extract_urls_from_markdown(content)
+    resource_doc_violations = []
+    external_url_occurrences: list[tuple[int, str]] = []
+
+    for lineno, url in extracted_urls:
+        if valid_resource_doc_slugs is not None:
+            is_res_doc, err = check_resource_doc_url(url, valid_resource_doc_slugs)
+            if is_res_doc:
+                if err:
+                    resource_doc_violations.append(f"  {path}:{lineno}: {url} — {err}")
+                continue
+        external_url_occurrences.append((lineno, url))
+
+    if resource_doc_violations:
+        print(
+            f"ERROR: {path} contains invalid Config Connector resource-docs links at '{ref}':",
+            file=sys.stderr,
+        )
+        print("\n".join(resource_doc_violations), file=sys.stderr)
+        failed = True
+
+    checked_remote_count = 0
+    if check_remote_urls and external_url_occurrences:
+        unique_external_urls = sorted({url for _, url in external_url_occurrences})
+        checked_remote_count = len(unique_external_urls)
+        url_errors: dict[str, str | None] = {}
+        max_workers = min(8, len(unique_external_urls))
+        with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+            future_to_url = {
+                executor.submit(url_checker, url): url for url in unique_external_urls
+            }
+            for future in concurrent.futures.as_completed(future_to_url):
+                url = future_to_url[future]
+                url_errors[url] = future.result()
+
+        remote_violations = [
+            f"  {path}:{lineno}: {url} — {url_errors[url]}"
+            for lineno, url in external_url_occurrences
+            if url_errors.get(url)
+        ]
+        if remote_violations:
+            print(
+                f"ERROR: {path} contains broken or unreachable external URLs:",
+                file=sys.stderr,
+            )
+            print("\n".join(remote_violations), file=sys.stderr)
+            failed = True
+
+    if failed:
+        return 1
+
+    summary_parts = [f"{num_blocked_kinds} blocked kinds checked at '{ref}'"]
+    if valid_resource_doc_slugs is not None:
+        summary_parts.append(f"{len(valid_resource_doc_slugs)} resource-docs slugs verified")
+    if check_remote_urls:
+        summary_parts.append(f"{checked_remote_count} external URL(s) verified")
+    print(f"OK: {path} passed release notes checks ({', '.join(summary_parts)}).")
+    return 0
 
 
 def fetch_commits(from_ref: str, to_ref: str) -> list[dict]:
@@ -404,7 +711,7 @@ def main():
         "--offline",
         "--git-only",
         action="store_true",
-        help="Only use git logs without making GitHub API requests",
+        help="Only use local git data without making GitHub API or external HTTP requests",
     )
     parser.add_argument(
         "--repo",
@@ -415,8 +722,10 @@ def main():
         "--check-notes",
         metavar="FILE",
         help=(
-            "Instead of gathering, check that a drafted release notes file does not mention any kind "
-            f"listed in BLOCKED_KINDS in {RELEASE_BUNDLE_SCRIPT} at to_tag (exits 1 if it does)"
+            "Instead of gathering, validate a drafted release notes file against BLOCKED_KINDS "
+            f"in {RELEASE_BUNDLE_SCRIPT} at to_tag, generated Config Connector resource-docs "
+            f"under {RESOURCE_DOCS_DIR} at to_tag, and external URL reachability/404s "
+            "(skip remote URL checks with --offline; exits 1 on any violation)"
         ),
     )
 
@@ -437,7 +746,27 @@ def main():
     find_blocked_kinds = make_blocked_kinds_matcher(blocked_kinds)
 
     if args.check_notes:
-        sys.exit(check_notes_file(args.check_notes, find_blocked_kinds, len(blocked_kinds), to_ref))
+        try:
+            resource_doc_slugs = load_resource_doc_slugs(to_ref)
+        except subprocess.CalledProcessError:
+            sys.exit(
+                f"Error: could not list {RESOURCE_DOCS_DIR} at '{to_ref}'; "
+                "cannot check resource-docs links."
+            )
+        if not resource_doc_slugs:
+            sys.exit(
+                f"Error: found no generated resource-docs under {RESOURCE_DOCS_DIR} at '{to_ref}'."
+            )
+        sys.exit(
+            check_notes_file(
+                args.check_notes,
+                find_blocked_kinds,
+                len(blocked_kinds),
+                to_ref,
+                valid_resource_doc_slugs=resource_doc_slugs,
+                check_remote_urls=not args.offline,
+            )
+        )
 
     from_sha = get_commit_sha(from_ref)
     to_sha = get_commit_sha(to_ref)

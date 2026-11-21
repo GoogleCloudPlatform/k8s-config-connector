@@ -92,6 +92,8 @@ When compiling and writing the release notes, you MUST strictly adhere to the fo
 9.  **No Reverted Changes**: Do NOT cover reverted changes in the release notes.
 10. **Do NOT Commit Gathered Data**: The gathered release notes data and any temporary files must NOT be committed to git. Only commit `docs/releasenotes/release-{{MAJOR_MINOR}}.md`.
 11. **No Blocked Kinds**: Do NOT cover any resource whose Kind is listed in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` at the release tag (`v{{VERSION}}`). Those CRDs are excluded from the release bundle, so users cannot install them. The gathered data lists the PRs that mention them under "⛔ PRs Mentioning Blocked Kinds".
+12. **No `resource-docs` Links for `v1alpha1`-Only Resources**: Only Beta (`v1beta1`) and GA (`v1`) resources have `/config-connector/docs/reference/resource-docs/<service>/<kind>` pages (matching `scripts/generate-google3-docs/resource-reference/generated/resource-docs/` at `v{{VERSION}}`). `v1alpha1`-only resources do NOT have `resource-docs` pages — render `v1alpha1` resource kinds as plain code spans (e.g., `` `DiscoveryEngineDataStore` ``) without `/config-connector/docs/reference/resource-docs/...` links in all sections (`New Fields`, `Reconciliation Improvements`, `Bug Fixes`, etc.).
+13. **Valid External Links & Exact CRD Field Casing**: Every external product or API documentation URL MUST return HTTP 200 and MUST NOT return HTTP 404 or a soft-404 (`Page Not Found`). When listing new or updated fields, verify exact camelCase field names against the CRD schema under `config/crds/resources/` (e.g., `serverCAMode` and `serverCAPoolRef`, not `serverCaMode` or `serverCaPoolRef`).
 
 # Task
 1.  **Identify Version Range**:
@@ -107,9 +109,9 @@ When compiling and writing the release notes, you MUST strictly adhere to the fo
       ./dev/tasks/gather-release-notes {{PREVIOUS_TAG}} {{CURRENT_TAG}} -o /tmp/gathered-release-notes-{{VERSION}}.md
       ```
     - **Draft Release Notes**: Use the gathered data in `/tmp/gathered-release-notes-{{VERSION}}.md` and `docs/releasenotes/template.md` as a base to draft `docs/releasenotes/release-{{MAJOR_MINOR}}.md`.
-      - Filter and categorize changes following the Drafting Guidelines (rules 1–11).
+      - Filter and categorize changes following the Drafting Guidelines (rules 1–13).
       - Extract contributors from the gathered PRs for the shout-outs section.
-    - **Verify No Blocked Kinds**: Check the draft against `BLOCKED_KINDS` (rule 11). If the command reports any lines, remove those entries and re-run it until it passes:
+    - **Verify Blocked Kinds & Links**: Validate the draft against `BLOCKED_KINDS`, generated Config Connector `resource-docs` pages, and external URL reachability/soft-404s (rules 11–13). If the command reports any violations, fix or remove the offending entries/links and re-run it until it passes:
       ```bash
       ./dev/tasks/gather-release-notes {{PREVIOUS_TAG}} {{CURRENT_TAG}} --check-notes docs/releasenotes/release-{{MAJOR_MINOR}}.md
       ```
