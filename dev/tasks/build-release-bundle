@@ -213,7 +213,6 @@ BLOCKED_KINDS=(
     "GDCHardwareManagementHardware"
     "GeminiDataAnalyticsConversation"
     "GKEBackupBackupChannel"
-    "GKEHubFleet"
     "GKEMulticloudAttachedCluster"
     "GKEMultiCloudAWSNodePool"
     "GKEMultiCloudAzureClient"

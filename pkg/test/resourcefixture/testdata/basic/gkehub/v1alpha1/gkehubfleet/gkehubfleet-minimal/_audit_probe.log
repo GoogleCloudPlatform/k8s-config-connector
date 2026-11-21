@@ -1,0 +1,16 @@
+GET https://gkehub.googleapis.com/v1/projects/${projectId}/locations/global/fleets/default?alt=json&prettyPrint=false
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Fleet Updated",
+  "name": "projects/${projectId}/locations/global/fleets/default",
+  "state": {
+    "code": "READY"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
