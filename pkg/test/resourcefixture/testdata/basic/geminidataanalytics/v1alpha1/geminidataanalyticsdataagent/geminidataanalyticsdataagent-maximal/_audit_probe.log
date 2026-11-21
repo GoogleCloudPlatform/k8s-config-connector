@@ -1,0 +1,17 @@
+GET https://geminidataanalytics.googleapis.com/v1/projects/${projectId}/locations/global/dataAgents/geminidataanalyticsdataagent-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated maximal Gemini Data Analytics Data Agent for testing",
+  "displayName": "geminidataanalyticsdataagent-max-updated-${uniqueId}",
+  "labels": {
+    "env": "staging",
+    "owner": "datateam"
+  },
+  "name": "projects/${projectId}/locations/global/dataAgents/geminidataanalyticsdataagent-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

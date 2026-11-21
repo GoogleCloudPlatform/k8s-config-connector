@@ -1,0 +1,6 @@
+- caisURL: //geminidataanalytics.googleapis.com/projects/${projectId}/locations/global/dataAgents/geminidataanalyticsdataagent-min-${uniqueId}
+  group: geminidataanalytics.cnrm.cloud.google.com
+  kind: GeminiDataAnalyticsDataAgent
+  name: geminidataanalyticsdataagent-min-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
