@@ -31,6 +31,7 @@ type ResourceFormatOption string
 const (
 	IAMFormatParamName               = "iam-format"
 	FilterDeletedIAMMembersParamName = "filter-deleted-iam-members"
+	FilterSensitiveFieldsParamName   = "filter-sensitive-fields"
 	OAuth2TokenParamName             = "oauth2-token"
 	OutputParamName                  = "output"
 	ResourceFormatParamName          = "resource-format"
@@ -45,6 +46,7 @@ const (
 
 	IAMFormatDefault               = PolicyIAMFormatOption
 	FilterDeletedIAMMembersDefault = false
+	FilterSensitiveFieldsDefault   = false
 	OAuth2TokenDefault             = ""
 	OutputDefault                  = ""
 	ResourceFormatDefault          = KRMResourceFormatOption
@@ -56,6 +58,7 @@ const (
 var (
 	IAMFormatUsage               = fmt.Sprintf("specify the IAM resource format or disable IAM output, options are '%v', '%v', '%v', or '%v'", PartialPolicyFormatOption, PolicyIAMFormatOption, PolicyMemberIAMFormatOption, NoneIAMFormatOption)
 	FilterDeletedIAMMembersUsage = fmt.Sprintf("specify whether to filter out deleted IAM members, options are '%v' or '%v', (default: '%v')", true, false, FilterDeletedIAMMembersDefault)
+	FilterSensitiveFieldsUsage   = fmt.Sprintf("specify whether to omit sensitive spec field values from exported resources, options are '%v' or '%v', (default: '%v')", true, false, FilterSensitiveFieldsDefault)
 	ResourceFormatUsage          = fmt.Sprintf("specify the format of the outputted resources, options are '%v' or '%v' (default: '%v')", KRMResourceFormatOption, HCLResourceFormatOption, ResourceFormatDefault)
 )
 
@@ -69,6 +72,10 @@ func AddIAMFormatParam(cmd *cobra.Command, value *string) {
 
 func AddFilterDeletedIAMMembersParam(cmd *cobra.Command, value *bool) {
 	cmd.Flags().BoolVar(value, FilterDeletedIAMMembersParamName, FilterDeletedIAMMembersDefault, FilterDeletedIAMMembersUsage)
+}
+
+func AddFilterSensitiveFieldsParam(cmd *cobra.Command, value *bool) {
+	cmd.Flags().BoolVar(value, FilterSensitiveFieldsParamName, FilterSensitiveFieldsDefault, FilterSensitiveFieldsUsage)
 }
 
 func ValidateIAMFormat(value string) error {
