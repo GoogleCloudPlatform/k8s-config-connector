@@ -21,6 +21,5 @@ metadata:
   labels:
     label-one: "value-one"
 spec:
-  diskSizeGb: 500
   diskRef:
     name: computedisk-${uniqueId}

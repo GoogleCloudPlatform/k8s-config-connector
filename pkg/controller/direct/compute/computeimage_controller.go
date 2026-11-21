@@ -21,14 +21,19 @@
 package compute
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
-	"reflect"
+	"maps"
+	"slices"
+	"strings"
 
 	compute "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
+	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	"google.golang.org/protobuf/reflect/protoreflect"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -36,12 +41,14 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -87,21 +94,32 @@ func (m *computeImageModel) AdapterForObject(ctx context.Context, op *directbase
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
-	mapCtx := &direct.MapContext{}
-	desired := obj.DeepCopy()
-	resource := ComputeImageSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return nil, mapCtx.Err()
+	desired, err := desiredComputeImage(obj)
+	if err != nil {
+		return nil, err
 	}
-
-	resource.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
 
 	return &ComputeImageAdapter{
 		gcpClient: imagesClient,
 		id:        id.(*krm.ComputeImageIdentity),
-		desired:   resource,
+		desired:   desired,
 		reader:    reader,
 	}, nil
+}
+
+// desiredComputeImage builds the image that obj asks for. The references in obj must already be
+// resolved.
+func desiredComputeImage(obj *krm.ComputeImage) (*computepb.Image, error) {
+	mapCtx := &direct.MapContext{}
+	desired := ComputeImageSpec_v1beta1_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	// GCPLabels adds managed-by-cnrm and drops the Kubernetes labels whose keys contain a "/",
+	// which GCE does not allow.
+	desired.Labels = label.GCPLabels(obj)
+	return desired, nil
 }
 
 func (m *computeImageModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
@@ -196,61 +214,30 @@ func (a *ComputeImageAdapter) Update(ctx context.Context, updateOp *directbase.U
 	log.V(2).Info("updating ComputeImage", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	// Update labels if needed
-	desiredLabels := updateOp.GetUnstructured().GetLabels()
-	actualLabels := a.actual.Labels
-	labelsChanged := !reflect.DeepEqual(desiredLabels, actualLabels)
-
-	diffs, _, err := compareComputeImage(ctx, a.actual, a.desired)
+	plan, err := a.planUpdate(ctx)
 	if err != nil {
 		return err
 	}
 
-	var updated *computepb.Image
-	if !diffs.HasDiff() && !labelsChanged {
+	updated := a.actual
+	if plan.setLabels == nil {
 		log.V(2).Info("no field needs update", "name", a.id.String())
-		updated = a.actual
 	} else {
-		if diffs.HasDiff() {
-			diffs.Object = updateOp.GetUnstructured()
-			structuredreporting.ReportDiff(ctx, diffs)
+		plan.diffs.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, plan.diffs)
 
-			a.desired.Name = direct.LazyPtr(a.id.Image)
-
-			req := &computepb.PatchImageRequest{
-				Project:       a.id.Project,
-				Image:         a.id.Image,
-				ImageResource: a.desired,
-			}
-			op, err := a.gcpClient.Patch(ctx, req)
-			if err != nil {
-				return fmt.Errorf("updating compute ComputeImage %s: %w", a.id.String(), err)
-			}
-			log.V(2).Info("successfully updated compute ComputeImage", "name", a.id.String())
-
-			err = op.Wait(ctx)
-			if err != nil {
-				return fmt.Errorf("compute ComputeImage %s waiting for update: %w", a.id.String(), err)
-			}
+		log.Info("updating labels", "name", a.id)
+		req := &computepb.SetLabelsImageRequest{
+			Project:                        a.id.Project,
+			Resource:                       a.id.Image,
+			GlobalSetLabelsRequestResource: plan.setLabels,
 		}
-
-		if labelsChanged {
-			log.Info("updating labels", "name", a.id)
-			req := &computepb.SetLabelsImageRequest{
-				Project:  a.id.Project,
-				Resource: a.id.Image,
-				GlobalSetLabelsRequestResource: &computepb.GlobalSetLabelsRequest{
-					LabelFingerprint: a.actual.LabelFingerprint,
-					Labels:           desiredLabels,
-				},
-			}
-			op, err := a.gcpClient.SetLabels(ctx, req)
-			if err != nil {
-				return fmt.Errorf("setting labels: %w", err)
-			}
-			if err := op.Wait(ctx); err != nil {
-				return fmt.Errorf("waiting for labels update: %w", err)
-			}
+		op, err := a.gcpClient.SetLabels(ctx, req)
+		if err != nil {
+			return fmt.Errorf("setting labels: %w", err)
+		}
+		if err := op.Wait(ctx); err != nil {
+			return fmt.Errorf("waiting for labels update: %w", err)
 		}
 
 		// Get the updated resource
@@ -265,6 +252,245 @@ func (a *ComputeImageAdapter) Update(ctx context.Context, updateOp *directbase.U
 		return mapCtx.Err()
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)
+}
+
+// computeImageUpdate is what Update has to send to GCE to bring a.actual in line with a.desired.
+type computeImageUpdate struct {
+	// diffs lists the changed fields, for structured reporting.
+	diffs *structuredreporting.Diff
+
+	// setLabels is the images.setLabels body, or nil when the labels are already right.
+	setLabels *computepb.GlobalSetLabelsRequest
+}
+
+// planUpdate works out how to bring a.actual in line with a.desired.
+// Every ComputeImageSpec field is immutable: the CRD marks them all Immutable, and the Terraform
+// controller recreates the image when one changes. So a spec difference returns an
+// ImmutableFieldsMutationError instead of an API call. Only the labels can change, and only with
+// images.setLabels: images.patch rejects any body that contains labels, even unchanged ones
+// ("Updating 'labels' is not supported").
+func (a *ComputeImageAdapter) planUpdate(ctx context.Context) (*computeImageUpdate, error) {
+	desired, actual, err := a.normalizedSpecs()
+	if err != nil {
+		return nil, err
+	}
+
+	diffs, _, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), actual.ProtoReflect())
+	if err != nil {
+		return nil, err
+	}
+	if diffs.HasDiff() {
+		return nil, immutableFieldsError(diffs, desired, actual)
+	}
+
+	plan := &computeImageUpdate{diffs: diffs}
+	// a.desired.Labels comes from label.GCPLabels (see desiredComputeImage).
+	if !maps.Equal(a.desired.GetLabels(), a.actual.GetLabels()) {
+		diffs.AddField("labels", a.actual.GetLabels(), a.desired.GetLabels())
+		plan.setLabels = &computepb.GlobalSetLabelsRequest{
+			LabelFingerprint: a.actual.LabelFingerprint,
+			Labels:           a.desired.GetLabels(),
+		}
+	}
+	return plan, nil
+}
+
+// normalizedSpecs returns the spec fields of a.desired and a.actual, normalized so that they can be
+// compared field by field (see normalizeComputeImageForCompare).
+//
+// It does not use common.CompareBrownfieldSpec: that helper normalizes each side on its own, but
+// three ComputeImage rules need both sides at once. Inherited guestOsFeatures and licenses are a
+// superset of what was asked for; a sourceImage family is resolved to an image; and rawDisk can
+// only be skipped when both sides have one.
+func (a *ComputeImageAdapter) normalizedSpecs() (*computepb.Image, *computepb.Image, error) {
+	maskedActual, err := mappers.OnlySpecFields(a.actual, ComputeImageSpec_v1beta1_FromProto, ComputeImageSpec_v1beta1_ToProto)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	desired, actual := normalizeComputeImageForCompare(a.desired, maskedActual)
+	return desired, actual, nil
+}
+
+// normalizeComputeImageForCompare returns copies of desired and actual that can be compared field
+// by field. GCE returns several fields differently from how they were sent:
+//   - sourceDisk, sourceImage, sourceSnapshot and licenses come back as full URLs.
+//   - A sourceImage family comes back as the image the family pointed to when the image was created.
+//   - rawDisk.source is input-only and comes back empty.
+//   - imageEncryptionKey.kmsKeyName comes back with a /cryptoKeyVersions/N suffix.
+//   - guestOsFeatures and licenses also contain the values inherited from the source.
+//   - storageLocations come back in lower case.
+//
+// Fields that desired leaves unset are not compared, because GCE fills them in (for example
+// diskSizeGb and storageLocations). A change to the contents of rawDisk, or to the family that an
+// image was built from, cannot be detected here; the immutable-fields webhook blocks those edits.
+func normalizeComputeImageForCompare(desired, actual *computepb.Image) (*computepb.Image, *computepb.Image) {
+	d := proto.CloneOf(desired)
+	a := proto.CloneOf(actual)
+
+	// Labels are reconciled with images.setLabels, and the name is the identity.
+	d.Labels, a.Labels = nil, nil
+	d.Name, a.Name = nil, nil
+
+	d.SourceDisk, a.SourceDisk = trimComputeURL(d.SourceDisk), trimComputeURL(a.SourceDisk)
+	d.SourceSnapshot, a.SourceSnapshot = trimComputeURL(d.SourceSnapshot), trimComputeURL(a.SourceSnapshot)
+	if isComputeImageFamily(d.GetSourceImage()) && a.SourceImage != nil {
+		d.SourceImage, a.SourceImage = nil, nil
+	} else {
+		d.SourceImage, a.SourceImage = trimComputeURL(d.SourceImage), trimComputeURL(a.SourceImage)
+	}
+
+	if d.RawDisk != nil && a.RawDisk != nil {
+		d.RawDisk, a.RawDisk = nil, nil
+	}
+
+	if d.ImageEncryptionKey != nil && a.ImageEncryptionKey != nil {
+		d.ImageEncryptionKey.KmsKeyName = trimKMSKeyVersion(d.ImageEncryptionKey.KmsKeyName)
+		a.ImageEncryptionKey.KmsKeyName = trimKMSKeyVersion(a.ImageEncryptionKey.KmsKeyName)
+		if d.ImageEncryptionKey.KmsKeyServiceAccount == nil {
+			a.ImageEncryptionKey.KmsKeyServiceAccount = nil
+		}
+	}
+
+	d.StorageLocations, a.StorageLocations = lowerAndSort(d.StorageLocations), lowerAndSort(a.StorageLocations)
+
+	d.Licenses, a.Licenses = trimComputeURLs(d.Licenses), trimComputeURLs(a.Licenses)
+	if containsAll(a.Licenses, d.Licenses) {
+		a.Licenses = d.Licenses
+	}
+	if containsAllGuestOSFeatures(a.GuestOsFeatures, d.GuestOsFeatures) {
+		a.GuestOsFeatures = d.GuestOsFeatures
+	}
+
+	desiredMsg, actualMsg := d.ProtoReflect(), a.ProtoReflect()
+	fields := actualMsg.Descriptor().Fields()
+	for i := 0; i < fields.Len(); i++ {
+		if field := fields.Get(i); !desiredMsg.Has(field) {
+			actualMsg.Clear(field)
+		}
+	}
+
+	return d, a
+}
+
+// trimComputeURL turns a full Compute Engine URL into a projects/... path.
+func trimComputeURL(ref *string) *string {
+	if ref == nil {
+		return nil
+	}
+	trimmed := apirefs.TrimComputeURIPrefix(*ref)
+	return &trimmed
+}
+
+// trimComputeURLs turns full Compute Engine URLs into projects/... paths.
+func trimComputeURLs(refs []string) []string {
+	trimmed := make([]string, 0, len(refs))
+	for _, ref := range refs {
+		trimmed = append(trimmed, apirefs.TrimComputeURIPrefix(ref))
+	}
+	return trimmed
+}
+
+// isComputeImageFamily reports whether ref points to an image family rather than to an image.
+func isComputeImageFamily(ref string) bool {
+	id := &krm.ComputeImageIdentity{}
+	return id.FromExternal(ref) == nil && id.IsFamily()
+}
+
+// trimKMSKeyVersion drops the /cryptoKeyVersions/N suffix from a KMS key name.
+func trimKMSKeyVersion(name *string) *string {
+	if name == nil {
+		return nil
+	}
+	key, _, _ := strings.Cut(*name, "/cryptoKeyVersions/")
+	return &key
+}
+
+// lowerAndSort returns values in lower case and sorted.
+func lowerAndSort(values []string) []string {
+	out := make([]string, 0, len(values))
+	for _, value := range values {
+		out = append(out, strings.ToLower(value))
+	}
+	slices.Sort(out)
+	return out
+}
+
+// containsAll reports whether every value in want is also in got.
+func containsAll(got, want []string) bool {
+	for _, value := range want {
+		if !slices.Contains(got, value) {
+			return false
+		}
+	}
+	return true
+}
+
+// containsAllGuestOSFeatures reports whether every feature type in want is also in got.
+func containsAllGuestOSFeatures(got, want []*computepb.GuestOsFeature) bool {
+	types := make(map[string]bool, len(got))
+	for _, feature := range got {
+		types[feature.GetType()] = true
+	}
+	for _, feature := range want {
+		if !types[feature.GetType()] {
+			return false
+		}
+	}
+	return true
+}
+
+// immutableFieldsError reports each changed spec field by its ComputeImage path, with the live and
+// desired values after normalization, so that a user can see what differs.
+func immutableFieldsError(diffs *structuredreporting.Diff, desired, actual *computepb.Image) error {
+	fields := make([]string, 0, len(diffs.Fields))
+	for _, field := range diffs.Fields {
+		fd := field.ProtoFieldDescriptor
+		if fd == nil {
+			fields = append(fields, field.ID)
+			continue
+		}
+		fields = append(fields, fmt.Sprintf("Field Name: %s, Live: %s, Desired: %s",
+			computeImageSpecPath(fd), imageFieldValue(actual, fd), imageFieldValue(desired, fd)))
+	}
+	return k8s.NewImmutableFieldsMutationError(fields)
+}
+
+// computeImageSpecPath returns the ComputeImage field that sets the Image field fd. The three
+// source fields are references in the KRM spec; all other fields share their JSON name.
+func computeImageSpecPath(fd protoreflect.FieldDescriptor) string {
+	switch fd.Name() {
+	case "source_disk":
+		return "spec.diskRef"
+	case "source_image":
+		return "spec.sourceImageRef"
+	case "source_snapshot":
+		return "spec.sourceSnapshotRef"
+	}
+	return "spec." + fd.JSONName()
+}
+
+// imageFieldValue returns the value of the field fd of img as compact JSON, or <unset>.
+func imageFieldValue(img *computepb.Image, fd protoreflect.FieldDescriptor) string {
+	if !img.ProtoReflect().Has(fd) {
+		return "<unset>"
+	}
+	single := &computepb.Image{}
+	single.ProtoReflect().Set(fd, img.ProtoReflect().Get(fd))
+	// protojson output is deliberately unstable, so pull the value out and compact it.
+	b, err := protojson.Marshal(single)
+	if err != nil {
+		return fmt.Sprintf("%v", img.ProtoReflect().Get(fd).Interface())
+	}
+	var obj map[string]json.RawMessage
+	if err := json.Unmarshal(b, &obj); err != nil {
+		return string(b)
+	}
+	var out bytes.Buffer
+	if err := json.Compact(&out, obj[fd.JSONName()]); err != nil {
+		return string(obj[fd.JSONName()])
+	}
+	return out.String()
 }
 
 func (a *ComputeImageAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
@@ -330,20 +556,4 @@ func (a *ComputeImageAdapter) get(ctx context.Context) (*computepb.Image, error)
 		return nil, fmt.Errorf("getting ComputeImage %s: %w", a.id, err)
 	}
 	return resource, nil
-}
-
-func compareComputeImage(ctx context.Context, actual, desired *computepb.Image) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	maskedActual, err := mappers.OnlySpecFields(actual, ComputeImageSpec_v1beta1_FromProto, ComputeImageSpec_v1beta1_ToProto)
-	if err != nil {
-		return nil, nil, err
-	}
-	maskedActual.Name = desired.Name
-
-	clonedDesired := proto.CloneOf(desired)
-
-	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
-	if err != nil {
-		return nil, nil, err
-	}
-	return diffs, updateMask, nil
 }
