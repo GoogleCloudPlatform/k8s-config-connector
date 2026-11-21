@@ -160,6 +160,7 @@ resourceID: string
 retentionPolicy:
   isLocked: boolean
   retentionPeriod: integer
+rpo: string
 softDeletePolicy:
   retentionDurationSeconds: integer
 storageClass: string
@@ -846,6 +847,16 @@ website:
         <td>
             <p><code class="apitype">integer</code></p>
             <p>The period of time, in seconds, that objects in the bucket must be retained and cannot be deleted, overwritten, or archived. The value must be less than 3,155,760,000 seconds.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rpo</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Specifies the RPO setting of bucket. If set 'ASYNC_TURBO', The Turbo Replication will be enabled for the dual-region bucket. Value 'DEFAULT' will set RPO setting to default. See the docs for more details.</p>
         </td>
     </tr>
     <tr>

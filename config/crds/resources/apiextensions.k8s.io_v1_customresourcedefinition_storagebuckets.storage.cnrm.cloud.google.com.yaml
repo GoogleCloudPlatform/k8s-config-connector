@@ -372,6 +372,12 @@ spec:
                 required:
                 - retentionPeriod
                 type: object
+              rpo:
+                description: Specifies the RPO setting of bucket. If set 'ASYNC_TURBO',
+                  The Turbo Replication will be enabled for the dual-region bucket.
+                  Value 'DEFAULT' will set RPO setting to default. See the docs for
+                  more details.
+                type: string
               softDeletePolicy:
                 description: The bucket's soft delete policy, which defines the period
                   of time that soft-deleted objects will be retained, and cannot be
