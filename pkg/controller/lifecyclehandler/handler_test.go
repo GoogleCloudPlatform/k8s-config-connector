@@ -17,6 +17,7 @@ package lifecyclehandler
 import (
 	"context"
 	"errors"
+	"fmt"
 	"testing"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -26,8 +27,11 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/client-go/tools/record"
+	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
 func TestIsOrphaned(t *testing.T) {
@@ -256,5 +260,68 @@ func Test_reasonForUnresolvableDeps(t *testing.T) {
 				t.Errorf("reasonForUnresolvableDeps() got = %v, want %v", got, test.want)
 			}
 		})
+	}
+}
+
+func TestHandleUpdateFailed_ServiceEndpointUnavailable(t *testing.T) {
+	scheme := runtime.NewScheme()
+	_ = corev1.AddToScheme(scheme)
+
+	testGVK := schema.GroupVersionKind{
+		Group:   "test1.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "Test1Foo",
+	}
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(testGVK)
+	u.SetName("test-foo")
+	u.SetNamespace("test-ns")
+
+	fakeClient := fake.NewClientBuilder().
+		WithScheme(scheme).
+		WithStatusSubresource(u).
+		WithRuntimeObjects(u).
+		Build()
+
+	fakeRecorder := record.NewFakeRecorder(10)
+	h := NewLifecycleHandler(fakeClient, fakeRecorder)
+
+	res, err := k8s.NewResource(u)
+	if err != nil {
+		t.Fatalf("failed to create resource: %v", err)
+	}
+
+	dnsErr := fmt.Errorf("Update call failed: error fetching live state: error reading underlying resource: Get \"https://binaryauthorization.googleapis.com/v1/projects/partition:sample-project/policy?alt=json\": dial tcp: lookup binaryauthorization.custom.universe.goog: no such host")
+	ctx := context.TODO()
+
+	err = h.HandleUpdateFailed(ctx, res, dnsErr)
+	if err == nil {
+		t.Fatalf("expected error from HandleUpdateFailed, got nil")
+	}
+
+	cond, found := k8s.GetReadyCondition(res)
+	if !found {
+		t.Fatalf("expected Ready condition to be set")
+	}
+	if cond.Status != corev1.ConditionFalse {
+		t.Errorf("expected ConditionFalse, got %v", cond.Status)
+	}
+	if cond.Reason != k8s.ServiceEndpointUnavailable {
+		t.Errorf("expected reason %s, got %v", k8s.ServiceEndpointUnavailable, cond.Reason)
+	}
+	expectedMsg := fmt.Sprintf("Service subdomain binaryauthorization.custom.universe.goog does not exist in DNS: %v", dnsErr)
+	if cond.Message != expectedMsg {
+		t.Errorf("expected message %q, got %q", expectedMsg, cond.Message)
+	}
+
+	select {
+	case event := <-fakeRecorder.Events:
+		expectedEvent := fmt.Sprintf("%s %s %s", corev1.EventTypeWarning, k8s.ServiceEndpointUnavailable, expectedMsg)
+		if event != expectedEvent {
+			t.Errorf("expected event %q, got %q", expectedEvent, event)
+		}
+	default:
+		t.Errorf("expected event to be recorded, but got none")
 	}
 }
