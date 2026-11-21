@@ -120,10 +120,7 @@ var _ directbase.Adapter = &MemoryLayerAdapter{}
 // a disabled memory layer is reported as not found so that Create turns it on.
 //
 // The service reports a MemoryLayer with state DISABLED for a cluster that has
-// never turned one on, so state is what we key off. memory_config is not a
-// reliable signal: storage_size_gib is output only, so a freshly enabled memory
-// layer that has not been provisioned yet serializes the same way an empty
-// memory_config would.
+// never turned one on, so state is what we key off.
 //
 // "Enabled" is not the same as "serving": the state is ENABLING or RESIZING
 // while the memory layer is still coming up, so a Ready condition on this object

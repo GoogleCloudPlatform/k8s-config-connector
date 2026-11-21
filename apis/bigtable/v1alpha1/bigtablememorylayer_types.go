@@ -62,6 +62,8 @@ type BigtableMemoryLayerObservedState struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.MemoryLayer.state
 	State *string `json:"state,omitempty"`
 
+	// DEPRECATED: MemoryConfig no longer surfaces storageSizeGib in the Bigtable API,
+	// and memory layer presence is modelled by the existence of the BigtableMemoryLayer object.
 	// Output only. The configuration of this memory layer.
 	// +optional
 	// +kcc:proto:field=google.bigtable.admin.v2.MemoryLayer.memory_config
@@ -71,6 +73,7 @@ type BigtableMemoryLayerObservedState struct {
 // MemoryLayer_MemoryConfigObservedState is the observed configuration of a memory layer.
 // +kcc:observedstate:proto=google.bigtable.admin.v2.MemoryLayer.MemoryConfig
 type MemoryLayer_MemoryConfigObservedState struct {
+	// DEPRECATED: storage_size_gib is removed from the Bigtable MemoryLayer API and is no longer populated.
 	// Output only. Reporting the current size of the memory layer in GiB.
 	// +optional
 	// +kcc:proto:field=google.bigtable.admin.v2.MemoryLayer.MemoryConfig.storage_size_gib
