@@ -28,6 +28,7 @@ import (
 	geminidataanalyticspb "cloud.google.com/go/geminidataanalytics/apiv1/geminidataanalyticspb"
 	pb "cloud.google.com/go/geminidataanalytics/apiv1beta/geminidataanalyticspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/geminidataanalytics/v1alpha1"
+	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -703,26 +704,11 @@ func GeminiDataAnalyticsDataAgentSpec_FromProto(mapCtx *direct.MapContext, in *g
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Labels = in.Labels
-	out.KMSKey = in.KmsKey
+	if in.GetKmsKey() != "" {
+		out.KMSKeyRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
+	}
 	out.BigqueryAgentAnalyticsEnabled = in.BigqueryAgentAnalyticsEnabled
 	out.BigqueryAgentAnalyticsTable = BigQueryTableReference_FromProto(mapCtx, in.GetBigqueryAgentAnalyticsTable())
-	return out
-}
-func GeminiDataAnalyticsDataAgentSpec_ToProto(mapCtx *direct.MapContext, in *krm.GeminiDataAnalyticsDataAgentSpec) *geminidataanalyticspb.DataAgent {
-	if in == nil {
-		return nil
-	}
-	out := &geminidataanalyticspb.DataAgent{}
-	if oneof := DataAnalyticsAgent_ToProto(mapCtx, in.DataAnalyticsAgent); oneof != nil {
-		out.Type = &geminidataanalyticspb.DataAgent_DataAnalyticsAgent{DataAnalyticsAgent: oneof}
-	}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
-	out.KmsKey = in.KMSKey
-	out.BigqueryAgentAnalyticsEnabled = in.BigqueryAgentAnalyticsEnabled
-	out.BigqueryAgentAnalyticsTable = BigQueryTableReference_ToProto(mapCtx, in.BigqueryAgentAnalyticsTable)
 	return out
 }
 func GlossaryTerm_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.GlossaryTerm) *krm.GlossaryTerm {

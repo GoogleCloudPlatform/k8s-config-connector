@@ -34,4 +34,19 @@
   5. Updated `generate-mapper` invocation in `apis/geminidataanalytics/generate.sh` to include both `--service google.cloud.geminidataanalytics.v1,google.cloud.geminidataanalytics.v1beta` and `--prepopulate-resource`. Upgraded `cloud.google.com/go/geminidataanalytics` to `v1.6.0` in root and mockgcp `go.mod` so mappers for `GeminiDataAnalyticsDataAgent` compile against `apiv1/geminidataanalyticspb` while preserving repository dependencies (such as `google.golang.org/api` and `protobuf`). Marked newly added `.title` field as untriaged in `geminidataanalyticsconversation_fuzzer.go`.
 - **Impact**: Clean, mechanical Greenfield Step 1a scaffolding for `GeminiDataAnalyticsDataAgent` with all apichecks, mappers, and preview envtest tests passing.
 
+### 2026-11-18 Triage Judgement Queue and Finalize GeminiDataAnalyticsDataAgent Types
+- **Context**: Triaging `judgement_queue.yaml` entries and finalizing direct KRM types, identity, and references for `GeminiDataAnalyticsDataAgent` (Greenfield Step 1b).
+- **Problem**:
+  1. `judgement_queue.yaml` contained open findings: `location-or-parent-ref` for `.spec.location`, `authoritative-proto-reference` for `.spec.kmsKey`, `verify-service-docs-link`, and multiple `possible-reference-by-name` / `possible-reference-by-description-loose` entries for embedded BigQuery/Looker identifiers within context and datasource configuration.
+  2. The proto message contains `optional string kms_key = 14`. When mapped to `KMSKeyRef *kmsv1beta1.KMSCryptoKeyRef`, `controllerbuilder generate-mapper` generated `out.KmsKey = in.KMSKeyRef.External`, which failed compilation because `KmsKey` in protobuf Go struct is `*string`.
+- **Solution**:
+  1. Replaced separate `ProjectRef` and `Location` in `GeminiDataAnalyticsDataAgentSpec` with inlined `*parent.ProjectAndLocationRef`.
+  2. Converted `KMSKey *string` to `KMSKeyRef *kmsv1beta1.KMSCryptoKeyRef`.
+  3. Kept `Labels` in `GeminiDataAnalyticsDataAgentSpec` per maintainer review feedback.
+  4. Added service documentation URL `https://cloud.google.com/conversational-analytics/docs/overview`.
+  5. Resolved all 37 entries in `apis/geminidataanalytics/judgement_queue.yaml`.
+  6. Implemented handwritten `GeminiDataAnalyticsDataAgentSpec_ToProto` in `pkg/controller/direct/geminidataanalytics/geminidataanalyticsdataagent_mappings.go` to safely assign `out.KmsKey = direct.LazyPtr(in.KMSKeyRef.External)` without out-of-scope `controllerbuilder` modifications.
+  7. Re-recorded `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` for `GeminiDataAnalyticsDataAgent`.
+- **Impact**: Greenfield Step 1b is complete with all tests passing, CRD schema cleanly updated, and all judgement queue entries resolved.
+
 

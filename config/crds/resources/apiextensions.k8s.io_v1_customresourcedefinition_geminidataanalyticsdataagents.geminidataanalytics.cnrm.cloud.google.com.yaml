@@ -1703,12 +1703,37 @@ spec:
 
                    * Must be between 1-256 characters.
                 type: string
-              kmsKey:
+              kmsKeyRef:
                 description: Optional. Customer managed encryption key (CMEK) to use
                   for encrypting the DataAgent resources. Cloud KMS CryptoKeys must
                   reside in the same location as the DataAgent. The expected format
                   is `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed KMSCryptoKey
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".
+                    type: string
+                  name:
+                    description: The name of a KMSCryptoKey resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a KMSCryptoKey resource.
+                    type: string
+                type: object
               labels:
                 additionalProperties:
                   type: string
@@ -1719,10 +1744,13 @@ spec:
                   for more details on label usage.
                 type: object
               location:
-                description: The location of this resource.
+                description: The location that this resource belongs to.
                 type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
