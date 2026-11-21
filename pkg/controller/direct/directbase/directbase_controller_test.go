@@ -1414,3 +1414,83 @@ func TestSetMBUR(t *testing.T) {
 		})
 	}
 }
+
+func TestReconcile_AbandonBeforeCloudRead(t *testing.T) {
+	ctx := context.TODO()
+	scheme := runtime.NewScheme()
+	_ = corev1.AddToScheme(scheme)
+	_ = operatorv1beta1.AddToScheme(scheme)
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(testGVK)
+	u.SetName("test-resource")
+	u.SetNamespace("test-ns")
+
+	// Deleting object with abandon must release the controller finalizer
+	// even when Find would return the reported 403.
+	now := metav1.Now()
+	u.SetDeletionTimestamp(&now)
+	u.SetFinalizers([]string{k8s.ControllerFinalizerName})
+	u.SetAnnotations(map[string]string{
+		k8s.DeletionPolicyAnnotation: k8s.DeletionPolicyAbandon,
+	})
+
+	adapter := &mockAdapter{
+		findFound: false,
+		findErr:   &googleapi.Error{Code: 403, Message: "Error(2028)"},
+	}
+	model := &mockModel{
+		adapter: adapter,
+	}
+
+	k8sClient := fake.NewClientBuilder().
+		WithScheme(scheme).
+		WithStatusSubresource(u).
+		WithRuntimeObjects(u).
+		Build()
+
+	r := &DirectReconciler{
+		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
+			k8sClient,
+			record.NewFakeRecorder(100),
+		),
+		Client:          k8sClient,
+		scheme:          scheme,
+		gvk:             testGVK,
+		model:           model,
+		jitterGenerator: &mockJitterGenerator{},
+		rateLimiter:     ratelimiter.NewDynamicRateLimiter(),
+	}
+
+	req := reconcile.Request{
+		NamespacedName: types.NamespacedName{
+			Namespace: "test-ns",
+			Name:      "test-resource",
+		},
+	}
+
+	_, err := r.Reconcile(ctx, req)
+	if err != nil {
+		t.Fatalf("expected reconcile to succeed without error, but got: %v", err)
+	}
+
+	if adapter.deleteCalled {
+		t.Error("expected Adapter.Delete() NOT to be called when abandoning")
+	}
+
+	// Verify that the finalizer has been removed from the resource
+	obj := &unstructured.Unstructured{}
+	obj.SetGroupVersionKind(testGVK)
+	if err := k8sClient.Get(ctx, req.NamespacedName, obj); err != nil {
+		if !apierrors.IsNotFound(err) {
+			t.Fatalf("unexpected error retrieving object: %v", err)
+		}
+	} else {
+		finalizers := obj.GetFinalizers()
+		for _, f := range finalizers {
+			if f == k8s.ControllerFinalizerName {
+				t.Error("expected finalizer to be removed, but it is still present")
+			}
+		}
+	}
+}
