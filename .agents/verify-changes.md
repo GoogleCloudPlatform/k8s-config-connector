@@ -33,9 +33,9 @@ and you make no code changes: one script decides everything and opens at most on
    ```
 
    It fetches `master`, finds the previous "Verify changed Kinds" batch (label
-   `validate/batch`), runs `hack/manual-validate/changed_kinds.py` on the commits since that
+   `validate-kind/batch`), runs `hack/manual-validate/changed_kinds.py` on the commits since that
    batch's head, and, if any Kind is worth verifying and no issue with the same title exists, opens
-   the batch issue labelled `overseer/fanout` and `validate/batch`. The issue's body is the
+   the batch issue labelled `overseer/fanout` and `validate-kind/batch`. The issue's body is the
    complete fan-out spec; do not edit it.
 
 2. Report what it printed (its lines start with `open-batch:`): the window, the Kinds selected, and
@@ -51,5 +51,5 @@ commit, however long ago that was.
 
 # After the batch is opened (not your job)
 The fan-out starts the children at once, two or three at a time: one plain issue per Kind, labelled
-`validate`, whose agent writes or extends that Kind's `hack/manual-validate/<kind>/validate.sh`, runs
+`overseer/validate-kind`, which the validate-kind rule runs: its agent writes or extends that Kind's `hack/manual-validate/<kind>/validate.sh`, runs
 it against real GCP and reports in its PR. The batch closes once every child is closed.
