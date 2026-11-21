@@ -56,6 +56,19 @@ ${CONTROLLERBUILDER} generate-identity \
     --pattern BigLakeIcebergCatalog=projects/{project}/catalogs/{catalog} \
     --pattern BigLakeIcebergNamespace=projects/{project}/catalogs/{catalog}/namespaces/{namespace}
 
+${CONTROLLERBUILDER} generate-types \
+    --service google.cloud.biglake.hive.v1 \
+    --api-version "bigquerybiglake.cnrm.cloud.google.com/v1alpha1" \
+    --include-skipped-output \
+    --resource BigLakeHiveCatalog:HiveCatalog \
+    --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+    --service google.cloud.biglake.hive.v1 \
+    --api-version "bigquerybiglake.cnrm.cloud.google.com/v1alpha1" \
+    --resource BigLakeHiveCatalog:HiveCatalog \
+    --pattern BigLakeHiveCatalog=projects/{project}/catalogs/{catalog}
+
 # --- v1beta1 ---
 
 ${CONTROLLERBUILDER} generate-types \
@@ -65,7 +78,7 @@ ${CONTROLLERBUILDER} generate-types \
 
 ${CONTROLLERBUILDER} generate-mapper \
     --multiversion \
-    --service google.cloud.bigquery.biglake.v1,google.cloud.biglake.v1 \
+    --service google.cloud.bigquery.biglake.v1,google.cloud.biglake.v1,google.cloud.biglake.hive.v1 \
     --api-version "bigquerybiglake.cnrm.cloud.google.com/v1beta1" \
     --prepopulate-resource
 

@@ -114,6 +114,10 @@ cp ${REPO_ROOT}/mockgcp/apis/google/cloud/config/v1/config.proto google/cloud/co
 mkdir -p google/cloud/biglake/v1
 cp ${REPO_ROOT}/mockgcp/apis/google/cloud/biglake/v1/* google/cloud/biglake/v1/
 
+# Overwrite biglake hive protos with the updated version that has HiveCatalog
+mkdir -p google/cloud/biglake/hive/v1
+cp ${REPO_ROOT}/mockgcp/apis/google/cloud/biglake/hive/v1/* google/cloud/biglake/hive/v1/
+
 # Overwrite lustre protos with the updated version that has Mirror
 mkdir -p google/cloud/lustre/v1
 cp ${REPO_ROOT}/mockgcp/apis/google/cloud/lustre/v1/* google/cloud/lustre/v1/

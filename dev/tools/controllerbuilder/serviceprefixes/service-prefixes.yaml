@@ -162,6 +162,7 @@ services:
     protoPackages:
       - google.cloud.bigquery.biglake.v1
       - google.cloud.biglake.v1
+      - google.cloud.biglake.hive.v1
   - api: bigquery
     title: BigQuery API
     servicePrefix: BigQuery

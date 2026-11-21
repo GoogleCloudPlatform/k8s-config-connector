@@ -29,9 +29,10 @@ import (
 )
 
 type packageDeclarations struct {
-	types     map[string]bool
-	protoTags map[string]bool
-	funcs     map[string]bool
+	types             map[string]bool
+	protoTags         map[string]bool
+	observedProtoTags map[string]bool
+	funcs             map[string]bool
 }
 
 type tokSpan struct {
@@ -255,9 +256,10 @@ func indexBlocksByName(blocks []generatedBlock) map[string]generatedBlock {
 
 func scanHandwrittenDirDeclarations(srcDir, currentFileName string) packageDeclarations {
 	decls := packageDeclarations{
-		types:     make(map[string]bool),
-		protoTags: make(map[string]bool),
-		funcs:     make(map[string]bool),
+		types:             make(map[string]bool),
+		protoTags:         make(map[string]bool),
+		observedProtoTags: make(map[string]bool),
+		funcs:             make(map[string]bool),
 	}
 
 	files, err := os.ReadDir(srcDir)
@@ -301,7 +303,11 @@ func recordGeneratedFileDecls(content []byte, decls *packageDeclarations) {
 		case "type":
 			decls.types[blk.name] = true
 			if blk.protoFQN != "" {
-				decls.protoTags[blk.protoFQN] = true
+				if blk.isObservedState {
+					decls.observedProtoTags[blk.protoFQN] = true
+				} else {
+					decls.protoTags[blk.protoFQN] = true
+				}
 			}
 		case "func":
 			decls.funcs[blk.name] = true
@@ -311,9 +317,13 @@ func recordGeneratedFileDecls(content []byte, decls *packageDeclarations) {
 
 func recordHandwrittenFileDecls(content string, decls *packageDeclarations) {
 	protoLines := make(map[string]string)
-	scanFileDeclarations(content, decls.types, protoLines)
+	observedProtoLines := make(map[string]string)
+	scanFileDeclarations(content, decls.types, protoLines, observedProtoLines)
 	for protoMsg := range protoLines {
 		decls.protoTags[protoMsg] = true
+	}
+	for protoMsg := range observedProtoLines {
+		decls.observedProtoTags[protoMsg] = true
 	}
 
 	for _, line := range strings.Split(content, "\n") {
@@ -426,10 +436,20 @@ func (f *generatedFile) shouldKeepExistingBlock(eb generatedBlock, pkgDecls pack
 			return false
 		}
 
-		if eb.protoFQN != "" && pkgDecls.protoTags[eb.protoFQN] {
-			baseName := strings.TrimSuffix(eb.name, "ObservedState")
-			if isBaseProtoStructName(eb.name, eb.protoFQN) || isBaseProtoStructName(baseName, eb.protoFQN) {
-				return false
+		if eb.protoFQN != "" {
+			if eb.isObservedState {
+				if pkgDecls.observedProtoTags[eb.protoFQN] {
+					baseName := strings.TrimSuffix(eb.name, "ObservedState")
+					if isBaseProtoStructName(eb.name, eb.protoFQN) || isBaseProtoStructName(baseName, eb.protoFQN) {
+						return false
+					}
+				}
+			} else {
+				if pkgDecls.protoTags[eb.protoFQN] {
+					if isBaseProtoStructName(eb.name, eb.protoFQN) {
+						return false
+					}
+				}
 			}
 		}
 	case "func":

@@ -18,16 +18,47 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.bigquery.biglake.v1
 // proto.service: google.cloud.biglake.v1
+// proto.service: google.cloud.biglake.hive.v1
 // resource: BigLakeCatalog:Catalog
 // resource: BigLakeDatabase:Database
 // resource: BigLakeIcebergCatalog:IcebergCatalog
 // resource: BigLakeIcebergNamespace:IcebergNamespace
+// resource: BigLakeHiveCatalog:HiveCatalog
 
 package v1alpha1
 
 import (
 	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 )
+
+/* found existing non-generated go type with proto tag "google.cloud.biglake.hive.v1.HiveCatalog", skipping
+
+// +kcc:proto=google.cloud.biglake.hive.v1.HiveCatalog
+type HiveCatalog struct {
+	// Identifier. The resource name.
+	//  Format:
+	//  projects/{project_id_or_number}/catalogs/{catalog_id}
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveCatalog.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Stores the catalog description.
+	//  The maximum length is 4000 characters.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveCatalog.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. The Cloud Storage location path where the catalog exists.
+	//  Format: gs://bucket/path/to/catalog
+	//  The maximum length is 4000 characters.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveCatalog.location_uri
+	LocationURI *string `json:"locationURI,omitempty"`
+}
+*/
+
+/* unreachable type HiveCatalog_Replica
+// +kcc:proto=google.cloud.biglake.hive.v1.HiveCatalog.Replica
+type HiveCatalog_Replica struct {
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.biglake.v1.IcebergCatalog", skipping
 
@@ -318,6 +349,35 @@ type HiveDatabaseOptions struct {
 	// Stores user supplied Hive database parameters.
 	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.HiveDatabaseOptions.parameters
 	Parameters map[string]string `json:"parameters,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.biglake.hive.v1.HiveCatalog", skipping
+
+// +kcc:observedstate:proto=google.cloud.biglake.hive.v1.HiveCatalog
+type HiveCatalogObservedState struct {
+	// Output only. The replicas for the catalog metadata.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveCatalog.replicas
+	Replicas []HiveCatalog_ReplicaObservedState `json:"replicas,omitempty"`
+
+	// Output only. The creation time of the catalog.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveCatalog.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The update time of the catalog.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveCatalog.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.biglake.hive.v1.HiveCatalog.Replica
+type HiveCatalog_ReplicaObservedState struct {
+	// Output only. The region of the replica. For example `us-east1`.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveCatalog.Replica.region
+	Region *string `json:"region,omitempty"`
+
+	// Output only. The current state of the replica.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveCatalog.Replica.state
+	State *string `json:"state,omitempty"`
 }
 
 /* found existing non-generated go type with proto tag "google.cloud.biglake.v1.IcebergCatalog", skipping

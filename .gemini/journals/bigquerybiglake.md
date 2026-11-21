@@ -50,6 +50,18 @@
   8. Verified `./apis/bigquerybiglake/generate.sh` idempotency (producing zero uncommitted diffs), and confirmed all unit tests and `apichecks` pass.
 - **Impact**: Greenfield Step 1a complete; `BigLakeIcebergNamespace` is prepopulated with open judgement queue entries ready for Step 1b triage.
 
+### [2026-11-19] Greenfield Step 1a: Prepopulate direct KRM types, identity, and judgement queue for BigLakeHiveCatalog
+- **Context**: Prepopulating direct KRM types, identity, reference, and `judgement_queue.yaml` for `BigLakeHiveCatalog` under `bigquerybiglake.cnrm.cloud.google.com/v1alpha1` (Issue #16141).
+- **Details**:
+  1. Extracted `google/cloud/biglake/hive/v1/hive_metastore.proto`, `biglake_hive_metastore_v1_grpc_service_config.json`, `biglake_v1.yaml`, and `BUILD.bazel` into `mockgcp/apis/google/cloud/biglake/hive/v1/` to serve as a proto overlay without disrupting the pinned googleapis SHA repo-wide.
+  2. Registered `google/cloud/biglake/hive/v1` in `dev/tools/controllerbuilder/generate-proto.sh`, added `google.cloud.biglake.hive.v1` to `protoPackages` under `biglake` in `dev/tools/controllerbuilder/serviceprefixes/service-prefixes.yaml`, and added `google/cloud/biglake/hive/v1/hive_metastore.proto` to `kccProtoOverrides` in `dev/tools/controllerbuilder/pkg/sourcelinks/sourcelinks.go`.
+  3. Fixed a bug in `dev/tools/controllerbuilder/pkg/codegen/filemerge.go` and `typegenerator.go` where `findTypeDeclarationWithProtoTag` and `shouldKeepExistingBlock` did not distinguish between Spec (`+kcc:proto=`) and ObservedState (`+kcc:observedstate:proto=`) annotations, causing generated ObservedState structs (such as `IcebergCatalog_FederatedCatalogOptionsObservedState`) to be mistakenly dropped when a handwritten spec struct existed in the package.
+  4. Configured `apis/bigquerybiglake/generate.sh` to add `generate-types` with `--prepopulate-resource`, `generate-identity` with `--pattern BigLakeHiveCatalog=projects/{project}/catalogs/{catalog}`, and updated `generate-mapper` with `--service google.cloud.bigquery.biglake.v1,google.cloud.biglake.v1,google.cloud.biglake.hive.v1` and `--prepopulate-resource`.
+  5. Added `BigLakeHiveCatalog` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  6. Updated golden exception files `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` and `refs_not_representable.txt` via `WRITE_GOLDEN_OUTPUT=1`.
+  7. Verified all unit tests and `apichecks` pass.
+- **Impact**: Successfully scaffolded `BigLakeHiveCatalog` types, IdentityV2, CRD, and `judgement_queue.yaml` ready for Step 1b triage.
+
 ### [2026-11-19] Greenfield Step 1b: Triage judgement queue and finalize direct KRM types and identity for BigLakeIcebergNamespace
 - **Context**: Triaging `apis/bigquerybiglake/judgement_queue.yaml` and finalizing direct KRM types, identity, and references for `BigLakeIcebergNamespace` (Issue #16154).
 - **Details**:
@@ -96,3 +108,17 @@
   9. Aligned mock behavior with authentic real GCP golden logs using `hack/compare-mock`. Generated `_http_mock.log` for both `biglakeicebergnamespace-minimal` and `biglakeicebergnamespace-maximal`.
   10. Verified `TestGoldenLogAlignment` passes with zero discrepancies and `./dev/ci/presubmits/tests-e2e-fixtures-suite bigquerybiglake` passes all 8 test fixtures.
 - **Impact**: Greenfield Step 3 complete; `BigLakeIcebergNamespace` MockGCP implementation and golden log alignment verified.
+
+### [2026-11-20] Greenfield Step 1b: Triage judgement queue and finalize direct KRM types and identity for BigLakeHiveCatalog
+- **Context**: Triaging `apis/bigquerybiglake/judgement_queue.yaml` and finalizing direct KRM types, identity, and references for `BigLakeHiveCatalog` (Issue #16212).
+- **Details**:
+  1. Triaged and resolved all 3 entries in `apis/bigquerybiglake/judgement_queue.yaml` for `BigLakeHiveCatalog`.
+  2. Maintained the canonical identity pattern `projects/{project}/catalogs/{catalog}` (configured via `--pattern BigLakeHiveCatalog=projects/{project}/catalogs/{catalog}` in `generate.sh`), parented directly by required `ProjectRef` on `BigLakeHiveCatalogSpec`.
+  3. Confirmed template format `//biglake.googleapis.com/projects/{}/catalogs/{}` was already registered in `pkg/gcpurls/registry_test.go` and verified `TestRegisteredTemplatesMatchCAI` passes.
+  4. Updated resource-docs URL in `biglakehivecatalog_types.go` to `https://cloud.google.com/bigquery/docs/manage-open-source-metadata`, removed the guess annotation, and resolved `verify-resource-docs-link`.
+  5. Resolved non-representable GCS path `.spec.locationURI` (`gs://bucket/path/to/catalog`) as accepted since KCC cannot express composite bucket/path references today.
+  6. Added `// +required` to `ProjectRef` on `BigLakeHiveCatalogSpec`.
+  7. Added comprehensive unit tests in `biglakehivecatalog_identity_test.go` covering `FromExternal` and `GetIdentity` (with explicit `resourceID`, `metadata.name` fallback, and status drift error).
+  8. Resolved `untriaged-bulk-generation` (`edited`).
+  9. Verified `./apis/bigquerybiglake/generate.sh` idempotency and confirmed all unit tests and `apichecks` pass cleanly.
+- **Impact**: Greenfield Step 1b complete; `BigLakeHiveCatalog` types, identity, references, CRD, and judgement queue triaged and fully verified.
