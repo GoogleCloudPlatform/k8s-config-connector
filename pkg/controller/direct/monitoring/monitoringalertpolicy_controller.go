@@ -17,7 +17,6 @@ package monitoring
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	monitoring "cloud.google.com/go/monitoring/apiv3/v2"
 	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
@@ -111,11 +110,6 @@ func (m *alertPolicyModel) AdapterForObject(ctx context.Context, op *directbase.
 }
 
 func (m *alertPolicyModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// Format: //monitoring.googleapis.com/projects/PROJECT_NUMBER/alertPolicies/ALERT_POLICY_ID
-	if !strings.HasPrefix(url, "//monitoring.googleapis.com/") {
-		return nil, nil
-	}
-
 	id := &krm.MonitoringAlertPolicyIdentity{}
 	if err := id.FromExternal(url); err != nil {
 		return nil, nil
