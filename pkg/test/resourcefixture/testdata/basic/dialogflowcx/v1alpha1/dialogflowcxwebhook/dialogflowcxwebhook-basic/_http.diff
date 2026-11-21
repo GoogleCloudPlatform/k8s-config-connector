@@ -1,0 +1,40 @@
+2c2
+< POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks?alt=json
+---
+> POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks?%24alt=json%3Benum-encoding%3Dint
+34c34
+<   "name": "projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/ad9a6fe0-14fb-49b8-856a-d1378e07488e",
+---
+>   "name": "projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4e7a8747-5b5a-45c4-9839-f6da7fe8876b",
+40c40
+< GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/ad9a6fe0-14fb-49b8-856a-d1378e07488e?alt=json
+---
+> GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4e7a8747-5b5a-45c4-9839-f6da7fe8876b?%24alt=json%3Benum-encoding%3Dint
+61c61
+<   "name": "projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/ad9a6fe0-14fb-49b8-856a-d1378e07488e",
+---
+>   "name": "projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4e7a8747-5b5a-45c4-9839-f6da7fe8876b",
+68c68
+< PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/ad9a6fe0-14fb-49b8-856a-d1378e07488e?alt=json&updateMask=displayName%2Ctimeout%2Cdisabled%2CgenericWebService
+---
+> PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4e7a8747-5b5a-45c4-9839-f6da7fe8876b?%24alt=json%3Benum-encoding%3Dint&updateMask=disabled%2CdisplayName%2CgenericWebService%2Ctimeout
+79a80
+>   "name": "projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4e7a8747-5b5a-45c4-9839-f6da7fe8876b",
+102c103
+<   "name": "projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/ad9a6fe0-14fb-49b8-856a-d1378e07488e",
+---
+>   "name": "projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4e7a8747-5b5a-45c4-9839-f6da7fe8876b",
+108c109,110
+< GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/ad9a6fe0-14fb-49b8-856a-d1378e07488e?alt=json
+---
+> # Phase: DELETE
+> GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4e7a8747-5b5a-45c4-9839-f6da7fe8876b?%24alt=json%3Benum-encoding%3Dint
+130c132
+<   "name": "projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/ad9a6fe0-14fb-49b8-856a-d1378e07488e",
+---
+>   "name": "projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4e7a8747-5b5a-45c4-9839-f6da7fe8876b",
+136,137c138
+< # Phase: DELETE
+< DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/ad9a6fe0-14fb-49b8-856a-d1378e07488e?alt=json
+---
+> DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4e7a8747-5b5a-45c4-9839-f6da7fe8876b?%24alt=json%3Benum-encoding%3Dint
