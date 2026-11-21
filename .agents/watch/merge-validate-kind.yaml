@@ -16,8 +16,9 @@
 # in and graded good. The validate-kind recipe grades it mechanically from its clean re-run:
 # overseer/assessment/good only if every run passed with no failure, every fixture variant ran,
 # and the PR changes nothing but that Kind's hack/manual-validate/<kind>/ files. A FAIL - a
-# controller finding - is graded poor and left to people. overseer/auto-merge comes from the
-# batch (hack/manual-validate/open-batch.sh; AUTO_MERGE=0 leaves it off).
+# controller finding - is graded poor and left to people. overseer/auto-merge is the opt-in, off by
+# default: add it to the labels line of a batch's ## Fan-out section (or to a child issue - PRs
+# inherit their issue's labels).
 name: merge-validate-kind
 description: Merge a validate-kind PR opted in and graded good by its clean re-run, with green checks
 on: pr
