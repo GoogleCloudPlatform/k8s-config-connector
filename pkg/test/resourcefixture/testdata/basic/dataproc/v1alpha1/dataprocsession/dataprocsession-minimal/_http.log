@@ -59,17 +59,17 @@ X-Xss-Protection: 0
     "description": "Create session",
     "labels": {
       "cnrm-test": "true",
-      "goog-dataproc-drz-resource-uuid": "session-6c279c19-6237-4922-a629-ac7f96d1a707",
+      "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
       "goog-dataproc-location": "us-central1",
       "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
-      "goog-dataproc-session-uuid": "6c279c19-6237-4922-a629-ac7f96d1a707",
+      "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
       "managed-by-cnrm": "true"
     },
     "operationType": 1,
     "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
-    "sessionUuid": "6c279c19-6237-4922-a629-ac7f96d1a707"
+    "sessionUuid": "00000000-0000-0000-0000-000000000001"
   },
-  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/regions/us-central1/operations/00000000-0000-0000-0000-000000000001"
 }
 
 ---
@@ -77,7 +77,7 @@ X-Xss-Protection: 0
 GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fregions%2Fus-central1%2Foperations%2F${operationID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fregions%2Fus-central1%2Foperations%2F00000000-0000-0000-0000-000000000001
 X-Goog-User-Project: ${projectId}
 
 200 OK
@@ -99,17 +99,17 @@ X-Xss-Protection: 0
     "doneTime": "2024-04-01T12:34:56.123456Z",
     "labels": {
       "cnrm-test": "true",
-      "goog-dataproc-drz-resource-uuid": "session-6c279c19-6237-4922-a629-ac7f96d1a707",
+      "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
       "goog-dataproc-location": "us-central1",
       "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
-      "goog-dataproc-session-uuid": "6c279c19-6237-4922-a629-ac7f96d1a707",
+      "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
       "managed-by-cnrm": "true"
     },
     "operationType": "CREATE",
     "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
-    "sessionUuid": "6c279c19-6237-4922-a629-ac7f96d1a707"
+    "sessionUuid": "00000000-0000-0000-0000-000000000001"
   },
-  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/regions/us-central1/operations/00000000-0000-0000-0000-000000000001",
   "response": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.Session",
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -130,10 +130,10 @@ X-Xss-Protection: 0
     },
     "labels": {
       "cnrm-test": "true",
-      "goog-dataproc-drz-resource-uuid": "session-6c279c19-6237-4922-a629-ac7f96d1a707",
+      "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
       "goog-dataproc-location": "us-central1",
       "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
-      "goog-dataproc-session-uuid": "6c279c19-6237-4922-a629-ac7f96d1a707",
+      "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
@@ -150,7 +150,7 @@ X-Xss-Protection: 0
         "spark:spark.executor.instances": "2",
         "spark:spark.executor.memory": "9600m"
       },
-      "version": "2.2.82"
+      "version": "2.2.86"
     },
     "runtimeInfo": {},
     "state": "ACTIVE",
@@ -161,7 +161,7 @@ X-Xss-Protection: 0
       }
     ],
     "stateTime": "2024-04-01T12:34:56.123456Z",
-    "uuid": "6c279c19-6237-4922-a629-ac7f96d1a707"
+    "uuid": "00000000-0000-0000-0000-000000000001"
   }
 }
 
@@ -202,10 +202,10 @@ X-Xss-Protection: 0
   },
   "labels": {
     "cnrm-test": "true",
-    "goog-dataproc-drz-resource-uuid": "session-6c279c19-6237-4922-a629-ac7f96d1a707",
+    "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
     "goog-dataproc-location": "us-central1",
     "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
-    "goog-dataproc-session-uuid": "6c279c19-6237-4922-a629-ac7f96d1a707",
+    "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
@@ -222,7 +222,7 @@ X-Xss-Protection: 0
       "spark:spark.executor.instances": "2",
       "spark:spark.executor.memory": "9600m"
     },
-    "version": "2.2.82"
+    "version": "2.2.86"
   },
   "runtimeInfo": {},
   "state": 2,
@@ -233,7 +233,7 @@ X-Xss-Protection: 0
     }
   ],
   "stateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "6c279c19-6237-4922-a629-ac7f96d1a707"
+  "uuid": "00000000-0000-0000-0000-000000000001"
 }
 
 ---
@@ -261,15 +261,15 @@ X-Xss-Protection: 0
     "description": "Delete session",
     "labels": {
       "cnrm-test": "true",
-      "goog-dataproc-drz-resource-uuid": "session-6c279c19-6237-4922-a629-ac7f96d1a707",
+      "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
       "goog-dataproc-location": "us-central1",
       "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
-      "goog-dataproc-session-uuid": "6c279c19-6237-4922-a629-ac7f96d1a707",
+      "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
       "managed-by-cnrm": "true"
     },
     "operationType": 3,
     "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
-    "sessionUuid": "6c279c19-6237-4922-a629-ac7f96d1a707"
+    "sessionUuid": "00000000-0000-0000-0000-000000000001"
   },
   "name": "projects/${projectId}/regions/us-central1/operations/${operationID}"
 }
@@ -301,15 +301,15 @@ X-Xss-Protection: 0
     "doneTime": "2024-04-01T12:34:56.123456Z",
     "labels": {
       "cnrm-test": "true",
-      "goog-dataproc-drz-resource-uuid": "session-6c279c19-6237-4922-a629-ac7f96d1a707",
+      "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
       "goog-dataproc-location": "us-central1",
       "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
-      "goog-dataproc-session-uuid": "6c279c19-6237-4922-a629-ac7f96d1a707",
+      "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
       "managed-by-cnrm": "true"
     },
     "operationType": "DELETE",
     "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
-    "sessionUuid": "6c279c19-6237-4922-a629-ac7f96d1a707"
+    "sessionUuid": "00000000-0000-0000-0000-000000000001"
   },
   "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "response": {
@@ -332,10 +332,10 @@ X-Xss-Protection: 0
     },
     "labels": {
       "cnrm-test": "true",
-      "goog-dataproc-drz-resource-uuid": "session-6c279c19-6237-4922-a629-ac7f96d1a707",
+      "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
       "goog-dataproc-location": "us-central1",
       "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
-      "goog-dataproc-session-uuid": "6c279c19-6237-4922-a629-ac7f96d1a707",
+      "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
@@ -352,12 +352,12 @@ X-Xss-Protection: 0
         "spark:spark.executor.instances": "2",
         "spark:spark.executor.memory": "9600m"
       },
-      "version": "2.2.82"
+      "version": "2.2.86"
     },
     "runtimeInfo": {
       "approximateUsage": {
-        "milliDcuSeconds": "1552350",
-        "shuffleStorageGbSeconds": "157200"
+        "milliDcuSeconds": "12345",
+        "shuffleStorageGbSeconds": "12345"
       }
     },
     "state": "TERMINATED",
@@ -376,6 +376,6 @@ X-Xss-Protection: 0
       }
     ],
     "stateTime": "2024-04-01T12:34:56.123456Z",
-    "uuid": "6c279c19-6237-4922-a629-ac7f96d1a707"
+    "uuid": "00000000-0000-0000-0000-000000000001"
   }
 }
