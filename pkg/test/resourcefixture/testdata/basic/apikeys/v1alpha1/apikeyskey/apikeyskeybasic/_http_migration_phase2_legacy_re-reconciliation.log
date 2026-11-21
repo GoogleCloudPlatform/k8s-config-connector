@@ -48,5 +48,5 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "keyString": "AIzaSyBAdc85bb2WyggY6A-Z5u1YxlktLGiaF8M"
+  "keyString": "${keyString}"
 }
