@@ -37,15 +37,13 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version iam.cnrm.cloud.google.com/v1alpha1 \
   --resource IAMDenyPolicy:Policy
 
-
-
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
-    --service google.iam.admin.v1 \
-    --api-version iam.cnrm.cloud.google.com/v1beta1 \
-    --include-skipped-output \
-    --resource IAMServiceAccountKey:ServiceAccountKey \
-    --resource IAMServiceAccount:ServiceAccount
+  --service google.iam.admin.v1 \
+  --api-version iam.cnrm.cloud.google.com/v1beta1 \
+  --include-skipped-output \
+  --resource IAMServiceAccountKey:ServiceAccountKey \
+  --resource IAMServiceAccount:ServiceAccount
 
 ${CONTROLLERBUILDER} generate-types \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
@@ -53,23 +51,28 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version iam.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource \
   --resource IAMAccessPolicy:AccessPolicy \
-  --resource IAMPrincipalAccessBoundaryPolicy:PrincipalAccessBoundaryPolicy
+  --resource IAMPrincipalAccessBoundaryPolicy:PrincipalAccessBoundaryPolicy \
+  --resource IAMPolicyBinding:PolicyBinding
 
 ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
   --service google.iam.v3 \
   --api-version iam.cnrm.cloud.google.com/v1alpha1 \
   --resource IAMAccessPolicy:AccessPolicy \
-  --resource IAMPrincipalAccessBoundaryPolicy:PrincipalAccessBoundaryPolicy
+  --resource IAMPrincipalAccessBoundaryPolicy:PrincipalAccessBoundaryPolicy \
+  --resource IAMPolicyBinding:PolicyBinding
 
 ${CONTROLLERBUILDER} generate-mapper \
-  --service google.iam.admin.v1,google.iam.v2 \
-  --api-version "iam.cnrm.cloud.google.com/v1beta1" \
+  --service google.iam.admin.v1,google.iam.v2,google.iam.v3 \
+  --api-version iam.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output \
-  --multiversion
+  --multiversion \
+  --prepopulate-resource
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/iam" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/iam/
