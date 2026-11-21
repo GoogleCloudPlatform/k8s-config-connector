@@ -18,11 +18,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/ptr"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -96,7 +95,7 @@ func getIdentityFromGKEHubMembershipBindingSpec(ctx context.Context, reader clie
 	location := membershipRef.Location
 	membershipID := membershipRef.MembershipID
 
-	resourceID := direct.ValueOf(membershipBinding.Spec.ResourceID)
+	resourceID := ptr.ValueOf(membershipBinding.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = membershipBinding.GetName()
 	}
@@ -115,7 +114,7 @@ func (obj *GKEHubMembershipBinding) GetIdentity(ctx context.Context, reader clie
 		return nil, err
 	}
 
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	externalRef := ptr.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
 		statusIdentity := &GKEHubMembershipBindingIdentity{}

@@ -31,6 +31,7 @@ RUN --mount=type=cache,target=/go/pkg/mod go mod download
 COPY apis/   apis/
 COPY dev/metadata/   dev/metadata/
 COPY pkg/    pkg/
+COPY ptr/    ptr/
 COPY cmd/    cmd/
 COPY config/ config/
 COPY mockgcp/ mockgcp/
