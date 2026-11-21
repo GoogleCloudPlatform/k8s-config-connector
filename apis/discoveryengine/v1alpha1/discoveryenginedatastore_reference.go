@@ -79,7 +79,15 @@ func (r *DiscoveryEngineDataStoreRef) ParseExternalToIdentity() (identity.Identi
 
 // Normalize ensures the "External" reference (in string format) is set.
 func (r *DiscoveryEngineDataStoreRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
+	if err := refsv1beta1.Normalize(ctx, reader, r, defaultNamespace); err != nil {
+		return err
+	}
+	id, err := ParseDiscoveryEngineDataStoreExternal(r.External)
+	if err != nil {
+		return err
+	}
+	r.External = id.String()
+	return nil
 }
 
 // DiscoveryEngineDataStoreID is a reference to a DiscoveryEngineDataStore.

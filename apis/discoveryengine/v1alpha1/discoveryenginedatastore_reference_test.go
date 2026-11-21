@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	"context"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -132,5 +133,40 @@ func TestParseDiscoveryEngineDataStoreExternal(t *testing.T) {
 				t.Errorf("ref.ValidateExternal(%q) returned unexpected error: %v", tc.ref, err)
 			}
 		})
+	}
+}
+
+func TestDiscoveryEngineDataStoreRef_Normalize(t *testing.T) {
+	ctx := context.Background()
+	ref := &DiscoveryEngineDataStoreRef{
+		External: "projects/my-project/locations/global/dataStores/my-datastore",
+	}
+	if err := ref.Normalize(ctx, nil, "default"); err != nil {
+		t.Fatalf("Normalize() failed: %v", err)
+	}
+	want := "projects/my-project/locations/global/collections/default_collection/dataStores/my-datastore"
+	if ref.External != want {
+		t.Errorf("ref.External after Normalize() = %q, want %q", ref.External, want)
+	}
+}
+
+func TestDiscoveryEngineWidgetConfig_GetIdentity_With6TokenParentRef(t *testing.T) {
+	ctx := context.Background()
+	obj := &DiscoveryEngineWidgetConfig{
+		Spec: DiscoveryEngineWidgetConfigSpec{
+			ParentRef: &DiscoveryEngineDataStoreRef{
+				External: "projects/my-project/locations/global/dataStores/my-datastore",
+			},
+		},
+	}
+	obj.SetName("my-widget")
+
+	id, err := obj.GetIdentity(ctx, nil)
+	if err != nil {
+		t.Fatalf("obj.GetIdentity() failed: %v", err)
+	}
+	want := "projects/my-project/locations/global/collections/default_collection/dataStores/my-datastore/widgetConfigs/my-widget"
+	if got := id.String(); got != want {
+		t.Errorf("id.String() = %q, want %q", got, want)
 	}
 }
