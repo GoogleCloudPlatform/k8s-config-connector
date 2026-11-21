@@ -591,6 +591,11 @@ func valuesCompatible(foundVal, expectedVal, createVal any, diffPath string) boo
 	if strings.HasSuffix(diffPath, "Ref") {
 		return true
 	}
+	if strings.HasSuffix(diffPath, "Refs") {
+		if refsSliceMatches(foundVal, expectedVal, createVal) {
+			return true
+		}
+	}
 	fStr, fIsStr := foundVal.(string)
 	eStr, eIsStr := expectedVal.(string)
 	if fIsStr && eIsStr {
@@ -645,7 +650,21 @@ func jsonContainsExpected(actual, expected any) bool {
 				}
 				continue
 			}
+			if strings.HasSuffix(k, "Refs") {
+				if refsSliceMatches(aVal, eVal, nil) {
+					continue
+				}
+			}
 			eVal = simplifyRefValue(k, eVal)
+			if strings.HasSuffix(k, "Ref") {
+				if aStr, aIsStr := aVal.(string); aIsStr && aStr != "" {
+					if eStr, eIsStr := eVal.(string); eIsStr && eStr != "" {
+						if strings.Contains(strings.ToLower(aStr), strings.ToLower(eStr)) || containsNonUniquePlaceholder(aStr) {
+							continue
+						}
+					}
+				}
+			}
 			if !jsonContainsExpected(aVal, eVal) {
 				return false
 			}
@@ -861,10 +880,122 @@ func updateMaskCoversPath(mask []string, diffPath string) bool {
 }
 
 func normalizeKey(k string) string {
-	k = strings.TrimSuffix(k, "Ref")
+	if base, ok := strings.CutSuffix(k, "Refs"); ok && base != "" {
+		if !strings.HasSuffix(base, "s") {
+			k = base + "s"
+		} else {
+			k = base
+		}
+	} else {
+		k = strings.TrimSuffix(k, "Ref")
+	}
 	k = strings.ReplaceAll(k, "_", "")
 	k = strings.ReplaceAll(k, "-", "")
 	return strings.ToLower(k)
+}
+
+func refsSliceMatches(foundVal, expectedVal, createVal any) bool {
+	fSlice, fOk := foundVal.([]any)
+	eSlice, eOk := expectedVal.([]any)
+	if !fOk || !eOk || len(fSlice) != len(eSlice) {
+		return false
+	}
+	if !refsSliceElementsCompatible(fSlice, eSlice) {
+		return false
+	}
+	if cSlice, cOk := createVal.([]any); cOk && !ValuesMatch(createVal, expectedVal) {
+		if refsSliceElementsCompatible(fSlice, cSlice) && !containsPlaceholder(fSlice) {
+			return false
+		}
+	}
+	return true
+}
+
+func refsSliceElementsCompatible(fSlice, eSlice []any) bool {
+	if len(fSlice) != len(eSlice) {
+		return false
+	}
+	used := make([]bool, len(fSlice))
+	for _, eElem := range eSlice {
+		eStr := extractRefTargetString(eElem)
+		if eStr == "" {
+			return false
+		}
+		matched := false
+		for j, fElem := range fSlice {
+			if used[j] {
+				continue
+			}
+			fStr, ok := fElem.(string)
+			if !ok || fStr == "" {
+				continue
+			}
+			if strings.Contains(strings.ToLower(fStr), strings.ToLower(eStr)) || containsNonUniquePlaceholder(fStr) {
+				used[j] = true
+				matched = true
+				break
+			}
+		}
+		if !matched {
+			return false
+		}
+	}
+	return true
+}
+
+func extractRefTargetString(elem any) string {
+	if s, ok := elem.(string); ok {
+		return s
+	}
+	if m, ok := elem.(map[string]any); ok {
+		if ext, ok := m["external"].(string); ok && ext != "" {
+			return ext
+		}
+		if name, ok := m["name"].(string); ok && name != "" {
+			return name
+		}
+	}
+	return ""
+}
+
+func containsPlaceholder(v any) bool {
+	switch val := v.(type) {
+	case string:
+		return containsNonUniquePlaceholder(val)
+	case map[string]any:
+		for _, child := range val {
+			if containsPlaceholder(child) {
+				return true
+			}
+		}
+	case []any:
+		for _, elem := range val {
+			if containsPlaceholder(elem) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func containsNonUniquePlaceholder(s string) bool {
+	rest := s
+	for {
+		idx := strings.Index(rest, "${")
+		if idx == -1 {
+			return false
+		}
+		rest = rest[idx+2:]
+		end := strings.Index(rest, "}")
+		if end == -1 {
+			return false
+		}
+		token := rest[:end]
+		rest = rest[end+1:]
+		if token != "uniqueId" && token != "projectId" {
+			return true
+		}
+	}
 }
 
 func isZeroOrEmptyValue(v any) bool {

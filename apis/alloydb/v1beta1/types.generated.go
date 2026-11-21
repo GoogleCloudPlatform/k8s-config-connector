@@ -108,13 +108,23 @@ type CloudSQLBackupRunSource struct {
 }
 */
 
+/* unreachable type Cluster_DataplexConfig
+// +kcc:proto=google.cloud.alloydb.v1beta.Cluster.DataplexConfig
+type Cluster_DataplexConfig struct {
+	// Dataplex is enabled by default for resources such as clusters and
+	//  instances. This flag controls the integration of AlloyDB PG
+	//  resources (like databases, schemas, and tables) with Dataplex."
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.DataplexConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
 /* unreachable type Cluster_PrimaryConfig
 // +kcc:proto=google.cloud.alloydb.v1beta.Cluster.PrimaryConfig
 type Cluster_PrimaryConfig struct {
 }
 */
 
-/* unreachable type Cluster_PSCConfig
 // +kcc:proto=google.cloud.alloydb.v1beta.Cluster.PscConfig
 type Cluster_PSCConfig struct {
 	// Optional. Create an instance that allows connections from Private Service
@@ -122,7 +132,6 @@ type Cluster_PSCConfig struct {
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.PscConfig.psc_enabled
 	PSCEnabled *bool `json:"pscEnabled,omitempty"`
 }
-*/
 
 /* unreachable type Cluster_TrialMetadata
 // +kcc:proto=google.cloud.alloydb.v1beta.Cluster.TrialMetadata
@@ -276,54 +285,9 @@ type Instance_ObservabilityInstanceConfig struct {
 	AssistiveExperiencesEnabled *bool `json:"assistiveExperiencesEnabled,omitempty"`
 }
 
-/* unreachable type Instance_PSCAutoConnectionConfig
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig
-type Instance_PSCAutoConnectionConfig struct {
-	// The consumer project to which the PSC service automation endpoint will
-	//  be created.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig.consumer_project
-	ConsumerProject *string `json:"consumerProject,omitempty"`
-
-	// The consumer network for the PSC service automation, example:
-	//  "projects/vpc-host-project/global/networks/default".
-	//  The consumer network might be hosted a different project than the
-	//  consumer project.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig.consumer_network
-	ConsumerNetwork *string `json:"consumerNetwork,omitempty"`
-}
-*/
-
-/* unreachable type Instance_PSCInstanceConfig
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig
-type Instance_PSCInstanceConfig struct {
-
-	// Optional. List of consumer projects that are allowed to create
-	//  PSC endpoints to service-attachments to this instance.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.allowed_consumer_projects
-	AllowedConsumerProjects []string `json:"allowedConsumerProjects,omitempty"`
-
-	// Optional. Configurations for setting up PSC interfaces attached to the
-	//  instance which are used for outbound connectivity. Only primary instances
-	//  can have PSC interface attached. Currently we only support 0 or 1 PSC
-	//  interface.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.psc_interface_configs
-	PSCInterfaceConfigs []Instance_PSCInterfaceConfig `json:"pscInterfaceConfigs,omitempty"`
-
-	// Optional. Configurations for setting up PSC service automation.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.psc_auto_connections
-	PSCAutoConnections []Instance_PSCAutoConnectionConfig `json:"pscAutoConnections,omitempty"`
-}
-*/
-
-/* unreachable type Instance_PSCInterfaceConfig
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.PscInterfaceConfig
-type Instance_PSCInterfaceConfig struct {
-	// The network attachment resource created in the consumer network to which
-	//  the PSC interface will be linked. This is of the format:
-	//  "projects/${CONSUMER_PROJECT}/regions/${REGION}/networkAttachments/${NETWORK_ATTACHMENT_NAME}".
-	//  The network attachment must be in the same region as the instance.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInterfaceConfig.network_attachment_resource
-	NetworkAttachmentResource *string `json:"networkAttachmentResource,omitempty"`
+/* unreachable type Instance_PSCInstanceInfo
+// +kcc:proto=google.cloud.alloydb.v1beta.Instance.PscInstanceInfo
+type Instance_PSCInstanceInfo struct {
 }
 */
 
@@ -546,67 +510,27 @@ type Instance_ObservabilityInstanceConfigObservedState struct {
 	TrackWaitEventTypes *bool `json:"trackWaitEventTypes,omitempty"`
 }
 
-/* unreachable type Instance_PSCAutoConnectionConfigObservedState
-// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig
-type Instance_PSCAutoConnectionConfigObservedState struct {
-	// Output only. The IP address of the PSC service automation endpoint.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig.ip_address
-	IPAddress *string `json:"ipAddress,omitempty"`
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.PscInstanceInfo
+type Instance_PSCInstanceInfoObservedState struct {
+	// Output only. The effective state of the PSC auto DNS for the instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceInfo.effective_psc_auto_dns_enabled
+	EffectivePSCAutoDNSEnabled *bool `json:"effectivePSCAutoDNSEnabled,omitempty"`
 
-	// Output only. The status of the PSC service automation connection.
-	//  Possible values:
-	//    "STATE_UNSPECIFIED" - An invalid state as the default case.
-	//    "ACTIVE" - The connection has been created successfully.
-	//    "FAILED" - The connection is not functional since some resources on the
-	//  connection fail to be created.
-	//    "CREATING" - The connection is being created.
-	//    "DELETING" - The connection is being deleted.
-	//    "CREATE_REPAIRING" - The connection is being repaired to complete
-	//  creation.
-	//    "DELETE_REPAIRING" - The connection is being repaired to complete
-	//  deletion.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig.status
-	Status *string `json:"status,omitempty"`
+	// Output only. Specifies the auto DNS names for the instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceInfo.psc_auto_dns_names
+	PSCAutoDNSNames []string `json:"pscAutoDNSNames,omitempty"`
 
-	// Output only. The status of the service connection policy.
-	//  Possible values:
-	//    "STATE_UNSPECIFIED" - Default state, when Connection Map is created
-	//  initially.
-	//    "VALID" - Set when policy and map configuration is valid, and their
-	//  matching can lead to allowing creation of PSC Connections subject to
-	//  other constraints like connections limit.
-	//    "CONNECTION_POLICY_MISSING" - No Service Connection Policy found for
-	//  this network and Service Class
-	//    "POLICY_LIMIT_REACHED" - Service Connection Policy limit reached for
-	//    this network and Service Class
-	//    "CONSUMER_INSTANCE_PROJECT_NOT_ALLOWLISTED" - The consumer instance
-	//  project is not in AllowedGoogleProducersResourceHierarchyLevels of the
-	//  matching ServiceConnectionPolicy.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig.consumer_network_status
-	ConsumerNetworkStatus *string `json:"consumerNetworkStatus,omitempty"`
+	// Output only. Indicates if the PSC auto connection policy is enabled for
+	//  the instance. For older instances, this will be off by default, but for
+	//  newer instances, this will be auto-enabled.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceInfo.effective_psc_auto_connection_policy
+	EffectivePSCAutoConnectionPolicy *bool `json:"effectivePSCAutoConnectionPolicy,omitempty"`
+
+	// Output only. The PSC service connection policy name. The format is
+	//  "projects/<PROJECT_ID>/regions/<REGION_ID>/serviceConnectionPolicies/<alloydb-$NETWORK-$RANDOM-scp>"
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceInfo.service_connection_policy
+	ServiceConnectionPolicy *string `json:"serviceConnectionPolicy,omitempty"`
 }
-*/
-
-/* unreachable type Instance_PSCInstanceConfigObservedState
-// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig
-type Instance_PSCInstanceConfigObservedState struct {
-	// Output only. The service attachment created when Private
-	//  Service Connect (PSC) is enabled for the instance.
-	//  The name of the resource will be in the format of
-	//  `projects/<alloydb-tenant-project-number>/regions/<region-name>/serviceAttachments/<service-attachment-name>`
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.service_attachment_link
-	ServiceAttachmentLink *string `json:"serviceAttachmentLink,omitempty"`
-
-	// Output only. The DNS name of the instance for PSC connectivity.
-	//  Name convention: <uid>.<uid>.<region>.alloydb-psc.goog
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.psc_dns_name
-	PSCDNSName *string `json:"pscDNSName,omitempty"`
-
-	// Optional. Configurations for setting up PSC service automation.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.psc_auto_connections
-	PSCAutoConnections []Instance_PSCAutoConnectionConfigObservedState `json:"pscAutoConnections,omitempty"`
-}
-*/
 
 /* unreachable type MaintenanceScheduleObservedState
 // +kcc:observedstate:proto=google.cloud.alloydb.v1beta.MaintenanceSchedule

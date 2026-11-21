@@ -511,6 +511,15 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
+              pscConfig:
+                description: Optional. The configuration for Private Service Connect
+                  (PSC) for the cluster.
+                properties:
+                  pscEnabled:
+                    description: Optional. Create an instance that allows connections
+                      from Private Service Connect endpoints to the instance.
+                    type: boolean
+                type: object
               resourceID:
                 description: The AlloyDBCluster name. If not given, the metadata.name
                   will be used.
@@ -1279,6 +1288,15 @@ spec:
                   namespace:
                     description: The `namespace` field of a `Project` resource.
                     type: string
+                type: object
+              pscConfig:
+                description: Optional. The configuration for Private Service Connect
+                  (PSC) for the cluster.
+                properties:
+                  pscEnabled:
+                    description: Optional. Create an instance that allows connections
+                      from Private Service Connect endpoints to the instance.
+                    type: boolean
                 type: object
               resourceID:
                 description: The AlloyDBCluster name. If not given, the metadata.name

@@ -97,6 +97,29 @@ observabilityConfig:
   trackActiveQueries: boolean
   trackClientAddress: boolean
   trackWaitEvents: boolean
+pscInstanceConfig:
+  allowedConsumerProjectRefs:
+  - external: string
+    kind: string
+    name: string
+    namespace: string
+  pscAutoConnectionPolicyState: string
+  pscAutoConnections:
+  - consumerNetworkRef:
+      external: string
+      name: string
+      namespace: string
+    consumerProjectRef:
+      external: string
+      kind: string
+      name: string
+      namespace: string
+  pscAutoDNSState: string
+  pscInterfaceConfigs:
+  - networkAttachmentResourceRef:
+      external: string
+      name: string
+      namespace: string
 queryInsightsConfig:
   queryPlansPerMinute: integer
   queryStringLength: integer
@@ -495,6 +518,266 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
     </tr>
     <tr>
         <td>
+            <p><code>pscInstanceConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. The configuration for Private Service Connect (PSC) for the instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.allowedConsumerProjectRefs</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Optional. List of consumer projects that are allowed to create PSC endpoints to service-attachments to this instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.allowedConsumerProjectRefs[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The Project that this resource belongs to.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.allowedConsumerProjectRefs[].external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.allowedConsumerProjectRefs[].kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The kind of the Project resource; optional but must be `Project` if provided.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.allowedConsumerProjectRefs[].name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `name` field of a `Project` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.allowedConsumerProjectRefs[].namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `namespace` field of a `Project` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscAutoConnectionPolicyState</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Optional. Configuration for setting up PSC auto connection policy automation for the instance. For new PSC instances, leaving this field unset enables PSC auto connection policy automation by default. When enabled, AlloyDB may create or update a Network Connectivity ServiceConnectionPolicy in the consumer network that Config Connector does not manage or delete, and deleting the AlloyDBInstance does not delete that policy. Check status.observedState.pscInstanceInfo.effectivePSCAutoConnectionPolicy for the effective state. Possible values: ["ENABLED", "DISABLED"].</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscAutoConnections</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Optional. Configurations for setting up PSC service automation.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscAutoConnections[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscAutoConnections[].consumerNetworkRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The consumer network for the PSC service automation, example: "projects/vpc-host-project/global/networks/default". The consumer network might be hosted a different project than the consumer project.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscAutoConnections[].consumerNetworkRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscAutoConnections[].consumerNetworkRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of a ComputeNetwork resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscAutoConnections[].consumerNetworkRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace of a ComputeNetwork resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscAutoConnections[].consumerProjectRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The consumer project to which the PSC service automation endpoint will be created.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscAutoConnections[].consumerProjectRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscAutoConnections[].consumerProjectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The kind of the Project resource; optional but must be `Project` if provided.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscAutoConnections[].consumerProjectRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `name` field of a `Project` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscAutoConnections[].consumerProjectRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `namespace` field of a `Project` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscAutoDNSState</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Optional. Configuration for setting up PSC auto DNS for the instance. For new PSC instances, leaving this field unset enables PSC auto DNS by default. Check status.observedState.pscInstanceInfo.effectivePSCAutoDNSEnabled for the effective state. Possible values: ["PSC_AUTO_DNS_STATE_ENABLED", "PSC_AUTO_DNS_STATE_DISABLED"].</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscInterfaceConfigs</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Optional. Configurations for setting up PSC interfaces attached to the instance which are used for outbound connectivity. Only primary instances can have PSC interface attached. Currently we only support 0 or 1 PSC interface.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscInterfaceConfigs[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscInterfaceConfigs[].networkAttachmentResourceRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The network attachment resource created in the consumer network to which the PSC interface will be linked. This is of the format: "projects/${CONSUMER_PROJECT}/regions/${REGION}/networkAttachments/${NETWORK_ATTACHMENT_NAME}". The network attachment must be in the same region as the instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscInterfaceConfigs[].networkAttachmentResourceRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed ComputeNetworkAttachment resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/networkAttachments/{{networkattachmentID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscInterfaceConfigs[].networkAttachmentResourceRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of a ComputeNetworkAttachment resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscInterfaceConfigs[].networkAttachmentResourceRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace of a ComputeNetworkAttachment resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>queryInsightsConfig</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -595,6 +878,19 @@ observedState:
     poolerCount: integer
   observabilityConfig:
     trackWaitEventTypes: boolean
+  pscInstanceConfig:
+    pscAutoConnections:
+    - consumerNetworkStatus: string
+      ipAddress: string
+      status: string
+    pscDNSName: string
+    serviceAttachmentLink: string
+  pscInstanceInfo:
+    effectivePSCAutoConnectionPolicy: boolean
+    effectivePSCAutoDNSEnabled: boolean
+    pscAutoDNSNames:
+    - string
+    serviceConnectionPolicy: string
 outboundPublicIpAddresses:
 - string
 publicIpAddress: string
@@ -728,6 +1024,104 @@ updateTime: string
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>Output only. Track wait event types during query execution for an instance. This flag is turned "on" by default but tracking is enabled only after observability enabled flag is also turned on. This is read-only flag and only modifiable by internal API.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscInstanceConfig</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Output only. The configuration for Private Service Connect (PSC) for the instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscInstanceConfig.pscAutoConnections</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Optional. Configurations for setting up PSC service automation.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscInstanceConfig.pscAutoConnections[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscInstanceConfig.pscAutoConnections[].consumerNetworkStatus</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The status of the service connection policy. Possible values: "STATE_UNSPECIFIED" - Default state, when Connection Map is created initially. "VALID" - Set when policy and map configuration is valid, and their matching can lead to allowing creation of PSC Connections subject to other constraints like connections limit. "CONNECTION_POLICY_MISSING" - No Service Connection Policy found for this network and Service Class "POLICY_LIMIT_REACHED" - Service Connection Policy limit reached for this network and Service Class "CONSUMER_INSTANCE_PROJECT_NOT_ALLOWLISTED" - The consumer instance project is not in AllowedGoogleProducersResourceHierarchyLevels of the matching ServiceConnectionPolicy.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscInstanceConfig.pscAutoConnections[].ipAddress</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The IP address of the PSC service automation endpoint.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscInstanceConfig.pscAutoConnections[].status</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The status of the PSC service automation connection. Possible values: "STATE_UNSPECIFIED" - An invalid state as the default case. "ACTIVE" - The connection has been created successfully. "FAILED" - The connection is not functional since some resources on the connection fail to be created. "CREATING" - The connection is being created. "DELETING" - The connection is being deleted. "CREATE_REPAIRING" - The connection is being repaired to complete creation. "DELETE_REPAIRING" - The connection is being repaired to complete deletion.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscInstanceConfig.pscDNSName</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The DNS name of the instance for PSC connectivity. Name convention: <uid>.<uid>.<region>.alloydb-psc.goog</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscInstanceConfig.serviceAttachmentLink</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The service attachment created when Private Service Connect (PSC) is enabled for the instance. The name of the resource will be in the format of `projects/<alloydb-tenant-project-number>/regions/<region-name>/serviceAttachments/<service-attachment-name>`</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscInstanceInfo</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Output only. The Private Service Connect (PSC) information of the instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscInstanceInfo.effectivePSCAutoConnectionPolicy</code></td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Output only. Indicates if the PSC auto connection policy is enabled for the instance. For older instances, this will be off by default, but for newer instances, this will be auto-enabled.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscInstanceInfo.effectivePSCAutoDNSEnabled</code></td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Output only. The effective state of the PSC auto DNS for the instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscInstanceInfo.pscAutoDNSNames</code></td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>Output only. Specifies the auto DNS names for the instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscInstanceInfo.pscAutoDNSNames[]</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscInstanceInfo.serviceConnectionPolicy</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The PSC service connection policy name. The format is "projects/<PROJECT_ID>/regions/<REGION_ID>/serviceConnectionPolicies/<alloydb-$NETWORK-$RANDOM-scp>"</p>
         </td>
     </tr>
     <tr>

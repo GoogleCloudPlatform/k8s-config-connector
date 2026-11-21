@@ -44,6 +44,7 @@ func instanceFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".observability_config")
 	f.SpecField(".query_insights_config")
 	f.SpecField(".connection_pool_config")
+	f.SpecField(".psc_instance_config")
 
 	f.StatusField(".uid")
 	f.StatusField(".name")
@@ -55,6 +56,12 @@ func instanceFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".outbound_public_ip_addresses")
 	f.StatusField(".observability_config.track_wait_event_types")
 	f.StatusField(".connection_pool_config.pooler_count")
+	f.StatusField(".psc_instance_config.service_attachment_link")
+	f.StatusField(".psc_instance_config.psc_dns_name")
+	f.StatusField(".psc_instance_config.psc_auto_connections[].ip_address")
+	f.StatusField(".psc_instance_config.psc_auto_connections[].status")
+	f.StatusField(".psc_instance_config.psc_auto_connections[].consumer_network_status")
+	f.StatusField(".psc_instance_info")
 
 	f.Unimplemented_Internal(".satisfies_pzs")
 
@@ -64,7 +71,6 @@ func instanceFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".gemini_config")
 	f.Unimplemented_NotYetTriaged(".update_policy")
 	f.Unimplemented_NotYetTriaged(".client_connection_config")
-	f.Unimplemented_NotYetTriaged(".psc_instance_config")
 	f.Unimplemented_NotYetTriaged(".gca_config")
 	f.Unimplemented_NotYetTriaged(".delete_time")
 	f.Unimplemented_NotYetTriaged(".etag")
