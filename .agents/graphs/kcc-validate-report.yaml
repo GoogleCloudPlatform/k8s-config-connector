@@ -1,0 +1,74 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Issue graph for the last step of a "Verify changed Kinds" batch (opened by
+# hack/manual-validate/open-batch.sh): once every Kind's kcc-manual-validate graph is done, the
+# batch's final child runs this, which aggregates their reports into one. Its `## Finally` section
+# starts it:
+#
+#   ```factory-graph
+#   graph: kcc-validate-report
+#   params:
+#     batch: "16300"
+#   ```
+#
+# The step makes no commit: its answer is the report. no-change: ok closes the step, which
+# completes the graph and closes the final child, and the fan-out then closes the batch.
+#
+# Validate changes with: factory graph validate .agents/graphs/kcc-validate-report.yaml
+apiVersion: factory.gemini.google.com/v1alpha1
+kind: IssueGraph
+metadata:
+  name: kcc-validate-report
+  description: >-
+    Aggregate the manual-validation reports of a "Verify changed Kinds" batch into one report.
+spec:
+  params:
+    - name: batch
+      description: The batch issue's number
+      pattern: '^[0-9]+$'
+      example: "16300"
+
+  maxActive: 1
+
+  defaults:
+    labels: [validate]
+
+  steps:
+    - id: report
+      no-change: ok
+      title: 'Validation report for batch #{{ .Params.batch }}'
+      labels: [step/validate-report]
+      body: |
+        Write the validation report for batch #{{ .Params.batch }}. **Make no commit and open no
+        pull request**: your final answer is the report, and it is posted on this issue.
+
+        1. Read the batch's progress comment: `gh issue view {{ .Params.batch }} --comments`, the
+           comment headed "Fan-out progress". It lists every child issue (one per Kind) and its PR.
+        2. For each child: `gh issue view <child> --comments`. The child is a `kcc-manual-validate`
+           issue graph; its step's issue and pull request carry the report. Read the step issue
+           (`gh issue view <step> --comments`) and the PR (`gh pr view <pr> --comments`) if there
+           is one. Each report says, per run (the default fixture and each variant): the verdict,
+           checks passed and failed, which checks are new, and any controller bugs. A step closed
+           with no PR (the script already covered the change) reported in its closing comment. A
+           child that is not closed, or a step labelled `overseer/needs-human`, did not finish:
+           say what blocked it.
+        3. Answer with:
+           - one line: N Kinds; how many PASS, FAIL, and not finished (and why);
+           - a table: Kind | change | verdict | checks (passed/failed) | new checks | controller
+             bugs | PR or closing comment;
+           - every FAIL and controller bug, with its evidence as the child reported it;
+           - what could not be checked out of band, per Kind.
+
+        Report only what the children reported: do not re-run anything, and do not change code.

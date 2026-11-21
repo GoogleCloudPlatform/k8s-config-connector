@@ -35,10 +35,11 @@ Usage:
   hack/manual-validate/changed_kinds.py --base <sha> --format title          # a batch issue's title
   hack/manual-validate/changed_kinds.py --base <sha> --format issue          # a batch issue's body
 
---format issue writes a complete fan-out parent: the spec (window, child labels), the task (one
-kcc-manual-validate issue graph per Kind, with what changed), the items, the final aggregation
-step, the report, and a marker with the window's commits (BATCH_MARKER) that the next batch
-starts from. .agents/verify-changes.md opens it on its schedule.
+--format issue writes a complete fan-out parent: the spec (window, child labels - overseer/graph, so
+every child is an issue graph), the task (one kcc-manual-validate graph per Kind, with what
+changed), the items, the final step (a kcc-validate-report graph that aggregates the children's
+reports; its batch param is BATCH_PLACEHOLDER until open-batch.sh fills in the issue's number), the
+scout report, and a marker with the window's commits (BATCH_MARKER) that the next batch starts from. .agents/verify-changes.md opens it on its schedule.
 """
 
 import argparse
@@ -415,6 +416,8 @@ def render_md(report, window):
 # Must match the `change` param's pattern in .agents/graphs/kcc-manual-validate.yaml.
 ITEM_LINE_DROP = re.compile(r"[^A-Za-z0-9 *:;,.()#_/-]")
 BATCH_LABEL = "validate/batch"
+# The batch issue's number, unknown until it is created: open-batch.sh puts it in its place.
+BATCH_PLACEHOLDER = "BATCH_NUMBER"
 BATCH_MARKER = "<!-- manual-validate-batch base={base} head={head} -->"
 BATCH_MARKER_RE = re.compile(r"<!-- manual-validate-batch base=([0-9a-f]+) head=([0-9a-f]+) -->")
 
@@ -456,7 +459,7 @@ Opened by `.agents/verify-changes.md` from `hack/manual-validate/changed_kinds.p
 ## Fan-out
 ```yaml
 title: "Verify {{{{.item.name}}}} ({report['base']}..{report['head']})"
-labels: [validate]
+labels: [validate, overseer/graph]
 group: 1
 create: lazy
 window: {{start: 2, max: 3}}
@@ -480,22 +483,13 @@ params:
 {items}
 
 ## Finally
-Write the verification report for this batch. Make no commit: your final answer is the report, and it is
-posted on this issue.
+Aggregate the validation reports of this batch into one report.
 
-1. This issue says which issue it is `Part of`: that is the batch. Read the batch's progress comment
-   (`gh issue view <batch> --comments`, the comment headed "Fan-out progress"): it lists every child
-   issue and its PR.
-2. For each child (one per Kind): `gh issue view <child> --comments`, then the PR its graph opened
-   (`gh pr view <pr> --comments`) if any. Each validation step ends with a REPORT summary: the verdict,
-   the number of checks passed and failed, and any controller bugs found. A child closed with no PR
-   reported in its closing comment instead.
-3. Answer with:
-   - one line: N Kinds, how many PASS, FAIL, not run (and why);
-   - a table: Kind | change | verdict | checks (passed/failed) | new checks added | controller bugs | PR;
-   - every FAIL and controller bug, each with its evidence as the child reported it;
-   - what could not be checked out of band, per Kind.
-   Do not re-run anything; report only what the children reported.
+```factory-graph
+graph: kcc-validate-report
+params:
+  batch: "{BATCH_PLACEHOLDER}"
+```
 """
 
 

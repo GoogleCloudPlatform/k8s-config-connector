@@ -177,6 +177,11 @@ class BatchIssueTest(unittest.TestCase):
         self.assertIn('kind: "{{.item.name}}"', body)
         self.assertIn("- [ ] " + ck.item_line(self.ROW), body)
         self.assertEqual(ck.render_title(report), "Verify changed Kinds aaaaaaaaaa..bbbbbbbbbb")
+        # Every child (the final one too) is an issue graph: the graph label, and a start block.
+        self.assertIn("labels: [validate, overseer/graph]", body)
+        finally_section = body.split("## Finally", 1)[1]
+        self.assertIn("graph: kcc-validate-report", finally_section)
+        self.assertIn(f'batch: "{ck.BATCH_PLACEHOLDER}"', finally_section)
 
 
 if __name__ == "__main__":

@@ -44,7 +44,8 @@ HEAD_SHA="$(git rev-parse FETCH_HEAD)"
 
 # The harness and the graph must be on master: the children run them.
 for f in hack/manual-validate/lib.sh hack/manual-validate/changed_kinds.py \
-  .agents/graphs/kcc-manual-validate.yaml .gemini/skills/manual-validate-controller/SKILL.md; do
+  .agents/graphs/kcc-manual-validate.yaml .agents/graphs/kcc-validate-report.yaml \
+  .gemini/skills/manual-validate-controller/SKILL.md; do
   if ! git cat-file -e "FETCH_HEAD:${f}" 2>/dev/null; then
     say "${f} is not on master yet; nothing to do"
     exit 0
@@ -91,7 +92,8 @@ fi
 say "$(printf '%s\n' "${ITEMS}" | wc -l | tr -d ' ') Kinds to verify:"
 printf '%s\n' "${ITEMS}" >&2
 if [[ "${DRY_RUN}" == "1" ]]; then
-  say "dry run: would open \"${TITLE}\" labelled ${FANOUT_LABEL}, ${BATCH_LABEL} with this body:"
+  say "dry run: would open \"${TITLE}\" labelled ${FANOUT_LABEL}, ${BATCH_LABEL} with this body"
+  say "(BATCH_NUMBER is replaced with the issue's number once it is created):"
   cat "${BODY}"
   exit 0
 fi
@@ -101,5 +103,9 @@ gh label create "${BATCH_LABEL}" -R "${REPO}" --color 0E8A16 \
 gh label create validate -R "${REPO}" --color 0E8A16 \
   --description "Manual validation of a controller against real GCP" >/dev/null 2>&1 || true
 URL="$(gh issue create -R "${REPO}" --title "${TITLE}" --label "${FANOUT_LABEL}" --label "${BATCH_LABEL}" --body-file "${BODY}")"
+# The final step's batch param is the issue's own number, known only now.
+NUMBER="${URL##*/}"
+sed "s/BATCH_NUMBER/${NUMBER}/g" "${BODY}" >"${BODY}.numbered"
+gh issue edit "${NUMBER}" -R "${REPO}" --body-file "${BODY}.numbered" >/dev/null
 say "opened ${URL}"
 echo "${URL}"
