@@ -175,7 +175,8 @@ class BatchIssueTest(unittest.TestCase):
         headings = [l for l in body.splitlines() if l.startswith("## ")]
         self.assertEqual(headings, ["## Fan-out", "## Task", "## Items"])  # no final step
         self.assertNotIn("factory-graph", body)  # children are plain issues
-        self.assertIn("labels: [overseer/validate-kind]", body)  # the validate-kind rule's label
+        self.assertIn("labels: [overseer/validate-kind, overseer/auto-merge]", body)
+        self.assertIn("labels: [overseer/validate-kind]\n", ck.render_issue(report, "w", auto_merge=False))
         task = body.split("## Task", 1)[1].split("## Items", 1)[0]
         self.assertIn("Validate the {{.item.name}} controller", task)
         self.assertIn("aaaaaaaaaa..bbbbbbbbbb", task)

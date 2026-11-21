@@ -34,6 +34,9 @@ BATCH_LABEL="validate-kind/batch"
 CHILD_LABEL="overseer/validate-kind"
 FANOUT_LABEL="${FANOUT_LABEL:-overseer/fanout}"
 FIRST_SINCE="${FIRST_SINCE:-1 day ago}"
+# AUTO_MERGE=0 opens a batch whose PRs are not labelled overseer/auto-merge (merge-validate-kind
+# then leaves them to people).
+AUTO_MERGE="${AUTO_MERGE:-1}"
 DRY_RUN=0
 [[ "${1:-}" == "--dry-run" ]] && DRY_RUN=1
 
@@ -80,7 +83,9 @@ if [[ -z "${ITEMS}" ]]; then
 fi
 TITLE="$(python3 "${SCOUT}" "${RANGE[@]}" --head "${HEAD_SHA}" --format title)"
 BODY="$(mktemp)"
-python3 "${SCOUT}" "${RANGE[@]}" --head "${HEAD_SHA}" --format issue >"${BODY}"
+ISSUE_FLAGS=()
+[[ "${AUTO_MERGE}" == "0" ]] && ISSUE_FLAGS=(--no-auto-merge)
+python3 "${SCOUT}" "${RANGE[@]}" --head "${HEAD_SHA}" --format issue ${ISSUE_FLAGS[@]+"${ISSUE_FLAGS[@]}"} >"${BODY}"
 
 EXISTING="$(gh issue list -R "${REPO}" --state all --search "\"${TITLE}\" in:title" \
   --json number,title --jq "[.[] | select(.title == \"${TITLE}\")][0].number // empty")"

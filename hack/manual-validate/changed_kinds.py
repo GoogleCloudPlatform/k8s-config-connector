@@ -480,9 +480,11 @@ def render_title(report):
     return f"Verify changed Kinds {report['base']}..{report['head']}"
 
 
-def render_issue(report, window):
+def render_issue(report, window, auto_merge=True):
     sel = [r for r in report["kinds"] if r["selected"]]
     base, head = report["base_sha"], report["head_sha"]
+    # overseer/auto-merge opts each child's PR in to merge-validate-kind (graded good, green).
+    child_labels = ", ".join([CHILD_LABEL] + (["overseer/auto-merge"] if auto_merge else []))
     items = "\n".join(f"- [ ] {item_line(r)}" for r in sel)
     task = (TASK_TEMPLATE.replace("__BASE_SHORT__", report["base"]).replace("__HEAD_SHORT__", report["head"])
             .replace("__BASE__", base).replace("__HEAD__", head).replace("__MARKER__", NO_CHANGE_MARKER))
@@ -505,7 +507,7 @@ Opened by `.agents/verify-changes.md` from `hack/manual-validate/changed_kinds.p
 ## Fan-out
 ```yaml
 title: "Verify {{{{.item.name}}}} ({report['base']}..{report['head']})"
-labels: [{CHILD_LABEL}]
+labels: [{child_labels}]
 group: 1
 create: lazy
 window: {{start: 2, max: 3}}
@@ -535,6 +537,8 @@ def main(argv=None):
                    help="a commit changing code of this many Kinds or more is a bulk change")
     p.add_argument("--sample", type=int, default=1, help="Kinds to sample from each bulk commit")
     p.add_argument("--format", choices=("md", "json", "items", "title", "issue"), default="md")
+    p.add_argument("--no-auto-merge", action="store_true",
+                   help="for --format issue: do not label the children overseer/auto-merge")
     a = p.parse_args(argv)
 
     base, head = resolve_range(a.repo, a.base, a.head, a.since)
@@ -550,7 +554,7 @@ def main(argv=None):
     elif a.format == "title":
         print(render_title(report))
     elif a.format == "issue":
-        sys.stdout.write(render_issue(report, window))
+        sys.stdout.write(render_issue(report, window, auto_merge=not a.no_auto_merge))
     else:
         sys.stdout.write(render_md(report, window))
 
