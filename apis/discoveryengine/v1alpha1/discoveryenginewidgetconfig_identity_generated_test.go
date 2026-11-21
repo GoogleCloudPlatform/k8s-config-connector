@@ -29,12 +29,13 @@ import (
 
 func TestDiscoveryEngineWidgetConfigIdentity_Conformance(t *testing.T) {
 	identity.AssertConformance(t, identity.ConformanceCase[DiscoveryEngineWidgetConfigIdentity]{
-		SampleExternal: "projects/my-project/locations/us-central1/dataStores/my-datastore/widgetConfigs/my-widgetconfig",
+		SampleExternal: "projects/my-project/locations/us-central1/collections/my-collection/dataStores/my-datastore/widgetConfigs/my-widgetconfig",
 		WantHost:       "discoveryengine.googleapis.com",
-		WantParent:     "projects/my-project/locations/us-central1/dataStores/my-datastore",
+		WantParent:     "projects/my-project/locations/us-central1/collections/my-collection/dataStores/my-datastore",
 		WantIdentity: &DiscoveryEngineWidgetConfigIdentity{
 			Project:      "my-project",
 			Location:     "us-central1",
+			Collection:   "my-collection",
 			DataStore:    "my-datastore",
 			WidgetConfig: "my-widgetconfig",
 		},

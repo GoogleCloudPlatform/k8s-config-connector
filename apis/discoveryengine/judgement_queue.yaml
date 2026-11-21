@@ -55,7 +55,7 @@ entries:
     detail: proto message google.cloud.discoveryengine.v1.WidgetConfig declares 3 resource name patterns (projects/{project}/locations/{location}/dataStores/{data_store}/widgetConfigs/{widget_config}, projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/widgetConfigs/{widget_config}, projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/widgetConfigs/{widget_config}) that tied on DiscoveryEngineWidgetConfigSpec; generated identity defaulted to "projects/{project}/locations/{location}/dataStores/{data_store}/widgetConfigs/{widget_config}" (pass --pattern DiscoveryEngineWidgetConfig=<pattern> to override)
     status: resolved
     resolution: accepted
-    note: locked in standard 4-segment pattern projects/{project}/locations/{location}/dataStores/{dataStore}/widgetConfigs/{widgetConfig} via --pattern in generate.sh
+    note: locked in 5-segment pattern projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}/widgetConfigs/{widgetConfig} via --pattern in generate.sh to align with parent DiscoveryEngineDataStore
   - kind: DiscoveryEngineWidgetConfig
     group: discoveryengine.cnrm.cloud.google.com
     reason: identity-root-unknown
