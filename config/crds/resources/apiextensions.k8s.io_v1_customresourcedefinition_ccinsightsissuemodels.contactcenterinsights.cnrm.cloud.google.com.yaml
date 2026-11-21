@@ -8,7 +8,6 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
   name: ccinsightsissuemodels.contactcenterinsights.cnrm.cloud.google.com
 spec:
@@ -84,13 +83,16 @@ spec:
                 description: Language of the model.
                 type: string
               location:
-                description: The location of this resource.
+                description: The location that this resource belongs to.
                 type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
               modelType:
                 description: Type of the model.
                 type: string
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -122,8 +124,9 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The CCInsightsIssueModel name. If not given, the metadata.name
-                  will be used.
+                description: Immutable. Optional. The service-generated name of the
+                  resource. Used for acquisition only. Leave unset to create a new
+                  resource.
                 type: string
             required:
             - location
@@ -205,6 +208,24 @@ spec:
                           at this point in time.
                         format: int64
                         type: integer
+                      issueStats:
+                        additionalProperties:
+                          properties:
+                            displayName:
+                              description: Display name of the issue.
+                              type: string
+                            issue:
+                              description: 'Issue resource. Format: projects/{project}/locations/{location}/issueModels/{issue_model}/issues/{issue}'
+                              type: string
+                            labeledConversationsCount:
+                              description: Number of conversations attached to the
+                                issue at this point in time.
+                              format: int64
+                              type: integer
+                          type: object
+                        description: Statistics on each issue. Key is the issue's
+                          resource name.
+                        type: object
                       unclassifiedConversationsCount:
                         description: Number of analyzed conversations for which no
                           issue was applicable at this point in time.

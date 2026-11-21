@@ -98,6 +98,21 @@
   - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via golden recording.
   - Verified `generate.sh` produces zero diff, and all tests in `apis/contactcenterinsights/...`, `pkg/controller/direct/contactcenterinsights/...`, and `tests/apichecks/...` pass cleanly.
 
+### [2026-11-19] CCInsightsIssueModel Greenfield Types Judgement Triage (Step 1b)
+- **Context**: Triaged `judgement_queue.yaml` entries and finalized direct KRM types and identity for `CCInsightsIssueModel` (`google.cloud.contactcenterinsights.v1.IssueModel`).
+- **Parent & Identity Resolution**:
+  - Pattern is `projects/{project}/locations/{location}/issueModels/{issue_model}`.
+  - Replaced separate `projectRef` and `location` fields on `CCInsightsIssueModelSpec` with inlined `*parent.ProjectAndLocationRef`.
+  - Confirmed server-generated identity: `CreateIssueModelRequest` does not accept an `issue_model_id` parameter and `IssueModel.name` is assigned by the server; confirmed `identity.ServerGeneratedIdentity`. Updated doc comment on `ResourceID`.
+- **Field & Mapping Review**:
+  - `deprecated-field` on `.spec.inputDataConfig.medium`: retained `Medium` in `IssueModel_InputDataConfig` to maintain CRD backward compatibility with the existing CRD schema on `master`.
+  - `message-map-derived` on `.status.observedState.trainingStats.issueStats`: verified generated `map[string]IssueModelLabelStats_IssueStats` Go type and mapping.
+- **Queue Triage & Verification**:
+  - Resolved all 5 `judgement_queue.yaml` entries (`untriaged-bulk-generation`, `identity-server-generated-id`, `deprecated-field`, `location-or-parent-ref`, and `message-map-derived`).
+  - Regenerated CRD and deepcopy via `apis/contactcenterinsights/generate.sh`.
+  - Verified `tests/apichecks/...`, `apis/contactcenterinsights/...`, and `pkg/controller/direct/contactcenterinsights/...` pass cleanly.
+
+
 ### [2026-11-14] CCInsightsQAScorecardRevision Greenfield Direct Controller & E2E Fixtures (Step 2)
 - **Context**: Implementing Phase 2 (direct controller, fuzzer, and E2E fixtures recorded against RealGCP) for `CCInsightsQAScorecardRevision`.
 - **GCP API Nuances & Architecture**:
@@ -111,6 +126,17 @@
 - **Verification**:
   - `FOCUS=CCInsightsQAScorecardRevision go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers` passes 200-seed round-trip.
   - Both `ccinsightsqascorecardrevision-minimal` and `ccinsightsqascorecardrevision-maximal` passed all 7/7 automated validation checks in `unified_test.go` (`hack/record-gcp`) against real GCP (`cnrm-barni-4`) with genuine `_http.log` and `_audit_probe.log` recorded.
+
+### [2026-11-19] CCInsightsIssueModel Greenfield Prepopulate (Step 1a)
+- **Context**: Mechanically prepopulating direct KRM types, IdentityV2, reference, CRD, and `judgement_queue.yaml` for `CCInsightsIssueModel` (`google.cloud.contactcenterinsights.v1.IssueModel`).
+- **Implementation**:
+  - Configured `apis/contactcenterinsights/generate.sh` with `--prepopulate-resource` for `CCInsightsIssueModel:IssueModel` in `generate-types`, `generate-identity`, and `generate-mapper`.
+  - Replaced legacy handwritten types/identity/reference with canonical `controllerbuilder` generated types, IdentityV2 conforming to `identity.IdentityV2` / `identity.ServerGeneratedIdentity`, and reference types.
+  - Retained `CCInsightsIssueModel` in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Added untriaged findings for `CCInsightsIssueModel` into `apis/contactcenterinsights/judgement_queue.yaml` (`untriaged-bulk-generation`, `identity-server-generated-id`, `deprecated-field`, `location-or-parent-ref`, and `message-map-derived`) with `status: open` for triage in Step 1b.
+- **Verification**:
+  - Verified `generate.sh` runs idempotently with zero uncommitted diff.
+  - Verified `apis/contactcenterinsights/...`, `pkg/controller/direct/contactcenterinsights/...`, and `tests/apichecks/...` pass cleanly.
 
 
 
