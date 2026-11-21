@@ -93,6 +93,16 @@ components:
           x-dcl-go-name: Location
           description: The location for the resource
           x-kubernetes-immutable: true
+        mode:
+          type: string
+          x-dcl-go-name: Mode
+          x-dcl-go-type: WorkloadIdentityPoolModeEnum
+          description: 'The mode the pool operates on. Possible values: MODE_UNSPECIFIED, FEDERATION_ONLY, TRUST_DOMAIN'
+          x-kubernetes-immutable: true
+          enum:
+          - MODE_UNSPECIFIED
+          - FEDERATION_ONLY
+          - TRUST_DOMAIN
         name:
           type: string
           x-dcl-go-name: Name
