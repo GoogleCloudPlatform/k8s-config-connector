@@ -414,7 +414,9 @@ def render_md(report, window):
 
 # The item line goes into each child's task text: no quotes, backslashes or braces (template syntax).
 ITEM_LINE_DROP = re.compile(r"[^A-Za-z0-9 *:;,.()#_/-]")
-BATCH_LABEL = "validate/batch"
+BATCH_LABEL = "validate-kind/batch"
+# Each child's label: the validate-kind rule (.agents/watch/validate-kind.yaml) runs on it.
+CHILD_LABEL = "overseer/validate-kind"
 # A child whose script already covers its change makes no commit; with this marker in its body
 # the factory closes it as completed (rather than leaving it open), so the fan-out goes on.
 NO_CHANGE_MARKER = "<!-- factory:no-change ok -->"
@@ -488,7 +490,7 @@ def render_issue(report, window):
     scout = re.sub(r"^#+ (.*)$", r"**\1**", render_md(report, window), flags=re.M)
     return f"""Human-style validation, against real GCP, of every Kind whose controller changed on master in
 {report['base']}..{report['head']} ({report['commits']} commits). One child per Kind runs the
-plain issue (labelled `validate`): its agent writes or extends `hack/manual-validate/<kind>/validate.sh`
+plain issue (labelled `overseer/validate-kind`): its agent writes or extends `hack/manual-validate/<kind>/validate.sh`
 for what changed, runs it, and reports in its PR. The batch closes once every child is closed.
 
 Opened by `.agents/verify-changes.md` from `hack/manual-validate/changed_kinds.py`.
@@ -503,7 +505,7 @@ Opened by `.agents/verify-changes.md` from `hack/manual-validate/changed_kinds.p
 ## Fan-out
 ```yaml
 title: "Verify {{{{.item.name}}}} ({report['base']}..{report['head']})"
-labels: [validate]
+labels: [{CHILD_LABEL}]
 group: 1
 create: lazy
 window: {{start: 2, max: 3}}

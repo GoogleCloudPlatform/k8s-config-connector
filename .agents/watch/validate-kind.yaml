@@ -12,18 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# A "Verify changed Kinds" batch child (labelled validate, opened by the fan-out from
-# hack/manual-validate/open-batch.sh) runs the validate-kind recipe instead of factory's fix: the
-# agent writes or extends the Kind's validate.sh and runs it until the script works, then the
-# recipe re-runs it from a clean start and puts that run's receipts on the PR. The batch's final
-# child (also labelled validate) gets the same recipe, which writes the batch report instead.
+# A "Verify changed Kinds" batch child (labelled overseer/validate-kind, opened by the fan-out
+# from hack/manual-validate/open-batch.sh) runs the validate-kind recipe instead of factory's fix:
+# the agent writes or extends the Kind's validate.sh and runs it until the script is valid, then
+# the recipe re-runs it from a clean start and the PR carries that run's receipts.
 # Order 15 is before factory's fix (20); a recipe rule takes the item, so fix does not run on it.
+# overseer/validate-kind is a label of the overseer's own, so the watcher's issue listing reaches
+# these issues on its own.
 name: validate-kind
 description: Validate one Kind against real GCP - the agent writes and runs its script, the recipe re-runs it for the receipts
 on: issue
 order: 15
 when:
-  labels: {all: [validate], none: [validate/batch]}
+  labels: {all: [overseer/validate-kind], none: [validate-kind/batch]}
   author: [pool, owner, member, collaborator]
   fanout: false
   graph: false
