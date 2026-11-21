@@ -16,6 +16,16 @@ package firestore
 
 import pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
 
+func applyDatabaseTypeDefaultForUpdate(desired, actual *pb.Database, configuredType *string) {
+	if configuredType == nil {
+		desired.Type = actual.Type
+		return
+	}
+	if desired.Type == pb.Database_DATABASE_TYPE_UNSPECIFIED {
+		desired.Type = pb.Database_FIRESTORE_NATIVE
+	}
+}
+
 func ApplyServerSideDefaults(in *pb.Database) {
 	// Set default values to make sure firestore database is "declarative-friendly".
 	if in.Type == pb.Database_DATABASE_TYPE_UNSPECIFIED {
