@@ -65,6 +65,10 @@ func (s *ArtifactRegistryV1) CreateRepository(ctx context.Context, req *pb.Creat
 
 	obj := proto.CloneOf(req.Repository)
 	obj.Name = fqn
+	// disable_upstream_validation is input only: the API does not return it.
+	if rc := obj.GetRemoteRepositoryConfig(); rc != nil {
+		rc.DisableUpstreamValidation = false
+	}
 
 	now := timestamppb.Now()
 	obj.CreateTime = now
@@ -146,6 +150,12 @@ func (s *ArtifactRegistryV1) UpdateRepository(ctx context.Context, req *pb.Updat
 			obj.CleanupPolicies = req.Repository.GetCleanupPolicies()
 		case "cleanup_policy_dry_run", "cleanupPolicyDryRun":
 			obj.CleanupPolicyDryRun = req.Repository.GetCleanupPolicyDryRun()
+		case "remote_repository_config.upstream_credentials.username_password_credentials.username",
+			"remoteRepositoryConfig.upstreamCredentials.usernamePasswordCredentials.username":
+			upstreamUsernamePasswordCredentials(obj).Username = req.Repository.GetRemoteRepositoryConfig().GetUpstreamCredentials().GetUsernamePasswordCredentials().GetUsername()
+		case "remote_repository_config.upstream_credentials.username_password_credentials.password_secret_version",
+			"remoteRepositoryConfig.upstreamCredentials.usernamePasswordCredentials.passwordSecretVersion":
+			upstreamUsernamePasswordCredentials(obj).PasswordSecretVersion = req.Repository.GetRemoteRepositoryConfig().GetUpstreamCredentials().GetUsernamePasswordCredentials().GetPasswordSecretVersion()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
 		}
@@ -191,4 +201,23 @@ func (s *ArtifactRegistryV1) DeleteRepository(ctx context.Context, req *pb.Delet
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		return &emptypb.Empty{}, nil
 	})
+}
+
+// upstreamUsernamePasswordCredentials returns obj's upstream username and
+// password credentials, adding them to its remote repository config if absent.
+func upstreamUsernamePasswordCredentials(obj *pb.Repository) *pb.RemoteRepositoryConfig_UpstreamCredentials_UsernamePasswordCredentials {
+	rc := obj.GetRemoteRepositoryConfig()
+	if rc == nil {
+		rc = &pb.RemoteRepositoryConfig{}
+		obj.ModeConfig = &pb.Repository_RemoteRepositoryConfig{RemoteRepositoryConfig: rc}
+	}
+	if rc.UpstreamCredentials == nil {
+		rc.UpstreamCredentials = &pb.RemoteRepositoryConfig_UpstreamCredentials{}
+	}
+	upc := rc.UpstreamCredentials.GetUsernamePasswordCredentials()
+	if upc == nil {
+		upc = &pb.RemoteRepositoryConfig_UpstreamCredentials_UsernamePasswordCredentials{}
+		rc.UpstreamCredentials.Credentials = &pb.RemoteRepositoryConfig_UpstreamCredentials_UsernamePasswordCredentials_{UsernamePasswordCredentials: upc}
+	}
+	return upc
 }
