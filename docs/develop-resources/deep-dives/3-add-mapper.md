@@ -13,7 +13,7 @@ go run . generate-mapper \
    --api-version "storage.cnrm.cloud.google.com/v1beta1"
 ```
 
-**Note**: We suggest using the same proto for your mock GCP and for you type-generation tool to generate the Config Connector API and mapper to avoid mismatch in schema definitions. There are some exceptions where you need to [replace the proto go package](https://github.com/xiaoweim/k8s-config-connector/blob/master/dev/tools/controllerbuilder/pkg/codegen/mappergenerator.go#L132).
+**Note**: We suggest using the same proto for your mock GCP and for you type-generation tool to generate the Config Connector API and mapper to avoid mismatch in schema definitions. There are some exceptions where you need to [replace the proto go package](../../../dev/tools/controllerbuilder/pkg/codegen/mappergenerator.go).
 
 ### Simple path
 
@@ -21,34 +21,36 @@ If no comments marked `MISSING` and all the mapper functions look good, you are 
 
 ### Custom path
 
-If you need manual changes to some methods, remove the method or/and the `MISSING` comment from the generated code and move to the next step (step 3.2).   
+> **Warning:** `mapper.generated.go` is overwritten by code generators; custom mapping logic must be placed in `<resource>_mappings.go`. Never manually edit generated files.
 
+If you need custom mapping logic (for example, handling reference types, complex field transforms, or fields marked `MISSING` by the generator), implement the custom methods in `<resource>_mappings.go` under `pkg/controller/direct/<service>/`.
+
+The code generator detects existing mapping methods and automatically skips generating duplicates in `mapper.generated.go` when a custom implementation exists.
 
 ## 3.2 Add manual mapper code
 
-Create a` <resource>_mappings.go` under` pkg/controller/direct/<service> `only if the auto-generated code cannot fulfill the mappings.
+Create a `<resource>_mappings.go` under `pkg/controller/direct/<service>/` when the auto-generated code cannot fulfill the mappings.
 
-If you have a lot of fields that need to be manually written, you can split the work into several PRs, just keep the `MISSING `comments for reference. Also, comment out the code you plan to update with `/*NOTYET*/ `comments
+### Implementing custom mapping methods
 
+* Follow the naming convention as the auto-generated code: implement `<Type>_ToProto(mapCtx *direct.MapContext, in *krm.<Type>) *pb.<Type>` and `<Type>_FromProto(mapCtx *direct.MapContext, in *pb.<Type>) *krm.<Type>`.
+* Place all custom methods in `<resource>_mappings.go`. Once implemented, rerun `generate-mapper`, and the generator will omit the auto-generated versions from `mapper.generated.go`.
 
-### To change a method
+### Zero Defaulting Invariant in Conversion Mappers
 
-* Move the code that needs manual change from `<resource>_generated.mappings.go `to `<resource>_mappings.go` 
-
-### To add a missing method
-
-* Follow the naming convention as the auto-generated code. You shall have two methods `<field>_ToProto` and` <field>_FromProto`
-* Remove the `MISSING` comment
+Conversion mappers must be pure, lossless 1:1 translations between KRM and protobuf messages:
+* **Do NOT synthesize or assign default values in mappers:** If a field is omitted or `nil` in KRM, `ToProto` must leave the proto field unset/nil. Never fabricate or assign default values in mappers.
+* **Do NOT assume defaults in `FromProto`:** When converting from proto back to KRM, only map values that are actually present in the proto message.
+* Defaulting is the responsibility of Kubernetes admission defaulting / CRD schemas or GCP server-side behavior. Injecting default values into conversion mappers violates round-trip fuzzer invariants and creates false diffs during reconciliation loops.
 
 ## 3.3 (Optional) Add fuzzer test
 
 Note: For Beta resources, a fuzzer test is required for both the `Spec` and `Status` / `ObservedState`. To generate a fuzzer test, modify the following example and run it:
 
-```
+```bash
 export REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd $REPO_ROOT/dev/tools/controllerbuilder
 
-LLM_MODEL="gemini-2.0-flash-exp" \
 go run main.go prompt \
   <<EOF > $REPO_ROOT/pkg/controller/direct/bigquerydatatransfer/transferconfig_fuzzer.go
 // +tool:fuzz-gen
