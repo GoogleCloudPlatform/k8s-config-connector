@@ -1,0 +1,125 @@
+GET https://storage.googleapis.com/storage/v1/b/ftpbucket-max-${uniqueId}?alt=json&prettyPrint=false
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: UploadServer
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-WEST1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "ftpbucket-max-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/ftpbucket-max-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/ftpsa-max-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "displayName": "ftpsa-max-${uniqueId}",
+  "email": "ftpsa-max-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/ftpsa-max-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://ftp.googleapis.com/v1/projects/${projectId}/locations/us-west1/servers/ftpserv-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=SERVER_VIEW_FULL
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "accessType": 1,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "externalConfig": {
+    "allowedCidrBlocks": [
+      "10.0.0.0/8"
+    ],
+    "ipAddress": "136.87.77.41"
+  },
+  "googleManagedServerCredential": {
+    "asymmetricAlgorithm": "ED25519",
+    "fingerprint": "SHA256:2cLXYemlyu791J5bF1fS8Glca9Y5ro+yzMh2VQBCH5U"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-west1/servers/ftpserv-max-${uniqueId}",
+  "serviceAgent": "p-${projectNumber}-407671688676@gcp-sa-ftp.iam.gserviceaccount.com",
+  "state": 3,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://ftp.googleapis.com/v1/projects/${projectId}/locations/us-west1/servers/ftpserv-max-${uniqueId}/users/ftpumax-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=USER_VIEW_FULL
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "customerServiceAccount": "ftpsa-max-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test-label": "ftpuser-upd-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-west1/servers/ftpserv-max-${uniqueId}/users/ftpumax-${uniqueId}",
+  "state": 2,
+  "storageDirectoryMappings": [
+    {
+      "bucket": "ftpbucket-max-${uniqueId}",
+      "bucketPrefix": "downloads",
+      "directory": "/home/user-upd",
+      "permission": 1
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "userCredentials": [
+    {
+      "credentialName": "cred-max-upd",
+      "credentialType": 1,
+      "sshPublicKeyBody": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILDTXQTace+X3/UzfTakKH89APZsbgFD3+ig1pI2rjMd"
+    }
+  ],
+  "username": "ftpumax-${uniqueId}"
+}

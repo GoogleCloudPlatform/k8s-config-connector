@@ -573,8 +573,13 @@ func valuesCompatible(foundVal, expectedVal, createVal any, diffPath string) boo
 	if createVal != nil && ValuesMatch(foundVal, createVal) {
 		return false
 	}
-	if jsonContainsExpected(foundVal, expectedVal) && (createVal == nil || !jsonContainsExpected(foundVal, createVal)) {
-		return true
+	if jsonContainsExpected(foundVal, expectedVal) {
+		if createVal == nil || !jsonContainsExpected(foundVal, createVal) {
+			return true
+		}
+		if !ValuesMatch(expectedVal, createVal) {
+			return true
+		}
 	}
 	// Allow proto enum integer encoding vs string enum name
 	if isNumericValue(foundVal) && isEnumLikeString(expectedVal) {
@@ -624,6 +629,10 @@ func jsonContainsExpected(actual, expected any) bool {
 		for k, eVal := range eMap {
 			nk := normalizeKey(k)
 			aVal, exists := aNorm[nk]
+			if !exists && strings.HasSuffix(k, "Ref") {
+				stripped := normalizeKey(strings.TrimSuffix(k, "Ref"))
+				aVal, exists = aNorm[stripped]
+			}
 			if !exists {
 				if isOmissibleEmptyCollection(eVal) || isZeroOrEmptyValue(eVal) {
 					continue
@@ -949,6 +958,12 @@ func jsonValuesEquivalent(a, b any) bool {
 		for k, aVal := range aNorm {
 			bVal, exists := bNorm[k]
 			if !exists {
+				if v, ok := bNorm[k+"ref"]; ok {
+					bVal = simplifyRefValue(k+"ref", v)
+					exists = true
+				}
+			}
+			if !exists {
 				if isOmissibleEmptyCollection(aVal) {
 					continue
 				}
@@ -959,7 +974,15 @@ func jsonValuesEquivalent(a, b any) bool {
 			}
 		}
 		for k, bVal := range bNorm {
-			if _, exists := aNorm[k]; !exists {
+			exists := false
+			if _, ok := aNorm[k]; ok {
+				exists = true
+			} else if strings.HasSuffix(k, "ref") {
+				if _, ok := aNorm[strings.TrimSuffix(k, "ref")]; ok {
+					exists = true
+				}
+			}
+			if !exists {
 				if isOmissibleEmptyCollection(bVal) {
 					continue
 				}

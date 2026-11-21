@@ -1,0 +1,26 @@
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: ftpbucket-min-${uniqueId}
+spec:
+  location: us-west1
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: ftpsa-min-${uniqueId}
+spec:
+  displayName: ftpsa-min-${uniqueId}
+---
+apiVersion: ftp.cnrm.cloud.google.com/v1alpha1
+kind: FTPServer
+metadata:
+  name: ftpserv-min-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-west1
+  accessType: EXTERNAL
+  externalConfig:
+    allowedCIDRBlocks:
+    - "10.0.0.0/8"

@@ -61,6 +61,10 @@ func (n *serverName) ParentString() string {
 	return fmt.Sprintf("projects/%s/locations/%s", n.Project.ID, n.Location)
 }
 
+func (n *serverName) LocationString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", n.Project.ID, n.Location)
+}
+
 func (s *MockService) parseServerName(name string) (*serverName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "servers" {
@@ -72,6 +76,42 @@ func (s *MockService) parseServerName(name string) (*serverName, error) {
 			Project:  project,
 			Location: tokens[3],
 			Server:   tokens[5],
+		}, nil
+	}
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+type userName struct {
+	Project  *projects.ProjectData
+	Location string
+	Server   string
+	User     string
+}
+
+func (n *userName) String() string {
+	return fmt.Sprintf("projects/%s/locations/%s/servers/%s/users/%s", n.Project.ID, n.Location, n.Server, n.User)
+}
+
+func (n *userName) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s/servers/%s", n.Project.ID, n.Location, n.Server)
+}
+
+func (n *userName) LocationString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", n.Project.ID, n.Location)
+}
+
+func (s *MockService) parseUserName(name string) (*userName, error) {
+	tokens := strings.Split(name, "/")
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "servers" && tokens[6] == "users" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+		return &userName{
+			Project:  project,
+			Location: tokens[3],
+			Server:   tokens[5],
+			User:     tokens[7],
 		}, nil
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
