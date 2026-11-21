@@ -21,6 +21,59 @@
 # file does not have.
 
 entries:
+  - kind: NetAppVolume
+    group: netapp.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: NetAppVolume
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.backupConfig.backupPolicies
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to netapp.googleapis.com/BackupPolicy (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: NetAppVolume
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.backupConfig.backupVault
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to netapp.googleapis.com/BackupVault (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: NetAppVolume
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.blockDevices[].hostGroups
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to netapp.googleapis.com/HostGroup (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: NetAppVolume
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.hybridReplicationParameters.replication
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to netapp.googleapis.com/Replication (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: NetAppVolume
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: open
+  - kind: NetAppVolume
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.restoreParameters.sourceBackup
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to netapp.googleapis.com/Backup (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: NetAppVolume
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.restoreParameters.sourceSnapshot
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/volumes/{volume}/snapshots/{snapshot}"
+    status: open
+  - kind: NetAppVolume
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.storagePool
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to netapp.googleapis.com/StoragePool (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
   - kind: NetappQuotaRule
     group: netapp.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
