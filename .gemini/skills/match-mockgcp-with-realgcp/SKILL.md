@@ -20,6 +20,9 @@ When the golden tests for K8s Config Connector mock output diverge from real GCP
     - **Normalize Variations**: Run-to-run differences (such as LRO polling counts, dynamic timestamps, tokens, or cookies) should be normalized in `normalize.go` rather than re-recording against real GCP.
 *   **Do NOT Update Legacy Controller**: Do not update or modify the legacy/Terraform-based controller (such as code under `pkg/krmtotf/references.go`) unless absolutely necessary. Keep the legacy controller logic unchanged and avoid modifications to common or shared legacy framework code.
 *   **Focus on Target CRUD Requests**: When aligning the HTTP logs, we only care about the requests made to the CRUD endpoint of the target resource. Non-target/dependent resource requests in the log do not need to be matched as strictly.
+*   **Do NOT Modify Test Harness or Presubmit Scripts**: Never modify `pkg/test/resourcefixture/golden_alignment_test.go`, `tests/e2e/unified_test.go`, or scripts under `dev/tasks/` or `dev/ci/` to bypass discrepancies or force tests to pass. Discrepancies between MockGCP and real GCP must be resolved exclusively within MockGCP handlers or `normalize.go`.
+*   **No Hand-Editing Golden Logs**: Manually editing `_http.log` or `_http_mock.log` is strictly forbidden. `_http.log` must come exclusively from live GCP recording (`hack/record-gcp`), and `_http_mock.log` must come exclusively from `hack/compare-mock`.
+*   **No Standalone Unit Tests in Mock or Controller Packages**: Do not add standalone unit test files (e.g. `mockgcp/mock<service>/<kind>_test.go` or `pkg/controller/direct/<service>/<kind>_controller_test.go`). Testing is strictly validated through central fuzz testing (`pkg/fuzztesting/fuzztests`) and E2E fixtures (`pkg/test/resourcefixture/testdata/basic`).
 
 ## Workflow
 

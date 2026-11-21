@@ -78,3 +78,4 @@ go test -v -count=1 -timeout=20m ./pkg/fuzztesting/fuzztests/...
 2. `go test -v -count=1 -timeout=20m ./pkg/fuzztesting/fuzztests/...` passes flawlessly.
 3. Any `// MISSING:` comments remaining in `mapper.generated.go` correspond to fields that are intentionally unsupported and explicitly ignored in the fuzzer configuration.
 4. The package is registered in `pkg/controller/direct/register/register.go`.
+5. `WRITE_GOLDEN_OUTPUT=1 go test -v ./pkg/test/resourcefixture/...` runs cleanly with zero unmarshaling errors in `_identities.yaml` (no `cannot restore struct from: slice`).
