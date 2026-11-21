@@ -732,6 +732,35 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			}
 		}
 
+		// Normalize DialogflowCXFlow fields between TF and Direct controller mock/real logs:
+		// Direct controller passes the full proto object to UpdateFlow, which includes name,
+		// and GAPIC REST client uses integer enum encoding.
+		if _, hasEventHandlers := v["eventHandlers"]; hasEventHandlers {
+			if _, hasNluSettings := v["nluSettings"]; hasNluSettings {
+				delete(v, "name")
+			}
+		}
+		if mtm, ok := v["modelTrainingMode"]; ok {
+			if f, ok := mtm.(float64); ok {
+				switch f {
+				case 1:
+					v["modelTrainingMode"] = "MODEL_TRAINING_MODE_AUTOMATIC"
+				case 2:
+					v["modelTrainingMode"] = "MODEL_TRAINING_MODE_MANUAL"
+				}
+			}
+		}
+		if mt, ok := v["modelType"]; ok {
+			if f, ok := mt.(float64); ok {
+				switch f {
+				case 1:
+					v["modelType"] = "MODEL_TYPE_STANDARD"
+				case 3:
+					v["modelType"] = "MODEL_TYPE_ADVANCED"
+				}
+			}
+		}
+
 		// AssuredWorkloads specific fields to normalize alignment differences between mock and real GCP responses
 		delete(v, "complianceStatus")
 		delete(v, "partnerPermissions")
