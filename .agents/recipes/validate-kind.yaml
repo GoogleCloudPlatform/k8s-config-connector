@@ -181,10 +181,26 @@ start:
           grade=poor; why="${why}- the commits change files outside hack/manual-validate/${kind}/: $(echo ${outside})\n"
         fi
         printf '%s\n' "${grade}" >"$TASK_DIR/grade"
+        # Every file of every clean run, kept with the task (runs/), so factory's harvest archives it
+        # with the rest of the task and the session page's Files tab shows it - live, then from the
+        # archive once the sandbox is reaped. Flat names (the archive keeps one directory level):
+        # runs/run1__cloud__create-profile.json. Not the run's kubeconfig (local envtest admin).
+        mkdir -p "$TASK_DIR/runs"
+        n=0
+        for d in artifactz/manual-validation/*/*/; do
+          [ -d "${d}" ] || continue
+          n=$((n + 1))
+          (cd "${d}" && find . -type f ! -name kubeconfig | sed 's#^\./##') | while IFS= read -r f; do
+            flat="run${n}__$(printf '%s' "${f}" | sed 's#/#__#g')"
+            # Only names the archive keeps (one path element of letters, digits and . _ -).
+            printf '%s' "${flat}" | grep -qE '^[A-Za-z0-9_][A-Za-z0-9._-]*$' || continue
+            cp "${d}${f}" "$TASK_DIR/runs/${flat}" 2>/dev/null || true
+          done
+        done
         {
           printf '**Grade: %s**' "${grade}"
           if [ -n "${why}" ]; then printf '\n\n'; printf '%b' "${why}"; else printf ' - every run passed, every variant ran, and only this Kind'"'"'s validation files changed.'; fi
-          printf '\n\n'
+          printf '\n\nEvery file of these runs (raw REST and CLI responses, object snapshots, manifests, manager log) is kept with this task: the Files tab of the agent session linked below, folder `runs/`.\n\n'
           bash hack/manual-validate/bundle-receipts.sh artifactz/manual-validation
           if [ -n "${notes}" ]; then
             printf '\n> **Fixture variants not run as asked:**\n>\n'
