@@ -42,6 +42,18 @@ ${CONTROLLERBUILDER} generate-types \
     --resource NetworkServicesWasmPlugin:WasmPlugin \
     --resource NetworkServicesAuthzExtension:AuthzExtension \
     --resource NetworkServicesServiceLBPolicy:ServiceLbPolicy
+
+${CONTROLLERBUILDER} generate-types \
+    --service google.cloud.networkservices.v1 \
+    --api-version "networkservices.cnrm.cloud.google.com/v1alpha1" \
+    --include-skipped-output \
+    --resource NetworkServicesAgentGateway:AgentGateway \
+    --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+    --service google.cloud.networkservices.v1 \
+    --api-version "networkservices.cnrm.cloud.google.com/v1alpha1" \
+    --resource NetworkServicesAgentGateway:AgentGateway
 # Note: NetworkServicesEdgeCacheService is handcoded under apis/networkservices/v1alpha1/edgecacheservice_types.go
 # because its proto definition is not published in the public googleapis repository.
 
@@ -61,7 +73,8 @@ ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.networkservices.v1 \
   --api-version "networkservices.cnrm.cloud.google.com/v1beta1" \
   --include-skipped-output \
-  --multiversion
+  --multiversion \
+  --prepopulate-resource
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

@@ -91,7 +91,7 @@ require (
 	cloud.google.com/go/netapp v1.12.0
 	cloud.google.com/go/networkmanagement v1.28.0
 	cloud.google.com/go/networksecurity v0.17.0
-	cloud.google.com/go/networkservices v0.6.0
+	cloud.google.com/go/networkservices v1.4.0
 	cloud.google.com/go/notebooks v1.17.0
 	cloud.google.com/go/observability v0.1.1
 	cloud.google.com/go/oracledatabase v1.5.0
