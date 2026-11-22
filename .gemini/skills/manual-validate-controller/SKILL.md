@@ -99,6 +99,12 @@ Use a long tool timeout (30 min+ for slow resources). Note the start/end time in
 `KEEP_ENV=1` leaves envtest + the manager running so you can poke at it with
 `KUBECONFIG=<run-dir>/kubeconfig kubectl ...` for debugging.
 
+`<run-dir>/run.log` is the run as `bash -x` would show it, with what came back: every REST, CLI,
+`kubectl` and audit-log call (`mv_trace`; tokens redacted), its HTTP or exit code, the first 40
+lines of its response (`MV_TRACE_LINES`), and each check's verdict right after. Read it first when a
+check fails: the response the check read is right above it. Make every out-of-band call through
+`mv_rest`, `mv_cli` and `mv_expect_audit` so it shows up there.
+
 ### 4. Judge the receipts
 
 Open `<run-dir>/REPORT.md`. For every FAIL, look at the evidence file and decide:

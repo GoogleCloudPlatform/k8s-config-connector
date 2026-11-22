@@ -47,6 +47,30 @@ mv_die() {
   exit 1
 }
 
+# mv_trace COMMAND RESULT [EVIDENCE]
+# Writes one out-of-band call to run.log the way `bash -x` would show it, with what came back:
+# the command as run (secrets redacted by the caller), its result (HTTP code, exit code), and the
+# first MV_TRACE_LINES (default 40) lines of the evidence file - JSON indented - so run.log reads
+# call by call, each PASS/FAIL right after the response it was read from. The whole response stays
+# in the evidence file.
+mv_trace() {
+  local cmd="$1" result="$2" evidence="${3:-}" limit="${MV_TRACE_LINES:-40}" pretty total
+  [[ -n "${MV_RUN_DIR:-}" ]] || return 0
+  {
+    printf '[%s] $ %s\n' "$(mv_ts_utc)" "${cmd}"
+    printf '    -> %s\n' "${result}"
+    if [[ -n "${evidence}" && -s "${MV_RUN_DIR}/${evidence}" ]]; then
+      # JSON indented; a CLI receipt without the command and exit code mv_cli wrote around it.
+      pretty="$(jq . "${MV_RUN_DIR}/${evidence}" 2>/dev/null || sed -e '1{/^\$ /d;}' -e '/^exit_code: [0-9]*$/d' "${MV_RUN_DIR}/${evidence}")"
+      total="$(printf '%s\n' "${pretty}" | wc -l | tr -d ' ')"
+      printf '%s\n' "${pretty}" | head -n "${limit}" | sed 's/^/    /'
+      if [[ "${total}" -gt "${limit}" ]]; then
+        printf '    ... (%s more lines in %s)\n' "$((total - limit))" "${evidence}"
+      fi
+    fi
+  } >>"${MV_RUN_DIR}/run.log"
+}
+
 # mv_record PHASE CHECK STATUS EVIDENCE DETAIL
 # STATUS is PASS, FAIL, or INFO. EVIDENCE is a path relative to MV_RUN_DIR.
 mv_record() {
@@ -187,7 +211,10 @@ mv_apply() {
   # bash 3.2 expands all `local` values before assigning, so derive `out` separately.
   local phase="$1" file="$2" out
   out="k8s/${phase}-apply.txt"
-  if mv_kubectl apply -f "${file}" >"${MV_RUN_DIR}/${out}" 2>&1; then
+  local rc=0
+  mv_kubectl apply -f "${file}" >"${MV_RUN_DIR}/${out}" 2>&1 || rc=$?
+  mv_trace "kubectl -n ${MV_NAMESPACE} apply -f rendered/$(basename "${file}")" "exit ${rc}" "${out}"
+  if [[ "${rc}" -eq 0 ]]; then
     mv_record "${phase}" "kubectl apply $(basename "${file}")" PASS "${out}" "$(tr '\n' ';' <"${MV_RUN_DIR}/${out}")"
   else
     mv_record "${phase}" "kubectl apply $(basename "${file}")" FAIL "${out}" "$(tail -3 "${MV_RUN_DIR}/${out}")"
@@ -235,6 +262,7 @@ mv_delete() {
   local phase="$1" kind="$2" name="$3" timeout="${4:-600}" start
   start=$(date +%s)
   mv_kubectl delete "${kind}" "${name}" --wait=false >>"${MV_RUN_DIR}/k8s/${phase}-delete.txt" 2>&1 || true
+  mv_trace "kubectl -n ${MV_NAMESPACE} delete ${kind} ${name} --wait=false" "requested" "k8s/${phase}-delete.txt"
   while mv_kubectl get "${kind}" "${name}" >/dev/null 2>&1; do
     if (($(date +%s) - start > timeout)); then
       mv_snapshot "${phase}" "${kind}" "${name}" >/dev/null
@@ -269,6 +297,11 @@ mv_rest() {
       -H "Authorization: Bearer ${token}" -H "x-goog-user-project: ${GCP_PROJECT_ID}" "${url}")"
   fi
   printf '%s %s -> HTTP %s\n' "${method}" "${url}" "${code}" >>"${MV_RUN_DIR}/cloud/requests.txt"
+  if [[ -n "${body}" ]]; then
+    mv_trace "curl -sS -X ${method} -H 'Authorization: Bearer ***' -d '$(printf '%s' "${body}" | head -c 300)' ${url}" "HTTP ${code}" "${out}"
+  else
+    mv_trace "curl -sS -X ${method} -H 'Authorization: Bearer ***' ${url}" "HTTP ${code}" "${out}"
+  fi
   echo "${code}"
 }
 
@@ -288,6 +321,7 @@ mv_cli() {
   rc=$?
   set -e
   echo "exit_code: ${rc}" >>"${MV_RUN_DIR}/${out}"
+  mv_trace "$*" "exit ${rc}" "${out}"
   return ${rc}
 }
 
@@ -392,6 +426,10 @@ mv_expect_audit() {
     sleep 15
   done
   echo "filter: ${filter}" >"${MV_RUN_DIR}/cloud/${phase}-${label}.filter.txt"
+  jq -r '.[] | "\(.timestamp)  \(.protoPayload.methodName)  \(.protoPayload.authenticationInfo.principalEmail // "-")"' \
+    "${MV_RUN_DIR}/${out}" >"${MV_RUN_DIR}/cloud/${phase}-${label}.summary.txt" 2>/dev/null || true
+  mv_trace "gcloud logging read '${filter}' --project ${GCP_PROJECT_ID} --order=asc --format=json" \
+    "$(jq 'length' "${MV_RUN_DIR}/${out}" 2>/dev/null || echo 0) entries: ${got:-none}" "cloud/${phase}-${label}.summary.txt"
   mv_expect_eq "${phase}" "audit log write calls on ${substr##*/}" "${want}" "${got}" "${out}"
 }
 

@@ -14,7 +14,8 @@
 # limitations under the License.
 
 # Bundles the receipts of manual-validation runs into one markdown file on stdout: each run's
-# REPORT.md first (the verdict and every check), then each run's results.tsv and run.log. Project
+# REPORT.md first (the verdict and every check), then each run's run.log - the calls made, as
+# `bash -x` shows them, with what came back (lib.sh's mv_trace), and each check's verdict. Project
 # numbers and email addresses are masked. One file with a fixed name, however many runs (the
 # default fixture and each variant), so a recipe can attach it.
 #
@@ -73,10 +74,10 @@ echo
 n=0
 for d in "${RUNS[@]}"; do
   n=$((n + 1))
-  for f in results.tsv run.log; do
+  for f in run.log; do
     [[ -f "${d}/${f}" ]] || continue
     fc="$(fence "${d}/${f}")"
-    echo "<details><summary>Run ${n} <code>${f}</code></summary>"
+    echo "<details><summary>Run ${n} <code>${f}</code>: every call and what came back</summary>"
     echo
     echo "${fc}text"
     mask <"${d}/${f}"
