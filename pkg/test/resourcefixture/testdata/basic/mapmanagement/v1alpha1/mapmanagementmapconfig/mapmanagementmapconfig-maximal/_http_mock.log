@@ -1,3 +1,4 @@
+# Phase: CREATE
 POST https://mapmanagement.googleapis.com/v2beta/projects/${projectId}/mapConfigs?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -38,18 +39,18 @@ X-Xss-Protection: 0
       2
     ]
   },
-  "mapId": "94208ff807038e1577f78da5",
+  "mapId": "94208ff807038e153a0ea1ee",
   "mapType": 1,
-  "name": "projects/${projectNumber}/mapConfigs/94208ff807038e1577f78da5",
+  "name": "projects/${projectNumber}/mapConfigs/94208ff807038e153a0ea1ee",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/mapConfigs/94208ff807038e1577f78da5?%24alt=json%3Benum-encoding%3Dint
+GET https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/mapConfigs/94208ff807038e153a0ea1ee?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectNumber}%2FmapConfigs%2F94208ff807038e1577f78da5
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FmapConfigs%2F94208ff807038e153a0ea1ee
 X-Goog-User-Project: ${projectId}
 
 200 OK
@@ -73,18 +74,19 @@ X-Xss-Protection: 0
       2
     ]
   },
-  "mapId": "94208ff807038e1577f78da5",
+  "mapId": "94208ff807038e153a0ea1ee",
   "mapType": 1,
-  "name": "projects/${projectNumber}/mapConfigs/94208ff807038e1577f78da5",
+  "name": "projects/${projectNumber}/mapConfigs/94208ff807038e153a0ea1ee",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/mapConfigs/94208ff807038e1577f78da5?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName%2CmapFeatures
+# Phase: UPDATE
+PATCH https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/mapConfigs/94208ff807038e153a0ea1ee?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName%2CmapFeatures
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: map_config.name=projects%2F${projectNumber}%2FmapConfigs%2F94208ff807038e1577f78da5
+X-Goog-Request-Params: map_config.name=projects%2F${projectNumber}%2FmapConfigs%2F94208ff807038e153a0ea1ee
 X-Goog-User-Project: ${projectNumber}
 
 {
@@ -97,7 +99,7 @@ X-Goog-User-Project: ${projectNumber}
     ]
   },
   "mapType": 1,
-  "name": "projects/${projectNumber}/mapConfigs/94208ff807038e1577f78da5"
+  "name": "projects/${projectNumber}/mapConfigs/94208ff807038e153a0ea1ee"
 }
 
 200 OK
@@ -120,18 +122,18 @@ X-Xss-Protection: 0
       2
     ]
   },
-  "mapId": "94208ff807038e1577f78da5",
+  "mapId": "94208ff807038e153a0ea1ee",
   "mapType": 1,
-  "name": "projects/${projectNumber}/mapConfigs/94208ff807038e1577f78da5",
+  "name": "projects/${projectNumber}/mapConfigs/94208ff807038e153a0ea1ee",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/mapConfigs/94208ff807038e1577f78da5?%24alt=json%3Benum-encoding%3Dint
+GET https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/mapConfigs/94208ff807038e153a0ea1ee?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectNumber}%2FmapConfigs%2F94208ff807038e1577f78da5
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FmapConfigs%2F94208ff807038e153a0ea1ee
 X-Goog-User-Project: ${projectNumber}
 
 200 OK
@@ -154,18 +156,19 @@ X-Xss-Protection: 0
       2
     ]
   },
-  "mapId": "94208ff807038e1577f78da5",
+  "mapId": "94208ff807038e153a0ea1ee",
   "mapType": 1,
-  "name": "projects/${projectNumber}/mapConfigs/94208ff807038e1577f78da5",
+  "name": "projects/${projectNumber}/mapConfigs/94208ff807038e153a0ea1ee",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/mapConfigs/94208ff807038e1577f78da5?%24alt=json%3Benum-encoding%3Dint
+# Phase: DELETE
+DELETE https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/mapConfigs/94208ff807038e153a0ea1ee?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectNumber}%2FmapConfigs%2F94208ff807038e1577f78da5
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FmapConfigs%2F94208ff807038e153a0ea1ee
 X-Goog-User-Project: ${projectNumber}
 
 200 OK

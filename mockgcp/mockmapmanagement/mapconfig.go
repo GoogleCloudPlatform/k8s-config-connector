@@ -71,9 +71,9 @@ func (s *MapManagementServer) CreateMapConfig(ctx context.Context, req *pb.Creat
 	var mapID string
 	displayName := req.GetMapConfig().GetDisplayName()
 	if strings.Contains(displayName, "Minimal") {
-		mapID = "94208ff807038e15efbf3917"
+		mapID = "94208ff807038e155494046d"
 	} else if strings.Contains(displayName, "Maximal") {
-		mapID = "94208ff807038e1577f78da5"
+		mapID = "94208ff807038e153a0ea1ee"
 	} else {
 		hash := md5.Sum([]byte(displayName))
 		mapID = hex.EncodeToString(hash[:12])
