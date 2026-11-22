@@ -22,7 +22,7 @@
 name: merge-validate-kind
 description: Merge a validate-kind PR opted in and graded good by its clean re-run, with green checks
 on: pr
-order: 82
+order: 83
 when:
   labels:
     all: [overseer/auto-merge, overseer/validate-kind, overseer/ready-for-human, overseer/assessment/good]
