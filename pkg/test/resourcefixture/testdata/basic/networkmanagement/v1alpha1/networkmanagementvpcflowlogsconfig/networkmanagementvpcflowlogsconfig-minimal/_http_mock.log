@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -68,9 +69,14 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.VpcFlowLogsConfig",
+    "aggregationInterval": "INTERVAL_5_SEC",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "crossProjectMetadata": "CROSS_PROJECT_METADATA_DISABLED",
+    "flowSampling": 1,
+    "metadata": "INCLUDE_ALL_METADATA",
     "name": "projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}",
-    "targetResourceState": "TARGET_RESOURCE_EXISTS",
+    "state": "ENABLED",
+    "targetResourceState": "TARGET_RESOURCE_DOES_NOT_EXIST",
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "vpnTunnel": "projects/${projectId}/regions/us-central1/vpnTunnels/computevpntunnel-${uniqueId}"
   }
@@ -94,15 +100,21 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "aggregationInterval": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "crossProjectMetadata": 2,
+  "flowSampling": 1,
+  "metadata": 1,
   "name": "projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}",
-  "targetResourceState": 1,
+  "state": 1,
+  "targetResourceState": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "vpnTunnel": "projects/${projectId}/regions/us-central1/vpnTunnels/computevpntunnel-${uniqueId}"
 }
 
 ---
 
+# Phase: DELETE
 DELETE https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)

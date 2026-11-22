@@ -1,0 +1,28 @@
+GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "aggregationInterval": 1,
+  "connectionLogging": 2,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "crossProjectMetadata": 2,
+  "description": "An updated test vpc flow logs config description",
+  "filterExpr": "true",
+  "flowSampling": 0.8,
+  "labels": {
+    "label-key": "label-value-updated"
+  },
+  "metadata": 3,
+  "metadataFields": [
+    "src_instance",
+    "dst_instance"
+  ],
+  "name": "projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}",
+  "state": 2,
+  "targetResourceState": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpnTunnel": "projects/${projectNumber}/regions/us-central1/vpnTunnels/computevpntunnel-${uniqueId}"
+}

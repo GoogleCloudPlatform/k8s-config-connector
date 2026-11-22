@@ -1,0 +1,269 @@
+# Phase: CREATE
+GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvpcFlowLogsConfigs%2Fflowlogsconfig-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/vpcFlowLogsConfigs?%24alt=json%3Benum-encoding%3Dint&vpcFlowLogsConfigId=flowlogsconfig-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "vpnTunnel": "projects/${projectId}/regions/us-central1/vpnTunnels/computevpntunnel-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.VpcFlowLogsConfig",
+    "aggregationInterval": "INTERVAL_5_SEC",
+    "connectionLogging": "CONNECTION_LOGGING_DISABLED",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "crossProjectMetadata": "CROSS_PROJECT_METADATA_DISABLED",
+    "flowSampling": 1,
+    "metadata": "INCLUDE_ALL_METADATA",
+    "name": "projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}",
+    "state": "ENABLED",
+    "targetResourceState": "TARGET_RESOURCE_DOES_NOT_EXIST",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "vpnTunnel": "projects/${projectId}/regions/us-central1/vpnTunnels/computevpntunnel-${uniqueId}"
+  }
+}
+
+---
+
+GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvpcFlowLogsConfigs%2Fflowlogsconfig-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "aggregationInterval": 1,
+  "connectionLogging": 2,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "crossProjectMetadata": 2,
+  "flowSampling": 1,
+  "metadata": 1,
+  "name": "projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}",
+  "state": 1,
+  "targetResourceState": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpnTunnel": "projects/${projectId}/regions/us-central1/vpnTunnels/computevpntunnel-${uniqueId}"
+}
+
+---
+
+# Phase: DELETE
+GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.VpcFlowLogsConfig",
+    "aggregationInterval": "INTERVAL_5_SEC",
+    "connectionLogging": "CONNECTION_LOGGING_DISABLED",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "crossProjectMetadata": "CROSS_PROJECT_METADATA_DISABLED",
+    "flowSampling": 1,
+    "metadata": "INCLUDE_ALL_METADATA",
+    "name": "projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}",
+    "state": "ENABLED",
+    "targetResourceState": "TARGET_RESOURCE_DOES_NOT_EXIST",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "vpnTunnel": "projects/${projectNumber}/regions/us-central1/vpnTunnels/computevpntunnel-${uniqueId}"
+  }
+}
+
+---
+
+GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvpcFlowLogsConfigs%2Fflowlogsconfig-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "aggregationInterval": 1,
+  "connectionLogging": 2,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "crossProjectMetadata": 2,
+  "flowSampling": 1,
+  "metadata": 1,
+  "name": "projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}",
+  "state": 1,
+  "targetResourceState": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpnTunnel": "projects/${projectNumber}/regions/us-central1/vpnTunnels/computevpntunnel-${uniqueId}"
+}
+
+---
+
+DELETE https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvpcFlowLogsConfigs%2Fflowlogsconfig-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
