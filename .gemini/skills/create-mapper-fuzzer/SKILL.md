@@ -31,8 +31,9 @@ go run . generate-mapper \
 *(Run this constructed command from inside `dev/tools/controllerbuilder`)*
 
 **Identify Failures during Generation:**
-- **Panics (`klog.Fatalf`):** The generator will crash if it encounters an unhandled Protobuf/OpenAPI type. Note the struct and field mentioned in the panic; you must hand-code the mapper for that struct in `<kind>_mapper.go`.
-- **Missing Fields:** Grep the output file `mapper.generated.go` for `// MISSING:`. This indicates the tool couldn't find a matching KRM field. If the field *should* be supported, hand-code the mapping. If it is intentionally unsupported for now, it must be explicitly ignored in the fuzzer (see below).
+- **Panics (`klog.Fatalf`):** The generator will crash if it encounters an unhandled Protobuf/OpenAPI type. Note the struct and field mentioned in the panic; you must hand-code the mapper for that struct in `<kind>_mapper.go` (or `mapper.go`). NEVER name mapper files `mappings.go` or `<kind>_mappings.go`.
+- **Missing Fields & Renamed References:** Grep the output file `mapper.generated.go` for `// MISSING:`. This indicates the tool couldn't find a matching KRM field. Note that when reference fields are renamed away from the literal proto field name (e.g., `RepositoryProjectId` -> `RepositoryProjectRef`, `KmsKeyName` -> `KMSKeyRef`), `generate-mapper` will emit `// MISSING:` and drop the mapping. You must hand-code custom `*_FromProto` and `*_ToProto` functions in `<kind>_mapper.go` to explicitly map each `*Ref` field to and from its proto string.
+- **No Standalone Unit Tests:** Do NOT create standalone `*_test.go` or `*_mappings_test.go` files inside `pkg/controller/direct/<service>/`. Mappers and controllers are verified centrally via the round-trip fuzzer (`TestFocusedMappers`) and E2E fixtures.
 
 ### 2. Build and Fix
 Run the compiler to find type signature mismatches:

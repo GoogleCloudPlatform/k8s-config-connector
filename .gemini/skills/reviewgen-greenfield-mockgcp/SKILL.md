@@ -16,6 +16,8 @@ Use this guide for a **Greenfield Step 3** PR (`Greenfield: Implement MockGCP an
 
 *   **Real-GCP baseline**: No `_http.log` or `_audit_probe.log` changed, unless the PR explains a fixture or request change and the new log comes from `hack/record-gcp`. No log or golden file was edited by hand.
 *   **Normalizers**: `Previsit` is scoped to `<service_name>.googleapis.com` URLs. API-version and URL-prefix replacements are exact strings for this service only, with no broad wildcards.
+*   **No Standalone Unit Tests**: Verify no dedicated `*_test.go` files were added inside `mockgcp/mock<service>/`. Mock services are verified via `hack/compare-mock` and fixture alignment tests.
+*   **Dependency Hygiene**: Verify `git diff mockgcp/go.mod` contains no collateral version bumps or additions to unrelated packages.
 *   **Scope**: No legacy (Terraform/DCL) controller changes, no new `missingfields.txt` lines, fixture directory names contain the kind name, and `<Kind>` isn't excluded in `ShouldTestRereconiliation` (`tests/e2e/ratcheting.go`).
 *   **`BLOCKED_KINDS`**: `<Kind>` is still in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`: only the pipeline's final Release step removes it.
 

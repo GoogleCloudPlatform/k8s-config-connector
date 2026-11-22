@@ -53,3 +53,7 @@ Ensure all mock tests pass and both `_http.log` and `_http_mock.log` are present
   - You **MUST** verify and ensure that all test directories associated with your target resource are completely verified.
   1. Ensure that all discovered test subdirectories under `pkg/test/resourcefixture/testdata/basic/<group>/<api_version>/<kind_lowercase>/` have their golden files (`_generated_object_*.golden.yaml`) and mock HTTP logs (`_http_mock.log`) successfully generated. Note that a 0-diff in `git status` is perfectly valid if the resource doesn't contain any service-generated, randomized values in the responses or our normalizers have overwritten those values.
   2. Commit and push all regenerated and matched log/golden files for every discovered fixture in your Pull Request.
+
+### 5. MockGCP Invariants & Hygiene
+- **No Standalone Unit Tests**: Do NOT create standalone `*_test.go` files inside `mockgcp/mock<service>/`. Mock services are verified end-to-end via `hack/compare-mock` and the fixtures test suite against authentic real-GCP golden logs.
+- **Dependency Hygiene**: When adding or updating client libraries for mockgcp, inspect `git diff mockgcp/go.mod` to ensure only the target package was updated. Revert any collateral version bumps or additions to unrelated Google Cloud packages.

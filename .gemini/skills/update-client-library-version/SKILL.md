@@ -34,6 +34,14 @@ go mod tidy
 cd ..
 ```
 
+### 3b. Verify Clean Dependency Diffs (Dependency Hygiene)
+
+Running `go get` or `go mod tidy` in the root workspace or `mockgcp/` can cause Go to update indirect dependencies or introduce transitive bumps to unrelated libraries.
+Inspect `git diff go.mod mockgcp/go.mod`:
+- Ensure ONLY the target client library (and any strictly required transitive dependencies) is modified.
+- Revert any collateral version bumps or additions to unrelated Google Cloud packages (e.g. `git checkout origin/master -- <file>` or manual reversion).
+- Strictly avoid introducing `replace` directives in `go.mod` or `mockgcp/go.mod`.
+
 ### 4. Verify Fuzzing & Identify Missing Fields
 
 Run KRM mapping fuzz tests to ensure the updated types do not introduce serialization or validation regressions.

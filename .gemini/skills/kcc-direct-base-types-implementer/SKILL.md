@@ -63,7 +63,9 @@ After running the generator (via `generate.sh`), you must verify and enforce the
   }
   
   func (r *NetworkSecurityInterceptDeploymentGroupRef) SetExternal(ref string) {
-  r.External = ref
+      r.External = ref
+      r.Name = ""
+      r.Namespace = ""
   }
   
   func (r *NetworkSecurityInterceptDeploymentGroupRef) ValidateExternal(ref string) error {
@@ -140,3 +142,7 @@ After running the generator (via `generate.sh`), you must verify and enforce the
   * The ObservedState struct (if present) must be annotated with `// +kcc:observedstate:proto=<proto_type>`.
   * The Status struct (if there is no separate ObservedState struct) must be annotated with `// +kcc:status:proto=<proto_type>`.
   * Nested/referenced helper structs (both in Spec and Status) must be annotated with `// +kcc:proto=<proto_sub_type>` (e.g. `// +kcc:proto=google.cloud.compute.v1.ServiceAttachmentConnectedEndpoint`).
+
+- **Embedded Message Snapshots vs. Top-Level `<Kind>Spec`**: NEVER use another resource's top-level `<Kind>Spec` struct as the type for an embedded or snapshot proto message field in `<Kind>Spec`. Top-level `<Kind>Spec` structs contain KRM resource-identity fields (`ProjectRef`, `Location`, `ResourceID`) which do not exist on nested proto snapshot messages and will wrongly leak into the child CRD schema. Declare a dedicated nested struct (e.g. `<Kind>_<NestedMessage>`) annotated with `// +kcc:proto=<full.proto.MessageName>` modeling only proto fields and omitting KRM identity fields.
+- **Preserve `Spec.Labels` on Greenfield Direct Resources**: If the proto message defines a labels field, keep `Labels map[string]string` in `<Kind>Spec`. Do NOT remove `Labels` from Spec in greenfield resources (reconciling via `metadata.labels` only applies to brownfield migrations from Terraform/DCL).
+- **Strict Alphabetical Sorting**: Whenever adding entries to `dev/tasks/build-release-bundle` (`BLOCKED_KINDS`) or exception files in `tests/apichecks/testdata/exceptions/` (e.g. `alpha-missingfields.txt`, `refs_deferred.txt`), place them in strict alphabetical order.

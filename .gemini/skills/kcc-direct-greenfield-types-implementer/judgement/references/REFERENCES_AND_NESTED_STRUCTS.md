@@ -28,6 +28,14 @@ Whenever resolving a queue entry requires a **breaking** edit to a nested struct
    - Because the variant's Go name differs from the base `<Struct>`, `controllerbuilder` automatically retains generator ownership of the base `type <Struct> struct` in `types.generated.go` for other Kinds.
    - *(Note on deep nesting)*: If `<Struct>` sits below an intermediate generated struct (`<Kind>Spec` -> `Outer` -> `<Struct>`) that is *also* shared with another Kind, fork `Outer` in `<kind>_types.go` as well (keeping `+kcc:proto=` and `Outer` in its name) so `<Kind>Spec` points to the customized chain while `types.generated.go` keeps the untouched `Outer` -> `<Struct>` for other Kinds.
 
+5. **Embedded Proto Message Snapshots: NEVER Reuse Top-Level `<Kind>Spec` Structs**:
+   - When a proto message contains an embedded or snapshot proto message of another resource (for example, `GeneratorEvaluation.initial_generator` embedding `google.cloud.dialogflow.v2.Generator`), **NEVER** use the other resource's top-level KRM `<Kind>Spec` (e.g. `*DialogflowGeneratorSpec`) as the Go struct type.
+   - A top-level `<Kind>Spec` represents a standalone KRM resource and contains KRM resource-identity fields (`ProjectRef`, `Location`, `ResourceID`), which do NOT exist on nested proto snapshot messages and will wrongly leak into the child CRD schema (and may even trigger spurious `required: [projectRef]` validations).
+   - Instead:
+     - Declare a dedicated nested message struct in `<kind>_types.go` (e.g., `<Kind>_<NestedMessage>` such as `DialogflowGeneratorEvaluation_Generator`), annotated with `// +kcc:proto=<full.proto.MessageName>`.
+     - Model only the nested configuration fields from the proto message, strictly omitting KRM identity fields (`ProjectRef`, `Location`, `ResourceID`).
+     - Point the parent Spec field to this dedicated nested struct (e.g., `InitialGenerator *DialogflowGeneratorEvaluation_Generator`).
+
 ---
 
 ## 2. Resolving Resource Reference Reasons (`authoritative-proto-reference`, `possible-reference*`, `reference-not-representable`)
