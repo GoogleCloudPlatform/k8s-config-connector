@@ -15,8 +15,8 @@ spec:
       userCount: 15
   displayName: maximal-license-manager-config-updated
   labels:
-    env: prod
-    team: sales
+    env: test
+    team: eng
   licenseType: LICENSE_TYPE_PER_MONTH_PER_USER
   location: us-central1
   nextBillingInfo:
