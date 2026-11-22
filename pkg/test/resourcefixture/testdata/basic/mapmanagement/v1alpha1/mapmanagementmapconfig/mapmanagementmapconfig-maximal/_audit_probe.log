@@ -1,0 +1,21 @@
+GET https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/mapConfigs/94208ff807038e153a0ea1ee?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: scaffolding on HTTPServer2
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "This is an updated maximal map config used for testing ${uniqueId}",
+  "displayName": "Maximal Map Config Updated ${uniqueId}",
+  "mapFeatures": {
+    "poiBoostLevel": -1,
+    "simpleFeatures": [
+      2
+    ]
+  },
+  "mapId": "94208ff807038e153a0ea1ee",
+  "mapType": 1,
+  "name": "projects/${projectNumber}/mapConfigs/94208ff807038e153a0ea1ee",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

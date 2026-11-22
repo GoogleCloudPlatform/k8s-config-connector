@@ -20,9 +20,9 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectNumber}/mapConfigs/94208ff807038e15efbf3917
+  externalRef: projects/${projectNumber}/mapConfigs/94208ff807038e155494046d
   observedGeneration: 1
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    mapID: 94208ff807038e15efbf3917
+    mapID: 94208ff807038e155494046d
     updateTime: "1970-01-01T00:00:00Z"
