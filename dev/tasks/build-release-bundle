@@ -241,7 +241,6 @@ BLOCKED_KINDS=(
     "NetappQuotaRule"
     "NetappReplication"
     "NetworkConnectivityDestination"
-    "NetworkConnectivityMulticloudDataTransferConfig"
     "NetworkConnectivityPolicyBasedRoute"
     "NetworkConnectivityServiceConnectionToken"
     "NetworkManagementVpcFlowLogsConfig"
