@@ -1,0 +1,19 @@
+GET https://geminidataanalytics.googleapis.com/v1beta/projects/${projectId}/locations/global/conversations/geminidataanalyticsconversation-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "agents": [
+    "projects/${projectId}/locations/global/dataAgents/dataagent-max-${uniqueId}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "env": "test",
+    "memory_paused": "false",
+    "owner": "devteam"
+  },
+  "lastUsedTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/global/conversations/geminidataanalyticsconversation-max-${uniqueId}"
+}

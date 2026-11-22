@@ -1,0 +1,17 @@
+GET https://geminidataanalytics.googleapis.com/v1beta/projects/${projectId}/locations/global/conversations/geminidataanalyticsconversation-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "agents": [
+    "projects/${projectId}/locations/global/dataAgents/dataagent-min-${uniqueId}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "memory_paused": "false"
+  },
+  "lastUsedTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/global/conversations/geminidataanalyticsconversation-min-${uniqueId}"
+}
