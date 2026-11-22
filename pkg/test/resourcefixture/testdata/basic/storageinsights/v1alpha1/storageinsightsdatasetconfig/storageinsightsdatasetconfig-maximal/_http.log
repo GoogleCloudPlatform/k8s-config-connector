@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://storage.googleapis.com/storage/v1/b/storageinsights-max-dep-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -7,6 +8,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a20545db87
 
 {
   "error": {
@@ -52,6 +54,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a20545ddbb
 
 {
   "etag": "abcdef0123A=",
@@ -97,6 +100,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a20545ddf2
 
 {
   "etag": "abcdef0123A=",
@@ -184,6 +188,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
   "includeNewlyCreatedBuckets": true,
   "labels": {
     "cnrm-test": "true",
+    "foo": "bar",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmax${uniqueId}",
@@ -255,7 +260,7 @@ X-Xss-Protection: 0
     "datasetConfigState": "CONFIG_STATE_ACTIVE",
     "description": "Maximal Storage Insights Dataset Config",
     "identity": {
-      "name": "p${projectNumber}-87a989273c14489@gcp-sa-storageinsights.iam.gserviceaccount.com",
+      "name": "p${projectNumber}-270e53ef2bf349d@gcp-sa-storageinsights.iam.gserviceaccount.com",
       "type": "IDENTITY_TYPE_PER_CONFIG"
     },
     "includeCloudStorageBuckets": {
@@ -272,10 +277,10 @@ X-Xss-Protection: 0
     },
     "includeNewlyCreatedBuckets": true,
     "link": {
-      "dataset": "datasetconfigmax${uniqueId}_87a98927_3c14_489c_ba94_9c9345678bc3"
+      "dataset": "datasetconfigmax${uniqueId}_270e53ef_2bf3_49d5_83da_58ffc1183866"
     },
     "name": "projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmax${uniqueId}",
-    "organizationNumber": "${folderID}",
+    "organizationNumber": "${organizationID}",
     "retentionPeriodDays": 30,
     "sourceProjects": {
       "projectNumbers": [
@@ -310,7 +315,7 @@ X-Xss-Protection: 0
   "datasetConfigState": 1,
   "description": "Maximal Storage Insights Dataset Config",
   "identity": {
-    "name": "p${projectNumber}-87a989273c14489@gcp-sa-storageinsights.iam.gserviceaccount.com",
+    "name": "p${projectNumber}-270e53ef2bf349d@gcp-sa-storageinsights.iam.gserviceaccount.com",
     "type": 1
   },
   "includeCloudStorageBuckets": {
@@ -328,13 +333,14 @@ X-Xss-Protection: 0
   "includeNewlyCreatedBuckets": true,
   "labels": {
     "cnrm-test": "true",
+    "foo": "bar",
     "managed-by-cnrm": "true"
   },
   "link": {
-    "dataset": "datasetconfigmax${uniqueId}_87a98927_3c14_489c_ba94_9c9345678bc3"
+    "dataset": "datasetconfigmax${uniqueId}_270e53ef_2bf3_49d5_83da_58ffc1183866"
   },
   "name": "projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmax${uniqueId}",
-  "organizationNumber": "${folderID}",
+  "organizationNumber": "${organizationID}",
   "retentionPeriodDays": 30,
   "sourceProjects": {
     "projectNumbers": [
@@ -347,7 +353,8 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://storageinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmax${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CincludeNewlyCreatedBuckets%2CretentionPeriodDays%2CskipVerificationAndIngest
+# Phase: UPDATE
+PATCH https://storageinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmax${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CincludeNewlyCreatedBuckets%2CretentionPeriodDays
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: dataset_config.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdatasetConfigs%2Fdatasetconfigmax${uniqueId}
@@ -371,6 +378,7 @@ X-Goog-Request-Params: dataset_config.name=projects%2F${projectId}%2Flocations%2
   },
   "labels": {
     "cnrm-test": "true",
+    "foo": "bar",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmax${uniqueId}",
@@ -437,11 +445,12 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.storageinsights.v1.DatasetConfig",
+    "activityDataRetentionPeriodDays": 30,
     "createTime": "2024-04-01T12:34:56.123456Z",
     "datasetConfigState": "CONFIG_STATE_ACTIVE",
     "description": "Updated Maximal Storage Insights Dataset Config",
     "identity": {
-      "name": "p${projectNumber}-87a989273c14489@gcp-sa-storageinsights.iam.gserviceaccount.com",
+      "name": "p${projectNumber}-270e53ef2bf349d@gcp-sa-storageinsights.iam.gserviceaccount.com",
       "type": "IDENTITY_TYPE_PER_CONFIG"
     },
     "includeCloudStorageBuckets": {
@@ -456,15 +465,11 @@ X-Xss-Protection: 0
         "us-central1"
       ]
     },
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
     "link": {
-      "dataset": "datasetconfigmax${uniqueId}_87a98927_3c14_489c_ba94_9c9345678bc3"
+      "dataset": "datasetconfigmax${uniqueId}_270e53ef_2bf3_49d5_83da_58ffc1183866"
     },
     "name": "projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmax${uniqueId}",
-    "organizationNumber": "${folderID}",
+    "organizationNumber": "${organizationID}",
     "retentionPeriodDays": 14,
     "sourceProjects": {
       "projectNumbers": [
@@ -499,7 +504,7 @@ X-Xss-Protection: 0
   "datasetConfigState": 1,
   "description": "Updated Maximal Storage Insights Dataset Config",
   "identity": {
-    "name": "p${projectNumber}-87a989273c14489@gcp-sa-storageinsights.iam.gserviceaccount.com",
+    "name": "p${projectNumber}-270e53ef2bf349d@gcp-sa-storageinsights.iam.gserviceaccount.com",
     "type": 1
   },
   "includeCloudStorageBuckets": {
@@ -516,13 +521,14 @@ X-Xss-Protection: 0
   },
   "labels": {
     "cnrm-test": "true",
+    "foo": "bar",
     "managed-by-cnrm": "true"
   },
   "link": {
-    "dataset": "datasetconfigmax${uniqueId}_87a98927_3c14_489c_ba94_9c9345678bc3"
+    "dataset": "datasetconfigmax${uniqueId}_270e53ef_2bf3_49d5_83da_58ffc1183866"
   },
   "name": "projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmax${uniqueId}",
-  "organizationNumber": "${folderID}",
+  "organizationNumber": "${organizationID}",
   "retentionPeriodDays": 14,
   "sourceProjects": {
     "projectNumbers": [
@@ -535,6 +541,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: DELETE
 DELETE https://storageinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmax${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -607,6 +614,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a2054878d9
 
 {
   "etag": "abcdef0123A=",
@@ -652,6 +660,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a205487901
 
 {
   "kind": "storage#objects"
@@ -668,3 +677,4 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a205487a42

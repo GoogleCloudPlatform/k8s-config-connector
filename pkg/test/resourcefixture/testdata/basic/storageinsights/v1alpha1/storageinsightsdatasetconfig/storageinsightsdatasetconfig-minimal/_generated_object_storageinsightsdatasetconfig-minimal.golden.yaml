@@ -40,8 +40,8 @@ status:
     createTime: "1970-01-01T00:00:00Z"
     datasetConfigState: CONFIG_STATE_ACTIVE
     identity:
-      name: p${projectNumber}-902ae861dd234d5@gcp-sa-storageinsights.iam.gserviceaccount.com
+      name: p${projectNumber}-a7b4792d5d064b6@gcp-sa-storageinsights.iam.gserviceaccount.com
     link:
-      dataset: datasetconfigmin${uniqueId}_902ae861_dd23_4d57_9e47_827346819fa1
+      dataset: datasetconfigmin${uniqueId}_a7b4792d_5d06_4b65_b952_0377610d5900
     uid: 0123456789abcdef
     updateTime: "1970-01-01T00:00:00Z"

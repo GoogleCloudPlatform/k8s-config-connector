@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://storage.googleapis.com/storage/v1/b/storageinsights-min-dep-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -7,6 +8,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a205539cd5
 
 {
   "error": {
@@ -52,6 +54,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a205539ec4
 
 {
   "etag": "abcdef0123A=",
@@ -97,6 +100,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a205539f08
 
 {
   "etag": "abcdef0123A=",
@@ -253,7 +257,7 @@ X-Xss-Protection: 0
     "datasetConfigState": "CONFIG_STATE_ACTIVE",
     "description": "Minimal Storage Insights Dataset Config",
     "identity": {
-      "name": "p${projectNumber}-902ae861dd234d5@gcp-sa-storageinsights.iam.gserviceaccount.com",
+      "name": "p${projectNumber}-a7b4792d5d064b6@gcp-sa-storageinsights.iam.gserviceaccount.com",
       "type": "IDENTITY_TYPE_PER_CONFIG"
     },
     "includeCloudStorageBuckets": {
@@ -269,10 +273,10 @@ X-Xss-Protection: 0
       ]
     },
     "link": {
-      "dataset": "datasetconfigmin${uniqueId}_902ae861_dd23_4d57_9e47_827346819fa1"
+      "dataset": "datasetconfigmin${uniqueId}_a7b4792d_5d06_4b65_b952_0377610d5900"
     },
     "name": "projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmin${uniqueId}",
-    "organizationNumber": "${folderID}",
+    "organizationNumber": "${organizationID}",
     "retentionPeriodDays": 30,
     "sourceProjects": {
       "projectNumbers": [
@@ -307,7 +311,7 @@ X-Xss-Protection: 0
   "datasetConfigState": 1,
   "description": "Minimal Storage Insights Dataset Config",
   "identity": {
-    "name": "p${projectNumber}-902ae861dd234d5@gcp-sa-storageinsights.iam.gserviceaccount.com",
+    "name": "p${projectNumber}-a7b4792d5d064b6@gcp-sa-storageinsights.iam.gserviceaccount.com",
     "type": 1
   },
   "includeCloudStorageBuckets": {
@@ -327,10 +331,10 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "link": {
-    "dataset": "datasetconfigmin${uniqueId}_902ae861_dd23_4d57_9e47_827346819fa1"
+    "dataset": "datasetconfigmin${uniqueId}_a7b4792d_5d06_4b65_b952_0377610d5900"
   },
   "name": "projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmin${uniqueId}",
-  "organizationNumber": "${folderID}",
+  "organizationNumber": "${organizationID}",
   "retentionPeriodDays": 30,
   "sourceProjects": {
     "projectNumbers": [
@@ -343,6 +347,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: DELETE
 DELETE https://storageinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmin${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -415,6 +420,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a20555245e
 
 {
   "etag": "abcdef0123A=",
@@ -460,6 +466,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a20555247f
 
 {
   "kind": "storage#objects"
@@ -476,3 +483,4 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a205552655

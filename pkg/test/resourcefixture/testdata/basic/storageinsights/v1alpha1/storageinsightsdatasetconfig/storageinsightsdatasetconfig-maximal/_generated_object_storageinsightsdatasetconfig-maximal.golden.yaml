@@ -22,7 +22,7 @@ spec:
     - us-central1
   includeNewlyCreatedBuckets: false
   labels:
-    foo: baz
+    foo: bar
   location: us-central1
   projectRef:
     external: ${projectId}
@@ -44,8 +44,8 @@ status:
     createTime: "1970-01-01T00:00:00Z"
     datasetConfigState: CONFIG_STATE_ACTIVE
     identity:
-      name: p${projectNumber}-87a989273c14489@gcp-sa-storageinsights.iam.gserviceaccount.com
+      name: p${projectNumber}-270e53ef2bf349d@gcp-sa-storageinsights.iam.gserviceaccount.com
     link:
-      dataset: datasetconfigmax${uniqueId}_87a98927_3c14_489c_ba94_9c9345678bc3
+      dataset: datasetconfigmax${uniqueId}_270e53ef_2bf3_49d5_83da_58ffc1183866
     uid: 0123456789abcdef
     updateTime: "1970-01-01T00:00:00Z"
