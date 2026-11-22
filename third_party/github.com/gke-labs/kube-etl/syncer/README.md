@@ -54,6 +54,20 @@ spec:
 - `Default` (default): the cluster's default endpoint, the same one `gcloud container clusters get-credentials` uses.
 - `DNS`: the cluster's DNS-based endpoint. It must be enabled for external traffic (`gcloud container clusters update --enable-dns-access`); needs no VPC connectivity, and is unaffected by credential rotation.
 - `PrivateIP`: the cluster's private endpoint. The controller must be able to reach the cluster's VPC.
+
+## Retries
+
+Failed syncs are retried per object with exponential backoff (controller-runtime's default): 5ms after the first failure, doubling after each failure, up to 1000s (~16.7 minutes). The backoff resets when the sync succeeds.
+
+| Consecutive failures | Delay before next retry |
+|---|---|
+| 1 | 5 ms |
+| 10 | ~2.6 s |
+| 14 | ~41 s |
+| 16 | ~2.7 min |
+| 18 | ~10.9 min |
+| 19+ | ~16.7 min (cap) |
+
 ## Run Integration test
 
 ```bash

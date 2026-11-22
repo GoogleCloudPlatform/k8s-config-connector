@@ -1,0 +1,8 @@
+# Expected KRMSyncer status: the TestCRD fails to sync (its destination object
+# does not exist).
+failedObjects: 1
+conditions:
+- type: Ready
+  status: "False"
+  reason: SyncFailed
+  message: "destination object missing: TestCRD.e2e.gkelabs.io. See the controller logs for details."

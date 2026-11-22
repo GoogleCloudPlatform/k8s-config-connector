@@ -1,0 +1,19 @@
+# Status mode (syncFields defaults to status) only updates objects that already
+# exist on the destination. No destination object is created for this case, so
+# the TestCRD fails to sync and is reported in the KRMSyncer status.
+apiVersion: syncer.gkelabs.io/v1alpha1
+kind: KRMSyncer
+metadata:
+  name: sync-failed-syncer
+  namespace: default
+spec:
+  mode: push
+  remote:
+    gkeCluster:
+      project: test-project
+      location: us-central1
+      name: cluster-b
+  rules:
+  - group: e2e.gkelabs.io
+    version: v1alpha1
+    kind: TestCRD

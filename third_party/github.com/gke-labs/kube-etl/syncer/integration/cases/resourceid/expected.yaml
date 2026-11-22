@@ -4,6 +4,9 @@ metadata:
   name: integration-test
   namespace: default
 spec:
+  # Not in syncFields: the destination value is kept.
+  foo: "dest-value"
+  # In syncFields: synced from the source.
   resourceID: "generated-id"
 status:
   bar: "initial-status"

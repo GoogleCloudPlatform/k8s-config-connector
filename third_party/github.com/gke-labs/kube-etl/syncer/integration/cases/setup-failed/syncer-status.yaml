@@ -1,0 +1,6 @@
+# Expected KRMSyncer status: setup fails because of the invalid rule.
+conditions:
+- type: Ready
+  status: "False"
+  reason: SetupFailed
+  message: "invalid rule */v1alpha1 TestCRD: globbing ('*') is only allowed for version and kind if group is KCC (e.g. *.cnrm.cloud.google.com)"

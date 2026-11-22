@@ -1,0 +1,6 @@
+# Expected KRMSyncer status: all matching objects synced.
+failedObjects: 0
+conditions:
+- type: Ready
+  status: "True"
+  reason: Syncing

@@ -146,20 +146,16 @@ Next step: config-connector ha setup --contexts=gke_proj-a_us-central1_cluster-a
 `,
 		},
 		{
-			name: "detected on all clusters",
+			name: "healthy",
 			handles: func(t *testing.T) []*clusterHandle {
-				return []*clusterHandle{
-					newFakeClusterHandle(t, testStatusContextA, configured.DeepCopy()),
-					newFakeClusterHandle(t, testStatusContextB, configured.DeepCopy()),
-				}
+				return healthyHAFixtures().handles(t)
 			},
-			wantState: haStateDetected,
+			wantState: haStateHealthy,
 			want: `CONTEXT                           PROJECT  LOCATION     HA
 gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Configured
 gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Configured
 
-HA Status: DETECTED
-Note: leadership and data sync status are not reported yet.
+HA Status: HEALTHY
 `,
 		},
 		{
@@ -240,7 +236,7 @@ Problems:
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			report := executeStatus(context.Background(), tc.handles(t))
+			report := executeStatus(context.Background(), tc.handles(t), testNow)
 			var out bytes.Buffer
 			report.render(&out)
 

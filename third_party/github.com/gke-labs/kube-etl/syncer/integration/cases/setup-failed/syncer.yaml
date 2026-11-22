@@ -1,0 +1,17 @@
+# Globs are only allowed for KCC groups, so setup fails and nothing is synced.
+apiVersion: syncer.gkelabs.io/v1alpha1
+kind: KRMSyncer
+metadata:
+  name: setup-failed-syncer
+  namespace: default
+spec:
+  mode: push
+  remote:
+    gkeCluster:
+      project: test-project
+      location: us-central1
+      name: cluster-b
+  rules:
+  - group: "*"
+    version: v1alpha1
+    kind: TestCRD

@@ -88,7 +88,7 @@ func runStatus(ctx context.Context, opts statusOptions) error {
 		return err
 	}
 
-	report := executeStatus(ctx, handles)
+	report := executeStatus(ctx, handles, time.Now())
 
 	stdout := opts.stdout
 	if stdout == nil {
@@ -102,13 +102,14 @@ func runStatus(ctx context.Context, opts statusOptions) error {
 	return nil
 }
 
-// executeStatus inspects every cluster and builds the HA status report.
-func executeStatus(ctx context.Context, handles []*clusterHandle) *statusReport {
+// executeStatus inspects every cluster and builds the HA status report. now is used to tell
+// whether the lease has expired; it is a parameter so tests are deterministic.
+func executeStatus(ctx context.Context, handles []*clusterHandle, now time.Time) *statusReport {
 	clusters := make([]*clusterStatus, 0, len(handles))
 	for _, h := range handles {
 		clusters = append(clusters, inspectCluster(ctx, h))
 	}
-	return buildStatusReport(clusters)
+	return buildStatusReport(clusters, now)
 }
 
 // clusterHA is the value of the HA column for a cluster.
@@ -125,6 +126,8 @@ const (
 type clusterStatus struct {
 	gke gkeClusterInfo
 	ha  clusterHA
+	// state is the cluster's HA objects; set only when HA is configured.
+	state *clusterHAState
 	// err is the error from fetchClusterHAState; nil when HA is configured.
 	err error
 }
@@ -143,7 +146,7 @@ func inspectCluster(ctx context.Context, h *clusterHandle) *clusterStatus {
 	ctx, cancel := context.WithTimeout(ctx, statusClusterTimeout)
 	defer cancel()
 
-	_, c.err = fetchClusterHAState(ctx, h)
+	c.state, c.err = fetchClusterHAState(ctx, h)
 
 	var notConfigured *multiClusterLeaseNotConfiguredError
 	var notFound *configConnectorNotFoundError
@@ -164,10 +167,9 @@ type haState string
 
 const (
 	haStateNotDetected haState = "NOT DETECTED"
-	// haStateDetected means HA is configured on every cluster. Leadership and data sync are
-	// not checked yet; once they are, this becomes HEALTHY or ERROR.
-	haStateDetected haState = "DETECTED"
-	haStateError    haState = "ERROR"
+	// haStateHealthy means HA is configured on every cluster and no problem was found.
+	haStateHealthy haState = "HEALTHY"
+	haStateError   haState = "ERROR"
 )
 
 // statusReport is the overall multi-cluster HA status across the inspected clusters.
@@ -177,7 +179,7 @@ type statusReport struct {
 	problems []string
 }
 
-func buildStatusReport(clusters []*clusterStatus) *statusReport {
+func buildStatusReport(clusters []*clusterStatus, now time.Time) *statusReport {
 	r := &statusReport{clusters: clusters}
 
 	var configured, notConfigured []*clusterStatus
@@ -199,11 +201,20 @@ func buildStatusReport(clusters []*clusterStatus) *statusReport {
 		}
 	}
 
+	// When every cluster is configured, check the election and data sync across them.
+	if len(configured) == len(clusters) {
+		states := make([]*clusterHAState, 0, len(configured))
+		for _, c := range configured {
+			states = append(states, c.state)
+		}
+		r.problems = append(r.problems, haProblems(states, now)...)
+	}
+
 	switch {
 	case len(r.problems) > 0:
 		r.state = haStateError
 	case len(configured) > 0:
-		r.state = haStateDetected
+		r.state = haStateHealthy
 	default:
 		r.state = haStateNotDetected
 	}
@@ -228,8 +239,6 @@ func (r *statusReport) render(w io.Writer) {
 			contexts = append(contexts, c.gke.contextName)
 		}
 		fmt.Fprintf(w, "Next step: config-connector ha setup --%s=%s --%s=<BUCKET>\n", contextsFlag, strings.Join(contexts, ","), bucketFlag)
-	case haStateDetected:
-		fmt.Fprintln(w, "Note: leadership and data sync status are not reported yet.")
 	case haStateError:
 		fmt.Fprintln(w, "Problems:")
 		for _, p := range r.problems {

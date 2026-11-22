@@ -30,8 +30,13 @@ import (
 	krmv1alpha1 "github.com/gke-labs/kube-etl/syncer/api/v1alpha1"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/api/meta"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/transport"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
 // RemoteConfigProvider builds connections to the remote cluster of a KRMSyncer.
@@ -334,4 +339,177 @@ func googleAPIErrorMessage(body []byte) string {
 		msg = msg[:maxLen] + "..."
 	}
 	return msg
+}
+
+// remoteHealth tracks the health of a remote cluster, based on the responses
+// to the requests sent to it through healthTransport:
+//   - whether it is reachable: a cluster-wide signal (RemoteUnreachable);
+//   - which resources it refuses to serve (403 or 5xx), reported per kind.
+type remoteHealth struct {
+	mu  sync.Mutex
+	err error // why the remote is unreachable; nil if reachable
+	// failedResources are the resources whose latest request failed with
+	// 403 or 5xx, and the reason, e.g. "Forbidden".
+	failedResources map[schema.GroupVersionResource]string
+	// mapper maps resources to kinds. Set once the remote cluster is created.
+	mapper meta.RESTMapper
+}
+
+// markUnreachable records that the remote is unreachable because of err.
+func (h *remoteHealth) markUnreachable(err error) {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+	h.err = err // keep the latest error for the status message
+}
+
+// markReachable records that the remote is reachable.
+func (h *remoteHealth) markReachable() {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+	h.err = nil
+}
+
+// unreachable returns why the remote is unreachable, or nil if it is reachable.
+func (h *remoteHealth) unreachable() error {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+	return h.err
+}
+
+// markResource records the result of the latest request for a resource: the
+// reason it failed (e.g. "Forbidden"), or "" if it succeeded.
+func (h *remoteHealth) markResource(gvr schema.GroupVersionResource, reason string) {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+	if reason == "" {
+		delete(h.failedResources, gvr)
+		return
+	}
+	if h.failedResources == nil {
+		h.failedResources = make(map[schema.GroupVersionResource]string)
+	}
+	h.failedResources[gvr] = reason
+}
+
+// setMapper sets the mapper used to map failed resources to kinds.
+func (h *remoteHealth) setMapper(mapper meta.RESTMapper) {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+	h.mapper = mapper
+}
+
+// failedKinds returns the kinds whose latest request failed with 403 or 5xx,
+// and the reason. Resources that cannot be mapped to a kind are logged and
+// skipped.
+func (h *remoteHealth) failedKinds() map[schema.GroupVersionKind]string {
+	h.mu.Lock()
+	mapper := h.mapper
+	failed := make(map[schema.GroupVersionResource]string, len(h.failedResources))
+	for gvr, reason := range h.failedResources {
+		failed[gvr] = reason
+	}
+	h.mu.Unlock()
+
+	kinds := make(map[schema.GroupVersionKind]string, len(failed))
+	if mapper == nil {
+		return kinds
+	}
+	for gvr, reason := range failed {
+		gvk, err := mapper.KindFor(gvr)
+		if err != nil {
+			log.Log.V(1).Info("Cannot report a failed remote resource: no kind found", "resource", gvr, "reason", reason, "error", err)
+			continue
+		}
+		kinds[gvk] = reason
+	}
+	return kinds
+}
+
+// wrap wraps rt (e.g. a rest.Config transport) to update h from each response.
+func (h *remoteHealth) wrap(rt http.RoundTripper) http.RoundTripper {
+	return &healthTransport{base: rt, health: h}
+}
+
+// healthTransport reports the outcome of each request to a remote cluster to
+// a remoteHealth:
+//   - a network error (except a request cancelled by the caller, e.g. a
+//     stopped watch) or a 401 marks the remote unreachable;
+//   - any other response marks it reachable;
+//   - for requests on a resource (e.g. a list or watch of TestCRDs), a 403 or
+//     5xx marks that resource failed, and a 2xx clears it. These are usually
+//     about one kind (e.g. a missing permission, a broken webhook or
+//     aggregated API), not the whole remote.
+//
+// Recording a response costs a mutex, so requests to a healthy remote cost
+// little.
+type healthTransport struct {
+	base   http.RoundTripper
+	health *remoteHealth
+}
+
+var _ http.RoundTripper = &healthTransport{}
+
+func (t *healthTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	resp, err := t.base.RoundTrip(req)
+	switch {
+	case err != nil:
+		if errors.Is(err, context.Canceled) || errors.Is(req.Context().Err(), context.Canceled) {
+			break
+		}
+		t.health.markUnreachable(err)
+	case resp.StatusCode == http.StatusUnauthorized:
+		t.health.markUnreachable(errors.New(http.StatusText(http.StatusUnauthorized)))
+	default:
+		t.health.markReachable()
+		gvr, ok := requestResource(req.URL.Path)
+		if !ok {
+			break
+		}
+		switch {
+		case resp.StatusCode >= 200 && resp.StatusCode < 300:
+			t.health.markResource(gvr, "")
+		case resp.StatusCode == http.StatusForbidden, resp.StatusCode >= 500:
+			t.health.markResource(gvr, statusReason(resp.StatusCode))
+		}
+	}
+	return resp, err
+}
+
+// WrappedRoundTripper lets client-go reach the underlying transport (e.g. to
+// close idle connections).
+func (t *healthTransport) WrappedRoundTripper() http.RoundTripper { return t.base }
+
+// requestResource returns the resource of a Kubernetes API request path, e.g.
+// /apis/g/v/namespaces/ns/rs/name -> g/v rs, or false if the path is not about
+// a resource (e.g. discovery).
+func requestResource(path string) (schema.GroupVersionResource, bool) {
+	segs := strings.Split(strings.Trim(path, "/"), "/")
+	var gvr schema.GroupVersionResource
+	var rest []string
+	switch {
+	case len(segs) >= 3 && segs[0] == "api":
+		gvr.Version, rest = segs[1], segs[2:]
+	case len(segs) >= 4 && segs[0] == "apis":
+		gvr.Group, gvr.Version, rest = segs[1], segs[2], segs[3:]
+	default:
+		return gvr, false
+	}
+	if len(rest) >= 3 && rest[0] == "namespaces" {
+		rest = rest[2:]
+	}
+	gvr.Resource = rest[0]
+	return gvr, gvr.Resource != ""
+}
+
+// statusReason returns the Kubernetes API reason of an HTTP status code, e.g.
+// "Forbidden" or "InternalError", or the HTTP status text if it has none.
+func statusReason(code int) string {
+	err := apierrors.NewGenericServerResponse(code, "", schema.GroupResource{}, "", "", 0, false)
+	if reason := apierrors.ReasonForError(err); reason != metav1.StatusReasonUnknown {
+		return string(reason)
+	}
+	if s := http.StatusText(code); s != "" {
+		return s
+	}
+	return fmt.Sprintf("HTTP status %d", code)
 }
