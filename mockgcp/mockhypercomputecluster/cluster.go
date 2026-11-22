@@ -92,9 +92,15 @@ func (s *hypercomputecluster) CreateCluster(ctx context.Context, req *pb.CreateC
 		}
 	}
 
-	// Populate login nodes instances suffix
+	// Populate login nodes instances suffix and default bootDisk
 	if obj.GetOrchestrator().GetSlurm().GetLoginNodes() != nil {
 		loginNodes := obj.Orchestrator.GetSlurm().LoginNodes
+		if loginNodes.BootDisk == nil {
+			loginNodes.BootDisk = &pb.BootDisk{
+				SizeGb: 100,
+				Type:   "pd-balanced",
+			}
+		}
 		loginNodes.Instances = []*pb.ComputeInstance{
 			{
 				Instance: fmt.Sprintf("projects/%s/zones/%s/instances/%s-login-001", name.Project.ID, loginNodes.GetZone(), name.Cluster),
@@ -116,6 +122,10 @@ func (s *hypercomputecluster) CreateCluster(ctx context.Context, req *pb.CreateC
 	}
 	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
+		obj.Reconciling = false
+		if err := s.storage.Update(ctx, fqn, obj); err != nil {
+			return nil, err
+		}
 		return obj, nil
 	})
 }
@@ -163,7 +173,20 @@ func (s *hypercomputecluster) UpdateCluster(ctx context.Context, req *pb.UpdateC
 		case "description":
 			obj.Description = req.GetCluster().GetDescription()
 		case "orchestrator", "orchestrator.slurm.node_sets":
+			prevLoginNodes := obj.GetOrchestrator().GetSlurm().GetLoginNodes()
 			obj.Orchestrator = req.GetCluster().GetOrchestrator()
+			if obj.GetOrchestrator().GetSlurm().GetLoginNodes() != nil {
+				loginNodes := obj.Orchestrator.GetSlurm().LoginNodes
+				if loginNodes.BootDisk == nil {
+					loginNodes.BootDisk = &pb.BootDisk{
+						SizeGb: 100,
+						Type:   "pd-balanced",
+					}
+				}
+				if len(loginNodes.Instances) == 0 && prevLoginNodes != nil {
+					loginNodes.Instances = prevLoginNodes.Instances
+				}
+			}
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)
 		}
@@ -186,6 +209,10 @@ func (s *hypercomputecluster) UpdateCluster(ctx context.Context, req *pb.UpdateC
 
 	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
+		obj.Reconciling = false
+		if err := s.storage.Update(ctx, fqn, obj); err != nil {
+			return nil, err
+		}
 		return obj, nil
 	})
 }

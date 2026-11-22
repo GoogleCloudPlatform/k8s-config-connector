@@ -23,10 +23,17 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "hypercomputecluster.googleapis.com") {
+		return
+	}
 	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".metadata.createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".metadata.endTime", mockgcpregistry.PlaceholderTimestamp)
+
+	// uid is an unmodeled GCP system field returned by real GCP but not in the v1 protobuf schema.
+	replacements.RemovePath(".uid")
+	replacements.RemovePath(".response.uid")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
