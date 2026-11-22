@@ -233,7 +233,6 @@ BLOCKED_KINDS=(
     "LustreDirectoryPolicy"
     "LustreMirror"
     "ManagedKafkaSchemaRegistry"
-    "MapManagementMapConfig"
     "MapmanagementMapContextConfig"
     "MapsPlatformDatasetsDataset"
     "MarketingPlatformAdminAnalyticsAccountLink"
