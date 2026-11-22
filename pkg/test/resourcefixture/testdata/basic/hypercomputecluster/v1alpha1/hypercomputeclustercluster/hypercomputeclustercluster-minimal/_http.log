@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/hccmin?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -65,10 +66,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.hypercomputecluster.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/clusters/hccmin",
     "verb": "create"
   },
@@ -99,6 +102,31 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "progress": {
+      "steps": [
+        {
+          "createOrchestrator": {},
+          "state": "DONE"
+        },
+        {
+          "createLoginNode": {},
+          "state": "DONE"
+        },
+        {
+          "createNodeset": {},
+          "state": "DONE"
+        },
+        {
+          "createPartition": {},
+          "state": "DONE"
+        },
+        {
+          "checkClusterHealth": {},
+          "state": "DONE"
+        }
+      ]
+    },
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/clusters/hccmin",
     "verb": "create"
   },
@@ -125,6 +153,10 @@ X-Xss-Protection: 0
     "orchestrator": {
       "slurm": {
         "loginNodes": {
+          "bootDisk": {
+            "sizeGb": "100",
+            "type": "pd-balanced"
+          },
           "count": "1",
           "enableOsLogin": true,
           "enablePublicIps": true,
@@ -138,7 +170,7 @@ X-Xss-Protection: 0
         }
       }
     },
-    "reconciling": true,
+    "reconciling": false,
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -181,6 +213,10 @@ X-Xss-Protection: 0
   "orchestrator": {
     "slurm": {
       "loginNodes": {
+        "bootDisk": {
+          "sizeGb": "100",
+          "type": "pd-balanced"
+        },
         "count": "1",
         "enableOsLogin": true,
         "enablePublicIps": true,
@@ -194,12 +230,13 @@ X-Xss-Protection: 0
       }
     }
   },
-  "reconciling": true,
+  "reconciling": false,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
+# Phase: DELETE
 DELETE https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/hccmin?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -216,10 +253,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.hypercomputecluster.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/clusters/hccmin",
     "verb": "delete"
   },
@@ -250,6 +289,27 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "progress": {
+      "steps": [
+        {
+          "deleteOrchestrator": {},
+          "state": "DONE"
+        },
+        {
+          "deleteNodeset": {},
+          "state": "DONE"
+        },
+        {
+          "deletePartition": {},
+          "state": "DONE"
+        },
+        {
+          "deleteLoginNode": {},
+          "state": "DONE"
+        }
+      ]
+    },
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/clusters/hccmin",
     "verb": "delete"
   },

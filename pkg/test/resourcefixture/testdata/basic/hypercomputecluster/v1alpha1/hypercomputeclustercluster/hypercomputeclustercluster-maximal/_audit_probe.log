@@ -1,0 +1,86 @@
+GET https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/hccmax?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "computeResources": {
+    "comp-resource-1": {
+      "config": {
+        "newOnDemandInstances": {
+          "machineType": "n2-standard-4",
+          "zone": "us-central1-a"
+        }
+      }
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated Maximal Hypercompute Cluster Description",
+  "labels": {
+    "foo": "bar-updated"
+  },
+  "name": "projects/${projectId}/locations/us-central1/clusters/hccmax",
+  "networkResources": {
+    "net-resource-1": {
+      "config": {
+        "existingNetwork": {
+          "network": "projects/${projectId}/global/networks/default",
+          "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+        }
+      },
+      "network": {
+        "network": "projects/${projectId}/global/networks/default",
+        "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+      }
+    }
+  },
+  "orchestrator": {
+    "slurm": {
+      "defaultPartition": "partition1",
+      "loginNodes": {
+        "bootDisk": {
+          "sizeGb": "100",
+          "type": "pd-balanced"
+        },
+        "count": "1",
+        "enableOsLogin": true,
+        "enablePublicIps": true,
+        "instances": [
+          {
+            "instance": "projects/${projectId}/zones/us-central1-a/instances/hccmax-login-001"
+          }
+        ],
+        "machineType": "e2-standard-4",
+        "zone": "us-central1-a"
+      },
+      "nodeSets": [
+        {
+          "computeId": "comp-resource-1",
+          "computeInstance": {
+            "bootDisk": {
+              "sizeGb": "100",
+              "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard"
+            },
+            "labels": {
+              "nodeset-label": "test-updated"
+            },
+            "startupScript": "#!/bin/bash\necho hello"
+          },
+          "id": "nodeset1",
+          "staticNodeCount": "1"
+        }
+      ],
+      "partitions": [
+        {
+          "id": "partition1",
+          "nodeSetIds": [
+            "nodeset1"
+          ]
+        }
+      ]
+    }
+  },
+  "reconciling": false,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

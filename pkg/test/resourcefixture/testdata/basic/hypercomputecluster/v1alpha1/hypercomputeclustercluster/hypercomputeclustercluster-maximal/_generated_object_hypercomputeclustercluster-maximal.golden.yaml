@@ -70,6 +70,7 @@ status:
     createTime: "1970-01-01T00:00:00Z"
     orchestrator:
       slurm:
-        loginNodes: {}
-    reconciling: true
+        loginNodes:
+          instances:
+          - instance: projects/${projectId}/zones/us-central1-a/instances/hccmax-login-001
     updateTime: "1970-01-01T00:00:00Z"

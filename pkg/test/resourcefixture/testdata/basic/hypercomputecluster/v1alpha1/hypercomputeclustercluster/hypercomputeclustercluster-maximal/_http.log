@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/hccmax?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -104,10 +105,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.hypercomputecluster.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/clusters/hccmax",
     "verb": "create"
   },
@@ -138,6 +141,39 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "progress": {
+      "steps": [
+        {
+          "createOrchestrator": {},
+          "state": "DONE"
+        },
+        {
+          "createLoginNode": {},
+          "state": "DONE"
+        },
+        {
+          "createNodeset": {
+            "nodesets": [
+              "nodeset1"
+            ]
+          },
+          "state": "DONE"
+        },
+        {
+          "createPartition": {
+            "partitions": [
+              "partition1"
+            ]
+          },
+          "state": "DONE"
+        },
+        {
+          "checkClusterHealth": {},
+          "state": "DONE"
+        }
+      ]
+    },
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/clusters/hccmax",
     "verb": "create"
   },
@@ -178,6 +214,10 @@ X-Xss-Protection: 0
       "slurm": {
         "defaultPartition": "partition1",
         "loginNodes": {
+          "bootDisk": {
+            "sizeGb": "100",
+            "type": "pd-balanced"
+          },
           "count": "1",
           "enableOsLogin": true,
           "enablePublicIps": true,
@@ -216,7 +256,7 @@ X-Xss-Protection: 0
         ]
       }
     },
-    "reconciling": true,
+    "reconciling": false,
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -273,6 +313,10 @@ X-Xss-Protection: 0
     "slurm": {
       "defaultPartition": "partition1",
       "loginNodes": {
+        "bootDisk": {
+          "sizeGb": "100",
+          "type": "pd-balanced"
+        },
         "count": "1",
         "enableOsLogin": true,
         "enablePublicIps": true,
@@ -311,12 +355,13 @@ X-Xss-Protection: 0
       ]
     }
   },
-  "reconciling": true,
+  "reconciling": false,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
+# Phase: UPDATE
 PATCH https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/hccmax?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels%2Corchestrator
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -345,6 +390,10 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
           "network": "projects/${projectId}/global/networks/default",
           "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
         }
+      },
+      "network": {
+        "network": "projects/${projectId}/global/networks/default",
+        "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       }
     }
   },
@@ -352,6 +401,10 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
     "slurm": {
       "defaultPartition": "partition1",
       "loginNodes": {
+        "bootDisk": {
+          "sizeGb": "100",
+          "type": "pd-balanced"
+        },
         "count": "1",
         "enableOsLogin": true,
         "enablePublicIps": true,
@@ -398,10 +451,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.hypercomputecluster.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/clusters/hccmax",
     "verb": "update"
   },
@@ -432,6 +487,35 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "progress": {
+      "steps": [
+        {
+          "state": "DONE",
+          "updateOrchestrator": {}
+        },
+        {
+          "state": "DONE",
+          "updateLoginNode": {}
+        },
+        {
+          "state": "DONE",
+          "updateNodeset": {
+            "nodesets": [
+              "nodeset1"
+            ]
+          }
+        },
+        {
+          "state": "DONE",
+          "updatePartition": {
+            "partitions": [
+              "partition1"
+            ]
+          }
+        }
+      ]
+    },
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/clusters/hccmax",
     "verb": "update"
   },
@@ -472,9 +556,18 @@ X-Xss-Protection: 0
       "slurm": {
         "defaultPartition": "partition1",
         "loginNodes": {
+          "bootDisk": {
+            "sizeGb": "100",
+            "type": "pd-balanced"
+          },
           "count": "1",
           "enableOsLogin": true,
           "enablePublicIps": true,
+          "instances": [
+            {
+              "instance": "projects/${projectId}/zones/us-central1-a/instances/hccmax-login-001"
+            }
+          ],
           "machineType": "e2-standard-4",
           "zone": "us-central1-a"
         },
@@ -505,7 +598,7 @@ X-Xss-Protection: 0
         ]
       }
     },
-    "reconciling": true,
+    "reconciling": false,
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -562,9 +655,18 @@ X-Xss-Protection: 0
     "slurm": {
       "defaultPartition": "partition1",
       "loginNodes": {
+        "bootDisk": {
+          "sizeGb": "100",
+          "type": "pd-balanced"
+        },
         "count": "1",
         "enableOsLogin": true,
         "enablePublicIps": true,
+        "instances": [
+          {
+            "instance": "projects/${projectId}/zones/us-central1-a/instances/hccmax-login-001"
+          }
+        ],
         "machineType": "e2-standard-4",
         "zone": "us-central1-a"
       },
@@ -595,12 +697,13 @@ X-Xss-Protection: 0
       ]
     }
   },
-  "reconciling": true,
+  "reconciling": false,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
+# Phase: DELETE
 DELETE https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/hccmax?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -617,10 +720,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.hypercomputecluster.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/clusters/hccmax",
     "verb": "delete"
   },
@@ -651,6 +756,35 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "progress": {
+      "steps": [
+        {
+          "deleteOrchestrator": {},
+          "state": "DONE"
+        },
+        {
+          "deleteNodeset": {
+            "nodesets": [
+              "nodeset1"
+            ]
+          },
+          "state": "DONE"
+        },
+        {
+          "deletePartition": {
+            "partitions": [
+              "partition1"
+            ]
+          },
+          "state": "DONE"
+        },
+        {
+          "deleteLoginNode": {},
+          "state": "DONE"
+        }
+      ]
+    },
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/clusters/hccmax",
     "verb": "delete"
   },
