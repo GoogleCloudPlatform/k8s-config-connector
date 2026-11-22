@@ -506,6 +506,11 @@ func unmarshalDynamicJSON(reg *descriptorRegistry, msgDesc protoreflect.MessageD
 	// Replace KCC's epoch millisecond timestamp placeholder ("123456789") with RFC3339
 	// when validating against protobuf schema expecting google.protobuf.Timestamp.
 	s = strings.ReplaceAll(s, `"123456789"`, `"1973-11-29T21:33:09Z"`)
+	// Replace KCC's normalized numeric placeholders ("${projectNumber}", "${organizationID}",
+	// "${folderID}") which may be used in int64/uint64 protobuf fields.
+	s = strings.ReplaceAll(s, `"${projectNumber}"`, `"123456789012"`)
+	s = strings.ReplaceAll(s, `"${organizationID}"`, `"123456789012"`)
+	s = strings.ReplaceAll(s, `"${folderID}"`, `"123456789012"`)
 	dynMsg := dynamicpb.NewMessage(msgDesc)
 	switch msgDesc.FullName() {
 	case "google.cloud.orchestration.airflow.service.v1.Environment",
@@ -516,7 +521,8 @@ func unmarshalDynamicJSON(reg *descriptorRegistry, msgDesc protoreflect.MessageD
 		"google.cloud.sql.v1.BackupRun",
 		"google.cloud.compute.v1.SignedUrlKey",
 		"google.cloud.networkmanagement.v1.VpcFlowLogsConfig",
-		"google.cloud.saasplatform.saasservicemgmt.v1beta1.Saas":
+		"google.cloud.saasplatform.saasservicemgmt.v1beta1.Saas",
+		"google.cloud.storageinsights.v1.DatasetConfig":
 		// Discard unknown fields (e.g. databaseVersion on BackupRun, source on QaScorecard, conditions on Release) returned in real GCP responses
 		// but absent in vendored googleapis proto schemas.
 		discardUnknown = true

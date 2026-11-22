@@ -7,8 +7,9 @@ spec:
     external: ${projectId}
   location: us-central1
   description: "Updated Maximal Storage Insights Dataset Config"
+  # GCP returns 400 "Invalid field_mask found. 'labels' field is not editable." when updating labels.
   labels:
-    foo: baz
+    foo: bar
   sourceProjects:
     projectNumbers:
       - ${projectNumber}

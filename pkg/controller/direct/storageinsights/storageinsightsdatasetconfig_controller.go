@@ -101,7 +101,13 @@ func (m *storageInsightsDatasetConfigModel) AdapterForObject(ctx context.Context
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	desired.Labels = label.NewGCPLabelsFromK8sLabels(obj.GetLabels())
+	desired.Labels = label.GCPLabels(obj)
+	for k, v := range obj.Spec.Labels {
+		if desired.Labels == nil {
+			desired.Labels = make(map[string]string)
+		}
+		desired.Labels[k] = v
+	}
 
 	return &storageInsightsDatasetConfigAdapter{
 		gcpClient: gcpClient,
