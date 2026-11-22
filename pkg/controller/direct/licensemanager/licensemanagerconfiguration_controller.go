@@ -93,7 +93,16 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, mapCtx.Err()
 	}
 
-	desiredPb.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
+	labels := label.NewGCPLabelsFromK8sLabels(u.GetLabels())
+	if labels == nil {
+		labels = make(map[string]string)
+	}
+	for k, v := range obj.Spec.Labels {
+		labels[k] = v
+	}
+	if len(labels) > 0 {
+		desiredPb.Labels = labels
+	}
 
 	return &LicenseManagerConfigurationAdapter{
 		id:        identity.(*krm.LicenseManagerConfigurationIdentity),

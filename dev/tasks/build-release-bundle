@@ -227,7 +227,6 @@ BLOCKED_KINDS=(
     "InfraManagerDeploymentGroup"
     "KMSEKMConnection"
     "KMSEkmConnection"
-    "LicenseManagerConfiguration"
     "LiveStreamAsset"
     "LiveStreamDVRSession"
     "LustreDirectoryPolicy"
