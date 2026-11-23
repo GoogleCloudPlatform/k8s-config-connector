@@ -43,6 +43,7 @@ func newTestSetupOptions() setupOptions {
 	opts.bucket = "my-ha-bucket"
 	opts.mclImage = testMCLImage
 	opts.syncerImage = testSyncerImage
+	opts.wait = false
 	return opts
 }
 
@@ -281,6 +282,7 @@ func TestExecuteSetupUsesTheDefaultImagesWhenNoImageIsSet(t *testing.T) {
 	runner := &recordingCommandRunner{}
 	// Only the flags that have no default are set.
 	opts := newSetupOptions()
+	opts.wait = false
 	opts.contexts = []string{handles[0].contextName, handles[1].contextName}
 	opts.bucket = "my-ha-bucket"
 	if err := opts.validate(); err != nil {
@@ -552,6 +554,7 @@ func TestExecuteSetupDryRunPrintsPlannedK8sActionsWithoutMutating(t *testing.T) 
 		fmt.Sprintf(`Lease bucket gs://my-ha-bucket already exists; reusing it.
 [dry-run] cluster "gke_proj-a_us-central1_cluster-a": apply %[1]d HA manifests and configure spec.experiments.multiClusterLease (gkeCluster="projects/proj-a/locations/us-central1/clusters/cluster-a", lease=cnrm-system/kcc-multicluster-lease)
 [dry-run] cluster "gke_proj-b_us-east1_cluster-b": apply %[1]d HA manifests and configure spec.experiments.multiClusterLease (gkeCluster="projects/proj-b/locations/us-east1/clusters/cluster-b", lease=cnrm-system/kcc-multicluster-lease)
+[dry-run] would wait for multi-cluster HA to become healthy
 `, manifestCount)
 	if stdout.String() != wantOutput {
 		t.Fatalf("got dry-run output:\n%s\nwant:\n%s", stdout.String(), wantOutput)

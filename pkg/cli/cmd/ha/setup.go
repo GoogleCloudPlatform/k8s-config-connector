@@ -46,6 +46,17 @@ type setupOptions struct {
 	yamlOnly                   bool
 	dryRun                     bool
 
+	wait        bool
+	waitTimeout time.Duration
+
+	// waitPollInterval controls how long setup waits between health polls during wait.
+	// If zero, defaults to defaultWaitPollInterval (5s).
+	waitPollInterval time.Duration
+	// statusFunc is used to fetch the status report during wait; defaults to executeStatus if nil.
+	statusFunc func(ctx context.Context, handles []*clusterHandle, now time.Time) *statusReport
+	// nowFunc returns the current time during wait; defaults to time.Now if nil.
+	nowFunc func() time.Time
+
 	// rolloutTimeout and rolloutPollInterval control how long setup waits for Deployments
 	// to roll out. If zero, defaults to defaultMCLRolloutTimeout (5m) and defaultMCLRolloutPollInterval (2s).
 	rolloutTimeout      time.Duration
@@ -56,6 +67,9 @@ const (
 	defaultLeaseName          = "kcc-multicluster-lease"
 	defaultLeaseNamespace     = "cnrm-system"
 	defaultLeaderEndpointType = operatorv1beta1.LeaderEndpointTypeDefault
+	defaultWait               = true
+	defaultWaitTimeout        = 5 * time.Minute
+	defaultWaitPollInterval   = 5 * time.Second
 
 	// The repositories that a Config Connector release publishes the multiclusterlease and
 	// krmsyncer images to.
@@ -70,6 +84,8 @@ func newSetupOptions() setupOptions {
 		mclImage:           defaultImage(defaultMCLImageRepo),
 		syncerImage:        defaultImage(defaultSyncerImageRepo),
 		leaderEndpointType: defaultLeaderEndpointType,
+		wait:               defaultWait,
+		waitTimeout:        defaultWaitTimeout,
 	}
 }
 
@@ -98,7 +114,7 @@ func NewSetupCmd() *cobra.Command {
 			if err := opts.validate(); err != nil {
 				return err
 			}
-
+			cmd.SilenceUsage = true
 			return runSetup(cmd.Context(), opts)
 		},
 	}
@@ -116,6 +132,8 @@ const (
 	leaderEndpointTypeFlag = "leader-endpoint-type"
 	yamlOnlyFlag           = "yaml-only"
 	dryRunFlag             = "dry-run"
+	waitFlag               = "wait"
+	waitTimeoutFlag        = "wait-timeout"
 )
 
 func (o *setupOptions) addFlags(flags *pflag.FlagSet) {
@@ -129,6 +147,8 @@ func (o *setupOptions) addFlags(flags *pflag.FlagSet) {
 	flags.StringVar(&o.leaderEndpointType, leaderEndpointTypeFlag, o.leaderEndpointType, "The control plane endpoint that standby clusters use to reach the leader's cluster: Default, DNS or PrivateIP.")
 	flags.BoolVar(&o.yamlOnly, yamlOnlyFlag, o.yamlOnly, "If true, print rendered manifests to stdout without applying them.")
 	flags.BoolVar(&o.dryRun, dryRunFlag, o.dryRun, "If true, print planned actions without mutating clusters or GCP resources.")
+	flags.BoolVar(&o.wait, waitFlag, o.wait, "Wait until leader election completes and HA is healthy across all clusters.")
+	flags.DurationVar(&o.waitTimeout, waitTimeoutFlag, o.waitTimeout, "Maximum duration to wait for multi-cluster HA to become healthy.")
 }
 
 func (o *setupOptions) readFlags(flags *pflag.FlagSet) {
@@ -188,6 +208,10 @@ func (o *setupOptions) validate() error {
 		errs = append(errs, fmt.Errorf("--%s %q is not a valid endpoint type; use Default, DNS or PrivateIP", leaderEndpointTypeFlag, o.leaderEndpointType))
 	}
 
+	if o.waitTimeout <= 0 {
+		errs = append(errs, fmt.Errorf("--%s must be greater than 0; got %s", waitTimeoutFlag, o.waitTimeout))
+	}
+
 	return errors.Join(errs...)
 }
 
@@ -236,7 +260,11 @@ func executeSetup(ctx context.Context, opts setupOptions, handles []*clusterHand
 		return err
 	}
 
-	return applyClusterConfigs(ctx, configurers, opts.stdout, opts.dryRun)
+	if err := applyClusterConfigs(ctx, configurers, opts.stdout, opts.dryRun); err != nil {
+		return err
+	}
+
+	return waitForHAHealthy(ctx, opts, configurers, handles)
 }
 
 func initClusterConfigurers(ctx context.Context, handles []*clusterHandle, opts setupOptions) ([]*clusterConfigurer, []gkeClusterInfo, error) {
