@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-dep-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -555,14 +556,14 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "filters": {
       "aspectTypes": [
-        "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-dep-${uniqueId}"
+        "projects/${projectNumber}/locations/us-central1/aspectTypes/aspecttype-dep-${uniqueId}"
       ],
       "changeTypes": [
         "CREATE",
         "UPDATE"
       ],
       "entryTypes": [
-        "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}"
+        "projects/${projectNumber}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}"
       ]
     },
     "labels": {
@@ -603,14 +604,14 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filters": {
     "aspectTypes": [
-      "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-dep-${uniqueId}"
+      "projects/${projectNumber}/locations/us-central1/aspectTypes/aspecttype-dep-${uniqueId}"
     ],
     "changeTypes": [
       1,
       2
     ],
     "entryTypes": [
-      "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}"
+      "projects/${projectNumber}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}"
     ]
   },
   "labels": {
@@ -631,6 +632,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: UPDATE
 GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectNumber}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -647,15 +649,19 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "configuredCapabilities": [
+    "projects/${projectNumber}/capabilities/app-management"
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "${projectId}",
+  "displayName": "Dependent Project",
   "etag": "abcdef0123A=",
+  "isManagementProject": true,
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectNumber}",
-  "parent": "organizations/${folderID}",
+  "parent": "organizations/${organizationID}",
   "projectId": "${projectId}",
   "state": 1,
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -753,7 +759,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "filters": {
       "aspectTypes": [
-        "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-dep-${uniqueId}"
+        "projects/${projectNumber}/locations/us-central1/aspectTypes/aspecttype-dep-${uniqueId}"
       ],
       "changeTypes": [
         "CREATE",
@@ -761,7 +767,7 @@ X-Xss-Protection: 0
         "DELETE"
       ],
       "entryTypes": [
-        "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}"
+        "projects/${projectNumber}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}"
       ]
     },
     "labels": {
@@ -802,7 +808,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filters": {
     "aspectTypes": [
-      "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-dep-${uniqueId}"
+      "projects/${projectNumber}/locations/us-central1/aspectTypes/aspecttype-dep-${uniqueId}"
     ],
     "changeTypes": [
       1,
@@ -810,7 +816,7 @@ X-Xss-Protection: 0
       3
     ],
     "entryTypes": [
-      "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}"
+      "projects/${projectNumber}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}"
     ]
   },
   "labels": {
@@ -831,6 +837,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: DELETE
 DELETE https://dataplex.googleapis.com/v1/projects/${projectId}/locations/us-central1/metadataFeeds/metadatafeed-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
