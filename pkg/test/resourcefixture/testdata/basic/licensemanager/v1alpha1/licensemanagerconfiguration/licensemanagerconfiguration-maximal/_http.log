@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://licensemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -37,7 +38,9 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
   "displayName": "maximal-license-manager-config",
   "labels": {
     "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "env": "test",
+    "managed-by-cnrm": "true",
+    "team": "eng"
   },
   "licenseType": 1,
   "nextBillingInfo": {
@@ -112,7 +115,9 @@ X-Xss-Protection: 0
     "displayName": "maximal-license-manager-config",
     "labels": {
       "cnrm-test": "true",
-      "managed-by-cnrm": "true"
+      "env": "test",
+      "managed-by-cnrm": "true",
+      "team": "eng"
     },
     "licenseType": "LICENSE_TYPE_PER_MONTH_PER_USER",
     "name": "projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}",
@@ -156,7 +161,9 @@ X-Xss-Protection: 0
   "displayName": "maximal-license-manager-config",
   "labels": {
     "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "env": "test",
+    "managed-by-cnrm": "true",
+    "team": "eng"
   },
   "licenseType": 1,
   "name": "projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}",
@@ -173,6 +180,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: UPDATE
 PATCH https://licensemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=currentBillingInfo%2CdisplayName%2CnextBillingInfo
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -187,7 +195,9 @@ X-Goog-Request-Params: configuration.name=projects%2F${projectId}%2Flocations%2F
   "displayName": "maximal-license-manager-config-updated",
   "labels": {
     "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "env": "test",
+    "managed-by-cnrm": "true",
+    "team": "eng"
   },
   "licenseType": 1,
   "name": "projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}",
@@ -263,7 +273,9 @@ X-Xss-Protection: 0
     "displayName": "maximal-license-manager-config-updated",
     "labels": {
       "cnrm-test": "true",
-      "managed-by-cnrm": "true"
+      "env": "test",
+      "managed-by-cnrm": "true",
+      "team": "eng"
     },
     "licenseType": "LICENSE_TYPE_PER_MONTH_PER_USER",
     "name": "projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}",
@@ -307,7 +319,9 @@ X-Xss-Protection: 0
   "displayName": "maximal-license-manager-config-updated",
   "labels": {
     "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "env": "test",
+    "managed-by-cnrm": "true",
+    "team": "eng"
   },
   "licenseType": 1,
   "name": "projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}",
@@ -324,6 +338,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: DELETE
 DELETE https://licensemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}

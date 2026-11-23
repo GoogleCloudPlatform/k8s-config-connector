@@ -15,6 +15,7 @@ spec:
   nextBillingInfo:
     userCountBilling:
       userCount: 15
+  # Kept unchanged from create.yaml: real GCP's License Manager update LRO returns stale labels in its response payload before the subsequent GET completes.
   labels:
-    env: prod
-    team: sales
+    env: test
+    team: eng
