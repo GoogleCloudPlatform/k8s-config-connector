@@ -212,7 +212,6 @@ BLOCKED_KINDS=(
     "FinancialServicesPredictionResult"
     "GDCHardwareManagementHardware"
     "GKEBackupBackupChannel"
-    "GKEHubFleet"
     "GKEMulticloudAttachedCluster"
     "GKEMultiCloudAWSNodePool"
     "GKEMultiCloudAzureClient"
