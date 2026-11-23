@@ -3715,7 +3715,6 @@
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.developerConnectSourceConfig.reference.branch" is not set in unstructured objects
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.developerConnectSourceConfig.reference.commitSha" is not set in unstructured objects
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.developerConnectSourceConfig.reference.refTag" is not set in unstructured objects
-[missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitSource.developerConnectConfig.gitRepositoryLink" is not set in unstructured objects
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitSource.dir" is not set in unstructured objects
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitSource.refTag" is not set in unstructured objects
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitSource.repo" is not set in unstructured objects

@@ -817,7 +817,7 @@ func GitSource_FromProto(mapCtx *direct.MapContext, in *pb.GitSource) *krm.GitSo
 	out.Repo = direct.LazyPtr(in.GetRepo())
 	out.Dir = direct.LazyPtr(in.GetDir())
 	// MISSING: CommitSha
-	out.DeveloperConnectConfig = DeveloperConnectConfig_FromProto(mapCtx, in.GetDeveloperConnectConfig())
+	// MISSING: DeveloperConnectConfig
 	out.RefTag = direct.LazyPtr(in.GetRefTag())
 	return out
 }
@@ -830,7 +830,7 @@ func GitSource_ToProto(mapCtx *direct.MapContext, in *krm.GitSource) *pb.GitSour
 	out.Repo = direct.ValueOf(in.Repo)
 	out.Dir = direct.ValueOf(in.Dir)
 	// MISSING: CommitSha
-	out.DeveloperConnectConfig = DeveloperConnectConfig_ToProto(mapCtx, in.DeveloperConnectConfig)
+	// MISSING: DeveloperConnectConfig
 	out.RefTag = direct.ValueOf(in.RefTag)
 	return out
 }

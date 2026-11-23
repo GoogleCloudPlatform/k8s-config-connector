@@ -100,6 +100,14 @@
   - `untriaged-bulk-generation`: Resolved with resolution `edited`.
   - Updated golden exceptions in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 
+### [2026-11-23] Finalize Step 1b compliance for DesignCenterCatalogTemplateRevision
+- **Context**: Addressed Step 1b review feedback on `DesignCenterCatalogTemplateRevision` (Issue #16241).
+- **Resolutions & Findings**:
+  - `deprecated-field` on `.spec.gitSource.developerConnectConfig`: Handwrote `GitSource` struct in `designcentercatalogtemplaterevision_types.go` without the deprecated `DeveloperConnectConfig` field, as `GitSource` is exclusive to `DesignCenterCatalogTemplateRevision` and superseded by `developerConnectSourceConfig`. Updated judgement queue resolution to `edited`.
+  - `well-known-proto-type`: Resolved all 18 open `google.protobuf.Value` entries in `apis/designcenter/judgement_queue.yaml` as `accepted` with explanatory notes confirming generated `struct Value` KRM representation and `Value_ToProto` mapper.
+  - Regenerated types, deepcopy, mappers, and CRD manifests via `./apis/designcenter/generate.sh`.
+  - Removed stale `.spec.gitSource.developerConnectConfig.gitRepositoryLink` exception from `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+
 
 
 

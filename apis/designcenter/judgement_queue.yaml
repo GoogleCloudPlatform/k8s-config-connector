@@ -163,7 +163,9 @@ entries:
     field: .spec.applicationParameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .spec.applicationTemplateRevisionSource
@@ -194,8 +196,8 @@ entries:
     reason: deprecated-field
     detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
     status: resolved
-    resolution: accepted
-    note: deprecated field in nested GitSource struct
+    resolution: edited
+    note: omitted deprecated developerConnectConfig field from handwritten GitSource struct
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .spec.location
@@ -217,7 +219,9 @@ entries:
     field: .spec.metadataInput.spec.ui.input.variables.KEY.alternateDefaults[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .spec.metadataInput.spec.ui.input.variables.KEY.properties
@@ -255,67 +259,89 @@ entries:
     field: .status.observedState.applicationTemplateRevision.applicationParameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.applicationTemplateRevision.components[].componentParameterSchema[].defaultValue
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.applicationTemplateRevision.components[].connectionsParameters[].parameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.applicationTemplateRevision.components[].connections[].destinationComponentParameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.applicationTemplateRevision.components[].connections[].sourceComponentParameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.applicationTemplateRevision.components[].parameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.applicationTemplateRevision.customTfvars[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.applicationTemplateRevision.customVariables[].defaultValue
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.applicationTemplateRevision.providers[].parameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.applicationTemplateRevision.serializedPolicies[].cloudControlConfigs[].parameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.helmChartMetadata.helmInput[].defaultValue
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.helmChartMetadata.helmInput[].nestedInputs
@@ -329,19 +355,25 @@ entries:
     field: .status.observedState.helmChartMetadata.helmOutput[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.inferredMetadata.templateMetadata.terraformInput[].defaultValue
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.inferredMetadata.templateMetadata.terraformOutput[].type
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.inferredMetadata.templateMetadata.uiMetadata.terraformUiInput.terraformUiInputs
@@ -363,13 +395,17 @@ entries:
     field: .status.observedState.templateMetadata.terraformInput[].defaultValue
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.templateMetadata.terraformOutput[].type
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterCatalogTemplateRevision
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.templateMetadata.uiMetadata.terraformUiInput.terraformUiInputs

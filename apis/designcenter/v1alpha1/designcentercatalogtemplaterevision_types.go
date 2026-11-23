@@ -50,6 +50,25 @@ type DeveloperConnectSourceConfig struct {
 	Dir *string `json:"dir,omitempty"`
 }
 
+// +kcc:proto=google.cloud.designcenter.v1.GitSource
+type GitSource struct {
+	// Required. Location of the git repo to build.
+	// +kcc:proto:field=google.cloud.designcenter.v1.GitSource.repo
+	// +required
+	Repo *string `json:"repo,omitempty"`
+
+	// Optional. Directory, relative to the source root, in which to run the
+	//  build. This must be a relative path. If a step's `dir` is specified and is
+	//  an absolute path, this value is ignored for that step's execution.
+	// +kcc:proto:field=google.cloud.designcenter.v1.GitSource.dir
+	Dir *string `json:"dir,omitempty"`
+
+	// Required. The reference tag of the git repo.
+	// +kcc:proto:field=google.cloud.designcenter.v1.GitSource.ref_tag
+	// +required
+	RefTag *string `json:"refTag,omitempty"`
+}
+
 // DesignCenterCatalogTemplateRevisionSpec defines the desired state of DesignCenterCatalogTemplateRevision
 // +kcc:spec:proto=google.cloud.designcenter.v1.CatalogTemplateRevision
 // +kcc:required-from-proto

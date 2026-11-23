@@ -1503,11 +1503,6 @@ func (in *GitSource) DeepCopyInto(out *GitSource) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.DeveloperConnectConfig != nil {
-		in, out := &in.DeveloperConnectConfig, &out.DeveloperConnectConfig
-		*out = new(DeveloperConnectConfig)
-		(*in).DeepCopyInto(*out)
-	}
 	if in.RefTag != nil {
 		in, out := &in.RefTag, &out.RefTag
 		*out = new(string)

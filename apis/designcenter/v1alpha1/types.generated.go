@@ -367,7 +367,6 @@ type DeveloperConnectConfig struct {
 	// Required. The Developer Connect Git repository link, formatted as
 	//  `projects/*/locations/*/connections/*/gitRepositoryLink/*`.
 	// +kcc:proto:field=google.cloud.designcenter.v1.DeveloperConnectConfig.git_repository_link
-	// +required
 	GitRepositoryLink *string `json:"gitRepositoryLink,omitempty"`
 }
 
@@ -478,11 +477,12 @@ type GitReference struct {
 	CommitSha *string `json:"commitSha,omitempty"`
 }
 
+/* found existing non-generated go type "GitSource", skipping
+
 // +kcc:proto=google.cloud.designcenter.v1.GitSource
 type GitSource struct {
 	// Required. Location of the git repo to build.
 	// +kcc:proto:field=google.cloud.designcenter.v1.GitSource.repo
-	// +required
 	Repo *string `json:"repo,omitempty"`
 
 	// Optional. Directory, relative to the source root, in which to run the
@@ -498,9 +498,9 @@ type GitSource struct {
 
 	// Required. The reference tag of the git repo.
 	// +kcc:proto:field=google.cloud.designcenter.v1.GitSource.ref_tag
-	// +required
 	RefTag *string `json:"refTag,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "HelmChartInput", skipping
 

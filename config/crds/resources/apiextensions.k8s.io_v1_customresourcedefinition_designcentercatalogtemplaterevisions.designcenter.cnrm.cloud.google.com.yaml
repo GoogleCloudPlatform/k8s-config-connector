@@ -181,17 +181,6 @@ spec:
               gitSource:
                 description: Optional. The git source.
                 properties:
-                  developerConnectConfig:
-                    description: Optional. This config defines the location of a source
-                      through Developer Connect. Used to access private git repos.
-                    properties:
-                      gitRepositoryLink:
-                        description: Required. The Developer Connect Git repository
-                          link, formatted as `projects/*/locations/*/connections/*/gitRepositoryLink/*`.
-                        type: string
-                    required:
-                    - gitRepositoryLink
-                    type: object
                   dir:
                     description: Optional. Directory, relative to the source root,
                       in which to run the build. This must be a relative path. If
