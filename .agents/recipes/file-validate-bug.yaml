@@ -1,0 +1,148 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# file-validate-bug: the controller bugs a validate-kind PR's failing checks show
+# (.agents/watch/file-validate-bug.yaml), as issues. Like assess-controller, the
+# evidence is extracted by a step and judged by a session that did not write
+# the test:
+#   1. run - the PR's receipts (the factory-attached receipts.md in its body) and
+#      every FAIL in them, into the task's files;
+#   2. ask - each failure classed as a controller bug, the script's own mistake,
+#      or a limit of the environment or service, from the receipts, the script,
+#      the fixture and the controller's code; an issue drafted for each
+#      controller bug only;
+#   3. factory's open-issues files them once per key and says on the PR what it
+#      filed and why the rest was not.
+name: file-validate-bug
+label: File validation bugs
+on: [pr]
+as: reviewer
+credentials: clone
+
+context: |
+  You read the result of a Config Connector (KCC) controller validation - a test that ran the
+  controller against real GCP and checked every step outside KCC - and decide which of its failures
+  are bugs in the controller. You did not write the test, and you do not fix anything.
+
+  You must not change anything: do NOT modify or create files in the repository (the files you are
+  asked to write are outside it), do NOT run git write operations, do NOT post anything to GitHub,
+  and do NOT create, change or delete cloud resources. You have no GitHub credentials; GitHub's
+  public API (curl https://api.github.com/...) works without them.
+
+  The PR is checked out in the current directory, detached at its head.
+
+start:
+  steps:
+    - uses: clone
+    - uses: configure-engine
+
+    # The evidence: the PR's receipts as the factory attached them, and each failing check in them.
+    - run: |
+        set -uo pipefail
+        printf '%s' "${INPUT_PR_BODY:-}" >"$TASK_DIR/pr-body.md"
+        if [ ! -s "$TASK_DIR/pr-body.md" ]; then
+          curl -s "https://api.github.com/repos/${INPUT_REPO_OWNER}/${INPUT_REPO_NAME}/pulls/${INPUT_PR_NUMBER}" \
+            | python3 -c 'import json,sys; print(json.load(sys.stdin).get("body") or "")' >"$TASK_DIR/pr-body.md"
+        fi
+        {
+          echo "# Failing checks"
+          echo
+          grep -E '\| \*\*FAIL\*\* \|' "$TASK_DIR/pr-body.md" || echo "(no FAIL row in the receipts' check tables)"
+          echo
+          echo "# run.log lines"
+          echo
+          grep -E "\] \[FAIL\] " "$TASK_DIR/pr-body.md" || true
+          echo
+          echo "# Grade"
+          echo
+          grep -m1 -E '^\*\*Grade: ' "$TASK_DIR/pr-body.md" || echo "(no grade line)"
+          sed -n '/^\*\*Grade: poor\*\*/,/^Every file of these runs/p' "$TASK_DIR/pr-body.md" | grep -E '^- ' || true
+          echo
+          echo "# Fixture variants not run"
+          echo
+          sed -n '/Fixture variants not run as asked/,/^$/p' "$TASK_DIR/pr-body.md" || true
+        } >"$TASK_DIR/failures.md"
+        cat "$TASK_DIR/failures.md"
+
+    - ask: |
+        A validation PR was graded poor. Decide which of its failures are controller bugs.
+
+        <pr_url>{{ .Inputs.pr_url }}</pr_url>
+        <pr_title>{{ .Inputs.pr_title }}</pr_title>
+
+        - The failing checks, and why the grade is poor: {{ output "failures.md" }}.
+        - The PR description with its receipts (each run's REPORT and its run.log - every REST,
+          CLI and audit-log call with what came back): {{ output "pr-body.md" }}.
+        - The test: `hack/manual-validate/<kind>/validate.sh` (and `fixtures/` if any) in the
+          checkout, and the helpers in `hack/manual-validate/lib.sh`.
+        - The fixture it applies, under `pkg/test/resourcefixture/testdata/`, and its `_http.log`:
+          how the API answered when the fixture was recorded against real GCP.
+        - The controller, under `pkg/controller/direct/`, and the Kind's types under `apis/`.
+
+        Class each failure as exactly one of:
+        - **controller bug**: the script asked the right question and the controller is why GCP or the
+          Kubernetes object is wrong - a field not sent or not read back, an update applied by
+          recreating, a delete that leaves the resource, never Ready because of how the controller
+          handles an API answer. Point to the controller code it comes from.
+        - **script mistake**: the test itself is wrong - a wrong URL or jq path, a missing API, a
+          check of something the spec never set, a variant the script ignored, files outside the Kind.
+        - **environment or service limit**: neither - the service writes no audit logs, an API
+          answers differently in this project (no data to evaluate), quota, permissions.
+        Only a controller bug is filed. When unsure, say why in the note rather than filing.
+
+        Say in a few lines how you classed each failure and why.
+
+    - ask: |
+        Now write the result to {{ output "issues_output.yaml" }}, as YAML in EXACTLY this structure,
+        with nothing else in the file:
+
+        issues_output:
+          issues:                 # one per controller bug; [] when there is none
+            - key: "<Kind>:<check-slug>"   # e.g. DialogflowGeneratorEvaluation:create-lro-identity
+              title: "<Kind>: <what is wrong, in a line>"
+              labels: [validate-kind/bug]
+              body: |
+                **What fails**: the check, what it expected and what it got, as the receipts say.
+
+                **Evidence**: the lines of the receipts (REPORT row, run.log call and response) that
+                show it, quoted.
+
+                **Cause**: where in the controller it comes from (file and function), and why.
+
+                **Reproduce**: `GCP_PROJECT_ID=<project> hack/manual-validate/<kind>/validate.sh`
+                (the PR adds the script).
+          note: |
+            One line per failure: the check, how you classed it, and why. Say which were filed.
+
+        Rules:
+        - The key is the Kind and a short slug of what is wrong: the same bug found again keeps its key.
+        - Quote evidence; do not invent values the receipts do not show.
+        - Write the whole file with your file tool, replacing anything in it, then say in a line that
+          it is written.
+      expects: issues_output.yaml
+
+outputs:
+  - failures.md
+  - issues_output.yaml
+
+task-output:
+  kind: Issues
+  from: issues_output.yaml
+  actions:
+    - verb: edit
+      field: spec
+      format: yaml
+    - verb: open-issues
+      label: File issues
+    - verb: reject
