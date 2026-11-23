@@ -158,7 +158,6 @@ BLOCKED_KINDS=(
     "ComputeInstanceGroupManagerResizeRequest"
     "ComputeNotificationEndpoint"
     "ComputePublicAdvertisedPrefix"
-    "ConnectorsConnection"
     "ContactCenterInsightsConversation"
     "ContentWarehouseDocument"
     "ContentWarehouseRuleSet"
