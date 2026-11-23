@@ -99,6 +99,14 @@ start:
           check of something the spec never set, a variant the script ignored, files outside the Kind.
         - **environment or service limit**: neither - the service writes no audit logs, an API
           answers differently in this project (no data to evaluate), quota, permissions.
+        Class by where the bug is, not by what set it off. A failure the environment triggers can
+        still show a controller bug: when GCP answers with an error (no data, a failed operation, a
+        quota), check how the controller handled that answer. If it then misbehaves - retries forever,
+        loses track of a resource GCP already created, leaks it on delete, or hides the real error
+        behind another - that is a controller bug: file it, and give the environmental trigger in the
+        note. For example: an evaluation fails in GCP because the project has no conversations
+        (environment), but the controller drops the operation's resource name when the operation
+        errors, re-creates on every pass and gets "has been taken" forever (controller bug, filed).
         Only a controller bug is filed. When unsure, say why in the note rather than filing.
 
         Say in a few lines how you classed each failure and why.
@@ -123,7 +131,8 @@ start:
                 **Reproduce**: `GCP_PROJECT_ID=<project> hack/manual-validate/<kind>/validate.sh`
                 (the PR adds the script).
           note: |
-            One line per failure: the check, how you classed it, and why. Say which were filed.
+            One line per failure: the check, how you classed it, and why - with the environmental
+            trigger, if any, of a controller bug. Say which were filed.
 
         Rules:
         - The key is the Kind and a short slug of what is wrong: the same bug found again keeps its key.
