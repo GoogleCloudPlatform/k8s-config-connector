@@ -15,13 +15,12 @@
 // API sources for DiscoveryEngineACLConfig, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/6a1db32dc52fd9421c1743dc8f5faa7a15e518d1/google/cloud/discoveryengine/v1/acl_config.proto
 // +kcc:source:service-docs=https://cloud.google.com/generative-ai-app-builder/docs/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/generative-ai-app-builder/docs/reference/rest/v1/projects.locations.aclConfig
+// +kcc:source:resource-docs=https://cloud.google.com/generative-ai-app-builder/docs/reference/rest/v1/projects.locations/getAclConfig
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,14 +31,8 @@ var DiscoveryEngineACLConfigGVK = GroupVersion.WithKind("DiscoveryEngineACLConfi
 // +kcc:spec:proto=google.cloud.discoveryengine.v1.AclConfig
 // +kcc:required-from-proto
 type DiscoveryEngineACLConfigSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// The DiscoveryEngineACLConfig name. If not given, the metadata.name will be used.
-	ResourceID *string `json:"resourceID,omitempty"`
 	// Identity provider config.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.AclConfig.idp_config
 	IdpConfig *IdpConfig `json:"idpConfig,omitempty"`
