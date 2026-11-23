@@ -101,7 +101,8 @@ type StorageInsightsDatasetConfigSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	// Optional. Labels as key value pairs.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Labels field is immutable"
+	// Immutable. Labels as key value pairs.
 	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
 
