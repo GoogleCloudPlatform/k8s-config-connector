@@ -548,7 +548,8 @@ func TestExecuteSetupDryRunPrintsPlannedK8sActionsWithoutMutating(t *testing.T) 
 		t.Fatalf("executeSetup failed: %v", err)
 	}
 	manifestCount := len((&manifestBuilder{}).buildClusterObjects())
-	wantOutput := fmt.Sprintf(`Lease bucket gs://my-ha-bucket already exists; reusing it.
+	wantOutput := "Checked Default leader endpoint on gke_proj-a_us-central1_cluster-a, gke_proj-b_us-east1_cluster-b.\n" +
+		fmt.Sprintf(`Lease bucket gs://my-ha-bucket already exists; reusing it.
 [dry-run] cluster "gke_proj-a_us-central1_cluster-a": apply %[1]d HA manifests and configure spec.experiments.multiClusterLease (gkeCluster="projects/proj-a/locations/us-central1/clusters/cluster-a", lease=cnrm-system/kcc-multicluster-lease)
 [dry-run] cluster "gke_proj-b_us-east1_cluster-b": apply %[1]d HA manifests and configure spec.experiments.multiClusterLease (gkeCluster="projects/proj-b/locations/us-east1/clusters/cluster-b", lease=cnrm-system/kcc-multicluster-lease)
 `, manifestCount)
@@ -931,11 +932,13 @@ func TestExecuteSetupYAMLOnlyWithLeaderEndpointType(t *testing.T) {
 }
 
 type recordingCommandRunner struct {
-	commands       []string
-	runCommands    []string
-	outputCommands []string
-	outputFn       func(ctx context.Context, name string, args ...string) ([]byte, error)
-	runFn          func(ctx context.Context, name string, args ...string) error
+	commands        []string
+	runCommands     []string
+	outputCommands  []string
+	outputFn        func(ctx context.Context, name string, args ...string) ([]byte, error)
+	runFn           func(ctx context.Context, name string, args ...string) error
+	describeOutputs map[string][]byte
+	describeErr     map[string]error
 }
 
 func (r *recordingCommandRunner) run(ctx context.Context, name string, args ...string) error {
@@ -952,6 +955,52 @@ func (r *recordingCommandRunner) output(ctx context.Context, name string, args .
 	cmd := name + " " + strings.Join(args, " ")
 	r.commands = append(r.commands, cmd)
 	r.outputCommands = append(r.outputCommands, cmd)
+	if len(args) >= 4 && args[0] == "container" && args[1] == "clusters" && args[2] == "describe" {
+		clusterName := args[3]
+		var project, location string
+		for _, arg := range args[4:] {
+			if strings.HasPrefix(arg, "--project=") {
+				project = strings.TrimPrefix(arg, "--project=")
+			} else if strings.HasPrefix(arg, "--location=") {
+				location = strings.TrimPrefix(arg, "--location=")
+			}
+		}
+		keys := []string{
+			clusterName,
+			fmt.Sprintf("gke_%s_%s_%s", project, location, clusterName),
+			fmt.Sprintf("projects/%s/locations/%s/clusters/%s", project, location, clusterName),
+		}
+		if r.describeErr != nil {
+			for _, k := range keys {
+				if err, ok := r.describeErr[k]; ok && err != nil {
+					return nil, err
+				}
+			}
+		}
+		if r.describeOutputs != nil {
+			for _, k := range keys {
+				if out, ok := r.describeOutputs[k]; ok {
+					return out, nil
+				}
+			}
+		}
+		// Default mock cluster that exposes all endpoints
+		return []byte(`{
+			"endpoint": "1.2.3.4",
+			"privateClusterConfig": {
+				"privateEndpoint": "10.0.0.2"
+			},
+			"controlPlaneEndpointsConfig": {
+				"dnsEndpointConfig": {
+					"endpoint": "gke-123.us-central1.gke.goog",
+					"allowExternalTraffic": true
+				},
+				"ipEndpointsConfig": {
+					"privateEndpoint": "10.0.0.2"
+				}
+			}
+		}`), nil
+	}
 	if r.outputFn != nil {
 		return r.outputFn(ctx, name, args...)
 	}
