@@ -1,3 +1,39 @@
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/consumer-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Consumer API",
+  "endpoints": [
+    "https://example.com/consumer"
+  ],
+  "name": "projects/${projectId}/locations/us-central1/externalApis/consumer-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/supplier-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Supplier API",
+  "endpoints": [
+    "https://example.com/supplier"
+  ],
+  "name": "projects/${projectId}/locations/us-central1/externalApis/supplier-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
 GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/dependencies/dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 X-Audit-Probe: true
 
