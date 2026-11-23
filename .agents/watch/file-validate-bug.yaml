@@ -1,0 +1,44 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Files the controller bugs a validate-kind PR's failures show. A PR graded
+# overseer/assessment/poor (its clean re-run had a FAIL, skipped a variant, or
+# changed files outside its Kind's directory) gets the file-validate-bug recipe:
+# a session that did not write the test reads the receipts and classes each
+# failure - a controller bug, the script's own mistake, or a limit of the
+# environment or service - and only the controller bugs are filed, once per
+# <Kind>:<check> key (factory's open-issues: an open issue with the key gets a
+# comment instead). The PR gets one comment listing what was filed and why the
+# rest was not. Once per head.
+name: file-validate-bug
+description: File the controller bugs a validate-kind PR's failing checks show, once per bug
+on: pr
+order: 74
+when:
+  author: pool
+  labels:
+    all: [overseer/validate-kind, overseer/assessment/poor]
+    none: [overseer/stop, do-not-merge/hold]
+run:
+  recipe: file-validate-bug
+  apply: open-issues
+policy:
+  dedupe: head
+  cooldown:
+    failure: 1h
+  give-up:
+    attempts: 3
+    since: [head, pause]
+    failed: true
+    comment: Pausing after 3 failed attempts to file this validation's bugs. Take overseer/stop off to try again.
