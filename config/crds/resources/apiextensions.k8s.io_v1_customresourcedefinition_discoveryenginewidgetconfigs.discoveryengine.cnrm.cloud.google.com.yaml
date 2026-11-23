@@ -123,11 +123,9 @@ spec:
                       type: object
                     type: array
                 type: object
-              location:
-                description: The location of this resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The DiscoveryEngineDataStore that this DiscoveryEngineWidgetConfig
+                  belongs to.
                 oneOf:
                 - not:
                     required:
@@ -144,20 +142,19 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed DiscoveryEngineDataStore
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/datastores/{{datastoreID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a DiscoveryEngineDataStore resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a DiscoveryEngineDataStore resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The DiscoveryEngineWidgetConfig name. If not given, the
                   metadata.name will be used.
@@ -187,6 +184,36 @@ spec:
                     description: Per data store configuration.
                     items:
                       properties:
+                        dataStoreRef:
+                          description: The DataStore this UI config applies to.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed DiscoveryEngineDataStore
+                                resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/datastores/{{datastoreID}}".
+                              type: string
+                            name:
+                              description: The name of a DiscoveryEngineDataStore
+                                resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a DiscoveryEngineDataStore
+                                resource.
+                              type: string
+                          type: object
                         facetField:
                           description: Facet fields that store the mapping of fields
                             to end user widget appearance.
@@ -234,14 +261,6 @@ spec:
                              The 3 custom fields are optional and can be added or removed. `title`,
                              `thumbnail`, `url` are required UI components that cannot be removed.
                           type: object
-                        name:
-                          description: 'The name of the data store. It should be data
-                            store resource name Format: `projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}`.
-                            For APIs under [WidgetService][google.cloud.discoveryengine.v1.WidgetService],
-                            such as [WidgetService.LookupWidgetConfig][google.cloud.discoveryengine.v1.WidgetService.LookupWidgetConfig],
-                            the project number and location part is erased in this
-                            field.'
-                          type: string
                       type: object
                     type: array
                   defaultSearchRequestOrderBy:
@@ -366,8 +385,7 @@ spec:
                 type: object
             required:
             - displayName
-            - location
-            - projectRef
+            - parentRef
             - solutionType
             type: object
           status:

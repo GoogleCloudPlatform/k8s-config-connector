@@ -5127,14 +5127,13 @@
 [missing_field] crd=discoveryenginewidgetconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.homepageSetting.shortcuts[].destinationURI" is not set in unstructured objects
 [missing_field] crd=discoveryenginewidgetconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.homepageSetting.shortcuts[].icon.url" is not set in unstructured objects
 [missing_field] crd=discoveryenginewidgetconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.homepageSetting.shortcuts[].title" is not set in unstructured objects
-[missing_field] crd=discoveryenginewidgetconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=discoveryenginewidgetconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=discoveryenginewidgetconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryenginewidgetconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.solutionType" is not set in unstructured objects
 [missing_field] crd=discoveryenginewidgetconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.uiBranding.logo.url" is not set in unstructured objects
+[missing_field] crd=discoveryenginewidgetconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.uiSettings.dataStoreUiConfigs[].dataStoreRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryenginewidgetconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.uiSettings.dataStoreUiConfigs[].facetField[].displayName" is not set in unstructured objects
 [missing_field] crd=discoveryenginewidgetconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.uiSettings.dataStoreUiConfigs[].facetField[].field" is not set in unstructured objects
 [missing_field] crd=discoveryenginewidgetconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.uiSettings.dataStoreUiConfigs[].fieldsUiComponentsMap" is not set in unstructured objects
-[missing_field] crd=discoveryenginewidgetconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.uiSettings.dataStoreUiConfigs[].name" is not set in unstructured objects
 [missing_field] crd=discoveryenginewidgetconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.uiSettings.defaultSearchRequestOrderBy" is not set in unstructured objects
 [missing_field] crd=discoveryenginewidgetconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.uiSettings.disableUserEventsCollection" is not set in unstructured objects
 [missing_field] crd=discoveryenginewidgetconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.uiSettings.enableAutocomplete" is not set in unstructured objects

@@ -110,5 +110,20 @@
   2. In `apis/discoveryengine/generate.sh`, previous resources were pinned to `665784f816da130b27edb566694b2441d0cfddf2`. To avoid type conflicts (such as duplicated `Date` struct between `v1` and `v1beta`), proto SHA `6a1db32dc52fd9421c1743dc8f5faa7a15e518d1` (`NEW_PROTO_SHA`) is used to scaffold both `DiscoveryEngineWidgetConfig` and `DiscoveryEngineACLConfig` with consolidated `generate-types` and `generate-identity` commands.
   3. Kept `cloud.google.com/go/discoveryengine` at `v1.32.0` in `go.mod` and ran `generate-mapper` against `${PROTO_OUT}` so Step 1a scaffolding does not introduce premature SDK upgrades.
 
+### [2026-11-20] DiscoveryEngineWidgetConfig Judgement Queue Triage and Identity Finalization
+- **Context**: Triaging judgement queue and finalizing direct KRM types/identity for `DiscoveryEngineWidgetConfig` (Issue #16247).
+- **Problem**:
+  1. `WidgetConfig` proto resource has 3 name patterns (`projects/{project}/locations/{location}/dataStores/{data_store}/widgetConfigs/{widget_config}`, plus collections and engines variants).
+  2. Generator produced `identity-multi-pattern` and `identity-root-unknown` because the parent hierarchy was not modeled as a single `spec.parentRef`.
+  3. `dataStoreUiConfigs[].name` had a resource-name template in description, requiring conversion to `DataStoreRef` to satisfy `TestMissingRefs`.
+  4. `DiscoveryEngineDataStoreRef` lacked `refs.Ref` and `refs.ExternalRef` interface implementations, which prevented `controllerbuilder generate-identity` from compiling generated parentRef resolution code.
+- **Solution**:
+  1. Passed `--pattern DiscoveryEngineWidgetConfig="projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}/widgetConfigs/{widgetConfig}"` to `generate-identity` in `apis/discoveryengine/generate.sh` to align with `DiscoveryEngineDataStore` externalRef format.
+  2. Modeled parent hierarchy as a single required immutable `spec.parentRef` (`*DiscoveryEngineDataStoreRef`) per `go/kcc-oneparent` and Case B of `PARENT_AND_IDENTITY.md`, removing `projectRef` and `location`.
+  3. Replaced `spec.uiSettings.dataStoreUiConfigs[].name` with `spec.uiSettings.dataStoreUiConfigs[].dataStoreRef` (`*DiscoveryEngineDataStoreRef`).
+  4. Implemented `refs.Ref` and `refs.ExternalRef` on `DiscoveryEngineDataStoreRef` in `discoveryenginedatastore_reference.go`, supported both 8-token and 6-token formats in `ParseDiscoveryEngineDataStoreExternal` (defaulting collection to `default_collection`), canonicalized `r.External = id.String()` in `Normalize` so 6-token references canonicalize to the 8-token format, allowing `controllerbuilder generate-identity` to generate `getIdentityFromDiscoveryEngineWidgetConfigSpec` with parentRef resolution and conformance testing out of the box.
+  5. Triaged all 11 judgement queue entries in `apis/discoveryengine/judgement_queue.yaml`.
+- **Impact**: Fully resolves Greenfield Step 1b for `DiscoveryEngineWidgetConfig` conforming to the single-parent standard, ready for Step 2 controller implementation.
+
 
 

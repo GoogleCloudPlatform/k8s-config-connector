@@ -36,7 +36,7 @@ var _ refs.Ref = &DiscoveryEngineWidgetConfigRef{}
 // DiscoveryEngineWidgetConfigRef is a reference to a GCP DiscoveryEngineWidgetConfig resource.
 type DiscoveryEngineWidgetConfigRef struct {
 	// A reference to an externally managed DiscoveryEngineWidgetConfig resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/dataStores/{{dataStoreID}}/widgetConfigs/{{widgetConfigID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/collections/{{collectionID}}/dataStores/{{dataStoreID}}/widgetConfigs/{{widgetConfigID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DiscoveryEngineWidgetConfig resource.
