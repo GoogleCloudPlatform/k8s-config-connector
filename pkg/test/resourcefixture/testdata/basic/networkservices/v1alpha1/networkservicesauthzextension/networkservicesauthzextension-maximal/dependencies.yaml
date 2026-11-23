@@ -1,45 +1,11 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeNetwork
-metadata:
-  name: network-${uniqueId}
-spec:
-  autoCreateSubnetworks: false
-  routingMode: REGIONAL
----
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeSubnetwork
-metadata:
-  name: subnet-${uniqueId}
-spec:
-  region: us-central1
-  ipCidrRange: 10.0.0.0/24
-  networkRef:
-    name: network-${uniqueId}
----
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeSubnetwork
-metadata:
-  name: proxy-subnet-${uniqueId}
-spec:
-  region: us-central1
-  ipCidrRange: 10.1.0.0/24
-  purpose: REGIONAL_MANAGED_PROXY
-  role: ACTIVE
-  networkRef:
-    name: network-${uniqueId}
----
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeHealthCheck
 metadata:
   name: hc-${uniqueId}
 spec:
-  location: us-central1
-  checkIntervalSec: 5
-  timeoutSec: 5
-  healthyThreshold: 2
-  unhealthyThreshold: 2
-  http2HealthCheck:
-    port: 443
+  location: global
+  httpHealthCheck:
+    port: 80
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
