@@ -40,16 +40,17 @@ const (
 	replicationModeDisabled = "Disabled"
 )
 
-// haProblems checks a group of clusters that all have multi-cluster HA configured, and
-// returns one problem per issue found. It checks, in order:
+// haProblems checks a group of clusters that all have multi-cluster HA configured. It returns
+// the identity of the cluster that holds the lease ("" if it can't be determined) and one
+// problem per issue found. It checks, in order:
 //  1. the clusters take part in the same election (validateMultiClusterLeaseConfigs);
 //  2. each cluster's MultiClusterLease has a live holder, and all clusters agree on it;
 //  3. each cluster's KRMSyncers: suspended on the leader, syncing from the leader on standbys.
 //
 // KRMSyncer checks (3) are skipped only when the leader cannot be determined.
-func haProblems(states []*clusterHAState, now time.Time) []string {
+func haProblems(states []*clusterHAState, now time.Time) (string, []string) {
 	if err := validateMultiClusterLeaseConfigs(states); err != nil {
-		return splitErrorLines(err)
+		return "", splitErrorLines(err)
 	}
 
 	problems := replicationModeProblems(states)
@@ -57,13 +58,13 @@ func haProblems(states []*clusterHAState, now time.Time) []string {
 	leader, leaseProblems := leaseHolder(states, now)
 	problems = append(problems, leaseProblems...)
 	if leader == "" {
-		return problems
+		return "", problems
 	}
 
 	for _, s := range states {
 		problems = append(problems, syncerProblems(s, leader)...)
 	}
-	return problems
+	return leader, problems
 }
 
 // replicationModeProblems reports clusters that replicate resources differently.

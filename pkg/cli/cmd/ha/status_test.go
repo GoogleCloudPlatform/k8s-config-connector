@@ -107,8 +107,8 @@ func TestRunStatusUnreachableClusters(t *testing.T) {
 		t.Fatalf("got error %v, want %v", err, errHAStatusError)
 	}
 	for _, want := range []string{
-		"gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Error\n",
-		"gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Error\n",
+		"gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Error  -\n",
+		"gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Error  -\n",
 		"HA Status: ERROR\n",
 		"  - fetching ConfigConnector on cluster \"gke_proj-a_us-central1_cluster-a\": ",
 	} {
@@ -119,7 +119,6 @@ func TestRunStatusUnreachableClusters(t *testing.T) {
 }
 
 func TestExecuteStatus(t *testing.T) {
-	configured := newConfigConnectorWithMCL("kcc-multicluster-lease", "cnrm-system", "cluster")
 	notConfigured := newConfigConnectorWithoutMCL()
 
 	tests := []struct {
@@ -137,9 +136,9 @@ func TestExecuteStatus(t *testing.T) {
 				}
 			},
 			wantState: haStateNotDetected,
-			want: `CONTEXT                           PROJECT  LOCATION     HA
-gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Not configured
-gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Not configured
+			want: `CONTEXT                           PROJECT  LOCATION     HA              ROLE
+gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Not configured  -
+gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Not configured  -
 
 HA Status: NOT DETECTED
 Next step: config-connector ha setup --contexts=gke_proj-a_us-central1_cluster-a,gke_proj-b_us-east1_cluster-b --bucket=<BUCKET>
@@ -151,10 +150,11 @@ Next step: config-connector ha setup --contexts=gke_proj-a_us-central1_cluster-a
 				return healthyHAFixtures().handles(t)
 			},
 			wantState: haStateHealthy,
-			want: `CONTEXT                           PROJECT  LOCATION     HA
-gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Configured
-gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Configured
+			want: `CONTEXT                           PROJECT  LOCATION     HA          ROLE
+gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Configured  Leader
+gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Configured  Standby
 
+Lease: cnrm-system/kcc-multicluster-lease, held by cluster-a (renewed 4s ago)
 HA Status: HEALTHY
 `,
 		},
@@ -162,18 +162,19 @@ HA Status: HEALTHY
 			name: "configured on only some clusters",
 			handles: func(t *testing.T) []*clusterHandle {
 				return []*clusterHandle{
-					newFakeClusterHandle(t, testStatusContextA, configured.DeepCopy()),
+					healthyHAFixtures()[:1].handles(t)[0],
 					newFakeClusterHandle(t, testStatusContextB, notConfigured.DeepCopy()),
 				}
 			},
 			wantState: haStateError,
-			want: `CONTEXT                           PROJECT  LOCATION     HA
-gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Configured
-gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Not configured
+			want: `CONTEXT                           PROJECT  LOCATION     HA              ROLE
+gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Configured      Leader
+gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Not configured  -
 
+Lease: cnrm-system/kcc-multicluster-lease, held by cluster-a (renewed 4s ago)
 HA Status: ERROR
 Problems:
-  - cluster "gke_proj-b_us-east1_cluster-b" does not have spec.experiments.multiClusterLease configured on ConfigConnector "configconnector.core.cnrm.cloud.google.com"; run ` + "`config-connector ha setup`" + ` or configure spec.experiments.multiClusterLease
+  - cluster "gke_proj-b_us-east1_cluster-b" does not have spec.experiments.multiClusterLease configured on ConfigConnector "configconnector.core.cnrm.cloud.google.com"; run ` + "`config-connector ha setup`" + ` or configure spec.experiments.multiClusterLease; it reconciles independently of the HA clusters, so more than one cluster may change the same resources
 `,
 		},
 		{
@@ -185,9 +186,9 @@ Problems:
 				}
 			},
 			wantState: haStateError,
-			want: `CONTEXT                           PROJECT  LOCATION     HA
-gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Not configured
-gke_proj-b_us-east1_cluster-b     proj-b   us-east1     No ConfigConnector
+			want: `CONTEXT                           PROJECT  LOCATION     HA                  ROLE
+gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Not configured      -
+gke_proj-b_us-east1_cluster-b     proj-b   us-east1     No ConfigConnector  -
 
 HA Status: ERROR
 Problems:
@@ -200,15 +201,16 @@ Problems:
 				unreachable := newFakeClusterHandle(t, testStatusContextB)
 				unreachable.client = &kubecli.Client{Client: &failingGetClient{Client: unreachable.client.Client, err: errors.New("dial tcp 10.0.0.1:443: i/o timeout")}}
 				return []*clusterHandle{
-					newFakeClusterHandle(t, testStatusContextA, configured.DeepCopy()),
+					healthyHAFixtures()[:1].handles(t)[0],
 					unreachable,
 				}
 			},
 			wantState: haStateError,
-			want: `CONTEXT                           PROJECT  LOCATION     HA
-gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Configured
-gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Error
+			want: `CONTEXT                           PROJECT  LOCATION     HA          ROLE
+gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Configured  Leader
+gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Error       -
 
+Lease: cnrm-system/kcc-multicluster-lease, held by cluster-a (renewed 4s ago)
 HA Status: ERROR
 Problems:
   - fetching ConfigConnector on cluster "gke_proj-b_us-east1_cluster-b": dial tcp 10.0.0.1:443: i/o timeout
@@ -218,15 +220,16 @@ Problems:
 			name: "invalid multiClusterLease spec",
 			handles: func(t *testing.T) []*clusterHandle {
 				return []*clusterHandle{
-					newFakeClusterHandle(t, testStatusContextA, configured.DeepCopy()),
+					healthyHAFixtures()[:1].handles(t)[0],
 					newFakeClusterHandle(t, testStatusContextB, newConfigConnectorWithMCL("kcc-multicluster-lease", "cnrm-system", "")),
 				}
 			},
 			wantState: haStateError,
-			want: `CONTEXT                           PROJECT  LOCATION     HA
-gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Configured
-gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Error
+			want: `CONTEXT                           PROJECT  LOCATION     HA          ROLE
+gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Configured  Leader
+gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Error       -
 
+Lease: cnrm-system/kcc-multicluster-lease, held by cluster-a (renewed 4s ago)
 HA Status: ERROR
 Problems:
   - cluster "gke_proj-b_us-east1_cluster-b": spec.experiments.multiClusterLease.gkeCluster is required

@@ -703,6 +703,129 @@ func TestHAStatusProblems(t *testing.T) {
 	}
 }
 
+func TestHAStatusRoles(t *testing.T) {
+	tests := []struct {
+		name      string
+		mutate    func(haFixtures)
+		wantState haState
+		wantRoles []clusterRole
+		// wantLease is the Lease line; empty means no Lease line.
+		wantLease string
+	}{
+		{
+			name:      "cluster-a leads",
+			mutate:    func(haFixtures) {},
+			wantState: haStateHealthy,
+			wantRoles: []clusterRole{roleLeader, roleStandby},
+			wantLease: "Lease: cnrm-system/kcc-multicluster-lease, held by cluster-a (renewed 4s ago)",
+		},
+		{
+			name: "cluster-b leads",
+			mutate: func(fs haFixtures) {
+				fs[0].lease = newTestLease(testIdentityB, testRenewTime)
+				fs[1].lease = newTestLease(testIdentityB, testRenewTime)
+				fs[0].syncers = []*syncerv1alpha1.KRMSyncer{newTestSyncer(testLeaseName, testIdentityB, false, syncerv1alpha1.ReasonSyncing, "")}
+				fs[1].syncers = []*syncerv1alpha1.KRMSyncer{newTestSyncer(testLeaseName, testIdentityB, true, syncerv1alpha1.ReasonSuspended, "")}
+			},
+			wantState: haStateHealthy,
+			wantRoles: []clusterRole{roleStandby, roleLeader},
+			wantLease: "Lease: cnrm-system/kcc-multicluster-lease, held by cluster-b (renewed 4s ago)",
+		},
+		{
+			name: "leader known, standby not syncing",
+			mutate: func(fs haFixtures) {
+				fs[1].syncers = []*syncerv1alpha1.KRMSyncer{newTestSyncer(testLeaseName, testIdentityA, false, syncerv1alpha1.ReasonRemoteUnreachable, "Unauthorized")}
+			},
+			wantState: haStateError,
+			wantRoles: []clusterRole{roleLeader, roleStandby},
+			wantLease: "Lease: cnrm-system/kcc-multicluster-lease, held by cluster-a (renewed 4s ago)",
+		},
+		{
+			name: "lease expired, so the leader is unknown",
+			mutate: func(fs haFixtures) {
+				fs[0].lease = newTestLease(testIdentityA, "2026-11-10T18:05:00Z")
+				fs[1].lease = newTestLease(testIdentityA, "2026-11-10T18:05:00Z")
+			},
+			wantState: haStateError,
+			wantRoles: []clusterRole{roleUnknown, roleUnknown},
+		},
+		{
+			name:      "clusters disagree on the holder, so the leader is unknown",
+			mutate:    func(fs haFixtures) { fs[1].lease = newTestLease(testIdentityB, testRenewTime) },
+			wantState: haStateError,
+			wantRoles: []clusterRole{roleUnknown, roleUnknown},
+		},
+		{
+			name: "no renew time reported",
+			mutate: func(fs haFixtures) {
+				for _, f := range fs {
+					f.lease.Status.GlobalRenewTime = nil
+				}
+			},
+			wantState: haStateHealthy,
+			wantRoles: []clusterRole{roleLeader, roleStandby},
+			wantLease: "Lease: cnrm-system/kcc-multicluster-lease, held by cluster-a\n",
+		},
+		{
+			name:      "only cluster-a configured, and it holds the lease",
+			mutate:    unconfigureClusterB,
+			wantState: haStateError,
+			wantRoles: []clusterRole{roleLeader, roleNone},
+			wantLease: "Lease: cnrm-system/kcc-multicluster-lease, held by cluster-a (renewed 4s ago)",
+		},
+		{
+			name: "only cluster-a configured, and another cluster holds the lease",
+			mutate: func(fs haFixtures) {
+				unconfigureClusterB(fs)
+				fs[0].lease = newTestLease(testIdentityB, testRenewTime)
+			},
+			wantState: haStateError,
+			wantRoles: []clusterRole{roleStandby, roleNone},
+		},
+		{
+			name: "only cluster-a configured, and its lease expired",
+			mutate: func(fs haFixtures) {
+				unconfigureClusterB(fs)
+				fs[0].lease = newTestLease(testIdentityA, "2026-11-10T18:05:00Z")
+			},
+			wantState: haStateError,
+			wantRoles: []clusterRole{roleUnknown, roleNone},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			fs := healthyHAFixtures()
+			tc.mutate(fs)
+
+			report, out := runHAStatus(t, fs)
+
+			if report.state != tc.wantState {
+				t.Fatalf("got state %q, want %q; output:\n%s", report.state, tc.wantState, out)
+			}
+			for i, c := range report.clusters {
+				if c.role != tc.wantRoles[i] {
+					t.Fatalf("cluster %q: got role %q, want %q; output:\n%s", c.gke.contextName, c.role, tc.wantRoles[i], out)
+				}
+			}
+			if tc.wantLease == "" {
+				if strings.Contains(out, "Lease:") {
+					t.Fatalf("expected no Lease line, got:\n%s", out)
+				}
+			} else if !strings.Contains(out, tc.wantLease) {
+				t.Fatalf("expected output to contain %q, got:\n%s", tc.wantLease, out)
+			}
+		})
+	}
+}
+
+// unconfigureClusterB removes multi-cluster HA from cluster-b.
+func unconfigureClusterB(fs haFixtures) {
+	fs[1].cc = newConfigConnectorWithoutMCL()
+	fs[1].lease = nil
+	fs[1].syncers = nil
+}
+
 func TestLeaseExpired(t *testing.T) {
 	seconds := func(n int32) *int32 { return &n }
 	tests := []struct {
