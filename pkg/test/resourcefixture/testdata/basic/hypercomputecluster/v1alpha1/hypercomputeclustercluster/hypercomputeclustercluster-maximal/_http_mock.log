@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/hccmax?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -178,6 +179,10 @@ X-Xss-Protection: 0
       "slurm": {
         "defaultPartition": "partition1",
         "loginNodes": {
+          "bootDisk": {
+            "sizeGb": "100",
+            "type": "pd-balanced"
+          },
           "count": "1",
           "enableOsLogin": true,
           "enablePublicIps": true,
@@ -216,7 +221,6 @@ X-Xss-Protection: 0
         ]
       }
     },
-    "reconciling": true,
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -273,6 +277,10 @@ X-Xss-Protection: 0
     "slurm": {
       "defaultPartition": "partition1",
       "loginNodes": {
+        "bootDisk": {
+          "sizeGb": "100",
+          "type": "pd-balanced"
+        },
         "count": "1",
         "enableOsLogin": true,
         "enablePublicIps": true,
@@ -311,12 +319,12 @@ X-Xss-Protection: 0
       ]
     }
   },
-  "reconciling": true,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
+# Phase: UPDATE
 PATCH https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/hccmax?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels%2Corchestrator
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -345,6 +353,10 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
           "network": "projects/${projectId}/global/networks/default",
           "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
         }
+      },
+      "network": {
+        "network": "projects/${projectId}/global/networks/default",
+        "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       }
     }
   },
@@ -352,6 +364,10 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
     "slurm": {
       "defaultPartition": "partition1",
       "loginNodes": {
+        "bootDisk": {
+          "sizeGb": "100",
+          "type": "pd-balanced"
+        },
         "count": "1",
         "enableOsLogin": true,
         "enablePublicIps": true,
@@ -472,9 +488,18 @@ X-Xss-Protection: 0
       "slurm": {
         "defaultPartition": "partition1",
         "loginNodes": {
+          "bootDisk": {
+            "sizeGb": "100",
+            "type": "pd-balanced"
+          },
           "count": "1",
           "enableOsLogin": true,
           "enablePublicIps": true,
+          "instances": [
+            {
+              "instance": "projects/${projectId}/zones/us-central1-a/instances/hccmax-login-001"
+            }
+          ],
           "machineType": "e2-standard-4",
           "zone": "us-central1-a"
         },
@@ -505,7 +530,6 @@ X-Xss-Protection: 0
         ]
       }
     },
-    "reconciling": true,
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -562,9 +586,18 @@ X-Xss-Protection: 0
     "slurm": {
       "defaultPartition": "partition1",
       "loginNodes": {
+        "bootDisk": {
+          "sizeGb": "100",
+          "type": "pd-balanced"
+        },
         "count": "1",
         "enableOsLogin": true,
         "enablePublicIps": true,
+        "instances": [
+          {
+            "instance": "projects/${projectId}/zones/us-central1-a/instances/hccmax-login-001"
+          }
+        ],
         "machineType": "e2-standard-4",
         "zone": "us-central1-a"
       },
@@ -595,12 +628,12 @@ X-Xss-Protection: 0
       ]
     }
   },
-  "reconciling": true,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
+# Phase: DELETE
 DELETE https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/hccmax?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)

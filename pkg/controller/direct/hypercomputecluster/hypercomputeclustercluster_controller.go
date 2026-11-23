@@ -17,6 +17,7 @@ package hypercomputecluster
 import (
 	"context"
 	"fmt"
+	"time"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/hypercomputecluster/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -28,9 +29,8 @@ import (
 
 	gcp "cloud.google.com/go/hypercomputecluster/apiv1"
 	pb "cloud.google.com/go/hypercomputecluster/apiv1/hypercomputeclusterpb"
+	"github.com/googleapis/gax-go/v2"
 	"google.golang.org/api/option"
-	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -96,9 +96,10 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	desired.Name = clusterID.String()
 
 	return &Adapter{
-		id:        clusterID,
-		gcpClient: gcpClient,
-		desired:   desired,
+		id:         clusterID,
+		gcpClient:  gcpClient,
+		desiredKRM: &obj.Spec,
+		desired:    desired,
 	}, nil
 }
 
@@ -107,10 +108,11 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id        *krm.HypercomputeClusterClusterIdentity
-	gcpClient *gcp.Client
-	desired   *pb.Cluster
-	actual    *pb.Cluster
+	id         *krm.HypercomputeClusterClusterIdentity
+	gcpClient  *gcp.Client
+	desiredKRM *krm.HypercomputeClusterClusterSpec
+	desired    *pb.Cluster
+	actual     *pb.Cluster
 }
 
 var _ directbase.Adapter = &Adapter{}
@@ -147,7 +149,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return fmt.Errorf("creating HypercomputeClusterCluster %s: %w", a.id.String(), err)
 	}
 
-	if _, err := op.Wait(ctx); err != nil {
+	if _, err := waitLROCluster(ctx, op, "waiting for HypercomputeClusterCluster creation"); err != nil {
 		return fmt.Errorf("waiting for HypercomputeClusterCluster %s creation: %w", a.id.String(), err)
 	}
 
@@ -167,7 +169,19 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating HypercomputeClusterCluster", "name", a.id.String())
 
-	diffs, updateMask, err := compareCluster(ctx, a.actual, a.desired)
+	normalize := func(ctx context.Context, p *pb.Cluster) error {
+		p.NetworkResources = nil
+		return nil
+	}
+
+	resource, diffs, updateMask, err := common.CompareGreenfieldSpec(
+		ctx,
+		a.desiredKRM,
+		a.actual,
+		HypercomputeClusterClusterSpec_FromProto,
+		HypercomputeClusterClusterSpec_ToProto,
+		normalize,
+	)
 	if err != nil {
 		return err
 	}
@@ -177,8 +191,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
 
+		resource.Name = a.id.String()
 		req := &pb.UpdateClusterRequest{
-			Cluster:    a.desired,
+			Cluster:    resource,
 			UpdateMask: updateMask,
 		}
 
@@ -187,7 +202,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 			return fmt.Errorf("updating HypercomputeClusterCluster %s: %w", a.id.String(), err)
 		}
 
-		if _, err := op.Wait(ctx); err != nil {
+		if _, err := waitLROCluster(ctx, op, "waiting for HypercomputeClusterCluster update"); err != nil {
 			return fmt.Errorf("waiting for HypercomputeClusterCluster %s update: %w", a.id.String(), err)
 		}
 
@@ -253,7 +268,7 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 		return false, fmt.Errorf("deleting HypercomputeClusterCluster %s: %w", a.id.String(), err)
 	}
 
-	if err := op.Wait(ctx); err != nil {
+	if err := waitLROError(ctx, op, "waiting for HypercomputeClusterCluster deletion"); err != nil {
 		if direct.IsNotFound(err) {
 			return true, nil
 		}
@@ -264,31 +279,55 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	return true, nil
 }
 
-func compareCluster(ctx context.Context, actual, desired *pb.Cluster) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	mapCtx := &direct.MapContext{}
-	actualSpec := HypercomputeClusterClusterSpec_FromProto(mapCtx, actual)
-	if mapCtx.Err() != nil {
-		return nil, nil, mapCtx.Err()
+func waitLROCluster(ctx context.Context, op interface {
+	Wait(ctx context.Context, opts ...gax.CallOption) (*pb.Cluster, error)
+	Name() string
+}, msg string) (*pb.Cluster, error) {
+	ticker := time.NewTicker(20 * time.Second)
+	defer ticker.Stop()
+
+	type result struct {
+		val *pb.Cluster
+		err error
 	}
+	ch := make(chan result, 1)
+	go func() {
+		val, err := op.Wait(ctx)
+		ch <- result{val: val, err: err}
+	}()
 
-	maskedActual := HypercomputeClusterClusterSpec_ToProto(mapCtx, actualSpec)
-	if mapCtx.Err() != nil {
-		return nil, nil, mapCtx.Err()
+	for {
+		select {
+		case r := <-ch:
+			return r.val, r.err
+		case <-ticker.C:
+			klog.FromContext(ctx).Info(msg, "operation", op.Name())
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		}
 	}
+}
 
-	maskedActual.Name = desired.Name
+func waitLROError(ctx context.Context, op interface {
+	Wait(ctx context.Context, opts ...gax.CallOption) error
+	Name() string
+}, msg string) error {
+	ticker := time.NewTicker(20 * time.Second)
+	defer ticker.Stop()
 
-	clonedDesired := proto.Clone(desired).(*pb.Cluster)
+	ch := make(chan error, 1)
+	go func() {
+		ch <- op.Wait(ctx)
+	}()
 
-	// network_resources is immutable and cannot be updated.
-	// To prevent false diffs (as GCP returns resolved references) and to avoid
-	// disallowed fields in the update mask, we clear it from the compared objects.
-	clonedDesired.NetworkResources = nil
-	maskedActual.NetworkResources = nil
-
-	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
-	if err != nil {
-		return nil, nil, err
+	for {
+		select {
+		case err := <-ch:
+			return err
+		case <-ticker.C:
+			klog.FromContext(ctx).Info(msg, "operation", op.Name())
+		case <-ctx.Done():
+			return ctx.Err()
+		}
 	}
-	return diffs, updateMask, nil
 }

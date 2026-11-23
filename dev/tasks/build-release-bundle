@@ -218,7 +218,6 @@ BLOCKED_KINDS=(
     "GKEMultiCloudAzureNodePool"
     "GrafeasNote"
     "GSuiteAddonsDeployment"
-    "HypercomputeClusterCluster"
     "IAMAccessPolicy"
     "IAMPrincipalAccessBoundaryPolicy"
     "IAPTunnelDestGroup"
