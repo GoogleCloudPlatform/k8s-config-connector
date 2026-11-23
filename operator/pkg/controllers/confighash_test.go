@@ -187,6 +187,187 @@ func TestComputeCCConfigHash(t *testing.T) {
 			t.Errorf("expected exclude and include modes to produce different hashes")
 		}
 	})
+
+	t.Run("pinned digest for resourceSettings without multiClusterLease", func(t *testing.T) {
+		cc := &corev1beta1.ConfigConnector{
+			Spec: corev1beta1.ConfigConnectorSpec{
+				Experiments: &corev1beta1.CCExperiments{
+					ResourceSettings: &corev1beta1.ResourceSettings{
+						Mode: corev1beta1.ResourceSettingsModeInclude,
+						Resources: []corev1beta1.ResourceFilter{
+							{Group: ptr.To("storage.cnrm.cloud.google.com"), Kind: ptr.To("StorageBucket")},
+						},
+					},
+				},
+			},
+		}
+		const expectedPinnedDigest = "843995b909ba9ac4f191261fc309a65f1b92d8de23fb013ac2e133e5d40a254c"
+		if got := ComputeCCConfigHash(cc); got != expectedPinnedDigest {
+			t.Errorf("expected pinned digest %q, got %q", expectedPinnedDigest, got)
+		}
+	})
+
+	t.Run("only multiClusterLease returns non-empty digest", func(t *testing.T) {
+		cc := &corev1beta1.ConfigConnector{
+			Spec: corev1beta1.ConfigConnectorSpec{
+				Experiments: &corev1beta1.CCExperiments{
+					MultiClusterLease: &corev1beta1.MultiClusterLeaseSpec{
+						LeaseName: "test-lease",
+						Namespace: "test-ns",
+						GKECluster: &corev1beta1.GKECluster{
+							Project:  "test-project",
+							Location: "us-central1",
+							Name:     "test-cluster",
+						},
+					},
+				},
+			},
+		}
+		if got := ComputeCCConfigHash(cc); got == "" {
+			t.Errorf("expected non-empty digest when only multiClusterLease is set, got %q", got)
+		}
+	})
+
+	t.Run("multiClusterLease digest changes when any hashed field changes", func(t *testing.T) {
+		baseLeaseCC := func() *corev1beta1.ConfigConnector {
+			return &corev1beta1.ConfigConnector{
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Experiments: &corev1beta1.CCExperiments{
+						MultiClusterLease: &corev1beta1.MultiClusterLeaseSpec{
+							LeaseName: "test-lease",
+							Namespace: "test-ns",
+							GKECluster: &corev1beta1.GKECluster{
+								Project:  "test-project",
+								Location: "us-central1",
+								Name:     "test-cluster",
+							},
+							LeaderEndpointType:      corev1beta1.LeaderEndpointTypeDefault,
+							ResourceReplicationMode: "Status",
+						},
+					},
+				},
+			}
+		}
+		baseHash := ComputeCCConfigHash(baseLeaseCC())
+		if baseHash == "" {
+			t.Fatal("expected non-empty base hash")
+		}
+
+		tests := []struct {
+			name   string
+			mutate func(cc *corev1beta1.ConfigConnector)
+		}{
+			{
+				name: "leaseName changed",
+				mutate: func(cc *corev1beta1.ConfigConnector) {
+					cc.Spec.Experiments.MultiClusterLease.LeaseName = "other-lease"
+				},
+			},
+			{
+				name: "namespace changed",
+				mutate: func(cc *corev1beta1.ConfigConnector) {
+					cc.Spec.Experiments.MultiClusterLease.Namespace = "other-ns"
+				},
+			},
+			{
+				name: "gkeCluster project changed",
+				mutate: func(cc *corev1beta1.ConfigConnector) {
+					cc.Spec.Experiments.MultiClusterLease.GKECluster.Project = "other-project"
+				},
+			},
+			{
+				name: "gkeCluster location changed",
+				mutate: func(cc *corev1beta1.ConfigConnector) {
+					cc.Spec.Experiments.MultiClusterLease.GKECluster.Location = "us-east1"
+				},
+			},
+			{
+				name: "gkeCluster name changed",
+				mutate: func(cc *corev1beta1.ConfigConnector) {
+					cc.Spec.Experiments.MultiClusterLease.GKECluster.Name = "other-cluster"
+				},
+			},
+			{
+				name: "leaderEndpointType changed",
+				mutate: func(cc *corev1beta1.ConfigConnector) {
+					cc.Spec.Experiments.MultiClusterLease.LeaderEndpointType = corev1beta1.LeaderEndpointTypePrivateIP
+				},
+			},
+			{
+				name: "resourceReplicationMode changed",
+				mutate: func(cc *corev1beta1.ConfigConnector) {
+					cc.Spec.Experiments.MultiClusterLease.ResourceReplicationMode = "Full"
+				},
+			},
+		}
+
+		for _, tc := range tests {
+			t.Run(tc.name, func(t *testing.T) {
+				cc := baseLeaseCC()
+				tc.mutate(cc)
+				gotHash := ComputeCCConfigHash(cc)
+				if gotHash == baseHash {
+					t.Errorf("expected hash to change for %s, but got identical hash %q", tc.name, gotHash)
+				}
+			})
+		}
+	})
+
+	t.Run("default and unset leaderEndpointType and resourceReplicationMode produce identical hash", func(t *testing.T) {
+		ccExplicitDefaults := &corev1beta1.ConfigConnector{
+			Spec: corev1beta1.ConfigConnectorSpec{
+				Experiments: &corev1beta1.CCExperiments{
+					MultiClusterLease: &corev1beta1.MultiClusterLeaseSpec{
+						LeaseName: "test-lease",
+						Namespace: "test-ns",
+						GKECluster: &corev1beta1.GKECluster{
+							Project:  "test-project",
+							Location: "us-central1",
+							Name:     "test-cluster",
+						},
+						LeaderEndpointType:      corev1beta1.LeaderEndpointTypeDefault,
+						ResourceReplicationMode: "Status",
+					},
+				},
+			},
+		}
+		ccUnsetDefaults := &corev1beta1.ConfigConnector{
+			Spec: corev1beta1.ConfigConnectorSpec{
+				Experiments: &corev1beta1.CCExperiments{
+					MultiClusterLease: &corev1beta1.MultiClusterLeaseSpec{
+						LeaseName: "test-lease",
+						Namespace: "test-ns",
+						GKECluster: &corev1beta1.GKECluster{
+							Project:  "test-project",
+							Location: "us-central1",
+							Name:     "test-cluster",
+						},
+						LeaderEndpointType:      "",
+						ResourceReplicationMode: "",
+					},
+				},
+			},
+		}
+		ccUnsetLeaderEndpoint := ccExplicitDefaults.DeepCopy()
+		ccUnsetLeaderEndpoint.Spec.Experiments.MultiClusterLease.LeaderEndpointType = ""
+
+		ccUnsetReplicationMode := ccExplicitDefaults.DeepCopy()
+		ccUnsetReplicationMode.Spec.Experiments.MultiClusterLease.ResourceReplicationMode = ""
+
+		explicitHash := ComputeCCConfigHash(ccExplicitDefaults)
+		if explicitHash == "" {
+			t.Fatal("expected non-empty hash")
+		}
+		if got := ComputeCCConfigHash(ccUnsetDefaults); got != explicitHash {
+			t.Errorf("expected unset defaults hash to equal explicit defaults hash, got %q vs %q", got, explicitHash)
+		}
+		if got := ComputeCCConfigHash(ccUnsetLeaderEndpoint); got != explicitHash {
+			t.Errorf("expected unset leaderEndpointType hash to equal explicit defaults hash, got %q vs %q", got, explicitHash)
+		}
+		if got := ComputeCCConfigHash(ccUnsetReplicationMode); got != explicitHash {
+			t.Errorf("expected unset resourceReplicationMode hash to equal explicit defaults hash, got %q vs %q", got, explicitHash)
+		}
+	})
 }
 
 func TestComputeCCCConfigHash(t *testing.T) {
