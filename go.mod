@@ -105,7 +105,7 @@ require (
 	cloud.google.com/go/pubsub/v2 v2.5.1
 	cloud.google.com/go/rapidmigrationassessment v1.7.0
 	cloud.google.com/go/recaptchaenterprise/v2 v2.26.0
-	cloud.google.com/go/redis v1.25.0
+	cloud.google.com/go/redis v1.29.0
 	cloud.google.com/go/resourcemanager v1.15.0
 	cloud.google.com/go/retail v1.31.0
 	cloud.google.com/go/run v1.21.0
