@@ -74,6 +74,42 @@
   - **E2E Dependencies & Recording**: `DesignCenterCatalogTemplate` requires an ancestor chain of `DesignCenterSpace` and `DesignCenterCatalog` in `dependencies.yaml`. Recorded authentic golden logs against real GCP (`cnrm-barni-4`) with `RECORD_AUDIT_PROBE=1 ./hack/record-gcp` for both `designcentercatalogtemplate-minimal` and `designcentercatalogtemplate-maximal`.
   - **Validation**: 200-seed focused round-trip fuzzer (`TestFocusedMappers/DesignCenterCatalogTemplate`), CRD field presence checks, and re-reconciliation passed cleanly.
 
+### [2026-11-20] Prepopulating DesignCenterCatalogTemplateRevision
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for DesignCenterCatalogTemplateRevision (Issue #16238).
+- **Findings & Solution**:
+  - Configured `apis/designcenter/generate.sh` with dedicated `--resource DesignCenterCatalogTemplateRevision:CatalogTemplateRevision` under `generate-types` and `generate-identity`.
+  - Added handwritten mapper helper functions in `pkg/controller/direct/designcenter/designcentercatalogtemplaterevision_mapper.go` for `*Metadata` messages skipped by `generate-mapper` (`TfBlueprintMetadataObservedState`, `HelmChartMetadataObservedState`, `InferredMetadataObservedState`, `TerraformBlueprintUiMetadataObservedState`) and `Value_ToProto` for `structpb.Value`.
+  - Mechanically generated `designcentercatalogtemplaterevision_types.go`, `designcentercatalogtemplaterevision_identity.generated.go`, `designcentercatalogtemplaterevision_reference.generated.go`, `designcentercatalogtemplaterevision_identity_generated_test.go`, CRD manifest, deepcopy, and updated `pkg/controller/direct/designcenter/mapper.generated.go`.
+  - Added `DesignCenterCatalogTemplateRevision` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Initialized open entries in `apis/designcenter/judgement_queue.yaml` for `DesignCenterCatalogTemplateRevision` (including `untriaged-bulk-generation` with `status: open`).
+  - Added `designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com` to `knownInvalidCRDs` in `tests/apichecks/crds_test.go` due to empty object schema from `TerraformUiInputs` map value type.
+  - Defined recursive types `ListValue` and `DisplayVariable` in `designcentercatalogtemplaterevision_types.go` with kubebuilder unknown fields annotations (`+kubebuilder:validation:items:XPreserveUnknownFields`, `+kubebuilder:validation:items:Type=object` on `ListValue.Values`, and `+kubebuilder:pruning:PreserveUnknownFields`, `+kubebuilder:validation:Schemaless`, `+kubebuilder:validation:XPreserveUnknownFields`, `+kubebuilder:validation:Type=object` on `DisplayVariable.Properties`) so `controller-gen` outputs valid OpenAPI schemas that satisfy Kubernetes OpenAPI v3 validation in envtest (`TestPreview`).
+  - Recorded untriaged missing fields in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`, recursive types in `recursivetypes.txt`, and not representable refs in `refs_not_representable.txt`.
+
+### [2026-11-20] Triaging judgement queue and finalizing KRM types for DesignCenterCatalogTemplateRevision
+- **Context**: Triaged `apis/designcenter/judgement_queue.yaml` and finalized KRM types, identity, and reference types for `DesignCenterCatalogTemplateRevision` (Issue #16250).
+- **Resolutions & Findings**:
+  - `location-or-parent-ref`, `parent-ref-guessed`, `identity-root-unknown`: `DesignCenterCatalogTemplateRevision` is a child resource under `DesignCenterCatalogTemplate` (`projects/{project}/locations/{location}/spaces/{space}/catalogs/{catalog}/templates/{catalog_template}/revisions/{revision}`). Per `judgement/references/PARENT_AND_IDENTITY.md` (Case B), replaced `ProjectRef`, `Location`, and `TemplateRef` with required, immutable `ParentRef *DesignCenterCatalogTemplateRef` (`json:"parentRef"`).
+  - `identity-not-in-cai`: Verified template `//designcenter.googleapis.com/projects/{project}/locations/{location}/spaces/{space}/catalogs/{catalog}/templates/{catalog_template}/revisions/{revision}` against proto `google.api.resource` pattern and marked accepted.
+  - `verify-service-docs-link` & `verify-resource-docs-link`: Added service docs `https://cloud.google.com/application-design-center/docs` and REST reference `https://cloud.google.com/application-design-center/docs/reference/rest/v1/projects.locations.spaces.catalogs.templates.revisions`.
+  - `authoritative-proto-reference`: Resolved `.spec.applicationTemplateRevisionSource` as `not-applicable` because `ApplicationTemplateRevision` is an unmanaged resource in KCC. Moved `DeveloperConnectSourceConfig` into `designcentercatalogtemplaterevision_types.go` and converted `.spec.developerConnectSourceConfig.developerConnectRepoURI` to `DeveloperConnectRepoRef *developerconnectv1alpha1.DeveloperConnectGitRepositoryLinkRef` (`resolution: edited`).
+  - Added handwritten mappers `DeveloperConnectSourceConfig_FromProto` and `DeveloperConnectSourceConfig_ToProto` in `pkg/controller/direct/designcenter/designcentercatalogtemplaterevision_mapper.go`.
+  - `deprecated-field`: Resolved `.spec.gcsSourceURI` (omitted from spec) and `.spec.gitSource.developerConnectConfig` (in nested `GitSource`) as `accepted`.
+  - `message-map-derived`: Verified Go map types and mappings for `DisplayVariable`, `TemplateUiOutputDisplayVariable`, `HelmChartInput`, `TerraformUiInputDisplayVariable`, and `TerraformUiOutputDisplay`, and marked `accepted`.
+  - `reference-not-representable`: Resolved `.spec.ociRepo.uri` as `accepted` (container image URI not representable as KCC reference today).
+  - `untriaged-bulk-generation`: Resolved with resolution `edited`.
+  - Updated golden exceptions in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+
+### [2026-11-23] Finalize Step 1b compliance for DesignCenterCatalogTemplateRevision
+- **Context**: Addressed Step 1b review feedback on `DesignCenterCatalogTemplateRevision` (Issue #16241).
+- **Resolutions & Findings**:
+  - `deprecated-field` on `.spec.gitSource.developerConnectConfig`: Handwrote `GitSource` struct in `designcentercatalogtemplaterevision_types.go` without the deprecated `DeveloperConnectConfig` field, as `GitSource` is exclusive to `DesignCenterCatalogTemplateRevision` and superseded by `developerConnectSourceConfig`. Updated judgement queue resolution to `edited`.
+  - `well-known-proto-type`: Resolved all 18 open `google.protobuf.Value` entries in `apis/designcenter/judgement_queue.yaml` as `accepted` with explanatory notes confirming generated `struct Value` KRM representation and `Value_ToProto` mapper.
+  - Regenerated types, deepcopy, mappers, and CRD manifests via `./apis/designcenter/generate.sh`.
+  - Removed stale `.spec.gitSource.developerConnectConfig.gitRepositoryLink` exception from `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+
+
+
 
 
 

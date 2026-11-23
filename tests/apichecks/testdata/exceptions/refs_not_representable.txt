@@ -91,6 +91,7 @@
 [not_representable] crd=dataplextasks.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.spark.mainJarFileURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=dataprocjobs.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.hadoopJob.mainJarFileURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=dataprocworkflowtemplates.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.jobs[].hadoopJob.mainJarFileUri" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.ociRepo.uri" reason=container-image-uri-not-a-storage-object
 [not_representable] crd=devconnectinsightsconfigs.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifactConfigs[].uri" reason=container-image-uri-not-a-storage-object
 [not_representable] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.advancedSettings.audioExportGCSDestination.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.advancedSettings.audioExportGCSDestination.uri" reason=gcs-path-decomposable-as-bucketref-plus-path

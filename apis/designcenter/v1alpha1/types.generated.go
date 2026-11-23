@@ -20,8 +20,137 @@
 // resource: DesignCenterSpace:Space
 // resource: DesignCenterCatalog:Catalog
 // resource: DesignCenterCatalogTemplate:CatalogTemplate
+// resource: DesignCenterCatalogTemplateRevision:CatalogTemplateRevision
 
 package v1alpha1
+
+import (
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+)
+
+/* unreachable type Attributes
+// +kcc:proto=google.cloud.apphub.v1.Attributes
+type Attributes struct {
+	// Optional. User-defined criticality information.
+	// +kcc:proto:field=google.cloud.apphub.v1.Attributes.criticality
+	Criticality *Criticality `json:"criticality,omitempty"`
+
+	// Optional. User-defined environment information.
+	// +kcc:proto:field=google.cloud.apphub.v1.Attributes.environment
+	Environment *Environment `json:"environment,omitempty"`
+
+	// Optional. Developer team that owns development and coding.
+	// +kcc:proto:field=google.cloud.apphub.v1.Attributes.developer_owners
+	DeveloperOwners []ContactInfo `json:"developerOwners,omitempty"`
+
+	// Optional. Operator team that ensures runtime and operations.
+	// +kcc:proto:field=google.cloud.apphub.v1.Attributes.operator_owners
+	OperatorOwners []ContactInfo `json:"operatorOwners,omitempty"`
+
+	// Optional. Business team that ensures user needs are met and value is
+	//  delivered
+	// +kcc:proto:field=google.cloud.apphub.v1.Attributes.business_owners
+	BusinessOwners []ContactInfo `json:"businessOwners,omitempty"`
+}
+*/
+
+/* unreachable type ContactInfo
+// +kcc:proto=google.cloud.apphub.v1.ContactInfo
+type ContactInfo struct {
+	// Optional. Contact's name.
+	//  Can have a maximum length of 63 characters.
+	// +kcc:proto:field=google.cloud.apphub.v1.ContactInfo.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Required. Email address of the contacts.
+	// +kcc:proto:field=google.cloud.apphub.v1.ContactInfo.email
+	Email *string `json:"email,omitempty"`
+}
+*/
+
+/* unreachable type Criticality
+// +kcc:proto=google.cloud.apphub.v1.Criticality
+type Criticality struct {
+	// Required. Criticality Type.
+	// +kcc:proto:field=google.cloud.apphub.v1.Criticality.type
+	Type *string `json:"type,omitempty"`
+}
+*/
+
+/* unreachable type Environment
+// +kcc:proto=google.cloud.apphub.v1.Environment
+type Environment struct {
+	// Required. Environment Type.
+	// +kcc:proto:field=google.cloud.apphub.v1.Environment.type
+	Type *string `json:"type,omitempty"`
+}
+*/
+
+/* unreachable type Scope
+// +kcc:proto=google.cloud.apphub.v1.Scope
+type Scope struct {
+	// Required. Scope Type.
+	// +kcc:proto:field=google.cloud.apphub.v1.Scope.type
+	Type *string `json:"type,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "AlternateDefault", skipping
+
+// +kcc:proto=google.cloud.designcenter.v1.AlternateDefault
+type AlternateDefault struct {
+}
+*/
+
+// +kcc:proto=google.cloud.designcenter.v1.AlternateDefaultInput
+type AlternateDefaultInput struct {
+	// Optional. Type of alternate default.
+	// +kcc:proto:field=google.cloud.designcenter.v1.AlternateDefaultInput.type
+	Type *string `json:"type,omitempty"`
+
+	// Optional. Value of the alternate default.
+	// +kcc:proto:field=google.cloud.designcenter.v1.AlternateDefaultInput.value
+	Value *Value `json:"value,omitempty"`
+}
+
+/* unreachable type AppHubApplicationParameters
+// +kcc:proto=google.cloud.designcenter.v1.AppHubApplicationParameters
+type AppHubApplicationParameters struct {
+	// Optional. The App Hub application ID.
+	// +kcc:proto:field=google.cloud.designcenter.v1.AppHubApplicationParameters.application_id
+	ApplicationID *string `json:"applicationID,omitempty"`
+
+	// Optional. The App Hub application scope.
+	// +kcc:proto:field=google.cloud.designcenter.v1.AppHubApplicationParameters.scope
+	Scope *Scope `json:"scope,omitempty"`
+
+	// Optional. The App Hub application attributes.
+	// +kcc:proto:field=google.cloud.designcenter.v1.AppHubApplicationParameters.attributes
+	Attributes *Attributes `json:"attributes,omitempty"`
+
+	// Optional. The App Hub application location. Only used for applications with
+	//  REGIONAL scope.
+	// +kcc:proto:field=google.cloud.designcenter.v1.AppHubApplicationParameters.location
+	Location *string `json:"location,omitempty"`
+
+	// Optional. The host project ID where the App Hub application is created.
+	// +kcc:proto:field=google.cloud.designcenter.v1.AppHubApplicationParameters.host_project_id
+	HostProjectID *string `json:"hostProjectID,omitempty"`
+}
+*/
+
+/* unreachable type ApplyCondition
+// +kcc:proto=google.cloud.designcenter.v1.ApplyCondition
+type ApplyCondition struct {
+	// Required. The key of the parameter for the condition.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplyCondition.condition_key
+	ConditionKey *string `json:"conditionKey,omitempty"`
+
+	// Required. The value of the parameter for the condition.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplyCondition.condition_value
+	ConditionValue *string `json:"conditionValue,omitempty"`
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.designcenter.v1.Catalog", skipping
 
@@ -67,6 +196,641 @@ type CatalogTemplate struct {
 	// Optional. The Application Design Center application template type.
 	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplate.type
 	Type *string `json:"type,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.designcenter.v1.CatalogTemplateRevision", skipping
+
+// +kcc:proto=google.cloud.designcenter.v1.CatalogTemplateRevision
+type CatalogTemplateRevision struct {
+	// Optional. The git source.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.git_source
+	GitSource *GitSource `json:"gitSource,omitempty"`
+
+	// Optional. Deprecated: Added new field tf_module_gcs_uri.
+	//  The Cloud Storage URI, which must be in the format gs://[bucket] or
+	//  gs://[bucket]/[object].
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.gcs_source_uri
+	GCSSourceURI *string `json:"gcsSourceURI,omitempty"`
+
+	// Optional. The application template revision source.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.application_template_revision_source
+	ApplicationTemplateRevisionSource *string `json:"applicationTemplateRevisionSource,omitempty"`
+
+	// Optional. Configuration for fetching content from source code repository
+	//  such as GitHub or Bitbucket through Developer Connect.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.developer_connect_source_config
+	DeveloperConnectSourceConfig *DeveloperConnectSourceConfig `json:"developerConnectSourceConfig,omitempty"`
+
+	// Optional. The Open Container Initiative (OCI) repo source that contains
+	//  helm charts.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.oci_repo
+	OciRepo *OciRepo `json:"ociRepo,omitempty"`
+
+	// Identifier. The catalog template revision name.
+	//  `projects/$project/locations/$location/spaces/$space/catalogs/$catalog/templates/$template/revisions/$revision`
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The catalog template revision description.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. The Application Design Center application template type.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.type
+	Type *string `json:"type,omitempty"`
+
+	// Optional. Metadata input.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.metadata_input
+	MetadataInput *MetadataInput `json:"metadataInput,omitempty"`
+
+	// Optional. The annotations of the template revision.
+	//  Key is the annotation name. Value is the annotation value.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.annotations
+	Annotations map[string]string `json:"annotations,omitempty"`
+
+	// Optional. The values provided for the input variables.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.application_parameters
+	ApplicationParameters []Parameter `json:"applicationParameters,omitempty"`
+}
+*/
+
+/* unreachable type CloudControlConfig
+// +kcc:proto=google.cloud.designcenter.v1.CloudControlConfig
+type CloudControlConfig struct {
+	// Required. Resource name of the cloud control that these parameter values
+	//  apply to. Format:
+	//  organizations/{organization}/locations/{location}/cloudControls/{cloud_control}
+	//  or projects/{project}/locations/{location}/cloudControls/{cloud_control}
+	// +kcc:proto:field=google.cloud.designcenter.v1.CloudControlConfig.cloud_control
+	CloudControl *string `json:"cloudControl,omitempty"`
+
+	// Optional. Parameter values for this specific control.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CloudControlConfig.parameters
+	Parameters []Parameter `json:"parameters,omitempty"`
+}
+*/
+
+/* unreachable type ComponentApplicationInfo
+// +kcc:proto=google.cloud.designcenter.v1.ComponentApplicationInfo
+type ComponentApplicationInfo struct {
+	// Required. The application ID of the apphub application. The ID must be 1-63
+	//  characters long and should match the regular expression
+	//  `^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$`.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ComponentApplicationInfo.apphub_application_id
+	ApphubApplicationID *string `json:"apphubApplicationID,omitempty"`
+
+	// Optional. Display name for the application. The number of characters should
+	//  be less than 64 characters.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ComponentApplicationInfo.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. Scope of apphub application.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ComponentApplicationInfo.scope
+	Scope *Scope `json:"scope,omitempty"`
+
+	// Optional. Attributes of apphub application.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ComponentApplicationInfo.attributes
+	Attributes *Attributes `json:"attributes,omitempty"`
+
+	// Optional. Deployment region for the component. If the scope is set to
+	//  REGIONAL, then the apphub application is created in this region, e.g.
+	//  `us-central1`.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ComponentApplicationInfo.deployment_region
+	DeploymentRegion *string `json:"deploymentRegion,omitempty"`
+}
+*/
+
+/* unreachable type ComponentParameterSchema
+// +kcc:proto=google.cloud.designcenter.v1.ComponentParameterSchema
+type ComponentParameterSchema struct {
+}
+*/
+
+/* unreachable type ComponentVariable
+// +kcc:proto=google.cloud.designcenter.v1.ComponentVariable
+type ComponentVariable struct {
+	// Required. Name of the variable.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ComponentVariable.variable
+	Variable *string `json:"variable,omitempty"`
+
+	// Required. Component to which this variable belongs.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ComponentVariable.component_uri
+	ComponentURI *string `json:"componentURI,omitempty"`
+}
+*/
+
+/* unreachable type ConnectionParameters
+// +kcc:proto=google.cloud.designcenter.v1.ConnectionParameters
+type ConnectionParameters struct {
+	// Required. The name of the connection parameter.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ConnectionParameters.connection
+	Connection *string `json:"connection,omitempty"`
+
+	// Optional. A list of parameters associated with the connection.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ConnectionParameters.parameters
+	Parameters []Parameter `json:"parameters,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.designcenter.v1.ConnectionSource
+type ConnectionSource struct {
+	// Required. Source of the connection. Defined using the same format as module
+	//  source of form [hostname]/namespace/name/provider for registry references
+	//  and unprefixed github.com URLs for github references.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ConnectionSource.source
+	// +required
+	Source *string `json:"source,omitempty"`
+
+	// Required. Version constraint syntax using the same format as module version
+	//  constraints.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ConnectionSource.version
+	// +required
+	Version *string `json:"version,omitempty"`
+}
+
+// +kcc:proto=google.cloud.designcenter.v1.ConnectionSpec
+type ConnectionSpec struct {
+	// Required. Output expression identifying output being connected to variable.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ConnectionSpec.output_expr
+	// +required
+	OutputExpr *string `json:"outputExpr,omitempty"`
+
+	// Optional. Optional dot separated attribuite notation to connect to a
+	//  specific object field of the input variable.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ConnectionSpec.input_path
+	InputPath *string `json:"inputPath,omitempty"`
+}
+
+// +kcc:proto=google.cloud.designcenter.v1.DeveloperConnectConfig
+type DeveloperConnectConfig struct {
+	// Required. The Developer Connect Git repository link, formatted as
+	//  `projects/*/locations/*/connections/*/gitRepositoryLink/*`.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeveloperConnectConfig.git_repository_link
+	GitRepositoryLink *string `json:"gitRepositoryLink,omitempty"`
+}
+
+/* found existing non-generated go type "DeveloperConnectSourceConfig", skipping
+
+// +kcc:proto=google.cloud.designcenter.v1.DeveloperConnectSourceConfig
+type DeveloperConnectSourceConfig struct {
+	// Required. The Developer Connect Git repository link, formatted as
+	//  `projects/* /locations/* /connections/* /gitRepositoryLinks/*`.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeveloperConnectSourceConfig.developer_connect_repo_uri
+	DeveloperConnectRepoURI *string `json:"developerConnectRepoURI,omitempty"`
+
+	// Required. The reference (for example, a branch, tag, or commit SHA) from
+	//  which the content should be read.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeveloperConnectSourceConfig.reference
+	Reference *GitReference `json:"reference,omitempty"`
+
+	// Required. The sub-directory within the repository from which to read
+	//  content. The path must be relative to the repository's root such as
+	//  dir1/dir2. To read content from the root dir, provide "/" as the value of
+	//  the field.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeveloperConnectSourceConfig.dir
+	Dir *string `json:"dir,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "DisplayVariable", skipping
+
+// +kcc:proto=google.cloud.designcenter.v1.DisplayVariable
+type DisplayVariable struct {
+	// Required. The variable name from the corresponding standard Template file.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DisplayVariable.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Visible title for the variable on the UI.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DisplayVariable.title
+	Title *string `json:"title,omitempty"`
+
+	// Optional. Alternate defaults for the input.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DisplayVariable.alternate_defaults
+	AlternateDefaults []AlternateDefaultInput `json:"alternateDefaults,omitempty"`
+
+	// Optional. Regex based validation rules for the variable.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DisplayVariable.regex_validation
+	RegexValidation *string `json:"regexValidation,omitempty"`
+
+	// Optional. Minimum value for numeric types.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DisplayVariable.min
+	Min *float32 `json:"min,omitempty"`
+
+	// Optional. Maximum value for numeric types.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DisplayVariable.max
+	Max *float32 `json:"max,omitempty"`
+
+	// Optional. Text describing the validation rules for the property. Typically
+	//  shown after an invalid input. Optional. UTF-8 text. No markup. At most 128
+	//  characters.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DisplayVariable.validation
+	Validation *string `json:"validation,omitempty"`
+
+	// Optional. Labels for enum values.
+	//  Values must be UTF-8 text with no markup, and at most 64 characters.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DisplayVariable.enum_value_labels
+	EnumValueLabels []ValueLabelInput `json:"enumValueLabels,omitempty"`
+
+	// Optional. Indicates the "advanced" level of the input property. Level 0
+	//  (default) will always be shown. Level 1 corresponds to one expansion (user
+	//  clicks "show advanced options" or "more options"). Higher levels correspond
+	//  to further expansions, or they may be collapsed to level 1 by the UI
+	//  implementation.
+	//  Optional.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DisplayVariable.level
+	Level *int32 `json:"level,omitempty"`
+
+	// Optional. Property subtext, displayed below the title.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DisplayVariable.subtext
+	Subtext *string `json:"subtext,omitempty"`
+
+	// Optional. properties is a map defining all the fields of the input
+	//  variable.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DisplayVariable.properties
+	Properties map[string]DisplayVariable `json:"properties,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "DisplayVariableToggle", skipping
+
+// +kcc:proto=google.cloud.designcenter.v1.DisplayVariableToggle
+type DisplayVariableToggle struct {
+}
+*/
+
+// +kcc:proto=google.cloud.designcenter.v1.GitReference
+type GitReference struct {
+	// Optional. The name of the branch from which content should be read.
+	//  For example: "main"
+	// +kcc:proto:field=google.cloud.designcenter.v1.GitReference.branch
+	Branch *string `json:"branch,omitempty"`
+
+	// Optional. The reference tag from which content should be read.
+	//  For example: "v1.2.3"
+	// +kcc:proto:field=google.cloud.designcenter.v1.GitReference.ref_tag
+	RefTag *string `json:"refTag,omitempty"`
+
+	// Optional. The full SHA hash of a specific commit from which content
+	//  should be read.
+	// +kcc:proto:field=google.cloud.designcenter.v1.GitReference.commit_sha
+	CommitSha *string `json:"commitSha,omitempty"`
+}
+
+/* found existing non-generated go type "GitSource", skipping
+
+// +kcc:proto=google.cloud.designcenter.v1.GitSource
+type GitSource struct {
+	// Required. Location of the git repo to build.
+	// +kcc:proto:field=google.cloud.designcenter.v1.GitSource.repo
+	Repo *string `json:"repo,omitempty"`
+
+	// Optional. Directory, relative to the source root, in which to run the
+	//  build. This must be a relative path. If a step's `dir` is specified and is
+	//  an absolute path, this value is ignored for that step's execution.
+	// +kcc:proto:field=google.cloud.designcenter.v1.GitSource.dir
+	Dir *string `json:"dir,omitempty"`
+
+	// Optional. This config defines the location of a source through Developer
+	//  Connect. Used to access private git repos.
+	// +kcc:proto:field=google.cloud.designcenter.v1.GitSource.developer_connect_config
+	DeveloperConnectConfig *DeveloperConnectConfig `json:"developerConnectConfig,omitempty"`
+
+	// Required. The reference tag of the git repo.
+	// +kcc:proto:field=google.cloud.designcenter.v1.GitSource.ref_tag
+	RefTag *string `json:"refTag,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "HelmChartInput", skipping
+
+// +kcc:proto=google.cloud.designcenter.v1.HelmChartInput
+type HelmChartInput struct {
+}
+*/
+
+/* unreachable type HelmChartMetadata
+// +kcc:proto=google.cloud.designcenter.v1.HelmChartMetadata
+type HelmChartMetadata struct {
+}
+*/
+
+/* unreachable type HelmChartOutput
+// +kcc:proto=google.cloud.designcenter.v1.HelmChartOutput
+type HelmChartOutput struct {
+}
+*/
+
+// +kcc:proto=google.cloud.designcenter.v1.IacFormatInfo
+type IacFormatInfo struct {
+	// Required. Flavor is the type of the actuation tool.
+	// +kcc:proto:field=google.cloud.designcenter.v1.IacFormatInfo.flavor
+	// +required
+	Flavor *string `json:"flavor,omitempty"`
+
+	// Required. Required version for the actuation tool.
+	//  required_version = ">= 0.13"
+	// +kcc:proto:field=google.cloud.designcenter.v1.IacFormatInfo.version
+	// +required
+	Version *string `json:"version,omitempty"`
+}
+
+/* unreachable type InferredMetadata
+// +kcc:proto=google.cloud.designcenter.v1.InferredMetadata
+type InferredMetadata struct {
+}
+*/
+
+/* unreachable type InputVariableAlias
+// +kcc:proto=google.cloud.designcenter.v1.InputVariableAlias
+type InputVariableAlias struct {
+	// Required. Name of the input variable inside the component's underlying
+	//  template or module.
+	// +kcc:proto:field=google.cloud.designcenter.v1.InputVariableAlias.variable
+	Variable *string `json:"variable,omitempty"`
+
+	// Required. Alias for the variable name to be exposed at the root level of
+	//  the composite template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.InputVariableAlias.alias
+	Alias *string `json:"alias,omitempty"`
+}
+*/
+
+/* unreachable type LogicalProduct
+// +kcc:proto=google.cloud.designcenter.v1.LogicalProduct
+type LogicalProduct struct {
+}
+*/
+
+// +kcc:proto=google.cloud.designcenter.v1.MetadataInput
+type MetadataInput struct {
+	// Required. spec containing the metadata
+	// +kcc:proto:field=google.cloud.designcenter.v1.MetadataInput.spec
+	// +required
+	Spec *MetadataInputSpec `json:"spec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.designcenter.v1.MetadataInputSpec
+type MetadataInputSpec struct {
+	// Optional. TemplateInfo provides the actuation tool information.
+	// +kcc:proto:field=google.cloud.designcenter.v1.MetadataInputSpec.info
+	Info *TemplateInfo `json:"info,omitempty"`
+
+	// Optional. TemplateSchemas provides the input variables lists and connection
+	//  information.
+	// +kcc:proto:field=google.cloud.designcenter.v1.MetadataInputSpec.interfaces
+	Interfaces *TemplateSchema `json:"interfaces,omitempty"`
+
+	// Required. TemplateRequirements defines the roles required and the provider
+	//  versions.
+	// +kcc:proto:field=google.cloud.designcenter.v1.MetadataInputSpec.requirements
+	// +required
+	Requirements *TemplateRequirements `json:"requirements,omitempty"`
+
+	// Optional. TemplateUi defines the UI related information for the Template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.MetadataInputSpec.ui
+	Ui *TemplateUi `json:"ui,omitempty"`
+}
+
+// +kcc:proto=google.cloud.designcenter.v1.OciRepo
+type OciRepo struct {
+	// Required. Path to Open Container Initiative (OCI) repo.
+	//  Example: oci://us-west1-docker.pkg.dev/nyap-test/helm-repo/my-chart
+	// +kcc:proto:field=google.cloud.designcenter.v1.OciRepo.uri
+	// +required
+	URI *string `json:"uri,omitempty"`
+
+	// Optional. The version of the helm chart.
+	// +kcc:proto:field=google.cloud.designcenter.v1.OciRepo.version
+	Version *string `json:"version,omitempty"`
+
+	// Optional. Field for containing the references to the source from which the
+	//  OCI repo was created.
+	// +kcc:proto:field=google.cloud.designcenter.v1.OciRepo.module_source_uri
+	ModuleSourceURI *string `json:"moduleSourceURI,omitempty"`
+}
+
+// +kcc:proto=google.cloud.designcenter.v1.Parameter
+type Parameter struct {
+	// Required. The key of the parameter.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Parameter.key
+	// +required
+	Key *string `json:"key,omitempty"`
+
+	// Optional. The value of the parameter.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Parameter.value
+	Value *Value `json:"value,omitempty"`
+}
+
+/* unreachable type ProviderVersion
+// +kcc:proto=google.cloud.designcenter.v1.ProviderVersion
+type ProviderVersion struct {
+}
+*/
+
+/* unreachable type ResourceType
+// +kcc:proto=google.cloud.designcenter.v1.ResourceType
+type ResourceType struct {
+}
+*/
+
+// +kcc:proto=google.cloud.designcenter.v1.SaaSRuntimeContext
+type SaaSRuntimeContext struct {
+	// Optional. The SaaS names. Format for each SaaS:
+	//  projects/{project}/locations/{location}/saas/{saas}
+	// +kcc:proto:field=google.cloud.designcenter.v1.SaaSRuntimeContext.saas_names
+	SaasNames []string `json:"saasNames,omitempty"`
+}
+
+/* unreachable type SerializedApplicationTemplate
+// +kcc:proto=google.cloud.designcenter.v1.SerializedApplicationTemplate
+type SerializedApplicationTemplate struct {
+	// Optional. The application template URI.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Optional. The application template display name.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The application template description.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Parameters to apply to all components in the application
+	//  template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.application_parameters
+	ApplicationParameters []Parameter `json:"applicationParameters,omitempty"`
+
+	// Optional. The IaC format of the application template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.iac_format
+	IacFormat *string `json:"iacFormat,omitempty"`
+
+	// Optional. The application template components.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.components
+	Components []SerializedComponent `json:"components,omitempty"`
+
+	// Optional. The App Hub application parameters.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.apphub_application_parameters
+	ApphubApplicationParameters *AppHubApplicationParameters `json:"apphubApplicationParameters,omitempty"`
+
+	// Optional. SaaS runtime context for the application template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.saas_runtime_context
+	SaasRuntimeContext *SaaSRuntimeContext `json:"saasRuntimeContext,omitempty"`
+
+	// Optional. Custom provider configurations imported from IaC.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.providers
+	Providers []SerializedProvider `json:"providers,omitempty"`
+
+	// Optional. Custom variables imported from variables.tf.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.custom_variables
+	CustomVariables []TerraformInput `json:"customVariables,omitempty"`
+
+	// Optional. Custom variable values imported from terraform.tfvars.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.custom_tfvars
+	CustomTfvars []Parameter `json:"customTfvars,omitempty"`
+
+	// Optional. If true, exposes all inputs as root module variables.
+	//  This is only supported for STANDARD composition type templates.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.inputs_as_root_module_variables
+	InputsAsRootModuleVariables *bool `json:"inputsAsRootModuleVariables,omitempty"`
+}
+*/
+
+/* unreachable type SerializedComponent
+// +kcc:proto=google.cloud.designcenter.v1.SerializedComponent
+type SerializedComponent struct {
+	// Optional. The component URI.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Optional. The shared template used to generate the component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.shared_template_revision_uri
+	SharedTemplateRevisionURI *string `json:"sharedTemplateRevisionURI,omitempty"`
+
+	// Optional. The component parameters.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.parameters
+	Parameters []Parameter `json:"parameters,omitempty"`
+
+	// Optional. The component connections.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.connections
+	Connections []SerializedConnection `json:"connections,omitempty"`
+
+	// Optional. IAM roles required by the service account to deploy the
+	//  component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.roles
+	Roles []string `json:"roles,omitempty"`
+
+	// Optional. APIs required to be enabled to deploy the component, in the form
+	//  of "*.googleapis.com".
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.apis
+	APIs []string `json:"apis,omitempty"`
+
+	// Optional. The component display name.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The application associated with the component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.application_info
+	ApplicationInfo *ComponentApplicationInfo `json:"applicationInfo,omitempty"`
+
+	// Optional. Whether the component is exported as a separate terraform root
+	//  module in a composite application template. If this is false, then native
+	//  components will be exported as a submodule of a separate terraform root
+	//  module.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.use_as_root_module
+	UseAsRootModule *bool `json:"useAsRootModule,omitempty"`
+
+	// Optional. Input variable aliases defined for this serialized component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.input_variable_aliases
+	InputVariableAliases []InputVariableAlias `json:"inputVariableAliases,omitempty"`
+
+	// Optional. The application template revision used to generate the component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.application_template_revision_uri
+	ApplicationTemplateRevisionURI *string `json:"applicationTemplateRevisionURI,omitempty"`
+}
+*/
+
+/* unreachable type SerializedConnection
+// +kcc:proto=google.cloud.designcenter.v1.SerializedConnection
+type SerializedConnection struct {
+	// Optional. The connection URI.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedConnection.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Optional. The destination component URI used to generate the connection.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedConnection.destination_component_uri
+	DestinationComponentURI *string `json:"destinationComponentURI,omitempty"`
+
+	// Optional. The parameters of the connection associated with the source
+	//  component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedConnection.source_component_parameters
+	SourceComponentParameters []Parameter `json:"sourceComponentParameters,omitempty"`
+
+	// Optional. The parameters of the connection associated with the destination
+	//  component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedConnection.destination_component_parameters
+	DestinationComponentParameters []Parameter `json:"destinationComponentParameters,omitempty"`
+}
+*/
+
+/* unreachable type SerializedPolicy
+// +kcc:proto=google.cloud.designcenter.v1.SerializedPolicy
+type SerializedPolicy struct {
+	// Optional. URI of the policy.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedPolicy.policy_uri
+	PolicyURI *string `json:"policyURI,omitempty"`
+
+	// Optional. URI of the policy revision.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedPolicy.policy_revision_uri
+	PolicyRevisionURI *string `json:"policyRevisionURI,omitempty"`
+
+	// Required. The uri of the policy in application template.
+	//  Format:
+	//  `projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/policies/{policy}`
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedPolicy.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Optional. The serialized policy display name.
+	//  The number of characters should be less than 128 characters.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedPolicy.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The serialized policy description.
+	//  At most 2048 characters.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedPolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. Policy type will be used to determine the domain of the policy.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedPolicy.policy_type
+	PolicyType *string `json:"policyType,omitempty"`
+
+	// Optional. The serialized policy apply conditions.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedPolicy.apply_conditions
+	ApplyConditions []ApplyCondition `json:"applyConditions,omitempty"`
+
+	// Optional. Stored parameter values grouped by cloud control.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedPolicy.cloud_control_configs
+	CloudControlConfigs []CloudControlConfig `json:"cloudControlConfigs,omitempty"`
+}
+*/
+
+/* unreachable type SerializedProvider
+// +kcc:proto=google.cloud.designcenter.v1.SerializedProvider
+type SerializedProvider struct {
+	// Required. Name of the provider (e.g., `"google"`, `"google-beta"`,
+	//  `"google-nightly"`).
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedProvider.provider
+	Provider *string `json:"provider,omitempty"`
+
+	// Optional. Optional alias for the provider (supports multi-region setups).
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedProvider.provider_alias
+	ProviderAlias *string `json:"providerAlias,omitempty"`
+
+	// Optional. Configuration parameters of the provider. Reuses the standard
+	//  Parameter message.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedProvider.parameters
+	Parameters []Parameter `json:"parameters,omitempty"`
 }
 */
 
@@ -116,6 +880,339 @@ type Space struct {
 }
 */
 
+/* unreachable type TfBlueprintMetadata
+// +kcc:proto=google.cloud.designcenter.v1.TFBlueprintMetadata
+type TfBlueprintMetadata struct {
+
+	// Optional. The time estimate for deploying the blueprint.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TFBlueprintMetadata.deployment_duration
+	DeploymentDuration *string `json:"deploymentDuration,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.designcenter.v1.TemplateConnections
+type TemplateConnections struct {
+	// Required. Source of the connection.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TemplateConnections.source
+	// +required
+	Source *ConnectionSource `json:"source,omitempty"`
+
+	// Required. Connection specifications.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TemplateConnections.spec
+	// +required
+	Spec *ConnectionSpec `json:"spec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.designcenter.v1.TemplateInfo
+type TemplateInfo struct {
+	// Required. IaCFormatInfo defines the actuation tool used to provision the
+	//  Template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TemplateInfo.actuation_tool
+	// +required
+	ActuationTool *IacFormatInfo `json:"actuationTool,omitempty"`
+}
+
+// +kcc:proto=google.cloud.designcenter.v1.TemplateRequirements
+type TemplateRequirements struct {
+	// Required. All roles required for the component
+	// +kcc:proto:field=google.cloud.designcenter.v1.TemplateRequirements.roles
+	// +required
+	Roles []TemplateRoles `json:"roles,omitempty"`
+}
+
+// +kcc:proto=google.cloud.designcenter.v1.TemplateRoles
+type TemplateRoles struct {
+	// Required. Level of the role.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TemplateRoles.level
+	// +required
+	Level *string `json:"level,omitempty"`
+
+	// Required. List of roles.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TemplateRoles.roles
+	// +required
+	Roles []string `json:"roles,omitempty"`
+}
+
+// +kcc:proto=google.cloud.designcenter.v1.TemplateSchema
+type TemplateSchema struct {
+	// Required. All defined variables for the Template
+	// +kcc:proto:field=google.cloud.designcenter.v1.TemplateSchema.variables
+	// +required
+	Variables []TemplateVariable `json:"variables,omitempty"`
+}
+
+// +kcc:proto=google.cloud.designcenter.v1.TemplateUi
+type TemplateUi struct {
+	// Required. The top-level input section that defines the list of variables
+	//  and their sections on the deployment page.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TemplateUi.input
+	// +required
+	Input *TemplateUiInput `json:"input,omitempty"`
+
+	// Optional. The top-level output section that defines the list of outputs and
+	//  their visibility on the deployment page.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TemplateUi.runtime
+	Runtime *TemplateUiOutput `json:"runtime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.designcenter.v1.TemplateUiInput
+type TemplateUiInput struct {
+	// Required. variables is a map defining all inputs on the UI.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TemplateUiInput.variables
+	// +required
+	Variables map[string]DisplayVariable `json:"variables,omitempty"`
+}
+
+// +kcc:proto=google.cloud.designcenter.v1.TemplateUiOutput
+type TemplateUiOutput struct {
+	// Optional. Message to be displayed in the UI.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TemplateUiOutput.output_message
+	OutputMessage *string `json:"outputMessage,omitempty"`
+
+	// Required. outputs is a map defining all outputs on the UI.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TemplateUiOutput.outputs
+	// +required
+	Outputs map[string]TemplateUiOutputDisplayVariable `json:"outputs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.designcenter.v1.TemplateUiOutputDisplayVariable
+type TemplateUiOutputDisplayVariable struct {
+	// Required. Visibility of the output.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TemplateUiOutputDisplayVariable.visibility
+	// +required
+	Visibility *string `json:"visibility,omitempty"`
+}
+
+// +kcc:proto=google.cloud.designcenter.v1.TemplateVariable
+type TemplateVariable struct {
+	// Required. Input variable name present in Terraform.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TemplateVariable.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// Required. Terraform input connections.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TemplateVariable.connections
+	// +required
+	Connections []TemplateConnections `json:"connections,omitempty"`
+}
+
+/* unreachable type TerraformBlueprintUiMetadata
+// +kcc:proto=google.cloud.designcenter.v1.TerraformBlueprintUiMetadata
+type TerraformBlueprintUiMetadata struct {
+}
+*/
+
+/* unreachable type TerraformInput
+// +kcc:proto=google.cloud.designcenter.v1.TerraformInput
+type TerraformInput struct {
+
+	// Optional. Indicates if the Terraform variable is sensitive.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformInput.sensitive
+	Sensitive *bool `json:"sensitive,omitempty"`
+
+	// Optional. Optional validation rules defined on the variable.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformInput.validation_rules
+	ValidationRules []TerraformVariableValidation `json:"validationRules,omitempty"`
+}
+*/
+
+/* unreachable type TerraformInputConnections
+// +kcc:proto=google.cloud.designcenter.v1.TerraformInputConnections
+type TerraformInputConnections struct {
+}
+*/
+
+/* unreachable type TerraformOutput
+// +kcc:proto=google.cloud.designcenter.v1.TerraformOutput
+type TerraformOutput struct {
+}
+*/
+
+/* unreachable type TerraformUiInput
+// +kcc:proto=google.cloud.designcenter.v1.TerraformUiInput
+type TerraformUiInput struct {
+}
+*/
+
+/* found existing non-generated go type "TerraformUiInputDisplayVariable", skipping
+
+// +kcc:proto=google.cloud.designcenter.v1.TerraformUiInputDisplayVariable
+type TerraformUiInputDisplayVariable struct {
+}
+*/
+
+/* unreachable type TerraformUiOutput
+// +kcc:proto=google.cloud.designcenter.v1.TerraformUiOutput
+type TerraformUiOutput struct {
+}
+*/
+
+/* found existing non-generated go type "TerraformUiOutputDisplay", skipping
+
+// +kcc:proto=google.cloud.designcenter.v1.TerraformUiOutputDisplay
+type TerraformUiOutputDisplay struct {
+}
+*/
+
+// +kcc:proto=google.cloud.designcenter.v1.TerraformVariableValidation
+type TerraformVariableValidation struct {
+	// Optional. The HCL expression for the validation condition (e.g.,
+	//  "length(var.image_id) > 4").
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformVariableValidation.condition
+	Condition *string `json:"condition,omitempty"`
+
+	// Optional. The error message displayed when the condition is false.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformVariableValidation.error_message
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+}
+
+/* found existing non-generated go type "ValueLabel", skipping
+
+// +kcc:proto=google.cloud.designcenter.v1.ValueLabel
+type ValueLabel struct {
+}
+*/
+
+// +kcc:proto=google.cloud.designcenter.v1.ValueLabelInput
+type ValueLabelInput struct {
+	// Optional. Value of the enum.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ValueLabelInput.value
+	Value *string `json:"value,omitempty"`
+
+	// Optional. Label of the enum.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ValueLabelInput.label
+	Label *string `json:"label,omitempty"`
+}
+
+/* found existing non-generated go type "ListValue", skipping
+
+// +kcc:proto=google.protobuf.ListValue
+type ListValue struct {
+	// Repeated field of dynamically typed values.
+	// +kcc:proto:field=google.protobuf.ListValue.values
+	Values []Value `json:"values,omitempty"`
+}
+*/
+
+// +kcc:proto=google.protobuf.Value
+type Value struct {
+	// Represents a null value.
+	// +kcc:proto:field=google.protobuf.Value.null_value
+	NullValue *string `json:"nullValue,omitempty"`
+
+	// Represents a double value.
+	// +kcc:proto:field=google.protobuf.Value.number_value
+	NumberValue *float64 `json:"numberValue,omitempty"`
+
+	// Represents a string value.
+	// +kcc:proto:field=google.protobuf.Value.string_value
+	StringValue *string `json:"stringValue,omitempty"`
+
+	// Represents a boolean value.
+	// +kcc:proto:field=google.protobuf.Value.bool_value
+	BoolValue *bool `json:"boolValue,omitempty"`
+
+	// Represents a structured value.
+	// +kcc:proto:field=google.protobuf.Value.struct_value
+	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
+
+	// Represents a repeated `Value`.
+	// +kcc:proto:field=google.protobuf.Value.list_value
+	ListValue *ListValue `json:"listValue,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.apphub.v1.Attributes
+type AttributesObservedState struct {
+	// Optional. User-defined criticality information.
+	// +kcc:proto:field=google.cloud.apphub.v1.Attributes.criticality
+	Criticality *CriticalityObservedState `json:"criticality,omitempty"`
+
+	// Optional. User-defined environment information.
+	// +kcc:proto:field=google.cloud.apphub.v1.Attributes.environment
+	Environment *EnvironmentObservedState `json:"environment,omitempty"`
+
+	// Optional. Developer team that owns development and coding.
+	// +kcc:proto:field=google.cloud.apphub.v1.Attributes.developer_owners
+	DeveloperOwners []ContactInfoObservedState `json:"developerOwners,omitempty"`
+
+	// Optional. Operator team that ensures runtime and operations.
+	// +kcc:proto:field=google.cloud.apphub.v1.Attributes.operator_owners
+	OperatorOwners []ContactInfoObservedState `json:"operatorOwners,omitempty"`
+
+	// Optional. Business team that ensures user needs are met and value is
+	//  delivered
+	// +kcc:proto:field=google.cloud.apphub.v1.Attributes.business_owners
+	BusinessOwners []ContactInfoObservedState `json:"businessOwners,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.apphub.v1.ContactInfo
+type ContactInfoObservedState struct {
+	// Optional. Contact's name.
+	//  Can have a maximum length of 63 characters.
+	// +kcc:proto:field=google.cloud.apphub.v1.ContactInfo.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Required. Email address of the contacts.
+	// +kcc:proto:field=google.cloud.apphub.v1.ContactInfo.email
+	Email *string `json:"email,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.apphub.v1.Criticality
+type CriticalityObservedState struct {
+	// Required. Criticality Type.
+	// +kcc:proto:field=google.cloud.apphub.v1.Criticality.type
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.apphub.v1.Environment
+type EnvironmentObservedState struct {
+	// Required. Environment Type.
+	// +kcc:proto:field=google.cloud.apphub.v1.Environment.type
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.apphub.v1.Scope
+type ScopeObservedState struct {
+	// Required. Scope Type.
+	// +kcc:proto:field=google.cloud.apphub.v1.Scope.type
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.AppHubApplicationParameters
+type AppHubApplicationParametersObservedState struct {
+	// Optional. The App Hub application ID.
+	// +kcc:proto:field=google.cloud.designcenter.v1.AppHubApplicationParameters.application_id
+	ApplicationID *string `json:"applicationID,omitempty"`
+
+	// Optional. The App Hub application scope.
+	// +kcc:proto:field=google.cloud.designcenter.v1.AppHubApplicationParameters.scope
+	Scope *ScopeObservedState `json:"scope,omitempty"`
+
+	// Optional. The App Hub application attributes.
+	// +kcc:proto:field=google.cloud.designcenter.v1.AppHubApplicationParameters.attributes
+	Attributes *AttributesObservedState `json:"attributes,omitempty"`
+
+	// Optional. The App Hub application location. Only used for applications with
+	//  REGIONAL scope.
+	// +kcc:proto:field=google.cloud.designcenter.v1.AppHubApplicationParameters.location
+	Location *string `json:"location,omitempty"`
+
+	// Optional. The host project ID where the App Hub application is created.
+	// +kcc:proto:field=google.cloud.designcenter.v1.AppHubApplicationParameters.host_project_id
+	HostProjectID *string `json:"hostProjectID,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.ApplyCondition
+type ApplyConditionObservedState struct {
+	// Required. The key of the parameter for the condition.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplyCondition.condition_key
+	ConditionKey *string `json:"conditionKey,omitempty"`
+
+	// Required. The value of the parameter for the condition.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplyCondition.condition_value
+	ConditionValue *string `json:"conditionValue,omitempty"`
+}
+
 /* found existing non-generated go type with proto tag "google.cloud.designcenter.v1.Catalog", skipping
 
 // +kcc:observedstate:proto=google.cloud.designcenter.v1.Catalog
@@ -152,6 +1249,544 @@ type CatalogTemplateObservedState struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.designcenter.v1.CatalogTemplateRevision", skipping
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.CatalogTemplateRevision
+type CatalogTemplateRevisionObservedState struct {
+	// Optional. The git source.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.git_source
+	GitSource *GitSourceObservedState `json:"gitSource,omitempty"`
+
+	// Optional. Configuration for fetching content from source code repository
+	//  such as GitHub or Bitbucket through Developer Connect.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.developer_connect_source_config
+	DeveloperConnectSourceConfig *DeveloperConnectSourceConfigObservedState `json:"developerConnectSourceConfig,omitempty"`
+
+	// Output only. The catalog template creation timestamp.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The catalog template update timestamp.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Template metadata related to Terraform input and output.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.template_metadata
+	TemplateMetadata *TfBlueprintMetadataObservedState `json:"templateMetadata,omitempty"`
+
+	// Output only. The template state (validating/ready/invalid).
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The application template revision.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.application_template_revision
+	ApplicationTemplateRevision *SerializedApplicationTemplateObservedState `json:"applicationTemplateRevision,omitempty"`
+
+	// Output only. The helm chart metadata.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.helm_chart_metadata
+	HelmChartMetadata *HelmChartMetadataObservedState `json:"helmChartMetadata,omitempty"`
+
+	// Output only. UUID of the template revision.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.uuid
+	Uuid *string `json:"uuid,omitempty"`
+
+	// Optional. Metadata input.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.metadata_input
+	MetadataInput *MetadataInputObservedState `json:"metadataInput,omitempty"`
+
+	// Output only. The category of the template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.template_category
+	TemplateCategory *string `json:"templateCategory,omitempty"`
+
+	// Output only. The Product Main logical product type information.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.logical_products
+	LogicalProducts []LogicalProductObservedState `json:"logicalProducts,omitempty"`
+
+	// Output only. Metadata that was automatically inferred from the template
+	//  content. This field can be updated by the system as it gets new
+	//  information.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.inferred_metadata
+	InferredMetadata *InferredMetadataObservedState `json:"inferredMetadata,omitempty"`
+
+	// Output only. The resource types present in the template revision.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.resource_types
+	ResourceTypes []ResourceTypeObservedState `json:"resourceTypes,omitempty"`
+
+	// Output only. Indicates the IaC source format of this catalog template
+	//  revision.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.iac_source
+	IacSource *string `json:"iacSource,omitempty"`
+
+	// Optional. The values provided for the input variables.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CatalogTemplateRevision.application_parameters
+	ApplicationParameters []ParameterObservedState `json:"applicationParameters,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.CloudControlConfig
+type CloudControlConfigObservedState struct {
+	// Required. Resource name of the cloud control that these parameter values
+	//  apply to. Format:
+	//  organizations/{organization}/locations/{location}/cloudControls/{cloud_control}
+	//  or projects/{project}/locations/{location}/cloudControls/{cloud_control}
+	// +kcc:proto:field=google.cloud.designcenter.v1.CloudControlConfig.cloud_control
+	CloudControl *string `json:"cloudControl,omitempty"`
+
+	// Optional. Parameter values for this specific control.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CloudControlConfig.parameters
+	Parameters []ParameterObservedState `json:"parameters,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.ComponentApplicationInfo
+type ComponentApplicationInfoObservedState struct {
+	// Required. The application ID of the apphub application. The ID must be 1-63
+	//  characters long and should match the regular expression
+	//  `^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$`.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ComponentApplicationInfo.apphub_application_id
+	ApphubApplicationID *string `json:"apphubApplicationID,omitempty"`
+
+	// Optional. Display name for the application. The number of characters should
+	//  be less than 64 characters.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ComponentApplicationInfo.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. Scope of apphub application.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ComponentApplicationInfo.scope
+	Scope *ScopeObservedState `json:"scope,omitempty"`
+
+	// Optional. Attributes of apphub application.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ComponentApplicationInfo.attributes
+	Attributes *AttributesObservedState `json:"attributes,omitempty"`
+
+	// Optional. Deployment region for the component. If the scope is set to
+	//  REGIONAL, then the apphub application is created in this region, e.g.
+	//  `us-central1`.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ComponentApplicationInfo.deployment_region
+	DeploymentRegion *string `json:"deploymentRegion,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.ComponentParameterSchema
+type ComponentParameterSchemaObservedState struct {
+	// Output only. The key of the parameter.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ComponentParameterSchema.key
+	Key *string `json:"key,omitempty"`
+
+	// Output only. The default value of the parameter.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ComponentParameterSchema.default_value
+	DefaultValue *Value `json:"defaultValue,omitempty"`
+
+	// Output only. Whether the parameter is required.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ComponentParameterSchema.is_required
+	IsRequired *bool `json:"isRequired,omitempty"`
+
+	// Output only. The type of the parameter.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ComponentParameterSchema.type
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.ComponentVariable
+type ComponentVariableObservedState struct {
+	// Required. Name of the variable.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ComponentVariable.variable
+	Variable *string `json:"variable,omitempty"`
+
+	// Required. Component to which this variable belongs.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ComponentVariable.component_uri
+	ComponentURI *string `json:"componentURI,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.ConnectionParameters
+type ConnectionParametersObservedState struct {
+	// Required. The name of the connection parameter.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ConnectionParameters.connection
+	Connection *string `json:"connection,omitempty"`
+
+	// Optional. A list of parameters associated with the connection.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ConnectionParameters.parameters
+	Parameters []ParameterObservedState `json:"parameters,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.DeveloperConnectSourceConfig
+type DeveloperConnectSourceConfigObservedState struct {
+	// Output only. The SHA of the commit deduced from GitReference.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeveloperConnectSourceConfig.fetched_commit_sha
+	FetchedCommitSha *string `json:"fetchedCommitSha,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.GitSource
+type GitSourceObservedState struct {
+	// Output only. The commit SHA of the git repo deduced from given ref_tag.
+	// +kcc:proto:field=google.cloud.designcenter.v1.GitSource.commit_sha
+	CommitSha *string `json:"commitSha,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.HelmChartInput
+type HelmChartInputObservedState struct {
+	// Output only. Input variable name present in Helm Chart values.yaml
+	// +kcc:proto:field=google.cloud.designcenter.v1.HelmChartInput.helm_input_variable
+	HelmInputVariable *string `json:"helmInputVariable,omitempty"`
+
+	// Output only. Input variable description.
+	// +kcc:proto:field=google.cloud.designcenter.v1.HelmChartInput.description
+	Description *string `json:"description,omitempty"`
+
+	// Output only. Input data type.
+	// +kcc:proto:field=google.cloud.designcenter.v1.HelmChartInput.type
+	Type *string `json:"type,omitempty"`
+
+	// Output only. The default value of the input variable.
+	// +kcc:proto:field=google.cloud.designcenter.v1.HelmChartInput.default_value
+	DefaultValue *Value `json:"defaultValue,omitempty"`
+
+	// Output only. Indicates if input is required.
+	// +kcc:proto:field=google.cloud.designcenter.v1.HelmChartInput.is_required
+	IsRequired *bool `json:"isRequired,omitempty"`
+
+	// Output only. Contains details of nested inputs.
+	// +kcc:proto:field=google.cloud.designcenter.v1.HelmChartInput.nested_inputs
+	NestedInputs map[string]HelmChartInput `json:"nestedInputs,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.HelmChartMetadata
+type HelmChartMetadataObservedState struct {
+	// Output only. Helm Chart inputs.
+	// +kcc:proto:field=google.cloud.designcenter.v1.HelmChartMetadata.helm_input
+	HelmInput []HelmChartInputObservedState `json:"helmInput,omitempty"`
+
+	// Output only. Helm Chart outputs.
+	// +kcc:proto:field=google.cloud.designcenter.v1.HelmChartMetadata.helm_output
+	HelmOutput []HelmChartOutputObservedState `json:"helmOutput,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.HelmChartOutput
+type HelmChartOutputObservedState struct {
+	// Output only. Type of output.
+	// +kcc:proto:field=google.cloud.designcenter.v1.HelmChartOutput.value
+	Value *Value `json:"value,omitempty"`
+
+	// Output only. Output variable name present.
+	// +kcc:proto:field=google.cloud.designcenter.v1.HelmChartOutput.helm_output_variable
+	HelmOutputVariable *string `json:"helmOutputVariable,omitempty"`
+
+	// Output only. Description of the variable.
+	// +kcc:proto:field=google.cloud.designcenter.v1.HelmChartOutput.description
+	Description *string `json:"description,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.InferredMetadata
+type InferredMetadataObservedState struct {
+	// Output only. Inferred description.
+	// +kcc:proto:field=google.cloud.designcenter.v1.InferredMetadata.description
+	Description *string `json:"description,omitempty"`
+
+	// Output only. Inferred template metadata related to Terraform input and
+	//  output.
+	// +kcc:proto:field=google.cloud.designcenter.v1.InferredMetadata.template_metadata
+	TemplateMetadata *TfBlueprintMetadataObservedState `json:"templateMetadata,omitempty"`
+
+	// Output only. Inferred metadata creation timestamp.
+	// +kcc:proto:field=google.cloud.designcenter.v1.InferredMetadata.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Inferred metadata update timestamp.
+	// +kcc:proto:field=google.cloud.designcenter.v1.InferredMetadata.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.InputVariableAlias
+type InputVariableAliasObservedState struct {
+	// Required. Name of the input variable inside the component's underlying
+	//  template or module.
+	// +kcc:proto:field=google.cloud.designcenter.v1.InputVariableAlias.variable
+	Variable *string `json:"variable,omitempty"`
+
+	// Required. Alias for the variable name to be exposed at the root level of
+	//  the composite template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.InputVariableAlias.alias
+	Alias *string `json:"alias,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.LogicalProduct
+type LogicalProductObservedState struct {
+	// Output only. The resource name of the logical product.
+	//  Format: logicalProducts/{logical_product}
+	// +kcc:proto:field=google.cloud.designcenter.v1.LogicalProduct.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The display name of the logical product.
+	// +kcc:proto:field=google.cloud.designcenter.v1.LogicalProduct.title
+	Title *string `json:"title,omitempty"`
+
+	// Output only. A short description of the logical product.
+	// +kcc:proto:field=google.cloud.designcenter.v1.LogicalProduct.short_description
+	ShortDescription *string `json:"shortDescription,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.MetadataInput
+type MetadataInputObservedState struct {
+	// Required. spec containing the metadata
+	// +kcc:proto:field=google.cloud.designcenter.v1.MetadataInput.spec
+	Spec *MetadataInputSpecObservedState `json:"spec,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.MetadataInputSpec
+type MetadataInputSpecObservedState struct {
+	// Required. TemplateRequirements defines the roles required and the provider
+	//  versions.
+	// +kcc:proto:field=google.cloud.designcenter.v1.MetadataInputSpec.requirements
+	Requirements *TemplateRequirementsObservedState `json:"requirements,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.Parameter
+type ParameterObservedState struct {
+	// Output only. Indicates if the parameter is read-only (driven by
+	//  expression).
+	// +kcc:proto:field=google.cloud.designcenter.v1.Parameter.read_only
+	ReadOnly *bool `json:"readOnly,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.ProviderVersion
+type ProviderVersionObservedState struct {
+	// Output only. The provider source in the format:
+	//  [hostname]/[namespace]/[name]. Hostname is optional, and defaults to the
+	//  Terraform registry.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ProviderVersion.source
+	Source *string `json:"source,omitempty"`
+
+	// Output only. Version constraint string.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ProviderVersion.version
+	Version *string `json:"version,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.ResourceType
+type ResourceTypeObservedState struct {
+	// Output only. The Terraform resource type. For example:
+	//  "google_compute_instance".
+	// +kcc:proto:field=google.cloud.designcenter.v1.ResourceType.tf_resource
+	TfResource *string `json:"tfResource,omitempty"`
+
+	// Output only. The CAIS resource type.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ResourceType.cais_resource
+	CaisResource *string `json:"caisResource,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.SerializedApplicationTemplate
+type SerializedApplicationTemplateObservedState struct {
+	// Optional. The application template URI.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Optional. The application template display name.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The application template description.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Parameters to apply to all components in the application
+	//  template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.application_parameters
+	ApplicationParameters []ParameterObservedState `json:"applicationParameters,omitempty"`
+
+	// Optional. The IaC format of the application template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.iac_format
+	IacFormat *string `json:"iacFormat,omitempty"`
+
+	// Optional. The application template components.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.components
+	Components []SerializedComponentObservedState `json:"components,omitempty"`
+
+	// Optional. The App Hub application parameters.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.apphub_application_parameters
+	ApphubApplicationParameters *AppHubApplicationParametersObservedState `json:"apphubApplicationParameters,omitempty"`
+
+	// Output only. Whether the application template is compatible with regional
+	//  scope.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.has_global_resource
+	HasGlobalResource *bool `json:"hasGlobalResource,omitempty"`
+
+	// Output only. The composition type of the applicationTemplate: STANDARD OR
+	//  COMPOSITE.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.composition_type
+	CompositionType *string `json:"compositionType,omitempty"`
+
+	// Output only. Root level input variables of the application template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.root_input_variables
+	RootInputVariables []ComponentVariableObservedState `json:"rootInputVariables,omitempty"`
+
+	// Output only. Root level output variables of the application template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.root_output_variables
+	RootOutputVariables []ComponentVariableObservedState `json:"rootOutputVariables,omitempty"`
+
+	// Optional. SaaS runtime context for the application template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.saas_runtime_context
+	SaasRuntimeContext *SaaSRuntimeContext `json:"saasRuntimeContext,omitempty"`
+
+	// Output only. Policies of the application template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.serialized_policies
+	SerializedPolicies []SerializedPolicyObservedState `json:"serializedPolicies,omitempty"`
+
+	// Optional. Custom provider configurations imported from IaC.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.providers
+	Providers []SerializedProviderObservedState `json:"providers,omitempty"`
+
+	// Optional. Custom variables imported from variables.tf.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.custom_variables
+	CustomVariables []TerraformInputObservedState `json:"customVariables,omitempty"`
+
+	// Optional. Custom variable values imported from terraform.tfvars.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.custom_tfvars
+	CustomTfvars []ParameterObservedState `json:"customTfvars,omitempty"`
+
+	// Optional. If true, exposes all inputs as root module variables.
+	//  This is only supported for STANDARD composition type templates.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedApplicationTemplate.inputs_as_root_module_variables
+	InputsAsRootModuleVariables *bool `json:"inputsAsRootModuleVariables,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.SerializedComponent
+type SerializedComponentObservedState struct {
+	// Optional. The component URI.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Optional. The shared template used to generate the component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.shared_template_revision_uri
+	SharedTemplateRevisionURI *string `json:"sharedTemplateRevisionURI,omitempty"`
+
+	// Optional. The component parameters.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.parameters
+	Parameters []ParameterObservedState `json:"parameters,omitempty"`
+
+	// Optional. The component connections.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.connections
+	Connections []SerializedConnectionObservedState `json:"connections,omitempty"`
+
+	// Optional. IAM roles required by the service account to deploy the
+	//  component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.roles
+	Roles []string `json:"roles,omitempty"`
+
+	// Optional. APIs required to be enabled to deploy the component, in the form
+	//  of "*.googleapis.com".
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.apis
+	APIs []string `json:"apis,omitempty"`
+
+	// Optional. The component display name.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Output only. The connection parameters of the component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.connections_parameters
+	ConnectionsParameters []ConnectionParametersObservedState `json:"connectionsParameters,omitempty"`
+
+	// Output only. The component parameter schema, which includes possible
+	//  parameter values.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.component_parameter_schema
+	ComponentParameterSchema []ComponentParameterSchemaObservedState `json:"componentParameterSchema,omitempty"`
+
+	// Optional. The application associated with the component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.application_info
+	ApplicationInfo *ComponentApplicationInfoObservedState `json:"applicationInfo,omitempty"`
+
+	// Optional. Whether the component is exported as a separate terraform root
+	//  module in a composite application template. If this is false, then native
+	//  components will be exported as a submodule of a separate terraform root
+	//  module.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.use_as_root_module
+	UseAsRootModule *bool `json:"useAsRootModule,omitempty"`
+
+	// Optional. Input variable aliases defined for this serialized component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.input_variable_aliases
+	InputVariableAliases []InputVariableAliasObservedState `json:"inputVariableAliases,omitempty"`
+
+	// Optional. The application template revision used to generate the component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedComponent.application_template_revision_uri
+	ApplicationTemplateRevisionURI *string `json:"applicationTemplateRevisionURI,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.SerializedConnection
+type SerializedConnectionObservedState struct {
+	// Optional. The connection URI.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedConnection.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Optional. The destination component URI used to generate the connection.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedConnection.destination_component_uri
+	DestinationComponentURI *string `json:"destinationComponentURI,omitempty"`
+
+	// Optional. The parameters of the connection associated with the source
+	//  component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedConnection.source_component_parameters
+	SourceComponentParameters []ParameterObservedState `json:"sourceComponentParameters,omitempty"`
+
+	// Optional. The parameters of the connection associated with the destination
+	//  component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedConnection.destination_component_parameters
+	DestinationComponentParameters []ParameterObservedState `json:"destinationComponentParameters,omitempty"`
+
+	// Output only. The type of the connection (data or logical).
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedConnection.dependency_type
+	DependencyType *string `json:"dependencyType,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.SerializedPolicy
+type SerializedPolicyObservedState struct {
+	// Optional. URI of the policy.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedPolicy.policy_uri
+	PolicyURI *string `json:"policyURI,omitempty"`
+
+	// Optional. URI of the policy revision.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedPolicy.policy_revision_uri
+	PolicyRevisionURI *string `json:"policyRevisionURI,omitempty"`
+
+	// Required. The uri of the policy in application template.
+	//  Format:
+	//  `projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/policies/{policy}`
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedPolicy.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Optional. The serialized policy display name.
+	//  The number of characters should be less than 128 characters.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedPolicy.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The serialized policy description.
+	//  At most 2048 characters.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedPolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. Policy type will be used to determine the domain of the policy.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedPolicy.policy_type
+	PolicyType *string `json:"policyType,omitempty"`
+
+	// Optional. The serialized policy apply conditions.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedPolicy.apply_conditions
+	ApplyConditions []ApplyConditionObservedState `json:"applyConditions,omitempty"`
+
+	// Optional. Stored parameter values grouped by cloud control.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedPolicy.cloud_control_configs
+	CloudControlConfigs []CloudControlConfigObservedState `json:"cloudControlConfigs,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.SerializedProvider
+type SerializedProviderObservedState struct {
+	// Required. Name of the provider (e.g., `"google"`, `"google-beta"`,
+	//  `"google-nightly"`).
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedProvider.provider
+	Provider *string `json:"provider,omitempty"`
+
+	// Optional. Optional alias for the provider (supports multi-region setups).
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedProvider.provider_alias
+	ProviderAlias *string `json:"providerAlias,omitempty"`
+
+	// Optional. Configuration parameters of the provider. Reuses the standard
+	//  Parameter message.
+	// +kcc:proto:field=google.cloud.designcenter.v1.SerializedProvider.parameters
+	Parameters []ParameterObservedState `json:"parameters,omitempty"`
+}
+
 /* found existing non-generated go type with proto tag "google.cloud.designcenter.v1.Space", skipping
 
 // +kcc:observedstate:proto=google.cloud.designcenter.v1.Space
@@ -165,3 +1800,149 @@ type SpaceObservedState struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.TFBlueprintMetadata
+type TfBlueprintMetadataObservedState struct {
+	// Output only. Terraform inputs.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TFBlueprintMetadata.terraform_input
+	TerraformInput []TerraformInputObservedState `json:"terraformInput,omitempty"`
+
+	// Output only. Terraform outputs.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TFBlueprintMetadata.terraform_output
+	TerraformOutput []TerraformOutputObservedState `json:"terraformOutput,omitempty"`
+
+	// Output only. APIs that must be enabled to deploy the template, in the form
+	//  of "compute.googleapis.com".
+	// +kcc:proto:field=google.cloud.designcenter.v1.TFBlueprintMetadata.apis
+	APIs []string `json:"apis,omitempty"`
+
+	// Output only. IAM roles required by the service account deploying the
+	//  template, in the form of "roles/compute.admin".
+	// +kcc:proto:field=google.cloud.designcenter.v1.TFBlueprintMetadata.roles
+	Roles []string `json:"roles,omitempty"`
+
+	// Optional. The time estimate for deploying the blueprint.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TFBlueprintMetadata.deployment_duration
+	DeploymentDuration *string `json:"deploymentDuration,omitempty"`
+
+	// Output only. The icon URI for the blueprint.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TFBlueprintMetadata.icon_uri
+	IconURI *string `json:"iconURI,omitempty"`
+
+	// Output only. Union of all the Terraform input connections.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TFBlueprintMetadata.connections
+	Connections []TerraformInputConnectionsObservedState `json:"connections,omitempty"`
+
+	// Output only. UI metadata for the blueprint.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TFBlueprintMetadata.ui_metadata
+	UiMetadata *TerraformBlueprintUiMetadataObservedState `json:"uiMetadata,omitempty"`
+
+	// Output only. Provider versions required to deploy the blueprint.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TFBlueprintMetadata.provider_versions
+	ProviderVersions []ProviderVersionObservedState `json:"providerVersions,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.TemplateRequirements
+type TemplateRequirementsObservedState struct {
+	// Required. Required provider versions.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TemplateRequirements.provider_versions
+	ProviderVersions []ProviderVersionObservedState `json:"providerVersions,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.TerraformBlueprintUiMetadata
+type TerraformBlueprintUiMetadataObservedState struct {
+	// Output only. Terraform UI inputs.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformBlueprintUiMetadata.terraform_ui_input
+	TerraformUiInput *TerraformUiInputObservedState `json:"terraformUiInput,omitempty"`
+
+	// Output only. Terraform UI outputs.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformBlueprintUiMetadata.terraform_ui_output
+	TerraformUiOutput *TerraformUiOutputObservedState `json:"terraformUiOutput,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.TerraformInput
+type TerraformInputObservedState struct {
+	// Output only. Input variable name present in Terraform.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformInput.terraform_input_variable
+	TerraformInputVariable *string `json:"terraformInputVariable,omitempty"`
+
+	// Output only. Terraform variable description.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformInput.description
+	Description *string `json:"description,omitempty"`
+
+	// Output only. The Terraform input data type.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformInput.type
+	Type *string `json:"type,omitempty"`
+
+	// Output only. The default value of the Terraform input variable.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformInput.default_value
+	DefaultValue *Value `json:"defaultValue,omitempty"`
+
+	// Output only. Terraform input connections.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformInput.connections
+	Connections []TerraformInputConnectionsObservedState `json:"connections,omitempty"`
+
+	// Output only. Indicates if input is required.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformInput.is_required
+	IsRequired *bool `json:"isRequired,omitempty"`
+
+	// Optional. Indicates if the Terraform variable is sensitive.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformInput.sensitive
+	Sensitive *bool `json:"sensitive,omitempty"`
+
+	// Optional. Optional validation rules defined on the variable.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformInput.validation_rules
+	ValidationRules []TerraformVariableValidation `json:"validationRules,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.TerraformInputConnections
+type TerraformInputConnectionsObservedState struct {
+	// Output only. List of other templates that can be connected to.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformInputConnections.cft_template_uri
+	CftTemplateURI *string `json:"cftTemplateURI,omitempty"`
+
+	// Output only. Version of the other template that can be connected to.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformInputConnections.cft_template_version
+	CftTemplateVersion *string `json:"cftTemplateVersion,omitempty"`
+
+	// Output only. Output variable name present in Terraform.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformInputConnections.output_var
+	OutputVar *string `json:"outputVar,omitempty"`
+
+	// Output only. Input path of the other template that can be connected to.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformInputConnections.input_path
+	InputPath *string `json:"inputPath,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.TerraformOutput
+type TerraformOutputObservedState struct {
+	// Output only. Type of Terraform output.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformOutput.type
+	Type *Value `json:"type,omitempty"`
+
+	// Output only. Output variable name present in Terraform.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformOutput.terraform_output_variable
+	TerraformOutputVariable *string `json:"terraformOutputVariable,omitempty"`
+
+	// Output only. Description of the Terraform varaiable.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformOutput.description
+	Description *string `json:"description,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.TerraformUiInput
+type TerraformUiInputObservedState struct {
+	// Output only. Terraform UI inputs.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformUiInput.terraform_ui_inputs
+	TerraformUiInputs map[string]TerraformUiInputDisplayVariable `json:"terraformUiInputs,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.TerraformUiOutput
+type TerraformUiOutputObservedState struct {
+	// Output only. Message to be displayed in the UI.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformUiOutput.output_message
+	OutputMessage *string `json:"outputMessage,omitempty"`
+
+	// Output only. Visibility of the output.
+	// +kcc:proto:field=google.cloud.designcenter.v1.TerraformUiOutput.terraform_ui_outputs
+	TerraformUiOutputs map[string]TerraformUiOutputDisplay `json:"terraformUiOutputs,omitempty"`
+}

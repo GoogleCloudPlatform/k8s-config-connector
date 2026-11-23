@@ -43,6 +43,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DesignCenterSpace:Space \
   --resource DesignCenterCatalog:Catalog \
   --resource DesignCenterCatalogTemplate:CatalogTemplate \
+  --resource DesignCenterCatalogTemplateRevision:CatalogTemplateRevision \
   --prepopulate-resource
 
 ${CONTROLLERBUILDER} generate-identity \
@@ -51,7 +52,8 @@ ${CONTROLLERBUILDER} generate-identity \
   --api-version designcenter.cnrm.cloud.google.com/v1alpha1 \
   --resource DesignCenterSpace:Space \
   --resource DesignCenterCatalog:Catalog \
-  --resource DesignCenterCatalogTemplate:CatalogTemplate
+  --resource DesignCenterCatalogTemplate:CatalogTemplate \
+  --resource DesignCenterCatalogTemplateRevision:CatalogTemplateRevision
 
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \

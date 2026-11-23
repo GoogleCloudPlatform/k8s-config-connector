@@ -20,14 +20,318 @@
 // krm.group: designcenter.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.designcenter.v1
+// proto.service: google.cloud.apphub.v1
+// proto.service: google.protobuf
 
 package designcenter
 
 import (
+	apphubpb "cloud.google.com/go/apphub/apiv1/apphubpb"
 	pb "cloud.google.com/go/designcenter/apiv1/designcenterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/designcenter/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	structpb "google.golang.org/protobuf/types/known/structpb"
 )
+
+func AlternateDefault_FromProto(mapCtx *direct.MapContext, in *pb.AlternateDefault) *krm.AlternateDefault {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlternateDefault{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Value = Value_FromProto(mapCtx, in.GetValue())
+	return out
+}
+
+func AlternateDefault_ToProto(mapCtx *direct.MapContext, in *krm.AlternateDefault) *pb.AlternateDefault {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlternateDefault{}
+	out.Type = direct.Enum_ToProto[pb.DisplayVariableAlternateType](mapCtx, in.Type)
+	out.Value = Value_ToProto(mapCtx, in.Value)
+	return out
+}
+
+func AlternateDefaultInput_FromProto(mapCtx *direct.MapContext, in *pb.AlternateDefaultInput) *krm.AlternateDefaultInput {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlternateDefaultInput{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Value = Value_FromProto(mapCtx, in.GetValue())
+	return out
+}
+
+func AlternateDefaultInput_ToProto(mapCtx *direct.MapContext, in *krm.AlternateDefaultInput) *pb.AlternateDefaultInput {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlternateDefaultInput{}
+	out.Type = direct.Enum_ToProto[pb.DisplayVariableAlternateType](mapCtx, in.Type)
+	out.Value = Value_ToProto(mapCtx, in.Value)
+	return out
+}
+
+func AppHubApplicationParametersObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AppHubApplicationParameters) *krm.AppHubApplicationParametersObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AppHubApplicationParametersObservedState{}
+	out.ApplicationID = direct.LazyPtr(in.GetApplicationId())
+	out.Scope = ScopeObservedState_FromProto(mapCtx, in.GetScope())
+	out.Attributes = AttributesObservedState_FromProto(mapCtx, in.GetAttributes())
+	out.Location = direct.LazyPtr(in.GetLocation())
+	out.HostProjectID = direct.LazyPtr(in.GetHostProjectId())
+	return out
+}
+
+func AppHubApplicationParametersObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AppHubApplicationParametersObservedState) *pb.AppHubApplicationParameters {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AppHubApplicationParameters{}
+	out.ApplicationId = direct.ValueOf(in.ApplicationID)
+	out.Scope = ScopeObservedState_ToProto(mapCtx, in.Scope)
+	out.Attributes = AttributesObservedState_ToProto(mapCtx, in.Attributes)
+	out.Location = direct.ValueOf(in.Location)
+	out.HostProjectId = direct.ValueOf(in.HostProjectID)
+	return out
+}
+
+func ApplyConditionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ApplyCondition) *krm.ApplyConditionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApplyConditionObservedState{}
+	out.ConditionKey = direct.LazyPtr(in.GetConditionKey())
+	out.ConditionValue = direct.LazyPtr(in.GetConditionValue())
+	return out
+}
+
+func ApplyConditionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApplyConditionObservedState) *pb.ApplyCondition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApplyCondition{}
+	out.ConditionKey = direct.ValueOf(in.ConditionKey)
+	out.ConditionValue = direct.ValueOf(in.ConditionValue)
+	return out
+}
+
+func AttributesObservedState_FromProto(mapCtx *direct.MapContext, in *apphubpb.Attributes) *krm.AttributesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AttributesObservedState{}
+	out.Criticality = CriticalityObservedState_FromProto(mapCtx, in.GetCriticality())
+	out.Environment = EnvironmentObservedState_FromProto(mapCtx, in.GetEnvironment())
+	out.DeveloperOwners = direct.Slice_FromProto(mapCtx, in.DeveloperOwners, ContactInfoObservedState_FromProto)
+	out.OperatorOwners = direct.Slice_FromProto(mapCtx, in.OperatorOwners, ContactInfoObservedState_FromProto)
+	out.BusinessOwners = direct.Slice_FromProto(mapCtx, in.BusinessOwners, ContactInfoObservedState_FromProto)
+	return out
+}
+
+func AttributesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AttributesObservedState) *apphubpb.Attributes {
+	if in == nil {
+		return nil
+	}
+	out := &apphubpb.Attributes{}
+	out.Criticality = CriticalityObservedState_ToProto(mapCtx, in.Criticality)
+	out.Environment = EnvironmentObservedState_ToProto(mapCtx, in.Environment)
+	out.DeveloperOwners = direct.Slice_ToProto(mapCtx, in.DeveloperOwners, ContactInfoObservedState_ToProto)
+	out.OperatorOwners = direct.Slice_ToProto(mapCtx, in.OperatorOwners, ContactInfoObservedState_ToProto)
+	out.BusinessOwners = direct.Slice_ToProto(mapCtx, in.BusinessOwners, ContactInfoObservedState_ToProto)
+	return out
+}
+
+func CloudControlConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CloudControlConfig) *krm.CloudControlConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudControlConfigObservedState{}
+	out.CloudControl = direct.LazyPtr(in.GetCloudControl())
+	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, ParameterObservedState_FromProto)
+	return out
+}
+
+func CloudControlConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudControlConfigObservedState) *pb.CloudControlConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudControlConfig{}
+	out.CloudControl = direct.ValueOf(in.CloudControl)
+	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, ParameterObservedState_ToProto)
+	return out
+}
+
+func ComponentApplicationInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ComponentApplicationInfo) *krm.ComponentApplicationInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComponentApplicationInfoObservedState{}
+	out.ApphubApplicationID = direct.LazyPtr(in.GetApphubApplicationId())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Scope = ScopeObservedState_FromProto(mapCtx, in.GetScope())
+	out.Attributes = AttributesObservedState_FromProto(mapCtx, in.GetAttributes())
+	out.DeploymentRegion = direct.LazyPtr(in.GetDeploymentRegion())
+	return out
+}
+
+func ComponentApplicationInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ComponentApplicationInfoObservedState) *pb.ComponentApplicationInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ComponentApplicationInfo{}
+	out.ApphubApplicationId = direct.ValueOf(in.ApphubApplicationID)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Scope = ScopeObservedState_ToProto(mapCtx, in.Scope)
+	out.Attributes = AttributesObservedState_ToProto(mapCtx, in.Attributes)
+	out.DeploymentRegion = direct.ValueOf(in.DeploymentRegion)
+	return out
+}
+
+func ComponentParameterSchemaObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ComponentParameterSchema) *krm.ComponentParameterSchemaObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComponentParameterSchemaObservedState{}
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.DefaultValue = Value_FromProto(mapCtx, in.GetDefaultValue())
+	out.IsRequired = direct.LazyPtr(in.GetIsRequired())
+	out.Type = direct.LazyPtr(in.GetType())
+	return out
+}
+
+func ComponentParameterSchemaObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ComponentParameterSchemaObservedState) *pb.ComponentParameterSchema {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ComponentParameterSchema{}
+	out.Key = direct.ValueOf(in.Key)
+	out.DefaultValue = Value_ToProto(mapCtx, in.DefaultValue)
+	out.IsRequired = direct.ValueOf(in.IsRequired)
+	out.Type = direct.ValueOf(in.Type)
+	return out
+}
+
+func ComponentVariableObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ComponentVariable) *krm.ComponentVariableObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComponentVariableObservedState{}
+	out.Variable = direct.LazyPtr(in.GetVariable())
+	out.ComponentURI = direct.LazyPtr(in.GetComponentUri())
+	return out
+}
+
+func ComponentVariableObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ComponentVariableObservedState) *pb.ComponentVariable {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ComponentVariable{}
+	out.Variable = direct.ValueOf(in.Variable)
+	out.ComponentUri = direct.ValueOf(in.ComponentURI)
+	return out
+}
+
+func ConnectionParametersObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConnectionParameters) *krm.ConnectionParametersObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConnectionParametersObservedState{}
+	out.Connection = direct.LazyPtr(in.GetConnection())
+	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, ParameterObservedState_FromProto)
+	return out
+}
+
+func ConnectionParametersObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ConnectionParametersObservedState) *pb.ConnectionParameters {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectionParameters{}
+	out.Connection = direct.ValueOf(in.Connection)
+	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, ParameterObservedState_ToProto)
+	return out
+}
+
+func ConnectionSource_FromProto(mapCtx *direct.MapContext, in *pb.ConnectionSource) *krm.ConnectionSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConnectionSource{}
+	out.Source = direct.LazyPtr(in.GetSource())
+	out.Version = direct.LazyPtr(in.GetVersion())
+	return out
+}
+
+func ConnectionSource_ToProto(mapCtx *direct.MapContext, in *krm.ConnectionSource) *pb.ConnectionSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectionSource{}
+	out.Source = direct.ValueOf(in.Source)
+	out.Version = direct.ValueOf(in.Version)
+	return out
+}
+
+func ConnectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.ConnectionSpec) *krm.ConnectionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConnectionSpec{}
+	out.OutputExpr = direct.LazyPtr(in.GetOutputExpr())
+	out.InputPath = in.InputPath
+	return out
+}
+
+func ConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm.ConnectionSpec) *pb.ConnectionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectionSpec{}
+	out.OutputExpr = direct.ValueOf(in.OutputExpr)
+	out.InputPath = in.InputPath
+	return out
+}
+
+func ContactInfoObservedState_FromProto(mapCtx *direct.MapContext, in *apphubpb.ContactInfo) *krm.ContactInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContactInfoObservedState{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Email = direct.LazyPtr(in.GetEmail())
+	return out
+}
+
+func ContactInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ContactInfoObservedState) *apphubpb.ContactInfo {
+	if in == nil {
+		return nil
+	}
+	out := &apphubpb.ContactInfo{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Email = direct.ValueOf(in.Email)
+	return out
+}
+
+func CriticalityObservedState_FromProto(mapCtx *direct.MapContext, in *apphubpb.Criticality) *krm.CriticalityObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CriticalityObservedState{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+
+func CriticalityObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CriticalityObservedState) *apphubpb.Criticality {
+	if in == nil {
+		return nil
+	}
+	out := &apphubpb.Criticality{}
+	out.Type = direct.Enum_ToProto[apphubpb.Criticality_Type](mapCtx, in.Type)
+	return out
+}
 
 func DesignCenterCatalogObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Catalog) *krm.DesignCenterCatalogObservedState {
 	if in == nil {
@@ -39,6 +343,7 @@ func DesignCenterCatalogObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
+
 func DesignCenterCatalogObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DesignCenterCatalogObservedState) *pb.Catalog {
 	if in == nil {
 		return nil
@@ -49,6 +354,7 @@ func DesignCenterCatalogObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
+
 func DesignCenterCatalogSpec_FromProto(mapCtx *direct.MapContext, in *pb.Catalog) *krm.DesignCenterCatalogSpec {
 	if in == nil {
 		return nil
@@ -59,6 +365,7 @@ func DesignCenterCatalogSpec_FromProto(mapCtx *direct.MapContext, in *pb.Catalog
 	out.Description = direct.LazyPtr(in.GetDescription())
 	return out
 }
+
 func DesignCenterCatalogSpec_ToProto(mapCtx *direct.MapContext, in *krm.DesignCenterCatalogSpec) *pb.Catalog {
 	if in == nil {
 		return nil
@@ -69,6 +376,7 @@ func DesignCenterCatalogSpec_ToProto(mapCtx *direct.MapContext, in *krm.DesignCe
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
+
 func DesignCenterCatalogTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CatalogTemplate) *krm.DesignCenterCatalogTemplateObservedState {
 	if in == nil {
 		return nil
@@ -81,6 +389,7 @@ func DesignCenterCatalogTemplateObservedState_FromProto(mapCtx *direct.MapContex
 	out.LatestRevisionID = direct.LazyPtr(in.GetLatestRevisionId())
 	return out
 }
+
 func DesignCenterCatalogTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DesignCenterCatalogTemplateObservedState) *pb.CatalogTemplate {
 	if in == nil {
 		return nil
@@ -93,6 +402,116 @@ func DesignCenterCatalogTemplateObservedState_ToProto(mapCtx *direct.MapContext,
 	out.LatestRevisionId = direct.ValueOf(in.LatestRevisionID)
 	return out
 }
+
+func DesignCenterCatalogTemplateRevisionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CatalogTemplateRevision) *krm.DesignCenterCatalogTemplateRevisionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DesignCenterCatalogTemplateRevisionObservedState{}
+	out.GitSource = GitSourceObservedState_FromProto(mapCtx, in.GetGitSource())
+	// MISSING: GCSSourceURI
+	out.DeveloperConnectSourceConfig = DeveloperConnectSourceConfigObservedState_FromProto(mapCtx, in.GetDeveloperConnectSourceConfig())
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.TemplateMetadata = TfBlueprintMetadataObservedState_FromProto(mapCtx, in.GetTemplateMetadata())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.ApplicationTemplateRevision = SerializedApplicationTemplateObservedState_FromProto(mapCtx, in.GetApplicationTemplateRevision())
+	out.HelmChartMetadata = HelmChartMetadataObservedState_FromProto(mapCtx, in.GetHelmChartMetadata())
+	out.Uuid = direct.LazyPtr(in.GetUuid())
+	out.MetadataInput = MetadataInputObservedState_FromProto(mapCtx, in.GetMetadataInput())
+	out.TemplateCategory = direct.Enum_FromProto(mapCtx, in.GetTemplateCategory())
+	out.LogicalProducts = direct.Slice_FromProto(mapCtx, in.LogicalProducts, LogicalProductObservedState_FromProto)
+	out.InferredMetadata = InferredMetadataObservedState_FromProto(mapCtx, in.GetInferredMetadata())
+	out.ResourceTypes = direct.Slice_FromProto(mapCtx, in.ResourceTypes, ResourceTypeObservedState_FromProto)
+	out.IacSource = direct.Enum_FromProto(mapCtx, in.GetIacSource())
+	out.ApplicationParameters = direct.Slice_FromProto(mapCtx, in.ApplicationParameters, ParameterObservedState_FromProto)
+	return out
+}
+
+func DesignCenterCatalogTemplateRevisionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DesignCenterCatalogTemplateRevisionObservedState) *pb.CatalogTemplateRevision {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CatalogTemplateRevision{}
+	if oneof := GitSourceObservedState_ToProto(mapCtx, in.GitSource); oneof != nil {
+		out.ArtifactLocation = &pb.CatalogTemplateRevision_GitSource{GitSource: oneof}
+	}
+	// MISSING: GCSSourceURI
+	if oneof := DeveloperConnectSourceConfigObservedState_ToProto(mapCtx, in.DeveloperConnectSourceConfig); oneof != nil {
+		out.ArtifactLocation = &pb.CatalogTemplateRevision_DeveloperConnectSourceConfig{DeveloperConnectSourceConfig: oneof}
+	}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.TemplateMetadata = TfBlueprintMetadataObservedState_ToProto(mapCtx, in.TemplateMetadata)
+	out.State = direct.Enum_ToProto[pb.CatalogTemplateRevision_State](mapCtx, in.State)
+	out.ApplicationTemplateRevision = SerializedApplicationTemplateObservedState_ToProto(mapCtx, in.ApplicationTemplateRevision)
+	out.HelmChartMetadata = HelmChartMetadataObservedState_ToProto(mapCtx, in.HelmChartMetadata)
+	out.Uuid = direct.ValueOf(in.Uuid)
+	out.MetadataInput = MetadataInputObservedState_ToProto(mapCtx, in.MetadataInput)
+	out.TemplateCategory = direct.Enum_ToProto[pb.TemplateCategory](mapCtx, in.TemplateCategory)
+	out.LogicalProducts = direct.Slice_ToProto(mapCtx, in.LogicalProducts, LogicalProductObservedState_ToProto)
+	out.InferredMetadata = InferredMetadataObservedState_ToProto(mapCtx, in.InferredMetadata)
+	out.ResourceTypes = direct.Slice_ToProto(mapCtx, in.ResourceTypes, ResourceTypeObservedState_ToProto)
+	out.IacSource = direct.Enum_ToProto[pb.IACSource](mapCtx, in.IacSource)
+	out.ApplicationParameters = direct.Slice_ToProto(mapCtx, in.ApplicationParameters, ParameterObservedState_ToProto)
+	return out
+}
+
+func DesignCenterCatalogTemplateRevisionSpec_FromProto(mapCtx *direct.MapContext, in *pb.CatalogTemplateRevision) *krm.DesignCenterCatalogTemplateRevisionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DesignCenterCatalogTemplateRevisionSpec{}
+	out.GitSource = GitSource_FromProto(mapCtx, in.GetGitSource())
+	// MISSING: GCSSourceURI
+	out.ApplicationTemplateRevisionSource = direct.LazyPtr(in.GetApplicationTemplateRevisionSource())
+	out.DeveloperConnectSourceConfig = DeveloperConnectSourceConfig_FromProto(mapCtx, in.GetDeveloperConnectSourceConfig())
+	out.OciRepo = OciRepo_FromProto(mapCtx, in.GetOciRepo())
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.MetadataInput = MetadataInput_FromProto(mapCtx, in.GetMetadataInput())
+	out.Annotations = in.Annotations
+	out.ApplicationParameters = direct.Slice_FromProto(mapCtx, in.ApplicationParameters, Parameter_FromProto)
+	return out
+}
+
+func DesignCenterCatalogTemplateRevisionSpec_ToProto(mapCtx *direct.MapContext, in *krm.DesignCenterCatalogTemplateRevisionSpec) *pb.CatalogTemplateRevision {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CatalogTemplateRevision{}
+	if oneof := GitSource_ToProto(mapCtx, in.GitSource); oneof != nil {
+		out.ArtifactLocation = &pb.CatalogTemplateRevision_GitSource{GitSource: oneof}
+	}
+	// MISSING: GCSSourceURI
+	if oneof := DesignCenterCatalogTemplateRevisionSpec_ApplicationTemplateRevisionSource_ToProto(mapCtx, in.ApplicationTemplateRevisionSource); oneof != nil {
+		out.ArtifactLocation = oneof
+	}
+	if oneof := DeveloperConnectSourceConfig_ToProto(mapCtx, in.DeveloperConnectSourceConfig); oneof != nil {
+		out.ArtifactLocation = &pb.CatalogTemplateRevision_DeveloperConnectSourceConfig{DeveloperConnectSourceConfig: oneof}
+	}
+	if oneof := OciRepo_ToProto(mapCtx, in.OciRepo); oneof != nil {
+		out.ArtifactLocation = &pb.CatalogTemplateRevision_OciRepo{OciRepo: oneof}
+	}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.Type = direct.Enum_ToProto[pb.TemplateType](mapCtx, in.Type)
+	out.MetadataInput = MetadataInput_ToProto(mapCtx, in.MetadataInput)
+	out.Annotations = in.Annotations
+	out.ApplicationParameters = direct.Slice_ToProto(mapCtx, in.ApplicationParameters, Parameter_ToProto)
+	return out
+}
+
+func DesignCenterCatalogTemplateRevisionSpec_ApplicationTemplateRevisionSource_ToProto(mapCtx *direct.MapContext, in *string) *pb.CatalogTemplateRevision_ApplicationTemplateRevisionSource {
+	if in == nil {
+		return nil
+	}
+	return &pb.CatalogTemplateRevision_ApplicationTemplateRevisionSource{ApplicationTemplateRevisionSource: *in}
+}
+
 func DesignCenterCatalogTemplateSpec_FromProto(mapCtx *direct.MapContext, in *pb.CatalogTemplate) *krm.DesignCenterCatalogTemplateSpec {
 	if in == nil {
 		return nil
@@ -105,6 +524,7 @@ func DesignCenterCatalogTemplateSpec_FromProto(mapCtx *direct.MapContext, in *pb
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	return out
 }
+
 func DesignCenterCatalogTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krm.DesignCenterCatalogTemplateSpec) *pb.CatalogTemplate {
 	if in == nil {
 		return nil
@@ -117,6 +537,7 @@ func DesignCenterCatalogTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.Type = direct.Enum_ToProto[pb.TemplateType](mapCtx, in.Type)
 	return out
 }
+
 func DesignCenterSpaceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Space) *krm.DesignCenterSpaceObservedState {
 	if in == nil {
 		return nil
@@ -128,6 +549,7 @@ func DesignCenterSpaceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: EnableGcpSharedTemplates
 	return out
 }
+
 func DesignCenterSpaceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DesignCenterSpaceObservedState) *pb.Space {
 	if in == nil {
 		return nil
@@ -177,3 +599,1388 @@ func DesignCenterSpaceSpec_ToProto(mapCtx *direct.MapContext, in *krm.DesignCent
 	return out
 }
 */
+
+func DeveloperConnectConfig_FromProto(mapCtx *direct.MapContext, in *pb.DeveloperConnectConfig) *krm.DeveloperConnectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DeveloperConnectConfig{}
+	out.GitRepositoryLink = direct.LazyPtr(in.GetGitRepositoryLink())
+	return out
+}
+
+func DeveloperConnectConfig_ToProto(mapCtx *direct.MapContext, in *krm.DeveloperConnectConfig) *pb.DeveloperConnectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DeveloperConnectConfig{}
+	out.GitRepositoryLink = direct.ValueOf(in.GitRepositoryLink)
+	return out
+}
+
+/* found existing non-generated mapping function "DeveloperConnectSourceConfig_FromProto", skipping
+func DeveloperConnectSourceConfig_FromProto(mapCtx *direct.MapContext, in *pb.DeveloperConnectSourceConfig) *krm.DeveloperConnectSourceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DeveloperConnectSourceConfig{}
+	// MISSING: DeveloperConnectRepoURI
+	out.Reference = GitReference_FromProto(mapCtx, in.GetReference())
+	out.Dir = direct.LazyPtr(in.GetDir())
+	// MISSING: FetchedCommitSha
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "DeveloperConnectSourceConfig_ToProto", skipping
+func DeveloperConnectSourceConfig_ToProto(mapCtx *direct.MapContext, in *krm.DeveloperConnectSourceConfig) *pb.DeveloperConnectSourceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DeveloperConnectSourceConfig{}
+	// MISSING: DeveloperConnectRepoURI
+	out.Reference = GitReference_ToProto(mapCtx, in.Reference)
+	out.Dir = direct.ValueOf(in.Dir)
+	// MISSING: FetchedCommitSha
+	return out
+}
+*/
+
+func DeveloperConnectSourceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DeveloperConnectSourceConfig) *krm.DeveloperConnectSourceConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DeveloperConnectSourceConfigObservedState{}
+	// MISSING: DeveloperConnectRepoURI
+	// MISSING: Reference
+	// MISSING: Dir
+	out.FetchedCommitSha = direct.LazyPtr(in.GetFetchedCommitSha())
+	return out
+}
+
+func DeveloperConnectSourceConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DeveloperConnectSourceConfigObservedState) *pb.DeveloperConnectSourceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DeveloperConnectSourceConfig{}
+	// MISSING: DeveloperConnectRepoURI
+	// MISSING: Reference
+	// MISSING: Dir
+	out.FetchedCommitSha = direct.ValueOf(in.FetchedCommitSha)
+	return out
+}
+
+func DisplayVariable_FromProto(mapCtx *direct.MapContext, in *pb.DisplayVariable) *krm.DisplayVariable {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DisplayVariable{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.AlternateDefaults = direct.Slice_FromProto(mapCtx, in.AlternateDefaults, AlternateDefaultInput_FromProto)
+	out.RegexValidation = direct.LazyPtr(in.GetRegexValidation())
+	out.Min = in.Min
+	out.Max = in.Max
+	out.Validation = direct.LazyPtr(in.GetValidation())
+	out.EnumValueLabels = direct.Slice_FromProto(mapCtx, in.EnumValueLabels, ValueLabelInput_FromProto)
+	out.Level = direct.LazyPtr(in.GetLevel())
+	out.Subtext = direct.LazyPtr(in.GetSubtext())
+	if in.Properties != nil {
+		out.Properties = make(map[string]krm.DisplayVariable, len(in.Properties))
+		for k, v := range in.Properties {
+			if c := DisplayVariable_FromProto(mapCtx, v); c != nil {
+				out.Properties[k] = *c
+			}
+		}
+	}
+	return out
+}
+
+func DisplayVariable_ToProto(mapCtx *direct.MapContext, in *krm.DisplayVariable) *pb.DisplayVariable {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DisplayVariable{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Title = direct.ValueOf(in.Title)
+	out.AlternateDefaults = direct.Slice_ToProto(mapCtx, in.AlternateDefaults, AlternateDefaultInput_ToProto)
+	out.RegexValidation = direct.ValueOf(in.RegexValidation)
+	out.Min = in.Min
+	out.Max = in.Max
+	out.Validation = direct.ValueOf(in.Validation)
+	out.EnumValueLabels = direct.Slice_ToProto(mapCtx, in.EnumValueLabels, ValueLabelInput_ToProto)
+	out.Level = direct.ValueOf(in.Level)
+	out.Subtext = direct.ValueOf(in.Subtext)
+	if in.Properties != nil {
+		out.Properties = make(map[string]*pb.DisplayVariable, len(in.Properties))
+		for k, v := range in.Properties {
+			out.Properties[k] = DisplayVariable_ToProto(mapCtx, &v)
+		}
+	}
+	return out
+}
+
+func DisplayVariableToggle_FromProto(mapCtx *direct.MapContext, in *pb.DisplayVariableToggle) *krm.DisplayVariableToggle {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DisplayVariableToggle{}
+	out.Variable = direct.LazyPtr(in.GetVariable())
+	out.VariableValues = in.VariableValues
+	out.VariableType = direct.Enum_FromProto(mapCtx, in.GetVariableType())
+	return out
+}
+
+func DisplayVariableToggle_ToProto(mapCtx *direct.MapContext, in *krm.DisplayVariableToggle) *pb.DisplayVariableToggle {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DisplayVariableToggle{}
+	out.Variable = direct.ValueOf(in.Variable)
+	out.VariableValues = in.VariableValues
+	out.VariableType = direct.Enum_ToProto[pb.DisplayVariableToggle_ToggleVariableType](mapCtx, in.VariableType)
+	return out
+}
+
+func EnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *apphubpb.Environment) *krm.EnvironmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EnvironmentObservedState{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+
+func EnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentObservedState) *apphubpb.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &apphubpb.Environment{}
+	out.Type = direct.Enum_ToProto[apphubpb.Environment_Type](mapCtx, in.Type)
+	return out
+}
+
+func GitReference_FromProto(mapCtx *direct.MapContext, in *pb.GitReference) *krm.GitReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GitReference{}
+	out.Branch = direct.LazyPtr(in.GetBranch())
+	out.RefTag = direct.LazyPtr(in.GetRefTag())
+	out.CommitSha = direct.LazyPtr(in.GetCommitSha())
+	return out
+}
+
+func GitReference_ToProto(mapCtx *direct.MapContext, in *krm.GitReference) *pb.GitReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GitReference{}
+	if oneof := GitReference_Branch_ToProto(mapCtx, in.Branch); oneof != nil {
+		out.Reference = oneof
+	}
+	if oneof := GitReference_RefTag_ToProto(mapCtx, in.RefTag); oneof != nil {
+		out.Reference = oneof
+	}
+	if oneof := GitReference_CommitSha_ToProto(mapCtx, in.CommitSha); oneof != nil {
+		out.Reference = oneof
+	}
+	return out
+}
+
+func GitReference_Branch_ToProto(mapCtx *direct.MapContext, in *string) *pb.GitReference_Branch {
+	if in == nil {
+		return nil
+	}
+	return &pb.GitReference_Branch{Branch: *in}
+}
+
+func GitReference_RefTag_ToProto(mapCtx *direct.MapContext, in *string) *pb.GitReference_RefTag {
+	if in == nil {
+		return nil
+	}
+	return &pb.GitReference_RefTag{RefTag: *in}
+}
+
+func GitReference_CommitSha_ToProto(mapCtx *direct.MapContext, in *string) *pb.GitReference_CommitSha {
+	if in == nil {
+		return nil
+	}
+	return &pb.GitReference_CommitSha{CommitSha: *in}
+}
+
+func GitSource_FromProto(mapCtx *direct.MapContext, in *pb.GitSource) *krm.GitSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GitSource{}
+	out.Repo = direct.LazyPtr(in.GetRepo())
+	out.Dir = direct.LazyPtr(in.GetDir())
+	// MISSING: CommitSha
+	// MISSING: DeveloperConnectConfig
+	out.RefTag = direct.LazyPtr(in.GetRefTag())
+	return out
+}
+
+func GitSource_ToProto(mapCtx *direct.MapContext, in *krm.GitSource) *pb.GitSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GitSource{}
+	out.Repo = direct.ValueOf(in.Repo)
+	out.Dir = direct.ValueOf(in.Dir)
+	// MISSING: CommitSha
+	// MISSING: DeveloperConnectConfig
+	out.RefTag = direct.ValueOf(in.RefTag)
+	return out
+}
+
+func GitSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GitSource) *krm.GitSourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GitSourceObservedState{}
+	// MISSING: Repo
+	// MISSING: Dir
+	out.CommitSha = direct.LazyPtr(in.GetCommitSha())
+	// MISSING: DeveloperConnectConfig
+	// MISSING: RefTag
+	return out
+}
+
+func GitSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GitSourceObservedState) *pb.GitSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GitSource{}
+	// MISSING: Repo
+	// MISSING: Dir
+	out.CommitSha = direct.ValueOf(in.CommitSha)
+	// MISSING: DeveloperConnectConfig
+	// MISSING: RefTag
+	return out
+}
+
+func HelmChartInput_FromProto(mapCtx *direct.MapContext, in *pb.HelmChartInput) *krm.HelmChartInput {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HelmChartInput{}
+	// MISSING: HelmInputVariable
+	// MISSING: Description
+	// MISSING: Type
+	// MISSING: DefaultValue
+	// MISSING: IsRequired
+	// MISSING: NestedInputs
+	return out
+}
+
+func HelmChartInput_ToProto(mapCtx *direct.MapContext, in *krm.HelmChartInput) *pb.HelmChartInput {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HelmChartInput{}
+	// MISSING: HelmInputVariable
+	// MISSING: Description
+	// MISSING: Type
+	// MISSING: DefaultValue
+	// MISSING: IsRequired
+	// MISSING: NestedInputs
+	return out
+}
+
+func HelmChartInputObservedState_FromProto(mapCtx *direct.MapContext, in *pb.HelmChartInput) *krm.HelmChartInputObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HelmChartInputObservedState{}
+	out.HelmInputVariable = direct.LazyPtr(in.GetHelmInputVariable())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Type = direct.LazyPtr(in.GetType())
+	out.DefaultValue = Value_FromProto(mapCtx, in.GetDefaultValue())
+	out.IsRequired = direct.LazyPtr(in.GetIsRequired())
+	if in.NestedInputs != nil {
+		out.NestedInputs = make(map[string]krm.HelmChartInput, len(in.NestedInputs))
+		for k, v := range in.NestedInputs {
+			if c := HelmChartInput_FromProto(mapCtx, v); c != nil {
+				out.NestedInputs[k] = *c
+			}
+		}
+	}
+	return out
+}
+
+func HelmChartInputObservedState_ToProto(mapCtx *direct.MapContext, in *krm.HelmChartInputObservedState) *pb.HelmChartInput {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HelmChartInput{}
+	out.HelmInputVariable = direct.ValueOf(in.HelmInputVariable)
+	out.Description = direct.ValueOf(in.Description)
+	out.Type = direct.ValueOf(in.Type)
+	out.DefaultValue = Value_ToProto(mapCtx, in.DefaultValue)
+	out.IsRequired = direct.ValueOf(in.IsRequired)
+	if in.NestedInputs != nil {
+		out.NestedInputs = make(map[string]*pb.HelmChartInput, len(in.NestedInputs))
+		for k, v := range in.NestedInputs {
+			out.NestedInputs[k] = HelmChartInput_ToProto(mapCtx, &v)
+		}
+	}
+	return out
+}
+
+func HelmChartOutputObservedState_FromProto(mapCtx *direct.MapContext, in *pb.HelmChartOutput) *krm.HelmChartOutputObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HelmChartOutputObservedState{}
+	out.Value = Value_FromProto(mapCtx, in.GetValue())
+	out.HelmOutputVariable = direct.LazyPtr(in.GetHelmOutputVariable())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+
+func HelmChartOutputObservedState_ToProto(mapCtx *direct.MapContext, in *krm.HelmChartOutputObservedState) *pb.HelmChartOutput {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HelmChartOutput{}
+	out.Value = Value_ToProto(mapCtx, in.Value)
+	out.HelmOutputVariable = direct.ValueOf(in.HelmOutputVariable)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+
+func IacFormatInfo_FromProto(mapCtx *direct.MapContext, in *pb.IacFormatInfo) *krm.IacFormatInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IacFormatInfo{}
+	out.Flavor = direct.LazyPtr(in.GetFlavor())
+	out.Version = direct.LazyPtr(in.GetVersion())
+	return out
+}
+
+func IacFormatInfo_ToProto(mapCtx *direct.MapContext, in *krm.IacFormatInfo) *pb.IacFormatInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IacFormatInfo{}
+	out.Flavor = direct.ValueOf(in.Flavor)
+	out.Version = direct.ValueOf(in.Version)
+	return out
+}
+
+func InputVariableAliasObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InputVariableAlias) *krm.InputVariableAliasObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InputVariableAliasObservedState{}
+	out.Variable = direct.LazyPtr(in.GetVariable())
+	out.Alias = direct.LazyPtr(in.GetAlias())
+	return out
+}
+
+func InputVariableAliasObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InputVariableAliasObservedState) *pb.InputVariableAlias {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InputVariableAlias{}
+	out.Variable = direct.ValueOf(in.Variable)
+	out.Alias = direct.ValueOf(in.Alias)
+	return out
+}
+
+func ListValue_FromProto(mapCtx *direct.MapContext, in *structpb.ListValue) *krm.ListValue {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ListValue{}
+	out.Values = direct.Slice_FromProto(mapCtx, in.Values, Value_FromProto)
+	return out
+}
+
+func ListValue_ToProto(mapCtx *direct.MapContext, in *krm.ListValue) *structpb.ListValue {
+	if in == nil {
+		return nil
+	}
+	out := &structpb.ListValue{}
+	out.Values = direct.Slice_ToProto(mapCtx, in.Values, Value_ToProto)
+	return out
+}
+
+func LogicalProductObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LogicalProduct) *krm.LogicalProductObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LogicalProductObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.ShortDescription = direct.LazyPtr(in.GetShortDescription())
+	return out
+}
+
+func LogicalProductObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LogicalProductObservedState) *pb.LogicalProduct {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LogicalProduct{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Title = direct.ValueOf(in.Title)
+	out.ShortDescription = direct.ValueOf(in.ShortDescription)
+	return out
+}
+
+func MetadataInput_FromProto(mapCtx *direct.MapContext, in *pb.MetadataInput) *krm.MetadataInput {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetadataInput{}
+	out.Spec = MetadataInputSpec_FromProto(mapCtx, in.GetSpec())
+	return out
+}
+
+func MetadataInput_ToProto(mapCtx *direct.MapContext, in *krm.MetadataInput) *pb.MetadataInput {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataInput{}
+	out.Spec = MetadataInputSpec_ToProto(mapCtx, in.Spec)
+	return out
+}
+
+func MetadataInputObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataInput) *krm.MetadataInputObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetadataInputObservedState{}
+	out.Spec = MetadataInputSpecObservedState_FromProto(mapCtx, in.GetSpec())
+	return out
+}
+
+func MetadataInputObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MetadataInputObservedState) *pb.MetadataInput {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataInput{}
+	out.Spec = MetadataInputSpecObservedState_ToProto(mapCtx, in.Spec)
+	return out
+}
+
+func MetadataInputSpec_FromProto(mapCtx *direct.MapContext, in *pb.MetadataInputSpec) *krm.MetadataInputSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetadataInputSpec{}
+	out.Info = TemplateInfo_FromProto(mapCtx, in.GetInfo())
+	out.Interfaces = TemplateSchema_FromProto(mapCtx, in.GetInterfaces())
+	out.Requirements = TemplateRequirements_FromProto(mapCtx, in.GetRequirements())
+	out.Ui = TemplateUi_FromProto(mapCtx, in.GetUi())
+	return out
+}
+
+func MetadataInputSpec_ToProto(mapCtx *direct.MapContext, in *krm.MetadataInputSpec) *pb.MetadataInputSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataInputSpec{}
+	out.Info = TemplateInfo_ToProto(mapCtx, in.Info)
+	out.Interfaces = TemplateSchema_ToProto(mapCtx, in.Interfaces)
+	out.Requirements = TemplateRequirements_ToProto(mapCtx, in.Requirements)
+	out.Ui = TemplateUi_ToProto(mapCtx, in.Ui)
+	return out
+}
+
+func MetadataInputSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataInputSpec) *krm.MetadataInputSpecObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetadataInputSpecObservedState{}
+	// MISSING: Info
+	// MISSING: Interfaces
+	out.Requirements = TemplateRequirementsObservedState_FromProto(mapCtx, in.GetRequirements())
+	// MISSING: Ui
+	return out
+}
+
+func MetadataInputSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MetadataInputSpecObservedState) *pb.MetadataInputSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataInputSpec{}
+	// MISSING: Info
+	// MISSING: Interfaces
+	out.Requirements = TemplateRequirementsObservedState_ToProto(mapCtx, in.Requirements)
+	// MISSING: Ui
+	return out
+}
+
+func OciRepo_FromProto(mapCtx *direct.MapContext, in *pb.OciRepo) *krm.OciRepo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OciRepo{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.Version = direct.LazyPtr(in.GetVersion())
+	out.ModuleSourceURI = direct.LazyPtr(in.GetModuleSourceUri())
+	return out
+}
+
+func OciRepo_ToProto(mapCtx *direct.MapContext, in *krm.OciRepo) *pb.OciRepo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OciRepo{}
+	out.Uri = direct.ValueOf(in.URI)
+	out.Version = direct.ValueOf(in.Version)
+	out.ModuleSourceUri = direct.ValueOf(in.ModuleSourceURI)
+	return out
+}
+
+func Parameter_FromProto(mapCtx *direct.MapContext, in *pb.Parameter) *krm.Parameter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Parameter{}
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Value = Value_FromProto(mapCtx, in.GetValue())
+	// MISSING: ReadOnly
+	return out
+}
+
+func Parameter_ToProto(mapCtx *direct.MapContext, in *krm.Parameter) *pb.Parameter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Parameter{}
+	out.Key = direct.ValueOf(in.Key)
+	out.Value = Value_ToProto(mapCtx, in.Value)
+	// MISSING: ReadOnly
+	return out
+}
+
+func ParameterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Parameter) *krm.ParameterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ParameterObservedState{}
+	// MISSING: Key
+	// MISSING: Value
+	out.ReadOnly = direct.LazyPtr(in.GetReadOnly())
+	return out
+}
+
+func ParameterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ParameterObservedState) *pb.Parameter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Parameter{}
+	// MISSING: Key
+	// MISSING: Value
+	out.ReadOnly = direct.ValueOf(in.ReadOnly)
+	return out
+}
+
+func ProviderVersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ProviderVersion) *krm.ProviderVersionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ProviderVersionObservedState{}
+	out.Source = direct.LazyPtr(in.GetSource())
+	out.Version = direct.LazyPtr(in.GetVersion())
+	return out
+}
+
+func ProviderVersionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ProviderVersionObservedState) *pb.ProviderVersion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ProviderVersion{}
+	out.Source = direct.ValueOf(in.Source)
+	out.Version = direct.ValueOf(in.Version)
+	return out
+}
+
+func ResourceTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResourceType) *krm.ResourceTypeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourceTypeObservedState{}
+	out.TfResource = direct.LazyPtr(in.GetTfResource())
+	out.CaisResource = direct.LazyPtr(in.GetCaisResource())
+	return out
+}
+
+func ResourceTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResourceTypeObservedState) *pb.ResourceType {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourceType{}
+	out.TfResource = direct.ValueOf(in.TfResource)
+	out.CaisResource = direct.ValueOf(in.CaisResource)
+	return out
+}
+
+func SaaSRuntimeContext_FromProto(mapCtx *direct.MapContext, in *pb.SaaSRuntimeContext) *krm.SaaSRuntimeContext {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSRuntimeContext{}
+	out.SaasNames = in.SaasNames
+	return out
+}
+
+func SaaSRuntimeContext_ToProto(mapCtx *direct.MapContext, in *krm.SaaSRuntimeContext) *pb.SaaSRuntimeContext {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SaaSRuntimeContext{}
+	out.SaasNames = in.SaasNames
+	return out
+}
+
+func ScopeObservedState_FromProto(mapCtx *direct.MapContext, in *apphubpb.Scope) *krm.ScopeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ScopeObservedState{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+
+func ScopeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ScopeObservedState) *apphubpb.Scope {
+	if in == nil {
+		return nil
+	}
+	out := &apphubpb.Scope{}
+	out.Type = direct.Enum_ToProto[apphubpb.Scope_Type](mapCtx, in.Type)
+	return out
+}
+
+func SerializedApplicationTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SerializedApplicationTemplate) *krm.SerializedApplicationTemplateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SerializedApplicationTemplateObservedState{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.ApplicationParameters = direct.Slice_FromProto(mapCtx, in.ApplicationParameters, ParameterObservedState_FromProto)
+	out.IacFormat = direct.Enum_FromProto(mapCtx, in.GetIacFormat())
+	out.Components = direct.Slice_FromProto(mapCtx, in.Components, SerializedComponentObservedState_FromProto)
+	out.ApphubApplicationParameters = AppHubApplicationParametersObservedState_FromProto(mapCtx, in.GetApphubApplicationParameters())
+	out.HasGlobalResource = direct.LazyPtr(in.GetHasGlobalResource())
+	out.CompositionType = direct.Enum_FromProto(mapCtx, in.GetCompositionType())
+	out.RootInputVariables = direct.Slice_FromProto(mapCtx, in.RootInputVariables, ComponentVariableObservedState_FromProto)
+	out.RootOutputVariables = direct.Slice_FromProto(mapCtx, in.RootOutputVariables, ComponentVariableObservedState_FromProto)
+	out.SaasRuntimeContext = SaaSRuntimeContext_FromProto(mapCtx, in.GetSaasRuntimeContext())
+	out.SerializedPolicies = direct.Slice_FromProto(mapCtx, in.SerializedPolicies, SerializedPolicyObservedState_FromProto)
+	out.Providers = direct.Slice_FromProto(mapCtx, in.Providers, SerializedProviderObservedState_FromProto)
+	out.CustomVariables = direct.Slice_FromProto(mapCtx, in.CustomVariables, TerraformInputObservedState_FromProto)
+	out.CustomTfvars = direct.Slice_FromProto(mapCtx, in.CustomTfvars, ParameterObservedState_FromProto)
+	out.InputsAsRootModuleVariables = direct.LazyPtr(in.GetInputsAsRootModuleVariables())
+	return out
+}
+
+func SerializedApplicationTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SerializedApplicationTemplateObservedState) *pb.SerializedApplicationTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SerializedApplicationTemplate{}
+	out.Uri = direct.ValueOf(in.URI)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.ApplicationParameters = direct.Slice_ToProto(mapCtx, in.ApplicationParameters, ParameterObservedState_ToProto)
+	out.IacFormat = direct.Enum_ToProto[pb.ApplicationTemplate_IACFormat](mapCtx, in.IacFormat)
+	out.Components = direct.Slice_ToProto(mapCtx, in.Components, SerializedComponentObservedState_ToProto)
+	out.ApphubApplicationParameters = AppHubApplicationParametersObservedState_ToProto(mapCtx, in.ApphubApplicationParameters)
+	out.HasGlobalResource = direct.ValueOf(in.HasGlobalResource)
+	out.CompositionType = direct.Enum_ToProto[pb.ApplicationCompositionType](mapCtx, in.CompositionType)
+	out.RootInputVariables = direct.Slice_ToProto(mapCtx, in.RootInputVariables, ComponentVariableObservedState_ToProto)
+	out.RootOutputVariables = direct.Slice_ToProto(mapCtx, in.RootOutputVariables, ComponentVariableObservedState_ToProto)
+	out.SaasRuntimeContext = SaaSRuntimeContext_ToProto(mapCtx, in.SaasRuntimeContext)
+	out.SerializedPolicies = direct.Slice_ToProto(mapCtx, in.SerializedPolicies, SerializedPolicyObservedState_ToProto)
+	out.Providers = direct.Slice_ToProto(mapCtx, in.Providers, SerializedProviderObservedState_ToProto)
+	out.CustomVariables = direct.Slice_ToProto(mapCtx, in.CustomVariables, TerraformInputObservedState_ToProto)
+	out.CustomTfvars = direct.Slice_ToProto(mapCtx, in.CustomTfvars, ParameterObservedState_ToProto)
+	out.InputsAsRootModuleVariables = direct.ValueOf(in.InputsAsRootModuleVariables)
+	return out
+}
+
+func SerializedComponentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SerializedComponent) *krm.SerializedComponentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SerializedComponentObservedState{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.SharedTemplateRevisionURI = direct.LazyPtr(in.GetSharedTemplateRevisionUri())
+	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, ParameterObservedState_FromProto)
+	out.Connections = direct.Slice_FromProto(mapCtx, in.Connections, SerializedConnectionObservedState_FromProto)
+	out.Roles = in.Roles
+	out.APIs = in.Apis
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.ConnectionsParameters = direct.Slice_FromProto(mapCtx, in.ConnectionsParameters, ConnectionParametersObservedState_FromProto)
+	out.ComponentParameterSchema = direct.Slice_FromProto(mapCtx, in.ComponentParameterSchema, ComponentParameterSchemaObservedState_FromProto)
+	out.ApplicationInfo = ComponentApplicationInfoObservedState_FromProto(mapCtx, in.GetApplicationInfo())
+	out.UseAsRootModule = direct.LazyPtr(in.GetUseAsRootModule())
+	out.InputVariableAliases = direct.Slice_FromProto(mapCtx, in.InputVariableAliases, InputVariableAliasObservedState_FromProto)
+	out.ApplicationTemplateRevisionURI = direct.LazyPtr(in.GetApplicationTemplateRevisionUri())
+	return out
+}
+
+func SerializedComponentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SerializedComponentObservedState) *pb.SerializedComponent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SerializedComponent{}
+	out.Uri = direct.ValueOf(in.URI)
+	out.SharedTemplateRevisionUri = direct.ValueOf(in.SharedTemplateRevisionURI)
+	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, ParameterObservedState_ToProto)
+	out.Connections = direct.Slice_ToProto(mapCtx, in.Connections, SerializedConnectionObservedState_ToProto)
+	out.Roles = in.Roles
+	out.Apis = in.APIs
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.ConnectionsParameters = direct.Slice_ToProto(mapCtx, in.ConnectionsParameters, ConnectionParametersObservedState_ToProto)
+	out.ComponentParameterSchema = direct.Slice_ToProto(mapCtx, in.ComponentParameterSchema, ComponentParameterSchemaObservedState_ToProto)
+	out.ApplicationInfo = ComponentApplicationInfoObservedState_ToProto(mapCtx, in.ApplicationInfo)
+	out.UseAsRootModule = direct.ValueOf(in.UseAsRootModule)
+	out.InputVariableAliases = direct.Slice_ToProto(mapCtx, in.InputVariableAliases, InputVariableAliasObservedState_ToProto)
+	out.ApplicationTemplateRevisionUri = direct.ValueOf(in.ApplicationTemplateRevisionURI)
+	return out
+}
+
+func SerializedConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SerializedConnection) *krm.SerializedConnectionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SerializedConnectionObservedState{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.DestinationComponentURI = direct.LazyPtr(in.GetDestinationComponentUri())
+	out.SourceComponentParameters = direct.Slice_FromProto(mapCtx, in.SourceComponentParameters, ParameterObservedState_FromProto)
+	out.DestinationComponentParameters = direct.Slice_FromProto(mapCtx, in.DestinationComponentParameters, ParameterObservedState_FromProto)
+	out.DependencyType = direct.Enum_FromProto(mapCtx, in.GetDependencyType())
+	return out
+}
+
+func SerializedConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SerializedConnectionObservedState) *pb.SerializedConnection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SerializedConnection{}
+	out.Uri = direct.ValueOf(in.URI)
+	out.DestinationComponentUri = direct.ValueOf(in.DestinationComponentURI)
+	out.SourceComponentParameters = direct.Slice_ToProto(mapCtx, in.SourceComponentParameters, ParameterObservedState_ToProto)
+	out.DestinationComponentParameters = direct.Slice_ToProto(mapCtx, in.DestinationComponentParameters, ParameterObservedState_ToProto)
+	out.DependencyType = direct.Enum_ToProto[pb.ConnectionDependencyType](mapCtx, in.DependencyType)
+	return out
+}
+
+func SerializedPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SerializedPolicy) *krm.SerializedPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SerializedPolicyObservedState{}
+	out.PolicyURI = direct.LazyPtr(in.GetPolicyUri())
+	out.PolicyRevisionURI = direct.LazyPtr(in.GetPolicyRevisionUri())
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.PolicyType = direct.Enum_FromProto(mapCtx, in.GetPolicyType())
+	out.ApplyConditions = direct.Slice_FromProto(mapCtx, in.ApplyConditions, ApplyConditionObservedState_FromProto)
+	out.CloudControlConfigs = direct.Slice_FromProto(mapCtx, in.CloudControlConfigs, CloudControlConfigObservedState_FromProto)
+	return out
+}
+
+func SerializedPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SerializedPolicyObservedState) *pb.SerializedPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SerializedPolicy{}
+	if oneof := SerializedPolicyObservedState_PolicyUri_ToProto(mapCtx, in.PolicyURI); oneof != nil {
+		out.SourceUri = oneof
+	}
+	if oneof := SerializedPolicyObservedState_PolicyRevisionUri_ToProto(mapCtx, in.PolicyRevisionURI); oneof != nil {
+		out.SourceUri = oneof
+	}
+	out.Uri = direct.ValueOf(in.URI)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.PolicyType = direct.Enum_ToProto[pb.SerializedPolicy_PolicyType](mapCtx, in.PolicyType)
+	out.ApplyConditions = direct.Slice_ToProto(mapCtx, in.ApplyConditions, ApplyConditionObservedState_ToProto)
+	out.CloudControlConfigs = direct.Slice_ToProto(mapCtx, in.CloudControlConfigs, CloudControlConfigObservedState_ToProto)
+	return out
+}
+
+func SerializedPolicyObservedState_PolicyUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.SerializedPolicy_PolicyUri {
+	if in == nil {
+		return nil
+	}
+	return &pb.SerializedPolicy_PolicyUri{PolicyUri: *in}
+}
+
+func SerializedPolicyObservedState_PolicyRevisionUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.SerializedPolicy_PolicyRevisionUri {
+	if in == nil {
+		return nil
+	}
+	return &pb.SerializedPolicy_PolicyRevisionUri{PolicyRevisionUri: *in}
+}
+
+func SerializedProviderObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SerializedProvider) *krm.SerializedProviderObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SerializedProviderObservedState{}
+	out.Provider = direct.LazyPtr(in.GetProvider())
+	out.ProviderAlias = direct.LazyPtr(in.GetProviderAlias())
+	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, ParameterObservedState_FromProto)
+	return out
+}
+
+func SerializedProviderObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SerializedProviderObservedState) *pb.SerializedProvider {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SerializedProvider{}
+	out.Provider = direct.ValueOf(in.Provider)
+	out.ProviderAlias = direct.ValueOf(in.ProviderAlias)
+	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, ParameterObservedState_ToProto)
+	return out
+}
+
+func TemplateConnections_FromProto(mapCtx *direct.MapContext, in *pb.TemplateConnections) *krm.TemplateConnections {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TemplateConnections{}
+	out.Source = ConnectionSource_FromProto(mapCtx, in.GetSource())
+	out.Spec = ConnectionSpec_FromProto(mapCtx, in.GetSpec())
+	return out
+}
+
+func TemplateConnections_ToProto(mapCtx *direct.MapContext, in *krm.TemplateConnections) *pb.TemplateConnections {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TemplateConnections{}
+	out.Source = ConnectionSource_ToProto(mapCtx, in.Source)
+	out.Spec = ConnectionSpec_ToProto(mapCtx, in.Spec)
+	return out
+}
+
+func TemplateInfo_FromProto(mapCtx *direct.MapContext, in *pb.TemplateInfo) *krm.TemplateInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TemplateInfo{}
+	out.ActuationTool = IacFormatInfo_FromProto(mapCtx, in.GetActuationTool())
+	return out
+}
+
+func TemplateInfo_ToProto(mapCtx *direct.MapContext, in *krm.TemplateInfo) *pb.TemplateInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TemplateInfo{}
+	out.ActuationTool = IacFormatInfo_ToProto(mapCtx, in.ActuationTool)
+	return out
+}
+
+func TemplateRequirements_FromProto(mapCtx *direct.MapContext, in *pb.TemplateRequirements) *krm.TemplateRequirements {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TemplateRequirements{}
+	out.Roles = direct.Slice_FromProto(mapCtx, in.Roles, TemplateRoles_FromProto)
+	// MISSING: ProviderVersions
+	return out
+}
+
+func TemplateRequirements_ToProto(mapCtx *direct.MapContext, in *krm.TemplateRequirements) *pb.TemplateRequirements {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TemplateRequirements{}
+	out.Roles = direct.Slice_ToProto(mapCtx, in.Roles, TemplateRoles_ToProto)
+	// MISSING: ProviderVersions
+	return out
+}
+
+func TemplateRequirementsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TemplateRequirements) *krm.TemplateRequirementsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TemplateRequirementsObservedState{}
+	// MISSING: Roles
+	out.ProviderVersions = direct.Slice_FromProto(mapCtx, in.ProviderVersions, ProviderVersionObservedState_FromProto)
+	return out
+}
+
+func TemplateRequirementsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TemplateRequirementsObservedState) *pb.TemplateRequirements {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TemplateRequirements{}
+	// MISSING: Roles
+	out.ProviderVersions = direct.Slice_ToProto(mapCtx, in.ProviderVersions, ProviderVersionObservedState_ToProto)
+	return out
+}
+
+func TemplateRoles_FromProto(mapCtx *direct.MapContext, in *pb.TemplateRoles) *krm.TemplateRoles {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TemplateRoles{}
+	out.Level = direct.LazyPtr(in.GetLevel())
+	out.Roles = in.Roles
+	return out
+}
+
+func TemplateRoles_ToProto(mapCtx *direct.MapContext, in *krm.TemplateRoles) *pb.TemplateRoles {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TemplateRoles{}
+	out.Level = direct.ValueOf(in.Level)
+	out.Roles = in.Roles
+	return out
+}
+
+func TemplateSchema_FromProto(mapCtx *direct.MapContext, in *pb.TemplateSchema) *krm.TemplateSchema {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TemplateSchema{}
+	out.Variables = direct.Slice_FromProto(mapCtx, in.Variables, TemplateVariable_FromProto)
+	return out
+}
+
+func TemplateSchema_ToProto(mapCtx *direct.MapContext, in *krm.TemplateSchema) *pb.TemplateSchema {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TemplateSchema{}
+	out.Variables = direct.Slice_ToProto(mapCtx, in.Variables, TemplateVariable_ToProto)
+	return out
+}
+
+func TemplateUi_FromProto(mapCtx *direct.MapContext, in *pb.TemplateUi) *krm.TemplateUi {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TemplateUi{}
+	out.Input = TemplateUiInput_FromProto(mapCtx, in.GetInput())
+	out.Runtime = TemplateUiOutput_FromProto(mapCtx, in.GetRuntime())
+	return out
+}
+
+func TemplateUi_ToProto(mapCtx *direct.MapContext, in *krm.TemplateUi) *pb.TemplateUi {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TemplateUi{}
+	out.Input = TemplateUiInput_ToProto(mapCtx, in.Input)
+	out.Runtime = TemplateUiOutput_ToProto(mapCtx, in.Runtime)
+	return out
+}
+
+func TemplateUiInput_FromProto(mapCtx *direct.MapContext, in *pb.TemplateUiInput) *krm.TemplateUiInput {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TemplateUiInput{}
+	if in.Variables != nil {
+		out.Variables = make(map[string]krm.DisplayVariable, len(in.Variables))
+		for k, v := range in.Variables {
+			if c := DisplayVariable_FromProto(mapCtx, v); c != nil {
+				out.Variables[k] = *c
+			}
+		}
+	}
+	return out
+}
+
+func TemplateUiInput_ToProto(mapCtx *direct.MapContext, in *krm.TemplateUiInput) *pb.TemplateUiInput {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TemplateUiInput{}
+	if in.Variables != nil {
+		out.Variables = make(map[string]*pb.DisplayVariable, len(in.Variables))
+		for k, v := range in.Variables {
+			out.Variables[k] = DisplayVariable_ToProto(mapCtx, &v)
+		}
+	}
+	return out
+}
+
+func TemplateUiOutput_FromProto(mapCtx *direct.MapContext, in *pb.TemplateUiOutput) *krm.TemplateUiOutput {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TemplateUiOutput{}
+	out.OutputMessage = direct.LazyPtr(in.GetOutputMessage())
+	if in.Outputs != nil {
+		out.Outputs = make(map[string]krm.TemplateUiOutputDisplayVariable, len(in.Outputs))
+		for k, v := range in.Outputs {
+			if c := TemplateUiOutputDisplayVariable_FromProto(mapCtx, v); c != nil {
+				out.Outputs[k] = *c
+			}
+		}
+	}
+	return out
+}
+
+func TemplateUiOutput_ToProto(mapCtx *direct.MapContext, in *krm.TemplateUiOutput) *pb.TemplateUiOutput {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TemplateUiOutput{}
+	out.OutputMessage = direct.ValueOf(in.OutputMessage)
+	if in.Outputs != nil {
+		out.Outputs = make(map[string]*pb.TemplateUiOutputDisplayVariable, len(in.Outputs))
+		for k, v := range in.Outputs {
+			out.Outputs[k] = TemplateUiOutputDisplayVariable_ToProto(mapCtx, &v)
+		}
+	}
+	return out
+}
+
+func TemplateUiOutputDisplayVariable_FromProto(mapCtx *direct.MapContext, in *pb.TemplateUiOutputDisplayVariable) *krm.TemplateUiOutputDisplayVariable {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TemplateUiOutputDisplayVariable{}
+	out.Visibility = direct.Enum_FromProto(mapCtx, in.GetVisibility())
+	return out
+}
+
+func TemplateUiOutputDisplayVariable_ToProto(mapCtx *direct.MapContext, in *krm.TemplateUiOutputDisplayVariable) *pb.TemplateUiOutputDisplayVariable {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TemplateUiOutputDisplayVariable{}
+	out.Visibility = direct.Enum_ToProto[pb.DisplayVariableVisibility](mapCtx, in.Visibility)
+	return out
+}
+
+func TemplateVariable_FromProto(mapCtx *direct.MapContext, in *pb.TemplateVariable) *krm.TemplateVariable {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TemplateVariable{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Connections = direct.Slice_FromProto(mapCtx, in.Connections, TemplateConnections_FromProto)
+	return out
+}
+
+func TemplateVariable_ToProto(mapCtx *direct.MapContext, in *krm.TemplateVariable) *pb.TemplateVariable {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TemplateVariable{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Connections = direct.Slice_ToProto(mapCtx, in.Connections, TemplateConnections_ToProto)
+	return out
+}
+
+func TerraformInputConnectionsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TerraformInputConnections) *krm.TerraformInputConnectionsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TerraformInputConnectionsObservedState{}
+	out.CftTemplateURI = direct.LazyPtr(in.GetCftTemplateUri())
+	out.CftTemplateVersion = direct.LazyPtr(in.GetCftTemplateVersion())
+	out.OutputVar = direct.LazyPtr(in.GetOutputVar())
+	out.InputPath = direct.LazyPtr(in.GetInputPath())
+	return out
+}
+
+func TerraformInputConnectionsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TerraformInputConnectionsObservedState) *pb.TerraformInputConnections {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TerraformInputConnections{}
+	out.CftTemplateUri = direct.ValueOf(in.CftTemplateURI)
+	out.CftTemplateVersion = direct.ValueOf(in.CftTemplateVersion)
+	out.OutputVar = direct.ValueOf(in.OutputVar)
+	out.InputPath = direct.ValueOf(in.InputPath)
+	return out
+}
+
+func TerraformInputObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TerraformInput) *krm.TerraformInputObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TerraformInputObservedState{}
+	out.TerraformInputVariable = direct.LazyPtr(in.GetTerraformInputVariable())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Type = direct.LazyPtr(in.GetType())
+	out.DefaultValue = Value_FromProto(mapCtx, in.GetDefaultValue())
+	out.Connections = direct.Slice_FromProto(mapCtx, in.Connections, TerraformInputConnectionsObservedState_FromProto)
+	out.IsRequired = direct.LazyPtr(in.GetIsRequired())
+	out.Sensitive = direct.LazyPtr(in.GetSensitive())
+	out.ValidationRules = direct.Slice_FromProto(mapCtx, in.ValidationRules, TerraformVariableValidation_FromProto)
+	return out
+}
+
+func TerraformInputObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TerraformInputObservedState) *pb.TerraformInput {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TerraformInput{}
+	out.TerraformInputVariable = direct.ValueOf(in.TerraformInputVariable)
+	out.Description = direct.ValueOf(in.Description)
+	out.Type = direct.ValueOf(in.Type)
+	out.DefaultValue = Value_ToProto(mapCtx, in.DefaultValue)
+	out.Connections = direct.Slice_ToProto(mapCtx, in.Connections, TerraformInputConnectionsObservedState_ToProto)
+	out.IsRequired = direct.ValueOf(in.IsRequired)
+	out.Sensitive = direct.ValueOf(in.Sensitive)
+	out.ValidationRules = direct.Slice_ToProto(mapCtx, in.ValidationRules, TerraformVariableValidation_ToProto)
+	return out
+}
+
+func TerraformOutputObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TerraformOutput) *krm.TerraformOutputObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TerraformOutputObservedState{}
+	out.Type = Value_FromProto(mapCtx, in.GetType())
+	out.TerraformOutputVariable = direct.LazyPtr(in.GetTerraformOutputVariable())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+
+func TerraformOutputObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TerraformOutputObservedState) *pb.TerraformOutput {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TerraformOutput{}
+	out.Type = Value_ToProto(mapCtx, in.Type)
+	out.TerraformOutputVariable = direct.ValueOf(in.TerraformOutputVariable)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+
+func TerraformUiInputDisplayVariable_FromProto(mapCtx *direct.MapContext, in *pb.TerraformUiInputDisplayVariable) *krm.TerraformUiInputDisplayVariable {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TerraformUiInputDisplayVariable{}
+	// MISSING: DisplayName
+	// MISSING: Title
+	// MISSING: AlternateDefaults
+	// MISSING: RegexValidation
+	// MISSING: Min
+	// MISSING: Max
+	// MISSING: Validation
+	// MISSING: EnumValueLabels
+	// MISSING: Level
+	// MISSING: Subtext
+	// MISSING: ToggleUsingVariables
+	// MISSING: Properties
+	return out
+}
+
+func TerraformUiInputDisplayVariable_ToProto(mapCtx *direct.MapContext, in *krm.TerraformUiInputDisplayVariable) *pb.TerraformUiInputDisplayVariable {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TerraformUiInputDisplayVariable{}
+	// MISSING: DisplayName
+	// MISSING: Title
+	// MISSING: AlternateDefaults
+	// MISSING: RegexValidation
+	// MISSING: Min
+	// MISSING: Max
+	// MISSING: Validation
+	// MISSING: EnumValueLabels
+	// MISSING: Level
+	// MISSING: Subtext
+	// MISSING: ToggleUsingVariables
+	// MISSING: Properties
+	return out
+}
+
+func TerraformUiInputObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TerraformUiInput) *krm.TerraformUiInputObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TerraformUiInputObservedState{}
+	if in.TerraformUiInputs != nil {
+		out.TerraformUiInputs = make(map[string]krm.TerraformUiInputDisplayVariable, len(in.TerraformUiInputs))
+		for k, v := range in.TerraformUiInputs {
+			if c := TerraformUiInputDisplayVariable_FromProto(mapCtx, v); c != nil {
+				out.TerraformUiInputs[k] = *c
+			}
+		}
+	}
+	return out
+}
+
+func TerraformUiInputObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TerraformUiInputObservedState) *pb.TerraformUiInput {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TerraformUiInput{}
+	if in.TerraformUiInputs != nil {
+		out.TerraformUiInputs = make(map[string]*pb.TerraformUiInputDisplayVariable, len(in.TerraformUiInputs))
+		for k, v := range in.TerraformUiInputs {
+			out.TerraformUiInputs[k] = TerraformUiInputDisplayVariable_ToProto(mapCtx, &v)
+		}
+	}
+	return out
+}
+
+func TerraformUiOutputDisplay_FromProto(mapCtx *direct.MapContext, in *pb.TerraformUiOutputDisplay) *krm.TerraformUiOutputDisplay {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TerraformUiOutputDisplay{}
+	out.Visibility = direct.Enum_FromProto(mapCtx, in.GetVisibility())
+	return out
+}
+
+func TerraformUiOutputDisplay_ToProto(mapCtx *direct.MapContext, in *krm.TerraformUiOutputDisplay) *pb.TerraformUiOutputDisplay {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TerraformUiOutputDisplay{}
+	out.Visibility = direct.Enum_ToProto[pb.DisplayVariableVisibility](mapCtx, in.Visibility)
+	return out
+}
+
+func TerraformUiOutputObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TerraformUiOutput) *krm.TerraformUiOutputObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TerraformUiOutputObservedState{}
+	out.OutputMessage = direct.LazyPtr(in.GetOutputMessage())
+	if in.TerraformUiOutputs != nil {
+		out.TerraformUiOutputs = make(map[string]krm.TerraformUiOutputDisplay, len(in.TerraformUiOutputs))
+		for k, v := range in.TerraformUiOutputs {
+			if c := TerraformUiOutputDisplay_FromProto(mapCtx, v); c != nil {
+				out.TerraformUiOutputs[k] = *c
+			}
+		}
+	}
+	return out
+}
+
+func TerraformUiOutputObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TerraformUiOutputObservedState) *pb.TerraformUiOutput {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TerraformUiOutput{}
+	out.OutputMessage = direct.ValueOf(in.OutputMessage)
+	if in.TerraformUiOutputs != nil {
+		out.TerraformUiOutputs = make(map[string]*pb.TerraformUiOutputDisplay, len(in.TerraformUiOutputs))
+		for k, v := range in.TerraformUiOutputs {
+			out.TerraformUiOutputs[k] = TerraformUiOutputDisplay_ToProto(mapCtx, &v)
+		}
+	}
+	return out
+}
+
+func TerraformVariableValidation_FromProto(mapCtx *direct.MapContext, in *pb.TerraformVariableValidation) *krm.TerraformVariableValidation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TerraformVariableValidation{}
+	out.Condition = direct.LazyPtr(in.GetCondition())
+	out.ErrorMessage = direct.LazyPtr(in.GetErrorMessage())
+	return out
+}
+
+func TerraformVariableValidation_ToProto(mapCtx *direct.MapContext, in *krm.TerraformVariableValidation) *pb.TerraformVariableValidation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TerraformVariableValidation{}
+	out.Condition = direct.ValueOf(in.Condition)
+	out.ErrorMessage = direct.ValueOf(in.ErrorMessage)
+	return out
+}
+
+func ValueLabel_FromProto(mapCtx *direct.MapContext, in *pb.ValueLabel) *krm.ValueLabel {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ValueLabel{}
+	out.Value = direct.LazyPtr(in.GetValue())
+	out.Label = direct.LazyPtr(in.GetLabel())
+	return out
+}
+
+func ValueLabel_ToProto(mapCtx *direct.MapContext, in *krm.ValueLabel) *pb.ValueLabel {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ValueLabel{}
+	out.Value = direct.ValueOf(in.Value)
+	out.Label = direct.ValueOf(in.Label)
+	return out
+}
+
+func Value_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krm.Value {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Value{}
+	out.NullValue = direct.Enum_FromProto(mapCtx, in.GetNullValue())
+	out.NumberValue = direct.LazyPtr(in.GetNumberValue())
+	out.StringValue = direct.LazyPtr(in.GetStringValue())
+	out.BoolValue = direct.LazyPtr(in.GetBoolValue())
+	if v := direct.Struct_FromProto(mapCtx, in.GetStructValue()); v != nil {
+		out.StructValue = *v
+	}
+	out.ListValue = ListValue_FromProto(mapCtx, in.GetListValue())
+	return out
+}
+
+func Value_NullValue_ToProto(mapCtx *direct.MapContext, in *string) *structpb.Value_NullValue {
+	if in == nil {
+		return nil
+	}
+	return &structpb.Value_NullValue{NullValue: direct.Enum_ToProto[structpb.NullValue](mapCtx, in)}
+}
+
+func Value_NumberValue_ToProto(mapCtx *direct.MapContext, in *float64) *structpb.Value_NumberValue {
+	if in == nil {
+		return nil
+	}
+	return &structpb.Value_NumberValue{NumberValue: *in}
+}
+
+func Value_StringValue_ToProto(mapCtx *direct.MapContext, in *string) *structpb.Value_StringValue {
+	if in == nil {
+		return nil
+	}
+	return &structpb.Value_StringValue{StringValue: *in}
+}
+
+func Value_BoolValue_ToProto(mapCtx *direct.MapContext, in *bool) *structpb.Value_BoolValue {
+	if in == nil {
+		return nil
+	}
+	return &structpb.Value_BoolValue{BoolValue: *in}
+}
+
+func ValueLabelInput_FromProto(mapCtx *direct.MapContext, in *pb.ValueLabelInput) *krm.ValueLabelInput {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ValueLabelInput{}
+	out.Value = direct.LazyPtr(in.GetValue())
+	out.Label = direct.LazyPtr(in.GetLabel())
+	return out
+}
+
+func ValueLabelInput_ToProto(mapCtx *direct.MapContext, in *krm.ValueLabelInput) *pb.ValueLabelInput {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ValueLabelInput{}
+	out.Value = direct.ValueOf(in.Value)
+	out.Label = direct.ValueOf(in.Label)
+	return out
+}

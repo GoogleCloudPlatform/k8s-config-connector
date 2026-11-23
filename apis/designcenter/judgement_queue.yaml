@@ -123,6 +123,305 @@ entries:
     status: resolved
     resolution: edited
     note: modelled as spec.parentRef (*DesignCenterCatalogRef); removed ProjectRef and Location
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: triaged DesignCenterCatalogTemplateRevision; modelled spec.parentRef (*DesignCenterCatalogTemplateRef), removed ProjectRef and Location, and added API doc links
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//designcenter.googleapis.com/projects/{project}/locations/{location}/spaces/{space}/catalogs/{catalog}/templates/{catalog_template}/revisions/{revision}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: resolved
+    resolution: accepted
+    note: verified template against proto google.api.resource pattern
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/spaces/{space}/catalogs/{catalog}/templates/{catalog_template}/revisions/{revision}" contains ancestor segment(s) spaces/{space}, catalogs/{catalog}, templates/{catalog_template} with no matching reference or field on DesignCenterCatalogTemplateRevisionSpec
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DesignCenterCatalogTemplateRef); removed ProjectRef and Location
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: found no docs root for this API; find the REST reference page by hand
+    status: resolved
+    resolution: edited
+    note: added resource REST reference URL
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    reason: verify-service-docs-link
+    detail: neither the Discovery directory nor the service config names a docs page; add one
+    status: resolved
+    resolution: edited
+    note: added service docs URL
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.applicationParameters[].value
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.applicationTemplateRevisionSource
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to designcenter.googleapis.com/ApplicationTemplateRevision (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: not-applicable
+    note: ApplicationTemplateRevision is an unmanaged resource type in KCC; field remains a string reference
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.developerConnectSourceConfig.developerConnectRepoURI
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to developerconnect.googleapis.com/GitRepositoryLink (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: converted to DeveloperConnectRepoRef (*developerconnectv1alpha1.DeveloperConnectGitRepositoryLinkRef)
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.gcsSourceURI
+    reason: deprecated-field
+    detail: the proto marks this field deprecated, so new Kinds leave it out of the Spec. If this Spec still has it, remove it by hand; add it back only if users still need it
+    status: resolved
+    resolution: accepted
+    note: deprecated field omitted from Spec
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.gitSource.developerConnectConfig
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: resolved
+    resolution: edited
+    note: omitted deprecated developerConnectConfig field from handwritten GitSource struct
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/spaces/{space}/catalogs/{catalog}/templates/{catalog_template}, which already names the location; a reference to it could replace location and the root reference
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DesignCenterCatalogTemplateRef); removed ProjectRef and Location
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.metadataInput.spec.ui.input.variables
+    reason: message-map-derived
+    detail: derived as map[string]DisplayVariable from proto google.cloud.designcenter.v1.DisplayVariable; verify Go type and mapping
+    status: resolved
+    resolution: accepted
+    note: verified map[string]DisplayVariable type and mapper
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.metadataInput.spec.ui.input.variables.KEY.alternateDefaults[].value
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.metadataInput.spec.ui.input.variables.KEY.properties
+    reason: message-map-derived
+    detail: derived as map[string]DisplayVariable from proto google.cloud.designcenter.v1.DisplayVariable; verify Go type and mapping
+    status: resolved
+    resolution: accepted
+    note: verified recursive map[string]DisplayVariable type and mapper
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.metadataInput.spec.ui.runtime.outputs
+    reason: message-map-derived
+    detail: derived as map[string]TemplateUiOutputDisplayVariable from proto google.cloud.designcenter.v1.TemplateUiOutputDisplayVariable; verify Go type and mapping
+    status: resolved
+    resolution: accepted
+    note: verified map[string]TemplateUiOutputDisplayVariable type and mapper
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.ociRepo.uri
+    reason: reference-not-representable
+    detail: 'container-image-uri-not-a-storage-object: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: container image URI is not a KCC-representable reference today
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.templateRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to DesignCenterCatalogTemplateRef, read from the templates segment of projects/{project}/locations/{location}/spaces/{space}/catalogs/{catalog}/templates/{catalog_template}/revisions/{revision}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DesignCenterCatalogTemplateRef); removed ProjectRef and Location
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.applicationTemplateRevision.applicationParameters[].value
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.applicationTemplateRevision.components[].componentParameterSchema[].defaultValue
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.applicationTemplateRevision.components[].connectionsParameters[].parameters[].value
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.applicationTemplateRevision.components[].connections[].destinationComponentParameters[].value
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.applicationTemplateRevision.components[].connections[].sourceComponentParameters[].value
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.applicationTemplateRevision.components[].parameters[].value
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.applicationTemplateRevision.customTfvars[].value
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.applicationTemplateRevision.customVariables[].defaultValue
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.applicationTemplateRevision.providers[].parameters[].value
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.applicationTemplateRevision.serializedPolicies[].cloudControlConfigs[].parameters[].value
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.helmChartMetadata.helmInput[].defaultValue
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.helmChartMetadata.helmInput[].nestedInputs
+    reason: message-map-derived
+    detail: derived as map[string]HelmChartInput from proto google.cloud.designcenter.v1.HelmChartInput; verify Go type and mapping
+    status: resolved
+    resolution: accepted
+    note: defined HelmChartInput in designcentercatalogtemplaterevision_types.go with output-only proto fields to populate CRD schema
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.helmChartMetadata.helmOutput[].value
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.inferredMetadata.templateMetadata.terraformInput[].defaultValue
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.inferredMetadata.templateMetadata.terraformOutput[].type
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.inferredMetadata.templateMetadata.uiMetadata.terraformUiInput.terraformUiInputs
+    reason: message-map-derived
+    detail: derived as map[string]TerraformUiInputDisplayVariable from proto google.cloud.designcenter.v1.TerraformUiInputDisplayVariable; verify Go type and mapping
+    status: resolved
+    resolution: accepted
+    note: defined TerraformUiInputDisplayVariable in designcentercatalogtemplaterevision_types.go with output-only proto fields to populate CRD schema
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.inferredMetadata.templateMetadata.uiMetadata.terraformUiOutput.terraformUiOutputs
+    reason: message-map-derived
+    detail: derived as map[string]TerraformUiOutputDisplay from proto google.cloud.designcenter.v1.TerraformUiOutputDisplay; verify Go type and mapping
+    status: resolved
+    resolution: accepted
+    note: defined TerraformUiOutputDisplay in designcentercatalogtemplaterevision_types.go with output-only proto fields to populate CRD schema
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.templateMetadata.terraformInput[].defaultValue
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.templateMetadata.terraformOutput[].type
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.templateMetadata.uiMetadata.terraformUiInput.terraformUiInputs
+    reason: message-map-derived
+    detail: derived as map[string]TerraformUiInputDisplayVariable from proto google.cloud.designcenter.v1.TerraformUiInputDisplayVariable; verify Go type and mapping
+    status: resolved
+    resolution: accepted
+    note: defined TerraformUiInputDisplayVariable in designcentercatalogtemplaterevision_types.go with output-only proto fields to populate CRD schema
+  - kind: DesignCenterCatalogTemplateRevision
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.templateMetadata.uiMetadata.terraformUiOutput.terraformUiOutputs
+    reason: message-map-derived
+    detail: derived as map[string]TerraformUiOutputDisplay from proto google.cloud.designcenter.v1.TerraformUiOutputDisplay; verify Go type and mapping
+    status: resolved
+    resolution: accepted
+    note: defined TerraformUiOutputDisplay in designcentercatalogtemplaterevision_types.go with output-only proto fields to populate CRD schema
   - kind: DesignCenterSpace
     group: designcenter.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
