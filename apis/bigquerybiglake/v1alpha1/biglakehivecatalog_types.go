@@ -37,6 +37,12 @@ type BigLakeHiveCatalogSpec struct {
 
 	// The BigLakeHiveCatalog name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Optional. The GCP region that specifies where the catalog metadata is stored,
+	// e.g. us-central1. If not specified, defaults to "us-central1".
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.CreateHiveCatalogRequest.primary_location
+	PrimaryLocation *string `json:"primaryLocation,omitempty"`
+
 	// Optional. Stores the catalog description.
 	//  The maximum length is 4000 characters.
 	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveCatalog.description
