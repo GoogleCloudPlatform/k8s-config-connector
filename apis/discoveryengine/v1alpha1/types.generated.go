@@ -19,6 +19,7 @@
 // proto.service: google.cloud.discoveryengine.v1
 // resource: DiscoveryEngineWidgetConfig:WidgetConfig
 // resource: DiscoveryEngineACLConfig:AclConfig
+// resource: DiscoveryEngineCMEKConfig:CmekConfig
 
 package v1alpha1
 

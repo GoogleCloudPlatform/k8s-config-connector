@@ -5049,6 +5049,10 @@
 [missing_field] crd=discoveryengineaclconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.idpConfig.idpType" is not set in unstructured objects
 [missing_field] crd=discoveryengineaclconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=discoveryengineaclconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=discoveryenginecmekconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.kmsKey" is not set in unstructured objects
+[missing_field] crd=discoveryenginecmekconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=discoveryenginecmekconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=discoveryenginecmekconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.singleRegionKeys[].kmsKey" is not set in unstructured objects
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostAction.boost" is not set in unstructured objects
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostAction.dataStoreRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostAction.filter" is not set in unstructured objects

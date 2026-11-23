@@ -79,7 +79,8 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource \
   --resource DiscoveryEngineWidgetConfig:WidgetConfig \
-  --resource DiscoveryEngineACLConfig:AclConfig
+  --resource DiscoveryEngineACLConfig:AclConfig \
+  --resource DiscoveryEngineCMEKConfig:CmekConfig
 
 ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${NEW_PROTO_OUT} \
@@ -87,6 +88,7 @@ ${CONTROLLERBUILDER} generate-identity \
   --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
   --resource DiscoveryEngineWidgetConfig:WidgetConfig \
   --resource DiscoveryEngineACLConfig:AclConfig \
+  --resource DiscoveryEngineCMEKConfig:CmekConfig \
   --pattern DiscoveryEngineWidgetConfig="projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}/widgetConfigs/{widgetConfig}"
 
 ${CONTROLLERBUILDER} generate-mapper \

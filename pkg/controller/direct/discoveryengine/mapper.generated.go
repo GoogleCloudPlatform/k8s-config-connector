@@ -933,6 +933,52 @@ func DataStore_BillingEstimation_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	out.WebsiteDataUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.WebsiteDataUpdateTime)
 	return out
 }
+func DiscoveryEngineCMEKConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CmekConfig) *krmdiscoveryenginev1alpha1.DiscoveryEngineCMEKConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineCMEKConfigObservedState{}
+	// MISSING: Name
+	out.KMSKeyVersion = direct.LazyPtr(in.GetKmsKeyVersion())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.IsDefault = direct.LazyPtr(in.GetIsDefault())
+	out.LastRotationTimestampMicros = direct.LazyPtr(in.GetLastRotationTimestampMicros())
+	out.NotebooklmState = direct.Enum_FromProto(mapCtx, in.GetNotebooklmState())
+	return out
+}
+func DiscoveryEngineCMEKConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineCMEKConfigObservedState) *pb.CmekConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CmekConfig{}
+	// MISSING: Name
+	out.KmsKeyVersion = direct.ValueOf(in.KMSKeyVersion)
+	out.State = direct.Enum_ToProto[pb.CmekConfig_State](mapCtx, in.State)
+	out.IsDefault = direct.ValueOf(in.IsDefault)
+	out.LastRotationTimestampMicros = direct.ValueOf(in.LastRotationTimestampMicros)
+	out.NotebooklmState = direct.Enum_ToProto[pb.CmekConfig_NotebookLMState](mapCtx, in.NotebooklmState)
+	return out
+}
+func DiscoveryEngineCMEKConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CmekConfig) *krmdiscoveryenginev1alpha1.DiscoveryEngineCMEKConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineCMEKConfigSpec{}
+	// MISSING: Name
+	out.KMSKey = direct.LazyPtr(in.GetKmsKey())
+	out.SingleRegionKeys = direct.Slice_FromProto(mapCtx, in.SingleRegionKeys, SingleRegionKeyWithRequired_v1alpha1_FromProto)
+	return out
+}
+func DiscoveryEngineCMEKConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineCMEKConfigSpec) *pb.CmekConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CmekConfig{}
+	// MISSING: Name
+	out.KmsKey = direct.ValueOf(in.KMSKey)
+	out.SingleRegionKeys = direct.Slice_ToProto(mapCtx, in.SingleRegionKeys, SingleRegionKeyWithRequired_v1alpha1_ToProto)
+	return out
+}
 func DiscoveryEngineControlSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Control) *krmdiscoveryenginev1alpha1.DiscoveryEngineControlSpec {
 	if in == nil {
 		return nil
@@ -1962,6 +2008,22 @@ func SingleRegionKey_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Single
 	return out
 }
 func SingleRegionKey_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SingleRegionKey) *pb.SingleRegionKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SingleRegionKey{}
+	out.KmsKey = direct.ValueOf(in.KMSKey)
+	return out
+}
+func SingleRegionKeyWithRequired_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SingleRegionKey) *krmdiscoveryenginev1alpha1.SingleRegionKeyWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SingleRegionKeyWithRequired{}
+	out.KMSKey = direct.LazyPtr(in.GetKmsKey())
+	return out
+}
+func SingleRegionKeyWithRequired_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SingleRegionKeyWithRequired) *pb.SingleRegionKey {
 	if in == nil {
 		return nil
 	}

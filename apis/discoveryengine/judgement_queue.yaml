@@ -42,6 +42,39 @@ entries:
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
     status: open
+  - kind: DiscoveryEngineCMEKConfig
+    group: discoveryengine.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: DiscoveryEngineCMEKConfig
+    group: discoveryengine.cnrm.cloud.google.com
+    reason: identity-multi-pattern
+    detail: proto message google.cloud.discoveryengine.v1.CmekConfig declares 2 resource name patterns (projects/{project}/locations/{location}/cmekConfig, projects/{project}/locations/{location}/cmekConfigs/{cmek_config}) that tied on DiscoveryEngineCMEKConfigSpec; generated identity defaulted to "projects/{project}/locations/{location}/cmekConfig" (pass --pattern DiscoveryEngineCMEKConfig=<pattern> to override)
+    status: open
+  - kind: DiscoveryEngineCMEKConfig
+    group: discoveryengine.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.cmekConfig: https://docs.cloud.google.com/generative-ai-app-builder/docs/reference/rest/v1/projects.locations.cmekConfig'
+    status: open
+  - kind: DiscoveryEngineCMEKConfig
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .spec.kmsKey
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to cloudkms.googleapis.com/CryptoKeys (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: DiscoveryEngineCMEKConfig
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: open
+  - kind: DiscoveryEngineCMEKConfig
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .spec.singleRegionKeys[].kmsKey
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to cloudkms.googleapis.com/CryptoKeys (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
   - kind: DiscoveryEngineWidgetConfig
     group: discoveryengine.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

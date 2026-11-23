@@ -589,29 +589,6 @@ type AssistantGroundedContent_TextGroundingMetadata_Segment struct {
 	Text *string `json:"text,omitempty"`
 }
 
-// +kcc:proto=google.cloud.discoveryengine.v1.CmekConfig
-type CmekConfig struct {
-	// Required. The name of the CmekConfig of the form
-	//  `projects/{project}/locations/{location}/cmekConfig` or
-	//  `projects/{project}/locations/{location}/cmekConfigs/{cmek_config}`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.name
-	Name *string `json:"name,omitempty"`
-
-	// KMS key resource name which will be used to encrypt resources
-	//  `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.kms_key
-	KMSKey *string `json:"kmsKey,omitempty"`
-
-	// KMS key version resource name which will be used to encrypt resources
-	//  `<kms_key>/cryptoKeyVersions/{keyVersion}`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.kms_key_version
-	KMSKeyVersion *string `json:"kmsKeyVersion,omitempty"`
-
-	// Optional. Single-regional CMEKs that are required for some VAIS features.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.single_region_keys
-	SingleRegionKeys []SingleRegionKey `json:"singleRegionKeys,omitempty"`
-}
-
 // +kcc:proto=google.cloud.discoveryengine.v1.Condition
 type Condition struct {
 	// Search only
@@ -1362,15 +1339,6 @@ type Session_Turn struct {
 	QueryConfig map[string]string `json:"queryConfig,omitempty"`
 }
 
-// +kcc:proto=google.cloud.discoveryengine.v1.SingleRegionKey
-type SingleRegionKey struct {
-	// Required. Single-regional kms key resource name which will be used to
-	//  encrypt resources
-	//  `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.SingleRegionKey.kms_key
-	KMSKey *string `json:"kmsKey,omitempty"`
-}
-
 // +kcc:proto=google.cloud.discoveryengine.v1.SiteVerificationInfo
 type SiteVerificationInfo struct {
 	// Site verification state indicating the ownership and validity.
@@ -1526,47 +1494,6 @@ type Answer_Reference_StructuredDocumentInfoObservedState struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.StructuredDocumentInfo.uri
 	URI *string `json:"uri,omitempty"`
 }
-
-/* unreachable type CmekConfigObservedState
-// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.CmekConfig
-type CmekConfigObservedState struct {
-	// Required. The name of the CmekConfig of the form
-	//  `projects/{project}/locations/{location}/cmekConfig` or
-	//  `projects/{project}/locations/{location}/cmekConfigs/{cmek_config}`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.name
-	Name *string `json:"name,omitempty"`
-
-	// KMS key resource name which will be used to encrypt resources
-	//  `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.kms_key
-	KMSKey *string `json:"kmsKey,omitempty"`
-
-	// KMS key version resource name which will be used to encrypt resources
-	//  `<kms_key>/cryptoKeyVersions/{keyVersion}`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.kms_key_version
-	KMSKeyVersion *string `json:"kmsKeyVersion,omitempty"`
-
-	// Output only. The states of the CmekConfig.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. The default CmekConfig for the Customer.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.is_default
-	IsDefault *bool `json:"isDefault,omitempty"`
-
-	// Output only. The timestamp of the last key rotation.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.last_rotation_timestamp_micros
-	LastRotationTimestampMicros *int64 `json:"lastRotationTimestampMicros,omitempty"`
-
-	// Optional. Single-regional CMEKs that are required for some VAIS features.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.single_region_keys
-	SingleRegionKeys []SingleRegionKey `json:"singleRegionKeys,omitempty"`
-
-	// Output only. Whether the NotebookLM Corpus is ready to be used.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.notebooklm_state
-	NotebooklmState *string `json:"notebooklmState,omitempty"`
-}
-*/
 
 /* unreachable type ConversationMessageObservedState
 // +kcc:observedstate:proto=google.cloud.discoveryengine.v1.ConversationMessage
