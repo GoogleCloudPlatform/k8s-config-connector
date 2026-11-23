@@ -323,7 +323,6 @@ BLOCKED_KINDS=(
     "VisionProductSet"
     "VisionReferenceImage"
     "VMMigrationDatacenterConnector"
-    "VMMigrationGroup"
     "VMMigrationMigratingVM"
     "VMMigrationSource"
     "VMMigrationTargetProject"

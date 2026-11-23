@@ -521,6 +521,7 @@ func unmarshalDynamicJSON(reg *descriptorRegistry, msgDesc protoreflect.MessageD
 		"google.cloud.sql.v1.BackupRun",
 		"google.cloud.compute.v1.SignedUrlKey",
 		"google.cloud.networkmanagement.v1.VpcFlowLogsConfig",
+		"google.cloud.vmmigration.v1.Group",
 		"google.cloud.saasplatform.saasservicemgmt.v1beta1.Saas",
 		"google.cloud.storageinsights.v1.DatasetConfig":
 		// Discard unknown fields (e.g. databaseVersion on BackupRun, source on QaScorecard, conditions on Release) returned in real GCP responses
