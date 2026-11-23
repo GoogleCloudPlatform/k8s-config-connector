@@ -240,7 +240,6 @@ BLOCKED_KINDS=(
     "NetworkConnectivityDestination"
     "NetworkConnectivityPolicyBasedRoute"
     "NetworkConnectivityServiceConnectionToken"
-    "NetworkManagementVpcFlowLogsConfig"
     "NetworkSecurityInterceptDeploymentGroup"
     "NetworkSecurityInterceptEndpointGroupAssociation"
     "NetworkSecurityMirroringDeployment"

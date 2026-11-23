@@ -26,7 +26,6 @@ import (
 
 	gcp "cloud.google.com/go/networkmanagement/apiv1"
 	pb "cloud.google.com/go/networkmanagement/apiv1/networkmanagementpb"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -35,6 +34,7 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkmanagement/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -44,7 +44,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
@@ -85,10 +84,11 @@ func (m *vpcFlowLogsConfigModel) AdapterForObject(ctx context.Context, op *direc
 	}
 
 	adapter := &vpcFlowLogsConfigAdapter{
-		gcpClient:  gcpClient,
-		id:         id,
-		desiredKRM: obj,
-		reader:     reader,
+		gcpClient:     gcpClient,
+		id:            id,
+		desiredKRM:    obj,
+		reader:        reader,
+		projectMapper: m.config.ProjectMapper,
 	}
 
 	if err := adapter.normalizeReferenceFields(ctx); err != nil {
@@ -110,12 +110,13 @@ func (m *vpcFlowLogsConfigModel) AdapterForURL(ctx context.Context, url string) 
 }
 
 type vpcFlowLogsConfigAdapter struct {
-	gcpClient  *gcp.VpcFlowLogsClient
-	id         *krm.VpcFlowLogsConfigIdentity
-	desiredKRM *krm.NetworkManagementVPCFlowLogsConfig
-	desired    *pb.VpcFlowLogsConfig
-	actual     *pb.VpcFlowLogsConfig
-	reader     client.Reader
+	gcpClient     *gcp.VpcFlowLogsClient
+	id            *krm.VpcFlowLogsConfigIdentity
+	desiredKRM    *krm.NetworkManagementVPCFlowLogsConfig
+	desired       *pb.VpcFlowLogsConfig
+	actual        *pb.VpcFlowLogsConfig
+	reader        client.Reader
+	projectMapper *projects.ProjectMapper
 }
 
 var _ directbase.Adapter = &vpcFlowLogsConfigAdapter{}
@@ -169,9 +170,30 @@ func (a *vpcFlowLogsConfigAdapter) Update(ctx context.Context, updateOp *directb
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating networkmanagement vpcflowlogsconfig", "name", a.id)
 
-	a.desired.Name = a.id.String()
+	normalize := func(ctx context.Context, pbObj *pb.VpcFlowLogsConfig) error {
+		if a.projectMapper != nil {
+			if pbObj.GetVpnTunnel() != "" {
+				if normalized, err := a.projectMapper.ReplaceProjectNumberWithIDInLink(ctx, pbObj.GetVpnTunnel()); err == nil {
+					pbObj.TargetResource = &pb.VpcFlowLogsConfig_VpnTunnel{VpnTunnel: normalized}
+				}
+			}
+			if pbObj.GetInterconnectAttachment() != "" {
+				if normalized, err := a.projectMapper.ReplaceProjectNumberWithIDInLink(ctx, pbObj.GetInterconnectAttachment()); err == nil {
+					pbObj.TargetResource = &pb.VpcFlowLogsConfig_InterconnectAttachment{InterconnectAttachment: normalized}
+				}
+			}
+		}
+		return nil
+	}
 
-	diffs, updateMask, err := compareVpcFlowLogsConfig(ctx, a.actual, a.desired)
+	mergedDesired, diffs, updateMask, err := common.CompareGreenfieldSpec(
+		ctx,
+		&a.desiredKRM.Spec,
+		a.actual,
+		NetworkManagementVPCFlowLogsConfigSpec_FromProto,
+		NetworkManagementVPCFlowLogsConfigSpec_ToProto,
+		normalize,
+	)
 	if err != nil {
 		return err
 	}
@@ -185,9 +207,10 @@ func (a *vpcFlowLogsConfigAdapter) Update(ctx context.Context, updateOp *directb
 		structuredreporting.ReportDiff(ctx, diffs)
 		log.V(2).Info("updating fields", "name", a.id, "paths", updateMask.Paths)
 
+		mergedDesired.Name = a.id.String()
 		req := &pb.UpdateVpcFlowLogsConfigRequest{
 			UpdateMask:        updateMask,
-			VpcFlowLogsConfig: a.desired,
+			VpcFlowLogsConfig: mergedDesired,
 		}
 		op, err := a.gcpClient.UpdateVpcFlowLogsConfig(ctx, req)
 		if err != nil {
@@ -282,20 +305,6 @@ func (a *vpcFlowLogsConfigAdapter) normalizeReferenceFields(ctx context.Context)
 		}
 	}
 	return nil
-}
-
-func compareVpcFlowLogsConfig(ctx context.Context, actual, desired *pb.VpcFlowLogsConfig) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	maskedActual, err := mappers.OnlySpecFields(actual, NetworkManagementVPCFlowLogsConfigSpec_FromProto, NetworkManagementVPCFlowLogsConfigSpec_ToProto)
-	if err != nil {
-		return nil, nil, err
-	}
-	maskedActual.Name = desired.Name
-
-	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
-	if err != nil {
-		return nil, nil, err
-	}
-	return diffs, updateMask, nil
 }
 
 func resolveComputeVPNTunnelRef(ctx context.Context, reader client.Reader, defaultNamespace string, ref *computev1beta1.ComputeVPNTunnelRef) error {

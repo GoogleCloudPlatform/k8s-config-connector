@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -83,6 +84,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.VpcFlowLogsConfig",
     "aggregationInterval": "INTERVAL_5_SEC",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "crossProjectMetadata": "CROSS_PROJECT_METADATA_DISABLED",
     "description": "A test vpc flow logs config created by kcc direct controller e2e test",
     "filterExpr": "true",
     "flowSampling": 0.5,
@@ -96,7 +98,7 @@ X-Xss-Protection: 0
     ],
     "name": "projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}",
     "state": "ENABLED",
-    "targetResourceState": "TARGET_RESOURCE_EXISTS",
+    "targetResourceState": "TARGET_RESOURCE_DOES_NOT_EXIST",
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "vpnTunnel": "projects/${projectId}/regions/us-central1/vpnTunnels/computevpntunnel-${uniqueId}"
   }
@@ -122,6 +124,7 @@ X-Xss-Protection: 0
 {
   "aggregationInterval": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "crossProjectMetadata": 2,
   "description": "A test vpc flow logs config created by kcc direct controller e2e test",
   "filterExpr": "true",
   "flowSampling": 0.5,
@@ -135,13 +138,14 @@ X-Xss-Protection: 0
   ],
   "name": "projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}",
   "state": 1,
-  "targetResourceState": 1,
+  "targetResourceState": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "vpnTunnel": "projects/${projectId}/regions/us-central1/vpnTunnels/computevpntunnel-${uniqueId}"
 }
 
 ---
 
+# Phase: UPDATE
 PATCH https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CflowSampling%2Clabels%2Cstate
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -203,6 +207,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.VpcFlowLogsConfig",
     "aggregationInterval": "INTERVAL_5_SEC",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "crossProjectMetadata": "CROSS_PROJECT_METADATA_DISABLED",
     "description": "An updated test vpc flow logs config description",
     "filterExpr": "true",
     "flowSampling": 0.8,
@@ -216,7 +221,7 @@ X-Xss-Protection: 0
     ],
     "name": "projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}",
     "state": "DISABLED",
-    "targetResourceState": "TARGET_RESOURCE_EXISTS",
+    "targetResourceState": "TARGET_RESOURCE_DOES_NOT_EXIST",
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "vpnTunnel": "projects/${projectId}/regions/us-central1/vpnTunnels/computevpntunnel-${uniqueId}"
   }
@@ -242,6 +247,7 @@ X-Xss-Protection: 0
 {
   "aggregationInterval": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "crossProjectMetadata": 2,
   "description": "An updated test vpc flow logs config description",
   "filterExpr": "true",
   "flowSampling": 0.8,
@@ -255,13 +261,14 @@ X-Xss-Protection: 0
   ],
   "name": "projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}",
   "state": 2,
-  "targetResourceState": 1,
+  "targetResourceState": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "vpnTunnel": "projects/${projectId}/regions/us-central1/vpnTunnels/computevpntunnel-${uniqueId}"
 }
 
 ---
 
+# Phase: DELETE
 DELETE https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)

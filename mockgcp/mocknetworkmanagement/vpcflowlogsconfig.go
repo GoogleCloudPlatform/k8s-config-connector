@@ -75,8 +75,29 @@ func (s *vpcFlowLogsService) CreateVpcFlowLogsConfig(ctx context.Context, req *p
 	obj.UpdateTime = timestamppb.New(now)
 
 	// Set target resource state
-	targetResourceState := pb.VpcFlowLogsConfig_TARGET_RESOURCE_EXISTS
+	targetResourceState := pb.VpcFlowLogsConfig_TARGET_RESOURCE_DOES_NOT_EXIST
 	obj.TargetResourceState = &targetResourceState
+
+	if obj.State == nil || *obj.State == pb.VpcFlowLogsConfig_STATE_UNSPECIFIED {
+		state := pb.VpcFlowLogsConfig_ENABLED
+		obj.State = &state
+	}
+	if obj.AggregationInterval == nil || *obj.AggregationInterval == pb.VpcFlowLogsConfig_AGGREGATION_INTERVAL_UNSPECIFIED {
+		aggregationInterval := pb.VpcFlowLogsConfig_INTERVAL_5_SEC
+		obj.AggregationInterval = &aggregationInterval
+	}
+	if obj.FlowSampling == nil || *obj.FlowSampling == 0 {
+		flowSampling := float32(1.0)
+		obj.FlowSampling = &flowSampling
+	}
+	if obj.Metadata == nil || *obj.Metadata == pb.VpcFlowLogsConfig_METADATA_UNSPECIFIED {
+		metadata := pb.VpcFlowLogsConfig_INCLUDE_ALL_METADATA
+		obj.Metadata = &metadata
+	}
+	if obj.CrossProjectMetadata == nil || *obj.CrossProjectMetadata == pb.VpcFlowLogsConfig_CROSS_PROJECT_METADATA_UNSPECIFIED {
+		crossProjectMetadata := pb.VpcFlowLogsConfig_CROSS_PROJECT_METADATA_DISABLED
+		obj.CrossProjectMetadata = &crossProjectMetadata
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err

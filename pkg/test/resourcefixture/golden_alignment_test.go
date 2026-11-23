@@ -673,6 +673,8 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "labels")
 		delete(v, "instanceCreateTime")
 		delete(v, "activityDataRetentionPeriodDays")
+		// NetworkManagementVpcFlowLogsConfig: connectionLogging is returned by real GCP but not in v1 proto
+		delete(v, "connectionLogging")
 		// WebSecurityScanner targetPlatforms is returned by real GCP (e.g. [1] for App Engine) but not in v1 proto
 		delete(v, "targetPlatforms")
 		// CESApp: retentionWindow is returned by real GCP but not in cespb.ConversationLoggingSettings
