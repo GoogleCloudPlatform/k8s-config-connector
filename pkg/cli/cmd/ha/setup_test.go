@@ -25,10 +25,12 @@ import (
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/version"
+	"github.com/spf13/pflag"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -146,6 +148,13 @@ func TestSetupValidateErrors(t *testing.T) {
 			wantErr: `--leader-endpoint-type "InvalidType" is not a valid endpoint type; use Default, DNS or PrivateIP`,
 		},
 		{
+			name: "empty leader-endpoint-type",
+			invalidate: func(o *setupOptions) {
+				o.leaderEndpointType = ""
+			},
+			wantErr: `--leader-endpoint-type "" is not a valid endpoint type; use Default, DNS or PrivateIP`,
+		},
+		{
 			name: "accumulates multiple flag errors",
 			invalidate: func(o *setupOptions) {
 				o.contexts = []string{"cluster-a"}
@@ -187,6 +196,60 @@ func TestSetupImageFlagsDefaultToTheImagesOfThisVersion(t *testing.T) {
 		if flag.DefValue != want {
 			t.Fatalf("got default --%s %q, want %q", flagName, flag.DefValue, want)
 		}
+	}
+}
+
+func TestSetupOptionsReadFlagsTracksExplicitLeaderEndpointType(t *testing.T) {
+	tests := []struct {
+		name         string
+		args         []string
+		wantExplicit bool
+		wantType     string
+	}{
+		{
+			name:         "flag omitted leaves explicit false and keeps default",
+			args:         []string{},
+			wantExplicit: false,
+			wantType:     defaultLeaderEndpointType,
+		},
+		{
+			name:         "explicit Default sets explicit true",
+			args:         []string{"--" + leaderEndpointTypeFlag + "=Default"},
+			wantExplicit: true,
+			wantType:     operatorv1beta1.LeaderEndpointTypeDefault,
+		},
+		{
+			name:         "explicit PrivateIP sets explicit true",
+			args:         []string{"--" + leaderEndpointTypeFlag + "=PrivateIP"},
+			wantExplicit: true,
+			wantType:     operatorv1beta1.LeaderEndpointTypePrivateIP,
+		},
+		{
+			name:         "explicit DNS sets explicit true",
+			args:         []string{"--" + leaderEndpointTypeFlag + "=DNS"},
+			wantExplicit: true,
+			wantType:     operatorv1beta1.LeaderEndpointTypeDNS,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			opts := newSetupOptions()
+			flags := pflag.NewFlagSet("test", pflag.ContinueOnError)
+			opts.addFlags(flags)
+
+			if err := flags.Parse(tc.args); err != nil {
+				t.Fatalf("flags.Parse failed: %v", err)
+			}
+			opts.readFlags(flags)
+
+			if opts.leaderEndpointTypeExplicit != tc.wantExplicit {
+				t.Fatalf("got leaderEndpointTypeExplicit = %v, want %v", opts.leaderEndpointTypeExplicit, tc.wantExplicit)
+			}
+			if opts.leaderEndpointType != tc.wantType {
+				t.Fatalf("got leaderEndpointType = %q, want %q", opts.leaderEndpointType, tc.wantType)
+			}
+		})
 	}
 }
 
@@ -624,6 +687,7 @@ func TestExecuteSetupLeaderEndpointType(t *testing.T) {
 	runner := &recordingCommandRunner{}
 	opts := newTestSetupOptions()
 	opts.leaderEndpointType = operatorv1beta1.LeaderEndpointTypePrivateIP
+	opts.leaderEndpointTypeExplicit = true
 
 	if err := executeSetup(context.Background(), opts, handles, runner); err != nil {
 		t.Fatalf("executeSetup failed: %v", err)
@@ -657,7 +721,24 @@ func TestExecuteSetupLeaderEndpointType(t *testing.T) {
 		}
 	}
 
-	// Re-run with flag omitted (leaderEndpointTypeExplicit = false): preserves DNS
+	// Re-run with explicit Default: changes from DNS to Default
+	opts.leaderEndpointType = operatorv1beta1.LeaderEndpointTypeDefault
+	opts.leaderEndpointTypeExplicit = true
+	if err := executeSetup(context.Background(), opts, handles, runner); err != nil {
+		t.Fatalf("executeSetup re-run failed: %v", err)
+	}
+	for _, h := range handles {
+		cc, err := fetchConfigConnector(context.Background(), h)
+		if err != nil {
+			t.Fatalf("fetchConfigConnector failed: %v", err)
+		}
+		mcl := cc.Spec.Experiments.MultiClusterLease
+		if mcl.LeaderEndpointType != operatorv1beta1.LeaderEndpointTypeDefault {
+			t.Fatalf("expected leaderEndpointType updated to %q on %s, got %q", operatorv1beta1.LeaderEndpointTypeDefault, h.contextName, mcl.LeaderEndpointType)
+		}
+	}
+
+	// Re-run with flag omitted (leaderEndpointTypeExplicit = false): preserves Default
 	opts.leaderEndpointType = defaultLeaderEndpointType
 	opts.leaderEndpointTypeExplicit = false
 	if err := executeSetup(context.Background(), opts, handles, runner); err != nil {
@@ -669,8 +750,66 @@ func TestExecuteSetupLeaderEndpointType(t *testing.T) {
 			t.Fatalf("fetchConfigConnector failed: %v", err)
 		}
 		mcl := cc.Spec.Experiments.MultiClusterLease
-		if mcl.LeaderEndpointType != operatorv1beta1.LeaderEndpointTypeDNS {
-			t.Fatalf("expected leaderEndpointType %q preserved on %s, got %q", operatorv1beta1.LeaderEndpointTypeDNS, h.contextName, mcl.LeaderEndpointType)
+		if mcl.LeaderEndpointType != operatorv1beta1.LeaderEndpointTypeDefault {
+			t.Fatalf("expected leaderEndpointType %q preserved on %s, got %q", operatorv1beta1.LeaderEndpointTypeDefault, h.contextName, mcl.LeaderEndpointType)
+		}
+	}
+}
+
+func TestExecuteSetupRolloutFailureStopsBeforeTouchingNextCluster(t *testing.T) {
+	stuckPod := &corev1.Pod{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "multiclusterlease-controller-manager-stuck",
+			Namespace: "cnrm-system",
+			Labels: map[string]string{
+				"app": "mcl-controller",
+			},
+		},
+		Status: corev1.PodStatus{
+			ContainerStatuses: []corev1.ContainerStatus{
+				{
+					Name: "manager",
+					State: corev1.ContainerState{
+						Waiting: &corev1.ContainerStateWaiting{Reason: "ImagePullBackOff", Message: "Back-off pulling image"},
+					},
+				},
+			},
+		},
+	}
+
+	clusterAHandle := newFakeClusterHandleWithPendingDeployments(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector(), stuckPod)
+	clusterBHandle := newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector())
+
+	handles := []*clusterHandle{clusterAHandle, clusterBHandle}
+
+	runner := &recordingCommandRunner{}
+	opts := newTestSetupOptions()
+	opts.rolloutTimeout = 50 * time.Millisecond
+	opts.rolloutPollInterval = 5 * time.Millisecond
+
+	err := executeSetup(context.Background(), opts, handles, runner)
+	if err == nil {
+		t.Fatalf("expected executeSetup to fail due to readiness timeout on cluster A, got nil")
+	}
+
+	// Verify that cluster B was never touched by step 2: its MCL Deployment was never created
+	mclDeploy := &appsv1.Deployment{}
+	getErr := clusterBHandle.client.Get(context.Background(), types.NamespacedName{Namespace: "cnrm-system", Name: mclDeploymentName}, mclDeploy)
+	if getErr == nil {
+		t.Fatalf("expected Deployment %q not to be created on cluster B, but it exists", mclDeploymentName)
+	}
+	if !apierrors.IsNotFound(getErr) {
+		t.Fatalf("expected NotFound error for Deployment on cluster B, got: %v", getErr)
+	}
+
+	// Verify that ConfigConnector on both clusters was not patched
+	for _, h := range handles {
+		cc, fetchErr := fetchConfigConnector(context.Background(), h)
+		if fetchErr != nil {
+			t.Fatalf("fetchConfigConnector on %s failed: %v", h.contextName, fetchErr)
+		}
+		if cc.Spec.Experiments != nil && cc.Spec.Experiments.MultiClusterLease != nil {
+			t.Fatalf("expected ConfigConnector on %s to remain unchanged without MultiClusterLease, got %+v", h.contextName, cc.Spec.Experiments.MultiClusterLease)
 		}
 	}
 }

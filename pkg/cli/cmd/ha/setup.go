@@ -94,7 +94,7 @@ func NewSetupCmd() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.stdout = cmd.OutOrStdout()
 			opts.stderr = cmd.ErrOrStderr()
-			opts.leaderEndpointTypeExplicit = cmd.Flags().Changed(leaderEndpointTypeFlag)
+			opts.readFlags(cmd.Flags())
 			if err := opts.validate(); err != nil {
 				return err
 			}
@@ -129,6 +129,10 @@ func (o *setupOptions) addFlags(flags *pflag.FlagSet) {
 	flags.StringVar(&o.leaderEndpointType, leaderEndpointTypeFlag, o.leaderEndpointType, "The control plane endpoint that standby clusters use to reach the leader's cluster: Default, DNS or PrivateIP.")
 	flags.BoolVar(&o.yamlOnly, yamlOnlyFlag, o.yamlOnly, "If true, print rendered manifests to stdout without applying them.")
 	flags.BoolVar(&o.dryRun, dryRunFlag, o.dryRun, "If true, print planned actions without mutating clusters or GCP resources.")
+}
+
+func (o *setupOptions) readFlags(flags *pflag.FlagSet) {
+	o.leaderEndpointTypeExplicit = flags.Changed(leaderEndpointTypeFlag)
 }
 
 func (o *setupOptions) validate() error {
@@ -177,15 +181,11 @@ func (o *setupOptions) validate() error {
 		errs = append(errs, fmt.Errorf("--%s cannot be empty; omit the flag to use the default image (%s), or specify the image that runs the KRM syncer", syncerImageFlag, defaultImage(defaultSyncerImageRepo)))
 	}
 
-	if o.leaderEndpointType != "" {
-		if o.leaderEndpointType != defaultLeaderEndpointType {
-			o.leaderEndpointTypeExplicit = true
-		}
-		switch o.leaderEndpointType {
-		case operatorv1beta1.LeaderEndpointTypeDefault, operatorv1beta1.LeaderEndpointTypeDNS, operatorv1beta1.LeaderEndpointTypePrivateIP:
-		default:
-			errs = append(errs, fmt.Errorf("--%s %q is not a valid endpoint type; use Default, DNS or PrivateIP", leaderEndpointTypeFlag, o.leaderEndpointType))
-		}
+	// An empty value is more likely an unset shell variable than a request for the default.
+	switch o.leaderEndpointType {
+	case operatorv1beta1.LeaderEndpointTypeDefault, operatorv1beta1.LeaderEndpointTypeDNS, operatorv1beta1.LeaderEndpointTypePrivateIP:
+	default:
+		errs = append(errs, fmt.Errorf("--%s %q is not a valid endpoint type; use Default, DNS or PrivateIP", leaderEndpointTypeFlag, o.leaderEndpointType))
 	}
 
 	return errors.Join(errs...)
@@ -320,21 +320,19 @@ func applyClusterConfigs(ctx context.Context, configurers []*clusterConfigurer, 
 		}
 	}
 
-	// 2. Apply MCL and syncer objects on every cluster.
+	// 2. On one cluster at a time: apply the MCL and syncer objects, and wait until both
+	// Deployments are Available. A rollout that fails stops setup before it touches the next
+	// cluster.
 	for _, cfg := range configurers {
 		if err := cfg.applyNonCRDObjects(ctx, stdout, false); err != nil {
 			return err
 		}
-	}
-
-	// 3. Wait until both Deployments are Available on every cluster.
-	for _, cfg := range configurers {
 		if err := cfg.waitForDeploymentsAvailable(ctx, stdout); err != nil {
 			return err
 		}
 	}
 
-	// 4. Patch ConfigConnector on every cluster. If anything failed before this, HA stays off on every cluster.
+	// 3. Patch ConfigConnector on every cluster. If anything failed before this, HA stays off on every cluster.
 	var errs []error
 	for _, cfg := range configurers {
 		if err := cfg.updateConfigConnector(ctx); err != nil {
