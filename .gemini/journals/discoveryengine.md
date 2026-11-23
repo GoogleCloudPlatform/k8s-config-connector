@@ -103,4 +103,15 @@
   2. Preserved the stable `PROTO_SHA` for the existing `v1` and `v1beta` resources and mapper generation.
 - **Impact**: Allows clean mechanical prepopulation and CRD generation for `DiscoveryEngineWidgetConfig` without destabilizing existing DiscoveryEngine CRDs or controller mappers.
 
+### [2026-11-06] DiscoveryEngineDataConnector Prepopulation
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for `DiscoveryEngineDataConnector` (Issue #15183).
+- **Problem**:
+  1. `data_connector.proto` was added in recent commits of `googleapis` and is absent from the older pinned commit `665784f816da130b27edb566694b2441d0cfddf2` used by existing DiscoveryEngine resources.
+  2. Regenerating all v1 resources using a newer googleapis commit caused breaking changes to existing types (`CmekConfig`, `WorkspaceConfig`) and introduced duplicate definitions of `google.type.Date` in both `v1_types.generated.go` and `v1beta_types.generated.go`.
+- **Solution**:
+  1. Pinned `DATA_CONNECTOR_PROTO_SHA="4d40dcbbad29b0ad0927d748796c6bb207a277de"` specifically for `DiscoveryEngineDataConnector` in `generate.sh`.
+  2. Moved the generated types to `dataconnector_types.generated.go`, leaving the existing `v1_types.generated.go` and `v1beta_types.generated.go` untouched and fully backwards compatible.
+- **Impact**: Cleanly scaffolds `DiscoveryEngineDataConnector` without any diffs or regressions in existing DiscoveryEngine types or direct controller mappers.
+
+
 

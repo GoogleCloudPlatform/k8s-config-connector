@@ -21,6 +21,85 @@
 # file does not have.
 
 entries:
+  - kind: DiscoveryEngineDataConnector
+    group: discoveryengine.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: DiscoveryEngineDataConnector
+    group: discoveryengine.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/collections/{collection}/dataConnector" contains ancestor segment(s) collections/{collection} with no matching reference or field on DiscoveryEngineDataConnectorSpec
+    status: open
+  - kind: DiscoveryEngineDataConnector
+    group: discoveryengine.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/collections/{collection}, and no CollectionRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: DiscoveryEngineDataConnector
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .spec.actionConfig.serviceName
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to servicedirectory.googleapis.com/Service (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: DiscoveryEngineDataConnector
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .spec.actionConfig.userDefinedScopesMapping
+    reason: message-map-derived
+    detail: derived as map[string]ActionConfig_ScopeList from proto google.cloud.discoveryengine.v1.ActionConfig.ScopeList; verify Go type and mapping
+    status: open
+  - kind: DiscoveryEngineDataConnector
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .spec.alertPolicyConfigs[].alertEnrollments[].alertID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: DiscoveryEngineDataConnector
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .spec.alertPolicyConfigs[].alertPolicyName
+    reason: possible-reference-by-description-loose
+    status: open
+  - kind: DiscoveryEngineDataConnector
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .spec.connectorSourceID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: DiscoveryEngineDataConnector
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .spec.dataProtectionPolicy.sensitiveDataProtectionPolicy.policy
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to dlp.googleapis.com/ContentPolicy (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: DiscoveryEngineDataConnector
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .spec.entities[].healthcareFhirConfig.initialFilterGroups
+    reason: possible-reference-by-description-loose
+    status: open
+  - kind: DiscoveryEngineDataConnector
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .spec.entities[].startingSchema.name
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/schemas/{schema}"
+    status: open
+  - kind: DiscoveryEngineDataConnector
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .spec.kmsKeyName
+    reason: possible-reference-by-name
+    detail: KMSCryptoKeyRef
+    status: open
+  - kind: DiscoveryEngineDataConnector
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/collections/{collection}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: DiscoveryEngineDataConnector
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .spec.realtimeSyncConfig.realtimeSyncSecret
+    reason: possible-reference-by-name
+    detail: SecretManagerSecretVersionRef
+    status: open
   - kind: DiscoveryEngineWidgetConfig
     group: discoveryengine.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
