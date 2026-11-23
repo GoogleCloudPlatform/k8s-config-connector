@@ -34,3 +34,23 @@ func TestExecCommandRunnerDryRun(t *testing.T) {
 		t.Fatalf("got stdout %q, want %q", stdout.String(), wantOut)
 	}
 }
+
+func TestExecCommandRunnerOutput(t *testing.T) {
+	var stdout, stderr bytes.Buffer
+	runner := newExecCommandRunner(&stdout, &stderr, true)
+
+	out, err := runner.output(context.Background(), "echo", "hello world")
+	if err != nil {
+		t.Fatalf("unexpected error running output: %v", err)
+	}
+	if string(out) != "hello world\n" {
+		t.Fatalf("got output %q, want %q", string(out), "hello world\n")
+	}
+	// Output should print nothing to stdout/stderr
+	if stdout.Len() != 0 {
+		t.Fatalf("expected stdout to be empty, got %q", stdout.String())
+	}
+	if stderr.Len() != 0 {
+		t.Fatalf("expected stderr to be empty, got %q", stderr.String())
+	}
+}

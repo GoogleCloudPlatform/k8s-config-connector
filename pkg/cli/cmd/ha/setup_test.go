@@ -302,7 +302,11 @@ func TestExecuteSetupWithExplicitBucketLocation(t *testing.T) {
 		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector()),
 		newFakeClusterHandle(t, "gke_proj-b_europe-west1_cluster-b", newBaseConfigConnector()),
 	}
-	runner := &recordingCommandRunner{}
+	runner := &recordingCommandRunner{
+		outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
+			return nil, fmt.Errorf("not found")
+		},
+	}
 	opts := newTestSetupOptions()
 	opts.bucketLocation = "nam4"
 
@@ -311,7 +315,14 @@ func TestExecuteSetupWithExplicitBucketLocation(t *testing.T) {
 	if err != nil {
 		t.Fatalf("executeSetup failed: %v", err)
 	}
-	if len(runner.commands) == 0 || !strings.Contains(runner.commands[0], "--location=nam4") {
+	var createCmd string
+	for _, cmd := range runner.commands {
+		if strings.Contains(cmd, "storage buckets create") {
+			createCmd = cmd
+			break
+		}
+	}
+	if !strings.Contains(createCmd, "--location=nam4") {
 		t.Fatalf("expected gcloud buckets create to specify --location=nam4, got %v", runner.commands)
 	}
 	assertClusterConfigured(t, handles[0], testMCLImage, testSyncerImage)
@@ -323,7 +334,11 @@ func TestExecuteSetupFailsOnConflictingClusterLocationsWithoutExplicitLocation(t
 		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector()),
 		newFakeClusterHandle(t, "gke_proj-b_europe-west1_cluster-b", newBaseConfigConnector()),
 	}
-	runner := &recordingCommandRunner{}
+	runner := &recordingCommandRunner{
+		outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
+			return nil, fmt.Errorf("not found")
+		},
+	}
 	opts := newTestSetupOptions()
 
 	err := executeSetup(context.Background(), opts, handles, runner)
@@ -438,6 +453,62 @@ func TestExecuteSetupLetsTheSyncersOfTheOtherClustersReadEachCluster(t *testing.
 	}
 }
 
+func TestExecuteSetupDryRunCommandRunner(t *testing.T) {
+	// In --dry-run, describe commands run and nothing else is executed (create/bindings not executed against GCP, only planned).
+	var stdout bytes.Buffer
+	handles := []*clusterHandle{
+		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector()),
+		newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector()),
+	}
+	runner := &recordingCommandRunner{
+		outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
+			// Simulates describe running
+			return nil, fmt.Errorf("not found")
+		},
+	}
+	opts := newTestSetupOptions()
+	opts.dryRun = true
+	opts.stdout = &stdout
+
+	err := executeSetup(context.Background(), opts, handles, runner)
+	if err != nil {
+		t.Fatalf("executeSetup failed: %v", err)
+	}
+
+	// Verify describe commands ran
+	hasDescribeBucket := false
+	hasDescribeSA := false
+	for _, cmd := range runner.commands {
+		if strings.Contains(cmd, "storage buckets describe") {
+			hasDescribeBucket = true
+		}
+		if strings.Contains(cmd, "service-accounts describe") {
+			hasDescribeSA = true
+		}
+	}
+	if !hasDescribeBucket {
+		t.Fatalf("expected storage buckets describe in dry-run, got %v", runner.commands)
+	}
+	if !hasDescribeSA {
+		t.Fatalf("expected service-accounts describe in dry-run, got %v", runner.commands)
+	}
+
+	// Verify create and binding commands were also invoked on the runner (which in execCommandRunner prints "[dry-run] would run: ...")
+	hasCreateSA := false
+	hasBinding := false
+	for _, cmd := range runner.commands {
+		if strings.Contains(cmd, "service-accounts create") {
+			hasCreateSA = true
+		}
+		if strings.Contains(cmd, "add-iam-policy-binding") {
+			hasBinding = true
+		}
+	}
+	if !hasCreateSA || !hasBinding {
+		t.Fatalf("expected create and binding commands to be recorded on runner in dry-run, got %v", runner.commands)
+	}
+}
+
 func TestExecuteSetupDryRunPrintsPlannedK8sActionsWithoutMutating(t *testing.T) {
 	var stdout bytes.Buffer
 	handles := []*clusterHandle{
@@ -455,7 +526,8 @@ func TestExecuteSetupDryRunPrintsPlannedK8sActionsWithoutMutating(t *testing.T) 
 		t.Fatalf("executeSetup failed: %v", err)
 	}
 	manifestCount := len((&manifestBuilder{}).buildClusterObjects())
-	wantOutput := fmt.Sprintf(`[dry-run] cluster "gke_proj-a_us-central1_cluster-a": apply %[1]d HA manifests and configure spec.experiments.multiClusterLease (gkeCluster="projects/proj-a/locations/us-central1/clusters/cluster-a", lease=cnrm-system/kcc-multicluster-lease)
+	wantOutput := fmt.Sprintf(`Lease bucket gs://my-ha-bucket already exists; reusing it.
+[dry-run] cluster "gke_proj-a_us-central1_cluster-a": apply %[1]d HA manifests and configure spec.experiments.multiClusterLease (gkeCluster="projects/proj-a/locations/us-central1/clusters/cluster-a", lease=cnrm-system/kcc-multicluster-lease)
 [dry-run] cluster "gke_proj-b_us-east1_cluster-b": apply %[1]d HA manifests and configure spec.experiments.multiClusterLease (gkeCluster="projects/proj-b/locations/us-east1/clusters/cluster-b", lease=cnrm-system/kcc-multicluster-lease)
 `, manifestCount)
 	if stdout.String() != wantOutput {
@@ -838,11 +910,24 @@ func TestExecuteSetupYAMLOnlyWithLeaderEndpointType(t *testing.T) {
 
 type recordingCommandRunner struct {
 	commands []string
+	outputFn func(ctx context.Context, name string, args ...string) ([]byte, error)
+	runFn    func(ctx context.Context, name string, args ...string) error
 }
 
-func (r *recordingCommandRunner) run(_ context.Context, name string, args ...string) error {
+func (r *recordingCommandRunner) run(ctx context.Context, name string, args ...string) error {
 	r.commands = append(r.commands, name+" "+strings.Join(args, " "))
+	if r.runFn != nil {
+		return r.runFn(ctx, name, args...)
+	}
 	return nil
+}
+
+func (r *recordingCommandRunner) output(ctx context.Context, name string, args ...string) ([]byte, error) {
+	r.commands = append(r.commands, name+" "+strings.Join(args, " "))
+	if r.outputFn != nil {
+		return r.outputFn(ctx, name, args...)
+	}
+	return nil, nil
 }
 
 func newBaseConfigConnector() *operatorv1beta1.ConfigConnector {

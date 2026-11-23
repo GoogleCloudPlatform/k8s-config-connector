@@ -26,6 +26,9 @@ import (
 // commandRunner executes external CLI commands (such as `gcloud`) or logs them during dry runs.
 type commandRunner interface {
 	run(ctx context.Context, name string, args ...string) error
+	// output runs a command that changes nothing and returns its stdout. It also runs in
+	// --dry-run, and it prints nothing.
+	output(ctx context.Context, name string, args ...string) ([]byte, error)
 }
 
 type execCommandRunner struct {
@@ -74,6 +77,25 @@ func (r *execCommandRunner) run(ctx context.Context, name string, args ...string
 	}
 
 	return nil
+}
+
+func (r *execCommandRunner) output(ctx context.Context, name string, args ...string) ([]byte, error) {
+	cmdLine := formatCommandLine(name, args)
+	var stdoutBuf, stderrBuf bytes.Buffer
+	cmd := exec.CommandContext(ctx, name, args...)
+	cmd.Stdout = &stdoutBuf
+	cmd.Stderr = &stderrBuf
+
+	if err := cmd.Run(); err != nil {
+		stderrMsg := strings.TrimSpace(stderrBuf.String())
+		if stderrMsg != "" {
+			return nil, fmt.Errorf("running `%s`: %w: %s", cmdLine, err, stderrMsg)
+		}
+
+		return nil, fmt.Errorf("running `%s`: %w", cmdLine, err)
+	}
+
+	return stdoutBuf.Bytes(), nil
 }
 
 func formatCommandLine(name string, args []string) string {
