@@ -153,17 +153,20 @@ spec:
                   is set as [DataStore.ContentConfig.GOOGLE_WORKSPACE][google.cloud.discoveryengine.v1.DataStore.ContentConfig.GOOGLE_WORKSPACE].
                 properties:
                   dasherCustomerID:
-                    description: Output only. Obfuscated Dasher customer ID.
+                    description: Obfuscated Dasher customer ID.
                     type: string
                   superAdminEmailAddress:
-                    description: Optional. The super admin email address for the workspace.
+                    description: Optional. The super admin email address for the workspace
+                      that will be used for access token generation. For now we only
+                      use it for Native Google Drive connector data ingestion.
                     type: string
                   superAdminServiceAccount:
                     description: Optional. The super admin service account for the
-                      workspace.
+                      workspace that will be used for access token generation. For
+                      now we only use it for Native Google Drive connector data ingestion.
                     type: string
                   type:
-                    description: The type of workspace.
+                    description: The Google Workspace data source.
                     type: string
                 type: object
             required:

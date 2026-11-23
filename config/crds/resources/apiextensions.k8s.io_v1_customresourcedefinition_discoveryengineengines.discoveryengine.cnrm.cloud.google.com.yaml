@@ -240,17 +240,6 @@ spec:
                 description: Configurations for the Search Engine. Only applicable
                   if solution_type is SOLUTION_TYPE_SEARCH.
                 properties:
-                  requiredSubscriptionTier:
-                    description: |-
-                      Optional. The required subscription tier of this engine.
-
-                       If the required subscription tier is search, user with higher license
-                       tier like assist can still access the standalone app associated with this
-                       engine.
-
-                       Web grounding feature is only available on the app if it is set as
-                       [SubscriptionTier.SUBSCRIPTION_TIER_SEARCH_AND_ASSISTANT][google.cloud.discoveryengine.v1.SubscriptionTier.SUBSCRIPTION_TIER_SEARCH_AND_ASSISTANT].
-                    type: string
                   searchAddOns:
                     description: The add-on that this search engine enables.
                     items:

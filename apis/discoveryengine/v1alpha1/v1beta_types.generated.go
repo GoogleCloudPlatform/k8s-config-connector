@@ -401,3 +401,22 @@ type ServingConfig_MediaConfig struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.ServingConfig.MediaConfig.content_freshness_cutoff_days
 	ContentFreshnessCutoffDays *int32 `json:"contentFreshnessCutoffDays,omitempty"`
 }
+
+// +kcc:proto=google.type.Date
+type Date struct {
+	// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
+	//  a year.
+	// +kcc:proto:field=google.type.Date.year
+	Year *int32 `json:"year,omitempty"`
+
+	// Month of a year. Must be from 1 to 12, or 0 to specify a year without a
+	//  month and day.
+	// +kcc:proto:field=google.type.Date.month
+	Month *int32 `json:"month,omitempty"`
+
+	// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
+	//  to specify a year by itself or a year and month where the day isn't
+	//  significant.
+	// +kcc:proto:field=google.type.Date.day
+	Day *int32 `json:"day,omitempty"`
+}

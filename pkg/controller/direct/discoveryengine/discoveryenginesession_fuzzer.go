@@ -45,7 +45,6 @@ func sessionFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".turns")
 
 	f.Unimplemented_NotYetTriaged(".labels")
-	f.Unimplemented_NotYetTriaged(".pending_async_assist_operation_id")
 
 	return f
 }

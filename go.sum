@@ -645,8 +645,8 @@ cloud.google.com/go/dialogflow v1.48.2/go.mod h1:7A2oDf6JJ1/+hdpnFRfb/RjJUOh2X3r
 cloud.google.com/go/dialogflow v1.49.0/go.mod h1:dhVrXKETtdPlpPhE7+2/k4Z8FRNUp6kMV3EW3oz/fe0=
 cloud.google.com/go/dialogflow v1.87.0 h1:4+CUAxOpYDn9Dam3UEoN86nHNkGpDDwvqjUl/U9dmzQ=
 cloud.google.com/go/dialogflow v1.87.0/go.mod h1:R3eLljcUogOgTW3GD5A+7xydHVhAaqwqBendeCIzL04=
-cloud.google.com/go/discoveryengine v1.38.0 h1:Ju67CH/5+Sw4UINh8CBWmc62cmR322Q8/yMH5H/Id9E=
-cloud.google.com/go/discoveryengine v1.38.0/go.mod h1:qe/52vRMSHxqvXHTS/cJ3N2/yyE9CQ70HYhHxC4Z9GA=
+cloud.google.com/go/discoveryengine v1.32.0 h1:iPoWBWLMVzf3DhBrYAAybhamVUJ2BjJZyOezEy5/FNw=
+cloud.google.com/go/discoveryengine v1.32.0/go.mod h1:H5dyX1t0Y89kJF/JuwHcE4tiE9/lHFChLwxvZJc6aJw=
 cloud.google.com/go/dlp v1.6.0/go.mod h1:9eyB2xIhpU0sVwUixfBubDoRwP+GjeUoxxeueZmqvmM=
 cloud.google.com/go/dlp v1.7.0/go.mod h1:68ak9vCiMBjbasxeVD17hVPxDEck+ExiHavX8kiHG+Q=
 cloud.google.com/go/dlp v1.9.0/go.mod h1:qdgmqgTyReTz5/YNSSuueR8pl7hO0o9bQ39ZhtgkWp4=

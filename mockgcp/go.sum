@@ -46,8 +46,6 @@ cloud.google.com/go/batch v1.19.0 h1:i4xCFKCvzfkSldUPYWL+DgBpKVTC3N8DSK6E9rFSbqQ
 cloud.google.com/go/batch v1.19.0/go.mod h1:dpWfhLmLQZqsTBAFYjZA3pS04fCY5ttTenZcWmSeILw=
 cloud.google.com/go/beyondcorp v1.7.0 h1:SHAZlC51z6ZO/OZZABnrI/Yk/z3GkhBREQC7qtgTo2I=
 cloud.google.com/go/beyondcorp v1.7.0/go.mod h1:vujdO0wfsBV2y1egrJxGtwKZr5P5V6bIHKWp1phWHBY=
-cloud.google.com/go/biglake v1.6.1 h1:kSbVNs0zdRw8Yh/jjQaK7tgYejBsp5e4FAXhQJvrKhk=
-cloud.google.com/go/biglake v1.6.1/go.mod h1:XEpcZc6Pwpqa+DgPK15FZQB6vdHciVxInWZNB71Ua0o=
 cloud.google.com/go/bigquery v1.86.0 h1:WeHJtrSOCd6FRzp5TgQWBmUuJvudHsD4o01S0ApzlyU=
 cloud.google.com/go/bigquery v1.86.0/go.mod h1:RKsmEiMVxmRTMkkWmf4y9w8djJmBqxR+0S53Xggkmqk=
 cloud.google.com/go/bigtable v1.58.0 h1:fkf7bI0DBkKN85uRrfEEpkbufSc48b4PVIZCRud3xRk=
@@ -102,16 +100,14 @@ cloud.google.com/go/datastream v1.20.0 h1:/Xv8hdolIN5SpMgxiiuDc8AncfEuXU9TWRhvQk
 cloud.google.com/go/datastream v1.20.0/go.mod h1:uoWTtfP20W8MXuV2DPcl5zqnVsxQ9QEmmBHX858oYTQ=
 cloud.google.com/go/deploy v1.32.0 h1:vA9yH8EEXOsq1caJpvkJl9wJYA9VU8xuU45V7iC9XHk=
 cloud.google.com/go/deploy v1.32.0/go.mod h1:lUG7maG/NkoTXmQ8G1mtcVymnbizfDJh6ER7vljVa/U=
-cloud.google.com/go/designcenter v0.1.0 h1:4N/M0gtGpvj9G+BXgc7fousfwlDG8EX5hjmigp8XyuM=
-cloud.google.com/go/designcenter v0.1.0/go.mod h1:EpulLwHUyix7gRW2k+ul2iisY/9Iaa5fmXsfD4KI8Yw=
 cloud.google.com/go/developerconnect v1.1.0 h1:R+IbcxBslrVx1aka0r7fQ8UhO7oZ3JvYwg3Mk6tFnXU=
 cloud.google.com/go/developerconnect v1.1.0/go.mod h1:SkX3Bac/5LUJ4BT7WYSqk7ju9YoU2iHpWm3I0JqmMcQ=
 cloud.google.com/go/devicestreaming v1.0.0 h1:+yVSFN0uTmhUFd5U8nu6MSLpkNd4DFGHDVIQLmTTx1I=
 cloud.google.com/go/devicestreaming v1.0.0/go.mod h1:9qJYACHii1+4yiv9TewXrFpsX4jc77ZAqcEuapi7lJ4=
 cloud.google.com/go/dialogflow v1.87.0 h1:4+CUAxOpYDn9Dam3UEoN86nHNkGpDDwvqjUl/U9dmzQ=
 cloud.google.com/go/dialogflow v1.87.0/go.mod h1:R3eLljcUogOgTW3GD5A+7xydHVhAaqwqBendeCIzL04=
-cloud.google.com/go/discoveryengine v1.38.0 h1:Ju67CH/5+Sw4UINh8CBWmc62cmR322Q8/yMH5H/Id9E=
-cloud.google.com/go/discoveryengine v1.38.0/go.mod h1:qe/52vRMSHxqvXHTS/cJ3N2/yyE9CQ70HYhHxC4Z9GA=
+cloud.google.com/go/discoveryengine v1.32.0 h1:iPoWBWLMVzf3DhBrYAAybhamVUJ2BjJZyOezEy5/FNw=
+cloud.google.com/go/discoveryengine v1.32.0/go.mod h1:H5dyX1t0Y89kJF/JuwHcE4tiE9/lHFChLwxvZJc6aJw=
 cloud.google.com/go/dlp v1.38.0 h1:/prU5AN590nNArmU6qERiSkRNsixwPaOKYnnmriBGGg=
 cloud.google.com/go/dlp v1.38.0/go.mod h1:gmqoT21fkrLI/mHz3/RBmLuIrKcxrKDPq86NWF8At9Y=
 cloud.google.com/go/documentai v1.51.0 h1:eG5YyPWLKxQHio5fkpNw6tS0i4/GCs7Uzp2GBebvPUY=
@@ -156,8 +152,6 @@ cloud.google.com/go/logging v1.21.0 h1:Grn9NZsh87BO5+CEtZFFdj5mXEAnrlPFEdHDMVo9p
 cloud.google.com/go/logging v1.21.0/go.mod h1:4foM+ucR/w1KQrJOh4tDr14iHUIt0MLh2cL8094/LZs=
 cloud.google.com/go/longrunning v1.5.0 h1:aGonu6LHQl38DyozLs2jxGieI4Ixk+7GTnmHVcHt8zA=
 cloud.google.com/go/longrunning v1.5.0/go.mod h1:vjM1U85ZQuTv8lJoUBSA44HLWvM6BBFeaSJYGFF1Q00=
-cloud.google.com/go/lustre v1.3.1 h1:yDbUqEp//0MZYT51xpxUrLNrAtxUNtP6u8hV/oINMtM=
-cloud.google.com/go/lustre v1.3.1/go.mod h1:YMqddpkdznws3PmJUdkNC8xDvcxh4OjB6eNM4i01MBk=
 cloud.google.com/go/managedkafka v0.8.1 h1:Bd5KPCg/TkknTyHYh/tYqGhmSJmINDBK0QGL/CoBZfg=
 cloud.google.com/go/managedkafka v0.8.1/go.mod h1:avX/DyZA0vPVlhJjt0wQ4q36kh6Ex/zEpScKyWBJdhg=
 cloud.google.com/go/maps v1.43.0 h1:wnaL0IgoQKzKYhCTzGjpKdNI9h5FRoPF8hjfilXiAlE=

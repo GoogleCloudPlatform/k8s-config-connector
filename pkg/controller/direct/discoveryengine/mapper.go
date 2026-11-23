@@ -148,7 +148,6 @@ func AssistantGroundedContent_TextGroundingMetadata_v1alpha1_FromProto(mapCtx *d
 	}
 	out := &krm.AssistantGroundedContent_TextGroundingMetadata{}
 	out.Segments = direct.Slice_FromProto(mapCtx, in.Segments, AssistantGroundedContent_TextGroundingMetadata_Segment_v1alpha1_FromProto)
-	out.VisualSegments = direct.Slice_FromProto(mapCtx, in.VisualSegments, AssistantGroundedContent_TextGroundingMetadata_VisualSegment_v1alpha1_FromProto)
 	out.References = direct.Slice_FromProto(mapCtx, in.References, AssistantGroundedContent_TextGroundingMetadata_Reference_v1alpha1_FromProto)
 	return out
 }
@@ -159,48 +158,7 @@ func AssistantGroundedContent_TextGroundingMetadata_v1alpha1_ToProto(mapCtx *dir
 	}
 	out := &pb.AssistantGroundedContent_TextGroundingMetadata{}
 	out.Segments = direct.Slice_ToProto(mapCtx, in.Segments, AssistantGroundedContent_TextGroundingMetadata_Segment_v1alpha1_ToProto)
-	out.VisualSegments = direct.Slice_ToProto(mapCtx, in.VisualSegments, AssistantGroundedContent_TextGroundingMetadata_VisualSegment_v1alpha1_ToProto)
 	out.References = direct.Slice_ToProto(mapCtx, in.References, AssistantGroundedContent_TextGroundingMetadata_Reference_v1alpha1_ToProto)
-	return out
-}
-
-func AssistantGroundedContent_TextGroundingMetadataObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistantGroundedContent_TextGroundingMetadata) *krm.AssistantGroundedContent_TextGroundingMetadataObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AssistantGroundedContent_TextGroundingMetadataObservedState{}
-	out.Segments = direct.Slice_FromProto(mapCtx, in.Segments, AssistantGroundedContent_TextGroundingMetadata_Segment_v1alpha1_FromProto)
-	out.VisualSegments = direct.Slice_FromProto(mapCtx, in.VisualSegments, AssistantGroundedContent_TextGroundingMetadata_VisualSegment_v1alpha1_FromProto)
-	out.References = direct.Slice_FromProto(mapCtx, in.References, AssistantGroundedContent_TextGroundingMetadata_ReferenceObservedState_v1alpha1_FromProto)
-	return out
-}
-
-func AssistantGroundedContent_TextGroundingMetadataObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.AssistantGroundedContent_TextGroundingMetadataObservedState) *pb.AssistantGroundedContent_TextGroundingMetadata {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AssistantGroundedContent_TextGroundingMetadata{}
-	out.Segments = direct.Slice_ToProto(mapCtx, in.Segments, AssistantGroundedContent_TextGroundingMetadata_Segment_v1alpha1_ToProto)
-	out.VisualSegments = direct.Slice_ToProto(mapCtx, in.VisualSegments, AssistantGroundedContent_TextGroundingMetadata_VisualSegment_v1alpha1_ToProto)
-	out.References = direct.Slice_ToProto(mapCtx, in.References, AssistantGroundedContent_TextGroundingMetadata_ReferenceObservedState_v1alpha1_ToProto)
-	return out
-}
-
-func CitationMetadataObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CitationMetadata) *krm.CitationMetadataObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CitationMetadataObservedState{}
-	out.Citations = direct.Slice_FromProto(mapCtx, in.Citations, CitationObservedState_v1alpha1_FromProto)
-	return out
-}
-
-func CitationMetadataObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.CitationMetadataObservedState) *pb.CitationMetadata {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CitationMetadata{}
-	out.Citations = direct.Slice_ToProto(mapCtx, in.Citations, CitationObservedState_v1alpha1_ToProto)
 	return out
 }
 

@@ -92,6 +92,49 @@ type DiscoveryEngineCMEKConfigObservedState struct {
 	NotebooklmState *string `json:"notebooklmState,omitempty"`
 }
 
+// +kcc:proto=google.cloud.discoveryengine.v1.SingleRegionKey
+type SingleRegionKey struct {
+	// Required. Single-regional kms key resource name which will be used to
+	//  encrypt resources
+	//  `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SingleRegionKey.kms_key
+	KMSKey *string `json:"kmsKey,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.SingleRegionKey
+type SingleRegionKeyWithRequired struct {
+	// Required. Single-regional kms key resource name which will be used to
+	//  encrypt resources
+	//  `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SingleRegionKey.kms_key
+	// +required
+	KMSKey *string `json:"kmsKey,omitempty"`
+}
+
+// CmekConfig is used by DiscoveryEngineIdentityMappingStore.
+// +kcc:proto=google.cloud.discoveryengine.v1.CmekConfig
+type CmekConfig struct {
+	// Required. The name of the CmekConfig of the form
+	//  `projects/{project}/locations/{location}/cmekConfig` or
+	//  `projects/{project}/locations/{location}/cmekConfigs/{cmek_config}`.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.name
+	Name *string `json:"name,omitempty"`
+
+	// KMS key resource name which will be used to encrypt resources
+	//  `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.kms_key
+	KMSKey *string `json:"kmsKey,omitempty"`
+
+	// KMS key version resource name which will be used to encrypt resources
+	//  `<kms_key>/cryptoKeyVersions/{keyVersion}`.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.kms_key_version
+	KMSKeyVersion *string `json:"kmsKeyVersion,omitempty"`
+
+	// Optional. Single-regional CMEKs that are required for some VAIS features.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.single_region_keys
+	SingleRegionKeys []SingleRegionKey `json:"singleRegionKeys,omitempty"`
+}
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdiscoveryenginecmekconfig;gcpdiscoveryenginecmekconfigs

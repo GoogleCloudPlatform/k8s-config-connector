@@ -5072,7 +5072,6 @@
 [missing_field] crd=discoveryengineengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.chatEngineConfig.agentCreationConfig.timeZone" is not set in unstructured objects
 [missing_field] crd=discoveryengineengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.chatEngineConfig.allowCrossRegion" is not set in unstructured objects
 [missing_field] crd=discoveryengineengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.chatEngineConfig.dialogflowAgentToLink" is not set in unstructured objects
-[missing_field] crd=discoveryengineengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.searchEngineConfig.requiredSubscriptionTier" is not set in unstructured objects
 [missing_field] crd=discoveryengineidentitymappingstores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.kmsKeyName" is not set in unstructured objects
 [missing_field] crd=discoveryengineidentitymappingstores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=discoveryengineidentitymappingstores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
@@ -5120,7 +5119,6 @@
 [missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.isPinned" is not set in unstructured objects
 [missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.state" is not set in unstructured objects
 [missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.turns[].answer" is not set in unstructured objects
-[missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.turns[].live" is not set in unstructured objects
 [missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.turns[].query.text" is not set in unstructured objects
 [missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.turns[].queryConfig" is not set in unstructured objects
 [missing_field] crd=discoveryenginewidgetconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.accessSettings.allowPublicAccess" is not set in unstructured objects

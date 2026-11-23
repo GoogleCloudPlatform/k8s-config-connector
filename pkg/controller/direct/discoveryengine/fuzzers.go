@@ -53,12 +53,6 @@ func fuzzDataStore() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".acl_enabled")
 	f.Unimplemented_NotYetTriaged(".kms_key_name")
 	f.Unimplemented_NotYetTriaged(".natural_language_query_understanding_config")
-	f.Unimplemented_NotYetTriaged(".serving_config_data_store")
-	f.Unimplemented_NotYetTriaged(".is_infobot_faq_data_store")
-	f.Unimplemented_NotYetTriaged(".federated_search_config")
-	f.Unimplemented_NotYetTriaged(".configurable_billing_approach")
-	f.Unimplemented_NotYetTriaged(".configurable_billing_approach_update_time")
-	f.Unimplemented_NotYetTriaged(".data_protection_policy")
 
 	return f
 }
