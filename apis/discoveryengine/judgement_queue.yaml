@@ -27,7 +27,7 @@ entries:
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
     status: resolved
     resolution: edited
-    note: inlined *parent.ProjectAndLocationRef, removed resourceID for singleton resource, verified observedState and resource docs link
+    note: inlined *parent.ProjectAndLocationRef, retained resourceID, verified observedState and resource docs link
   - kind: DiscoveryEngineACLConfig
     group: discoveryengine.cnrm.cloud.google.com
     reason: empty-observedstate

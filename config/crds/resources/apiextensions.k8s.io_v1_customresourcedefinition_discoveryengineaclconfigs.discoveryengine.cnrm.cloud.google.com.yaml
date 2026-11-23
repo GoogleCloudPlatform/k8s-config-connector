@@ -115,6 +115,10 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
+              resourceID:
+                description: The DiscoveryEngineACLConfig name. If not given, the
+                  metadata.name will be used.
+                type: string
             required:
             - location
             - projectRef

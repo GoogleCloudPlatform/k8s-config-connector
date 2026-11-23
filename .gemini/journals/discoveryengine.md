@@ -136,7 +136,7 @@
 - **Details**:
   1. `DiscoveryEngineACLConfig` represents the singleton resource `projects/{project}/locations/{location}/aclConfig`.
   2. Inlined `*parent.ProjectAndLocationRef` on `DiscoveryEngineACLConfigSpec` to model the parent project and location uniformly.
-  3. Removed `ResourceID *string` from `DiscoveryEngineACLConfigSpec` since `aclConfig` is a singleton resource under project and location without a client-assigned resource ID.
+  3. Retained `ResourceID *string` on `DiscoveryEngineACLConfigSpec` per review feedback.
   4. Verified that `ObservedState` is commented out as `AclConfig` has no output-only fields in proto definition.
   5. Updated `+kcc:source:resource-docs` to `https://cloud.google.com/generative-ai-app-builder/docs/reference/rest/v1/projects.locations/getAclConfig` and removed the guess marker.
   6. Triaged and marked all `DiscoveryEngineACLConfig` entries in `apis/discoveryengine/judgement_queue.yaml` as resolved.

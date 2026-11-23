@@ -33,6 +33,9 @@ var DiscoveryEngineACLConfigGVK = GroupVersion.WithKind("DiscoveryEngineACLConfi
 type DiscoveryEngineACLConfigSpec struct {
 	*parent.ProjectAndLocationRef `json:",inline"`
 
+	// The DiscoveryEngineACLConfig name. If not given, the metadata.name will be used.
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Identity provider config.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.AclConfig.idp_config
 	IdpConfig *IdpConfig `json:"idpConfig,omitempty"`
