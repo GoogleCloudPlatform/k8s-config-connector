@@ -43,13 +43,14 @@ type manifestBuilder struct {
 	// peerProjects are the projects of the other clusters in the HA group.
 	peerProjects []string
 	// mode is the mode that Config Connector runs in on this cluster (ConfigConnector.GetMode).
-	mode               string
-	mclImage           string
-	syncerImage        string
-	leaderEndpointType string
-	leaseName          string
-	leaseNamespace     string
-	bucket             string
+	mode                       string
+	mclImage                   string
+	syncerImage                string
+	leaderEndpointType         string
+	leaderEndpointTypeExplicit bool
+	leaseName                  string
+	leaseNamespace             string
+	bucket                     string
 }
 
 type controllerComponent struct {
@@ -65,18 +66,19 @@ type controllerComponent struct {
 	container          corev1.Container
 }
 
-func newManifestBuilder(contextName string, gkeCluster operatorv1beta1.GKECluster, project, mode, mclImage, syncerImage, leaderEndpointType, leaseName, leaseNamespace, bucket string) *manifestBuilder {
+func newManifestBuilder(contextName string, gkeCluster operatorv1beta1.GKECluster, project, mode, mclImage, syncerImage, leaderEndpointType string, leaderEndpointTypeExplicit bool, leaseName, leaseNamespace, bucket string) *manifestBuilder {
 	return &manifestBuilder{
-		contextName:        contextName,
-		gkeCluster:         gkeCluster,
-		project:            project,
-		mode:               mode,
-		mclImage:           mclImage,
-		syncerImage:        syncerImage,
-		leaderEndpointType: leaderEndpointType,
-		leaseName:          leaseName,
-		leaseNamespace:     leaseNamespace,
-		bucket:             bucket,
+		contextName:                contextName,
+		gkeCluster:                 gkeCluster,
+		project:                    project,
+		mode:                       mode,
+		mclImage:                   mclImage,
+		syncerImage:                syncerImage,
+		leaderEndpointType:         leaderEndpointType,
+		leaderEndpointTypeExplicit: leaderEndpointTypeExplicit,
+		leaseName:                  leaseName,
+		leaseNamespace:             leaseNamespace,
+		bucket:                     bucket,
 	}
 }
 
@@ -413,7 +415,7 @@ const (
 	// componentMinReadySeconds is how long a component's pod must stay ready before its
 	// Deployment counts it as available. The MCL controller exits right after it starts when it
 	// can't read the lease bucket, and setup must not take such a pod for a working controller
-	// (see clusterConfigurer.waitForMCLController).
+	// (see clusterConfigurer.waitForDeploymentsAvailable).
 	componentMinReadySeconds = 10
 	// componentTerminationGracePeriodSeconds is the forks' value. It bounds how long a rollout
 	// waits for the old pod to stop.
@@ -570,8 +572,14 @@ func (b *manifestBuilder) configureMultiClusterLease(spec *operatorv1beta1.Confi
 		gkeCluster := b.gkeCluster
 		mcl.GKECluster = &gkeCluster
 	}
-	if mcl.LeaderEndpointType == "" && b.leaderEndpointType != "" {
+	if b.leaderEndpointTypeExplicit {
 		mcl.LeaderEndpointType = b.leaderEndpointType
+	} else if mcl.LeaderEndpointType == "" {
+		if b.leaderEndpointType != "" {
+			mcl.LeaderEndpointType = b.leaderEndpointType
+		} else {
+			mcl.LeaderEndpointType = defaultLeaderEndpointType
+		}
 	}
 	if mcl.ResourceReplicationMode == "" {
 		mcl.ResourceReplicationMode = defaultReplicationMode

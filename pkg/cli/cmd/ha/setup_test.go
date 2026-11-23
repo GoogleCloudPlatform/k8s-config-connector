@@ -28,8 +28,10 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // newTestSetupOptions returns setup options with the bucket set, and with images other than the
@@ -273,6 +275,15 @@ func TestExecuteSetupFailsOnConflictingClusterLocationsWithoutExplicitLocation(t
 
 func assertClusterConfigured(t *testing.T, h *clusterHandle, wantMCLImage, wantSyncerImage string) {
 	t.Helper()
+	for _, crdName := range []string{"multiclusterleases.multicluster.core.cnrm.cloud.google.com", "krmsyncers.syncer.gkelabs.io"} {
+		crd := &apiextensionsv1.CustomResourceDefinition{}
+		if err := h.client.Get(context.Background(), types.NamespacedName{Name: crdName}, crd); err != nil {
+			t.Fatalf("expected CRD %q on %s, got error: %v", crdName, h.contextName, err)
+		}
+		if crd.Labels[manifestManagedByLabelKey] != manifestManagedByLabelValue {
+			t.Fatalf("expected CRD %q on %s to have label %s=%s, got %v", crdName, h.contextName, manifestManagedByLabelKey, manifestManagedByLabelValue, crd.Labels)
+		}
+	}
 	mclDeploy := &appsv1.Deployment{}
 	if err := h.client.Get(context.Background(), types.NamespacedName{Namespace: "cnrm-system", Name: "multiclusterlease-controller-manager"}, mclDeploy); err != nil {
 		t.Fatalf("expected Deployment multiclusterlease-controller-manager on %s, got error: %v", h.contextName, err)
@@ -480,7 +491,7 @@ func TestExecuteSetupReadinessTimeoutLeavesConfigConnectorsUnchanged(t *testing.
 			Name:      "multiclusterlease-controller-manager-stuck",
 			Namespace: "cnrm-system",
 			Labels: map[string]string{
-				"control-plane": "controller-manager",
+				"app": "mcl-controller",
 			},
 		},
 		Status: corev1.PodStatus{
@@ -502,13 +513,15 @@ func TestExecuteSetupReadinessTimeoutLeavesConfigConnectorsUnchanged(t *testing.
 
 	runner := &recordingCommandRunner{}
 	opts := newTestSetupOptions()
+	opts.rolloutTimeout = 50 * time.Millisecond
+	opts.rolloutPollInterval = 5 * time.Millisecond
 
-	ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
-	defer cancel()
-
-	err := executeSetup(ctx, opts, handles, runner)
+	err := executeSetup(context.Background(), opts, handles, runner)
 	if err == nil {
 		t.Fatalf("expected executeSetup to fail due to readiness timeout, got nil")
+	}
+	if !strings.Contains(err.Error(), "ImagePullBackOff") || !strings.Contains(err.Error(), "spec.experiments.multiClusterLease was left unchanged on every cluster") {
+		t.Fatalf("expected error with rollout details, got: %v", err)
 	}
 
 	// Verify that neither cluster's ConfigConnector was patched (HA stays off on every cluster)
@@ -520,6 +533,167 @@ func TestExecuteSetupReadinessTimeoutLeavesConfigConnectorsUnchanged(t *testing.
 		if cc.Spec.Experiments != nil && cc.Spec.Experiments.MultiClusterLease != nil {
 			t.Fatalf("expected ConfigConnector on %s to remain unchanged without MultiClusterLease, got %+v", h.contextName, cc.Spec.Experiments.MultiClusterLease)
 		}
+	}
+}
+
+// rolledOutMCLOnlyClient marks MCL Deployment as rolled out, but leaves syncer unready.
+type rolledOutMCLOnlyClient struct {
+	client.Client
+}
+
+func (c *rolledOutMCLOnlyClient) Get(ctx context.Context, key client.ObjectKey, obj client.Object, opts ...client.GetOption) error {
+	if err := c.Client.Get(ctx, key, obj, opts...); err != nil {
+		return err
+	}
+	if deployment, ok := obj.(*appsv1.Deployment); ok && key.Name == mclDeploymentName {
+		replicas := int32(1)
+		if deployment.Spec.Replicas != nil {
+			replicas = *deployment.Spec.Replicas
+		}
+		deployment.Status = appsv1.DeploymentStatus{
+			ObservedGeneration: deployment.Generation,
+			Replicas:           replicas,
+			UpdatedReplicas:    replicas,
+			ReadyReplicas:      replicas,
+			AvailableReplicas:  replicas,
+		}
+	}
+	return nil
+}
+
+func TestExecuteSetupSyncerReadinessTimeoutLeavesConfigConnectorsUnchanged(t *testing.T) {
+	stuckSyncerPod := &corev1.Pod{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "syncer-controller-manager-stuck",
+			Namespace: "cnrm-system",
+			Labels: map[string]string{
+				"app": "syncer-controller",
+			},
+		},
+		Status: corev1.PodStatus{
+			ContainerStatuses: []corev1.ContainerStatus{
+				{
+					Name: "syncer",
+					State: corev1.ContainerState{
+						Waiting: &corev1.ContainerStateWaiting{Reason: "CrashLoopBackOff", Message: "Back-off restarting failed container"},
+					},
+				},
+			},
+		},
+	}
+
+	clusterBHandle := newFakeClusterHandleWithPendingDeployments(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector(), stuckSyncerPod)
+	// Cluster B has MCL rolled out, but syncer stays pending.
+	clusterBHandle.client.Client = &rolledOutMCLOnlyClient{Client: clusterBHandle.client.Client}
+
+	handles := []*clusterHandle{
+		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector()),
+		clusterBHandle,
+	}
+
+	runner := &recordingCommandRunner{}
+	opts := newTestSetupOptions()
+	opts.rolloutTimeout = 50 * time.Millisecond
+	opts.rolloutPollInterval = 5 * time.Millisecond
+
+	err := executeSetup(context.Background(), opts, handles, runner)
+	if err == nil {
+		t.Fatalf("expected executeSetup to fail due to syncer readiness timeout, got nil")
+	}
+	if !strings.Contains(err.Error(), syncerDeploymentName) || !strings.Contains(err.Error(), "CrashLoopBackOff") || !strings.Contains(err.Error(), "spec.experiments.multiClusterLease was left unchanged on every cluster") {
+		t.Fatalf("expected error mentioning syncer rollout failure, got: %v", err)
+	}
+
+	// Verify that neither cluster's ConfigConnector was patched (HA stays off on every cluster)
+	for _, h := range handles {
+		cc, fetchErr := fetchConfigConnector(context.Background(), h)
+		if fetchErr != nil {
+			t.Fatalf("fetchConfigConnector on %s failed: %v", h.contextName, fetchErr)
+		}
+		if cc.Spec.Experiments != nil && cc.Spec.Experiments.MultiClusterLease != nil {
+			t.Fatalf("expected ConfigConnector on %s to remain unchanged without MultiClusterLease, got %+v", h.contextName, cc.Spec.Experiments.MultiClusterLease)
+		}
+	}
+}
+
+func TestExecuteSetupLeaderEndpointType(t *testing.T) {
+	handles := []*clusterHandle{
+		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector()),
+		newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector()),
+	}
+	runner := &recordingCommandRunner{}
+	opts := newTestSetupOptions()
+	opts.leaderEndpointType = operatorv1beta1.LeaderEndpointTypePrivateIP
+
+	if err := executeSetup(context.Background(), opts, handles, runner); err != nil {
+		t.Fatalf("executeSetup failed: %v", err)
+	}
+
+	for _, h := range handles {
+		cc, err := fetchConfigConnector(context.Background(), h)
+		if err != nil {
+			t.Fatalf("fetchConfigConnector failed: %v", err)
+		}
+		mcl := cc.Spec.Experiments.MultiClusterLease
+		if mcl.LeaderEndpointType != operatorv1beta1.LeaderEndpointTypePrivateIP {
+			t.Fatalf("expected leaderEndpointType %q on %s, got %q", operatorv1beta1.LeaderEndpointTypePrivateIP, h.contextName, mcl.LeaderEndpointType)
+		}
+	}
+
+	// Re-run with an explicit new value: changes to DNS
+	opts.leaderEndpointType = operatorv1beta1.LeaderEndpointTypeDNS
+	opts.leaderEndpointTypeExplicit = true
+	if err := executeSetup(context.Background(), opts, handles, runner); err != nil {
+		t.Fatalf("executeSetup re-run failed: %v", err)
+	}
+	for _, h := range handles {
+		cc, err := fetchConfigConnector(context.Background(), h)
+		if err != nil {
+			t.Fatalf("fetchConfigConnector failed: %v", err)
+		}
+		mcl := cc.Spec.Experiments.MultiClusterLease
+		if mcl.LeaderEndpointType != operatorv1beta1.LeaderEndpointTypeDNS {
+			t.Fatalf("expected leaderEndpointType updated to %q on %s, got %q", operatorv1beta1.LeaderEndpointTypeDNS, h.contextName, mcl.LeaderEndpointType)
+		}
+	}
+
+	// Re-run with flag omitted (leaderEndpointTypeExplicit = false): preserves DNS
+	opts.leaderEndpointType = defaultLeaderEndpointType
+	opts.leaderEndpointTypeExplicit = false
+	if err := executeSetup(context.Background(), opts, handles, runner); err != nil {
+		t.Fatalf("executeSetup re-run with omitted flag failed: %v", err)
+	}
+	for _, h := range handles {
+		cc, err := fetchConfigConnector(context.Background(), h)
+		if err != nil {
+			t.Fatalf("fetchConfigConnector failed: %v", err)
+		}
+		mcl := cc.Spec.Experiments.MultiClusterLease
+		if mcl.LeaderEndpointType != operatorv1beta1.LeaderEndpointTypeDNS {
+			t.Fatalf("expected leaderEndpointType %q preserved on %s, got %q", operatorv1beta1.LeaderEndpointTypeDNS, h.contextName, mcl.LeaderEndpointType)
+		}
+	}
+}
+
+func TestExecuteSetupYAMLOnlyWithLeaderEndpointType(t *testing.T) {
+	var stdout bytes.Buffer
+	handles := []*clusterHandle{
+		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector()),
+		newFakeClusterHandle(t, "gke_proj-a_us-east1_cluster-b", newBaseConfigConnector()),
+	}
+	runner := &recordingCommandRunner{}
+	opts := newTestSetupOptions()
+	opts.yamlOnly = true
+	opts.stdout = &stdout
+	opts.leaderEndpointType = operatorv1beta1.LeaderEndpointTypePrivateIP
+
+	if err := executeSetup(context.Background(), opts, handles, runner); err != nil {
+		t.Fatalf("executeSetup failed: %v", err)
+	}
+	rendered := stdout.String()
+	wantLeaderEndpoint := "leaderEndpointType: PrivateIP\n"
+	if !strings.Contains(rendered, wantLeaderEndpoint) {
+		t.Fatalf("expected rendered YAML to contain %q, got:\n%s", wantLeaderEndpoint, rendered)
 	}
 }
 

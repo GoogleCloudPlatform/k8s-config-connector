@@ -54,7 +54,7 @@ type clusterConfigurer struct {
 	mclRolloutPollInterval time.Duration
 }
 
-func newClusterConfigurer(ctx context.Context, handle *clusterHandle, mclImage, syncerImage, leaderEndpointType, leaseName, leaseNamespace, bucket string) (*clusterConfigurer, error) {
+func newClusterConfigurer(ctx context.Context, handle *clusterHandle, mclImage, syncerImage, leaderEndpointType string, leaderEndpointTypeExplicit bool, leaseName, leaseNamespace, bucket string) (*clusterConfigurer, error) {
 	if handle == nil || handle.client == nil {
 		return nil, fmt.Errorf("cluster handle has a nil Kubernetes client")
 	}
@@ -80,7 +80,7 @@ func newClusterConfigurer(ctx context.Context, handle *clusterHandle, mclImage, 
 	}
 
 	// GetMode applies the operator's default: an unset spec.mode means namespaced mode.
-	manifests := newManifestBuilder(gkeInfo.contextName, expectedCluster, gkeInfo.project, cc.GetMode(), mclImage, syncerImage, leaderEndpointType, leaseName, leaseNamespace, bucket)
+	manifests := newManifestBuilder(gkeInfo.contextName, expectedCluster, gkeInfo.project, cc.GetMode(), mclImage, syncerImage, leaderEndpointType, leaderEndpointTypeExplicit, leaseName, leaseNamespace, bucket)
 	return &clusterConfigurer{
 		handle:                 handle,
 		gkeInfo:                gkeInfo,
@@ -115,8 +115,15 @@ func (c *clusterConfigurer) applyCRDs(ctx context.Context, stdout io.Writer, dry
 	if dryRun {
 		return nil
 	}
+	objs := c.manifests.buildClusterObjects()
+	var crdObjs []client.Object
+	for _, obj := range objs {
+		if _, isCRD := obj.(*apiextensionsv1.CustomResourceDefinition); isCRD {
+			crdObjs = append(crdObjs, obj)
+		}
+	}
 	var errs []error
-	for _, obj := range buildCRDObjects() {
+	for _, obj := range crdObjs {
 		if err := upsertObject(ctx, c.handle.client.Client, obj); err != nil {
 			errs = append(errs, fmt.Errorf("applying %s on cluster %q: %w", formatObjectID(c.handle.client.Client, obj), c.handle.contextName, err))
 		}
@@ -248,13 +255,9 @@ func (c *clusterConfigurer) waitForDeploymentAvailable(ctx context.Context, name
 	details := []string{pending}
 	details = append(details, c.describeUnavailablePods(ctx, deployment)...)
 	return fmt.Errorf(
-		"cluster %q: Deployment %q (namespace %q) did not become available within %s, so spec.experiments.multiClusterLease was left unchanged on this cluster: %s",
+		"cluster %q: Deployment %q (namespace %q) did not become available within %s, so spec.experiments.multiClusterLease was left unchanged on every cluster: %s",
 		c.handle.contextName, key.Name, key.Namespace, c.mclRolloutTimeout, strings.Join(details, "; "),
 	)
-}
-
-func (c *clusterConfigurer) waitForMCLController(ctx context.Context, stdout io.Writer) error {
-	return c.waitForDeploymentAvailable(ctx, mclDeploymentName, stdout)
 }
 
 // deploymentRolloutStatus reports whether a Deployment has finished rolling out its current spec,

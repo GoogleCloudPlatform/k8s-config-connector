@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"io"
 	"strings"
+	"time"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/version"
@@ -38,11 +39,17 @@ type setupOptions struct {
 	leaseNamespace string
 	// mclImage and syncerImage default to the images of this version of Config Connector; see
 	// defaultImage.
-	mclImage           string
-	syncerImage        string
-	leaderEndpointType string
-	yamlOnly           bool
-	dryRun             bool
+	mclImage                   string
+	syncerImage                string
+	leaderEndpointType         string
+	leaderEndpointTypeExplicit bool
+	yamlOnly                   bool
+	dryRun                     bool
+
+	// rolloutTimeout and rolloutPollInterval control how long setup waits for Deployments
+	// to roll out. If zero, defaults to defaultMCLRolloutTimeout (5m) and defaultMCLRolloutPollInterval (2s).
+	rolloutTimeout      time.Duration
+	rolloutPollInterval time.Duration
 }
 
 const (
@@ -87,6 +94,7 @@ func NewSetupCmd() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.stdout = cmd.OutOrStdout()
 			opts.stderr = cmd.ErrOrStderr()
+			opts.leaderEndpointTypeExplicit = cmd.Flags().Changed(leaderEndpointTypeFlag)
 			if err := opts.validate(); err != nil {
 				return err
 			}
@@ -170,6 +178,9 @@ func (o *setupOptions) validate() error {
 	}
 
 	if o.leaderEndpointType != "" {
+		if o.leaderEndpointType != defaultLeaderEndpointType {
+			o.leaderEndpointTypeExplicit = true
+		}
 		switch o.leaderEndpointType {
 		case operatorv1beta1.LeaderEndpointTypeDefault, operatorv1beta1.LeaderEndpointTypeDNS, operatorv1beta1.LeaderEndpointTypePrivateIP:
 		default:
@@ -233,10 +244,16 @@ func initClusterConfigurers(ctx context.Context, handles []*clusterHandle, opts 
 	configurers := make([]*clusterConfigurer, 0, len(handles))
 	gkeClusters := make([]gkeClusterInfo, 0, len(handles))
 	for _, h := range handles {
-		cfg, err := newClusterConfigurer(ctx, h, opts.mclImage, opts.syncerImage, opts.leaderEndpointType, opts.leaseName, opts.leaseNamespace, opts.bucket)
+		cfg, err := newClusterConfigurer(ctx, h, opts.mclImage, opts.syncerImage, opts.leaderEndpointType, opts.leaderEndpointTypeExplicit, opts.leaseName, opts.leaseNamespace, opts.bucket)
 		if err != nil {
 			errs = append(errs, err)
 			continue
+		}
+		if opts.rolloutTimeout > 0 {
+			cfg.mclRolloutTimeout = opts.rolloutTimeout
+		}
+		if opts.rolloutPollInterval > 0 {
+			cfg.mclRolloutPollInterval = opts.rolloutPollInterval
 		}
 
 		configurers = append(configurers, cfg)
