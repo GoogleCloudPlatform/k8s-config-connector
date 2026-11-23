@@ -44,6 +44,8 @@ func newTestManifestBuilder(mode string) *manifestBuilder {
 		mode,
 		testMCLImage,
 		testSyncerImage,
+		defaultLeaderEndpointType,
+		false,
 		"kcc-multicluster-lease",
 		"cnrm-system",
 		"my-ha-bucket",

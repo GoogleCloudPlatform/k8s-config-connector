@@ -44,7 +44,7 @@ const (
 
 func TestClusterConfigurerApplyIsIdempotent(t *testing.T) {
 	handle := newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector())
-	cfg, err := newClusterConfigurer(context.Background(), handle, testMCLImage, testSyncerImage, "kcc-multicluster-lease", "cnrm-system", "my-ha-bucket")
+	cfg, err := newClusterConfigurer(context.Background(), handle, testMCLImage, testSyncerImage, defaultLeaderEndpointType, false, "kcc-multicluster-lease", "cnrm-system", "my-ha-bucket")
 	if err != nil {
 		t.Fatalf("newClusterConfigurer failed: %v", err)
 	}
@@ -61,7 +61,7 @@ func TestClusterConfigurerApplyIsIdempotent(t *testing.T) {
 
 func TestClusterConfigurerApplySkipsConfigConnectorUpdateOnManifestError(t *testing.T) {
 	handle := newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector())
-	cfg, err := newClusterConfigurer(context.Background(), handle, testMCLImage, testSyncerImage, "kcc-multicluster-lease", "cnrm-system", "my-ha-bucket")
+	cfg, err := newClusterConfigurer(context.Background(), handle, testMCLImage, testSyncerImage, defaultLeaderEndpointType, false, "kcc-multicluster-lease", "cnrm-system", "my-ha-bucket")
 	if err != nil {
 		t.Fatalf("newClusterConfigurer failed: %v", err)
 	}
@@ -100,7 +100,7 @@ func TestClusterConfigurerApplyLeavesConfigConnectorUnchangedWhenMCLControllerIs
 		},
 	}
 	handle := newFakeClusterHandleWithPendingDeployments(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector(), stuckPod)
-	cfg, err := newClusterConfigurer(context.Background(), handle, testMCLImage, testSyncerImage, "kcc-multicluster-lease", "cnrm-system", "my-ha-bucket")
+	cfg, err := newClusterConfigurer(context.Background(), handle, testMCLImage, testSyncerImage, defaultLeaderEndpointType, false, "kcc-multicluster-lease", "cnrm-system", "my-ha-bucket")
 	if err != nil {
 		t.Fatalf("newClusterConfigurer failed: %v", err)
 	}
@@ -110,7 +110,7 @@ func TestClusterConfigurerApplyLeavesConfigConnectorUnchangedWhenMCLControllerIs
 
 	err = cfg.apply(context.Background(), &stdout, false)
 
-	const wantErr = `cluster "gke_proj-a_us-central1_cluster-a": Deployment "multiclusterlease-controller-manager" (namespace "cnrm-system") did not become available within 50ms, so spec.experiments.multiClusterLease was left unchanged on this cluster: 0 of 1 pods run the latest spec; pod "multiclusterlease-controller-manager-5d8f7-abcde" container "manager" is waiting: ImagePullBackOff (Back-off pulling image)`
+	const wantErr = `cluster "gke_proj-a_us-central1_cluster-a": Deployment "multiclusterlease-controller-manager" (namespace "cnrm-system") did not become available within 50ms, so spec.experiments.multiClusterLease was left unchanged on every cluster: 0 of 1 pods run the latest spec; pod "multiclusterlease-controller-manager-5d8f7-abcde" container "manager" is waiting: ImagePullBackOff (Back-off pulling image)`
 	if err == nil || err.Error() != wantErr {
 		t.Fatalf("got error:\n%v\nwant:\n%s", err, wantErr)
 	}
@@ -204,7 +204,7 @@ func TestClusterConfigurerApplyGrantsLeaseAccessToTheManagersOfEachMode(t *testi
 			cc := newBaseConfigConnector()
 			cc.Spec.Mode = tc.mode
 			handle := newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", cc)
-			cfg, err := newClusterConfigurer(context.Background(), handle, testMCLImage, testSyncerImage, "kcc-multicluster-lease", "lease-ns", "my-ha-bucket")
+			cfg, err := newClusterConfigurer(context.Background(), handle, testMCLImage, testSyncerImage, defaultLeaderEndpointType, false, "kcc-multicluster-lease", "lease-ns", "my-ha-bucket")
 			if err != nil {
 				t.Fatalf("newClusterConfigurer failed: %v", err)
 			}
@@ -226,18 +226,19 @@ func TestClusterConfigurerApplyGrantsLeaseAccessToTheManagersOfEachMode(t *testi
 }
 
 func TestClusterConfigurerApplyPreservesExistingMultiClusterLeaseFields(t *testing.T) {
-	existingGKECluster := operatorv1beta1.GKECluster{Project: "custom-proj", Location: "us-west1", Name: "custom-cluster"}
+	existingGKECluster := operatorv1beta1.GKECluster{Project: "proj-a", Location: "us-central1", Name: "cluster-a"}
 	existingCC := newBaseConfigConnector()
 	existingCC.Spec.Experiments = &operatorv1beta1.CCExperiments{
 		MultiClusterLease: &operatorv1beta1.MultiClusterLeaseSpec{
 			LeaseName:               "old-lease",
 			Namespace:               "old-ns",
 			GKECluster:              &existingGKECluster,
+			LeaderEndpointType:      operatorv1beta1.LeaderEndpointTypePrivateIP,
 			ResourceReplicationMode: "Full",
 		},
 	}
 	handle := newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", existingCC)
-	cfg, err := newClusterConfigurer(context.Background(), handle, testMCLImage, testSyncerImage, "kcc-multicluster-lease", "cnrm-system", "my-ha-bucket")
+	cfg, err := newClusterConfigurer(context.Background(), handle, testMCLImage, testSyncerImage, defaultLeaderEndpointType, false, "kcc-multicluster-lease", "cnrm-system", "my-ha-bucket")
 	if err != nil {
 		t.Fatalf("newClusterConfigurer failed: %v", err)
 	}
@@ -255,29 +256,29 @@ func TestClusterConfigurerApplyPreservesExistingMultiClusterLeaseFields(t *testi
 	if gotMCL.LeaseName != "kcc-multicluster-lease" || gotMCL.Namespace != "cnrm-system" {
 		t.Fatalf("got lease %s/%s, want cnrm-system/kcc-multicluster-lease", gotMCL.Namespace, gotMCL.LeaseName)
 	}
-	if gotMCL.GKECluster == nil || *gotMCL.GKECluster != existingGKECluster || gotMCL.ResourceReplicationMode != "Full" {
-		t.Fatalf("expected existing gkeCluster and replication mode to be preserved, got %+v", gotMCL)
+	if gotMCL.GKECluster == nil || *gotMCL.GKECluster != existingGKECluster || gotMCL.LeaderEndpointType != operatorv1beta1.LeaderEndpointTypePrivateIP || gotMCL.ResourceReplicationMode != "Full" {
+		t.Fatalf("expected existing gkeCluster, leaderEndpointType, and replication mode to be preserved, got %+v", gotMCL)
 	}
 }
 
-func TestClusterConfigurerApplyReplacesDeprecatedClusterCandidateIdentity(t *testing.T) {
+func TestClusterConfigurerApplyOverwritesLeaderEndpointTypeWhenExplicit(t *testing.T) {
+	existingGKECluster := operatorv1beta1.GKECluster{Project: "proj-a", Location: "us-central1", Name: "cluster-a"}
 	existingCC := newBaseConfigConnector()
 	existingCC.Spec.Experiments = &operatorv1beta1.CCExperiments{
 		MultiClusterLease: &operatorv1beta1.MultiClusterLeaseSpec{
-			LeaseName:                "kcc-multicluster-lease",
-			Namespace:                "cnrm-system",
-			ClusterCandidateIdentity: "legacy-identity-a",
+			LeaseName:          "old-lease",
+			Namespace:          "old-ns",
+			GKECluster:         &existingGKECluster,
+			LeaderEndpointType: operatorv1beta1.LeaderEndpointTypeDefault,
 		},
 	}
 	handle := newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", existingCC)
-	cfg, err := newClusterConfigurer(context.Background(), handle, testMCLImage, testSyncerImage, "kcc-multicluster-lease", "cnrm-system", "my-ha-bucket")
+	cfg, err := newClusterConfigurer(context.Background(), handle, testMCLImage, testSyncerImage, operatorv1beta1.LeaderEndpointTypePrivateIP, true, "kcc-multicluster-lease", "cnrm-system", "my-ha-bucket")
 	if err != nil {
 		t.Fatalf("newClusterConfigurer failed: %v", err)
 	}
 
-	err = cfg.apply(context.Background(), nil, false)
-
-	if err != nil {
+	if err := cfg.apply(context.Background(), nil, false); err != nil {
 		t.Fatalf("apply failed: %v", err)
 	}
 	cc, fetchErr := fetchConfigConnector(context.Background(), handle)
@@ -285,15 +286,29 @@ func TestClusterConfigurerApplyReplacesDeprecatedClusterCandidateIdentity(t *tes
 		t.Fatalf("fetchConfigConnector failed: %v", fetchErr)
 	}
 	gotMCL := cc.Spec.Experiments.MultiClusterLease
-	if gotMCL.ClusterCandidateIdentity != "" {
-		t.Fatalf("expected deprecated clusterCandidateIdentity to be cleared, got %q", gotMCL.ClusterCandidateIdentity)
+	if gotMCL.LeaderEndpointType != operatorv1beta1.LeaderEndpointTypePrivateIP {
+		t.Fatalf("expected leaderEndpointType to be overwritten to %q, got %q", operatorv1beta1.LeaderEndpointTypePrivateIP, gotMCL.LeaderEndpointType)
 	}
-	identity, err := gotMCL.CandidateIdentity()
-	if err != nil {
-		t.Fatalf("CandidateIdentity() failed: %v", err)
+}
+
+func TestClusterConfigurerFailsWhenGKEClusterDiffers(t *testing.T) {
+	differentGKECluster := operatorv1beta1.GKECluster{Project: "custom-proj", Location: "us-west1", Name: "custom-cluster"}
+	existingCC := newBaseConfigConnector()
+	existingCC.Spec.Experiments = &operatorv1beta1.CCExperiments{
+		MultiClusterLease: &operatorv1beta1.MultiClusterLeaseSpec{
+			LeaseName:  "old-lease",
+			Namespace:  "old-ns",
+			GKECluster: &differentGKECluster,
+		},
 	}
-	if want := "projects/proj-a/locations/us-central1/clusters/cluster-a"; identity != want {
-		t.Fatalf("got identity %q, want %q", identity, want)
+	handle := newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", existingCC)
+	_, err := newClusterConfigurer(context.Background(), handle, testMCLImage, testSyncerImage, defaultLeaderEndpointType, false, "kcc-multicluster-lease", "cnrm-system", "my-ha-bucket")
+	if err == nil {
+		t.Fatalf("expected newClusterConfigurer to fail when gkeCluster differs, got nil")
+	}
+	const wantErr = `cluster "gke_proj-a_us-central1_cluster-a": ConfigConnector is already configured with gkeCluster "projects/custom-proj/locations/us-west1/clusters/custom-cluster"; cannot overwrite with "projects/proj-a/locations/us-central1/clusters/cluster-a"`
+	if err.Error() != wantErr {
+		t.Fatalf("got error %q, want %q", err.Error(), wantErr)
 	}
 }
 

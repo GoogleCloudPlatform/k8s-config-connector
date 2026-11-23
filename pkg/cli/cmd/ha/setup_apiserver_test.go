@@ -376,7 +376,7 @@ func (s *apiServer) setClusterMode(t *testing.T) {
 // runSetup applies setup's Kubernetes configuration, as executeSetup does for each cluster.
 func (s *apiServer) runSetup(t *testing.T) {
 	t.Helper()
-	cfg, err := newClusterConfigurer(t.Context(), s.handle, testMCLImage, testSyncerImage, apiServerLeaseName, "cnrm-system", "my-ha-bucket")
+	cfg, err := newClusterConfigurer(t.Context(), s.handle, testMCLImage, testSyncerImage, defaultLeaderEndpointType, false, apiServerLeaseName, "cnrm-system", "my-ha-bucket")
 	if err != nil {
 		t.Fatalf("newClusterConfigurer failed: %v", err)
 	}
