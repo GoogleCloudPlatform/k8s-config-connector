@@ -21,6 +21,7 @@ import (
 	"strings"
 	"time"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
@@ -337,6 +338,7 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 }
 
 func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unstructured) (requeue bool, err error) {
+	defer execution.RecoverWithInternalError(&err)
 	logger := log.FromContext(ctx)
 
 	cc, ccc, err := kccstate.FetchLiveKCCState(ctx, r.Reconciler.Client, r.NamespacedName)
@@ -364,6 +366,25 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		return false, nil
 	}
 
+	if !u.GetDeletionTimestamp().IsZero() {
+		if !k8s.HasFinalizer(u, k8s.ControllerFinalizerName) {
+			// Resource has no controller finalizer; no finalization necessary
+			logger.Info("no controller finalizer; no finalization necessary",
+				"resource", k8s.GetNamespacedName(u))
+			return false, nil
+		}
+		if k8s.HasFinalizer(u, k8s.DeletionDefenderFinalizerName) {
+			// deletion defender has not yet finalized; allowing watch catching the finalizer removal to handle this case.
+			logger.Info("deletion defender has not yet finalized; cannot delete yet", "resource", k8s.GetNamespacedName(u))
+			return false, nil
+		}
+		if k8s.HasAbandonAnnotation(u) {
+			logger.Info("finalizing resource deletion", "resource", k8s.GetNamespacedName(u))
+			logger.Info("deletion policy set to abandon; abandoning underlying resource", "resource", k8s.GetNamespacedName(u))
+			return false, r.handleDeleted(ctx, u)
+		}
+	}
+
 	// Apply defaulters
 	{
 		changeCount := 0
@@ -383,20 +404,19 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		}
 	}
 
-	var adapter Adapter
-	var adapteErr error
-	switch m := r.Reconciler.model.(type) {
-	case IAMModel:
-		adapter, adapteErr = m.IAMAdapterForObject(ctx, r.Reconciler.Client, u, r.Reconciler.iamDeps)
-	default:
-		// The default case handles any other type that implements the base model interface.
-		op := &AdapterForObjectOperation{
-			Reader: r.Reconciler.Client,
-			Object: u,
-		}
-		adapter, adapteErr = r.Reconciler.model.AdapterForObject(ctx, op)
-	}
+	adapter, evaluatedObj, adapteErr := r.adapterForObject(ctx, u)
 	if adapteErr != nil {
+		if !u.GetDeletionTimestamp().IsZero() {
+			if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(adapteErr); ok {
+				logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
+				return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
+			}
+			if parentNotFoundErr, ok := r.missingUntypedParentRefError(ctx, evaluatedObj); ok {
+				logger.Info(parentNotFoundErr.Error(), "resource", k8s.GetNamespacedName(u))
+				return r.handleUnresolvableDeps(ctx, u, parentNotFoundErr)
+			}
+			return false, r.handleDeleteFailed(ctx, u, adapteErr)
+		}
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(adapteErr); ok {
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
 			return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
@@ -439,24 +459,8 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		}
 	}
 
-	defer execution.RecoverWithInternalError(&err)
 	if !u.GetDeletionTimestamp().IsZero() {
 		logger.Info("finalizing resource deletion", "resource", k8s.GetNamespacedName(u))
-		if !k8s.HasFinalizer(u, k8s.ControllerFinalizerName) {
-			// Resource has no controller finalizer; no finalization necessary
-			logger.Info("no controller finalizer; no finalization necessary",
-				"resource", k8s.GetNamespacedName(u))
-			return false, nil
-		}
-		if k8s.HasFinalizer(u, k8s.DeletionDefenderFinalizerName) {
-			// deletion defender has not yet finalized; allowing watch catching the finalizer removal to handle this case.
-			logger.Info("deletion defender has not yet finalized; cannot delete yet", "resource", k8s.GetNamespacedName(u))
-			return false, nil
-		}
-		if k8s.HasAbandonAnnotation(u) {
-			logger.Info("deletion policy set to abandon; abandoning underlying resource", "resource", k8s.GetNamespacedName(u))
-			return false, r.handleDeleted(ctx, u)
-		}
 		if !existsAlready {
 			logger.Info("underlying resource does not exist; no API call necessary", "resource", k8s.GetNamespacedName(u))
 			return false, r.handleDeleted(ctx, u)
@@ -682,4 +686,345 @@ func toK8sResource(policy *unstructured.Unstructured) (*k8s.Resource, error) {
 		return nil, fmt.Errorf("error marshalling to k8s resource: %w", err)
 	}
 	return &resource, nil
+}
+
+func (r *reconcileContext) adapterForObject(ctx context.Context, u *unstructured.Unstructured) (Adapter, *unstructured.Unstructured, error) {
+	if m, ok := r.Reconciler.model.(IAMModel); ok {
+		adapter, err := m.IAMAdapterForObject(ctx, r.Reconciler.Client, u, r.Reconciler.iamDeps)
+		return adapter, u, err
+	}
+	op := &AdapterForObjectOperation{
+		Reader: r.Reconciler.Client,
+		Object: u,
+	}
+	adapter, err := r.Reconciler.model.AdapterForObject(ctx, op)
+	if err == nil || u.GetDeletionTimestamp().IsZero() {
+		return adapter, u, err
+	}
+	return r.retryAdapterForDeleteFromStatus(ctx, u, err)
+}
+
+const maxDeleteParentRefRecoveries = 3
+
+func (r *reconcileContext) retryAdapterForDeleteFromStatus(ctx context.Context, u *unstructured.Unstructured, initialErr error) (Adapter, *unstructured.Unstructured, error) {
+	segments := statusResourceSegments(u)
+	if len(segments) < 4 {
+		return nil, u, initialErr
+	}
+
+	uCopy := u.DeepCopy()
+	curErr := initialErr
+	for range maxDeleteParentRefRecoveries {
+		adapter, nextCopy, nextErr, progressed := r.recoverOneParentRefFromStatus(ctx, uCopy, segments, curErr)
+		if adapter != nil && nextErr == nil {
+			return adapter, nextCopy, nil
+		}
+		if !progressed {
+			return nil, uCopy, curErr
+		}
+		uCopy = nextCopy
+		curErr = nextErr
+	}
+	return nil, uCopy, curErr
+}
+
+var folderGVK = schema.GroupVersionKind{
+	Group:   "resourcemanager.cnrm.cloud.google.com",
+	Version: "v1beta1",
+	Kind:    "Folder",
+}
+
+func (r *reconcileContext) recoverOneParentRefFromStatus(ctx context.Context, uCopy *unstructured.Unstructured, segments []string, curErr error) (Adapter, *unstructured.Unstructured, error, bool) {
+	if refGVK, refNN, ok := unresolvableParentRef(curErr); ok {
+		prefixes := candidateParentPrefixes(segments, refGVK)
+		var advancedCopy *unstructured.Unstructured
+		var advancedErr error
+		for _, prefix := range prefixes {
+			candidates := replaceMatchingSpecRef(uCopy, refGVK, refNN, prefix)
+			for _, cand := range candidates {
+				op := &AdapterForObjectOperation{
+					Reader: r.Reconciler.Client,
+					Object: cand,
+				}
+				adapter, err := r.Reconciler.model.AdapterForObject(ctx, op)
+				if err == nil {
+					return adapter, cand, nil, true
+				}
+				if advancedCopy == nil {
+					nextGVK, nextNN, nextOK := unresolvableParentRef(err)
+					advancedToNextRef := nextOK && (nextGVK != refGVK || nextNN != refNN)
+					resolvedSingleExactRef := !nextOK && len(prefixes) == 1 && len(candidates) == 1
+					if advancedToNextRef || resolvedSingleExactRef {
+						advancedCopy = cand
+						advancedErr = err
+					}
+				}
+			}
+		}
+		if advancedCopy != nil {
+			return nil, advancedCopy, advancedErr, true
+		}
+		return nil, nil, curErr, false
+	}
+
+	if segments[0] == "projects" && segments[1] != "_" {
+		if _, ok := r.specParentRefNotFound(ctx, uCopy, "projectRef", refs.ProjectGVK); ok {
+			prefix := "projects/" + segments[1]
+			projectRef := &refs.ProjectRef{External: prefix}
+			if projectRef.ValidateExternal(prefix) == nil {
+				cand := uCopy.DeepCopy()
+				if setTopLevelSpecRefExternal(cand, "projectRef", prefix) {
+					op := &AdapterForObjectOperation{
+						Reader: r.Reconciler.Client,
+						Object: cand,
+					}
+					adapter, err := r.Reconciler.model.AdapterForObject(ctx, op)
+					return adapter, cand, err, true
+				}
+			}
+		}
+	}
+
+	if segments[0] == "folders" {
+		if _, ok := r.specParentRefNotFound(ctx, uCopy, "folderRef", folderGVK); ok {
+			prefix := "folders/" + segments[1]
+			cand := uCopy.DeepCopy()
+			if setTopLevelSpecRefExternal(cand, "folderRef", prefix) {
+				op := &AdapterForObjectOperation{
+					Reader: r.Reconciler.Client,
+					Object: cand,
+				}
+				adapter, err := r.Reconciler.model.AdapterForObject(ctx, op)
+				return adapter, cand, err, true
+			}
+		}
+	}
+
+	return nil, nil, curErr, false
+}
+
+func (r *reconcileContext) missingUntypedParentRefError(ctx context.Context, u *unstructured.Unstructured) (*k8s.ReferenceNotFoundError, bool) {
+	if projectNN, ok := r.specParentRefNotFound(ctx, u, "projectRef", refs.ProjectGVK); ok {
+		return k8s.NewReferenceNotFoundError(refs.ProjectGVK, projectNN), true
+	}
+	if folderNN, ok := r.specParentRefNotFound(ctx, u, "folderRef", folderGVK); ok {
+		return k8s.NewReferenceNotFoundError(folderGVK, folderNN), true
+	}
+	return nil, false
+}
+
+func (r *reconcileContext) specParentRefNotFound(ctx context.Context, u *unstructured.Unstructured, refField string, gvk schema.GroupVersionKind) (types.NamespacedName, bool) {
+	if r.Reconciler == nil || r.Reconciler.Client == nil {
+		return types.NamespacedName{}, false
+	}
+	external, _, _ := unstructured.NestedString(u.Object, "spec", refField, "external")
+	name, _, _ := unstructured.NestedString(u.Object, "spec", refField, "name")
+	if external != "" || name == "" {
+		return types.NamespacedName{}, false
+	}
+	kind, _, _ := unstructured.NestedString(u.Object, "spec", refField, "kind")
+	if kind != "" && kind != gvk.Kind {
+		return types.NamespacedName{}, false
+	}
+	ns, _, _ := unstructured.NestedString(u.Object, "spec", refField, "namespace")
+	if ns == "" {
+		ns = u.GetNamespace()
+	}
+	nn := types.NamespacedName{Namespace: ns, Name: name}
+	target := &unstructured.Unstructured{}
+	target.SetGroupVersionKind(gvk)
+	return nn, apierrors.IsNotFound(r.Reconciler.Client.Get(ctx, nn, target))
+}
+
+func unresolvableParentRef(err error) (schema.GroupVersionKind, types.NamespacedName, bool) {
+	if unwrappedErr, ok := k8s.AsReferenceNotFoundError(err); ok {
+		return unwrappedErr.RefResourceGVK, unwrappedErr.RefResource, true
+	}
+	if unwrappedErr, ok := k8s.AsReferenceNotReadyError(err); ok {
+		return unwrappedErr.RefResourceGVK, unwrappedErr.RefResource, true
+	}
+	if unwrappedErr, ok := k8s.AsTransitiveDependencyNotFoundError(err); ok {
+		return unwrappedErr.ResourceGVK, unwrappedErr.Resource, true
+	}
+	if unwrappedErr, ok := k8s.AsTransitiveDependencyNotReadyError(err); ok {
+		return unwrappedErr.ResourceGVK, unwrappedErr.Resource, true
+	}
+	return schema.GroupVersionKind{}, types.NamespacedName{}, false
+}
+
+func candidateParentPrefixes(segments []string, refGVK schema.GroupVersionKind) []string {
+	_, err := refs.NewRef(refGVK.GroupKind())
+	hasValidator := err == nil
+	var prefixes []string
+	for k := len(segments) - 1; k >= 2; k-- {
+		prefix := strings.Join(segments[:k], "/")
+		if hasValidator {
+			validator, err := refs.NewRef(refGVK.GroupKind())
+			if err == nil {
+				validator.SetExternal(prefix)
+				if validator.ValidateExternal(prefix) == nil {
+					prefixes = append(prefixes, prefix)
+				}
+			}
+			continue
+		}
+		if k%2 == 0 {
+			prefixes = append(prefixes, prefix)
+		}
+	}
+	return prefixes
+}
+
+func replaceMatchingSpecRef(u *unstructured.Unstructured, refGVK schema.GroupVersionKind, refNN types.NamespacedName, external string) []*unstructured.Unstructured {
+	specMap, ok := u.Object["spec"].(map[string]any)
+	if !ok {
+		return nil
+	}
+	paths := findMatchingRefPaths(specMap, nil, u.GetNamespace(), refGVK, refNN)
+	var out []*unstructured.Unstructured
+	for _, p := range paths {
+		cand := u.DeepCopy()
+		candSpec, ok := cand.Object["spec"].(map[string]any)
+		if !ok {
+			continue
+		}
+		if target := mapAtPath(candSpec, p); target != nil {
+			delete(target, "name")
+			delete(target, "namespace")
+			target["external"] = external
+			out = append(out, cand)
+		}
+	}
+	return out
+}
+
+func findMatchingRefPaths(cur any, prefix []any, defaultNamespace string, refGVK schema.GroupVersionKind, refNN types.NamespacedName) [][]any {
+	var results [][]any
+	switch val := cur.(type) {
+	case map[string]any:
+		if isMatchingUnstructuredRef(val, defaultNamespace, refGVK, refNN) {
+			pathCopy := make([]any, len(prefix))
+			copy(pathCopy, prefix)
+			results = append(results, pathCopy)
+		}
+		for k, child := range val {
+			nextPrefix := append(prefix[:len(prefix):len(prefix)], k)
+			results = append(results, findMatchingRefPaths(child, nextPrefix, defaultNamespace, refGVK, refNN)...)
+		}
+	case []any:
+		for i, child := range val {
+			nextPrefix := append(prefix[:len(prefix):len(prefix)], i)
+			results = append(results, findMatchingRefPaths(child, nextPrefix, defaultNamespace, refGVK, refNN)...)
+		}
+	}
+	return results
+}
+
+func isMatchingUnstructuredRef(m map[string]any, defaultNamespace string, refGVK schema.GroupVersionKind, refNN types.NamespacedName) bool {
+	if strField(m, "external") != "" {
+		return false
+	}
+	if strField(m, "name") != refNN.Name || refNN.Name == "" {
+		return false
+	}
+	kind := strField(m, "kind")
+	if kind != "" && kind != refGVK.Kind {
+		return false
+	}
+	ns := strField(m, "namespace")
+	if ns == "" {
+		ns = defaultNamespace
+	}
+	return ns == refNN.Namespace
+}
+
+func mapAtPath(root map[string]any, path []any) map[string]any {
+	var cur any = root
+	for _, step := range path {
+		switch key := step.(type) {
+		case string:
+			m, ok := cur.(map[string]any)
+			if !ok {
+				return nil
+			}
+			cur = m[key]
+		case int:
+			s, ok := cur.([]any)
+			if !ok || key < 0 || key >= len(s) {
+				return nil
+			}
+			cur = s[key]
+		default:
+			return nil
+		}
+	}
+	target, _ := cur.(map[string]any)
+	return target
+}
+
+func setTopLevelSpecRefExternal(u *unstructured.Unstructured, refField, external string) bool {
+	specMap, ok := u.Object["spec"].(map[string]any)
+	if !ok {
+		return false
+	}
+	refMap, ok := specMap[refField].(map[string]any)
+	if !ok {
+		return false
+	}
+	delete(refMap, "name")
+	delete(refMap, "namespace")
+	refMap["external"] = external
+	return true
+}
+
+func strField(m map[string]any, key string) string {
+	val, _ := m[key].(string)
+	return val
+}
+
+func statusResourceSegments(u *unstructured.Unstructured) []string {
+	for _, field := range []string{"externalRef", "selfLink", "id", "name"} {
+		val, _, _ := unstructured.NestedString(u.Object, "status", field)
+		if segs := parseResourcePathSegments(val); len(segs) >= 2 {
+			return segs
+		}
+	}
+	return nil
+}
+
+func parseResourcePathSegments(raw string) []string {
+	s := strings.TrimSpace(raw)
+	for _, scheme := range []string{"https://", "http://", "//"} {
+		if strings.HasPrefix(s, scheme) {
+			s = strings.TrimPrefix(s, scheme)
+			break
+		}
+	}
+	if s == "" || strings.HasPrefix(s, "/") || strings.HasSuffix(s, "/") {
+		return nil
+	}
+	parts := strings.Split(s, "/")
+	for _, p := range parts {
+		if p == "" || p == "." || p == ".." {
+			return nil
+		}
+	}
+	if strings.Contains(parts[0], ".") {
+		parts = parts[1:]
+		if len(parts) >= 2 && (parts[0] == "compute" || parts[0] == "storage") && isAPIVersionSegment(parts[1]) {
+			parts = parts[2:]
+		} else if len(parts) >= 1 && isAPIVersionSegment(parts[0]) {
+			parts = parts[1:]
+		}
+	}
+	return parts
+}
+
+func isAPIVersionSegment(seg string) bool {
+	switch seg {
+	case "v1", "v1beta1", "v1alpha1", "v1beta", "v2", "beta", "alpha":
+		return true
+	default:
+		return false
+	}
 }

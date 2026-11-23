@@ -22,7 +22,10 @@ import (
 	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"google.golang.org/protobuf/proto"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -42,10 +45,11 @@ func SkipPath(paths ...string) NormalizeOption {
 
 func NormalizeReferences(ctx context.Context, reader client.Reader, obj client.Object, projectRef *refs.ProjectIdentity, opts ...NormalizeOption) error {
 	normalizer := &refNormalizer{
-		ctx:     ctx,
-		kube:    reader,
-		src:     obj,
-		project: projectRef,
+		ctx:      ctx,
+		kube:     reader,
+		src:      obj,
+		project:  projectRef,
+		deleting: obj != nil && !obj.GetDeletionTimestamp().IsZero(),
 	}
 	for _, opt := range opts {
 		opt(normalizer)
@@ -78,6 +82,7 @@ type refNormalizer struct {
 	src       client.Object
 	project   *refs.ProjectIdentity
 	skipPaths map[string]bool
+	deleting  bool
 }
 
 func (r *refNormalizer) VisitField(path string, v any) error {
@@ -88,20 +93,54 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 	}
 
 	if projectRef, ok := v.(*refs.ProjectRef); ok {
-		if ref, err := normalizeProjectRef(r.ctx, r.kube, r.src, projectRef); err != nil {
+		ref, err := normalizeProjectRef(r.ctx, r.kube, r.src, projectRef)
+		if err != nil {
+			if r.deleting && isMissingProjectRef(r.ctx, r.kube, r.src.GetNamespace(), projectRef) {
+				return nil
+			}
 			return err
-		} else if ref != nil {
+		}
+		if ref != nil {
 			*projectRef = *ref
 		}
 	}
 
 	if ref, ok := v.(refs.Ref); ok {
 		if err := ref.Normalize(r.ctx, r.kube, r.src.GetNamespace()); err != nil {
+			if r.deleting && isIgnorableRefErrorOnDelete(ref, err) {
+				return nil
+			}
 			return err
 		}
 	}
 
 	return nil
+}
+
+func isIgnorableRefErrorOnDelete(ref refs.Ref, err error) bool {
+	if ref.GetExternal() != "" || ref.GetNamespacedName().Name == "" {
+		return false
+	}
+	return k8s.IsReferenceNotFoundError(err) ||
+		k8s.IsReferenceNotReadyError(err) ||
+		k8s.IsTransitiveDependencyNotFoundError(err) ||
+		k8s.IsTransitiveDependencyNotReadyError(err)
+}
+
+func isMissingProjectRef(ctx context.Context, reader client.Reader, defaultNamespace string, ref *refs.ProjectRef) bool {
+	if reader == nil || ref == nil || ref.External != "" || ref.Name == "" {
+		return false
+	}
+	if ref.Kind != "" && ref.Kind != "Project" {
+		return false
+	}
+	key := ref.GetNamespacedName()
+	if key.Namespace == "" {
+		key.Namespace = defaultNamespace
+	}
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(refs.ProjectGVK)
+	return apierrors.IsNotFound(reader.Get(ctx, key, u))
 }
 
 // NormalizeManagedComputeURIs converts a proto message to its KRM representation,

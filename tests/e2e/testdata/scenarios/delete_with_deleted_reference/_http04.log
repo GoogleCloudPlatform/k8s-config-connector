@@ -1,0 +1,44 @@
+# Phase: DELETE
+DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/upstream-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
