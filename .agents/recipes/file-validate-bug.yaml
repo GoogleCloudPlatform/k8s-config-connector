@@ -148,6 +148,10 @@ outputs:
 task-output:
   kind: Issues
   from: issues_output.yaml
+  # The comment on the PR is a result, not a request: /overseer-ignore keeps
+  # the overseer from acting on it.
+  comment:
+    prefix: /overseer-ignore
   actions:
     - verb: edit
       field: spec
