@@ -102,9 +102,9 @@ func (s *storageInsightsServer) populateDefaultsForDatasetConfig(name *datasetCo
 	// Deterministic UUID for testing alignment
 	var uuid string
 	if strings.HasPrefix(name.DatasetConfig, "datasetconfigmin") {
-		uuid = "902ae861-dd23-4d57-9e47-827346819fa1"
+		uuid = "a7b4792d-5d06-4b65-b952-0377610d5900"
 	} else if strings.HasPrefix(name.DatasetConfig, "datasetconfigmax") {
-		uuid = "87a98927-3c14-489c-ba94-9c9345678bc3"
+		uuid = "270e53ef-2bf3-49d5-83da-58ffc1183866"
 	} else {
 		hash := md5.Sum([]byte(name.DatasetConfig))
 		h := hex.EncodeToString(hash[:])
@@ -130,7 +130,7 @@ func (s *storageInsightsServer) populateDefaultsForDatasetConfig(name *datasetCo
 		}
 	}
 	if obj.OrganizationNumber == 0 {
-		obj.OrganizationNumber = 123451001
+		obj.OrganizationNumber = 123450001
 	}
 	obj.SkipVerificationAndIngest = false
 }

@@ -1,0 +1,87 @@
+GET https://storage.googleapis.com/storage/v1/b/storageinsights-min-dep-${uniqueId}?alt=json&prettyPrint=false
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: UploadServer
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "storageinsights-min-dep-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storageinsights-min-dep-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storageinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmin${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "activityDataRetentionPeriodDays": 30,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "datasetConfigState": 1,
+  "description": "Minimal Storage Insights Dataset Config",
+  "identity": {
+    "name": "p${projectNumber}-a7b4792d5d064b6@gcp-sa-storageinsights.iam.gserviceaccount.com",
+    "type": 1
+  },
+  "includeCloudStorageBuckets": {
+    "cloudStorageBuckets": [
+      {
+        "bucketName": "storageinsights-min-dep-${uniqueId}"
+      }
+    ]
+  },
+  "includeCloudStorageLocations": {
+    "locations": [
+      "us-central1"
+    ]
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "link": {
+    "dataset": "datasetconfigmin${uniqueId}_a7b4792d_5d06_4b65_b952_0377610d5900"
+  },
+  "name": "projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmin${uniqueId}",
+  "organizationNumber": "${organizationID}",
+  "retentionPeriodDays": 30,
+  "sourceProjects": {
+    "projectNumbers": [
+      "${projectNumber}"
+    ]
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

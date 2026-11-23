@@ -1,0 +1,88 @@
+GET https://storage.googleapis.com/storage/v1/b/storageinsights-max-dep-${uniqueId}?alt=json&prettyPrint=false
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: UploadServer
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "storageinsights-max-dep-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storageinsights-max-dep-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storageinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmax${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "activityDataRetentionPeriodDays": 30,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "datasetConfigState": 1,
+  "description": "Updated Maximal Storage Insights Dataset Config",
+  "identity": {
+    "name": "p${projectNumber}-270e53ef2bf349d@gcp-sa-storageinsights.iam.gserviceaccount.com",
+    "type": 1
+  },
+  "includeCloudStorageBuckets": {
+    "cloudStorageBuckets": [
+      {
+        "bucketName": "storageinsights-max-dep-${uniqueId}"
+      }
+    ]
+  },
+  "includeCloudStorageLocations": {
+    "locations": [
+      "us-central1"
+    ]
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "foo": "bar",
+    "managed-by-cnrm": "true"
+  },
+  "link": {
+    "dataset": "datasetconfigmax${uniqueId}_270e53ef_2bf3_49d5_83da_58ffc1183866"
+  },
+  "name": "projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmax${uniqueId}",
+  "organizationNumber": "${organizationID}",
+  "retentionPeriodDays": 14,
+  "sourceProjects": {
+    "projectNumbers": [
+      "${projectNumber}"
+    ]
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

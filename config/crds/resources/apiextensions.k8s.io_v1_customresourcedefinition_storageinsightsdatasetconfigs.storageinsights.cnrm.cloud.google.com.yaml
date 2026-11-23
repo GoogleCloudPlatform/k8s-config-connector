@@ -232,8 +232,11 @@ spec:
               labels:
                 additionalProperties:
                   type: string
-                description: Optional. Labels as key value pairs.
+                description: Immutable. Labels as key value pairs.
                 type: object
+                x-kubernetes-validations:
+                - message: Labels field is immutable
+                  rule: self == oldSelf
               location:
                 description: Immutable. The location of this resource.
                 type: string

@@ -271,7 +271,6 @@ BLOCKED_KINDS=(
     "SecurityposturePostureDeployment"
     "SpannerInstancePartition"
     "StorageBatchOperationsJob"
-    "StorageInsightsDatasetConfig"
     "StorageRapidCache"
     "TelcoAutomationBlueprint"
     "TelcoAutomationDeployment"
