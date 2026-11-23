@@ -21,11 +21,13 @@
 // krm.version: v1beta1
 // proto.service: google.cloud.bigquery.biglake.v1
 // proto.service: google.cloud.biglake.v1
+// proto.service: google.cloud.biglake.hive.v1
 
 package bigquerybiglake
 
 import (
 	biglakepb "cloud.google.com/go/biglake/apiv1/biglakepb"
+	hivepb "cloud.google.com/go/biglake/hive/apiv1/hivepb"
 	pb "cloud.google.com/go/bigquery/biglake/apiv1/biglakepb"
 	krmbigquerybiglakev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1beta1"
@@ -120,6 +122,48 @@ func BigLakeDatabaseSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigq
 	}
 	// MISSING: Name
 	out.Type = direct.Enum_ToProto[pb.Database_Type](mapCtx, in.Type)
+	return out
+}
+func BigLakeHiveCatalogObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *hivepb.HiveCatalog) *krmbigquerybiglakev1alpha1.BigLakeHiveCatalogObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.BigLakeHiveCatalogObservedState{}
+	// MISSING: Name
+	out.Replicas = direct.Slice_FromProto(mapCtx, in.Replicas, HiveCatalog_ReplicaObservedState_v1alpha1_FromProto)
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func BigLakeHiveCatalogObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.BigLakeHiveCatalogObservedState) *hivepb.HiveCatalog {
+	if in == nil {
+		return nil
+	}
+	out := &hivepb.HiveCatalog{}
+	// MISSING: Name
+	out.Replicas = direct.Slice_ToProto(mapCtx, in.Replicas, HiveCatalog_ReplicaObservedState_v1alpha1_ToProto)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func BigLakeHiveCatalogSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *hivepb.HiveCatalog) *krmbigquerybiglakev1alpha1.BigLakeHiveCatalogSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.BigLakeHiveCatalogSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.LocationURI = direct.LazyPtr(in.GetLocationUri())
+	return out
+}
+func BigLakeHiveCatalogSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.BigLakeHiveCatalogSpec) *hivepb.HiveCatalog {
+	if in == nil {
+		return nil
+	}
+	out := &hivepb.HiveCatalog{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.LocationUri = direct.ValueOf(in.LocationURI)
 	return out
 }
 func BigLakeIcebergCatalogObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *biglakepb.IcebergCatalog) *krmbigquerybiglakev1alpha1.BigLakeIcebergCatalogObservedState {
@@ -246,6 +290,24 @@ func BigLakeTableSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BigLake
 	// MISSING: Name
 	out.Type = direct.Enum_ToProto[pb.Table_Type](mapCtx, in.Type)
 	// MISSING: Etag
+	return out
+}
+func HiveCatalog_ReplicaObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *hivepb.HiveCatalog_Replica) *krmbigquerybiglakev1alpha1.HiveCatalog_ReplicaObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.HiveCatalog_ReplicaObservedState{}
+	out.Region = direct.LazyPtr(in.GetRegion())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func HiveCatalog_ReplicaObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.HiveCatalog_ReplicaObservedState) *hivepb.HiveCatalog_Replica {
+	if in == nil {
+		return nil
+	}
+	out := &hivepb.HiveCatalog_Replica{}
+	out.Region = direct.ValueOf(in.Region)
+	out.State = direct.Enum_ToProto[hivepb.HiveCatalog_Replica_State](mapCtx, in.State)
 	return out
 }
 func HiveDatabaseOptions_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.HiveDatabaseOptions) *krmbigquerybiglakev1alpha1.HiveDatabaseOptions {
