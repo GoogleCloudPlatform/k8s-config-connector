@@ -26,25 +26,6 @@ import (
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
-/* found existing non-generated go type with proto tag "google.cloud.discoveryengine.v1.AclConfig", skipping
-
-// +kcc:proto=google.cloud.discoveryengine.v1.AclConfig
-type AclConfig struct {
-	// Immutable. The full resource name of the acl configuration.
-	//  Format:
-	//  `projects/{project}/locations/{location}/aclConfig`.
-	//
-	//  This field must be a UTF-8 encoded string with a length limit of 1024
-	//  characters.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.AclConfig.name
-	Name *string `json:"name,omitempty"`
-
-	// Identity provider config.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.AclConfig.idp_config
-	IdpConfig *IdpConfig `json:"idpConfig,omitempty"`
-}
-*/
-
 // +kcc:proto=google.cloud.discoveryengine.v1.DataConnector.ConnectorMetadata
 type DataConnector_ConnectorMetadata struct {
 	// Optional. Display title of the connector.
