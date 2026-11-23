@@ -33,11 +33,15 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 PROTO_SHA="665784f816da130b27edb566694b2441d0cfddf2"
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 
+NEW_PROTO_SHA="6a1db32dc52fd9421c1743dc8f5faa7a15e518d1"
+NEW_PROTO_OUT="${REPO_ROOT}/.build/googleapis-${NEW_PROTO_SHA}.pb"
+
 # Unset SKIP_GENERATE_PROTOS so this specific script fetches the proto
 OLD_SKIP_GENERATE_PROTOS="${SKIP_GENERATE_PROTOS:-}"
 unset SKIP_GENERATE_PROTOS
 
 ./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+./generate-proto.sh ${NEW_PROTO_SHA} ${NEW_PROTO_OUT}
 
 # Restore SKIP_GENERATE_PROTOS
 if [[ -n "${OLD_SKIP_GENERATE_PROTOS}" ]]; then
@@ -69,31 +73,20 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DiscoveryEngineUserStore:UserStore
 mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1beta_types.generated.go
 
-WIDGET_PROTO_SHA="6a1db32dc52fd9421c1743dc8f5faa7a15e518d1"
-WIDGET_PROTO_OUT="${REPO_ROOT}/.build/googleapis-${WIDGET_PROTO_SHA}.pb"
-
-# Unset SKIP_GENERATE_PROTOS so this specific script fetches the proto
-unset SKIP_GENERATE_PROTOS
-
-./generate-proto.sh ${WIDGET_PROTO_SHA} ${WIDGET_PROTO_OUT}
-
-# Restore SKIP_GENERATE_PROTOS
-if [[ -n "${OLD_SKIP_GENERATE_PROTOS}" ]]; then
-  export SKIP_GENERATE_PROTOS="${OLD_SKIP_GENERATE_PROTOS}"
-fi
-
 ${CONTROLLERBUILDER} generate-types \
-  --proto-source-path ${WIDGET_PROTO_OUT} \
+  --proto-source-path ${NEW_PROTO_OUT} \
+  --service google.cloud.discoveryengine.v1 \
+  --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource DiscoveryEngineWidgetConfig:WidgetConfig \
+  --resource DiscoveryEngineACLConfig:AclConfig
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${NEW_PROTO_OUT} \
   --service google.cloud.discoveryengine.v1 \
   --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
   --resource DiscoveryEngineWidgetConfig:WidgetConfig \
-  --prepopulate-resource
-
-${CONTROLLERBUILDER} generate-identity \
-  --proto-source-path ${WIDGET_PROTO_OUT} \
-  --service google.cloud.discoveryengine.v1 \
-  --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
-  --resource DiscoveryEngineWidgetConfig:WidgetConfig
+  --resource DiscoveryEngineACLConfig:AclConfig
 
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \

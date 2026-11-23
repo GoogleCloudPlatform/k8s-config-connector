@@ -21,6 +21,27 @@
 # file does not have.
 
 entries:
+  - kind: DiscoveryEngineACLConfig
+    group: discoveryengine.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: DiscoveryEngineACLConfig
+    group: discoveryengine.cnrm.cloud.google.com
+    reason: empty-observedstate
+    detail: nothing was generated into status.observedState; the proto probably marks no field OUTPUT_ONLY, so output fields landed in the Spec. Decide what belongs in status
+    status: open
+  - kind: DiscoveryEngineACLConfig
+    group: discoveryengine.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.aclConfig: https://docs.cloud.google.com/generative-ai-app-builder/docs/reference/rest/v1/projects.locations.aclConfig'
+    status: open
+  - kind: DiscoveryEngineACLConfig
+    group: discoveryengine.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: open
   - kind: DiscoveryEngineWidgetConfig
     group: discoveryengine.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
