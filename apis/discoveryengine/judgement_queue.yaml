@@ -125,7 +125,7 @@ entries:
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
     status: resolved
     resolution: edited
-    note: triaged judgement queue, updated parent to *parent.ProjectAndLocationRef, locked in singleton pattern projects/{project}/locations/{location}/cmekConfig via --pattern in generate.sh, converted KMSKey to KMSKeyRef (*kmsv1beta1.KMSCryptoKeyRef) on DiscoveryEngineCMEKConfigSpec and SingleRegionKeyWithRequired, and updated resource docs link
+    note: triaged judgement queue, updated parent to *parent.ProjectAndLocationRef, locked in singleton pattern projects/{project}/locations/{location}/cmekConfig via --pattern in generate.sh, converted KMSKey to KMSKeyRef (*kmsv1beta1.KMSCryptoKeyRef) on DiscoveryEngineCMEKConfigSpec and SingleRegionKeyWithRefs, and updated resource docs link
   - kind: DiscoveryEngineCMEKConfig
     group: discoveryengine.cnrm.cloud.google.com
     reason: identity-multi-pattern
@@ -163,7 +163,7 @@ entries:
     detail: the proto marks this field as a reference to cloudkms.googleapis.com/CryptoKeys (google.api.resource_reference); confirm whether it should be a KCC reference
     status: resolved
     resolution: edited
-    note: converted to KMSKeyRef (*kmsv1beta1.KMSCryptoKeyRef) on SingleRegionKey and SingleRegionKeyWithRequired
+    note: converted to KMSKeyRef (*kmsv1beta1.KMSCryptoKeyRef) on SingleRegionKeyWithRefs
   - kind: DiscoveryEngineWidgetConfig
     group: discoveryengine.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
