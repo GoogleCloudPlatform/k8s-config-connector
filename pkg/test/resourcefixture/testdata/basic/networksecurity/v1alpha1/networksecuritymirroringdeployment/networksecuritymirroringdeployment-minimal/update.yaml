@@ -5,9 +5,9 @@ metadata:
 spec:
   projectRef:
     external: "projects/${projectId}"
-  location: us-central1
+  location: us-central1-a
   forwardingRuleRef:
-    external: "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}"
+    external: "projects/${projectId}/regions/us-central1/forwardingRules/shared-mirroring-fr"
   mirroringDeploymentGroupRef:
-    external: "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}"
+    external: "projects/${projectId}/locations/global/mirroringDeploymentGroups/shared-dg"
   description: "Updated description for minimal mirroring deployment"
