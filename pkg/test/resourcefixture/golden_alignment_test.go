@@ -765,6 +765,8 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "displayName")
 			delete(v, "name")
 			delete(v, "parent")
+			delete(v, "configuredCapabilities")
+			delete(v, "isManagementProject")
 		}
 
 		// Cloud KMS ImportJob specific fields (HSM attestation and wrapping public key are dynamically generated per job)
