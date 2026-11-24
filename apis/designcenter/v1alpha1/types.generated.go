@@ -21,6 +21,7 @@
 // resource: DesignCenterCatalog:Catalog
 // resource: DesignCenterCatalogTemplate:CatalogTemplate
 // resource: DesignCenterCatalogTemplateRevision:CatalogTemplateRevision
+// resource: DesignCenterApplicationTemplate:ApplicationTemplate
 
 package v1alpha1
 
@@ -139,6 +140,51 @@ type AppHubApplicationParameters struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.designcenter.v1.ApplicationTemplate", skipping
+
+// +kcc:proto=google.cloud.designcenter.v1.ApplicationTemplate
+type ApplicationTemplate struct {
+	// Identifier. Application template name.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplicationTemplate.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Application template display name.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplicationTemplate.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. Application template description.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplicationTemplate.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Parameters to apply to all components in an application. You can
+	//  specify projectID and region.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplicationTemplate.application_parameters
+	ApplicationParameters []Parameter `json:"applicationParameters,omitempty"`
+
+	// Optional. Immutable. The composition type of the applicationTemplate:
+	//  STANDARD OR COMPOSITE. This is a create time only param.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplicationTemplate.composition_type
+	CompositionType *string `json:"compositionType,omitempty"`
+
+	// Optional. Root level input variables of the application template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplicationTemplate.root_input_variables
+	RootInputVariables []ComponentVariable `json:"rootInputVariables,omitempty"`
+
+	// Optional. Root level output variables of the application template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplicationTemplate.root_output_variables
+	RootOutputVariables []ComponentVariable `json:"rootOutputVariables,omitempty"`
+
+	// Optional. SaaS runtime context for the application template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplicationTemplate.saas_runtime_context
+	SaasRuntimeContext *SaaSRuntimeContext `json:"saasRuntimeContext,omitempty"`
+
+	// Optional. If true, exposes all inputs as root module variables.
+	//  This is only supported for STANDARD composition type templates.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplicationTemplate.inputs_as_root_module_variables
+	InputsAsRootModuleVariables *bool `json:"inputsAsRootModuleVariables,omitempty"`
+}
+*/
+
 /* unreachable type ApplyCondition
 // +kcc:proto=google.cloud.designcenter.v1.ApplyCondition
 type ApplyCondition struct {
@@ -149,6 +195,21 @@ type ApplyCondition struct {
 	// Required. The value of the parameter for the condition.
 	// +kcc:proto:field=google.cloud.designcenter.v1.ApplyCondition.condition_value
 	ConditionValue *string `json:"conditionValue,omitempty"`
+}
+*/
+
+/* unreachable type ArtifactLocation
+// +kcc:proto=google.cloud.designcenter.v1.ArtifactLocation
+type ArtifactLocation struct {
+	// Optional. Source Code Management(SCM) config for storing the content,
+	//  such as generated IaC. Supports sources integrated with Developer Connect
+	//  like GitHub, GitHub Enterprise, GitLab, and Bitbucket.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ArtifactLocation.developer_connect_export_config
+	DeveloperConnectExportConfig *DeveloperConnectExportConfig `json:"developerConnectExportConfig,omitempty"`
+
+	// Optional. The Cloud Storage URI for storing the generated IaC.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ArtifactLocation.gcs_uri
+	GCSURI *string `json:"gcsURI,omitempty"`
 }
 */
 
@@ -307,18 +368,18 @@ type ComponentParameterSchema struct {
 }
 */
 
-/* unreachable type ComponentVariable
 // +kcc:proto=google.cloud.designcenter.v1.ComponentVariable
 type ComponentVariable struct {
 	// Required. Name of the variable.
 	// +kcc:proto:field=google.cloud.designcenter.v1.ComponentVariable.variable
+	// +required
 	Variable *string `json:"variable,omitempty"`
 
 	// Required. Component to which this variable belongs.
 	// +kcc:proto:field=google.cloud.designcenter.v1.ComponentVariable.component_uri
+	// +required
 	ComponentURI *string `json:"componentURI,omitempty"`
 }
-*/
 
 /* unreachable type ConnectionParameters
 // +kcc:proto=google.cloud.designcenter.v1.ConnectionParameters
@@ -369,6 +430,29 @@ type DeveloperConnectConfig struct {
 	// +kcc:proto:field=google.cloud.designcenter.v1.DeveloperConnectConfig.git_repository_link
 	GitRepositoryLink *string `json:"gitRepositoryLink,omitempty"`
 }
+
+/* unreachable type DeveloperConnectExportConfig
+// +kcc:proto=google.cloud.designcenter.v1.DeveloperConnectExportConfig
+type DeveloperConnectExportConfig struct {
+	// Required. The Developer Connect Git repository link, formatted as
+	//  `projects/-*-/locations/-*-/connections/-*-/gitRepositoryLinks/-*`.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeveloperConnectExportConfig.developer_connect_repo_uri
+	DeveloperConnectRepoURI *string `json:"developerConnectRepoURI,omitempty"`
+
+	// Optional. The branch in repo to which the content such as Infrastructure as
+	//  Code (IaC) should be written to. If empty, Application Design Center will
+	//  create a branch and push the changes.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeveloperConnectExportConfig.branch
+	Branch *string `json:"branch,omitempty"`
+
+	// Required. Directory, relative to the source repo, where content such as
+	//  Infrastructure as Code (IaC) will be stored.
+	//  This must be a relative path.To specify the root directory, use '/'.
+	//  If the path or any subdirectories do not exist, they will be created.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeveloperConnectExportConfig.dir
+	Dir *string `json:"dir,omitempty"`
+}
+*/
 
 /* found existing non-generated go type "DeveloperConnectSourceConfig", skipping
 
@@ -1202,6 +1286,57 @@ type AppHubApplicationParametersObservedState struct {
 	HostProjectID *string `json:"hostProjectID,omitempty"`
 }
 
+/* found existing non-generated go type with proto tag "google.cloud.designcenter.v1.ApplicationTemplate", skipping
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.ApplicationTemplate
+type ApplicationTemplateObservedState struct {
+	// Output only. Application template creation timestamp.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplicationTemplate.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Application template update timestamp.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplicationTemplate.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Optional. Parameters to apply to all components in an application. You can
+	//  specify projectID and region.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplicationTemplate.application_parameters
+	ApplicationParameters []ParameterObservedState `json:"applicationParameters,omitempty"`
+
+	// Output only. The IaC format of the application template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplicationTemplate.iac_format
+	IacFormat *string `json:"iacFormat,omitempty"`
+
+	// Output only. The serialized application template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplicationTemplate.serialized_application_template
+	SerializedApplicationTemplate *SerializedApplicationTemplateObservedState `json:"serializedApplicationTemplate,omitempty"`
+
+	// Output only. The latest application template revision.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplicationTemplate.latest_revision
+	LatestRevision *string `json:"latestRevision,omitempty"`
+
+	// Output only. Details of the location where the IaC for this
+	//  ApplicationTemplate was last successfully exported.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplicationTemplate.artifact_location
+	ArtifactLocation *ArtifactLocationObservedState `json:"artifactLocation,omitempty"`
+
+	// Output only. The URI of the most recent System Revision generated for this
+	//  ApplicationTemplate. This ID corresponds to the `name` field in the
+	//  ApplicationTemplateSystemRevision resource.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplicationTemplate.latest_system_revision_uri
+	LatestSystemRevisionURI *string `json:"latestSystemRevisionURI,omitempty"`
+
+	// Output only. Indicates the IaC source format of this application template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplicationTemplate.iac_source
+	IacSource *string `json:"iacSource,omitempty"`
+
+	// Output only. The input output variables parsed from the imported terraform
+	//  code.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ApplicationTemplate.template_metadata
+	TemplateMetadata *TfBlueprintMetadataObservedState `json:"templateMetadata,omitempty"`
+}
+*/
+
 // +kcc:observedstate:proto=google.cloud.designcenter.v1.ApplyCondition
 type ApplyConditionObservedState struct {
 	// Required. The key of the parameter for the condition.
@@ -1211,6 +1346,19 @@ type ApplyConditionObservedState struct {
 	// Required. The value of the parameter for the condition.
 	// +kcc:proto:field=google.cloud.designcenter.v1.ApplyCondition.condition_value
 	ConditionValue *string `json:"conditionValue,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.ArtifactLocation
+type ArtifactLocationObservedState struct {
+	// Optional. Source Code Management(SCM) config for storing the content,
+	//  such as generated IaC. Supports sources integrated with Developer Connect
+	//  like GitHub, GitHub Enterprise, GitLab, and Bitbucket.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ArtifactLocation.developer_connect_export_config
+	DeveloperConnectExportConfig *DeveloperConnectExportConfigObservedState `json:"developerConnectExportConfig,omitempty"`
+
+	// Optional. The Cloud Storage URI for storing the generated IaC.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ArtifactLocation.gcs_uri
+	GCSURI *string `json:"gcsURI,omitempty"`
 }
 
 /* found existing non-generated go type with proto tag "google.cloud.designcenter.v1.Catalog", skipping
@@ -1406,6 +1554,32 @@ type ConnectionParametersObservedState struct {
 	Parameters []ParameterObservedState `json:"parameters,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.DeveloperConnectExportConfig
+type DeveloperConnectExportConfigObservedState struct {
+	// Required. The Developer Connect Git repository link, formatted as
+	//  `projects/*/locations/*/connections/*/gitRepositoryLinks/*`.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeveloperConnectExportConfig.developer_connect_repo_uri
+	DeveloperConnectRepoURI *string `json:"developerConnectRepoURI,omitempty"`
+
+	// Optional. The branch in repo to which the content such as Infrastructure as
+	//  Code (IaC) should be written to. If empty, Application Design Center will
+	//  create a branch and push the changes.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeveloperConnectExportConfig.branch
+	Branch *string `json:"branch,omitempty"`
+
+	// Required. Directory, relative to the source repo, where content such as
+	//  Infrastructure as Code (IaC) will be stored.
+	//  This must be a relative path.To specify the root directory, use '/'.
+	//  If the path or any subdirectories do not exist, they will be created.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeveloperConnectExportConfig.dir
+	Dir *string `json:"dir,omitempty"`
+
+	// Output only. The SHA of the Git commit that contains the exported content
+	//  such as Infrastructure as Code (IaC).
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeveloperConnectExportConfig.commit_sha
+	CommitSha *string `json:"commitSha,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.designcenter.v1.DeveloperConnectSourceConfig
 type DeveloperConnectSourceConfigObservedState struct {
 	// Output only. The SHA of the commit deduced from GitReference.
@@ -1539,6 +1713,14 @@ type MetadataInputSpecObservedState struct {
 
 // +kcc:observedstate:proto=google.cloud.designcenter.v1.Parameter
 type ParameterObservedState struct {
+	// Required. The key of the parameter.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Parameter.key
+	Key *string `json:"key,omitempty"`
+
+	// Optional. The value of the parameter.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Parameter.value
+	Value *Value `json:"value,omitempty"`
+
 	// Output only. Indicates if the parameter is read-only (driven by
 	//  expression).
 	// +kcc:proto:field=google.cloud.designcenter.v1.Parameter.read_only

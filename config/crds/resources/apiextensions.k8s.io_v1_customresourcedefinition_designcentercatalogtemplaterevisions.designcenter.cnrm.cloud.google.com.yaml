@@ -585,10 +585,43 @@ spec:
                     description: Optional. The values provided for the input variables.
                     items:
                       properties:
+                        key:
+                          description: Required. The key of the parameter.
+                          type: string
                         readOnly:
                           description: Output only. Indicates if the parameter is
                             read-only (driven by expression).
                           type: boolean
+                        value:
+                          description: Optional. The value of the parameter.
+                          properties:
+                            boolValue:
+                              description: Represents a boolean value.
+                              type: boolean
+                            listValue:
+                              description: Represents a repeated `Value`.
+                              properties:
+                                values:
+                                  description: Repeated field of dynamically typed
+                                    values.
+                                  items:
+                                    type: object
+                                    x-kubernetes-preserve-unknown-fields: true
+                                  type: array
+                              type: object
+                            nullValue:
+                              description: Represents a null value.
+                              type: string
+                            numberValue:
+                              description: Represents a double value.
+                              type: number
+                            stringValue:
+                              description: Represents a string value.
+                              type: string
+                            structValue:
+                              description: Represents a structured value.
+                              x-kubernetes-preserve-unknown-fields: true
+                          type: object
                       type: object
                     type: array
                   applicationTemplateRevision:
@@ -684,10 +717,43 @@ spec:
                           in the application template.
                         items:
                           properties:
+                            key:
+                              description: Required. The key of the parameter.
+                              type: string
                             readOnly:
                               description: Output only. Indicates if the parameter
                                 is read-only (driven by expression).
                               type: boolean
+                            value:
+                              description: Optional. The value of the parameter.
+                              properties:
+                                boolValue:
+                                  description: Represents a boolean value.
+                                  type: boolean
+                                listValue:
+                                  description: Represents a repeated `Value`.
+                                  properties:
+                                    values:
+                                      description: Repeated field of dynamically typed
+                                        values.
+                                      items:
+                                        type: object
+                                        x-kubernetes-preserve-unknown-fields: true
+                                      type: array
+                                  type: object
+                                nullValue:
+                                  description: Represents a null value.
+                                  type: string
+                                numberValue:
+                                  description: Represents a double value.
+                                  type: number
+                                stringValue:
+                                  description: Represents a string value.
+                                  type: string
+                                structValue:
+                                  description: Represents a structured value.
+                                  x-kubernetes-preserve-unknown-fields: true
+                              type: object
                           type: object
                         type: array
                       components:
@@ -858,10 +924,45 @@ spec:
                                       associated with the destination component.
                                     items:
                                       properties:
+                                        key:
+                                          description: Required. The key of the parameter.
+                                          type: string
                                         readOnly:
                                           description: Output only. Indicates if the
                                             parameter is read-only (driven by expression).
                                           type: boolean
+                                        value:
+                                          description: Optional. The value of the
+                                            parameter.
+                                          properties:
+                                            boolValue:
+                                              description: Represents a boolean value.
+                                              type: boolean
+                                            listValue:
+                                              description: Represents a repeated `Value`.
+                                              properties:
+                                                values:
+                                                  description: Repeated field of dynamically
+                                                    typed values.
+                                                  items:
+                                                    type: object
+                                                    x-kubernetes-preserve-unknown-fields: true
+                                                  type: array
+                                              type: object
+                                            nullValue:
+                                              description: Represents a null value.
+                                              type: string
+                                            numberValue:
+                                              description: Represents a double value.
+                                              type: number
+                                            stringValue:
+                                              description: Represents a string value.
+                                              type: string
+                                            structValue:
+                                              description: Represents a structured
+                                                value.
+                                              x-kubernetes-preserve-unknown-fields: true
+                                          type: object
                                       type: object
                                     type: array
                                   destinationComponentURI:
@@ -873,10 +974,45 @@ spec:
                                       associated with the source component.
                                     items:
                                       properties:
+                                        key:
+                                          description: Required. The key of the parameter.
+                                          type: string
                                         readOnly:
                                           description: Output only. Indicates if the
                                             parameter is read-only (driven by expression).
                                           type: boolean
+                                        value:
+                                          description: Optional. The value of the
+                                            parameter.
+                                          properties:
+                                            boolValue:
+                                              description: Represents a boolean value.
+                                              type: boolean
+                                            listValue:
+                                              description: Represents a repeated `Value`.
+                                              properties:
+                                                values:
+                                                  description: Repeated field of dynamically
+                                                    typed values.
+                                                  items:
+                                                    type: object
+                                                    x-kubernetes-preserve-unknown-fields: true
+                                                  type: array
+                                              type: object
+                                            nullValue:
+                                              description: Represents a null value.
+                                              type: string
+                                            numberValue:
+                                              description: Represents a double value.
+                                              type: number
+                                            stringValue:
+                                              description: Represents a string value.
+                                              type: string
+                                            structValue:
+                                              description: Represents a structured
+                                                value.
+                                              x-kubernetes-preserve-unknown-fields: true
+                                          type: object
                                       type: object
                                     type: array
                                   uri:
@@ -898,10 +1034,45 @@ spec:
                                       with the connection.
                                     items:
                                       properties:
+                                        key:
+                                          description: Required. The key of the parameter.
+                                          type: string
                                         readOnly:
                                           description: Output only. Indicates if the
                                             parameter is read-only (driven by expression).
                                           type: boolean
+                                        value:
+                                          description: Optional. The value of the
+                                            parameter.
+                                          properties:
+                                            boolValue:
+                                              description: Represents a boolean value.
+                                              type: boolean
+                                            listValue:
+                                              description: Represents a repeated `Value`.
+                                              properties:
+                                                values:
+                                                  description: Repeated field of dynamically
+                                                    typed values.
+                                                  items:
+                                                    type: object
+                                                    x-kubernetes-preserve-unknown-fields: true
+                                                  type: array
+                                              type: object
+                                            nullValue:
+                                              description: Represents a null value.
+                                              type: string
+                                            numberValue:
+                                              description: Represents a double value.
+                                              type: number
+                                            stringValue:
+                                              description: Represents a string value.
+                                              type: string
+                                            structValue:
+                                              description: Represents a structured
+                                                value.
+                                              x-kubernetes-preserve-unknown-fields: true
+                                          type: object
                                       type: object
                                     type: array
                                 type: object
@@ -930,10 +1101,43 @@ spec:
                               description: Optional. The component parameters.
                               items:
                                 properties:
+                                  key:
+                                    description: Required. The key of the parameter.
+                                    type: string
                                   readOnly:
                                     description: Output only. Indicates if the parameter
                                       is read-only (driven by expression).
                                     type: boolean
+                                  value:
+                                    description: Optional. The value of the parameter.
+                                    properties:
+                                      boolValue:
+                                        description: Represents a boolean value.
+                                        type: boolean
+                                      listValue:
+                                        description: Represents a repeated `Value`.
+                                        properties:
+                                          values:
+                                            description: Repeated field of dynamically
+                                              typed values.
+                                            items:
+                                              type: object
+                                              x-kubernetes-preserve-unknown-fields: true
+                                            type: array
+                                        type: object
+                                      nullValue:
+                                        description: Represents a null value.
+                                        type: string
+                                      numberValue:
+                                        description: Represents a double value.
+                                        type: number
+                                      stringValue:
+                                        description: Represents a string value.
+                                        type: string
+                                      structValue:
+                                        description: Represents a structured value.
+                                        x-kubernetes-preserve-unknown-fields: true
+                                    type: object
                                 type: object
                               type: array
                             roles:
@@ -967,10 +1171,43 @@ spec:
                           terraform.tfvars.
                         items:
                           properties:
+                            key:
+                              description: Required. The key of the parameter.
+                              type: string
                             readOnly:
                               description: Output only. Indicates if the parameter
                                 is read-only (driven by expression).
                               type: boolean
+                            value:
+                              description: Optional. The value of the parameter.
+                              properties:
+                                boolValue:
+                                  description: Represents a boolean value.
+                                  type: boolean
+                                listValue:
+                                  description: Represents a repeated `Value`.
+                                  properties:
+                                    values:
+                                      description: Repeated field of dynamically typed
+                                        values.
+                                      items:
+                                        type: object
+                                        x-kubernetes-preserve-unknown-fields: true
+                                      type: array
+                                  type: object
+                                nullValue:
+                                  description: Represents a null value.
+                                  type: string
+                                numberValue:
+                                  description: Represents a double value.
+                                  type: number
+                                stringValue:
+                                  description: Represents a string value.
+                                  type: string
+                                structValue:
+                                  description: Represents a structured value.
+                                  x-kubernetes-preserve-unknown-fields: true
+                              type: object
                           type: object
                         type: array
                       customVariables:
@@ -1093,10 +1330,43 @@ spec:
                                 provider. Reuses the standard Parameter message.
                               items:
                                 properties:
+                                  key:
+                                    description: Required. The key of the parameter.
+                                    type: string
                                   readOnly:
                                     description: Output only. Indicates if the parameter
                                       is read-only (driven by expression).
                                     type: boolean
+                                  value:
+                                    description: Optional. The value of the parameter.
+                                    properties:
+                                      boolValue:
+                                        description: Represents a boolean value.
+                                        type: boolean
+                                      listValue:
+                                        description: Represents a repeated `Value`.
+                                        properties:
+                                          values:
+                                            description: Repeated field of dynamically
+                                              typed values.
+                                            items:
+                                              type: object
+                                              x-kubernetes-preserve-unknown-fields: true
+                                            type: array
+                                        type: object
+                                      nullValue:
+                                        description: Represents a null value.
+                                        type: string
+                                      numberValue:
+                                        description: Represents a double value.
+                                        type: number
+                                      stringValue:
+                                        description: Represents a string value.
+                                        type: string
+                                      structValue:
+                                        description: Represents a structured value.
+                                        x-kubernetes-preserve-unknown-fields: true
+                                    type: object
                                 type: object
                               type: array
                             provider:
@@ -1182,10 +1452,45 @@ spec:
                                       specific control.
                                     items:
                                       properties:
+                                        key:
+                                          description: Required. The key of the parameter.
+                                          type: string
                                         readOnly:
                                           description: Output only. Indicates if the
                                             parameter is read-only (driven by expression).
                                           type: boolean
+                                        value:
+                                          description: Optional. The value of the
+                                            parameter.
+                                          properties:
+                                            boolValue:
+                                              description: Represents a boolean value.
+                                              type: boolean
+                                            listValue:
+                                              description: Represents a repeated `Value`.
+                                              properties:
+                                                values:
+                                                  description: Repeated field of dynamically
+                                                    typed values.
+                                                  items:
+                                                    type: object
+                                                    x-kubernetes-preserve-unknown-fields: true
+                                                  type: array
+                                              type: object
+                                            nullValue:
+                                              description: Represents a null value.
+                                              type: string
+                                            numberValue:
+                                              description: Represents a double value.
+                                              type: number
+                                            stringValue:
+                                              description: Represents a string value.
+                                              type: string
+                                            structValue:
+                                              description: Represents a structured
+                                                value.
+                                              x-kubernetes-preserve-unknown-fields: true
+                                          type: object
                                       type: object
                                     type: array
                                 type: object

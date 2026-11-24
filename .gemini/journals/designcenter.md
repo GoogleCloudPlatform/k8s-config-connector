@@ -116,6 +116,13 @@
   - **Fixtures & Golden Logs**: Recorded E2E fixtures against real GCP (`cnrm-barni-4`) using `./hack/record-gcp "fixtures/designcentercatalogtemplaterevision-minimal"` and `"fixtures/designcentercatalogtemplaterevision-maximal"`. Audit probe markers and Cloud Audit Logs confirm successful actuation and deletion.
   - **Validation**: 200-seed focused round-trip fuzzer (`TestFocusedMappers/DesignCenterCatalogTemplateRevision`), CRD field presence checks, and presubmit unit tests all passed cleanly.
 
+### [2026-11-19] Prepopulating DesignCenterApplicationTemplate
+- **Context**: Prepopulating direct KRM types, identity, reference, mapper, and judgement queue for `DesignCenterApplicationTemplate` (Issue #16161).
+- **Generation & Mapper Setup**:
+  - Added `--resource DesignCenterApplicationTemplate:ApplicationTemplate` to `generate-types` and `generate-identity` in `apis/designcenter/generate.sh`.
+  - Appended `google.cloud.apphub.v1` to `--service` on `generate-mapper` in `apis/designcenter/generate.sh` to automatically emit mappers for AppHub types referenced in `AppHubApplicationParameters` (`Scope`, `Attributes`, `Criticality`, `Environment`, `ContactInfo`).
+  - Added `DesignCenterApplicationTemplate` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` with golden output for `DesignCenterApplicationTemplate`.
 
 
 

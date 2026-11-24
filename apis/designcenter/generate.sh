@@ -44,6 +44,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DesignCenterCatalog:Catalog \
   --resource DesignCenterCatalogTemplate:CatalogTemplate \
   --resource DesignCenterCatalogTemplateRevision:CatalogTemplateRevision \
+  --resource DesignCenterApplicationTemplate:ApplicationTemplate \
   --prepopulate-resource
 
 ${CONTROLLERBUILDER} generate-identity \
@@ -53,11 +54,12 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource DesignCenterSpace:Space \
   --resource DesignCenterCatalog:Catalog \
   --resource DesignCenterCatalogTemplate:CatalogTemplate \
-  --resource DesignCenterCatalogTemplateRevision:CatalogTemplateRevision
+  --resource DesignCenterCatalogTemplateRevision:CatalogTemplateRevision \
+  --resource DesignCenterApplicationTemplate:ApplicationTemplate
 
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \
-  --service google.cloud.designcenter.v1 \
+  --service google.cloud.designcenter.v1,google.cloud.apphub.v1 \
   --api-version designcenter.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --prepopulate-resource
