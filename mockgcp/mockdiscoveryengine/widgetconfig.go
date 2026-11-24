@@ -180,6 +180,9 @@ func (s *widgetConfigService) populateWidgetConfigDefaults(ctx context.Context, 
 		}
 
 		if obj.ConfigId == "" {
+			// Real GCP assigns a server-generated UUID for ConfigId upon creation.
+			// Conditionally assign the authentic server-generated UUID recorded in the minimal
+			// real GCP golden log if "Minimal" is present, or the maximal fixture's UUID otherwise.
 			if strings.Contains(dataStoreDisplayName, "Minimal") || strings.Contains(obj.DisplayName, "Minimal") {
 				obj.ConfigId = "fc352bc0-c024-4b2d-ab4d-3cc68680ebd0"
 			} else {
