@@ -126,7 +126,6 @@ BLOCKED_KINDS=(
     "CCInsightsConversation"
     "CCInsightsIssueModel"
     "CCInsightsQaQuestion"
-    "CCInsightsView"
     "CertificateManagerTrustConfig"
     "CesAgent"
     "ChronicleDataAccessLabel"
