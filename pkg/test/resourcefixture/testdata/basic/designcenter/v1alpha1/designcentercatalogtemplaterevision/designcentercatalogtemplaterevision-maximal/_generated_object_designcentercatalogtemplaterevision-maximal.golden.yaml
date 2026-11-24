@@ -1,0 +1,394 @@
+apiVersion: designcenter.cnrm.cloud.google.com/v1alpha1
+kind: DesignCenterCatalogTemplateRevision
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: designcentercatalogtemplaterevision-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Maximal catalog template revision description
+  gitSource:
+    refTag: v0.34.2
+    repo: GoogleCloudPlatform/terraform-google-cloud-run
+  parentRef:
+    name: dc-template-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/dc-template-${uniqueId}/revisions/designcentercatalogtemplaterevision-maximal-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    gitSource: {}
+    state: ACTIVE
+    templateCategory: APPLICATION_TEMPLATE
+    templateMetadata:
+      apis:
+      - accesscontextmanager.googleapis.com
+      - cloudbilling.googleapis.com
+      - cloudkms.googleapis.com
+      - cloudresourcemanager.googleapis.com
+      - compute.googleapis.com
+      - iam.googleapis.com
+      - iap.googleapis.com
+      - monitoring.googleapis.com
+      - run.googleapis.com
+      - serviceusage.googleapis.com
+      - storage-api.googleapis.com
+      providerVersions:
+      - source: hashicorp/google
+        version: '>= 6, < 8'
+      - source: hashicorp/google-beta
+        version: '>= 6, < 8'
+      roles:
+      - roles/cloudkms.admin
+      - roles/resourcemanager.projectIamAdmin
+      - roles/run.admin
+      - roles/iam.serviceAccountAdmin
+      - roles/artifactregistry.admin
+      - roles/iam.serviceAccountUser
+      - roles/serviceusage.serviceUsageViewer
+      terraformInput:
+      - description: The project ID to deploy to
+        isRequired: true
+        terraformInputVariable: project_id
+        type: string
+      - description: The name of the Cloud Run service to create
+        isRequired: true
+        terraformInputVariable: service_name
+        type: string
+      - description: Cloud Run service deployment location
+        isRequired: true
+        terraformInputVariable: location
+        type: string
+      - description: GCR hosted image URL to deploy
+        isRequired: true
+        terraformInputVariable: image
+        type: string
+      - defaultValue:
+          boolValue: true
+        description: Option to enable revision name generation
+        terraformInputVariable: generate_revision_name
+        type: bool
+      - defaultValue:
+          listValue:
+            values:
+            - structValue:
+                latest_revision: true
+                percent: 100
+                revision_name: v1-0-0
+                tag: null
+        description: Managing traffic routing to the service
+        terraformInputVariable: traffic_split
+        type: |-
+          list(object({
+              latest_revision = bool
+              percent         = number
+              revision_name   = string
+              tag             = string
+            }))
+      - defaultValue:
+          structValue: {}
+        description: A set of key/value label pairs to assign to the service
+        terraformInputVariable: service_labels
+        type: map(string)
+      - defaultValue:
+          structValue:
+            run.googleapis.com/ingress: all
+        description: Annotations to the service. Acceptable values all, internal,
+          internal-and-cloud-load-balancing
+        terraformInputVariable: service_annotations
+        type: map(string)
+      - defaultValue:
+          structValue: {}
+        description: A set of key/value label pairs to assign to the container metadata
+        terraformInputVariable: template_labels
+        type: map(string)
+      - defaultValue:
+          structValue:
+            autoscaling.knative.dev/maxScale: 2
+            autoscaling.knative.dev/minScale: 1
+            generated-by: terraform
+            run.googleapis.com/client-name: terraform
+        description: Annotations to the container metadata including VPC Connector
+          and SQL. See [more details](https://cloud.google.com/run/docs/reference/rpc/google.cloud.run.v1#revisiontemplate)
+        terraformInputVariable: template_annotations
+        type: map(string)
+      - description: CMEK encryption key self-link expected in the format projects/PROJECT/locations/LOCATION/keyRings/KEY-RING/cryptoKeys/CRYPTO-KEY.
+        terraformInputVariable: encryption_key
+        type: string
+      - description: Concurrent request limits to the service
+        terraformInputVariable: container_concurrency
+        type: number
+      - defaultValue:
+          numberValue: 120
+        description: Timeout for each request
+        terraformInputVariable: timeout_seconds
+        type: number
+      - defaultValue: {}
+        description: Service Account email needed for the service
+        terraformInputVariable: service_account_email
+        type: string
+      - defaultValue:
+          listValue: {}
+        description: '[Beta] Volumes needed for environment variables (when using
+          secret)'
+        terraformInputVariable: volumes
+        type: |-
+          list(object({
+              name = string
+              secret = set(object({
+                secret_name = string
+                items       = map(string)
+              }))
+            }))
+      - description: Resource limits to the container
+        terraformInputVariable: limits
+        type: map(string)
+      - defaultValue:
+          structValue: {}
+        description: Resource requests to the container
+        terraformInputVariable: requests
+        type: map(string)
+      - defaultValue:
+          structValue:
+            name: http1
+            port: 8080
+        description: Port which the container listens to (http1 or h2c)
+        terraformInputVariable: ports
+        type: |-
+          object({
+              name = string
+              port = number
+            })
+      - defaultValue:
+          listValue: {}
+        description: Arguments passed to the ENTRYPOINT command, include these only
+          if image entrypoint needs arguments
+        terraformInputVariable: argument
+        type: list(string)
+      - defaultValue:
+          listValue: {}
+        description: Leave blank to use the ENTRYPOINT command defined in the container
+          image, include these only if image entrypoint should be overwritten
+        terraformInputVariable: container_command
+        type: list(string)
+      - description: |
+          Startup probe of application within the container.
+          All other probes are disabled if a startup probe is provided, until it succeeds.
+          Container will not be added to service endpoints if the probe fails.
+          More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+        terraformInputVariable: startup_probe
+        type: |-
+          object({
+              failure_threshold     = optional(number, null)
+              initial_delay_seconds = optional(number, null)
+              timeout_seconds       = optional(number, null)
+              period_seconds        = optional(number, null)
+              http_get = optional(object({
+                path = optional(string)
+                http_headers = optional(list(object({
+                  name  = string
+                  value = string
+                })), null)
+              }), null)
+              tcp_socket = optional(object({
+                port = optional(number)
+              }), null)
+              grpc = optional(object({
+                port    = optional(number)
+                service = optional(string)
+              }), null)
+            })
+      - description: |
+          Periodic probe of container liveness. Container will be restarted if the probe fails.
+          More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+        terraformInputVariable: liveness_probe
+        type: |-
+          object({
+              failure_threshold     = optional(number, null)
+              initial_delay_seconds = optional(number, null)
+              timeout_seconds       = optional(number, null)
+              period_seconds        = optional(number, null)
+              http_get = optional(object({
+                path = optional(string)
+                http_headers = optional(list(object({
+                  name  = string
+                  value = string
+                })), null)
+              }), null)
+              grpc = optional(object({
+                port    = optional(number)
+                service = optional(string)
+              }), null)
+            })
+      - defaultValue:
+          listValue: {}
+        description: Environment variables (cleartext)
+        terraformInputVariable: env_vars
+        type: |-
+          list(object({
+              value = string
+              name  = string
+            }))
+      - defaultValue:
+          listValue: {}
+        description: '[Beta] Environment variables (Secret Manager)'
+        terraformInputVariable: env_secret_vars
+        type: |-
+          list(object({
+              name = string
+              value_from = set(object({
+                secret_key_ref = map(string)
+              }))
+            }))
+      - defaultValue:
+          listValue: {}
+        description: '[Beta] Volume Mounts to be attached to the container (when using
+          secret)'
+        terraformInputVariable: volume_mounts
+        type: |-
+          list(object({
+              mount_path = string
+              name       = string
+            }))
+      - defaultValue:
+          listValue: {}
+        description: List of Custom Domain Name
+        terraformInputVariable: verified_domain_name
+        type: list(string)
+      - defaultValue: {}
+        description: Option to force override existing mapping
+        terraformInputVariable: force_override
+        type: bool
+      - defaultValue:
+          stringValue: NONE
+        description: The mode of the certificate (NONE or AUTOMATIC)
+        terraformInputVariable: certificate_mode
+        type: string
+      - defaultValue:
+          structValue: {}
+        description: A set of key/value label pairs to assign to the Domain mapping
+        terraformInputVariable: domain_map_labels
+        type: map(string)
+      - defaultValue:
+          structValue: {}
+        description: Annotations to the domain map
+        terraformInputVariable: domain_map_annotations
+        type: map(string)
+      - defaultValue:
+          listValue: {}
+        description: Users/SAs to be given invoker access to the service
+        terraformInputVariable: members
+        type: list(string)
+      terraformOutput:
+      - description: Service URI in CAIS style to be used by Apphub.
+        terraformOutputVariable: apphub_service_uri
+        type:
+          listValue:
+            values:
+            - stringValue: object
+              structValue: null
+            - structValue:
+                service_id: string
+                service_uri: string
+      - description: Unique Identifier for the created domain map
+        terraformOutputVariable: domain_map_id
+        type:
+          listValue:
+            values:
+            - stringValue: tuple
+              structValue: null
+            - listValue: {}
+              structValue: null
+      - description: Status of Domain mapping
+        terraformOutputVariable: domain_map_status
+        type:
+          listValue:
+            values:
+            - stringValue: tuple
+              structValue: null
+            - listValue: {}
+              structValue: null
+      - description: Location in which the Cloud Run service was created
+        terraformOutputVariable: location
+        type:
+          stringValue: string
+      - description: Google Cloud project in which the service was created
+        terraformOutputVariable: project_id
+        type:
+          stringValue: string
+      - description: Deployed revision for the service
+        terraformOutputVariable: revision
+        type:
+          stringValue: string
+      - description: Unique Identifier for the created service
+        terraformOutputVariable: service_id
+        type:
+          stringValue: string
+      - description: Name of the created service
+        terraformOutputVariable: service_name
+        type:
+          stringValue: string
+      - description: Status of the created service
+        terraformOutputVariable: service_status
+        type:
+          stringValue: string
+      - description: The URL on which the deployed service is available
+        terraformOutputVariable: service_url
+        type:
+          stringValue: string
+      - description: List of Custom Domain Name
+        terraformOutputVariable: verified_domain_name
+        type:
+          listValue:
+            values:
+            - stringValue: tuple
+              structValue: null
+            - listValue: {}
+              structValue: null
+      uiMetadata:
+        terraformUiInput:
+          terraformUiInputs:
+            argument: {}
+            certificate_mode: {}
+            container_command: {}
+            container_concurrency: {}
+            domain_map_annotations: {}
+            domain_map_labels: {}
+            encryption_key: {}
+            env_secret_vars: {}
+            env_vars: {}
+            force_override: {}
+            generate_revision_name: {}
+            image: {}
+            limits: {}
+            liveness_probe: {}
+            location: {}
+            members: {}
+            ports: {}
+            project_id: {}
+            requests: {}
+            service_account_email: {}
+            service_annotations: {}
+            service_labels: {}
+            service_name: {}
+            startup_probe: {}
+            template_annotations: {}
+            template_labels: {}
+            timeout_seconds: {}
+            traffic_split: {}
+            verified_domain_name: {}
+            volume_mounts: {}
+            volumes: {}
+        terraformUiOutput: {}
+    updateTime: "1970-01-01T00:00:00Z"
+    uuid: designcentercatalogtemplaterevision-maximal-${uniqueId}

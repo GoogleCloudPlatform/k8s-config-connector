@@ -1,0 +1,1576 @@
+# Phase: CREATE
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces?%24alt=json%3Benum-encoding%3Dint&spaceId=dc-space-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}%2Fcatalogs%2Fdc-catalog-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs?%24alt=json%3Benum-encoding%3Dint&catalogId=dc-catalog-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "dc-catalog-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/dc-template-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}%2Fcatalogs%2Fdc-catalog-${uniqueId}%2Ftemplates%2Fdc-template-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/dc-template-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates?%24alt=json%3Benum-encoding%3Dint&catalogTemplateId=dc-template-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}%2Fcatalogs%2Fdc-catalog-${uniqueId}
+
+{
+  "templateCategory": 2
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "dc-template-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/dc-template-${uniqueId}",
+  "templateCategory": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uuid": "dc-space-${uniqueId}-dc-template-${uniqueId}-wypd6h"
+}
+
+---
+
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/dc-template-${uniqueId}/revisions/designcentercatalogtemplaterevision-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}%2Fcatalogs%2Fdc-catalog-${uniqueId}%2Ftemplates%2Fdc-template-${uniqueId}%2Frevisions%2Fdesigncentercatalogtemplaterevision-maximal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/dc-template-${uniqueId}/revisions/designcentercatalogtemplaterevision-maximal-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/dc-template-${uniqueId}/revisions?%24alt=json%3Benum-encoding%3Dint&catalogTemplateRevisionId=designcentercatalogtemplaterevision-maximal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}%2Fcatalogs%2Fdc-catalog-${uniqueId}%2Ftemplates%2Fdc-template-${uniqueId}
+
+{
+  "description": "Maximal catalog template revision description",
+  "gitSource": {
+    "refTag": "v0.34.2",
+    "repo": "GoogleCloudPlatform/terraform-google-cloud-run"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.designcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/dc-template-${uniqueId}/revisions/designcentercatalogtemplaterevision-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.designcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/dc-template-${uniqueId}/revisions/designcentercatalogtemplaterevision-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.designcenter.v1.CatalogTemplateRevision",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Maximal catalog template revision description",
+    "gitSource": {
+      "refTag": "v0.34.2",
+      "repo": "GoogleCloudPlatform/terraform-google-cloud-run"
+    },
+    "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/dc-template-${uniqueId}/revisions/designcentercatalogtemplaterevision-maximal-${uniqueId}",
+    "state": "ACTIVE",
+    "templateCategory": "APPLICATION_TEMPLATE",
+    "templateMetadata": {
+      "apis": [
+        "accesscontextmanager.googleapis.com",
+        "cloudbilling.googleapis.com",
+        "cloudkms.googleapis.com",
+        "cloudresourcemanager.googleapis.com",
+        "compute.googleapis.com",
+        "iam.googleapis.com",
+        "iap.googleapis.com",
+        "monitoring.googleapis.com",
+        "run.googleapis.com",
+        "serviceusage.googleapis.com",
+        "storage-api.googleapis.com"
+      ],
+      "providerVersions": [
+        {
+          "source": "hashicorp/google",
+          "version": "\u003e= 6, \u003c 8"
+        },
+        {
+          "source": "hashicorp/google-beta",
+          "version": "\u003e= 6, \u003c 8"
+        }
+      ],
+      "roles": [
+        "roles/cloudkms.admin",
+        "roles/resourcemanager.projectIamAdmin",
+        "roles/run.admin",
+        "roles/iam.serviceAccountAdmin",
+        "roles/artifactregistry.admin",
+        "roles/iam.serviceAccountUser",
+        "roles/serviceusage.serviceUsageViewer"
+      ],
+      "terraformInput": [
+        {
+          "description": "The project ID to deploy to",
+          "isRequired": true,
+          "terraformInputVariable": "project_id",
+          "type": "string"
+        },
+        {
+          "description": "The name of the Cloud Run service to create",
+          "isRequired": true,
+          "terraformInputVariable": "service_name",
+          "type": "string"
+        },
+        {
+          "description": "Cloud Run service deployment location",
+          "isRequired": true,
+          "terraformInputVariable": "location",
+          "type": "string"
+        },
+        {
+          "description": "GCR hosted image URL to deploy",
+          "isRequired": true,
+          "terraformInputVariable": "image",
+          "type": "string"
+        },
+        {
+          "defaultValue": true,
+          "description": "Option to enable revision name generation",
+          "terraformInputVariable": "generate_revision_name",
+          "type": "bool"
+        },
+        {
+          "defaultValue": [
+            {
+              "latest_revision": true,
+              "percent": 100,
+              "revision_name": "v1-0-0",
+              "tag": null
+            }
+          ],
+          "description": "Managing traffic routing to the service",
+          "terraformInputVariable": "traffic_split",
+          "type": "list(object({\n    latest_revision = bool\n    percent         = number\n    revision_name   = string\n    tag             = string\n  }))"
+        },
+        {
+          "defaultValue": {},
+          "description": "A set of key/value label pairs to assign to the service",
+          "terraformInputVariable": "service_labels",
+          "type": "map(string)"
+        },
+        {
+          "defaultValue": {
+            "run.googleapis.com/ingress": "all"
+          },
+          "description": "Annotations to the service. Acceptable values all, internal, internal-and-cloud-load-balancing",
+          "terraformInputVariable": "service_annotations",
+          "type": "map(string)"
+        },
+        {
+          "defaultValue": {},
+          "description": "A set of key/value label pairs to assign to the container metadata",
+          "terraformInputVariable": "template_labels",
+          "type": "map(string)"
+        },
+        {
+          "defaultValue": {
+            "autoscaling.knative.dev/maxScale": 2,
+            "autoscaling.knative.dev/minScale": 1,
+            "generated-by": "terraform",
+            "run.googleapis.com/client-name": "terraform"
+          },
+          "description": "Annotations to the container metadata including VPC Connector and SQL. See [more details](https://cloud.google.com/run/docs/reference/rpc/google.cloud.run.v1#revisiontemplate)",
+          "terraformInputVariable": "template_annotations",
+          "type": "map(string)"
+        },
+        {
+          "description": "CMEK encryption key self-link expected in the format projects/PROJECT/locations/LOCATION/keyRings/KEY-RING/cryptoKeys/CRYPTO-KEY.",
+          "terraformInputVariable": "encryption_key",
+          "type": "string"
+        },
+        {
+          "description": "Concurrent request limits to the service",
+          "terraformInputVariable": "container_concurrency",
+          "type": "number"
+        },
+        {
+          "defaultValue": 120,
+          "description": "Timeout for each request",
+          "terraformInputVariable": "timeout_seconds",
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "Service Account email needed for the service",
+          "terraformInputVariable": "service_account_email",
+          "type": "string"
+        },
+        {
+          "defaultValue": [],
+          "description": "[Beta] Volumes needed for environment variables (when using secret)",
+          "terraformInputVariable": "volumes",
+          "type": "list(object({\n    name = string\n    secret = set(object({\n      secret_name = string\n      items       = map(string)\n    }))\n  }))"
+        },
+        {
+          "description": "Resource limits to the container",
+          "terraformInputVariable": "limits",
+          "type": "map(string)"
+        },
+        {
+          "defaultValue": {},
+          "description": "Resource requests to the container",
+          "terraformInputVariable": "requests",
+          "type": "map(string)"
+        },
+        {
+          "defaultValue": {
+            "name": "http1",
+            "port": 8080
+          },
+          "description": "Port which the container listens to (http1 or h2c)",
+          "terraformInputVariable": "ports",
+          "type": "object({\n    name = string\n    port = number\n  })"
+        },
+        {
+          "defaultValue": [],
+          "description": "Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments",
+          "terraformInputVariable": "argument",
+          "type": "list(string)"
+        },
+        {
+          "defaultValue": [],
+          "description": "Leave blank to use the ENTRYPOINT command defined in the container image, include these only if image entrypoint should be overwritten",
+          "terraformInputVariable": "container_command",
+          "type": "list(string)"
+        },
+        {
+          "description": "Startup probe of application within the container.\nAll other probes are disabled if a startup probe is provided, until it succeeds.\nContainer will not be added to service endpoints if the probe fails.\nMore info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes\n",
+          "terraformInputVariable": "startup_probe",
+          "type": "object({\n    failure_threshold     = optional(number, null)\n    initial_delay_seconds = optional(number, null)\n    timeout_seconds       = optional(number, null)\n    period_seconds        = optional(number, null)\n    http_get = optional(object({\n      path = optional(string)\n      http_headers = optional(list(object({\n        name  = string\n        value = string\n      })), null)\n    }), null)\n    tcp_socket = optional(object({\n      port = optional(number)\n    }), null)\n    grpc = optional(object({\n      port    = optional(number)\n      service = optional(string)\n    }), null)\n  })"
+        },
+        {
+          "description": "Periodic probe of container liveness. Container will be restarted if the probe fails.\nMore info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes\n",
+          "terraformInputVariable": "liveness_probe",
+          "type": "object({\n    failure_threshold     = optional(number, null)\n    initial_delay_seconds = optional(number, null)\n    timeout_seconds       = optional(number, null)\n    period_seconds        = optional(number, null)\n    http_get = optional(object({\n      path = optional(string)\n      http_headers = optional(list(object({\n        name  = string\n        value = string\n      })), null)\n    }), null)\n    grpc = optional(object({\n      port    = optional(number)\n      service = optional(string)\n    }), null)\n  })"
+        },
+        {
+          "defaultValue": [],
+          "description": "Environment variables (cleartext)",
+          "terraformInputVariable": "env_vars",
+          "type": "list(object({\n    value = string\n    name  = string\n  }))"
+        },
+        {
+          "defaultValue": [],
+          "description": "[Beta] Environment variables (Secret Manager)",
+          "terraformInputVariable": "env_secret_vars",
+          "type": "list(object({\n    name = string\n    value_from = set(object({\n      secret_key_ref = map(string)\n    }))\n  }))"
+        },
+        {
+          "defaultValue": [],
+          "description": "[Beta] Volume Mounts to be attached to the container (when using secret)",
+          "terraformInputVariable": "volume_mounts",
+          "type": "list(object({\n    mount_path = string\n    name       = string\n  }))"
+        },
+        {
+          "defaultValue": [],
+          "description": "List of Custom Domain Name",
+          "terraformInputVariable": "verified_domain_name",
+          "type": "list(string)"
+        },
+        {
+          "defaultValue": false,
+          "description": "Option to force override existing mapping",
+          "terraformInputVariable": "force_override",
+          "type": "bool"
+        },
+        {
+          "defaultValue": "NONE",
+          "description": "The mode of the certificate (NONE or AUTOMATIC)",
+          "terraformInputVariable": "certificate_mode",
+          "type": "string"
+        },
+        {
+          "defaultValue": {},
+          "description": "A set of key/value label pairs to assign to the Domain mapping",
+          "terraformInputVariable": "domain_map_labels",
+          "type": "map(string)"
+        },
+        {
+          "defaultValue": {},
+          "description": "Annotations to the domain map",
+          "terraformInputVariable": "domain_map_annotations",
+          "type": "map(string)"
+        },
+        {
+          "defaultValue": [],
+          "description": "Users/SAs to be given invoker access to the service",
+          "terraformInputVariable": "members",
+          "type": "list(string)"
+        }
+      ],
+      "terraformOutput": [
+        {
+          "description": "Service URI in CAIS style to be used by Apphub.",
+          "terraformOutputVariable": "apphub_service_uri",
+          "type": [
+            "object",
+            {
+              "service_id": "string",
+              "service_uri": "string"
+            }
+          ]
+        },
+        {
+          "description": "Unique Identifier for the created domain map",
+          "terraformOutputVariable": "domain_map_id",
+          "type": [
+            "tuple",
+            []
+          ]
+        },
+        {
+          "description": "Status of Domain mapping",
+          "terraformOutputVariable": "domain_map_status",
+          "type": [
+            "tuple",
+            []
+          ]
+        },
+        {
+          "description": "Location in which the Cloud Run service was created",
+          "terraformOutputVariable": "location",
+          "type": "string"
+        },
+        {
+          "description": "Google Cloud project in which the service was created",
+          "terraformOutputVariable": "project_id",
+          "type": "string"
+        },
+        {
+          "description": "Deployed revision for the service",
+          "terraformOutputVariable": "revision",
+          "type": "string"
+        },
+        {
+          "description": "Unique Identifier for the created service",
+          "terraformOutputVariable": "service_id",
+          "type": "string"
+        },
+        {
+          "description": "Name of the created service",
+          "terraformOutputVariable": "service_name",
+          "type": "string"
+        },
+        {
+          "description": "Status of the created service",
+          "terraformOutputVariable": "service_status",
+          "type": "string"
+        },
+        {
+          "description": "The URL on which the deployed service is available",
+          "terraformOutputVariable": "service_url",
+          "type": "string"
+        },
+        {
+          "description": "List of Custom Domain Name",
+          "terraformOutputVariable": "verified_domain_name",
+          "type": [
+            "tuple",
+            []
+          ]
+        }
+      ],
+      "uiMetadata": {
+        "terraformUiInput": {
+          "terraformUiInputs": {
+            "argument": {
+              "displayName": "argument",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Argument"
+            },
+            "certificate_mode": {
+              "displayName": "certificate_mode",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Certificate Mode"
+            },
+            "container_command": {
+              "displayName": "container_command",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Container Command"
+            },
+            "container_concurrency": {
+              "displayName": "container_concurrency",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Container Concurrency"
+            },
+            "domain_map_annotations": {
+              "displayName": "domain_map_annotations",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Domain Map Annotations"
+            },
+            "domain_map_labels": {
+              "displayName": "domain_map_labels",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Domain Map Labels"
+            },
+            "encryption_key": {
+              "displayName": "encryption_key",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Encryption Key"
+            },
+            "env_secret_vars": {
+              "displayName": "env_secret_vars",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Env Secret Vars"
+            },
+            "env_vars": {
+              "displayName": "env_vars",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Env Vars"
+            },
+            "force_override": {
+              "displayName": "force_override",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Force Override"
+            },
+            "generate_revision_name": {
+              "displayName": "generate_revision_name",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Generate Revision Name"
+            },
+            "image": {
+              "displayName": "image",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Image"
+            },
+            "limits": {
+              "displayName": "limits",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Limits"
+            },
+            "liveness_probe": {
+              "displayName": "liveness_probe",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Liveness Probe"
+            },
+            "location": {
+              "displayName": "location",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Location"
+            },
+            "members": {
+              "displayName": "members",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Members"
+            },
+            "ports": {
+              "displayName": "ports",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Ports"
+            },
+            "project_id": {
+              "displayName": "project_id",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Project Id"
+            },
+            "requests": {
+              "displayName": "requests",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Requests"
+            },
+            "service_account_email": {
+              "displayName": "service_account_email",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Service Account Email"
+            },
+            "service_annotations": {
+              "displayName": "service_annotations",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Service Annotations"
+            },
+            "service_labels": {
+              "displayName": "service_labels",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Service Labels"
+            },
+            "service_name": {
+              "displayName": "service_name",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Service Name"
+            },
+            "startup_probe": {
+              "displayName": "startup_probe",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Startup Probe"
+            },
+            "template_annotations": {
+              "displayName": "template_annotations",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Template Annotations"
+            },
+            "template_labels": {
+              "displayName": "template_labels",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Template Labels"
+            },
+            "timeout_seconds": {
+              "displayName": "timeout_seconds",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Timeout Seconds"
+            },
+            "traffic_split": {
+              "displayName": "traffic_split",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Traffic Split"
+            },
+            "verified_domain_name": {
+              "displayName": "verified_domain_name",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Verified Domain Name"
+            },
+            "volume_mounts": {
+              "displayName": "volume_mounts",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Volume Mounts"
+            },
+            "volumes": {
+              "displayName": "volumes",
+              "max": 3.4028235e+38,
+              "min": -3.4028235e+38,
+              "title": "Volumes"
+            }
+          }
+        },
+        "terraformUiOutput": {}
+      }
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "uuid": "designcentercatalogtemplaterevision-maximal-${uniqueId}"
+  }
+}
+
+---
+
+# Phase: DELETE
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/dc-template-${uniqueId}/revisions/designcentercatalogtemplaterevision-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}%2Fcatalogs%2Fdc-catalog-${uniqueId}%2Ftemplates%2Fdc-template-${uniqueId}%2Frevisions%2Fdesigncentercatalogtemplaterevision-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal catalog template revision description",
+  "gitSource": {
+    "refTag": "v0.34.2",
+    "repo": "GoogleCloudPlatform/terraform-google-cloud-run"
+  },
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/dc-template-${uniqueId}/revisions/designcentercatalogtemplaterevision-maximal-${uniqueId}",
+  "state": 2,
+  "templateCategory": 2,
+  "templateMetadata": {
+    "apis": [
+      "accesscontextmanager.googleapis.com",
+      "cloudbilling.googleapis.com",
+      "cloudkms.googleapis.com",
+      "cloudresourcemanager.googleapis.com",
+      "compute.googleapis.com",
+      "iam.googleapis.com",
+      "iap.googleapis.com",
+      "monitoring.googleapis.com",
+      "run.googleapis.com",
+      "serviceusage.googleapis.com",
+      "storage-api.googleapis.com"
+    ],
+    "providerVersions": [
+      {
+        "source": "hashicorp/google",
+        "version": "\u003e= 6, \u003c 8"
+      },
+      {
+        "source": "hashicorp/google-beta",
+        "version": "\u003e= 6, \u003c 8"
+      }
+    ],
+    "roles": [
+      "roles/cloudkms.admin",
+      "roles/resourcemanager.projectIamAdmin",
+      "roles/run.admin",
+      "roles/iam.serviceAccountAdmin",
+      "roles/artifactregistry.admin",
+      "roles/iam.serviceAccountUser",
+      "roles/serviceusage.serviceUsageViewer"
+    ],
+    "terraformInput": [
+      {
+        "description": "The project ID to deploy to",
+        "isRequired": true,
+        "terraformInputVariable": "project_id",
+        "type": "string"
+      },
+      {
+        "description": "The name of the Cloud Run service to create",
+        "isRequired": true,
+        "terraformInputVariable": "service_name",
+        "type": "string"
+      },
+      {
+        "description": "Cloud Run service deployment location",
+        "isRequired": true,
+        "terraformInputVariable": "location",
+        "type": "string"
+      },
+      {
+        "description": "GCR hosted image URL to deploy",
+        "isRequired": true,
+        "terraformInputVariable": "image",
+        "type": "string"
+      },
+      {
+        "defaultValue": true,
+        "description": "Option to enable revision name generation",
+        "terraformInputVariable": "generate_revision_name",
+        "type": "bool"
+      },
+      {
+        "defaultValue": [
+          {
+            "latest_revision": true,
+            "percent": 100,
+            "revision_name": "v1-0-0",
+            "tag": null
+          }
+        ],
+        "description": "Managing traffic routing to the service",
+        "terraformInputVariable": "traffic_split",
+        "type": "list(object({\n    latest_revision = bool\n    percent         = number\n    revision_name   = string\n    tag             = string\n  }))"
+      },
+      {
+        "defaultValue": {},
+        "description": "A set of key/value label pairs to assign to the service",
+        "terraformInputVariable": "service_labels",
+        "type": "map(string)"
+      },
+      {
+        "defaultValue": {
+          "run.googleapis.com/ingress": "all"
+        },
+        "description": "Annotations to the service. Acceptable values all, internal, internal-and-cloud-load-balancing",
+        "terraformInputVariable": "service_annotations",
+        "type": "map(string)"
+      },
+      {
+        "defaultValue": {},
+        "description": "A set of key/value label pairs to assign to the container metadata",
+        "terraformInputVariable": "template_labels",
+        "type": "map(string)"
+      },
+      {
+        "defaultValue": {
+          "autoscaling.knative.dev/maxScale": 2,
+          "autoscaling.knative.dev/minScale": 1,
+          "generated-by": "terraform",
+          "run.googleapis.com/client-name": "terraform"
+        },
+        "description": "Annotations to the container metadata including VPC Connector and SQL. See [more details](https://cloud.google.com/run/docs/reference/rpc/google.cloud.run.v1#revisiontemplate)",
+        "terraformInputVariable": "template_annotations",
+        "type": "map(string)"
+      },
+      {
+        "description": "CMEK encryption key self-link expected in the format projects/PROJECT/locations/LOCATION/keyRings/KEY-RING/cryptoKeys/CRYPTO-KEY.",
+        "terraformInputVariable": "encryption_key",
+        "type": "string"
+      },
+      {
+        "description": "Concurrent request limits to the service",
+        "terraformInputVariable": "container_concurrency",
+        "type": "number"
+      },
+      {
+        "defaultValue": 120,
+        "description": "Timeout for each request",
+        "terraformInputVariable": "timeout_seconds",
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Service Account email needed for the service",
+        "terraformInputVariable": "service_account_email",
+        "type": "string"
+      },
+      {
+        "defaultValue": [],
+        "description": "[Beta] Volumes needed for environment variables (when using secret)",
+        "terraformInputVariable": "volumes",
+        "type": "list(object({\n    name = string\n    secret = set(object({\n      secret_name = string\n      items       = map(string)\n    }))\n  }))"
+      },
+      {
+        "description": "Resource limits to the container",
+        "terraformInputVariable": "limits",
+        "type": "map(string)"
+      },
+      {
+        "defaultValue": {},
+        "description": "Resource requests to the container",
+        "terraformInputVariable": "requests",
+        "type": "map(string)"
+      },
+      {
+        "defaultValue": {
+          "name": "http1",
+          "port": 8080
+        },
+        "description": "Port which the container listens to (http1 or h2c)",
+        "terraformInputVariable": "ports",
+        "type": "object({\n    name = string\n    port = number\n  })"
+      },
+      {
+        "defaultValue": [],
+        "description": "Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments",
+        "terraformInputVariable": "argument",
+        "type": "list(string)"
+      },
+      {
+        "defaultValue": [],
+        "description": "Leave blank to use the ENTRYPOINT command defined in the container image, include these only if image entrypoint should be overwritten",
+        "terraformInputVariable": "container_command",
+        "type": "list(string)"
+      },
+      {
+        "description": "Startup probe of application within the container.\nAll other probes are disabled if a startup probe is provided, until it succeeds.\nContainer will not be added to service endpoints if the probe fails.\nMore info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes\n",
+        "terraformInputVariable": "startup_probe",
+        "type": "object({\n    failure_threshold     = optional(number, null)\n    initial_delay_seconds = optional(number, null)\n    timeout_seconds       = optional(number, null)\n    period_seconds        = optional(number, null)\n    http_get = optional(object({\n      path = optional(string)\n      http_headers = optional(list(object({\n        name  = string\n        value = string\n      })), null)\n    }), null)\n    tcp_socket = optional(object({\n      port = optional(number)\n    }), null)\n    grpc = optional(object({\n      port    = optional(number)\n      service = optional(string)\n    }), null)\n  })"
+      },
+      {
+        "description": "Periodic probe of container liveness. Container will be restarted if the probe fails.\nMore info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes\n",
+        "terraformInputVariable": "liveness_probe",
+        "type": "object({\n    failure_threshold     = optional(number, null)\n    initial_delay_seconds = optional(number, null)\n    timeout_seconds       = optional(number, null)\n    period_seconds        = optional(number, null)\n    http_get = optional(object({\n      path = optional(string)\n      http_headers = optional(list(object({\n        name  = string\n        value = string\n      })), null)\n    }), null)\n    grpc = optional(object({\n      port    = optional(number)\n      service = optional(string)\n    }), null)\n  })"
+      },
+      {
+        "defaultValue": [],
+        "description": "Environment variables (cleartext)",
+        "terraformInputVariable": "env_vars",
+        "type": "list(object({\n    value = string\n    name  = string\n  }))"
+      },
+      {
+        "defaultValue": [],
+        "description": "[Beta] Environment variables (Secret Manager)",
+        "terraformInputVariable": "env_secret_vars",
+        "type": "list(object({\n    name = string\n    value_from = set(object({\n      secret_key_ref = map(string)\n    }))\n  }))"
+      },
+      {
+        "defaultValue": [],
+        "description": "[Beta] Volume Mounts to be attached to the container (when using secret)",
+        "terraformInputVariable": "volume_mounts",
+        "type": "list(object({\n    mount_path = string\n    name       = string\n  }))"
+      },
+      {
+        "defaultValue": [],
+        "description": "List of Custom Domain Name",
+        "terraformInputVariable": "verified_domain_name",
+        "type": "list(string)"
+      },
+      {
+        "defaultValue": false,
+        "description": "Option to force override existing mapping",
+        "terraformInputVariable": "force_override",
+        "type": "bool"
+      },
+      {
+        "defaultValue": "NONE",
+        "description": "The mode of the certificate (NONE or AUTOMATIC)",
+        "terraformInputVariable": "certificate_mode",
+        "type": "string"
+      },
+      {
+        "defaultValue": {},
+        "description": "A set of key/value label pairs to assign to the Domain mapping",
+        "terraformInputVariable": "domain_map_labels",
+        "type": "map(string)"
+      },
+      {
+        "defaultValue": {},
+        "description": "Annotations to the domain map",
+        "terraformInputVariable": "domain_map_annotations",
+        "type": "map(string)"
+      },
+      {
+        "defaultValue": [],
+        "description": "Users/SAs to be given invoker access to the service",
+        "terraformInputVariable": "members",
+        "type": "list(string)"
+      }
+    ],
+    "terraformOutput": [
+      {
+        "description": "Service URI in CAIS style to be used by Apphub.",
+        "terraformOutputVariable": "apphub_service_uri",
+        "type": [
+          "object",
+          {
+            "service_id": "string",
+            "service_uri": "string"
+          }
+        ]
+      },
+      {
+        "description": "Unique Identifier for the created domain map",
+        "terraformOutputVariable": "domain_map_id",
+        "type": [
+          "tuple",
+          []
+        ]
+      },
+      {
+        "description": "Status of Domain mapping",
+        "terraformOutputVariable": "domain_map_status",
+        "type": [
+          "tuple",
+          []
+        ]
+      },
+      {
+        "description": "Location in which the Cloud Run service was created",
+        "terraformOutputVariable": "location",
+        "type": "string"
+      },
+      {
+        "description": "Google Cloud project in which the service was created",
+        "terraformOutputVariable": "project_id",
+        "type": "string"
+      },
+      {
+        "description": "Deployed revision for the service",
+        "terraformOutputVariable": "revision",
+        "type": "string"
+      },
+      {
+        "description": "Unique Identifier for the created service",
+        "terraformOutputVariable": "service_id",
+        "type": "string"
+      },
+      {
+        "description": "Name of the created service",
+        "terraformOutputVariable": "service_name",
+        "type": "string"
+      },
+      {
+        "description": "Status of the created service",
+        "terraformOutputVariable": "service_status",
+        "type": "string"
+      },
+      {
+        "description": "The URL on which the deployed service is available",
+        "terraformOutputVariable": "service_url",
+        "type": "string"
+      },
+      {
+        "description": "List of Custom Domain Name",
+        "terraformOutputVariable": "verified_domain_name",
+        "type": [
+          "tuple",
+          []
+        ]
+      }
+    ],
+    "uiMetadata": {
+      "terraformUiInput": {
+        "terraformUiInputs": {
+          "argument": {
+            "displayName": "argument",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Argument"
+          },
+          "certificate_mode": {
+            "displayName": "certificate_mode",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Certificate Mode"
+          },
+          "container_command": {
+            "displayName": "container_command",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Container Command"
+          },
+          "container_concurrency": {
+            "displayName": "container_concurrency",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Container Concurrency"
+          },
+          "domain_map_annotations": {
+            "displayName": "domain_map_annotations",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Domain Map Annotations"
+          },
+          "domain_map_labels": {
+            "displayName": "domain_map_labels",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Domain Map Labels"
+          },
+          "encryption_key": {
+            "displayName": "encryption_key",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Encryption Key"
+          },
+          "env_secret_vars": {
+            "displayName": "env_secret_vars",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Env Secret Vars"
+          },
+          "env_vars": {
+            "displayName": "env_vars",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Env Vars"
+          },
+          "force_override": {
+            "displayName": "force_override",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Force Override"
+          },
+          "generate_revision_name": {
+            "displayName": "generate_revision_name",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Generate Revision Name"
+          },
+          "image": {
+            "displayName": "image",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Image"
+          },
+          "limits": {
+            "displayName": "limits",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Limits"
+          },
+          "liveness_probe": {
+            "displayName": "liveness_probe",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Liveness Probe"
+          },
+          "location": {
+            "displayName": "location",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Location"
+          },
+          "members": {
+            "displayName": "members",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Members"
+          },
+          "ports": {
+            "displayName": "ports",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Ports"
+          },
+          "project_id": {
+            "displayName": "project_id",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Project Id"
+          },
+          "requests": {
+            "displayName": "requests",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Requests"
+          },
+          "service_account_email": {
+            "displayName": "service_account_email",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Service Account Email"
+          },
+          "service_annotations": {
+            "displayName": "service_annotations",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Service Annotations"
+          },
+          "service_labels": {
+            "displayName": "service_labels",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Service Labels"
+          },
+          "service_name": {
+            "displayName": "service_name",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Service Name"
+          },
+          "startup_probe": {
+            "displayName": "startup_probe",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Startup Probe"
+          },
+          "template_annotations": {
+            "displayName": "template_annotations",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Template Annotations"
+          },
+          "template_labels": {
+            "displayName": "template_labels",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Template Labels"
+          },
+          "timeout_seconds": {
+            "displayName": "timeout_seconds",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Timeout Seconds"
+          },
+          "traffic_split": {
+            "displayName": "traffic_split",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Traffic Split"
+          },
+          "verified_domain_name": {
+            "displayName": "verified_domain_name",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Verified Domain Name"
+          },
+          "volume_mounts": {
+            "displayName": "volume_mounts",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Volume Mounts"
+          },
+          "volumes": {
+            "displayName": "volumes",
+            "max": 3.4028235e+38,
+            "min": -3.4028235e+38,
+            "title": "Volumes"
+          }
+        }
+      },
+      "terraformUiOutput": {}
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uuid": "designcentercatalogtemplaterevision-maximal-${uniqueId}"
+}
+
+---
+
+DELETE https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/dc-template-${uniqueId}/revisions/designcentercatalogtemplaterevision-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}%2Fcatalogs%2Fdc-catalog-${uniqueId}%2Ftemplates%2Fdc-template-${uniqueId}%2Frevisions%2Fdesigncentercatalogtemplaterevision-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.designcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/dc-template-${uniqueId}/revisions/designcentercatalogtemplaterevision-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.designcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/dc-template-${uniqueId}/revisions/designcentercatalogtemplaterevision-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/dc-template-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}%2Fcatalogs%2Fdc-catalog-${uniqueId}%2Ftemplates%2Fdc-template-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "dc-template-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/dc-template-${uniqueId}",
+  "templateCategory": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uuid": "dc-space-${uniqueId}-dc-template-${uniqueId}-wypd6h"
+}
+
+---
+
+DELETE https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/dc-template-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}%2Fcatalogs%2Fdc-catalog-${uniqueId}%2Ftemplates%2Fdc-template-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.designcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/dc-template-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.designcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}/templates/dc-template-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}%2Fcatalogs%2Fdc-catalog-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "dc-catalog-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}%2Fcatalogs%2Fdc-catalog-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.designcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.designcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/catalogs/dc-catalog-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
