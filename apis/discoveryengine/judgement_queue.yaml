@@ -25,23 +25,31 @@ entries:
     group: discoveryengine.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: inlined *parent.ProjectAndLocationRef, retained resourceID, verified observedState and resource docs link
   - kind: DiscoveryEngineACLConfig
     group: discoveryengine.cnrm.cloud.google.com
     reason: empty-observedstate
     detail: nothing was generated into status.observedState; the proto probably marks no field OUTPUT_ONLY, so output fields landed in the Spec. Decide what belongs in status
-    status: open
+    status: resolved
+    resolution: edited
+    note: proto has no output fields; observedState is commented out
   - kind: DiscoveryEngineACLConfig
     group: discoveryengine.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: 'none of these loaded as a page ending in /v1/projects.locations.aclConfig: https://docs.cloud.google.com/generative-ai-app-builder/docs/reference/rest/v1/projects.locations.aclConfig'
-    status: open
+    status: resolved
+    resolution: edited
+    note: updated resource-docs link to valid cloud.google.com REST reference and removed guess marker
   - kind: DiscoveryEngineACLConfig
     group: discoveryengine.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef
   - kind: DiscoveryEngineAssistant
     group: discoveryengine.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

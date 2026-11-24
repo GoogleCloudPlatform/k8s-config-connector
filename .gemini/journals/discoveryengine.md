@@ -131,6 +131,16 @@
 - **Solution**: Added `DiscoveryEngineAssistant:Assistant` to `generate-types` with `--prepopulate-resource` and `generate-identity` under `NEW_PROTO_OUT` (`6a1db32dc52fd9421c1743dc8f5faa7a15e518d1`) alongside `WidgetConfig` and `ACLConfig` in `apis/discoveryengine/generate.sh`. Scaffolds identity, reference, conformance tests, and open entries in `judgement_queue.yaml` for Step 1b triage. Added `DiscoveryEngineAssistant` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
 - **Impact**: Sets up clean initial mechanical types and identity conforming to Greenfield Step 1a standards for DiscoveryEngineAssistant using the updated proto SHA without causing multiversion `Date` collisions on legacy resources.
 
+### [2026-11-23] DiscoveryEngineACLConfig Types Judgement Triage and Finalization
+- **Context**: Triaging judgement queue and finalizing KRM types and identity for `DiscoveryEngineACLConfig` (Issue #16334).
+- **Details**:
+  1. `DiscoveryEngineACLConfig` represents the singleton resource `projects/{project}/locations/{location}/aclConfig`.
+  2. Inlined `*parent.ProjectAndLocationRef` on `DiscoveryEngineACLConfigSpec` to model the parent project and location uniformly.
+  3. Retained `ResourceID *string` on `DiscoveryEngineACLConfigSpec` per review feedback.
+  4. Verified that `ObservedState` is commented out as `AclConfig` has no output-only fields in proto definition.
+  5. Updated `+kcc:source:resource-docs` to `https://cloud.google.com/generative-ai-app-builder/docs/reference/rest/v1/projects.locations/getAclConfig` and removed the guess marker.
+  6. Triaged and marked all `DiscoveryEngineACLConfig` entries in `apis/discoveryengine/judgement_queue.yaml` as resolved.
+
 ### [2026-11-24] DiscoveryEngineWidgetConfig Step 2 Controller Implementation
 - **Context**: Greenfield Step 2 implementation (direct controller, fuzzer, and E2E fixtures) for `DiscoveryEngineWidgetConfig` (Issue #16342).
 - **Details & Learnings**:
