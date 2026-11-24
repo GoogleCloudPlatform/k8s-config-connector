@@ -12,17 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Files the controller bugs a validate-kind PR's failures show. A PR graded
+# Files the controller bugs and script mistakes a validate-kind PR's failures show. A PR graded
 # overseer/assessment/poor (its clean re-run had a FAIL, skipped a variant, or
 # changed files outside its Kind's directory) gets the file-validate-bug recipe:
 # a session that did not write the test reads the receipts and classes each
 # failure - a controller bug, the script's own mistake, or a limit of the
-# environment or service - and only the controller bugs are filed, once per
-# <Kind>:<check> key (factory's open-issues: an open issue with the key gets a
-# comment instead). The PR gets one comment listing what was filed and why the
+# environment or service - and files the controller bugs (validate-kind/bug)
+# and the script mistakes (validate-kind/bug plus overseer/validate-kind, which
+# the validate-kind rule picks up to fix and re-run the script), once per key
+# (factory's open-issues: an open issue with the key gets a comment instead).
+# An environment limit is only said in the comment. The PR gets one comment listing what was filed and why the
 # rest was not. Once per head.
 name: file-validate-bug
-description: File the controller bugs a validate-kind PR's failing checks show, once per bug
+description: File the controller bugs and script mistakes a validate-kind PR's failing checks show, once per bug
 on: pr
 order: 74
 when:
