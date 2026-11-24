@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"io"
 	"strings"
+	"time"
 )
 
 // gcpProvisioner provisions the GCS lease bucket and IAM bindings required for multi-cluster HA.
@@ -26,15 +27,27 @@ type gcpProvisioner struct {
 	runner         commandRunner
 	bucketURI      string
 	bucketLocation string
+	outWriter      io.Writer
 	warnWriter     io.Writer
+
+	retryInterval time.Duration
+	retryTimeout  time.Duration
 }
 
-func newGCPProvisioner(runner commandRunner, bucket, bucketLocation string, warnWriter io.Writer) *gcpProvisioner {
+const (
+	defaultIAMRetryInterval = 5 * time.Second
+	defaultIAMRetryTimeout  = 2 * time.Minute
+)
+
+func newGCPProvisioner(runner commandRunner, bucket, bucketLocation string, outWriter, warnWriter io.Writer) *gcpProvisioner {
 	return &gcpProvisioner{
 		runner:         runner,
 		bucketURI:      "gs://" + bucket,
 		bucketLocation: bucketLocation,
+		outWriter:      outWriter,
 		warnWriter:     warnWriter,
+		retryInterval:  defaultIAMRetryInterval,
+		retryTimeout:   defaultIAMRetryTimeout,
 	}
 }
 
@@ -48,8 +61,13 @@ func (p *gcpProvisioner) provision(ctx context.Context, clusters []gkeClusterInf
 	}
 
 	projects := dedupeProjects(clusters)
+	accountCreated, err := p.ensureServiceAccounts(ctx, projects)
+	if err != nil {
+		return err
+	}
+
 	for _, project := range projects {
-		if err := p.configureProjectIAM(ctx, project.project, projects); err != nil {
+		if err := p.configureProjectIAM(ctx, project.project, projects, accountCreated); err != nil {
 			return err
 		}
 	}
@@ -57,7 +75,39 @@ func (p *gcpProvisioner) provision(ctx context.Context, clusters []gkeClusterInf
 	return nil
 }
 
+func (p *gcpProvisioner) ensureServiceAccounts(ctx context.Context, projects []gkeClusterInfo) (bool, error) {
+	accountNames := []string{gcpMCLServiceAccountName, gcpSyncerServiceAccountName}
+	anyCreated := false
+
+	for _, project := range projects {
+		for _, name := range accountNames {
+			email := gsaEmail(name, project.project)
+			_, describeErr := p.runner.output(ctx, "gcloud", "iam", "service-accounts", "describe", email, "--project="+project.project)
+			if describeErr != nil {
+				createErr := p.runner.run(ctx, "gcloud", "iam", "service-accounts", "create", name, "--project="+project.project)
+				if createErr != nil {
+					return false, fmt.Errorf("ensuring service account %q in project %q: describe failed: %w; create failed: %w", email, project.project, describeErr, createErr)
+				}
+				anyCreated = true
+			}
+		}
+	}
+
+	return anyCreated, nil
+}
+
 func (p *gcpProvisioner) createLeaseBucket(ctx context.Context, clusters []gkeClusterInfo) error {
+	_, describeErr := p.runner.output(ctx, "gcloud", "storage", "buckets", "describe", p.bucketURI)
+	if describeErr == nil {
+		if p.outWriter != nil {
+			fmt.Fprintf(p.outWriter, "Lease bucket %s already exists; reusing it.\n", p.bucketURI)
+			if p.bucketLocation != "" {
+				fmt.Fprintf(p.outWriter, "--%s has no effect on an existing bucket.\n", bucketLocationFlag)
+			}
+		}
+		return nil
+	}
+
 	location, err := resolveBucketLocation(clusters, p.bucketLocation, p.warnWriter)
 	if err != nil {
 		return err
@@ -65,7 +115,7 @@ func (p *gcpProvisioner) createLeaseBucket(ctx context.Context, clusters []gkeCl
 
 	primary := clusters[0]
 	if err := p.runner.run(ctx, "gcloud", "storage", "buckets", "create", p.bucketURI, "--project="+primary.project, "--location="+location); err != nil {
-		return fmt.Errorf("creating GCS lease bucket %q in location %q (project %q): %w", p.bucketURI, location, primary.project, err)
+		return fmt.Errorf("creating GCS lease bucket %q in location %q (project %q): describe failed: %w; create failed: %w", p.bucketURI, location, primary.project, describeErr, err)
 	}
 
 	return nil
@@ -200,19 +250,60 @@ const (
 	gcpSyncerServiceAccountName  = "kcc-syncer"
 )
 
-func (p *gcpProvisioner) configureProjectIAM(ctx context.Context, projectID string, allProjects []gkeClusterInfo) error {
+func (p *gcpProvisioner) runIAMBindingWithRetry(ctx context.Context, retry bool, name string, args ...string) error {
+	err := p.runner.run(ctx, name, args...)
+	if err == nil || !retry {
+		return err
+	}
+
+	if p.outWriter != nil {
+		fmt.Fprintln(p.outWriter, "Waiting for newly created service account to propagate in IAM...")
+	}
+
+	timeout := p.retryTimeout
+	if timeout <= 0 {
+		timeout = defaultIAMRetryTimeout
+	}
+	interval := p.retryInterval
+	if interval <= 0 {
+		interval = defaultIAMRetryInterval
+	}
+
+	timer := time.NewTimer(timeout)
+	defer timer.Stop()
+
+	ticker := time.NewTicker(interval)
+	defer ticker.Stop()
+
+	lastErr := err
+	for {
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		case <-timer.C:
+			return lastErr
+		case <-ticker.C:
+			lastErr = p.runner.run(ctx, name, args...)
+			if lastErr == nil {
+				return nil
+			}
+		}
+	}
+}
+
+func (p *gcpProvisioner) configureProjectIAM(ctx context.Context, projectID string, allProjects []gkeClusterInfo, retry bool) error {
 	mclGSA := gsaEmail(gcpMCLServiceAccountName, projectID)
-	if err := p.configureIAMForLeaseBucket(ctx, mclGSA); err != nil {
+	if err := p.configureIAMForLeaseBucket(ctx, mclGSA, retry); err != nil {
 		return err
 	}
 
 	syncerGSA := gsaEmail(gcpSyncerServiceAccountName, projectID)
 
-	if err := p.configureIAMForWorkloadIdentity(ctx, projectID, mclGSA, syncerGSA); err != nil {
+	if err := p.configureIAMForWorkloadIdentity(ctx, projectID, mclGSA, syncerGSA, retry); err != nil {
 		return err
 	}
 
-	if err := p.configureIAMForServiceAccounts(ctx, allProjects, syncerGSA); err != nil {
+	if err := p.configureIAMForServiceAccounts(ctx, allProjects, syncerGSA, retry); err != nil {
 		return err
 	}
 
@@ -223,13 +314,13 @@ func gsaEmail(serviceAccountName, projectID string) string {
 	return fmt.Sprintf("%s@%s.iam.gserviceaccount.com", serviceAccountName, projectID)
 }
 
-func (p *gcpProvisioner) configureIAMForLeaseBucket(ctx context.Context, mclGSA string) error {
+func (p *gcpProvisioner) configureIAMForLeaseBucket(ctx context.Context, mclGSA string, retry bool) error {
 	roles := []string{
 		"roles/storage.objectAdmin",
 		"roles/storage.legacyBucketReader",
 	}
 	for _, role := range roles {
-		if err := p.runner.run(ctx, "gcloud", "storage", "buckets", "add-iam-policy-binding", p.bucketURI,
+		if err := p.runIAMBindingWithRetry(ctx, retry, "gcloud", "storage", "buckets", "add-iam-policy-binding", p.bucketURI,
 			"--member=serviceAccount:"+mclGSA,
 			"--role="+role,
 		); err != nil {
@@ -240,7 +331,7 @@ func (p *gcpProvisioner) configureIAMForLeaseBucket(ctx context.Context, mclGSA 
 	return nil
 }
 
-func (p *gcpProvisioner) configureIAMForWorkloadIdentity(ctx context.Context, projectID, mclGSA, syncerGSA string) error {
+func (p *gcpProvisioner) configureIAMForWorkloadIdentity(ctx context.Context, projectID, mclGSA, syncerGSA string, retry bool) error {
 	bindings := []struct {
 		gsa string
 		ksa string
@@ -251,7 +342,7 @@ func (p *gcpProvisioner) configureIAMForWorkloadIdentity(ctx context.Context, pr
 
 	for _, b := range bindings {
 		wiMember := fmt.Sprintf("serviceAccount:%s.svc.id.goog[%s/%s]", projectID, gcpWorkloadIdentityNamespace, b.ksa)
-		if err := p.runner.run(ctx, "gcloud", "iam", "service-accounts", "add-iam-policy-binding", b.gsa,
+		if err := p.runIAMBindingWithRetry(ctx, retry, "gcloud", "iam", "service-accounts", "add-iam-policy-binding", b.gsa,
 			"--project="+projectID,
 			"--role=roles/iam.workloadIdentityUser",
 			"--member="+wiMember,
@@ -270,9 +361,9 @@ func (p *gcpProvisioner) configureIAMForWorkloadIdentity(ctx context.Context, pr
 // resources through the cnrm-syncer-peers ClusterRoleBinding that setup creates on each cluster.
 const syncerClusterAccessRole = "roles/container.clusterViewer"
 
-func (p *gcpProvisioner) configureIAMForServiceAccounts(ctx context.Context, allProjects []gkeClusterInfo, syncerGSA string) error {
+func (p *gcpProvisioner) configureIAMForServiceAccounts(ctx context.Context, allProjects []gkeClusterInfo, syncerGSA string, retry bool) error {
 	for _, peer := range allProjects {
-		if err := p.runner.run(ctx, "gcloud", "projects", "add-iam-policy-binding", peer.project,
+		if err := p.runIAMBindingWithRetry(ctx, retry, "gcloud", "projects", "add-iam-policy-binding", peer.project,
 			"--member=serviceAccount:"+syncerGSA,
 			"--role="+syncerClusterAccessRole,
 		); err != nil {

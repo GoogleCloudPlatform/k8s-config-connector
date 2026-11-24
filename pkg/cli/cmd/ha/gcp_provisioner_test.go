@@ -17,14 +17,20 @@ package ha
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"slices"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestGCPProvisionerDeduplicatesProjectsAndUsesMultiRegionBucketLocation(t *testing.T) {
-	runner := &recordingCommandRunner{}
-	provisioner := newGCPProvisioner(runner, "my-ha-bucket", "", nil)
+	runner := &recordingCommandRunner{
+		outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
+			return nil, fmt.Errorf("not found")
+		},
+	}
+	provisioner := newGCPProvisioner(runner, "my-ha-bucket", "", nil, nil)
 	clusters := []gkeClusterInfo{
 		{contextName: "ctx-1", project: "proj-a", location: "us-central1-a", clusterName: "c1"},
 		{contextName: "ctx-2", project: "proj-a", location: "us-east1-b", clusterName: "c2"},
@@ -36,7 +42,12 @@ func TestGCPProvisionerDeduplicatesProjectsAndUsesMultiRegionBucketLocation(t *t
 		t.Fatalf("unexpected error: %v", err)
 	}
 	wantCommands := []string{
+		"gcloud storage buckets describe gs://my-ha-bucket",
 		"gcloud storage buckets create gs://my-ha-bucket --project=proj-a --location=us",
+		"gcloud iam service-accounts describe kcc-mcl@proj-a.iam.gserviceaccount.com --project=proj-a",
+		"gcloud iam service-accounts create kcc-mcl --project=proj-a",
+		"gcloud iam service-accounts describe kcc-syncer@proj-a.iam.gserviceaccount.com --project=proj-a",
+		"gcloud iam service-accounts create kcc-syncer --project=proj-a",
 		"gcloud storage buckets add-iam-policy-binding gs://my-ha-bucket --member=serviceAccount:kcc-mcl@proj-a.iam.gserviceaccount.com --role=roles/storage.objectAdmin",
 		"gcloud storage buckets add-iam-policy-binding gs://my-ha-bucket --member=serviceAccount:kcc-mcl@proj-a.iam.gserviceaccount.com --role=roles/storage.legacyBucketReader",
 		"gcloud iam service-accounts add-iam-policy-binding kcc-mcl@proj-a.iam.gserviceaccount.com --project=proj-a --role=roles/iam.workloadIdentityUser --member=serviceAccount:proj-a.svc.id.goog[cnrm-system/kcc-mcl]",
@@ -49,8 +60,12 @@ func TestGCPProvisionerDeduplicatesProjectsAndUsesMultiRegionBucketLocation(t *t
 }
 
 func TestGCPProvisionerUsesExplicitBucketLocation(t *testing.T) {
-	runner := &recordingCommandRunner{}
-	provisioner := newGCPProvisioner(runner, "my-ha-bucket", "nam4", nil)
+	runner := &recordingCommandRunner{
+		outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
+			return nil, fmt.Errorf("not found")
+		},
+	}
+	provisioner := newGCPProvisioner(runner, "my-ha-bucket", "nam4", nil, nil)
 	clusters := []gkeClusterInfo{
 		{contextName: "ctx-1", project: "proj-a", location: "us-central1-a", clusterName: "c1"},
 		{contextName: "ctx-2", project: "proj-b", location: "europe-west1-b", clusterName: "c2"},
@@ -61,15 +76,26 @@ func TestGCPProvisionerUsesExplicitBucketLocation(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if len(runner.commands) == 0 || !strings.Contains(runner.commands[0], "--location=nam4") {
-		t.Fatalf("expected first command to use --location=nam4, got %v", runner.commands)
+	var createCmd string
+	for _, cmd := range runner.commands {
+		if strings.Contains(cmd, "storage buckets create") {
+			createCmd = cmd
+			break
+		}
+	}
+	if !strings.Contains(createCmd, "--location=nam4") {
+		t.Fatalf("expected create command to use --location=nam4, got %v", runner.commands)
 	}
 }
 
 func TestGCPProvisionerWarnsOnRegionalFallback(t *testing.T) {
-	runner := &recordingCommandRunner{}
+	runner := &recordingCommandRunner{
+		outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
+			return nil, fmt.Errorf("not found")
+		},
+	}
 	var stderr bytes.Buffer
-	provisioner := newGCPProvisioner(runner, "my-ha-bucket", "", &stderr)
+	provisioner := newGCPProvisioner(runner, "my-ha-bucket", "", nil, &stderr)
 	clusters := []gkeClusterInfo{
 		{contextName: "ctx-1", project: "proj-a", location: "australia-southeast1-a", clusterName: "c1"},
 		{contextName: "ctx-2", project: "proj-a", location: "australia-southeast1-b", clusterName: "c2"},
@@ -80,8 +106,15 @@ func TestGCPProvisionerWarnsOnRegionalFallback(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if len(runner.commands) == 0 || !strings.Contains(runner.commands[0], "--location=australia-southeast1") {
-		t.Fatalf("expected first command to use --location=australia-southeast1, got %v", runner.commands)
+	var createCmd string
+	for _, cmd := range runner.commands {
+		if strings.Contains(cmd, "storage buckets create") {
+			createCmd = cmd
+			break
+		}
+	}
+	if !strings.Contains(createCmd, "--location=australia-southeast1") {
+		t.Fatalf("expected create command to use --location=australia-southeast1, got %v", runner.commands)
 	}
 	warnMsg := stderr.String()
 	if !strings.Contains(warnMsg, "Warning:") || !strings.Contains(warnMsg, "does not map to a GCS multi-region") || !strings.Contains(warnMsg, "australia-southeast1") {
@@ -90,8 +123,12 @@ func TestGCPProvisionerWarnsOnRegionalFallback(t *testing.T) {
 }
 
 func TestGCPProvisionerFailsOnConflictingClusterLocations(t *testing.T) {
-	runner := &recordingCommandRunner{}
-	provisioner := newGCPProvisioner(runner, "my-ha-bucket", "", nil)
+	runner := &recordingCommandRunner{
+		outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
+			return nil, fmt.Errorf("not found")
+		},
+	}
+	provisioner := newGCPProvisioner(runner, "my-ha-bucket", "", nil, nil)
 	clusters := []gkeClusterInfo{
 		{contextName: "ctx-1", project: "proj-a", location: "us-central1-a", clusterName: "c1"},
 		{contextName: "ctx-2", project: "proj-b", location: "europe-west1-b", clusterName: "c2"},
@@ -396,5 +433,390 @@ func TestDedupeProjects(t *testing.T) {
 	}
 	if !slices.Equal(got, want) {
 		t.Fatalf("got %+v, want %+v", got, want)
+	}
+}
+
+func TestGCPProvisionerWhenNothingExists(t *testing.T) {
+	runner := &recordingCommandRunner{
+		outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
+			return nil, fmt.Errorf("not found")
+		},
+	}
+	provisioner := newGCPProvisioner(runner, "my-ha-bucket", "", nil, nil)
+	clusters := []gkeClusterInfo{
+		{contextName: "ctx-1", project: "proj-a", location: "us-central1-a", clusterName: "c1"},
+		{contextName: "ctx-2", project: "proj-b", location: "us-east1-b", clusterName: "c2"},
+	}
+
+	err := provisioner.provision(context.Background(), clusters)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	// Verify both accounts are created in every project before the first binding command
+	firstBindingIdx := -1
+	for i, cmd := range runner.commands {
+		if strings.Contains(cmd, "add-iam-policy-binding") {
+			firstBindingIdx = i
+			break
+		}
+	}
+	if firstBindingIdx == -1 {
+		t.Fatalf("expected add-iam-policy-binding commands, got none: %v", runner.commands)
+	}
+
+	wantCreated := []string{
+		"gcloud iam service-accounts create kcc-mcl --project=proj-a",
+		"gcloud iam service-accounts create kcc-syncer --project=proj-a",
+		"gcloud iam service-accounts create kcc-mcl --project=proj-b",
+		"gcloud iam service-accounts create kcc-syncer --project=proj-b",
+	}
+	for _, wantCmd := range wantCreated {
+		idx := slices.Index(runner.commands, wantCmd)
+		if idx == -1 {
+			t.Fatalf("expected command %q to be run, got: %v", wantCmd, runner.commands)
+		}
+		if idx >= firstBindingIdx {
+			t.Fatalf("expected command %q to run before first binding at index %d, but ran at %d", wantCmd, firstBindingIdx, idx)
+		}
+	}
+
+	// Verify bucket is created in resolved location
+	wantBucketCreate := "gcloud storage buckets create gs://my-ha-bucket --project=proj-a --location=us"
+	if !slices.Contains(runner.commands, wantBucketCreate) {
+		t.Fatalf("expected command %q to be run, got: %v", wantBucketCreate, runner.commands)
+	}
+}
+
+func TestGCPProvisionerWhenEverythingExists(t *testing.T) {
+	runner := &recordingCommandRunner{
+		outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
+			// output succeeds for describe commands
+			return []byte("existing"), nil
+		},
+	}
+	provisioner := newGCPProvisioner(runner, "my-ha-bucket", "", nil, nil)
+	clusters := []gkeClusterInfo{
+		{contextName: "ctx-1", project: "proj-a", location: "us-central1-a", clusterName: "c1"},
+	}
+
+	err := provisioner.provision(context.Background(), clusters)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	for _, cmd := range runner.commands {
+		if strings.Contains(cmd, "create") {
+			t.Fatalf("expected no create command to run when everything exists, but found %q", cmd)
+		}
+	}
+
+	wantBindings := []string{
+		"gcloud storage buckets add-iam-policy-binding gs://my-ha-bucket --member=serviceAccount:kcc-mcl@proj-a.iam.gserviceaccount.com --role=roles/storage.objectAdmin",
+		"gcloud storage buckets add-iam-policy-binding gs://my-ha-bucket --member=serviceAccount:kcc-mcl@proj-a.iam.gserviceaccount.com --role=roles/storage.legacyBucketReader",
+		"gcloud iam service-accounts add-iam-policy-binding kcc-mcl@proj-a.iam.gserviceaccount.com --project=proj-a --role=roles/iam.workloadIdentityUser --member=serviceAccount:proj-a.svc.id.goog[cnrm-system/kcc-mcl]",
+		"gcloud iam service-accounts add-iam-policy-binding kcc-syncer@proj-a.iam.gserviceaccount.com --project=proj-a --role=roles/iam.workloadIdentityUser --member=serviceAccount:proj-a.svc.id.goog[cnrm-system/kcc-syncer]",
+		"gcloud projects add-iam-policy-binding proj-a --member=serviceAccount:kcc-syncer@proj-a.iam.gserviceaccount.com --role=roles/container.clusterViewer",
+	}
+	for _, wantBinding := range wantBindings {
+		if !slices.Contains(runner.commands, wantBinding) {
+			t.Fatalf("expected binding command %q to run, got: %v", wantBinding, runner.commands)
+		}
+	}
+}
+
+func TestGCPProvisionerTwoClustersInSameProjectDescribesEachAccountOnce(t *testing.T) {
+	runner := &recordingCommandRunner{
+		outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
+			return []byte("existing"), nil
+		},
+	}
+	provisioner := newGCPProvisioner(runner, "my-ha-bucket", "", nil, nil)
+	clusters := []gkeClusterInfo{
+		{contextName: "ctx-1", project: "proj-a", location: "us-central1-a", clusterName: "c1"},
+		{contextName: "ctx-2", project: "proj-a", location: "us-central1-b", clusterName: "c2"},
+	}
+
+	err := provisioner.provision(context.Background(), clusters)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	mclDescribeCount := 0
+	syncerDescribeCount := 0
+	for _, cmd := range runner.commands {
+		if strings.Contains(cmd, "service-accounts describe kcc-mcl@proj-a.iam.gserviceaccount.com") {
+			mclDescribeCount++
+		}
+		if strings.Contains(cmd, "service-accounts describe kcc-syncer@proj-a.iam.gserviceaccount.com") {
+			syncerDescribeCount++
+		}
+	}
+	if mclDescribeCount != 1 {
+		t.Fatalf("expected kcc-mcl describe once, got %d", mclDescribeCount)
+	}
+	if syncerDescribeCount != 1 {
+		t.Fatalf("expected kcc-syncer describe once, got %d", syncerDescribeCount)
+	}
+}
+
+func TestGCPProvisionerOneAccountExistsAndOtherMissing(t *testing.T) {
+	runner := &recordingCommandRunner{
+		outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
+			cmdStr := strings.Join(args, " ")
+			if strings.Contains(cmdStr, "kcc-mcl@proj-a") {
+				return []byte("existing"), nil
+			}
+			return nil, fmt.Errorf("not found")
+		},
+	}
+	provisioner := newGCPProvisioner(runner, "my-ha-bucket", "", nil, nil)
+	clusters := []gkeClusterInfo{
+		{contextName: "ctx-1", project: "proj-a", location: "us-central1-a", clusterName: "c1"},
+	}
+
+	err := provisioner.provision(context.Background(), clusters)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if slices.Contains(runner.commands, "gcloud iam service-accounts create kcc-mcl --project=proj-a") {
+		t.Fatalf("expected existing kcc-mcl not to be created")
+	}
+	if !slices.Contains(runner.commands, "gcloud iam service-accounts create kcc-syncer --project=proj-a") {
+		t.Fatalf("expected missing kcc-syncer to be created, got commands: %v", runner.commands)
+	}
+}
+
+func TestGCPProvisionerAccountDescribeAndCreateBothFail(t *testing.T) {
+	runner := &recordingCommandRunner{
+		outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
+			return nil, fmt.Errorf("describe permission denied")
+		},
+		runFn: func(ctx context.Context, name string, args ...string) error {
+			if strings.Contains(strings.Join(args, " "), "service-accounts create") {
+				return fmt.Errorf("create quota exceeded")
+			}
+			return nil
+		},
+	}
+	provisioner := newGCPProvisioner(runner, "my-ha-bucket", "", nil, nil)
+	clusters := []gkeClusterInfo{
+		{contextName: "ctx-1", project: "proj-foo", location: "us-central1-a", clusterName: "c1"},
+	}
+
+	err := provisioner.provision(context.Background(), clusters)
+	if err == nil {
+		t.Fatalf("expected error, got nil")
+	}
+	errMsg := err.Error()
+	if !strings.Contains(errMsg, "kcc-mcl@proj-foo.iam.gserviceaccount.com") {
+		t.Fatalf("expected error to name account email, got %q", errMsg)
+	}
+	if !strings.Contains(errMsg, "proj-foo") {
+		t.Fatalf("expected error to name project, got %q", errMsg)
+	}
+	if !strings.Contains(errMsg, "describe permission denied") || !strings.Contains(errMsg, "create quota exceeded") {
+		t.Fatalf("expected error to include both failures, got %q", errMsg)
+	}
+}
+
+func TestGCPProvisionerBucketExistsWithDifferingClusterLocations(t *testing.T) {
+	runner := &recordingCommandRunner{
+		outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
+			if strings.Contains(strings.Join(args, " "), "buckets describe") {
+				return []byte("existing"), nil
+			}
+			return []byte("existing"), nil
+		},
+	}
+	provisioner := newGCPProvisioner(runner, "my-ha-bucket", "", nil, nil)
+	// clusters map to us and eu
+	clusters := []gkeClusterInfo{
+		{contextName: "ctx-1", project: "proj-a", location: "us-central1-a", clusterName: "c1"},
+		{contextName: "ctx-2", project: "proj-b", location: "europe-west1-b", clusterName: "c2"},
+	}
+
+	err := provisioner.provision(context.Background(), clusters)
+	if err != nil {
+		t.Fatalf("expected setup not to fail on differing bucket locations when bucket exists, got: %v", err)
+	}
+}
+
+func TestGCPProvisionerBucketExistsWithExplicitLocationPrintsNote(t *testing.T) {
+	var stdout bytes.Buffer
+	runner := &recordingCommandRunner{
+		outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
+			return []byte("existing"), nil
+		},
+	}
+	provisioner := newGCPProvisioner(runner, "my-ha-bucket", "us", &stdout, nil)
+	clusters := []gkeClusterInfo{
+		{contextName: "ctx-1", project: "proj-a", location: "us-central1-a", clusterName: "c1"},
+	}
+
+	err := provisioner.provision(context.Background(), clusters)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	for _, cmd := range runner.commands {
+		if strings.Contains(cmd, "storage buckets create") {
+			t.Fatalf("expected no bucket create command when bucket exists, got: %s", cmd)
+		}
+	}
+	outStr := stdout.String()
+	wantMsg1 := "Lease bucket gs://my-ha-bucket already exists; reusing it."
+	wantMsg2 := "--bucket-location has no effect on an existing bucket."
+	if !strings.Contains(outStr, wantMsg1) || !strings.Contains(outStr, wantMsg2) {
+		t.Fatalf("expected stdout to contain %q and %q, got: %q", wantMsg1, wantMsg2, outStr)
+	}
+}
+
+func TestGCPProvisionerBucketDescribeAndCreateBothFail(t *testing.T) {
+	runner := &recordingCommandRunner{
+		outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
+			return nil, fmt.Errorf("describe bucket 404")
+		},
+		runFn: func(ctx context.Context, name string, args ...string) error {
+			if strings.Contains(strings.Join(args, " "), "storage buckets create") {
+				return fmt.Errorf("create bucket 403")
+			}
+			return nil
+		},
+	}
+	provisioner := newGCPProvisioner(runner, "my-ha-bucket", "us", nil, nil)
+	clusters := []gkeClusterInfo{
+		{contextName: "ctx-1", project: "proj-a", location: "us-central1-a", clusterName: "c1"},
+	}
+
+	err := provisioner.provision(context.Background(), clusters)
+	if err == nil {
+		t.Fatalf("expected error, got nil")
+	}
+	errMsg := err.Error()
+	if !strings.Contains(errMsg, "describe bucket 404") || !strings.Contains(errMsg, "create bucket 403") {
+		t.Fatalf("expected error to include both describe and create failures, got: %q", errMsg)
+	}
+}
+
+func TestGCPProvisionerBindingRetryAfterAccountCreated(t *testing.T) {
+	// Account missing -> created. Then first binding fails twice and then succeeds; subsequent 4 bindings succeed on attempt 1.
+	var stdout bytes.Buffer
+	firstBindingAttempts := 0
+	totalBindingAttempts := 0
+	runner := &recordingCommandRunner{
+		outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
+			if strings.Contains(strings.Join(args, " "), "buckets describe") {
+				return []byte("existing"), nil
+			}
+			// service accounts describe fails -> will create
+			return nil, fmt.Errorf("not found")
+		},
+		runFn: func(ctx context.Context, name string, args ...string) error {
+			if strings.Contains(strings.Join(args, " "), "add-iam-policy-binding") {
+				totalBindingAttempts++
+				if totalBindingAttempts <= 3 {
+					firstBindingAttempts++
+					if firstBindingAttempts <= 2 {
+						return fmt.Errorf("IAM not ready yet")
+					}
+				}
+			}
+			return nil
+		},
+	}
+	provisioner := newGCPProvisioner(runner, "my-ha-bucket", "", &stdout, nil)
+	provisioner.retryInterval = 1 * time.Millisecond
+	provisioner.retryTimeout = 1 * time.Second
+	clusters := []gkeClusterInfo{
+		{contextName: "ctx-1", project: "proj-a", location: "us-central1-a", clusterName: "c1"},
+	}
+
+	err := provisioner.provision(context.Background(), clusters)
+	if err != nil {
+		t.Fatalf("expected provision to succeed after retrying binding, got: %v", err)
+	}
+	if firstBindingAttempts != 3 {
+		t.Fatalf("expected 3 attempts for first binding, got %d", firstBindingAttempts)
+	}
+	if totalBindingAttempts != 7 {
+		t.Fatalf("expected 7 total binding attempts (3 for first binding + 4 for remaining bindings), got %d", totalBindingAttempts)
+	}
+	if gotCount := strings.Count(stdout.String(), "Waiting for newly created service account to propagate in IAM..."); gotCount != 1 {
+		t.Fatalf("expected waiting line to be printed exactly once, got %d times in stdout:\n%s", gotCount, stdout.String())
+	}
+}
+
+func TestGCPProvisionerBindingRetryTimeoutExhausted(t *testing.T) {
+	// Account missing -> created. Binding keeps failing until retryTimeout, returning last error.
+	bindingAttempts := 0
+	runner := &recordingCommandRunner{
+		outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
+			if strings.Contains(strings.Join(args, " "), "buckets describe") {
+				return []byte("existing"), nil
+			}
+			// service accounts describe fails -> will create
+			return nil, fmt.Errorf("not found")
+		},
+		runFn: func(ctx context.Context, name string, args ...string) error {
+			if strings.Contains(strings.Join(args, " "), "add-iam-policy-binding") {
+				bindingAttempts++
+				return fmt.Errorf("IAM error attempt %d", bindingAttempts)
+			}
+			return nil
+		},
+	}
+	provisioner := newGCPProvisioner(runner, "my-ha-bucket", "", nil, nil)
+	provisioner.retryInterval = 1 * time.Millisecond
+	provisioner.retryTimeout = 15 * time.Millisecond
+	clusters := []gkeClusterInfo{
+		{contextName: "ctx-1", project: "proj-a", location: "us-central1-a", clusterName: "c1"},
+	}
+
+	err := provisioner.provision(context.Background(), clusters)
+	if err == nil {
+		t.Fatalf("expected error on retry timeout, got nil")
+	}
+	wantLastErr := fmt.Sprintf("IAM error attempt %d", bindingAttempts)
+	if !strings.Contains(err.Error(), wantLastErr) {
+		t.Fatalf("expected error to contain last error %q, got: %v", wantLastErr, err)
+	}
+	if bindingAttempts < 2 {
+		t.Fatalf("expected multiple binding attempts before timeout, got %d", bindingAttempts)
+	}
+}
+
+func TestGCPProvisionerBindingFailsWithoutRetryWhenNoAccountCreated(t *testing.T) {
+	// Everything exists -> no account created. Binding fails -> returns immediately without retry.
+	bindingAttempts := 0
+	runner := &recordingCommandRunner{
+		outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
+			return []byte("existing"), nil
+		},
+		runFn: func(ctx context.Context, name string, args ...string) error {
+			if strings.Contains(strings.Join(args, " "), "add-iam-policy-binding") {
+				bindingAttempts++
+				return fmt.Errorf("first failure")
+			}
+			return nil
+		},
+	}
+	provisioner := newGCPProvisioner(runner, "my-ha-bucket", "", nil, nil)
+	provisioner.retryInterval = 1 * time.Millisecond
+	provisioner.retryTimeout = 1 * time.Second
+	clusters := []gkeClusterInfo{
+		{contextName: "ctx-1", project: "proj-a", location: "us-central1-a", clusterName: "c1"},
+	}
+
+	err := provisioner.provision(context.Background(), clusters)
+	if err == nil {
+		t.Fatalf("expected error, got nil")
+	}
+	if !strings.Contains(err.Error(), "first failure") {
+		t.Fatalf("expected first failure error, got: %v", err)
+	}
+	if bindingAttempts != 1 {
+		t.Fatalf("expected binding to fail on first attempt without retries, got %d attempts", bindingAttempts)
 	}
 }
