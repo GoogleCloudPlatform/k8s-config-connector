@@ -5038,10 +5038,6 @@
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceDirectory.genericWebService.username" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceDirectory.genericWebService.webhookType" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceDirectory.serviceRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=discoveryengineaclconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.idpConfig.externalIdpConfig.workforcePoolName" is not set in unstructured objects
-[missing_field] crd=discoveryengineaclconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.idpConfig.idpType" is not set in unstructured objects
-[missing_field] crd=discoveryengineaclconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=discoveryengineaclconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryengineassistants.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.customerPolicy.bannedPhrases[].ignoreDiacritics" is not set in unstructured objects
 [missing_field] crd=discoveryengineassistants.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.customerPolicy.bannedPhrases[].matchType" is not set in unstructured objects
 [missing_field] crd=discoveryengineassistants.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.customerPolicy.bannedPhrases[].phrase" is not set in unstructured objects
