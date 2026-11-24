@@ -36,6 +36,8 @@ func DialogflowSipTrunkObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	out := &krm.DialogflowSipTrunkObservedState{}
 	// MISSING: Name
 	out.Connections = direct.Slice_FromProto(mapCtx, in.Connections, ConnectionObservedState_FromProto)
+	// MISSING: PeerHostnames
+	// MISSING: GoogleRootCertFile
 	return out
 }
 func DialogflowSipTrunkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowSipTrunkObservedState) *pb.SipTrunk {
@@ -45,6 +47,8 @@ func DialogflowSipTrunkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out := &pb.SipTrunk{}
 	// MISSING: Name
 	out.Connections = direct.Slice_ToProto(mapCtx, in.Connections, ConnectionObservedState_ToProto)
+	// MISSING: PeerHostnames
+	// MISSING: GoogleRootCertFile
 	return out
 }
 func DialogflowSipTrunkSpec_FromProto(mapCtx *direct.MapContext, in *pb.SipTrunk) *krm.DialogflowSipTrunkSpec {
@@ -55,6 +59,8 @@ func DialogflowSipTrunkSpec_FromProto(mapCtx *direct.MapContext, in *pb.SipTrunk
 	// MISSING: Name
 	out.ExpectedHostname = in.ExpectedHostname
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: PeerHostnames
+	// MISSING: GoogleRootCertFile
 	return out
 }
 func DialogflowSipTrunkSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowSipTrunkSpec) *pb.SipTrunk {
@@ -65,5 +71,7 @@ func DialogflowSipTrunkSpec_ToProto(mapCtx *direct.MapContext, in *krm.Dialogflo
 	// MISSING: Name
 	out.ExpectedHostname = in.ExpectedHostname
 	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: PeerHostnames
+	// MISSING: GoogleRootCertFile
 	return out
 }

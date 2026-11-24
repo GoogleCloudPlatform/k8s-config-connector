@@ -131,6 +131,10 @@ type Adapter struct {
 var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
+	if a.id.Siptrunk == "" {
+		return false, nil
+	}
+
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting DialogflowSipTrunk", "name", a.id.String())
 
@@ -151,7 +155,6 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating DialogflowSipTrunk", "name", a.id.String())
 
-	a.desired.Name = a.id.String()
 	parent := fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location)
 	req := &pb.CreateSipTrunkRequest{
 		Parent:   parent,
@@ -161,7 +164,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	if err != nil {
 		return fmt.Errorf("creating DialogflowSipTrunk %s: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully created DialogflowSipTrunk", "name", a.id.String())
+	log.V(2).Info("successfully created DialogflowSipTrunk", "name", created.GetName())
 
 	return a.updateStatus(ctx, createOp, created)
 }
@@ -174,6 +177,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	desired := proto.CloneOf(a.desired)
 	desired.Name = a.id.String()
 	desired.Connections = a.actual.Connections
+	desired.PeerHostnames = a.actual.PeerHostnames
 
 	// Compare proto messages
 	paths, report, err := common.CompareProtoMessageStructuredDiff(desired, a.actual, common.BasicDiff)
@@ -214,7 +218,11 @@ func (a *Adapter) updateStatus(ctx context.Context, op directbase.Operation, lat
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
+	externalRef := latest.GetName()
+	if externalRef == "" {
+		externalRef = a.id.String()
+	}
+	status.ExternalRef = direct.PtrTo(externalRef)
 	return op.UpdateStatus(ctx, status, nil)
 }
 

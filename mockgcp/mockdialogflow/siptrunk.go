@@ -16,7 +16,10 @@ package mockdialogflow
 
 import (
 	"context"
+	"crypto/rand"
+	"encoding/base64"
 	"fmt"
+	"math/big"
 	"strings"
 
 	"google.golang.org/grpc/codes"
@@ -46,22 +49,37 @@ func (s *sipTrunksServer) GetSipTrunk(ctx context.Context, req *pb.GetSipTrunkRe
 }
 
 func (s *sipTrunksServer) CreateSipTrunk(ctx context.Context, req *pb.CreateSipTrunkRequest) (*pb.SipTrunk, error) {
-	reqName := req.GetSipTrunk().GetName()
-	name, err := s.parseSipTrunkName(reqName)
+	parent, err := s.parseSipTrunkParent(req.GetParent())
 	if err != nil {
 		return nil, err
 	}
-	fqn := name.String()
 
-	obj := proto.CloneOf(req.GetSipTrunk())
+	sipTrunkID := ""
+	if req.GetSipTrunk().GetName() != "" {
+		name, err := s.parseSipTrunkName(req.GetSipTrunk().GetName())
+		if err == nil && name.SipTrunk != "" {
+			sipTrunkID = name.SipTrunk
+		}
+	}
+	if sipTrunkID == "" {
+		n, err := rand.Int(rand.Reader, big.NewInt(1<<62))
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "%v", err)
+		}
+		sipTrunkID = base64.RawURLEncoding.EncodeToString([]byte(n.String()))
+	}
+
+	parent.SipTrunk = sipTrunkID
+	fqn := parent.String()
+
+	obj := proto.Clone(req.GetSipTrunk()).(*pb.SipTrunk)
 	obj.Name = fqn
 
-	// Populate simulated connection
-	obj.Connections = []*pb.Connection{
-		{
-			ConnectionId: "connection-1",
-			State:        pb.Connection_CONNECTED,
-		},
+	obj.PeerHostnames = nil
+	for _, hostname := range obj.GetExpectedHostname() {
+		obj.PeerHostnames = append(obj.PeerHostnames, &pb.SipHostname{
+			PeerHostname: hostname,
+		})
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -103,6 +121,13 @@ func (s *sipTrunksServer) UpdateSipTrunk(ctx context.Context, req *pb.UpdateSipT
 		}
 	}
 
+	obj.PeerHostnames = nil
+	for _, hostname := range obj.GetExpectedHostname() {
+		obj.PeerHostnames = append(obj.PeerHostnames, &pb.SipHostname{
+			PeerHostname: hostname,
+		})
+	}
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -133,6 +158,23 @@ type sipTrunkName struct {
 
 func (n *sipTrunkName) String() string {
 	return fmt.Sprintf("projects/%s/locations/%s/sipTrunks/%s", n.Project.ID, n.Location, n.SipTrunk)
+}
+
+func (s *MockService) parseSipTrunkParent(parent string) (*sipTrunkName, error) {
+	tokens := strings.Split(parent, "/")
+	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "locations" {
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &sipTrunkName{
+			Project:  project,
+			Location: tokens[3],
+		}, nil
+	}
+
+	return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid, expected format projects/{project}/locations/{location}", parent)
 }
 
 func (s *MockService) parseSipTrunkName(name string) (*sipTrunkName, error) {
