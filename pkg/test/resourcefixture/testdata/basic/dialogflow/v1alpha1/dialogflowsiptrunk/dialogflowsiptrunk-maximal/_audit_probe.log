@@ -1,0 +1,22 @@
+GET https://dialogflow.googleapis.com/v2beta1/projects/${projectId}/locations/global/sipTrunks/${sipTrunkID}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "displayName": "Updated SIP Trunk",
+  "expectedHostname": [
+    "updated-sip1.example.com",
+    "updated-sip2.example.com"
+  ],
+  "name": "projects/${projectId}/locations/global/sipTrunks/${sipTrunkID}",
+  "peerHostnames": [
+    {
+      "peerHostname": "updated-sip1.example.com"
+    },
+    {
+      "peerHostname": "updated-sip2.example.com"
+    }
+  ]
+}
