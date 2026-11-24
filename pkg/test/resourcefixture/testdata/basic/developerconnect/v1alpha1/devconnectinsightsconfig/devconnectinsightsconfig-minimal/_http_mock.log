@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://developerconnect.googleapis.com/v1/projects/${projectId}/locations/us-central1/insightsConfigs/default?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -96,7 +97,7 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/locations/us-central1/insightsConfigs/default",
     "projects": {
       "projectIds": [
-        "projects/${projectNumber}"
+        "${projectId}"
       ]
     },
     "state": "PENDING",
@@ -126,7 +127,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/insightsConfigs/default",
   "projects": {
     "projectIds": [
-      "projects/${projectNumber}"
+      "${projectId}"
     ]
   },
   "state": 5,
@@ -135,6 +136,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: UPDATE
 PATCH https://developerconnect.googleapis.com/v1/projects/${projectId}/locations/us-central1/insightsConfigs/default?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -204,7 +206,7 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/locations/us-central1/insightsConfigs/default",
     "projects": {
       "projectIds": [
-        "projects/${projectNumber}"
+        "${projectId}"
       ]
     },
     "state": "PENDING",
@@ -239,7 +241,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/insightsConfigs/default",
   "projects": {
     "projectIds": [
-      "projects/${projectNumber}"
+      "${projectId}"
     ]
   },
   "state": 5,
@@ -248,6 +250,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: DELETE
 DELETE https://developerconnect.googleapis.com/v1/projects/${projectId}/locations/us-central1/insightsConfigs/default?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)

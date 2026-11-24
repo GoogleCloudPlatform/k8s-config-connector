@@ -186,7 +186,7 @@ func (s *InsightsConfigServer) normalizeProjects(ctx context.Context, projects *
 		}
 		proj, err := s.Projects.GetProjectByIDOrNumber(idOrNumber)
 		if err == nil {
-			projects.ProjectIds[i] = "projects/" + strconv.FormatInt(proj.Number, 10)
+			projects.ProjectIds[i] = proj.ID
 		}
 	}
 }
