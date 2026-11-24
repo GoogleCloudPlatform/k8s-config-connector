@@ -1,4 +1,4 @@
-- caisURL: //networksecurity.googleapis.com/projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-max-${uniqueId}
+- caisURL: //networksecurity.googleapis.com/projects/${projectId}/locations/us-central1-a/mirroringDeployments/mirroringdep-max-${uniqueId}
   group: networksecurity.cnrm.cloud.google.com
   kind: NetworkSecurityMirroringDeployment
   name: mirroringdep-max-${uniqueId}

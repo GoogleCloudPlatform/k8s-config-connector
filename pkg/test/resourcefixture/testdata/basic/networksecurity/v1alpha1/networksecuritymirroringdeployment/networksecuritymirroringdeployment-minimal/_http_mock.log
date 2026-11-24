@@ -1,48 +1,80 @@
-GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringDeployment
+# Phase: CREATE
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/mirroringDeployments/mirroringdep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FmirroringDeployments%2Fmirroringdep-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}"
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1-a/mirroringDeployments/mirroringdep-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
 }
-
-error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}' was not found
-
-{}
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.Mirroring/CreateMirroringDeployment
+POST https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/mirroringDeployments?%24alt=json%3Benum-encoding%3Dint&mirroringDeploymentId=mirroringdep-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1-a
 
 {
-  "mirroringDeployment": {
-    "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}",
-    "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}"
+  "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/shared-mirroring-fr",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   },
-  "mirroringDeploymentId": "mirroringdep-${uniqueId}",
-  "parent": "projects/${projectId}/locations/us-central1"
+  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/shared-dg"
 }
 
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/mirroringDeployments/mirroringdep-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
 }
 
 ---
 
-GRPC /google.longrunning.Operations/GetOperation
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2Foperations%2F${operationID}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -51,16 +83,20 @@ OK
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/mirroringDeployments/mirroringdep-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.MirroringDeployment",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}",
-    "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}",
-    "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}",
+    "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/shared-mirroring-fr",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/shared-dg",
+    "name": "projects/${projectId}/locations/us-central1-a/mirroringDeployments/mirroringdep-${uniqueId}",
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -68,78 +104,90 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringDeployment
+# Phase: UPDATE
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/mirroringDeployments/mirroringdep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FmirroringDeployments%2Fmirroringdep-${uniqueId}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}",
-  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}",
-  "state": "ACTIVE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringDeployment
-
-{
-  "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}",
-  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}",
-  "state": "ACTIVE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.Mirroring/UpdateMirroringDeployment
-
-{
-  "mirroringDeployment": {
-    "description": "Updated description for minimal mirroring deployment",
-    "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}",
-    "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}",
-    "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}"
+  "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/shared-mirroring-fr",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   },
-  "updateMask": "description"
+  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/shared-dg",
+  "name": "projects/${projectId}/locations/us-central1-a/mirroringDeployments/mirroringdep-${uniqueId}",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
-OK
+---
+
+PATCH https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/mirroringDeployments/mirroringdep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: mirroring_deployment.name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FmirroringDeployments%2Fmirroringdep-${uniqueId}
+
+{
+  "description": "Updated description for minimal mirroring deployment",
+  "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/shared-mirroring-fr",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/shared-dg",
+  "name": "projects/${projectId}/locations/us-central1-a/mirroringDeployments/mirroringdep-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/mirroringDeployments/mirroringdep-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
 }
 
 ---
 
-GRPC /google.longrunning.Operations/GetOperation
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2Foperations%2F${operationID}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -148,17 +196,21 @@ OK
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/mirroringDeployments/mirroringdep-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.MirroringDeployment",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Updated description for minimal mirroring deployment",
-    "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}",
-    "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}",
-    "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}",
+    "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/shared-mirroring-fr",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/shared-dg",
+    "name": "projects/${projectId}/locations/us-central1-a/mirroringDeployments/mirroringdep-${uniqueId}",
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -166,94 +218,80 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringDeployment
+# Phase: DELETE
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/mirroringDeployments/mirroringdep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FmirroringDeployments%2Fmirroringdep-${uniqueId}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated description for minimal mirroring deployment",
-  "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}",
-  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}",
-  "state": "ACTIVE",
+  "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/shared-mirroring-fr",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/shared-dg",
+  "name": "projects/${projectId}/locations/us-central1-a/mirroringDeployments/mirroringdep-${uniqueId}",
+  "state": 1,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringDeployment
+DELETE https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/mirroringDeployments/mirroringdep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FmirroringDeployments%2Fmirroringdep-${uniqueId}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description for minimal mirroring deployment",
-  "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}",
-  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}",
-  "state": "ACTIVE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringDeployment
-
-{
-  "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description for minimal mirroring deployment",
-  "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}",
-  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}",
-  "state": "ACTIVE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.Mirroring/DeleteMirroringDeployment
-
-{
-  "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/mirroringDeployments/mirroringdep-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
 }
 
 ---
 
-GRPC /google.longrunning.Operations/GetOperation
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2Foperations%2F${operationID}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -262,17 +300,21 @@ OK
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/mirroringDeployments/mirroringdep-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.MirroringDeployment",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Updated description for minimal mirroring deployment",
-    "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}",
-    "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}",
-    "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}",
+    "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/shared-mirroring-fr",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/shared-dg",
+    "name": "projects/${projectId}/locations/us-central1-a/mirroringDeployments/mirroringdep-${uniqueId}",
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
