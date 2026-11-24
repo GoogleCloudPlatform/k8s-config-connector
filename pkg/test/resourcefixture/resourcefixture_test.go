@@ -88,6 +88,8 @@ func testCreateAndUpdateUnstructShouldDiffer(t *testing.T, fixture resourcefixtu
 		"containercluster-resourcemanagertags-standard": true,
 		"dataformrepository-basic":                      true,
 		"datalabelinginstruction-maximal":               true,
+		"designcentercatalogtemplaterevision-maximal":   true,
+		"designcentercatalogtemplaterevision-minimal":   true,
 		"networkconnectivityregionalendpoint-maximal":   true,
 		"networkconnectivityregionalendpoint-minimal":   true,
 	}

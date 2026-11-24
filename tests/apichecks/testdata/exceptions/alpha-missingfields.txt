@@ -3700,15 +3700,12 @@
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.applicationParameters[].value.stringValue" is not set in unstructured objects
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.applicationParameters[].value.structValue" is not set in unstructured objects
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.applicationTemplateRevisionSource" is not set in unstructured objects
-[missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.developerConnectSourceConfig.developerConnectRepoRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.developerConnectSourceConfig.dir" is not set in unstructured objects
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.developerConnectSourceConfig.reference.branch" is not set in unstructured objects
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.developerConnectSourceConfig.reference.commitSha" is not set in unstructured objects
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.developerConnectSourceConfig.reference.refTag" is not set in unstructured objects
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitSource.dir" is not set in unstructured objects
-[missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitSource.refTag" is not set in unstructured objects
-[missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitSource.repo" is not set in unstructured objects
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataInput.spec.info.actuationTool.flavor" is not set in unstructured objects
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataInput.spec.info.actuationTool.version" is not set in unstructured objects
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataInput.spec.interfaces.variables[].connections[].source.source" is not set in unstructured objects
@@ -3724,7 +3721,6 @@
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.ociRepo.moduleSourceURI" is not set in unstructured objects
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.ociRepo.uri" is not set in unstructured objects
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.ociRepo.version" is not set in unstructured objects
-[missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.type" is not set in unstructured objects
 [missing_field] crd=designcenterspaces.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.tags" is not set in unstructured objects
 [missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects

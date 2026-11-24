@@ -108,6 +108,15 @@
   - Regenerated types, deepcopy, mappers, and CRD manifests via `./apis/designcenter/generate.sh`.
   - Removed stale `.spec.gitSource.developerConnectConfig.gitRepositoryLink` exception from `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 
+### [2026-11-24] Greenfield Step 2: Implement direct controller, fuzzer, and E2E fixtures for DesignCenterCatalogTemplateRevision
+- **Context**: Greenfield implementation of direct controller, round-trip fuzzer, and real-GCP recorded E2E fixtures for `DesignCenterCatalogTemplateRevision` (`designcenter.cnrm.cloud.google.com/v1alpha1`, Issue #16348).
+- **Resolutions & Findings**:
+  - **Controller and Fuzzer**: Generated with `controllerbuilder generate-controller` and `generate-fuzzer --prepopulate-resource`. The GCP API does not support `UpdateCatalogTemplateRevision` (revisions are immutable), and controllerbuilder generated an update handler rejecting non-empty spec field updates.
+  - **GCP API Artifact Requirements**: CatalogTemplateRevision creation requires an `artifact_location` oneof (e.g. `gitSource`) pointing to a valid Terraform module repository containing `metadata.yaml` with valid `spec.info.actuationTool` configurations (such as `GoogleCloudPlatform/terraform-google-cloud-run` at ref tag `v0.34.2`).
+  - **Fixtures & Golden Logs**: Recorded E2E fixtures against real GCP (`cnrm-barni-4`) using `./hack/record-gcp "fixtures/designcentercatalogtemplaterevision-minimal"` and `"fixtures/designcentercatalogtemplaterevision-maximal"`. Audit probe markers and Cloud Audit Logs confirm successful actuation and deletion.
+  - **Validation**: 200-seed focused round-trip fuzzer (`TestFocusedMappers/DesignCenterCatalogTemplateRevision`), CRD field presence checks, and presubmit unit tests all passed cleanly.
+
+
 
 
 
