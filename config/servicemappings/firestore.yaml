@@ -25,6 +25,9 @@ spec:
     - name: google_firestore_index
       kind: FirestoreIndex
       serverGeneratedIDField: "name"
+      resourceID:
+        targetField: name
+        valueTemplate: "projects/{{project}}/databases/{{database}}/collectionGroups/{{collection}}/indexes/{{value}}"
       # too hard to reason about yet
       idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: false
