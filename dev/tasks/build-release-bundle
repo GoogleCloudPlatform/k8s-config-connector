@@ -192,7 +192,6 @@ BLOCKED_KINDS=(
     "DiscoveryEngineAssistant"
     "DiscoveryEngineCMEKConfig"
     "DiscoveryEngineIdentityMappingStore"
-    "DiscoveryEngineWidgetConfig"
     "DLPConnection"
     "DLPContentPolicy"
     "DLPDiscoveryConfig"
