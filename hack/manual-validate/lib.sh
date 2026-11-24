@@ -412,6 +412,18 @@ mv_wait_http() {
 # ordered short method names (e.g. CreateFoo,UpdateFoo,DeleteFoo) to EXPECTED.
 # This proves what GCP actually received: no delete+recreate on update and no
 # spurious writes while idle. Polls because audit logs lag by seconds to minutes.
+# A long-running operation logs several entries under one operation.id (its
+# start, its completion, sometimes the start twice): it counts once, as its
+# first entry. An entry with no operation.id is one call.
+mv_audit_calls() {
+  jq -r 'reduce .[] as $e ({seen: {}, out: []};
+      ($e.operation.id // "") as $id
+      | if $id == "" then .out += [$e]
+        elif .seen[$id] then .
+        else .seen[$id] = true | .out += [$e] end)
+    | [.out[].protoPayload.methodName | split(".") | last] | join(",")' "$1"
+}
+
 mv_expect_audit() {
   local phase="$1" label="$2" substr="$3" want="$4" timeout="${5:-240}" start got out filter
   out="cloud/${phase}-${label}.json"
@@ -420,7 +432,7 @@ mv_expect_audit() {
   while :; do
     gcloud logging read "${filter}" --project "${GCP_PROJECT_ID}" --order=asc --format=json \
       >"${MV_RUN_DIR}/${out}" 2>/dev/null || echo '[]' >"${MV_RUN_DIR}/${out}"
-    got="$(jq -r '[.[].protoPayload.methodName | split(".") | last] | join(",")' "${MV_RUN_DIR}/${out}" 2>/dev/null || true)"
+    got="$(mv_audit_calls "${MV_RUN_DIR}/${out}" 2>/dev/null || true)"
     [[ "${got}" == "${want}" ]] && break
     (($(date +%s) - start > timeout)) && break
     sleep 15
