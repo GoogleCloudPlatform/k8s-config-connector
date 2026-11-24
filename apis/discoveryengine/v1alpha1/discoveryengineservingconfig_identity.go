@@ -93,7 +93,7 @@ func getIdentityFromDiscoveryEngineServingConfigSpec(ctx context.Context, reader
 		return nil, fmt.Errorf("resolving spec.engineRef: %w", err)
 	}
 
-	engineLink, err := parseDiscoveryEngineEngineExternal(normalizedEngine)
+	engineLink, err := ParseDiscoveryEngineEngineExternal(normalizedEngine)
 	if err != nil {
 		return nil, fmt.Errorf("parsing spec.engineRef external: %w", err)
 	}

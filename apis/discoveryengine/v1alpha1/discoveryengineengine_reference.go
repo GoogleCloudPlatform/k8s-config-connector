@@ -19,20 +19,21 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+var _ refsv1beta1.Ref = &DiscoveryEngineEngineRef{}
+var _ refsv1beta1.ExternalRef = &DiscoveryEngineEngineRef{}
 var _ refsv1beta1.ExternalNormalizer = &DiscoveryEngineEngineRef{}
 
 // DiscoveryEngineEngineRef is a reference to a DiscoveryEngineEngine.
 type DiscoveryEngineEngineRef struct {
 	// A reference to an externally managed DiscoveryEngineEngine resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/engines/{{engineID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/collections/{{collectionID}}/engines/{{engineID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DiscoveryEngineEngine resource.
@@ -40,6 +41,53 @@ type DiscoveryEngineEngineRef struct {
 
 	// The namespace of a DiscoveryEngineEngine resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refsv1beta1.Register(&DiscoveryEngineEngineRef{}, &DiscoveryEngineEngine{})
+}
+
+func (r *DiscoveryEngineEngineRef) GetGVK() schema.GroupVersionKind {
+	return DiscoveryEngineEngineGVK
+}
+
+func (r *DiscoveryEngineEngineRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *DiscoveryEngineEngineRef) GetExternal() string {
+	return r.External
+}
+
+func (r *DiscoveryEngineEngineRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *DiscoveryEngineEngineRef) ValidateExternal(ref string) error {
+	_, err := ParseDiscoveryEngineEngineExternal(ref)
+	return err
+}
+
+func (r *DiscoveryEngineEngineRef) ParseExternalToIdentity() (identity.Identity, error) {
+	return ParseDiscoveryEngineEngineExternal(r.External)
+}
+
+// Normalize ensures the "External" reference (in string format) is set.
+func (r *DiscoveryEngineEngineRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if err := refsv1beta1.Normalize(ctx, reader, r, defaultNamespace); err != nil {
+		return err
+	}
+	id, err := ParseDiscoveryEngineEngineExternal(r.External)
+	if err != nil {
+		return err
+	}
+	r.External = id.String()
+	return nil
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on DiscoveryEngineEngine.
@@ -51,7 +99,7 @@ func (r *DiscoveryEngineEngineRef) NormalizedExternal(ctx context.Context, reade
 	}
 	// From given External
 	if r.External != "" {
-		id, err := parseDiscoveryEngineEngineExternal(r.External)
+		id, err := ParseDiscoveryEngineEngineExternal(r.External)
 		if err != nil {
 			return "", err
 		}
@@ -60,27 +108,9 @@ func (r *DiscoveryEngineEngineRef) NormalizedExternal(ctx context.Context, reade
 	}
 
 	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
+	if err := r.Normalize(ctx, reader, otherNamespace); err != nil {
+		return "", err
 	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(DiscoveryEngineEngineGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", DiscoveryEngineEngineGVK, key, err)
-	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = actualExternalRef
 	return r.External, nil
 }
 
@@ -130,7 +160,7 @@ func NewDiscoveryEngineEngineRef(ctx context.Context, reader client.Reader, obj 
 	externalRef := valueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		statusID, err := parseDiscoveryEngineEngineExternal(externalRef)
+		statusID, err := ParseDiscoveryEngineEngineExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
@@ -147,7 +177,7 @@ func NewDiscoveryEngineEngineRef(ctx context.Context, reader client.Reader, obj 
 // 		return r.parent, nil
 // 	}
 // 	if r.External != "" {
-// 		parent, _, err := parseDiscoveryEngineEngineExternal(r.External)
+// 		parent, _, err := ParseDiscoveryEngineEngineExternal(r.External)
 // 		if err != nil {
 // 			return nil, err
 // 		}
@@ -166,6 +196,15 @@ func (p *DiscoveryEngineEngineID) String() string {
 	return p.CollectionLink.String() + "/engines/" + p.Engine
 }
 
+func (p *DiscoveryEngineEngineID) FromExternal(ref string) error {
+	id, err := ParseDiscoveryEngineEngineExternal(ref)
+	if err != nil {
+		return err
+	}
+	*p = *id
+	return nil
+}
+
 // func (p *DiscoveryEngineEngineParent) String() string {
 // 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 // }
@@ -174,7 +213,7 @@ func (p *DiscoveryEngineEngineID) String() string {
 // 	return parent.String() + "/engines/" + resourceID
 // }
 
-func parseDiscoveryEngineEngineExternal(external string) (*DiscoveryEngineEngineID, error) {
+func ParseDiscoveryEngineEngineExternal(external string) (*DiscoveryEngineEngineID, error) {
 	s := strings.TrimPrefix(external, "//discoveryengine.googleapis.com/")
 	s = strings.TrimPrefix(s, "/")
 	tokens := strings.Split(s, "/")

@@ -162,4 +162,23 @@
   5. Triaged all 6 judgement queue entries for `DiscoveryEngineCMEKConfig` in `apis/discoveryengine/judgement_queue.yaml`.
 - **Impact**: Fully resolves Greenfield Step 1b for `DiscoveryEngineCMEKConfig`, passing all API compatibility and schema checks.
 
+### [2026-11-24] DiscoveryEngineAssistant Judgement Queue Triage and Identity Finalization
+- **Context**: Triaging judgement queue and finalizing direct KRM types/identity for `DiscoveryEngineAssistant` (Issue #16379).
+- **Problem**:
+  1. `DiscoveryEngineAssistant` pattern is `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/assistants/{assistant}`.
+  2. The parent resource is `DiscoveryEngineEngine` (`projects/{project}/locations/{location}/collections/{collection}/engines/{engine}`).
+  3. `DiscoveryEngineEngineRef` lacked `refs.Ref` and `refs.ExternalRef` interface implementations, and its parse function was not exported, preventing `refs.Normalize` and `controllerbuilder generate-identity` from compiling parentRef resolution code.
+  4. Generator produced open judgement queue entries for parent hierarchy (`location-or-parent-ref`, `parent-ref-guessed`, `identity-root-unknown`).
+  5. Nested customerPolicy references point to `modelarmor.googleapis.com/Template` and `dlp.googleapis.com/ContentPolicy`, which have corresponding KCC types `ModelArmorTemplateRef` and `DLPContentPolicyRef`.
+  6. Proto defines `enabled_tools` map with a note `not implemented yet. Use enabled_actions instead` and references an unreleased `DataConnector` resource.
+- **Solution**:
+  1. Modeled `spec.parentRef` (`*DiscoveryEngineEngineRef`) as required and immutable with `+kubebuilder:validation:XValidation:rule="self == oldSelf"`, removing `projectRef` and `location` per Greenfield Case B.
+  2. Implemented `refs.Ref` and `refs.ExternalRef` on `DiscoveryEngineEngineRef`, registered it in `refsv1beta1.Register`, and exported `ParseDiscoveryEngineEngineExternal` (supporting both canonical 8-token and legacy 6-token engine formats).
+  3. Modeled `userPromptTemplateRef` and `responseTemplateRef` in `Assistant_CustomerPolicy_ModelArmorConfig` as `*modelarmorv1alpha1.ModelArmorTemplateRef`, and `policyRef` in `DataProtectionPolicy_SensitiveDataProtectionPolicy` as `*dlpv1alpha1.DLPContentPolicyRef`.
+  4. Omitted unimplementable `enabledTools` from `DiscoveryEngineAssistantSpec` per proto documentation note.
+  5. Regenerated identity via `controllerbuilder generate-identity`, producing deterministic parentRef parsing and canonical identity generation.
+  6. Added unit tests in `discoveryengineassistant_reference_test.go` verifying identity resolution with both 6-token and 8-token parent references.
+  7. Triaged all 12 entries for `DiscoveryEngineAssistant` in `apis/discoveryengine/judgement_queue.yaml` to `resolved`, with 0 exceptions added to `refs_deferred.txt`.
+- **Impact**: Fully resolves Greenfield Step 1b for `DiscoveryEngineAssistant` conforming to the single-parent and reference standards, ready for Step 2 controller implementation.
+
 

@@ -93,10 +93,36 @@ spec:
                         description: Optional. Specifies the sensitive data protection
                           policy for the connector source.
                         properties:
-                          policy:
-                            description: Optional. Specifies the resource name of
-                              the Sensitive Data Protection content policy.
-                            type: string
+                          policyRef:
+                            description: Optional. The Sensitive Data Protection content
+                              policy.
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: A reference to an externally managed
+                                  DLPContentPolicy resource. Should be in the format
+                                  "projects/{{projectID}}/locations/{{location}}/contentPolicies/{{contentPolicyID}}".
+                                type: string
+                              name:
+                                description: The name of a DLPContentPolicy resource.
+                                type: string
+                              namespace:
+                                description: The namespace of a DLPContentPolicy resource.
+                                type: string
+                            type: object
                         type: object
                     type: object
                   modelArmorConfig:
@@ -107,23 +133,64 @@ spec:
                         description: Optional. Defines the failure mode for Model
                           Armor sanitization.
                         type: string
-                      responseTemplate:
-                        description: |-
-                          Optional. The resource name of the Model Armor template for sanitizing
-                           assistant responses. Format:
-                           `projects/{project}/locations/{location}/templates/{template_id}`
-
-                           If not specified, no sanitization will be applied to the assistant
-                           response.
-                        type: string
-                      userPromptTemplate:
-                        description: |-
-                          Optional. The resource name of the Model Armor template for sanitizing
-                           user prompts. Format:
-                           `projects/{project}/locations/{location}/templates/{template_id}`
-
-                           If not specified, no sanitization will be applied to the user prompt.
-                        type: string
+                      responseTemplateRef:
+                        description: Optional. The Model Armor template for sanitizing
+                          assistant responses.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed ModelArmorTemplate
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/templates/{{template}}".
+                            type: string
+                          name:
+                            description: The name of a ModelArmorTemplate resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a ModelArmorTemplate resource.
+                            type: string
+                        type: object
+                      userPromptTemplateRef:
+                        description: Optional. The Model Armor template for sanitizing
+                          user prompts.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed ModelArmorTemplate
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/templates/{{template}}".
+                            type: string
+                          name:
+                            description: The name of a ModelArmorTemplate resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a ModelArmorTemplate resource.
+                            type: string
+                        type: object
                     type: object
                 type: object
               defaultWebGroundingToggleOff:
@@ -146,33 +213,6 @@ spec:
 
                    It must be a UTF-8 encoded string with a length limit of 128 characters.
                 type: string
-              enabledTools:
-                additionalProperties:
-                  properties:
-                    toolInfo:
-                      description: The list of tools with corresponding tool information.
-                      items:
-                        properties:
-                          toolDisplayName:
-                            description: The display name of the tool.
-                            type: string
-                          toolName:
-                            description: 'The name of the tool as defined by DataConnectorService.QueryAvailableActions.
-                              Note: it''s using `action` in the DataConnectorService
-                              apis, but they are the same as the `tool` here.'
-                            type: string
-                        type: object
-                      type: array
-                  type: object
-                description: 'Optional. Note: not implemented yet. Use [enabled_actions][google.cloud.discoveryengine.v1.Assistant.enabled_actions]
-                  instead. The enabled tools on this assistant. The keys are connector
-                  name, for example "projects/{projectId}/locations/{locationId}/collections/{collectionId}/dataconnector
-                  The values consist of admin enabled tools towards the connector
-                  instance. Admin can selectively enable multiple tools on any of
-                  the connector instances that they created in the project. For example
-                  {"jira1ConnectorName": [(toolId1, "createTicket"), (toolId2, "transferTicket")],
-                  "gmail1ConnectorName": [(toolId3, "sendEmail"),..] }'
-                type: object
               generationConfig:
                 description: Optional. Configuration for the generation of the assistant
                   response.
@@ -202,11 +242,9 @@ spec:
                         type: string
                     type: object
                 type: object
-              location:
-                description: The location of this resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The DiscoveryEngineEngine that this DiscoveryEngineAssistant
+                  belongs to.
                 oneOf:
                 - not:
                     required:
@@ -223,20 +261,19 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed DiscoveryEngineEngine
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/collections/{{collectionID}}/engines/{{engineID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a DiscoveryEngineEngine resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a DiscoveryEngineEngine resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The DiscoveryEngineAssistant name. If not given, the
                   metadata.name will be used.
@@ -246,8 +283,7 @@ spec:
                 type: string
             required:
             - displayName
-            - location
-            - projectRef
+            - parentRef
             type: object
           status:
             description: DiscoveryEngineAssistantStatus defines the config connector

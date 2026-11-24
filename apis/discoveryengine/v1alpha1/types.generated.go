@@ -62,30 +62,6 @@ type Assistant_CustomerPolicy_BannedPhrase struct {
 	IgnoreDiacritics *bool `json:"ignoreDiacritics,omitempty"`
 }
 
-// +kcc:proto=google.cloud.discoveryengine.v1.Assistant.CustomerPolicy.ModelArmorConfig
-type Assistant_CustomerPolicy_ModelArmorConfig struct {
-	// Optional. The resource name of the Model Armor template for sanitizing
-	//  user prompts. Format:
-	//  `projects/{project}/locations/{location}/templates/{template_id}`
-	//
-	//  If not specified, no sanitization will be applied to the user prompt.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.CustomerPolicy.ModelArmorConfig.user_prompt_template
-	UserPromptTemplate *string `json:"userPromptTemplate,omitempty"`
-
-	// Optional. The resource name of the Model Armor template for sanitizing
-	//  assistant responses. Format:
-	//  `projects/{project}/locations/{location}/templates/{template_id}`
-	//
-	//  If not specified, no sanitization will be applied to the assistant
-	//  response.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.CustomerPolicy.ModelArmorConfig.response_template
-	ResponseTemplate *string `json:"responseTemplate,omitempty"`
-
-	// Optional. Defines the failure mode for Model Armor sanitization.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.CustomerPolicy.ModelArmorConfig.failure_mode
-	FailureMode *string `json:"failureMode,omitempty"`
-}
-
 // +kcc:proto=google.cloud.discoveryengine.v1.Assistant.GenerationConfig
 type Assistant_GenerationConfig struct {
 	// Optional. The default model to use for assistant.
@@ -118,6 +94,7 @@ type Assistant_GenerationConfig_SystemInstruction struct {
 	AdditionalSystemInstruction *string `json:"additionalSystemInstruction,omitempty"`
 }
 
+/* unreachable type Assistant_ToolInfo
 // +kcc:proto=google.cloud.discoveryengine.v1.Assistant.ToolInfo
 type Assistant_ToolInfo struct {
 	// The name of the tool as defined by
@@ -131,13 +108,16 @@ type Assistant_ToolInfo struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.ToolInfo.tool_display_name
 	ToolDisplayName *string `json:"toolDisplayName,omitempty"`
 }
+*/
 
+/* unreachable type Assistant_ToolList
 // +kcc:proto=google.cloud.discoveryengine.v1.Assistant.ToolList
 type Assistant_ToolList struct {
 	// The list of tools with corresponding tool information.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.ToolList.tool_info
 	ToolInfo []Assistant_ToolInfo `json:"toolInfo,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.discoveryengine.v1.DataConnector.ConnectorMetadata
 type DataConnector_ConnectorMetadata struct {
@@ -172,14 +152,6 @@ type DataProtectionPolicy struct {
 	//  source.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataProtectionPolicy.sensitive_data_protection_policy
 	SensitiveDataProtectionPolicy *DataProtectionPolicy_SensitiveDataProtectionPolicy `json:"sensitiveDataProtectionPolicy,omitempty"`
-}
-
-// +kcc:proto=google.cloud.discoveryengine.v1.DataProtectionPolicy.SensitiveDataProtectionPolicy
-type DataProtectionPolicy_SensitiveDataProtectionPolicy struct {
-	// Optional. Specifies the resource name of the Sensitive Data Protection
-	//  content policy.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataProtectionPolicy.SensitiveDataProtectionPolicy.policy
-	Policy *string `json:"policy,omitempty"`
 }
 
 // +kcc:proto=google.cloud.discoveryengine.v1.IdpConfig

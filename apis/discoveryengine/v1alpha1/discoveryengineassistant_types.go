@@ -20,7 +20,8 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	dlpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dlp/v1alpha1"
+	modelarmorv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/modelarmor/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,15 +32,10 @@ var DiscoveryEngineAssistantGVK = GroupVersion.WithKind("DiscoveryEngineAssistan
 // +kcc:spec:proto=google.cloud.discoveryengine.v1.Assistant
 // +kcc:required-from-proto
 type DiscoveryEngineAssistantSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/collections/{collection}/engines/{engine} this resource belongs to.
-	// +kcc:guess
-	// EngineRef *DiscoveryEngineEngineRef `json:"engineRef,omitempty"`
+	// The DiscoveryEngineEngine that this DiscoveryEngineAssistant belongs to.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *DiscoveryEngineEngineRef `json:"parentRef"`
 
 	// The DiscoveryEngineAssistant name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -73,20 +69,6 @@ type DiscoveryEngineAssistantSpec struct {
 	//  the UI if web grounding is enabled.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.default_web_grounding_toggle_off
 	DefaultWebGroundingToggleOff *bool `json:"defaultWebGroundingToggleOff,omitempty"`
-
-	// Optional. Note: not implemented yet. Use
-	//  [enabled_actions][google.cloud.discoveryengine.v1.Assistant.enabled_actions]
-	//  instead. The enabled tools on this assistant. The keys are connector name,
-	//  for example
-	//  "projects/{projectId}/locations/{locationId}/collections/{collectionId}/dataconnector
-	//  The values consist of admin enabled tools towards the connector
-	//  instance. Admin can selectively enable multiple tools on any of the
-	//  connector instances that they created in the project. For example
-	//  {"jira1ConnectorName": [(toolId1, "createTicket"), (toolId2,
-	//  "transferTicket")],
-	//   "gmail1ConnectorName": [(toolId3, "sendEmail"),..] }
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.enabled_tools
-	EnabledTools map[string]Assistant_ToolList `json:"enabledTools,omitempty"`
 
 	// Optional. Customer policy for the assistant.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.customer_policy
@@ -154,4 +136,26 @@ type DiscoveryEngineAssistantList struct {
 
 func init() {
 	SchemeBuilder.Register(&DiscoveryEngineAssistant{}, &DiscoveryEngineAssistantList{})
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Assistant.CustomerPolicy.ModelArmorConfig
+type Assistant_CustomerPolicy_ModelArmorConfig struct {
+	// Optional. The Model Armor template for sanitizing user prompts.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.CustomerPolicy.ModelArmorConfig.user_prompt_template
+	UserPromptTemplateRef *modelarmorv1alpha1.ModelArmorTemplateRef `json:"userPromptTemplateRef,omitempty"`
+
+	// Optional. The Model Armor template for sanitizing assistant responses.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.CustomerPolicy.ModelArmorConfig.response_template
+	ResponseTemplateRef *modelarmorv1alpha1.ModelArmorTemplateRef `json:"responseTemplateRef,omitempty"`
+
+	// Optional. Defines the failure mode for Model Armor sanitization.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.CustomerPolicy.ModelArmorConfig.failure_mode
+	FailureMode *string `json:"failureMode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.DataProtectionPolicy.SensitiveDataProtectionPolicy
+type DataProtectionPolicy_SensitiveDataProtectionPolicy struct {
+	// Optional. The Sensitive Data Protection content policy.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataProtectionPolicy.SensitiveDataProtectionPolicy.policy
+	PolicyRef *dlpv1alpha1.DLPContentPolicyRef `json:"policyRef,omitempty"`
 }
