@@ -28,6 +28,7 @@ import (
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	discoveryenginepb "cloud.google.com/go/discoveryengine/apiv1beta/discoveryenginepb"
 	krmdiscoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
+	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -1023,8 +1024,10 @@ func DiscoveryEngineCMEKConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext,
 	}
 	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineCMEKConfigSpec{}
 	// MISSING: Name
-	out.KMSKey = direct.LazyPtr(in.GetKmsKey())
-	out.SingleRegionKeys = direct.Slice_FromProto(mapCtx, in.SingleRegionKeys, SingleRegionKeyWithRequired_v1alpha1_FromProto)
+	if in.GetKmsKey() != "" {
+		out.KMSKeyRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
+	}
+	out.SingleRegionKeys = direct.Slice_FromProto(mapCtx, in.SingleRegionKeys, SingleRegionKeyWithRefs_v1alpha1_FromProto)
 	return out
 }
 func DiscoveryEngineCMEKConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineCMEKConfigSpec) *pb.CmekConfig {
@@ -1033,8 +1036,10 @@ func DiscoveryEngineCMEKConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 	}
 	out := &pb.CmekConfig{}
 	// MISSING: Name
-	out.KmsKey = direct.ValueOf(in.KMSKey)
-	out.SingleRegionKeys = direct.Slice_ToProto(mapCtx, in.SingleRegionKeys, SingleRegionKeyWithRequired_v1alpha1_ToProto)
+	if in.KMSKeyRef != nil {
+		out.KmsKey = in.KMSKeyRef.External
+	}
+	out.SingleRegionKeys = direct.Slice_ToProto(mapCtx, in.SingleRegionKeys, SingleRegionKeyWithRefs_v1alpha1_ToProto)
 	return out
 }
 func DiscoveryEngineControlSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Control) *krmdiscoveryenginev1alpha1.DiscoveryEngineControlSpec {
@@ -2241,6 +2246,26 @@ func SingleRegionKey_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscover
 	}
 	out := &pb.SingleRegionKey{}
 	out.KmsKey = direct.ValueOf(in.KMSKey)
+	return out
+}
+func SingleRegionKeyWithRefs_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SingleRegionKey) *krmdiscoveryenginev1alpha1.SingleRegionKeyWithRefs {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SingleRegionKeyWithRefs{}
+	if in.GetKmsKey() != "" {
+		out.KMSKeyRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
+	}
+	return out
+}
+func SingleRegionKeyWithRefs_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SingleRegionKeyWithRefs) *pb.SingleRegionKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SingleRegionKey{}
+	if in.KMSKeyRef != nil {
+		out.KmsKey = in.KMSKeyRef.External
+	}
 	return out
 }
 func SingleRegionKeyWithRequired_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SingleRegionKey) *krmdiscoveryenginev1alpha1.SingleRegionKeyWithRequired {
