@@ -454,6 +454,11 @@ func (in *BigLakeHiveCatalogSpec) DeepCopyInto(out *BigLakeHiveCatalogSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.PrimaryLocation != nil {
+		in, out := &in.PrimaryLocation, &out.PrimaryLocation
+		*out = new(string)
+		**out = **in
+	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
 		*out = new(string)

@@ -18,6 +18,7 @@ package mockbigquerybiglake
 // http.host: biglake.googleapis.com
 // proto.service: google.cloud.bigquery.biglake.v1.MetastoreService
 // proto.service: google.cloud.biglake.v1.IcebergCatalogService
+// proto.service: google.cloud.biglake.hive.v1.HiveMetastoreService
 
 import (
 	"bytes"
@@ -27,6 +28,7 @@ import (
 	"strings"
 
 	biglakepb "cloud.google.com/go/biglake/apiv1/biglakepb"
+	hivepb "cloud.google.com/go/biglake/hive/apiv1/hivepb"
 	"google.golang.org/grpc"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
@@ -66,6 +68,7 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterMetastoreServiceServer(grpcServer, &bigLakeService{MockService: s})
 	biglakepb.RegisterIcebergCatalogServiceServer(grpcServer, &icebergCatalogService{MockService: s})
+	hivepb.RegisterHiveMetastoreServiceServer(grpcServer, &hiveMetastoreService{MockService: s})
 }
 
 type icebergResponseWriter struct {

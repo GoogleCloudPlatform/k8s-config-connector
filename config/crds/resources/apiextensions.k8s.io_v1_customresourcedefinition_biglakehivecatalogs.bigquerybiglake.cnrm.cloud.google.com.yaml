@@ -70,6 +70,11 @@ spec:
                   catalog exists. Format: gs://bucket/path/to/catalog The maximum
                   length is 4000 characters.'
                 type: string
+              primaryLocation:
+                description: Optional. The GCP region that specifies where the catalog
+                  metadata is stored, e.g. us-central1. If not specified, defaults
+                  to "us-central1".
+                type: string
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
