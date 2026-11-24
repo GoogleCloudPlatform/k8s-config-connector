@@ -34,6 +34,9 @@ var DiscoveryEngineCMEKConfigGVK = GroupVersion.WithKind("DiscoveryEngineCMEKCon
 type DiscoveryEngineCMEKConfigSpec struct {
 	*parent.ProjectAndLocationRef `json:",inline"`
 
+	// The DiscoveryEngineCMEKConfig name. If not given, the metadata.name will be used.
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	// KMS key resource name which will be used to encrypt resources
 	//  `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.kms_key

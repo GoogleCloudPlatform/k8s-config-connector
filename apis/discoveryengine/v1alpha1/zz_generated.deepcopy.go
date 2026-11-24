@@ -2251,6 +2251,11 @@ func (in *DiscoveryEngineCMEKConfigSpec) DeepCopyInto(out *DiscoveryEngineCMEKCo
 		*out = new(parent.ProjectAndLocationRef)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.ResourceID != nil {
+		in, out := &in.ResourceID, &out.ResourceID
+		*out = new(string)
+		**out = **in
+	}
 	if in.KMSKeyRef != nil {
 		in, out := &in.KMSKeyRef, &out.KMSKeyRef
 		*out = new(kmsv1beta1.KMSCryptoKeyRef)

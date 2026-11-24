@@ -156,7 +156,7 @@
 - **Context**: Triaging judgement queue and finalizing direct KRM types/identity for `DiscoveryEngineCMEKConfig` (Issue #16359).
 - **Details**:
   1. `CmekConfig` in proto declares two resource name patterns: `projects/{project}/locations/{location}/cmekConfig` and `projects/{project}/locations/{location}/cmekConfigs/{cmek_config}`. Locked in the singleton pattern `projects/{project}/locations/{location}/cmekConfig` via `--pattern DiscoveryEngineCMEKConfig="projects/{project}/locations/{location}/cmekConfig"` in `apis/discoveryengine/generate.sh`.
-  2. Modeled parent hierarchy as inlined `*parent.ProjectAndLocationRef` in `DiscoveryEngineCMEKConfigSpec`, removing `projectRef` and `location`. Removed `resourceID` as `DiscoveryEngineCMEKConfig` is a singleton per project/location.
+  2. Modeled parent hierarchy as inlined `*parent.ProjectAndLocationRef` in `DiscoveryEngineCMEKConfigSpec`, removing `projectRef` and `location`. Retained `resourceID` on `DiscoveryEngineCMEKConfigSpec`.
   3. Replaced `kmsKey` string fields with `*kmsv1beta1.KMSCryptoKeyRef`: `kmsKeyRef` on `DiscoveryEngineCMEKConfigSpec`, and defined `SingleRegionKeyWithRefs` with `kmsKeyRef *kmsv1beta1.KMSCryptoKeyRef` while keeping `SingleRegionKey` and `SingleRegionKeyWithRequired` with `kmsKey string` to preserve backward compatibility for `DiscoveryEngineIdentityMappingStore`.
   4. Updated resource documentation link to valid reference docs page `https://cloud.google.com/generative-ai-app-builder/docs/reference/rest/v1/projects.locations.cmekConfigs`.
   5. Triaged all 6 judgement queue entries for `DiscoveryEngineCMEKConfig` in `apis/discoveryengine/judgement_queue.yaml`.
