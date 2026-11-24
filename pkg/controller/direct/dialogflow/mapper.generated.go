@@ -1057,6 +1057,8 @@ func NluSettings_ToProto(mapCtx *direct.MapContext, in *krm.NluSettings) *pb.Nlu
 	out.ModelTrainingMode = direct.Enum_ToProto[pb.NluSettings_ModelTrainingMode](mapCtx, in.ModelTrainingMode)
 	return out
 }
+
+/* found existing non-generated mapping function "ResponseMessage_FromProto", skipping
 func ResponseMessage_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage) *krm.ResponseMessage {
 	if in == nil {
 		return nil
@@ -1078,6 +1080,7 @@ func ResponseMessage_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage
 	out.Channel = direct.LazyPtr(in.GetChannel())
 	return out
 }
+*/
 
 /*
 found existing non-generated mapping function "ResponseMessage_ToProto", skipping
