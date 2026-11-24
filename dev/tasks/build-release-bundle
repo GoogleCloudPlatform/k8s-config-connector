@@ -236,7 +236,6 @@ BLOCKED_KINDS=(
     "NetworkConnectivityServiceConnectionToken"
     "NetworkSecurityInterceptDeploymentGroup"
     "NetworkSecurityInterceptEndpointGroupAssociation"
-    "NetworkSecurityMirroringDeployment"
     "NetworkSecurityPartnerSSEGateway"
     "NetworkSecurityPartnerSSERealm"
     "NetworkSecurityUrlList"
