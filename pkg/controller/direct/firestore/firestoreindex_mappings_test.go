@@ -15,12 +15,109 @@
 package firestore
 
 import (
+	"context"
 	"testing"
 
 	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
+
+func TestFirestoreIndexExportIncludesResourceID(t *testing.T) {
+	adapter := &firestoreIndexAdapter{
+		id: &krm.FirestoreIndexIdentity{
+			Project:         "my-project",
+			Database:        "my-database",
+			CollectionGroup: "Customer",
+			Index:           "CICAgOjXh4EK",
+		},
+		actual: &pb.Index{},
+	}
+
+	obj, err := adapter.Export(context.Background())
+	if err != nil {
+		t.Fatalf("Export() returned error: %v", err)
+	}
+
+	got, found, err := unstructured.NestedString(obj.Object, "spec", "resourceID")
+	if err != nil {
+		t.Fatalf("reading spec.resourceID: %v", err)
+	}
+	if !found || got != "CICAgOjXh4EK" {
+		t.Fatalf("spec.resourceID = %q, found=%t; want %q", got, found, "CICAgOjXh4EK")
+	}
+}
+
+func TestFirestoreIndexDefinitionsEqual(t *testing.T) {
+	tests := []struct {
+		name    string
+		desired *pb.Index
+		actual  *pb.Index
+		want    bool
+	}{
+		{
+			name: "native API adds name field using last order",
+			desired: &pb.Index{
+				Fields: []*pb.Index_IndexField{indexOrderField("email", pb.Index_IndexField_DESCENDING)},
+			},
+			actual: &pb.Index{
+				QueryScope: pb.Index_COLLECTION,
+				Fields: []*pb.Index_IndexField{
+					indexOrderField("email", pb.Index_IndexField_DESCENDING),
+					indexOrderField("__name__", pb.Index_IndexField_DESCENDING),
+				},
+				State:   pb.Index_READY,
+				Density: pb.Index_SPARSE_ALL,
+			},
+			want: true,
+		},
+		{
+			name: "datastore API adds ascending name field",
+			desired: &pb.Index{
+				ApiScope: pb.Index_DATASTORE_MODE_API,
+				Fields:   []*pb.Index_IndexField{indexOrderField("createdAt", pb.Index_IndexField_DESCENDING)},
+			},
+			actual: &pb.Index{
+				ApiScope:   pb.Index_DATASTORE_MODE_API,
+				QueryScope: pb.Index_COLLECTION,
+				Fields: []*pb.Index_IndexField{
+					indexOrderField("createdAt", pb.Index_IndexField_DESCENDING),
+					indexOrderField("__name__", pb.Index_IndexField_ASCENDING),
+				},
+			},
+			want: true,
+		},
+		{
+			name: "different definition",
+			desired: &pb.Index{
+				Fields: []*pb.Index_IndexField{indexOrderField("email", pb.Index_IndexField_ASCENDING)},
+			},
+			actual: &pb.Index{
+				Fields: []*pb.Index_IndexField{
+					indexOrderField("email", pb.Index_IndexField_DESCENDING),
+					indexOrderField("__name__", pb.Index_IndexField_DESCENDING),
+				},
+			},
+			want: false,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := firestoreIndexDefinitionsEqual(tc.desired, tc.actual); got != tc.want {
+				t.Fatalf("firestoreIndexDefinitionsEqual() = %t, want %t", got, tc.want)
+			}
+		})
+	}
+}
+
+func indexOrderField(path string, order pb.Index_IndexField_Order) *pb.Index_IndexField {
+	return &pb.Index_IndexField{
+		FieldPath: path,
+		ValueMode: &pb.Index_IndexField_Order_{Order: order},
+	}
+}
 
 func TestFirestoreIndexDatastoreModeMapping(t *testing.T) {
 	apiScope := "DATASTORE_MODE_API"
