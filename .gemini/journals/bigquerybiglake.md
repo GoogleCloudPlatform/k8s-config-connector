@@ -141,3 +141,18 @@
   11. Verified fuzzer passes (`FOCUS=BigLakeHiveCatalog go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`).
 - **Impact**: Greenfield Step 2 complete; `BigLakeHiveCatalog` direct controller, fuzzer, and real GCP golden files recorded and verified.
 
+### [2026-11-24] Greenfield Step 3: Implement MockGCP and Alignment for BigLakeHiveCatalog
+- **Context**: Implementing MockGCP service and alignment for `BigLakeHiveCatalog` under `bigquerybiglake.cnrm.cloud.google.com/v1alpha1` (Issue #16363).
+- **Details**:
+  1. Extended `mockgcp/mockbigquerybiglake/service.go` to register `hivepb.RegisterHiveMetastoreServiceServer` on `grpcServer` and added `proto.service: google.cloud.biglake.hive.v1.HiveMetastoreService`.
+  2. Implemented full CRUD handlers for Hive catalogs on `*hiveMetastoreService` in `mockgcp/mockbigquerybiglake/hivecatalog.go` (`CreateHiveCatalog`, `GetHiveCatalog`, `UpdateHiveCatalog`, `DeleteHiveCatalog`, `ListHiveCatalogs`).
+  3. Replicated authentic GCP behaviors:
+     - Populated `replicas` in storage based on `req.GetPrimaryLocation()` on `CreateHiveCatalog`.
+     - Stripped `replicas` from the response in `CreateHiveCatalog` and `UpdateHiveCatalog` to match GCP API behavior where replicas are returned only on `GetHiveCatalog`.
+     - Returned `codes.NotFound` with exact message `Hive Catalog <catalog_id> not found.` matching real GCP.
+  4. Added `BigLakeHiveCatalog` to supported mock resources in `config/tests/samples/create/harness.go`.
+  5. Ran `hack/compare-mock "fixtures/biglakehivecatalog"` and generated matching mock HTTP/gRPC logs (`_http_mock.log`) for both `biglakehivecatalog-minimal` and `biglakehivecatalog-maximal` with zero discrepancies.
+  6. Verified `TestGoldenLogAlignment` passes with zero discrepancies and `./dev/ci/presubmits/tests-e2e-fixtures-suite bigquerybiglake` passes all 10 test fixtures.
+- **Impact**: Greenfield Step 3 complete; `BigLakeHiveCatalog` MockGCP implementation and golden log alignment verified.
+
+
