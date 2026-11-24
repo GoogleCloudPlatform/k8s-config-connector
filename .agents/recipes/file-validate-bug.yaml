@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# file-validate-bug: the controller bugs a validate-kind PR's failing checks show
-# (.agents/watch/file-validate-bug.yaml), as issues. Like assess-controller, the
+# file-validate-bug: the controller bugs and script mistakes a validate-kind PR's
+# failing checks show (.agents/watch/file-validate-bug.yaml), as issues. Like assess-controller, the
 # evidence is extracted by a step and judged by a session that did not write
 # the test:
 #   1. run - the PR's receipts (the factory-attached receipts.md in its body) and
@@ -21,7 +21,9 @@
 #   2. ask - each failure classed as a controller bug, the script's own mistake,
 #      or a limit of the environment or service, from the receipts, the script,
 #      the fixture and the controller's code; an issue drafted for each
-#      controller bug only;
+#      controller bug and each script mistake, none for an environment limit. A
+#      script issue is labelled overseer/validate-kind, so the validate-kind rule
+#      fixes the script (with the manual-validate skill) and re-runs it;
 #   3. factory's open-issues files them once per key and says on the PR what it
 #      filed and why the rest was not.
 name: file-validate-bug
@@ -76,7 +78,8 @@ start:
         cat "$TASK_DIR/failures.md"
 
     - ask: |
-        A validation PR was graded poor. Decide which of its failures are controller bugs.
+        A validation PR was graded poor. Decide which of its failures are controller bugs, which are
+        mistakes in the test script, and which are limits of the environment.
 
         <pr_url>{{ .Inputs.pr_url }}</pr_url>
         <pr_title>{{ .Inputs.pr_title }}</pr_title>
@@ -107,7 +110,9 @@ start:
         note. For example: an evaluation fails in GCP because the project has no conversations
         (environment), but the controller drops the operation's resource name when the operation
         errors, re-creates on every pass and gets "has been taken" forever (controller bug, filed).
-        Only a controller bug is filed. When unsure, say why in the note rather than filing.
+        A controller bug and a script mistake are filed; an environment or service limit is not (say
+        it in the note). When unsure, say why in the note rather than filing. A script mistake in a
+        shared helper of `hack/manual-validate/lib.sh` is one issue for the helper, not one per Kind.
 
         Say in a few lines how you classed each failure and why.
 
@@ -116,7 +121,8 @@ start:
         with nothing else in the file:
 
         issues_output:
-          issues:                 # one per controller bug; [] when there is none
+          issues:                 # one per controller bug or script mistake; [] when there is none
+            # A controller bug:
             - key: "<Kind>:<check-slug>"   # e.g. DialogflowGeneratorEvaluation:create-lro-identity
               title: "<Kind>: <what is wrong, in a line>"
               labels: [validate-kind/bug]
@@ -130,12 +136,35 @@ start:
 
                 **Reproduce**: `GCP_PROJECT_ID=<project> hack/manual-validate/<kind>/validate.sh`
                 (the PR adds the script).
+            # A script mistake:
+            - key: "<Kind>:script:<check-slug>"   # a shared helper: "harness:<helper>:<slug>"
+              title: "Verify <Kind>: fix validate.sh - <what is wrong, in a line>"
+              labels: [validate-kind/bug, overseer/validate-kind]
+              body: |
+                Fix the validation script of <Kind> and run it again, with
+                `.gemini/skills/manual-validate-controller/SKILL.md`. The tests are cumulative: fix the
+                check, never drop or weaken it.
+
+                **What fails**: the check, what it expected and what it got, as the receipts say.
+
+                **Evidence**: the lines of the receipts that show it, quoted.
+
+                **Why it is the script**: what the script (or the `lib.sh` helper) does wrong, and
+                what it should do instead.
+
+                **Start from**: `hack/manual-validate/<kind>/` in {{ .Inputs.pr_url }} (not on master until it
+                merges); this fix supersedes that PR.
           note: |
             One line per failure: the check, how you classed it, and why - with the environmental
-            trigger, if any, of a controller bug. Say which were filed.
+            trigger, if any, of a controller bug. Say which were filed, and that environment limits
+            are not.
 
         Rules:
         - The key is the Kind and a short slug of what is wrong: the same bug found again keeps its key.
+          A script mistake's key has `:script:` after the Kind; one in a shared helper of `lib.sh` is
+          `harness:<helper>:<slug>` (e.g. `harness:mv_expect_audit:lro-entries`), whichever Kind showed it.
+        - Labels exactly as above: `[validate-kind/bug]` for a controller bug,
+          `[validate-kind/bug, overseer/validate-kind]` for a script mistake.
         - Quote evidence; do not invent values the receipts do not show.
         - Write the whole file with your file tool, replacing anything in it, then say in a line that
           it is written.
