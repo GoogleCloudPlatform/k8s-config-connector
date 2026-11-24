@@ -52,3 +52,5 @@ spec:
       enabled: false
     parallelstoreCsiDriverConfig:
       enabled: false
+    rayOperatorConfig:
+      enabled: false

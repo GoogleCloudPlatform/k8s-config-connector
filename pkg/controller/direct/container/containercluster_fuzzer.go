@@ -118,7 +118,6 @@ func containerClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".addons_config.node_readiness_config")
 	f.Unimplemented_NotYetTriaged(".addons_config.parallelstore_csi_driver_config")
 	f.Unimplemented_NotYetTriaged(".addons_config.pod_snapshot_config")
-	f.Unimplemented_NotYetTriaged(".addons_config.ray_operator_config")
 	f.Unimplemented_NotYetTriaged(".addons_config.slice_controller_config")
 	f.Unimplemented_NotYetTriaged(".addons_config.slurm_operator_config")
 	f.Unimplemented_NotYetTriaged(".addons_config.stateful_ha_config")

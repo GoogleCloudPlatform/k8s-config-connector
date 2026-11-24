@@ -606,13 +606,14 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 		obj.AddonsConfig.CloudRunConfig.LoadBalancerType == pb.CloudRunConfig_LOAD_BALANCER_TYPE_UNSPECIFIED {
 		obj.AddonsConfig.CloudRunConfig.LoadBalancerType = pb.CloudRunConfig_LOAD_BALANCER_TYPE_EXTERNAL
 	}
-	if obj.AddonsConfig.GcePersistentDiskCsiDriverConfig == nil {
-		obj.AddonsConfig.GcePersistentDiskCsiDriverConfig = &pb.GcePersistentDiskCsiDriverConfig{}
-	}
 	// Weird behavior:
 	// Even if `.AddonsConfig.GcePersistentDiskCsiDriverConfig.Enabled` is set to
 	// `false` in request, the returned value is still `true`.
-	obj.AddonsConfig.GcePersistentDiskCsiDriverConfig.Enabled = true
+	if obj.AddonsConfig.GcePersistentDiskCsiDriverConfig == nil {
+		obj.AddonsConfig.GcePersistentDiskCsiDriverConfig = &pb.GcePersistentDiskCsiDriverConfig{
+			Enabled: true,
+		}
+	}
 
 	if obj.AddonsConfig.KubernetesDashboard == nil {
 		obj.AddonsConfig.KubernetesDashboard = &pb.KubernetesDashboard{

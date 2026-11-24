@@ -755,6 +755,13 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "state")
 		}
 
+		// ContainerCluster workloadIdentityConfig: identityNamespace and identityProvider are computed
+		// output-only fields returned by live GKE APIs when workloadPool is set.
+		if wic, ok := v["workloadIdentityConfig"].(map[string]interface{}); ok {
+			delete(wic, "identityNamespace")
+			delete(wic, "identityProvider")
+		}
+
 		// DataplexEntity compatibility bigquery field normalization due to async background scan in real GCP
 		if comp, ok := v["compatibility"].(map[string]interface{}); ok {
 			delete(comp, "bigquery")
