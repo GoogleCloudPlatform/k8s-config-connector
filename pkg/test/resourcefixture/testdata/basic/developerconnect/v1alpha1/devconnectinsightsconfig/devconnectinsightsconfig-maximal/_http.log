@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://apphub.googleapis.com/v1/projects/${projectId}/locations/us-central1/applications/apphubapp-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -46,12 +47,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.apphub.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/applications/apphubapp-maximal-${uniqueId}",
     "verb": "create"
   },
@@ -82,7 +81,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/applications/apphubapp-maximal-${uniqueId}",
     "verb": "create"
   },
@@ -95,7 +93,6 @@ X-Xss-Protection: 0
       "type": "REGIONAL"
     },
     "state": "ACTIVE",
-    "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -181,10 +178,6 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.Repository",
     "format": "DOCKER",
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
     "mode": "STANDARD_REPOSITORY",
     "name": "projects/${projectId}/locations/us-central1/repositories/arrepository-${uniqueId}",
     "satisfiesPzi": true,
@@ -295,12 +288,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.developerconnect.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/insightsConfigs/devconnectinsightsconfig-maximal-${uniqueId}",
     "verb": "create"
   },
@@ -331,7 +322,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/insightsConfigs/devconnectinsightsconfig-maximal-${uniqueId}",
     "verb": "create"
   },
@@ -397,6 +387,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: UPDATE
 PATCH https://developerconnect.googleapis.com/v1/projects/${projectId}/locations/us-central1/insightsConfigs/devconnectinsightsconfig-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -434,12 +425,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.developerconnect.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/insightsConfigs/devconnectinsightsconfig-maximal-${uniqueId}",
     "verb": "update"
   },
@@ -470,7 +459,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/insightsConfigs/devconnectinsightsconfig-maximal-${uniqueId}",
     "verb": "update"
   },
@@ -540,6 +528,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: DELETE
 DELETE https://developerconnect.googleapis.com/v1/projects/${projectId}/locations/us-central1/insightsConfigs/devconnectinsightsconfig-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -556,12 +545,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.developerconnect.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/insightsConfigs/devconnectinsightsconfig-maximal-${uniqueId}",
     "verb": "delete"
   },
@@ -592,7 +579,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/insightsConfigs/devconnectinsightsconfig-maximal-${uniqueId}",
     "verb": "delete"
   },
@@ -711,7 +697,6 @@ X-Xss-Protection: 0
     "type": 1
   },
   "state": 2,
-  "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -733,12 +718,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.apphub.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/applications/apphubapp-maximal-${uniqueId}",
     "verb": "delete"
   },
@@ -769,7 +752,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/applications/apphubapp-maximal-${uniqueId}",
     "verb": "delete"
   },
