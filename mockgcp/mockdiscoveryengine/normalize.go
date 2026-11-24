@@ -42,6 +42,20 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 					delete(m, "response")
 				}
 			}
+		} else if strings.Contains(name, "/widgetConfigs/") {
+			// For WidgetConfigs responses, real GCP returns top-level deprecated fields
+			if m["configId"] != nil {
+				if m["enableQualityFeedback"] == nil {
+					m["enableQualityFeedback"] = true
+				}
+				if m["fieldsUiComponentsMap"] == nil {
+					m["fieldsUiComponentsMap"] = map[string]any{
+						"thumbnail": map[string]any{"deviceVisibility": []any{float64(1), float64(2)}},
+						"title":     map[string]any{"deviceVisibility": []any{float64(1), float64(2)}},
+						"url":       map[string]any{"deviceVisibility": []any{float64(1), float64(2)}},
+					}
+				}
+			}
 		} else if strings.Contains(name, "/engines/") {
 			// For Engines, the real log does not have createTime, updateTime, marketplaceAgentVisibility, observabilityConfig, sessionConfig
 			delete(m, "createTime")

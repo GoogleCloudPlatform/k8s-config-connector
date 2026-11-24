@@ -75,6 +75,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterControlServiceServer(grpcServer, &controlService{MockService: s})
 	pb.RegisterSiteSearchEngineServiceServer(grpcServer, &siteSearchEngineService{MockService: s})
 	pb.RegisterSchemaServiceServer(grpcServer, &schemaService{MockService: s})
+	pb.RegisterWidgetConfigServiceServer(grpcServer, &widgetConfigService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -93,6 +94,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.AddService(pb.NewControlServiceClient(conn))
 	mux.AddService(pb.NewSiteSearchEngineServiceClient(conn))
 	mux.AddService(pb.NewSchemaServiceClient(conn))
+	mux.AddService(pb.NewWidgetConfigServiceClient(conn))
 	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
 	return mux, nil
