@@ -1,0 +1,30 @@
+apiVersion: discoveryengine.cnrm.cloud.google.com/v1alpha1
+kind: DiscoveryEngineDataStore
+metadata:
+  name: datastore-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: global
+  collection: default_collection
+  displayName: "DataStore for WidgetConfig Maximal"
+  industryVertical: GENERIC
+status:
+  externalRef: projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}
+---
+apiVersion: discoveryengine.cnrm.cloud.google.com/v1alpha1
+kind: DiscoveryEngineEngine
+metadata:
+  name: engine-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: global
+  collection: default_collection
+  displayName: "Engine for WidgetConfig Maximal"
+  solutionType: SOLUTION_TYPE_SEARCH
+  industryVertical: GENERIC
+  dataStoreRefs:
+    - name: datastore-${uniqueId}
+status:
+  externalRef: projects/${projectId}/locations/global/collections/default_collection/engines/engine-${uniqueId}

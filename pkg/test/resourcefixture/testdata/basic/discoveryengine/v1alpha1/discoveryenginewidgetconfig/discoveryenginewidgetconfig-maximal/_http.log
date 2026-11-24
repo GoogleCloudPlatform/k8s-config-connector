@@ -1,0 +1,973 @@
+# Phase: CREATE
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "DataStore projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId} not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores?%24alt=json%3Benum-encoding%3Dint&dataStoreId=datastore-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection
+X-Goog-User-Project: ${projectId}
+
+{
+  "displayName": "DataStore for WidgetConfig Maximal",
+  "industryVertical": 1,
+  "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.DataStore",
+    "defaultSchemaId": "default_schema",
+    "displayName": "DataStore for WidgetConfig Maximal",
+    "industryVertical": 1,
+    "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
+    "naturalLanguageQueryUnderstandingConfig": {
+      "mode": 2
+    }
+  }
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/engines/engine-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2Fengines%2Fengine-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Engine with name \"projects/${projectNumber}/locations/global/collections/default_collection/engines/engine-${uniqueId}\" does not exist.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/engines?%24alt=json%3Benum-encoding%3Dint&engineId=engine-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection
+X-Goog-User-Project: ${projectId}
+
+{
+  "dataStoreIds": [
+    "datastore-${uniqueId}"
+  ],
+  "displayName": "Engine for WidgetConfig Maximal",
+  "industryVertical": 1,
+  "name": "projects/${projectId}/locations/global/collections/default_collection/engines/engine-${uniqueId}",
+  "solutionType": 2
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.Engine",
+    "dataStoreIds": [
+      "datastore-${uniqueId}"
+    ],
+    "displayName": "Engine for WidgetConfig Maximal",
+    "industryVertical": 1,
+    "name": "projects/${projectNumber}/locations/global/collections/default_collection/engines/engine-${uniqueId}",
+    "searchEngineConfig": {
+      "searchTier": 1
+    },
+    "solutionType": 2
+  }
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/widgetConfigs/default_search_widget_config?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}%2FwidgetConfigs%2Fdefault_search_widget_config
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "collectionComponents": [
+    {
+      "dataStoreComponents": [
+        {
+          "displayName": "DataStore for WidgetConfig Maximal",
+          "id": "datastore-${uniqueId}",
+          "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
+        }
+      ],
+      "id": "default_collection",
+      "name": "projects/${projectNumber}/locations/global/collections/default_collection"
+    }
+  ],
+  "configId": "c22e0a45-49bf-4d34-b335-b145cd0cd2f5",
+  "dataStoreType": 2,
+  "displayName": "default_search_widget_config",
+  "enableQualityFeedback": true,
+  "fieldsUiComponentsMap": {
+    "thumbnail": {
+      "deviceVisibility": [
+        1,
+        2
+      ]
+    },
+    "title": {
+      "deviceVisibility": [
+        1,
+        2
+      ]
+    },
+    "url": {
+      "deviceVisibility": [
+        1,
+        2
+      ]
+    }
+  },
+  "industryVertical": 1,
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/engines/engine-${uniqueId}/widgetConfigs/default_search_widget_config",
+  "uiSettings": {
+    "dataStoreUiConfigs": [
+      {
+        "fieldsUiComponentsMap": {
+          "thumbnail": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          },
+          "title": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          },
+          "url": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          }
+        },
+        "id": "datastore-${uniqueId}",
+        "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
+      }
+    ],
+    "features": {
+      "agent-gallery": 1,
+      "bi-directional-audio": 2,
+      "cross-product-intelligence": 2,
+      "disable-canvas": 1,
+      "feedback": 1,
+      "model-selector": 2,
+      "no-code-agent-builder": 2,
+      "notebook-lm": 1,
+      "people-search": 1,
+      "people-search-org-chart": 1,
+      "personalization-memory": 1,
+      "prompt-gallery": 1,
+      "session-sharing": 2,
+      "speech-to-text": 0,
+      "workflow-agents": 2
+    },
+    "googleDrivePickerEnabled": true,
+    "modelConfigInfo": {
+      "resolvedModels": [
+        {
+          "description": "We choose the best fit",
+          "displayName": "Auto",
+          "icon": "automation",
+          "label": "Auto"
+        },
+        {
+          "description": "Frontier intelligence built for speed",
+          "displayName": "Gemini 3.8 Flash",
+          "icon": "rocket_launch",
+          "iconUrl": "https://www.gstatic.com/images/branding/productlogos/gemini_2026/v1/192px.svg",
+          "label": "3.8 Flash",
+          "modelId": "gemini-3.8-flash"
+        },
+        {
+          "description": "Frontier intelligence built for speed",
+          "displayName": "Gemini 3.5 Flash",
+          "icon": "rocket_launch",
+          "iconUrl": "https://www.gstatic.com/images/branding/productlogos/gemini_2026/v1/192px.svg",
+          "label": "3.5 Flash",
+          "modelId": "gemini-3.5-flash"
+        },
+        {
+          "description": "Solves complex problems",
+          "displayName": "Gemini 2.5 Pro",
+          "icon": "graph_5",
+          "iconUrl": "https://www.gstatic.com/images/branding/productlogos/gemini_2026/v1/192px.svg",
+          "label": "2.5 Pro",
+          "modelId": "gemini-2.5-pro"
+        }
+      ]
+    },
+    "onedrivePickerEnabled": true
+  }
+}
+
+---
+
+PATCH https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/widgetConfigs/default_search_widget_config?%24alt=json%3Benum-encoding%3Dint&updateMask=accessSettings%2CdisplayName%2CenableResultScore%2CuiBranding%2CuiSettings
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: widget_config.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}%2FwidgetConfigs%2Fdefault_search_widget_config
+
+{
+  "accessSettings": {
+    "allowlistedDomains": [
+      "example.com"
+    ]
+  },
+  "displayName": "Widget Config Maximal",
+  "enableResultScore": true,
+  "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/widgetConfigs/default_search_widget_config",
+  "solutionType": 2,
+  "uiBranding": {
+    "logo": {
+      "url": "https://example.com/logo.png"
+    }
+  },
+  "uiSettings": {
+    "dataStoreUiConfigs": [
+      {
+        "fieldsUiComponentsMap": {
+          "thumbnail": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          },
+          "title": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          },
+          "url": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          }
+        }
+      }
+    ],
+    "enableAutocomplete": true,
+    "enableQualityFeedback": true,
+    "enableSafeSearch": true,
+    "enableSearchAsYouType": true,
+    "generativeAnswerConfig": {
+      "resultCount": 5
+    },
+    "interactionType": 1
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "accessSettings": {
+    "allowlistedDomains": [
+      "example.com"
+    ]
+  },
+  "configId": "c22e0a45-49bf-4d34-b335-b145cd0cd2f5",
+  "dataStoreType": 2,
+  "displayName": "Widget Config Maximal",
+  "enableQualityFeedback": true,
+  "enableResultScore": true,
+  "fieldsUiComponentsMap": {
+    "thumbnail": {
+      "deviceVisibility": [
+        1,
+        2
+      ]
+    },
+    "title": {
+      "deviceVisibility": [
+        1,
+        2
+      ]
+    },
+    "url": {
+      "deviceVisibility": [
+        1,
+        2
+      ]
+    }
+  },
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/engines/engine-${uniqueId}/widgetConfigs/default_search_widget_config",
+  "uiBranding": {
+    "logo": {
+      "url": "https://example.com/logo.png"
+    }
+  },
+  "uiSettings": {
+    "dataStoreUiConfigs": [
+      {
+        "fieldsUiComponentsMap": {
+          "thumbnail": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          },
+          "title": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          },
+          "url": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          }
+        }
+      }
+    ],
+    "enableAutocomplete": true,
+    "enableQualityFeedback": true,
+    "enableSafeSearch": true,
+    "enableSearchAsYouType": true,
+    "generativeAnswerConfig": {
+      "resultCount": 5
+    },
+    "interactionType": 1
+  }
+}
+
+---
+
+# Phase: UPDATE
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/widgetConfigs/default_search_widget_config?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}%2FwidgetConfigs%2Fdefault_search_widget_config
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "accessSettings": {
+    "allowlistedDomains": [
+      "example.com"
+    ]
+  },
+  "collectionComponents": [
+    {
+      "dataStoreComponents": [
+        {
+          "displayName": "DataStore for WidgetConfig Maximal",
+          "id": "datastore-${uniqueId}",
+          "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
+        }
+      ],
+      "id": "default_collection",
+      "name": "projects/${projectNumber}/locations/global/collections/default_collection"
+    }
+  ],
+  "configId": "c22e0a45-49bf-4d34-b335-b145cd0cd2f5",
+  "dataStoreType": 2,
+  "displayName": "Widget Config Maximal",
+  "enableQualityFeedback": true,
+  "enableResultScore": true,
+  "fieldsUiComponentsMap": {
+    "thumbnail": {
+      "deviceVisibility": [
+        1,
+        2
+      ]
+    },
+    "title": {
+      "deviceVisibility": [
+        1,
+        2
+      ]
+    },
+    "url": {
+      "deviceVisibility": [
+        1,
+        2
+      ]
+    }
+  },
+  "industryVertical": 1,
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/engines/engine-${uniqueId}/widgetConfigs/default_search_widget_config",
+  "uiBranding": {
+    "logo": {
+      "url": "https://example.com/logo.png"
+    }
+  },
+  "uiSettings": {
+    "dataStoreUiConfigs": [
+      {
+        "fieldsUiComponentsMap": {
+          "thumbnail": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          },
+          "title": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          },
+          "url": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          }
+        }
+      }
+    ],
+    "enableAutocomplete": true,
+    "enableQualityFeedback": true,
+    "enableSafeSearch": true,
+    "enableSearchAsYouType": true,
+    "features": {
+      "agent-gallery": 1,
+      "bi-directional-audio": 2,
+      "cross-product-intelligence": 2,
+      "disable-canvas": 1,
+      "feedback": 1,
+      "model-selector": 2,
+      "no-code-agent-builder": 2,
+      "notebook-lm": 1,
+      "people-search": 1,
+      "people-search-org-chart": 1,
+      "personalization-memory": 1,
+      "prompt-gallery": 1,
+      "session-sharing": 2,
+      "speech-to-text": 0,
+      "workflow-agents": 2
+    },
+    "generativeAnswerConfig": {
+      "resultCount": 5
+    },
+    "googleDrivePickerEnabled": true,
+    "interactionType": 1,
+    "modelConfigInfo": {
+      "resolvedModels": [
+        {
+          "description": "We choose the best fit",
+          "displayName": "Auto",
+          "icon": "automation",
+          "label": "Auto"
+        },
+        {
+          "description": "Frontier intelligence built for speed",
+          "displayName": "Gemini 3.8 Flash",
+          "icon": "rocket_launch",
+          "iconUrl": "https://www.gstatic.com/images/branding/productlogos/gemini_2026/v1/192px.svg",
+          "label": "3.8 Flash",
+          "modelId": "gemini-3.8-flash"
+        },
+        {
+          "description": "Frontier intelligence built for speed",
+          "displayName": "Gemini 3.5 Flash",
+          "icon": "rocket_launch",
+          "iconUrl": "https://www.gstatic.com/images/branding/productlogos/gemini_2026/v1/192px.svg",
+          "label": "3.5 Flash",
+          "modelId": "gemini-3.5-flash"
+        },
+        {
+          "description": "Solves complex problems",
+          "displayName": "Gemini 2.5 Pro",
+          "icon": "graph_5",
+          "iconUrl": "https://www.gstatic.com/images/branding/productlogos/gemini_2026/v1/192px.svg",
+          "label": "2.5 Pro",
+          "modelId": "gemini-2.5-pro"
+        }
+      ]
+    },
+    "onedrivePickerEnabled": true
+  }
+}
+
+---
+
+PATCH https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/widgetConfigs/default_search_widget_config?%24alt=json%3Benum-encoding%3Dint&updateMask=accessSettings%2CdisplayName%2CenableResultScore%2CuiBranding%2CuiSettings
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: widget_config.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}%2FwidgetConfigs%2Fdefault_search_widget_config
+
+{
+  "accessSettings": {
+    "allowPublicAccess": true,
+    "allowlistedDomains": [
+      "updated.example.com"
+    ]
+  },
+  "displayName": "Updated Widget Config Maximal",
+  "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/widgetConfigs/default_search_widget_config",
+  "solutionType": 2,
+  "uiBranding": {
+    "logo": {
+      "url": "https://updated.example.com/logo.png"
+    }
+  },
+  "uiSettings": {
+    "dataStoreUiConfigs": [
+      {
+        "fieldsUiComponentsMap": {
+          "thumbnail": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          },
+          "title": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          },
+          "url": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          }
+        }
+      }
+    ],
+    "disableUserEventsCollection": true,
+    "generativeAnswerConfig": {
+      "resultCount": 3
+    },
+    "interactionType": 2
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "accessSettings": {
+    "allowPublicAccess": true,
+    "allowlistedDomains": [
+      "updated.example.com"
+    ]
+  },
+  "configId": "c22e0a45-49bf-4d34-b335-b145cd0cd2f5",
+  "dataStoreType": 2,
+  "displayName": "Updated Widget Config Maximal",
+  "enableQualityFeedback": true,
+  "fieldsUiComponentsMap": {
+    "thumbnail": {
+      "deviceVisibility": [
+        1,
+        2
+      ]
+    },
+    "title": {
+      "deviceVisibility": [
+        1,
+        2
+      ]
+    },
+    "url": {
+      "deviceVisibility": [
+        1,
+        2
+      ]
+    }
+  },
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/engines/engine-${uniqueId}/widgetConfigs/default_search_widget_config",
+  "uiBranding": {
+    "logo": {
+      "url": "https://updated.example.com/logo.png"
+    }
+  },
+  "uiSettings": {
+    "dataStoreUiConfigs": [
+      {
+        "fieldsUiComponentsMap": {
+          "thumbnail": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          },
+          "title": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          },
+          "url": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          }
+        }
+      }
+    ],
+    "disableUserEventsCollection": true,
+    "generativeAnswerConfig": {
+      "resultCount": 3
+    },
+    "interactionType": 2
+  }
+}
+
+---
+
+# Phase: DELETE
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/widgetConfigs/default_search_widget_config?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}%2FwidgetConfigs%2Fdefault_search_widget_config
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "accessSettings": {
+    "allowPublicAccess": true,
+    "allowlistedDomains": [
+      "updated.example.com"
+    ]
+  },
+  "collectionComponents": [
+    {
+      "dataStoreComponents": [
+        {
+          "displayName": "DataStore for WidgetConfig Maximal",
+          "id": "datastore-${uniqueId}",
+          "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
+        }
+      ],
+      "id": "default_collection",
+      "name": "projects/${projectNumber}/locations/global/collections/default_collection"
+    }
+  ],
+  "configId": "c22e0a45-49bf-4d34-b335-b145cd0cd2f5",
+  "dataStoreType": 2,
+  "displayName": "Updated Widget Config Maximal",
+  "enableQualityFeedback": true,
+  "fieldsUiComponentsMap": {
+    "thumbnail": {
+      "deviceVisibility": [
+        1,
+        2
+      ]
+    },
+    "title": {
+      "deviceVisibility": [
+        1,
+        2
+      ]
+    },
+    "url": {
+      "deviceVisibility": [
+        1,
+        2
+      ]
+    }
+  },
+  "industryVertical": 1,
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/engines/engine-${uniqueId}/widgetConfigs/default_search_widget_config",
+  "uiBranding": {
+    "logo": {
+      "url": "https://updated.example.com/logo.png"
+    }
+  },
+  "uiSettings": {
+    "dataStoreUiConfigs": [
+      {
+        "fieldsUiComponentsMap": {
+          "thumbnail": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          },
+          "title": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          },
+          "url": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          }
+        }
+      }
+    ],
+    "disableUserEventsCollection": true,
+    "features": {
+      "agent-gallery": 1,
+      "bi-directional-audio": 2,
+      "cross-product-intelligence": 2,
+      "disable-canvas": 1,
+      "feedback": 1,
+      "model-selector": 2,
+      "no-code-agent-builder": 2,
+      "notebook-lm": 1,
+      "people-search": 1,
+      "people-search-org-chart": 1,
+      "personalization-memory": 1,
+      "prompt-gallery": 1,
+      "session-sharing": 2,
+      "speech-to-text": 0,
+      "workflow-agents": 2
+    },
+    "generativeAnswerConfig": {
+      "resultCount": 3
+    },
+    "googleDrivePickerEnabled": true,
+    "interactionType": 2,
+    "modelConfigInfo": {
+      "resolvedModels": [
+        {
+          "description": "We choose the best fit",
+          "displayName": "Auto",
+          "icon": "automation",
+          "label": "Auto"
+        },
+        {
+          "description": "Frontier intelligence built for speed",
+          "displayName": "Gemini 3.8 Flash",
+          "icon": "rocket_launch",
+          "iconUrl": "https://www.gstatic.com/images/branding/productlogos/gemini_2026/v1/192px.svg",
+          "label": "3.8 Flash",
+          "modelId": "gemini-3.8-flash"
+        },
+        {
+          "description": "Frontier intelligence built for speed",
+          "displayName": "Gemini 3.5 Flash",
+          "icon": "rocket_launch",
+          "iconUrl": "https://www.gstatic.com/images/branding/productlogos/gemini_2026/v1/192px.svg",
+          "label": "3.5 Flash",
+          "modelId": "gemini-3.5-flash"
+        },
+        {
+          "description": "Solves complex problems",
+          "displayName": "Gemini 2.5 Pro",
+          "icon": "graph_5",
+          "iconUrl": "https://www.gstatic.com/images/branding/productlogos/gemini_2026/v1/192px.svg",
+          "label": "2.5 Pro",
+          "modelId": "gemini-2.5-pro"
+        }
+      ]
+    },
+    "onedrivePickerEnabled": true
+  }
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/engines/engine-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2Fengines%2Fengine-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "dataStoreIds": [
+    "datastore-${uniqueId}"
+  ],
+  "displayName": "Engine for WidgetConfig Maximal",
+  "industryVertical": 1,
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/engines/engine-${uniqueId}",
+  "searchEngineConfig": {
+    "searchTier": 1
+  },
+  "solutionType": 2
+}
+
+---
+
+DELETE https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/engines/engine-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2Fengines%2Fengine-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/operations/${operationID}"
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultSchemaId": "default_schema",
+  "displayName": "DataStore for WidgetConfig Maximal",
+  "industryVertical": 1,
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
+  "naturalLanguageQueryUnderstandingConfig": {
+    "mode": 2
+  },
+  "solutionTypes": [
+    2
+  ]
+}
+
+---
+
+DELETE https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/operations/${operationID}"
+}

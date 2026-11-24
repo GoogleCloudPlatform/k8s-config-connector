@@ -100,6 +100,13 @@ ${CONTROLLERBUILDER} generate-mapper \
   --multiversion \
   --prepopulate-resource
 
+${CONTROLLERBUILDER} generate-mapper \
+  --proto-source-path ${NEW_PROTO_OUT} \
+  --service google.cloud.discoveryengine.v1,google.cloud.discoveryengine.v1beta \
+  --api-version "discoveryengine.cnrm.cloud.google.com/v1alpha1" \
+  --multiversion \
+  --prepopulate-resource
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

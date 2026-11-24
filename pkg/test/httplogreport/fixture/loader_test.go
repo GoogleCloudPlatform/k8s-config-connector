@@ -151,6 +151,7 @@ func TestData_IsNonDeletable(t *testing.T) {
 		{kind: "APIQuotaPreference", want: true},
 		{kind: "APIQuotaAdjusterSettings", want: true},
 		{kind: "DiscoveryEngineUserStore", want: true},
+		{kind: "DiscoveryEngineWidgetConfig", want: true},
 		{kind: "FirestoreField", want: true},
 		{kind: "IAPSettings", want: true},
 		{kind: "StorageControlFolderIntelligenceConfig", want: true},

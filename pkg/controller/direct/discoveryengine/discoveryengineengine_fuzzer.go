@@ -33,12 +33,25 @@ func engineFuzzer() fuzztesting.KRMFuzzer {
 
 	f.Unimplemented_Identity(".name")
 
+	f.Unimplemented_NotYetTriaged(".agent_gateway_setting")
+	f.Unimplemented_NotYetTriaged(".app_type")
+	f.Unimplemented_NotYetTriaged(".associated_agent_registry")
 	f.Unimplemented_NotYetTriaged(".chat_engine_metadata")
+	f.Unimplemented_NotYetTriaged(".cmek_config")
+	f.Unimplemented_NotYetTriaged(".configurable_billing_approach")
+	f.Unimplemented_NotYetTriaged(".connector_tenant_info")
 	f.Unimplemented_NotYetTriaged(".create_time")
-	f.Unimplemented_NotYetTriaged(".update_time")
-
+	f.Unimplemented_NotYetTriaged(".features")
+	f.Unimplemented_NotYetTriaged(".knowledge_graph_config")
+	f.Unimplemented_NotYetTriaged(".marketplace_agent_visibility")
 	f.Unimplemented_NotYetTriaged(".media_recommendation_engine_config")
 	f.Unimplemented_NotYetTriaged(".chat_engine_config.allow_cross_region")
+	f.Unimplemented_NotYetTriaged(".model_configs")
+	f.Unimplemented_NotYetTriaged(".observability_config")
+	f.Unimplemented_NotYetTriaged(".procurement_contact_emails")
+	f.Unimplemented_NotYetTriaged(".search_engine_config.required_subscription_tier")
+	f.Unimplemented_NotYetTriaged(".session_config")
+	f.Unimplemented_NotYetTriaged(".update_time")
 
 	f.SpecField(".display_name")
 	f.SpecField(".common_config")

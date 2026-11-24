@@ -473,3 +473,29 @@ func DiscoveryEngineServingConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext
 	out.PersonalizationSpec = SearchRequest_PersonalizationSpec_v1alpha1_ToProto(mapCtx, in.PersonalizationSpec)
 	return out
 }
+
+func DataConnector_ConnectorMetadata_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DataConnector_ConnectorMetadata) *krm.DataConnector_ConnectorMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataConnector_ConnectorMetadata{}
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.ShortDescription = direct.LazyPtr(in.GetShortDescription())
+	out.Author = direct.LazyPtr(in.GetAuthor())
+	out.Note = direct.LazyPtr(in.GetNote())
+	return out
+}
+
+func DataConnector_ConnectorMetadata_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.DataConnector_ConnectorMetadata) *pb.DataConnector_ConnectorMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataConnector_ConnectorMetadata{}
+	out.Title = direct.ValueOf(in.Title)
+	out.Description = direct.ValueOf(in.Description)
+	out.ShortDescription = direct.ValueOf(in.ShortDescription)
+	out.Author = direct.ValueOf(in.Author)
+	out.Note = direct.ValueOf(in.Note)
+	return out
+}

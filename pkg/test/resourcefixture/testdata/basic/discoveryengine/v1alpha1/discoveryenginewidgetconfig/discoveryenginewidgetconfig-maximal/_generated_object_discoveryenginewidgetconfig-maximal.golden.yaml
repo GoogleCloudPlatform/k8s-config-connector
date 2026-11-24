@@ -1,0 +1,51 @@
+apiVersion: discoveryengine.cnrm.cloud.google.com/v1alpha1
+kind: DiscoveryEngineWidgetConfig
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: widgetconfig-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  accessSettings:
+    allowPublicAccess: true
+    allowlistedDomains:
+    - updated.example.com
+  displayName: Updated Widget Config Maximal
+  enableResultScore: false
+  parentRef:
+    name: datastore-${uniqueId}
+  resourceID: default_search_widget_config
+  solutionType: SOLUTION_TYPE_SEARCH
+  uiBranding:
+    logo:
+      url: https://updated.example.com/logo.png
+  uiSettings:
+    disableUserEventsCollection: true
+    enableAutocomplete: false
+    enableQualityFeedback: false
+    enableSafeSearch: false
+    enableSearchAsYouType: false
+    generativeAnswerConfig:
+      resultCount: 3
+    interactionType: SEARCH_WITH_ANSWER
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/widgetConfigs/default_search_widget_config
+  observedGeneration: 2
+  observedState:
+    configID: c22e0a45-49bf-4d34-b335-b145cd0cd2f5
+    createTime: "1970-01-01T00:00:00Z"
+    dataStoreType: STRUCTURED
+    uiSettings:
+      dataStoreUiConfigs:
+      - {}
+    updateTime: "1970-01-01T00:00:00Z"

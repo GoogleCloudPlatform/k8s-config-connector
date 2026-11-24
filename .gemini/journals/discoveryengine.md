@@ -131,4 +131,15 @@
 - **Solution**: Added `DiscoveryEngineAssistant:Assistant` to `generate-types` with `--prepopulate-resource` and `generate-identity` under `NEW_PROTO_OUT` (`6a1db32dc52fd9421c1743dc8f5faa7a15e518d1`) alongside `WidgetConfig` and `ACLConfig` in `apis/discoveryengine/generate.sh`. Scaffolds identity, reference, conformance tests, and open entries in `judgement_queue.yaml` for Step 1b triage. Added `DiscoveryEngineAssistant` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
 - **Impact**: Sets up clean initial mechanical types and identity conforming to Greenfield Step 1a standards for DiscoveryEngineAssistant using the updated proto SHA without causing multiversion `Date` collisions on legacy resources.
 
+### [2026-11-24] DiscoveryEngineWidgetConfig Step 2 Controller Implementation
+- **Context**: Greenfield Step 2 implementation (direct controller, fuzzer, and E2E fixtures) for `DiscoveryEngineWidgetConfig` (Issue #16342).
+- **Details & Learnings**:
+  1. **SDK Upgrade**: Upgraded `cloud.google.com/go/discoveryengine` from `v1.32.0` to `v1.38.0` across `go.mod` and `mockgcp/go.mod` to bring in `WidgetConfigClient` (`NewWidgetConfigRESTClient`).
+  2. **Mapper Generation**: Switched `generate-mapper` in `apis/discoveryengine/generate.sh` to use `${NEW_PROTO_OUT}` (`googleapis-6a1db32dc52fd9421c1743dc8f5faa7a15e518d1.pb`), adding the generated mappers for `WidgetConfig` without regressing any existing mappers.
+  3. **Metadata Heuristic Workaround**: `DataConnector.ConnectorMetadata` ends with `Metadata`, which causes `controllerbuilder generate-mapper` to skip generating mappers for it. Added handwritten mappers `DataConnector_ConnectorMetadata_v1alpha1_FromProto` and `ToProto` in `pkg/controller/direct/discoveryengine/mapper.go`.
+  4. **Singleton & Lifecycle Pattern**: `WidgetConfigService` in GCP only provides `GetWidgetConfig` and `UpdateWidgetConfig` RPCs (no `CreateWidgetConfig` or `DeleteWidgetConfig`). In `Create()`, the controller performs an update on the singleton GCP resource. In `Delete()`, it logs deletion not supported and removes the finalizer without deleting the GCP resource. Added `DiscoveryEngineWidgetConfig` to `IsNonDeletable()` in `pkg/test/httplogreport/fixture/loader.go`.
+  5. **Immutable Field Handling in Spec Comparison**: `solutionType` is immutable and is not returned by the server on `GetWidgetConfig`. If `solution_type` is included in `updateMask`, GCP rejects the request with `INVALID_ARGUMENT`. Added a `normalize` hook in `CompareGreenfieldSpec` to zero out `p.SolutionType` so it is never included in `updateMask`.
+  6. **Fixture Dependencies**: When `DiscoveryEngineEngine` is linked to `DiscoveryEngineDataStore`, GCP automatically provisions `default_search_widget_config` under that DataStore. Both minimal and maximal fixtures configure `resourceID: default_search_widget_config` with `dependencies.yaml` creating the DataStore and Engine.
+  7. **Validation**: Both minimal and maximal fixtures recorded cleanly against real GCP with 7/7 checks passed in `_http_report.md`. Round-trip fuzzer passed 200/200 seeds.
+
 

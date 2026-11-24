@@ -1,0 +1,10 @@
+apiVersion: discoveryengine.cnrm.cloud.google.com/v1alpha1
+kind: DiscoveryEngineWidgetConfig
+metadata:
+  name: widgetconfig-${uniqueId}
+spec:
+  resourceID: default_search_widget_config
+  parentRef:
+    name: datastore-${uniqueId}
+  displayName: "Widget Config Minimal"
+  solutionType: SOLUTION_TYPE_SEARCH
