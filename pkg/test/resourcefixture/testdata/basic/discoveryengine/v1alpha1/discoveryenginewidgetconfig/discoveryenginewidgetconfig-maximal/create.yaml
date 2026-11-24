@@ -1,0 +1,27 @@
+apiVersion: discoveryengine.cnrm.cloud.google.com/v1alpha1
+kind: DiscoveryEngineWidgetConfig
+metadata:
+  name: widgetconfig-${uniqueId}
+spec:
+  resourceID: default_search_widget_config
+  parentRef:
+    name: datastore-${uniqueId}
+  displayName: "Widget Config Maximal"
+  solutionType: SOLUTION_TYPE_SEARCH
+  enableResultScore: true
+  accessSettings:
+    allowPublicAccess: false
+    allowlistedDomains:
+      - "example.com"
+  uiSettings:
+    enableAutocomplete: true
+    enableQualityFeedback: true
+    enableSafeSearch: true
+    enableSearchAsYouType: true
+    disableUserEventsCollection: false
+    interactionType: "SEARCH_ONLY"
+    generativeAnswerConfig:
+      resultCount: 5
+  uiBranding:
+    logo:
+      url: "https://example.com/logo.png"

@@ -1,0 +1,185 @@
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultSchemaId": "default_schema",
+  "displayName": "DataStore for WidgetConfig Maximal",
+  "industryVertical": 1,
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
+  "naturalLanguageQueryUnderstandingConfig": {
+    "mode": 2
+  },
+  "solutionTypes": [
+    2
+  ]
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/engines/engine-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "dataStoreIds": [
+    "datastore-${uniqueId}"
+  ],
+  "displayName": "Engine for WidgetConfig Maximal",
+  "industryVertical": 1,
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/engines/engine-${uniqueId}",
+  "searchEngineConfig": {
+    "searchTier": 1
+  },
+  "solutionType": 2
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/widgetConfigs/default_search_widget_config?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "accessSettings": {
+    "allowPublicAccess": true,
+    "allowlistedDomains": [
+      "updated.example.com"
+    ]
+  },
+  "collectionComponents": [
+    {
+      "dataStoreComponents": [
+        {
+          "displayName": "DataStore for WidgetConfig Maximal",
+          "id": "datastore-${uniqueId}",
+          "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
+        }
+      ],
+      "id": "default_collection",
+      "name": "projects/${projectNumber}/locations/global/collections/default_collection"
+    }
+  ],
+  "configId": "c22e0a45-49bf-4d34-b335-b145cd0cd2f5",
+  "dataStoreType": 2,
+  "displayName": "Updated Widget Config Maximal",
+  "enableQualityFeedback": true,
+  "fieldsUiComponentsMap": {
+    "thumbnail": {
+      "deviceVisibility": [
+        1,
+        2
+      ]
+    },
+    "title": {
+      "deviceVisibility": [
+        1,
+        2
+      ]
+    },
+    "url": {
+      "deviceVisibility": [
+        1,
+        2
+      ]
+    }
+  },
+  "industryVertical": 1,
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/engines/engine-${uniqueId}/widgetConfigs/default_search_widget_config",
+  "uiBranding": {
+    "logo": {
+      "url": "https://updated.example.com/logo.png"
+    }
+  },
+  "uiSettings": {
+    "dataStoreUiConfigs": [
+      {
+        "fieldsUiComponentsMap": {
+          "thumbnail": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          },
+          "title": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          },
+          "url": {
+            "deviceVisibility": [
+              1,
+              2
+            ]
+          }
+        }
+      }
+    ],
+    "disableUserEventsCollection": true,
+    "features": {
+      "agent-gallery": 1,
+      "bi-directional-audio": 2,
+      "cross-product-intelligence": 2,
+      "disable-canvas": 1,
+      "feedback": 1,
+      "model-selector": 2,
+      "no-code-agent-builder": 2,
+      "notebook-lm": 1,
+      "people-search": 1,
+      "people-search-org-chart": 1,
+      "personalization-memory": 1,
+      "prompt-gallery": 1,
+      "session-sharing": 2,
+      "speech-to-text": 0,
+      "workflow-agents": 2
+    },
+    "generativeAnswerConfig": {
+      "resultCount": 3
+    },
+    "googleDrivePickerEnabled": true,
+    "interactionType": 2,
+    "modelConfigInfo": {
+      "resolvedModels": [
+        {
+          "description": "We choose the best fit",
+          "displayName": "Auto",
+          "icon": "automation",
+          "label": "Auto"
+        },
+        {
+          "description": "Frontier intelligence built for speed",
+          "displayName": "Gemini 3.8 Flash",
+          "icon": "rocket_launch",
+          "iconUrl": "https://www.gstatic.com/images/branding/productlogos/gemini_2026/v1/192px.svg",
+          "label": "3.8 Flash",
+          "modelId": "gemini-3.8-flash"
+        },
+        {
+          "description": "Frontier intelligence built for speed",
+          "displayName": "Gemini 3.5 Flash",
+          "icon": "rocket_launch",
+          "iconUrl": "https://www.gstatic.com/images/branding/productlogos/gemini_2026/v1/192px.svg",
+          "label": "3.5 Flash",
+          "modelId": "gemini-3.5-flash"
+        },
+        {
+          "description": "Solves complex problems",
+          "displayName": "Gemini 2.5 Pro",
+          "icon": "graph_5",
+          "iconUrl": "https://www.gstatic.com/images/branding/productlogos/gemini_2026/v1/192px.svg",
+          "label": "2.5 Pro",
+          "modelId": "gemini-2.5-pro"
+        }
+      ]
+    },
+    "onedrivePickerEnabled": true
+  }
+}
