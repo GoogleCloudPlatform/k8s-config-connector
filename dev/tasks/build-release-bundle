@@ -240,7 +240,6 @@ BLOCKED_KINDS=(
     "NetworkSecurityInterceptDeploymentGroup"
     "NetworkSecurityInterceptEndpointGroupAssociation"
     "NetworkSecurityMirroringDeployment"
-    "NetworkSecurityMirroringDeploymentGroup"
     "NetworkSecurityPartnerSSEGateway"
     "NetworkSecurityPartnerSSERealm"
     "NetworkSecurityUrlList"
