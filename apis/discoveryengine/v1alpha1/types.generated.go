@@ -19,6 +19,7 @@
 // proto.service: google.cloud.discoveryengine.v1
 // resource: DiscoveryEngineWidgetConfig:WidgetConfig
 // resource: DiscoveryEngineACLConfig:AclConfig
+// resource: DiscoveryEngineAssistant:Assistant
 // resource: DiscoveryEngineCMEKConfig:CmekConfig
 
 package v1alpha1
@@ -26,6 +27,117 @@ package v1alpha1
 import (
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Assistant.CustomerPolicy
+type Assistant_CustomerPolicy struct {
+	// Optional. List of banned phrases.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.CustomerPolicy.banned_phrases
+	BannedPhrases []Assistant_CustomerPolicy_BannedPhrase `json:"bannedPhrases,omitempty"`
+
+	// Optional. Model Armor configuration to be used for sanitizing user
+	//  prompts and assistant responses.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.CustomerPolicy.model_armor_config
+	ModelArmorConfig *Assistant_CustomerPolicy_ModelArmorConfig `json:"modelArmorConfig,omitempty"`
+
+	// Optional. Data protection policy to be used for sanitizing file uploads.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.CustomerPolicy.data_protection_policy
+	DataProtectionPolicy *DataProtectionPolicy `json:"dataProtectionPolicy,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Assistant.CustomerPolicy.BannedPhrase
+type Assistant_CustomerPolicy_BannedPhrase struct {
+	// Required. The raw string content to be banned.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.CustomerPolicy.BannedPhrase.phrase
+	// +required
+	Phrase *string `json:"phrase,omitempty"`
+
+	// Optional. Match type for the banned phrase.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.CustomerPolicy.BannedPhrase.match_type
+	MatchType *string `json:"matchType,omitempty"`
+
+	// Optional. If true, diacritical marks (e.g., accents, umlauts) are
+	//  ignored when matching banned phrases. For example, "cafe" would match
+	//  "café".
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.CustomerPolicy.BannedPhrase.ignore_diacritics
+	IgnoreDiacritics *bool `json:"ignoreDiacritics,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Assistant.CustomerPolicy.ModelArmorConfig
+type Assistant_CustomerPolicy_ModelArmorConfig struct {
+	// Optional. The resource name of the Model Armor template for sanitizing
+	//  user prompts. Format:
+	//  `projects/{project}/locations/{location}/templates/{template_id}`
+	//
+	//  If not specified, no sanitization will be applied to the user prompt.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.CustomerPolicy.ModelArmorConfig.user_prompt_template
+	UserPromptTemplate *string `json:"userPromptTemplate,omitempty"`
+
+	// Optional. The resource name of the Model Armor template for sanitizing
+	//  assistant responses. Format:
+	//  `projects/{project}/locations/{location}/templates/{template_id}`
+	//
+	//  If not specified, no sanitization will be applied to the assistant
+	//  response.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.CustomerPolicy.ModelArmorConfig.response_template
+	ResponseTemplate *string `json:"responseTemplate,omitempty"`
+
+	// Optional. Defines the failure mode for Model Armor sanitization.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.CustomerPolicy.ModelArmorConfig.failure_mode
+	FailureMode *string `json:"failureMode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Assistant.GenerationConfig
+type Assistant_GenerationConfig struct {
+	// Optional. The default model to use for assistant.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.GenerationConfig.default_model_id
+	DefaultModelID *string `json:"defaultModelID,omitempty"`
+
+	// Optional. The list of models that are allowed to be used for assistant.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.GenerationConfig.allowed_model_ids
+	AllowedModelIDs []string `json:"allowedModelIDs,omitempty"`
+
+	// System instruction, also known as the prompt preamble for LLM calls.
+	//  See also
+	//  https://cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/system-instructions
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.GenerationConfig.system_instruction
+	SystemInstruction *Assistant_GenerationConfig_SystemInstruction `json:"systemInstruction,omitempty"`
+
+	// The default language to use for the generation of the assistant
+	//  response.
+	//  Use an ISO 639-1 language code such as `en`.
+	//  If not specified, the language will be automatically detected.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.GenerationConfig.default_language
+	DefaultLanguage *string `json:"defaultLanguage,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Assistant.GenerationConfig.SystemInstruction
+type Assistant_GenerationConfig_SystemInstruction struct {
+	// Optional. Additional system instruction that will be added to the
+	//  default system instruction.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.GenerationConfig.SystemInstruction.additional_system_instruction
+	AdditionalSystemInstruction *string `json:"additionalSystemInstruction,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Assistant.ToolInfo
+type Assistant_ToolInfo struct {
+	// The name of the tool as defined by
+	//  DataConnectorService.QueryAvailableActions.
+	//  Note: it's using `action` in the DataConnectorService apis, but they are
+	//  the same as the `tool` here.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.ToolInfo.tool_name
+	ToolName *string `json:"toolName,omitempty"`
+
+	// The display name of the tool.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.ToolInfo.tool_display_name
+	ToolDisplayName *string `json:"toolDisplayName,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Assistant.ToolList
+type Assistant_ToolList struct {
+	// The list of tools with corresponding tool information.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Assistant.ToolList.tool_info
+	ToolInfo []Assistant_ToolInfo `json:"toolInfo,omitempty"`
+}
 
 // +kcc:proto=google.cloud.discoveryengine.v1.DataConnector.ConnectorMetadata
 type DataConnector_ConnectorMetadata struct {
@@ -52,6 +164,22 @@ type DataConnector_ConnectorMetadata struct {
 	//  or a custom note that can be set for the connector.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataConnector.ConnectorMetadata.note
 	Note *string `json:"note,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.DataProtectionPolicy
+type DataProtectionPolicy struct {
+	// Optional. Specifies the sensitive data protection policy for the connector
+	//  source.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataProtectionPolicy.sensitive_data_protection_policy
+	SensitiveDataProtectionPolicy *DataProtectionPolicy_SensitiveDataProtectionPolicy `json:"sensitiveDataProtectionPolicy,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.DataProtectionPolicy.SensitiveDataProtectionPolicy
+type DataProtectionPolicy_SensitiveDataProtectionPolicy struct {
+	// Optional. Specifies the resource name of the Sensitive Data Protection
+	//  content policy.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataProtectionPolicy.SensitiveDataProtectionPolicy.policy
+	Policy *string `json:"policy,omitempty"`
 }
 
 // +kcc:proto=google.cloud.discoveryengine.v1.IdpConfig

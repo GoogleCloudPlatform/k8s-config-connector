@@ -125,5 +125,10 @@
   5. Triaged all 11 judgement queue entries in `apis/discoveryengine/judgement_queue.yaml`.
 - **Impact**: Fully resolves Greenfield Step 1b for `DiscoveryEngineWidgetConfig` conforming to the single-parent standard, ready for Step 2 controller implementation.
 
+### [2026-11-06] DiscoveryEngineAssistant Greenfield Prepopulation
+- **Context**: Prepopulating direct KRM types, IdentityV2, and judgement queue for DiscoveryEngineAssistant (Issue #15182).
+- **Problem**: DiscoveryEngineAssistant resource pattern is `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/assistants/{assistant}`. In CAI metadata, it is formatted as `//discoveryengine.googleapis.com/projects/{{PROJECT_NUMBER}}/locations/{{LOCATION}}/collections/{{COLLECTION}}/engines/{{ENGINE}}/assistants/{{ASSISTANT}}`.
+- **Solution**: Added `DiscoveryEngineAssistant:Assistant` to `generate-types` with `--prepopulate-resource` and `generate-identity` under `NEW_PROTO_OUT` (`6a1db32dc52fd9421c1743dc8f5faa7a15e518d1`) alongside `WidgetConfig` and `ACLConfig` in `apis/discoveryengine/generate.sh`. Scaffolds identity, reference, conformance tests, and open entries in `judgement_queue.yaml` for Step 1b triage. Added `DiscoveryEngineAssistant` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+- **Impact**: Sets up clean initial mechanical types and identity conforming to Greenfield Step 1a standards for DiscoveryEngineAssistant using the updated proto SHA without causing multiversion `Date` collisions on legacy resources.
 
 
