@@ -1,0 +1,33 @@
+apiVersion: firestore.cnrm.cloud.google.com/v1beta1
+kind: FirestoreIndex
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  name: firestoreindex-acquire-${uniqueId}
+  namespace: ${projectId}
+spec:
+  apiScope: DATASTORE_MODE_API
+  collection: Customer-${uniqueId}
+  database: firestoreindex-acquire-db-${uniqueId}
+  fields:
+  - fieldPath: email
+    order: ASCENDING
+  - fieldPath: createdAt
+    order: DESCENDING
+  queryScope: COLLECTION_RECURSIVE
+  resourceID: ${indexID}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  name: projects/${projectId}/databases/firestoreindex-acquire-db-${uniqueId}/collectionGroups/Customer-${uniqueId}/indexes/${indexID}
+  observedGeneration: 2
