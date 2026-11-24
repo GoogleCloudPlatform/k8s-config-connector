@@ -454,7 +454,7 @@ func TestExecuteSetupLetsTheSyncersOfTheOtherClustersReadEachCluster(t *testing.
 }
 
 func TestExecuteSetupDryRunCommandRunner(t *testing.T) {
-	// In --dry-run, describe commands run and nothing else is executed (create/bindings not executed against GCP, only planned).
+	// In --dry-run, describe commands run via runner.output (non-mutating lookup) and create/bindings run via runner.run.
 	var stdout bytes.Buffer
 	handles := []*clusterHandle{
 		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector()),
@@ -462,7 +462,7 @@ func TestExecuteSetupDryRunCommandRunner(t *testing.T) {
 	}
 	runner := &recordingCommandRunner{
 		outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
-			// Simulates describe running
+			// Simulates describe running and finding nothing
 			return nil, fmt.Errorf("not found")
 		},
 	}
@@ -475,37 +475,59 @@ func TestExecuteSetupDryRunCommandRunner(t *testing.T) {
 		t.Fatalf("executeSetup failed: %v", err)
 	}
 
-	// Verify describe commands ran
+	// Verify describe commands went through runner.output (and no mutating commands went through output)
 	hasDescribeBucket := false
 	hasDescribeSA := false
-	for _, cmd := range runner.commands {
+	for _, cmd := range runner.outputCommands {
 		if strings.Contains(cmd, "storage buckets describe") {
 			hasDescribeBucket = true
 		}
 		if strings.Contains(cmd, "service-accounts describe") {
 			hasDescribeSA = true
 		}
+		if strings.Contains(cmd, "create") || strings.Contains(cmd, "add-iam-policy-binding") {
+			t.Fatalf("expected outputCommands not to contain mutating command %q", cmd)
+		}
 	}
 	if !hasDescribeBucket {
-		t.Fatalf("expected storage buckets describe in dry-run, got %v", runner.commands)
+		t.Fatalf("expected storage buckets describe in outputCommands, got %v", runner.outputCommands)
 	}
 	if !hasDescribeSA {
-		t.Fatalf("expected service-accounts describe in dry-run, got %v", runner.commands)
+		t.Fatalf("expected service-accounts describe in outputCommands, got %v", runner.outputCommands)
 	}
 
-	// Verify create and binding commands were also invoked on the runner (which in execCommandRunner prints "[dry-run] would run: ...")
+	// Verify create and binding commands went through runner.run (and no describe commands went through run)
+	hasCreateBucket := false
 	hasCreateSA := false
 	hasBinding := false
-	for _, cmd := range runner.commands {
+	for _, cmd := range runner.runCommands {
+		if strings.Contains(cmd, "storage buckets create") {
+			hasCreateBucket = true
+		}
 		if strings.Contains(cmd, "service-accounts create") {
 			hasCreateSA = true
 		}
 		if strings.Contains(cmd, "add-iam-policy-binding") {
 			hasBinding = true
 		}
+		if strings.Contains(cmd, "describe") {
+			t.Fatalf("expected runCommands not to contain describe command %q", cmd)
+		}
 	}
-	if !hasCreateSA || !hasBinding {
-		t.Fatalf("expected create and binding commands to be recorded on runner in dry-run, got %v", runner.commands)
+	if !hasCreateBucket {
+		t.Fatalf("expected storage buckets create in runCommands, got %v", runner.runCommands)
+	}
+	if !hasCreateSA {
+		t.Fatalf("expected service-accounts create in runCommands, got %v", runner.runCommands)
+	}
+	if !hasBinding {
+		t.Fatalf("expected add-iam-policy-binding in runCommands, got %v", runner.runCommands)
+	}
+
+	// Verify stdout contains the setup dry-run output logging
+	outStr := stdout.String()
+	if !strings.Contains(outStr, "[dry-run] cluster \"gke_proj-a_us-central1_cluster-a\"") {
+		t.Fatalf("expected stdout to contain dry-run message for cluster-a, got %q", outStr)
 	}
 }
 
@@ -909,13 +931,17 @@ func TestExecuteSetupYAMLOnlyWithLeaderEndpointType(t *testing.T) {
 }
 
 type recordingCommandRunner struct {
-	commands []string
-	outputFn func(ctx context.Context, name string, args ...string) ([]byte, error)
-	runFn    func(ctx context.Context, name string, args ...string) error
+	commands       []string
+	runCommands    []string
+	outputCommands []string
+	outputFn       func(ctx context.Context, name string, args ...string) ([]byte, error)
+	runFn          func(ctx context.Context, name string, args ...string) error
 }
 
 func (r *recordingCommandRunner) run(ctx context.Context, name string, args ...string) error {
-	r.commands = append(r.commands, name+" "+strings.Join(args, " "))
+	cmd := name + " " + strings.Join(args, " ")
+	r.commands = append(r.commands, cmd)
+	r.runCommands = append(r.runCommands, cmd)
 	if r.runFn != nil {
 		return r.runFn(ctx, name, args...)
 	}
@@ -923,7 +949,9 @@ func (r *recordingCommandRunner) run(ctx context.Context, name string, args ...s
 }
 
 func (r *recordingCommandRunner) output(ctx context.Context, name string, args ...string) ([]byte, error) {
-	r.commands = append(r.commands, name+" "+strings.Join(args, " "))
+	cmd := name + " " + strings.Join(args, " ")
+	r.commands = append(r.commands, cmd)
+	r.outputCommands = append(r.outputCommands, cmd)
 	if r.outputFn != nil {
 		return r.outputFn(ctx, name, args...)
 	}

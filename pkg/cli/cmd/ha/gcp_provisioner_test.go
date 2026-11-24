@@ -701,9 +701,10 @@ func TestGCPProvisionerBucketDescribeAndCreateBothFail(t *testing.T) {
 }
 
 func TestGCPProvisionerBindingRetryAfterAccountCreated(t *testing.T) {
-	// Account missing -> created. Then first binding fails twice and then succeeds.
+	// Account missing -> created. Then first binding fails twice and then succeeds; subsequent 4 bindings succeed on attempt 1.
 	var stdout bytes.Buffer
-	bindingAttempts := 0
+	firstBindingAttempts := 0
+	totalBindingAttempts := 0
 	runner := &recordingCommandRunner{
 		outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
 			if strings.Contains(strings.Join(args, " "), "buckets describe") {
@@ -714,9 +715,12 @@ func TestGCPProvisionerBindingRetryAfterAccountCreated(t *testing.T) {
 		},
 		runFn: func(ctx context.Context, name string, args ...string) error {
 			if strings.Contains(strings.Join(args, " "), "add-iam-policy-binding") {
-				bindingAttempts++
-				if bindingAttempts <= 2 {
-					return fmt.Errorf("IAM not ready yet")
+				totalBindingAttempts++
+				if totalBindingAttempts <= 3 {
+					firstBindingAttempts++
+					if firstBindingAttempts <= 2 {
+						return fmt.Errorf("IAM not ready yet")
+					}
 				}
 			}
 			return nil
@@ -733,11 +737,53 @@ func TestGCPProvisionerBindingRetryAfterAccountCreated(t *testing.T) {
 	if err != nil {
 		t.Fatalf("expected provision to succeed after retrying binding, got: %v", err)
 	}
-	if bindingAttempts < 3 {
-		t.Fatalf("expected at least 3 attempts for binding, got %d", bindingAttempts)
+	if firstBindingAttempts != 3 {
+		t.Fatalf("expected 3 attempts for first binding, got %d", firstBindingAttempts)
 	}
-	if !strings.Contains(stdout.String(), "Waiting for newly created service account to propagate in IAM...") {
-		t.Fatalf("expected output to mention waiting for new account, got %q", stdout.String())
+	if totalBindingAttempts != 7 {
+		t.Fatalf("expected 7 total binding attempts (3 for first binding + 4 for remaining bindings), got %d", totalBindingAttempts)
+	}
+	if gotCount := strings.Count(stdout.String(), "Waiting for newly created service account to propagate in IAM..."); gotCount != 1 {
+		t.Fatalf("expected waiting line to be printed exactly once, got %d times in stdout:\n%s", gotCount, stdout.String())
+	}
+}
+
+func TestGCPProvisionerBindingRetryTimeoutExhausted(t *testing.T) {
+	// Account missing -> created. Binding keeps failing until retryTimeout, returning last error.
+	bindingAttempts := 0
+	runner := &recordingCommandRunner{
+		outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
+			if strings.Contains(strings.Join(args, " "), "buckets describe") {
+				return []byte("existing"), nil
+			}
+			// service accounts describe fails -> will create
+			return nil, fmt.Errorf("not found")
+		},
+		runFn: func(ctx context.Context, name string, args ...string) error {
+			if strings.Contains(strings.Join(args, " "), "add-iam-policy-binding") {
+				bindingAttempts++
+				return fmt.Errorf("IAM error attempt %d", bindingAttempts)
+			}
+			return nil
+		},
+	}
+	provisioner := newGCPProvisioner(runner, "my-ha-bucket", "", nil, nil)
+	provisioner.retryInterval = 1 * time.Millisecond
+	provisioner.retryTimeout = 15 * time.Millisecond
+	clusters := []gkeClusterInfo{
+		{contextName: "ctx-1", project: "proj-a", location: "us-central1-a", clusterName: "c1"},
+	}
+
+	err := provisioner.provision(context.Background(), clusters)
+	if err == nil {
+		t.Fatalf("expected error on retry timeout, got nil")
+	}
+	wantLastErr := fmt.Sprintf("IAM error attempt %d", bindingAttempts)
+	if !strings.Contains(err.Error(), wantLastErr) {
+		t.Fatalf("expected error to contain last error %q, got: %v", wantLastErr, err)
+	}
+	if bindingAttempts < 2 {
+		t.Fatalf("expected multiple binding attempts before timeout, got %d", bindingAttempts)
 	}
 }
 
