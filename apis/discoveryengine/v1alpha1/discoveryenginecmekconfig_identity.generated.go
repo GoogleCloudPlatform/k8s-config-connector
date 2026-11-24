@@ -37,13 +37,14 @@ var (
 	_ identity.Resource   = &DiscoveryEngineCMEKConfig{}
 )
 
-var DiscoveryEngineCMEKConfigIdentityFormat = gcpurls.Template[DiscoveryEngineCMEKConfigIdentity]("discoveryengine.googleapis.com", "projects/{project}/locations/{location}/cmekConfig")
+var DiscoveryEngineCMEKConfigIdentityFormat = gcpurls.Template[DiscoveryEngineCMEKConfigIdentity]("discoveryengine.googleapis.com", "projects/{project}/locations/{location}/cmekConfigs/{cmekConfig}")
 
 // DiscoveryEngineCMEKConfigIdentity is the identity of a GCP DiscoveryEngineCMEKConfig resource.
 // +k8s:deepcopy-gen=false
 type DiscoveryEngineCMEKConfigIdentity struct {
-	Project  string
-	Location string
+	Project    string
+	Location   string
+	CmekConfig string
 }
 
 func (i *DiscoveryEngineCMEKConfigIdentity) String() string {
@@ -72,6 +73,11 @@ func (i *DiscoveryEngineCMEKConfigIdentity) ParentString() string {
 }
 
 func getIdentityFromDiscoveryEngineCMEKConfigSpec(ctx context.Context, reader client.Reader, obj *DiscoveryEngineCMEKConfig) (*DiscoveryEngineCMEKConfigIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
+	}
+
 	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve project: %w", err)
@@ -83,8 +89,9 @@ func getIdentityFromDiscoveryEngineCMEKConfigSpec(ctx context.Context, reader cl
 	}
 
 	return &DiscoveryEngineCMEKConfigIdentity{
-		Project:  projectID,
-		Location: location,
+		Project:    projectID,
+		Location:   location,
+		CmekConfig: resourceID,
 	}, nil
 }
 

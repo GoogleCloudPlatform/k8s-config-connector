@@ -36,7 +36,7 @@ var _ refs.Ref = &DiscoveryEngineCMEKConfigRef{}
 // DiscoveryEngineCMEKConfigRef is a reference to a GCP DiscoveryEngineCMEKConfig resource.
 type DiscoveryEngineCMEKConfigRef struct {
 	// A reference to an externally managed DiscoveryEngineCMEKConfig resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/cmekConfig".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/cmekConfigs/{{cmekConfigID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DiscoveryEngineCMEKConfig resource.

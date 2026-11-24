@@ -29,12 +29,13 @@ import (
 
 func TestDiscoveryEngineCMEKConfigIdentity_Conformance(t *testing.T) {
 	identity.AssertConformance(t, identity.ConformanceCase[DiscoveryEngineCMEKConfigIdentity]{
-		SampleExternal: "projects/my-project/locations/us-central1/cmekConfig",
+		SampleExternal: "projects/my-project/locations/us-central1/cmekConfigs/my-cmek-config",
 		WantHost:       "discoveryengine.googleapis.com",
 		WantParent:     "projects/my-project/locations/us-central1",
 		WantIdentity: &DiscoveryEngineCMEKConfigIdentity{
-			Project:  "my-project",
-			Location: "us-central1",
+			Project:    "my-project",
+			Location:   "us-central1",
+			CmekConfig: "my-cmek-config",
 		},
 		Ref: &DiscoveryEngineCMEKConfigRef{},
 	})

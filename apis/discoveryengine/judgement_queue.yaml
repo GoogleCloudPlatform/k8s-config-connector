@@ -125,14 +125,14 @@ entries:
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
     status: resolved
     resolution: edited
-    note: triaged judgement queue, updated parent to *parent.ProjectAndLocationRef, locked in singleton pattern projects/{project}/locations/{location}/cmekConfig via --pattern in generate.sh, converted KMSKey to KMSKeyRef (*kmsv1beta1.KMSCryptoKeyRef) on DiscoveryEngineCMEKConfigSpec and SingleRegionKeyWithRefs, and updated resource docs link
+    note: triaged judgement queue, updated parent to *parent.ProjectAndLocationRef, locked in pattern projects/{project}/locations/{location}/cmekConfigs/{cmek_config} via --pattern in generate.sh, converted KMSKey to KMSKeyRef (*kmsv1beta1.KMSCryptoKeyRef) on DiscoveryEngineCMEKConfigSpec and SingleRegionKeyWithRefs, and updated resource docs link
   - kind: DiscoveryEngineCMEKConfig
     group: discoveryengine.cnrm.cloud.google.com
     reason: identity-multi-pattern
     detail: proto message google.cloud.discoveryengine.v1.CmekConfig declares 2 resource name patterns (projects/{project}/locations/{location}/cmekConfig, projects/{project}/locations/{location}/cmekConfigs/{cmek_config}) that tied on DiscoveryEngineCMEKConfigSpec; generated identity defaulted to "projects/{project}/locations/{location}/cmekConfig" (pass --pattern DiscoveryEngineCMEKConfig=<pattern> to override)
     status: resolved
     resolution: accepted
-    note: locked in singleton pattern projects/{project}/locations/{location}/cmekConfig via --pattern in generate.sh
+    note: locked in pattern projects/{project}/locations/{location}/cmekConfigs/{cmek_config} via --pattern in generate.sh
   - kind: DiscoveryEngineCMEKConfig
     group: discoveryengine.cnrm.cloud.google.com
     reason: verify-resource-docs-link
