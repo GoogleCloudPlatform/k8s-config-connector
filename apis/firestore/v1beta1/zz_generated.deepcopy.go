@@ -315,6 +315,11 @@ func (in *FirestoreIndexSpec) DeepCopyInto(out *FirestoreIndexSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ResourceID != nil {
+		in, out := &in.ResourceID, &out.ResourceID
+		*out = new(string)
+		**out = **in
+	}
 	if in.Fields != nil {
 		in, out := &in.Fields, &out.Fields
 		*out = make([]IndexFields, len(*in))

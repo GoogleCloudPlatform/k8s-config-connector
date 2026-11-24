@@ -51,6 +51,10 @@ type FirestoreIndexSpec struct {
 	// +optional
 	Database *string `json:"database,omitempty"`
 
+	/* Immutable. Optional. The service-generated index ID. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Immutable. The fields supported by this index. The last field entry is always for
 	the field path '__name__'. If, on creation, '__name__' was not
 	specified as the last field, it will be added automatically with the
