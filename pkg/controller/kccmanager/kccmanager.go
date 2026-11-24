@@ -54,6 +54,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/leaderelection"
+	"k8s.io/client-go/util/flowcontrol"
 	"k8s.io/klog/v2"
 	crclient "sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
@@ -183,8 +184,8 @@ func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme
 		return nil, nil, false, fmt.Errorf("invalid multi-cluster lease configuration: %w", err)
 	}
 
-	// Create a new client for the lock to ensure it uses the correct configuration
-	c, err := crclient.New(restConfig, crclient.Options{Scheme: scheme})
+	// The lock has its own client, with its own rate limiter. See lockRESTConfig.
+	c, err := crclient.New(lockRESTConfig(restConfig), crclient.Options{Scheme: scheme})
 	if err != nil {
 		return nil, nil, false, fmt.Errorf("error creating client for lock: %w", err)
 	}
@@ -211,6 +212,28 @@ func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme
 			},
 		},
 	}, leaseSpec, exitOnLeadershipLoss, nil
+}
+
+const (
+	// lockClientQPS and lockClientBurst limit the requests of the multi-cluster lease lock.
+	// They are the defaults of the manager's own rate limiter (--qps and --burst), and far
+	// above what the lock needs: it makes a few requests every retry period.
+	lockClientQPS   = 20
+	lockClientBurst = 30
+)
+
+// lockRESTConfig returns the rest.Config for the client of the multi-cluster lease lock.
+//
+// The manager's rest.Config can carry a rate limiter that all of the manager's clients share
+// (cmd/manager sets one, see ratelimiter.SetMasterRateLimiter). The lock must not share it.
+// A manager that starts leading starts a controller for every installed CRD, and their first
+// LIST and WATCH requests wait for that rate limiter for longer than the renew deadline. If
+// the lock's requests waited behind them, the manager would lose the lease that it just won.
+func lockRESTConfig(restConfig *rest.Config) *rest.Config {
+	lockConfig := rest.CopyConfig(restConfig)
+	// rest.CopyConfig copies the pointer to the shared rate limiter, so replace it.
+	lockConfig.RateLimiter = flowcontrol.NewTokenBucketRateLimiter(lockClientQPS, lockClientBurst)
+	return lockConfig
 }
 
 type leaderElectionManager struct {

@@ -21,9 +21,11 @@ import (
 	"path/filepath"
 	stdruntime "runtime"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
@@ -33,6 +35,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/leaderelection/resourcelock"
+	"k8s.io/client-go/util/flowcontrol"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
@@ -589,5 +592,80 @@ func TestMultiClusterLeaseFromConfigConnector(t *testing.T) {
 	}
 	if got, want := lem.leConfig.Lock.Identity(), cluster.ResourceName(); got != want {
 		t.Errorf("identity in the election is %q, want %q", got, want)
+	}
+}
+
+type countingRateLimiter struct {
+	flowcontrol.RateLimiter
+	count atomic.Int64
+}
+
+func (c *countingRateLimiter) TryAccept() bool {
+	c.count.Add(1)
+	return c.RateLimiter.TryAccept()
+}
+
+func (c *countingRateLimiter) Accept() {
+	c.count.Add(1)
+	c.RateLimiter.Accept()
+}
+
+func (c *countingRateLimiter) Wait(ctx context.Context) error {
+	c.count.Add(1)
+	return c.RateLimiter.Wait(ctx)
+}
+
+func TestMultiClusterLeaseLockHasItsOwnRateLimiter(t *testing.T) {
+	ctx := context.Background()
+	cfg, kubeClient := startSyncerEnvtest(t)
+
+	ns := "cnrm-system"
+	namespaceObj := &corev1.Namespace{ObjectMeta: metav1.ObjectMeta{Name: ns}}
+	if err := kubeClient.Create(ctx, namespaceObj); err != nil && !apierrors.IsAlreadyExists(err) {
+		t.Fatalf("creating namespace %s: %v", ns, err)
+	}
+
+	limiter := &countingRateLimiter{RateLimiter: flowcontrol.NewFakeAlwaysRateLimiter()}
+	cfg.RateLimiter = limiter
+
+	cluster := testGKECluster("cluster-a")
+	kccCfg := Config{
+		ManagerOptions: manager.Options{
+			Metrics:                metricsserver.Options{BindAddress: "0"},
+			HealthProbeBindAddress: "0",
+		},
+		MultiClusterLease: true,
+		testConfig: testConfig{
+			skipControllerRegistration: true,
+			multiClusterLeaseConfig: &operatorv1beta1.MultiClusterLeaseSpec{
+				LeaseName:  testLeaseName,
+				Namespace:  ns,
+				GKECluster: cluster,
+			},
+			suppressExitOnLeadershipLoss: true,
+		},
+	}
+	mgr, err := New(ctx, cfg, kccCfg)
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	lem, ok := mgr.(*leaderElectionManager)
+	if !ok {
+		t.Fatalf("manager is not *leaderElectionManager, it is %T", mgr)
+	}
+
+	record := resourcelock.LeaderElectionRecord{
+		HolderIdentity:       cluster.ResourceName(),
+		LeaseDurationSeconds: 1,
+	}
+	_ = lem.leConfig.Lock.Create(ctx, record)
+
+	lease := &mclv1alpha1.MultiClusterLease{}
+	if err := kubeClient.Get(ctx, types.NamespacedName{Namespace: ns, Name: testLeaseName}, lease); err != nil {
+		t.Fatalf("lease was not created: %v", err)
+	}
+
+	if count := limiter.count.Load(); count != 0 {
+		t.Errorf("%d requests of the lock went through the rate limiter that the manager's clients share, want 0", count)
 	}
 }
