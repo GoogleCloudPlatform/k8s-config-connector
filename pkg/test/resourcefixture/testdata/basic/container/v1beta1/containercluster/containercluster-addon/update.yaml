@@ -55,3 +55,6 @@ spec:
       enabled: true
     parallelstoreCsiDriverConfig:
       enabled: true
+    lustreCsiDriverConfig:
+      enabled: true
+      enableLegacyLustrePort: true
