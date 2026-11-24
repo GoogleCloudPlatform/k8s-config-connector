@@ -34,6 +34,13 @@ go mod tidy
 cd ..
 ```
 
+### 3b. Verify Clean Diffs in `go.mod` and `mockgcp/go.mod`
+
+Run `git diff go.mod mockgcp/go.mod` to ensure dependency changes are strictly scoped:
+- Ensure ONLY the target client library was added or updated.
+- If `go mod tidy` or `go get` upgraded unrelated modules or indirect dependencies (such as other `cloud.google.com/go/*` libraries), revert the unrelated lines.
+- NEVER add `replace` directives in `go.mod` or `mockgcp/go.mod`.
+
 ### 4. Verify Fuzzing & Identify Missing Fields
 
 Run KRM mapping fuzz tests to ensure the updated types do not introduce serialization or validation regressions.

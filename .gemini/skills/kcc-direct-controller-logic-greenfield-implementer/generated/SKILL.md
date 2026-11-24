@@ -58,10 +58,11 @@ Before generating or finalizing the controller and E2E fixtures for `{kind}`, ve
    - Service registration in `pkg/controller/direct/register/register.go` and `pkg/controller/resourceconfig/static_config.go`
 
 3. **Handle Complex / High-Touch Resource Cases**:
-   - **Missing GAPIC Modules or Multi-Service Packages (`iam/apiv3`, `dialogflow` spanning `v2` + `cx/v3`, `mapmanagement/apiv2`):** If `go build` fails on a missing GAPIC package, run `go get cloud.google.com/go/<service>@latest && go mod tidy && (cd mockgcp && go mod tidy)` so both `go.mod` and `mockgcp/go.mod` stay aligned (`validate-ensure`).
+   - **Missing GAPIC Modules or Multi-Service Packages (`iam/apiv3`, `dialogflow` spanning `v2` + `cx/v3`, `mapmanagement/apiv2`):** If `go build` fails on a missing GAPIC package, run `go get cloud.google.com/go/<service>@latest && go mod tidy && (cd mockgcp && go mod tidy)` so both `go.mod` and `mockgcp/go.mod` stay aligned (`validate-ensure`). Check `git diff go.mod mockgcp/go.mod` and revert any unrelated indirect dependency bumps; never add `replace` directives.
    - **Shared/Legacy Package Mapper Collisions (`<kind_lower>_mapper.go`):** If `pkg/controller/direct/<service>/mapper.generated.go` cannot be regenerated via `generate-mapper` without clobbering existing mockgcp or multi-service mappers (or if `v1alpha1`/`v1beta1` types collide), isolate `{kind}`'s mapper functions in `pkg/controller/direct/<service>/<kind_lower>_mapper.go` (matching `TestDirectResourceFileNaming`) or pass `--multiversion` to `generate-mapper`.
    - **Custom LROs & Immutable Resources Without `Update*` RPCs:** For immutable resources without an `Update*` RPC, verify `Update` refreshes status (`a.setStatus(u, actual)`) without calling an `Update*` RPC, and resolve any `// TODO:` markers in `<proto_lower>_controller.go`.
    - **`TestRegisteredTemplatesMatchCAI` & `TestVerifyLabelsTestCasesExist`:** Run `go test ./pkg/gcpurls/... ./pkg/test/resourcefixture/... -run "TestRegisteredTemplatesMatchCAI|TestVerifyLabelsTestCasesExist"`. If `{kind}`'s URL template is absent from CAI's asset inventory table, add it to `ignoredTemplates` in `pkg/gcpurls/registry_test.go`.
+   - **No Standalone Unit Tests:** Do NOT create unit test files (such as `*_test.go` or `*_fuzzer_test.go`) inside `pkg/controller/direct/<service>/`. Fuzzers are registered centrally via `init()`, and controllers are verified via E2E fixtures.
 
 4. **Verify Compilation & 200-Seed Fuzzer Round-Trip Immediately**:
    - Check that `pkg/controller/direct/<service>/...` compiles and passes 200-seed focused round-trip fuzzing:
@@ -85,15 +86,20 @@ Before generating or finalizing the controller and E2E fixtures for `{kind}`, ve
 
 1. **Minimal Fixture** (`pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind_lower>/<kind_lower>-minimal/`):
    - `create.yaml`: Include only the bare minimum **required** Spec fields (use `${uniqueId}` for resource names and `${projectId}` where needed).
-   - `update.yaml`: Modify mutable fields from `create.yaml` (omit `update.yaml` only if the resource has no mutable fields or no Update RPC).
-   - `dependencies.yaml`: Include any prerequisite KCC resources referenced by `create.yaml`.
+   - `update.yaml`: Modify mutable fields from `create.yaml`. **Mandatory** if the resource defines any mutable fields and supports Update RPCs. Omit `update.yaml` only if the resource has no mutable fields or no Update RPC.
+   - `dependencies.yaml`: Include any prerequisite KCC resources referenced by `create.yaml` (mandatory if `*Ref` fields are present).
 
 2. **Maximal Fixture** (`pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind_lower>/<kind_lower>-maximal/`):
    - `create.yaml`: Populate **every supported Spec field** (create additional sibling fixture directories if certain Spec fields are mutually exclusive `oneof`s).
    - `update.yaml`: Modify all mutable fields defined in `create.yaml`.
    - `dependencies.yaml`: Include all prerequisite KCC resources.
 
-3. **Parent fields** (as `<Kind>Spec` models them; see `kcc-direct-greenfield-types-implementer/judgement/references/PARENT_AND_IDENTITY.md`). Never change them in `update.yaml`.
+3. **Fixture Conventions**:
+   - **Do not specify `spec.resourceID`**: When its value matches `metadata.name`, do NOT specify `spec.resourceID` in `create.yaml` or `update.yaml`. `spec.resourceID` is a KCC-specific acquisition field; specifying it redundantly adds no testing value for controller/mapper logic against live GCP.
+   - **`update.yaml` is Mandatory for Mutable Resources**: Omitting `update.yaml` on a resource with mutable fields will cause review failure.
+   - **`dependencies.yaml` is Mandatory for Referenced Resources**: All `*Ref` dependencies must be provisioned via `dependencies.yaml`.
+
+4. **Parent fields** (as `<Kind>Spec` models them; see `kcc-direct-greenfield-types-implementer/judgement/references/PARENT_AND_IDENTITY.md`). Never change them in `update.yaml`.
    ```yaml
    # Top-level resource (project + location parent)
    spec:

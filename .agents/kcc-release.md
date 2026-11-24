@@ -92,6 +92,9 @@ When compiling and writing the release notes, you MUST strictly adhere to the fo
 9.  **No Reverted Changes**: Do NOT cover reverted changes in the release notes.
 10. **Do NOT Commit Gathered Data**: The gathered release notes data and any temporary files must NOT be committed to git. Only commit `docs/releasenotes/release-{{MAJOR_MINOR}}.md`.
 11. **No Blocked Kinds**: Do NOT cover any resource whose Kind is listed in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` at the release tag (`v{{VERSION}}`). Those CRDs are excluded from the release bundle, so users cannot install them. The gathered data lists the PRs that mention them under "⛔ PRs Mentioning Blocked Kinds".
+12. **No Doc Links for v1alpha1 Resources**: Do NOT add links to `https://cloud.google.com/config-connector/docs/reference/resource-docs/...` for `v1alpha1` resources. Reference documentation pages are only published for `v1beta1` and `v1` resources.
+13. **Accurate Field Categorization**: Classify newly added fields under "New Fields", not "Bug Fixes".
+14. **Valid External Documentation Links**: Verify all external Google Cloud product documentation URLs are valid and do not return 404 errors.
 
 # Task
 1.  **Identify Version Range**:

@@ -22,6 +22,8 @@ Use this guide for a **Greenfield Step 3** PR (`Greenfield: Implement MockGCP an
 ## 2. Step 3: MockGCP implementation
 
 *   **Mock service**: `<Kind>` is implemented in `mockgcp/mock<service_name>/`, and a new service is registered in `mockgcp/register.go`. CRUD handles the parent like real GCP, including rejecting a missing parent.
+*   **No standalone unit tests**: Verify that no `*_test.go` files were added inside `mockgcp/mock<service_name>/`. Mock services are verified through the E2E fixtures runner (`hack/compare-mock`), not isolated unit tests.
+*   **Dependency hygiene**: Verify that `mockgcp/go.mod` contains no unrelated dependency bumps or `replace` directives.
 *   **Alignment and CI**: Every fixture has `_http_mock.log` and goldens. `TestGoldenLogAlignment/<kind_lower>` passes with zero errors, and `./dev/ci/presubmits/tests-e2e-fixtures-suite <service>` passes.
 *   **Mock behavior**: Defaults are set on both write and read paths, and proto3 zero-value gaps have `TODO`s.
 *   **Release note**: `NONE`. The pipeline's final Release step adds the new-resource note.
