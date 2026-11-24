@@ -15,7 +15,9 @@
 # 6. Do NOT include smoke test changes or SMOKETEST phase additions.
 # 7. If a resource is listed in "Reconciliation Improvements" (e.g. opt-in direct reconciler), it MUST NOT be mentioned in "New Alpha Resources".
 # 8. Only release note resources whose controllers have been merged.
-# 9. Do NOT include resources whose Kind is in BLOCKED_KINDS in dev/tasks/build-release-bundle; their CRDs are excluded from the release bundle. Verify with `./dev/tasks/gather-release-notes <previous_tag> <current_tag> --check-notes <this file>`.
+# 9. Do NOT include resources whose Kind is in BLOCKED_KINDS in dev/tasks/build-release-bundle; their CRDs are excluded from the release bundle.
+# 10. Only Beta (v1beta1) and GA (v1) resources have /config-connector/docs/reference/resource-docs/<service>/<kind> pages (matching scripts/generate-google3-docs/resource-reference/generated/resource-docs/). Do NOT link v1alpha1-only resources to /config-connector/docs/reference/resource-docs/...; render them as plain code spans (e.g. `DiscoveryEngineDataStore`) instead.
+# 11. Verify that every external product/API documentation URL returns HTTP 200 (not 404 or soft-404 "Page Not Found") and that field names match exact CRD camelCase under config/crds/resources/. Validate with `./dev/tasks/gather-release-notes <previous_tag> <current_tag> --check-notes <this file>` until all checks pass.
 
 ** This version is not yet released; this document is gathering release notes
 for the future release **
