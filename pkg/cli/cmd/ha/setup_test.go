@@ -43,6 +43,7 @@ func newTestSetupOptions() setupOptions {
 	opts.bucket = "my-ha-bucket"
 	opts.mclImage = testMCLImage
 	opts.syncerImage = testSyncerImage
+	opts.wait = false
 	return opts
 }
 
@@ -281,6 +282,7 @@ func TestExecuteSetupUsesTheDefaultImagesWhenNoImageIsSet(t *testing.T) {
 	runner := &recordingCommandRunner{}
 	// Only the flags that have no default are set.
 	opts := newSetupOptions()
+	opts.wait = false
 	opts.contexts = []string{handles[0].contextName, handles[1].contextName}
 	opts.bucket = "my-ha-bucket"
 	if err := opts.validate(); err != nil {
@@ -540,6 +542,7 @@ func TestExecuteSetupDryRunPrintsPlannedK8sActionsWithoutMutating(t *testing.T) 
 	runner := &recordingCommandRunner{}
 	opts := newTestSetupOptions()
 	opts.dryRun = true
+	opts.wait = true
 	opts.stdout = &stdout
 
 	err := executeSetup(context.Background(), opts, handles, runner)
@@ -548,9 +551,11 @@ func TestExecuteSetupDryRunPrintsPlannedK8sActionsWithoutMutating(t *testing.T) 
 		t.Fatalf("executeSetup failed: %v", err)
 	}
 	manifestCount := len((&manifestBuilder{}).buildClusterObjects())
-	wantOutput := fmt.Sprintf(`Lease bucket gs://my-ha-bucket already exists; reusing it.
+	wantOutput := "Checked Default leader endpoint on gke_proj-a_us-central1_cluster-a, gke_proj-b_us-east1_cluster-b.\n" +
+		fmt.Sprintf(`Lease bucket gs://my-ha-bucket already exists; reusing it.
 [dry-run] cluster "gke_proj-a_us-central1_cluster-a": apply %[1]d HA manifests and configure spec.experiments.multiClusterLease (gkeCluster="projects/proj-a/locations/us-central1/clusters/cluster-a", lease=cnrm-system/kcc-multicluster-lease)
 [dry-run] cluster "gke_proj-b_us-east1_cluster-b": apply %[1]d HA manifests and configure spec.experiments.multiClusterLease (gkeCluster="projects/proj-b/locations/us-east1/clusters/cluster-b", lease=cnrm-system/kcc-multicluster-lease)
+[dry-run] would wait for multi-cluster HA to become healthy
 `, manifestCount)
 	if stdout.String() != wantOutput {
 		t.Fatalf("got dry-run output:\n%s\nwant:\n%s", stdout.String(), wantOutput)
@@ -558,6 +563,31 @@ func TestExecuteSetupDryRunPrintsPlannedK8sActionsWithoutMutating(t *testing.T) 
 	mclDeploy := &appsv1.Deployment{}
 	if err := handles[0].client.Get(context.Background(), types.NamespacedName{Namespace: "cnrm-system", Name: "multiclusterlease-controller-manager"}, mclDeploy); err == nil {
 		t.Fatalf("expected Deployment multiclusterlease-controller-manager not to be created in dry-run mode")
+	}
+}
+
+func TestExecuteSetupDryRunNoWaitDoesNotPrintWaitLine(t *testing.T) {
+	var stdout bytes.Buffer
+	handles := []*clusterHandle{
+		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector()),
+		newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector()),
+	}
+	runner := &recordingCommandRunner{}
+	opts := newTestSetupOptions()
+	opts.dryRun = true
+	opts.wait = false
+	opts.stdout = &stdout
+
+	err := executeSetup(context.Background(), opts, handles, runner)
+	if err != nil {
+		t.Fatalf("executeSetup failed: %v", err)
+	}
+	out := stdout.String()
+	if strings.Contains(out, "would wait") {
+		t.Fatalf("expected stdout not to contain 'would wait' when wait=false, got:\n%s", out)
+	}
+	if strings.Contains(out, "config-connector ha status") {
+		t.Fatalf("expected stdout not to contain 'config-connector ha status' in dry-run mode, got:\n%s", out)
 	}
 }
 
@@ -850,6 +880,89 @@ func TestExecuteSetupLeaderEndpointType(t *testing.T) {
 	}
 }
 
+func TestExecuteSetupPreservesPerClusterLeaderEndpointTypeWhenOmitted(t *testing.T) {
+	ccA := newBaseConfigConnector()
+	ccA.Spec.Experiments = &operatorv1beta1.CCExperiments{
+		MultiClusterLease: &operatorv1beta1.MultiClusterLeaseSpec{
+			LeaderEndpointType: operatorv1beta1.LeaderEndpointTypeDNS,
+		},
+	}
+	ccB := newBaseConfigConnector()
+	ccB.Spec.Experiments = &operatorv1beta1.CCExperiments{
+		MultiClusterLease: &operatorv1beta1.MultiClusterLeaseSpec{
+			LeaderEndpointType: operatorv1beta1.LeaderEndpointTypePrivateIP,
+		},
+	}
+	handles := []*clusterHandle{
+		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", ccA),
+		newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", ccB),
+	}
+	runner := &recordingCommandRunner{}
+	opts := newTestSetupOptions()
+	opts.leaderEndpointType = defaultLeaderEndpointType
+	opts.leaderEndpointTypeExplicit = false
+
+	if err := executeSetup(context.Background(), opts, handles, runner); err != nil {
+		t.Fatalf("executeSetup failed: %v", err)
+	}
+
+	gotCCA, err := fetchConfigConnector(context.Background(), handles[0])
+	if err != nil {
+		t.Fatalf("fetchConfigConnector failed on cluster A: %v", err)
+	}
+	if gotCCA.Spec.Experiments.MultiClusterLease.LeaderEndpointType != operatorv1beta1.LeaderEndpointTypeDNS {
+		t.Fatalf("expected cluster A to preserve DNS, got %q", gotCCA.Spec.Experiments.MultiClusterLease.LeaderEndpointType)
+	}
+
+	gotCCB, err := fetchConfigConnector(context.Background(), handles[1])
+	if err != nil {
+		t.Fatalf("fetchConfigConnector failed on cluster B: %v", err)
+	}
+	if gotCCB.Spec.Experiments.MultiClusterLease.LeaderEndpointType != operatorv1beta1.LeaderEndpointTypePrivateIP {
+		t.Fatalf("expected cluster B to preserve PrivateIP, got %q", gotCCB.Spec.Experiments.MultiClusterLease.LeaderEndpointType)
+	}
+}
+
+func TestSetupCmdSilenceUsage(t *testing.T) {
+	t.Run("shows usage when flag validation fails", func(t *testing.T) {
+		cmd := NewSetupCmd()
+		var stdout, stderr bytes.Buffer
+		cmd.SetOut(&stdout)
+		cmd.SetErr(&stderr)
+		cmd.SetArgs([]string{"--contexts=cluster-a,cluster-b"}) // missing --bucket
+
+		err := cmd.ExecuteContext(context.Background())
+		if err == nil || !strings.Contains(err.Error(), "--bucket is required") {
+			t.Fatalf("expected --bucket is required error, got: %v", err)
+		}
+		if cmd.SilenceUsage {
+			t.Errorf("SilenceUsage is true after a flag validation error, want false")
+		}
+		if !strings.Contains(stdout.String()+stderr.String(), "Usage:") {
+			t.Errorf("output does not include command usage:\nstdout:\n%s\nstderr:\n%s", stdout.String(), stderr.String())
+		}
+	})
+
+	t.Run("silences usage once validation succeeds", func(t *testing.T) {
+		cmd := NewSetupCmd()
+		var stdout, stderr bytes.Buffer
+		cmd.SetOut(&stdout)
+		cmd.SetErr(&stderr)
+		cmd.SetArgs([]string{"--contexts=gke_proj-a_us-central1_cluster-a,gke_proj-b_us-east1_cluster-b", "--bucket=my-ha-bucket"})
+
+		err := cmd.ExecuteContext(context.Background())
+		if err == nil {
+			t.Fatalf("expected cluster error, got nil")
+		}
+		if !cmd.SilenceUsage {
+			t.Errorf("SilenceUsage is false after validation succeeded, want true")
+		}
+		if strings.Contains(stdout.String()+stderr.String(), "Usage:") {
+			t.Errorf("output includes command usage on a cluster error:\nstdout:\n%s\nstderr:\n%s", stdout.String(), stderr.String())
+		}
+	})
+}
+
 func TestExecuteSetupRolloutFailureStopsBeforeTouchingNextCluster(t *testing.T) {
 	stuckPod := &corev1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
@@ -931,11 +1044,13 @@ func TestExecuteSetupYAMLOnlyWithLeaderEndpointType(t *testing.T) {
 }
 
 type recordingCommandRunner struct {
-	commands       []string
-	runCommands    []string
-	outputCommands []string
-	outputFn       func(ctx context.Context, name string, args ...string) ([]byte, error)
-	runFn          func(ctx context.Context, name string, args ...string) error
+	commands        []string
+	runCommands     []string
+	outputCommands  []string
+	outputFn        func(ctx context.Context, name string, args ...string) ([]byte, error)
+	runFn           func(ctx context.Context, name string, args ...string) error
+	describeOutputs map[string][]byte
+	describeErr     map[string]error
 }
 
 func (r *recordingCommandRunner) run(ctx context.Context, name string, args ...string) error {
@@ -952,6 +1067,52 @@ func (r *recordingCommandRunner) output(ctx context.Context, name string, args .
 	cmd := name + " " + strings.Join(args, " ")
 	r.commands = append(r.commands, cmd)
 	r.outputCommands = append(r.outputCommands, cmd)
+	if len(args) >= 4 && args[0] == "container" && args[1] == "clusters" && args[2] == "describe" {
+		clusterName := args[3]
+		var project, location string
+		for _, arg := range args[4:] {
+			if strings.HasPrefix(arg, "--project=") {
+				project = strings.TrimPrefix(arg, "--project=")
+			} else if strings.HasPrefix(arg, "--location=") {
+				location = strings.TrimPrefix(arg, "--location=")
+			}
+		}
+		keys := []string{
+			clusterName,
+			fmt.Sprintf("gke_%s_%s_%s", project, location, clusterName),
+			fmt.Sprintf("projects/%s/locations/%s/clusters/%s", project, location, clusterName),
+		}
+		if r.describeErr != nil {
+			for _, k := range keys {
+				if err, ok := r.describeErr[k]; ok && err != nil {
+					return nil, err
+				}
+			}
+		}
+		if r.describeOutputs != nil {
+			for _, k := range keys {
+				if out, ok := r.describeOutputs[k]; ok {
+					return out, nil
+				}
+			}
+		}
+		// Default mock cluster that exposes all endpoints
+		return []byte(`{
+			"endpoint": "1.2.3.4",
+			"privateClusterConfig": {
+				"privateEndpoint": "10.0.0.2"
+			},
+			"controlPlaneEndpointsConfig": {
+				"dnsEndpointConfig": {
+					"endpoint": "gke-123.us-central1.gke.goog",
+					"allowExternalTraffic": true
+				},
+				"ipEndpointsConfig": {
+					"privateEndpoint": "10.0.0.2"
+				}
+			}
+		}`), nil
+	}
 	if r.outputFn != nil {
 		return r.outputFn(ctx, name, args...)
 	}

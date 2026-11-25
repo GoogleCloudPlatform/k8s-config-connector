@@ -95,6 +95,20 @@ func (c *clusterConfigurer) setPeerProjects(peerProjects []string) {
 	c.manifests.setPeerProjects(peerProjects)
 }
 
+// targetMultiClusterLeaseSpec returns the multiClusterLease spec that setup will configure on
+// this cluster's ConfigConnector.
+func (c *clusterConfigurer) targetMultiClusterLeaseSpec() *operatorv1beta1.MultiClusterLeaseSpec {
+	var spec operatorv1beta1.ConfigConnectorSpec
+	if c.configConnector != nil {
+		spec = *c.configConnector.Spec.DeepCopy()
+	}
+	c.manifests.configureMultiClusterLease(&spec)
+	if spec.Experiments == nil {
+		return nil
+	}
+	return spec.Experiments.MultiClusterLease
+}
+
 func (c *clusterConfigurer) apply(ctx context.Context, stdout io.Writer, dryRun bool) error {
 	if dryRun {
 		return c.applyObjects(ctx, stdout, true)
