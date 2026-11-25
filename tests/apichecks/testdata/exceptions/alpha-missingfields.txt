@@ -1507,7 +1507,7 @@
 [missing_field] crd=biglakehivedatabases.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=biglakehivedatabases.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.locationURI" is not set in unstructured objects
 [missing_field] crd=biglakehivedatabases.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.parameters" is not set in unstructured objects
-[missing_field] crd=biglakehivedatabases.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=biglakehivedatabases.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.federatedCatalogOptions.glueCatalogInfo.awsRegion" is not set in unstructured objects
 [missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.federatedCatalogOptions.glueCatalogInfo.awsRoleArn" is not set in unstructured objects
 [missing_field] crd=biglakeicebergcatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.federatedCatalogOptions.glueCatalogInfo.warehouse" is not set in unstructured objects

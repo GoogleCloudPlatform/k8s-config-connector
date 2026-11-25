@@ -85,6 +85,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// BigLake
 		"//biglake.googleapis.com/projects/{}/catalogs/{}":               true,
+		"//biglake.googleapis.com/projects/{}/catalogs/{}/databases/{}":  true,
 		"//biglake.googleapis.com/projects/{}/catalogs/{}/namespaces/{}": true,
 
 		// BigQuery
