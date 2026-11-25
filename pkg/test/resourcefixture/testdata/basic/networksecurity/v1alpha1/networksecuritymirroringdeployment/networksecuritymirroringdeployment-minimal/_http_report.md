@@ -2,26 +2,36 @@
 
 - **Primary Resource:** `NetworkSecurityMirroringDeployment` (`networksecurity.cnrm.cloud.google.com/v1alpha1`)
 - **Resource Name:** `mirroringdep-${uniqueId}`
-- **Source Log:** `_http.log` (9 total HTTP entries, 0 dependency entries)
+- **Source Log:** `_http.log` (46 total HTTP entries, 37 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:ea9e5906df35501d`
+- **Integrity Hash:** `sha256:3f227654f2e5af4b`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 
 | Field | Change (`create` -> `update`) | Sent in Update? | Final GCP State |
 | :--- | :--- | :--- | :--- |
-| `spec.description` | **from:** *(unset)*<br>**to:** `"Updated description for minimal mirroring deployment"` | Yes (#5 `PATCH`) | Yes |
+| `spec.description` | **from:** *(unset)*<br>**to:** `"Updated description for minimal mirroring deployment"` | Yes (#27 `PATCH`) | Yes |
+
+## Dependency Traffic Summary
+
+| Dependency Kind | Total RPCs | Phases |
+| :--- | :--- | :--- |
+| `ComputeBackendService` | 7 | `CREATE`, `DELETE` |
+| `ComputeForwardingRule` | 9 | `CREATE`, `DELETE` |
+| `ComputeNetwork` | 9 | `CREATE`, `DELETE` |
+| `ComputeSubnetwork` | 5 | `CREATE`, `DELETE` |
+| `NetworkSecurityMirroringDeploymentGroup` | 7 | `CREATE`, `DELETE` |
 
 ## 2. Primary Resource RPC Summary
 
 | # | Phase | Method / Status | Endpoint | Details / LRO / Mask |
 | :--- | :--- | :--- | :--- | :--- |
-| 1 | `CREATE` | `GET` `404` | `.../locations/us-central1-a/mirroringDeployments/`<br>`mirroringdep-${uniqueId}` | Pre-create existence check |
-| 2 | `CREATE` | `POST` `200` | `.../locations/us-central1-a/`<br>`mirroringDeployments`<br>`?mirroringDeploymentId=mirroringdep-${uniqueId}` | LRO: create -> done (#3)<br>Created resource |
-| 4 | `UPDATE` | `GET` `200` | `.../locations/us-central1-a/mirroringDeployments/`<br>`mirroringdep-${uniqueId}` | Pre-update read |
-| 5 | `UPDATE` | `PATCH` `200` | `.../locations/us-central1-a/mirroringDeployments/`<br>`mirroringdep-${uniqueId}` | LRO: update -> done (#6)<br>updateMask: description |
-| 7 | `DELETE` | `GET` `200` | `.../locations/us-central1-a/mirroringDeployments/`<br>`mirroringdep-${uniqueId}` | Pre-delete read |
-| 8 | `DELETE` | `DELETE` `200` | `.../locations/us-central1-a/mirroringDeployments/`<br>`mirroringdep-${uniqueId}` | LRO: delete -> done (#9)<br>Deleted resource |
+| 23 | `CREATE` | `GET` `404` | `.../locations/us-central1-a/mirroringDeployments/`<br>`mirroringdep-${uniqueId}` | Pre-create existence check |
+| 24 | `CREATE` | `POST` `200` | `.../locations/us-central1-a/`<br>`mirroringDeployments`<br>`?mirroringDeploymentId=mirroringdep-${uniqueId}` | LRO: create -> done (#25)<br>Created resource |
+| 26 | `UPDATE` | `GET` `200` | `.../locations/us-central1-a/mirroringDeployments/`<br>`mirroringdep-${uniqueId}` | Pre-update read |
+| 27 | `UPDATE` | `PATCH` `200` | `.../locations/us-central1-a/mirroringDeployments/`<br>`mirroringdep-${uniqueId}` | LRO: update -> done (#28)<br>updateMask: description |
+| 29 | `DELETE` | `GET` `200` | `.../locations/us-central1-a/mirroringDeployments/`<br>`mirroringdep-${uniqueId}` | Pre-delete read |
+| 30 | `DELETE` | `DELETE` `200` | `.../locations/us-central1-a/mirroringDeployments/`<br>`mirroringdep-${uniqueId}` | LRO: delete -> done (#31)<br>Deleted resource |
 
 ## 3. Automated Validation Checks
 

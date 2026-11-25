@@ -12,10 +12,10 @@ metadata:
 spec:
   description: Updated description for minimal mirroring deployment
   forwardingRuleRef:
-    external: projects/${projectId}/regions/us-central1/forwardingRules/shared-mirroring-fr
+    name: ${forwardingRuleID}
   location: us-central1-a
   mirroringDeploymentGroupRef:
-    external: projects/${projectId}/locations/global/mirroringDeploymentGroups/shared-dg
+    name: mirroringdg-${uniqueId}
   projectRef:
     external: projects/${projectId}
 status:

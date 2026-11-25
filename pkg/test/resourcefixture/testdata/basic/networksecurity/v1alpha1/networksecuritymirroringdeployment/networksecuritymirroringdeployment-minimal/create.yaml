@@ -7,6 +7,6 @@ spec:
     external: "projects/${projectId}"
   location: us-central1-a
   forwardingRuleRef:
-    external: "projects/${projectId}/regions/us-central1/forwardingRules/shared-mirroring-fr"
+    name: computeforwardingrule-${uniqueId}
   mirroringDeploymentGroupRef:
-    external: "projects/${projectId}/locations/global/mirroringDeploymentGroups/shared-dg"
+    name: mirroringdg-${uniqueId}

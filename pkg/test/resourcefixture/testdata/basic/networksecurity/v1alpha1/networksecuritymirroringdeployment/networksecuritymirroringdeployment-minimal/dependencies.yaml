@@ -1,0 +1,59 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computenetwork-${uniqueId}
+spec:
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: computesubnetwork-${uniqueId}
+spec:
+  networkRef:
+    name: computenetwork-${uniqueId}
+  ipCidrRange: 10.0.0.0/24
+  region: us-central1
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computebackendservice-${uniqueId}
+spec:
+  location: us-central1
+  loadBalancingScheme: INTERNAL
+  protocol: UDP
+  networkRef:
+    name: computenetwork-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computeforwardingrule-${uniqueId}
+spec:
+  location: us-central1
+  loadBalancingScheme: INTERNAL
+  backendServiceRef:
+    name: computebackendservice-${uniqueId}
+  networkRef:
+    name: computenetwork-${uniqueId}
+  subnetworkRef:
+    name: computesubnetwork-${uniqueId}
+  allPorts: true
+  isMirroringCollector: true
+  ipProtocol: UDP
+---
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityMirroringDeploymentGroup
+metadata:
+  name: mirroringdg-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global
+  networkRef:
+    name: computenetwork-${uniqueId}
