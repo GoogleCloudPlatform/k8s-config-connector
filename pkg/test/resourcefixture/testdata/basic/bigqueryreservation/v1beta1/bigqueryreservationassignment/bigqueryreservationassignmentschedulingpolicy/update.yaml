@@ -22,7 +22,6 @@ spec:
       external: ${projectId}
   reservationRef:
     name: bigqueryreservationreservation-${uniqueId}
-  jobType: QUERY
   schedulingPolicy:
     concurrency: 20
     maxSlots: 4000

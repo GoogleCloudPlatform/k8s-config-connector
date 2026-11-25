@@ -209,7 +209,7 @@ schedulingPolicy:
     <tr>
         <td>
             <p><code>jobType</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>

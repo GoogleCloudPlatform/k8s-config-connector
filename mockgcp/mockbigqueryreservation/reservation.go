@@ -257,6 +257,9 @@ func (n *assignmentName) String() string {
 // Creates an assignment object which allows the given project to submit jobs
 // of a certain type using slots from the specified reservation.
 func (s *ReservationV1) CreateAssignment(ctx context.Context, req *pb.CreateAssignmentRequest) (*pb.Assignment, error) {
+	if req.Assignment.GetSchedulingPolicy() != nil && req.Assignment.GetJobType() != pb.Assignment_JOB_TYPE_UNSPECIFIED {
+		return nil, status.Errorf(codes.InvalidArgument, "job_type cannot be set for scheduling policy assignments.")
+	}
 
 	// reqName = req.Parent + "/assignments/" + uuid.New().String()
 	// Using fixed UUID to test "acquire" in spec.resourceID. This also fix the dynamic uuid value in the `x-goog-request-params` header.
@@ -358,6 +361,9 @@ func (s *ReservationV1) DeleteAssignment(ctx context.Context, req *pb.DeleteAssi
 func (s *ReservationV1) UpdateAssignment(ctx context.Context, req *pb.UpdateAssignmentRequest) (*pb.Assignment, error) {
 	if req.Assignment == nil {
 		return nil, status.Errorf(codes.InvalidArgument, "assignment is required")
+	}
+	if req.Assignment.GetSchedulingPolicy() != nil && req.Assignment.GetJobType() != pb.Assignment_JOB_TYPE_UNSPECIFIED {
+		return nil, status.Errorf(codes.InvalidArgument, "job_type cannot be set for scheduling policy assignments.")
 	}
 
 	name, err := s.parseAssignmentName(req.Assignment.Name)

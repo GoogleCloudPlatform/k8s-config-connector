@@ -213,7 +213,6 @@ spec:
                 type: object
             required:
             - assignee
-            - jobType
             - reservationRef
             type: object
           status:
@@ -462,7 +461,6 @@ spec:
                 type: object
             required:
             - assignee
-            - jobType
             - reservationRef
             type: object
           status:

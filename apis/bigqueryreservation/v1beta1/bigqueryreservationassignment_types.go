@@ -42,7 +42,7 @@ type BigQueryReservationAssignmentSpec struct {
 	// Immutable.
 	// Which type of jobs will use the reservation.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.job_type
-	// +required
+	// +optional
 	JobType *string `json:"jobType,omitempty"`
 
 	// Immutable. Optional.
