@@ -15,13 +15,13 @@
 // API sources for DiscoveryEngineCMEKConfig, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/6a1db32dc52fd9421c1743dc8f5faa7a15e518d1/google/cloud/discoveryengine/v1/cmek_config_service.proto
 // +kcc:source:service-docs=https://cloud.google.com/generative-ai-app-builder/docs/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/generative-ai-app-builder/docs/reference/rest/v1/projects.locations.cmekConfig
+// +kcc:source:resource-docs=https://cloud.google.com/generative-ai-app-builder/docs/reference/rest/v1/projects.locations.cmekConfigs
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,22 +32,19 @@ var DiscoveryEngineCMEKConfigGVK = GroupVersion.WithKind("DiscoveryEngineCMEKCon
 // +kcc:spec:proto=google.cloud.discoveryengine.v1.CmekConfig
 // +kcc:required-from-proto
 type DiscoveryEngineCMEKConfigSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The DiscoveryEngineCMEKConfig name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// KMS key resource name which will be used to encrypt resources
 	//  `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.kms_key
-	KMSKey *string `json:"kmsKey,omitempty"`
+	KMSKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 
 	// Optional. Single-regional CMEKs that are required for some VAIS features.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.single_region_keys
-	SingleRegionKeys []SingleRegionKeyWithRequired `json:"singleRegionKeys,omitempty"`
+	SingleRegionKeys []SingleRegionKeyWithRefs `json:"singleRegionKeys,omitempty"`
 }
 
 // DiscoveryEngineCMEKConfigStatus defines the config connector machine state of DiscoveryEngineCMEKConfig
@@ -109,6 +106,16 @@ type SingleRegionKeyWithRequired struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.SingleRegionKey.kms_key
 	// +required
 	KMSKey *string `json:"kmsKey,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.SingleRegionKey
+type SingleRegionKeyWithRefs struct {
+	// Required. Single-regional kms key resource name which will be used to
+	//  encrypt resources
+	//  `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SingleRegionKey.kms_key
+	// +required
+	KMSKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 // CmekConfig is used by DiscoveryEngineIdentityMappingStore.

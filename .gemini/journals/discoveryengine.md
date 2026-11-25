@@ -152,4 +152,14 @@
   6. **Fixture Dependencies**: When `DiscoveryEngineEngine` is linked to `DiscoveryEngineDataStore`, GCP automatically provisions `default_search_widget_config` under that DataStore. Both minimal and maximal fixtures configure `resourceID: default_search_widget_config` with `dependencies.yaml` creating the DataStore and Engine.
   7. **Validation**: Both minimal and maximal fixtures recorded cleanly against real GCP with 7/7 checks passed in `_http_report.md`. Round-trip fuzzer passed 200/200 seeds.
 
+### [2026-11-24] DiscoveryEngineCMEKConfig Judgement Queue Triage and Identity Finalization
+- **Context**: Triaging judgement queue and finalizing direct KRM types/identity for `DiscoveryEngineCMEKConfig` (Issue #16359).
+- **Details**:
+  1. `CmekConfig` in proto declares two resource name patterns: `projects/{project}/locations/{location}/cmekConfig` and `projects/{project}/locations/{location}/cmekConfigs/{cmek_config}`. Locked in the pattern `projects/{project}/locations/{location}/cmekConfigs/{cmek_config}` via `--pattern DiscoveryEngineCMEKConfig="projects/{project}/locations/{location}/cmekConfigs/{cmek_config}"` in `apis/discoveryengine/generate.sh`.
+  2. Modeled parent hierarchy as inlined `*parent.ProjectAndLocationRef` in `DiscoveryEngineCMEKConfigSpec`, removing `projectRef` and `location`. Retained `resourceID` on `DiscoveryEngineCMEKConfigSpec`.
+  3. Replaced `kmsKey` string fields with `*kmsv1beta1.KMSCryptoKeyRef`: `kmsKeyRef` on `DiscoveryEngineCMEKConfigSpec`, and defined `SingleRegionKeyWithRefs` with `kmsKeyRef *kmsv1beta1.KMSCryptoKeyRef` while keeping `SingleRegionKey` and `SingleRegionKeyWithRequired` with `kmsKey string` to preserve backward compatibility for `DiscoveryEngineIdentityMappingStore`.
+  4. Updated resource documentation link to valid reference docs page `https://cloud.google.com/generative-ai-app-builder/docs/reference/rest/v1/projects.locations.cmekConfigs`.
+  5. Triaged all 6 judgement queue entries for `DiscoveryEngineCMEKConfig` in `apis/discoveryengine/judgement_queue.yaml`.
+- **Impact**: Fully resolves Greenfield Step 1b for `DiscoveryEngineCMEKConfig`, passing all API compatibility and schema checks.
+
 

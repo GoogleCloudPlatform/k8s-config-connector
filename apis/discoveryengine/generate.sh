@@ -91,7 +91,8 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource DiscoveryEngineACLConfig:AclConfig \
   --resource DiscoveryEngineAssistant:Assistant \
   --resource DiscoveryEngineCMEKConfig:CmekConfig \
-  --pattern DiscoveryEngineWidgetConfig="projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}/widgetConfigs/{widgetConfig}"
+  --pattern DiscoveryEngineWidgetConfig="projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}/widgetConfigs/{widgetConfig}" \
+  --pattern DiscoveryEngineCMEKConfig="projects/{project}/locations/{location}/cmekConfigs/{cmek_config}"
 
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \
