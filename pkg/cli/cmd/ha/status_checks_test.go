@@ -17,6 +17,7 @@ package ha
 import (
 	"bytes"
 	"context"
+	"errors"
 	"strings"
 	"testing"
 	"time"
@@ -24,8 +25,14 @@ import (
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	syncerv1alpha1 "github.com/gke-labs/kube-etl/syncer/api/v1alpha1"
 	mclv1alpha1 "github.com/gke-labs/multicluster-leader-election/api/v1alpha1"
+	mclcontroller "github.com/gke-labs/multicluster-leader-election/controllers"
+	mclstorage "github.com/gke-labs/multicluster-leader-election/pkg/storage"
+	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/types"
+	ctrl "sigs.k8s.io/controller-runtime"
+	crfake "sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
 const (
@@ -138,6 +145,17 @@ func TestHAStatusHealthy(t *testing.T) {
 			mutate: func(haFixtures) {},
 		},
 		{
+			name: "standby candidate lease is stale in multicluster-leader-election",
+			mutate: func(fs haFixtures) {
+				fs[1].lease.Status.Conditions = []metav1.Condition{{
+					Type:    string(mclv1alpha1.ConditionTypeBackendHealthy),
+					Status:  metav1.ConditionFalse,
+					Reason:  "BackendError",
+					Message: "failed to communicate with backend: candidate lease is stale",
+				}}
+			},
+		},
+		{
 			name:   "leader without a KRMSyncer",
 			mutate: func(fs haFixtures) { fs[0].syncers = nil },
 		},
@@ -237,6 +255,66 @@ func TestHAStatusProblems(t *testing.T) {
 			mutate: func(fs haFixtures) { fs[0].lease.Status.Conditions = []metav1.Condition{unhealthy} },
 			wantProblems: []string{
 				`cluster "gke_proj-a_us-central1_cluster-a": the lease backend is unhealthy: failed to communicate with backend: storage: bucket doesn't exist`,
+			},
+		},
+		{
+			name: "standby lease backend unhealthy with real backend failure",
+			mutate: func(fs haFixtures) {
+				fs[1].lease.Status.Conditions = []metav1.Condition{{
+					Type:    string(mclv1alpha1.ConditionTypeBackendHealthy),
+					Status:  metav1.ConditionFalse,
+					Reason:  "BackendError",
+					Message: "failed to communicate with backend: failed to read lease: storage: bucket doesn't exist",
+				}}
+			},
+			wantProblems: []string{
+				`cluster "gke_proj-b_us-east1_cluster-b": the lease backend is unhealthy: failed to communicate with backend: failed to read lease: storage: bucket doesn't exist`,
+			},
+		},
+		{
+			name: "stale candidate on leader is not ignored",
+			mutate: func(fs haFixtures) {
+				fs[0].lease.Status.Conditions = []metav1.Condition{{
+					Type:    string(mclv1alpha1.ConditionTypeBackendHealthy),
+					Status:  metav1.ConditionFalse,
+					Reason:  "BackendError",
+					Message: "failed to communicate with backend: candidate lease is stale",
+				}}
+			},
+			wantProblems: []string{
+				`cluster "gke_proj-a_us-central1_cluster-a": the lease backend is unhealthy: failed to communicate with backend: candidate lease is stale`,
+			},
+		},
+		{
+			name: "standby candidate lease is stale but lease expired",
+			mutate: func(fs haFixtures) {
+				fs[1].lease = newTestLease(testIdentityA, "2026-11-10T18:05:00Z")
+				fs[1].lease.Status.Conditions = []metav1.Condition{{
+					Type:    string(mclv1alpha1.ConditionTypeBackendHealthy),
+					Status:  metav1.ConditionFalse,
+					Reason:  "BackendError",
+					Message: "failed to communicate with backend: candidate lease is stale",
+				}}
+			},
+			wantProblems: []string{
+				`cluster "gke_proj-b_us-east1_cluster-b": the lease held by "` + testIdentityA + `" has expired (last renewed at 2026-11-10T18:05:00Z, lease duration 15s)`,
+			},
+		},
+		{
+			name: "stale candidate with no lease holder",
+			mutate: func(fs haFixtures) {
+				fs[0].lease = newTestLease("", "")
+				fs[1].lease = newTestLease("", "")
+				fs[1].lease.Status.Conditions = []metav1.Condition{{
+					Type:    string(mclv1alpha1.ConditionTypeBackendHealthy),
+					Status:  metav1.ConditionFalse,
+					Reason:  "BackendError",
+					Message: "failed to communicate with backend: candidate lease is stale",
+				}}
+			},
+			wantProblems: []string{
+				`cluster "gke_proj-a_us-central1_cluster-a": no cluster holds the lease cnrm-system/kcc-multicluster-lease`,
+				`cluster "gke_proj-b_us-east1_cluster-b": the lease backend is unhealthy: failed to communicate with backend: candidate lease is stale`,
 			},
 		},
 		{
@@ -414,4 +492,129 @@ func TestLeaseExpired(t *testing.T) {
 			}
 		})
 	}
+}
+
+// errorStorage wraps Storage to return an error from ReadLease.
+type errorStorage struct {
+	mclstorage.Storage
+	err error
+}
+
+func (s *errorStorage) ReadLease(ctx context.Context, key string) (*mclstorage.LeaseObject, error) {
+	return nil, s.err
+}
+
+// TestStandbyStaleCandidate_Contract tests that liveLeaseHolder handles the real status produced
+// by the vendored MultiClusterLeaseReconciler when reconciling a standby whose spec.renewTime is stale.
+func TestStandbyStaleCandidate_Contract(t *testing.T) {
+	ctx := context.Background()
+
+	scheme := runtime.NewScheme()
+	if err := mclv1alpha1.AddToScheme(scheme); err != nil {
+		t.Fatalf("AddToScheme: %v", err)
+	}
+
+	reconcileStandbyLease := func(t *testing.T, s mclstorage.Storage) *mclv1alpha1.MultiClusterLease {
+		t.Helper()
+		fakeClient := crfake.NewClientBuilder().
+			WithScheme(scheme).
+			WithStatusSubresource(&mclv1alpha1.MultiClusterLease{}).
+			Build()
+
+		reconciler := mclcontroller.NewMultiClusterLeaseReconciler(
+			fakeClient,
+			ctrl.Log.WithName("test-mcl-reconciler"),
+			s,
+		)
+
+		staleRenewTime := metav1.NewMicroTime(testNow.Add(-60 * time.Second))
+		duration := int32(15)
+		standbyCandidate := testIdentityB
+		mcl := &mclv1alpha1.MultiClusterLease{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      testLeaseName,
+				Namespace: testLeaseNamespace,
+			},
+			Spec: mclv1alpha1.MultiClusterLeaseSpec{
+				HolderIdentity:       &standbyCandidate,
+				RenewTime:            &staleRenewTime,
+				LeaseDurationSeconds: &duration,
+			},
+		}
+		if err := fakeClient.Create(ctx, mcl); err != nil {
+			t.Fatalf("create MultiClusterLease: %v", err)
+		}
+
+		req := ctrl.Request{
+			NamespacedName: types.NamespacedName{
+				Namespace: testLeaseNamespace,
+				Name:      testLeaseName,
+			},
+		}
+		if _, err := reconciler.Reconcile(ctx, req); err != nil {
+			t.Fatalf("reconcile: %v", err)
+		}
+
+		var reconciled mclv1alpha1.MultiClusterLease
+		if err := fakeClient.Get(ctx, req.NamespacedName, &reconciled); err != nil {
+			t.Fatalf("get reconciled MultiClusterLease: %v", err)
+		}
+		return &reconciled
+	}
+
+	t.Run("stale standby candidate produces BackendHealthy=False but ha status reports HEALTHY", func(t *testing.T) {
+		fakeStorage := mclstorage.NewFakeStorage()
+		// Seed fake storage with a live lease held by cluster A.
+		_, err := fakeStorage.CreateLease(ctx, testLeaseNamespace+"/"+testLeaseName, mclstorage.LeaseData{
+			HolderIdentity:   testIdentityA,
+			RenewTime:        testNow.Add(-4 * time.Second),
+			LeaseTransitions: 1,
+		})
+		if err != nil {
+			t.Fatalf("seed fake storage: %v", err)
+		}
+
+		reconciled := reconcileStandbyLease(t, fakeStorage)
+
+		// Verify the MCL controller recorded BackendHealthy=False with "candidate lease is stale".
+		cond := meta.FindStatusCondition(reconciled.Status.Conditions, string(mclv1alpha1.ConditionTypeBackendHealthy))
+		if cond == nil || cond.Status != metav1.ConditionFalse || !strings.Contains(cond.Message, "candidate lease is stale") {
+			t.Fatalf("expected BackendHealthy=False with candidate lease is stale, got %+v", cond)
+		}
+
+		fs := healthyHAFixtures()
+		fs[1].lease = reconciled
+
+		report, out := runHAStatus(t, fs)
+		if report.state != haStateHealthy {
+			t.Fatalf("got state %q, want %q; output:\n%s", report.state, haStateHealthy, out)
+		}
+	})
+
+	t.Run("storage failure during standby reconcile reports backend error", func(t *testing.T) {
+		fakeStorage := mclstorage.NewFakeStorage()
+		errStg := &errorStorage{
+			Storage: fakeStorage,
+			err:     errors.New("storage network error"),
+		}
+
+		reconciled := reconcileStandbyLease(t, errStg)
+
+		// Verify the MCL controller recorded BackendHealthy=False with "failed to read lease".
+		cond := meta.FindStatusCondition(reconciled.Status.Conditions, string(mclv1alpha1.ConditionTypeBackendHealthy))
+		if cond == nil || cond.Status != metav1.ConditionFalse || !strings.Contains(cond.Message, "storage network error") {
+			t.Fatalf("expected BackendHealthy=False with storage network error, got %+v", cond)
+		}
+
+		fs := healthyHAFixtures()
+		fs[1].lease = reconciled
+
+		report, out := runHAStatus(t, fs)
+		if report.state != haStateError {
+			t.Fatalf("got state %q, want %q; output:\n%s", report.state, haStateError, out)
+		}
+		if !strings.Contains(out, "the lease backend is unhealthy: failed to communicate with backend: failed to read lease: storage network error") {
+			t.Fatalf("expected output to contain storage network error, got:\n%s", out)
+		}
+	})
 }

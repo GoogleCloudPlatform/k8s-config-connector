@@ -120,6 +120,16 @@ func leaseHolder(states []*clusterHAState, now time.Time) (string, []string) {
 	return holder, nil
 }
 
+const (
+	// staleCandidateMessage is the error string that the multicluster-leader-election
+	// controller records in BackendHealthy=False when a cluster's spec.renewTime is older
+	// than its staleness threshold.
+	//
+	// TODO: remove this workaround once multicluster-leader-election stops reporting a
+	// stale standby candidate as BackendHealthy=False.
+	staleCandidateMessage = "candidate lease is stale"
+)
+
 // liveLeaseHolder returns the holder of the cluster's MultiClusterLease, or a problem if the
 // lease is missing, its backend is unhealthy, it has no holder, or it has expired.
 func liveLeaseHolder(s *clusterHAState, now time.Time) (string, string) {
@@ -129,19 +139,47 @@ func liveLeaseHolder(s *clusterHAState, now time.Time) (string, string) {
 		return "", fmt.Sprintf("cluster %q: MultiClusterLease %s/%s not found; check that the multiclusterlease-controller-manager is running", s.contextName, mcl.Namespace, mcl.LeaseName)
 	}
 
+	var holder string
+	if lease.Status.GlobalHolderIdentity != nil {
+		holder = *lease.Status.GlobalHolderIdentity
+	}
+	candidate, _ := mcl.CandidateIdentity()
+
 	if cond := meta.FindStatusCondition(lease.Status.Conditions, string(mclv1alpha1.ConditionTypeBackendHealthy)); cond != nil && cond.Status == metav1.ConditionFalse {
-		return "", fmt.Sprintf("cluster %q: the lease backend is unhealthy: %s", s.contextName, cond.Message)
+		if !isStandbyStaleCandidate(cond, candidate, holder) {
+			return "", fmt.Sprintf("cluster %q: the lease backend is unhealthy: %s", s.contextName, cond.Message)
+		}
 	}
 
-	if lease.Status.GlobalHolderIdentity == nil || *lease.Status.GlobalHolderIdentity == "" {
+	if holder == "" {
 		return "", fmt.Sprintf("cluster %q: no cluster holds the lease %s/%s", s.contextName, mcl.Namespace, mcl.LeaseName)
 	}
-	holder := *lease.Status.GlobalHolderIdentity
 
 	if expired, detail := leaseExpired(lease, now); expired {
 		return "", fmt.Sprintf("cluster %q: the lease held by %q %s", s.contextName, holder, detail)
 	}
 	return holder, ""
+}
+
+// isStandbyStaleCandidate reports whether a BackendHealthy=False condition is the
+// multicluster-leader-election controller reporting that a standby's spec.renewTime is
+// stale.
+//
+// A standby doesn't refresh spec.renewTime while another cluster holds a live lease. The
+// MCL controller still reads the backend, updates status.globalHolderIdentity and
+// status.globalRenewTime, and then returns "candidate lease is stale", which its reconciler
+// records as BackendHealthy=False. If the backend read itself fails, the controller returns
+// "failed to read lease: ..." instead, so real backend errors are not ignored. On the
+// leader (candidate == holder), a stale spec.renewTime means the leader's manager stopped
+// heartbeating and is not ignored.
+//
+// TODO: remove this workaround once multicluster-leader-election stops reporting a stale
+// standby candidate as BackendHealthy=False.
+func isStandbyStaleCandidate(cond *metav1.Condition, candidate, holder string) bool {
+	if holder == "" || candidate == holder {
+		return false
+	}
+	return strings.Contains(cond.Message, staleCandidateMessage)
 }
 
 // leaseExpired reports whether the lease has not been renewed for leaseExpiryFactor lease
