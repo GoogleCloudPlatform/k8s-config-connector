@@ -43,6 +43,38 @@ entries:
     status: resolved
     resolution: accepted
     note: gcs path decomposable as bucketref plus path stays string
+  - kind: BigLakeHiveDatabase
+    group: bigquerybiglake.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: BigLakeHiveDatabase
+    group: bigquerybiglake.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//biglake.googleapis.com/projects/{project}/catalogs/{catalog}/databases/{database}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: BigLakeHiveDatabase
+    group: bigquerybiglake.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/catalogs/{catalog}/databases/{database}" contains ancestor segment(s) catalogs/{catalog} with no matching reference or field on BigLakeHiveDatabaseSpec
+    status: open
+  - kind: BigLakeHiveDatabase
+    group: bigquerybiglake.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.catalogs.databases: https://docs.cloud.google.com/products/lakehouse/docs/reference/rest/v1/projects.catalogs.databases, https://docs.cloud.google.com/bigquery/docs/reference/rest/v1/projects.catalogs.databases'
+    status: open
+  - kind: BigLakeHiveDatabase
+    group: bigquerybiglake.cnrm.cloud.google.com
+    field: .spec.catalogRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to BigQueryBigLakeCatalogRef, read from the catalogs segment of projects/{project}/catalogs/{catalog}/databases/{database}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: BigLakeHiveDatabase
+    group: bigquerybiglake.cnrm.cloud.google.com
+    field: .spec.locationURI
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
   - kind: BigLakeIcebergCatalog
     group: bigquerybiglake.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

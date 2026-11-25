@@ -166,6 +166,48 @@ func BigLakeHiveCatalogSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmb
 	out.LocationUri = direct.ValueOf(in.LocationURI)
 	return out
 }
+func BigLakeHiveDatabaseObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *hivepb.HiveDatabase) *krmbigquerybiglakev1alpha1.BigLakeHiveDatabaseObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.BigLakeHiveDatabaseObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func BigLakeHiveDatabaseObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.BigLakeHiveDatabaseObservedState) *hivepb.HiveDatabase {
+	if in == nil {
+		return nil
+	}
+	out := &hivepb.HiveDatabase{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func BigLakeHiveDatabaseSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *hivepb.HiveDatabase) *krmbigquerybiglakev1alpha1.BigLakeHiveDatabaseSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.BigLakeHiveDatabaseSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.LocationURI = direct.LazyPtr(in.GetLocationUri())
+	out.Parameters = in.Parameters
+	return out
+}
+func BigLakeHiveDatabaseSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.BigLakeHiveDatabaseSpec) *hivepb.HiveDatabase {
+	if in == nil {
+		return nil
+	}
+	out := &hivepb.HiveDatabase{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.LocationUri = direct.ValueOf(in.LocationURI)
+	out.Parameters = in.Parameters
+	return out
+}
 func BigLakeIcebergCatalogObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *biglakepb.IcebergCatalog) *krmbigquerybiglakev1alpha1.BigLakeIcebergCatalogObservedState {
 	if in == nil {
 		return nil

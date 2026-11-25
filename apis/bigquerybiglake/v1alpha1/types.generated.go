@@ -24,6 +24,7 @@
 // resource: BigLakeIcebergCatalog:IcebergCatalog
 // resource: BigLakeIcebergNamespace:IcebergNamespace
 // resource: BigLakeHiveCatalog:HiveCatalog
+// resource: BigLakeHiveDatabase:HiveDatabase
 
 package v1alpha1
 
@@ -57,6 +58,35 @@ type HiveCatalog struct {
 /* unreachable type HiveCatalog_Replica
 // +kcc:proto=google.cloud.biglake.hive.v1.HiveCatalog.Replica
 type HiveCatalog_Replica struct {
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.biglake.hive.v1.HiveDatabase", skipping
+
+// +kcc:proto=google.cloud.biglake.hive.v1.HiveDatabase
+type HiveDatabase struct {
+	// Identifier. The resource name.
+	//  Format:
+	//  projects/{project_id_or_number}/catalogs/{catalog_id}/databases/{database_id}
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveDatabase.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Stores the database description.
+	//  The maximum length is 4000 characters.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveDatabase.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. The Cloud Storage location path where the database exists.
+	//  Format: `gs://bucket/path/to/database`
+	//  If unspecified, the database will be stored in the catalog location.
+	//  The maximum length is 4000 characters.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveDatabase.location_uri
+	LocationURI *string `json:"locationURI,omitempty"`
+
+	// Optional. Stores the properties associated with the database.
+	//  The maximum size is 2 MiB.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveDatabase.parameters
+	Parameters map[string]string `json:"parameters,omitempty"`
 }
 */
 
@@ -379,6 +409,20 @@ type HiveCatalog_ReplicaObservedState struct {
 	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveCatalog.Replica.state
 	State *string `json:"state,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.biglake.hive.v1.HiveDatabase", skipping
+
+// +kcc:observedstate:proto=google.cloud.biglake.hive.v1.HiveDatabase
+type HiveDatabaseObservedState struct {
+	// Output only. The creation time of the database.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveDatabase.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The update time of the database.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveDatabase.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.biglake.v1.IcebergCatalog", skipping
 

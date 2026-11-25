@@ -155,4 +155,17 @@
   6. Verified `TestGoldenLogAlignment` passes with zero discrepancies and `./dev/ci/presubmits/tests-e2e-fixtures-suite bigquerybiglake` passes all 10 test fixtures.
 - **Impact**: Greenfield Step 3 complete; `BigLakeHiveCatalog` MockGCP implementation and golden log alignment verified.
 
+### [2026-11-25] Greenfield Step 1a: Prepopulate direct KRM types, identity, and judgement queue for BigLakeHiveDatabase
+- **Context**: Prepopulating direct KRM types, identity, reference, and `judgement_queue.yaml` for `BigLakeHiveDatabase` under `bigquerybiglake.cnrm.cloud.google.com/v1alpha1` (Issue #16435).
+- **Details**:
+  1. Verified `BigLakeHiveDatabase` corresponds to `google.cloud.biglake.hive.v1.HiveDatabase` from `hive_metastore.proto` under the GA package `google.cloud.biglake.hive.v1`.
+  2. Configured `apis/bigquerybiglake/generate.sh` to add `generate-types` with `--resource BigLakeHiveDatabase:HiveDatabase` and `--prepopulate-resource`, and `generate-identity` with `--pattern BigLakeHiveDatabase=projects/{project}/catalogs/{catalog}/databases/{database}`.
+  3. Ran `./apis/bigquerybiglake/generate.sh`, generating `biglakehivedatabase_types.go`, `biglakehivedatabase_identity.generated.go`, `biglakehivedatabase_identity_generated_test.go`, `biglakehivedatabase_reference.generated.go`, updating `types.generated.go`, `mapper.generated.go`, and generating the CRD.
+  4. Confirmed `apis/bigquerybiglake/judgement_queue.yaml` was populated with open entries for `BigLakeHiveDatabase` including `untriaged-bulk-generation` (`status: open`).
+  5. Added `"BigLakeHiveDatabase"` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` sorted alphabetically.
+  6. Verified compilation of `apis/bigquerybiglake/...` and `pkg/controller/direct/bigquerybiglake/...`.
+  7. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` and `tests/apichecks/testdata/exceptions/refs_not_representable.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...`.
+  8. Verified `./apis/bigquerybiglake/generate.sh` idempotency (producing zero uncommitted diffs), and confirmed all unit tests and `apichecks` pass.
+- **Impact**: Greenfield Step 1a complete; `BigLakeHiveDatabase` is prepopulated with open judgement queue entries ready for Step 1b triage.
+
 
