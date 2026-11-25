@@ -93,6 +93,14 @@ func generateListOfUnacquirableResources(smLoader *servicemappingloader.ServiceM
 }
 
 func generateListOfResources(resources []schema.GroupVersionKind, outputFileName string) error {
+	// Kinds in BLOCKED_KINDS are excluded from the release bundle, so don't
+	// list them in the docs.
+	blocked, err := blockedKinds()
+	if err != nil {
+		return err
+	}
+	resources = excludeBlockedKinds(resources, blocked)
+
 	outputFilePath := path.Join(repo.GetG3ResourceListsGeneratedPath(), outputFileName)
 	outputFile, err := fileutil.NewEmptyFile(outputFilePath)
 	if err != nil {
@@ -186,11 +194,22 @@ func directResourcesWithServiceGeneratedResourceIDv1alpha1() ([]schema.GroupVers
 	return directResourcesWithServiceGeneratedResourceIDForVersion(true)
 }
 
+// directResourcesWithServiceGeneratedResourceIDForVersion returns the direct
+// resources with a service-generated resource ID, i.e. those whose identity
+// implements identity.ServerGeneratedIdentity, or whose adapter's Find()
+// short-circuits when the resource ID is not yet known.
 func directResourcesWithServiceGeneratedResourceIDForVersion(v1alpha1 bool) ([]schema.GroupVersionKind, error) {
-	all, err := allDirectResourcesWithServiceGeneratedResourceID()
+	serverGeneratedIdentityResources, err := allResourcesWithServerGeneratedIdentity()
 	if err != nil {
 		return nil, err
 	}
+	findBasedResources, err := allDirectResourcesWithServiceGeneratedResourceID()
+	if err != nil {
+		return nil, err
+	}
+	all := make([]schema.GroupVersionKind, 0, len(serverGeneratedIdentityResources)+len(findBasedResources))
+	all = append(all, serverGeneratedIdentityResources...)
+	all = append(all, findBasedResources...)
 	gvks := make([]schema.GroupVersionKind, 0)
 	for _, gvk := range all {
 		if isV1alpha1(gvk) != v1alpha1 {
