@@ -234,3 +234,83 @@ func TestApplyResourceSettingsConfigHash(t *testing.T) {
 		}
 	}
 }
+
+func TestApplyMultiClusterLeaseLeaderEndpointTypeConfigHash(t *testing.T) {
+	ctx := context.Background()
+	r := &Reconciler{}
+
+	ccDefault := &corev1beta1.ConfigConnector{
+		Spec: corev1beta1.ConfigConnectorSpec{
+			Experiments: &corev1beta1.CCExperiments{
+				MultiClusterLease: &corev1beta1.MultiClusterLeaseSpec{
+					LeaseName: "test-lease",
+					Namespace: "cnrm-system",
+					GKECluster: &corev1beta1.GKECluster{
+						Project:  "test-project",
+						Location: "us-central1",
+						Name:     "test-cluster",
+					},
+					LeaderEndpointType: corev1beta1.LeaderEndpointTypeDefault,
+				},
+			},
+		},
+	}
+
+	mDefault := testcontroller.ParseObjects(ctx, t, testcontroller.ClusterModeComponents)
+	if err := r.applyExperiments(ctx, ccDefault, mDefault); err != nil {
+		t.Fatalf("applyExperiments failed: %v", err)
+	}
+
+	var hashDefault string
+	foundSts := false
+	for _, item := range mDefault.Items {
+		if IsControllerManagerStatefulSet(item) {
+			foundSts = true
+			templateAnnotations, _, _ := unstructured.NestedStringMap(item.UnstructuredObject().Object, "spec", "template", "metadata", "annotations")
+			hashDefault = templateAnnotations[k8s.CCConfigHashAnnotation]
+		}
+	}
+	if !foundSts {
+		t.Fatal("expected controller-manager StatefulSet in manifests")
+	}
+	if hashDefault == "" {
+		t.Fatal("expected non-empty cc-config-hash annotation")
+	}
+
+	ccPrivateIP := ccDefault.DeepCopy()
+	ccPrivateIP.Spec.Experiments.MultiClusterLease.LeaderEndpointType = corev1beta1.LeaderEndpointTypePrivateIP
+
+	mPrivateIP := testcontroller.ParseObjects(ctx, t, testcontroller.ClusterModeComponents)
+	if err := r.applyExperiments(ctx, ccPrivateIP, mPrivateIP); err != nil {
+		t.Fatalf("applyExperiments failed: %v", err)
+	}
+
+	var hashPrivateIP string
+	for _, item := range mPrivateIP.Items {
+		if IsControllerManagerStatefulSet(item) {
+			templateAnnotations, _, _ := unstructured.NestedStringMap(item.UnstructuredObject().Object, "spec", "template", "metadata", "annotations")
+			hashPrivateIP = templateAnnotations[k8s.CCConfigHashAnnotation]
+		}
+	}
+	if hashPrivateIP == "" {
+		t.Fatal("expected non-empty cc-config-hash annotation after change")
+	}
+	if hashDefault == hashPrivateIP {
+		t.Errorf("expected cc-config-hash to change when leaderEndpointType changes, but both are %q", hashDefault)
+	}
+
+	// Removing MultiClusterLease should remove cc-config-hash annotation when no other CC experiments are set
+	ccWithoutLease := &corev1beta1.ConfigConnector{}
+	mWithoutLease := testcontroller.ParseObjects(ctx, t, testcontroller.ClusterModeComponents)
+	if err := r.applyExperiments(ctx, ccWithoutLease, mWithoutLease); err != nil {
+		t.Fatalf("applyExperiments failed: %v", err)
+	}
+	for _, item := range mWithoutLease.Items {
+		if IsControllerManagerStatefulSet(item) {
+			templateAnnotations, _, _ := unstructured.NestedStringMap(item.UnstructuredObject().Object, "spec", "template", "metadata", "annotations")
+			if _, exists := templateAnnotations[k8s.CCConfigHashAnnotation]; exists {
+				t.Errorf("expected pod template annotation %s to be removed when MultiClusterLease is nil", k8s.CCConfigHashAnnotation)
+			}
+		}
+	}
+}
