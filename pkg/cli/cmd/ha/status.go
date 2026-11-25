@@ -130,6 +130,10 @@ type clusterStatus struct {
 	state *clusterHAState
 	// err is the error from fetchClusterHAState; nil when HA is configured.
 	err error
+	// workloads holds the observed HA workloads on the cluster; set only when HA is configured.
+	workloads *clusterWorkloads
+	// workloadsErr is non-nil if reading workloads failed with a non-NotFound error.
+	workloadsErr error
 }
 
 // statusClusterTimeout bounds how long a single cluster is inspected, so that one unreachable
@@ -153,6 +157,7 @@ func inspectCluster(ctx context.Context, h *clusterHandle) *clusterStatus {
 	switch {
 	case c.err == nil:
 		c.ha = clusterHAConfigured
+		c.workloads, c.workloadsErr = fetchClusterWorkloads(ctx, h, c.state.configConnector)
 	case errors.As(c.err, &notConfigured):
 		c.ha = clusterHANotConfigured
 	case errors.As(c.err, &notFound):
@@ -177,6 +182,7 @@ type statusReport struct {
 	state    haState
 	clusters []*clusterStatus
 	problems []string
+	warnings []string
 }
 
 func buildStatusReport(clusters []*clusterStatus, now time.Time) *statusReport {
@@ -208,6 +214,18 @@ func buildStatusReport(clusters []*clusterStatus, now time.Time) *statusReport {
 			states = append(states, c.state)
 		}
 		r.problems = append(r.problems, haProblems(states, now)...)
+
+		for _, c := range configured {
+			if c.workloadsErr != nil {
+				r.problems = append(r.problems, fmt.Sprintf("cluster %q: could not read Config Connector's workloads: %v", c.gke.contextName, c.workloadsErr))
+				continue
+			}
+			if c.workloads != nil {
+				probs, warns := c.workloads.checkWorkloads(c.gke.contextName, c.state, now)
+				r.problems = append(r.problems, probs...)
+				r.warnings = append(r.warnings, warns...)
+			}
+		}
 	}
 
 	switch {
@@ -243,6 +261,12 @@ func (r *statusReport) render(w io.Writer) {
 		fmt.Fprintln(w, "Problems:")
 		for _, p := range r.problems {
 			fmt.Fprintf(w, "  - %s\n", p)
+		}
+	}
+	if len(r.warnings) > 0 {
+		fmt.Fprintln(w, "Warnings:")
+		for _, warn := range r.warnings {
+			fmt.Fprintf(w, "  - %s\n", warn)
 		}
 	}
 }

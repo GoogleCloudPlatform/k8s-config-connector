@@ -20,10 +20,12 @@ import (
 	"fmt"
 	"io"
 	"regexp"
+	"sort"
 	"strings"
 	"time"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	operatork8s "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/kubecli"
 	syncerv1alpha1 "github.com/gke-labs/kube-etl/syncer/api/v1alpha1"
 	mclv1alpha1 "github.com/gke-labs/multicluster-leader-election/api/v1alpha1"
@@ -33,6 +35,7 @@ import (
 	rbacv1 "k8s.io/api/rbac/v1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 const (
@@ -136,6 +139,44 @@ func buildClusterHandles(ctx context.Context, contexts []string) ([]*clusterHand
 		return nil, errors.Join(errs...)
 	}
 	return handles, nil
+}
+
+// listManagers lists the StatefulSets of Config Connector's manager in every namespace. A manager
+// that has a namespace of its own (ConfigConnectorContext spec.managerNamespace) runs outside
+// cnrm-system.
+func (h *clusterHandle) listManagers(ctx context.Context) ([]*managerStatefulSet, error) {
+	list := &appsv1.StatefulSetList{}
+	labels := client.MatchingLabels{operatork8s.KCCSystemComponentLabel: operatork8s.KCCControllerManagerComponent}
+	if err := h.client.List(ctx, list, labels); err != nil {
+		return nil, fmt.Errorf("listing the StatefulSets of Config Connector's manager on cluster %q: %w", h.contextName, err)
+	}
+	managers := make([]*managerStatefulSet, 0, len(list.Items))
+	for i := range list.Items {
+		managers = append(managers, &managerStatefulSet{StatefulSet: &list.Items[i]})
+	}
+	sort.Slice(managers, func(i, j int) bool { return managers[i].key() < managers[j].key() })
+	return managers, nil
+}
+
+// describeUnavailablePods says why the pods of a Deployment aren't running, from the state of
+// their containers.
+func (h *clusterHandle) describeUnavailablePods(ctx context.Context, deployment *appsv1.Deployment) []string {
+	if deployment.Spec.Selector == nil {
+		return nil
+	}
+
+	pods := &corev1.PodList{}
+	if err := h.client.List(ctx, pods, client.InNamespace(deployment.Namespace), client.MatchingLabels(deployment.Spec.Selector.MatchLabels)); err != nil {
+		return []string{fmt.Sprintf("listing its pods failed: %v", err)}
+	}
+	return describeUnavailablePods(pods.Items)
+}
+
+func describeUnavailablePods(pods []corev1.Pod) []string {
+	if len(pods) == 0 {
+		return []string{"it has no pods"}
+	}
+	return describePodContainers(pods)
 }
 
 // newHAScheme constructs a runtime.Scheme registered with all API types needed by HA commands.

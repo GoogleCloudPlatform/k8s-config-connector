@@ -108,8 +108,8 @@ func TestWaitHealthyFirstPoll(t *testing.T) {
 	syncerB := newTestSyncer(testLeaseName, holder, false, syncerv1alpha1.ReasonSyncing, "Syncing")
 
 	handles := []*clusterHandle{
-		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector(), leaseA, syncerA),
-		newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector(), leaseB, syncerB),
+		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector(), leaseA, syncerA, newTestManagerSTS("cnrm-system")),
+		newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector(), leaseB, syncerB, newTestManagerSTS("cnrm-system")),
 	}
 	runner := &recordingCommandRunner{}
 	opts := newTestSetupOptions()
@@ -147,8 +147,8 @@ func TestWaitHealthyLaterPoll(t *testing.T) {
 	syncerB := newTestSyncer(testLeaseName, holder, false, syncerv1alpha1.ReasonSyncing, "Syncing")
 
 	handles := []*clusterHandle{
-		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector(), leaseA, syncerA),
-		newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector(), leaseB, syncerB),
+		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector(), leaseA, syncerA, newTestManagerSTS("cnrm-system")),
+		newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector(), leaseB, syncerB, newTestManagerSTS("cnrm-system")),
 	}
 	runner := &recordingCommandRunner{}
 	opts := newTestSetupOptions()

@@ -300,27 +300,7 @@ func deploymentRolloutStatus(deployment *appsv1.Deployment) (pending string, don
 // describeUnavailablePods says why the pods of a Deployment aren't running, from the state of
 // their containers.
 func (c *clusterConfigurer) describeUnavailablePods(ctx context.Context, deployment *appsv1.Deployment) []string {
-	if deployment.Spec.Selector == nil {
-		return nil
-	}
-
-	pods := &corev1.PodList{}
-	if err := c.handle.client.List(ctx, pods, client.InNamespace(deployment.Namespace), client.MatchingLabels(deployment.Spec.Selector.MatchLabels)); err != nil {
-		return []string{fmt.Sprintf("listing its pods failed: %v", err)}
-	}
-	if len(pods.Items) == 0 {
-		return []string{"it has no pods"}
-	}
-
-	var details []string
-	for _, pod := range pods.Items {
-		for _, container := range pod.Status.ContainerStatuses {
-			if state := describeContainerState(container); state != "" {
-				details = append(details, fmt.Sprintf("pod %q container %q %s", pod.Name, container.Name, state))
-			}
-		}
-	}
-	return details
+	return c.handle.describeUnavailablePods(ctx, deployment)
 }
 
 func describeContainerState(container corev1.ContainerStatus) string {
@@ -333,6 +313,8 @@ func describeContainerState(container corev1.ContainerStatus) string {
 		}
 	case container.State.Terminated != nil:
 		state = fmt.Sprintf("terminated: %s, exit code %d", container.State.Terminated.Reason, container.State.Terminated.ExitCode)
+	case container.State.Running != nil && container.RestartCount > 0:
+		state = fmt.Sprintf("is running; %d restarts", container.RestartCount)
 	default:
 		return ""
 	}

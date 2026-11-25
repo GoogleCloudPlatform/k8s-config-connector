@@ -46,7 +46,7 @@ const (
 //  2. each cluster's MultiClusterLease has a live holder, and all clusters agree on it;
 //  3. each cluster's KRMSyncers: suspended on the leader, syncing from the leader on standbys.
 //
-// Later checks are skipped when an earlier one fails, because they depend on it.
+// KRMSyncer checks (3) are skipped only when the leader cannot be determined.
 func haProblems(states []*clusterHAState, now time.Time) []string {
 	if err := validateMultiClusterLeaseConfigs(states); err != nil {
 		return splitErrorLines(err)
@@ -91,6 +91,10 @@ func replicationMode(mcl *operatorv1beta1.MultiClusterLeaseSpec) string {
 
 // leaseHolder returns the identity of the cluster that holds the lease, or "" if it can't be
 // determined, together with the lease problems found.
+//
+// The holder is the one that the clusters with a live lease agree on. A cluster whose own
+// lease has a problem is reported, and doesn't make the holder unknown: the other clusters
+// still say who holds the lease.
 func leaseHolder(states []*clusterHAState, now time.Time) (string, []string) {
 	var problems []string
 	holders := map[string][]string{} // holder identity -> contexts that report it
@@ -102,12 +106,12 @@ func leaseHolder(states []*clusterHAState, now time.Time) (string, []string) {
 		}
 		holders[holder] = append(holders[holder], s.contextName)
 	}
-	if len(problems) > 0 {
+	if len(holders) == 0 {
 		return "", problems
 	}
 
 	if len(holders) > 1 {
-		return "", []string{fmt.Sprintf("clusters disagree on the lease holder (%s)", formatHolders(holders))}
+		return "", append(problems, fmt.Sprintf("clusters disagree on the lease holder (%s)", formatHolders(holders)))
 	}
 
 	var holder string
@@ -115,9 +119,9 @@ func leaseHolder(states []*clusterHAState, now time.Time) (string, []string) {
 		holder = h
 	}
 	if !isInspectedCluster(states, holder) {
-		return "", []string{fmt.Sprintf("the lease is held by %q, which is not one of the clusters in --%s", holder, contextsFlag)}
+		return "", append(problems, fmt.Sprintf("the lease is held by %q, which is not one of the clusters in --%s", holder, contextsFlag))
 	}
-	return holder, nil
+	return holder, problems
 }
 
 const (
