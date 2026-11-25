@@ -20,6 +20,7 @@ import (
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	operatork8s "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	syncercrd "github.com/gke-labs/kube-etl/syncer/config/crd"
 	mclcrd "github.com/gke-labs/multicluster-leader-election/config/crd/bases"
 	appsv1 "k8s.io/api/apps/v1"
@@ -140,8 +141,8 @@ const (
 	syncerAPIGroup = "syncer.gkelabs.io"
 	rbacAPIGroup   = "rbac.authorization.k8s.io"
 
-	manifestSystemNamespace = "cnrm-system"
-	manifestSystemSAGroup   = "system:serviceaccounts:cnrm-system"
+	manifestSystemNamespace = k8s.SystemNamespace
+	manifestSystemSAGroup   = "system:serviceaccounts:" + k8s.SystemNamespace
 
 	managerHARoleName                   = "cnrm-manager-ha"
 	controllerManagerServiceAccountName = "cnrm-controller-manager"
@@ -274,7 +275,7 @@ func (b *manifestBuilder) mclComponent() controllerComponent {
 }
 
 const (
-	syncerServiceAccountName = "kcc-syncer"
+	syncerServiceAccountName = k8s.SyncerServiceAccountName
 	syncerClusterRoleName    = "cnrm-syncer-controller"
 	syncerDeploymentName     = "syncer-controller-manager"
 

@@ -75,14 +75,17 @@ func (si *SyncerIntegration) getDesiredRules(namespaces []string) []interface{} 
 		}
 	}
 
-	rules := []interface{}{
-		createRule("*.cnrm.cloud.google.com", "*", "*", []interface{}{"status"}),
+	// Status mode: the status of every object, and its spec.resourceID where the leader's object
+	// has one. The leader's controller writes a service-generated ID there, and a standby that
+	// becomes the leader needs it to find the resource instead of creating another one.
+	//
+	// This has to be ONE rule. The syncer applies every rule that matches an object, in order,
+	// with one field manager. With a status-only wildcard rule followed by a rule per kind for
+	// spec.resourceID, each sync would first remove spec.resourceID from the standby's object
+	// (the status-only apply no longer names it) and then set it again.
+	return []interface{}{
+		createRule("*.cnrm.cloud.google.com", "*", "*", []interface{}{"status", "spec.resourceID"}),
 	}
-
-	for gvk := range syncerGVKsWithServiceGeneratedIDs {
-		rules = append(rules, createRule(gvk.Group, gvk.Version, gvk.Kind, []interface{}{"status", "spec.resourceID"}))
-	}
-	return rules
 }
 
 type ruleData struct {

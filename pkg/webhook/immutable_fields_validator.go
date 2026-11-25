@@ -118,10 +118,16 @@ func (a *immutableFieldsValidatorHandler) Handle(_ context.Context, req admissio
 		return admission.Errored(http.StatusForbidden, err)
 	}
 
+	// The KRM syncer of multi-cluster leader election copies the leader's service-generated
+	// spec.resourceID onto a standby cluster's objects (without it, a standby that becomes the
+	// leader cannot find a DCL-based resource and creates another one). Allow only spec.resourceID
+	// updates from the syncer; all other immutable fields and annotations remain enforced.
+	allowResourceIDUpdate := req.AdmissionRequest.UserInfo.Username == SyncerServiceAccount
+
 	gk := oldObj.GroupVersionKind().GroupKind()
 	switch gk {
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
-		return validateImmutableFieldsForLoggingLogMetricResource(oldSpec, spec)
+		return validateImmutableFieldsForLoggingLogMetricResource(oldSpec, spec, allowResourceIDUpdate)
 	case schema.GroupKind{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubFeatureMembership"}:
 		return validateImmutableFieldsForGKEHubFeatureMembershipResource(oldSpec, spec)
 	}
@@ -132,9 +138,9 @@ func (a *immutableFieldsValidatorHandler) Handle(_ context.Context, req admissio
 	}
 
 	if dclmetadata.IsDCLBasedResourceKind(obj.GroupVersionKind(), a.serviceMetadataLoader) {
-		return validateImmutableFieldsForDCLBasedResource(obj, oldObj, spec, oldSpec, a.dclSchemaLoader, a.serviceMetadataLoader)
+		return validateImmutableFieldsForDCLBasedResource(obj, oldObj, spec, oldSpec, a.dclSchemaLoader, a.serviceMetadataLoader, allowResourceIDUpdate)
 	}
-	return validateImmutableFieldsForTFBasedResource(obj, oldObj, spec, oldSpec, a.smLoader, a.tfResourceMap)
+	return validateImmutableFieldsForTFBasedResource(obj, oldObj, spec, oldSpec, a.smLoader, a.tfResourceMap, allowResourceIDUpdate)
 }
 
 func validateImmutableStateIntoSpecAnnotation(obj, oldObj *unstructured.Unstructured) error {
@@ -146,7 +152,7 @@ func validateImmutableStateIntoSpecAnnotation(obj, oldObj *unstructured.Unstruct
 	return nil
 }
 
-func validateImmutableFieldsForDCLBasedResource(obj, oldObj *unstructured.Unstructured, spec, oldSpec map[string]interface{}, dclSchemaLoader dclschemaloader.DCLSchemaLoader, serviceMetadataLoader dclmetadata.ServiceMetadataLoader) admission.Response {
+func validateImmutableFieldsForDCLBasedResource(obj, oldObj *unstructured.Unstructured, spec, oldSpec map[string]interface{}, dclSchemaLoader dclschemaloader.DCLSchemaLoader, serviceMetadataLoader dclmetadata.ServiceMetadataLoader, allowResourceIDUpdate bool) admission.Response {
 	gvk := obj.GroupVersionKind()
 	schema, err := dclschemaloader.GetDCLSchemaForGVK(gvk, serviceMetadataLoader, dclSchemaLoader)
 	if err != nil {
@@ -167,7 +173,7 @@ func validateImmutableFieldsForDCLBasedResource(obj, oldObj *unstructured.Unstru
 		return admission.Errored(http.StatusBadRequest,
 			fmt.Errorf("error validating container annotations: %w", err))
 	}
-	if isResourceIDModified(spec, oldSpec) {
+	if !allowResourceIDUpdate && isResourceIDModified(spec, oldSpec) {
 		return admission.Errored(http.StatusForbidden,
 			k8s.NewImmutableFieldsMutationError([]string{k8s.ResourceIDFieldPath}))
 	}
@@ -295,7 +301,7 @@ func getQualifiedFieldName(prefix string, fieldName string) string {
 	return qualifiedName
 }
 
-func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstructured, spec, oldSpec map[string]interface{}, smLoader *servicemappingloader.ServiceMappingLoader, tfResourceMap map[string]*tfschema.Resource) admission.Response {
+func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstructured, spec, oldSpec map[string]interface{}, smLoader *servicemappingloader.ServiceMappingLoader, tfResourceMap map[string]*tfschema.Resource, allowResourceIDUpdate bool) admission.Response {
 	rc, err := smLoader.GetResourceConfig(obj)
 	if err != nil {
 		return admission.Errored(http.StatusBadRequest,
@@ -313,7 +319,7 @@ func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstruc
 			fmt.Errorf("unknown resource %v", rc.Name))
 	}
 
-	if findChangesOnImmutableResourceIDField(spec, oldSpec, rc) {
+	if !allowResourceIDUpdate && findChangesOnImmutableResourceIDField(spec, oldSpec, rc) {
 		return admission.Errored(http.StatusForbidden,
 			k8s.NewImmutableFieldsMutationError([]string{k8s.ResourceIDFieldPath}))
 	}
@@ -368,8 +374,8 @@ func validateImmutableFieldsForGKEHubFeatureMembershipResource(oldSpec, spec map
 	return allowedResponse
 }
 
-func validateImmutableFieldsForLoggingLogMetricResource(oldSpec, spec map[string]interface{}) admission.Response {
-	if isResourceIDModified(oldSpec, spec) {
+func validateImmutableFieldsForLoggingLogMetricResource(oldSpec, spec map[string]interface{}, allowResourceIDUpdate bool) admission.Response {
+	if !allowResourceIDUpdate && isResourceIDModified(oldSpec, spec) {
 		return admission.Errored(http.StatusForbidden,
 			k8s.NewImmutableFieldsMutationError([]string{k8s.ResourceIDFieldPath}))
 	}

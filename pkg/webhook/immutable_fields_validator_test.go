@@ -1525,7 +1525,7 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			dclSchemaMap := make(map[string]*openapi.Schema)
 			dclSchemaMap[dclSchemaKey] = tc.schema
 			dclSchemaLoader := testdclschemaloader.New(dclSchemaMap)
-			actual := validateImmutableFieldsForDCLBasedResource(tc.obj, tc.oldObj, tc.spec, tc.oldSpec, dclSchemaLoader, smLoader)
+			actual := validateImmutableFieldsForDCLBasedResource(tc.obj, tc.oldObj, tc.spec, tc.oldSpec, dclSchemaLoader, smLoader, false)
 			if !testutil.Equals(t, actual, tc.response) {
 				t.Fatalf("got: %v, but want: %v", actual, tc.response)
 			}
@@ -2476,7 +2476,7 @@ func TestUpdateLogLoggingMetric(t *testing.T) {
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			actual := validateImmutableFieldsForLoggingLogMetricResource(tc.oldSpec, tc.spec)
+			actual := validateImmutableFieldsForLoggingLogMetricResource(tc.oldSpec, tc.spec, false)
 			if !testutil.Equals(t, actual, tc.response) {
 				t.Fatalf("got: %v, but want: %v", actual, tc.response)
 			}
