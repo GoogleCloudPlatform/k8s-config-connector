@@ -720,6 +720,18 @@ func TestHAStatusProblems(t *testing.T) {
 				`cluster "gke_proj-b_us-east1_cluster-b": KRMSyncer cnrm-system/kcc-multicluster-lease is failing to sync 3 objects (SyncFailed): apply failed (Forbidden): StorageBucket. See the controller logs for details.`,
 			},
 		},
+		{
+			name: "standby KRMSyncer failing to sync kinds",
+			mutate: func(fs haFixtures) {
+				s := newTestSyncer(testLeaseName, testIdentityA, false, syncerv1alpha1.ReasonSyncFailed,
+					"watch failed (Forbidden): APIGatewayAPI.apigateway.cnrm.cloud.google.com. See the controller logs for details.")
+				s.Status.FailedObjects = 0
+				fs[1].syncers = []*syncerv1alpha1.KRMSyncer{s}
+			},
+			wantProblems: []string{
+				`cluster "gke_proj-b_us-east1_cluster-b": KRMSyncer cnrm-system/kcc-multicluster-lease is failing to sync (SyncFailed): watch failed (Forbidden): APIGatewayAPI.apigateway.cnrm.cloud.google.com. See the controller logs for details.`,
+			},
+		},
 	}
 
 	for _, tc := range tests {

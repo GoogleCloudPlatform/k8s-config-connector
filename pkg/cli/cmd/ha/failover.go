@@ -39,6 +39,9 @@ type failoverOptions struct {
 	targetCluster string
 	timeout       time.Duration
 	dryRun        bool
+	// skipSyncCheck lets failover go ahead when the KRMSyncers of a standby don't report that
+	// they sync from the leader.
+	skipSyncCheck bool
 
 	// pollInterval is how often failover looks at the clusters while it waits.
 	pollInterval time.Duration
@@ -90,6 +93,11 @@ Failover stops Config Connector's manager on every other cluster in --contexts, 
 the target cluster holds the lease, and then starts those managers again as standbys. From the
 moment the leader's manager stops until the target takes over, no cluster reconciles resources.
 That takes about a minute, because the leader's lease has to expire first.
+
+Before it stops anything, failover checks that the target is a working standby: its managers
+run, and its KRMSyncers sync from the leader. If a KRMSyncer reports that it doesn't, failover
+refuses: the target's copy of the leader's status and resource IDs may be out of date, and the
+target would lead with it. --skip-sync-check makes failover go ahead anyway.
 
 Name every cluster of the group in --contexts. Failover doesn't stop the managers of a cluster
 that isn't named, and such a cluster can take the lease instead of the target. Every cluster
@@ -199,6 +207,7 @@ const (
 	targetClusterFlag   = "target-cluster"
 	failoverTimeoutFlag = "timeout"
 	failoverDryRunFlag  = "dry-run"
+	skipSyncCheckFlag   = "skip-sync-check"
 )
 
 func (o *failoverOptions) addFlags(flags *pflag.FlagSet) {
@@ -206,6 +215,7 @@ func (o *failoverOptions) addFlags(flags *pflag.FlagSet) {
 	flags.StringVar(&o.targetCluster, targetClusterFlag, o.targetCluster, "Kubeconfig context name of the standby cluster to promote to leader.")
 	flags.DurationVar(&o.timeout, failoverTimeoutFlag, o.timeout, "How long to wait for each step (at least 1m): for the other clusters' managers to stop, for the target to become the leader, and for the other clusters to follow it.")
 	flags.BoolVar(&o.dryRun, failoverDryRunFlag, o.dryRun, "If true, print planned actions without making changes.")
+	flags.BoolVar(&o.skipSyncCheck, skipSyncCheckFlag, o.skipSyncCheck, "If true, fail over even if the target's KRMSyncers don't report that they sync from the leader, and don't wait for the other clusters' KRMSyncers to report that they sync from the new leader. The target's copy of the leader's status and resource IDs may then be out of date.")
 }
 
 func (o *failoverOptions) validate() error {
@@ -253,6 +263,8 @@ type failover struct {
 
 	out    io.Writer
 	dryRun bool
+	// skipSyncCheck is --skip-sync-check.
+	skipSyncCheck bool
 
 	timeout                time.Duration
 	pollInterval           time.Duration
@@ -276,6 +288,7 @@ func newFailover(ctx context.Context, opts failoverOptions, handles []*clusterHa
 	f := &failover{
 		out:                    opts.stdout,
 		dryRun:                 opts.dryRun,
+		skipSyncCheck:          opts.skipSyncCheck,
 		timeout:                opts.timeout,
 		pollInterval:           opts.pollInterval,
 		leaderAgreementTimeout: opts.leaderAgreementTimeout,
@@ -489,7 +502,10 @@ func (f *failover) prepareTarget(ctx context.Context, leader *failoverCluster, v
 				moved = fmt.Errorf("the lease went from %s to %s while failover started the managers of cluster %q; run the command again", leader.identity, v.holder, target.name())
 				return "", moved
 			}
-			return target.pendingAsTarget(v, leader), nil
+			if pending := target.pendingAsTarget(v, leader); pending != "" {
+				return pending, nil
+			}
+			return f.pendingSync(target, v, leader), nil
 		})
 		if moved != nil {
 			return moved
@@ -503,12 +519,28 @@ func (f *failover) prepareTarget(ctx context.Context, leader *failoverCluster, v
 	if pending := target.pendingAsTarget(view, leader); pending != "" {
 		return fmt.Errorf("cluster %q is not ready to take over: %s", target.name(), pending)
 	}
+	if problem := target.notSyncing(view, leader); problem != "" {
+		if !f.skipSyncCheck {
+			return fmt.Errorf("cluster %q is not ready to take over: it does not sync from the leader (--%s fails over anyway): %s", target.name(), skipSyncCheckFlag, problem)
+		}
+		f.logf("cluster %q: --%s is set, so failing over although it does not sync from the leader: %s", target.name(), skipSyncCheckFlag, problem)
+	}
 	for _, m := range view.managers {
 		if m.replicas() == 0 {
 			f.logf("cluster %q: note: StatefulSet %s is scaled to 0, so that manager will not run after the failover either", target.name(), m.key())
 		}
 	}
 	return nil
+}
+
+// pendingSync returns why the KRMSyncers of a standby don't report that they sync from the
+// leader, or "" if they do. With --skip-sync-check it returns "": failover then only checks
+// what the managers ask the syncer for (pendingSyncers).
+func (f *failover) pendingSync(c *failoverCluster, v *failoverView, leader *failoverCluster) string {
+	if f.skipSyncCheck {
+		return ""
+	}
+	return c.notSyncing(v, leader)
 }
 
 func (f *failover) printPlan(leader *failoverCluster, views map[*failoverCluster]*failoverView) {
@@ -651,7 +683,10 @@ func (f *failover) waitForStandbys(ctx context.Context) error {
 				return err.Error(), nil
 			}
 			hasRunning = hasRunningManager(v.managers)
-			return c.pendingAsStandby(v, f.target), nil
+			if pending := c.pendingAsStandby(v, f.target); pending != "" {
+				return pending, nil
+			}
+			return f.pendingSync(c, v, f.target), nil
 		})
 		if err != nil {
 			errs = append(errs, fmt.Errorf("cluster %q does not follow it yet: %w", c.name(), err))

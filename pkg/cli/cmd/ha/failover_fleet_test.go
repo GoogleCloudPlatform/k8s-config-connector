@@ -29,6 +29,7 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
@@ -130,6 +131,12 @@ type fleetCluster struct {
 	// abandonedSyncers stops the updates of its KRMSyncers, as when its managers can't write
 	// them.
 	abandonedSyncers bool
+	// noSyncer stops the updates of the status of its KRMSyncers, as when its syncer has
+	// stopped.
+	noSyncer bool
+	// syncFailures is what its syncer reports for a KRMSyncer that pulls and doesn't sync, by the
+	// name of the KRMSyncer. Without an entry, the syncer reports that the KRMSyncer syncs.
+	syncFailures map[string]fleetSyncFailure
 	// rejectRead, if set, can fail a read of failover from the cluster. It gets the object or the
 	// list that failover asks for.
 	rejectRead func(ctx context.Context, obj runtime.Object) error
@@ -157,7 +164,7 @@ func newHAFleet(t *testing.T, names ...string) *haFleet {
 	for _, name := range names {
 		backend := fake.NewClientBuilder().
 			WithScheme(scheme).
-			WithStatusSubresource(&appsv1.StatefulSet{}, &corev1.Pod{}, &mclv1alpha1.MultiClusterLease{}).
+			WithStatusSubresource(&appsv1.StatefulSet{}, &corev1.Pod{}, &mclv1alpha1.MultiClusterLease{}, &syncerv1alpha1.KRMSyncer{}).
 			Build()
 		c := fleet.addCluster(name, backend)
 		c.create(newConfigConnectorWithMCL(fleetLeaseName, fleetLeaseNamespace, name))
@@ -301,6 +308,7 @@ func (f *haFleet) step() {
 	for _, c := range f.clusters {
 		c.reportLease()
 		c.maintainSyncers()
+		c.reportSync()
 	}
 }
 
@@ -513,6 +521,60 @@ func (c *fleetCluster) maintainSyncers() {
 			if err := c.backend.Update(ctx, syncer); err != nil {
 				t.Fatalf("cluster %q: updating KRMSyncer %s: %v", c.name, name, err)
 			}
+		}
+	}
+}
+
+// fleetSyncFailure is what a syncer reports for a KRMSyncer that doesn't sync: the reason and
+// the message of its Ready condition, and the number of objects that fail.
+type fleetSyncFailure struct {
+	reason        string
+	message       string
+	failedObjects int32
+}
+
+// syncerReady returns the Ready condition that a working syncer reports for a KRMSyncer:
+// Suspended if spec.suspend is set, as on the leader, and Syncing otherwise.
+func syncerReady(syncer *syncerv1alpha1.KRMSyncer) metav1.Condition {
+	ready := metav1.Condition{
+		Type:               syncerv1alpha1.ConditionReady,
+		Status:             metav1.ConditionTrue,
+		Reason:             syncerv1alpha1.ReasonSyncing,
+		Message:            "Syncing resources",
+		ObservedGeneration: syncer.Generation,
+	}
+	if syncer.Spec.Suspend {
+		ready.Reason, ready.Message = syncerv1alpha1.ReasonSuspended, "Sync is suspended by spec.suspend"
+	}
+	return ready
+}
+
+// reportSync is the cluster's syncer: it reports, in the status of each KRMSyncer, the spec
+// that it has processed and whether it syncs.
+func (c *fleetCluster) reportSync() {
+	t := c.fleet.t
+	t.Helper()
+	if c.noSyncer {
+		return
+	}
+	for _, syncer := range c.syncers() {
+		ready := syncerReady(&syncer)
+		var failedObjects int32
+		if failure, failing := c.syncFailures[syncer.Name]; failing && !syncer.Spec.Suspend {
+			ready.Status, ready.Reason, ready.Message = metav1.ConditionFalse, failure.reason, failure.message
+			failedObjects = failure.failedObjects
+		}
+
+		status := syncer.Status.DeepCopy()
+		status.ObservedGeneration = syncer.Generation
+		status.FailedObjects = failedObjects
+		meta.SetStatusCondition(&status.Conditions, ready)
+		if reflect.DeepEqual(&syncer.Status, status) {
+			continue
+		}
+		syncer.Status = *status
+		if err := c.backend.Status().Update(context.Background(), &syncer); err != nil {
+			t.Fatalf("cluster %q: updating the status of KRMSyncer %s: %v", c.name, syncer.Name, err)
 		}
 	}
 }

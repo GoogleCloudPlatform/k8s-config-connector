@@ -275,6 +275,10 @@ func syncerReadyProblem(syncer syncerv1alpha1.KRMSyncer) string {
 	case ready.Status == metav1.ConditionTrue && ready.Reason == syncerv1alpha1.ReasonSyncing:
 		return ""
 	case ready.Reason == syncerv1alpha1.ReasonSyncFailed:
+		if syncer.Status.FailedObjects == 0 {
+			// No object has failed: the leader refuses to serve kinds, and the message names them.
+			return fmt.Sprintf("is failing to sync (%s): %s", ready.Reason, ready.Message)
+		}
 		return fmt.Sprintf("is failing to sync %d objects (%s): %s", syncer.Status.FailedObjects, ready.Reason, ready.Message)
 	default:
 		return fmt.Sprintf("is not syncing (%s): %s", ready.Reason, ready.Message)

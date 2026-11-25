@@ -385,6 +385,36 @@ func (c *failoverCluster) pendingSyncers(v *failoverView, leader *failoverCluste
 	return ""
 }
 
+// notSyncing returns why a KRMSyncer of the cluster's running managers doesn't report that it
+// syncs from the leader, or "" if they all report it. It reads the Ready condition that the
+// syncer writes, as `ha status` does. pendingSyncers only checks what the managers ask the
+// syncer for, and has to find nothing pending first.
+//
+// It is for a standby. The leader's KRMSyncers are suspended, so their condition says nothing
+// about whether the syncer works.
+func (c *failoverCluster) notSyncing(v *failoverView, leader *failoverCluster) string {
+	if !c.syncs || c == leader {
+		return ""
+	}
+	syncers := make(map[string]*syncerv1alpha1.KRMSyncer, len(v.syncers))
+	for i := range v.syncers {
+		syncers[v.syncers[i].Name] = &v.syncers[i]
+	}
+	for _, m := range v.managers {
+		if m.replicas() == 0 {
+			continue
+		}
+		syncer, found := syncers[c.syncerName(m)]
+		if !found {
+			continue
+		}
+		if problem := syncerReadyProblem(*syncer); problem != "" {
+			return fmt.Sprintf("KRMSyncer %s/%s %s", c.lease.Namespace, syncer.Name, problem)
+		}
+	}
+	return ""
+}
+
 // syncerName returns the name of the KRMSyncer that a manager maintains in the lease's
 // namespace: the lease's name in cluster mode, and <lease>-<namespace> for the manager of a
 // namespace in namespaced mode. It must match SyncerIntegration.getDesiredSyncers in
