@@ -72,17 +72,19 @@ func marshalAdmissionObject(t *testing.T, gvk k8sschema.GroupVersionKind, annota
 
 // Who may set, change, or clear spec.resourceID.
 //
-// A user may not. The controller manager may: it writes the generated ID there. The KRM syncer
-// of multi-cluster leader election (service account kcc-syncer in cnrm-system, installed by
-// `config-connector ha setup`) may too: on a standby cluster it copies the leader's
-// spec.resourceID, without which a standby that becomes the leader creates the resource again.
+// The controller manager is exempt. For any other caller (including a user or the KRM syncer
+// of multi-cluster leader election):
+//   - Setting spec.resourceID when previously missing is permitted for server-generated kinds, or
+//     for user-configured kinds when the value equals metadata.name.
+//   - Modifying or clearing an already-set spec.resourceID is forbidden for all kinds.
 func TestWhoMaySetServiceGeneratedResourceID(t *testing.T) {
 	handler := newTestImmutableFieldsHandler(t)
 
 	kinds := []struct {
-		name string
-		gvk  k8sschema.GroupVersionKind
-		spec map[string]interface{}
+		name              string
+		gvk               k8sschema.GroupVersionKind
+		spec              map[string]interface{}
+		isServerGenerated bool
 	}{
 		{
 			name: "DCL-based kind",
@@ -92,6 +94,7 @@ func TestWhoMaySetServiceGeneratedResourceID(t *testing.T) {
 				"filter":      "resource.metadata.name=has_substring(\"x\")",
 				"projectRef":  map[string]interface{}{"external": "projects/a-project"},
 			},
+			isServerGenerated: true,
 		},
 		{
 			name: "Terraform-based kind",
@@ -100,6 +103,7 @@ func TestWhoMaySetServiceGeneratedResourceID(t *testing.T) {
 				"type":   "email",
 				"labels": map[string]interface{}{"email_address": "nobody@example.com"},
 			},
+			isServerGenerated: true,
 		},
 		{
 			name: "LoggingLogMetric",
@@ -108,35 +112,39 @@ func TestWhoMaySetServiceGeneratedResourceID(t *testing.T) {
 				"description": "a metric",
 				"projectRef":  map[string]interface{}{"external": "projects/a-project"},
 			},
+			isServerGenerated: false,
 		},
 	}
 	users := []struct {
-		name     string
-		username string
-		allowed  bool
+		name         string
+		username     string
+		isController bool
 	}{
 		{"a user", "jane@example.com", false},
 		{"the controller manager", "system:serviceaccount:cnrm-system:cnrm-controller-manager", true},
 		{"the controller manager of a namespace", "system:serviceaccount:cnrm-system:cnrm-controller-manager-team-a", true},
-		{"the KRM syncer", "system:serviceaccount:cnrm-system:kcc-syncer", true},
-		// Only the syncer that `config-connector ha setup` installs, in cnrm-system.
+		{"the KRM syncer", "system:serviceaccount:cnrm-system:kcc-syncer", false},
 		{"a kcc-syncer service account in another namespace", "system:serviceaccount:team-a:kcc-syncer", false},
 		{"the MultiClusterLease controller", "system:serviceaccount:cnrm-system:kcc-mcl", false},
 	}
 	changes := []struct {
-		name  string
-		oldID interface{}
-		newID interface{}
+		name             string
+		oldID            interface{}
+		newID            interface{}
+		allowIfGenerated bool
+		allowAlways      bool
 	}{
-		{"set", nil, "1234567890"},
-		{"change", "1234567890", "9876543210"},
-		{"clear", "1234567890", nil},
+		{"set generated ID", nil, "1234567890", true, false},
+		{"set matching metadata.name", nil, "an-object", true, true},
+		{"change", "1234567890", "9876543210", false, false},
+		{"clear", "1234567890", nil, false, false},
 	}
 
 	for _, kind := range kinds {
 		for _, user := range users {
 			for _, change := range changes {
 				t.Run(kind.name+"/"+user.name+"/"+change.name, func(t *testing.T) {
+					wantAllowed := user.isController || change.allowAlways || (change.allowIfGenerated && kind.isServerGenerated)
 					specWithID := func(id interface{}) map[string]interface{} {
 						s := runtime.DeepCopyJSON(kind.spec)
 						if id != nil {
@@ -150,12 +158,12 @@ func TestWhoMaySetServiceGeneratedResourceID(t *testing.T) {
 						Object:    marshalAdmissionObject(t, kind.gvk, nil, specWithID(change.newID)),
 					}}
 					resp := handler.Handle(context.Background(), req)
-					if resp.Allowed != user.allowed {
+					if resp.Allowed != wantAllowed {
 						message := ""
 						if resp.Result != nil {
 							message = resp.Result.Message
 						}
-						t.Errorf("allowed: got %t, want %t (%s)", resp.Allowed, user.allowed, message)
+						t.Errorf("allowed: got %t, want %t (%s)", resp.Allowed, wantAllowed, message)
 					}
 				})
 			}

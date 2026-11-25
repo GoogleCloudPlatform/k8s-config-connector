@@ -102,9 +102,7 @@ func TestGetDesiredRules(t *testing.T) {
 	}
 
 	rules := si.getDesiredRules([]string{"tenant-a"})
-	// One rule: a second rule that matches the same objects would make the syncer remove and
-	// re-add spec.resourceID on every sync (it applies each rule with the same field manager).
-	if len(rules) != 1 {
+	if len(rules) != len(syncerGVKsWithServiceGeneratedIDs)+1 {
 		t.Fatalf("unexpected number of rules: %d", len(rules))
 	}
 
@@ -116,9 +114,6 @@ func TestGetDesiredRules(t *testing.T) {
 			nsList := ruleMap["namespaces"].([]interface{})
 			if len(nsList) != 1 || nsList[0] != "tenant-a" {
 				t.Errorf("expected namespaces [tenant-a], got %v", nsList)
-			}
-			if got, want := ruleMap["syncFields"], []interface{}{"status", "spec.resourceID"}; !reflect.DeepEqual(got, want) {
-				t.Errorf("syncFields: got %v, want %v", got, want)
 			}
 		}
 	}

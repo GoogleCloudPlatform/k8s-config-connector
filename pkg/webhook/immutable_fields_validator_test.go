@@ -1525,7 +1525,7 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			dclSchemaMap := make(map[string]*openapi.Schema)
 			dclSchemaMap[dclSchemaKey] = tc.schema
 			dclSchemaLoader := testdclschemaloader.New(dclSchemaMap)
-			actual := validateImmutableFieldsForDCLBasedResource(tc.obj, tc.oldObj, tc.spec, tc.oldSpec, dclSchemaLoader, smLoader, false)
+			actual := validateImmutableFieldsForDCLBasedResource(tc.obj, tc.oldObj, tc.spec, tc.oldSpec, dclSchemaLoader, smLoader)
 			if !testutil.Equals(t, actual, tc.response) {
 				t.Fatalf("got: %v, but want: %v", actual, tc.response)
 			}
@@ -1572,6 +1572,7 @@ func TestChangesOnImmutableLocationField(t *testing.T) {
 func TestChangesOnImmutableResourceIDField(t *testing.T) {
 	tests := []struct {
 		name           string
+		obj            *unstructured.Unstructured
 		spec           map[string]interface{}
 		oldSpec        map[string]interface{}
 		rc             *corekccv1alpha1.ResourceConfig
@@ -1606,13 +1607,106 @@ func TestChangesOnImmutableResourceIDField(t *testing.T) {
 			rc:             &corekccv1alpha1.ResourceConfig{},
 			expectedResult: false,
 		},
+		{
+			name: "missing to set matching metadata.name",
+			obj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"metadata": map[string]interface{}{
+						"name": "my-resource",
+					},
+				},
+			},
+			spec:    map[string]interface{}{k8s.ResourceIDFieldName: "my-resource"},
+			oldSpec: map[string]interface{}{},
+			rc: &corekccv1alpha1.ResourceConfig{
+				ResourceID: corekccv1alpha1.ResourceID{
+					TargetField: "test_field",
+				},
+			},
+			expectedResult: false,
+		},
+		{
+			name: "missing to set not matching metadata.name",
+			obj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"metadata": map[string]interface{}{
+						"name": "my-resource",
+					},
+				},
+			},
+			spec:    map[string]interface{}{k8s.ResourceIDFieldName: "different-resource"},
+			oldSpec: map[string]interface{}{},
+			rc: &corekccv1alpha1.ResourceConfig{
+				ResourceID: corekccv1alpha1.ResourceID{
+					TargetField: "test_field",
+				},
+			},
+			expectedResult: true,
+		},
+		{
+			name: "missing to set for server-generated ID",
+			obj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"metadata": map[string]interface{}{
+						"name": "my-resource",
+					},
+				},
+			},
+			spec:    map[string]interface{}{k8s.ResourceIDFieldName: "1234567890"},
+			oldSpec: map[string]interface{}{},
+			rc: &corekccv1alpha1.ResourceConfig{
+				ResourceID: corekccv1alpha1.ResourceID{
+					TargetField: "test_field",
+				},
+				ServerGeneratedIDField: "test_field",
+			},
+			expectedResult: false,
+		},
+		{
+			name: "value change blocked for server-generated ID",
+			obj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"metadata": map[string]interface{}{
+						"name": "my-resource",
+					},
+				},
+			},
+			spec:    map[string]interface{}{k8s.ResourceIDFieldName: "9876543210"},
+			oldSpec: map[string]interface{}{k8s.ResourceIDFieldName: "1234567890"},
+			rc: &corekccv1alpha1.ResourceConfig{
+				ResourceID: corekccv1alpha1.ResourceID{
+					TargetField: "test_field",
+				},
+				ServerGeneratedIDField: "test_field",
+			},
+			expectedResult: true,
+		},
+		{
+			name: "clearing blocked for server-generated ID",
+			obj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"metadata": map[string]interface{}{
+						"name": "my-resource",
+					},
+				},
+			},
+			spec:    map[string]interface{}{},
+			oldSpec: map[string]interface{}{k8s.ResourceIDFieldName: "1234567890"},
+			rc: &corekccv1alpha1.ResourceConfig{
+				ResourceID: corekccv1alpha1.ResourceID{
+					TargetField: "test_field",
+				},
+				ServerGeneratedIDField: "test_field",
+			},
+			expectedResult: true,
+		},
 	}
 
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			if got, want :=
-				findChangesOnImmutableResourceIDField(tc.spec, tc.oldSpec, tc.rc),
+				findChangesOnImmutableResourceIDField(tc.obj, tc.spec, tc.oldSpec, tc.rc),
 				tc.expectedResult; got != want {
 				t.Errorf("unexpected result finding changes on %q "+
 					"field: got %t, want %t", k8s.ResourceIDFieldPath, got, want)
@@ -2476,7 +2570,7 @@ func TestUpdateLogLoggingMetric(t *testing.T) {
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			actual := validateImmutableFieldsForLoggingLogMetricResource(tc.oldSpec, tc.spec, false)
+			actual := validateImmutableFieldsForLoggingLogMetricResource(nil, tc.oldSpec, tc.spec)
 			if !testutil.Equals(t, actual, tc.response) {
 				t.Fatalf("got: %v, but want: %v", actual, tc.response)
 			}
