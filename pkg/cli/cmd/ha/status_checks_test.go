@@ -64,18 +64,11 @@ type haFixtures []*haFixture
 
 func ptrInt32(v int32) *int32 { return &v }
 
-func healthyWorkloadObjects(leaseNamespace string) []runtime.Object {
-	role := &rbacv1.Role{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      managerHARoleName,
-			Namespace: leaseNamespace,
-			Labels:    map[string]string{manifestManagedByLabelKey: manifestManagedByLabelValue},
-		},
-	}
-	managerSts := &appsv1.StatefulSet{
+func newTestManagerSTS(namespace string) *appsv1.StatefulSet {
+	return &appsv1.StatefulSet{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "cnrm-controller-manager-system",
-			Namespace: leaseNamespace,
+			Namespace: namespace,
 			Labels:    map[string]string{operatork8s.KCCSystemComponentLabel: operatork8s.KCCControllerManagerComponent},
 		},
 		Spec: appsv1.StatefulSetSpec{
@@ -89,6 +82,17 @@ func healthyWorkloadObjects(leaseNamespace string) []runtime.Object {
 			ReadyReplicas: 1,
 		},
 	}
+}
+
+func healthyWorkloadObjects(leaseNamespace string) []runtime.Object {
+	role := &rbacv1.Role{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      managerHARoleName,
+			Namespace: leaseNamespace,
+			Labels:    map[string]string{manifestManagedByLabelKey: manifestManagedByLabelValue},
+		},
+	}
+	managerSts := newTestManagerSTS(leaseNamespace)
 	managerPod := &corev1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "cnrm-controller-manager-system-0",
@@ -504,6 +508,18 @@ func TestHAStatusProblems(t *testing.T) {
 				fs[1].lease = newTestLease(other, testRenewTime)
 			},
 			wantProblems: []string{
+				`the lease is held by "projects/other/locations/europe-west1/clusters/cluster-c", which is not one of the clusters in --contexts`,
+			},
+		},
+		{
+			name: "lease held by cluster not in --contexts and standby lease expired",
+			mutate: func(fs haFixtures) {
+				other := "projects/other/locations/europe-west1/clusters/cluster-c"
+				fs[0].lease = newTestLease(other, testRenewTime)
+				fs[1].lease = newTestLease(testIdentityA, "2026-11-10T18:05:00Z")
+			},
+			wantProblems: []string{
+				`cluster "gke_proj-b_us-east1_cluster-b": the lease held by "` + testIdentityA + `" has expired (last renewed at 2026-11-10T18:05:00Z, lease duration 15s)`,
 				`the lease is held by "projects/other/locations/europe-west1/clusters/cluster-c", which is not one of the clusters in --contexts`,
 			},
 		},

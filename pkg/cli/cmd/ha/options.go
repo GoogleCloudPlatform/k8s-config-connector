@@ -169,19 +169,14 @@ func (h *clusterHandle) describeUnavailablePods(ctx context.Context, deployment 
 	if err := h.client.List(ctx, pods, client.InNamespace(deployment.Namespace), client.MatchingLabels(deployment.Spec.Selector.MatchLabels)); err != nil {
 		return []string{fmt.Sprintf("listing its pods failed: %v", err)}
 	}
-	if len(pods.Items) == 0 {
+	return describeUnavailablePods(pods.Items)
+}
+
+func describeUnavailablePods(pods []corev1.Pod) []string {
+	if len(pods) == 0 {
 		return []string{"it has no pods"}
 	}
-
-	var details []string
-	for _, pod := range pods.Items {
-		for _, container := range pod.Status.ContainerStatuses {
-			if state := describeContainerState(container); state != "" {
-				details = append(details, fmt.Sprintf("pod %q container %q %s", pod.Name, container.Name, state))
-			}
-		}
-	}
-	return details
+	return describePodContainers(pods)
 }
 
 // newHAScheme constructs a runtime.Scheme registered with all API types needed by HA commands.

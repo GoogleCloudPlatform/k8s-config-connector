@@ -26,12 +26,15 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 type clusterWorkloads struct {
 	isHASetupManaged bool
+	roleForbiddenErr error
 	managers         []*managerWorkload
 	mcl              *deploymentWorkload
 	syncer           *deploymentWorkload
@@ -62,6 +65,9 @@ func fetchClusterWorkloads(ctx context.Context, h *clusterHandle, cc *operatorv1
 		}
 	case apierrors.IsNotFound(err):
 		cw.isHASetupManaged = false
+	case apierrors.IsForbidden(err):
+		cw.isHASetupManaged = false
+		cw.roleForbiddenErr = err
 	default:
 		return nil, err
 	}
@@ -71,14 +77,23 @@ func fetchClusterWorkloads(ctx context.Context, h *clusterHandle, cc *operatorv1
 	if err != nil {
 		return nil, err
 	}
+	managerPods := &corev1.PodList{}
+	podLabels := client.MatchingLabels{operatork8s.KCCSystemComponentLabel: operatork8s.KCCControllerManagerComponent}
+	if err := h.client.List(ctx, managerPods, podLabels); err != nil {
+		return nil, err
+	}
 	for _, m := range managers {
 		mw := &managerWorkload{sts: m}
 		if m.Spec.Selector != nil {
-			pods := &corev1.PodList{}
-			if err := h.client.List(ctx, pods, client.InNamespace(m.Namespace), client.MatchingLabels(m.Spec.Selector.MatchLabels)); err != nil {
+			selector, err := metav1.LabelSelectorAsSelector(m.Spec.Selector)
+			if err != nil {
 				return nil, err
 			}
-			mw.pods = pods.Items
+			for _, pod := range managerPods.Items {
+				if pod.Namespace == m.Namespace && selector.Matches(labels.Set(pod.Labels)) {
+					mw.pods = append(mw.pods, pod)
+				}
+			}
 		}
 		cw.managers = append(cw.managers, mw)
 	}
@@ -133,6 +148,10 @@ func (cw *clusterWorkloads) checkWorkloads(contextName string, state *clusterHAS
 	var problems []string
 	var warnings []string
 	mclSpec := multiClusterLeaseSpec(state.configConnector)
+
+	if cw.roleForbiddenErr != nil {
+		warnings = append(warnings, fmt.Sprintf("cluster %q: could not read Role %q in namespace %q: %v", contextName, managerHARoleName, mclSpec.Namespace, cw.roleForbiddenErr))
+	}
 
 	// Missing workloads check
 	if len(cw.managers) == 0 {
@@ -189,43 +208,17 @@ func (cw *clusterWorkloads) checkWorkloads(contextName string, state *clusterHAS
 
 	// Check 4 on MCL Deployment
 	if cw.mcl != nil {
-		d := cw.mcl.deployment
-		wantReplicas := int32(1)
-		if d.Spec.Replicas != nil {
-			wantReplicas = *d.Spec.Replicas
-		}
-		if wantReplicas == 0 {
-			problems = append(problems, fmt.Sprintf("cluster %q: Deployment %q is stopped: scaled to 0", contextName, d.Name))
-			reportedWorkloads[d] = true
-		} else if pending, done := deploymentRolloutStatus(d); !done {
-			details := describePodContainers(cw.mcl.pods)
-			msg := fmt.Sprintf("Deployment %q is not available: %s", d.Name, pending)
-			if len(details) > 0 {
-				msg = strings.Join(append([]string{msg}, details...), "; ")
-			}
-			problems = append(problems, fmt.Sprintf("cluster %q: %s", contextName, msg))
-			reportedWorkloads[d] = true
+		if prob, reported := checkDeployment(contextName, cw.mcl); reported {
+			problems = append(problems, prob)
+			reportedWorkloads[cw.mcl.deployment] = true
 		}
 	}
 
 	// Check 4 on Syncer Deployment
 	if cw.syncer != nil && replicationMode(mclSpec) != replicationModeDisabled {
-		d := cw.syncer.deployment
-		wantReplicas := int32(1)
-		if d.Spec.Replicas != nil {
-			wantReplicas = *d.Spec.Replicas
-		}
-		if wantReplicas == 0 {
-			problems = append(problems, fmt.Sprintf("cluster %q: Deployment %q is stopped: scaled to 0", contextName, d.Name))
-			reportedWorkloads[d] = true
-		} else if pending, done := deploymentRolloutStatus(d); !done {
-			details := describePodContainers(cw.syncer.pods)
-			msg := fmt.Sprintf("Deployment %q is not available: %s", d.Name, pending)
-			if len(details) > 0 {
-				msg = strings.Join(append([]string{msg}, details...), "; ")
-			}
-			problems = append(problems, fmt.Sprintf("cluster %q: %s", contextName, msg))
-			reportedWorkloads[d] = true
+		if prob, reported := checkDeployment(contextName, cw.syncer); reported {
+			problems = append(problems, prob)
+			reportedWorkloads[cw.syncer.deployment] = true
 		}
 	}
 
@@ -243,6 +236,29 @@ func (cw *clusterWorkloads) checkWorkloads(contextName string, state *clusterHAS
 	}
 
 	return problems, warnings
+}
+
+func checkDeployment(contextName string, dw *deploymentWorkload) (string, bool) {
+	if dw == nil {
+		return "", false
+	}
+	d := dw.deployment
+	wantReplicas := int32(1)
+	if d.Spec.Replicas != nil {
+		wantReplicas = *d.Spec.Replicas
+	}
+	if wantReplicas == 0 {
+		return fmt.Sprintf("cluster %q: Deployment %q is stopped: scaled to 0", contextName, d.Name), true
+	}
+	if pending, done := deploymentRolloutStatus(d); !done {
+		details := describeUnavailablePods(dw.pods)
+		msg := fmt.Sprintf("Deployment %q is not available: %s", d.Name, pending)
+		if len(details) > 0 {
+			msg = strings.Join(append([]string{msg}, details...), "; ")
+		}
+		return fmt.Sprintf("cluster %q: %s", contextName, msg), true
+	}
+	return "", false
 }
 
 func checkRestartedContainers(contextName string, pods []corev1.Pod, now time.Time) []string {

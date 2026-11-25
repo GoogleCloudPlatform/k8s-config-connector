@@ -15,8 +15,10 @@
 package ha
 
 import (
+	"bytes"
 	"context"
 	"errors"
+	"fmt"
 	"strings"
 	"testing"
 	"time"
@@ -25,8 +27,10 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -40,6 +44,18 @@ func (c *failingPodListClient) List(ctx context.Context, list client.ObjectList,
 		return c.err
 	}
 	return c.Client.List(ctx, list, opts...)
+}
+
+type roleErrorClient struct {
+	client.Client
+	err error
+}
+
+func (c *roleErrorClient) Get(ctx context.Context, key client.ObjectKey, obj client.Object, opts ...client.GetOption) error {
+	if _, ok := obj.(*rbacv1.Role); ok && key.Name == managerHARoleName {
+		return c.err
+	}
+	return c.Client.Get(ctx, key, obj, opts...)
 }
 
 func TestStatusWorkloadChecks(t *testing.T) {
@@ -635,6 +651,150 @@ func TestStatusWorkloadChecks(t *testing.T) {
 			wantState:    haStateHealthy,
 			wantProblems: nil,
 		},
+		{
+			name: "Role named cnrm-manager-ha without managed-by label treated as not set up by ha setup",
+			now:  testNow,
+			mutate: func(fs haFixtures) {
+				for _, obj := range fs[1].extraObjs {
+					if r, ok := obj.(*rbacv1.Role); ok && r.Name == managerHARoleName {
+						r.Labels = nil
+					}
+				}
+				// Remove MCL Deployment from cluster B
+				var filtered []runtime.Object
+				for _, obj := range fs[1].extraObjs {
+					if d, ok := obj.(*appsv1.Deployment); ok && d.Name == mclDeploymentName {
+						continue
+					}
+					filtered = append(filtered, obj)
+				}
+				fs[1].extraObjs = filtered
+			},
+			wantState:    haStateHealthy,
+			wantProblems: nil,
+			wantWarnings: []string{
+				`cluster "gke_proj-b_us-east1_cluster-b": Deployment "multiclusterlease-controller-manager" not found in namespace "cnrm-system"`,
+			},
+		},
+		{
+			name: "container running 1m with 0 restarts is healthy",
+			now:  testNow,
+			mutate: func(fs haFixtures) {
+				for _, obj := range fs[1].extraObjs {
+					if p, ok := obj.(*corev1.Pod); ok && p.Name == mclDeploymentName+"-pod" {
+						p.Status.ContainerStatuses = []corev1.ContainerStatus{
+							{
+								Name: "manager",
+								State: corev1.ContainerState{
+									Running: &corev1.ContainerStateRunning{
+										StartedAt: metav1.NewTime(testNow.Add(-1 * time.Minute)),
+									},
+								},
+								RestartCount: 0,
+							},
+						}
+					}
+				}
+			},
+			wantState:    haStateHealthy,
+			wantProblems: nil,
+			wantWarnings: nil,
+		},
+		{
+			name: "Syncer Deployment scaled to 0",
+			now:  testNow,
+			mutate: func(fs haFixtures) {
+				for _, obj := range fs[1].extraObjs {
+					if d, ok := obj.(*appsv1.Deployment); ok && d.Name == syncerDeploymentName {
+						d.Spec.Replicas = ptrInt32(0)
+					}
+				}
+			},
+			wantState: haStateError,
+			wantProblems: []string{
+				`cluster "gke_proj-b_us-east1_cluster-b": Deployment "syncer-controller-manager" is stopped: scaled to 0`,
+			},
+			wantWarnings: nil,
+		},
+		{
+			name: "Syncer Deployment unavailable with resourceReplicationMode Disabled is healthy",
+			now:  testNow,
+			mutate: func(fs haFixtures) {
+				for _, f := range fs {
+					f.cc.Spec.Experiments.MultiClusterLease.ResourceReplicationMode = replicationModeDisabled
+				}
+				for _, obj := range fs[1].extraObjs {
+					if d, ok := obj.(*appsv1.Deployment); ok && d.Name == syncerDeploymentName {
+						d.Status.AvailableReplicas = 0
+					}
+				}
+			},
+			wantState:    haStateHealthy,
+			wantProblems: nil,
+			wantWarnings: nil,
+		},
+		{
+			name: "MCL Deployment has no pods",
+			now:  testNow,
+			mutate: func(fs haFixtures) {
+				for _, obj := range fs[1].extraObjs {
+					if d, ok := obj.(*appsv1.Deployment); ok && d.Name == mclDeploymentName {
+						d.Status.AvailableReplicas = 0
+						d.Status.UpdatedReplicas = 0
+					}
+				}
+				var filtered []runtime.Object
+				for _, obj := range fs[1].extraObjs {
+					if p, ok := obj.(*corev1.Pod); ok && p.Name == mclDeploymentName+"-pod" {
+						continue
+					}
+					filtered = append(filtered, obj)
+				}
+				fs[1].extraObjs = filtered
+			},
+			wantState: haStateError,
+			wantProblems: []string{
+				`cluster "gke_proj-b_us-east1_cluster-b": Deployment "multiclusterlease-controller-manager" is not available: 0 of 1 pods run the latest spec; it has no pods`,
+			},
+			wantWarnings: nil,
+		},
+		{
+			name: "MCL Deployment: 0 of 1 available, container running 20s, 7 restarts (not duplicated by check 5)",
+			now:  testNow,
+			mutate: func(fs haFixtures) {
+				for _, obj := range fs[1].extraObjs {
+					if d, ok := obj.(*appsv1.Deployment); ok && d.Name == mclDeploymentName {
+						d.Status.AvailableReplicas = 0
+					}
+					if p, ok := obj.(*corev1.Pod); ok && p.Name == mclDeploymentName+"-pod" {
+						p.Status.ContainerStatuses = []corev1.ContainerStatus{
+							{
+								Name: "manager",
+								State: corev1.ContainerState{
+									Running: &corev1.ContainerStateRunning{
+										StartedAt: metav1.NewTime(testNow.Add(-20 * time.Second)),
+									},
+								},
+								RestartCount: 7,
+								LastTerminationState: corev1.ContainerState{
+									Terminated: &corev1.ContainerStateTerminated{
+										StartedAt:  metav1.NewTime(testNow.Add(-23 * time.Second)),
+										FinishedAt: metav1.NewTime(testNow.Add(-20 * time.Second)),
+										ExitCode:   1,
+										Reason:     "Error",
+									},
+								},
+							},
+						}
+					}
+				}
+			},
+			wantState: haStateError,
+			wantProblems: []string{
+				`cluster "gke_proj-b_us-east1_cluster-b": Deployment "multiclusterlease-controller-manager" is not available: 0 of 1 pods are available; pod "multiclusterlease-controller-manager-pod" container "manager" is running; 7 restarts; it last exited with code 1 (Error)`,
+			},
+			wantWarnings: nil,
+		},
 	}
 
 	for _, tc := range tests {
@@ -642,39 +802,101 @@ func TestStatusWorkloadChecks(t *testing.T) {
 			fs := healthyHAFixtures()
 			tc.mutate(fs)
 
+			var buf bytes.Buffer
 			report := executeStatus(context.Background(), fs.handlesWithPendingDeployments(t), tc.now)
+			report.render(&buf)
+			out := buf.String()
 
 			if report.state != tc.wantState {
-				t.Fatalf("got state %q, want %q; problems: %v", report.state, tc.wantState, report.problems)
+				t.Fatalf("got state %q, want %q; output:\n%s", report.state, tc.wantState, out)
 			}
-			if len(tc.wantProblems) == 0 && len(report.problems) > 0 {
-				t.Fatalf("expected no problems, got %v", report.problems)
+			if len(report.problems) != len(tc.wantProblems) {
+				t.Fatalf("got %d problems, want %d; output:\n%s", len(report.problems), len(tc.wantProblems), out)
 			}
-			for _, wantP := range tc.wantProblems {
-				found := false
-				for _, p := range report.problems {
-					if strings.Contains(p, wantP) {
-						found = true
-						break
+			for i, wantP := range tc.wantProblems {
+				if report.problems[i] != wantP {
+					t.Fatalf("problem %d: got %q, want %q", i, report.problems[i], wantP)
+				}
+			}
+			if len(report.warnings) != len(tc.wantWarnings) {
+				t.Fatalf("got %d warnings, want %d; output:\n%s", len(report.warnings), len(tc.wantWarnings), out)
+			}
+			for i, wantW := range tc.wantWarnings {
+				if report.warnings[i] != wantW {
+					t.Fatalf("warning %d: got %q, want %q", i, report.warnings[i], wantW)
+				}
+			}
+			if len(tc.wantWarnings) > 0 {
+				if !strings.Contains(out, "Warnings:\n") {
+					t.Fatalf("expected output to contain 'Warnings:\\n', got:\n%s", out)
+				}
+				if tc.wantState == haStateHealthy {
+					if !strings.Contains(out, "HA Status: HEALTHY\nWarnings:\n") {
+						t.Fatalf("expected output to contain 'HA Status: HEALTHY\\nWarnings:\\n', got:\n%s", out)
 					}
 				}
-				if !found {
-					t.Fatalf("expected problem containing %q, got problems:\n%s", wantP, strings.Join(report.problems, "\n"))
-				}
-			}
-			for _, wantW := range tc.wantWarnings {
-				found := false
-				for _, w := range report.warnings {
-					if strings.Contains(w, wantW) {
-						found = true
-						break
-					}
-				}
-				if !found {
-					t.Fatalf("expected warning containing %q, got warnings:\n%s", wantW, strings.Join(report.warnings, "\n"))
+			} else {
+				if strings.Contains(out, "Warnings:") {
+					t.Fatalf("expected output not to contain 'Warnings:', got:\n%s", out)
 				}
 			}
 		})
+	}
+}
+
+func TestStatusMarkerRoleForbidden(t *testing.T) {
+	fs := healthyHAFixtures()
+	handles := fs.handles(t)
+	// Inject a forbidden error on cluster B when reading manager-ha role
+	handles[1].client.Client = &roleErrorClient{
+		Client: handles[1].client.Client,
+		err:    apierrors.NewForbidden(schema.GroupResource{Group: "rbac.authorization.k8s.io", Resource: "roles"}, managerHARoleName, errors.New("forbidden")),
+	}
+
+	var buf bytes.Buffer
+	report := executeStatus(context.Background(), handles, testNow)
+	report.render(&buf)
+	out := buf.String()
+
+	if report.state != haStateHealthy {
+		t.Fatalf("got state %q, want %q; output:\n%s", report.state, haStateHealthy, out)
+	}
+	if len(report.problems) != 0 {
+		t.Fatalf("got %d problems, want 0; output:\n%s", len(report.problems), out)
+	}
+	wantWarning := fmt.Sprintf(`cluster %q: could not read Role %q in namespace %q: roles.rbac.authorization.k8s.io %q is forbidden: forbidden`,
+		testStatusContextB, managerHARoleName, "cnrm-system", managerHARoleName)
+	if len(report.warnings) != 1 || report.warnings[0] != wantWarning {
+		t.Fatalf("got warnings %v, want [%q]", report.warnings, wantWarning)
+	}
+	if !strings.Contains(out, "HA Status: HEALTHY\nWarnings:\n") {
+		t.Fatalf("expected rendered output to contain 'HA Status: HEALTHY\\nWarnings:\\n', got:\n%s", out)
+	}
+}
+
+func TestStatusMarkerRoleInternalError(t *testing.T) {
+	fs := healthyHAFixtures()
+	handles := fs.handles(t)
+	// Inject an internal error on cluster B when reading manager-ha role
+	handles[1].client.Client = &roleErrorClient{
+		Client: handles[1].client.Client,
+		err:    apierrors.NewInternalError(errors.New("internal server error")),
+	}
+
+	var buf bytes.Buffer
+	report := executeStatus(context.Background(), handles, testNow)
+	report.render(&buf)
+	out := buf.String()
+
+	if report.state != haStateError {
+		t.Fatalf("got state %q, want %q; output:\n%s", report.state, haStateError, out)
+	}
+	wantProblem := fmt.Sprintf(`cluster %q: could not read Config Connector's workloads: Internal error occurred: internal server error`, testStatusContextB)
+	if len(report.problems) != 1 || report.problems[0] != wantProblem {
+		t.Fatalf("got problems %v, want [%q]", report.problems, wantProblem)
+	}
+	if len(report.warnings) != 0 {
+		t.Fatalf("got %d warnings, want 0; output:\n%s", len(report.warnings), out)
 	}
 }
 

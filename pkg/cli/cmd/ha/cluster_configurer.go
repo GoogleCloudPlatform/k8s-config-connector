@@ -313,6 +313,8 @@ func describeContainerState(container corev1.ContainerStatus) string {
 		}
 	case container.State.Terminated != nil:
 		state = fmt.Sprintf("terminated: %s, exit code %d", container.State.Terminated.Reason, container.State.Terminated.ExitCode)
+	case container.State.Running != nil && container.RestartCount > 0:
+		state = fmt.Sprintf("is running; %d restarts", container.RestartCount)
 	default:
 		return ""
 	}
