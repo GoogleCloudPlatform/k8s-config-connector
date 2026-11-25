@@ -7,6 +7,8 @@
 # after the wildcard status-only rule. With --sync-mode=full this file is unused.
 #
 # Source: syncerGVKsWithServiceGeneratedIDs in KCC's
+# pkg/controller/kccmanager/syncer_exceptions.go, which lists every served
+# version of the kinds in
 # scripts/generate-google3-docs/resource-lists/generated/_resources-with-service-generated-resource-id.html
 # scripts/generate-google3-docs/resource-lists/generated/_v1alpha1-resources-with-service-generated-resource-id.html
 - group: accesscontextmanager.cnrm.cloud.google.com
@@ -17,6 +19,15 @@
   kind: AccessContextManagerGCPUserAccessBinding
 - group: aiplatform.cnrm.cloud.google.com
   version: v1alpha1
+  kind: AIPlatformBatchPredictionJob
+- group: aiplatform.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: AIPlatformCustomJob
+- group: aiplatform.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: AIPlatformNasJob
+- group: aiplatform.cnrm.cloud.google.com
+  version: v1alpha1
   kind: AIPlatformReasoningEngine
 - group: apigee.cnrm.cloud.google.com
   version: v1beta1
@@ -24,12 +35,36 @@
 - group: apikeys.cnrm.cloud.google.com
   version: v1alpha1
   kind: APIKeysKey
+- group: appengine.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: AppEngineDomainMapping
+- group: appengine.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: AppEngineFlexibleAppVersion
 - group: assuredworkloads.cnrm.cloud.google.com
   version: v1alpha1
   kind: AssuredWorkloadsWorkload
+- group: bigquerybiglake.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: BigLakeIcebergNamespace
+- group: bigqueryconnection.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: BigQueryConnectionConnection
+- group: bigqueryconnection.cnrm.cloud.google.com
+  version: v1beta1
+  kind: BigQueryConnectionConnection
+- group: bigquerydatatransfer.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: BigQueryDataTransferConfig
 - group: bigquerydatatransfer.cnrm.cloud.google.com
   version: v1beta1
   kind: BigQueryDataTransferConfig
+- group: bigqueryreservation.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: BigQueryReservationAssignment
+- group: bigqueryreservation.cnrm.cloud.google.com
+  version: v1beta1
+  kind: BigQueryReservationAssignment
 - group: billingbudgets.cnrm.cloud.google.com
   version: v1beta1
   kind: BillingBudgetsBudget
@@ -42,6 +77,9 @@
 - group: cloudasset.cnrm.cloud.google.com
   version: v1alpha1
   kind: CloudAssetProjectFeed
+- group: cloudbuild.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: CloudBuildBuild
 - group: cloudidentity.cnrm.cloud.google.com
   version: v1beta1
   kind: CloudIdentityGroup
@@ -51,12 +89,24 @@
 - group: cloudnumberregistry.cnrm.cloud.google.com
   version: v1alpha1
   kind: CloudNumberRegistryRegistryBook
+- group: composer.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: ComposerUserWorkloadsSecret
 - group: compute.cnrm.cloud.google.com
   version: v1beta1
   kind: ComputeFirewallPolicy
+- group: compute.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: ComputeOrganizationSecurityPolicy
+- group: connectors.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: ConnectorsConnection
 - group: containeranalysis.cnrm.cloud.google.com
   version: v1alpha1
   kind: ContainerAnalysisOccurrence
+- group: contentwarehouse.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: ContentWarehouseDocumentSchema
 - group: datacatalog.cnrm.cloud.google.com
   version: v1alpha1
   kind: DataCatalogEntry
@@ -75,18 +125,27 @@
 - group: datacatalog.cnrm.cloud.google.com
   version: v1beta1
   kind: DataCatalogTaxonomy
-- group: datalabeling.cnrm.cloud.google.com
+- group: dataplex.cnrm.cloud.google.com
   version: v1alpha1
-  kind: DataLabelingInstruction
+  kind: DataplexEntity
+- group: dataplex.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: DataplexPartition
 - group: dataproc.cnrm.cloud.google.com
   version: v1alpha1
   kind: DataprocJob
 - group: datastore.cnrm.cloud.google.com
   version: v1alpha1
   kind: DatastoreIndex
+- group: devicestreaming.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: DeviceStreamingSession
 - group: dialogflow.cnrm.cloud.google.com
   version: v1alpha1
   kind: DialogflowConversationDataset
+- group: dialogflow.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: DialogflowConversationProfile
 - group: dialogflow.cnrm.cloud.google.com
   version: v1alpha1
   kind: DialogflowEntityType
@@ -95,7 +154,13 @@
   kind: DialogflowFulfillment
 - group: dialogflow.cnrm.cloud.google.com
   version: v1alpha1
+  kind: DialogflowGeneratorEvaluation
+- group: dialogflow.cnrm.cloud.google.com
+  version: v1alpha1
   kind: DialogflowIntent
+- group: dialogflow.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: DialogflowPlaybook
 - group: dialogflowcx.cnrm.cloud.google.com
   version: v1alpha1
   kind: DialogflowCXAgent
@@ -133,8 +198,14 @@
   version: v1alpha1
   kind: DocumentAIProcessor
 - group: documentai.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: DocumentAIProcessorVersion
+- group: documentai.cnrm.cloud.google.com
   version: v1beta1
   kind: DocumentAIProcessorVersion
+- group: essentialcontacts.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: EssentialContactsContact
 - group: essentialcontacts.cnrm.cloud.google.com
   version: v1beta1
   kind: EssentialContactsContact
@@ -160,6 +231,9 @@
   version: v1alpha1
   kind: KMSCryptoKeyVersion
 - group: kms.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: KMSKeyHandle
+- group: kms.cnrm.cloud.google.com
   version: v1beta1
   kind: KMSKeyHandle
 - group: kms.cnrm.cloud.google.com
@@ -170,9 +244,6 @@
   kind: KMSSecretCiphertext
 - group: mapmanagement.cnrm.cloud.google.com
   version: v1alpha1
-  kind: MapManagementMapConfig
-- group: mapmanagement.cnrm.cloud.google.com
-  version: v1alpha1
   kind: MapManagementStyleConfig
 - group: migrationcenter.cnrm.cloud.google.com
   version: v1alpha1
@@ -180,6 +251,9 @@
 - group: migrationcenter.cnrm.cloud.google.com
   version: v1alpha1
   kind: MigrationCenterPreferenceSet
+- group: migrationcenter.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: MigrationCenterSource
 - group: monitoring.cnrm.cloud.google.com
   version: v1beta1
   kind: MonitoringAlertPolicy
@@ -201,9 +275,6 @@
 - group: oslogin.cnrm.cloud.google.com
   version: v1alpha1
   kind: OSLoginSSHPublicKey
-- group: rapidmigrationassessment.cnrm.cloud.google.com
-  version: v1alpha1
-  kind: RapidMigrationAssessmentCollector
 - group: recaptchaenterprise.cnrm.cloud.google.com
   version: v1alpha1
   kind: ReCAPTCHAEnterpriseFirewallPolicy
@@ -216,6 +287,9 @@
 - group: resourcemanager.cnrm.cloud.google.com
   version: v1beta1
   kind: ResourceManagerLien
+- group: resourcemanager.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: ResourceManagerTagHold
 - group: secretmanager.cnrm.cloud.google.com
   version: v1beta1
   kind: SecretManagerSecretVersion
@@ -228,6 +302,9 @@
 - group: serviceusage.cnrm.cloud.google.com
   version: v1alpha1
   kind: ServiceUsageConsumerQuotaOverride
+- group: sqladmin.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: SQLAdminBackup
 - group: sql.cnrm.cloud.google.com
   version: v1beta1
   kind: SQLSSLCert
@@ -237,11 +314,17 @@
 - group: storage.cnrm.cloud.google.com
   version: v1beta1
   kind: StorageNotification
+- group: storageinsights.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: StorageInsightsReportConfig
 - group: storagetransfer.cnrm.cloud.google.com
   version: v1beta1
   kind: StorageTransferJob
 - group: tags.cnrm.cloud.google.com
   version: v1alpha1
+  kind: TagsLocationTagBinding
+- group: tags.cnrm.cloud.google.com
+  version: v1beta1
   kind: TagsLocationTagBinding
 - group: tags.cnrm.cloud.google.com
   version: v1beta1
@@ -253,8 +336,14 @@
   version: v1beta1
   kind: TagsTagValue
 - group: vertexai.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: VertexAIDataset
+- group: vertexai.cnrm.cloud.google.com
   version: v1beta1
   kind: VertexAIDataset
+- group: vertexai.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: VertexAIIndex
 - group: vertexai.cnrm.cloud.google.com
   version: v1beta1
   kind: VertexAIIndex
@@ -267,6 +356,9 @@
 - group: vmmigration.cnrm.cloud.google.com
   version: v1alpha1
   kind: VMMigrationGroup
+- group: websecurityscanner.cnrm.cloud.google.com
+  version: v1alpha1
+  kind: WebSecurityScannerScanConfig
 - group: workflowexecutions.cnrm.cloud.google.com
   version: v1alpha1
   kind: WorkflowsExecution
