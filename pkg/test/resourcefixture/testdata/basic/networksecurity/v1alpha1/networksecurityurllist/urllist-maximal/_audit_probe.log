@@ -1,0 +1,17 @@
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/urlLists/urllist-max-${uniqueId}
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated URL list maximal test",
+  "name": "projects/${projectId}/locations/us-central1/urlLists/urllist-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "values": [
+    "google.com",
+    "github.com",
+    "gitlab.com"
+  ]
+}
