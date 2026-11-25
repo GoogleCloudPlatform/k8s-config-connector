@@ -136,6 +136,15 @@
   - `untriaged-bulk-generation`: Resolved with resolution `edited`.
   - Updated golden exceptions in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 
+### [2026-11-25] Greenfield Step 2: Implement direct controller, fuzzer, and E2E fixtures for DesignCenterApplicationTemplate
+- **Context**: Greenfield implementation of direct controller, round-trip fuzzer, and real-GCP recorded E2E fixtures for `DesignCenterApplicationTemplate` (`designcenter.cnrm.cloud.google.com/v1alpha1`, Issue #16450).
+- **Resolutions & Findings**:
+  - **Controller and Fuzzer**: Generated using `controllerbuilder generate-controller` and `generate-fuzzer --prepopulate-resource`. The controller registers with `static_config.go` and uses the standard REST GAPIC client with `NormalizeGreenfieldReferences` and `CompareGreenfieldSpec`.
+  - **Fixtures & Golden Logs**: Created `designcenterapplicationtemplate-minimal` and `designcenterapplicationtemplate-maximal` fixtures under parent `DesignCenterSpace` (`projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}`). Recorded against real GCP (`cnrm-barni-4`) using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`.
+  - **Lifecycle & Updates**: Verified Create, Update (`displayName`, `description`), and Delete phases against real GCP, passing all 7/7 HTTP report validation checks and re-reconciliation testing.
+  - **Validation**: 200-seed focused round-trip fuzzer (`TestFocusedMappers/DesignCenterApplicationTemplate`), CRD field presence checks, and presubmit unit tests all passed cleanly.
+
+
 
 
 
