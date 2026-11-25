@@ -515,6 +515,7 @@ func unmarshalDynamicJSON(reg *descriptorRegistry, msgDesc protoreflect.MessageD
 	switch msgDesc.FullName() {
 	case "google.cloud.orchestration.airflow.service.v1.Environment",
 		"google.cloud.dataform.v1.WorkflowConfig",
+		"google.cloud.contactcenterinsights.v1.Conversation",
 		"google.cloud.contactcenterinsights.v1.QaScorecardRevision",
 		"google.cloud.contactcenterinsights.v1.ListQaScorecardRevisionsResponse",
 		"google.cloud.deploy.v1.Release",

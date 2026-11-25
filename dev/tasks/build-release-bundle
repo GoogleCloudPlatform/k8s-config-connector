@@ -122,7 +122,6 @@ BLOCKED_KINDS=(
     "BigQueryMigrationWorkflow"
     "BinaryAuthorizationPlatformPolicy"
     "BlockchainNodeEngineBlockchainNode"
-    "CCInsightsConversation"
     "CCInsightsIssueModel"
     "CCInsightsQaQuestion"
     "CertificateManagerTrustConfig"

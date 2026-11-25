@@ -633,6 +633,12 @@ func jsonContainsExpected(actual, expected any) bool {
 				stripped := normalizeKey(strings.TrimSuffix(k, "Ref"))
 				aVal, exists = aNorm[stripped]
 			}
+			if !exists && strings.HasSuffix(nk, "s") {
+				aVal, exists = aNorm[strings.TrimSuffix(nk, "s")]
+			}
+			if !exists {
+				aVal, exists = aNorm[nk+"s"]
+			}
 			if !exists {
 				if isOmissibleEmptyCollection(eVal) || isZeroOrEmptyValue(eVal) {
 					continue
@@ -653,16 +659,27 @@ func jsonContainsExpected(actual, expected any) bool {
 		return true
 	}
 	if aSlice, aOk := actual.([]any); aOk {
-		eSlice, eOk := expected.([]any)
-		if !eOk || len(aSlice) != len(eSlice) {
-			return false
-		}
-		for i := range aSlice {
-			if !jsonContainsExpected(aSlice[i], eSlice[i]) {
+		if eSlice, eOk := expected.([]any); eOk {
+			if len(aSlice) != len(eSlice) {
 				return false
 			}
+			for i := range aSlice {
+				if !jsonContainsExpected(aSlice[i], eSlice[i]) {
+					return false
+				}
+			}
+			return true
 		}
-		return true
+		if len(aSlice) == 1 {
+			return jsonContainsExpected(aSlice[0], expected)
+		}
+		return false
+	}
+	if eSlice, eOk := expected.([]any); eOk {
+		if len(eSlice) == 1 {
+			return jsonContainsExpected(actual, eSlice[0])
+		}
+		return false
 	}
 	if isNumericValue(actual) && isEnumLikeString(expected) {
 		return true
@@ -963,6 +980,18 @@ func jsonValuesEquivalent(a, b any) bool {
 					exists = true
 				}
 			}
+			if !exists && strings.HasSuffix(k, "s") {
+				if v, ok := bNorm[strings.TrimSuffix(k, "s")]; ok {
+					bVal = v
+					exists = true
+				}
+			}
+			if !exists {
+				if v, ok := bNorm[k+"s"]; ok {
+					bVal = v
+					exists = true
+				}
+			}
 			if !exists {
 				if isOmissibleEmptyCollection(aVal) {
 					continue
@@ -981,6 +1010,12 @@ func jsonValuesEquivalent(a, b any) bool {
 				if _, ok := aNorm[strings.TrimSuffix(k, "ref")]; ok {
 					exists = true
 				}
+			} else if strings.HasSuffix(k, "s") {
+				if _, ok := aNorm[strings.TrimSuffix(k, "s")]; ok {
+					exists = true
+				}
+			} else if _, ok := aNorm[k+"s"]; ok {
+				exists = true
 			}
 			if !exists {
 				if isOmissibleEmptyCollection(bVal) {
@@ -992,15 +1027,32 @@ func jsonValuesEquivalent(a, b any) bool {
 		return true
 	}
 	if aSlice, aOk := a.([]any); aOk {
-		bSlice, bOk := b.([]any)
-		if !bOk || len(aSlice) != len(bSlice) {
-			return false
-		}
-		for i := range aSlice {
-			if !jsonValuesEquivalent(aSlice[i], bSlice[i]) {
+		if bSlice, bOk := b.([]any); bOk {
+			if len(aSlice) != len(bSlice) {
 				return false
 			}
+			for i := range aSlice {
+				if !jsonValuesEquivalent(aSlice[i], bSlice[i]) {
+					return false
+				}
+			}
+			return true
 		}
+		if len(aSlice) == 1 {
+			return jsonValuesEquivalent(aSlice[0], b)
+		}
+		return false
+	}
+	if bSlice, bOk := b.([]any); bOk {
+		if len(bSlice) == 1 {
+			return jsonValuesEquivalent(a, bSlice[0])
+		}
+		return false
+	}
+	if isNumericValue(a) && isEnumLikeString(b) {
+		return true
+	}
+	if isNumericValue(b) && isEnumLikeString(a) {
 		return true
 	}
 	return fmt.Sprintf("%v", a) == fmt.Sprintf("%v", b)
