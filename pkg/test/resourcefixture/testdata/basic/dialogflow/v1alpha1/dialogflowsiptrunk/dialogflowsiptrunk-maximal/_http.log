@@ -1,35 +1,4 @@
-GET https://dialogflow.googleapis.com/v2beta1/projects/${projectId}/locations/global/sipTrunks/dialogflowsiptrunk-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FsipTrunks%2Fdialogflowsiptrunk-${uniqueId}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "sipTrunk \"projects/${projectId}/locations/global/sipTrunks/dialogflowsiptrunk-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "sipTrunk \"projects/${projectId}/locations/global/sipTrunks/dialogflowsiptrunk-${uniqueId}\" not found",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
+# Phase: CREATE
 POST https://dialogflow.googleapis.com/v2beta1/projects/${projectId}/locations/global/sipTrunks?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -40,8 +9,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
   "expectedHostname": [
     "sip1.example.com",
     "sip2.example.com"
-  ],
-  "name": "projects/${projectId}/locations/global/sipTrunks/dialogflowsiptrunk-${uniqueId}"
+  ]
 }
 
 200 OK
@@ -55,26 +23,29 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "connections": [
-    {
-      "connectionId": "connection-1",
-      "state": 1
-    }
-  ],
   "displayName": "Maximal SIP Trunk",
   "expectedHostname": [
     "sip1.example.com",
     "sip2.example.com"
   ],
-  "name": "projects/${projectId}/locations/global/sipTrunks/dialogflowsiptrunk-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/sipTrunks/${sipTrunkID}",
+  "peerHostnames": [
+    {
+      "peerHostname": "sip1.example.com"
+    },
+    {
+      "peerHostname": "sip2.example.com"
+    }
+  ]
 }
 
 ---
 
-GET https://dialogflow.googleapis.com/v2beta1/projects/${projectId}/locations/global/sipTrunks/dialogflowsiptrunk-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+# Phase: UPDATE
+GET https://dialogflow.googleapis.com/v2beta1/projects/${projectId}/locations/global/sipTrunks/${sipTrunkID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FsipTrunks%2Fdialogflowsiptrunk-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FsipTrunks%2F${sipTrunkID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -87,40 +58,44 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "connections": [
-    {
-      "connectionId": "connection-1",
-      "state": 1
-    }
-  ],
   "displayName": "Maximal SIP Trunk",
   "expectedHostname": [
     "sip1.example.com",
     "sip2.example.com"
   ],
-  "name": "projects/${projectId}/locations/global/sipTrunks/dialogflowsiptrunk-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/sipTrunks/${sipTrunkID}",
+  "peerHostnames": [
+    {
+      "peerHostname": "sip1.example.com"
+    },
+    {
+      "peerHostname": "sip2.example.com"
+    }
+  ]
 }
 
 ---
 
-PATCH https://dialogflow.googleapis.com/v2beta1/projects/${projectId}/locations/global/sipTrunks/dialogflowsiptrunk-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2CexpectedHostname
+PATCH https://dialogflow.googleapis.com/v2beta1/projects/${projectId}/locations/global/sipTrunks/${sipTrunkID}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2CexpectedHostname
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: sip_trunk.name=projects%2F${projectId}%2Flocations%2Fglobal%2FsipTrunks%2Fdialogflowsiptrunk-${uniqueId}
+X-Goog-Request-Params: sip_trunk.name=projects%2F${projectId}%2Flocations%2Fglobal%2FsipTrunks%2F${sipTrunkID}
 
 {
-  "connections": [
-    {
-      "connectionId": "connection-1",
-      "state": 1
-    }
-  ],
   "displayName": "Updated SIP Trunk",
   "expectedHostname": [
     "updated-sip1.example.com",
     "updated-sip2.example.com"
   ],
-  "name": "projects/${projectId}/locations/global/sipTrunks/dialogflowsiptrunk-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/sipTrunks/${sipTrunkID}",
+  "peerHostnames": [
+    {
+      "peerHostname": "sip1.example.com"
+    },
+    {
+      "peerHostname": "sip2.example.com"
+    }
+  ]
 }
 
 200 OK
@@ -134,26 +109,29 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "connections": [
-    {
-      "connectionId": "connection-1",
-      "state": 1
-    }
-  ],
   "displayName": "Updated SIP Trunk",
   "expectedHostname": [
     "updated-sip1.example.com",
     "updated-sip2.example.com"
   ],
-  "name": "projects/${projectId}/locations/global/sipTrunks/dialogflowsiptrunk-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/sipTrunks/${sipTrunkID}",
+  "peerHostnames": [
+    {
+      "peerHostname": "updated-sip1.example.com"
+    },
+    {
+      "peerHostname": "updated-sip2.example.com"
+    }
+  ]
 }
 
 ---
 
-GET https://dialogflow.googleapis.com/v2beta1/projects/${projectId}/locations/global/sipTrunks/dialogflowsiptrunk-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+# Phase: DELETE
+GET https://dialogflow.googleapis.com/v2beta1/projects/${projectId}/locations/global/sipTrunks/${sipTrunkID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FsipTrunks%2Fdialogflowsiptrunk-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FsipTrunks%2F${sipTrunkID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -166,26 +144,28 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "connections": [
-    {
-      "connectionId": "connection-1",
-      "state": 1
-    }
-  ],
   "displayName": "Updated SIP Trunk",
   "expectedHostname": [
     "updated-sip1.example.com",
     "updated-sip2.example.com"
   ],
-  "name": "projects/${projectId}/locations/global/sipTrunks/dialogflowsiptrunk-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/sipTrunks/${sipTrunkID}",
+  "peerHostnames": [
+    {
+      "peerHostname": "updated-sip1.example.com"
+    },
+    {
+      "peerHostname": "updated-sip2.example.com"
+    }
+  ]
 }
 
 ---
 
-DELETE https://dialogflow.googleapis.com/v2beta1/projects/${projectId}/locations/global/sipTrunks/dialogflowsiptrunk-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://dialogflow.googleapis.com/v2beta1/projects/${projectId}/locations/global/sipTrunks/${sipTrunkID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FsipTrunks%2Fdialogflowsiptrunk-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FsipTrunks%2F${sipTrunkID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

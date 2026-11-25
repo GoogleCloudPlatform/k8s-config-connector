@@ -24,9 +24,6 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/global/sipTrunks/dialogflowsiptrunk-${uniqueId}
+  externalRef: projects/${projectId}/locations/global/sipTrunks/${sipTrunkID}
   observedGeneration: 2
-  observedState:
-    connections:
-    - connectionID: connection-1
-      state: CONNECTED
+  observedState: {}

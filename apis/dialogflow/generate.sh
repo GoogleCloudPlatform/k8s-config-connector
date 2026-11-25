@@ -31,6 +31,10 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
+PROTO_SHA="e7513c828b8db536fa12fc5493d541f323aedf90"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
@@ -49,6 +53,7 @@ ${CONTROLLERBUILDER} generate-types \
 mv ${REPO_ROOT}/apis/dialogflow/v1alpha1/types.generated.go ${REPO_ROOT}/apis/dialogflow/v1alpha1/securitysettings_types.generated.go
 
 ${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.dialogflow.v2beta1 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --resource DialogflowSipTrunk:SipTrunk
@@ -90,7 +95,7 @@ ${CONTROLLERBUILDER} generate-identity \
   --pattern DialogflowConversationProfile=projects/{project}/locations/{location}/conversationProfiles/{conversationProfile}
 
 ${CONTROLLERBUILDER} generate-types \
-  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource \
@@ -98,14 +103,14 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DialogflowGeneratorEvaluation:GeneratorEvaluation
 
 ${CONTROLLERBUILDER} generate-identity \
-  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --resource DialogflowCompanionAgent:CompanionAgent \
   --resource DialogflowGeneratorEvaluation:GeneratorEvaluation
 
 ${CONTROLLERBUILDER} generate-types \
-  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.dialogflow.cx.v3 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource \
@@ -116,7 +121,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DialogflowPage:Page
 
 ${CONTROLLERBUILDER} generate-identity \
-  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.dialogflow.cx.v3 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --resource DialogflowEnvironment:Environment \
@@ -132,6 +137,7 @@ ${CONTROLLERBUILDER} generate-mapper \
   --prepopulate-resource
 
 ${CONTROLLERBUILDER} generate-mapper \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.dialogflow.v2beta1 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --output-dir "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk"

@@ -15,7 +15,12 @@
 package v1alpha1
 
 import (
+	"context"
+	"strings"
 	"testing"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func TestDialogflowSipTrunkIdentity_FromExternal(t *testing.T) {
@@ -68,6 +73,149 @@ func TestDialogflowSipTrunkIdentity_FromExternal(t *testing.T) {
 				if i.Siptrunk != tt.want.Siptrunk {
 					t.Errorf("Siptrunk = %v, want %v", i.Siptrunk, tt.want.Siptrunk)
 				}
+			}
+		})
+	}
+}
+
+func TestDialogflowSipTrunk_GetIdentity(t *testing.T) {
+	ctx := context.Background()
+
+	tests := []struct {
+		name        string
+		obj         *DialogflowSipTrunk
+		wantID      *DialogflowSipTrunkIdentity
+		wantErr     bool
+		errContains string
+	}{
+		{
+			name: "spec identity without resourceID (server-generated ID before create)",
+			obj: &DialogflowSipTrunk{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "test-trunk",
+					Namespace: "default",
+					Annotations: map[string]string{
+						"cnrm.cloud.google.com/project-id": "my-project",
+					},
+				},
+				Spec: DialogflowSipTrunkSpec{
+					Location: direct.PtrTo("global"),
+				},
+			},
+			wantID: &DialogflowSipTrunkIdentity{
+				Project:  "my-project",
+				Location: "global",
+				Siptrunk: "",
+			},
+		},
+		{
+			name: "spec identity without resourceID, status has server-generated ID",
+			obj: &DialogflowSipTrunk{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "test-trunk",
+					Namespace: "default",
+					Annotations: map[string]string{
+						"cnrm.cloud.google.com/project-id": "my-project",
+					},
+				},
+				Spec: DialogflowSipTrunkSpec{
+					Location: direct.PtrTo("global"),
+				},
+				Status: DialogflowSipTrunkStatus{
+					ExternalRef: direct.PtrTo("projects/my-project/locations/global/sipTrunks/server-gen-123"),
+				},
+			},
+			wantID: &DialogflowSipTrunkIdentity{
+				Project:  "my-project",
+				Location: "global",
+				Siptrunk: "server-gen-123",
+			},
+		},
+		{
+			name: "spec identity with resourceID, matches status",
+			obj: &DialogflowSipTrunk{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "test-trunk",
+					Namespace: "default",
+					Annotations: map[string]string{
+						"cnrm.cloud.google.com/project-id": "my-project",
+					},
+				},
+				Spec: DialogflowSipTrunkSpec{
+					Location:   direct.PtrTo("global"),
+					ResourceID: direct.PtrTo("my-id"),
+				},
+				Status: DialogflowSipTrunkStatus{
+					ExternalRef: direct.PtrTo("projects/my-project/locations/global/sipTrunks/my-id"),
+				},
+			},
+			wantID: &DialogflowSipTrunkIdentity{
+				Project:  "my-project",
+				Location: "global",
+				Siptrunk: "my-id",
+			},
+		},
+		{
+			name: "spec identity with resourceID, mismatches status",
+			obj: &DialogflowSipTrunk{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "test-trunk",
+					Namespace: "default",
+					Annotations: map[string]string{
+						"cnrm.cloud.google.com/project-id": "my-project",
+					},
+				},
+				Spec: DialogflowSipTrunkSpec{
+					Location:   direct.PtrTo("global"),
+					ResourceID: direct.PtrTo("new-id"),
+				},
+				Status: DialogflowSipTrunkStatus{
+					ExternalRef: direct.PtrTo("projects/my-project/locations/global/sipTrunks/old-id"),
+				},
+			},
+			wantErr:     true,
+			errContains: "cannot change DialogflowSipTrunk identity",
+		},
+		{
+			name: "status parent project mismatches spec parent project",
+			obj: &DialogflowSipTrunk{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "test-trunk",
+					Namespace: "default",
+					Annotations: map[string]string{
+						"cnrm.cloud.google.com/project-id": "my-project-2",
+					},
+				},
+				Spec: DialogflowSipTrunkSpec{
+					Location: direct.PtrTo("global"),
+				},
+				Status: DialogflowSipTrunkStatus{
+					ExternalRef: direct.PtrTo("projects/my-project-1/locations/global/sipTrunks/server-gen-123"),
+				},
+			},
+			wantErr:     true,
+			errContains: "cannot change DialogflowSipTrunk parent project",
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			id, err := tc.obj.GetIdentity(ctx, nil)
+			if tc.wantErr {
+				if err == nil {
+					t.Fatalf("expected error, got nil")
+				}
+				if tc.errContains != "" && !strings.Contains(err.Error(), tc.errContains) {
+					t.Fatalf("expected error to contain %q, got %q", tc.errContains, err.Error())
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			gotID := id.(*DialogflowSipTrunkIdentity)
+			if *gotID != *tc.wantID {
+				t.Fatalf("expected identity %+v, got %+v", tc.wantID, gotID)
 			}
 		})
 	}

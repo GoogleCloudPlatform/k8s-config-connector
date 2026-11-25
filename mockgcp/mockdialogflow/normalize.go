@@ -65,5 +65,14 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 				}
 			}
 		}
+		if path == ".name" && strings.Contains(value, "/sipTrunks/") {
+			tokens := strings.Split(value, "/")
+			for i := 0; i < len(tokens)-1; i++ {
+				if tokens[i] == "sipTrunks" {
+					sipTrunkID := tokens[i+1]
+					replacements.ReplaceStringValue(sipTrunkID, "${sipTrunkID}")
+				}
+			}
+		}
 	})
 }

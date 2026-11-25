@@ -181,7 +181,6 @@ BLOCKED_KINDS=(
     "DialogflowFlow"
     "DialogflowPage"
     "DialogflowSecuritySettings"
-    "DialogflowSipTrunk"
     "DialogflowTool"
     "DialogflowTransitionRouteGroup"
     "DialogflowWebhook"

@@ -62,10 +62,7 @@ func (i *DialogflowSipTrunkIdentity) Host() string {
 }
 
 func getIdentityFromDialogflowSipTrunkSpec(ctx context.Context, reader client.Reader, obj *DialogflowSipTrunk) (*DialogflowSipTrunkIdentity, error) {
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
 	location, err := refs.GetLocation(obj)
 	if err != nil {
@@ -98,6 +95,16 @@ func (obj *DialogflowSipTrunk) GetIdentity(ctx context.Context, reader client.Re
 		statusIdentity := &DialogflowSipTrunkIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
+		}
+
+		if specIdentity.Siptrunk == "" {
+			if statusIdentity.Project != specIdentity.Project {
+				return nil, fmt.Errorf("cannot change DialogflowSipTrunk parent project (old=%q, new=%q)", statusIdentity.Project, specIdentity.Project)
+			}
+			if statusIdentity.Location != specIdentity.Location {
+				return nil, fmt.Errorf("cannot change DialogflowSipTrunk location (old=%q, new=%q)", statusIdentity.Location, specIdentity.Location)
+			}
+			return statusIdentity, nil
 		}
 
 		if statusIdentity.String() != specIdentity.String() {
