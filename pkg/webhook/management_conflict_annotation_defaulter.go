@@ -22,6 +22,7 @@ import (
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/managementconflict"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 
@@ -38,6 +39,7 @@ import (
 
 type managementConflictAnnotationDefaulter struct {
 	client                client.Client
+	reader                client.Reader
 	dclSchemaLoader       dclschemaloader.DCLSchemaLoader
 	serviceMetadataLoader dclmetadata.ServiceMetadataLoader
 	smLoader              *servicemappingloader.ServiceMappingLoader
@@ -48,6 +50,7 @@ func NewManagementConflictAnnotationDefaulter(smLoader *servicemappingloader.Ser
 	return func(mgr manager.Manager) admission.Handler {
 		return &managementConflictAnnotationDefaulter{
 			client:                mgr.GetClient(),
+			reader:                mgr.GetAPIReader(),
 			smLoader:              smLoader,
 			serviceMetadataLoader: serviceMetadataLoader,
 			dclSchemaLoader:       dclSchemaLoader,
@@ -71,6 +74,11 @@ func (a *managementConflictAnnotationDefaulter) Handle(ctx context.Context, req 
 	}
 	if supportedgvks.IsDirectByGVK(obj.GroupVersionKind()) {
 		return admission.Allowed("")
+	}
+	if requestsResourcePolicy(obj, ns) && a.isReconciledByDirect(ctx, obj) {
+		// The Direct controller doesn't take leases. Treat the object like one of a Direct-only kind:
+		// don't default the policy, and tell the user that "resource" isn't enforced.
+		return admission.Allowed("").WithWarnings(resourcePolicyNotEnforcedWarning(obj))
 	}
 	if dclmetadata.IsDCLBasedResourceKind(obj.GroupVersionKind(), a.serviceMetadataLoader) {
 		return defaultManagementConflictAnnotationForDCLBasedResources(obj, ns, a.dclSchemaLoader, a.serviceMetadataLoader)
@@ -108,4 +116,28 @@ func defaultManagementConflictAnnotationForTFBasedResources(obj *unstructured.Un
 		return admission.Errored(http.StatusBadRequest, fmt.Errorf("error validating or defaulting management conflict policy annotation: %w", err))
 	}
 	return constructPatchResponse(obj, newObj)
+}
+
+// isReconciledByDirect reports whether the Direct controller reconciles obj.
+func (a *managementConflictAnnotationDefaulter) isReconciledByDirect(ctx context.Context, obj *unstructured.Unstructured) bool {
+	reconcilerType, ok := reconcilerTypeForObject(ctx, a.reader, obj)
+	return ok && reconcilerType == k8s.ReconcilerTypeDirect
+}
+
+// requestsResourcePolicy reports whether obj asks for the "resource" management conflict prevention
+// policy, either in its own annotation or, when it has none, through its namespace's default.
+func requestsResourcePolicy(obj *unstructured.Unstructured, ns *corev1.Namespace) bool {
+	if value, ok := obj.GetAnnotations()[managementconflict.FullyQualifiedAnnotation]; ok {
+		return value == managementconflict.ManagementConflictPreventionPolicyResource
+	}
+	return ns.GetAnnotations()[managementconflict.FullyQualifiedAnnotation] == managementconflict.ManagementConflictPreventionPolicyResource
+}
+
+func resourcePolicyNotEnforcedWarning(obj *unstructured.Unstructured) string {
+	if _, ok := obj.GetAnnotations()[managementconflict.FullyQualifiedAnnotation]; ok {
+		return fmt.Sprintf("%v=%v is not enforced: %v objects reconciled by the Direct controller do not support resource leasing",
+			managementconflict.FullyQualifiedAnnotation, managementconflict.ManagementConflictPreventionPolicyResource, obj.GetKind())
+	}
+	return fmt.Sprintf("the namespace default %v=%v is not applied: %v objects reconciled by the Direct controller do not support resource leasing",
+		managementconflict.FullyQualifiedAnnotation, managementconflict.ManagementConflictPreventionPolicyResource, obj.GetKind())
 }

@@ -20,14 +20,10 @@ import (
 	"fmt"
 	"strings"
 
-	bigquerykrm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
-	computekrm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	secretkrm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
-	spannerkrm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/parent/controllertype"
 	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
@@ -40,7 +36,6 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
@@ -229,81 +224,14 @@ func (r *ParentReconciler) Reconcile(ctx context.Context, req reconcile.Request)
 }
 
 func (r *ParentReconciler) determineControllerType(ctx context.Context, u *unstructured.Unstructured) (k8s.ReconcilerType, error) {
-	// Check for resource annotation
-	annotations := u.GetAnnotations()
-	if annotations[k8s.AlphaReconcilerAnnotation] == "direct" {
-		return k8s.ReconcilerTypeDirect, nil
-	}
-
-	// Special case handling. Will be removed after the resources have turned on direct as default.
-	if r.gvk.Kind == "BigQueryTable" {
-		obj := &bigquerykrm.BigQueryTable{}
-		if _, ok := annotations[kccpredicate.AnnotationUnmanaged]; ok {
-			return k8s.ReconcilerTypeDirect, nil
+	return controllertype.ForObject(ctx, r.gvk, u, func(ctx context.Context) (map[string]k8s.ReconcilerType, error) {
+		_, ccc, err := kccstate.FetchLiveKCCState(ctx, r.Client, types.NamespacedName{Namespace: u.GetNamespace(), Name: u.GetName()})
+		if err != nil {
+			return nil, fmt.Errorf("error fetching kcc state: %w", err)
 		}
-		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
-			return "", fmt.Errorf("error converting to %T: %w", obj, err)
+		if ccc.Spec.Experiments == nil {
+			return nil, nil
 		}
-		if obj.Spec.Labels != nil {
-			return k8s.ReconcilerTypeDirect, nil
-		}
-	}
-	if r.gvk.Kind == "ComputeForwardingRule" {
-		obj := &computekrm.ComputeForwardingRule{}
-		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
-			return "", fmt.Errorf("error converting to %T: %w", obj, err)
-		}
-		if obj.Spec.Target != nil && obj.Spec.Target.GoogleAPIsBundle != nil {
-			return k8s.ReconcilerTypeDirect, nil
-		}
-	}
-	if r.gvk.Kind == "ComputeTargetTCPProxy" {
-		obj := &computekrm.ComputeTargetTCPProxy{}
-		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
-			return "", fmt.Errorf("error converting to %T: %w", obj, err)
-		}
-		if obj.Spec.Location != nil && obj.Spec.Location != direct.PtrTo("global") {
-			return k8s.ReconcilerTypeDirect, nil
-		}
-	}
-	if r.gvk.Kind == "SecretManagerSecret" {
-		obj := &secretkrm.SecretManagerSecret{}
-		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
-			return "", fmt.Errorf("error converting to %T: %w", obj, err)
-		}
-		if obj.Spec.Labels != nil {
-			return k8s.ReconcilerTypeDirect, nil
-		}
-	}
-	if r.gvk.Kind == "SpannerInstance" {
-		obj := &spannerkrm.SpannerInstance{}
-		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
-			return "", fmt.Errorf("error converting to %T: %w", obj, err)
-		}
-		if obj.Spec.DefaultBackupScheduleType != nil || obj.Spec.Labels != nil || obj.Spec.Edition != nil || obj.Spec.AutoscalingConfig != nil {
-			return k8s.ReconcilerTypeDirect, nil
-		}
-	}
-
-	// Check for CCC setting
-	_, ccc, err := kccstate.FetchLiveKCCState(ctx, r.Client, types.NamespacedName{Namespace: u.GetNamespace(), Name: u.GetName()})
-	if err != nil {
-		return "", fmt.Errorf("error fetching kcc state: %w", err)
-	}
-	if ccc.Spec.Experiments != nil {
-		for k, v := range ccc.Spec.Experiments.ControllerOverrides {
-			if k == r.gvk.GroupKind().String() {
-				return v, nil
-			}
-		}
-	}
-
-	// Fallback to static config
-	gk := r.gvk.GroupKind()
-	resourcesControllersConfig := resourceconfig.LoadConfig()
-	config, err := resourcesControllersConfig.GetControllersForGVK(r.gvk)
-	if err != nil {
-		return "", fmt.Errorf("error getting controller config found for GroupKind %v", gk)
-	}
-	return config.DefaultController, nil
+		return ccc.Spec.Experiments.ControllerOverrides, nil
+	})
 }
