@@ -14,14 +14,8 @@
 
 package webhook
 
-import "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-
 const (
 	ControllerManagerServiceAccountRegex = "system:serviceaccount:[a-z0-9.-]+:cnrm-controller-manager"
-	// SyncerServiceAccount is the user name of the KRM syncer that `config-connector ha setup`
-	// installs for multi-cluster leader election. While a cluster is a standby, the syncer copies
-	// the leader's service-generated spec.resourceID onto this cluster's objects.
-	SyncerServiceAccount = "system:serviceaccount:" + k8s.SystemNamespace + ":" + k8s.SyncerServiceAccountName
 	// ServicePort is the port that the webhook binary will bind to, as well as use as the service port.
 	//
 	// must be 443 as private GKE clusters have opened up 443 specifically
