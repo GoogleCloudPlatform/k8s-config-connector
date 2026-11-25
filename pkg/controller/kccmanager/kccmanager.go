@@ -230,6 +230,9 @@ const (
 // LIST and WATCH requests wait for that rate limiter for longer than the renew deadline. If
 // the lock's requests waited behind them, the manager would lose the lease that it just won.
 func lockRESTConfig(restConfig *rest.Config) *rest.Config {
+	if restConfig == nil {
+		return nil
+	}
 	lockConfig := rest.CopyConfig(restConfig)
 	// rest.CopyConfig copies the pointer to the shared rate limiter, so replace it.
 	lockConfig.RateLimiter = flowcontrol.NewTokenBucketRateLimiter(lockClientQPS, lockClientBurst)

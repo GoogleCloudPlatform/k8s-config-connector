@@ -659,6 +659,9 @@ func TestMultiClusterLeaseLockHasItsOwnRateLimiter(t *testing.T) {
 		LeaseDurationSeconds: 1,
 	}
 	_ = lem.leConfig.Lock.Create(ctx, record)
+	if _, _, err := lem.leConfig.Lock.Get(ctx); err != nil {
+		t.Fatalf("Lock.Get: %v", err)
+	}
 
 	lease := &mclv1alpha1.MultiClusterLease{}
 	if err := kubeClient.Get(ctx, types.NamespacedName{Namespace: ns, Name: testLeaseName}, lease); err != nil {
@@ -667,5 +670,52 @@ func TestMultiClusterLeaseLockHasItsOwnRateLimiter(t *testing.T) {
 
 	if count := limiter.count.Load(); count != 0 {
 		t.Errorf("%d requests of the lock went through the rate limiter that the manager's clients share, want 0", count)
+	}
+
+	// Verify that the manager's own client still uses the shared rate limiter.
+	if err := mgr.GetAPIReader().Get(ctx, types.NamespacedName{Namespace: ns, Name: testLeaseName}, lease); err != nil {
+		t.Fatalf("reading lease through manager: %v", err)
+	}
+	if count := limiter.count.Load(); count == 0 {
+		t.Errorf("requests of the manager did not go through the shared rate limiter, want > 0")
+	}
+}
+
+func TestLockRESTConfig(t *testing.T) {
+	if got := lockRESTConfig(nil); got != nil {
+		t.Fatalf("lockRESTConfig(nil) = %v, want nil", got)
+	}
+
+	origLimiter := flowcontrol.NewFakeAlwaysRateLimiter()
+	cfg := &rest.Config{
+		Host:        "https://example.com",
+		RateLimiter: origLimiter,
+	}
+	got := lockRESTConfig(cfg)
+	if got == nil {
+		t.Fatal("lockRESTConfig returned nil")
+	}
+	if got == cfg {
+		t.Fatal("lockRESTConfig returned the original rest.Config pointer, want a copy")
+	}
+	if cfg.RateLimiter != origLimiter {
+		t.Errorf("original restConfig.RateLimiter was mutated")
+	}
+	if got.RateLimiter == nil {
+		t.Fatal("lockRESTConfig RateLimiter is nil")
+	}
+	if got.RateLimiter == origLimiter {
+		t.Errorf("lockRESTConfig RateLimiter shares the same rate limiter as restConfig")
+	}
+	if qps := got.RateLimiter.QPS(); qps != lockClientQPS {
+		t.Errorf("got RateLimiter.QPS() = %v, want %v", qps, float32(lockClientQPS))
+	}
+	for i := 0; i < lockClientBurst; i++ {
+		if !got.RateLimiter.TryAccept() {
+			t.Fatalf("TryAccept() returned false on call %d, want true (burst = %d)", i+1, lockClientBurst)
+		}
+	}
+	if got.RateLimiter.TryAccept() {
+		t.Errorf("TryAccept() returned true after %d burst calls, want false", lockClientBurst)
 	}
 }
