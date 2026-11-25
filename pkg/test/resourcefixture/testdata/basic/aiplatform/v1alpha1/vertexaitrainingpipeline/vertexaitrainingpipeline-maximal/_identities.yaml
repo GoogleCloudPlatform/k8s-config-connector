@@ -1,3 +1,9 @@
+- caisURL: //storage.googleapis.com/projects/${projectId}/buckets/tpipe-max-dep-${uniqueId}
+  group: storage.cnrm.cloud.google.com
+  kind: StorageBucket
+  name: tpipe-max-dep-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
 - caisURL: unknown
   group: aiplatform.cnrm.cloud.google.com
   kind: VertexAITrainingPipeline

@@ -1,12 +1,140 @@
-GRPC /google.cloud.aiplatform.v1.PipelineService/GetTrainingPipeline
+# Phase: CREATE
+GET https://storage.googleapis.com/storage/v1/b/tpipe-max-dep-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
-  "name": "projects/${projectId}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}"
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
 }
 
-error: rpc error: code = NotFound desc = trainingPipeline "projects/${projectNumber}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}" not found
+---
 
-{}
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": []
+  },
+  "location": "us-central1",
+  "name": "tpipe-max-dep-${uniqueId}",
+  "softDeletePolicy": {
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "tpipe-max-dep-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/tpipe-max-dep-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/tpipe-max-dep-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "tpipe-max-dep-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/tpipe-max-dep-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
 
 ---
 
@@ -21,49 +149,28 @@ GRPC /google.cloud.aiplatform.v1.PipelineService/CreateTrainingPipeline
     },
     "modelId": "model_${uniqueId}",
     "modelToUpload": {
+      "artifactUri": "gs://tpipe-max-dep-${uniqueId}/model",
       "containerSpec": {
         "imageUri": "gcr.io/google-samples/hello-app:1.0"
       },
       "displayName": "Uploaded Model"
     },
-    "name": "projects/${projectId}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}",
     "trainingTaskDefinition": "gs://google-cloud-aiplatform/schema/trainingjob/definition/custom_task_1.0.0.yaml",
     "trainingTaskInputs": {
-      "fields": {
-        "workerPoolSpecs": {
-          "listValue": {
-            "values": [
-              {
-                "structValue": {
-                  "fields": {
-                    "containerSpec": {
-                      "structValue": {
-                        "fields": {
-                          "imageUri": {
-                            "stringValue": "gcr.io/google-samples/hello-app:1.0"
-                          }
-                        }
-                      }
-                    },
-                    "machineSpec": {
-                      "structValue": {
-                        "fields": {
-                          "machineType": {
-                            "stringValue": "n1-standard-4"
-                          }
-                        }
-                      }
-                    },
-                    "replicaCount": {
-                      "stringValue": "1"
-                    }
-                  }
-                }
-              }
-            ]
-          }
+      "baseOutputDirectory": {
+        "outputUriPrefix": "gs://tpipe-max-dep-${uniqueId}/output"
+      },
+      "workerPoolSpecs": [
+        {
+          "containerSpec": {
+            "imageUri": "gcr.io/google-samples/hello-app:1.0"
+          },
+          "machineSpec": {
+            "machineType": "n1-standard-4"
+          },
+          "replicaCount": 1
         }
-      }
+      ]
     }
   }
 }
@@ -73,60 +180,94 @@ OK
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Maximal Training Pipeline",
-  "endTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "key-one": "value-one"
   },
-  "modelId": "model_${uniqueId}",
   "modelToUpload": {
+    "artifactUri": "gs://tpipe-max-dep-${uniqueId}/model",
     "containerSpec": {
       "imageUri": "gcr.io/google-samples/hello-app:1.0"
     },
     "createTime": "2024-04-01T12:34:56.000123456Z",
     "displayName": "Uploaded Model",
-    "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}/model",
+    "predictSchemata": {},
     "updateTime": "2024-04-01T12:34:56.000123456Z"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "state": "PIPELINE_STATE_SUCCEEDED",
+  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/${trainingPipelineID}",
+  "state": "PIPELINE_STATE_PENDING",
   "trainingTaskDefinition": "gs://google-cloud-aiplatform/schema/trainingjob/definition/custom_task_1.0.0.yaml",
   "trainingTaskInputs": {
-    "fields": {
-      "workerPoolSpecs": {
-        "listValue": {
-          "values": [
-            {
-              "structValue": {
-                "fields": {
-                  "containerSpec": {
-                    "structValue": {
-                      "fields": {
-                        "imageUri": {
-                          "stringValue": "gcr.io/google-samples/hello-app:1.0"
-                        }
-                      }
-                    }
-                  },
-                  "machineSpec": {
-                    "structValue": {
-                      "fields": {
-                        "machineType": {
-                          "stringValue": "n1-standard-4"
-                        }
-                      }
-                    }
-                  },
-                  "replicaCount": {
-                    "stringValue": "1"
-                  }
-                }
-              }
-            }
-          ]
-        }
+    "baseOutputDirectory": {
+      "outputUriPrefix": "gs://tpipe-max-dep-${uniqueId}/output"
+    },
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "imageUri": "gcr.io/google-samples/hello-app:1.0"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
       }
-    }
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GRPC /google.cloud.aiplatform.v1.PipelineService/GetTrainingPipeline
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/${trainingPipelineID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Maximal Training Pipeline",
+  "labels": {
+    "key-one": "value-one"
+  },
+  "modelToUpload": {
+    "artifactUri": "gs://tpipe-max-dep-${uniqueId}/model",
+    "containerSpec": {
+      "imageUri": "gcr.io/google-samples/hello-app:1.0"
+    },
+    "createTime": "2024-04-01T12:34:56.000123456Z",
+    "displayName": "Uploaded Model",
+    "predictSchemata": {},
+    "updateTime": "2024-04-01T12:34:56.000123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/${trainingPipelineID}",
+  "state": "PIPELINE_STATE_PENDING",
+  "trainingTaskDefinition": "gs://google-cloud-aiplatform/schema/trainingjob/definition/custom_task_1.0.0.yaml",
+  "trainingTaskInputs": {
+    "baseOutputDirectory": {
+      "outputUriPrefix": "gs://tpipe-max-dep-${uniqueId}/output"
+    },
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "imageUri": "gcr.io/google-samples/hello-app:1.0"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
   },
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -136,7 +277,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.PipelineService/GetTrainingPipeline
 
 {
-  "name": "projects/${projectId}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}"
+  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/${trainingPipelineID}"
 }
 
 OK
@@ -144,60 +285,41 @@ OK
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Maximal Training Pipeline",
-  "endTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "key-one": "value-one"
   },
-  "modelId": "model_${uniqueId}",
   "modelToUpload": {
+    "artifactUri": "gs://tpipe-max-dep-${uniqueId}/model",
     "containerSpec": {
       "imageUri": "gcr.io/google-samples/hello-app:1.0"
     },
     "createTime": "2024-04-01T12:34:56.000123456Z",
     "displayName": "Uploaded Model",
-    "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}/model",
+    "predictSchemata": {},
     "updateTime": "2024-04-01T12:34:56.000123456Z"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "state": "PIPELINE_STATE_SUCCEEDED",
+  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/${trainingPipelineID}",
+  "state": "PIPELINE_STATE_PENDING",
   "trainingTaskDefinition": "gs://google-cloud-aiplatform/schema/trainingjob/definition/custom_task_1.0.0.yaml",
   "trainingTaskInputs": {
-    "fields": {
-      "workerPoolSpecs": {
-        "listValue": {
-          "values": [
-            {
-              "structValue": {
-                "fields": {
-                  "containerSpec": {
-                    "structValue": {
-                      "fields": {
-                        "imageUri": {
-                          "stringValue": "gcr.io/google-samples/hello-app:1.0"
-                        }
-                      }
-                    }
-                  },
-                  "machineSpec": {
-                    "structValue": {
-                      "fields": {
-                        "machineType": {
-                          "stringValue": "n1-standard-4"
-                        }
-                      }
-                    }
-                  },
-                  "replicaCount": {
-                    "stringValue": "1"
-                  }
-                }
-              }
-            }
-          ]
-        }
+    "baseOutputDirectory": {
+      "outputUriPrefix": "gs://tpipe-max-dep-${uniqueId}/output"
+    },
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "imageUri": "gcr.io/google-samples/hello-app:1.0"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
       }
-    }
+    ]
   },
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -207,7 +329,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.PipelineService/GetTrainingPipeline
 
 {
-  "name": "projects/${projectId}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}"
+  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/${trainingPipelineID}"
 }
 
 OK
@@ -215,60 +337,157 @@ OK
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Maximal Training Pipeline",
-  "endTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "key-one": "value-one"
   },
-  "modelId": "model_${uniqueId}",
   "modelToUpload": {
+    "artifactUri": "gs://tpipe-max-dep-${uniqueId}/model",
     "containerSpec": {
       "imageUri": "gcr.io/google-samples/hello-app:1.0"
     },
     "createTime": "2024-04-01T12:34:56.000123456Z",
     "displayName": "Uploaded Model",
-    "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}/model",
+    "predictSchemata": {},
     "updateTime": "2024-04-01T12:34:56.000123456Z"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "state": "PIPELINE_STATE_SUCCEEDED",
+  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/${trainingPipelineID}",
+  "state": "PIPELINE_STATE_PENDING",
   "trainingTaskDefinition": "gs://google-cloud-aiplatform/schema/trainingjob/definition/custom_task_1.0.0.yaml",
   "trainingTaskInputs": {
-    "fields": {
-      "workerPoolSpecs": {
-        "listValue": {
-          "values": [
-            {
-              "structValue": {
-                "fields": {
-                  "containerSpec": {
-                    "structValue": {
-                      "fields": {
-                        "imageUri": {
-                          "stringValue": "gcr.io/google-samples/hello-app:1.0"
-                        }
-                      }
-                    }
-                  },
-                  "machineSpec": {
-                    "structValue": {
-                      "fields": {
-                        "machineType": {
-                          "stringValue": "n1-standard-4"
-                        }
-                      }
-                    }
-                  },
-                  "replicaCount": {
-                    "stringValue": "1"
-                  }
-                }
-              }
-            }
-          ]
-        }
+    "baseOutputDirectory": {
+      "outputUriPrefix": "gs://tpipe-max-dep-${uniqueId}/output"
+    },
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "imageUri": "gcr.io/google-samples/hello-app:1.0"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
       }
-    }
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.PipelineService/CancelTrainingPipeline
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/${trainingPipelineID}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.PipelineService/GetTrainingPipeline
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/${trainingPipelineID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Maximal Training Pipeline",
+  "labels": {
+    "key-one": "value-one"
+  },
+  "modelToUpload": {
+    "artifactUri": "gs://tpipe-max-dep-${uniqueId}/model",
+    "containerSpec": {
+      "imageUri": "gcr.io/google-samples/hello-app:1.0"
+    },
+    "createTime": "2024-04-01T12:34:56.000123456Z",
+    "displayName": "Uploaded Model",
+    "predictSchemata": {},
+    "updateTime": "2024-04-01T12:34:56.000123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/${trainingPipelineID}",
+  "state": "PIPELINE_STATE_CANCELLED",
+  "trainingTaskDefinition": "gs://google-cloud-aiplatform/schema/trainingjob/definition/custom_task_1.0.0.yaml",
+  "trainingTaskInputs": {
+    "baseOutputDirectory": {
+      "outputUriPrefix": "gs://tpipe-max-dep-${uniqueId}/output"
+    },
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "imageUri": "gcr.io/google-samples/hello-app:1.0"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.PipelineService/GetTrainingPipeline
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/${trainingPipelineID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Maximal Training Pipeline",
+  "labels": {
+    "key-one": "value-one"
+  },
+  "modelToUpload": {
+    "artifactUri": "gs://tpipe-max-dep-${uniqueId}/model",
+    "containerSpec": {
+      "imageUri": "gcr.io/google-samples/hello-app:1.0"
+    },
+    "createTime": "2024-04-01T12:34:56.000123456Z",
+    "displayName": "Uploaded Model",
+    "predictSchemata": {},
+    "updateTime": "2024-04-01T12:34:56.000123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/${trainingPipelineID}",
+  "state": "PIPELINE_STATE_CANCELLED",
+  "trainingTaskDefinition": "gs://google-cloud-aiplatform/schema/trainingjob/definition/custom_task_1.0.0.yaml",
+  "trainingTaskInputs": {
+    "baseOutputDirectory": {
+      "outputUriPrefix": "gs://tpipe-max-dep-${uniqueId}/output"
+    },
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "imageUri": "gcr.io/google-samples/hello-app:1.0"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
   },
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -278,7 +497,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.PipelineService/DeleteTrainingPipeline
 
 {
-  "name": "projects/${projectId}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}"
+  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/${trainingPipelineID}"
 }
 
 OK
@@ -297,3 +516,79 @@ OK
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
 }
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/tpipe-max-dep-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "tpipe-max-dep-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/tpipe-max-dep-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/tpipe-max-dep-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "kind": "storage#objects",
+  "prefixes": [
+    "testfolder",
+    "testmanagedfolder"
+  ]
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/tpipe-max-dep-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+204 No Content
+Content-Type: application/json
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
