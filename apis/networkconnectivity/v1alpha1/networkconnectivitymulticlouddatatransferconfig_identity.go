@@ -65,7 +65,7 @@ func (i *NetworkConnectivityMulticloudDataTransferConfigIdentity) ParentString()
 	return "projects/" + i.Project + "/locations/" + i.Location
 }
 
-func getIdentityFromNetworkConnectivityMulticloudDataTransferConfigSpec(ctx context.Context, reader client.Reader, obj *NetworkConnectivityMulticloudDataTransferConfig) (*NetworkConnectivityMulticloudDataTransferConfigIdentity, error) {
+func getIdentityFromNetworkConnectivityMulticloudDataTransferConfigSpec(ctx context.Context, reader client.Reader, obj client.Object) (*NetworkConnectivityMulticloudDataTransferConfigIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)

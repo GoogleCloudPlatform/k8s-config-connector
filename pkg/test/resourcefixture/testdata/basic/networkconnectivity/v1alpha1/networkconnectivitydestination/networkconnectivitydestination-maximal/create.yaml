@@ -1,0 +1,13 @@
+apiVersion: networkconnectivity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkConnectivityDestination
+metadata:
+  name: nc-dest-${uniqueId}
+spec:
+  parentRef:
+    name: nc-mcdt-${uniqueId}
+  resourceID: nc-dest-${uniqueId}
+  description: "Initial destination description"
+  ipPrefix: "203.0.113.0/24"
+  endpoints:
+  - asn: 16509
+    csp: "aws"

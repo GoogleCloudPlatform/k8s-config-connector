@@ -31,4 +31,15 @@
   3. Moved concurrency-control field `etag` to `status.observedState`, and removed top-level `labels` from `spec`.
 - **Impact**: All child resources under `MulticloudDataTransferConfig` can reuse `NetworkConnectivityMulticloudDataTransferConfigRef` as `spec.parentRef`.
 
+### [2026-11-04] NetworkConnectivityDestination endpoint requirements and single active config constraint
+- **Context**: Implementing `NetworkConnectivityDestination` direct controller, fuzzer, and recording E2E fixtures against real GCP.
+- **Problem**:
+  1. GCP server returns error `endpoint asn:65001 csp:"AWS" is invalid` when using generic ASN or capitalized CSP names.
+  2. GCP project allows only one active `MulticloudDataTransferConfig` at a time per project (`project ... already has an active multicloud data transfer config`).
+- **Solution**:
+  1. Configured endpoint in E2E fixtures with `csp: "aws"` (lowercase) and valid AWS ASN `16509` and RFC 5737 test prefix `203.0.113.0/24`.
+  2. Ensure lingering `MulticloudDataTransferConfig` resources from interrupted tests are deleted before recording new tests.
+- **Impact**: Fixtures testing `NetworkConnectivityDestination` must use lowercase CSP identifiers (e.g. `aws`) and valid CSP ASNs (e.g. `16509`), and ensure clean tear-down of parent `MulticloudDataTransferConfig`.
+
+
 
