@@ -119,11 +119,9 @@ spec:
                   variables. This is only supported for STANDARD composition type
                   templates.
                 type: boolean
-              location:
-                description: The location of this resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The DesignCenterSpace this DesignCenterApplicationTemplate
+                  is created under.
                 oneOf:
                 - not:
                     required:
@@ -140,20 +138,19 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed DesignCenterSpace
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/spaces/{{spaceID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a DesignCenterSpace resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a DesignCenterSpace resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The DesignCenterApplicationTemplate name. If not given,
                   the metadata.name will be used.
@@ -193,16 +190,42 @@ spec:
               saasRuntimeContext:
                 description: Optional. SaaS runtime context for the application template.
                 properties:
-                  saasNames:
+                  saasRefs:
                     description: 'Optional. The SaaS names. Format for each SaaS:
                       projects/{project}/locations/{location}/saas/{saas}'
                     items:
-                      type: string
+                      description: SaaSServiceMgmtSaaSRef is a reference to a GCP
+                        SaaSServiceMgmtSaaS resource.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed SaaSServiceMgmtSaaS
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/saas/{{saasID}}".
+                          type: string
+                        name:
+                          description: The name of a SaaSServiceMgmtSaaS resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a SaaSServiceMgmtSaaS resource.
+                          type: string
+                      type: object
                     type: array
                 type: object
             required:
-            - location
-            - projectRef
+            - parentRef
             type: object
           status:
             description: DesignCenterApplicationTemplateStatus defines the config

@@ -14,15 +14,13 @@
 
 // API sources for DesignCenterApplicationTemplate, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/547f8fdb4b91dbac70d540b3757520f0608ae356/google/cloud/designcenter/v1/authoring.proto
-// +kcc:guess=source-link reason=verify-service-docs-link
-// +kcc:source:service-docs=
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=
+// +kcc:source:service-docs=https://cloud.google.com/application-design-center/docs
+// +kcc:source:resource-docs=https://cloud.google.com/application-design-center/docs/reference/rest/v1/projects.locations.spaces.applicationTemplates
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	saasservicemgmtv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/saasservicemgmt/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -33,15 +31,10 @@ var DesignCenterApplicationTemplateGVK = GroupVersion.WithKind("DesignCenterAppl
 // +kcc:spec:proto=google.cloud.designcenter.v1.ApplicationTemplate
 // +kcc:required-from-proto
 type DesignCenterApplicationTemplateSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/spaces/{space} this resource belongs to.
-	// +kcc:guess
-	// SpaceRef *DesignCenterSpaceRef `json:"spaceRef,omitempty"`
+	// The DesignCenterSpace this DesignCenterApplicationTemplate is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *DesignCenterSpaceRef `json:"parentRef"`
 
 	// The DesignCenterApplicationTemplate name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -73,12 +66,21 @@ type DesignCenterApplicationTemplateSpec struct {
 
 	// Optional. SaaS runtime context for the application template.
 	// +kcc:proto:field=google.cloud.designcenter.v1.ApplicationTemplate.saas_runtime_context
-	SaasRuntimeContext *SaaSRuntimeContext `json:"saasRuntimeContext,omitempty"`
+	SaasRuntimeContext *ApplicationTemplate_SaaSRuntimeContext `json:"saasRuntimeContext,omitempty"`
 
 	// Optional. If true, exposes all inputs as root module variables.
 	//  This is only supported for STANDARD composition type templates.
 	// +kcc:proto:field=google.cloud.designcenter.v1.ApplicationTemplate.inputs_as_root_module_variables
 	InputsAsRootModuleVariables *bool `json:"inputsAsRootModuleVariables,omitempty"`
+}
+
+// ApplicationTemplate_SaaSRuntimeContext defines the SaaS runtime context for the application template.
+// +kcc:proto=google.cloud.designcenter.v1.SaaSRuntimeContext
+type ApplicationTemplate_SaaSRuntimeContext struct {
+	// Optional. The SaaS names. Format for each SaaS:
+	//  projects/{project}/locations/{location}/saas/{saas}
+	// +kcc:proto:field=google.cloud.designcenter.v1.SaaSRuntimeContext.saas_names
+	SaasRefs []saasservicemgmtv1alpha1.SaaSServiceMgmtSaaSRef `json:"saasRefs,omitempty"`
 }
 
 // DesignCenterApplicationTemplateStatus defines the config connector machine state of DesignCenterApplicationTemplate

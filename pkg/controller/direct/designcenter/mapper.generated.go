@@ -99,6 +99,28 @@ func AppHubApplicationParametersObservedState_ToProto(mapCtx *direct.MapContext,
 	return out
 }
 
+/* found existing non-generated mapping function "ApplicationTemplate_SaaSRuntimeContext_FromProto", skipping
+func ApplicationTemplate_SaaSRuntimeContext_FromProto(mapCtx *direct.MapContext, in *pb.SaaSRuntimeContext) *krm.ApplicationTemplate_SaaSRuntimeContext {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApplicationTemplate_SaaSRuntimeContext{}
+	// MISSING: SaasNames
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ApplicationTemplate_SaaSRuntimeContext_ToProto", skipping
+func ApplicationTemplate_SaaSRuntimeContext_ToProto(mapCtx *direct.MapContext, in *krm.ApplicationTemplate_SaaSRuntimeContext) *pb.SaaSRuntimeContext {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SaaSRuntimeContext{}
+	// MISSING: SaasNames
+	return out
+}
+*/
+
 func ApplyConditionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ApplyCondition) *krm.ApplyConditionObservedState {
 	if in == nil {
 		return nil
@@ -434,7 +456,7 @@ func DesignCenterApplicationTemplateSpec_FromProto(mapCtx *direct.MapContext, in
 	out.CompositionType = direct.Enum_FromProto(mapCtx, in.GetCompositionType())
 	out.RootInputVariables = direct.Slice_FromProto(mapCtx, in.RootInputVariables, ComponentVariable_FromProto)
 	out.RootOutputVariables = direct.Slice_FromProto(mapCtx, in.RootOutputVariables, ComponentVariable_FromProto)
-	out.SaasRuntimeContext = SaaSRuntimeContext_FromProto(mapCtx, in.GetSaasRuntimeContext())
+	out.SaasRuntimeContext = ApplicationTemplate_SaaSRuntimeContext_FromProto(mapCtx, in.GetSaasRuntimeContext())
 	out.InputsAsRootModuleVariables = direct.LazyPtr(in.GetInputsAsRootModuleVariables())
 	return out
 }
@@ -451,7 +473,7 @@ func DesignCenterApplicationTemplateSpec_ToProto(mapCtx *direct.MapContext, in *
 	out.CompositionType = direct.Enum_ToProto[pb.ApplicationCompositionType](mapCtx, in.CompositionType)
 	out.RootInputVariables = direct.Slice_ToProto(mapCtx, in.RootInputVariables, ComponentVariable_ToProto)
 	out.RootOutputVariables = direct.Slice_ToProto(mapCtx, in.RootOutputVariables, ComponentVariable_ToProto)
-	out.SaasRuntimeContext = SaaSRuntimeContext_ToProto(mapCtx, in.SaasRuntimeContext)
+	out.SaasRuntimeContext = ApplicationTemplate_SaaSRuntimeContext_ToProto(mapCtx, in.SaasRuntimeContext)
 	out.InputsAsRootModuleVariables = direct.ValueOf(in.InputsAsRootModuleVariables)
 	return out
 }
