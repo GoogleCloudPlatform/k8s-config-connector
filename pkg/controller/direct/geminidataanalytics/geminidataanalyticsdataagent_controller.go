@@ -34,6 +34,7 @@ import (
 
 	gcp "cloud.google.com/go/geminidataanalytics/apiv1"
 	geminidataanalyticspb "cloud.google.com/go/geminidataanalytics/apiv1/geminidataanalyticspb"
+	"cloud.google.com/go/iam/apiv1/iampb"
 	"google.golang.org/api/option"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -42,7 +43,11 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.GeminiDataAnalyticsDataAgentGVK, NewDataAgentModel)
+	registry.RegisterModel(krm.GeminiDataAnalyticsDataAgentGVK, NewDataAgentModel,
+		registry.WithIAM(
+			krm.GeminiDataAnalyticsDataAgentIdentityFormat.CanonicalForm(),
+		),
+	)
 }
 
 func NewDataAgentModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -122,6 +127,7 @@ type DataAgentAdapter struct {
 }
 
 var _ directbase.Adapter = &DataAgentAdapter{}
+var _ direct.IAMAdapter = &DataAgentAdapter{}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
@@ -281,4 +287,37 @@ func (a *DataAgentAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 		return false, fmt.Errorf("waiting delete DataAgent %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func (a *DataAgentAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
+	}
+
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.gcpClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return policy, nil
+}
+
+func (a *DataAgentAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot set iam policy for missing resource")
+	}
+
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.gcpClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return newPolicy, nil
 }

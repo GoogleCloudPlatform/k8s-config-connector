@@ -168,6 +168,10 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td>Y</td>
     </tr>
     <tr>
+        <td><code>GeminiDataAnalyticsDataAgent</code></td>
+        <td>Y</td>
+    </tr>
+    <tr>
         <td><code>IAMServiceAccount</code></td>
         <td>Y</td>
     </tr>
@@ -379,6 +383,12 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td><code>GKEHubScope</code></td>
         <td>
             <p><code>projects/{projectID}/locations/{location}/scopes/{scopeID}</code></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>GeminiDataAnalyticsDataAgent</code></td>
+        <td>
+            <p><code>projects/{project}/locations/{location}/dataAgents/{dataAgent}</code></p>
         </td>
     </tr>
     <tr>
