@@ -121,6 +121,26 @@ func ApplicationTemplate_SaaSRuntimeContext_ToProto(mapCtx *direct.MapContext, i
 }
 */
 
+func ApplyCondition_FromProto(mapCtx *direct.MapContext, in *pb.ApplyCondition) *krm.ApplyCondition {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApplyCondition{}
+	out.ConditionKey = direct.LazyPtr(in.GetConditionKey())
+	out.ConditionValue = direct.LazyPtr(in.GetConditionValue())
+	return out
+}
+
+func ApplyCondition_ToProto(mapCtx *direct.MapContext, in *krm.ApplyCondition) *pb.ApplyCondition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApplyCondition{}
+	out.ConditionKey = direct.ValueOf(in.ConditionKey)
+	out.ConditionValue = direct.ValueOf(in.ConditionValue)
+	return out
+}
+
 func ApplyConditionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ApplyCondition) *krm.ApplyConditionObservedState {
 	if in == nil {
 		return nil
@@ -195,6 +215,26 @@ func AttributesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Attribut
 	out.DeveloperOwners = direct.Slice_ToProto(mapCtx, in.DeveloperOwners, ContactInfoObservedState_ToProto)
 	out.OperatorOwners = direct.Slice_ToProto(mapCtx, in.OperatorOwners, ContactInfoObservedState_ToProto)
 	out.BusinessOwners = direct.Slice_ToProto(mapCtx, in.BusinessOwners, ContactInfoObservedState_ToProto)
+	return out
+}
+
+func CloudControlConfig_FromProto(mapCtx *direct.MapContext, in *pb.CloudControlConfig) *krm.CloudControlConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudControlConfig{}
+	out.CloudControl = direct.LazyPtr(in.GetCloudControl())
+	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, Parameter_FromProto)
+	return out
+}
+
+func CloudControlConfig_ToProto(mapCtx *direct.MapContext, in *krm.CloudControlConfig) *pb.CloudControlConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudControlConfig{}
+	out.CloudControl = direct.ValueOf(in.CloudControl)
+	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, Parameter_ToProto)
 	return out
 }
 
@@ -681,6 +721,80 @@ func DesignCenterCatalogTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.TemplateCategory = direct.Enum_ToProto[pb.TemplateCategory](mapCtx, in.TemplateCategory)
 	out.Type = direct.Enum_ToProto[pb.TemplateType](mapCtx, in.Type)
 	return out
+}
+
+func DesignCenterPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krm.DesignCenterPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DesignCenterPolicyObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.CloudControlConfigs = direct.Slice_FromProto(mapCtx, in.CloudControlConfigs, CloudControlConfigObservedState_FromProto)
+	return out
+}
+
+func DesignCenterPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DesignCenterPolicyObservedState) *pb.Policy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Policy{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.CloudControlConfigs = direct.Slice_ToProto(mapCtx, in.CloudControlConfigs, CloudControlConfigObservedState_ToProto)
+	return out
+}
+
+func DesignCenterPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krm.DesignCenterPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DesignCenterPolicySpec{}
+	out.PolicyURI = direct.LazyPtr(in.GetPolicyUri())
+	out.PolicyRevisionURI = direct.LazyPtr(in.GetPolicyRevisionUri())
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.PolicyType = direct.Enum_FromProto(mapCtx, in.GetPolicyType())
+	out.ApplyConditions = direct.Slice_FromProto(mapCtx, in.ApplyConditions, ApplyCondition_FromProto)
+	out.CloudControlConfigs = direct.Slice_FromProto(mapCtx, in.CloudControlConfigs, CloudControlConfig_FromProto)
+	return out
+}
+
+func DesignCenterPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.DesignCenterPolicySpec) *pb.Policy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Policy{}
+	if oneof := DesignCenterPolicySpec_PolicyUri_ToProto(mapCtx, in.PolicyURI); oneof != nil {
+		out.Uri = oneof
+	}
+	if oneof := DesignCenterPolicySpec_PolicyRevisionUri_ToProto(mapCtx, in.PolicyRevisionURI); oneof != nil {
+		out.Uri = oneof
+	}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.PolicyType = direct.Enum_ToProto[pb.Policy_PolicyType](mapCtx, in.PolicyType)
+	out.ApplyConditions = direct.Slice_ToProto(mapCtx, in.ApplyConditions, ApplyCondition_ToProto)
+	out.CloudControlConfigs = direct.Slice_ToProto(mapCtx, in.CloudControlConfigs, CloudControlConfig_ToProto)
+	return out
+}
+
+func DesignCenterPolicySpec_PolicyUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.Policy_PolicyUri {
+	if in == nil {
+		return nil
+	}
+	return &pb.Policy_PolicyUri{PolicyUri: *in}
+}
+
+func DesignCenterPolicySpec_PolicyRevisionUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.Policy_PolicyRevisionUri {
+	if in == nil {
+		return nil
+	}
+	return &pb.Policy_PolicyRevisionUri{PolicyRevisionUri: *in}
 }
 
 func DesignCenterSpaceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Space) *krm.DesignCenterSpaceObservedState {

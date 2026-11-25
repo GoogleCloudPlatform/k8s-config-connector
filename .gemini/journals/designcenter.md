@@ -144,6 +144,15 @@
   - **Lifecycle & Updates**: Verified Create, Update (`displayName`, `description`), and Delete phases against real GCP, passing all 7/7 HTTP report validation checks and re-reconciliation testing.
   - **Validation**: 200-seed focused round-trip fuzzer (`TestFocusedMappers/DesignCenterApplicationTemplate`), CRD field presence checks, and presubmit unit tests all passed cleanly.
 
+### [2026-11-25] Prepopulating DesignCenterPolicy
+- **Context**: Prepopulating direct KRM types, identity, reference, mapper, and judgement queue for `DesignCenterPolicy` (Issue #16469).
+- **Generation & Ordering**:
+  - Added `--resource DesignCenterPolicy:Policy` to `generate-types` and `generate-identity` in `apis/designcenter/generate.sh`.
+  - Ordered `DesignCenterPolicy:Policy` first among resources in `generate-types` and `generate-identity` so that downstream resources (`DesignCenterCatalogTemplateRevision` and `DesignCenterApplicationTemplate`) that traverse shared types `Parameter` and `CloudControlConfig` with `forceAll == true` are visited after and preserve all output fields during `deduplicateAndSortOutputMessages`, preventing CRD backward compatibility failures on existing kinds.
+  - Added `DesignCenterPolicy` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` with golden output for `DesignCenterPolicy`.
+
+
 
 
 
