@@ -155,13 +155,8 @@ func (cw *clusterWorkloads) checkWorkloads(contextName string, state *clusterHAS
 
 	// Missing workloads check
 	if len(cw.managers) == 0 {
-		if state.configConnector.GetMode() != operatork8s.NamespacedMode {
-			msg := fmt.Sprintf("cluster %q: Config Connector's manager StatefulSet not found", contextName)
-			if cw.isHASetupManaged {
-				problems = append(problems, msg)
-			} else {
-				warnings = append(warnings, msg)
-			}
+		if state.configConnector.GetMode() != operatork8s.NamespacedMode && !cw.isHASetupManaged {
+			warnings = append(warnings, fmt.Sprintf("cluster %q: Config Connector's manager StatefulSet not found", contextName))
 		}
 	}
 
@@ -185,23 +180,12 @@ func (cw *clusterWorkloads) checkWorkloads(contextName string, state *clusterHAS
 
 	reportedWorkloads := make(map[interface{}]bool)
 
-	// Checks 1-3 on Manager StatefulSets
+	// Checks 1-3 on Manager StatefulSets:
+	// Stopped or unready manager StatefulSets are reported by managerProblems in haProblems.
+	// Mark them in reportedWorkloads so Check 5 (settling rule) skips them.
 	for _, mw := range cw.managers {
 		m := mw.sts
-		if m.replicas() == 0 {
-			if _, annotated := m.Annotations[failoverReplicasAnnotation]; annotated {
-				problems = append(problems, fmt.Sprintf("cluster %q: Config Connector's manager is stopped: failover scaled StatefulSet %s to 0 and has not started it again; if no failover is running, run \"config-connector ha failover\" again, which starts it", contextName, m.key()))
-			} else {
-				problems = append(problems, fmt.Sprintf("cluster %q: Config Connector's manager is stopped: StatefulSet %s is scaled to 0", contextName, m.key()))
-			}
-			reportedWorkloads[m.StatefulSet] = true
-		} else if pending := m.pendingReady(); pending != "" {
-			details := describePodContainers(mw.pods)
-			msg := fmt.Sprintf("Config Connector's manager is not ready: %s", pending)
-			if len(details) > 0 {
-				msg = strings.Join(append([]string{msg}, details...), "; ")
-			}
-			problems = append(problems, fmt.Sprintf("cluster %q: %s", contextName, msg))
+		if m.replicas() == 0 || m.pendingReady() != "" {
 			reportedWorkloads[m.StatefulSet] = true
 		}
 	}

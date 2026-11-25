@@ -21,6 +21,7 @@ import (
 	"time"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	operatork8s "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	syncerv1alpha1 "github.com/gke-labs/kube-etl/syncer/api/v1alpha1"
 	mclv1alpha1 "github.com/gke-labs/multicluster-leader-election/api/v1alpha1"
 	"k8s.io/apimachinery/pkg/api/meta"
@@ -49,7 +50,8 @@ const (
 //  1. the clusters take part in the same election (validateMultiClusterLeaseConfigs), when at
 //     least 2 are configured;
 //  2. each cluster's MultiClusterLease is live, and the live leases agree on the holder;
-//  3. when a holder is agreed, each cluster's KRMSyncers: suspended on the leader, syncing from
+//  3. each cluster's managers are running;
+//  4. when a holder is agreed, each cluster's KRMSyncers: suspended on the leader, syncing from
 //     the leader on standbys.
 //
 // The election check stops the others when it fails, because they depend on it. KRMSyncer checks
@@ -65,6 +67,11 @@ func haProblems(states []*clusterHAState, contextIdentities map[string]bool, now
 
 	leader, leaseProblems := leaseHolder(states, contextIdentities, now)
 	problems = append(problems, leaseProblems...)
+
+	for _, s := range states {
+		problems = append(problems, managerProblems(s, leader)...)
+	}
+
 	if leader == "" {
 		return "", problems
 	}
@@ -216,6 +223,71 @@ func leaseExpired(lease *mclv1alpha1.MultiClusterLease, now time.Time) (bool, st
 		return true, fmt.Sprintf("has expired (last renewed at %s, lease duration %s)", renewTime.UTC().Format(time.RFC3339), duration)
 	}
 	return false, ""
+}
+
+// managerProblems checks whether Config Connector's managers are running on a cluster.
+func managerProblems(s *clusterHAState, leader string) []string {
+	if len(s.managers) == 0 {
+		if !s.isHASetupManaged {
+			return nil
+		}
+		return []string{fmt.Sprintf("cluster %q: no StatefulSet of Config Connector's manager found; this cluster cannot take over", s.contextName)}
+	}
+
+	mcl := multiClusterLeaseSpec(s.configConnector)
+	identity, _ := mcl.CandidateIdentity()
+	isLeader := leader != "" && identity == leader
+
+	var problems []string
+	for _, m := range s.managers {
+		replicas := m.replicas()
+		pendingReady := m.pendingReady()
+		if replicas > 0 && pendingReady == "" {
+			continue
+		}
+
+		clusterPart := fmt.Sprintf("cluster %q", s.contextName)
+		if isLeader {
+			clusterPart += " (leader)"
+		}
+
+		scopedNamespace := m.Labels[operatork8s.NamespacedComponentLabel]
+		var managerPart string
+		if scopedNamespace != "" {
+			managerPart = fmt.Sprintf("the manager of namespace %q", scopedNamespace)
+		} else {
+			managerPart = "Config Connector's manager"
+		}
+
+		var reasonPart string
+		if replicas == 0 {
+			if _, hasFailoverReplicas := m.Annotations[failoverReplicasAnnotation]; hasFailoverReplicas {
+				reasonPart = fmt.Sprintf("StatefulSet %s was stopped by ha failover; running ha failover again starts it", m.key())
+			} else {
+				reasonPart = fmt.Sprintf("StatefulSet %s is scaled to 0", m.key())
+			}
+		} else {
+			reasonPart = pendingReady
+		}
+
+		var consequencePart string
+		if isLeader {
+			if scopedNamespace != "" {
+				consequencePart = "no cluster reconciles that namespace. The cluster keeps the lease while another of its managers runs: start the manager, or move leadership to a cluster where it runs with config-connector ha failover"
+			} else {
+				consequencePart = "nothing reconciles until it runs again or another cluster takes the lease"
+			}
+		} else {
+			if scopedNamespace != "" {
+				consequencePart = "this cluster would not reconcile that namespace as the leader"
+			} else {
+				consequencePart = "this cluster cannot take over"
+			}
+		}
+
+		problems = append(problems, fmt.Sprintf("%s: %s is not running (%s); %s", clusterPart, managerPart, reasonPart, consequencePart))
+	}
+	return problems
 }
 
 // syncerProblems checks the cluster's KRMSyncers for the lease, using the Ready condition that

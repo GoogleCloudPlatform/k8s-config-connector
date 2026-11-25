@@ -38,11 +38,24 @@ func newStatusOptions() statusOptions {
 	return statusOptions{}
 }
 
+const statusLong = `Display multi-cluster high availability leadership, manager, and replication status.
+
+Status inspects each cluster named in --contexts and checks:
+  - the clusters share a consistent MultiClusterLease configuration;
+  - each cluster's lease backend is healthy and the lease has a live holder;
+  - all clusters agree on the current leader;
+  - Config Connector's manager StatefulSets are running and ready;
+  - KRMSyncers are suspended on the leader and actively syncing on standbys.
+
+In namespaced mode, all managers on a cluster share the multi-cluster lease under the
+cluster's identity, so leadership never moves for one namespace alone.`
+
 func NewStatusCmd() *cobra.Command {
 	opts := newStatusOptions()
 	cmd := &cobra.Command{
 		Use:   "status",
 		Short: "Display multi-cluster high availability leadership and replication status",
+		Long:  statusLong,
 		Args:  cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.stdout = cmd.OutOrStdout()
@@ -251,6 +264,9 @@ func buildStatusReport(clusters []*clusterStatus, now time.Time) *statusReport {
 	if len(configured) > 0 {
 		states := make([]*clusterHAState, 0, len(configured))
 		for _, c := range configured {
+			if c.workloads != nil && c.state != nil {
+				c.state.isHASetupManaged = c.workloads.isHASetupManaged
+			}
 			states = append(states, c.state)
 		}
 		leader, problems := haProblems(states, r.contextIdentities(), now)

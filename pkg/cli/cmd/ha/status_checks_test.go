@@ -60,6 +60,7 @@ type haFixture struct {
 	cc        *operatorv1beta1.ConfigConnector
 	lease     *mclv1alpha1.MultiClusterLease
 	syncers   []*syncerv1alpha1.KRMSyncer
+	managers  []*appsv1.StatefulSet
 	extraObjs []runtime.Object
 	// unreachable makes every read from the cluster fail.
 	unreachable bool
@@ -89,7 +90,7 @@ func newTestManagerSTS(namespace string) *appsv1.StatefulSet {
 	}
 }
 
-func healthyWorkloadObjects(leaseNamespace string) []runtime.Object {
+func healthyWorkloadObjects(leaseNamespace string, managerSts *appsv1.StatefulSet) []runtime.Object {
 	role := &rbacv1.Role{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      managerHARoleName,
@@ -97,7 +98,6 @@ func healthyWorkloadObjects(leaseNamespace string) []runtime.Object {
 			Labels:    map[string]string{manifestManagedByLabelKey: manifestManagedByLabelValue},
 		},
 	}
-	managerSts := newTestManagerSTS(leaseNamespace)
 	managerPod := &corev1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "cnrm-controller-manager-system-0",
@@ -186,7 +186,11 @@ func healthyWorkloadObjects(leaseNamespace string) []runtime.Object {
 			},
 		},
 	}
-	return []runtime.Object{role, managerSts, managerPod, mclDeploy, mclPod, syncerDeploy, syncerPod}
+	objs := []runtime.Object{role, managerPod, mclDeploy, mclPod, syncerDeploy, syncerPod}
+	if managerSts != nil {
+		objs = append([]runtime.Object{role, managerSts}, objs[1:]...)
+	}
+	return objs
 }
 
 // healthyHAFixtures returns a healthy pair: cluster-a holds the lease and its syncer is
@@ -202,6 +206,7 @@ func healthyHAFixtures() haFixtures {
 // HA workloads.
 func newLeaderFixture(context string) *haFixture {
 	identity := contextIdentity(context)
+	sts := newReadyTestManagerStatefulSet(testLeaseNamespace, "cnrm-controller-manager", "")
 	return &haFixture{
 		context: context,
 		cc:      newHAConfigConnector(context),
@@ -209,13 +214,15 @@ func newLeaderFixture(context string) *haFixture {
 		syncers: []*syncerv1alpha1.KRMSyncer{
 			newTestSyncer(testLeaseName, identity, true, syncerv1alpha1.ReasonSuspended, "Syncer is suspended"),
 		},
-		extraObjs: healthyWorkloadObjects(testLeaseNamespace),
+		managers:  []*appsv1.StatefulSet{sts},
+		extraObjs: healthyWorkloadObjects(testLeaseNamespace, sts),
 	}
 }
 
 // newStandbyFixture returns a standby cluster that sees leader holding the lease, with a syncer
 // that is syncing from it and healthy HA workloads.
 func newStandbyFixture(context, leader string) *haFixture {
+	sts := newReadyTestManagerStatefulSet(testLeaseNamespace, "cnrm-controller-manager", "")
 	return &haFixture{
 		context: context,
 		cc:      newHAConfigConnector(context),
@@ -223,7 +230,8 @@ func newStandbyFixture(context, leader string) *haFixture {
 		syncers: []*syncerv1alpha1.KRMSyncer{
 			newTestSyncer(testLeaseName, leader, false, syncerv1alpha1.ReasonSyncing, "Syncing"),
 		},
-		extraObjs: healthyWorkloadObjects(testLeaseNamespace),
+		managers:  []*appsv1.StatefulSet{sts},
+		extraObjs: healthyWorkloadObjects(testLeaseNamespace, sts),
 	}
 }
 
@@ -259,7 +267,42 @@ func (fs haFixtures) handles(t *testing.T) []*clusterHandle {
 		for _, s := range f.syncers {
 			objs = append(objs, s)
 		}
-		objs = append(objs, f.extraObjs...)
+		managers := f.managers
+		if f.extraObjs == nil {
+			managers = nil
+		} else {
+			hasExtraSTS := false
+			for _, obj := range f.extraObjs {
+				if _, ok := obj.(*appsv1.StatefulSet); ok {
+					hasExtraSTS = true
+					break
+				}
+			}
+			if len(f.extraObjs) > 0 && !hasExtraSTS {
+				managers = nil
+			}
+		}
+		for _, m := range managers {
+			objs = append(objs, m)
+		}
+		for _, obj := range f.extraObjs {
+			if sts, ok := obj.(*appsv1.StatefulSet); ok {
+				if f.managers == nil {
+					continue
+				}
+				inManagers := false
+				for _, m := range managers {
+					if m == sts || (m.Namespace == sts.Namespace && m.Name == sts.Name) {
+						inManagers = true
+						break
+					}
+				}
+				if inManagers {
+					continue
+				}
+			}
+			objs = append(objs, obj)
+		}
 		h := newFakeClusterHandle(t, f.context, objs...)
 		if f.unreachable {
 			h.client = &kubecli.Client{Client: &failingGetClient{Client: h.client.Client, err: errors.New("dial tcp 10.0.0.1:443: i/o timeout")}}
@@ -280,10 +323,62 @@ func (fs haFixtures) handlesWithPendingDeployments(t *testing.T) []*clusterHandl
 		for _, s := range f.syncers {
 			objs = append(objs, s)
 		}
-		objs = append(objs, f.extraObjs...)
+		managers := f.managers
+		if f.extraObjs == nil {
+			managers = nil
+		} else {
+			hasExtraSTS := false
+			for _, obj := range f.extraObjs {
+				if _, ok := obj.(*appsv1.StatefulSet); ok {
+					hasExtraSTS = true
+					break
+				}
+			}
+			if len(f.extraObjs) > 0 && !hasExtraSTS {
+				managers = nil
+			}
+		}
+		for _, m := range managers {
+			objs = append(objs, m)
+		}
+		for _, obj := range f.extraObjs {
+			if sts, ok := obj.(*appsv1.StatefulSet); ok {
+				if f.managers == nil {
+					continue
+				}
+				inManagers := false
+				for _, m := range managers {
+					if m == sts || (m.Namespace == sts.Namespace && m.Name == sts.Name) {
+						inManagers = true
+						break
+					}
+				}
+				if inManagers {
+					continue
+				}
+			}
+			objs = append(objs, obj)
+		}
 		handles = append(handles, newFakeClusterHandleWithPendingDeployments(t, f.context, objs...))
 	}
 	return handles
+}
+
+func newReadyTestManagerStatefulSet(namespace, name, scopedNamespace string) *appsv1.StatefulSet {
+	sts := newManagerStatefulSet(namespace, name, scopedNamespace)
+	sts.Generation = 1
+	sts.Spec.Selector = &metav1.LabelSelector{
+		MatchLabels: map[string]string{operatork8s.KCCSystemComponentLabel: operatork8s.KCCControllerManagerComponent},
+	}
+	if scopedNamespace != "" {
+		sts.Spec.Selector.MatchLabels[scopedNamespaceLabel] = scopedNamespace
+	}
+	sts.Status = appsv1.StatefulSetStatus{
+		ObservedGeneration: 1,
+		Replicas:           1,
+		ReadyReplicas:      1,
+	}
+	return sts
 }
 
 func newTestLease(holder, renewTime string) *mclv1alpha1.MultiClusterLease {
@@ -365,6 +460,26 @@ func TestHAStatusHealthy(t *testing.T) {
 		{
 			name: "namespaced mode, one KRMSyncer per namespace",
 			mutate: func(fs haFixtures) {
+				fs[0].syncers = []*syncerv1alpha1.KRMSyncer{
+					newTestSyncer(testLeaseName+"-team-a", testIdentityA, true, syncerv1alpha1.ReasonSuspended, ""),
+					newTestSyncer(testLeaseName+"-team-b", testIdentityA, true, syncerv1alpha1.ReasonSuspended, ""),
+				}
+				fs[1].syncers = []*syncerv1alpha1.KRMSyncer{
+					newTestSyncer(testLeaseName+"-team-a", testIdentityA, false, syncerv1alpha1.ReasonSyncing, ""),
+					newTestSyncer(testLeaseName+"-team-b", testIdentityA, false, syncerv1alpha1.ReasonSyncing, ""),
+				}
+			},
+		},
+		{
+			name: "namespaced mode with a running manager for team-a and team-b on both clusters",
+			mutate: func(fs haFixtures) {
+				for _, f := range fs {
+					f.cc.Spec.Mode = "namespaced"
+					f.managers = []*appsv1.StatefulSet{
+						newReadyTestManagerStatefulSet(testLeaseNamespace, "cnrm-controller-manager-team-a", "team-a"),
+						newReadyTestManagerStatefulSet(testLeaseNamespace, "cnrm-controller-manager-team-b", "team-b"),
+					}
+				}
 				fs[0].syncers = []*syncerv1alpha1.KRMSyncer{
 					newTestSyncer(testLeaseName+"-team-a", testIdentityA, true, syncerv1alpha1.ReasonSuspended, ""),
 					newTestSyncer(testLeaseName+"-team-b", testIdentityA, true, syncerv1alpha1.ReasonSuspended, ""),
@@ -730,6 +845,116 @@ func TestHAStatusProblems(t *testing.T) {
 			},
 			wantProblems: []string{
 				`cluster "gke_proj-b_us-east1_cluster-b": KRMSyncer cnrm-system/kcc-multicluster-lease is failing to sync (SyncFailed): watch failed (Forbidden): APIGatewayAPI.apigateway.cnrm.cloud.google.com. See the controller logs for details.`,
+			},
+		},
+		// Managers.
+		{
+			name: "namespaced mode, leader manager of team-a scaled to 0",
+			mutate: func(fs haFixtures) {
+				for _, f := range fs {
+					f.cc.Spec.Mode = "namespaced"
+					f.managers = []*appsv1.StatefulSet{
+						newReadyTestManagerStatefulSet(testLeaseNamespace, "cnrm-controller-manager-team-a", "team-a"),
+						newReadyTestManagerStatefulSet(testLeaseNamespace, "cnrm-controller-manager-team-b", "team-b"),
+					}
+				}
+				fs[0].syncers = []*syncerv1alpha1.KRMSyncer{
+					newTestSyncer(testLeaseName+"-team-a", testIdentityA, true, syncerv1alpha1.ReasonSuspended, ""),
+					newTestSyncer(testLeaseName+"-team-b", testIdentityA, true, syncerv1alpha1.ReasonSuspended, ""),
+				}
+				fs[1].syncers = []*syncerv1alpha1.KRMSyncer{
+					newTestSyncer(testLeaseName+"-team-a", testIdentityA, false, syncerv1alpha1.ReasonSyncing, ""),
+					newTestSyncer(testLeaseName+"-team-b", testIdentityA, false, syncerv1alpha1.ReasonSyncing, ""),
+				}
+				zero := int32(0)
+				fs[0].managers[0].Spec.Replicas = &zero
+				fs[0].managers[0].Status.Replicas = 0
+				fs[0].managers[0].Status.ReadyReplicas = 0
+			},
+			wantProblems: []string{
+				`cluster "gke_proj-a_us-central1_cluster-a" (leader): the manager of namespace "team-a" is not running (StatefulSet cnrm-system/cnrm-controller-manager-team-a is scaled to 0); no cluster reconciles that namespace. The cluster keeps the lease while another of its managers runs: start the manager, or move leadership to a cluster where it runs with config-connector ha failover`,
+			},
+		},
+		{
+			name: "namespaced mode, standby manager of team-a with 0 of 1 pods ready",
+			mutate: func(fs haFixtures) {
+				for _, f := range fs {
+					f.cc.Spec.Mode = "namespaced"
+					f.managers = []*appsv1.StatefulSet{
+						newReadyTestManagerStatefulSet(testLeaseNamespace, "cnrm-controller-manager-team-a", "team-a"),
+						newReadyTestManagerStatefulSet(testLeaseNamespace, "cnrm-controller-manager-team-b", "team-b"),
+					}
+				}
+				fs[0].syncers = []*syncerv1alpha1.KRMSyncer{
+					newTestSyncer(testLeaseName+"-team-a", testIdentityA, true, syncerv1alpha1.ReasonSuspended, ""),
+					newTestSyncer(testLeaseName+"-team-b", testIdentityA, true, syncerv1alpha1.ReasonSuspended, ""),
+				}
+				fs[1].syncers = []*syncerv1alpha1.KRMSyncer{
+					newTestSyncer(testLeaseName+"-team-a", testIdentityA, false, syncerv1alpha1.ReasonSyncing, ""),
+					newTestSyncer(testLeaseName+"-team-b", testIdentityA, false, syncerv1alpha1.ReasonSyncing, ""),
+				}
+				fs[1].managers[0].Status.ReadyReplicas = 0
+			},
+			wantProblems: []string{
+				`cluster "gke_proj-b_us-east1_cluster-b": the manager of namespace "team-a" is not running (StatefulSet cnrm-system/cnrm-controller-manager-team-a has 0 of 1 pods ready); this cluster would not reconcile that namespace as the leader`,
+			},
+		},
+		{
+			name: "cluster mode, standby manager scaled to 0",
+			mutate: func(fs haFixtures) {
+				zero := int32(0)
+				fs[1].managers[0].Spec.Replicas = &zero
+				fs[1].managers[0].Status.Replicas = 0
+				fs[1].managers[0].Status.ReadyReplicas = 0
+			},
+			wantProblems: []string{
+				`cluster "gke_proj-b_us-east1_cluster-b": Config Connector's manager is not running (StatefulSet cnrm-system/cnrm-controller-manager is scaled to 0); this cluster cannot take over`,
+			},
+		},
+		{
+			name: "manager that ha failover stopped",
+			mutate: func(fs haFixtures) {
+				zero := int32(0)
+				fs[1].managers[0].Spec.Replicas = &zero
+				fs[1].managers[0].Status.Replicas = 0
+				fs[1].managers[0].Status.ReadyReplicas = 0
+				fs[1].managers[0].Annotations[failoverReplicasAnnotation] = "1"
+			},
+			wantProblems: []string{
+				`cluster "gke_proj-b_us-east1_cluster-b": Config Connector's manager is not running (StatefulSet cnrm-system/cnrm-controller-manager was stopped by ha failover; running ha failover again starts it); this cluster cannot take over`,
+			},
+		},
+		{
+			name: "manager whose latest spec the StatefulSet controller has not processed",
+			mutate: func(fs haFixtures) {
+				fs[1].managers[0].Generation = 2
+				fs[1].managers[0].Status.ObservedGeneration = 1
+			},
+			wantProblems: []string{
+				`cluster "gke_proj-b_us-east1_cluster-b": Config Connector's manager is not running (the StatefulSet controller has not processed the latest spec of StatefulSet cnrm-system/cnrm-controller-manager yet); this cluster cannot take over`,
+			},
+		},
+		{
+			name: "cluster with no manager StatefulSet",
+			mutate: func(fs haFixtures) {
+				fs[1].managers = nil
+			},
+			wantProblems: []string{
+				`cluster "gke_proj-b_us-east1_cluster-b": no StatefulSet of Config Connector's manager found; this cluster cannot take over`,
+			},
+		},
+		{
+			name: "an expired lease and a manager that is down",
+			mutate: func(fs haFixtures) {
+				fs[1].lease = newTestLease(testIdentityA, "2026-11-10T18:05:00Z")
+				zero := int32(0)
+				fs[0].managers[0].Spec.Replicas = &zero
+				fs[0].managers[0].Status.Replicas = 0
+				fs[0].managers[0].Status.ReadyReplicas = 0
+			},
+			wantProblems: []string{
+				`cluster "gke_proj-b_us-east1_cluster-b": the lease held by "` + testIdentityA + `" has expired (last renewed at 2026-11-10T18:05:00Z, lease duration 15s)`,
+				`cluster "gke_proj-a_us-central1_cluster-a" (leader): Config Connector's manager is not running (StatefulSet cnrm-system/cnrm-controller-manager is scaled to 0); nothing reconciles until it runs again or another cluster takes the lease`,
 			},
 		},
 	}

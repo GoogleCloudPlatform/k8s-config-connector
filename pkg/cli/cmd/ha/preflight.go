@@ -41,6 +41,8 @@ type clusterHAState struct {
 	configConnector   *operatorv1beta1.ConfigConnector
 	multiClusterLease *mclv1alpha1.MultiClusterLease
 	krmSyncers        []syncerv1alpha1.KRMSyncer
+	managers          []*managerStatefulSet
+	isHASetupManaged  bool
 }
 
 // fetchAllClusterHAStates fetches the HA state across all configured clusters.
@@ -87,11 +89,17 @@ func fetchClusterHAState(ctx context.Context, handle *clusterHandle) (*clusterHA
 		return nil, err
 	}
 
+	managers, err := handle.listManagers(ctx)
+	if err != nil {
+		return nil, err
+	}
+
 	return &clusterHAState{
 		contextName:       handle.contextName,
 		configConnector:   cc,
 		multiClusterLease: lease,
 		krmSyncers:        syncers,
+		managers:          managers,
 	}, nil
 }
 
