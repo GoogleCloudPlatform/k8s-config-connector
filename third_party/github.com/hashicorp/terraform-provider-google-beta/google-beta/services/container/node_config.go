@@ -177,10 +177,11 @@ func schemaNodeConfig() *schema.Schema {
 				},
 
 				"resource_labels": {
-					Type:        schema.TypeMap,
-					Optional:    true,
-					Elem:        &schema.Schema{Type: schema.TypeString},
-					Description: `The GCE resource labels (a map of key/value pairs) to be applied to the node pool.`,
+					Type:             schema.TypeMap,
+					Optional:         true,
+					Elem:             &schema.Schema{Type: schema.TypeString},
+					DiffSuppressFunc: containerNodePoolResourceLabelsDiffSuppress,
+					Description:      `The GCE resource labels (a map of key/value pairs) to be applied to the node pool.`,
 				},
 
 				"local_ssd_count": {
@@ -1573,6 +1574,21 @@ func flattenSandboxConfig(c *container.SandboxConfig) []map[string]interface{} {
 		})
 	}
 	return result
+}
+
+func containerNodePoolResourceLabelsDiffSuppress(k, old, new string, d *schema.ResourceData) bool {
+	// Suppress diffs for server-specified labels prefixed with "goog-gke"
+	if strings.Contains(k, "resource_labels.goog-gke") && new == "" {
+		return true
+	}
+
+	// Let diff be determined by resource_labels (above)
+	if strings.Contains(k, "resource_labels.%") {
+		return true
+	}
+
+	// For other keys, don't suppress diff.
+	return false
 }
 
 func containerNodePoolLabelsSuppress(k, old, new string, d *schema.ResourceData) bool {
