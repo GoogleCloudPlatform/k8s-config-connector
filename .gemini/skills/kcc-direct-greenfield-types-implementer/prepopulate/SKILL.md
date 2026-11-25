@@ -10,8 +10,10 @@ Use this workflow for **Greenfield Step 1** when `apis/<service>/<version>/<kind
 > [!IMPORTANT]
 > **Strict Mechanical Scope for Step 1**:
 > - **Do NOT hand-edit** `<kind>_types.go`, `types.generated.go`, `<kind>_identity.generated.go`, `<kind>_reference.generated.go`, or `apis/<service>/judgement_queue.yaml`.
-> - **Do NOT resolve** any entries in `apis/<service>/judgement_queue.yaml` during Step 1; `untriaged-bulk-generation` for `<Kind>` **must** remain `status: open` so Step 2 (`judgement/SKILL.md`) can triage it.
+> - **Do NOT resolve** any entries in `apis/<service>/judgement_queue.yaml` during Step 1; `untriaged-bulk-generation` for `<Kind>` **must** remain `status: open` so Step 2 (`judgement/SKILL.md`) can triage it. Step 1a (`step/gen-types`) and Step 1b (`step/types-judgement`) MUST NOT be combined.
+> - **Do NOT modify shared generator tooling** in `dev/tools/controllerbuilder/` (e.g. `mappergenerator.go`, `filemerge.go`, `typegenerator.go`).
 > - **Do NOT pass `--allow-non-ga-proto`** unless explicitly instructed by a human.
+> - **Strict Alphabetical Sorting**: When inserting `<Kind>` into `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`, place it in strict alphabetical order.
 
 ---
 

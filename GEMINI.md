@@ -115,6 +115,7 @@ but we have not been 100% consistent on this.
 Within a test directory, we typically have `create.yaml` which describes the primary resource that we are testing. We have `update.yaml`, which describes an update to make to that primary resource. Including `update.yaml` is **strongly recommended** to ensure updates reconcile in-place correctly, and is required if the resource contains mutable spec fields. If the primary resource's configuration contains reference fields, we need a `dependencies.yaml`, which contains
 all dependency resources that are referenced by the primary resource. We create the resources in `dependencies.yaml`, then the resource in `create.yaml`,
 then we run `update.yaml`. We expect the resources to become "ready" at each step of the test.
+Note on `spec.resourceID`: When creating test fixtures, do NOT specify `spec.resourceID` if its value matches `metadata.name`; omit `spec.resourceID` and let KCC default it from `metadata.name`.
 
 We capture the logs from the HTTP (and GRPC) traffic to GCP APIs.  This is compared against the "golden traffic" in the `_http.log` file.  We do
 perform some normalization to remove volatile values, such as timestamps, server-generated identifiers and complicated hashes.

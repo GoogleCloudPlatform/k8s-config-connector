@@ -58,8 +58,10 @@ Before generating or finalizing the controller and E2E fixtures for `{kind}`, ve
    - Service registration in `pkg/controller/direct/register/register.go` and `pkg/controller/resourceconfig/static_config.go`
 
 3. **Handle Complex / High-Touch Resource Cases**:
-   - **Missing GAPIC Modules or Multi-Service Packages (`iam/apiv3`, `dialogflow` spanning `v2` + `cx/v3`, `mapmanagement/apiv2`):** If `go build` fails on a missing GAPIC package, run `go get cloud.google.com/go/<service>@latest && go mod tidy && (cd mockgcp && go mod tidy)` so both `go.mod` and `mockgcp/go.mod` stay aligned (`validate-ensure`).
-   - **Shared/Legacy Package Mapper Collisions (`<kind_lower>_mapper.go`):** If `pkg/controller/direct/<service>/mapper.generated.go` cannot be regenerated via `generate-mapper` without clobbering existing mockgcp or multi-service mappers (or if `v1alpha1`/`v1beta1` types collide), isolate `{kind}`'s mapper functions in `pkg/controller/direct/<service>/<kind_lower>_mapper.go` (matching `TestDirectResourceFileNaming`) or pass `--multiversion` to `generate-mapper`.
+   - **Missing GAPIC Modules or Multi-Service Packages (`iam/apiv3`, `dialogflow` spanning `v2` + `cx/v3`, `mapmanagement/apiv2`):** If `go build` fails on a missing GAPIC package, run `go get cloud.google.com/go/<service>@latest && go mod tidy && (cd mockgcp && go mod tidy)` so both `go.mod` and `mockgcp/go.mod` stay aligned (`validate-ensure`). Inspect `git diff go.mod mockgcp/go.mod` and revert any collateral bumps to unrelated libraries; never introduce `replace` directives.
+   - **Shared/Legacy Package Mapper Collisions & File Naming (`<kind_lower>_mapper.go`):** If `pkg/controller/direct/<service>/mapper.generated.go` cannot be regenerated via `generate-mapper` without clobbering existing mockgcp or multi-service mappers (or if `v1alpha1`/`v1beta1` types collide), isolate `{kind}`'s mapper functions in `pkg/controller/direct/<service>/<kind_lower>_mapper.go` (or `<kind_lower>_mappers.go`), matching `TestDirectResourceFileNaming` (NEVER name it `<kind_lower>_mappings.go` or `mappings.go`).
+   - **Handling Renamed Reference Fields in Mappers:** Grep `mapper.generated.go` for `// MISSING:`. When reference fields in types are renamed away from the exact literal proto field name (e.g. `RepositoryProjectId` -> `RepositoryProjectRef`, `KmsKeyName` -> `KMSKeyRef`), `controllerbuilder generate-mapper` emits `// MISSING:` and silently drops the mapping. You must implement custom `*_FromProto` and `*_ToProto` functions in `pkg/controller/direct/<service>/mapper.go` (or `<kind_lower>_mapper.go`) to explicitly map the `*Ref` to/from the proto string.
+   - **No Standalone Unit Tests in Controllers:** Do NOT create standalone `*_test.go` or `*_mappings_test.go` files inside `pkg/controller/direct/<service>/`. Direct controllers and mappers are verified centrally via `TestFocusedMappers` in `pkg/fuzztesting/fuzztests` and the E2E fixture runner.
    - **Custom LROs & Immutable Resources Without `Update*` RPCs:** For immutable resources without an `Update*` RPC, verify `Update` refreshes status (`a.setStatus(u, actual)`) without calling an `Update*` RPC, and resolve any `// TODO:` markers in `<proto_lower>_controller.go`.
    - **`TestRegisteredTemplatesMatchCAI` & `TestVerifyLabelsTestCasesExist`:** Run `go test ./pkg/gcpurls/... ./pkg/test/resourcefixture/... -run "TestRegisteredTemplatesMatchCAI|TestVerifyLabelsTestCasesExist"`. If `{kind}`'s URL template is absent from CAI's asset inventory table, add it to `ignoredTemplates` in `pkg/gcpurls/registry_test.go`.
 
@@ -84,13 +86,13 @@ Before generating or finalizing the controller and E2E fixtures for `{kind}`, ve
 ## Step 2: Create Minimal and Maximal E2E Fixtures
 
 1. **Minimal Fixture** (`pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind_lower>/<kind_lower>-minimal/`):
-   - `create.yaml`: Include only the bare minimum **required** Spec fields (use `${uniqueId}` for resource names and `${projectId}` where needed).
-   - `update.yaml`: Modify mutable fields from `create.yaml` (omit `update.yaml` only if the resource has no mutable fields or no Update RPC).
-   - `dependencies.yaml`: Include any prerequisite KCC resources referenced by `create.yaml`.
+   - `create.yaml`: Include only the bare minimum **required** Spec fields (use `${uniqueId}` for resource names and `${projectId}` where needed). Do NOT specify `spec.resourceID` if its value is identical to `metadata.name`; omit `spec.resourceID` to let KCC default it from `metadata.name`.
+   - `update.yaml`: Modify mutable fields from `create.yaml` (MANDATORY if the resource has any mutable fields; omit `update.yaml` only if the resource has no mutable fields or no Update RPC).
+   - `dependencies.yaml`: Include any prerequisite KCC resources referenced by `create.yaml` (MANDATORY if the resource references other KCC resources).
 
 2. **Maximal Fixture** (`pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind_lower>/<kind_lower>-maximal/`):
-   - `create.yaml`: Populate **every supported Spec field** (create additional sibling fixture directories if certain Spec fields are mutually exclusive `oneof`s).
-   - `update.yaml`: Modify all mutable fields defined in `create.yaml`.
+   - `create.yaml`: Populate **every supported Spec field** (create additional sibling fixture directories if certain Spec fields are mutually exclusive `oneof`s). Do NOT specify `spec.resourceID` if its value is identical to `metadata.name`.
+   - `update.yaml`: Modify all mutable fields defined in `create.yaml` (MANDATORY if mutable fields exist).
    - `dependencies.yaml`: Include all prerequisite KCC resources.
 
 3. **Parent fields** (as `<Kind>Spec` models them; see `kcc-direct-greenfield-types-implementer/judgement/references/PARENT_AND_IDENTITY.md`). Never change them in `update.yaml`.
@@ -128,6 +130,7 @@ RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^<kind_lower>-maximal$"
 ```
 - `hack/record-gcp` (`E2E_GCP_TARGET=real WRITE_GOLDEN_OUTPUT=1`) automatically validates `_http.log` (`V1`–`V7`, including protobuf schema and LRO `@type` validation) and writes `_http_report.md` in each fixture directory. Always stage `_http_report.md` alongside `_http.log`, and never hand-edit `_http.log` or `_http_report.md`.
 - Once a fixture provisions on real GCP, reaches `Ready`, deletes cleanly, and writes `_http.log`, `_http_report.md`, and `_audit_probe.log`, **do not re-run `hack/record-gcp` for minor log variations**—normalize volatile fields in `tests/e2e/normalize.go` instead.
+- **Audit Probe Hygiene**: If recording against real GCP produces an `_audit_probe.log` that only contains incidental IAM entries (e.g. for gRPC services where service audit entries are currently skipped), remove `_audit_probe.log` before staging. Do not commit an `_audit_probe.log` containing only IAM entries.
 - If real GCP reports a disabled API, enable it via `gcloud services enable <service>.googleapis.com` and retry.
 
 ---

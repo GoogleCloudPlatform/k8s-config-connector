@@ -156,3 +156,5 @@ Please use the skill .gemini/skills/match-mockgcp-with-realgcp/SKILL.md to align
 *   Use `httptogrpc` to avoid compiling protos if possible.
 *   Follow established patterns in `mockfirestore` or other existing mocks.
 *   For Terraform-based resources, check the provider code to understand how fields are flattened/expanded.
+*   **No Standalone Unit Tests**: Do NOT create standalone `*_test.go` files inside `mockgcp/mock<service>/`. MockGCP services are verified end-to-end via `hack/compare-mock` and fixture test suites against authentic real-GCP logs.
+*   **Dependency Hygiene**: Only add dependencies strictly required by the mock service. Inspect `git diff mockgcp/go.mod` and revert any collateral bumps or additions to unrelated modules.
