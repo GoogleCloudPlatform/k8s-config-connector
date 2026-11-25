@@ -288,6 +288,12 @@ func TestComputeCCConfigHash(t *testing.T) {
 				},
 			},
 			{
+				name: "gkeCluster set to nil",
+				mutate: func(cc *corev1beta1.ConfigConnector) {
+					cc.Spec.Experiments.MultiClusterLease.GKECluster = nil
+				},
+			},
+			{
 				name: "leaderEndpointType changed",
 				mutate: func(cc *corev1beta1.ConfigConnector) {
 					cc.Spec.Experiments.MultiClusterLease.LeaderEndpointType = corev1beta1.LeaderEndpointTypePrivateIP

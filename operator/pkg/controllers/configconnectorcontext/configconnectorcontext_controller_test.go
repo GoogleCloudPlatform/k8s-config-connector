@@ -1560,23 +1560,55 @@ func TestNamespacedResourceSettingsConfigHashes(t *testing.T) {
 			}
 		}
 	}
+}
 
-	// In namespaced mode, changing only leaderEndpointType must change cc-config-hash
-	cc.Spec.Experiments.MultiClusterLease = &corev1beta1.MultiClusterLeaseSpec{
-		LeaseName: "test-lease",
-		Namespace: "cnrm-system",
-		GKECluster: &corev1beta1.GKECluster{
-			Project:  "test-project",
-			Location: "us-central1",
-			Name:     "test-cluster",
+func TestNamespacedMultiClusterLeaseConfigHashes(t *testing.T) {
+	t.Parallel()
+	ctx := context.Background()
+	mgr, stop := testmain.StartTestManagerFromNewTestEnv()
+	defer stop()
+	c := mgr.GetClient()
+	testcontroller.EnsureNamespaceExists(c, k8s.OperatorSystemNamespace)
+	testcontroller.EnsureNamespaceExists(c, k8s.CNRMSystemNamespace)
+	testcontroller.EnsureNamespaceExists(c, "foo-ns")
+
+	cc := &corev1beta1.ConfigConnector{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: corev1beta1.ConfigConnectorAllowedName,
 		},
-		LeaderEndpointType: corev1beta1.LeaderEndpointTypeDefault,
+		Spec: corev1beta1.ConfigConnectorSpec{
+			Mode: k8s.NamespacedMode,
+			Experiments: &corev1beta1.CCExperiments{
+				MultiClusterLease: &corev1beta1.MultiClusterLeaseSpec{
+					LeaseName: "test-lease",
+					Namespace: "cnrm-system",
+					GKECluster: &corev1beta1.GKECluster{
+						Project:  "test-project",
+						Location: "us-central1",
+						Name:     "test-cluster",
+					},
+					LeaderEndpointType: corev1beta1.LeaderEndpointTypeDefault,
+				},
+			},
+		},
 	}
-	if err := c.Update(ctx, cc); err != nil {
-		t.Fatalf("error updating ConfigConnector with MultiClusterLease: %v", err)
+	if err := c.Create(ctx, cc); err != nil {
+		t.Fatalf("error creating ConfigConnector: %v", err)
 	}
 
-	objsWithLeaseDefault, err := transformNamespacedComponentTemplates(ctx, c, ccc, objsAfterClear)
+	ccc := &corev1beta1.ConfigConnectorContext{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      corev1beta1.ConfigConnectorContextAllowedName,
+			Namespace: "foo-ns",
+		},
+		Spec: corev1beta1.ConfigConnectorContextSpec{
+			GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
+		},
+	}
+
+	// 1. Initial transform with default leaderEndpointType
+	m1 := testcontroller.ParseObjects(ctx, t, testcontroller.GetPerNamespaceManifest())
+	objsWithLeaseDefault, err := transformNamespacedComponentTemplates(ctx, c, ccc, m1.Items)
 	if err != nil {
 		t.Fatalf("transformNamespacedComponentTemplates failed: %v", err)
 	}
@@ -1591,12 +1623,14 @@ func TestNamespacedResourceSettingsConfigHashes(t *testing.T) {
 		t.Fatalf("expected non-empty %s annotation", k8s.CCConfigHashAnnotation)
 	}
 
+	// 2. Changing leaderEndpointType to PrivateIP updates cc-config-hash
 	cc.Spec.Experiments.MultiClusterLease.LeaderEndpointType = corev1beta1.LeaderEndpointTypePrivateIP
 	if err := c.Update(ctx, cc); err != nil {
 		t.Fatalf("error updating ConfigConnector leaderEndpointType: %v", err)
 	}
 
-	objsWithLeasePrivateIP, err := transformNamespacedComponentTemplates(ctx, c, ccc, objsWithLeaseDefault)
+	m2 := testcontroller.ParseObjects(ctx, t, testcontroller.GetPerNamespaceManifest())
+	objsWithLeasePrivateIP, err := transformNamespacedComponentTemplates(ctx, c, ccc, m2.Items)
 	if err != nil {
 		t.Fatalf("transformNamespacedComponentTemplates failed: %v", err)
 	}
@@ -1613,21 +1647,42 @@ func TestNamespacedResourceSettingsConfigHashes(t *testing.T) {
 	if hashDefault == hashPrivateIP {
 		t.Errorf("expected %s to change when leaderEndpointType changes, but both are %q", k8s.CCConfigHashAnnotation, hashDefault)
 	}
+
+	// 3. Removing MultiClusterLease removes cc-config-hash when no other CC experiments are set
+	cc.Spec.Experiments.MultiClusterLease = nil
+	if err := c.Update(ctx, cc); err != nil {
+		t.Fatalf("error updating ConfigConnector to clear MultiClusterLease: %v", err)
+	}
+
+	m3 := testcontroller.ParseObjects(ctx, t, testcontroller.GetPerNamespaceManifest())
+	objsWithoutLease, err := transformNamespacedComponentTemplates(ctx, c, ccc, m3.Items)
+	if err != nil {
+		t.Fatalf("transformNamespacedComponentTemplates failed: %v", err)
+	}
+	for _, item := range objsWithoutLease {
+		if controllers.IsControllerManagerStatefulSet(item) {
+			annotations, _, _ := unstructured.NestedStringMap(item.UnstructuredObject().Object, "spec", "template", "metadata", "annotations")
+			if _, exists := annotations[k8s.CCConfigHashAnnotation]; exists {
+				t.Errorf("expected %s to be removed when MultiClusterLease is nil", k8s.CCConfigHashAnnotation)
+			}
+		}
+	}
+}
+
+func getManagerContainerStatefulSet(ctx context.Context, t *testing.T) *unstructured.Unstructured {
+	t.Helper()
+	m := testcontroller.ParseObjects(ctx, t, testcontroller.GetPerNamespaceManifest())
+	for _, item := range m.Items {
+		if controllers.IsControllerManagerStatefulSet(item) {
+			return item.UnstructuredObject()
+		}
+	}
+	t.Fatal("expected controller-manager StatefulSet in per-namespace manifest")
+	return nil
 }
 
 func TestApplyExperimentsToManagerContainer_LeaderEndpointType(t *testing.T) {
 	ctx := context.Background()
-	m := testcontroller.ParseObjects(ctx, t, testcontroller.GetPerNamespaceManifest())
-	var u *unstructured.Unstructured
-	for _, item := range m.Items {
-		if controllers.IsControllerManagerStatefulSet(item) {
-			u = item.UnstructuredObject()
-			break
-		}
-	}
-	if u == nil {
-		t.Fatal("expected controller-manager StatefulSet in per-namespace manifest")
-	}
 
 	ccDefault := &corev1beta1.ConfigConnector{
 		Spec: corev1beta1.ConfigConnectorSpec{
@@ -1646,10 +1701,11 @@ func TestApplyExperimentsToManagerContainer_LeaderEndpointType(t *testing.T) {
 		},
 	}
 
-	if err := applyExperimentsToManagerContainer(u, ccDefault); err != nil {
+	uDefault := getManagerContainerStatefulSet(ctx, t)
+	if err := applyExperimentsToManagerContainer(uDefault, ccDefault); err != nil {
 		t.Fatalf("applyExperimentsToManagerContainer failed: %v", err)
 	}
-	annotations, _, _ := unstructured.NestedStringMap(u.Object, "spec", "template", "metadata", "annotations")
+	annotations, _, _ := unstructured.NestedStringMap(uDefault.Object, "spec", "template", "metadata", "annotations")
 	hashDefault := annotations[k8s.CCConfigHashAnnotation]
 	if hashDefault == "" {
 		t.Fatal("expected non-empty cc-config-hash annotation")
@@ -1658,16 +1714,27 @@ func TestApplyExperimentsToManagerContainer_LeaderEndpointType(t *testing.T) {
 	ccPrivateIP := ccDefault.DeepCopy()
 	ccPrivateIP.Spec.Experiments.MultiClusterLease.LeaderEndpointType = corev1beta1.LeaderEndpointTypePrivateIP
 
-	if err := applyExperimentsToManagerContainer(u, ccPrivateIP); err != nil {
+	uPrivateIP := getManagerContainerStatefulSet(ctx, t)
+	if err := applyExperimentsToManagerContainer(uPrivateIP, ccPrivateIP); err != nil {
 		t.Fatalf("applyExperimentsToManagerContainer failed: %v", err)
 	}
-	annotations, _, _ = unstructured.NestedStringMap(u.Object, "spec", "template", "metadata", "annotations")
+	annotations, _, _ = unstructured.NestedStringMap(uPrivateIP.Object, "spec", "template", "metadata", "annotations")
 	hashPrivateIP := annotations[k8s.CCConfigHashAnnotation]
 	if hashPrivateIP == "" {
 		t.Fatal("expected non-empty cc-config-hash annotation after change")
 	}
 	if hashDefault == hashPrivateIP {
 		t.Errorf("expected cc-config-hash to change when leaderEndpointType changes, but both are %q", hashDefault)
+	}
+
+	ccWithoutLease := &corev1beta1.ConfigConnector{}
+	uWithoutLease := getManagerContainerStatefulSet(ctx, t)
+	if err := applyExperimentsToManagerContainer(uWithoutLease, ccWithoutLease); err != nil {
+		t.Fatalf("applyExperimentsToManagerContainer failed: %v", err)
+	}
+	annotations, _, _ = unstructured.NestedStringMap(uWithoutLease.Object, "spec", "template", "metadata", "annotations")
+	if _, exists := annotations[k8s.CCConfigHashAnnotation]; exists {
+		t.Errorf("expected cc-config-hash annotation to be removed when MultiClusterLease is nil")
 	}
 }
 
