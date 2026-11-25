@@ -4,7 +4,7 @@
 - **Resource Name:** `vertexaitrainingpipeline-maximal-${uniqueId}`
 - **Source Log:** `_http.log` (25 total HTTP entries, 6 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:50ca4790895d0715`
+- **Integrity Hash:** `sha256:6772b5b0ea8b3c54`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 
