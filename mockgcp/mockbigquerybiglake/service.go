@@ -34,6 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
+	hivepbGw "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/biglake/hive/v1"
 	icebergpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/biglake/v1"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/biglake/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
@@ -89,6 +90,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterMetastoreServiceHandler,
 		icebergpb.RegisterIcebergCatalogServiceHandler,
+		hivepbGw.RegisterHiveMetastoreServiceHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err
@@ -99,6 +101,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 			error.Errors = nil
 			error.Status = ""
 			error.Type = "NoSuchNamespaceException"
+		}
+		if error.Code == 404 && strings.Contains(error.Message, "Hive database") {
+			error.Errors = nil
 		}
 	}
 

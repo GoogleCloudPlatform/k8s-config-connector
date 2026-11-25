@@ -116,7 +116,6 @@ BLOCKED_KINDS=(
     "BackupDRRestoreVerificationPlan"
     "BeyondCorpClientConnectorService"
     "BigLakeCatalog"
-    "BigLakeHiveDatabase"
     "BigLakeLock"
     "BigQueryDataTransferTransferConfig"
     "BigQueryMigrationMigrationWorkflow"
