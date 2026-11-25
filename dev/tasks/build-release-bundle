@@ -236,7 +236,6 @@ BLOCKED_KINDS=(
     "NetworkSecurityMirroringDeployment"
     "NetworkSecurityPartnerSSEGateway"
     "NetworkSecurityPartnerSSERealm"
-    "NetworkSecurityUrlList"
     "NotebookRuntime"
     "NotebooksRuntime"
     "NotebooksSchedule"
