@@ -85,6 +85,7 @@ func waitForHAHealthy(ctx context.Context, opts setupOptions, configurers []*clu
 
 		pollCtx, cancel := context.WithTimeout(ctx, remaining)
 		rep := statusFn(pollCtx, handles, now)
+		pollErr := pollCtx.Err()
 		cancel()
 
 		if ctx.Err() != nil {
@@ -92,11 +93,11 @@ func waitForHAHealthy(ctx context.Context, opts setupOptions, configurers []*clu
 		}
 
 		if rep != nil && rep.state == haStateHealthy {
-			printHASummary(stdout, rep, nowFn())
+			printHASummary(stdout, rep, now)
 			return nil
 		}
 
-		if pollCtx.Err() == nil || lastReport == nil {
+		if pollErr == nil || lastReport == nil {
 			lastReport = rep
 		}
 

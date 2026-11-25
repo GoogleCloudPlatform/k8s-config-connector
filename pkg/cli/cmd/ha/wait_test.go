@@ -295,6 +295,93 @@ func TestWaitTimeoutStandbySyncsFromWrongCluster(t *testing.T) {
 	}
 }
 
+func TestWaitTimeoutReportsLatestPollProblems(t *testing.T) {
+	t.Run("updates lastReport when poll completes normally", func(t *testing.T) {
+		handles := []*clusterHandle{
+			newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector()),
+			newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector()),
+		}
+		runner := &recordingCommandRunner{}
+		opts := newTestSetupOptions()
+		opts.contexts = []string{handles[0].contextName, handles[1].contextName}
+		opts.wait = true
+		opts.waitTimeout = 10 * time.Second
+		opts.waitPollInterval = 5 * time.Second
+		withFakeClock(&opts, testNow)
+
+		pollCount := 0
+		poll1Problem := "problem from poll 1: no cluster holds the lease"
+		poll2Problem := "problem from poll 2: standby syncer setup failed"
+		opts.statusFunc = func(ctx context.Context, h []*clusterHandle, now time.Time) *statusReport {
+			pollCount++
+			if pollCount == 1 {
+				return &statusReport{
+					state:    haStateError,
+					problems: []string{poll1Problem},
+				}
+			}
+			return &statusReport{
+				state:    haStateError,
+				problems: []string{poll2Problem},
+			}
+		}
+
+		err := executeSetup(context.Background(), opts, handles, runner)
+		if err == nil {
+			t.Fatalf("expected executeSetup to fail on timeout, got nil")
+		}
+		if pollCount < 2 {
+			t.Fatalf("expected at least 2 polls, got %d", pollCount)
+		}
+		errMsg := err.Error()
+		if !strings.Contains(errMsg, poll2Problem) {
+			t.Fatalf("expected error to contain poll 2 problem %q, got: %v", poll2Problem, errMsg)
+		}
+		if strings.Contains(errMsg, poll1Problem) {
+			t.Fatalf("expected error not to contain stale poll 1 problem %q, got: %v", poll1Problem, errMsg)
+		}
+	})
+
+	t.Run("preserves previous lastReport when poll context expires mid-poll", func(t *testing.T) {
+		handles := []*clusterHandle{
+			newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector()),
+			newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector()),
+		}
+		runner := &recordingCommandRunner{}
+		opts := newTestSetupOptions()
+		opts.contexts = []string{handles[0].contextName, handles[1].contextName}
+		opts.wait = true
+		opts.waitTimeout = 20 * time.Millisecond
+		opts.waitPollInterval = 10 * time.Millisecond
+
+		pollCount := 0
+		poll1Problem := "problem from poll 1: valid diagnosed error"
+		opts.statusFunc = func(pollCtx context.Context, h []*clusterHandle, now time.Time) *statusReport {
+			pollCount++
+			if pollCount == 1 {
+				return &statusReport{
+					state:    haStateError,
+					problems: []string{poll1Problem},
+				}
+			}
+			<-pollCtx.Done()
+			return &statusReport{
+				state:    haStateError,
+				problems: []string{"incomplete poll 2 report due to timeout"},
+			}
+		}
+
+		err := executeSetup(context.Background(), opts, handles, runner)
+		if err == nil {
+			t.Fatalf("expected executeSetup to fail on timeout, got nil")
+		}
+		errMsg := err.Error()
+		if !strings.Contains(errMsg, poll1Problem) {
+			t.Fatalf("expected error to preserve poll 1 problem %q, got: %v", poll1Problem, errMsg)
+		}
+	})
+}
+
 func TestWaitTimeoutNamespacedModeHint(t *testing.T) {
 	const wantHint = "the manager of each namespace restarts on its own, so a cluster with many namespaces can need a longer --wait-timeout"
 
