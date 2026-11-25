@@ -17,13 +17,24 @@ package ha
 import (
 	"bytes"
 	"context"
+	"errors"
 	"strings"
 	"testing"
 	"time"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	syncerv1alpha1 "github.com/gke-labs/kube-etl/syncer/api/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+func withFakeClock(opts *setupOptions, startTime time.Time) {
+	curr := startTime
+	opts.nowFunc = func() time.Time { return curr }
+	opts.sleepFunc = func(ctx context.Context, d time.Duration) error {
+		curr = curr.Add(d)
+		return nil
+	}
+}
 
 func newTestHealthyStatusReport(now time.Time) *statusReport {
 	ccA := &operatorv1beta1.ConfigConnector{
@@ -90,29 +101,27 @@ func newTestHealthyStatusReport(now time.Time) *statusReport {
 }
 
 func TestWaitHealthyFirstPoll(t *testing.T) {
+	holder := "projects/proj-a/locations/us-central1/clusters/cluster-a"
+	leaseA := newTestLease(holder, testRenewTime)
+	syncerA := newTestSyncer(testLeaseName, holder, true, syncerv1alpha1.ReasonSuspended, "Syncer is suspended")
+	leaseB := newTestLease(holder, testRenewTime)
+	syncerB := newTestSyncer(testLeaseName, holder, false, syncerv1alpha1.ReasonSyncing, "Syncing")
+
 	handles := []*clusterHandle{
-		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector()),
-		newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector()),
+		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector(), leaseA, syncerA),
+		newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector(), leaseB, syncerB),
 	}
 	runner := &recordingCommandRunner{}
 	opts := newTestSetupOptions()
 	opts.wait = true
 	opts.waitTimeout = 5 * time.Minute
+	withFakeClock(&opts, testNow)
 	var stdout bytes.Buffer
 	opts.stdout = &stdout
-
-	pollCount := 0
-	opts.statusFunc = func(ctx context.Context, h []*clusterHandle, now time.Time) *statusReport {
-		pollCount++
-		return newTestHealthyStatusReport(now)
-	}
 
 	err := executeSetup(context.Background(), opts, handles, runner)
 	if err != nil {
 		t.Fatalf("expected executeSetup to succeed, got: %v", err)
-	}
-	if pollCount != 1 {
-		t.Fatalf("expected 1 poll, got %d", pollCount)
 	}
 
 	out := stdout.String()
@@ -131,36 +140,53 @@ func TestWaitHealthyFirstPoll(t *testing.T) {
 }
 
 func TestWaitHealthyLaterPoll(t *testing.T) {
+	holder := "projects/proj-a/locations/us-central1/clusters/cluster-a"
+	leaseA := newTestLease("", "")
+	syncerA := newTestSyncer(testLeaseName, holder, true, syncerv1alpha1.ReasonSuspended, "Syncer is suspended")
+	leaseB := newTestLease("", "")
+	syncerB := newTestSyncer(testLeaseName, holder, false, syncerv1alpha1.ReasonSyncing, "Syncing")
+
 	handles := []*clusterHandle{
-		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector()),
-		newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector()),
+		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector(), leaseA, syncerA),
+		newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector(), leaseB, syncerB),
 	}
 	runner := &recordingCommandRunner{}
 	opts := newTestSetupOptions()
 	opts.wait = true
-	opts.waitTimeout = 1 * time.Second
-	opts.waitPollInterval = 1 * time.Millisecond
-	var stdout bytes.Buffer
-	opts.stdout = &stdout
+	opts.waitTimeout = 1 * time.Minute
+	opts.waitPollInterval = 5 * time.Second
 
-	pollCount := 0
-	opts.statusFunc = func(ctx context.Context, h []*clusterHandle, now time.Time) *statusReport {
-		pollCount++
-		if pollCount < 3 {
-			return &statusReport{
-				state:    haStateError,
-				problems: []string{"no cluster holds the lease"},
+	currTime := testNow
+	opts.nowFunc = func() time.Time { return currTime }
+	sleepCount := 0
+	opts.sleepFunc = func(ctx context.Context, d time.Duration) error {
+		currTime = currTime.Add(d)
+		sleepCount++
+		if sleepCount == 2 {
+			renewTime := testRenewTime
+			leaseA.Status.GlobalHolderIdentity = &holder
+			leaseA.Status.GlobalRenewTime = &renewTime
+			if err := handles[0].client.Update(ctx, leaseA); err != nil {
+				t.Fatalf("updating lease on cluster A: %v", err)
+			}
+			leaseB.Status.GlobalHolderIdentity = &holder
+			leaseB.Status.GlobalRenewTime = &renewTime
+			if err := handles[1].client.Update(ctx, leaseB); err != nil {
+				t.Fatalf("updating lease on cluster B: %v", err)
 			}
 		}
-		return newTestHealthyStatusReport(now)
+		return nil
 	}
+
+	var stdout bytes.Buffer
+	opts.stdout = &stdout
 
 	err := executeSetup(context.Background(), opts, handles, runner)
 	if err != nil {
 		t.Fatalf("expected executeSetup to succeed on later poll, got: %v", err)
 	}
-	if pollCount != 3 {
-		t.Fatalf("expected 3 polls, got %d", pollCount)
+	if sleepCount != 2 {
+		t.Fatalf("expected 2 sleeps (3 polls), got %d sleeps", sleepCount)
 	}
 
 	out := stdout.String()
@@ -174,24 +200,24 @@ func TestWaitHealthyLaterPoll(t *testing.T) {
 }
 
 func TestWaitTimeoutTwoClustersDisagreeOnHolder(t *testing.T) {
+	holderA := "projects/proj-a/locations/us-central1/clusters/cluster-a"
+	holderB := "projects/proj-b/locations/us-east1/clusters/cluster-b"
+	leaseA := newTestLease(holderA, testRenewTime)
+	leaseB := newTestLease(holderB, testRenewTime)
+
 	handles := []*clusterHandle{
-		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector()),
-		newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector()),
+		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector(), leaseA),
+		newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector(), leaseB),
 	}
 	runner := &recordingCommandRunner{}
 	opts := newTestSetupOptions()
 	opts.contexts = []string{handles[0].contextName, handles[1].contextName}
 	opts.wait = true
-	opts.waitTimeout = 2 * time.Millisecond
-	opts.waitPollInterval = 1 * time.Millisecond
+	opts.waitTimeout = 10 * time.Second
+	opts.waitPollInterval = 5 * time.Second
+	withFakeClock(&opts, testNow)
 
 	disagreeProblem := `clusters disagree on the lease holder ("projects/proj-a/locations/us-central1/clusters/cluster-a" reported by [gke_proj-a_us-central1_cluster-a]; "projects/proj-b/locations/us-east1/clusters/cluster-b" reported by [gke_proj-b_us-east1_cluster-b])`
-	opts.statusFunc = func(ctx context.Context, h []*clusterHandle, now time.Time) *statusReport {
-		return &statusReport{
-			state:    haStateError,
-			problems: []string{disagreeProblem},
-		}
-	}
 
 	err := executeSetup(context.Background(), opts, handles, runner)
 	if err == nil {
@@ -212,24 +238,22 @@ func TestWaitTimeoutTwoClustersDisagreeOnHolder(t *testing.T) {
 }
 
 func TestWaitTimeoutNoClusterReportsHolder(t *testing.T) {
+	leaseA := newTestLease("", "")
+	leaseB := newTestLease("", "")
+
 	handles := []*clusterHandle{
-		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector()),
-		newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector()),
+		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector(), leaseA),
+		newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector(), leaseB),
 	}
 	runner := &recordingCommandRunner{}
 	opts := newTestSetupOptions()
 	opts.contexts = []string{handles[0].contextName, handles[1].contextName}
 	opts.wait = true
-	opts.waitTimeout = 2 * time.Millisecond
-	opts.waitPollInterval = 1 * time.Millisecond
+	opts.waitTimeout = 10 * time.Second
+	opts.waitPollInterval = 5 * time.Second
+	withFakeClock(&opts, testNow)
 
 	noHolderProblem := `cluster "gke_proj-a_us-central1_cluster-a": no cluster holds the lease cnrm-system/kcc-multicluster-lease`
-	opts.statusFunc = func(ctx context.Context, h []*clusterHandle, now time.Time) *statusReport {
-		return &statusReport{
-			state:    haStateError,
-			problems: []string{noHolderProblem},
-		}
-	}
 
 	err := executeSetup(context.Background(), opts, handles, runner)
 	if err == nil {
@@ -241,24 +265,26 @@ func TestWaitTimeoutNoClusterReportsHolder(t *testing.T) {
 }
 
 func TestWaitTimeoutStandbySyncsFromWrongCluster(t *testing.T) {
+	holder := "projects/proj-a/locations/us-central1/clusters/cluster-a"
+	leaseA := newTestLease(holder, testRenewTime)
+	syncerA := newTestSyncer(testLeaseName, holder, true, syncerv1alpha1.ReasonSuspended, "Syncer is suspended")
+	leaseB := newTestLease(holder, testRenewTime)
+	wrongRemote := "projects/proj-c/locations/us-west1/clusters/cluster-c"
+	syncerB := newTestSyncer(testLeaseName, wrongRemote, false, syncerv1alpha1.ReasonSyncing, "Syncing")
+
 	handles := []*clusterHandle{
-		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector()),
-		newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector()),
+		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector(), leaseA, syncerA),
+		newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector(), leaseB, syncerB),
 	}
 	runner := &recordingCommandRunner{}
 	opts := newTestSetupOptions()
 	opts.contexts = []string{handles[0].contextName, handles[1].contextName}
 	opts.wait = true
-	opts.waitTimeout = 2 * time.Millisecond
-	opts.waitPollInterval = 1 * time.Millisecond
+	opts.waitTimeout = 10 * time.Second
+	opts.waitPollInterval = 5 * time.Second
+	withFakeClock(&opts, testNow)
 
 	wrongClusterProblem := `cluster "gke_proj-b_us-east1_cluster-b": KRMSyncer cnrm-system/kcc-multicluster-lease syncs from "projects/proj-c/locations/us-west1/clusters/cluster-c", but the lease is held by "projects/proj-a/locations/us-central1/clusters/cluster-a"`
-	opts.statusFunc = func(ctx context.Context, h []*clusterHandle, now time.Time) *statusReport {
-		return &statusReport{
-			state:    haStateError,
-			problems: []string{wrongClusterProblem},
-		}
-	}
 
 	err := executeSetup(context.Background(), opts, handles, runner)
 	if err == nil {
@@ -286,8 +312,9 @@ func TestWaitTimeoutNamespacedModeHint(t *testing.T) {
 		opts := newTestSetupOptions()
 		opts.contexts = []string{handles[0].contextName, handles[1].contextName}
 		opts.wait = true
-		opts.waitTimeout = 2 * time.Millisecond
-		opts.waitPollInterval = 1 * time.Millisecond
+		opts.waitTimeout = 10 * time.Second
+		opts.waitPollInterval = 5 * time.Second
+		withFakeClock(&opts, testNow)
 		opts.statusFunc = func(ctx context.Context, h []*clusterHandle, now time.Time) *statusReport {
 			return &statusReport{
 				state:    haStateError,
@@ -318,8 +345,9 @@ func TestWaitTimeoutNamespacedModeHint(t *testing.T) {
 		opts := newTestSetupOptions()
 		opts.contexts = []string{handles[0].contextName, handles[1].contextName}
 		opts.wait = true
-		opts.waitTimeout = 2 * time.Millisecond
-		opts.waitPollInterval = 1 * time.Millisecond
+		opts.waitTimeout = 10 * time.Second
+		opts.waitPollInterval = 5 * time.Second
+		withFakeClock(&opts, testNow)
 		opts.statusFunc = func(ctx context.Context, h []*clusterHandle, now time.Time) *statusReport {
 			return &statusReport{
 				state:    haStateError,
@@ -335,6 +363,66 @@ func TestWaitTimeoutNamespacedModeHint(t *testing.T) {
 			t.Fatalf("expected namespaced mode error to contain %q, got: %v", wantHint, err)
 		}
 	})
+
+	t.Run("unset mode defaults to namespaced mode and includes namespaced hint", func(t *testing.T) {
+		ccA := newBaseConfigConnector()
+		ccA.Spec.Mode = ""
+		ccB := newBaseConfigConnector()
+		ccB.Spec.Mode = "cluster"
+
+		handles := []*clusterHandle{
+			newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", ccA),
+			newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", ccB),
+		}
+		runner := &recordingCommandRunner{}
+		opts := newTestSetupOptions()
+		opts.contexts = []string{handles[0].contextName, handles[1].contextName}
+		opts.wait = true
+		opts.waitTimeout = 10 * time.Second
+		opts.waitPollInterval = 5 * time.Second
+		withFakeClock(&opts, testNow)
+		opts.statusFunc = func(ctx context.Context, h []*clusterHandle, now time.Time) *statusReport {
+			return &statusReport{
+				state:    haStateError,
+				problems: []string{"lease not acquired"},
+			}
+		}
+
+		err := executeSetup(context.Background(), opts, handles, runner)
+		if err == nil {
+			t.Fatalf("expected timeout error, got nil")
+		}
+		if !strings.Contains(err.Error(), wantHint) {
+			t.Fatalf("expected unset mode error to contain %q, got: %v", wantHint, err)
+		}
+	})
+}
+
+func TestWaitContextCanceledReturnsContextError(t *testing.T) {
+	handles := []*clusterHandle{
+		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector()),
+		newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector()),
+	}
+	runner := &recordingCommandRunner{}
+	opts := newTestSetupOptions()
+	opts.contexts = []string{handles[0].contextName, handles[1].contextName}
+	opts.wait = true
+	opts.waitTimeout = 5 * time.Minute
+	withFakeClock(&opts, testNow)
+
+	ctx, cancel := context.WithCancel(context.Background())
+	opts.statusFunc = func(pollCtx context.Context, h []*clusterHandle, now time.Time) *statusReport {
+		cancel()
+		return &statusReport{
+			state:    haStateError,
+			problems: []string{"context canceled mid-poll"},
+		}
+	}
+
+	err := executeSetup(ctx, opts, handles, runner)
+	if !errors.Is(err, context.Canceled) {
+		t.Fatalf("expected context.Canceled error, got: %v", err)
+	}
 }
 
 func TestWaitNoWaitCasesDoNotReadStatus(t *testing.T) {

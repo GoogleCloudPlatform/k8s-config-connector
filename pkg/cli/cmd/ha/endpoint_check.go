@@ -20,6 +20,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"slices"
 	"sort"
 	"strings"
 
@@ -99,13 +100,12 @@ func checkLeaderEndpoints(ctx context.Context, configurers []*clusterConfigurer,
 	failedEndpoints := make(map[string]bool)
 	checkedEndpoints := make(map[string][]string)
 
+	var warnings []string
 	seenWarnings := make(map[string]bool)
 	warn := func(msg string) {
 		if !seenWarnings[msg] {
 			seenWarnings[msg] = true
-			if stderr != nil {
-				fmt.Fprintf(stderr, "Warning: %s\n", msg)
-			}
+			warnings = append(warnings, msg)
 		}
 	}
 
@@ -116,10 +116,7 @@ func checkLeaderEndpoints(ctx context.Context, configurers []*clusterConfigurer,
 			continue
 		}
 
-		mode := mcl.ResourceReplicationMode
-		if mode == "" {
-			mode = defaultReplicationMode
-		}
+		mode := replicationMode(mcl)
 		if mode == replicationModeDisabled {
 			continue
 		}
@@ -137,7 +134,7 @@ func checkLeaderEndpoints(ctx context.Context, configurers []*clusterConfigurer,
 			lDesc := descs[lIdx]
 
 			checkedKey := fmt.Sprintf("%s on %s", sEndpointType, lInfo.contextName)
-			if !containsString(checkedEndpoints[sEndpointType], lInfo.contextName) {
+			if !slices.Contains(checkedEndpoints[sEndpointType], lInfo.contextName) {
 				checkedEndpoints[sEndpointType] = append(checkedEndpoints[sEndpointType], lInfo.contextName)
 			}
 
@@ -180,6 +177,10 @@ func checkLeaderEndpoints(ctx context.Context, configurers []*clusterConfigurer,
 				}
 			}
 
+			if failedEndpoints[checkedKey] {
+				continue
+			}
+
 			// 2. Check warning conditions
 			sDesc := descs[sIdx]
 			switch sEndpointType {
@@ -213,6 +214,12 @@ func checkLeaderEndpoints(ctx context.Context, configurers []*clusterConfigurer,
 
 	if len(errs) > 0 {
 		return errors.Join(errs...)
+	}
+
+	for _, msg := range warnings {
+		if stderr != nil {
+			fmt.Fprintf(stderr, "Warning: %s\n", msg)
+		}
 	}
 
 	if stdout != nil {
@@ -249,13 +256,4 @@ func reportCheckedEndpoints(w io.Writer, checked map[string][]string) {
 		parts = append(parts, fmt.Sprintf("%s on [%s]", epType, strings.Join(clusters, ", ")))
 	}
 	fmt.Fprintf(w, "Checked leader endpoints: %s.\n", strings.Join(parts, "; "))
-}
-
-func containsString(list []string, s string) bool {
-	for _, item := range list {
-		if item == s {
-			return true
-		}
-	}
-	return false
 }

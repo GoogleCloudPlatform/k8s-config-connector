@@ -56,6 +56,8 @@ type setupOptions struct {
 	statusFunc func(ctx context.Context, handles []*clusterHandle, now time.Time) *statusReport
 	// nowFunc returns the current time during wait; defaults to time.Now if nil.
 	nowFunc func() time.Time
+	// sleepFunc pauses during wait; defaults to sleeping with context cancellation if nil.
+	sleepFunc func(ctx context.Context, d time.Duration) error
 
 	// rolloutTimeout and rolloutPollInterval control how long setup waits for Deployments
 	// to roll out. If zero, defaults to defaultMCLRolloutTimeout (5m) and defaultMCLRolloutPollInterval (2s).

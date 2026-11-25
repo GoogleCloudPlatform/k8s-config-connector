@@ -452,3 +452,33 @@ func TestCheckLeaderEndpointsDescribeFailureFailsSetup(t *testing.T) {
 		t.Fatalf("expected error naming cluster-b, got: %v", err)
 	}
 }
+
+func TestCheckLeaderEndpointsNoWarningsWhenCheckFails(t *testing.T) {
+	handles := []*clusterHandle{
+		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector()),
+		newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector()),
+	}
+	runner := &recordingCommandRunner{
+		describeOutputs: map[string][]byte{
+			"cluster-a": []byte(fullClusterDescribeJSON()),
+			// cluster-b is a standard public cluster (no private endpoint) across regions
+			"cluster-b": []byte(`{"endpoint": "1.2.3.4"}`),
+		},
+	}
+	opts := newTestSetupOptions()
+	opts.leaderEndpointType = operatorv1beta1.LeaderEndpointTypePrivateIP
+	opts.leaderEndpointTypeExplicit = true
+	var stderr bytes.Buffer
+	opts.stderr = &stderr
+
+	err := executeSetup(context.Background(), opts, handles, runner)
+	if err == nil {
+		t.Fatalf("expected executeSetup to fail, got nil")
+	}
+	if !strings.Contains(err.Error(), "cluster has no private endpoint") {
+		t.Fatalf("expected error about missing private endpoint, got: %v", err)
+	}
+	if stderr.Len() != 0 {
+		t.Fatalf("expected no warnings on stderr when endpoint check fails, got:\n%s", stderr.String())
+	}
+}

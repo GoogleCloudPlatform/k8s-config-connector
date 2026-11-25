@@ -22,6 +22,8 @@ import (
 	"sort"
 	"strings"
 	"time"
+
+	operatork8s "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 )
 
 func waitForHAHealthy(ctx context.Context, opts setupOptions, configurers []*clusterConfigurer, handles []*clusterHandle) error {
@@ -30,13 +32,15 @@ func waitForHAHealthy(ctx context.Context, opts setupOptions, configurers []*clu
 		stdout = io.Discard
 	}
 
-	if opts.dryRun {
-		fmt.Fprintln(stdout, "[dry-run] would wait for multi-cluster HA to become healthy")
+	if !opts.wait {
+		if !opts.dryRun {
+			fmt.Fprintf(stdout, "config-connector ha status --%s=%s\n", contextsFlag, strings.Join(opts.contexts, ","))
+		}
 		return nil
 	}
 
-	if !opts.wait {
-		fmt.Fprintf(stdout, "config-connector ha status --%s=%s\n", contextsFlag, strings.Join(opts.contexts, ","))
+	if opts.dryRun {
+		fmt.Fprintln(stdout, "[dry-run] would wait for multi-cluster HA to become healthy")
 		return nil
 	}
 
@@ -52,8 +56,20 @@ func waitForHAHealthy(ctx context.Context, opts setupOptions, configurers []*clu
 	}
 
 	pollInterval := opts.waitPollInterval
-	if pollInterval <= 0 && opts.statusFunc == nil {
+	if pollInterval <= 0 {
 		pollInterval = defaultWaitPollInterval
+	}
+
+	sleepFn := opts.sleepFunc
+	if sleepFn == nil {
+		sleepFn = func(ctx context.Context, d time.Duration) error {
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			case <-time.After(d):
+				return nil
+			}
+		}
 	}
 
 	startTime := nowFn()
@@ -62,26 +78,40 @@ func waitForHAHealthy(ctx context.Context, opts setupOptions, configurers []*clu
 	var lastReport *statusReport
 	for {
 		now := nowFn()
-		lastReport = statusFn(ctx, handles, now)
-		if lastReport != nil && lastReport.state == haStateHealthy {
-			printHASummary(stdout, lastReport, now)
-			return nil
-		}
-
-		if !now.Before(deadline) {
+		remaining := deadline.Sub(now)
+		if remaining <= 0 {
 			break
 		}
 
-		if pollInterval > 0 {
-			select {
-			case <-ctx.Done():
-				return ctx.Err()
-			case <-time.After(pollInterval):
-			}
-		} else {
-			if ctx.Err() != nil {
-				return ctx.Err()
-			}
+		pollCtx, cancel := context.WithTimeout(ctx, remaining)
+		rep := statusFn(pollCtx, handles, now)
+		cancel()
+
+		if ctx.Err() != nil {
+			return ctx.Err()
+		}
+
+		if rep != nil && rep.state == haStateHealthy {
+			printHASummary(stdout, rep, nowFn())
+			return nil
+		}
+
+		if pollCtx.Err() == nil || lastReport == nil {
+			lastReport = rep
+		}
+
+		remaining = deadline.Sub(nowFn())
+		if remaining <= 0 {
+			break
+		}
+
+		sleepDuration := pollInterval
+		if sleepDuration > remaining {
+			sleepDuration = remaining
+		}
+
+		if err := sleepFn(ctx, sleepDuration); err != nil {
+			return err
 		}
 	}
 
@@ -111,6 +141,9 @@ func printHASummary(w io.Writer, report *statusReport, now time.Time) {
 			continue
 		}
 		mcl := multiClusterLeaseSpec(c.state.configConnector)
+		if mcl == nil {
+			continue
+		}
 		if repMode == "" {
 			repMode = replicationMode(mcl)
 		}
@@ -148,7 +181,7 @@ func waitTimeoutError(problems []string, contexts []string, hasNamespaced bool) 
 
 func isAnyClusterNamespaced(configurers []*clusterConfigurer) bool {
 	for _, cfg := range configurers {
-		if cfg.configConnector != nil && cfg.configConnector.GetMode() == "namespaced" {
+		if cfg.configConnector != nil && cfg.configConnector.GetMode() == operatork8s.NamespacedMode {
 			return true
 		}
 	}
