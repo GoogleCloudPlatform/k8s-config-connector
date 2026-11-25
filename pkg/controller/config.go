@@ -37,4 +37,5 @@ type Deps struct {
 	// It bypasses the global controller name registry in controller-runtime which causes conflicts when running multiple managers in the same process.
 	SkipNameValidation      bool
 	MaxConcurrentReconciles int
+	UsePriorityQueue        bool
 }

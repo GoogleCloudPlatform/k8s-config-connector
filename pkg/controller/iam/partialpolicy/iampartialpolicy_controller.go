@@ -34,6 +34,7 @@ import (
 	kccratelimiter "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceactuation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
+	kccworkqueue "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/workqueue"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
@@ -55,6 +56,7 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/util/workqueue"
 	"k8s.io/klog/v2"
+	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
@@ -87,7 +89,14 @@ func Add(mgr manager.Manager, deps *kontroller.Deps) error {
 	if err != nil {
 		return err
 	}
-	return add(mgr, reconciler)
+	opt := controller.Options{
+		SkipNameValidation:      ptr.To(deps.SkipNameValidation),
+		MaxConcurrentReconciles: deps.MaxConcurrentReconciles,
+	}
+	if deps.UsePriorityQueue {
+		opt.NewQueue = kccworkqueue.NewQueueFunc(nil)
+	}
+	return add(mgr, reconciler, opt)
 }
 
 // NewReconciler returns a new reconcile.Reconciler.
@@ -118,15 +127,19 @@ func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *s
 }
 
 // add adds a new Controller to mgr with r as the reconcile.Reconciler.
-func add(mgr manager.Manager, r *ReconcileIAMPartialPolicy) error {
+func add(mgr manager.Manager, r *ReconcileIAMPartialPolicy, opt controller.Options) error {
+	if opt.MaxConcurrentReconciles == 0 {
+		opt.MaxConcurrentReconciles = k8s.ControllerMaxConcurrentReconciles
+	}
+	r.ReconcilerMetrics.MaxConcurrentReconciles = int64(opt.MaxConcurrentReconciles)
+	if opt.RateLimiter == nil {
+		opt.RateLimiter = kccratelimiter.NewRateLimiter()
+	}
 	obj := &iamv1beta1.IAMPartialPolicy{}
 	_, err := builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
-		WithOptions(controller.Options{
-			MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles,
-			RateLimiter:             kccratelimiter.NewRateLimiter(),
-		}).
+		WithOptions(opt).
 		WatchesRawSource(source.TypedChannel(r.immediateReconcileRequests, &handler.EnqueueRequestForObject{})).
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicate.UnderlyingResourceOutOfSyncPredicate{})).
 		Build(r)
