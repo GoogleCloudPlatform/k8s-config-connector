@@ -15,10 +15,15 @@
 package kccmanager
 
 import (
+	"errors"
 	"reflect"
+	"strings"
 	"testing"
 
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/client-go/discovery"
 )
 
 func TestGetDesiredSyncers(t *testing.T) {
@@ -96,17 +101,148 @@ func TestGetNamespacesForSyncer(t *testing.T) {
 	}
 }
 
+type fakeDiscovery struct {
+	groups    []*metav1.APIGroup
+	resources []*metav1.APIResourceList
+	err       error
+}
+
+func (f *fakeDiscovery) ServerGroupsAndResources() ([]*metav1.APIGroup, []*metav1.APIResourceList, error) {
+	return f.groups, f.resources, f.err
+}
+
+func TestServedGVKsWithServiceGeneratedIDs(t *testing.T) {
+	// 1. Not initialized
+	siUninit := &SyncerIntegration{}
+	if _, err := siUninit.servedGVKsWithServiceGeneratedIDs(); err == nil || !strings.Contains(err.Error(), "discovery client not initialized") {
+		t.Fatalf("expected 'discovery client not initialized', got %v", err)
+	}
+
+	// 2. Served and unserved kinds, two served versions of one kind, subresources, and kinds not on list
+	fake := &fakeDiscovery{
+		resources: []*metav1.APIResourceList{
+			{
+				GroupVersion: "resourcemanager.cnrm.cloud.google.com/v1beta1",
+				APIResources: []metav1.APIResource{
+					{Name: "folders", Kind: "Folder"},
+					{Name: "folders/status", Kind: "Folder"}, // Subresource should be ignored
+					{Name: "projects", Kind: "Project"},      // Not in syncerGVKsWithServiceGeneratedIDs
+				},
+			},
+			{
+				GroupVersion: "essentialcontacts.cnrm.cloud.google.com/v1alpha1",
+				APIResources: []metav1.APIResource{
+					{Name: "essentialcontactscontacts", Kind: "EssentialContactsContact"},
+				},
+			},
+			{
+				GroupVersion: "essentialcontacts.cnrm.cloud.google.com/v1beta1",
+				APIResources: []metav1.APIResource{
+					{Name: "essentialcontactscontacts", Kind: "EssentialContactsContact"},
+				},
+			},
+			{
+				GroupVersion: "invalid-group-version",
+				APIResources: []metav1.APIResource{
+					{Name: "invalid", Kind: "Invalid"},
+				},
+			},
+		},
+	}
+	si := &SyncerIntegration{discovery: fake}
+	gvks, err := si.servedGVKsWithServiceGeneratedIDs()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	expected := []schema.GroupVersionKind{
+		{Group: "essentialcontacts.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "EssentialContactsContact"},
+		{Group: "essentialcontacts.cnrm.cloud.google.com", Version: "v1beta1", Kind: "EssentialContactsContact"},
+		{Group: "resourcemanager.cnrm.cloud.google.com", Version: "v1beta1", Kind: "Folder"},
+	}
+	if !reflect.DeepEqual(gvks, expected) {
+		t.Fatalf("expected %v, got %v", expected, gvks)
+	}
+
+	// 3. Discovery failing for a group not on the list is tolerated
+	fakeIgnoredErr := &fakeDiscovery{
+		resources: []*metav1.APIResourceList{
+			{
+				GroupVersion: "resourcemanager.cnrm.cloud.google.com/v1beta1",
+				APIResources: []metav1.APIResource{
+					{Name: "folders", Kind: "Folder"},
+				},
+			},
+		},
+		err: &discovery.ErrGroupDiscoveryFailed{
+			Groups: map[schema.GroupVersion]error{
+				{Group: "custom.example.com", Version: "v1"}: errors.New("group down"),
+			},
+		},
+	}
+	siIgnoredErr := &SyncerIntegration{discovery: fakeIgnoredErr}
+	gvks, err = siIgnoredErr.servedGVKsWithServiceGeneratedIDs()
+	if err != nil {
+		t.Fatalf("expected discovery failure on unrelated group to be ignored, got: %v", err)
+	}
+	if len(gvks) != 1 || gvks[0].Kind != "Folder" {
+		t.Fatalf("expected [Folder], got %v", gvks)
+	}
+
+	// 4. Discovery failing for a group on the list returns error
+	fakeListErr := &fakeDiscovery{
+		err: &discovery.ErrGroupDiscoveryFailed{
+			Groups: map[schema.GroupVersion]error{
+				{Group: "resourcemanager.cnrm.cloud.google.com", Version: "v1beta1"}: errors.New("group down"),
+			},
+		},
+	}
+	siListErr := &SyncerIntegration{discovery: fakeListErr}
+	if _, err := siListErr.servedGVKsWithServiceGeneratedIDs(); err == nil || !strings.Contains(err.Error(), "error discovering the kinds of resourcemanager.cnrm.cloud.google.com/v1beta1") {
+		t.Fatalf("expected error for group on the list, got %v", err)
+	}
+
+	// 5. General discovery error returns error
+	fakeGeneralErr := &fakeDiscovery{
+		err: errors.New("connection refused"),
+	}
+	siGeneralErr := &SyncerIntegration{discovery: fakeGeneralErr}
+	if _, err := siGeneralErr.servedGVKsWithServiceGeneratedIDs(); err == nil || !strings.Contains(err.Error(), "error discovering the kinds that the cluster serves") {
+		t.Fatalf("expected error for general discovery failure, got %v", err)
+	}
+}
+
+func TestGVKsWithOwnRule_FullMode(t *testing.T) {
+	// In Full mode, gvksWithOwnRule should return nil, nil without calling discovery
+	for _, mode := range []string{"Full", "full", "FULL"} {
+		si := &SyncerIntegration{
+			replicationMode: mode,
+			discovery:       nil, // nil discovery verifies it is never called
+		}
+		gvks, err := si.gvksWithOwnRule()
+		if err != nil {
+			t.Fatalf("mode %q: unexpected error: %v", mode, err)
+		}
+		if gvks != nil {
+			t.Fatalf("mode %q: expected nil gvks, got %v", mode, gvks)
+		}
+	}
+}
+
 func TestGetDesiredRules(t *testing.T) {
 	si := &SyncerIntegration{
 		replicationMode: "Status",
 	}
 
-	rules := si.getDesiredRules([]string{"tenant-a"})
-	if len(rules) != len(syncerGVKsWithServiceGeneratedIDs)+1 {
+	gvks := []schema.GroupVersionKind{
+		{Group: "resourcemanager.cnrm.cloud.google.com", Version: "v1beta1", Kind: "Folder"},
+	}
+	rules := si.getDesiredRules([]string{"tenant-a"}, gvks)
+	if len(rules) != len(gvks)+1 {
 		t.Fatalf("unexpected number of rules: %d", len(rules))
 	}
 
 	hasGlob := false
+	hasFolder := false
 	for _, r := range rules {
 		ruleMap := r.(map[string]interface{})
 		if ruleMap["group"] == "*.cnrm.cloud.google.com" {
@@ -116,16 +252,25 @@ func TestGetDesiredRules(t *testing.T) {
 				t.Errorf("expected namespaces [tenant-a], got %v", nsList)
 			}
 		}
+		if ruleMap["kind"] == "Folder" {
+			hasFolder = true
+			if ruleMap["group"] != "resourcemanager.cnrm.cloud.google.com" || ruleMap["version"] != "v1beta1" {
+				t.Errorf("unexpected Folder rule: %v", ruleMap)
+			}
+		}
 	}
 	if !hasGlob {
 		t.Errorf("glob rule missing")
+	}
+	if !hasFolder {
+		t.Errorf("Folder rule missing")
 	}
 
 	// Cluster scoped
 	siCluster := &SyncerIntegration{
 		replicationMode: "Full",
 	}
-	clusterRules := siCluster.getDesiredRules(nil)
+	clusterRules := siCluster.getDesiredRules(nil, gvks)
 	if len(clusterRules) != 1 {
 		t.Fatalf("expected 1 rule for full mode")
 	}

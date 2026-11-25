@@ -16,15 +16,21 @@ package kccmanager
 
 import (
 	"context"
+	stderrors "errors"
 	"fmt"
 	"reflect"
+	"sort"
 	"strings"
+	"time"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"k8s.io/apimachinery/pkg/api/errors"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/client-go/discovery"
+	"k8s.io/client-go/rest"
 	"k8s.io/client-go/util/retry"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -38,9 +44,24 @@ var (
 	}
 )
 
+// syncerDiscoveryTimeout bounds one discovery request of the syncer integration. A standby
+// asks what the cluster serves every time it updates its KRMSyncers, and that update must end
+// before the cluster can start to lead; see leaderFollower.stop.
+const syncerDiscoveryTimeout = 10 * time.Second
+
+// newSyncerDiscovery returns the discovery client that tells the syncer integration which
+// kinds the cluster serves.
+func newSyncerDiscovery(restConfig *rest.Config) (servedResources, error) {
+	config := rest.CopyConfig(restConfig)
+	config.Timeout = syncerDiscoveryTimeout
+	return discovery.NewDiscoveryClientForConfig(config)
+}
+
 type SyncerIntegration struct {
-	client          client.Client
-	apiReader       client.Reader
+	client    client.Client
+	apiReader client.Reader
+	// discovery tells which kinds this cluster serves. See servedGVKsWithServiceGeneratedIDs.
+	discovery       servedResources
 	leaseNN         types.NamespacedName
 	replicationMode string
 	watchNamespaces []string
@@ -50,7 +71,86 @@ type SyncerIntegration struct {
 	leaderEndpointType string
 }
 
-func (si *SyncerIntegration) getDesiredRules(namespaces []string) []interface{} {
+// servedResources lists the resources that an API server serves. A discovery client is one.
+type servedResources interface {
+	ServerGroupsAndResources() ([]*metav1.APIGroup, []*metav1.APIResourceList, error)
+}
+
+// isFullReplication reports whether the KRMSyncers copy whole objects. Otherwise they copy the
+// status, and spec.resourceID of the kinds whose ID the service generates.
+func (si *SyncerIntegration) isFullReplication() bool {
+	return strings.EqualFold(si.replicationMode, "Full")
+}
+
+// servedGVKsWithServiceGeneratedIDs returns the kinds of syncerGVKsWithServiceGeneratedIDs
+// that this cluster serves, in a fixed order. These are the kinds that get a KRMSyncer rule
+// of their own.
+//
+// A rule that names a kind must name one that is served. The syncer watches the kind of such
+// a rule on the leader's cluster without asking first whether the leader serves it, and a
+// watch that can't start makes the syncer exit two minutes later, again and again. The
+// static list has kinds that a cluster doesn't serve: a release doesn't install the CRDs
+// that only have an alpha version.
+//
+// This asks this cluster's API server, and not the leader's, which the manager can't reach.
+// The clusters of a group are meant to run the same version of Config Connector, and then
+// they serve the same kinds. While they don't, a rule can still name a kind that the leader
+// doesn't serve.
+func (si *SyncerIntegration) servedGVKsWithServiceGeneratedIDs() ([]schema.GroupVersionKind, error) {
+	if si.discovery == nil {
+		return nil, fmt.Errorf("discovery client not initialized")
+	}
+
+	// With aggregated discovery, which API servers have had since Kubernetes 1.27, this is
+	// two requests.
+	_, resourceLists, err := si.discovery.ServerGroupsAndResources()
+	if err != nil {
+		// Discovery can fail for some groups and still answer for the others, for example
+		// while the server of an aggregated API is down. That only matters here if it is a
+		// group of the list.
+		var failed *discovery.ErrGroupDiscoveryFailed
+		if !stderrors.As(err, &failed) {
+			return nil, fmt.Errorf("error discovering the kinds that the cluster serves: %w", err)
+		}
+		for gvk := range syncerGVKsWithServiceGeneratedIDs {
+			if groupErr, ok := failed.Groups[gvk.GroupVersion()]; ok {
+				return nil, fmt.Errorf("error discovering the kinds of %s: %w", gvk.GroupVersion(), groupErr)
+			}
+		}
+	}
+
+	servedSet := make(map[schema.GroupVersionKind]struct{})
+	for _, resourceList := range resourceLists {
+		gv, err := schema.ParseGroupVersion(resourceList.GroupVersion)
+		if err != nil {
+			continue
+		}
+		for _, resource := range resourceList.APIResources {
+			if strings.Contains(resource.Name, "/") {
+				continue // A subresource, such as status.
+			}
+			gvk := gv.WithKind(resource.Kind)
+			if _, ok := syncerGVKsWithServiceGeneratedIDs[gvk]; ok {
+				servedSet[gvk] = struct{}{}
+			}
+		}
+	}
+
+	served := make([]schema.GroupVersionKind, 0, len(servedSet))
+	for gvk := range servedSet {
+		served = append(served, gvk)
+	}
+	sort.Slice(served, func(i, j int) bool {
+		return served[i].String() < served[j].String()
+	})
+	return served, nil
+}
+
+// getDesiredRules returns the rules of a KRMSyncer for the given namespaces. gvksWithOwnRule
+// are the kinds that get a rule of their own, which also copies spec.resourceID; see
+// servedGVKsWithServiceGeneratedIDs. They are not used in Full mode, where one rule copies
+// everything.
+func (si *SyncerIntegration) getDesiredRules(namespaces []string, gvksWithOwnRule []schema.GroupVersionKind) []interface{} {
 	var nsList []interface{}
 	for _, ns := range namespaces {
 		nsList = append(nsList, ns)
@@ -69,7 +169,7 @@ func (si *SyncerIntegration) getDesiredRules(namespaces []string) []interface{} 
 		return rule
 	}
 
-	if strings.EqualFold(si.replicationMode, "Full") {
+	if si.isFullReplication() {
 		return []interface{}{
 			createRule("*.cnrm.cloud.google.com", "*", "*", []interface{}{"spec", "status"}),
 		}
@@ -79,7 +179,7 @@ func (si *SyncerIntegration) getDesiredRules(namespaces []string) []interface{} 
 		createRule("*.cnrm.cloud.google.com", "*", "*", []interface{}{"status"}),
 	}
 
-	for gvk := range syncerGVKsWithServiceGeneratedIDs {
+	for _, gvk := range gvksWithOwnRule {
 		rules = append(rules, createRule(gvk.Group, gvk.Version, gvk.Kind, []interface{}{"status", "spec.resourceID"}))
 	}
 	return rules
@@ -236,6 +336,15 @@ func (si *SyncerIntegration) getNamespacesForSyncer(syncerName string) []string 
 	return nil
 }
 
+// gvksWithOwnRule returns the kinds that get a KRMSyncer rule of their own. There are none in
+// Full mode.
+func (si *SyncerIntegration) gvksWithOwnRule() ([]schema.GroupVersionKind, error) {
+	if si.isFullReplication() {
+		return nil, nil
+	}
+	return si.servedGVKsWithServiceGeneratedIDs()
+}
+
 // EnsurePullingFromLeader points this cluster's KRMSyncers at the leader's GKE cluster and
 // resumes them.
 func (si *SyncerIntegration) EnsurePullingFromLeader(ctx context.Context, leader *operatorv1beta1.GKECluster) error {
@@ -246,8 +355,12 @@ func (si *SyncerIntegration) EnsurePullingFromLeader(ctx context.Context, leader
 		return fmt.Errorf("the leader's GKE cluster is not set")
 	}
 
+	gvksWithOwnRule, err := si.gvksWithOwnRule()
+	if err != nil {
+		return err
+	}
 	for _, syncerNN := range si.getDesiredSyncers() {
-		if err := si.reconcileSyncer(ctx, syncerNN, leader, false); err != nil {
+		if err := si.reconcileSyncer(ctx, syncerNN, leader, false, gvksWithOwnRule); err != nil {
 			return err
 		}
 	}
@@ -265,8 +378,12 @@ func (si *SyncerIntegration) EnsureSuspended(ctx context.Context) error {
 		return fmt.Errorf("this cluster's GKE cluster is not set")
 	}
 
+	gvksWithOwnRule, err := si.gvksWithOwnRule()
+	if err != nil {
+		return err
+	}
 	for _, syncerNN := range si.getDesiredSyncers() {
-		if err := si.reconcileSyncer(ctx, syncerNN, si.cluster, true); err != nil {
+		if err := si.reconcileSyncer(ctx, syncerNN, si.cluster, true, gvksWithOwnRule); err != nil {
 			return err
 		}
 	}
@@ -290,7 +407,7 @@ func (si *SyncerIntegration) desiredRemote(cluster *operatorv1beta1.GKECluster) 
 	}
 }
 
-func (si *SyncerIntegration) reconcileSyncer(ctx context.Context, name types.NamespacedName, remoteCluster *operatorv1beta1.GKECluster, suspend bool) error {
+func (si *SyncerIntegration) reconcileSyncer(ctx context.Context, name types.NamespacedName, remoteCluster *operatorv1beta1.GKECluster, suspend bool, gvksWithOwnRule []schema.GroupVersionKind) error {
 	syncer := &unstructured.Unstructured{}
 	syncer.SetGroupVersionKind(KRMSyncerGVK)
 
@@ -306,7 +423,7 @@ func (si *SyncerIntegration) reconcileSyncer(ctx context.Context, name types.Nam
 	}
 
 	namespaces := si.getNamespacesForSyncer(name.Name)
-	rules := si.getDesiredRules(namespaces)
+	rules := si.getDesiredRules(namespaces, gvksWithOwnRule)
 	remote := si.desiredRemote(remoteCluster)
 
 	if isCreate {

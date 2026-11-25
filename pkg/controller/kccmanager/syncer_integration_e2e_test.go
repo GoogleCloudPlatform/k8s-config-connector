@@ -19,14 +19,17 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 	corev1 "k8s.io/api/core/v1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/wait"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 
@@ -99,9 +102,15 @@ func TestSyncerIntegration_RetryOnConflict(t *testing.T) {
 	}
 
 	cluster := testGKECluster("test-leader")
+	syncerDiscovery, err := newSyncerDiscovery(cfg)
+	if err != nil {
+		t.Fatalf("error creating discovery client: %v", err)
+	}
+
 	si := &SyncerIntegration{
 		client:          kubeClient,
 		apiReader:       kubeClient, // use non-cached client directly
+		discovery:       syncerDiscovery,
 		leaseNN:         name,
 		replicationMode: "Status",
 		cluster:         cluster,
@@ -139,7 +148,11 @@ func TestSyncerIntegration_RetryOnConflict(t *testing.T) {
 // When this cluster becomes the leader, the KRMSyncer is suspended and names this cluster.
 func TestSyncerIntegration_RemoteFollowsLeader(t *testing.T) {
 	ctx := context.Background()
-	_, kubeClient := startSyncerEnvtest(t)
+	cfg, kubeClient := startSyncerEnvtest(t)
+	syncerDiscovery, err := newSyncerDiscovery(cfg)
+	if err != nil {
+		t.Fatalf("error creating discovery client: %v", err)
+	}
 
 	ns := "cnrm-system"
 	if err := kubeClient.Create(ctx, &corev1.Namespace{ObjectMeta: metav1.ObjectMeta{Name: ns}}); err != nil {
@@ -151,6 +164,7 @@ func TestSyncerIntegration_RemoteFollowsLeader(t *testing.T) {
 	si := &SyncerIntegration{
 		client:             kubeClient,
 		apiReader:          kubeClient,
+		discovery:          syncerDiscovery,
 		leaseNN:            nn,
 		replicationMode:    "Status",
 		cluster:            self,
@@ -193,6 +207,130 @@ func TestSyncerIntegration_RemoteFollowsLeader(t *testing.T) {
 	}
 	if got, want := getSyncer().GetResourceVersion(), suspended.GetResourceVersion(); got != want {
 		t.Errorf("EnsureSuspended updated an already suspended KRMSyncer: resourceVersion %s, want %s", got, want)
+	}
+}
+
+// The KRMSyncer gets a kind's rule when the kind's CRD is installed, and not before.
+func TestSyncerIntegration_RulesOnlyForServedKinds(t *testing.T) {
+	ctx := context.Background()
+	cfg, kubeClient := startSyncerEnvtest(t)
+
+	syncerDiscovery, err := newSyncerDiscovery(cfg)
+	if err != nil {
+		t.Fatalf("error creating discovery client: %v", err)
+	}
+
+	ns := "cnrm-system"
+	if err := kubeClient.Create(ctx, &corev1.Namespace{ObjectMeta: metav1.ObjectMeta{Name: ns}}); err != nil {
+		t.Fatalf("error creating namespace: %v", err)
+	}
+
+	self := testGKECluster("cluster-standby")
+	nn := types.NamespacedName{Namespace: ns, Name: "test-lease"}
+	si := &SyncerIntegration{
+		client:          kubeClient,
+		apiReader:       kubeClient,
+		discovery:       syncerDiscovery,
+		leaseNN:         nn,
+		replicationMode: "Status",
+		cluster:         self,
+	}
+
+	getSyncer := func() *unstructured.Unstructured {
+		t.Helper()
+		u := &unstructured.Unstructured{}
+		u.SetGroupVersionKind(KRMSyncerGVK)
+		if err := kubeClient.Get(ctx, nn, u); err != nil {
+			t.Fatalf("error getting KRMSyncer %s: %v", nn, err)
+		}
+		return u
+	}
+
+	// This cluster is a standby: the KRMSyncer is created.
+	leader := testGKECluster("cluster-leader")
+	if err := si.EnsurePullingFromLeader(ctx, leader); err != nil {
+		t.Fatalf("EnsurePullingFromLeader: %v", err)
+	}
+
+	// Before installing any CRD on the service-generated list, only the generic glob rule is present.
+	rules, _, _ := unstructured.NestedSlice(getSyncer().Object, "spec", "rules")
+	if len(rules) != 1 {
+		t.Fatalf("expected exactly 1 rule before installing CRD, got %d rules: %v", len(rules), rules)
+	}
+
+	// Install a CRD for Folder (resourcemanager.cnrm.cloud.google.com/v1beta1).
+	folderCRD := &apiextensionsv1.CustomResourceDefinition{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: "folders.resourcemanager.cnrm.cloud.google.com",
+		},
+		Spec: apiextensionsv1.CustomResourceDefinitionSpec{
+			Group: "resourcemanager.cnrm.cloud.google.com",
+			Names: apiextensionsv1.CustomResourceDefinitionNames{
+				Plural:   "folders",
+				Singular: "folder",
+				Kind:     "Folder",
+			},
+			Scope: apiextensionsv1.ClusterScoped,
+			Versions: []apiextensionsv1.CustomResourceDefinitionVersion{
+				{
+					Name:    "v1beta1",
+					Served:  true,
+					Storage: true,
+					Schema: &apiextensionsv1.CustomResourceValidation{
+						OpenAPIV3Schema: &apiextensionsv1.JSONSchemaProps{
+							Type: "object",
+						},
+					},
+				},
+			},
+		},
+	}
+	if err := kubeClient.Create(ctx, folderCRD); err != nil {
+		t.Fatalf("error creating Folder CRD: %v", err)
+	}
+
+	// Wait until discovery sees the new CRD.
+	if err := wait.PollUntilContextTimeout(ctx, 50*time.Millisecond, 10*time.Second, true, func(ctx context.Context) (bool, error) {
+		gvks, err := si.servedGVKsWithServiceGeneratedIDs()
+		if err != nil {
+			return false, err
+		}
+		for _, gvk := range gvks {
+			if gvk.Kind == "Folder" {
+				return true, nil
+			}
+		}
+		return false, nil
+	}); err != nil {
+		t.Fatalf("timed out waiting for Folder CRD to be discovered: %v", err)
+	}
+
+	// Update the syncer with EnsurePullingFromLeader.
+	if err := si.EnsurePullingFromLeader(ctx, leader); err != nil {
+		t.Fatalf("EnsurePullingFromLeader after installing CRD: %v", err)
+	}
+
+	// Now the KRMSyncer has 2 rules: the glob rule and the Folder rule.
+	rules, _, _ = unstructured.NestedSlice(getSyncer().Object, "spec", "rules")
+	if len(rules) != 2 {
+		t.Fatalf("expected 2 rules after installing CRD, got %d: %v", len(rules), rules)
+	}
+	foundFolderRule := false
+	for _, r := range rules {
+		ruleMap, ok := r.(map[string]interface{})
+		if !ok {
+			continue
+		}
+		if ruleMap["kind"] == "Folder" && ruleMap["group"] == "resourcemanager.cnrm.cloud.google.com" && ruleMap["version"] == "v1beta1" {
+			foundFolderRule = true
+			syncFields, _, _ := unstructured.NestedSlice(ruleMap, "syncFields")
+			if len(syncFields) != 2 || syncFields[0] != "status" || syncFields[1] != "spec.resourceID" {
+				t.Errorf("unexpected syncFields for Folder rule: %v", syncFields)
+			}
+		}
+	}
+	if !foundFolderRule {
+		t.Errorf("Folder rule not found in syncer rules: %v", rules)
 	}
 }
 

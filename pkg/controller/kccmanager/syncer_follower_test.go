@@ -162,7 +162,11 @@ func TestLeaderFollower_StopsWhenLeading(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	_, kubeClient := startSyncerEnvtest(t)
+	cfg, kubeClient := startSyncerEnvtest(t)
+	syncerDiscovery, err := newSyncerDiscovery(cfg)
+	if err != nil {
+		t.Fatalf("error creating discovery client: %v", err)
+	}
 
 	nsName := "cnrm-system"
 	if err := kubeClient.Create(ctx, &corev1.Namespace{ObjectMeta: metav1.ObjectMeta{Name: nsName}}); err != nil {
@@ -185,6 +189,7 @@ func TestLeaderFollower_StopsWhenLeading(t *testing.T) {
 			return nil
 		}},
 		apiReader:       kubeClient,
+		discovery:       syncerDiscovery,
 		leaseNN:         syncerNN,
 		replicationMode: "Status",
 		cluster:         self,
