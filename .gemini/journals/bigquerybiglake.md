@@ -199,5 +199,18 @@
   7. Confirmed Cloud Audit Logs capture mutations (`HiveDatabaseDeletionAuditMetadata`, `DeleteHiveDatabase`, `GetHiveDatabase`, `RESOURCE_ACTUATED_AND_VERIFIED`).
 - **Impact**: Greenfield Step 2 complete; `BigLakeHiveDatabase` direct controller, fuzzer, and real GCP fixtures verified and ready for Step 3 MockGCP implementation.
 
+### [2026-11-25] Greenfield Step 3: Implement MockGCP and Alignment for BigLakeHiveDatabase
+- **Context**: Implementing MockGCP service and alignment for `BigLakeHiveDatabase` under `bigquerybiglake.cnrm.cloud.google.com/v1alpha1` (Issue #16456).
+- **Details**:
+  1. Added `./apis/google/cloud/biglake/hive/v1/*.proto` to `generate-grpc-for-google-protos` in `mockgcp/Makefile` and generated grpc-gateway bindings in `mockgcp/generated/google/cloud/biglake/hive/v1/hive_metastore.pb.gw.go`.
+  2. Implemented `CreateHiveDatabase`, `GetHiveDatabase`, `UpdateHiveDatabase`, `DeleteHiveDatabase`, and `ListHiveDatabases` on `hiveMetastoreService` in `mockgcp/mockbigquerybiglake/hivedatabase.go`.
+  3. Registered `RegisterHiveMetastoreServiceHandler` in `NewHTTPMux` in `mockgcp/mockbigquerybiglake/service.go`, and added error rewriting to match the GCP Hive metastore 404 response format.
+  4. Registered `BigLakeHiveDatabase` in `config/tests/samples/create/harness.go`.
+  5. Verified `ShouldTestRereconiliation` in `tests/e2e/ratcheting.go` does not exclude `BigLakeHiveDatabase`.
+  6. Generated and matched `_http_mock.log` for both `biglakehivedatabase-minimal` and `biglakehivedatabase-maximal` fixtures using `hack/compare-mock`.
+  7. Confirmed all 12 fixtures tests under `bigquerybiglake` pass cleanly via `./dev/ci/presubmits/tests-e2e-fixtures-suite bigquerybiglake`.
+  8. Verified repo-wide golden log alignment test (`TestGoldenLogAlignment`) passes with zero diffs.
+- **Impact**: Greenfield Step 3 complete; `BigLakeHiveDatabase` mock service implemented, golden logs aligned, and e2e fixture suite passing.
+
 
 
