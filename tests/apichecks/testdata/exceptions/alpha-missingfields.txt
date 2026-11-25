@@ -3688,6 +3688,23 @@
 [missing_field] crd=deploymentmanagerdeployments.deploymentmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.target.config.content" is not set in unstructured objects
 [missing_field] crd=deploymentmanagerdeployments.deploymentmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.target.imports[].content" is not set in unstructured objects
 [missing_field] crd=deploymentmanagerdeployments.deploymentmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.target.imports[].name" is not set in unstructured objects
+[missing_field] crd=designcenterapplicationtemplates.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.applicationParameters[].key" is not set in unstructured objects
+[missing_field] crd=designcenterapplicationtemplates.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.applicationParameters[].value.boolValue" is not set in unstructured objects
+[missing_field] crd=designcenterapplicationtemplates.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.applicationParameters[].value.listValue.values[]" is not set in unstructured objects
+[missing_field] crd=designcenterapplicationtemplates.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.applicationParameters[].value.nullValue" is not set in unstructured objects
+[missing_field] crd=designcenterapplicationtemplates.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.applicationParameters[].value.numberValue" is not set in unstructured objects
+[missing_field] crd=designcenterapplicationtemplates.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.applicationParameters[].value.stringValue" is not set in unstructured objects
+[missing_field] crd=designcenterapplicationtemplates.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.applicationParameters[].value.structValue" is not set in unstructured objects
+[missing_field] crd=designcenterapplicationtemplates.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.compositionType" is not set in unstructured objects
+[missing_field] crd=designcenterapplicationtemplates.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=designcenterapplicationtemplates.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=designcenterapplicationtemplates.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputsAsRootModuleVariables" is not set in unstructured objects
+[missing_field] crd=designcenterapplicationtemplates.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=designcenterapplicationtemplates.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.rootInputVariables[].componentURI" is not set in unstructured objects
+[missing_field] crd=designcenterapplicationtemplates.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.rootInputVariables[].variable" is not set in unstructured objects
+[missing_field] crd=designcenterapplicationtemplates.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.rootOutputVariables[].componentURI" is not set in unstructured objects
+[missing_field] crd=designcenterapplicationtemplates.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.rootOutputVariables[].variable" is not set in unstructured objects
+[missing_field] crd=designcenterapplicationtemplates.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.saasRuntimeContext.saasRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.applicationParameters[].key" is not set in unstructured objects
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.applicationParameters[].value.boolValue" is not set in unstructured objects

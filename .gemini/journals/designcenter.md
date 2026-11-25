@@ -116,6 +116,26 @@
   - **Fixtures & Golden Logs**: Recorded E2E fixtures against real GCP (`cnrm-barni-4`) using `./hack/record-gcp "fixtures/designcentercatalogtemplaterevision-minimal"` and `"fixtures/designcentercatalogtemplaterevision-maximal"`. Audit probe markers and Cloud Audit Logs confirm successful actuation and deletion.
   - **Validation**: 200-seed focused round-trip fuzzer (`TestFocusedMappers/DesignCenterCatalogTemplateRevision`), CRD field presence checks, and presubmit unit tests all passed cleanly.
 
+### [2026-11-19] Prepopulating DesignCenterApplicationTemplate
+- **Context**: Prepopulating direct KRM types, identity, reference, mapper, and judgement queue for `DesignCenterApplicationTemplate` (Issue #16161).
+- **Generation & Mapper Setup**:
+  - Added `--resource DesignCenterApplicationTemplate:ApplicationTemplate` to `generate-types` and `generate-identity` in `apis/designcenter/generate.sh`.
+  - Appended `google.cloud.apphub.v1` to `--service` on `generate-mapper` in `apis/designcenter/generate.sh` to automatically emit mappers for AppHub types referenced in `AppHubApplicationParameters` (`Scope`, `Attributes`, `Criticality`, `Environment`, `ContactInfo`).
+  - Added `DesignCenterApplicationTemplate` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` with golden output for `DesignCenterApplicationTemplate`.
+
+### [2026-11-25] Triaging judgement queue and finalizing KRM types for DesignCenterApplicationTemplate
+- **Context**: Triaged `apis/designcenter/judgement_queue.yaml` and finalized KRM types, identity, and reference types for `DesignCenterApplicationTemplate` (Issue #16442).
+- **Resolutions & Findings**:
+  - `location-or-parent-ref`, `parent-ref-guessed`, `identity-root-unknown`: `DesignCenterApplicationTemplate` is a child resource under `DesignCenterSpace` (`projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}`). Per `judgement/references/PARENT_AND_IDENTITY.md` (Case B), replaced `ProjectRef`, `Location`, and `SpaceRef` with required, immutable `ParentRef *DesignCenterSpaceRef` (`json:"parentRef"`).
+  - `possible-reference-by-description` on `.spec.saasRuntimeContext.saasNames`: Field format is `projects/{project}/locations/{location}/saas/{saas}`. To avoid breaking CRD backward compatibility on existing kinds sharing `SaaSRuntimeContext` in status/observedState (`DesignCenterCatalogTemplateRevision`), forked `ApplicationTemplate_SaaSRuntimeContext` into `designcenterapplicationtemplate_types.go` and converted `saasNames []string` to `SaasRefs []saasservicemgmtv1alpha1.SaaSServiceMgmtSaaSRef` (`json:"saasRefs,omitempty"`). Implemented handwritten bidirectional mappers and roundtrip unit tests in `pkg/controller/direct/designcenter/designcenterapplicationtemplate_mapper.go`.
+  - `identity-not-in-cai`: Verified template `//designcenter.googleapis.com/projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}` against proto `google.api.resource` pattern and marked accepted.
+  - `verify-service-docs-link` & `verify-resource-docs-link`: Added service docs `https://cloud.google.com/application-design-center/docs` and REST reference `https://cloud.google.com/application-design-center/docs/reference/rest/v1/projects.locations.spaces.applicationTemplates`.
+  - `well-known-proto-type`: Confirmed `google.protobuf.Value` representation and resolved as accepted.
+  - `message-map-derived`: Confirmed map types and mappings for Terraform UI input/output display types and resolved as accepted.
+  - `untriaged-bulk-generation`: Resolved with resolution `edited`.
+  - Updated golden exceptions in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+
 
 
 
