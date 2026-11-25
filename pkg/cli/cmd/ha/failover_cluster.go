@@ -20,7 +20,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -128,17 +127,7 @@ func (c *failoverCluster) view(ctx context.Context) (*failoverView, error) {
 // that has a namespace of its own (ConfigConnectorContext spec.managerNamespace) runs outside
 // cnrm-system.
 func (c *failoverCluster) managers(ctx context.Context) ([]*managerStatefulSet, error) {
-	list := &appsv1.StatefulSetList{}
-	labels := client.MatchingLabels{operatork8s.KCCSystemComponentLabel: operatork8s.KCCControllerManagerComponent}
-	if err := c.handle.client.List(ctx, list, labels); err != nil {
-		return nil, fmt.Errorf("listing the StatefulSets of Config Connector's manager on cluster %q: %w", c.name(), err)
-	}
-	managers := make([]*managerStatefulSet, 0, len(list.Items))
-	for i := range list.Items {
-		managers = append(managers, &managerStatefulSet{StatefulSet: &list.Items[i]})
-	}
-	sort.Slice(managers, func(i, j int) bool { return managers[i].key() < managers[j].key() })
-	return managers, nil
+	return c.handle.listManagers(ctx)
 }
 
 // managerStatefulSet is a StatefulSet of Config Connector's manager.

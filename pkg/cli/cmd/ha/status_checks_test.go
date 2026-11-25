@@ -23,10 +23,14 @@ import (
 	"time"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	operatork8s "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	syncerv1alpha1 "github.com/gke-labs/kube-etl/syncer/api/v1alpha1"
 	mclv1alpha1 "github.com/gke-labs/multicluster-leader-election/api/v1alpha1"
 	mclcontroller "github.com/gke-labs/multicluster-leader-election/controllers"
 	mclstorage "github.com/gke-labs/multicluster-leader-election/pkg/storage"
+	appsv1 "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
+	rbacv1 "k8s.io/api/rbac/v1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -49,33 +53,150 @@ var testNow = time.Date(2026, 11, 10, 18, 6, 0, 0, time.UTC)
 
 // haFixture holds the HA objects of one fake cluster.
 type haFixture struct {
-	context string
-	cc      *operatorv1beta1.ConfigConnector
-	lease   *mclv1alpha1.MultiClusterLease
-	syncers []*syncerv1alpha1.KRMSyncer
+	context   string
+	cc        *operatorv1beta1.ConfigConnector
+	lease     *mclv1alpha1.MultiClusterLease
+	syncers   []*syncerv1alpha1.KRMSyncer
+	extraObjs []runtime.Object
 }
 
 type haFixtures []*haFixture
+
+func ptrInt32(v int32) *int32 { return &v }
+
+func healthyWorkloadObjects(leaseNamespace string) []runtime.Object {
+	role := &rbacv1.Role{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      managerHARoleName,
+			Namespace: leaseNamespace,
+			Labels:    map[string]string{manifestManagedByLabelKey: manifestManagedByLabelValue},
+		},
+	}
+	managerSts := &appsv1.StatefulSet{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "cnrm-controller-manager-system",
+			Namespace: leaseNamespace,
+			Labels:    map[string]string{operatork8s.KCCSystemComponentLabel: operatork8s.KCCControllerManagerComponent},
+		},
+		Spec: appsv1.StatefulSetSpec{
+			Replicas: ptrInt32(1),
+			Selector: &metav1.LabelSelector{
+				MatchLabels: map[string]string{operatork8s.KCCSystemComponentLabel: operatork8s.KCCControllerManagerComponent},
+			},
+		},
+		Status: appsv1.StatefulSetStatus{
+			Replicas:      1,
+			ReadyReplicas: 1,
+		},
+	}
+	managerPod := &corev1.Pod{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "cnrm-controller-manager-system-0",
+			Namespace: leaseNamespace,
+			Labels:    map[string]string{operatork8s.KCCSystemComponentLabel: operatork8s.KCCControllerManagerComponent},
+		},
+		Status: corev1.PodStatus{
+			ContainerStatuses: []corev1.ContainerStatus{
+				{
+					Name: "manager",
+					State: corev1.ContainerState{
+						Running: &corev1.ContainerStateRunning{StartedAt: metav1.NewTime(testNow.Add(-10 * time.Minute))},
+					},
+					RestartCount: 0,
+				},
+			},
+		},
+	}
+	mclDeploy := &appsv1.Deployment{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      mclDeploymentName,
+			Namespace: manifestSystemNamespace,
+		},
+		Spec: appsv1.DeploymentSpec{
+			Replicas: ptrInt32(1),
+			Selector: &metav1.LabelSelector{
+				MatchLabels: map[string]string{"app": mclDeploymentName},
+			},
+		},
+		Status: appsv1.DeploymentStatus{
+			Replicas:          1,
+			AvailableReplicas: 1,
+			UpdatedReplicas:   1,
+		},
+	}
+	mclPod := &corev1.Pod{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      mclDeploymentName + "-pod",
+			Namespace: manifestSystemNamespace,
+			Labels:    map[string]string{"app": mclDeploymentName},
+		},
+		Status: corev1.PodStatus{
+			ContainerStatuses: []corev1.ContainerStatus{
+				{
+					Name: "manager",
+					State: corev1.ContainerState{
+						Running: &corev1.ContainerStateRunning{StartedAt: metav1.NewTime(testNow.Add(-10 * time.Minute))},
+					},
+					RestartCount: 0,
+				},
+			},
+		},
+	}
+	syncerDeploy := &appsv1.Deployment{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      syncerDeploymentName,
+			Namespace: manifestSystemNamespace,
+		},
+		Spec: appsv1.DeploymentSpec{
+			Replicas: ptrInt32(1),
+			Selector: &metav1.LabelSelector{
+				MatchLabels: map[string]string{"app": syncerDeploymentName},
+			},
+		},
+		Status: appsv1.DeploymentStatus{
+			Replicas:          1,
+			AvailableReplicas: 1,
+			UpdatedReplicas:   1,
+		},
+	}
+	syncerPod := &corev1.Pod{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      syncerDeploymentName + "-pod",
+			Namespace: manifestSystemNamespace,
+			Labels:    map[string]string{"app": syncerDeploymentName},
+		},
+		Status: corev1.PodStatus{
+			ContainerStatuses: []corev1.ContainerStatus{
+				{
+					Name: "manager",
+					State: corev1.ContainerState{
+						Running: &corev1.ContainerStateRunning{StartedAt: metav1.NewTime(testNow.Add(-10 * time.Minute))},
+					},
+					RestartCount: 0,
+				},
+			},
+		},
+	}
+	return []runtime.Object{role, managerSts, managerPod, mclDeploy, mclPod, syncerDeploy, syncerPod}
+}
 
 // healthyHAFixtures returns a healthy pair: cluster-a holds the lease and its syncer is
 // suspended; cluster-b is a standby whose syncer is syncing from cluster-a.
 func healthyHAFixtures() haFixtures {
 	return haFixtures{
 		{
-			context: testStatusContextA,
-			cc:      newConfigConnectorWithMCL(testLeaseName, testLeaseNamespace, "cluster-a"),
-			lease:   newTestLease(testIdentityA, testRenewTime),
-			syncers: []*syncerv1alpha1.KRMSyncer{
-				newTestSyncer(testLeaseName, testIdentityA, true, syncerv1alpha1.ReasonSuspended, "Syncer is suspended"),
-			},
+			context:   testStatusContextA,
+			cc:        newConfigConnectorWithMCL(testLeaseName, testLeaseNamespace, "cluster-a"),
+			lease:     newTestLease(testIdentityA, testRenewTime),
+			syncers:   []*syncerv1alpha1.KRMSyncer{newTestSyncer(testLeaseName, testIdentityA, true, syncerv1alpha1.ReasonSuspended, "Syncer is suspended")},
+			extraObjs: healthyWorkloadObjects(testLeaseNamespace),
 		},
 		{
-			context: testStatusContextB,
-			cc:      newConfigConnectorWithMCL(testLeaseName, testLeaseNamespace, "cluster-b"),
-			lease:   newTestLease(testIdentityA, testRenewTime),
-			syncers: []*syncerv1alpha1.KRMSyncer{
-				newTestSyncer(testLeaseName, testIdentityA, false, syncerv1alpha1.ReasonSyncing, "Syncing"),
-			},
+			context:   testStatusContextB,
+			cc:        newConfigConnectorWithMCL(testLeaseName, testLeaseNamespace, "cluster-b"),
+			lease:     newTestLease(testIdentityA, testRenewTime),
+			syncers:   []*syncerv1alpha1.KRMSyncer{newTestSyncer(testLeaseName, testIdentityA, false, syncerv1alpha1.ReasonSyncing, "Syncing")},
+			extraObjs: healthyWorkloadObjects(testLeaseNamespace),
 		},
 	}
 }
@@ -91,7 +212,25 @@ func (fs haFixtures) handles(t *testing.T) []*clusterHandle {
 		for _, s := range f.syncers {
 			objs = append(objs, s)
 		}
+		objs = append(objs, f.extraObjs...)
 		handles = append(handles, newFakeClusterHandle(t, f.context, objs...))
+	}
+	return handles
+}
+
+func (fs haFixtures) handlesWithPendingDeployments(t *testing.T) []*clusterHandle {
+	t.Helper()
+	handles := make([]*clusterHandle, 0, len(fs))
+	for _, f := range fs {
+		objs := []runtime.Object{f.cc}
+		if f.lease != nil {
+			objs = append(objs, f.lease)
+		}
+		for _, s := range f.syncers {
+			objs = append(objs, s)
+		}
+		objs = append(objs, f.extraObjs...)
+		handles = append(handles, newFakeClusterHandleWithPendingDeployments(t, f.context, objs...))
 	}
 	return handles
 }
@@ -207,6 +346,20 @@ func TestHAStatusHealthy(t *testing.T) {
 	}
 }
 
+const testIdentityC = "projects/test-project/locations/us-central1/clusters/cluster-c"
+
+func threeClusterHAFixtures() haFixtures {
+	fs := healthyHAFixtures()
+	fs = append(fs, &haFixture{
+		context:   "gke_proj-c_us-central1_cluster-c",
+		cc:        newConfigConnectorWithMCL(testLeaseName, testLeaseNamespace, "cluster-c"),
+		lease:     newTestLease(testIdentityA, testRenewTime),
+		syncers:   []*syncerv1alpha1.KRMSyncer{newTestSyncer(testLeaseName, testIdentityA, false, syncerv1alpha1.ReasonSyncing, "Syncing")},
+		extraObjs: healthyWorkloadObjects(testLeaseNamespace),
+	})
+	return fs
+}
+
 func TestHAStatusProblems(t *testing.T) {
 	unhealthy := metav1.Condition{
 		Type:    string(mclv1alpha1.ConditionTypeBackendHealthy),
@@ -217,6 +370,7 @@ func TestHAStatusProblems(t *testing.T) {
 
 	tests := []struct {
 		name         string
+		fixtures     func() haFixtures
 		mutate       func(haFixtures)
 		wantProblems []string
 	}{
@@ -398,6 +552,69 @@ func TestHAStatusProblems(t *testing.T) {
 			},
 		},
 		{
+			name: "standby lease expired and standby KRMSyncer suspended",
+			mutate: func(fs haFixtures) {
+				fs[1].lease = newTestLease(testIdentityA, "2026-11-10T18:05:00Z")
+				fs[1].syncers = []*syncerv1alpha1.KRMSyncer{newTestSyncer(testLeaseName, testIdentityA, true, syncerv1alpha1.ReasonSuspended, "")}
+			},
+			wantProblems: []string{
+				`cluster "gke_proj-b_us-east1_cluster-b": the lease held by "` + testIdentityA + `" has expired (last renewed at 2026-11-10T18:05:00Z, lease duration 15s)`,
+				`cluster "gke_proj-b_us-east1_cluster-b": KRMSyncer cnrm-system/kcc-multicluster-lease is suspended, so it is not syncing from the leader`,
+			},
+		},
+		{
+			name: "standby lease backend unhealthy and standby KRMSyncer SyncFailed",
+			mutate: func(fs haFixtures) {
+				fs[1].lease.Status.Conditions = []metav1.Condition{{
+					Type:    string(mclv1alpha1.ConditionTypeBackendHealthy),
+					Status:  metav1.ConditionFalse,
+					Reason:  "BackendError",
+					Message: "failed to communicate with backend: failed to read lease: Error 403",
+				}}
+				fs[1].syncers = []*syncerv1alpha1.KRMSyncer{newTestSyncer(testLeaseName, testIdentityA, false, syncerv1alpha1.ReasonSyncFailed, "failed to fetch objects")}
+			},
+			wantProblems: []string{
+				`cluster "gke_proj-b_us-east1_cluster-b": the lease backend is unhealthy: failed to communicate with backend: failed to read lease: Error 403`,
+				`cluster "gke_proj-b_us-east1_cluster-b": KRMSyncer cnrm-system/kcc-multicluster-lease is failing to sync 0 objects (SyncFailed): failed to fetch objects`,
+			},
+		},
+		{
+			name: "leader missing MultiClusterLease and leader KRMSyncer not suspended",
+			mutate: func(fs haFixtures) {
+				fs[0].lease = nil
+				fs[0].syncers = []*syncerv1alpha1.KRMSyncer{newTestSyncer(testLeaseName, testIdentityB, false, syncerv1alpha1.ReasonSyncing, "")}
+			},
+			wantProblems: []string{
+				`cluster "gke_proj-a_us-central1_cluster-a": MultiClusterLease cnrm-system/kcc-multicluster-lease not found; check that the multiclusterlease-controller-manager is running`,
+				`cluster "gke_proj-a_us-central1_cluster-a" (leader): KRMSyncer cnrm-system/kcc-multicluster-lease is not suspended`,
+			},
+		},
+		{
+			name:     "three clusters: c lease expired and c KRMSyncer syncs from b instead of leader a",
+			fixtures: threeClusterHAFixtures,
+			mutate: func(fs haFixtures) {
+				fs[2].lease = newTestLease(testIdentityA, "2026-11-10T18:05:00Z")
+				fs[2].syncers = []*syncerv1alpha1.KRMSyncer{newTestSyncer(testLeaseName, testIdentityB, false, syncerv1alpha1.ReasonSyncing, "")}
+			},
+			wantProblems: []string{
+				`cluster "gke_proj-c_us-central1_cluster-c": the lease held by "` + testIdentityA + `" has expired (last renewed at 2026-11-10T18:05:00Z, lease duration 15s)`,
+				`cluster "gke_proj-c_us-central1_cluster-c": KRMSyncer cnrm-system/kcc-multicluster-lease syncs from "` + testIdentityB + `", but the lease is held by "` + testIdentityA + `"`,
+			},
+		},
+		{
+			name:     "three clusters: c lease expired, a and b disagree on holder",
+			fixtures: threeClusterHAFixtures,
+			mutate: func(fs haFixtures) {
+				fs[1].lease = newTestLease(testIdentityB, testRenewTime)
+				fs[2].lease = newTestLease(testIdentityA, "2026-11-10T18:05:00Z")
+				fs[2].syncers = []*syncerv1alpha1.KRMSyncer{newTestSyncer(testLeaseName, testIdentityB, false, syncerv1alpha1.ReasonSyncing, "")}
+			},
+			wantProblems: []string{
+				`cluster "gke_proj-c_us-central1_cluster-c": the lease held by "` + testIdentityA + `" has expired (last renewed at 2026-11-10T18:05:00Z, lease duration 15s)`,
+				`clusters disagree on the lease holder ("` + testIdentityA + `" reported by [gke_proj-a_us-central1_cluster-a]; "` + testIdentityB + `" reported by [gke_proj-b_us-east1_cluster-b])`,
+			},
+		},
+		{
 			name: "standby KRMSyncer status is out of date",
 			mutate: func(fs haFixtures) {
 				s := newTestSyncer(testLeaseName, testIdentityA, false, syncerv1alpha1.ReasonSyncing, "")
@@ -444,8 +661,14 @@ func TestHAStatusProblems(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			fs := healthyHAFixtures()
-			tc.mutate(fs)
+			fsFn := tc.fixtures
+			if fsFn == nil {
+				fsFn = healthyHAFixtures
+			}
+			fs := fsFn()
+			if tc.mutate != nil {
+				tc.mutate(fs)
+			}
 
 			report, out := runHAStatus(t, fs)
 
