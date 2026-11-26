@@ -69,9 +69,6 @@ spec:
                   It can also contain custom placeholders which will be resolved during
                   fulfillment.
                 type: string
-              location:
-                description: The location of this resource.
-                type: string
               modelParameter:
                 description: Parameters passed to the LLM to configure its behavior.
                 properties:
@@ -100,21 +97,8 @@ spec:
                       Large topP = more random.'
                     type: number
                 type: object
-              placeholders:
-                description: Optional. List of custom placeholders in the prompt text.
-                items:
-                  properties:
-                    id:
-                      description: Unique ID used to map custom placeholder to parameters
-                        in fulfillment.
-                      type: string
-                    name:
-                      description: Custom placeholder value in the prompt text.
-                      type: string
-                  type: object
-                type: array
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The DialogflowCXAgent that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -131,20 +115,32 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed DialogflowCXAgent
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/agents/{{agentID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a DialogflowCXAgent resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a DialogflowCXAgent resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
+              placeholders:
+                description: Optional. List of custom placeholders in the prompt text.
+                items:
+                  properties:
+                    id:
+                      description: Unique ID used to map custom placeholder to parameters
+                        in fulfillment.
+                      type: string
+                    name:
+                      description: Custom placeholder value in the prompt text.
+                      type: string
+                  type: object
+                type: array
               promptText:
                 description: Required. Prompt for the LLM model.
                 properties:
@@ -156,13 +152,13 @@ spec:
                 - text
                 type: object
               resourceID:
-                description: The DialogflowCXGenerator name. If not given, the metadata.name
-                  will be used.
+                description: The DialogflowCXGenerator name. The server-generated
+                  name of the resource. Used for acquisition only. Leave unset to
+                  create a new resource.
                 type: string
             required:
             - displayName
-            - location
-            - projectRef
+            - parentRef
             - promptText
             type: object
           status:
