@@ -14,15 +14,13 @@
 
 // API sources for DesignCenterPolicy, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/547f8fdb4b91dbac70d540b3757520f0608ae356/google/cloud/designcenter/v1/best_practices.proto
-// +kcc:guess=source-link reason=verify-service-docs-link
-// +kcc:source:service-docs=
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=
+// +kcc:source:service-docs=https://cloud.google.com/application-design-center/docs
+// +kcc:source:resource-docs=https://cloud.google.com/application-design-center/docs/reference/rest/v1/projects.locations.spaces.applicationTemplates.policies
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	cloudsecuritycompliancev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudsecuritycompliance/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -33,18 +31,14 @@ var DesignCenterPolicyGVK = GroupVersion.WithKind("DesignCenterPolicy")
 // +kcc:spec:proto=google.cloud.designcenter.v1.Policy
 // +kcc:required-from-proto
 type DesignCenterPolicySpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template} this resource belongs to.
-	// +kcc:guess
-	// ApplicationTemplateRef *DesignCenterApplicationTemplateRef `json:"applicationTemplateRef,omitempty"`
+	// The DesignCenterApplicationTemplate this DesignCenterPolicy is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *DesignCenterApplicationTemplateRef `json:"parentRef"`
 
 	// The DesignCenterPolicy name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Optional. URI of the policy.
 	// +kcc:proto:field=google.cloud.designcenter.v1.Policy.policy_uri
 	PolicyURI *string `json:"policyURI,omitempty"`
@@ -85,6 +79,21 @@ type DesignCenterPolicySpec struct {
 	CloudControlConfigs []CloudControlConfig `json:"cloudControlConfigs,omitempty"`
 }
 
+// +kcc:proto=google.cloud.designcenter.v1.CloudControlConfig
+type CloudControlConfig struct {
+	// Required. Resource name of the cloud control that these parameter values
+	//  apply to. Format:
+	//  organizations/{organization}/locations/{location}/cloudControls/{cloud_control}
+	//  or projects/{project}/locations/{location}/cloudControls/{cloud_control}
+	// +kcc:proto:field=google.cloud.designcenter.v1.CloudControlConfig.cloud_control
+	// +required
+	CloudControlRef *cloudsecuritycompliancev1alpha1.CloudSecurityComplianceCloudControlRef `json:"cloudControlRef,omitempty"`
+
+	// Optional. Parameter values for this specific control.
+	// +kcc:proto:field=google.cloud.designcenter.v1.CloudControlConfig.parameters
+	Parameters []Parameter `json:"parameters,omitempty"`
+}
+
 // DesignCenterPolicyStatus defines the config connector machine state of DesignCenterPolicy
 type DesignCenterPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
@@ -111,18 +120,6 @@ type DesignCenterPolicyObservedState struct {
 	// Output only. The policy update timestamp.
 	// +kcc:proto:field=google.cloud.designcenter.v1.Policy.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Optional. Input only. Parameter values for the cloud controls of the
-	//  policy's framework, grouped by cloud control. Only honored when framework
-	//  parameter support is enabled for the project; ignored otherwise.
-	//
-	//  The values are saved with the application template and are not returned on
-	//  the policy. On update, they replace the saved values. If they are empty,
-	//  the saved values are cleared if `cloud_control_configs` is named in the
-	//  update mask. Otherwise, the saved values are kept, unless the policy's
-	//  framework changes.
-	// +kcc:proto:field=google.cloud.designcenter.v1.Policy.cloud_control_configs
-	CloudControlConfigs []CloudControlConfigObservedState `json:"cloudControlConfigs,omitempty"`
 }
 
 // +genclient

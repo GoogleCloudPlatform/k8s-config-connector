@@ -317,6 +317,8 @@ type CatalogTemplateRevision struct {
 }
 */
 
+/* found existing non-generated go type "CloudControlConfig", skipping
+
 // +kcc:proto=google.cloud.designcenter.v1.CloudControlConfig
 type CloudControlConfig struct {
 	// Required. Resource name of the cloud control that these parameter values
@@ -324,13 +326,13 @@ type CloudControlConfig struct {
 	//  organizations/{organization}/locations/{location}/cloudControls/{cloud_control}
 	//  or projects/{project}/locations/{location}/cloudControls/{cloud_control}
 	// +kcc:proto:field=google.cloud.designcenter.v1.CloudControlConfig.cloud_control
-	// +required
 	CloudControl *string `json:"cloudControl,omitempty"`
 
 	// Optional. Parameter values for this specific control.
 	// +kcc:proto:field=google.cloud.designcenter.v1.CloudControlConfig.parameters
 	Parameters []Parameter `json:"parameters,omitempty"`
 }
+*/
 
 /* unreachable type ComponentApplicationInfo
 // +kcc:proto=google.cloud.designcenter.v1.ComponentApplicationInfo

@@ -152,6 +152,18 @@
   - Added `DesignCenterPolicy` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
   - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` with golden output for `DesignCenterPolicy`.
 
+### [2026-11-26] Greenfield Step 1b: Triaging judgement queue and finalizing KRM types for DesignCenterPolicy
+- **Context**: Triaged `apis/designcenter/judgement_queue.yaml` and finalized KRM types, identity, and reference types for `DesignCenterPolicy` (Issue #16490).
+- **Resolutions & Findings**:
+  - `location-or-parent-ref`, `parent-ref-guessed`, `identity-root-unknown`: `DesignCenterPolicy` is a child resource under `DesignCenterApplicationTemplate` (`projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/policies/{policy}`). Per `judgement/references/PARENT_AND_IDENTITY.md` (Case B), replaced `ProjectRef`, `Location`, and `ApplicationTemplateRef` with required, immutable `ParentRef *DesignCenterApplicationTemplateRef` (`json:"parentRef"`).
+  - `authoritative-proto-reference` on `.spec.cloudControlConfigs[].cloudControl`: Replaced with `CloudControlRef *cloudsecuritycompliancev1alpha1.CloudSecurityComplianceCloudControlRef` (`json:"cloudControlRef,omitempty"`) in `CloudControlConfig`, moving `CloudControlConfig` to `designcenterpolicy_types.go`.
+  - `INPUT_ONLY` field placed in status: Removed `CloudControlConfigs` from `DesignCenterPolicyObservedState` per `REFERENCES_AND_NESTED_STRUCTS.md` because `cloud_control_configs` is marked `INPUT_ONLY` in proto and not returned on GET.
+  - `identity-not-in-cai`: Verified template `//designcenter.googleapis.com/projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/policies/{policy}` against proto `google.api.resource` pattern and marked accepted.
+  - `verify-service-docs-link` & `verify-resource-docs-link`: Added service docs `https://cloud.google.com/application-design-center/docs` and REST reference `https://cloud.google.com/application-design-center/docs/reference/rest/v1/projects.locations.spaces.applicationTemplates.policies`.
+  - `well-known-proto-type`: Confirmed `google.protobuf.Value` representation and resolved as accepted.
+  - `untriaged-bulk-generation`: Resolved with resolution `edited`.
+
+
 
 
 

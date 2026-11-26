@@ -28,6 +28,7 @@ package designcenter
 import (
 	apphubpb "cloud.google.com/go/apphub/apiv1/apphubpb"
 	pb "cloud.google.com/go/designcenter/apiv1/designcenterpb"
+	krmcloudsecuritycompliancev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudsecuritycompliance/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/designcenter/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	structpb "google.golang.org/protobuf/types/known/structpb"
@@ -223,7 +224,9 @@ func CloudControlConfig_FromProto(mapCtx *direct.MapContext, in *pb.CloudControl
 		return nil
 	}
 	out := &krm.CloudControlConfig{}
-	out.CloudControl = direct.LazyPtr(in.GetCloudControl())
+	if in.GetCloudControl() != "" {
+		out.CloudControlRef = &krmcloudsecuritycompliancev1alpha1.CloudSecurityComplianceCloudControlRef{External: in.GetCloudControl()}
+	}
 	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, Parameter_FromProto)
 	return out
 }
@@ -233,7 +236,9 @@ func CloudControlConfig_ToProto(mapCtx *direct.MapContext, in *krm.CloudControlC
 		return nil
 	}
 	out := &pb.CloudControlConfig{}
-	out.CloudControl = direct.ValueOf(in.CloudControl)
+	if in.CloudControlRef != nil {
+		out.CloudControl = in.CloudControlRef.External
+	}
 	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, Parameter_ToProto)
 	return out
 }
@@ -731,7 +736,6 @@ func DesignCenterPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.CloudControlConfigs = direct.Slice_FromProto(mapCtx, in.CloudControlConfigs, CloudControlConfigObservedState_FromProto)
 	return out
 }
 
@@ -743,7 +747,6 @@ func DesignCenterPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.CloudControlConfigs = direct.Slice_ToProto(mapCtx, in.CloudControlConfigs, CloudControlConfigObservedState_ToProto)
 	return out
 }
 
