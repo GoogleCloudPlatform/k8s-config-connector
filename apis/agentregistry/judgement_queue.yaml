@@ -43,3 +43,57 @@ entries:
     status: resolved
     resolution: edited
     note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef
+  - kind: AgentRegistrySkill
+    group: agentregistry.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: accepted
+    note: triaged all findings; inlined *parent.ProjectAndLocationRef, resolved docs link, converted defaultRevision and publisher to references, moved SkillRevision to handwritten types without server identifier, and verified KRM types, identity, and references
+  - kind: AgentRegistrySkill
+    group: agentregistry.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.skills: https://docs.cloud.google.com/agent-registry/overview/docs/reference/rest/v1/projects.locations.skills'
+    status: resolved
+    resolution: edited
+    note: updated service-docs link to valid cloud.google.com overview page, removed non-existent resource-docs URL and guess annotation
+  - kind: AgentRegistrySkill
+    group: agentregistry.cnrm.cloud.google.com
+    field: .spec.defaultRevision
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to agentregistry.googleapis.com/SkillRevision (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: converted to defaultRevisionRef (*AgentRegistrySkillRevisionRef)
+  - kind: AgentRegistrySkill
+    group: agentregistry.cnrm.cloud.google.com
+    field: .spec.initialRevision.gcsSource.uri
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: resolved
+    resolution: accepted
+    note: GCS URI names a Cloud Storage object and cannot be represented as a typed reference in KCC today; stays a string
+  - kind: AgentRegistrySkill
+    group: agentregistry.cnrm.cloud.google.com
+    field: .spec.initialRevision.name
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/skills/{skill}/revisions/{revision}"
+    status: resolved
+    resolution: edited
+    note: removed server-assigned identifier field from nested initialRevision spec struct
+  - kind: AgentRegistrySkill
+    group: agentregistry.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef
+  - kind: AgentRegistrySkill
+    group: agentregistry.cnrm.cloud.google.com
+    field: .spec.publisher
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to agentregistry.googleapis.com/Publisher (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: converted to publisherRef (*AgentRegistryPublisherRef)

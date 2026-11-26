@@ -11,6 +11,18 @@
 [missing_field] crd=agentregistryservices.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.agentSpec.type" is not set in unstructured objects
 [missing_field] crd=agentregistryservices.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpointSpec.content" is not set in unstructured objects
 [missing_field] crd=agentregistryservices.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpointSpec.type" is not set in unstructured objects
+[missing_field] crd=agentregistryskills.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultRevisionRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=agentregistryskills.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=agentregistryskills.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=agentregistryskills.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.initialRevision.archiveUploadSource.archiveContent" is not set in unstructured objects
+[missing_field] crd=agentregistryskills.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.initialRevision.gcsSource.generation" is not set in unstructured objects
+[missing_field] crd=agentregistryskills.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.initialRevision.gcsSource.uri" is not set in unstructured objects
+[missing_field] crd=agentregistryskills.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=agentregistryskills.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=agentregistryskills.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.publisherRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=agentregistryskills.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.scanningConfig.policy" is not set in unstructured objects
+[missing_field] crd=agentregistryskills.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.targetState" is not set in unstructured objects
+[missing_field] crd=agentregistryskills.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.type" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.flexStart.maxRuntimeDuration" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.machineSpec.acceleratorCount" is not set in unstructured objects
 [missing_field] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.machineSpec.acceleratorType" is not set in unstructured objects

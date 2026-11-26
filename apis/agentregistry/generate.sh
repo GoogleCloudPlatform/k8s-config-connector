@@ -29,8 +29,8 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
-PROTO_SHA="5e3f9202b4b2311a242e8fcb3d8f95dac63a9c7b"
+# Pin a specific commit of googleapis to ensure consistent generation
+PROTO_SHA="25fb8ea2d4bfa8fd41e24b28029e34a4adc35db0"
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 
 # Unset SKIP_GENERATE_PROTOS so this specific script fetches the newer proto
@@ -64,11 +64,26 @@ ${CONTROLLERBUILDER} generate-identity \
   --api-version agentregistry.cnrm.cloud.google.com/v1alpha1 \
   --resource AgentRegistryService:Service
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.agentregistry.v1 \
+  --api-version agentregistry.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource AgentRegistrySkill:Skill \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.agentregistry.v1 \
+  --api-version agentregistry.cnrm.cloud.google.com/v1alpha1 \
+  --resource AgentRegistrySkill:Skill
+
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.agentregistry.v1 \
   --api-version agentregistry.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
+  --skip-proto Skill,ScanningConfig,Frontmatter,ArchiveUploadSource,SkillRevision,ScanResult,GcsSource,Publisher,SkillEncryptionSpec \
   --prepopulate-resource
 
 cd ${REPO_ROOT}
