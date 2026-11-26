@@ -23,8 +23,13 @@
 // resource: DialogflowCXPage:Page
 // resource: DialogflowCXIntent:Intent
 // resource: DialogflowCXGenerator:Generator
+// resource: DialogflowCXTool:Tool
 
 package v1alpha1
+
+import (
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+)
 
 /* unreachable type AdvancedSettings
 // +kcc:proto=google.cloud.dialogflow.cx.v3.AdvancedSettings
@@ -141,7 +146,6 @@ type AdvancedSettings_SpeechSettings struct {
 }
 */
 
-/* unreachable type DataStoreConnection
 // +kcc:proto=google.cloud.dialogflow.cx.v3.DataStoreConnection
 type DataStoreConnection struct {
 	// The type of the connected data store.
@@ -161,7 +165,6 @@ type DataStoreConnection struct {
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.DataStoreConnection.document_processing_mode
 	DocumentProcessingMode *string `json:"documentProcessingMode,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.EntityType", skipping
 
@@ -1215,6 +1218,272 @@ type ResponseMessage_Text struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Tool", skipping
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Tool
+type Tool struct {
+	// The unique identifier of the Tool.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The human-readable name of the Tool, unique within an agent.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Required. High level description of the Tool and its usage.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.description
+	Description *string `json:"description,omitempty"`
+
+	// OpenAPI specification of the Tool.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.open_api_spec
+	OpenAPISpec *Tool_OpenAPITool `json:"openAPISpec,omitempty"`
+
+	// Data store search tool specification.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.data_store_spec
+	DataStoreSpec *Tool_DataStoreTool `json:"dataStoreSpec,omitempty"`
+
+	// Client side executed function specification.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.function_spec
+	FunctionSpec *Tool_FunctionTool `json:"functionSpec,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.Authentication
+type Tool_Authentication struct {
+	// Config for API key auth.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.api_key_config
+	APIKeyConfig *Tool_Authentication_APIKeyConfig `json:"apiKeyConfig,omitempty"`
+
+	// Config for OAuth.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.oauth_config
+	OauthConfig *Tool_Authentication_OAuthConfig `json:"oauthConfig,omitempty"`
+
+	// Config for [Diglogflow service
+	//  agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent)
+	//  auth.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.service_agent_auth_config
+	ServiceAgentAuthConfig *Tool_Authentication_ServiceAgentAuthConfig `json:"serviceAgentAuthConfig,omitempty"`
+
+	// Config for bearer token auth.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.bearer_token_config
+	BearerTokenConfig *Tool_Authentication_BearerTokenConfig `json:"bearerTokenConfig,omitempty"`
+
+	// Configuration for service account authentication.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.service_account_auth_config
+	ServiceAccountAuthConfig *Tool_Authentication_ServiceAccountAuthConfig `json:"serviceAccountAuthConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.Authentication.ApiKeyConfig
+type Tool_Authentication_APIKeyConfig struct {
+	// Required. The parameter name or the header name of the API key.
+	//  E.g., If the API request is "https://example.com/act?X-Api-Key=<API
+	//  KEY>", "X-Api-Key" would be the parameter name.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.ApiKeyConfig.key_name
+	// +required
+	KeyName *string `json:"keyName,omitempty"`
+
+	// Optional. The API key. If the `secret_version_for_api_key` field is
+	//  set, this field will be ignored.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.ApiKeyConfig.api_key
+	APIKey *string `json:"apiKey,omitempty"`
+
+	// Optional. The name of the SecretManager secret version resource storing
+	//  the API key. If this field is set, the `api_key` field will be ignored.
+	//  Format: `projects/{project}/secrets/{secret}/versions/{version}`
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.ApiKeyConfig.secret_version_for_api_key
+	SecretVersionForAPIKey *string `json:"secretVersionForAPIKey,omitempty"`
+
+	// Required. Key location in the request.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.ApiKeyConfig.request_location
+	// +required
+	RequestLocation *string `json:"requestLocation,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.Authentication.BearerTokenConfig
+type Tool_Authentication_BearerTokenConfig struct {
+	// Optional. The text token appended to the text `Bearer` to the request
+	//  Authorization header.
+	//  [Session parameters
+	//  reference](https://cloud.google.com/dialogflow/cx/docs/concept/parameter#session-ref)
+	//  can be used to pass the token dynamically, e.g.
+	//  `$session.params.parameter-id`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.BearerTokenConfig.token
+	Token *string `json:"token,omitempty"`
+
+	// Optional. The name of the SecretManager secret version resource storing
+	//  the Bearer token. If this field is set, the `token` field will be
+	//  ignored. Format:
+	//  `projects/{project}/secrets/{secret}/versions/{version}`
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.BearerTokenConfig.secret_version_for_token
+	SecretVersionForToken *string `json:"secretVersionForToken,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.Authentication.OAuthConfig
+type Tool_Authentication_OAuthConfig struct {
+	// Required. OAuth grant types.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.OAuthConfig.oauth_grant_type
+	// +required
+	OauthGrantType *string `json:"oauthGrantType,omitempty"`
+
+	// Required. The client ID from the OAuth provider.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.OAuthConfig.client_id
+	// +required
+	ClientID *string `json:"clientID,omitempty"`
+
+	// Optional. The client secret from the OAuth provider. If the
+	//  `secret_version_for_client_secret` field is set, this field will be
+	//  ignored.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.OAuthConfig.client_secret
+	ClientSecret *string `json:"clientSecret,omitempty"`
+
+	// Optional. The name of the SecretManager secret version resource storing
+	//  the client secret. If this field is set, the `client_secret` field will
+	//  be ignored. Format:
+	//  `projects/{project}/secrets/{secret}/versions/{version}`
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.OAuthConfig.secret_version_for_client_secret
+	SecretVersionForClientSecret *string `json:"secretVersionForClientSecret,omitempty"`
+
+	// Required. The token endpoint in the OAuth provider to exchange for an
+	//  access token.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.OAuthConfig.token_endpoint
+	// +required
+	TokenEndpoint *string `json:"tokenEndpoint,omitempty"`
+
+	// Optional. The OAuth scopes to grant.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.OAuthConfig.scopes
+	Scopes []string `json:"scopes,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.Authentication.ServiceAccountAuthConfig
+type Tool_Authentication_ServiceAccountAuthConfig struct {
+	// Required. The email address of the service account used to authenticate
+	//  the tool call. Dialogflow uses this service account to exchange an
+	//  access token and the access token is then sent in the `Authorization`
+	//  header of the tool request.
+	//
+	//  The service account must have the
+	//  `roles/iam.serviceAccountTokenCreator` role granted to the
+	//  [Dialogflow service
+	//  agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent).
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.ServiceAccountAuthConfig.service_account
+	// +required
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.Authentication.ServiceAgentAuthConfig
+type Tool_Authentication_ServiceAgentAuthConfig struct {
+	// Optional. Indicate the auth token type generated from the [Diglogflow
+	//  service
+	//  agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent).
+	//  The generated token is sent in the Authorization header.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.ServiceAgentAuthConfig.service_agent_auth
+	ServiceAgentAuth *string `json:"serviceAgentAuth,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.DataStoreTool
+type Tool_DataStoreTool struct {
+	// Required. List of data stores to search.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.DataStoreTool.data_store_connections
+	// +required
+	DataStoreConnections []DataStoreConnection `json:"dataStoreConnections,omitempty"`
+
+	// Required. Fallback prompt configurations to use.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.DataStoreTool.fallback_prompt
+	// +required
+	FallbackPrompt *Tool_DataStoreTool_FallbackPrompt `json:"fallbackPrompt,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.DataStoreTool.FallbackPrompt
+type Tool_DataStoreTool_FallbackPrompt struct {
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.FunctionTool
+type Tool_FunctionTool struct {
+	// Optional. The JSON schema is encapsulated in a
+	//  [google.protobuf.Struct][google.protobuf.Struct] to describe the input of
+	//  the function. This input is a JSON object that contains the function's
+	//  parameters as properties of the object.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.FunctionTool.input_schema
+	InputSchema apiextensionsv1.JSON `json:"inputSchema,omitempty"`
+
+	// Optional. The JSON schema is encapsulated in a
+	//  [google.protobuf.Struct][google.protobuf.Struct] to describe the output
+	//  of the function. This output is a JSON object that contains the
+	//  function's parameters as properties of the object.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.FunctionTool.output_schema
+	OutputSchema apiextensionsv1.JSON `json:"outputSchema,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.OpenApiTool
+type Tool_OpenAPITool struct {
+	// Required. The OpenAPI schema specified as a text.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.OpenApiTool.text_schema
+	// +required
+	TextSchema *string `json:"textSchema,omitempty"`
+
+	// Optional. Authentication information required by the API.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.OpenApiTool.authentication
+	Authentication *Tool_Authentication `json:"authentication,omitempty"`
+
+	// Optional. TLS configuration for the HTTPS verification.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.OpenApiTool.tls_config
+	TLSConfig *Tool_TLSConfig `json:"tlsConfig,omitempty"`
+
+	// Optional. Service Directory configuration.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.OpenApiTool.service_directory_config
+	ServiceDirectoryConfig *Tool_ServiceDirectoryConfig `json:"serviceDirectoryConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.ServiceDirectoryConfig
+type Tool_ServiceDirectoryConfig struct {
+	// Required. The name of [Service
+	//  Directory](https://cloud.google.com/service-directory) service.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/namespaces/<NamespaceID>/services/<ServiceID>`.
+	//  `LocationID` of the service directory must be the same as the location
+	//  of the agent.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.ServiceDirectoryConfig.service
+	// +required
+	Service *string `json:"service,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.TLSConfig
+type Tool_TLSConfig struct {
+	// Required. Specifies a list of allowed custom CA certificates for HTTPS
+	//  verification.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.TLSConfig.ca_certs
+	// +required
+	CACerts []Tool_TLSConfig_CACert `json:"caCerts,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.TLSConfig.CACert
+type Tool_TLSConfig_CACert struct {
+	// Required. The name of the allowed custom CA certificates. This
+	//  can be used to disambiguate the custom CA certificates.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.TLSConfig.CACert.display_name
+	// +required
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Required. The allowed custom CA certificates (in DER format) for
+	//  HTTPS verification. This overrides the default SSL trust store. If this
+	//  is empty or unspecified, Dialogflow will use Google's default trust
+	//  store to verify certificates. N.B. Make sure the HTTPS server
+	//  certificates are signed with "subject alt name". For instance a
+	//  certificate can be self-signed using the following command:
+	//
+	//  ```
+	//     openssl x509 -req -days 200 -in example.com.csr \
+	//       -signkey example.com.key \
+	//       -out example.com.crt \
+	//       -extfile <(printf "\nsubjectAltName='DNS:www.example.com'")
+	//  ```
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.TLSConfig.CACert.cert
+	// +required
+	Cert []byte `json:"cert,omitempty"`
+}
+
 /* found existing non-generated go type "TransitionRoute", skipping
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.TransitionRoute
@@ -1803,6 +2072,16 @@ type ResponseMessage_TextObservedState struct {
 	//  request.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.Text.allow_playback_interruption
 	AllowPlaybackInterruption *bool `json:"allowPlaybackInterruption,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Tool", skipping
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Tool
+type ToolObservedState struct {
+	// Output only. The tool type.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.tool_type
+	ToolType *string `json:"toolType,omitempty"`
 }
 */
 

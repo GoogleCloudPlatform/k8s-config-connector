@@ -140,6 +140,10 @@ cp ${REPO_ROOT}/mockgcp/apis/google/logging/v2/logging_config.proto google/loggi
 mkdir -p google/privacy/dlp/v2
 cp ${REPO_ROOT}/mockgcp/apis/google/privacy/dlp/v2/dlp.proto google/privacy/dlp/v2/dlp.proto
 
+# Overwrite dialogflow cx v3 protos with the updated version that has Tool
+mkdir -p google/cloud/dialogflow/cx/v3
+cp ${REPO_ROOT}/mockgcp/apis/google/cloud/dialogflow/cx/v3/* google/cloud/dialogflow/cx/v3/
+
 # Patch monitoring dashboard metrics.proto to include OpsAnalyticsQuery
 sed -i '/string prometheus_query = 6;/a \ \ \ \ // A query used to fetch time series with SQL.\n    OpsAnalyticsQuery ops_analytics_query = 8;' google/monitoring/dashboard/v1/metrics.proto
 cat >> google/monitoring/dashboard/v1/metrics.proto <<EOF

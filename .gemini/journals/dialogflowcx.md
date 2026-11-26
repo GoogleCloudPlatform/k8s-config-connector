@@ -16,3 +16,8 @@
 - **Server-Generated ID**: `CreateGeneratorRequest` does not accept a client-assigned ID parameter (`name` is populated automatically by Dialogflow on creation), so `DialogflowCXGeneratorIdentity` implements `identity.ServerGeneratedIdentity` and `spec.resourceID` is optional and used for acquisition only.
 - **ObservedState**: The `Generator` proto message defines no `OUTPUT_ONLY` fields other than `name` (which maps to identity/externalRef); hence `ObservedState` is commented out in status.
 
+## DialogflowCXTool Prepopulation Notes
+
+- **Proto Source Overlay**: `google/cloud/dialogflow/cx/v3/tool.proto` is mirrored into `mockgcp/apis/google/cloud/dialogflow/cx/v3/` along with `data_store_connection.proto` and `dialogflow_v3.yaml` and compiled into `.build/googleapis.pb` via `dev/tools/controllerbuilder/generate-proto.sh`.
+- **Mapper Generation**: Removed `ServiceDirectoryConfig` from `--skip-proto` in `apis/dialogflowcx/generate.sh` so `Tool_ServiceDirectoryConfig` mappers are generated automatically for `DialogflowCXTool` without impacting `Webhook_ServiceDirectoryConfig`.
+- **Empty Message in Oneof / Spec Validation**: `FallbackPrompt` in `google.cloud.dialogflow.cx.v3.Tool.DataStoreTool` is an empty message (`message FallbackPrompt {}`), requiring an entry in `knownInvalidCRDs` in `tests/apichecks/crds_test.go`.
