@@ -212,5 +212,20 @@
   8. Verified repo-wide golden log alignment test (`TestGoldenLogAlignment`) passes with zero diffs.
 - **Impact**: Greenfield Step 3 complete; `BigLakeHiveDatabase` mock service implemented, golden logs aligned, and e2e fixture suite passing.
 
+### [2026-11-26] Greenfield Step 1a: Prepopulate direct KRM types, identity, and judgement queue for BigLakeHiveTable
+- **Context**: Prepopulating direct KRM types, identity, reference, and `judgement_queue.yaml` for `BigLakeHiveTable` under `bigquerybiglake.cnrm.cloud.google.com/v1alpha1` (Issue #16485).
+- **Details**:
+  1. Verified `BigLakeHiveTable` corresponds to `google.cloud.biglake.hive.v1.HiveTable` from `hive_metastore.proto` under the GA package `google.cloud.biglake.hive.v1`.
+  2. Configured `apis/bigquerybiglake/generate.sh` to add `generate-types` with `--resource BigLakeHiveTable:HiveTable` and `--prepopulate-resource`, and `generate-identity` with `--pattern BigLakeHiveTable=projects/{project}/catalogs/{catalog}/databases/{database}/tables/{table}`.
+  3. Ran `./apis/bigquerybiglake/generate.sh`, generating `biglakehivetable_types.go`, `biglakehivetable_identity.generated.go`, `biglakehivetable_identity_generated_test.go`, `biglakehivetable_reference.generated.go`, updating `types.generated.go`, `mapper.generated.go`, and generating the CRD.
+  4. Confirmed `apis/bigquerybiglake/judgement_queue.yaml` was populated with open entries for `BigLakeHiveTable` including `untriaged-bulk-generation` (`status: open`).
+  5. Added `"BigLakeHiveTable"` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` sorted alphabetically.
+  6. Added URL template `//biglake.googleapis.com/projects/{}/catalogs/{}/databases/{}/tables/{}` to `pkg/gcpurls/registry_test.go` and verified `TestRegisteredTemplatesMatchCAI` passes.
+  7. Verified compilation of `apis/bigquerybiglake/...` and `pkg/controller/direct/bigquerybiglake/...`.
+  8. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...`.
+  9. Verified `./apis/bigquerybiglake/generate.sh` idempotency (producing zero uncommitted diffs), and confirmed all unit tests and `apichecks` pass.
+- **Impact**: Greenfield Step 1a complete; `BigLakeHiveTable` is prepopulated with open judgement queue entries ready for Step 1b triage.
+
+
 
 

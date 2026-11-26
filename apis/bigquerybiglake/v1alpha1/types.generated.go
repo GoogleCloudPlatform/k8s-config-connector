@@ -25,12 +25,30 @@
 // resource: BigLakeIcebergNamespace:IcebergNamespace
 // resource: BigLakeHiveCatalog:HiveCatalog
 // resource: BigLakeHiveDatabase:HiveDatabase
+// resource: BigLakeHiveTable:HiveTable
 
 package v1alpha1
 
 import (
 	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 )
+
+// +kcc:proto=google.cloud.biglake.hive.v1.FieldSchema
+type FieldSchema struct {
+	// Required. Name of the field. The maximum length is 767 characters.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.FieldSchema.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// Required. Type of the field. The maximum length is 128 characters.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.FieldSchema.type
+	// +required
+	Type *string `json:"type,omitempty"`
+
+	// Optional. Comment of the field. The maximum length is 256 characters.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.FieldSchema.comment
+	Comment *string `json:"comment,omitempty"`
+}
 
 /* found existing non-generated go type with proto tag "google.cloud.biglake.hive.v1.HiveCatalog", skipping
 
@@ -89,6 +107,197 @@ type HiveDatabase struct {
 	Parameters map[string]string `json:"parameters,omitempty"`
 }
 */
+
+/* found existing non-generated go type with proto tag "google.cloud.biglake.hive.v1.HiveTable", skipping
+
+// +kcc:proto=google.cloud.biglake.hive.v1.HiveTable
+type HiveTable struct {
+	// Identifier. The resource name.
+	//  Format:
+	//  projects/{project_id_or_number}/catalogs/{catalog_id}/databases/{database_id}/tables/{table_id}
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveTable.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Description of the table. The maximum length is 4000 characters.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveTable.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. Storage descriptor of the table.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveTable.storage_descriptor
+	StorageDescriptor *StorageDescriptor `json:"storageDescriptor,omitempty"`
+
+	// Optional. The partition keys of the table.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveTable.partition_keys
+	PartitionKeys []FieldSchema `json:"partitionKeys,omitempty"`
+
+	// Optional. Stores the properties associated with the table. The maximum size
+	//  is 4MiB.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveTable.parameters
+	Parameters map[string]string `json:"parameters,omitempty"`
+
+	// Optional. The original view text. Empty for non-view. The maximum size is
+	//  16MiB.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveTable.view_original_text
+	ViewOriginalText *string `json:"viewOriginalText,omitempty"`
+
+	// Optional. The expanded view text. Empty for non-view. The maximum size is
+	//  16MiB.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveTable.view_expanded_text
+	ViewExpandedText *string `json:"viewExpandedText,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.biglake.hive.v1.SerdeInfo
+type SerdeInfo struct {
+	// Required. Name of the SerDe. Table name by default. The maximum length is
+	//  128 characters.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.SerdeInfo.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// Required. The fully qualified Java class name of the serialization library.
+	//  The maximum length is 4000 characters.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.SerdeInfo.serialization_lib
+	// +required
+	SerializationLib *string `json:"serializationLib,omitempty"`
+
+	// Optional. Description of the serde. The maximum length is 4000 characters.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.SerdeInfo.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Parameters of the serde. The maximum size is 10Kib.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.SerdeInfo.parameters
+	Parameters map[string]string `json:"parameters,omitempty"`
+
+	// Optional. The fully qualified Java class name of the serializer. The
+	//  maximum length is 4000 characters.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.SerdeInfo.serializer_class
+	SerializerClass *string `json:"serializerClass,omitempty"`
+
+	// Optional. The fully qualified Java class name of the deserializer. The
+	//  maximum length is 4000 characters.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.SerdeInfo.deserializer_class
+	DeserializerClass *string `json:"deserializerClass,omitempty"`
+
+	// Optional. The serde type.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.SerdeInfo.serde_type
+	SerdeType *string `json:"serdeType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.biglake.hive.v1.StorageDescriptor
+type StorageDescriptor struct {
+	// Required. Specifies the columns of the table.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.StorageDescriptor.columns
+	// +required
+	Columns []FieldSchema `json:"columns,omitempty"`
+
+	// Optional. The Cloud storage uri where the table is located.
+	//  Defaults to `<database_location_uri>/<table_name>`. The maximum length is
+	//  4000 characters.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.StorageDescriptor.location_uri
+	LocationURI *string `json:"locationURI,omitempty"`
+
+	// Optional. The fully qualified Java class name of the input format. The
+	//  maximum length is 4000 characters.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.StorageDescriptor.input_format
+	InputFormat *string `json:"inputFormat,omitempty"`
+
+	// Optional. The fully qualified Java class name of the output format. The
+	//  maximum length is 4000 characters.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.StorageDescriptor.output_format
+	OutputFormat *string `json:"outputFormat,omitempty"`
+
+	// Optional. Whether the table is compressed.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.StorageDescriptor.compressed
+	Compressed *bool `json:"compressed,omitempty"`
+
+	// Optional. The number of buckets in the table.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.StorageDescriptor.num_buckets
+	NumBuckets *int32 `json:"numBuckets,omitempty"`
+
+	// Optional. Serialization and deserialization information.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.StorageDescriptor.serde_info
+	SerdeInfo *SerdeInfo `json:"serdeInfo,omitempty"`
+
+	// Optional. Reducer grouping columns and clustering columns and bucketing
+	//  columns
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.StorageDescriptor.bucket_cols
+	BucketCols []string `json:"bucketCols,omitempty"`
+
+	// Optional. Sort order of the data in each bucket
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.StorageDescriptor.sort_cols
+	SortCols []StorageDescriptor_Order `json:"sortCols,omitempty"`
+
+	// Optional. Key-value pairs for the storage descriptor. The maximum size is
+	//  10Kib.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.StorageDescriptor.parameters
+	Parameters map[string]string `json:"parameters,omitempty"`
+
+	// Optional. Table data skew information.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.StorageDescriptor.skewed_info
+	SkewedInfo *StorageDescriptor_SkewedInfo `json:"skewedInfo,omitempty"`
+
+	// Optional. Whether the table is stored as sub directories.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.StorageDescriptor.stored_as_sub_dirs
+	StoredAsSubDirs *bool `json:"storedAsSubDirs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.biglake.hive.v1.StorageDescriptor.Order
+type StorageDescriptor_Order struct {
+	// Required. The column name. The maximum length is 767 characters.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.StorageDescriptor.Order.col
+	// +required
+	Col *string `json:"col,omitempty"`
+
+	// Required. Defines the sort order of the column. Ascending if 1,
+	//  descending if 0.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.StorageDescriptor.Order.order
+	// +required
+	Order *int32 `json:"order,omitempty"`
+}
+
+// +kcc:proto=google.cloud.biglake.hive.v1.StorageDescriptor.SkewedInfo
+type StorageDescriptor_SkewedInfo struct {
+	// Required. The column names that are skewed. The maximum length is 256
+	//  characters per column name.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.StorageDescriptor.SkewedInfo.skewed_col_names
+	// +required
+	SkewedColNames []string `json:"skewedColNames,omitempty"`
+
+	// Required. The skewed column values.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.StorageDescriptor.SkewedInfo.skewed_col_values
+	// +required
+	SkewedColValues []StorageDescriptor_SkewedInfo_SkewedColumnValue `json:"skewedColValues,omitempty"`
+
+	// Required. The skewed key values locations.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.StorageDescriptor.SkewedInfo.skewed_key_values_locations
+	// +required
+	SkewedKeyValuesLocations []StorageDescriptor_SkewedInfo_SkewedKeyValuesLocation `json:"skewedKeyValuesLocations,omitempty"`
+}
+
+// +kcc:proto=google.cloud.biglake.hive.v1.StorageDescriptor.SkewedInfo.SkewedColumnValue
+type StorageDescriptor_SkewedInfo_SkewedColumnValue struct {
+	// Required. The skewed column values. The maximum length is 256
+	//  characters per value.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.StorageDescriptor.SkewedInfo.SkewedColumnValue.values
+	// +required
+	Values []string `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.biglake.hive.v1.StorageDescriptor.SkewedInfo.SkewedKeyValuesLocation
+type StorageDescriptor_SkewedInfo_SkewedKeyValuesLocation struct {
+	// Required. The skewed column values. The maximum length is 256
+	//  characters per value.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.StorageDescriptor.SkewedInfo.SkewedKeyValuesLocation.values
+	// +required
+	Values []string `json:"values,omitempty"`
+
+	// Required. The location of the skewed column values. The maximum length
+	//  is 4000 characters.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.StorageDescriptor.SkewedInfo.SkewedKeyValuesLocation.location
+	// +required
+	Location *string `json:"location,omitempty"`
+}
 
 /* found existing non-generated go type with proto tag "google.cloud.biglake.v1.IcebergCatalog", skipping
 
@@ -420,6 +629,25 @@ type HiveDatabaseObservedState struct {
 
 	// Output only. The update time of the database.
 	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveDatabase.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.biglake.hive.v1.HiveTable", skipping
+
+// +kcc:observedstate:proto=google.cloud.biglake.hive.v1.HiveTable
+type HiveTableObservedState struct {
+	// Output only. The creation time of the table.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveTable.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The type of the table. This is EXTERNAL for BigLake hive
+	//  tables.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveTable.table_type
+	TableType *string `json:"tableType,omitempty"`
+
+	// Output only. The update time of the table.
+	// +kcc:proto:field=google.cloud.biglake.hive.v1.HiveTable.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */

@@ -208,6 +208,56 @@ func BigLakeHiveDatabaseSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Parameters = in.Parameters
 	return out
 }
+func BigLakeHiveTableObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *hivepb.HiveTable) *krmbigquerybiglakev1alpha1.BigLakeHiveTableObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.BigLakeHiveTableObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.TableType = direct.LazyPtr(in.GetTableType())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func BigLakeHiveTableObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.BigLakeHiveTableObservedState) *hivepb.HiveTable {
+	if in == nil {
+		return nil
+	}
+	out := &hivepb.HiveTable{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.TableType = direct.ValueOf(in.TableType)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func BigLakeHiveTableSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *hivepb.HiveTable) *krmbigquerybiglakev1alpha1.BigLakeHiveTableSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.BigLakeHiveTableSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.StorageDescriptor = StorageDescriptor_v1alpha1_FromProto(mapCtx, in.GetStorageDescriptor())
+	out.PartitionKeys = direct.Slice_FromProto(mapCtx, in.PartitionKeys, FieldSchema_v1alpha1_FromProto)
+	out.Parameters = in.Parameters
+	out.ViewOriginalText = direct.LazyPtr(in.GetViewOriginalText())
+	out.ViewExpandedText = direct.LazyPtr(in.GetViewExpandedText())
+	return out
+}
+func BigLakeHiveTableSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.BigLakeHiveTableSpec) *hivepb.HiveTable {
+	if in == nil {
+		return nil
+	}
+	out := &hivepb.HiveTable{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.StorageDescriptor = StorageDescriptor_v1alpha1_ToProto(mapCtx, in.StorageDescriptor)
+	out.PartitionKeys = direct.Slice_ToProto(mapCtx, in.PartitionKeys, FieldSchema_v1alpha1_ToProto)
+	out.Parameters = in.Parameters
+	out.ViewOriginalText = direct.ValueOf(in.ViewOriginalText)
+	out.ViewExpandedText = direct.ValueOf(in.ViewExpandedText)
+	return out
+}
 func BigLakeIcebergCatalogObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *biglakepb.IcebergCatalog) *krmbigquerybiglakev1alpha1.BigLakeIcebergCatalogObservedState {
 	if in == nil {
 		return nil
@@ -332,6 +382,26 @@ func BigLakeTableSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BigLake
 	// MISSING: Name
 	out.Type = direct.Enum_ToProto[pb.Table_Type](mapCtx, in.Type)
 	// MISSING: Etag
+	return out
+}
+func FieldSchema_v1alpha1_FromProto(mapCtx *direct.MapContext, in *hivepb.FieldSchema) *krmbigquerybiglakev1alpha1.FieldSchema {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.FieldSchema{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Type = direct.LazyPtr(in.GetType())
+	out.Comment = direct.LazyPtr(in.GetComment())
+	return out
+}
+func FieldSchema_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.FieldSchema) *hivepb.FieldSchema {
+	if in == nil {
+		return nil
+	}
+	out := &hivepb.FieldSchema{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Type = direct.ValueOf(in.Type)
+	out.Comment = direct.ValueOf(in.Comment)
 	return out
 }
 func HiveCatalog_ReplicaObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *hivepb.HiveCatalog_Replica) *krmbigquerybiglakev1alpha1.HiveCatalog_ReplicaObservedState {
@@ -618,5 +688,143 @@ func IcebergCatalog_RestrictedLocationsConfig_v1alpha1_ToProto(mapCtx *direct.Ma
 	}
 	out := &biglakepb.IcebergCatalog_RestrictedLocationsConfig{}
 	out.RestrictedLocations = in.RestrictedLocations
+	return out
+}
+func SerdeInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *hivepb.SerdeInfo) *krmbigquerybiglakev1alpha1.SerdeInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.SerdeInfo{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.SerializationLib = direct.LazyPtr(in.GetSerializationLib())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Parameters = in.Parameters
+	out.SerializerClass = direct.LazyPtr(in.GetSerializerClass())
+	out.DeserializerClass = direct.LazyPtr(in.GetDeserializerClass())
+	out.SerdeType = direct.Enum_FromProto(mapCtx, in.GetSerdeType())
+	return out
+}
+func SerdeInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.SerdeInfo) *hivepb.SerdeInfo {
+	if in == nil {
+		return nil
+	}
+	out := &hivepb.SerdeInfo{}
+	out.Name = direct.ValueOf(in.Name)
+	out.SerializationLib = direct.ValueOf(in.SerializationLib)
+	out.Description = direct.ValueOf(in.Description)
+	out.Parameters = in.Parameters
+	out.SerializerClass = direct.ValueOf(in.SerializerClass)
+	out.DeserializerClass = direct.ValueOf(in.DeserializerClass)
+	out.SerdeType = direct.Enum_ToProto[hivepb.SerdeInfo_SerdeType](mapCtx, in.SerdeType)
+	return out
+}
+func StorageDescriptor_v1alpha1_FromProto(mapCtx *direct.MapContext, in *hivepb.StorageDescriptor) *krmbigquerybiglakev1alpha1.StorageDescriptor {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.StorageDescriptor{}
+	out.Columns = direct.Slice_FromProto(mapCtx, in.Columns, FieldSchema_v1alpha1_FromProto)
+	out.LocationURI = direct.LazyPtr(in.GetLocationUri())
+	out.InputFormat = direct.LazyPtr(in.GetInputFormat())
+	out.OutputFormat = direct.LazyPtr(in.GetOutputFormat())
+	out.Compressed = in.Compressed
+	out.NumBuckets = in.NumBuckets
+	out.SerdeInfo = SerdeInfo_v1alpha1_FromProto(mapCtx, in.GetSerdeInfo())
+	out.BucketCols = in.BucketCols
+	out.SortCols = direct.Slice_FromProto(mapCtx, in.SortCols, StorageDescriptor_Order_v1alpha1_FromProto)
+	out.Parameters = in.Parameters
+	out.SkewedInfo = StorageDescriptor_SkewedInfo_v1alpha1_FromProto(mapCtx, in.GetSkewedInfo())
+	out.StoredAsSubDirs = in.StoredAsSubDirs
+	return out
+}
+func StorageDescriptor_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.StorageDescriptor) *hivepb.StorageDescriptor {
+	if in == nil {
+		return nil
+	}
+	out := &hivepb.StorageDescriptor{}
+	out.Columns = direct.Slice_ToProto(mapCtx, in.Columns, FieldSchema_v1alpha1_ToProto)
+	out.LocationUri = direct.ValueOf(in.LocationURI)
+	out.InputFormat = direct.ValueOf(in.InputFormat)
+	out.OutputFormat = direct.ValueOf(in.OutputFormat)
+	out.Compressed = in.Compressed
+	out.NumBuckets = in.NumBuckets
+	out.SerdeInfo = SerdeInfo_v1alpha1_ToProto(mapCtx, in.SerdeInfo)
+	out.BucketCols = in.BucketCols
+	out.SortCols = direct.Slice_ToProto(mapCtx, in.SortCols, StorageDescriptor_Order_v1alpha1_ToProto)
+	out.Parameters = in.Parameters
+	out.SkewedInfo = StorageDescriptor_SkewedInfo_v1alpha1_ToProto(mapCtx, in.SkewedInfo)
+	out.StoredAsSubDirs = in.StoredAsSubDirs
+	return out
+}
+func StorageDescriptor_Order_v1alpha1_FromProto(mapCtx *direct.MapContext, in *hivepb.StorageDescriptor_Order) *krmbigquerybiglakev1alpha1.StorageDescriptor_Order {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.StorageDescriptor_Order{}
+	out.Col = direct.LazyPtr(in.GetCol())
+	out.Order = direct.LazyPtr(in.GetOrder())
+	return out
+}
+func StorageDescriptor_Order_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.StorageDescriptor_Order) *hivepb.StorageDescriptor_Order {
+	if in == nil {
+		return nil
+	}
+	out := &hivepb.StorageDescriptor_Order{}
+	out.Col = direct.ValueOf(in.Col)
+	out.Order = direct.ValueOf(in.Order)
+	return out
+}
+func StorageDescriptor_SkewedInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *hivepb.StorageDescriptor_SkewedInfo) *krmbigquerybiglakev1alpha1.StorageDescriptor_SkewedInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.StorageDescriptor_SkewedInfo{}
+	out.SkewedColNames = in.SkewedColNames
+	out.SkewedColValues = direct.Slice_FromProto(mapCtx, in.SkewedColValues, StorageDescriptor_SkewedInfo_SkewedColumnValue_v1alpha1_FromProto)
+	out.SkewedKeyValuesLocations = direct.Slice_FromProto(mapCtx, in.SkewedKeyValuesLocations, StorageDescriptor_SkewedInfo_SkewedKeyValuesLocation_v1alpha1_FromProto)
+	return out
+}
+func StorageDescriptor_SkewedInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.StorageDescriptor_SkewedInfo) *hivepb.StorageDescriptor_SkewedInfo {
+	if in == nil {
+		return nil
+	}
+	out := &hivepb.StorageDescriptor_SkewedInfo{}
+	out.SkewedColNames = in.SkewedColNames
+	out.SkewedColValues = direct.Slice_ToProto(mapCtx, in.SkewedColValues, StorageDescriptor_SkewedInfo_SkewedColumnValue_v1alpha1_ToProto)
+	out.SkewedKeyValuesLocations = direct.Slice_ToProto(mapCtx, in.SkewedKeyValuesLocations, StorageDescriptor_SkewedInfo_SkewedKeyValuesLocation_v1alpha1_ToProto)
+	return out
+}
+func StorageDescriptor_SkewedInfo_SkewedColumnValue_v1alpha1_FromProto(mapCtx *direct.MapContext, in *hivepb.StorageDescriptor_SkewedInfo_SkewedColumnValue) *krmbigquerybiglakev1alpha1.StorageDescriptor_SkewedInfo_SkewedColumnValue {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.StorageDescriptor_SkewedInfo_SkewedColumnValue{}
+	out.Values = in.Values
+	return out
+}
+func StorageDescriptor_SkewedInfo_SkewedColumnValue_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.StorageDescriptor_SkewedInfo_SkewedColumnValue) *hivepb.StorageDescriptor_SkewedInfo_SkewedColumnValue {
+	if in == nil {
+		return nil
+	}
+	out := &hivepb.StorageDescriptor_SkewedInfo_SkewedColumnValue{}
+	out.Values = in.Values
+	return out
+}
+func StorageDescriptor_SkewedInfo_SkewedKeyValuesLocation_v1alpha1_FromProto(mapCtx *direct.MapContext, in *hivepb.StorageDescriptor_SkewedInfo_SkewedKeyValuesLocation) *krmbigquerybiglakev1alpha1.StorageDescriptor_SkewedInfo_SkewedKeyValuesLocation {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerybiglakev1alpha1.StorageDescriptor_SkewedInfo_SkewedKeyValuesLocation{}
+	out.Values = in.Values
+	out.Location = direct.LazyPtr(in.GetLocation())
+	return out
+}
+func StorageDescriptor_SkewedInfo_SkewedKeyValuesLocation_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerybiglakev1alpha1.StorageDescriptor_SkewedInfo_SkewedKeyValuesLocation) *hivepb.StorageDescriptor_SkewedInfo_SkewedKeyValuesLocation {
+	if in == nil {
+		return nil
+	}
+	out := &hivepb.StorageDescriptor_SkewedInfo_SkewedKeyValuesLocation{}
+	out.Values = in.Values
+	out.Location = direct.ValueOf(in.Location)
 	return out
 }
