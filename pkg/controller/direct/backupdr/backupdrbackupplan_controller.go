@@ -23,12 +23,12 @@ package backupdr
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
@@ -37,6 +37,7 @@ import (
 
 	gcp "cloud.google.com/go/backupdr/apiv1"
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -191,29 +192,15 @@ func (a *BackupPlanAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating BackupPlan", "name", a.id)
 
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-
-	paths := []string{}
-	if !reflect.DeepEqual(a.desired.Description, a.actual.Description) {
-		report.AddField("description", a.actual.Description, a.desired.Description)
-		paths = append(paths, "description")
-	}
-	if !reflect.DeepEqual(a.desired.BackupRules, a.actual.BackupRules) {
-		report.AddField("backup_rules", a.actual.BackupRules, a.desired.BackupRules)
-		paths = append(paths, "backup_rules")
-	}
-	if !reflect.DeepEqual(a.desired.ResourceType, a.actual.ResourceType) {
-		report.AddField("resource_type", a.actual.ResourceType, a.desired.ResourceType)
-		paths = append(paths, "resource_type")
-	}
-	if !reflect.DeepEqual(a.desired.Labels, a.actual.Labels) {
-		report.AddField("labels", a.actual.Labels, a.desired.Labels)
-		paths = append(paths, "labels")
+	diffs, updateMask, err := compareBackupPlan(ctx, a.actual, a.desired)
+	if err != nil {
+		return err
 	}
 
-	if len(paths) != 0 {
-		structuredreporting.ReportDiff(ctx, report)
-		return fmt.Errorf("updating BackupPlan is not supported, fields: %v", paths)
+	if diffs.HasDiff() {
+		diffs.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, diffs)
+		return fmt.Errorf("updating BackupPlan is not supported, fields: %v", updateMask.GetPaths())
 	}
 
 	// still need to update status (in the event of acquiring an existing resource)
@@ -225,6 +212,21 @@ func (a *BackupPlanAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
+}
+
+// compareBackupPlan compares the BackupPlan fields managed by this controller, using proto semantics.
+// reflect.DeepEqual must not be used on proto messages: it also compares their internal state, which
+// differs between the messages built by the mappers and the messages decoded from the API response.
+func compareBackupPlan(ctx context.Context, actual, desired *pb.BackupPlan) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	comparedFields := func(in *pb.BackupPlan) *pb.BackupPlan {
+		return &pb.BackupPlan{
+			Description:  in.GetDescription(),
+			BackupRules:  in.GetBackupRules(),
+			ResourceType: in.GetResourceType(),
+			Labels:       in.GetLabels(),
+		}
+	}
+	return common.DiffForTopLevelFields(ctx, comparedFields(desired).ProtoReflect(), comparedFields(actual).ProtoReflect())
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
