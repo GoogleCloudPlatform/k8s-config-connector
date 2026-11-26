@@ -259,9 +259,14 @@ func TestStandbyKeepsLeaderResourceID(t *testing.T) {
 	setLeaderStatus("sync 0")
 
 	// The KRMSyncer, as the manager of a standby writes it.
+	syncerDiscovery, err := newSyncerDiscovery(standbyCfg)
+	if err != nil {
+		t.Fatalf("error creating discovery client: %v", err)
+	}
 	si := &SyncerIntegration{
 		client:          standby,
 		apiReader:       standby,
+		discovery:       syncerDiscovery,
 		leaseNN:         types.NamespacedName{Namespace: "cnrm-system", Name: "kcc-multicluster-lease"},
 		replicationMode: "Status",
 		cluster:         testGKECluster("standby"),
