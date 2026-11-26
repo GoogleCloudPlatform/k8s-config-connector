@@ -1,0 +1,45 @@
+{
+  "description": "Non-dropping testability flags applied only to unreleased resources, documenting self-accomplishable E2E test prerequisites.",
+  "flags": [
+    {
+      "pattern": "^securityposture\\.googleapis\\.com/Posture$",
+      "reason": "self-permission-setup"
+    },
+    {
+      "pattern": "^securitycenter\\.googleapis\\.com/MuteConfig$",
+      "reason": "new-folder-needed"
+    },
+    {
+      "pattern": "^securitycenter\\.googleapis\\.com/Finding$",
+      "reason": "new-folder-needed"
+    },
+    {
+      "pattern": "^apphub\\.googleapis\\.com/Boundary$",
+      "reason": "isolated-project-needed"
+    },
+    {
+      "pattern": "^logging\\.googleapis\\.com/CmekSettings$",
+      "reason": "isolated-project-needed"
+    },
+    {
+      "pattern": "^logging\\.googleapis\\.com/Settings$",
+      "reason": "isolated-project-needed"
+    },
+    {
+      "pattern": "^observability\\.googleapis\\.com/Settings$",
+      "reason": "isolated-project-needed"
+    },
+    {
+      "pattern": "^advisorynotifications\\.googleapis\\.com/Settings$",
+      "reason": "isolated-project-needed"
+    },
+    {
+      "pattern": "^recommender\\.googleapis\\.com/InsightTypeConfig$",
+      "reason": "isolated-project-needed"
+    },
+    {
+      "pattern": "^recommender\\.googleapis\\.com/RecommenderConfig$",
+      "reason": "isolated-project-needed"
+    }
+  ]
+}

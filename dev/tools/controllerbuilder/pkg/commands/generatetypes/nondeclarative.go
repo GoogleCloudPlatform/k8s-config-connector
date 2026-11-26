@@ -121,6 +121,84 @@ var ephemeralCollectionSegments = map[string]string{
 	// (.../pullRequests/{pull_request}/pullRequestComments/{comment}). Represents
 	// individual code-review comments on a pull request.
 	"pullRequestComments": "ephemeral activity",
+
+	// Encountered in google.cloud.saasplatform.saasservicemgmt.v1.UnitOperation
+	// (projects/{project}/locations/{location}/unitOperations/{unitOperation}).
+	// Represents an imperative Provision/Upgrade/Deprovision execution run on
+	// an immutable Unit (schedule, cancel, State PENDING -> SUCCEEDED/FAILED).
+	"unitOperations": "ephemeral execution",
+
+	// Encountered in google.cloud.video.stitcher.v1.LiveSession and VodSession
+	// (.../liveSessions/{live_session}, .../vodSessions/{vod_session}).
+	// Represents short-lived runtime streaming/playback sessions (Create/Get only).
+	"liveSessions": "ephemeral runtime",
+	"vodSessions":  "ephemeral runtime",
+
+	// Encountered in google.devtools.testing.v1.DeviceSession and
+	// google.cloud.devicestreaming.v1.DeviceSession (projects/{project}/deviceSessions/*).
+	// Allocates a 15-minute live Android device lease (REQUESTED -> PENDING ->
+	// ACTIVE -> EXPIRED/FINISHED, CancelDeviceSession); UpdateDeviceSession only
+	// extends ttl/expire_time rather than managing durable configuration.
+	"deviceSessions": "ephemeral runtime",
+
+	// Encountered in google.cloud.policysimulator.v1.Replay
+	// (.../replays/{replay}) and OrgPolicyViolationsPreview
+	// (.../orgPolicyViolationsPreviews/{org_policy_violations_preview}).
+	// Represents one-shot policy simulation/preview runs rather than durable config.
+	"replays":                     "ephemeral execution",
+	"orgPolicyViolationsPreviews": "ephemeral execution",
+
+	// Encountered in google.cloud.privilegedaccessmanager.v1.Grant
+	// (.../entitlements/{entitlement}/grants/{grant}). Represents time-bounded
+	// JIT access grants requested against an Entitlement (versus durable Entitlement config).
+	"grants": "ephemeral execution",
+
+	// Encountered in google.cloud.support.v2.Case and Comment
+	// (.../cases/{case}, .../cases/{case}/comments/{comment}). Represents
+	// customer support tickets and conversation threads rather than cloud infra.
+	"cases":    "ephemeral activity",
+	"comments": "ephemeral activity",
+
+	// Encountered in google.monitoring.v3.Snooze (projects/{project}/snoozes/{snooze}).
+	// Temporarily silences alerts for a wall-clock [start_time, end_time] window
+	// (start_time cannot be in the past; becomes read-only after end_time; no Delete RPC).
+	"snoozes": "ephemeral window",
+
+	// Encountered in google.cloud.video.livestream.v1.DvrSession
+	// (.../channels/{channel}/dvrSessions/{dvr_session}). Represents a one-time
+	// wall-clock DVR recording window (PENDING -> SCHEDULED -> LIVE -> FINISHED);
+	// UpdateDvrSession only adjusts dvrWindows timestamps.
+	"dvrSessions": "ephemeral window",
+
+	// Encountered in google.cloud.vmmigration.v1.DiskMigrationJob
+	// (.../sources/{source}/diskMigrationJobs/{disk_migration_job}).
+	// Represents a one-time disk migration execution (RunDiskMigrationJob,
+	// CancelDiskMigrationJob, State READY/RUNNING/SUCCEEDED/CANCELLING).
+	"diskMigrationJobs": "ephemeral execution",
+
+	// Encountered in google.cloud.vmmigration.v1.ImageImport
+	// (projects/{project}/locations/{location}/imageImports/{job}).
+	// Triggers a one-shot immutable GCS-to-Compute-Engine image import execution
+	// (tracked via read-only child ImageImportJob with CancelImageImportJob).
+	"imageImports": "ephemeral execution",
+
+	// Encountered in google.cloud.dataform.v1.WorkflowInvocation
+	// (.../repositories/{repository}/workflowInvocations/{workflow_invocation}).
+	// Single immutable execution run of a WorkflowConfig/CompilationResult
+	// (RUNNING -> SUCCEEDED/CANCELLED/FAILED; CancelWorkflowInvocation, no Update).
+	"workflowInvocations": "ephemeral execution",
+
+	// Encountered in google.cloud.aiplatform.v1.TrainingPipeline
+	// (projects/{project}/locations/{location}/trainingPipelines/{training_pipeline}).
+	// Imperative one-shot ML training pipeline run (Create + CancelTrainingPipeline,
+	// no UpdateTrainingPipeline RPC).
+	"trainingPipelines": "ephemeral execution",
+
+	// Encountered in google.cloud.clouddms.v1.MigrationJob
+	// (projects/{project}/locations/{location}/migrationJobs/{migration_job}).
+	// Imperative one-time database migration workflow driven by Start/Stop/Resume/
+	// Promote/Verify/RestartMigrationJob RPCs rather than declarative CRUD.
+	"migrationJobs": "ephemeral execution",
 }
 
 // nonDeclarativeLeafCollections lists google.api.resource leaf collection
@@ -149,6 +227,13 @@ var nonDeclarativeLeafCollections = map[string]string{
 	// parent KnowledgeBase/DataStore is control-plane infrastructure, whereas
 	// Document is ingested search/knowledge content.
 	"documents": "data-plane document",
+
+	// Encountered in google.cloud.aiplatform.v1.RagFile (AIPlatformRAGFile,
+	// .../ragCorpora/{rag_corpus}/ragFiles/{rag_file}). The parent RagCorpus is
+	// control-plane infrastructure, whereas RagFile represents ingested user data
+	// for chunking, embedding, and indexing (UploadRagFile, ImportRagFiles;
+	// no CreateRagFile or UpdateRagFile RPCs, OUTPUT_ONLY source fields).
+	"ragFiles": "data-plane document",
 
 	// Encountered in google.cloud.retail.v2.Product (RetailProduct,
 	// .../catalogs/{catalog}/branches/{branch}/products/{product}). Represents
@@ -265,6 +350,59 @@ var nonDeclarativeLeafCollections = map[string]string{
 	// the snapshots collection cannot distinguish it from control-plane config;
 	// gated behind --allow-non-declarative for explicit opt-in.
 	"snapshots": "point-in-time snapshot",
+
+	// Encountered in google.cloud.vmmigration.v1.UtilizationReport
+	// (projects/{project}/locations/{location}/sources/{source}/utilizationReports/{utilization_report}).
+	// Captures a point-in-time backward-looking VM utilization snapshot (frame_end_time,
+	// time_frame, vm_count, State CREATING/SUCCEEDED/FAILED, no Update RPC).
+	"utilizationReports": "point-in-time snapshot",
+
+	// Encountered in google.cloud.translate.v3.GlossaryEntry
+	// (projects/{project}/locations/{location}/glossaries/{glossary}/glossaryEntries/{glossary_entry}).
+	// Represents individual glossary term-pair entries inside a Glossary.
+	"glossaryEntries": "data-plane glossary entry",
+
+	// Encountered in google.cloud.vision.v1.ProductSet and ReferenceImage
+	// (.../productSets/{product_set}, .../products/{product}/referenceImages/{reference_image}).
+	// Part of the Vision Product Search retail catalog alongside "products"
+	// (data-plane catalog items and their reference image blobs).
+	"productSets":     "data-plane catalog",
+	"referenceImages": "data-plane catalog item",
+}
+
+// nonDeclarativeEphemeralResourceTypes lists explicit google.api.resource types
+// that represent ephemeral executions whose collection segment collides with
+// declarative control-plane jobs (for example, transcoder.googleapis.com/Job
+// uses "jobs", which would collide with run.googleapis.com/Job).
+var nonDeclarativeEphemeralResourceTypes = map[string]string{
+	// Encountered in google.cloud.video.transcoder.v1.Job
+	// (projects/{project}/locations/{location}/jobs/{job}).
+	// One-shot video transcoding execution (PENDING/RUNNING/SUCCEEDED/FAILED,
+	// no UpdateJob RPC) alongside declarative TranscoderJobTemplate.
+	"transcoder.googleapis.com/Job": "ephemeral execution",
+}
+
+// nonDeclarativeDataPlaneResourceTypes lists explicit google.api.resource types
+// whose leaf collection segment collides with declarative control-plane
+// resources in other services (for example, bigquerystorage.googleapis.com/WriteStream
+// uses "streams", which would collide with datastream.googleapis.com/Stream).
+var nonDeclarativeDataPlaneResourceTypes = map[string]string{
+	// Encountered in google.cloud.bigquery.storage.v1.WriteStream
+	// (projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}).
+	// Streams rows directly into BigQuery tables (AppendRows/FlushRows) rather
+	// than managing control-plane infrastructure, without false-flagging
+	// control-plane streams collections such as datastream.googleapis.com/Stream.
+	"bigquerystorage.googleapis.com/WriteStream": "data-plane stream",
+
+	// Encountered in google.devtools.artifactregistry.v1.File and Package
+	// (.../repositories/{repository}/files/{file}, .../packages/{package}).
+	// Populated by data-plane artifact uploads/imports (docker push, npm,
+	// pip, generic upload, remote caching) rather than declarative Create
+	// RPCs; exposes UpdateFile/UpdatePackage only for metadata annotations.
+	// Using explicit resource types avoids colliding with unrelated "files"
+	// or "packages" collections in other services.
+	"artifactregistry.googleapis.com/File":    "data-plane artifact file",
+	"artifactregistry.googleapis.com/Package": "data-plane artifact package",
 }
 
 // nonDeclarativeResourceReason reports whether a proto message appears
@@ -274,6 +412,14 @@ func nonDeclarativeResourceReason(api *protoapi.Proto, msg protoreflect.MessageD
 	md := protoapi.GetResourceMetadata(msg)
 	if md == nil {
 		return "", false
+	}
+	if rd, _ := proto.GetExtension(msg.Options(), annotations.E_Resource).(*annotations.ResourceDescriptor); rd != nil {
+		if category, ok := nonDeclarativeEphemeralResourceTypes[rd.GetType()]; ok {
+			return fmt.Sprintf("resource type %q is %s", rd.GetType(), category), true
+		}
+		if category, ok := nonDeclarativeDataPlaneResourceTypes[rd.GetType()]; ok {
+			return fmt.Sprintf("resource type %q is %s", rd.GetType(), category), true
+		}
 	}
 	for _, pattern := range md.Patterns {
 		if reason, ok := nonDeclarativePatternReason(pattern); ok {

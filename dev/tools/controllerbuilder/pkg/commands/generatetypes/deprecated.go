@@ -54,16 +54,41 @@ var knownDeprecatedProtoPackages = map[string]string{
 	// RPCs, even though Vertex AI Workbench legacy v1 user-managed and managed
 	// notebooks were deprecated and shut down in favor of google.cloud.notebooks.v2.
 	"google.cloud.notebooks.v1": "AI Platform / Vertex AI Workbench v1 (google.cloud.notebooks.v1) is deprecated in favor of google.cloud.notebooks.v2",
+
+	// Shut down January 16, 2025 without `option deprecated = true;` on services/RPCs.
+	"google.cloud.contentwarehouse.v1": "Document AI Warehouse (google.cloud.contentwarehouse.v1) was shut down on January 16, 2025",
+
+	// End of sale July 30, 2024 and shut down June 30, 2025 without `option deprecated = true;`.
+	"google.cloud.rapidmigrationassessment.v1": "Rapid Migration Assessment (google.cloud.rapidmigrationassessment.v1) shut down on June 30, 2025 in favor of Migration Center",
+
+	// Deprecated June 15, 2026 and EOL September 30, 2026 without `option deprecated = true;`.
+	"google.cloud.visionai.v1": "Vertex AI Vision (google.cloud.visionai.v1) reached EOL on September 30, 2026",
+
+	// End of sale June 17, 2024 (closed to new organizations and standalone projects).
+	"google.devtools.sourcerepo.v1": "Cloud Source Repositories (google.devtools.sourcerepo.v1) reached End of Sale on June 17, 2024",
+}
+
+// knownDeprecatedProtoMessages lists specific deprecated/non-creatable resource
+// messages inside otherwise active GA proto packages when the resource itself
+// (or its read RPC) omits `option deprecated = true;`.
+var knownDeprecatedProtoMessages = map[string]string{
+	"google.cloud.aiplatform.v1.DataLabelingJob":          "Vertex AI Data Labeling Service (DataLabelingJob) shut down on October 3, 2024",
+	"google.cloud.backupdr.v1.ManagementServer":           "Backup and DR legacy Management Console (ManagementServer) ended new deployments on July 31, 2026",
+	"google.cloud.iap.v1.Brand":                           "IAP OAuth Admin API (Brand) shut down on March 19, 2026",
+	"google.cloud.iap.v1.IdentityAwareProxyClient":        "IAP OAuth Admin API (IdentityAwareProxyClient) shut down on March 19, 2026",
+	"google.cloud.securitycenter.v1.OrganizationSettings": "SCC OrganizationSettings singleton only retains read access (UpdateOrganizationSettings is deprecated following Asset Discovery retirement on June 20, 2024)",
 }
 
 // deprecatedResourceReason reports whether a resource proto message is
 // deprecated:
 //  1. Its proto package is in knownDeprecatedProtoPackages (for retired GCP
 //     products whose .proto descriptors omit `option deprecated = true;`), or
-//  2. The resource message itself has `option deprecated = true;`, or
-//  3. The proto service(s) managing the resource have `option deprecated = true;`
+//  2. Its proto message full name is in knownDeprecatedProtoMessages (for
+//     retired/non-creatable resources inside an otherwise active package), or
+//  3. The resource message itself has `option deprecated = true;`, or
+//  4. The proto service(s) managing the resource have `option deprecated = true;`
 //     at the service level (or on all RPC methods in the service), or
-//  4. All RPC methods managing this specific resource in a shared service have
+//  5. All RPC methods managing this specific resource in a shared service have
 //     `option deprecated = true;`.
 func deprecatedResourceReason(api *protoapi.Proto, msg protoreflect.MessageDescriptor) (string, bool) {
 	if api == nil || msg == nil {
@@ -71,6 +96,9 @@ func deprecatedResourceReason(api *protoapi.Proto, msg protoreflect.MessageDescr
 	}
 	pkg := msg.ParentFile().Package()
 	if reason, ok := knownDeprecatedProtoPackages[string(pkg)]; ok {
+		return reason, true
+	}
+	if reason, ok := knownDeprecatedProtoMessages[string(msg.FullName())]; ok {
 		return reason, true
 	}
 	if opts, ok := msg.Options().(*descriptorpb.MessageOptions); ok && opts.GetDeprecated() {

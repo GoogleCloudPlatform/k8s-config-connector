@@ -1,0 +1,141 @@
+{
+  "description": "Unreleased Google Cloud resources excluded under drop_reason 'manual-setup' because automated E2E testing requires manual GCP or external setup: service-team project allowlisting or Terms/Console opt-in, commercial/partner enrollment, verified external assets (BYOIP/domain/EKM), a separate testing organization, or an isolated project requiring billing setup.",
+  "exclusions": [
+    {
+      "pattern": "^accessapproval\\.googleapis\\.com/AccessApprovalSettings$",
+      "reason": "Tied to Google Cloud Support SLA / Enterprise org preconditions and requires billing-enabled project setup."
+    },
+    {
+      "pattern": "^apihub\\.googleapis\\.com/ApiHubInstance$",
+      "reason": "One-per-project API Hub instance provisioning requires an isolated project with an active billing account."
+    },
+    {
+      "pattern": "^apihub\\.googleapis\\.com/HostProjectRegistration$",
+      "reason": "API Hub host project registration requires an isolated project with an active billing account."
+    },
+    {
+      "pattern": "^apihub\\.googleapis\\.com/StyleGuide$",
+      "reason": "API Hub plugin singleton tied to an API Hub host project requiring an active billing account."
+    },
+    {
+      "pattern": "^appengine\\.googleapis\\.com/Application$",
+      "reason": "Permanent one-per-project singleton requiring an active billing account on an isolated project."
+    },
+    {
+      "pattern": "^appengine\\.googleapis\\.com/AuthorizedCertificate$",
+      "reason": "Requires Search Console / DNS domain ownership verification (#15767, PR #15787)."
+    },
+    {
+      "pattern": "^auditmanager\\.googleapis\\.com/AuditSchedule$",
+      "reason": "Audit Manager report scheduling requires billing-enabled project and GCS destination setup."
+    },
+    {
+      "pattern": "^cloudbilling\\.googleapis\\.com/ProjectBillingInfo$",
+      "reason": "Attaches or modifies a project's billing account association; requires billing account permissions."
+    },
+    {
+      "pattern": "^cloudchannel\\.googleapis\\.com/.*$",
+      "reason": "Requires Google Cloud Partner Advantage reseller/distributor enrollment and Partner Sales Console (#15951)."
+    },
+    {
+      "pattern": "^cloudcontrolspartner\\.googleapis\\.com/Customer$",
+      "reason": "Requires Cloud Controls Partner organization enrollment."
+    },
+    {
+      "pattern": "^cloudkms\\.googleapis\\.com/EkmConfig$",
+      "reason": "Requires external third-party KMS/EKM service setup."
+    },
+    {
+      "pattern": "^cloudkms\\.googleapis\\.com/EkmConnection$",
+      "reason": "Requires an external third-party EKM TLS/IAM endpoint."
+    },
+    {
+      "pattern": "^cloudsecuritycompliance\\.googleapis\\.com/FrameworkDeployment$",
+      "reason": "Deploys security/compliance enforcement controls across an organization, folder, or project."
+    },
+    {
+      "pattern": "^cloudsupport\\.googleapis\\.com/SupportEventSubscription$",
+      "reason": "Requires an active paid Enhanced/Premium Cloud Support tier on the organization plus roles/cloudsupport.admin (#15735)."
+    },
+    {
+      "pattern": "^compute\\.googleapis\\.com/Commitment$",
+      "reason": "Purchases an uncancellable 1-year or 3-year billing commitment contract (no Delete RPC)."
+    },
+    {
+      "pattern": "^compute\\.googleapis\\.com/HealthCheckService$",
+      "reason": "Requires service-team project allowlisting for the Compute HealthCheck as a Service feature (#15638)."
+    },
+    {
+      "pattern": "^compute\\.googleapis\\.com/NotificationEndpoint$",
+      "reason": "Requires service-team project allowlisting for the Compute HealthCheck as a Service feature (#15638, #15535)."
+    },
+    {
+      "pattern": "^compute\\.googleapis\\.com/PublicAdvertisedPrefix$",
+      "reason": "Requires public BYOIP IPv4/IPv6 ownership, RIR RPKI ROA setup, and a separate testing organization (#16073, #16058)."
+    },
+    {
+      "pattern": "^compute\\.googleapis\\.com/PublicDelegatedPrefix$",
+      "reason": "Requires a provisioned BYOIP PublicAdvertisedPrefix (#16073, #16058)."
+    },
+    {
+      "pattern": "^datalineage\\.googleapis\\.com/Config$",
+      "reason": "Billed Data Lineage service requiring an isolated project with an active billing account."
+    },
+    {
+      "pattern": "^dataplex\\.googleapis\\.com/EncryptionConfig$",
+      "reason": "Organization-wide Dataplex CMEK enforcement; requires a separate testing organization."
+    },
+    {
+      "pattern": "^dlp\\.googleapis\\.com/DiscoveryConfig$",
+      "reason": "One-per-project/org singleton requiring an isolated project with an active billing account."
+    },
+    {
+      "pattern": "^domains\\.googleapis\\.com/Registration$",
+      "reason": "Requires live public DNS domain purchase and ICANN registrant contact verification."
+    },
+    {
+      "pattern": "^eventarc\\.googleapis\\.com/ChannelConnection$",
+      "reason": "Requires service-team server-side project allowlisting for Eventarc event providers (#15936)."
+    },
+    {
+      "pattern": "^financialservices\\.googleapis\\.com/.*$",
+      "reason": "Early Access Anti-Money Laundering AI API requiring service-team project allowlist approval (#14955)."
+    },
+    {
+      "pattern": "^iam\\.googleapis\\.com/AccessPolicy$",
+      "reason": "Enforces IAM access policy rules across organization/folder/project; risks org-wide access lockouts."
+    },
+    {
+      "pattern": "^iam\\.googleapis\\.com/PolicyBinding$",
+      "reason": "Binds IAM principal access boundary/access policies across organization/folder/project."
+    },
+    {
+      "pattern": "^iam\\.googleapis\\.com/PrincipalAccessBoundaryPolicy$",
+      "reason": "Organization-level IAM principal access boundary; requires a separate testing organization."
+    },
+    {
+      "pattern": "^jobs\\.googleapis\\.com/Company$",
+      "reason": "Requires a manual Cloud Console UI data-permission opt-in click (#15827)."
+    },
+    {
+      "pattern": "^jobs\\.googleapis\\.com/Tenant$",
+      "reason": "Requires a manual Cloud Console UI data-permission opt-in click (#15827)."
+    },
+    {
+      "pattern": "^oracledatabase\\.googleapis\\.com/.*$",
+      "reason": "Requires an active commercial Oracle Marketplace subscription and OCI tenancy linked to billing (#15655)."
+    },
+    {
+      "pattern": "^securitycentermanagement\\.googleapis\\.com/SecurityCenterService$",
+      "reason": "Enables/disables top-level Security Command Center services across org/folder/project."
+    },
+    {
+      "pattern": "^securityposture\\.googleapis\\.com/PostureDeployment$",
+      "reason": "Deploys and enforces an organization-wide security posture; requires a separate testing organization."
+    },
+    {
+      "pattern": "^storage\\.googleapis\\.com/IntelligenceConfig$",
+      "reason": "Paid Storage Intelligence feature requiring an isolated project with an active billing account."
+    }
+  ]
+}

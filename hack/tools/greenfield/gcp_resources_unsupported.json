@@ -1,0 +1,506 @@
+{
+ "meta": {
+  "schema_version": 2,
+  "googleapis_sha": "9c0bfc06db6841da058b88c7054153ac22fc2465",
+  "kcc_ref": "eb0e7db205f8b8757aeb47e985ffa034d3977cf9",
+  "count": 82,
+  "by_kcc_status": {
+   "net-new": 62,
+   "in progress (types only)": 20
+  }
+ },
+ "resources": [
+  {
+   "resource_type": "advisorynotifications.googleapis.com/Settings",
+   "kind": "AdvisoryNotificationsSettings",
+   "service": "advisorynotifications",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "agentregistry.googleapis.com/Skill",
+   "kind": "AgentRegistrySkill",
+   "service": "agentregistry",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "agentregistry.googleapis.com/SkillEncryptionSpec",
+   "kind": "AgentRegistrySkillEncryptionSpec",
+   "service": "agentregistry",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "agentregistry.googleapis.com/SkillRevision",
+   "kind": "AgentRegistrySkillRevision",
+   "service": "agentregistry",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "aiplatform.googleapis.com/MetadataSchema",
+   "kind": "AIPlatformMetadataSchema",
+   "service": "aiplatform",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "aiplatform.googleapis.com/RagEngineConfig",
+   "kind": "AIPlatformRAGEngineConfig",
+   "service": "aiplatform",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "aiplatform.googleapis.com/Study",
+   "kind": "VertexAIStudy",
+   "service": "aiplatform",
+   "kcc_status": "in progress (types only)"
+  },
+  {
+   "resource_type": "apphub.googleapis.com/Boundary",
+   "kind": "AppHubBoundary",
+   "service": "apphub",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "artifactregistry.googleapis.com/ProjectSettings",
+   "kind": "ArtifactRegistryProjectSettings",
+   "service": "artifactregistry",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "backupdr.googleapis.com/AutoProtectionPolicyBinding",
+   "kind": "BackupDRAutoProtectionPolicyBinding",
+   "service": "backupdr",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "backupdr.googleapis.com/DataSource",
+   "kind": "BackupDRDataSource",
+   "service": "backupdr",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "backupdr.googleapis.com/RestoreTemplate",
+   "kind": "BackupDRRestoreTemplate",
+   "service": "backupdr",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "backupdr.googleapis.com/RestoreVerificationPlan",
+   "kind": "BackupDRRestoreVerificationPlan",
+   "service": "backupdr",
+   "kcc_status": "in progress (types only)"
+  },
+  {
+   "resource_type": "backupdr.googleapis.com/RestoreVerificationPlanAssociation",
+   "kind": "BackupDRRestoreVerificationPlanAssociation",
+   "service": "backupdr",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "biglake.googleapis.com/Namespace",
+   "kind": "BigLakeHiveDatabase",
+   "service": "biglake",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "biglake.googleapis.com/Table",
+   "kind": "BigLakeHiveTable",
+   "service": "biglake",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "bigquerymigration.googleapis.com/MigrationWorkflow",
+   "kind": "BigQueryMigrationMigrationWorkflow",
+   "service": "bigquerymigration",
+   "kcc_status": "in progress (types only)"
+  },
+  {
+   "resource_type": "bigqueryreservation.googleapis.com/BiReservation",
+   "kind": "BigQueryReservationBiReservation",
+   "service": "bigqueryreservation",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "certificatemanager.googleapis.com/TrustConfig",
+   "kind": "CertificateManagerTrustConfig",
+   "service": "certificatemanager",
+   "kcc_status": "in progress (types only)"
+  },
+  {
+   "resource_type": "cloudprofiler.googleapis.com/Profile",
+   "kind": "ProfilerProfile",
+   "service": "cloudprofiler",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "cloudsecuritycompliance.googleapis.com/FrameworkAudit",
+   "kind": "CloudSecurityComplianceFrameworkAudit",
+   "service": "cloudsecuritycompliance",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "cloudtasks.googleapis.com/CmekConfig",
+   "kind": "TasksCMEKConfig",
+   "service": "cloudtasks",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "config.googleapis.com/AutoMigrationConfig",
+   "kind": "ConfigAutoMigrationConfig",
+   "service": "config",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "contactcenterinsights.googleapis.com/IssueModel",
+   "kind": "CCInsightsIssueModel",
+   "service": "contactcenterinsights",
+   "kcc_status": "in progress (types only)"
+  },
+  {
+   "resource_type": "contactcenterinsights.googleapis.com/Settings",
+   "kind": "CCInsightsSettings",
+   "service": "contactcenterinsights",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "dataform.googleapis.com/CompilationResult",
+   "kind": "DataformCompilationResult",
+   "service": "dataform",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "dataform.googleapis.com/Config",
+   "kind": "DataformConfig",
+   "service": "dataform",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "datamigration.googleapis.com/PrivateConnection",
+   "kind": "CloudDMSPrivateConnection",
+   "service": "datamigration",
+   "kcc_status": "in progress (types only)"
+  },
+  {
+   "resource_type": "dataproc.googleapis.com/NodeGroup",
+   "kind": "DataprocNodeGroup",
+   "service": "dataproc",
+   "kcc_status": "in progress (types only)"
+  },
+  {
+   "resource_type": "designcenter.googleapis.com/Application",
+   "kind": "DesignCenterApplication",
+   "service": "designcenter",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "designcenter.googleapis.com/ApplicationTemplate",
+   "kind": "DesignCenterApplicationTemplate",
+   "service": "designcenter",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "designcenter.googleapis.com/CatalogTemplateRevision",
+   "kind": "DesignCenterCatalogTemplateRevision",
+   "service": "designcenter",
+   "kcc_status": "in progress (types only)"
+  },
+  {
+   "resource_type": "designcenter.googleapis.com/Component",
+   "kind": "DesignCenterComponent",
+   "service": "designcenter",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "designcenter.googleapis.com/Connection",
+   "kind": "DesignCenterConnection",
+   "service": "designcenter",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "designcenter.googleapis.com/Policy",
+   "kind": "DesignCenterPolicy",
+   "service": "designcenter",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "designcenter.googleapis.com/Share",
+   "kind": "DesignCenterShare",
+   "service": "designcenter",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "developerconnect.googleapis.com/Connection",
+   "kind": "DevConnectConnection",
+   "service": "developerconnect",
+   "kcc_status": "in progress (types only)"
+  },
+  {
+   "resource_type": "dialogflow.googleapis.com/AgentGenerativeSettings",
+   "kind": "DialogflowCXGenerativeSettings",
+   "service": "dialogflow",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "dialogflow.googleapis.com/AnswerRecord",
+   "kind": "DialogflowAnswerRecord",
+   "service": "dialogflow",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "dialogflow.googleapis.com/ConversationModelEvaluation",
+   "kind": "DialogflowConversationModelEvaluation",
+   "service": "dialogflow",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "dialogflow.googleapis.com/Generator",
+   "kind": "DialogflowCXGenerator",
+   "service": "dialogflow",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "dialogflow.googleapis.com/SecuritySettings",
+   "kind": "DialogflowSecuritySettings",
+   "service": "dialogflow",
+   "kcc_status": "in progress (types only)"
+  },
+  {
+   "resource_type": "dialogflow.googleapis.com/Tool",
+   "kind": "DialogflowCXTool",
+   "service": "dialogflow",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "dialogflow.googleapis.com/Tool",
+   "kind": "DialogflowTool",
+   "service": "dialogflow",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "discoveryengine.googleapis.com/AclConfig",
+   "kind": "DiscoveryEngineACLConfig",
+   "service": "discoveryengine",
+   "kcc_status": "in progress (types only)"
+  },
+  {
+   "resource_type": "discoveryengine.googleapis.com/CmekConfig",
+   "kind": "DiscoveryEngineCMEKConfig",
+   "service": "discoveryengine",
+   "kcc_status": "in progress (types only)"
+  },
+  {
+   "resource_type": "livestream.googleapis.com/Clip",
+   "kind": "LiveStreamClip",
+   "service": "livestream",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "livestream.googleapis.com/Pool",
+   "kind": "LiveStreamPool",
+   "service": "livestream",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "logging.googleapis.com/CmekSettings",
+   "kind": "LoggingCMEKSettings",
+   "service": "logging",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "logging.googleapis.com/Settings",
+   "kind": "LoggingSettings",
+   "service": "logging",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "lustre.googleapis.com/DirectoryPolicy",
+   "kind": "LustreDirectoryPolicy",
+   "service": "lustre",
+   "kcc_status": "in progress (types only)"
+  },
+  {
+   "resource_type": "lustre.googleapis.com/Mirror",
+   "kind": "LustreMirror",
+   "service": "lustre",
+   "kcc_status": "in progress (types only)"
+  },
+  {
+   "resource_type": "managedidentities.googleapis.com/Domain",
+   "kind": "ManagedidentitiesDomain",
+   "service": "managedidentities",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "managedkafka.googleapis.com/ConsumerGroup",
+   "kind": "ManagedKafkaConsumerGroup",
+   "service": "managedkafka",
+   "kcc_status": "in progress (types only)"
+  },
+  {
+   "resource_type": "managedkafka.googleapis.com/SchemaConfig",
+   "kind": "ManagedKafkaSchemaConfig",
+   "service": "managedkafka",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "managedkafka.googleapis.com/SchemaMode",
+   "kind": "ManagedKafkaSchemaMode",
+   "service": "managedkafka",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "migrationcenter.googleapis.com/Settings",
+   "kind": "MigrationCenterSettings",
+   "service": "migrationcenter",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "netapp.googleapis.com/StoragePool",
+   "kind": "NetAppStoragePool",
+   "service": "netapp",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "netapp.googleapis.com/Volume",
+   "kind": "NetAppVolume",
+   "service": "netapp",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "networkconnectivity.googleapis.com/GatewayAdvertisedRoute",
+   "kind": "NetworkConnectivityGatewayAdvertisedRoute",
+   "service": "networkconnectivity",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "networkconnectivity.googleapis.com/Group",
+   "kind": "NetworkConnectivityGroup",
+   "service": "networkconnectivity",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "networkconnectivity.googleapis.com/ServiceClass",
+   "kind": "NetworkConnectivityServiceClass",
+   "service": "networkconnectivity",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "networkconnectivity.googleapis.com/ServiceConnectionMap",
+   "kind": "NetworkConnectivityServiceConnectionMap",
+   "service": "networkconnectivity",
+   "kcc_status": "in progress (types only)"
+  },
+  {
+   "resource_type": "networkservices.googleapis.com/AgentGateway",
+   "kind": "NetworkServicesAgentGateway",
+   "service": "networkservices",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "observability.googleapis.com/Bucket",
+   "kind": "ObservabilityBucket",
+   "service": "observability",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "observability.googleapis.com/Scope",
+   "kind": "ObservabilityScope",
+   "service": "observability",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "observability.googleapis.com/Settings",
+   "kind": "ObservabilitySettings",
+   "service": "observability",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "privateca.googleapis.com/CertificateRevocationList",
+   "kind": "PrivateCACertificateRevocationList",
+   "service": "privateca",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "recaptchaenterprise.googleapis.com/Policy",
+   "kind": "ReCAPTCHAEnterprisePolicy",
+   "service": "recaptchaenterprise",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "redis.googleapis.com/AclPolicy",
+   "kind": "RedisACLPolicy",
+   "service": "redis",
+   "kcc_status": "in progress (types only)"
+  },
+  {
+   "resource_type": "retail.googleapis.com/AttributesConfig",
+   "kind": "RetailAttributesConfig",
+   "service": "retail",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "retail.googleapis.com/Catalog",
+   "kind": "RetailCatalog",
+   "service": "retail",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "retail.googleapis.com/CompletionConfig",
+   "kind": "RetailCompletionConfig",
+   "service": "retail",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "run.googleapis.com/Instance",
+   "kind": "RunInstance",
+   "service": "run",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "securitycenter.googleapis.com/Finding",
+   "kind": "SecurityCenterFinding",
+   "service": "securitycenter",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "speech.googleapis.com/Config",
+   "kind": "SpeechConfig",
+   "service": "speech",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "storage.googleapis.com/RapidCache",
+   "kind": "StorageRapidCache",
+   "service": "storage",
+   "kcc_status": "in progress (types only)"
+  },
+  {
+   "resource_type": "telcoautomation.googleapis.com/EdgeSlm",
+   "kind": "TelcoAutomationEdgeSLM",
+   "service": "telcoautomation",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "telcoautomation.googleapis.com/HydratedDeployment",
+   "kind": "TelcoAutomationHydratedDeployment",
+   "service": "telcoautomation",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "testing.googleapis.com/TestMatrix",
+   "kind": "TestingTestMatrix",
+   "service": "testing",
+   "kcc_status": "net-new"
+  },
+  {
+   "resource_type": "tpu.googleapis.com/QueuedResource",
+   "kind": "TPUQueuedResource",
+   "service": "tpu",
+   "kcc_status": "in progress (types only)"
+  },
+  {
+   "resource_type": "translate.googleapis.com/AdaptiveMtDataset",
+   "kind": "TranslateAdaptiveMtDataset",
+   "service": "translate",
+   "kcc_status": "in progress (types only)"
+  }
+ ]
+}
