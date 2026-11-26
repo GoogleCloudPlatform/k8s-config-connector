@@ -40,30 +40,39 @@ const (
 	replicationModeDisabled = "Disabled"
 )
 
-// haProblems checks a group of clusters that all have multi-cluster HA configured, and
-// returns one problem per issue found. It checks, in order:
-//  1. the clusters take part in the same election (validateMultiClusterLeaseConfigs);
-//  2. each cluster's MultiClusterLease has a live holder, and all clusters agree on it;
-//  3. each cluster's KRMSyncers: suspended on the leader, syncing from the leader on standbys.
+// haProblems checks the clusters that have multi-cluster HA configured, which may be only some
+// of the clusters in --contexts. contextIdentities holds the election identity of every cluster
+// in --contexts, including ones that aren't configured or couldn't be read.
 //
-// KRMSyncer checks (3) are skipped only when the leader cannot be determined.
-func haProblems(states []*clusterHAState, now time.Time) []string {
-	if err := validateMultiClusterLeaseConfigs(states); err != nil {
-		return splitErrorLines(err)
+// It returns the identity of the cluster that holds the lease ("" if it can't be determined) and
+// one problem per issue found. It checks, in order:
+//  1. the clusters take part in the same election (validateMultiClusterLeaseConfigs), when at
+//     least 2 are configured;
+//  2. each cluster's MultiClusterLease is live, and the live leases agree on the holder;
+//  3. when a holder is agreed, each cluster's KRMSyncers: suspended on the leader, syncing from
+//     the leader on standbys.
+//
+// The election check stops the others when it fails, because they depend on it. KRMSyncer checks
+// are skipped only when the leader cannot be determined.
+func haProblems(states []*clusterHAState, contextIdentities map[string]bool, now time.Time) (string, []string) {
+	if len(states) >= 2 {
+		if err := validateMultiClusterLeaseConfigs(states); err != nil {
+			return "", splitErrorLines(err)
+		}
 	}
 
 	problems := replicationModeProblems(states)
 
-	leader, leaseProblems := leaseHolder(states, now)
+	leader, leaseProblems := leaseHolder(states, contextIdentities, now)
 	problems = append(problems, leaseProblems...)
 	if leader == "" {
-		return problems
+		return "", problems
 	}
 
 	for _, s := range states {
 		problems = append(problems, syncerProblems(s, leader)...)
 	}
-	return problems
+	return leader, problems
 }
 
 // replicationModeProblems reports clusters that replicate resources differently.
@@ -89,13 +98,11 @@ func replicationMode(mcl *operatorv1beta1.MultiClusterLeaseSpec) string {
 	return mcl.ResourceReplicationMode
 }
 
-// leaseHolder returns the identity of the cluster that holds the lease, or "" if it can't be
-// determined, together with the lease problems found.
-//
-// The holder is the one that the clusters with a live lease agree on. A cluster whose own
-// lease has a problem is reported, and doesn't make the holder unknown: the other clusters
-// still say who holds the lease.
-func leaseHolder(states []*clusterHAState, now time.Time) (string, []string) {
+// leaseHolder returns the identity of the cluster that holds the lease, and the lease problems
+// found. The holder is the one that all live leases agree on, so it's known even if some
+// clusters' leases aren't live; it's "" if no lease is live or the live leases disagree. A holder
+// that isn't in --contexts is reported as a problem but still returned.
+func leaseHolder(states []*clusterHAState, contextIdentities map[string]bool, now time.Time) (string, []string) {
 	var problems []string
 	holders := map[string][]string{} // holder identity -> contexts that report it
 	for _, s := range states {
@@ -106,11 +113,12 @@ func leaseHolder(states []*clusterHAState, now time.Time) (string, []string) {
 		}
 		holders[holder] = append(holders[holder], s.contextName)
 	}
-	if len(holders) == 0 {
-		return "", problems
-	}
 
-	if len(holders) > 1 {
+	switch len(holders) {
+	case 0:
+		return "", problems
+	case 1:
+	default:
 		return "", append(problems, fmt.Sprintf("clusters disagree on the lease holder (%s)", formatHolders(holders)))
 	}
 
@@ -118,8 +126,8 @@ func leaseHolder(states []*clusterHAState, now time.Time) (string, []string) {
 	for h := range holders {
 		holder = h
 	}
-	if !isInspectedCluster(states, holder) {
-		return "", append(problems, fmt.Sprintf("the lease is held by %q, which is not one of the clusters in --%s", holder, contextsFlag))
+	if !contextIdentities[holder] {
+		problems = append(problems, fmt.Sprintf("the lease is held by %q, which is not one of the clusters in --%s", holder, contextsFlag))
 	}
 	return holder, problems
 }
@@ -208,16 +216,6 @@ func leaseExpired(lease *mclv1alpha1.MultiClusterLease, now time.Time) (bool, st
 		return true, fmt.Sprintf("has expired (last renewed at %s, lease duration %s)", renewTime.UTC().Format(time.RFC3339), duration)
 	}
 	return false, ""
-}
-
-func isInspectedCluster(states []*clusterHAState, identity string) bool {
-	for _, s := range states {
-		// validateMultiClusterLeaseConfigs checked that every identity is valid.
-		if id, _ := multiClusterLeaseSpec(s.configConnector).CandidateIdentity(); id == identity {
-			return true
-		}
-	}
-	return false
 }
 
 // syncerProblems checks the cluster's KRMSyncers for the lease, using the Ready condition that

@@ -131,7 +131,7 @@ func printHASummary(w io.Writer, report *statusReport, now time.Time) {
 			states = append(states, c.state)
 		}
 	}
-	leaderID, _ := leaseHolder(states, now)
+	leaderID, _ := leaseHolder(states, report.contextIdentities(), now)
 
 	var leaderContext string
 	var standbyContexts []string

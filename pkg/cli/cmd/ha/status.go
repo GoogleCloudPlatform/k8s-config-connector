@@ -122,10 +122,25 @@ const (
 	clusterHAError             clusterHA = "Error"
 )
 
+// clusterRole is the value of the ROLE column for a cluster.
+type clusterRole string
+
+const (
+	// roleLeader: the cluster holds the multi-cluster lease, so its Config Connector reconciles.
+	roleLeader clusterRole = "Leader"
+	// roleStandby: another cluster holds the lease; this cluster waits to take over.
+	roleStandby clusterRole = "Standby"
+	// roleUnknown: HA is configured, but the lease holder could not be determined.
+	roleUnknown clusterRole = "Unknown"
+	// roleNone: HA is not configured, or the cluster could not be inspected.
+	roleNone clusterRole = "-"
+)
+
 // clusterStatus is the observed HA status of one cluster.
 type clusterStatus struct {
-	gke gkeClusterInfo
-	ha  clusterHA
+	gke  gkeClusterInfo
+	ha   clusterHA
+	role clusterRole
 	// state is the cluster's HA objects; set only when HA is configured.
 	state *clusterHAState
 	// err is the error from fetchClusterHAState; nil when HA is configured.
@@ -134,6 +149,15 @@ type clusterStatus struct {
 	workloads *clusterWorkloads
 	// workloadsErr is non-nil if reading workloads failed with a non-NotFound error.
 	workloadsErr error
+}
+
+// identity returns the cluster's identity in the election, or "" if HA is not configured.
+func (c *clusterStatus) identity() string {
+	if c.state == nil {
+		return ""
+	}
+	identity, _ := multiClusterLeaseSpec(c.state.configConnector).CandidateIdentity()
+	return identity
 }
 
 // statusClusterTimeout bounds how long a single cluster is inspected, so that one unreachable
@@ -145,7 +169,7 @@ const statusClusterTimeout = 30 * time.Second
 func inspectCluster(ctx context.Context, h *clusterHandle) *clusterStatus {
 	// validate() checked that every context is a GKE context.
 	gke, _ := parseGKEContext(h.contextName)
-	c := &clusterStatus{gke: gke}
+	c := &clusterStatus{gke: gke, role: roleNone}
 
 	ctx, cancel := context.WithTimeout(ctx, statusClusterTimeout)
 	defer cancel()
@@ -183,16 +207,30 @@ type statusReport struct {
 	clusters []*clusterStatus
 	problems []string
 	warnings []string
+	// lease describes the multi-cluster lease; nil when its holder is not known.
+	lease *leaseSummary
+	now   time.Time
+}
+
+// leaseSummary describes the multi-cluster lease and the cluster that holds it.
+type leaseSummary struct {
+	// key is <namespace>/<name> of the MultiClusterLease.
+	key string
+	// holder is the context of the leader, or its identity if it's not in --contexts.
+	holder string
+	// renewTime is when the leader last renewed the lease; zero if not reported.
+	renewTime time.Time
 }
 
 func buildStatusReport(clusters []*clusterStatus, now time.Time) *statusReport {
-	r := &statusReport{clusters: clusters}
+	r := &statusReport{clusters: clusters, now: now}
 
 	var configured, notConfigured []*clusterStatus
 	for _, c := range clusters {
 		switch c.ha {
 		case clusterHAConfigured:
 			configured = append(configured, c)
+			c.role = roleUnknown
 		case clusterHANotConfigured:
 			notConfigured = append(notConfigured, c)
 		default:
@@ -200,20 +238,26 @@ func buildStatusReport(clusters []*clusterStatus, now time.Time) *statusReport {
 		}
 	}
 
-	// HA must be configured on all clusters or on none of them.
+	// HA must be configured on all clusters or on none of them. A cluster without HA runs its own
+	// leader election, so it reconciles alongside whichever cluster holds the multi-cluster lease.
 	if len(configured) > 0 {
 		for _, c := range notConfigured {
-			r.problems = append(r.problems, c.err.Error())
+			r.problems = append(r.problems, c.err.Error()+"; it reconciles independently of the HA clusters, so more than one cluster may change the same resources")
 		}
 	}
 
-	// When every cluster is configured, check the election and data sync across them.
-	if len(configured) == len(clusters) {
+	// Check the election, leadership and data sync across the configured clusters, even if some
+	// clusters aren't configured or couldn't be read.
+	if len(configured) > 0 {
 		states := make([]*clusterHAState, 0, len(configured))
 		for _, c := range configured {
 			states = append(states, c.state)
 		}
-		r.problems = append(r.problems, haProblems(states, now)...)
+		leader, problems := haProblems(states, r.contextIdentities(), now)
+		r.problems = append(r.problems, problems...)
+		if leader != "" {
+			r.setLeader(leader, configured)
+		}
 
 		for _, c := range configured {
 			if c.workloadsErr != nil {
@@ -239,16 +283,82 @@ func buildStatusReport(clusters []*clusterStatus, now time.Time) *statusReport {
 	return r
 }
 
+// clusterIdentity returns a cluster's identity in the election: from its multiClusterLease spec
+// when HA is configured, or else from its GKE context (gke_<project>_<location>_<cluster>), which
+// is how `config-connector ha setup` sets it.
+func clusterIdentity(c *clusterStatus) string {
+	if id := c.identity(); id != "" {
+		return id
+	}
+	gke := c.gke.gkeCluster()
+	return gke.ResourceName()
+}
+
+// contextIdentities returns the election identity of every cluster in --contexts.
+func (r *statusReport) contextIdentities() map[string]bool {
+	ids := make(map[string]bool, len(r.clusters))
+	for _, c := range r.clusters {
+		ids[clusterIdentity(c)] = true
+	}
+	return ids
+}
+
+// setLeader sets each configured cluster's role, and the lease summary, from the identity of the
+// cluster that holds the lease. The leader may be a cluster that isn't configured or couldn't be
+// read, or one outside --contexts.
+func (r *statusReport) setLeader(leader string, configured []*clusterStatus) {
+	for _, c := range configured {
+		if c.identity() == leader {
+			c.role = roleLeader
+		} else {
+			c.role = roleStandby
+		}
+	}
+
+	// Name the holder by its context when it's in --contexts, and by its identity otherwise.
+	holder := leader
+	for _, c := range r.clusters {
+		if clusterIdentity(c) == leader {
+			holder = c.gke.contextName
+			break
+		}
+	}
+
+	// haProblems checked that the configured clusters use the same lease.
+	mcl := multiClusterLeaseSpec(configured[0].state.configConnector)
+	r.lease = &leaseSummary{
+		key:    mcl.Namespace + "/" + mcl.LeaseName,
+		holder: holder,
+	}
+	// Use the latest renewal reported for the leader by any configured cluster.
+	for _, c := range configured {
+		lease := c.state.multiClusterLease
+		if lease == nil || lease.Status.GlobalHolderIdentity == nil || *lease.Status.GlobalHolderIdentity != leader || lease.Status.GlobalRenewTime == nil {
+			continue
+		}
+		if t, err := time.Parse(time.RFC3339, *lease.Status.GlobalRenewTime); err == nil && t.After(r.lease.renewTime) {
+			r.lease.renewTime = t
+		}
+	}
+}
+
 // render writes the report: a table with one row per cluster, then the overall status.
 func (r *statusReport) render(w io.Writer) {
 	tw := tabwriter.NewWriter(w, 0, 0, 2, ' ', 0)
-	fmt.Fprintln(tw, "CONTEXT\tPROJECT\tLOCATION\tHA")
+	fmt.Fprintln(tw, "CONTEXT\tPROJECT\tLOCATION\tHA\tROLE")
 	for _, c := range r.clusters {
-		fmt.Fprintf(tw, "%s\t%s\t%s\t%s\n", c.gke.contextName, c.gke.project, c.gke.location, c.ha)
+		fmt.Fprintf(tw, "%s\t%s\t%s\t%s\t%s\n", c.gke.contextName, c.gke.project, c.gke.location, c.ha, c.role)
 	}
 	tw.Flush()
 
 	fmt.Fprintln(w)
+	if r.lease != nil {
+		fmt.Fprintf(w, "Lease: %s, held by %s", r.lease.key, r.lease.holder)
+		if !r.lease.renewTime.IsZero() {
+			fmt.Fprintf(w, " (renewed %s ago)", r.now.Sub(r.lease.renewTime).Round(time.Second))
+		}
+		fmt.Fprintln(w)
+	}
 	fmt.Fprintf(w, "HA Status: %s\n", r.state)
 	switch r.state {
 	case haStateNotDetected:
