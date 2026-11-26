@@ -638,7 +638,7 @@ func TestHAStatusProblems(t *testing.T) {
 			},
 			wantProblems: []string{
 				`cluster "gke_proj-b_us-east1_cluster-b": the lease backend is unhealthy: failed to communicate with backend: failed to read lease: Error 403`,
-				`cluster "gke_proj-b_us-east1_cluster-b": KRMSyncer cnrm-system/kcc-multicluster-lease is failing to sync 0 objects (SyncFailed): failed to fetch objects`,
+				`cluster "gke_proj-b_us-east1_cluster-b": KRMSyncer cnrm-system/kcc-multicluster-lease is failing to sync (SyncFailed): failed to fetch objects`,
 			},
 		},
 		{

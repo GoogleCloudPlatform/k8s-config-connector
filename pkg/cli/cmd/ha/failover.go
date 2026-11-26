@@ -505,7 +505,11 @@ func (f *failover) prepareTarget(ctx context.Context, leader *failoverCluster, v
 			if pending := target.pendingAsTarget(v, leader); pending != "" {
 				return pending, nil
 			}
-			return f.pendingSync(target, v, leader), nil
+			if pending := f.pendingSync(target, v, leader); pending != "" {
+				return pending, nil
+			}
+			view = v
+			return "", nil
 		})
 		if moved != nil {
 			return moved
@@ -513,7 +517,6 @@ func (f *failover) prepareTarget(ctx context.Context, leader *failoverCluster, v
 		if err != nil {
 			return fmt.Errorf("cluster %q is not ready to take over: %w", target.name(), err)
 		}
-		return nil
 	}
 
 	if pending := target.pendingAsTarget(view, leader); pending != "" {

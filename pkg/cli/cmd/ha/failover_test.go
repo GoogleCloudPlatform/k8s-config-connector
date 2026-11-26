@@ -1846,6 +1846,47 @@ func TestFailoverWithSkipSyncCheck(t *testing.T) {
 				t.Errorf("warning was not printed before plan:\n%s", out)
 			}
 		})
+
+		t.Run("target managers stopped", func(t *testing.T) {
+			fleet := newHAFleet(t, "cluster-a", "cluster-b")
+			a, b := fleet.cluster("cluster-a"), fleet.cluster("cluster-b")
+			b.stopManagerAsFailoverDoes("cnrm-system", "cnrm-controller-manager")
+			b.syncFailures = map[string]fleetSyncFailure{
+				fleetLeaseName: {
+					reason:        syncerv1alpha1.ReasonSyncFailed,
+					failedObjects: 3,
+					message:       "apply failed (Forbidden): MonitoringGroup.monitoring.cnrm.cloud.google.com. See the controller logs for details.",
+				},
+			}
+			fleet.settle()
+
+			out, err := fleet.failOver("cluster-b", func(opts *failoverOptions) {
+				opts.skipSyncCheck = true
+			})
+			if err != nil {
+				t.Fatalf("failover failed: %v\noutput:\n%s", err, out)
+			}
+
+			fleet.requireLeader(b)
+			a.requireManager("cnrm-system", "cnrm-controller-manager", 1)
+			b.requireManager("cnrm-system", "cnrm-controller-manager", 1)
+			fleet.requirePatches(
+				`start cluster-b `+fleetManager+` (replicas 1, annotation "") while cluster-a leads`,
+				`stop cluster-a `+fleetManager+` (annotation "1") while cluster-a leads and cluster-a,cluster-b run`,
+				`start cluster-a `+fleetManager+` (replicas 1, annotation "") while cluster-b leads`,
+			)
+			if !strings.Contains(out, wantWarn) {
+				t.Errorf("output does not contain warning:\n%s\nwant:\n%s", out, wantWarn)
+			}
+			warnIdx := strings.Index(out, wantWarn)
+			stopIdx := strings.Index(out, "stopped Config Connector's manager")
+			if stopIdx == -1 || warnIdx > stopIdx {
+				t.Errorf("warning was not printed before stopping managers:\n%s", out)
+			}
+			if !strings.Contains(out, "Failover complete") {
+				t.Errorf("output missing 'Failover complete':\n%s", out)
+			}
+		})
 	})
 
 	t.Run("KRMSyncer of every cluster fails while standby", func(t *testing.T) {
