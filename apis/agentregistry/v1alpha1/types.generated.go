@@ -235,6 +235,8 @@ type Skill struct {
 }
 */
 
+/* found existing non-generated go type "SkillRevision", skipping
+
 // +kcc:proto=google.cloud.agentregistry.v1.SkillRevision
 type SkillRevision struct {
 	// Optional. Immutable. Cloud Storage object generation URI.
@@ -251,6 +253,7 @@ type SkillRevision struct {
 	// +kcc:proto:field=google.cloud.agentregistry.v1.SkillRevision.name
 	Name *string `json:"name,omitempty"`
 }
+*/
 
 /* unreachable type SkillRevision_ScanResult
 // +kcc:proto=google.cloud.agentregistry.v1.SkillRevision.ScanResult
@@ -348,6 +351,7 @@ type SkillObservedState struct {
 }
 */
 
+/* unreachable type SkillRevisionObservedState
 // +kcc:observedstate:proto=google.cloud.agentregistry.v1.SkillRevision
 type SkillRevisionObservedState struct {
 	// Output only. The system-managed lifecycle state of this revision.
@@ -380,7 +384,9 @@ type SkillRevisionObservedState struct {
 	// +kcc:proto:field=google.cloud.agentregistry.v1.SkillRevision.scan_result
 	ScanResult *SkillRevision_ScanResultObservedState `json:"scanResult,omitempty"`
 }
+*/
 
+/* unreachable type SkillRevision_ScanResultObservedState
 // +kcc:observedstate:proto=google.cloud.agentregistry.v1.SkillRevision.ScanResult
 type SkillRevision_ScanResultObservedState struct {
 	// Output only. The state of the vulnerability check.
@@ -399,3 +405,4 @@ type SkillRevision_ScanResultObservedState struct {
 	// +kcc:proto:field=google.cloud.agentregistry.v1.SkillRevision.ScanResult.findings
 	Findings []string `json:"findings,omitempty"`
 }
+*/

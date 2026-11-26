@@ -8,6 +8,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
   name: agentregistryskills.agentregistry.cnrm.cloud.google.com
 spec:
@@ -61,10 +62,15 @@ spec:
           spec:
             description: AgentRegistrySkillSpec defines the desired state of AgentRegistrySkill
             properties:
-              defaultRevision:
-                description: 'Optional. The full resource name of the revision currently
-                  served by default (floating track). Format: `projects/{project}/locations/{location}/skills/{skill}/revisions/{revision}`'
-                type: string
+              defaultRevisionRef:
+                description: Optional. The revision currently served by default (floating
+                  track).
+                properties:
+                  external:
+                    description: A reference to an externally managed AgentRegistrySkillRevision
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/skills/{{skillID}}/revisions/{{revisionID}}".
+                    type: string
+                type: object
               description:
                 description: Optional. Brief summary describing the capabilities of
                   the skill. Maximum length is 2048 characters.
@@ -107,16 +113,15 @@ spec:
                     required:
                     - uri
                     type: object
-                  name:
-                    description: 'Identifier. Resource name of the SkillRevision.
-                      Format: `projects/{project}/locations/{location}/skills/{skill}/revisions/{revision}`'
-                    type: string
                 type: object
               location:
-                description: The location of this resource.
+                description: The location that this resource belongs to.
                 type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -147,13 +152,17 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
-              publisher:
-                description: 'Optional. The publisher resource associated with this
-                  skill. Format: `projects/{project}/locations/{location}/publishers/{publisher}`
-                  The publisher dictates the allowed namespace prefixes for the skill''s
-                  name and logical `skill_id` (e.g., Publisher `google` authorizes
-                  the `google-*` prefix).'
-                type: string
+              publisherRef:
+                description: Optional. The publisher resource associated with this
+                  skill. The publisher dictates the allowed namespace prefixes for
+                  the skill's name and logical `skill_id` (e.g., Publisher `google`
+                  authorizes the `google-*` prefix).
+                properties:
+                  external:
+                    description: A reference to an externally managed AgentRegistryPublisher
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/publishers/{{publisherID}}".
+                    type: string
+                type: object
               resourceID:
                 description: The AgentRegistrySkill name. If not given, the metadata.name
                   will be used.
@@ -249,78 +258,6 @@ spec:
                         type: object
                       name:
                         description: Required. The name of the skill.
-                        type: string
-                    type: object
-                  initialRevision:
-                    description: Optional. Input only. Optional nested initial revision
-                      payload to support standard one-shot creation. The server processes
-                      this field on input during creation but must never return it
-                      in responses.
-                    properties:
-                      createTime:
-                        description: Output only. Revision creation timestamp.
-                        type: string
-                      frontmatter:
-                        description: Output only. Extracted YAML frontmatter configuration
-                          snapshot.
-                        properties:
-                          compatibility:
-                            description: Optional. Environmental dependencies or companion
-                              services.
-                            type: string
-                          description:
-                            description: Required. Functional description.
-                            type: string
-                          license:
-                            description: Optional. License.
-                            type: string
-                          metadata:
-                            additionalProperties:
-                              type: string
-                            description: Optional. Extensible flattened map mapping
-                              custom tags, authors, and version parameters.
-                            type: object
-                          name:
-                            description: Required. The name of the skill.
-                            type: string
-                        type: object
-                      scanResult:
-                        description: Output only. Scan result of the skill revision.
-                        properties:
-                          errorMessage:
-                            description: Output only. The error message if the scan
-                              failed.
-                            type: string
-                          findings:
-                            description: Output only. The finding resource names for
-                              the skill revision.
-                            items:
-                              type: string
-                            type: array
-                          scanState:
-                            description: Output only. The state of the vulnerability
-                              check.
-                            type: string
-                          scanTime:
-                            description: Output only. The time when the scan was completed.
-                            type: string
-                        type: object
-                      sha256Hash:
-                        description: Output only. Cryptographic SHA-256 integrity
-                          and deduplication digest of the payload zip.
-                        type: string
-                      sizeBytes:
-                        description: Output only. Size of the compiled zip payload
-                          in bytes (assists client download progress).
-                        format: int64
-                        type: integer
-                      state:
-                        description: Output only. The system-managed lifecycle state
-                          of this revision.
-                        type: string
-                      uid:
-                        description: Output only. Universally unique identifier (UUID4)
-                          for the skill revision.
                         type: string
                     type: object
                   skillID:

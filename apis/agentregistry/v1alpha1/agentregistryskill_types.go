@@ -14,14 +14,12 @@
 
 // API sources for AgentRegistrySkill, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/25fb8ea2d4bfa8fd41e24b28029e34a4adc35db0/google/cloud/agentregistry/v1/skill.proto
-// +kcc:source:service-docs=https://docs.cloud.google.com/agent-registry/overview
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/agent-registry/overview/docs/reference/rest/v1/projects.locations.skills
+// +kcc:source:service-docs=https://cloud.google.com/gemini-enterprise-agent-platform/govern/agent-registry
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,14 +30,11 @@ var AgentRegistrySkillGVK = GroupVersion.WithKind("AgentRegistrySkill")
 // +kcc:spec:proto=google.cloud.agentregistry.v1.Skill
 // +kcc:required-from-proto
 type AgentRegistrySkillSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The AgentRegistrySkill name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Optional. Human-readable display name of the skill.
 	//  Maximum length is 128 characters.
 	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.display_name
@@ -60,20 +55,16 @@ type AgentRegistrySkillSpec struct {
 	// +required
 	TargetState *string `json:"targetState,omitempty"`
 
-	// Optional. The full resource name of the revision currently served by
-	//  default (floating track).
-	//  Format:
-	//  `projects/{project}/locations/{location}/skills/{skill}/revisions/{revision}`
+	// Optional. The revision currently served by default (floating track).
 	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.default_revision
-	DefaultRevision *string `json:"defaultRevision,omitempty"`
+	DefaultRevisionRef *AgentRegistrySkillRevisionRef `json:"defaultRevisionRef,omitempty"`
 
 	// Optional. The publisher resource associated with this skill.
-	//  Format: `projects/{project}/locations/{location}/publishers/{publisher}`
 	//  The publisher dictates the allowed namespace prefixes for the skill's name
 	//  and logical `skill_id` (e.g., Publisher `google` authorizes the `google-*`
 	//  prefix).
 	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.publisher
-	Publisher *string `json:"publisher,omitempty"`
+	PublisherRef *AgentRegistryPublisherRef `json:"publisherRef,omitempty"`
 
 	// Optional. Input only. Optional nested initial revision payload to support
 	//  standard one-shot creation. The server processes this field on input during
@@ -84,6 +75,17 @@ type AgentRegistrySkillSpec struct {
 	// Optional. Optional. Scanning configuration for the skill.
 	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.scanning_config
 	ScanningConfig *ScanningConfig `json:"scanningConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.agentregistry.v1.SkillRevision
+type SkillRevision struct {
+	// Optional. Immutable. Cloud Storage object generation URI.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.SkillRevision.gcs_source
+	GCSSource *GCSSource `json:"gcsSource,omitempty"`
+
+	// Optional. Immutable. Direct write-only raw archive upload source.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.SkillRevision.archive_upload_source
+	ArchiveUploadSource *ArchiveUploadSource `json:"archiveUploadSource,omitempty"`
 }
 
 // AgentRegistrySkillStatus defines the config connector machine state of AgentRegistrySkill
@@ -135,12 +137,6 @@ type AgentRegistrySkillObservedState struct {
 	// Output only. Update time.
 	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Optional. Input only. Optional nested initial revision payload to support
-	//  standard one-shot creation. The server processes this field on input during
-	//  creation but must never return it in responses.
-	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.initial_revision
-	InitialRevision *SkillRevisionObservedState `json:"initialRevision,omitempty"`
 }
 
 // +genclient
@@ -148,6 +144,7 @@ type AgentRegistrySkillObservedState struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpagentregistryskill;gcpagentregistryskills
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
