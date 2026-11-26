@@ -26,6 +26,7 @@ spec:
         identities:
         - serviceAccountRef:
             name: gsa-${uniqueId}
+        - group: kcc-eng@google.com
     - egressTo:
         resources:
         - projectRef:
@@ -35,6 +36,7 @@ spec:
         identities:
         - serviceAccountRef:
             name: gsa-${uniqueId}
+        - group: kcc-eng@google.com
         sources:
         - accessLevelRef:
             name: acl${uniqueId}
@@ -48,6 +50,22 @@ spec:
     restrictedServices:
     - notebooks.googleapis.com
   status:
+    egressPolicies:
+    - egressFrom:
+        identities:
+        - group: kcc-eng@google.com
+    - egressTo:
+        resources:
+        - projectRef:
+            name: project-${uniqueId}
+    ingressPolicies:
+    - ingressFrom:
+        identities:
+        - group: kcc-eng@google.com
+    - ingressTo:
+        resources:
+        - projectRef:
+            name: project-${uniqueId}
     restrictedServices:
     - bigquery.googleapis.com
   title: default policy ${uniqueId} 2

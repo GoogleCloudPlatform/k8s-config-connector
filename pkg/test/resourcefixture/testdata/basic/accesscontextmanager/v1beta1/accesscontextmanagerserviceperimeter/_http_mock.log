@@ -488,7 +488,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       {
         "egressFrom": {
           "identities": [
-            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+            "group:kcc-eng@google.com"
           ]
         }
       },
@@ -504,7 +505,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       {
         "ingressFrom": {
           "identities": [
-            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+            "group:kcc-eng@google.com"
           ],
           "sources": [
             {
@@ -529,6 +531,38 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     ]
   },
   "status": {
+    "egressPolicies": [
+      {
+        "egressFrom": {
+          "identities": [
+            "group:kcc-eng@google.com"
+          ]
+        }
+      },
+      {
+        "egressTo": {
+          "resources": [
+            "projects/${projectNumber}"
+          ]
+        }
+      }
+    ],
+    "ingressPolicies": [
+      {
+        "ingressFrom": {
+          "identities": [
+            "group:kcc-eng@google.com"
+          ]
+        }
+      },
+      {
+        "ingressTo": {
+          "resources": [
+            "projects/${projectNumber}"
+          ]
+        }
+      }
+    ],
     "restrictedServices": [
       "bigquery.googleapis.com"
     ]
@@ -564,7 +598,8 @@ X-Xss-Protection: 0
         {
           "egressFrom": {
             "identities": [
-              "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+              "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+              "group:kcc-eng@google.com"
             ]
           }
         },
@@ -580,7 +615,8 @@ X-Xss-Protection: 0
         {
           "ingressFrom": {
             "identities": [
-              "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+              "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+              "group:kcc-eng@google.com"
             ],
             "sources": [
               {
@@ -605,6 +641,38 @@ X-Xss-Protection: 0
       ]
     },
     "status": {
+      "egressPolicies": [
+        {
+          "egressFrom": {
+            "identities": [
+              "group:kcc-eng@google.com"
+            ]
+          }
+        },
+        {
+          "egressTo": {
+            "resources": [
+              "projects/${projectNumber}"
+            ]
+          }
+        }
+      ],
+      "ingressPolicies": [
+        {
+          "ingressFrom": {
+            "identities": [
+              "group:kcc-eng@google.com"
+            ]
+          }
+        },
+        {
+          "ingressTo": {
+            "resources": [
+              "projects/${projectNumber}"
+            ]
+          }
+        }
+      ],
       "restrictedServices": [
         "bigquery.googleapis.com"
       ]
@@ -640,7 +708,8 @@ X-Xss-Protection: 0
       {
         "egressFrom": {
           "identities": [
-            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+            "group:kcc-eng@google.com"
           ]
         }
       },
@@ -656,7 +725,8 @@ X-Xss-Protection: 0
       {
         "ingressFrom": {
           "identities": [
-            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+            "group:kcc-eng@google.com"
           ],
           "sources": [
             {
@@ -681,6 +751,38 @@ X-Xss-Protection: 0
     ]
   },
   "status": {
+    "egressPolicies": [
+      {
+        "egressFrom": {
+          "identities": [
+            "group:kcc-eng@google.com"
+          ]
+        }
+      },
+      {
+        "egressTo": {
+          "resources": [
+            "projects/${projectNumber}"
+          ]
+        }
+      }
+    ],
+    "ingressPolicies": [
+      {
+        "ingressFrom": {
+          "identities": [
+            "group:kcc-eng@google.com"
+          ]
+        }
+      },
+      {
+        "ingressTo": {
+          "resources": [
+            "projects/${projectNumber}"
+          ]
+        }
+      }
+    ],
     "restrictedServices": [
       "bigquery.googleapis.com"
     ]

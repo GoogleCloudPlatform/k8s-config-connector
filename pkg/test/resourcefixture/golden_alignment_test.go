@@ -688,6 +688,11 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "kubectlVersionSupportedCondition")
 		delete(v, "kustomizeVersionSupportedCondition")
 		delete(v, "skaffoldVersionSupportedCondition")
+		// AccessContextManagerServicePerimeter: real GCP returns output-only "etag"
+		// which is not yet present in the vendored accesscontextmanagerpb.ServicePerimeter proto.
+		if name, ok := v["name"].(string); ok && strings.Contains(name, "/servicePerimeters/") {
+			delete(v, "etag")
+		}
 		if dps, ok := v["deliveryPipelineSnapshot"].(map[string]interface{}); ok {
 			delete(dps, "etag")
 		}

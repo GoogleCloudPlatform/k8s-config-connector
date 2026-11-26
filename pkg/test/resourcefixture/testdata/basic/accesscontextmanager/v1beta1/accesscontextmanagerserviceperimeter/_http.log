@@ -410,7 +410,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "ServicePerimeter \"accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}\" not found.",
+    "message": "Service perimeter not found",
     "status": "NOT_FOUND"
   }
 }
@@ -445,6 +445,7 @@ X-Xss-Protection: 0
   "name": "operations/accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}/create/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.ServicePerimeter",
+    "etag": "abcdef0123A=",
     "name": "accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}",
     "title": "default policy ${uniqueId}"
   }
@@ -467,6 +468,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "etag": "abcdef0123A=",
   "name": "accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}",
   "title": "default policy ${uniqueId}"
 }
@@ -486,7 +488,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       {
         "egressFrom": {
           "identities": [
-            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+            "group:kcc-eng@google.com"
           ]
         }
       },
@@ -502,7 +505,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       {
         "ingressFrom": {
           "identities": [
-            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+            "group:kcc-eng@google.com"
           ],
           "sources": [
             {
@@ -527,6 +531,38 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     ]
   },
   "status": {
+    "egressPolicies": [
+      {
+        "egressFrom": {
+          "identities": [
+            "group:kcc-eng@google.com"
+          ]
+        }
+      },
+      {
+        "egressTo": {
+          "resources": [
+            "projects/${projectNumber}"
+          ]
+        }
+      }
+    ],
+    "ingressPolicies": [
+      {
+        "ingressFrom": {
+          "identities": [
+            "group:kcc-eng@google.com"
+          ]
+        }
+      },
+      {
+        "ingressTo": {
+          "resources": [
+            "projects/${projectNumber}"
+          ]
+        }
+      }
+    ],
     "restrictedServices": [
       "bigquery.googleapis.com"
     ]
@@ -553,6 +589,7 @@ X-Xss-Protection: 0
   "name": "operations/accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}/update/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.ServicePerimeter",
+    "etag": "abcdef0123A=",
     "name": "accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}",
     "spec": {
       "accessLevels": [
@@ -562,7 +599,8 @@ X-Xss-Protection: 0
         {
           "egressFrom": {
             "identities": [
-              "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+              "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+              "group:kcc-eng@google.com"
             ]
           }
         },
@@ -578,7 +616,8 @@ X-Xss-Protection: 0
         {
           "ingressFrom": {
             "identities": [
-              "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+              "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+              "group:kcc-eng@google.com"
             ],
             "sources": [
               {
@@ -603,6 +642,38 @@ X-Xss-Protection: 0
       ]
     },
     "status": {
+      "egressPolicies": [
+        {
+          "egressFrom": {
+            "identities": [
+              "group:kcc-eng@google.com"
+            ]
+          }
+        },
+        {
+          "egressTo": {
+            "resources": [
+              "projects/${projectNumber}"
+            ]
+          }
+        }
+      ],
+      "ingressPolicies": [
+        {
+          "ingressFrom": {
+            "identities": [
+              "group:kcc-eng@google.com"
+            ]
+          }
+        },
+        {
+          "ingressTo": {
+            "resources": [
+              "projects/${projectNumber}"
+            ]
+          }
+        }
+      ],
       "restrictedServices": [
         "bigquery.googleapis.com"
       ]
@@ -629,6 +700,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "etag": "abcdef0123A=",
   "name": "accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}",
   "spec": {
     "accessLevels": [
@@ -638,7 +710,8 @@ X-Xss-Protection: 0
       {
         "egressFrom": {
           "identities": [
-            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+            "group:kcc-eng@google.com"
           ]
         }
       },
@@ -654,7 +727,8 @@ X-Xss-Protection: 0
       {
         "ingressFrom": {
           "identities": [
-            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+            "group:kcc-eng@google.com"
           ],
           "sources": [
             {
@@ -679,6 +753,38 @@ X-Xss-Protection: 0
     ]
   },
   "status": {
+    "egressPolicies": [
+      {
+        "egressFrom": {
+          "identities": [
+            "group:kcc-eng@google.com"
+          ]
+        }
+      },
+      {
+        "egressTo": {
+          "resources": [
+            "projects/${projectNumber}"
+          ]
+        }
+      }
+    ],
+    "ingressPolicies": [
+      {
+        "ingressFrom": {
+          "identities": [
+            "group:kcc-eng@google.com"
+          ]
+        }
+      },
+      {
+        "ingressTo": {
+          "resources": [
+            "projects/${projectNumber}"
+          ]
+        }
+      }
+    ],
     "restrictedServices": [
       "bigquery.googleapis.com"
     ]
