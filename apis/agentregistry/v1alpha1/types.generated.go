@@ -18,12 +18,64 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.agentregistry.v1
 // resource: AgentRegistryService:Service
+// resource: AgentRegistrySkill:Skill
+// resource: AgentRegistryBinding:Binding
 
 package v1alpha1
 
 import (
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
+
+// +kcc:proto=google.cloud.agentregistry.v1.ArchiveUploadSource
+type ArchiveUploadSource struct {
+	// Required. Input only. Write-only raw ZIP/TAR archive payload bytes
+	//  containing the skill package.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.ArchiveUploadSource.archive_content
+	// +required
+	ArchiveContent []byte `json:"archiveContent,omitempty"`
+}
+
+/* unreachable type Frontmatter
+// +kcc:proto=google.cloud.agentregistry.v1.Frontmatter
+type Frontmatter struct {
+	// Required. The name of the skill.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Frontmatter.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Functional description.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Frontmatter.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. License.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Frontmatter.license
+	License *string `json:"license,omitempty"`
+
+	// Optional. Environmental dependencies or companion services.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Frontmatter.compatibility
+	Compatibility *string `json:"compatibility,omitempty"`
+
+	// Optional. Extensible flattened map mapping custom tags, authors, and
+	//  version parameters.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Frontmatter.metadata
+	Metadata map[string]string `json:"metadata,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.agentregistry.v1.GcsSource
+type GCSSource struct {
+	// Required. Cloud Storage object URI.
+	//  Format:
+	//  `gs://{bucket_name}/{object_name}`
+	// +kcc:proto:field=google.cloud.agentregistry.v1.GcsSource.uri
+	// +required
+	URI *string `json:"uri,omitempty"`
+
+	// Optional. Cloud Storage object generation ID. If not specified, the latest
+	//  generation is used.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.GcsSource.generation
+	Generation *int64 `json:"generation,omitempty"`
+}
 
 // +kcc:proto=google.cloud.agentregistry.v1.Interface
 type Interface struct {
@@ -36,6 +88,13 @@ type Interface struct {
 	// +kcc:proto:field=google.cloud.agentregistry.v1.Interface.protocol_binding
 	// +required
 	ProtocolBinding *string `json:"protocolBinding,omitempty"`
+}
+
+// +kcc:proto=google.cloud.agentregistry.v1.ScanningConfig
+type ScanningConfig struct {
+	// Optional. The security scanning policy.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.ScanningConfig.policy
+	Policy *string `json:"policy,omitempty"`
 }
 
 /* found existing non-generated go type with proto tag "google.cloud.agentregistry.v1.Service", skipping
@@ -80,7 +139,7 @@ type Service struct {
 
 // +kcc:proto=google.cloud.agentregistry.v1.Service.AgentSpec
 type Service_AgentSpec struct {
-	// Required. The type of the agent spec content.
+	// Required. Immutable. The type of the agent spec content.
 	// +kcc:proto:field=google.cloud.agentregistry.v1.Service.AgentSpec.type
 	// +required
 	Type *string `json:"type,omitempty"`
@@ -94,7 +153,7 @@ type Service_AgentSpec struct {
 
 // +kcc:proto=google.cloud.agentregistry.v1.Service.EndpointSpec
 type Service_EndpointSpec struct {
-	// Required. The type of the endpoint spec content.
+	// Required. Immutable. The type of the endpoint spec content.
 	// +kcc:proto:field=google.cloud.agentregistry.v1.Service.EndpointSpec.type
 	// +required
 	Type *string `json:"type,omitempty"`
@@ -107,7 +166,7 @@ type Service_EndpointSpec struct {
 
 // +kcc:proto=google.cloud.agentregistry.v1.Service.McpServerSpec
 type Service_McpServerSpec struct {
-	// Required. The type of the MCP Server spec content.
+	// Required. Immutable. The type of the MCP Server spec content.
 	// +kcc:proto:field=google.cloud.agentregistry.v1.Service.McpServerSpec.type
 	// +required
 	Type *string `json:"type,omitempty"`
@@ -117,6 +176,110 @@ type Service_McpServerSpec struct {
 	//  The content size is limited to `10KB`.
 	// +kcc:proto:field=google.cloud.agentregistry.v1.Service.McpServerSpec.content
 	Content apiextensionsv1.JSON `json:"content,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.agentregistry.v1.Skill", skipping
+
+// +kcc:proto=google.cloud.agentregistry.v1.Skill
+type Skill struct {
+	// Identifier. Resource name of the Skill.
+	//  Format: `projects/{project}/locations/{location}/skills/{skill}`
+	//  The `{skill}` segment acts as the resource ID. If the skill is associated
+	//  with a Publisher, this segment typically uses a hyphenated namespace prefix
+	//  corresponding to the publisher (e.g., `google-workspace-create-docs`).
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Human-readable display name of the skill.
+	//  Maximum length is 128 characters.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. Brief summary describing the capabilities of the skill.
+	//  Maximum length is 2048 characters.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. Structural deployment type (SIMPLE leaf vs COMPOSITE bundle).
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.type
+	Type *string `json:"type,omitempty"`
+
+	// Required. User-managed target state of the skill.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.target_state
+	TargetState *string `json:"targetState,omitempty"`
+
+	// Optional. The full resource name of the revision currently served by
+	//  default (floating track).
+	//  Format:
+	//  `projects/{project}/locations/{location}/skills/{skill}/revisions/{revision}`
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.default_revision
+	DefaultRevision *string `json:"defaultRevision,omitempty"`
+
+	// Optional. The publisher resource associated with this skill.
+	//  Format: `projects/{project}/locations/{location}/publishers/{publisher}`
+	//  The publisher dictates the allowed namespace prefixes for the skill's name
+	//  and logical `skill_id` (e.g., Publisher `google` authorizes the `google-*`
+	//  prefix).
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.publisher
+	Publisher *string `json:"publisher,omitempty"`
+
+	// Optional. Input only. Optional nested initial revision payload to support
+	//  standard one-shot creation. The server processes this field on input during
+	//  creation but must never return it in responses.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.initial_revision
+	InitialRevision *SkillRevision `json:"initialRevision,omitempty"`
+
+	// Optional. Optional. Scanning configuration for the skill.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.scanning_config
+	ScanningConfig *ScanningConfig `json:"scanningConfig,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.agentregistry.v1.SkillRevision
+type SkillRevision struct {
+	// Optional. Immutable. Cloud Storage object generation URI.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.SkillRevision.gcs_source
+	GCSSource *GCSSource `json:"gcsSource,omitempty"`
+
+	// Optional. Immutable. Direct write-only raw archive upload source.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.SkillRevision.archive_upload_source
+	ArchiveUploadSource *ArchiveUploadSource `json:"archiveUploadSource,omitempty"`
+
+	// Identifier. Resource name of the SkillRevision.
+	//  Format:
+	//  `projects/{project}/locations/{location}/skills/{skill}/revisions/{revision}`
+	// +kcc:proto:field=google.cloud.agentregistry.v1.SkillRevision.name
+	Name *string `json:"name,omitempty"`
+}
+
+/* unreachable type SkillRevision_ScanResult
+// +kcc:proto=google.cloud.agentregistry.v1.SkillRevision.ScanResult
+type SkillRevision_ScanResult struct {
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.agentregistry.v1.Frontmatter
+type FrontmatterObservedState struct {
+	// Required. The name of the skill.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Frontmatter.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Functional description.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Frontmatter.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. License.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Frontmatter.license
+	License *string `json:"license,omitempty"`
+
+	// Optional. Environmental dependencies or companion services.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Frontmatter.compatibility
+	Compatibility *string `json:"compatibility,omitempty"`
+
+	// Optional. Extensible flattened map mapping custom tags, authors, and
+	//  version parameters.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Frontmatter.metadata
+	Metadata map[string]string `json:"metadata,omitempty"`
 }
 
 /* found existing non-generated go type with proto tag "google.cloud.agentregistry.v1.Service", skipping
@@ -141,3 +304,98 @@ type ServiceObservedState struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
+
+/* found existing non-generated go type with proto tag "google.cloud.agentregistry.v1.Skill", skipping
+
+// +kcc:observedstate:proto=google.cloud.agentregistry.v1.Skill
+type SkillObservedState struct {
+	// Output only. Universally unique identifier (UUID4) for the logical
+	//  container.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. The system-managed state of the skill.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Lightweight frontmatter metadata attributes copied from the
+	//  default revision.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.frontmatter
+	Frontmatter *FrontmatterObservedState `json:"frontmatter,omitempty"`
+
+	// Output only. A stable, globally unique logical identifier for the skill.
+	//  It is securely constructed by the backend by combining the associated
+	//  `publisher`'s verified namespace and the skill's resource ID to enforce
+	//  strict ownership. For example, the prefix `google-` is reserved exclusively
+	//  for first-party Google publishers to prevent namespace squatting.
+	//  Example: `urn:skill:google-workspace:create-docs`
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.skill_id
+	SkillID *string `json:"skillID,omitempty"`
+
+	// Output only. Create time.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Update time.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Optional. Input only. Optional nested initial revision payload to support
+	//  standard one-shot creation. The server processes this field on input during
+	//  creation but must never return it in responses.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Skill.initial_revision
+	InitialRevision *SkillRevisionObservedState `json:"initialRevision,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.agentregistry.v1.SkillRevision
+type SkillRevisionObservedState struct {
+	// Output only. The system-managed lifecycle state of this revision.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.SkillRevision.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Cryptographic SHA-256 integrity and deduplication digest of
+	//  the payload zip.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.SkillRevision.sha256_hash
+	Sha256Hash *string `json:"sha256Hash,omitempty"`
+
+	// Output only. Extracted YAML frontmatter configuration snapshot.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.SkillRevision.frontmatter
+	Frontmatter *FrontmatterObservedState `json:"frontmatter,omitempty"`
+
+	// Output only. Revision creation timestamp.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.SkillRevision.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Size of the compiled zip payload in bytes (assists client
+	//  download progress).
+	// +kcc:proto:field=google.cloud.agentregistry.v1.SkillRevision.size_bytes
+	SizeBytes *int64 `json:"sizeBytes,omitempty"`
+
+	// Output only. Universally unique identifier (UUID4) for the skill revision.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.SkillRevision.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. Scan result of the skill revision.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.SkillRevision.scan_result
+	ScanResult *SkillRevision_ScanResultObservedState `json:"scanResult,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.agentregistry.v1.SkillRevision.ScanResult
+type SkillRevision_ScanResultObservedState struct {
+	// Output only. The state of the vulnerability check.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.SkillRevision.ScanResult.scan_state
+	ScanState *string `json:"scanState,omitempty"`
+
+	// Output only. The time when the scan was completed.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.SkillRevision.ScanResult.scan_time
+	ScanTime *string `json:"scanTime,omitempty"`
+
+	// Output only. The error message if the scan failed.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.SkillRevision.ScanResult.error_message
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+
+	// Output only. The finding resource names for the skill revision.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.SkillRevision.ScanResult.findings
+	Findings []string `json:"findings,omitempty"`
+}

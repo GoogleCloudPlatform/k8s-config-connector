@@ -72,7 +72,7 @@ spec:
                       specified type. The content size is limited to `10KB`.
                     x-kubernetes-preserve-unknown-fields: true
                   type:
-                    description: Required. The type of the agent spec content.
+                    description: Required. Immutable. The type of the agent spec content.
                     type: string
                 required:
                 - type
@@ -94,7 +94,8 @@ spec:
                       for future use.
                     x-kubernetes-preserve-unknown-fields: true
                   type:
-                    description: Required. The type of the endpoint spec content.
+                    description: Required. Immutable. The type of the endpoint spec
+                      content.
                     type: string
                 required:
                 - type
@@ -130,7 +131,8 @@ spec:
                       The content size is limited to `10KB`.
                     x-kubernetes-preserve-unknown-fields: true
                   type:
-                    description: Required. The type of the MCP Server spec content.
+                    description: Required. Immutable. The type of the MCP Server spec
+                      content.
                     type: string
                 required:
                 - type

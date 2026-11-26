@@ -1,3 +1,4 @@
+[not_representable] crd=agentregistryskills.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.initialRevision.gcsSource.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.metadata.featureAttributionsSchemaURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputConfig.bigquerySource.inputURI" reason=bq-scheme-not-a-gcp-resource-name
 [not_representable] crd=aiplatformbatchpredictionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputConfig.bigqueryDestination.outputURI" reason=bq-scheme-not-a-gcp-resource-name

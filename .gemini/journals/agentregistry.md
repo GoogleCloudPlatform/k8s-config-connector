@@ -35,5 +35,16 @@
   7. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` and verified all tests pass.
 - **Impact**: `AgentRegistryService` controller and fixtures are complete and ready for MockGCP implementation.
 
+### [2026-11-26] Greenfield Step 1a: Prepopulate direct KRM types, identity, and judgement queue for AgentRegistrySkill
+- **Context**: Prepopulating direct KRM types, identity, reference, and `judgement_queue.yaml` for `AgentRegistrySkill` under `agentregistry.cnrm.cloud.google.com/v1alpha1` (Issue #16484).
+- **Details**:
+  1. Updated `apis/agentregistry/generate.sh` PROTO_SHA to `25fb8ea2d4bfa8fd41e24b28029e34a4adc35db0` which introduces `google.cloud.agentregistry.v1.Skill` protos.
+  2. Added `generate-types --prepopulate-resource` and `generate-identity` for `AgentRegistrySkill:Skill`.
+  3. Added `--skip-proto Skill,ScanningConfig,Frontmatter,ArchiveUploadSource,SkillRevision,ScanResult,GcsSource,Publisher,SkillEncryptionSpec` to `generate-mapper` because the Go client library (`cloud.google.com/go/agentregistry`) has not yet generated and released the Go pb types for `Skill`.
+  4. Executed `./apis/agentregistry/generate.sh` to generate `agentregistryskill_types.go`, `agentregistryskill_identity.generated.go`, `agentregistryskill_reference.generated.go`, `agentregistryskill_identity_generated_test.go`, CRD, and update `judgement_queue.yaml`.
+  5. Added `AgentRegistrySkill` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  6. Verified `pkg/gcpurls` (`TestRegisteredTemplatesMatchCAI`) and updated golden exceptions in `tests/apichecks/testdata/exceptions/{alpha-missingfields.txt,refs_not_representable.txt}`.
+- **Impact**: Establishes initial direct KRM types, identity, and judgement queue for `AgentRegistrySkill` ready for Step 1b triage.
+
 
 
