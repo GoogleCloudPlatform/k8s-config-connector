@@ -215,4 +215,22 @@
   7. Generated `_http_mock.log` files with zero diff on the target resource against authentic real GCP golden logs (`_http.log`) and 0 diff in golden objects. Passed `TestGoldenLogAlignment` and `./dev/ci/presubmits/tests-e2e-fixtures-suite dialogflow`.
 - **Impact**: Enables hermetic mock testing and end-to-end reconciliation for `DialogflowGeneratorEvaluation` without requiring live GCP access.
 
+### [2026-11-26] DialogflowTool Greenfield Step 1b Judgement Queue Triage
+- **Context**: Triaging judgement queue and finalizing direct KRM types, identity, and references for DialogflowTool under `dialogflow.cnrm.cloud.google.com/v1alpha1` (Issue #16543).
+- **Details**:
+  1. `DialogflowTool` belongs to `google.cloud.dialogflow.cx.v3` (GCP resource: `projects/{project}/locations/{location}/agents/{agent}/tools/{tool}`).
+  2. Modeled child parentage with required, immutable `spec.parentRef *DialogflowCXAgentRef` (`json:"parentRef"`) per `go/kcc-oneparent` (Case B). Replaced `projectRef`, `location`, and guessed `agentRef`.
+  3. Confirmed server-generated identity conforming to `identity.ServerGeneratedIdentity` as `CreateToolRequest` has no `tool_id` parameter; updated `ResourceID` comment in spec.
+  4. Moved and isolated `Tool_*` nested structs in `apis/dialogflow/v1alpha1/dialogflowtool_types.go` so they are cleanly maintained with `DialogflowTool`.
+  5. Converted references:
+     - `spec.openAPISpec.authentication.apiKeyConfig.secretVersionForAPIKey`: `secretVersionForAPIKeyRef (*refsv1beta1.SecretManagerSecretVersionRef)`.
+     - `spec.openAPISpec.authentication.bearerTokenConfig.secretVersionForToken`: `secretVersionForTokenRef (*refsv1beta1.SecretManagerSecretVersionRef)`.
+     - `spec.openAPISpec.authentication.oauthConfig.secretVersionForClientSecret`: `secretVersionForClientSecretRef (*refsv1beta1.SecretManagerSecretVersionRef)`.
+     - `spec.openAPISpec.authentication.serviceAccountAuthConfig.serviceAccount`: `serviceAccountRef (*refsv1beta1.IAMServiceAccountRef)`.
+     - `spec.openAPISpec.serviceDirectoryConfig.service`: `serviceRef (*servicedirectoryv1beta1.ServiceDirectoryServiceRef)`.
+     - Forked `Tool_DataStoreConnection` for `spec.dataStoreSpec.dataStoreConnections[]` with `dataStoreRef (*discoveryenginev1alpha1.DiscoveryEngineDataStoreRef)` to avoid mutating shared `DataStoreConnection` used by untriaged `DialogflowFlow` and `DialogflowPage`.
+  6. Resolved `spec.openAPISpec.authentication.oauthConfig.clientID` and `clientSecret` as `not-applicable` (OAuth client ID and plaintext client secret from external OAuth provider, not GCP resource references).
+  7. Resolved all 13 judgement queue entries in `apis/dialogflow/judgement_queue.yaml`.
+  8. Regenerated types, identity, mappers, CRDs, and updated `alpha-missingfields.txt`.
+- **Impact**: Cleanly finalizes direct KRM types, IdentityV2 conformance, references, CRD schema, and generated mappers for `DialogflowTool`.
 
