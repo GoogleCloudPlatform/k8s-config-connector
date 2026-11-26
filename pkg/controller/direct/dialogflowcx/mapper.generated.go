@@ -75,6 +75,30 @@ func DialogflowCXEntityTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.Dialo
 	out.Redact = direct.ValueOf(in.Redact)
 	return out
 }
+func DialogflowCXGeneratorSpec_FromProto(mapCtx *direct.MapContext, in *pb.Generator) *krm.DialogflowCXGeneratorSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowCXGeneratorSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.PromptText = Phrase_FromProto(mapCtx, in.GetPromptText())
+	out.Placeholders = direct.Slice_FromProto(mapCtx, in.Placeholders, Generator_Placeholder_FromProto)
+	out.ModelParameter = Generator_ModelParameter_FromProto(mapCtx, in.GetModelParameter())
+	return out
+}
+func DialogflowCXGeneratorSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowCXGeneratorSpec) *pb.Generator {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Generator{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.PromptText = Phrase_ToProto(mapCtx, in.PromptText)
+	out.Placeholders = direct.Slice_ToProto(mapCtx, in.Placeholders, Generator_Placeholder_ToProto)
+	out.ModelParameter = Generator_ModelParameter_ToProto(mapCtx, in.ModelParameter)
+	return out
+}
 func EntityType_Entity_FromProto(mapCtx *direct.MapContext, in *pb.EntityType_Entity) *krm.EntityType_Entity {
 	if in == nil {
 		return nil
@@ -107,5 +131,61 @@ func EntityType_ExcludedPhrase_ToProto(mapCtx *direct.MapContext, in *krm.Entity
 	}
 	out := &pb.EntityType_ExcludedPhrase{}
 	out.Value = direct.ValueOf(in.Value)
+	return out
+}
+func Generator_ModelParameter_FromProto(mapCtx *direct.MapContext, in *pb.Generator_ModelParameter) *krm.Generator_ModelParameter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Generator_ModelParameter{}
+	out.Temperature = in.Temperature
+	out.MaxDecodeSteps = in.MaxDecodeSteps
+	out.TopP = in.TopP
+	out.TopK = in.TopK
+	return out
+}
+func Generator_ModelParameter_ToProto(mapCtx *direct.MapContext, in *krm.Generator_ModelParameter) *pb.Generator_ModelParameter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Generator_ModelParameter{}
+	out.Temperature = in.Temperature
+	out.MaxDecodeSteps = in.MaxDecodeSteps
+	out.TopP = in.TopP
+	out.TopK = in.TopK
+	return out
+}
+func Generator_Placeholder_FromProto(mapCtx *direct.MapContext, in *pb.Generator_Placeholder) *krm.Generator_Placeholder {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Generator_Placeholder{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.Name = direct.LazyPtr(in.GetName())
+	return out
+}
+func Generator_Placeholder_ToProto(mapCtx *direct.MapContext, in *krm.Generator_Placeholder) *pb.Generator_Placeholder {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Generator_Placeholder{}
+	out.Id = direct.ValueOf(in.ID)
+	out.Name = direct.ValueOf(in.Name)
+	return out
+}
+func Phrase_FromProto(mapCtx *direct.MapContext, in *pb.Phrase) *krm.Phrase {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Phrase{}
+	out.Text = direct.LazyPtr(in.GetText())
+	return out
+}
+func Phrase_ToProto(mapCtx *direct.MapContext, in *krm.Phrase) *pb.Phrase {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Phrase{}
+	out.Text = direct.ValueOf(in.Text)
 	return out
 }
