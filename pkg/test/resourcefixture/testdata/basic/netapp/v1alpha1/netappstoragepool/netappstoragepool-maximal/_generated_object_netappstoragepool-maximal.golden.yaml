@@ -1,0 +1,38 @@
+apiVersion: netapp.cnrm.cloud.google.com/v1alpha1
+kind: NetAppStoragePool
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+    label-new: value-new
+    label-one: value-two
+  name: netappstoragepool-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  capacityGib: 4096
+  description: Updated description for maximal storage pool
+  location: us-central1
+  networkRef:
+    external: projects/${projectId}/global/networks/default
+  projectRef:
+    external: projects/${projectId}
+  replicaZone: us-central1-b
+  serviceLevel: STANDARD
+  zone: us-central1-a
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/storagePools/netappstoragepool-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    availableThroughputMibps: 64
+    createTime: "1970-01-01T00:00:00Z"
+    encryptionType: SERVICE_MANAGED
+    state: READY

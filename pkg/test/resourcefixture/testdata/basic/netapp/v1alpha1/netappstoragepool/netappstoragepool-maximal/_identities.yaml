@@ -1,0 +1,6 @@
+- caisURL: //netapp.googleapis.com/projects/${projectId}/locations/us-central1/storagePools/netappstoragepool-${uniqueId}
+  group: netapp.cnrm.cloud.google.com
+  kind: NetAppStoragePool
+  name: netappstoragepool-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
