@@ -186,6 +186,15 @@
   - `well-known-proto-type`: Confirmed `google.protobuf.Value` representation across 18 entries and marked resolved/accepted.
   - `untriaged-bulk-generation`: Resolved with resolution `accepted`.
 
+### [2026-11-26] Greenfield Step 2: Implement direct controller, fuzzer, and E2E fixtures for DesignCenterPolicy
+- **Context**: Greenfield implementation of direct controller, round-trip fuzzer, and real-GCP recorded E2E fixtures for `DesignCenterPolicy` (`designcenter.cnrm.cloud.google.com/v1alpha1`, Issue #16505).
+- **Resolutions & Findings**:
+  - **Controller and Fuzzer**: Generated using `controllerbuilder generate-controller` and `generate-fuzzer --prepopulate-resource`. The controller registers with `static_config.go` and uses the standard REST GAPIC client with `NormalizeGreenfieldReferences` and `CompareGreenfieldSpec`.
+  - **API Behavior on Create**: Real GCP requires a non-empty URI (`policyURI` or `policyRevisionURI`) even though protobuf marked it optional; creating a policy without URI fails with HTTP 400 Bad Request (`The request was invalid: invalid policy: uri cannot be empty: invalid argument`). Used `organizations/12345/locations/global/frameworks/test-framework` in test fixtures.
+  - **Fixtures & Golden Logs**: Created `designcenterpolicy-minimal` and `designcenterpolicy-maximal` fixtures under parent `DesignCenterApplicationTemplate` and grandparent `DesignCenterSpace` (`projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}`). Recorded against real GCP (`cnrm-barni-4`) using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`.
+  - **Lifecycle & Updates**: Verified Create, Update (`displayName`, `description`, `applyConditions`), and Delete phases against real GCP, passing all 7/7 HTTP report validation checks and re-reconciliation testing. Both fixtures produced rich `_audit_probe.log` entries with authentic service audit probe data.
+  - **Validation**: 200-seed focused round-trip fuzzer (`TestFocusedMappers/DesignCenterPolicy`), `TestCRDFieldPresenceInTestsForAlpha`, and presubmit unit tests all passed cleanly.
+
 
 
 

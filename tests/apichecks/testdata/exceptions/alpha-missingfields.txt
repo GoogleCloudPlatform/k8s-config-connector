@@ -3843,8 +3843,6 @@
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.ociRepo.uri" is not set in unstructured objects
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.ociRepo.version" is not set in unstructured objects
 [missing_field] crd=designcentercatalogtemplaterevisions.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.type" is not set in unstructured objects
-[missing_field] crd=designcenterpolicies.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.applyConditions[].conditionKey" is not set in unstructured objects
-[missing_field] crd=designcenterpolicies.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.applyConditions[].conditionValue" is not set in unstructured objects
 [missing_field] crd=designcenterpolicies.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudControlConfigs[].cloudControlRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=designcenterpolicies.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudControlConfigs[].parameters[].key" is not set in unstructured objects
 [missing_field] crd=designcenterpolicies.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudControlConfigs[].parameters[].value.boolValue" is not set in unstructured objects
@@ -3853,12 +3851,7 @@
 [missing_field] crd=designcenterpolicies.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudControlConfigs[].parameters[].value.numberValue" is not set in unstructured objects
 [missing_field] crd=designcenterpolicies.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudControlConfigs[].parameters[].value.stringValue" is not set in unstructured objects
 [missing_field] crd=designcenterpolicies.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudControlConfigs[].parameters[].value.structValue" is not set in unstructured objects
-[missing_field] crd=designcenterpolicies.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=designcenterpolicies.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=designcenterpolicies.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=designcenterpolicies.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.policyRevisionURI" is not set in unstructured objects
-[missing_field] crd=designcenterpolicies.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.policyType" is not set in unstructured objects
-[missing_field] crd=designcenterpolicies.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.policyURI" is not set in unstructured objects
 [missing_field] crd=designcenterspaces.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.tags" is not set in unstructured objects
 [missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
 [missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.bitbucketCloudConfig.authorizerCredential.userTokenSecretVersion" is not set in unstructured objects
