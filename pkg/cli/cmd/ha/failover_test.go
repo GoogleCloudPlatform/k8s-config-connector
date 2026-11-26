@@ -124,8 +124,14 @@ func TestFailoverFlagDefaults(t *testing.T) {
 	if got, want := flags.Lookup(failoverDryRunFlag).DefValue, "false"; got != want {
 		t.Errorf("default of --%s is %q, want %q", failoverDryRunFlag, got, want)
 	}
+	if got, want := flags.Lookup(skipSyncCheckFlag).DefValue, "false"; got != want {
+		t.Errorf("default of --%s is %q, want %q", skipSyncCheckFlag, got, want)
+	}
 
 	opts := newFailoverOptions()
+	if opts.skipSyncCheck != false {
+		t.Errorf("opts.skipSyncCheck = %v, want false", opts.skipSyncCheck)
+	}
 	if opts.timeout != 5*time.Minute {
 		t.Errorf("opts.timeout = %s, want 5m0s", opts.timeout)
 	}
@@ -1641,6 +1647,459 @@ func TestFailoverGivesUpWhenTheLeaseMovesWhileTheManagersOfTheTargetStart(t *tes
 	}
 	// The target's managers stay started. Nothing else was touched.
 	fleet.requirePatches(`start cluster-b ` + fleetManager + ` (replicas 1, annotation "") while cluster-a leads`)
+}
+
+// Failover refuses a target whose KRMSyncers report that they do not sync from the leader.
+func TestFailoverRefusesWhenTargetKRMSyncerDoesNotSync(t *testing.T) {
+	tests := []struct {
+		name    string
+		prepare func(t *testing.T, fleet *haFleet, b *fleetCluster)
+		wantErr string
+	}{
+		{
+			name: "SyncFailed, 3 failed objects",
+			prepare: func(t *testing.T, fleet *haFleet, b *fleetCluster) {
+				b.syncFailures = map[string]fleetSyncFailure{
+					fleetLeaseName: {
+						reason:        syncerv1alpha1.ReasonSyncFailed,
+						failedObjects: 3,
+						message:       "apply failed (Forbidden): MonitoringGroup.monitoring.cnrm.cloud.google.com. See the controller logs for details.",
+					},
+				}
+				fleet.settle()
+			},
+			wantErr: `cluster "cluster-b" is not ready to take over: it does not sync from the leader (--skip-sync-check fails over anyway): KRMSyncer cnrm-system/kcc-multicluster-lease is failing to sync 3 objects (SyncFailed): apply failed (Forbidden): MonitoringGroup.monitoring.cnrm.cloud.google.com. See the controller logs for details.`,
+		},
+		{
+			name: "SyncFailed, 0 failed objects",
+			prepare: func(t *testing.T, fleet *haFleet, b *fleetCluster) {
+				b.syncFailures = map[string]fleetSyncFailure{
+					fleetLeaseName: {
+						reason:        syncerv1alpha1.ReasonSyncFailed,
+						failedObjects: 0,
+						message:       "watch failed (Forbidden): APIGatewayAPI.apigateway.cnrm.cloud.google.com, APIQuotaAdjusterSettings.cloudquota.cnrm.cloud.google.com, APIQuotaPreference.cloudquota.cnrm.cloud.google.com, and 294 more kinds. See the controller logs for details.",
+					},
+				}
+				fleet.settle()
+			},
+			wantErr: `cluster "cluster-b" is not ready to take over: it does not sync from the leader (--skip-sync-check fails over anyway): KRMSyncer cnrm-system/kcc-multicluster-lease is failing to sync (SyncFailed): watch failed (Forbidden): APIGatewayAPI.apigateway.cnrm.cloud.google.com, APIQuotaAdjusterSettings.cloudquota.cnrm.cloud.google.com, APIQuotaPreference.cloudquota.cnrm.cloud.google.com, and 294 more kinds. See the controller logs for details.`,
+		},
+		{
+			name: "RemoteUnreachable",
+			prepare: func(t *testing.T, fleet *haFleet, b *fleetCluster) {
+				b.syncFailures = map[string]fleetSyncFailure{
+					fleetLeaseName: {
+						reason:  syncerv1alpha1.ReasonRemoteUnreachable,
+						message: "remote cluster " + fleetIdentity("cluster-a") + ": Unauthorized",
+					},
+				}
+				fleet.settle()
+			},
+			wantErr: `cluster "cluster-b" is not ready to take over: it does not sync from the leader (--skip-sync-check fails over anyway): KRMSyncer cnrm-system/kcc-multicluster-lease is not syncing (RemoteUnreachable): remote cluster ` + fleetIdentity("cluster-a") + `: Unauthorized`,
+		},
+		{
+			name: "SetupFailed",
+			prepare: func(t *testing.T, fleet *haFleet, b *fleetCluster) {
+				b.syncFailures = map[string]fleetSyncFailure{
+					fleetLeaseName: {
+						reason:  syncerv1alpha1.ReasonSetupFailed,
+						message: "discovery failed",
+					},
+				}
+				fleet.settle()
+			},
+			wantErr: `cluster "cluster-b" is not ready to take over: it does not sync from the leader (--skip-sync-check fails over anyway): KRMSyncer cnrm-system/kcc-multicluster-lease is not syncing (SetupFailed): discovery failed`,
+		},
+		{
+			name: "no Ready condition",
+			prepare: func(t *testing.T, fleet *haFleet, b *fleetCluster) {
+				b.noSyncer = true
+				syncer := b.syncer(fleetLeaseName)
+				syncer.Status.Conditions = nil
+				if err := b.backend.Status().Update(context.Background(), syncer); err != nil {
+					t.Fatalf("updating KRMSyncer status: %v", err)
+				}
+			},
+			wantErr: `cluster "cluster-b" is not ready to take over: it does not sync from the leader (--skip-sync-check fails over anyway): KRMSyncer cnrm-system/kcc-multicluster-lease has not reported a Ready condition; check that the syncer-controller-manager is running`,
+		},
+		{
+			name: "status.observedGeneration behind metadata.generation",
+			prepare: func(t *testing.T, fleet *haFleet, b *fleetCluster) {
+				b.noSyncer = true
+				syncer := b.syncer(fleetLeaseName)
+				syncer.Generation = 2
+				syncer.Status.ObservedGeneration = 1
+				if err := b.backend.Update(context.Background(), syncer); err != nil {
+					t.Fatalf("updating KRMSyncer: %v", err)
+				}
+				if err := b.backend.Status().Update(context.Background(), syncer); err != nil {
+					t.Fatalf("updating KRMSyncer status: %v", err)
+				}
+			},
+			wantErr: `cluster "cluster-b" is not ready to take over: it does not sync from the leader (--skip-sync-check fails over anyway): KRMSyncer cnrm-system/kcc-multicluster-lease has not processed its latest spec yet; check that the syncer-controller-manager is running`,
+		},
+	}
+
+	for _, tc := range tests {
+		for _, dryRun := range []bool{false, true} {
+			mode := "live"
+			if dryRun {
+				mode = "dry-run"
+			}
+			t.Run(tc.name+"/"+mode, func(t *testing.T) {
+				fleet := newHAFleet(t, "cluster-a", "cluster-b")
+				a, b := fleet.cluster("cluster-a"), fleet.cluster("cluster-b")
+				tc.prepare(t, fleet, b)
+
+				out, err := fleet.failOver("cluster-b", func(opts *failoverOptions) {
+					opts.dryRun = dryRun
+				})
+
+				requireErrorContains(t, err, tc.wantErr)
+				fleet.requirePatches()
+				if fleet.holder != a {
+					t.Errorf("cluster %q holds the lease, want cluster-a still", fleet.holder.name)
+				}
+				if strings.Contains(out, "stopped") {
+					t.Errorf("the output says that something was stopped:\n%s", out)
+				}
+				if strings.Contains(out, "[dry-run]") {
+					t.Errorf("the dry-run output contains a plan:\n%s", out)
+				}
+			})
+		}
+	}
+}
+
+// --skip-sync-check lets failover proceed even if the standby KRMSyncers report problems.
+func TestFailoverWithSkipSyncCheck(t *testing.T) {
+	t.Run("target syncer fails, completes with warning", func(t *testing.T) {
+		const problem = "KRMSyncer cnrm-system/kcc-multicluster-lease is failing to sync 3 objects (SyncFailed): apply failed (Forbidden): MonitoringGroup.monitoring.cnrm.cloud.google.com. See the controller logs for details."
+		wantWarn := `cluster "cluster-b": --skip-sync-check is set, so failing over although it does not sync from the leader: ` + problem
+
+		t.Run("live", func(t *testing.T) {
+			fleet := newHAFleet(t, "cluster-a", "cluster-b")
+			a, b := fleet.cluster("cluster-a"), fleet.cluster("cluster-b")
+			b.syncFailures = map[string]fleetSyncFailure{
+				fleetLeaseName: {
+					reason:        syncerv1alpha1.ReasonSyncFailed,
+					failedObjects: 3,
+					message:       "apply failed (Forbidden): MonitoringGroup.monitoring.cnrm.cloud.google.com. See the controller logs for details.",
+				},
+			}
+			fleet.settle()
+
+			out, err := fleet.failOver("cluster-b", func(opts *failoverOptions) {
+				opts.skipSyncCheck = true
+			})
+			if err != nil {
+				t.Fatalf("failover failed: %v\noutput:\n%s", err, out)
+			}
+
+			fleet.requireLeader(b)
+			a.requireManager("cnrm-system", "cnrm-controller-manager", 1)
+			fleet.requirePatches(
+				`stop cluster-a `+fleetManager+` (annotation "1") while cluster-a leads and cluster-a,cluster-b run`,
+				`start cluster-a `+fleetManager+` (replicas 1, annotation "") while cluster-b leads`,
+			)
+			if !strings.Contains(out, wantWarn) {
+				t.Errorf("output does not contain warning:\n%s\nwant:\n%s", out, wantWarn)
+			}
+			warnIdx := strings.Index(out, wantWarn)
+			stopIdx := strings.Index(out, "stopped Config Connector's manager")
+			if stopIdx == -1 || warnIdx > stopIdx {
+				t.Errorf("warning was not printed before stopping managers:\n%s", out)
+			}
+			if !strings.Contains(out, "Failover complete") {
+				t.Errorf("output missing 'Failover complete':\n%s", out)
+			}
+		})
+
+		t.Run("dry-run", func(t *testing.T) {
+			fleet := newHAFleet(t, "cluster-a", "cluster-b")
+			a, b := fleet.cluster("cluster-a"), fleet.cluster("cluster-b")
+			b.syncFailures = map[string]fleetSyncFailure{
+				fleetLeaseName: {
+					reason:        syncerv1alpha1.ReasonSyncFailed,
+					failedObjects: 3,
+					message:       "apply failed (Forbidden): MonitoringGroup.monitoring.cnrm.cloud.google.com. See the controller logs for details.",
+				},
+			}
+			fleet.settle()
+
+			out, err := fleet.failOver("cluster-b", func(opts *failoverOptions) {
+				opts.skipSyncCheck = true
+				opts.dryRun = true
+			})
+			if err != nil {
+				t.Fatalf("dry-run failed: %v\noutput:\n%s", err, out)
+			}
+
+			fleet.requireLeader(a)
+			fleet.requirePatches()
+			if !strings.Contains(out, wantWarn) {
+				t.Errorf("output does not contain warning:\n%s\nwant:\n%s", out, wantWarn)
+			}
+			warnIdx := strings.Index(out, wantWarn)
+			planIdx := strings.Index(out, "[dry-run]")
+			if planIdx == -1 || warnIdx > planIdx {
+				t.Errorf("warning was not printed before plan:\n%s", out)
+			}
+		})
+
+		t.Run("target managers stopped", func(t *testing.T) {
+			fleet := newHAFleet(t, "cluster-a", "cluster-b")
+			a, b := fleet.cluster("cluster-a"), fleet.cluster("cluster-b")
+			b.stopManagerAsFailoverDoes("cnrm-system", "cnrm-controller-manager")
+			b.syncFailures = map[string]fleetSyncFailure{
+				fleetLeaseName: {
+					reason:        syncerv1alpha1.ReasonSyncFailed,
+					failedObjects: 3,
+					message:       "apply failed (Forbidden): MonitoringGroup.monitoring.cnrm.cloud.google.com. See the controller logs for details.",
+				},
+			}
+			fleet.settle()
+
+			out, err := fleet.failOver("cluster-b", func(opts *failoverOptions) {
+				opts.skipSyncCheck = true
+			})
+			if err != nil {
+				t.Fatalf("failover failed: %v\noutput:\n%s", err, out)
+			}
+
+			fleet.requireLeader(b)
+			a.requireManager("cnrm-system", "cnrm-controller-manager", 1)
+			b.requireManager("cnrm-system", "cnrm-controller-manager", 1)
+			fleet.requirePatches(
+				`start cluster-b `+fleetManager+` (replicas 1, annotation "") while cluster-a leads`,
+				`stop cluster-a `+fleetManager+` (annotation "1") while cluster-a leads and cluster-a,cluster-b run`,
+				`start cluster-a `+fleetManager+` (replicas 1, annotation "") while cluster-b leads`,
+			)
+			if !strings.Contains(out, wantWarn) {
+				t.Errorf("output does not contain warning:\n%s\nwant:\n%s", out, wantWarn)
+			}
+			warnIdx := strings.Index(out, wantWarn)
+			stopIdx := strings.Index(out, "stopped Config Connector's manager")
+			if stopIdx == -1 || warnIdx > stopIdx {
+				t.Errorf("warning was not printed before stopping managers:\n%s", out)
+			}
+			if !strings.Contains(out, "Failover complete") {
+				t.Errorf("output missing 'Failover complete':\n%s", out)
+			}
+		})
+	})
+
+	t.Run("KRMSyncer of every cluster fails while standby", func(t *testing.T) {
+		fleet := newHAFleet(t, "cluster-a", "cluster-b")
+		a, b := fleet.cluster("cluster-a"), fleet.cluster("cluster-b")
+		failure := fleetSyncFailure{
+			reason:        syncerv1alpha1.ReasonSyncFailed,
+			failedObjects: 2,
+			message:       "apply failed",
+		}
+		a.syncFailures = map[string]fleetSyncFailure{fleetLeaseName: failure}
+		b.syncFailures = map[string]fleetSyncFailure{fleetLeaseName: failure}
+		fleet.settle()
+
+		out, err := fleet.failOver("cluster-b", func(opts *failoverOptions) {
+			opts.skipSyncCheck = true
+		})
+		if err != nil {
+			t.Fatalf("failover failed: %v\noutput:\n%s", err, out)
+		}
+
+		fleet.requireLeader(b)
+		a.requireManager("cnrm-system", "cnrm-controller-manager", 1)
+		if !strings.Contains(out, `cluster "cluster-a": follows the new leader`) {
+			t.Errorf("output does not report cluster-a follows the new leader:\n%s", out)
+		}
+		if !strings.Contains(out, "Failover complete") {
+			t.Errorf("output does not report Failover complete:\n%s", out)
+		}
+	})
+}
+
+// After failover, the old leader must follow the new leader. If its KRMSyncer fails to sync,
+// failover reports that it does not follow.
+func TestFailoverStandbyKRMSyncerFailsAfterTakeover(t *testing.T) {
+	fleet := newHAFleet(t, "cluster-a", "cluster-b")
+	a, b := fleet.cluster("cluster-a"), fleet.cluster("cluster-b")
+	a.syncFailures = map[string]fleetSyncFailure{
+		fleetLeaseName: {
+			reason:        syncerv1alpha1.ReasonSyncFailed,
+			failedObjects: 3,
+			message:       "apply failed (Forbidden): MonitoringGroup.monitoring.cnrm.cloud.google.com. See the controller logs for details.",
+		},
+	}
+	fleet.settle()
+
+	out, err := fleet.failOverUntilTimeout("cluster-b")
+
+	requireErrorContains(t, err,
+		`cluster "cluster-b" is the leader, but: cluster "cluster-a" does not follow it yet: timed out after 500ms: KRMSyncer cnrm-system/kcc-multicluster-lease is failing to sync 3 objects (SyncFailed): apply failed (Forbidden): MonitoringGroup.monitoring.cnrm.cloud.google.com. See the controller logs for details.`,
+	)
+	fleet.requireLeader(b)
+	a.requireManager("cnrm-system", "cnrm-controller-manager", 1)
+	if strings.Contains(out, "Failover complete") {
+		t.Errorf("the output reports success:\n%s", out)
+	}
+}
+
+// With three clusters, if the standby that is neither leader nor target has a syncer failure,
+// failover names that cluster and not the old leader.
+func TestFailoverOtherStandbyKRMSyncerFails(t *testing.T) {
+	fleet := newHAFleet(t, "cluster-a", "cluster-b", "cluster-c")
+	a, b, c := fleet.cluster("cluster-a"), fleet.cluster("cluster-b"), fleet.cluster("cluster-c")
+	c.syncFailures = map[string]fleetSyncFailure{
+		fleetLeaseName: {
+			reason:        syncerv1alpha1.ReasonSyncFailed,
+			failedObjects: 1,
+			message:       "apply failed",
+		},
+	}
+	fleet.settle()
+
+	out, err := fleet.failOverUntilTimeout("cluster-b")
+
+	requireErrorContains(t, err,
+		`cluster "cluster-b" is the leader, but: cluster "cluster-c" does not follow it yet: timed out after 500ms: KRMSyncer cnrm-system/kcc-multicluster-lease is failing to sync 1 objects (SyncFailed): apply failed`,
+	)
+	if strings.Contains(err.Error(), "cluster-a") {
+		t.Errorf("error unexpectedly named cluster-a: %v", err)
+	}
+	fleet.requireLeader(b)
+	a.requireManager("cnrm-system", "cnrm-controller-manager", 1)
+	c.requireManager("cnrm-system", "cnrm-controller-manager", 1)
+	if strings.Contains(out, "Failover complete") {
+		t.Errorf("the output reports success:\n%s", out)
+	}
+}
+
+// An earlier failover left the target's managers stopped, and its KRMSyncer fails.
+// Failover starts the manager, but refuses to proceed when the syncer fails to sync.
+func TestFailoverTargetKRMSyncerFailsWhenManagersWereStopped(t *testing.T) {
+	fleet := newHAFleet(t, "cluster-a", "cluster-b", "cluster-c")
+	a, _, c := fleet.cluster("cluster-a"), fleet.cluster("cluster-b"), fleet.cluster("cluster-c")
+	c.stopManagerAsFailoverDoes("cnrm-system", "cnrm-controller-manager")
+	fleet.settle()
+	c.syncFailures = map[string]fleetSyncFailure{
+		fleetLeaseName: {
+			reason:        syncerv1alpha1.ReasonSyncFailed,
+			failedObjects: 3,
+			message:       "apply failed",
+		},
+	}
+
+	_, err := fleet.failOverUntilTimeout("cluster-c")
+
+	requireErrorContains(t, err,
+		`cluster "cluster-c" is not ready to take over: timed out after 500ms: KRMSyncer cnrm-system/kcc-multicluster-lease is failing to sync 3 objects (SyncFailed): apply failed`,
+	)
+	fleet.requirePatches(`start cluster-c ` + fleetManager + ` (replicas 1, annotation "") while cluster-a leads`)
+	fleet.requireLeader(a)
+}
+
+// The target's syncer stops, and its KRMSyncer keeps the status that it had.
+// Failover completes: the new leader's KRMSyncer is suspended, and its status is not read.
+func TestFailoverTargetSyncerStoppedKeepsPreviousStatus(t *testing.T) {
+	fleet := newHAFleet(t, "cluster-a", "cluster-b")
+	a, b := fleet.cluster("cluster-a"), fleet.cluster("cluster-b")
+	b.noSyncer = true
+
+	out, err := fleet.failOver("cluster-b")
+	if err != nil {
+		t.Fatalf("failover failed: %v\noutput:\n%s", err, out)
+	}
+
+	fleet.requireLeader(b)
+	a.requireManager("cnrm-system", "cnrm-controller-manager", 1)
+	if !strings.Contains(out, "Failover complete") {
+		t.Errorf("output does not report Failover complete:\n%s", out)
+	}
+}
+
+// In namespaced mode, the KRMSyncer of one namespace fails on the target.
+func TestFailoverNamespacedModeSyncerFails(t *testing.T) {
+	fleet := newHAFleet(t, "cluster-a", "cluster-b")
+	a, b := fleet.cluster("cluster-a"), fleet.cluster("cluster-b")
+	for _, c := range fleet.clusters {
+		c.useNamespacedMode(map[string]string{"team-a": "cnrm-system", "team-b": "cnrm-system"})
+	}
+	fleet.settle()
+	fleet.requireLeader(a)
+
+	b.syncFailures = map[string]fleetSyncFailure{
+		fleetLeaseName + "-team-b": {
+			reason:        syncerv1alpha1.ReasonSyncFailed,
+			failedObjects: 1,
+			message:       "apply failed",
+		},
+	}
+	fleet.settle()
+
+	// Refused, naming that KRMSyncer.
+	_, err := fleet.failOver("cluster-b")
+	requireErrorContains(t, err,
+		`cluster "cluster-b" is not ready to take over: it does not sync from the leader (--skip-sync-check fails over anyway): KRMSyncer cnrm-system/kcc-multicluster-lease-team-b is failing to sync 1 objects (SyncFailed): apply failed`,
+	)
+	fleet.requirePatches()
+	fleet.requireLeader(a)
+
+	// With that namespace's manager scaled to 0 on both clusters: completes.
+	for _, c := range fleet.clusters {
+		c.scaleManager(c.manager("cnrm-system", "cnrm-controller-manager-team-b"), 0)
+	}
+	fleet.settle()
+
+	out, err := fleet.failOver("cluster-b")
+	if err != nil {
+		t.Fatalf("failover failed: %v\noutput:\n%s", err, out)
+	}
+	fleet.requireLeader(b)
+	if !strings.Contains(out, "Failover complete") {
+		t.Errorf("output does not report Failover complete:\n%s", out)
+	}
+}
+
+// With resourceReplicationMode: Disabled, a leftover failing KRMSyncer does not block failover.
+func TestFailoverReplicationDisabledWithFailingLeftoverSyncer(t *testing.T) {
+	fleet := newHAFleet(t, "cluster-a", "cluster-b")
+	a, b := fleet.cluster("cluster-a"), fleet.cluster("cluster-b")
+	for _, c := range fleet.clusters {
+		c.updateConfigConnector(func(cc *operatorv1beta1.ConfigConnector) {
+			cc.Spec.Experiments.MultiClusterLease.ResourceReplicationMode = "Disabled"
+		})
+		for _, syncer := range c.syncers() {
+			if err := c.backend.Delete(context.Background(), &syncer); err != nil {
+				t.Fatalf("deleting KRMSyncer %s: %v", syncer.Name, err)
+			}
+		}
+	}
+
+	// Create a leftover failing KRMSyncer on cluster-b.
+	leftover := &syncerv1alpha1.KRMSyncer{
+		ObjectMeta: metav1.ObjectMeta{Namespace: fleetLeaseNamespace, Name: fleetLeaseName},
+		Spec:       newSyncerSpec(a.gke, false),
+		Status: syncerv1alpha1.KRMSyncerStatus{
+			Conditions: []metav1.Condition{{
+				Type:    syncerv1alpha1.ConditionReady,
+				Status:  metav1.ConditionFalse,
+				Reason:  syncerv1alpha1.ReasonSyncFailed,
+				Message: "apply failed",
+			}},
+		},
+	}
+	b.noSyncer = true
+	b.create(leftover)
+
+	out, err := fleet.failOver("cluster-b")
+	if err != nil {
+		t.Fatalf("failover failed: %v\noutput:\n%s", err, out)
+	}
+	fleet.requireLeader(b)
+	if !strings.Contains(out, "Failover complete") {
+		t.Errorf("output does not report Failover complete:\n%s", out)
+	}
 }
 
 func (c *fleetCluster) syncer(name string) *syncerv1alpha1.KRMSyncer {

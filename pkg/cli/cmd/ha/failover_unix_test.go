@@ -102,11 +102,14 @@ func newSignalTestCluster(t *testing.T, name, holder string, namespaces []string
 		sts.Generation = 1
 		sts.Status = appsv1.StatefulSetStatus{ObservedGeneration: 1, Replicas: 1, ReadyReplicas: 1}
 		c.managers = append(c.managers, sts)
-		c.syncers = append(c.syncers, syncerv1alpha1.KRMSyncer{
+		syncer := syncerv1alpha1.KRMSyncer{
 			TypeMeta:   metav1.TypeMeta{APIVersion: "syncer.gkelabs.io/v1alpha1", Kind: "KRMSyncer"},
 			ObjectMeta: metav1.ObjectMeta{Namespace: fleetLeaseNamespace, Name: syncerName},
 			Spec:       newSyncerSpec(leaderGKE, isLeader),
-		})
+		}
+		// What a working syncer reports. Without it, failover refuses the target.
+		syncer.Status.Conditions = []metav1.Condition{syncerReady(&syncer)}
+		c.syncers = append(c.syncers, syncer)
 	}
 	c.server = httptest.NewServer(http.HandlerFunc(c.serveHTTP))
 	t.Cleanup(c.server.Close)
