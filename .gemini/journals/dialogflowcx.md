@@ -9,3 +9,10 @@
   - `status.externalRef` and `status.name` are populated in status update.
 - **Regional Endpoint Construction**: Dialogflow CX API uses endpoint format `{location}-dialogflow.googleapis.com` (e.g. `global-dialogflow.googleapis.com`). Endpoints must be formatted without `:443` port suffix to cleanly align with GAPIC REST client HTTP request URLs.
 - **Reconciliation & CompareGreenfieldSpec**: Using `common.CompareGreenfieldSpec` with `DialogflowCXAgentSpec_FromProto` and `DialogflowCXAgentSpec_ToProto` accurately identifies spec field diffs and produces field mask for `UpdateAgentRequest`.
+
+## DialogflowCXGenerator Types & Identity
+
+- **Child Resource Hierarchy**: `DialogflowCXGenerator` is a child resource under `DialogflowCXAgent` (`projects/{project}/locations/{location}/agents/{agent}/generators/{generator}`). Per Greenfield Case B parent standards, it models `spec.parentRef` pointing to `DialogflowCXAgentRef` and omits `ProjectRef` and `Location`.
+- **Server-Generated ID**: `CreateGeneratorRequest` does not accept a client-assigned ID parameter (`name` is populated automatically by Dialogflow on creation), so `DialogflowCXGeneratorIdentity` implements `identity.ServerGeneratedIdentity` and `spec.resourceID` is optional and used for acquisition only.
+- **ObservedState**: The `Generator` proto message defines no `OUTPUT_ONLY` fields other than `name` (which maps to identity/externalRef); hence `ObservedState` is commented out in status.
+

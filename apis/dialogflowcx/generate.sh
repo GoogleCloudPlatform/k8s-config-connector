@@ -49,7 +49,9 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DialogflowCXEntityType:EntityType \
   --resource DialogflowCXWebhook:Webhook \
   --resource DialogflowCXPage:Page \
-  --resource DialogflowCXIntent:Intent
+  --resource DialogflowCXIntent:Intent \
+  --resource DialogflowCXGenerator:Generator \
+  --prepopulate-resource
 
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.dialogflow.cx.v3 \
@@ -58,12 +60,14 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource DialogflowCXFlow:Flow \
   --resource DialogflowCXIntent:Intent \
   --resource DialogflowCXPage:Page \
-  --resource DialogflowCXWebhook:Webhook
+  --resource DialogflowCXWebhook:Webhook \
+  --resource DialogflowCXGenerator:Generator
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.cx.v3 \
   --api-version dialogflowcx.cnrm.cloud.google.com/v1alpha1 \
-  --skip-proto Flow,Fulfillment,EventHandler,ResponseMessage,NluSettings,TransitionRoute,ConditionalCases,SetParameterAction,ConversationSuccess,LiveAgentHandoff,OutputAudioText,PlayAudio,TelephonyTransferCall,Text,Agent,SpeechToTextSettings,Page,Form,Parameter,FillBehavior,Webhook,GenericWebService,ServiceDirectoryConfig,Intent,TrainingPhrase,Part
+  --skip-proto Flow,Fulfillment,EventHandler,ResponseMessage,NluSettings,TransitionRoute,ConditionalCases,SetParameterAction,ConversationSuccess,LiveAgentHandoff,OutputAudioText,PlayAudio,TelephonyTransferCall,Text,Agent,SpeechToTextSettings,Page,Form,Parameter,FillBehavior,Webhook,GenericWebService,ServiceDirectoryConfig,Intent,TrainingPhrase,Part \
+  --prepopulate-resource
 
 cd ${REPO_ROOT}
 if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then

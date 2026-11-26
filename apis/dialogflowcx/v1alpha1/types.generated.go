@@ -22,6 +22,7 @@
 // resource: DialogflowCXWebhook:Webhook
 // resource: DialogflowCXPage:Page
 // resource: DialogflowCXIntent:Intent
+// resource: DialogflowCXGenerator:Generator
 
 package v1alpha1
 
@@ -666,6 +667,81 @@ type GCSDestination struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Generator", skipping
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Generator
+type Generator struct {
+	// The unique identifier of the generator.
+	//  Must be set for the
+	//  [Generators.UpdateGenerator][google.cloud.dialogflow.cx.v3.Generators.UpdateGenerator]
+	//  method. [Generators.CreateGenerate][] populates the name automatically.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Generator.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The human-readable name of the generator, unique within the
+	//  agent. The prompt contains pre-defined parameters such as $conversation,
+	//  $last-user-utterance, etc. populated by Dialogflow. It can also contain
+	//  custom placeholders which will be resolved during fulfillment.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Generator.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Required. Prompt for the LLM model.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Generator.prompt_text
+	PromptText *Phrase `json:"promptText,omitempty"`
+
+	// Optional. List of custom placeholders in the prompt text.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Generator.placeholders
+	Placeholders []Generator_Placeholder `json:"placeholders,omitempty"`
+
+	// Parameters passed to the LLM to configure its behavior.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Generator.model_parameter
+	ModelParameter *Generator_ModelParameter `json:"modelParameter,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Generator.ModelParameter
+type Generator_ModelParameter struct {
+	// The temperature used for sampling. Temperature sampling occurs after both
+	//  topP and topK have been applied.
+	//  Valid range: [0.0, 1.0]
+	//  Low temperature = less random. High temperature = more random.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Generator.ModelParameter.temperature
+	Temperature *float32 `json:"temperature,omitempty"`
+
+	// The maximum number of tokens to generate.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Generator.ModelParameter.max_decode_steps
+	MaxDecodeSteps *int32 `json:"maxDecodeSteps,omitempty"`
+
+	// If set, only the tokens comprising the top top_p probability mass are
+	//  considered. If both top_p and top_k are
+	//  set, top_p will be used for further refining candidates selected with
+	//  top_k.
+	//  Valid range: (0.0, 1.0].
+	//  Small topP = less random. Large topP = more random.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Generator.ModelParameter.top_p
+	TopP *float32 `json:"topP,omitempty"`
+
+	// If set, the sampling process in each step is limited to the top_k tokens
+	//  with highest probabilities.
+	//  Valid range: [1, 40] or 1000+.
+	//  Small topK = less random. Large topK = more random.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Generator.ModelParameter.top_k
+	TopK *int32 `json:"topK,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Generator.Placeholder
+type Generator_Placeholder struct {
+	// Unique ID used to map custom placeholder to parameters in fulfillment.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Generator.Placeholder.id
+	ID *string `json:"id,omitempty"`
+
+	// Custom placeholder value in the prompt text.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Generator.Placeholder.name
+	Name *string `json:"name,omitempty"`
+}
+
 /* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Intent", skipping
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Intent
@@ -736,8 +812,7 @@ type Intent struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Intent.Parameter", skipping
-
+/* unreachable type Intent_Parameter
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Intent.Parameter
 type Intent_Parameter struct {
 	// Required. The unique identifier of the parameter. This field
@@ -772,8 +847,7 @@ type Intent_Parameter struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase", skipping
-
+/* unreachable type Intent_TrainingPhrase
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase
 type Intent_TrainingPhrase struct {
 
@@ -806,8 +880,7 @@ type Intent_TrainingPhrase struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.Part", skipping
-
+/* unreachable type Intent_TrainingPhrase_Part
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.Part
 type Intent_TrainingPhrase_Part struct {
 	// Required. The text for this part.
@@ -857,8 +930,7 @@ type KnowledgeConnectorSettings struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.NluSettings", skipping
-
+/* unreachable type NluSettings
 // +kcc:proto=google.cloud.dialogflow.cx.v3.NluSettings
 type NluSettings struct {
 	// Indicates the type of NLU model.
@@ -973,6 +1045,14 @@ type Page struct {
 	KnowledgeConnectorSettings *KnowledgeConnectorSettings `json:"knowledgeConnectorSettings,omitempty"`
 }
 */
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Phrase
+type Phrase struct {
+	// Required. Text input which can be used for prompt or banned phrases.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Phrase.text
+	// +required
+	Text *string `json:"text,omitempty"`
+}
 
 /* found existing non-generated go type "ResponseMessage", skipping
 
@@ -1227,8 +1307,7 @@ type Webhook struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Webhook.GenericWebService", skipping
-
+/* unreachable type Webhook_GenericWebService
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Webhook.GenericWebService
 type Webhook_GenericWebService struct {
 	// Required. The webhook URI for receiving POST requests. It must use https
@@ -1321,8 +1400,7 @@ type Webhook_GenericWebService_OAuthConfig struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Webhook.ServiceDirectoryConfig", skipping
-
+/* unreachable type Webhook_ServiceDirectoryConfig
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Webhook.ServiceDirectoryConfig
 type Webhook_ServiceDirectoryConfig struct {
 	// Required. The name of [Service
@@ -1378,8 +1456,7 @@ type Value struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.EventHandler", skipping
-
+/* unreachable type EventHandlerObservedState
 // +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.EventHandler
 type EventHandlerObservedState struct {
 	// Output only. The unique identifier of this event handler.
@@ -1440,8 +1517,7 @@ type FlowObservedState struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Form", skipping
-
+/* unreachable type FormObservedState
 // +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Form
 type FormObservedState struct {
 	// Parameters to collect from the user.
@@ -1450,8 +1526,7 @@ type FormObservedState struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Form.Parameter", skipping
-
+/* unreachable type Form_ParameterObservedState
 // +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Form.Parameter
 type Form_ParameterObservedState struct {
 	// Required. Defines fill behavior for the parameter.
@@ -1460,8 +1535,7 @@ type Form_ParameterObservedState struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Form.Parameter.FillBehavior", skipping
-
+/* unreachable type Form_Parameter_FillBehaviorObservedState
 // +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Form.Parameter.FillBehavior
 type Form_Parameter_FillBehaviorObservedState struct {
 	// Required. The fulfillment to provide the initial prompt that the agent
@@ -1506,8 +1580,7 @@ type Form_Parameter_FillBehaviorObservedState struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Fulfillment", skipping
-
+/* unreachable type FulfillmentObservedState
 // +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Fulfillment
 type FulfillmentObservedState struct {
 	// The list of rich message responses to present to the user.
@@ -1520,8 +1593,7 @@ type FulfillmentObservedState struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Fulfillment.ConditionalCases", skipping
-
+/* unreachable type Fulfillment_ConditionalCasesObservedState
 // +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Fulfillment.ConditionalCases
 type Fulfillment_ConditionalCasesObservedState struct {
 	// A list of cascading if-else conditions.
@@ -1559,8 +1631,7 @@ type IntentObservedState struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase", skipping
-
+/* unreachable type Intent_TrainingPhraseObservedState
 // +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase
 type Intent_TrainingPhraseObservedState struct {
 	// Output only. The unique identifier of the training phrase.
@@ -1633,8 +1704,7 @@ type PageObservedState struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.ResponseMessage", skipping
-
+/* unreachable type ResponseMessageObservedState
 // +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.ResponseMessage
 type ResponseMessageObservedState struct {
 	// Returns a text response.
@@ -1703,8 +1773,7 @@ type ResponseMessage_MixedAudio_SegmentObservedState struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.ResponseMessage.OutputAudioText", skipping
-
+/* unreachable type ResponseMessage_OutputAudioTextObservedState
 // +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.OutputAudioText
 type ResponseMessage_OutputAudioTextObservedState struct {
 	// Output only. Whether the playback of this message can be interrupted by
@@ -1715,8 +1784,7 @@ type ResponseMessage_OutputAudioTextObservedState struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.ResponseMessage.PlayAudio", skipping
-
+/* unreachable type ResponseMessage_PlayAudioObservedState
 // +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.PlayAudio
 type ResponseMessage_PlayAudioObservedState struct {
 	// Output only. Whether the playback of this message can be interrupted by
@@ -1727,8 +1795,7 @@ type ResponseMessage_PlayAudioObservedState struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.ResponseMessage.Text", skipping
-
+/* unreachable type ResponseMessage_TextObservedState
 // +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.Text
 type ResponseMessage_TextObservedState struct {
 	// Output only. Whether the playback of this message can be interrupted by
@@ -1739,8 +1806,7 @@ type ResponseMessage_TextObservedState struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.TransitionRoute", skipping
-
+/* unreachable type TransitionRouteObservedState
 // +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.TransitionRoute
 type TransitionRouteObservedState struct {
 	// Output only. The unique identifier of this transition route.

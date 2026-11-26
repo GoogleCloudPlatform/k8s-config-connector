@@ -3955,6 +3955,15 @@
 [missing_field] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.setParameterActions[].value" is not set in unstructured objects
 [missing_field] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.tag" is not set in unstructured objects
 [missing_field] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.webhook" is not set in unstructured objects
+[missing_field] crd=dialogflowcxgenerators.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=dialogflowcxgenerators.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelParameter.maxDecodeSteps" is not set in unstructured objects
+[missing_field] crd=dialogflowcxgenerators.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelParameter.temperature" is not set in unstructured objects
+[missing_field] crd=dialogflowcxgenerators.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelParameter.topK" is not set in unstructured objects
+[missing_field] crd=dialogflowcxgenerators.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelParameter.topP" is not set in unstructured objects
+[missing_field] crd=dialogflowcxgenerators.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dialogflowcxgenerators.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.placeholders[].id" is not set in unstructured objects
+[missing_field] crd=dialogflowcxgenerators.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.placeholders[].name" is not set in unstructured objects
+[missing_field] crd=dialogflowcxgenerators.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.promptText.text" is not set in unstructured objects
 [missing_field] crd=dialogflowcxintents.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=dialogflowcxintents.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=dialogflowcxintents.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.isFallback" is not set in unstructured objects
