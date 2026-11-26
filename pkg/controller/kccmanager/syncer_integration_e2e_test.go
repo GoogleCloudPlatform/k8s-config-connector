@@ -332,6 +332,20 @@ func TestSyncerIntegration_RulesOnlyForServedKinds(t *testing.T) {
 	if !foundFolderRule {
 		t.Errorf("Folder rule not found in syncer rules: %v", rules)
 	}
+
+	// When this cluster becomes the leader, the syncer is suspended and keeps its rules.
+	if err := si.EnsureSuspended(ctx); err != nil {
+		t.Fatalf("EnsureSuspended after installing CRD: %v", err)
+	}
+	suspended := getSyncer()
+	suspend, _, _ := unstructured.NestedBool(suspended.Object, "spec", "suspend")
+	if !suspend {
+		t.Errorf("KRMSyncer %s: spec.suspend = %v, want true", suspended.GetName(), suspend)
+	}
+	rules, _, _ = unstructured.NestedSlice(suspended.Object, "spec", "rules")
+	if len(rules) != 2 {
+		t.Fatalf("expected 2 rules after EnsureSuspended, got %d: %v", len(rules), rules)
+	}
 }
 
 // The ConfigConnector CRD requires gkeCluster and rejects the deprecated clusterCandidateIdentity.

@@ -19,11 +19,13 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"time"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/discovery"
+	"k8s.io/client-go/rest"
 )
 
 func TestGetDesiredSyncers(t *testing.T) {
@@ -125,8 +127,9 @@ func TestServedGVKsWithServiceGeneratedIDs(t *testing.T) {
 				GroupVersion: "resourcemanager.cnrm.cloud.google.com/v1beta1",
 				APIResources: []metav1.APIResource{
 					{Name: "folders", Kind: "Folder"},
-					{Name: "folders/status", Kind: "Folder"}, // Subresource should be ignored
-					{Name: "projects", Kind: "Project"},      // Not in syncerGVKsWithServiceGeneratedIDs
+					{Name: "folders/status", Kind: "Folder"},             // Subresource should be ignored
+					{Name: "folders/liens", Kind: "ResourceManagerLien"}, // Subresource of kind on list should also be ignored
+					{Name: "projects", Kind: "Project"},                  // Not in syncerGVKsWithServiceGeneratedIDs
 				},
 			},
 			{
@@ -208,6 +211,28 @@ func TestServedGVKsWithServiceGeneratedIDs(t *testing.T) {
 	siGeneralErr := &SyncerIntegration{discovery: fakeGeneralErr}
 	if _, err := siGeneralErr.servedGVKsWithServiceGeneratedIDs(); err == nil || !strings.Contains(err.Error(), "error discovering the kinds that the cluster serves") {
 		t.Fatalf("expected error for general discovery failure, got %v", err)
+	}
+}
+
+func TestNewSyncerDiscovery(t *testing.T) {
+	cfg := &rest.Config{Host: "https://example.com", Timeout: 42 * time.Second}
+	res, err := newSyncerDiscovery(cfg)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if cfg.Timeout != 42*time.Second {
+		t.Errorf("caller's config was mutated: got %v, want %v", cfg.Timeout, 42*time.Second)
+	}
+	dc, ok := res.(*discovery.DiscoveryClient)
+	if !ok {
+		t.Fatalf("expected *discovery.DiscoveryClient, got %T", res)
+	}
+	rc, ok := dc.RESTClient().(*rest.RESTClient)
+	if !ok {
+		t.Fatalf("expected *rest.RESTClient, got %T", dc.RESTClient())
+	}
+	if rc.Client.Timeout != syncerDiscoveryTimeout {
+		t.Errorf("expected client timeout %v, got %v", syncerDiscoveryTimeout, rc.Client.Timeout)
 	}
 }
 
