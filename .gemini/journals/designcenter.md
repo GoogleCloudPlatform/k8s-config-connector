@@ -144,6 +144,27 @@
   - **Lifecycle & Updates**: Verified Create, Update (`displayName`, `description`), and Delete phases against real GCP, passing all 7/7 HTTP report validation checks and re-reconciliation testing.
   - **Validation**: 200-seed focused round-trip fuzzer (`TestFocusedMappers/DesignCenterApplicationTemplate`), CRD field presence checks, and presubmit unit tests all passed cleanly.
 
+### [2026-11-25] Prepopulating DesignCenterPolicy
+- **Context**: Prepopulating direct KRM types, identity, reference, mapper, and judgement queue for `DesignCenterPolicy` (Issue #16469).
+- **Generation & Ordering**:
+  - Added `--resource DesignCenterPolicy:Policy` to `generate-types` and `generate-identity` in `apis/designcenter/generate.sh`.
+  - Ordered `DesignCenterPolicy:Policy` first among resources in `generate-types` and `generate-identity` so that downstream resources (`DesignCenterCatalogTemplateRevision` and `DesignCenterApplicationTemplate`) that traverse shared types `Parameter` and `CloudControlConfig` with `forceAll == true` are visited after and preserve all output fields during `deduplicateAndSortOutputMessages`, preventing CRD backward compatibility failures on existing kinds.
+  - Added `DesignCenterPolicy` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` with golden output for `DesignCenterPolicy`.
+
+### [2026-11-26] Greenfield Step 1b: Triaging judgement queue and finalizing KRM types for DesignCenterPolicy
+- **Context**: Triaged `apis/designcenter/judgement_queue.yaml` and finalized KRM types, identity, and reference types for `DesignCenterPolicy` (Issue #16490).
+- **Resolutions & Findings**:
+  - `location-or-parent-ref`, `parent-ref-guessed`, `identity-root-unknown`: `DesignCenterPolicy` is a child resource under `DesignCenterApplicationTemplate` (`projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/policies/{policy}`). Per `judgement/references/PARENT_AND_IDENTITY.md` (Case B), replaced `ProjectRef`, `Location`, and `ApplicationTemplateRef` with required, immutable `ParentRef *DesignCenterApplicationTemplateRef` (`json:"parentRef"`).
+  - `authoritative-proto-reference` on `.spec.cloudControlConfigs[].cloudControl`: Replaced with `CloudControlRef *cloudsecuritycompliancev1alpha1.CloudSecurityComplianceCloudControlRef` (`json:"cloudControlRef,omitempty"`) in `CloudControlConfig`, moving `CloudControlConfig` to `designcenterpolicy_types.go`.
+  - `INPUT_ONLY` field placed in status: Removed `CloudControlConfigs` from `DesignCenterPolicyObservedState` per `REFERENCES_AND_NESTED_STRUCTS.md` because `cloud_control_configs` is marked `INPUT_ONLY` in proto and not returned on GET.
+  - `identity-not-in-cai`: Verified template `//designcenter.googleapis.com/projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/policies/{policy}` against proto `google.api.resource` pattern and marked accepted.
+  - `verify-service-docs-link` & `verify-resource-docs-link`: Added service docs `https://cloud.google.com/application-design-center/docs` and REST reference `https://cloud.google.com/application-design-center/docs/reference/rest/v1/projects.locations.spaces.applicationTemplates.policies`.
+  - `well-known-proto-type`: Confirmed `google.protobuf.Value` representation and resolved as accepted.
+  - `untriaged-bulk-generation`: Resolved with resolution `edited`.
+
+
+
 
 
 

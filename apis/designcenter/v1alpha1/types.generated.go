@@ -17,6 +17,7 @@
 // krm.group: designcenter.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.designcenter.v1
+// resource: DesignCenterPolicy:Policy
 // resource: DesignCenterSpace:Space
 // resource: DesignCenterCatalog:Catalog
 // resource: DesignCenterCatalogTemplate:CatalogTemplate
@@ -185,18 +186,18 @@ type ApplicationTemplate struct {
 }
 */
 
-/* unreachable type ApplyCondition
 // +kcc:proto=google.cloud.designcenter.v1.ApplyCondition
 type ApplyCondition struct {
 	// Required. The key of the parameter for the condition.
 	// +kcc:proto:field=google.cloud.designcenter.v1.ApplyCondition.condition_key
+	// +required
 	ConditionKey *string `json:"conditionKey,omitempty"`
 
 	// Required. The value of the parameter for the condition.
 	// +kcc:proto:field=google.cloud.designcenter.v1.ApplyCondition.condition_value
+	// +required
 	ConditionValue *string `json:"conditionValue,omitempty"`
 }
-*/
 
 /* unreachable type ArtifactLocation
 // +kcc:proto=google.cloud.designcenter.v1.ArtifactLocation
@@ -316,7 +317,8 @@ type CatalogTemplateRevision struct {
 }
 */
 
-/* unreachable type CloudControlConfig
+/* found existing non-generated go type "CloudControlConfig", skipping
+
 // +kcc:proto=google.cloud.designcenter.v1.CloudControlConfig
 type CloudControlConfig struct {
 	// Required. Resource name of the cloud control that these parameter values
@@ -705,6 +707,55 @@ type Parameter struct {
 	// +kcc:proto:field=google.cloud.designcenter.v1.Parameter.value
 	Value *Value `json:"value,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.designcenter.v1.Policy", skipping
+
+// +kcc:proto=google.cloud.designcenter.v1.Policy
+type Policy struct {
+	// Optional. URI of the policy.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Policy.policy_uri
+	PolicyURI *string `json:"policyURI,omitempty"`
+
+	// Optional. URI of the policy revision.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Policy.policy_revision_uri
+	PolicyRevisionURI *string `json:"policyRevisionURI,omitempty"`
+
+	// Identifier. The policy name in the following format:
+	//  `projects/$project/locations/$location/spaces/$space/applicationTemplates/$applicationTemplate/policies/$policy`
+	// +kcc:proto:field=google.cloud.designcenter.v1.Policy.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The policy display name.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Policy.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The policy description.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Policy.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. The policy type.
+	//  Policy type is used to determine the domain of the policy.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Policy.policy_type
+	PolicyType *string `json:"policyType,omitempty"`
+
+	// Optional. Conditions for applying the policy. Condition accepts the
+	//  `criticality` and `environment` parameters from the application template.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Policy.apply_conditions
+	ApplyConditions []ApplyCondition `json:"applyConditions,omitempty"`
+
+	// Optional. Input only. Parameter values for the cloud controls of the
+	//  policy's framework, grouped by cloud control. Only honored when framework
+	//  parameter support is enabled for the project; ignored otherwise.
+	//
+	//  The values are saved with the application template and are not returned on
+	//  the policy. On update, they replace the saved values. If they are empty,
+	//  the saved values are cleared if `cloud_control_configs` is named in the
+	//  update mask. Otherwise, the saved values are kept, unless the policy's
+	//  framework changes.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Policy.cloud_control_configs
+	CloudControlConfigs []CloudControlConfig `json:"cloudControlConfigs,omitempty"`
+}
+*/
 
 /* unreachable type ProviderVersion
 // +kcc:proto=google.cloud.designcenter.v1.ProviderVersion
@@ -1726,6 +1777,32 @@ type ParameterObservedState struct {
 	// +kcc:proto:field=google.cloud.designcenter.v1.Parameter.read_only
 	ReadOnly *bool `json:"readOnly,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.designcenter.v1.Policy", skipping
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.Policy
+type PolicyObservedState struct {
+	// Output only. The policy creation timestamp.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Policy.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The policy update timestamp.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Policy.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Optional. Input only. Parameter values for the cloud controls of the
+	//  policy's framework, grouped by cloud control. Only honored when framework
+	//  parameter support is enabled for the project; ignored otherwise.
+	//
+	//  The values are saved with the application template and are not returned on
+	//  the policy. On update, they replace the saved values. If they are empty,
+	//  the saved values are cleared if `cloud_control_configs` is named in the
+	//  update mask. Otherwise, the saved values are kept, unless the policy's
+	//  framework changes.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Policy.cloud_control_configs
+	CloudControlConfigs []CloudControlConfigObservedState `json:"cloudControlConfigs,omitempty"`
+}
+*/
 
 // +kcc:observedstate:proto=google.cloud.designcenter.v1.ProviderVersion
 type ProviderVersionObservedState struct {

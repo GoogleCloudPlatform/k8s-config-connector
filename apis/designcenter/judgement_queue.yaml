@@ -601,6 +601,73 @@ entries:
     status: resolved
     resolution: accepted
     note: defined TerraformUiOutputDisplay in designcentercatalogtemplaterevision_types.go with output-only proto fields to populate CRD schema
+  - kind: DesignCenterPolicy
+    group: designcenter.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: triaged DesignCenterPolicy; modelled spec.parentRef (*DesignCenterApplicationTemplateRef), converted cloudControl to cloudControlRef (*cloudsecuritycompliancev1alpha1.CloudSecurityComplianceCloudControlRef), removed input-only cloudControlConfigs from observedState, removed ProjectRef and Location, and added API doc links
+  - kind: DesignCenterPolicy
+    group: designcenter.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//designcenter.googleapis.com/projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/policies/{policy}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: resolved
+    resolution: accepted
+    note: verified template against proto google.api.resource pattern
+  - kind: DesignCenterPolicy
+    group: designcenter.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/policies/{policy}" contains ancestor segment(s) spaces/{space}, applicationTemplates/{application_template} with no matching reference or field on DesignCenterPolicySpec
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DesignCenterApplicationTemplateRef); removed ProjectRef and Location
+  - kind: DesignCenterPolicy
+    group: designcenter.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: found no docs root for this API; find the REST reference page by hand
+    status: resolved
+    resolution: edited
+    note: added resource REST reference URL
+  - kind: DesignCenterPolicy
+    group: designcenter.cnrm.cloud.google.com
+    reason: verify-service-docs-link
+    detail: neither the Discovery directory nor the service config names a docs page; add one
+    status: resolved
+    resolution: edited
+    note: added service docs URL
+  - kind: DesignCenterPolicy
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.applicationTemplateRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to DesignCenterApplicationTemplateRef, read from the applicationTemplates segment of projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/policies/{policy}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DesignCenterApplicationTemplateRef); removed ProjectRef and Location
+  - kind: DesignCenterPolicy
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.cloudControlConfigs[].cloudControl
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to cloudsecuritycompliance.googleapis.com/CloudControl (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: converted to cloudControlRef (*cloudsecuritycompliancev1alpha1.CloudSecurityComplianceCloudControlRef)
+  - kind: DesignCenterPolicy
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.cloudControlConfigs[].parameters[].value
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
+  - kind: DesignCenterPolicy
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}, which already names the location; a reference to it could replace location and the root reference
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DesignCenterApplicationTemplateRef); removed ProjectRef and Location
   - kind: DesignCenterSpace
     group: designcenter.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
