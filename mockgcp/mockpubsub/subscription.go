@@ -24,6 +24,7 @@ import (
 	"strings"
 	"time"
 
+	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -48,6 +49,10 @@ func (s *subscriberService) CreateSubscription(ctx context.Context, req *pb.Subs
 		return nil, err
 	}
 	fqn := name.String()
+
+	if err := s.validateBigQueryConfig(req.GetBigqueryConfig()); err != nil {
+		return nil, err
+	}
 
 	obj := proto.CloneOf(req)
 	obj.Name = name.String()
@@ -85,6 +90,39 @@ func (s *subscriberService) CreateSubscription(ctx context.Context, req *pb.Subs
 	return ret, nil
 }
 
+// validateBigQueryConfig mirrors how Pub/Sub parses bigquery_config.table on
+// create and on every update of a BigQuery subscription: the value must be
+// "{project}.{dataset}.{table}" or "{project}:{dataset}.{table}", split from the
+// right. Anything else, such as "projects/p/datasets/d/tables/t", is rejected
+// with INVALID_ARGUMENT. Like the real service, the top-level message is generic
+// and the parse error is only in the DebugInfo detail.
+func (s *subscriberService) validateBigQueryConfig(bigqueryConfig *pb.BigQueryConfig) error {
+	if bigqueryConfig == nil {
+		return nil
+	}
+	table := bigqueryConfig.GetTable()
+	tableSep := strings.LastIndexByte(table, '.')
+	if tableSep <= 0 || tableSep == len(table)-1 {
+		return invalidBigQueryTableError(table)
+	}
+	datasetSep := strings.LastIndexAny(table[:tableSep], ".:")
+	if datasetSep <= 0 || datasetSep == tableSep-1 {
+		return invalidBigQueryTableError(table)
+	}
+	return nil
+}
+
+func invalidBigQueryTableError(table string) error {
+	st := status.New(codes.InvalidArgument, "Request contains an invalid argument.")
+	st, err := st.WithDetails(&errdetails.DebugInfo{
+		Detail: fmt.Sprintf("[ORIGINAL ERROR] generic::invalid_argument: Could not parse BigQuery table path %s", table),
+	})
+	if err != nil {
+		return status.Errorf(codes.Internal, "unexpected error attaching details to status: %v", err)
+	}
+	return st.Err()
+}
+
 func (s *subscriberService) populateDefaultsForSubscription(obj *pb.Subscription) {
 	if obj.BigqueryConfig != nil {
 		obj.BigqueryConfig.State = pb.BigQueryConfig_ACTIVE
@@ -101,9 +139,27 @@ func (s *subscriberService) populateDefaultsForSubscription(obj *pb.Subscription
 		}
 	}
 
+	if obj.MessageRetentionDuration == nil {
+		// TODO: validate that message_retention_duration <= expiration_policy.ttl
+		// like the real service, which rejects incompatible values.
+		obj.MessageRetentionDuration = defaultMessageRetentionDuration(obj.GetExpirationPolicy())
+	}
+
 	if obj.PushConfig == nil {
 		obj.PushConfig = &pb.PushConfig{}
 	}
+}
+
+// defaultMessageRetentionDuration mirrors the default Pub/Sub applies when a
+// subscription is created or updated without message_retention_duration: 7 days,
+// bounded by the expiration policy's ttl when one is set. The default is stored,
+// so Create, Update and GetSubscription responses always include it.
+func defaultMessageRetentionDuration(expirationPolicy *pb.ExpirationPolicy) *durationpb.Duration {
+	retention := 7 * 24 * time.Hour
+	if ttl := expirationPolicy.GetTtl(); ttl != nil && ttl.AsDuration() < retention {
+		retention = ttl.AsDuration()
+	}
+	return durationpb.New(retention)
 }
 
 func (s *subscriberService) UpdateSubscription(ctx context.Context, req *pb.UpdateSubscriptionRequest) (*pb.Subscription, error) {
@@ -173,6 +229,10 @@ func (s *subscriberService) UpdateSubscription(ctx context.Context, req *pb.Upda
 		if updated.CloudStorageConfig.MaxDuration != nil && int64(updated.AckDeadlineSeconds) < updated.CloudStorageConfig.MaxDuration.Seconds {
 			updated.AckDeadlineSeconds = int32(updated.CloudStorageConfig.MaxDuration.Seconds)
 		}
+	}
+
+	if err := s.validateBigQueryConfig(updated.GetBigqueryConfig()); err != nil {
+		return nil, err
 	}
 
 	s.populateDefaultsForSubscription(updated)

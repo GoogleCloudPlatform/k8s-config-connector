@@ -70,5 +70,14 @@ func pubSubSubscriptionFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".bigtable_config")
 	f.Unimplemented_NotYetTriaged(".bigtable_config.app_profile_id")
 
+	// Pub/Sub accepts bigquery_config.table as "{project}.{dataset}.{table}" or
+	// "{project}:{dataset}.{table}", and the mappers normalize both to the first
+	// form, so fuzzed values that only parse one way (e.g. "p:d.t") can't round-trip.
+	f.FilterSpec = func(in *pb.Subscription) {
+		if in.BigqueryConfig != nil {
+			in.BigqueryConfig.Table = "my-project.my_dataset.my_table"
+		}
+	}
+
 	return f
 }

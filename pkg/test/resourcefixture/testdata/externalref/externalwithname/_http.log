@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
 Content-Type: application/json
 
@@ -129,6 +130,7 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "messageRetentionDuration": "604800s",
   "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
   "pushConfig": {},
   "state": 1,
@@ -182,6 +184,7 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "messageRetentionDuration": "604800s",
   "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
   "pushConfig": {},
   "state": 1,
@@ -190,6 +193,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: UPDATE
 PATCH https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 
@@ -225,6 +229,7 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "messageRetentionDuration": "604800s",
   "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
   "pushConfig": {
     "attributes": {
@@ -237,6 +242,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: DELETE
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 
@@ -259,6 +265,7 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "messageRetentionDuration": "604800s",
   "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
   "pushConfig": {},
   "state": 1,
