@@ -26,6 +26,9 @@ package dialogflowcx
 import (
 	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflowcx/v1alpha1"
+	krmdiscoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmservicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -35,7 +38,9 @@ func DataStoreConnection_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreCo
 	}
 	out := &krm.DataStoreConnection{}
 	out.DataStoreType = direct.Enum_FromProto(mapCtx, in.GetDataStoreType())
-	out.DataStore = direct.LazyPtr(in.GetDataStore())
+	if in.GetDataStore() != "" {
+		out.DataStoreRef = &krmdiscoveryenginev1alpha1.DiscoveryEngineDataStoreRef{External: in.GetDataStore()}
+	}
 	out.DocumentProcessingMode = direct.Enum_FromProto(mapCtx, in.GetDocumentProcessingMode())
 	return out
 }
@@ -45,7 +50,9 @@ func DataStoreConnection_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreCon
 	}
 	out := &pb.DataStoreConnection{}
 	out.DataStoreType = direct.Enum_ToProto[pb.DataStoreType](mapCtx, in.DataStoreType)
-	out.DataStore = direct.ValueOf(in.DataStore)
+	if in.DataStoreRef != nil {
+		out.DataStore = in.DataStoreRef.External
+	}
 	out.DocumentProcessingMode = direct.Enum_ToProto[pb.DocumentProcessingMode](mapCtx, in.DocumentProcessingMode)
 	return out
 }
@@ -300,7 +307,9 @@ func Tool_Authentication_APIKeyConfig_FromProto(mapCtx *direct.MapContext, in *p
 	out := &krm.Tool_Authentication_APIKeyConfig{}
 	out.KeyName = direct.LazyPtr(in.GetKeyName())
 	out.APIKey = direct.LazyPtr(in.GetApiKey())
-	out.SecretVersionForAPIKey = direct.LazyPtr(in.GetSecretVersionForApiKey())
+	if in.GetSecretVersionForApiKey() != "" {
+		out.SecretVersionForAPIKeyRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetSecretVersionForApiKey()}
+	}
 	out.RequestLocation = direct.Enum_FromProto(mapCtx, in.GetRequestLocation())
 	return out
 }
@@ -311,7 +320,9 @@ func Tool_Authentication_APIKeyConfig_ToProto(mapCtx *direct.MapContext, in *krm
 	out := &pb.Tool_Authentication_ApiKeyConfig{}
 	out.KeyName = direct.ValueOf(in.KeyName)
 	out.ApiKey = direct.ValueOf(in.APIKey)
-	out.SecretVersionForApiKey = direct.ValueOf(in.SecretVersionForAPIKey)
+	if in.SecretVersionForAPIKeyRef != nil {
+		out.SecretVersionForApiKey = in.SecretVersionForAPIKeyRef.External
+	}
 	out.RequestLocation = direct.Enum_ToProto[pb.Tool_Authentication_RequestLocation](mapCtx, in.RequestLocation)
 	return out
 }
@@ -321,7 +332,9 @@ func Tool_Authentication_BearerTokenConfig_FromProto(mapCtx *direct.MapContext, 
 	}
 	out := &krm.Tool_Authentication_BearerTokenConfig{}
 	out.Token = direct.LazyPtr(in.GetToken())
-	out.SecretVersionForToken = direct.LazyPtr(in.GetSecretVersionForToken())
+	if in.GetSecretVersionForToken() != "" {
+		out.SecretVersionForTokenRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetSecretVersionForToken()}
+	}
 	return out
 }
 func Tool_Authentication_BearerTokenConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_Authentication_BearerTokenConfig) *pb.Tool_Authentication_BearerTokenConfig {
@@ -330,7 +343,9 @@ func Tool_Authentication_BearerTokenConfig_ToProto(mapCtx *direct.MapContext, in
 	}
 	out := &pb.Tool_Authentication_BearerTokenConfig{}
 	out.Token = direct.ValueOf(in.Token)
-	out.SecretVersionForToken = direct.ValueOf(in.SecretVersionForToken)
+	if in.SecretVersionForTokenRef != nil {
+		out.SecretVersionForToken = in.SecretVersionForTokenRef.External
+	}
 	return out
 }
 func Tool_Authentication_OAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_Authentication_OAuthConfig) *krm.Tool_Authentication_OAuthConfig {
@@ -341,7 +356,9 @@ func Tool_Authentication_OAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb
 	out.OauthGrantType = direct.Enum_FromProto(mapCtx, in.GetOauthGrantType())
 	out.ClientID = direct.LazyPtr(in.GetClientId())
 	out.ClientSecret = direct.LazyPtr(in.GetClientSecret())
-	out.SecretVersionForClientSecret = direct.LazyPtr(in.GetSecretVersionForClientSecret())
+	if in.GetSecretVersionForClientSecret() != "" {
+		out.SecretVersionForClientSecretRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetSecretVersionForClientSecret()}
+	}
 	out.TokenEndpoint = direct.LazyPtr(in.GetTokenEndpoint())
 	out.Scopes = in.Scopes
 	return out
@@ -354,7 +371,9 @@ func Tool_Authentication_OAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.OauthGrantType = direct.Enum_ToProto[pb.Tool_Authentication_OAuthConfig_OauthGrantType](mapCtx, in.OauthGrantType)
 	out.ClientId = direct.ValueOf(in.ClientID)
 	out.ClientSecret = direct.ValueOf(in.ClientSecret)
-	out.SecretVersionForClientSecret = direct.ValueOf(in.SecretVersionForClientSecret)
+	if in.SecretVersionForClientSecretRef != nil {
+		out.SecretVersionForClientSecret = in.SecretVersionForClientSecretRef.External
+	}
 	out.TokenEndpoint = direct.ValueOf(in.TokenEndpoint)
 	out.Scopes = in.Scopes
 	return out
@@ -364,7 +383,9 @@ func Tool_Authentication_ServiceAccountAuthConfig_FromProto(mapCtx *direct.MapCo
 		return nil
 	}
 	out := &krm.Tool_Authentication_ServiceAccountAuthConfig{}
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
 	return out
 }
 func Tool_Authentication_ServiceAccountAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_Authentication_ServiceAccountAuthConfig) *pb.Tool_Authentication_ServiceAccountAuthConfig {
@@ -372,7 +393,9 @@ func Tool_Authentication_ServiceAccountAuthConfig_ToProto(mapCtx *direct.MapCont
 		return nil
 	}
 	out := &pb.Tool_Authentication_ServiceAccountAuthConfig{}
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
 	return out
 }
 func Tool_Authentication_ServiceAgentAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_Authentication_ServiceAgentAuthConfig) *krm.Tool_Authentication_ServiceAgentAuthConfig {
@@ -480,7 +503,9 @@ func Tool_ServiceDirectoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.Too
 		return nil
 	}
 	out := &krm.Tool_ServiceDirectoryConfig{}
-	out.Service = direct.LazyPtr(in.GetService())
+	if in.GetService() != "" {
+		out.ServiceRef = &krmservicedirectoryv1beta1.ServiceDirectoryServiceRef{External: in.GetService()}
+	}
 	return out
 }
 func Tool_ServiceDirectoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_ServiceDirectoryConfig) *pb.Tool_ServiceDirectoryConfig {
@@ -488,7 +513,9 @@ func Tool_ServiceDirectoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool
 		return nil
 	}
 	out := &pb.Tool_ServiceDirectoryConfig{}
-	out.Service = direct.ValueOf(in.Service)
+	if in.ServiceRef != nil {
+		out.Service = in.ServiceRef.External
+	}
 	return out
 }
 func Tool_TLSConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_TLSConfig) *krm.Tool_TLSConfig {

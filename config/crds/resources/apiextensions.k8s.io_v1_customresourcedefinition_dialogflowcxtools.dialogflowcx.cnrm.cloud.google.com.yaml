@@ -68,11 +68,38 @@ spec:
                     description: Required. List of data stores to search.
                     items:
                       properties:
-                        dataStore:
+                        dataStoreRef:
                           description: 'The full name of the referenced data store.
                             Formats: `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}`
                             `projects/{project}/locations/{location}/dataStores/{data_store}`'
-                          type: string
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed DiscoveryEngineDataStore
+                                resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/datastores/{{datastoreID}}".
+                              type: string
+                            name:
+                              description: The name of a DiscoveryEngineDataStore
+                                resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a DiscoveryEngineDataStore
+                                resource.
+                              type: string
+                          type: object
                         dataStoreType:
                           description: The type of the connected data store.
                           type: string
@@ -115,9 +142,6 @@ spec:
                       of the object.
                     x-kubernetes-preserve-unknown-fields: true
                 type: object
-              location:
-                description: The location of this resource.
-                type: string
               openAPISpec:
                 description: OpenAPI specification of the Tool.
                 properties:
@@ -140,12 +164,38 @@ spec:
                           requestLocation:
                             description: Required. Key location in the request.
                             type: string
-                          secretVersionForAPIKey:
+                          secretVersionForAPIKeyRef:
                             description: 'Optional. The name of the SecretManager
                               secret version resource storing the API key. If this
                               field is set, the `api_key` field will be ignored. Format:
                               `projects/{project}/secrets/{secret}/versions/{version}`'
-                            type: string
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: ' If provided must be in the format `projects/*/secrets/*/versions/*`.'
+                                type: string
+                              name:
+                                description: The `name` field of a `SecretManagerSecretVersion`
+                                  resource.
+                                type: string
+                              namespace:
+                                description: The `metadata.namespace` field of a `SecretManagerSecretVersion`
+                                  resource.
+                                type: string
+                            type: object
                         required:
                         - keyName
                         - requestLocation
@@ -153,12 +203,38 @@ spec:
                       bearerTokenConfig:
                         description: Config for bearer token auth.
                         properties:
-                          secretVersionForToken:
+                          secretVersionForTokenRef:
                             description: 'Optional. The name of the SecretManager
                               secret version resource storing the Bearer token. If
                               this field is set, the `token` field will be ignored.
                               Format: `projects/{project}/secrets/{secret}/versions/{version}`'
-                            type: string
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: ' If provided must be in the format `projects/*/secrets/*/versions/*`.'
+                                type: string
+                              name:
+                                description: The `name` field of a `SecretManagerSecretVersion`
+                                  resource.
+                                type: string
+                              namespace:
+                                description: The `metadata.namespace` field of a `SecretManagerSecretVersion`
+                                  resource.
+                                type: string
+                            type: object
                           token:
                             description: Optional. The text token appended to the
                               text `Bearer` to the request Authorization header. [Session
@@ -185,12 +261,38 @@ spec:
                             items:
                               type: string
                             type: array
-                          secretVersionForClientSecret:
+                          secretVersionForClientSecretRef:
                             description: 'Optional. The name of the SecretManager
                               secret version resource storing the client secret. If
                               this field is set, the `client_secret` field will be
                               ignored. Format: `projects/{project}/secrets/{secret}/versions/{version}`'
-                            type: string
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: ' If provided must be in the format `projects/*/secrets/*/versions/*`.'
+                                type: string
+                              name:
+                                description: The `name` field of a `SecretManagerSecretVersion`
+                                  resource.
+                                type: string
+                              namespace:
+                                description: The `metadata.namespace` field of a `SecretManagerSecretVersion`
+                                  resource.
+                                type: string
+                            type: object
                           tokenEndpoint:
                             description: Required. The token endpoint in the OAuth
                               provider to exchange for an access token.
@@ -203,7 +305,7 @@ spec:
                       serviceAccountAuthConfig:
                         description: Configuration for service account authentication.
                         properties:
-                          serviceAccount:
+                          serviceAccountRef:
                             description: |-
                               Required. The email address of the service account used to authenticate
                                the tool call. Dialogflow uses this service account to exchange an
@@ -214,9 +316,35 @@ spec:
                                `roles/iam.serviceAccountTokenCreator` role granted to the
                                [Dialogflow service
                                agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent).
-                            type: string
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: The `email` field of an `IAMServiceAccount`
+                                  resource.
+                                type: string
+                              name:
+                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                type: string
+                              namespace:
+                                description: 'Namespace of the referent. More info:
+                                  https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                type: string
+                            type: object
                         required:
-                        - serviceAccount
+                        - serviceAccountRef
                         type: object
                       serviceAgentAuthConfig:
                         description: Config for [Diglogflow service agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent)
@@ -232,14 +360,40 @@ spec:
                   serviceDirectoryConfig:
                     description: Optional. Service Directory configuration.
                     properties:
-                      service:
+                      serviceRef:
                         description: 'Required. The name of [Service Directory](https://cloud.google.com/service-directory)
                           service. Format: `projects/<ProjectID>/locations/<LocationID>/namespaces/<NamespaceID>/services/<ServiceID>`.
                           `LocationID` of the service directory must be the same as
                           the location of the agent.'
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed ServiceDirectoryService
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/namespaces/{{namespaceID}}/services/{{serviceID}}".
+                            type: string
+                          name:
+                            description: The name of a ServiceDirectoryService resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a ServiceDirectoryService
+                              resource.
+                            type: string
+                        type: object
                     required:
-                    - service
+                    - serviceRef
                     type: object
                   textSchema:
                     description: Required. The OpenAPI schema specified as a text.
@@ -285,8 +439,9 @@ spec:
                 required:
                 - textSchema
                 type: object
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The DialogflowCXAgent that this DialogflowCXTool belongs
+                  to.
                 oneOf:
                 - not:
                     required:
@@ -303,29 +458,28 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed DialogflowCXAgent
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/agents/{{agentID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a DialogflowCXAgent resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a DialogflowCXAgent resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
-                description: The DialogflowCXTool name. If not given, the metadata.name
-                  will be used.
+                description: Immutable. Optional. The service-generated name of the
+                  resource. Used for acquisition only. Leave unset to create a new
+                  resource.
                 type: string
             required:
             - description
             - displayName
-            - location
-            - projectRef
+            - parentRef
             type: object
           status:
             description: DialogflowCXToolStatus defines the config connector machine

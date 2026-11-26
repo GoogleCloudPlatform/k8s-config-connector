@@ -146,6 +146,8 @@ type AdvancedSettings_SpeechSettings struct {
 }
 */
 
+/* found existing non-generated go type "DataStoreConnection", skipping
+
 // +kcc:proto=google.cloud.dialogflow.cx.v3.DataStoreConnection
 type DataStoreConnection struct {
 	// The type of the connected data store.
@@ -165,6 +167,7 @@ type DataStoreConnection struct {
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.DataStoreConnection.document_processing_mode
 	DocumentProcessingMode *string `json:"documentProcessingMode,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.EntityType", skipping
 
@@ -1275,13 +1278,14 @@ type Tool_Authentication struct {
 	ServiceAccountAuthConfig *Tool_Authentication_ServiceAccountAuthConfig `json:"serviceAccountAuthConfig,omitempty"`
 }
 
+/* found existing non-generated go type "Tool_Authentication_APIKeyConfig", skipping
+
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.Authentication.ApiKeyConfig
 type Tool_Authentication_APIKeyConfig struct {
 	// Required. The parameter name or the header name of the API key.
 	//  E.g., If the API request is "https://example.com/act?X-Api-Key=<API
 	//  KEY>", "X-Api-Key" would be the parameter name.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.ApiKeyConfig.key_name
-	// +required
 	KeyName *string `json:"keyName,omitempty"`
 
 	// Optional. The API key. If the `secret_version_for_api_key` field is
@@ -1297,9 +1301,11 @@ type Tool_Authentication_APIKeyConfig struct {
 
 	// Required. Key location in the request.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.ApiKeyConfig.request_location
-	// +required
 	RequestLocation *string `json:"requestLocation,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "Tool_Authentication_BearerTokenConfig", skipping
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.Authentication.BearerTokenConfig
 type Tool_Authentication_BearerTokenConfig struct {
@@ -1319,17 +1325,18 @@ type Tool_Authentication_BearerTokenConfig struct {
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.BearerTokenConfig.secret_version_for_token
 	SecretVersionForToken *string `json:"secretVersionForToken,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "Tool_Authentication_OAuthConfig", skipping
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.Authentication.OAuthConfig
 type Tool_Authentication_OAuthConfig struct {
 	// Required. OAuth grant types.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.OAuthConfig.oauth_grant_type
-	// +required
 	OauthGrantType *string `json:"oauthGrantType,omitempty"`
 
 	// Required. The client ID from the OAuth provider.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.OAuthConfig.client_id
-	// +required
 	ClientID *string `json:"clientID,omitempty"`
 
 	// Optional. The client secret from the OAuth provider. If the
@@ -1348,13 +1355,15 @@ type Tool_Authentication_OAuthConfig struct {
 	// Required. The token endpoint in the OAuth provider to exchange for an
 	//  access token.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.OAuthConfig.token_endpoint
-	// +required
 	TokenEndpoint *string `json:"tokenEndpoint,omitempty"`
 
 	// Optional. The OAuth scopes to grant.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.OAuthConfig.scopes
 	Scopes []string `json:"scopes,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "Tool_Authentication_ServiceAccountAuthConfig", skipping
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.Authentication.ServiceAccountAuthConfig
 type Tool_Authentication_ServiceAccountAuthConfig struct {
@@ -1368,9 +1377,9 @@ type Tool_Authentication_ServiceAccountAuthConfig struct {
 	//  [Dialogflow service
 	//  agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent).
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.ServiceAccountAuthConfig.service_account
-	// +required
 	ServiceAccount *string `json:"serviceAccount,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.Authentication.ServiceAgentAuthConfig
 type Tool_Authentication_ServiceAgentAuthConfig struct {
@@ -1436,6 +1445,8 @@ type Tool_OpenAPITool struct {
 	ServiceDirectoryConfig *Tool_ServiceDirectoryConfig `json:"serviceDirectoryConfig,omitempty"`
 }
 
+/* found existing non-generated go type "Tool_ServiceDirectoryConfig", skipping
+
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.ServiceDirectoryConfig
 type Tool_ServiceDirectoryConfig struct {
 	// Required. The name of [Service
@@ -1445,9 +1456,9 @@ type Tool_ServiceDirectoryConfig struct {
 	//  `LocationID` of the service directory must be the same as the location
 	//  of the agent.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.ServiceDirectoryConfig.service
-	// +required
 	Service *string `json:"service,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.TLSConfig
 type Tool_TLSConfig struct {

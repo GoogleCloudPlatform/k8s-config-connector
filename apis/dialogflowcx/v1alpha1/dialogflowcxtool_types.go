@@ -20,7 +20,9 @@
 package v1alpha1
 
 import (
+	discoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	servicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,18 +33,14 @@ var DialogflowCXToolGVK = GroupVersion.WithKind("DialogflowCXTool")
 // +kcc:spec:proto=google.cloud.dialogflow.cx.v3.Tool
 // +kcc:required-from-proto
 type DialogflowCXToolSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	// The DialogflowCXAgent that this DialogflowCXTool belongs to.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *DialogflowCXAgentRef `json:"parentRef"`
 
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/agents/{agent} this resource belongs to.
-	// +kcc:guess
-	// AgentRef *DialogflowCXAgentRef `json:"agentRef,omitempty"`
-
-	// The DialogflowCXTool name. If not given, the metadata.name will be used.
+	// Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Required. The human-readable name of the Tool, unique within an agent.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.display_name
 	// +required
@@ -122,4 +120,134 @@ type DialogflowCXToolList struct {
 
 func init() {
 	SchemeBuilder.Register(&DialogflowCXTool{}, &DialogflowCXToolList{})
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.DataStoreConnection
+type DataStoreConnection struct {
+	// The type of the connected data store.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.DataStoreConnection.data_store_type
+	DataStoreType *string `json:"dataStoreType,omitempty"`
+
+	// The full name of the referenced data store.
+	//  Formats:
+	//  `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}`
+	//  `projects/{project}/locations/{location}/dataStores/{data_store}`
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.DataStoreConnection.data_store
+	DataStoreRef *discoveryenginev1alpha1.DiscoveryEngineDataStoreRef `json:"dataStoreRef,omitempty"`
+
+	// The document processing mode for the data store connection. Should only be
+	//  set for PUBLIC_WEB and UNSTRUCTURED data stores. If not set it is
+	//  considered as DOCUMENTS, as this is the legacy mode.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.DataStoreConnection.document_processing_mode
+	DocumentProcessingMode *string `json:"documentProcessingMode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.Authentication.ApiKeyConfig
+type Tool_Authentication_APIKeyConfig struct {
+	// Required. The parameter name or the header name of the API key.
+	//  E.g., If the API request is "https://example.com/act?X-Api-Key=<API
+	//  KEY>", "X-Api-Key" would be the parameter name.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.ApiKeyConfig.key_name
+	// +required
+	KeyName *string `json:"keyName,omitempty"`
+
+	// Optional. The API key. If the `secret_version_for_api_key` field is
+	//  set, this field will be ignored.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.ApiKeyConfig.api_key
+	APIKey *string `json:"apiKey,omitempty"`
+
+	// Optional. The name of the SecretManager secret version resource storing
+	//  the API key. If this field is set, the `api_key` field will be ignored.
+	//  Format: `projects/{project}/secrets/{secret}/versions/{version}`
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.ApiKeyConfig.secret_version_for_api_key
+	SecretVersionForAPIKeyRef *refsv1beta1.SecretManagerSecretVersionRef `json:"secretVersionForAPIKeyRef,omitempty"`
+
+	// Required. Key location in the request.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.ApiKeyConfig.request_location
+	// +required
+	RequestLocation *string `json:"requestLocation,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.Authentication.BearerTokenConfig
+type Tool_Authentication_BearerTokenConfig struct {
+	// Optional. The text token appended to the text `Bearer` to the request
+	//  Authorization header.
+	//  [Session parameters
+	//  reference](https://cloud.google.com/dialogflow/cx/docs/concept/parameter#session-ref)
+	//  can be used to pass the token dynamically, e.g.
+	//  `$session.params.parameter-id`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.BearerTokenConfig.token
+	Token *string `json:"token,omitempty"`
+
+	// Optional. The name of the SecretManager secret version resource storing
+	//  the Bearer token. If this field is set, the `token` field will be
+	//  ignored. Format:
+	//  `projects/{project}/secrets/{secret}/versions/{version}`
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.BearerTokenConfig.secret_version_for_token
+	SecretVersionForTokenRef *refsv1beta1.SecretManagerSecretVersionRef `json:"secretVersionForTokenRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.Authentication.OAuthConfig
+type Tool_Authentication_OAuthConfig struct {
+	// Required. OAuth grant types.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.OAuthConfig.oauth_grant_type
+	// +required
+	OauthGrantType *string `json:"oauthGrantType,omitempty"`
+
+	// Required. The client ID from the OAuth provider.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.OAuthConfig.client_id
+	// +required
+	ClientID *string `json:"clientID,omitempty"`
+
+	// Optional. The client secret from the OAuth provider. If the
+	//  `secret_version_for_client_secret` field is set, this field will be
+	//  ignored.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.OAuthConfig.client_secret
+	ClientSecret *string `json:"clientSecret,omitempty"`
+
+	// Optional. The name of the SecretManager secret version resource storing
+	//  the client secret. If this field is set, the `client_secret` field will
+	//  be ignored. Format:
+	//  `projects/{project}/secrets/{secret}/versions/{version}`
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.OAuthConfig.secret_version_for_client_secret
+	SecretVersionForClientSecretRef *refsv1beta1.SecretManagerSecretVersionRef `json:"secretVersionForClientSecretRef,omitempty"`
+
+	// Required. The token endpoint in the OAuth provider to exchange for an
+	//  access token.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.OAuthConfig.token_endpoint
+	// +required
+	TokenEndpoint *string `json:"tokenEndpoint,omitempty"`
+
+	// Optional. The OAuth scopes to grant.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.OAuthConfig.scopes
+	Scopes []string `json:"scopes,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.Authentication.ServiceAccountAuthConfig
+type Tool_Authentication_ServiceAccountAuthConfig struct {
+	// Required. The email address of the service account used to authenticate
+	//  the tool call. Dialogflow uses this service account to exchange an
+	//  access token and the access token is then sent in the `Authorization`
+	//  header of the tool request.
+	//
+	//  The service account must have the
+	//  `roles/iam.serviceAccountTokenCreator` role granted to the
+	//  [Dialogflow service
+	//  agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent).
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.Authentication.ServiceAccountAuthConfig.service_account
+	// +required
+	ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Tool.ServiceDirectoryConfig
+type Tool_ServiceDirectoryConfig struct {
+	// Required. The name of [Service
+	//  Directory](https://cloud.google.com/service-directory) service.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/namespaces/<NamespaceID>/services/<ServiceID>`.
+	//  `LocationID` of the service directory must be the same as the location
+	//  of the agent.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Tool.ServiceDirectoryConfig.service
+	// +required
+	ServiceRef *servicedirectoryv1beta1.ServiceDirectoryServiceRef `json:"serviceRef,omitempty"`
 }
