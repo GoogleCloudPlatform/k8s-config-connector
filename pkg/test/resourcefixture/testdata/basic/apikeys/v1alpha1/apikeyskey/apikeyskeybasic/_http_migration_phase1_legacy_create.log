@@ -102,7 +102,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "Example Display Name",
     "etag": "abcdef0123A=",
-    "keyString": "AIzaSyBAdc85bb2WyggY6A-Z5u1YxlktLGiaF8M",
+    "keyString": "${keyString}",
     "name": "projects/${projectNumber}/locations/global/keys/apikeyskey${uniqueId}",
     "restrictions": {
       "apiTargets": [
@@ -171,7 +171,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "keyString": "AIzaSyBAdc85bb2WyggY6A-Z5u1YxlktLGiaF8M"
+  "keyString": "${keyString}"
 }
 
 ---
@@ -226,7 +226,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "keyString": "AIzaSyBAdc85bb2WyggY6A-Z5u1YxlktLGiaF8M"
+  "keyString": "${keyString}"
 }
 
 ---
@@ -281,5 +281,5 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "keyString": "AIzaSyBAdc85bb2WyggY6A-Z5u1YxlktLGiaF8M"
+  "keyString": "${keyString}"
 }
