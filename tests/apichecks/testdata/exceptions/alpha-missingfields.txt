@@ -1529,35 +1529,12 @@
 [missing_field] crd=beyondcorpclientconnectorservices.beyondcorp.cnrm.cloud.google.com version=v1alpha1: field ".spec.ingress.config.transportProtocol" is not set in unstructured objects
 [missing_field] crd=beyondcorpclientconnectorservices.beyondcorp.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=beyondcorpclientconnectorservices.beyondcorp.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.parameters" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.partitionKeys[].comment" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.partitionKeys[].name" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.partitionKeys[].type" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.bucketCols[]" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.columns[].comment" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.columns[].name" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.columns[].type" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.compressed" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.inputFormat" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.locationURI" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.numBuckets" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.outputFormat" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.parameters" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.serdeInfo.description" is not set in unstructured objects
 [missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.serdeInfo.deserializerClass" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.serdeInfo.name" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.serdeInfo.parameters" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.serdeInfo.serdeType" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.serdeInfo.serializationLib" is not set in unstructured objects
 [missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.serdeInfo.serializerClass" is not set in unstructured objects
 [missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.skewedInfo.skewedColNames[]" is not set in unstructured objects
 [missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.skewedInfo.skewedColValues[].values[]" is not set in unstructured objects
 [missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.skewedInfo.skewedKeyValuesLocations[].location" is not set in unstructured objects
 [missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.skewedInfo.skewedKeyValuesLocations[].values[]" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.sortCols[].col" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.sortCols[].order" is not set in unstructured objects
 [missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.storedAsSubDirs" is not set in unstructured objects
 [missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.viewExpandedText" is not set in unstructured objects
 [missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.viewOriginalText" is not set in unstructured objects

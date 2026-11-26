@@ -1,0 +1,639 @@
+# Phase: CREATE
+GET https://storage.googleapis.com/storage/v1/b/${projectId}-hivetbl-min-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": true
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": []
+  },
+  "location": "us-central1",
+  "name": "${projectId}-hivetbl-min-${uniqueId}",
+  "storageClass": "STANDARD"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "${projectId}-hivetbl-min-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/${projectId}-hivetbl-min-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/${projectId}-hivetbl-min-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "${projectId}-hivetbl-min-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/${projectId}-hivetbl-min-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.biglake.hive.v1.HiveMetastoreService/GetHiveCatalog
+
+{
+  "name": "projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Hive Catalog biglakehivecatalog_min_${uniqueId} not found.
+
+{}
+
+---
+
+GRPC /google.cloud.biglake.hive.v1.HiveMetastoreService/CreateHiveCatalog
+
+{
+  "hiveCatalog": {
+    "locationUri": "gs://${projectId}-hivetbl-min-${uniqueId}"
+  },
+  "hiveCatalogId": "biglakehivecatalog_min_${uniqueId}",
+  "parent": "projects/${projectId}",
+  "primary_location": "us-central1"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "locationUri": "gs://${projectId}-hivetbl-min-${uniqueId}",
+  "name": "projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://biglake.googleapis.com/hive/v1/projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}/databases/biglakehivedatabase_min_${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fcatalogs%2Fbiglakehivecatalog_min_${uniqueId}%2Fdatabases%2Fbiglakehivedatabase_min_${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Hive database biglakehivecatalog_min_${uniqueId}.biglakehivedatabase_min_${uniqueId} does not exist",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://biglake.googleapis.com/hive/v1/projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}/databases?%24alt=json%3Benum-encoding%3Dint&hiveDatabaseId=biglakehivedatabase_min_${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Fcatalogs%2Fbiglakehivecatalog_min_${uniqueId}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "locationUri": "gs://${projectId}-hivetbl-min-${uniqueId}/biglakehivedatabase_min_${uniqueId}.db",
+  "name": "projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}/databases/biglakehivedatabase_min_${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://biglake.googleapis.com/hive/v1/projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}/databases/biglakehivedatabase_min_${uniqueId}/tables/biglakehivetable_min_${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fcatalogs%2Fbiglakehivecatalog_min_${uniqueId}%2Fdatabases%2Fbiglakehivedatabase_min_${uniqueId}%2Ftables%2Fbiglakehivetable_min_${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Hive table: biglakehivecatalog_min_${uniqueId}.biglakehivedatabase_min_${uniqueId}.biglakehivetable_min_${uniqueId} does not exist",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Hive table: biglakehivecatalog_min_${uniqueId}.biglakehivedatabase_min_${uniqueId}.biglakehivetable_min_${uniqueId} does not exist",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://biglake.googleapis.com/hive/v1/projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}/databases/biglakehivedatabase_min_${uniqueId}/tables?%24alt=json%3Benum-encoding%3Dint&hiveTableId=biglakehivetable_min_${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Fcatalogs%2Fbiglakehivecatalog_min_${uniqueId}%2Fdatabases%2Fbiglakehivedatabase_min_${uniqueId}
+
+{
+  "storageDescriptor": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "int"
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}/databases/biglakehivedatabase_min_${uniqueId}/tables/biglakehivetable_min_${uniqueId}",
+  "parameters": {
+    "table_type": "HIVE"
+  },
+  "storageDescriptor": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "int"
+      }
+    ],
+    "locationUri": "gs://${projectId}-hivetbl-min-${uniqueId}/biglakehivedatabase_min_${uniqueId}.db/biglakehivetable_min_${uniqueId}"
+  },
+  "tableType": "EXTERNAL_TABLE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: UPDATE
+GET https://biglake.googleapis.com/hive/v1/projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}/databases/biglakehivedatabase_min_${uniqueId}/tables/biglakehivetable_min_${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fcatalogs%2Fbiglakehivecatalog_min_${uniqueId}%2Fdatabases%2Fbiglakehivedatabase_min_${uniqueId}%2Ftables%2Fbiglakehivetable_min_${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}/databases/biglakehivedatabase_min_${uniqueId}/tables/biglakehivetable_min_${uniqueId}",
+  "parameters": {
+    "table_type": "HIVE"
+  },
+  "storageDescriptor": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "int"
+      }
+    ],
+    "locationUri": "gs://${projectId}-hivetbl-min-${uniqueId}/biglakehivedatabase_min_${uniqueId}.db/biglakehivetable_min_${uniqueId}"
+  },
+  "tableType": "EXTERNAL_TABLE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://biglake.googleapis.com/hive/v1/projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}/databases/biglakehivedatabase_min_${uniqueId}/tables/biglakehivetable_min_${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CstorageDescriptor
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: hive_table.name=projects%2F${projectId}%2Fcatalogs%2Fbiglakehivecatalog_min_${uniqueId}%2Fdatabases%2Fbiglakehivedatabase_min_${uniqueId}%2Ftables%2Fbiglakehivetable_min_${uniqueId}
+
+{
+  "description": "Updated description for minimal Hive table",
+  "name": "projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}/databases/biglakehivedatabase_min_${uniqueId}/tables/biglakehivetable_min_${uniqueId}",
+  "parameters": {
+    "table_type": "HIVE"
+  },
+  "storageDescriptor": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "int"
+      },
+      {
+        "name": "name",
+        "type": "string"
+      }
+    ],
+    "locationUri": "gs://${projectId}-hivetbl-min-${uniqueId}/biglakehivedatabase_min_${uniqueId}.db/biglakehivetable_min_${uniqueId}"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description for minimal Hive table",
+  "name": "projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}/databases/biglakehivedatabase_min_${uniqueId}/tables/biglakehivetable_min_${uniqueId}",
+  "parameters": {
+    "table_type": "HIVE"
+  },
+  "storageDescriptor": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "int"
+      },
+      {
+        "name": "name",
+        "type": "string"
+      }
+    ],
+    "locationUri": "gs://${projectId}-hivetbl-min-${uniqueId}/biglakehivedatabase_min_${uniqueId}.db/biglakehivetable_min_${uniqueId}"
+  },
+  "tableType": "EXTERNAL_TABLE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GET https://biglake.googleapis.com/hive/v1/projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}/databases/biglakehivedatabase_min_${uniqueId}/tables/biglakehivetable_min_${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fcatalogs%2Fbiglakehivecatalog_min_${uniqueId}%2Fdatabases%2Fbiglakehivedatabase_min_${uniqueId}%2Ftables%2Fbiglakehivetable_min_${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description for minimal Hive table",
+  "name": "projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}/databases/biglakehivedatabase_min_${uniqueId}/tables/biglakehivetable_min_${uniqueId}",
+  "parameters": {
+    "table_type": "HIVE"
+  },
+  "storageDescriptor": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "int"
+      },
+      {
+        "name": "name",
+        "type": "string"
+      }
+    ],
+    "locationUri": "gs://${projectId}-hivetbl-min-${uniqueId}/biglakehivedatabase_min_${uniqueId}.db/biglakehivetable_min_${uniqueId}"
+  },
+  "tableType": "EXTERNAL_TABLE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://biglake.googleapis.com/hive/v1/projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}/databases/biglakehivedatabase_min_${uniqueId}/tables/biglakehivetable_min_${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fcatalogs%2Fbiglakehivecatalog_min_${uniqueId}%2Fdatabases%2Fbiglakehivedatabase_min_${uniqueId}%2Ftables%2Fbiglakehivetable_min_${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://biglake.googleapis.com/hive/v1/projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}/databases/biglakehivedatabase_min_${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fcatalogs%2Fbiglakehivecatalog_min_${uniqueId}%2Fdatabases%2Fbiglakehivedatabase_min_${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "locationUri": "gs://${projectId}-hivetbl-min-${uniqueId}/biglakehivedatabase_min_${uniqueId}.db",
+  "name": "projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}/databases/biglakehivedatabase_min_${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://biglake.googleapis.com/hive/v1/projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}/databases/biglakehivedatabase_min_${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fcatalogs%2Fbiglakehivecatalog_min_${uniqueId}%2Fdatabases%2Fbiglakehivedatabase_min_${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GRPC /google.cloud.biglake.hive.v1.HiveMetastoreService/GetHiveCatalog
+
+{
+  "name": "projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "locationUri": "gs://${projectId}-hivetbl-min-${uniqueId}",
+  "name": "projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}",
+  "replicas": [
+    {
+      "region": "us-central1"
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.biglake.hive.v1.HiveMetastoreService/GetHiveCatalog
+
+{
+  "name": "projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "locationUri": "gs://${projectId}-hivetbl-min-${uniqueId}",
+  "name": "projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}",
+  "replicas": [
+    {
+      "region": "us-central1"
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.biglake.hive.v1.HiveMetastoreService/DeleteHiveCatalog
+
+{
+  "name": "projects/${projectId}/catalogs/biglakehivecatalog_min_${uniqueId}"
+}
+
+OK
+
+{}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/${projectId}-hivetbl-min-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "${projectId}-hivetbl-min-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/${projectId}-hivetbl-min-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/${projectId}-hivetbl-min-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "kind": "storage#objects",
+  "prefixes": [
+    "testfolder",
+    "testmanagedfolder"
+  ]
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/${projectId}-hivetbl-min-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+204 No Content
+Content-Type: application/json
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin

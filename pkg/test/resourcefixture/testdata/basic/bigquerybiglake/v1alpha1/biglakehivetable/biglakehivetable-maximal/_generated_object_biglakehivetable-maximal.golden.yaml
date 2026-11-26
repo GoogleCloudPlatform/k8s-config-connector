@@ -1,0 +1,66 @@
+apiVersion: bigquerybiglake.cnrm.cloud.google.com/v1alpha1
+kind: BigLakeHiveTable
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: biglakehivetable-max-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Updated Maximal BigLake Hive Table
+  parameters:
+    environment: production
+    owner: kcc-test-updated
+  parentRef:
+    name: biglakehivedatabase-max-${uniqueId}
+  partitionKeys:
+  - comment: Partition by date updated
+    name: date
+    type: string
+  resourceID: biglakehivetable_max_${uniqueId}
+  storageDescriptor:
+    bucketCols:
+    - user_id
+    columns:
+    - comment: User identifier
+      name: user_id
+      type: int
+    - comment: Payload data updated
+      name: data
+      type: string
+    - comment: Added column
+      name: extra
+      type: string
+    compressed: false
+    inputFormat: org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat
+    locationURI: gs://${projectId}-hivetbl-max-${uniqueId}/tables/table1
+    numBuckets: 8
+    outputFormat: org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat
+    parameters:
+      key: updated_value
+    serdeInfo:
+      description: Updated Parquet SerDe
+      name: parquet_serde
+      parameters:
+        serde_param: updated_serde_val
+      serdeType: HIVE
+      serializationLib: org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe
+    sortCols:
+    - col: user_id
+      order: 0
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/catalogs/biglakehivecatalog_max_${uniqueId}/databases/biglakehivedatabase_max_${uniqueId}/tables/biglakehivetable_max_${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    tableType: EXTERNAL_TABLE
+    updateTime: "1970-01-01T00:00:00Z"
