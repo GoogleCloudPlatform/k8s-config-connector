@@ -26,9 +26,36 @@ package dialogflowcx
 import (
 	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflowcx/v1alpha1"
+	krmdiscoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmservicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func DataStoreConnection_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreConnection) *krm.DataStoreConnection {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreConnection{}
+	out.DataStoreType = direct.Enum_FromProto(mapCtx, in.GetDataStoreType())
+	if in.GetDataStore() != "" {
+		out.DataStoreRef = &krmdiscoveryenginev1alpha1.DiscoveryEngineDataStoreRef{External: in.GetDataStore()}
+	}
+	out.DocumentProcessingMode = direct.Enum_FromProto(mapCtx, in.GetDocumentProcessingMode())
+	return out
+}
+func DataStoreConnection_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreConnection) *pb.DataStoreConnection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStoreConnection{}
+	out.DataStoreType = direct.Enum_ToProto[pb.DataStoreType](mapCtx, in.DataStoreType)
+	if in.DataStoreRef != nil {
+		out.DataStore = in.DataStoreRef.External
+	}
+	out.DocumentProcessingMode = direct.Enum_ToProto[pb.DocumentProcessingMode](mapCtx, in.DocumentProcessingMode)
+	return out
+}
 func DialogflowCXEntityTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntityType) *krm.DialogflowCXEntityTypeObservedState {
 	if in == nil {
 		return nil
@@ -97,6 +124,56 @@ func DialogflowCXGeneratorSpec_ToProto(mapCtx *direct.MapContext, in *krm.Dialog
 	out.PromptText = Phrase_ToProto(mapCtx, in.PromptText)
 	out.Placeholders = direct.Slice_ToProto(mapCtx, in.Placeholders, Generator_Placeholder_ToProto)
 	out.ModelParameter = Generator_ModelParameter_ToProto(mapCtx, in.ModelParameter)
+	return out
+}
+func DialogflowCXToolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Tool) *krm.DialogflowCXToolObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowCXToolObservedState{}
+	// MISSING: Name
+	out.ToolType = direct.Enum_FromProto(mapCtx, in.GetToolType())
+	return out
+}
+func DialogflowCXToolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowCXToolObservedState) *pb.Tool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool{}
+	// MISSING: Name
+	out.ToolType = direct.Enum_ToProto[pb.Tool_ToolType](mapCtx, in.ToolType)
+	return out
+}
+func DialogflowCXToolSpec_FromProto(mapCtx *direct.MapContext, in *pb.Tool) *krm.DialogflowCXToolSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowCXToolSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.OpenAPISpec = Tool_OpenAPITool_FromProto(mapCtx, in.GetOpenApiSpec())
+	out.DataStoreSpec = Tool_DataStoreTool_FromProto(mapCtx, in.GetDataStoreSpec())
+	out.FunctionSpec = Tool_FunctionTool_FromProto(mapCtx, in.GetFunctionSpec())
+	return out
+}
+func DialogflowCXToolSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowCXToolSpec) *pb.Tool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	if oneof := Tool_OpenAPITool_ToProto(mapCtx, in.OpenAPISpec); oneof != nil {
+		out.Specification = &pb.Tool_OpenApiSpec{OpenApiSpec: oneof}
+	}
+	if oneof := Tool_DataStoreTool_ToProto(mapCtx, in.DataStoreSpec); oneof != nil {
+		out.Specification = &pb.Tool_DataStoreSpec{DataStoreSpec: oneof}
+	}
+	if oneof := Tool_FunctionTool_ToProto(mapCtx, in.FunctionSpec); oneof != nil {
+		out.Specification = &pb.Tool_FunctionSpec{FunctionSpec: oneof}
+	}
 	return out
 }
 func EntityType_Entity_FromProto(mapCtx *direct.MapContext, in *pb.EntityType_Entity) *krm.EntityType_Entity {
@@ -187,5 +264,291 @@ func Phrase_ToProto(mapCtx *direct.MapContext, in *krm.Phrase) *pb.Phrase {
 	}
 	out := &pb.Phrase{}
 	out.Text = direct.ValueOf(in.Text)
+	return out
+}
+func Tool_Authentication_FromProto(mapCtx *direct.MapContext, in *pb.Tool_Authentication) *krm.Tool_Authentication {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_Authentication{}
+	out.APIKeyConfig = Tool_Authentication_APIKeyConfig_FromProto(mapCtx, in.GetApiKeyConfig())
+	out.OauthConfig = Tool_Authentication_OAuthConfig_FromProto(mapCtx, in.GetOauthConfig())
+	out.ServiceAgentAuthConfig = Tool_Authentication_ServiceAgentAuthConfig_FromProto(mapCtx, in.GetServiceAgentAuthConfig())
+	out.BearerTokenConfig = Tool_Authentication_BearerTokenConfig_FromProto(mapCtx, in.GetBearerTokenConfig())
+	out.ServiceAccountAuthConfig = Tool_Authentication_ServiceAccountAuthConfig_FromProto(mapCtx, in.GetServiceAccountAuthConfig())
+	return out
+}
+func Tool_Authentication_ToProto(mapCtx *direct.MapContext, in *krm.Tool_Authentication) *pb.Tool_Authentication {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_Authentication{}
+	if oneof := Tool_Authentication_APIKeyConfig_ToProto(mapCtx, in.APIKeyConfig); oneof != nil {
+		out.AuthConfig = &pb.Tool_Authentication_ApiKeyConfig_{ApiKeyConfig: oneof}
+	}
+	if oneof := Tool_Authentication_OAuthConfig_ToProto(mapCtx, in.OauthConfig); oneof != nil {
+		out.AuthConfig = &pb.Tool_Authentication_OauthConfig{OauthConfig: oneof}
+	}
+	if oneof := Tool_Authentication_ServiceAgentAuthConfig_ToProto(mapCtx, in.ServiceAgentAuthConfig); oneof != nil {
+		out.AuthConfig = &pb.Tool_Authentication_ServiceAgentAuthConfig_{ServiceAgentAuthConfig: oneof}
+	}
+	if oneof := Tool_Authentication_BearerTokenConfig_ToProto(mapCtx, in.BearerTokenConfig); oneof != nil {
+		out.AuthConfig = &pb.Tool_Authentication_BearerTokenConfig_{BearerTokenConfig: oneof}
+	}
+	if oneof := Tool_Authentication_ServiceAccountAuthConfig_ToProto(mapCtx, in.ServiceAccountAuthConfig); oneof != nil {
+		out.AuthConfig = &pb.Tool_Authentication_ServiceAccountAuthConfig_{ServiceAccountAuthConfig: oneof}
+	}
+	return out
+}
+func Tool_Authentication_APIKeyConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_Authentication_ApiKeyConfig) *krm.Tool_Authentication_APIKeyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_Authentication_APIKeyConfig{}
+	out.KeyName = direct.LazyPtr(in.GetKeyName())
+	out.APIKey = direct.LazyPtr(in.GetApiKey())
+	if in.GetSecretVersionForApiKey() != "" {
+		out.SecretVersionForAPIKeyRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetSecretVersionForApiKey()}
+	}
+	out.RequestLocation = direct.Enum_FromProto(mapCtx, in.GetRequestLocation())
+	return out
+}
+func Tool_Authentication_APIKeyConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_Authentication_APIKeyConfig) *pb.Tool_Authentication_ApiKeyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_Authentication_ApiKeyConfig{}
+	out.KeyName = direct.ValueOf(in.KeyName)
+	out.ApiKey = direct.ValueOf(in.APIKey)
+	if in.SecretVersionForAPIKeyRef != nil {
+		out.SecretVersionForApiKey = in.SecretVersionForAPIKeyRef.External
+	}
+	out.RequestLocation = direct.Enum_ToProto[pb.Tool_Authentication_RequestLocation](mapCtx, in.RequestLocation)
+	return out
+}
+func Tool_Authentication_BearerTokenConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_Authentication_BearerTokenConfig) *krm.Tool_Authentication_BearerTokenConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_Authentication_BearerTokenConfig{}
+	out.Token = direct.LazyPtr(in.GetToken())
+	if in.GetSecretVersionForToken() != "" {
+		out.SecretVersionForTokenRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetSecretVersionForToken()}
+	}
+	return out
+}
+func Tool_Authentication_BearerTokenConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_Authentication_BearerTokenConfig) *pb.Tool_Authentication_BearerTokenConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_Authentication_BearerTokenConfig{}
+	out.Token = direct.ValueOf(in.Token)
+	if in.SecretVersionForTokenRef != nil {
+		out.SecretVersionForToken = in.SecretVersionForTokenRef.External
+	}
+	return out
+}
+func Tool_Authentication_OAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_Authentication_OAuthConfig) *krm.Tool_Authentication_OAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_Authentication_OAuthConfig{}
+	out.OauthGrantType = direct.Enum_FromProto(mapCtx, in.GetOauthGrantType())
+	out.ClientID = direct.LazyPtr(in.GetClientId())
+	out.ClientSecret = direct.LazyPtr(in.GetClientSecret())
+	if in.GetSecretVersionForClientSecret() != "" {
+		out.SecretVersionForClientSecretRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetSecretVersionForClientSecret()}
+	}
+	out.TokenEndpoint = direct.LazyPtr(in.GetTokenEndpoint())
+	out.Scopes = in.Scopes
+	return out
+}
+func Tool_Authentication_OAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_Authentication_OAuthConfig) *pb.Tool_Authentication_OAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_Authentication_OAuthConfig{}
+	out.OauthGrantType = direct.Enum_ToProto[pb.Tool_Authentication_OAuthConfig_OauthGrantType](mapCtx, in.OauthGrantType)
+	out.ClientId = direct.ValueOf(in.ClientID)
+	out.ClientSecret = direct.ValueOf(in.ClientSecret)
+	if in.SecretVersionForClientSecretRef != nil {
+		out.SecretVersionForClientSecret = in.SecretVersionForClientSecretRef.External
+	}
+	out.TokenEndpoint = direct.ValueOf(in.TokenEndpoint)
+	out.Scopes = in.Scopes
+	return out
+}
+func Tool_Authentication_ServiceAccountAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_Authentication_ServiceAccountAuthConfig) *krm.Tool_Authentication_ServiceAccountAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_Authentication_ServiceAccountAuthConfig{}
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	return out
+}
+func Tool_Authentication_ServiceAccountAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_Authentication_ServiceAccountAuthConfig) *pb.Tool_Authentication_ServiceAccountAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_Authentication_ServiceAccountAuthConfig{}
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+	return out
+}
+func Tool_Authentication_ServiceAgentAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_Authentication_ServiceAgentAuthConfig) *krm.Tool_Authentication_ServiceAgentAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_Authentication_ServiceAgentAuthConfig{}
+	out.ServiceAgentAuth = direct.Enum_FromProto(mapCtx, in.GetServiceAgentAuth())
+	return out
+}
+func Tool_Authentication_ServiceAgentAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_Authentication_ServiceAgentAuthConfig) *pb.Tool_Authentication_ServiceAgentAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_Authentication_ServiceAgentAuthConfig{}
+	out.ServiceAgentAuth = direct.Enum_ToProto[pb.Tool_Authentication_ServiceAgentAuthConfig_ServiceAgentAuth](mapCtx, in.ServiceAgentAuth)
+	return out
+}
+func Tool_DataStoreTool_FromProto(mapCtx *direct.MapContext, in *pb.Tool_DataStoreTool) *krm.Tool_DataStoreTool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_DataStoreTool{}
+	out.DataStoreConnections = direct.Slice_FromProto(mapCtx, in.DataStoreConnections, DataStoreConnection_FromProto)
+	out.FallbackPrompt = Tool_DataStoreTool_FallbackPrompt_FromProto(mapCtx, in.GetFallbackPrompt())
+	return out
+}
+func Tool_DataStoreTool_ToProto(mapCtx *direct.MapContext, in *krm.Tool_DataStoreTool) *pb.Tool_DataStoreTool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_DataStoreTool{}
+	out.DataStoreConnections = direct.Slice_ToProto(mapCtx, in.DataStoreConnections, DataStoreConnection_ToProto)
+	out.FallbackPrompt = Tool_DataStoreTool_FallbackPrompt_ToProto(mapCtx, in.FallbackPrompt)
+	return out
+}
+func Tool_DataStoreTool_FallbackPrompt_FromProto(mapCtx *direct.MapContext, in *pb.Tool_DataStoreTool_FallbackPrompt) *krm.Tool_DataStoreTool_FallbackPrompt {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_DataStoreTool_FallbackPrompt{}
+	return out
+}
+func Tool_DataStoreTool_FallbackPrompt_ToProto(mapCtx *direct.MapContext, in *krm.Tool_DataStoreTool_FallbackPrompt) *pb.Tool_DataStoreTool_FallbackPrompt {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_DataStoreTool_FallbackPrompt{}
+	return out
+}
+func Tool_FunctionTool_FromProto(mapCtx *direct.MapContext, in *pb.Tool_FunctionTool) *krm.Tool_FunctionTool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_FunctionTool{}
+	if v := direct.Struct_FromProto(mapCtx, in.GetInputSchema()); v != nil {
+		out.InputSchema = *v
+	}
+	if v := direct.Struct_FromProto(mapCtx, in.GetOutputSchema()); v != nil {
+		out.OutputSchema = *v
+	}
+	return out
+}
+func Tool_FunctionTool_ToProto(mapCtx *direct.MapContext, in *krm.Tool_FunctionTool) *pb.Tool_FunctionTool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_FunctionTool{}
+	out.InputSchema = direct.Struct_ToProto(mapCtx, &in.InputSchema)
+	out.OutputSchema = direct.Struct_ToProto(mapCtx, &in.OutputSchema)
+	return out
+}
+func Tool_OpenAPITool_FromProto(mapCtx *direct.MapContext, in *pb.Tool_OpenApiTool) *krm.Tool_OpenAPITool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_OpenAPITool{}
+	out.TextSchema = direct.LazyPtr(in.GetTextSchema())
+	out.Authentication = Tool_Authentication_FromProto(mapCtx, in.GetAuthentication())
+	out.TLSConfig = Tool_TLSConfig_FromProto(mapCtx, in.GetTlsConfig())
+	out.ServiceDirectoryConfig = Tool_ServiceDirectoryConfig_FromProto(mapCtx, in.GetServiceDirectoryConfig())
+	return out
+}
+func Tool_OpenAPITool_ToProto(mapCtx *direct.MapContext, in *krm.Tool_OpenAPITool) *pb.Tool_OpenApiTool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_OpenApiTool{}
+	if oneof := Tool_OpenAPITool_TextSchema_ToProto(mapCtx, in.TextSchema); oneof != nil {
+		out.Schema = oneof
+	}
+	out.Authentication = Tool_Authentication_ToProto(mapCtx, in.Authentication)
+	out.TlsConfig = Tool_TLSConfig_ToProto(mapCtx, in.TLSConfig)
+	out.ServiceDirectoryConfig = Tool_ServiceDirectoryConfig_ToProto(mapCtx, in.ServiceDirectoryConfig)
+	return out
+}
+func Tool_OpenAPITool_TextSchema_ToProto(mapCtx *direct.MapContext, in *string) *pb.Tool_OpenApiTool_TextSchema {
+	if in == nil {
+		return nil
+	}
+	return &pb.Tool_OpenApiTool_TextSchema{TextSchema: *in}
+}
+func Tool_ServiceDirectoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_ServiceDirectoryConfig) *krm.Tool_ServiceDirectoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_ServiceDirectoryConfig{}
+	if in.GetService() != "" {
+		out.ServiceRef = &krmservicedirectoryv1beta1.ServiceDirectoryServiceRef{External: in.GetService()}
+	}
+	return out
+}
+func Tool_ServiceDirectoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_ServiceDirectoryConfig) *pb.Tool_ServiceDirectoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_ServiceDirectoryConfig{}
+	if in.ServiceRef != nil {
+		out.Service = in.ServiceRef.External
+	}
+	return out
+}
+func Tool_TLSConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_TLSConfig) *krm.Tool_TLSConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_TLSConfig{}
+	out.CACerts = direct.Slice_FromProto(mapCtx, in.CaCerts, Tool_TLSConfig_CACert_FromProto)
+	return out
+}
+func Tool_TLSConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_TLSConfig) *pb.Tool_TLSConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_TLSConfig{}
+	out.CaCerts = direct.Slice_ToProto(mapCtx, in.CACerts, Tool_TLSConfig_CACert_ToProto)
+	return out
+}
+func Tool_TLSConfig_CACert_FromProto(mapCtx *direct.MapContext, in *pb.Tool_TLSConfig_CACert) *krm.Tool_TLSConfig_CACert {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_TLSConfig_CACert{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Cert = in.GetCert()
+	return out
+}
+func Tool_TLSConfig_CACert_ToProto(mapCtx *direct.MapContext, in *krm.Tool_TLSConfig_CACert) *pb.Tool_TLSConfig_CACert {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_TLSConfig_CACert{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Cert = in.Cert
 	return out
 }
