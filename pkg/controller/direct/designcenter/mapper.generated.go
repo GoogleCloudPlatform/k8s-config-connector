@@ -32,6 +32,7 @@ import (
 	pb "cloud.google.com/go/designcenter/apiv1/designcenterpb"
 	krmcloudsecuritycompliancev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudsecuritycompliance/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/designcenter/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	structpb "google.golang.org/protobuf/types/known/structpb"
 )
@@ -954,7 +955,9 @@ func DesignCenterApplicationSpec_FromProto(mapCtx *direct.MapContext, in *pb.App
 	out.Source = DeploymentSource_FromProto(mapCtx, in.GetSource())
 	out.AppParameters = direct.Slice_FromProto(mapCtx, in.AppParameters, Parameter_FromProto)
 	out.ComponentParameters = direct.Slice_FromProto(mapCtx, in.ComponentParameters, ComponentParameters_FromProto)
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Attributes = Attributes_FromProto(mapCtx, in.GetAttributes())
@@ -980,7 +983,9 @@ func DesignCenterApplicationSpec_ToProto(mapCtx *direct.MapContext, in *krm.Desi
 	out.Source = DeploymentSource_ToProto(mapCtx, in.Source)
 	out.AppParameters = direct.Slice_ToProto(mapCtx, in.AppParameters, Parameter_ToProto)
 	out.ComponentParameters = direct.Slice_ToProto(mapCtx, in.ComponentParameters, ComponentParameters_ToProto)
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	out.Attributes = Attributes_ToProto(mapCtx, in.Attributes)
@@ -2078,7 +2083,7 @@ func ProjectParametersList_FromProto(mapCtx *direct.MapContext, in *pb.ProjectPa
 		return nil
 	}
 	out := &krm.ProjectParametersList{}
-	// MISSING: ProjectParameters
+	out.ProjectParameters = direct.Slice_FromProto(mapCtx, in.ProjectParameters, ProjectParametersObservedState_FromProto)
 	return out
 }
 
@@ -2087,7 +2092,7 @@ func ProjectParametersList_ToProto(mapCtx *direct.MapContext, in *krm.ProjectPar
 		return nil
 	}
 	out := &pb.ProjectParametersList{}
-	// MISSING: ProjectParameters
+	out.ProjectParameters = direct.Slice_ToProto(mapCtx, in.ProjectParameters, ProjectParametersObservedState_ToProto)
 	return out
 }
 

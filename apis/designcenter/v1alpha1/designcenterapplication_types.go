@@ -14,10 +14,8 @@
 
 // API sources for DesignCenterApplication, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/547f8fdb4b91dbac70d540b3757520f0608ae356/google/cloud/designcenter/v1/deployment_resources.proto
-// +kcc:guess=source-link reason=verify-service-docs-link
-// +kcc:source:service-docs=
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=
+// +kcc:source:service-docs=https://cloud.google.com/application-design-center/docs
+// +kcc:source:resource-docs=https://cloud.google.com/application-design-center/docs/reference/rest/v1/projects.locations.spaces.applications
 
 package v1alpha1
 
@@ -33,18 +31,14 @@ var DesignCenterApplicationGVK = GroupVersion.WithKind("DesignCenterApplication"
 // +kcc:spec:proto=google.cloud.designcenter.v1.Application
 // +kcc:required-from-proto
 type DesignCenterApplicationSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/spaces/{space} this resource belongs to.
-	// +kcc:guess
-	// SpaceRef *DesignCenterSpaceRef `json:"spaceRef,omitempty"`
+	// The DesignCenterSpace this DesignCenterApplication is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *DesignCenterSpaceRef `json:"parentRef"`
 
 	// The DesignCenterApplication name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Required. The application deployment source.
 	// +kcc:proto:field=google.cloud.designcenter.v1.Application.source
 	// +required
@@ -61,7 +55,7 @@ type DesignCenterApplicationSpec struct {
 
 	// Optional. Your own service account that you use to deploy an application.
 	// +kcc:proto:field=google.cloud.designcenter.v1.Application.service_account
-	ServiceAccount *string `json:"serviceAccount,omitempty"`
+	ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 
 	// Optional. Display name of the application.
 	// +kcc:proto:field=google.cloud.designcenter.v1.Application.display_name
@@ -227,6 +221,44 @@ type DesignCenterApplicationObservedState struct {
 	// Output only. Indicates the IaC source format of this application.
 	// +kcc:proto:field=google.cloud.designcenter.v1.Application.iac_source
 	IacSource *string `json:"iacSource,omitempty"`
+}
+
+// +kcc:proto=google.cloud.designcenter.v1.ProjectParametersList
+type ProjectParametersList struct {
+	// Output only. List of project parameters for the application.
+	// +kcc:proto:field=google.cloud.designcenter.v1.ProjectParametersList.project_parameters
+	ProjectParameters []ProjectParametersObservedState `json:"projectParameters,omitempty"`
+}
+
+// +kcc:proto=google.cloud.designcenter.v1.DeploymentMetadata
+type DeploymentMetadata struct {
+	// Output only. The revision of the deployment.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeploymentMetadata.revision
+	Revision *string `json:"revision,omitempty"`
+
+	// Output only. The component output parameters of the deployment.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeploymentMetadata.component_output_parameters
+	ComponentOutputParameters []ComponentOutputParametersObservedState `json:"componentOutputParameters,omitempty"`
+
+	// Output only. The error associated with the deployment.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeploymentMetadata.error
+	Error *DeploymentErrorObservedState `json:"error,omitempty"`
+
+	// Output only. The Cloud Build build id for the deployment.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeploymentMetadata.build
+	Build *string `json:"build,omitempty"`
+
+	// Output only. The Cloud Build worker pool for the deployment.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeploymentMetadata.worker_pool
+	WorkerPool *string `json:"workerPool,omitempty"`
+
+	// Output only. The attempted number of deployment retries.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeploymentMetadata.retry_attempts
+	RetryAttempts *int32 `json:"retryAttempts,omitempty"`
+
+	// Output only. The application output parameters of the deployment.
+	// +kcc:proto:field=google.cloud.designcenter.v1.DeploymentMetadata.application_output_parameters
+	ApplicationOutputParameters *ApplicationOutputParametersObservedState `json:"applicationOutputParameters,omitempty"`
 }
 
 // +genclient

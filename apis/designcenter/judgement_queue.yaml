@@ -25,219 +25,293 @@ entries:
     group: designcenter.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: accepted
+    note: triaged all fields, modeled parentRef, converted serviceAccountRef, resolved message maps
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     reason: identity-not-in-cai
     detail: template "//designcenter.googleapis.com/projects/{project}/locations/{location}/spaces/{space}/applications/{application}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
-    status: open
+    status: resolved
+    resolution: accepted
+    note: verified template against proto google.api.resource pattern
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/spaces/{space}/applications/{application}" contains ancestor segment(s) spaces/{space} with no matching reference or field on DesignCenterApplicationSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DesignCenterSpaceRef); removed ProjectRef and Location
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: found no docs root for this API; find the REST reference page by hand
-    status: open
+    status: resolved
+    resolution: edited
+    note: added resource REST reference URL
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     reason: verify-service-docs-link
     detail: neither the Discovery directory nor the service config names a docs page; add one
-    status: open
+    status: resolved
+    resolution: edited
+    note: added service docs URL
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .spec.appParameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .spec.componentParameters[].applicationInfo.apphubApplicationID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: user-defined ID string for the created App Hub application, not a reference to an existing resource
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .spec.componentParameters[].parameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .spec.compositeApplicationParameters.serviceAccountMap
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/components/{component}"
-    status: open
+    status: resolved
+    resolution: deferred
+    note: map[string]string mapping component URI keys to service account values; cannot be represented as a typed KRM reference
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .spec.connectionConfigs[].destinationComponentParameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .spec.connectionConfigs[].sourceComponentParameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .spec.deploymentTarget.gkeDeploymentTarget.kubernetesServiceAccount
     reason: possible-reference-by-description
     detail: the field name ends in serviceAccount
-    status: open
+    status: resolved
+    resolution: deferred
+    note: Kubernetes service account name within the target GKE namespace, not a GCP IAM service account
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/spaces/{space}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DesignCenterSpaceRef); removed ProjectRef and Location
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .spec.rolesAPIsConfig[].projectID
     reason: possible-reference-by-name
     detail: ProjectRef
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: GCP project ID string specifying target project configuration; not a top-level resource reference
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .spec.rolesAPIsConfig[].roles[].role
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to iam.googleapis.com/Role (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: IAM role name string (e.g. roles/editor); KCC does not model IAM roles as a reference type
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .spec.serviceAccount
     reason: possible-reference-by-description
     detail: the field name ends in serviceAccount
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to serviceAccountRef (*refsv1beta1.IAMServiceAccountRef)
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .spec.spaceRef
     reason: parent-ref-guessed
     detail: emitted as a reference to DesignCenterSpaceRef, read from the spaces segment of projects/{project}/locations/{location}/spaces/{space}/applications/{application}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DesignCenterSpaceRef); removed ProjectRef and Location
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.componentParameters[].componentParameterSchema[].defaultValue
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.componentParameters[].connectionsParameters[].parameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.compositeApplicationParameters.projectParametersMap
     reason: message-map-derived
     detail: derived as map[string]ProjectParametersList from proto google.cloud.designcenter.v1.ProjectParametersList; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: accepted
+    note: defined ProjectParametersList in designcenterapplication_types.go with output-only fields to populate CRD schema
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.deploymentGroupMetadata.deploymentMetadataMap
     reason: message-map-derived
     detail: derived as map[string]DeploymentMetadata from proto google.cloud.designcenter.v1.DeploymentMetadata; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: accepted
+    note: defined DeploymentMetadata in designcenterapplication_types.go with output-only fields to populate CRD schema
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.deploymentMetadata.applicationOutputParameters.helmApplicationOutputParameters.parameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.deploymentMetadata.componentOutputParameters[].parameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.serializedApplicationTemplate.applicationParameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.serializedApplicationTemplate.components[].componentParameterSchema[].defaultValue
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.serializedApplicationTemplate.components[].connectionsParameters[].parameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.serializedApplicationTemplate.components[].connections[].destinationComponentParameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.serializedApplicationTemplate.components[].connections[].sourceComponentParameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.serializedApplicationTemplate.components[].parameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.serializedApplicationTemplate.customTfvars[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.serializedApplicationTemplate.customVariables[].defaultValue
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.serializedApplicationTemplate.providers[].parameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.serializedApplicationTemplate.serializedPolicies[].cloudControlConfigs[].parameters[].value
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.templateMetadata.terraformInput[].defaultValue
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.templateMetadata.terraformOutput[].type
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.templateMetadata.uiMetadata.terraformUiInput.terraformUiInputs
     reason: message-map-derived
     detail: derived as map[string]TerraformUiInputDisplayVariable from proto google.cloud.designcenter.v1.TerraformUiInputDisplayVariable; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: accepted
+    note: verified map[string]TerraformUiInputDisplayVariable type and mapper
   - kind: DesignCenterApplication
     group: designcenter.cnrm.cloud.google.com
     field: .status.observedState.templateMetadata.uiMetadata.terraformUiOutput.terraformUiOutputs
     reason: message-map-derived
     detail: derived as map[string]TerraformUiOutputDisplay from proto google.cloud.designcenter.v1.TerraformUiOutputDisplay; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: accepted
+    note: verified map[string]TerraformUiOutputDisplay type and mapper
   - kind: DesignCenterApplicationTemplate
     group: designcenter.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

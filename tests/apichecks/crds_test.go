@@ -1110,7 +1110,6 @@ func TestCRDObjectTypes(t *testing.T) {
 		"dataformrepositories.dataform.cnrm.cloud.google.com":                           true, // status.observedState is an empty object
 		"dataprocjobs.dataproc.cnrm.cloud.google.com":                                   true, // spec.pysparkJob.loggingConfig is an empty object
 		"datastreamconnectionprofiles.datastream.cnrm.cloud.google.com":                 true, // spec.staticServiceIPConnectivity is an empty object
-		"designcenterapplications.designcenter.cnrm.cloud.google.com":                   true, // status.observedState.compositeApplicationParameters.projectParametersMap is an empty object
 		"dlpconnections.dlp.cnrm.cloud.google.com":                                      true, // spec.cloudSQL.cloudSQLIAM is an empty object
 		"firestorebackupschedules.firestore.cnrm.cloud.google.com":                      true, // spec.dailyRecurrence is an empty object
 		"firestorefields.firestore.cnrm.cloud.google.com":                               true, // spec.indexConfig.indexes[].fields[].vectorConfig.flat is an empty object

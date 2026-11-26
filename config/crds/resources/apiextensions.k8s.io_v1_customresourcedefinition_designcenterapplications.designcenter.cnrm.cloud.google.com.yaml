@@ -481,16 +481,14 @@ spec:
               importExistingResources:
                 description: Optional. Import existing resources into the application.
                 type: boolean
-              location:
-                description: The location of this resource.
-                type: string
               paramsUpdateStrategy:
                 description: Optional. Specifies the strategy to use when updating
                   the application parameters while updating the application template
                   revision.
                 type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The DesignCenterSpace this DesignCenterApplication is
+                  created under.
                 oneOf:
                 - not:
                     required:
@@ -507,20 +505,19 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed DesignCenterSpace
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/spaces/{{spaceID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a DesignCenterSpace resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a DesignCenterSpace resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The DesignCenterApplication name. If not given, the metadata.name
                   will be used.
@@ -575,10 +572,34 @@ spec:
                 required:
                 - type
                 type: object
-              serviceAccount:
+              serviceAccountRef:
                 description: Optional. Your own service account that you use to deploy
                   an application.
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `email` field of an `IAMServiceAccount` resource.
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
               source:
                 description: Required. The application deployment source.
                 properties:
@@ -593,8 +614,7 @@ spec:
                 description: Optional. The type of the application.
                 type: string
             required:
-            - location
-            - projectRef
+            - parentRef
             - scope
             - source
             type: object
@@ -986,6 +1006,32 @@ spec:
                     properties:
                       projectParametersMap:
                         additionalProperties:
+                          properties:
+                            projectParameters:
+                              description: Output only. List of project parameters
+                                for the application.
+                              items:
+                                properties:
+                                  apis:
+                                    description: Output only. APIs required to be
+                                      enabled to deploy the application, in the form
+                                      of "*.googleapis.com".
+                                    items:
+                                      type: string
+                                    type: array
+                                  projectID:
+                                    description: Output only. The project ID of the
+                                      project.
+                                    type: string
+                                  roles:
+                                    description: Output only. IAM roles required by
+                                      the service account to deploy the application
+                                      in given project.
+                                    items:
+                                      type: string
+                                    type: array
+                                type: object
+                              type: array
                           type: object
                         description: 'Output only. A map from a component''s URI to
                           its project parameters. The key format is: projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/components/{component}'
@@ -1102,6 +1148,221 @@ spec:
                         type: string
                       deploymentMetadataMap:
                         additionalProperties:
+                          properties:
+                            applicationOutputParameters:
+                              description: Output only. The application output parameters
+                                of the deployment.
+                              properties:
+                                helmApplicationOutputParameters:
+                                  description: Output only. Helm application output
+                                    parameters.
+                                  properties:
+                                    parameters:
+                                      description: Output only. The output parameters
+                                        of the helm application.
+                                      items:
+                                        properties:
+                                          key:
+                                            description: Required. The key of the
+                                              parameter.
+                                            type: string
+                                          readOnly:
+                                            description: Output only. Indicates if
+                                              the parameter is read-only (driven by
+                                              expression).
+                                            type: boolean
+                                          value:
+                                            description: Optional. The value of the
+                                              parameter.
+                                            properties:
+                                              boolValue:
+                                                description: Represents a boolean
+                                                  value.
+                                                type: boolean
+                                              listValue:
+                                                description: Represents a repeated
+                                                  `Value`.
+                                                properties:
+                                                  values:
+                                                    description: Repeated field of
+                                                      dynamically typed values.
+                                                    items:
+                                                      type: object
+                                                      x-kubernetes-preserve-unknown-fields: true
+                                                    type: array
+                                                type: object
+                                              nullValue:
+                                                description: Represents a null value.
+                                                type: string
+                                              numberValue:
+                                                description: Represents a double value.
+                                                type: number
+                                              stringValue:
+                                                description: Represents a string value.
+                                                type: string
+                                              structValue:
+                                                description: Represents a structured
+                                                  value.
+                                                x-kubernetes-preserve-unknown-fields: true
+                                            type: object
+                                        type: object
+                                      type: array
+                                  type: object
+                              type: object
+                            build:
+                              description: Output only. The Cloud Build build id for
+                                the deployment.
+                              type: string
+                            componentOutputParameters:
+                              description: Output only. The component output parameters
+                                of the deployment.
+                              items:
+                                properties:
+                                  component:
+                                    description: Output only. The component name of
+                                      the output parameters.
+                                    type: string
+                                  parameters:
+                                    description: Output only. The output parameters
+                                      of the component.
+                                    items:
+                                      properties:
+                                        key:
+                                          description: Required. The key of the parameter.
+                                          type: string
+                                        readOnly:
+                                          description: Output only. Indicates if the
+                                            parameter is read-only (driven by expression).
+                                          type: boolean
+                                        value:
+                                          description: Optional. The value of the
+                                            parameter.
+                                          properties:
+                                            boolValue:
+                                              description: Represents a boolean value.
+                                              type: boolean
+                                            listValue:
+                                              description: Represents a repeated `Value`.
+                                              properties:
+                                                values:
+                                                  description: Repeated field of dynamically
+                                                    typed values.
+                                                  items:
+                                                    type: object
+                                                    x-kubernetes-preserve-unknown-fields: true
+                                                  type: array
+                                              type: object
+                                            nullValue:
+                                              description: Represents a null value.
+                                              type: string
+                                            numberValue:
+                                              description: Represents a double value.
+                                              type: number
+                                            stringValue:
+                                              description: Represents a string value.
+                                              type: string
+                                            structValue:
+                                              description: Represents a structured
+                                                value.
+                                              x-kubernetes-preserve-unknown-fields: true
+                                          type: object
+                                      type: object
+                                    type: array
+                                type: object
+                              type: array
+                            error:
+                              description: Output only. The error associated with
+                                the deployment.
+                              properties:
+                                code:
+                                  description: Output only. The deployment error code.
+                                    Based on Infrastructure Manager error codes.
+                                  type: string
+                                deploymentFailureResolutionInfo:
+                                  description: Output only. The call to actions associated
+                                    with the deployment issue.
+                                  items:
+                                    properties:
+                                      resolutionLink:
+                                        description: Output only. Link for the call
+                                          to action.
+                                        type: string
+                                      resolutionLinkText:
+                                        description: Output only. Call to action link
+                                          text.
+                                        type: string
+                                      resolutionMessage:
+                                        description: Output only. Elaborative error
+                                          resolution message.
+                                        type: string
+                                    type: object
+                                  type: array
+                                detail:
+                                  description: Output only. Human readable string
+                                    that summarizes the deployment error issue.
+                                  type: string
+                                errorMessage:
+                                  description: Output only. Stores errors generated
+                                    by Infra Manager, as well as all non-internal
+                                    errors (such as INVALID_ARGUMENT) that occur before
+                                    initiating the deployment.
+                                  type: string
+                                tfErrors:
+                                  description: Output only. The error message associated
+                                    with the deployment.
+                                  items:
+                                    properties:
+                                      error:
+                                        description: Output only. Original error response
+                                          from underlying Google API, if available.
+                                        properties:
+                                          code:
+                                            description: The status code, which should
+                                              be an enum value of [google.rpc.Code][google.rpc.Code].
+                                            format: int32
+                                            type: integer
+                                          message:
+                                            description: A developer-facing error
+                                              message, which should be in English.
+                                              Any user-facing error message should
+                                              be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details]
+                                              field, or localized by the client.
+                                            type: string
+                                        type: object
+                                      errorDescription:
+                                        description: A human-readable error description.
+                                        type: string
+                                      httpResponseCode:
+                                        description: HTTP response code returned from
+                                          Google Cloud Platform APIs when Terraform
+                                          fails to provision the resource. If unset
+                                          or 0, no HTTP response code was returned
+                                          by Terraform.
+                                        format: int32
+                                        type: integer
+                                      resourceAddress:
+                                        description: Address of the resource associated
+                                          with the error, e.g. `google_compute_network.vpc_network`.
+                                        type: string
+                                    type: object
+                                  type: array
+                                type:
+                                  description: Output only. The error type based on
+                                    the deployment error code.
+                                  type: string
+                              type: object
+                            retryAttempts:
+                              description: Output only. The attempted number of deployment
+                                retries.
+                              format: int32
+                              type: integer
+                            revision:
+                              description: Output only. The revision of the deployment.
+                              type: string
+                            workerPool:
+                              description: Output only. The Cloud Build worker pool
+                                for the deployment.
+                              type: string
                           type: object
                         description: 'Output only. Map of component name to deployment
                           metadata for the component. Key format: projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/components/{component}'

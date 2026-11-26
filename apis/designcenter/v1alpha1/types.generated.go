@@ -607,9 +607,12 @@ type DeploymentGroupMetadata struct {
 }
 */
 
+/* found existing non-generated go type "DeploymentMetadata", skipping
+
 // +kcc:proto=google.cloud.designcenter.v1.DeploymentMetadata
 type DeploymentMetadata struct {
 }
+*/
 
 // +kcc:proto=google.cloud.designcenter.v1.DeploymentSource
 type DeploymentSource struct {
@@ -1000,9 +1003,12 @@ type ProjectParameters struct {
 }
 */
 
+/* found existing non-generated go type "ProjectParametersList", skipping
+
 // +kcc:proto=google.cloud.designcenter.v1.ProjectParametersList
 type ProjectParametersList struct {
 }
+*/
 
 /* unreachable type ProviderVersion
 // +kcc:proto=google.cloud.designcenter.v1.ProviderVersion

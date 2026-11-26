@@ -3748,14 +3748,13 @@
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.importExistingResources" is not set in unstructured objects
-[missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.paramsUpdateStrategy" is not set in unstructured objects
-[missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolesAPIsConfig[].apis[].api" is not set in unstructured objects
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolesAPIsConfig[].projectID" is not set in unstructured objects
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolesAPIsConfig[].roles[].role" is not set in unstructured objects
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.scope.type" is not set in unstructured objects
-[missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccount" is not set in unstructured objects
+[missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.applicationTemplateRevision" is not set in unstructured objects
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.sharedTemplateRevisionURI" is not set in unstructured objects
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.type" is not set in unstructured objects
