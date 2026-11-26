@@ -15,13 +15,11 @@
 // API sources for BigLakeHiveTable, recorded by generate-types:
 // +kcc:source:proto=https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/mockgcp/apis/google/cloud/biglake/hive/v1/hive_metastore.proto
 // +kcc:source:service-docs=https://cloud.google.com/products/lakehouse
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/products/lakehouse/docs/reference/rest/v1/projects.catalogs.databases.tables
+// +kcc:source:resource-docs=https://cloud.google.com/bigquery/docs/manage-open-source-metadata
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,12 +30,10 @@ var BigLakeHiveTableGVK = GroupVersion.WithKind("BigLakeHiveTable")
 // +kcc:spec:proto=google.cloud.biglake.hive.v1.HiveTable
 // +kcc:required-from-proto
 type BigLakeHiveTableSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// A reference to the projects/{project}/catalogs/{catalog}/databases/{database} this resource belongs to.
-	// +kcc:guess
-	// DatabaseRef *BigQueryBigLakeDatabaseRef `json:"databaseRef,omitempty"`
+	// The BigLakeHiveDatabase this BigLakeHiveTable is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *BigLakeHiveDatabaseRef `json:"parentRef"`
 
 	// The BigLakeHiveTable name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

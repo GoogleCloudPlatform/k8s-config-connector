@@ -71,6 +71,38 @@ spec:
                 description: Optional. Stores the properties associated with the table.
                   The maximum size is 4MiB.
                 type: object
+              parentRef:
+                description: The BigLakeHiveDatabase this BigLakeHiveTable is created
+                  under.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed BigLakeHiveDatabase
+                      resource. Should be in the format "projects/{{projectID}}/catalogs/{{catalogID}}/databases/{{databaseID}}".
+                    type: string
+                  name:
+                    description: The name of a BigLakeHiveDatabase resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a BigLakeHiveDatabase resource.
+                    type: string
+                type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               partitionKeys:
                 description: Optional. The partition keys of the table.
                 items:
@@ -92,38 +124,6 @@ spec:
                   - type
                   type: object
                 type: array
-              projectRef:
-                description: The project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
-                type: object
               resourceID:
                 description: The BigLakeHiveTable name. If not given, the metadata.name
                   will be used.
@@ -301,7 +301,7 @@ spec:
                   The maximum size is 16MiB.
                 type: string
             required:
-            - projectRef
+            - parentRef
             - storageDescriptor
             type: object
           status:

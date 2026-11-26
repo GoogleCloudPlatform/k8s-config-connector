@@ -24,6 +24,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -79,29 +80,19 @@ func getIdentityFromBigLakeHiveTableSpec(ctx context.Context, reader client.Read
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	if obj.Spec.ParentRef == nil {
+		return nil, fmt.Errorf("spec.parentRef is required")
 	}
-
-	// +kcc:guess reason=identity-root-unknown
-	catalog := ""
-	if catalog == "" {
-		return nil, fmt.Errorf("cannot resolve catalog for BigLakeHiveTable")
+	parentRef := *obj.Spec.ParentRef
+	if err := parentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, fmt.Errorf("resolving spec.parentRef: %w", err)
 	}
-
-	// +kcc:guess reason=identity-root-unknown
-	database := ""
-	if database == "" {
-		return nil, fmt.Errorf("cannot resolve database for BigLakeHiveTable")
+	parsed := &BigLakeHiveTableIdentity{}
+	if err := parsed.FromExternal(strings.TrimSuffix(parentRef.GetExternal(), "/") + "/tables" + "/" + resourceID); err != nil {
+		return nil, fmt.Errorf("parsing spec.parentRef external=%q: %w", parentRef.GetExternal(), err)
 	}
-
-	return &BigLakeHiveTableIdentity{
-		Project:  projectID,
-		Catalog:  catalog,
-		Database: database,
-		Table:    resourceID,
-	}, nil
+	parsed.Table = resourceID
+	return parsed, nil
 }
 
 func (obj *BigLakeHiveTable) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {

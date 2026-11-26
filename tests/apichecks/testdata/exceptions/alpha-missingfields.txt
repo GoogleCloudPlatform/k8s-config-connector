@@ -1506,10 +1506,10 @@
 [missing_field] crd=beyondcorpclientconnectorservices.beyondcorp.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.parameters" is not set in unstructured objects
+[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.partitionKeys[].comment" is not set in unstructured objects
 [missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.partitionKeys[].name" is not set in unstructured objects
 [missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.partitionKeys[].type" is not set in unstructured objects
-[missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.bucketCols[]" is not set in unstructured objects
 [missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.columns[].comment" is not set in unstructured objects
 [missing_field] crd=biglakehivetables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.storageDescriptor.columns[].name" is not set in unstructured objects
