@@ -916,6 +916,54 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 			}
 
+			// Inject status.externalRef for BigLakeHiveDatabase to simulate a reconciled database in static unit tests.
+			if u.GetKind() == "BigLakeHiveDatabase" && u.GroupVersionKind().Group == "bigquerybiglake.cnrm.cloud.google.com" {
+				if extRef, ok, _ := unstructured.NestedString(u.Object, "status", "externalRef"); !ok || extRef == "" {
+					databaseID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+					if databaseID == "" {
+						databaseID = u.GetName()
+					}
+					var extRef string
+					if parentExt, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "external"); parentExt != "" {
+						extRef = fmt.Sprintf("%s/databases/%s", strings.TrimSuffix(parentExt, "/"), databaseID)
+					} else if parentName, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "name"); parentName != "" {
+						for _, other := range kccObjs {
+							if other.GetKind() == "BigLakeHiveCatalog" && other.GetName() == parentName {
+								if otherExt, ok, _ := unstructured.NestedString(other.Object, "status", "externalRef"); ok && otherExt != "" {
+									extRef = fmt.Sprintf("%s/databases/%s", strings.TrimSuffix(otherExt, "/"), databaseID)
+								} else {
+									projectID, _, _ := unstructured.NestedString(other.Object, "spec", "projectRef", "external")
+									projectID = strings.TrimPrefix(projectID, "projects/")
+									if projectID == "" {
+										otherAnn := other.GetAnnotations()
+										if otherAnn != nil {
+											projectID = otherAnn["cnrm.cloud.google.com/project-id"]
+										}
+									}
+									if projectID == "" {
+										projectID = annotations["cnrm.cloud.google.com/project-id"]
+									}
+									if projectID == "" {
+										projectID = "mock-project"
+									}
+									catalogID, _, _ := unstructured.NestedString(other.Object, "spec", "resourceID")
+									if catalogID == "" {
+										catalogID = other.GetName()
+									}
+									extRef = fmt.Sprintf("projects/%s/catalogs/%s/databases/%s", projectID, catalogID, databaseID)
+								}
+								break
+							}
+						}
+					}
+					if extRef != "" {
+						if err := unstructured.SetNestedField(u.Object, extRef, "status", "externalRef"); err != nil {
+							t.Fatalf("failed to inject status.externalRef for BigLakeHiveDatabase %s: %v", u.GetName(), err)
+						}
+					}
+				}
+			}
+
 			// Inject status.externalRef for FTPServer to simulate a reconciled server in static unit tests.
 			if u.GetKind() == "FTPServer" && u.GroupVersionKind().Group == "ftp.cnrm.cloud.google.com" {
 				projectID, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external")
@@ -1354,6 +1402,50 @@ func normalizeFixtureKCCObjects(allObjs []*unstructured.Unstructured) []*unstruc
 			}
 			extRef := fmt.Sprintf("projects/%s/catalogs/%s", projectID, catalogID)
 			_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+		}
+		if u.GetKind() == "BigLakeHiveDatabase" && group == "bigquerybiglake.cnrm.cloud.google.com" {
+			if extRef, ok, _ := unstructured.NestedString(u.Object, "status", "externalRef"); !ok || extRef == "" {
+				databaseID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+				if databaseID == "" {
+					databaseID = u.GetName()
+				}
+				var extRef string
+				if parentExt, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "external"); parentExt != "" {
+					extRef = fmt.Sprintf("%s/databases/%s", strings.TrimSuffix(parentExt, "/"), databaseID)
+				} else if parentName, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "name"); parentName != "" {
+					for _, other := range allObjs {
+						if other.GetKind() == "BigLakeHiveCatalog" && other.GetName() == parentName {
+							if otherExt, ok, _ := unstructured.NestedString(other.Object, "status", "externalRef"); ok && otherExt != "" {
+								extRef = fmt.Sprintf("%s/databases/%s", strings.TrimSuffix(otherExt, "/"), databaseID)
+							} else {
+								projectID, _, _ := unstructured.NestedString(other.Object, "spec", "projectRef", "external")
+								projectID = strings.TrimPrefix(projectID, "projects/")
+								if projectID == "" {
+									otherAnn := other.GetAnnotations()
+									if otherAnn != nil {
+										projectID = otherAnn["cnrm.cloud.google.com/project-id"]
+									}
+								}
+								if projectID == "" {
+									projectID = ann["cnrm.cloud.google.com/project-id"]
+								}
+								if projectID == "" {
+									projectID = "mock-project"
+								}
+								catalogID, _, _ := unstructured.NestedString(other.Object, "spec", "resourceID")
+								if catalogID == "" {
+									catalogID = other.GetName()
+								}
+								extRef = fmt.Sprintf("projects/%s/catalogs/%s/databases/%s", projectID, catalogID, databaseID)
+							}
+							break
+						}
+					}
+				}
+				if extRef != "" {
+					_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+				}
+			}
 		}
 		if u.GetKind() == "MigrationCenterImportJob" && group == "migrationcenter.cnrm.cloud.google.com" {
 			projectID := ann["cnrm.cloud.google.com/project-id"]

@@ -4,7 +4,7 @@
 - **Resource Name:** `biglakehivetable-min-${uniqueId} (resourceID: biglakehivetable_min_${uniqueId})`
 - **Source Log:** `_http.log` (21 total HTTP entries, 10 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:030a559173a41cfd`
+- **Integrity Hash:** `sha256:886756a401572ba1`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 
