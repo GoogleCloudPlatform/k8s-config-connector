@@ -105,6 +105,8 @@ Content-Type: application/json
   ],
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
     "managed-by-cnrm": "true"
   },
   "networks": [
@@ -179,6 +181,8 @@ X-Xss-Protection: 0
     ],
     "labels": {
       "cnrm-test": "true",
+      "label-one": "value-one",
+      "label-two": "value-two",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
@@ -226,6 +230,8 @@ X-Xss-Protection: 0
   ],
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
@@ -260,6 +266,8 @@ Content-Type: application/json
   ],
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
     "managed-by-cnrm": "true"
   }
 }
@@ -325,6 +333,8 @@ X-Xss-Protection: 0
     ],
     "labels": {
       "cnrm-test": "true",
+      "label-one": "value-one",
+      "label-two": "value-two",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
@@ -372,6 +382,8 @@ X-Xss-Protection: 0
   ],
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
@@ -417,7 +429,9 @@ Content-Type: application/json
   ],
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
+    "label-one": "value-one-updated",
+    "label-three": "value-three",
+    "label-two": "value-two",
     "managed-by-cnrm": "true"
   }
 }
@@ -497,7 +511,9 @@ X-Xss-Protection: 0
     ],
     "labels": {
       "cnrm-test": "true",
-      "label-one": "value-one",
+      "label-one": "value-one-updated",
+      "label-three": "value-three",
+      "label-two": "value-two",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
@@ -559,7 +575,9 @@ X-Xss-Protection: 0
   ],
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
+    "label-one": "value-one-updated",
+    "label-three": "value-three",
+    "label-two": "value-two",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",

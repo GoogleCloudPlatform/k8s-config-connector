@@ -171,12 +171,7 @@ func (a *filestoreInstanceAdapter) buildDesired(ctx context.Context, u *unstruct
 		return nil, mapCtx.Err()
 	}
 
-	labels := label.NewGCPLabelsFromK8sLabels(u.GetLabels())
-	if labels == nil {
-		labels = make(map[string]string)
-	}
-	labels["managed-by-cnrm"] = "true"
-	desired.Labels = labels
+	desired.Labels = label.GCPLabels(u)
 
 	return desired, nil
 }
