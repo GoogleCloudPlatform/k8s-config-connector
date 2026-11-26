@@ -41,6 +41,7 @@ func AdvancedSettings_FromProto(mapCtx *direct.MapContext, in *pb.AdvancedSettin
 	out.LoggingSettings = AdvancedSettings_LoggingSettings_FromProto(mapCtx, in.GetLoggingSettings())
 	return out
 }
+
 func AdvancedSettings_ToProto(mapCtx *direct.MapContext, in *krm.AdvancedSettings) *pb.AdvancedSettings {
 	if in == nil {
 		return nil
@@ -52,6 +53,7 @@ func AdvancedSettings_ToProto(mapCtx *direct.MapContext, in *krm.AdvancedSetting
 	out.LoggingSettings = AdvancedSettings_LoggingSettings_ToProto(mapCtx, in.LoggingSettings)
 	return out
 }
+
 func AdvancedSettings_DtmfSettings_FromProto(mapCtx *direct.MapContext, in *pb.AdvancedSettings_DtmfSettings) *krm.AdvancedSettings_DtmfSettings {
 	if in == nil {
 		return nil
@@ -64,6 +66,7 @@ func AdvancedSettings_DtmfSettings_FromProto(mapCtx *direct.MapContext, in *pb.A
 	out.EndpointingTimeoutDuration = direct.StringDuration_FromProto(mapCtx, in.GetEndpointingTimeoutDuration())
 	return out
 }
+
 func AdvancedSettings_DtmfSettings_ToProto(mapCtx *direct.MapContext, in *krm.AdvancedSettings_DtmfSettings) *pb.AdvancedSettings_DtmfSettings {
 	if in == nil {
 		return nil
@@ -76,6 +79,7 @@ func AdvancedSettings_DtmfSettings_ToProto(mapCtx *direct.MapContext, in *krm.Ad
 	out.EndpointingTimeoutDuration = direct.StringDuration_ToProto(mapCtx, in.EndpointingTimeoutDuration)
 	return out
 }
+
 func AdvancedSettings_LoggingSettings_FromProto(mapCtx *direct.MapContext, in *pb.AdvancedSettings_LoggingSettings) *krm.AdvancedSettings_LoggingSettings {
 	if in == nil {
 		return nil
@@ -86,6 +90,7 @@ func AdvancedSettings_LoggingSettings_FromProto(mapCtx *direct.MapContext, in *p
 	out.EnableConsentBasedRedaction = direct.LazyPtr(in.GetEnableConsentBasedRedaction())
 	return out
 }
+
 func AdvancedSettings_LoggingSettings_ToProto(mapCtx *direct.MapContext, in *krm.AdvancedSettings_LoggingSettings) *pb.AdvancedSettings_LoggingSettings {
 	if in == nil {
 		return nil
@@ -96,6 +101,7 @@ func AdvancedSettings_LoggingSettings_ToProto(mapCtx *direct.MapContext, in *krm
 	out.EnableConsentBasedRedaction = direct.ValueOf(in.EnableConsentBasedRedaction)
 	return out
 }
+
 func AdvancedSettings_SpeechSettings_FromProto(mapCtx *direct.MapContext, in *pb.AdvancedSettings_SpeechSettings) *krm.AdvancedSettings_SpeechSettings {
 	if in == nil {
 		return nil
@@ -107,6 +113,7 @@ func AdvancedSettings_SpeechSettings_FromProto(mapCtx *direct.MapContext, in *pb
 	out.Models = in.Models
 	return out
 }
+
 func AdvancedSettings_SpeechSettings_ToProto(mapCtx *direct.MapContext, in *krm.AdvancedSettings_SpeechSettings) *pb.AdvancedSettings_SpeechSettings {
 	if in == nil {
 		return nil
@@ -118,6 +125,29 @@ func AdvancedSettings_SpeechSettings_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.Models = in.Models
 	return out
 }
+
+/* found existing non-generated mapping function "CodeBlock_FromProto", skipping
+func CodeBlock_FromProto(mapCtx *direct.MapContext, in *pb.CodeBlock) *krm.CodeBlock {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CodeBlock{}
+	out.Code = direct.LazyPtr(in.GetCode())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "CodeBlock_ToProto", skipping
+func CodeBlock_ToProto(mapCtx *direct.MapContext, in *krm.CodeBlock) *pb.CodeBlock {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CodeBlock{}
+	out.Code = direct.ValueOf(in.Code)
+	return out
+}
+*/
+
 func DataStoreConnection_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreConnection) *krm.DataStoreConnection {
 	if in == nil {
 		return nil
@@ -128,6 +158,7 @@ func DataStoreConnection_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreCo
 	out.DocumentProcessingMode = direct.Enum_FromProto(mapCtx, in.GetDocumentProcessingMode())
 	return out
 }
+
 func DataStoreConnection_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreConnection) *pb.DataStoreConnection {
 	if in == nil {
 		return nil
@@ -138,6 +169,7 @@ func DataStoreConnection_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreCon
 	out.DocumentProcessingMode = direct.Enum_ToProto[pb.DocumentProcessingMode](mapCtx, in.DocumentProcessingMode)
 	return out
 }
+
 func DialogflowEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.DialogflowEnvironmentObservedState {
 	if in == nil {
 		return nil
@@ -147,6 +179,7 @@ func DialogflowEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in 
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
+
 func DialogflowEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowEnvironmentObservedState) *pb.Environment {
 	if in == nil {
 		return nil
@@ -156,6 +189,7 @@ func DialogflowEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *k
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
+
 func DialogflowEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.DialogflowEnvironmentSpec {
 	if in == nil {
 		return nil
@@ -169,6 +203,7 @@ func DialogflowEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Envir
 	out.WebhookConfig = Environment_WebhookConfig_FromProto(mapCtx, in.GetWebhookConfig())
 	return out
 }
+
 func DialogflowEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowEnvironmentSpec) *pb.Environment {
 	if in == nil {
 		return nil
@@ -182,6 +217,7 @@ func DialogflowEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.Dialog
 	out.WebhookConfig = Environment_WebhookConfig_ToProto(mapCtx, in.WebhookConfig)
 	return out
 }
+
 func DialogflowFlowObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Flow) *krm.DialogflowFlowObservedState {
 	if in == nil {
 		return nil
@@ -193,6 +229,7 @@ func DialogflowFlowObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Flo
 	out.KnowledgeConnectorSettings = KnowledgeConnectorSettingsObservedState_FromProto(mapCtx, in.GetKnowledgeConnectorSettings())
 	return out
 }
+
 func DialogflowFlowObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowFlowObservedState) *pb.Flow {
 	if in == nil {
 		return nil
@@ -204,6 +241,7 @@ func DialogflowFlowObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Dial
 	out.KnowledgeConnectorSettings = KnowledgeConnectorSettingsObservedState_ToProto(mapCtx, in.KnowledgeConnectorSettings)
 	return out
 }
+
 func DialogflowFlowSpec_FromProto(mapCtx *direct.MapContext, in *pb.Flow) *krm.DialogflowFlowSpec {
 	if in == nil {
 		return nil
@@ -222,6 +260,7 @@ func DialogflowFlowSpec_FromProto(mapCtx *direct.MapContext, in *pb.Flow) *krm.D
 	out.Locked = direct.LazyPtr(in.GetLocked())
 	return out
 }
+
 func DialogflowFlowSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowFlowSpec) *pb.Flow {
 	if in == nil {
 		return nil
@@ -240,6 +279,7 @@ func DialogflowFlowSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowFlo
 	out.Locked = direct.ValueOf(in.Locked)
 	return out
 }
+
 func DialogflowPageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Page) *krm.DialogflowPageObservedState {
 	if in == nil {
 		return nil
@@ -253,6 +293,7 @@ func DialogflowPageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Pag
 	out.KnowledgeConnectorSettings = KnowledgeConnectorSettingsObservedState_FromProto(mapCtx, in.GetKnowledgeConnectorSettings())
 	return out
 }
+
 func DialogflowPageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowPageObservedState) *pb.Page {
 	if in == nil {
 		return nil
@@ -266,6 +307,7 @@ func DialogflowPageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Dial
 	out.KnowledgeConnectorSettings = KnowledgeConnectorSettingsObservedState_ToProto(mapCtx, in.KnowledgeConnectorSettings)
 	return out
 }
+
 func DialogflowPageSpec_FromProto(mapCtx *direct.MapContext, in *pb.Page) *krm.DialogflowPageSpec {
 	if in == nil {
 		return nil
@@ -283,6 +325,7 @@ func DialogflowPageSpec_FromProto(mapCtx *direct.MapContext, in *pb.Page) *krm.D
 	out.KnowledgeConnectorSettings = KnowledgeConnectorSettings_FromProto(mapCtx, in.GetKnowledgeConnectorSettings())
 	return out
 }
+
 func DialogflowPageSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowPageSpec) *pb.Page {
 	if in == nil {
 		return nil
@@ -300,6 +343,85 @@ func DialogflowPageSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowPag
 	out.KnowledgeConnectorSettings = KnowledgeConnectorSettings_ToProto(mapCtx, in.KnowledgeConnectorSettings)
 	return out
 }
+
+/* found existing non-generated mapping function "DialogflowPlaybookObservedState_FromProto", skipping
+func DialogflowPlaybookObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Playbook) *krm.DialogflowPlaybookObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowPlaybookObservedState{}
+	// MISSING: Name
+	out.TokenCount = direct.LazyPtr(in.GetTokenCount())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.ReferencedPlaybooks = in.ReferencedPlaybooks
+	out.ReferencedFlows = in.ReferencedFlows
+	out.InlineActions = in.InlineActions
+	out.Handlers = direct.Slice_FromProto(mapCtx, in.Handlers, HandlerObservedState_FromProto)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "DialogflowPlaybookObservedState_ToProto", skipping
+func DialogflowPlaybookObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowPlaybookObservedState) *pb.Playbook {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Playbook{}
+	// MISSING: Name
+	out.TokenCount = direct.ValueOf(in.TokenCount)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.ReferencedPlaybooks = in.ReferencedPlaybooks
+	out.ReferencedFlows = in.ReferencedFlows
+	out.InlineActions = in.InlineActions
+	out.Handlers = direct.Slice_ToProto(mapCtx, in.Handlers, HandlerObservedState_ToProto)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "DialogflowPlaybookSpec_FromProto", skipping
+func DialogflowPlaybookSpec_FromProto(mapCtx *direct.MapContext, in *pb.Playbook) *krm.DialogflowPlaybookSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowPlaybookSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Goal = direct.LazyPtr(in.GetGoal())
+	out.InputParameterDefinitions = direct.Slice_FromProto(mapCtx, in.InputParameterDefinitions, ParameterDefinition_FromProto)
+	out.OutputParameterDefinitions = direct.Slice_FromProto(mapCtx, in.OutputParameterDefinitions, ParameterDefinition_FromProto)
+	out.Instruction = Playbook_Instruction_FromProto(mapCtx, in.GetInstruction())
+	out.ReferencedTools = in.ReferencedTools
+	out.CodeBlock = CodeBlock_FromProto(mapCtx, in.GetCodeBlock())
+	out.LlmModelSettings = LlmModelSettings_FromProto(mapCtx, in.GetLlmModelSettings())
+	out.Handlers = direct.Slice_FromProto(mapCtx, in.Handlers, Handler_FromProto)
+	out.PlaybookType = direct.Enum_FromProto(mapCtx, in.GetPlaybookType())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "DialogflowPlaybookSpec_ToProto", skipping
+func DialogflowPlaybookSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowPlaybookSpec) *pb.Playbook {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Playbook{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Goal = direct.ValueOf(in.Goal)
+	out.InputParameterDefinitions = direct.Slice_ToProto(mapCtx, in.InputParameterDefinitions, ParameterDefinition_ToProto)
+	out.OutputParameterDefinitions = direct.Slice_ToProto(mapCtx, in.OutputParameterDefinitions, ParameterDefinition_ToProto)
+	out.Instruction = Playbook_Instruction_ToProto(mapCtx, in.Instruction)
+	out.ReferencedTools = in.ReferencedTools
+	out.CodeBlock = CodeBlock_ToProto(mapCtx, in.CodeBlock)
+	out.LlmModelSettings = LlmModelSettings_ToProto(mapCtx, in.LlmModelSettings)
+	out.Handlers = direct.Slice_ToProto(mapCtx, in.Handlers, Handler_ToProto)
+	out.PlaybookType = direct.Enum_ToProto[pb.Playbook_PlaybookType](mapCtx, in.PlaybookType)
+	return out
+}
+*/
+
 func DialogflowSecuritySettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.SecuritySettings) *krm.DialogflowSecuritySettingsSpec {
 	if in == nil {
 		return nil
@@ -318,6 +440,7 @@ func DialogflowSecuritySettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.InsightsExportSettings = SecuritySettings_InsightsExportSettings_FromProto(mapCtx, in.GetInsightsExportSettings())
 	return out
 }
+
 func DialogflowSecuritySettingsSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowSecuritySettingsSpec) *pb.SecuritySettings {
 	if in == nil {
 		return nil
@@ -340,18 +463,75 @@ func DialogflowSecuritySettingsSpec_ToProto(mapCtx *direct.MapContext, in *krm.D
 	out.InsightsExportSettings = SecuritySettings_InsightsExportSettings_ToProto(mapCtx, in.InsightsExportSettings)
 	return out
 }
+
 func DialogflowSecuritySettingsSpec_RetentionWindowDays_ToProto(mapCtx *direct.MapContext, in *int32) *pb.SecuritySettings_RetentionWindowDays {
 	if in == nil {
 		return nil
 	}
 	return &pb.SecuritySettings_RetentionWindowDays{RetentionWindowDays: *in}
 }
+
 func DialogflowSecuritySettingsSpec_RetentionStrategy_ToProto(mapCtx *direct.MapContext, in *string) *pb.SecuritySettings_RetentionStrategy_ {
 	if in == nil {
 		return nil
 	}
 	return &pb.SecuritySettings_RetentionStrategy_{RetentionStrategy: direct.Enum_ToProto[pb.SecuritySettings_RetentionStrategy](mapCtx, in)}
 }
+
+func DialogflowToolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Tool) *krm.DialogflowToolObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowToolObservedState{}
+	// MISSING: Name
+	out.ToolType = direct.Enum_FromProto(mapCtx, in.GetToolType())
+	return out
+}
+
+func DialogflowToolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowToolObservedState) *pb.Tool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool{}
+	// MISSING: Name
+	out.ToolType = direct.Enum_ToProto[pb.Tool_ToolType](mapCtx, in.ToolType)
+	return out
+}
+
+func DialogflowToolSpec_FromProto(mapCtx *direct.MapContext, in *pb.Tool) *krm.DialogflowToolSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowToolSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.OpenAPISpec = Tool_OpenAPITool_FromProto(mapCtx, in.GetOpenApiSpec())
+	out.DataStoreSpec = Tool_DataStoreTool_FromProto(mapCtx, in.GetDataStoreSpec())
+	out.FunctionSpec = Tool_FunctionTool_FromProto(mapCtx, in.GetFunctionSpec())
+	return out
+}
+
+func DialogflowToolSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowToolSpec) *pb.Tool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	if oneof := Tool_OpenAPITool_ToProto(mapCtx, in.OpenAPISpec); oneof != nil {
+		out.Specification = &pb.Tool_OpenApiSpec{OpenApiSpec: oneof}
+	}
+	if oneof := Tool_DataStoreTool_ToProto(mapCtx, in.DataStoreSpec); oneof != nil {
+		out.Specification = &pb.Tool_DataStoreSpec{DataStoreSpec: oneof}
+	}
+	if oneof := Tool_FunctionTool_ToProto(mapCtx, in.FunctionSpec); oneof != nil {
+		out.Specification = &pb.Tool_FunctionSpec{FunctionSpec: oneof}
+	}
+	return out
+}
+
 func DialogflowTransitionRouteGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TransitionRouteGroup) *krm.DialogflowTransitionRouteGroupObservedState {
 	if in == nil {
 		return nil
@@ -361,6 +541,7 @@ func DialogflowTransitionRouteGroupObservedState_FromProto(mapCtx *direct.MapCon
 	out.TransitionRoutes = direct.Slice_FromProto(mapCtx, in.TransitionRoutes, TransitionRouteObservedState_FromProto)
 	return out
 }
+
 func DialogflowTransitionRouteGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowTransitionRouteGroupObservedState) *pb.TransitionRouteGroup {
 	if in == nil {
 		return nil
@@ -370,6 +551,7 @@ func DialogflowTransitionRouteGroupObservedState_ToProto(mapCtx *direct.MapConte
 	out.TransitionRoutes = direct.Slice_ToProto(mapCtx, in.TransitionRoutes, TransitionRouteObservedState_ToProto)
 	return out
 }
+
 func DialogflowTransitionRouteGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.TransitionRouteGroup) *krm.DialogflowTransitionRouteGroupSpec {
 	if in == nil {
 		return nil
@@ -380,6 +562,7 @@ func DialogflowTransitionRouteGroupSpec_FromProto(mapCtx *direct.MapContext, in 
 	out.TransitionRoutes = direct.Slice_FromProto(mapCtx, in.TransitionRoutes, TransitionRoute_FromProto)
 	return out
 }
+
 func DialogflowTransitionRouteGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowTransitionRouteGroupSpec) *pb.TransitionRouteGroup {
 	if in == nil {
 		return nil
@@ -390,6 +573,7 @@ func DialogflowTransitionRouteGroupSpec_ToProto(mapCtx *direct.MapContext, in *k
 	out.TransitionRoutes = direct.Slice_ToProto(mapCtx, in.TransitionRoutes, TransitionRoute_ToProto)
 	return out
 }
+
 func DialogflowWebhookSpec_FromProto(mapCtx *direct.MapContext, in *pb.Webhook) *krm.DialogflowWebhookSpec {
 	if in == nil {
 		return nil
@@ -403,6 +587,7 @@ func DialogflowWebhookSpec_FromProto(mapCtx *direct.MapContext, in *pb.Webhook) 
 	out.Disabled = direct.LazyPtr(in.GetDisabled())
 	return out
 }
+
 func DialogflowWebhookSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowWebhookSpec) *pb.Webhook {
 	if in == nil {
 		return nil
@@ -420,6 +605,7 @@ func DialogflowWebhookSpec_ToProto(mapCtx *direct.MapContext, in *krm.Dialogflow
 	out.Disabled = direct.ValueOf(in.Disabled)
 	return out
 }
+
 func Environment_TestCasesConfig_FromProto(mapCtx *direct.MapContext, in *pb.Environment_TestCasesConfig) *krm.Environment_TestCasesConfig {
 	if in == nil {
 		return nil
@@ -430,6 +616,7 @@ func Environment_TestCasesConfig_FromProto(mapCtx *direct.MapContext, in *pb.Env
 	out.EnablePredeploymentRun = direct.LazyPtr(in.GetEnablePredeploymentRun())
 	return out
 }
+
 func Environment_TestCasesConfig_ToProto(mapCtx *direct.MapContext, in *krm.Environment_TestCasesConfig) *pb.Environment_TestCasesConfig {
 	if in == nil {
 		return nil
@@ -440,6 +627,7 @@ func Environment_TestCasesConfig_ToProto(mapCtx *direct.MapContext, in *krm.Envi
 	out.EnablePredeploymentRun = direct.ValueOf(in.EnablePredeploymentRun)
 	return out
 }
+
 func Environment_VersionConfig_FromProto(mapCtx *direct.MapContext, in *pb.Environment_VersionConfig) *krm.Environment_VersionConfig {
 	if in == nil {
 		return nil
@@ -448,6 +636,7 @@ func Environment_VersionConfig_FromProto(mapCtx *direct.MapContext, in *pb.Envir
 	out.Version = direct.LazyPtr(in.GetVersion())
 	return out
 }
+
 func Environment_VersionConfig_ToProto(mapCtx *direct.MapContext, in *krm.Environment_VersionConfig) *pb.Environment_VersionConfig {
 	if in == nil {
 		return nil
@@ -456,6 +645,7 @@ func Environment_VersionConfig_ToProto(mapCtx *direct.MapContext, in *krm.Enviro
 	out.Version = direct.ValueOf(in.Version)
 	return out
 }
+
 func Environment_WebhookConfig_FromProto(mapCtx *direct.MapContext, in *pb.Environment_WebhookConfig) *krm.Environment_WebhookConfig {
 	if in == nil {
 		return nil
@@ -464,6 +654,7 @@ func Environment_WebhookConfig_FromProto(mapCtx *direct.MapContext, in *pb.Envir
 	out.WebhookOverrides = direct.Slice_FromProto(mapCtx, in.WebhookOverrides, Webhook_FromProto)
 	return out
 }
+
 func Environment_WebhookConfig_ToProto(mapCtx *direct.MapContext, in *krm.Environment_WebhookConfig) *pb.Environment_WebhookConfig {
 	if in == nil {
 		return nil
@@ -472,6 +663,7 @@ func Environment_WebhookConfig_ToProto(mapCtx *direct.MapContext, in *krm.Enviro
 	out.WebhookOverrides = direct.Slice_ToProto(mapCtx, in.WebhookOverrides, Webhook_ToProto)
 	return out
 }
+
 func EventHandler_FromProto(mapCtx *direct.MapContext, in *pb.EventHandler) *krm.EventHandler {
 	if in == nil {
 		return nil
@@ -484,6 +676,7 @@ func EventHandler_FromProto(mapCtx *direct.MapContext, in *pb.EventHandler) *krm
 	out.TargetFlow = direct.LazyPtr(in.GetTargetFlow())
 	return out
 }
+
 func EventHandler_ToProto(mapCtx *direct.MapContext, in *krm.EventHandler) *pb.EventHandler {
 	if in == nil {
 		return nil
@@ -500,18 +693,28 @@ func EventHandler_ToProto(mapCtx *direct.MapContext, in *krm.EventHandler) *pb.E
 	}
 	return out
 }
+
 func EventHandler_TargetPage_ToProto(mapCtx *direct.MapContext, in *string) *pb.EventHandler_TargetPage {
 	if in == nil {
 		return nil
 	}
 	return &pb.EventHandler_TargetPage{TargetPage: *in}
 }
+
 func EventHandler_TargetFlow_ToProto(mapCtx *direct.MapContext, in *string) *pb.EventHandler_TargetFlow {
 	if in == nil {
 		return nil
 	}
 	return &pb.EventHandler_TargetFlow{TargetFlow: *in}
 }
+
+func EventHandler_TargetPlaybook_ToProto(mapCtx *direct.MapContext, in *string) *pb.EventHandler_TargetPlaybook {
+	if in == nil {
+		return nil
+	}
+	return &pb.EventHandler_TargetPlaybook{TargetPlaybook: *in}
+}
+
 func EventHandlerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EventHandler) *krm.EventHandlerObservedState {
 	if in == nil {
 		return nil
@@ -524,6 +727,7 @@ func EventHandlerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Event
 	// MISSING: TargetFlow
 	return out
 }
+
 func EventHandlerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventHandlerObservedState) *pb.EventHandler {
 	if in == nil {
 		return nil
@@ -536,6 +740,7 @@ func EventHandlerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventH
 	// MISSING: TargetFlow
 	return out
 }
+
 func Flow_MultiLanguageSettings_FromProto(mapCtx *direct.MapContext, in *pb.Flow_MultiLanguageSettings) *krm.Flow_MultiLanguageSettings {
 	if in == nil {
 		return nil
@@ -545,6 +750,7 @@ func Flow_MultiLanguageSettings_FromProto(mapCtx *direct.MapContext, in *pb.Flow
 	out.SupportedResponseLanguageCodes = in.SupportedResponseLanguageCodes
 	return out
 }
+
 func Flow_MultiLanguageSettings_ToProto(mapCtx *direct.MapContext, in *krm.Flow_MultiLanguageSettings) *pb.Flow_MultiLanguageSettings {
 	if in == nil {
 		return nil
@@ -554,6 +760,7 @@ func Flow_MultiLanguageSettings_ToProto(mapCtx *direct.MapContext, in *krm.Flow_
 	out.SupportedResponseLanguageCodes = in.SupportedResponseLanguageCodes
 	return out
 }
+
 func Form_FromProto(mapCtx *direct.MapContext, in *pb.Form) *krm.Form {
 	if in == nil {
 		return nil
@@ -562,6 +769,7 @@ func Form_FromProto(mapCtx *direct.MapContext, in *pb.Form) *krm.Form {
 	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, Form_Parameter_FromProto)
 	return out
 }
+
 func Form_ToProto(mapCtx *direct.MapContext, in *krm.Form) *pb.Form {
 	if in == nil {
 		return nil
@@ -570,6 +778,7 @@ func Form_ToProto(mapCtx *direct.MapContext, in *krm.Form) *pb.Form {
 	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, Form_Parameter_ToProto)
 	return out
 }
+
 func FormObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Form) *krm.FormObservedState {
 	if in == nil {
 		return nil
@@ -578,6 +787,7 @@ func FormObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Form) *krm.Fo
 	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, Form_ParameterObservedState_FromProto)
 	return out
 }
+
 func FormObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FormObservedState) *pb.Form {
 	if in == nil {
 		return nil
@@ -586,6 +796,7 @@ func FormObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FormObservedSt
 	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, Form_ParameterObservedState_ToProto)
 	return out
 }
+
 func Form_Parameter_FromProto(mapCtx *direct.MapContext, in *pb.Form_Parameter) *krm.Form_Parameter {
 	if in == nil {
 		return nil
@@ -601,6 +812,7 @@ func Form_Parameter_FromProto(mapCtx *direct.MapContext, in *pb.Form_Parameter) 
 	out.AdvancedSettings = AdvancedSettings_FromProto(mapCtx, in.GetAdvancedSettings())
 	return out
 }
+
 func Form_Parameter_ToProto(mapCtx *direct.MapContext, in *krm.Form_Parameter) *pb.Form_Parameter {
 	if in == nil {
 		return nil
@@ -616,6 +828,7 @@ func Form_Parameter_ToProto(mapCtx *direct.MapContext, in *krm.Form_Parameter) *
 	out.AdvancedSettings = AdvancedSettings_ToProto(mapCtx, in.AdvancedSettings)
 	return out
 }
+
 func Form_ParameterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Form_Parameter) *krm.Form_ParameterObservedState {
 	if in == nil {
 		return nil
@@ -631,6 +844,7 @@ func Form_ParameterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.For
 	// MISSING: AdvancedSettings
 	return out
 }
+
 func Form_ParameterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Form_ParameterObservedState) *pb.Form_Parameter {
 	if in == nil {
 		return nil
@@ -646,6 +860,7 @@ func Form_ParameterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Form
 	// MISSING: AdvancedSettings
 	return out
 }
+
 func Form_Parameter_FillBehavior_FromProto(mapCtx *direct.MapContext, in *pb.Form_Parameter_FillBehavior) *krm.Form_Parameter_FillBehavior {
 	if in == nil {
 		return nil
@@ -655,6 +870,7 @@ func Form_Parameter_FillBehavior_FromProto(mapCtx *direct.MapContext, in *pb.For
 	out.RepromptEventHandlers = direct.Slice_FromProto(mapCtx, in.RepromptEventHandlers, EventHandler_FromProto)
 	return out
 }
+
 func Form_Parameter_FillBehavior_ToProto(mapCtx *direct.MapContext, in *krm.Form_Parameter_FillBehavior) *pb.Form_Parameter_FillBehavior {
 	if in == nil {
 		return nil
@@ -664,6 +880,7 @@ func Form_Parameter_FillBehavior_ToProto(mapCtx *direct.MapContext, in *krm.Form
 	out.RepromptEventHandlers = direct.Slice_ToProto(mapCtx, in.RepromptEventHandlers, EventHandler_ToProto)
 	return out
 }
+
 func Form_Parameter_FillBehaviorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Form_Parameter_FillBehavior) *krm.Form_Parameter_FillBehaviorObservedState {
 	if in == nil {
 		return nil
@@ -673,6 +890,7 @@ func Form_Parameter_FillBehaviorObservedState_FromProto(mapCtx *direct.MapContex
 	out.RepromptEventHandlers = direct.Slice_FromProto(mapCtx, in.RepromptEventHandlers, EventHandlerObservedState_FromProto)
 	return out
 }
+
 func Form_Parameter_FillBehaviorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Form_Parameter_FillBehaviorObservedState) *pb.Form_Parameter_FillBehavior {
 	if in == nil {
 		return nil
@@ -682,6 +900,7 @@ func Form_Parameter_FillBehaviorObservedState_ToProto(mapCtx *direct.MapContext,
 	out.RepromptEventHandlers = direct.Slice_ToProto(mapCtx, in.RepromptEventHandlers, EventHandlerObservedState_ToProto)
 	return out
 }
+
 func Fulfillment_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment) *krm.Fulfillment {
 	if in == nil {
 		return nil
@@ -698,6 +917,7 @@ func Fulfillment_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment) *krm.F
 	out.Generators = direct.Slice_FromProto(mapCtx, in.Generators, Fulfillment_GeneratorSettings_FromProto)
 	return out
 }
+
 func Fulfillment_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment) *pb.Fulfillment {
 	if in == nil {
 		return nil
@@ -714,6 +934,7 @@ func Fulfillment_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment) *pb.Ful
 	out.Generators = direct.Slice_ToProto(mapCtx, in.Generators, Fulfillment_GeneratorSettings_ToProto)
 	return out
 }
+
 func FulfillmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment) *krm.FulfillmentObservedState {
 	if in == nil {
 		return nil
@@ -730,6 +951,7 @@ func FulfillmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Fulfil
 	// MISSING: Generators
 	return out
 }
+
 func FulfillmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FulfillmentObservedState) *pb.Fulfillment {
 	if in == nil {
 		return nil
@@ -746,6 +968,7 @@ func FulfillmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Fulfill
 	// MISSING: Generators
 	return out
 }
+
 func Fulfillment_ConditionalCases_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_ConditionalCases) *krm.Fulfillment_ConditionalCases {
 	if in == nil {
 		return nil
@@ -754,6 +977,7 @@ func Fulfillment_ConditionalCases_FromProto(mapCtx *direct.MapContext, in *pb.Fu
 	out.Cases = direct.Slice_FromProto(mapCtx, in.Cases, Fulfillment_ConditionalCases_Case_FromProto)
 	return out
 }
+
 func Fulfillment_ConditionalCases_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment_ConditionalCases) *pb.Fulfillment_ConditionalCases {
 	if in == nil {
 		return nil
@@ -762,6 +986,7 @@ func Fulfillment_ConditionalCases_ToProto(mapCtx *direct.MapContext, in *krm.Ful
 	out.Cases = direct.Slice_ToProto(mapCtx, in.Cases, Fulfillment_ConditionalCases_Case_ToProto)
 	return out
 }
+
 func Fulfillment_ConditionalCasesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_ConditionalCases) *krm.Fulfillment_ConditionalCasesObservedState {
 	if in == nil {
 		return nil
@@ -770,6 +995,7 @@ func Fulfillment_ConditionalCasesObservedState_FromProto(mapCtx *direct.MapConte
 	out.Cases = direct.Slice_FromProto(mapCtx, in.Cases, Fulfillment_ConditionalCases_CaseObservedState_FromProto)
 	return out
 }
+
 func Fulfillment_ConditionalCasesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment_ConditionalCasesObservedState) *pb.Fulfillment_ConditionalCases {
 	if in == nil {
 		return nil
@@ -778,6 +1004,7 @@ func Fulfillment_ConditionalCasesObservedState_ToProto(mapCtx *direct.MapContext
 	out.Cases = direct.Slice_ToProto(mapCtx, in.Cases, Fulfillment_ConditionalCases_CaseObservedState_ToProto)
 	return out
 }
+
 func Fulfillment_ConditionalCases_Case_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_ConditionalCases_Case) *krm.Fulfillment_ConditionalCases_Case {
 	if in == nil {
 		return nil
@@ -787,6 +1014,7 @@ func Fulfillment_ConditionalCases_Case_FromProto(mapCtx *direct.MapContext, in *
 	out.CaseContent = direct.Slice_FromProto(mapCtx, in.CaseContent, Fulfillment_ConditionalCases_Case_CaseContent_FromProto)
 	return out
 }
+
 func Fulfillment_ConditionalCases_Case_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment_ConditionalCases_Case) *pb.Fulfillment_ConditionalCases_Case {
 	if in == nil {
 		return nil
@@ -796,6 +1024,7 @@ func Fulfillment_ConditionalCases_Case_ToProto(mapCtx *direct.MapContext, in *kr
 	out.CaseContent = direct.Slice_ToProto(mapCtx, in.CaseContent, Fulfillment_ConditionalCases_Case_CaseContent_ToProto)
 	return out
 }
+
 func Fulfillment_ConditionalCases_CaseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_ConditionalCases_Case) *krm.Fulfillment_ConditionalCases_CaseObservedState {
 	if in == nil {
 		return nil
@@ -805,6 +1034,7 @@ func Fulfillment_ConditionalCases_CaseObservedState_FromProto(mapCtx *direct.Map
 	out.CaseContent = direct.Slice_FromProto(mapCtx, in.CaseContent, Fulfillment_ConditionalCases_Case_CaseContentObservedState_FromProto)
 	return out
 }
+
 func Fulfillment_ConditionalCases_CaseObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment_ConditionalCases_CaseObservedState) *pb.Fulfillment_ConditionalCases_Case {
 	if in == nil {
 		return nil
@@ -814,6 +1044,7 @@ func Fulfillment_ConditionalCases_CaseObservedState_ToProto(mapCtx *direct.MapCo
 	out.CaseContent = direct.Slice_ToProto(mapCtx, in.CaseContent, Fulfillment_ConditionalCases_Case_CaseContentObservedState_ToProto)
 	return out
 }
+
 func Fulfillment_ConditionalCases_Case_CaseContent_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_ConditionalCases_Case_CaseContent) *krm.Fulfillment_ConditionalCases_Case_CaseContent {
 	if in == nil {
 		return nil
@@ -823,6 +1054,7 @@ func Fulfillment_ConditionalCases_Case_CaseContent_FromProto(mapCtx *direct.MapC
 	out.AdditionalCases = Fulfillment_ConditionalCases_FromProto(mapCtx, in.GetAdditionalCases())
 	return out
 }
+
 func Fulfillment_ConditionalCases_Case_CaseContent_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment_ConditionalCases_Case_CaseContent) *pb.Fulfillment_ConditionalCases_Case_CaseContent {
 	if in == nil {
 		return nil
@@ -836,6 +1068,7 @@ func Fulfillment_ConditionalCases_Case_CaseContent_ToProto(mapCtx *direct.MapCon
 	}
 	return out
 }
+
 func Fulfillment_ConditionalCases_Case_CaseContentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_ConditionalCases_Case_CaseContent) *krm.Fulfillment_ConditionalCases_Case_CaseContentObservedState {
 	if in == nil {
 		return nil
@@ -845,6 +1078,7 @@ func Fulfillment_ConditionalCases_Case_CaseContentObservedState_FromProto(mapCtx
 	// MISSING: AdditionalCases
 	return out
 }
+
 func Fulfillment_ConditionalCases_Case_CaseContentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment_ConditionalCases_Case_CaseContentObservedState) *pb.Fulfillment_ConditionalCases_Case_CaseContent {
 	if in == nil {
 		return nil
@@ -856,6 +1090,7 @@ func Fulfillment_ConditionalCases_Case_CaseContentObservedState_ToProto(mapCtx *
 	// MISSING: AdditionalCases
 	return out
 }
+
 func Fulfillment_GeneratorSettings_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_GeneratorSettings) *krm.Fulfillment_GeneratorSettings {
 	if in == nil {
 		return nil
@@ -866,6 +1101,7 @@ func Fulfillment_GeneratorSettings_FromProto(mapCtx *direct.MapContext, in *pb.F
 	out.OutputParameter = direct.LazyPtr(in.GetOutputParameter())
 	return out
 }
+
 func Fulfillment_GeneratorSettings_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment_GeneratorSettings) *pb.Fulfillment_GeneratorSettings {
 	if in == nil {
 		return nil
@@ -876,6 +1112,7 @@ func Fulfillment_GeneratorSettings_ToProto(mapCtx *direct.MapContext, in *krm.Fu
 	out.OutputParameter = direct.ValueOf(in.OutputParameter)
 	return out
 }
+
 func Fulfillment_SetParameterAction_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_SetParameterAction) *krm.Fulfillment_SetParameterAction {
 	if in == nil {
 		return nil
@@ -885,6 +1122,7 @@ func Fulfillment_SetParameterAction_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.Value = Value_FromProto(mapCtx, in.GetValue())
 	return out
 }
+
 func Fulfillment_SetParameterAction_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment_SetParameterAction) *pb.Fulfillment_SetParameterAction {
 	if in == nil {
 		return nil
@@ -894,6 +1132,7 @@ func Fulfillment_SetParameterAction_ToProto(mapCtx *direct.MapContext, in *krm.F
 	out.Value = Value_ToProto(mapCtx, in.Value)
 	return out
 }
+
 func GCSDestination_FromProto(mapCtx *direct.MapContext, in *pb.GcsDestination) *krm.GCSDestination {
 	if in == nil {
 		return nil
@@ -902,6 +1141,7 @@ func GCSDestination_FromProto(mapCtx *direct.MapContext, in *pb.GcsDestination) 
 	out.URI = direct.LazyPtr(in.GetUri())
 	return out
 }
+
 func GCSDestination_ToProto(mapCtx *direct.MapContext, in *krm.GCSDestination) *pb.GcsDestination {
 	if in == nil {
 		return nil
@@ -911,28 +1151,27 @@ func GCSDestination_ToProto(mapCtx *direct.MapContext, in *krm.GCSDestination) *
 	return out
 }
 
-/*
-found existing non-generated mapping function "GenericWebService_FromProto", skipping
-
-	func GenericWebService_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_GenericWebService) *krm.GenericWebService {
-		if in == nil {
-			return nil
-		}
-		out := &krm.GenericWebService{}
-		out.URI = direct.LazyPtr(in.GetUri())
-		out.Username = direct.LazyPtr(in.GetUsername())
-		out.Password = direct.LazyPtr(in.GetPassword())
-		out.RequestHeaders = in.RequestHeaders
-		out.AllowedCACerts = in.AllowedCaCerts
-		out.OauthConfig = GenericWebServiceOAuthConfig_FromProto(mapCtx, in.GetOauthConfig())
-		out.ServiceAgentAuth = direct.Enum_FromProto(mapCtx, in.GetServiceAgentAuth())
-		out.WebhookType = direct.Enum_FromProto(mapCtx, in.GetWebhookType())
-		out.HTTPMethod = direct.Enum_FromProto(mapCtx, in.GetHttpMethod())
-		out.RequestBody = direct.LazyPtr(in.GetRequestBody())
-		out.ParameterMapping = in.ParameterMapping
-		return out
+/* found existing non-generated mapping function "GenericWebService_FromProto", skipping
+func GenericWebService_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_GenericWebService) *krm.GenericWebService {
+	if in == nil {
+		return nil
 	}
+	out := &krm.GenericWebService{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.Username = direct.LazyPtr(in.GetUsername())
+	out.Password = direct.LazyPtr(in.GetPassword())
+	out.RequestHeaders = in.RequestHeaders
+	out.AllowedCACerts = in.AllowedCaCerts
+	out.OauthConfig = GenericWebServiceOAuthConfig_FromProto(mapCtx, in.GetOauthConfig())
+	out.ServiceAgentAuth = direct.Enum_FromProto(mapCtx, in.GetServiceAgentAuth())
+	out.WebhookType = direct.Enum_FromProto(mapCtx, in.GetWebhookType())
+	out.HTTPMethod = direct.Enum_FromProto(mapCtx, in.GetHttpMethod())
+	out.RequestBody = direct.LazyPtr(in.GetRequestBody())
+	out.ParameterMapping = in.ParameterMapping
+	return out
+}
 */
+
 func GenericWebService_ToProto(mapCtx *direct.MapContext, in *krm.GenericWebService) *pb.Webhook_GenericWebService {
 	if in == nil {
 		return nil
@@ -951,6 +1190,7 @@ func GenericWebService_ToProto(mapCtx *direct.MapContext, in *krm.GenericWebServ
 	out.ParameterMapping = in.ParameterMapping
 	return out
 }
+
 func GenericWebServiceOAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_GenericWebService_OAuthConfig) *krm.GenericWebServiceOAuthConfig {
 	if in == nil {
 		return nil
@@ -962,6 +1202,7 @@ func GenericWebServiceOAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.We
 	out.Scopes = in.Scopes
 	return out
 }
+
 func GenericWebServiceOAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.GenericWebServiceOAuthConfig) *pb.Webhook_GenericWebService_OAuthConfig {
 	if in == nil {
 		return nil
@@ -973,6 +1214,191 @@ func GenericWebServiceOAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.Gen
 	out.Scopes = in.Scopes
 	return out
 }
+
+/* found existing non-generated mapping function "Handler_FromProto", skipping
+func Handler_FromProto(mapCtx *direct.MapContext, in *pb.Handler) *krm.Handler {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Handler{}
+	out.EventHandler = Handler_EventHandler_FromProto(mapCtx, in.GetEventHandler())
+	out.LifecycleHandler = Handler_LifecycleHandler_FromProto(mapCtx, in.GetLifecycleHandler())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "Handler_ToProto", skipping
+func Handler_ToProto(mapCtx *direct.MapContext, in *krm.Handler) *pb.Handler {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Handler{}
+	if oneof := Handler_EventHandler_ToProto(mapCtx, in.EventHandler); oneof != nil {
+		out.Handler = &pb.Handler_EventHandler_{EventHandler: oneof}
+	}
+	if oneof := Handler_LifecycleHandler_ToProto(mapCtx, in.LifecycleHandler); oneof != nil {
+		out.Handler = &pb.Handler_LifecycleHandler_{LifecycleHandler: oneof}
+	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "HandlerObservedState_FromProto", skipping
+func HandlerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Handler) *krm.HandlerObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HandlerObservedState{}
+	out.EventHandler = Handler_EventHandlerObservedState_FromProto(mapCtx, in.GetEventHandler())
+	out.LifecycleHandler = Handler_LifecycleHandlerObservedState_FromProto(mapCtx, in.GetLifecycleHandler())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "HandlerObservedState_ToProto", skipping
+func HandlerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.HandlerObservedState) *pb.Handler {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Handler{}
+	if oneof := Handler_EventHandlerObservedState_ToProto(mapCtx, in.EventHandler); oneof != nil {
+		out.Handler = &pb.Handler_EventHandler_{EventHandler: oneof}
+	}
+	if oneof := Handler_LifecycleHandlerObservedState_ToProto(mapCtx, in.LifecycleHandler); oneof != nil {
+		out.Handler = &pb.Handler_LifecycleHandler_{LifecycleHandler: oneof}
+	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "Handler_EventHandler_FromProto", skipping
+func Handler_EventHandler_FromProto(mapCtx *direct.MapContext, in *pb.Handler_EventHandler) *krm.Handler_EventHandler {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Handler_EventHandler{}
+	out.Event = direct.LazyPtr(in.GetEvent())
+	out.Condition = direct.LazyPtr(in.GetCondition())
+	out.Fulfillment = Fulfillment_FromProto(mapCtx, in.GetFulfillment())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "Handler_EventHandler_ToProto", skipping
+func Handler_EventHandler_ToProto(mapCtx *direct.MapContext, in *krm.Handler_EventHandler) *pb.Handler_EventHandler {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Handler_EventHandler{}
+	out.Event = direct.ValueOf(in.Event)
+	out.Condition = direct.ValueOf(in.Condition)
+	out.Fulfillment = Fulfillment_ToProto(mapCtx, in.Fulfillment)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "Handler_EventHandlerObservedState_FromProto", skipping
+func Handler_EventHandlerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Handler_EventHandler) *krm.Handler_EventHandlerObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Handler_EventHandlerObservedState{}
+	// MISSING: Event
+	// MISSING: Condition
+	out.Fulfillment = FulfillmentObservedState_FromProto(mapCtx, in.GetFulfillment())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "Handler_EventHandlerObservedState_ToProto", skipping
+func Handler_EventHandlerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Handler_EventHandlerObservedState) *pb.Handler_EventHandler {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Handler_EventHandler{}
+	// MISSING: Event
+	// MISSING: Condition
+	out.Fulfillment = FulfillmentObservedState_ToProto(mapCtx, in.Fulfillment)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "Handler_LifecycleHandler_FromProto", skipping
+func Handler_LifecycleHandler_FromProto(mapCtx *direct.MapContext, in *pb.Handler_LifecycleHandler) *krm.Handler_LifecycleHandler {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Handler_LifecycleHandler{}
+	out.LifecycleStage = direct.LazyPtr(in.GetLifecycleStage())
+	out.Condition = direct.LazyPtr(in.GetCondition())
+	out.Fulfillment = Fulfillment_FromProto(mapCtx, in.GetFulfillment())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "Handler_LifecycleHandler_ToProto", skipping
+func Handler_LifecycleHandler_ToProto(mapCtx *direct.MapContext, in *krm.Handler_LifecycleHandler) *pb.Handler_LifecycleHandler {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Handler_LifecycleHandler{}
+	out.LifecycleStage = direct.ValueOf(in.LifecycleStage)
+	out.Condition = direct.ValueOf(in.Condition)
+	out.Fulfillment = Fulfillment_ToProto(mapCtx, in.Fulfillment)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "Handler_LifecycleHandlerObservedState_FromProto", skipping
+func Handler_LifecycleHandlerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Handler_LifecycleHandler) *krm.Handler_LifecycleHandlerObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Handler_LifecycleHandlerObservedState{}
+	// MISSING: LifecycleStage
+	// MISSING: Condition
+	out.Fulfillment = FulfillmentObservedState_FromProto(mapCtx, in.GetFulfillment())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "Handler_LifecycleHandlerObservedState_ToProto", skipping
+func Handler_LifecycleHandlerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Handler_LifecycleHandlerObservedState) *pb.Handler_LifecycleHandler {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Handler_LifecycleHandler{}
+	// MISSING: LifecycleStage
+	// MISSING: Condition
+	out.Fulfillment = FulfillmentObservedState_ToProto(mapCtx, in.Fulfillment)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InlineSchema_FromProto", skipping
+func InlineSchema_FromProto(mapCtx *direct.MapContext, in *pb.InlineSchema) *krm.InlineSchema {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InlineSchema{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Items = TypeSchema_FromProto(mapCtx, in.GetItems())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InlineSchema_ToProto", skipping
+func InlineSchema_ToProto(mapCtx *direct.MapContext, in *krm.InlineSchema) *pb.InlineSchema {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InlineSchema{}
+	out.Type = direct.Enum_ToProto[pb.DataType](mapCtx, in.Type)
+	out.Items = TypeSchema_ToProto(mapCtx, in.Items)
+	return out
+}
+*/
+
 func KnowledgeConnectorSettings_FromProto(mapCtx *direct.MapContext, in *pb.KnowledgeConnectorSettings) *krm.KnowledgeConnectorSettings {
 	if in == nil {
 		return nil
@@ -985,6 +1411,7 @@ func KnowledgeConnectorSettings_FromProto(mapCtx *direct.MapContext, in *pb.Know
 	out.DataStoreConnections = direct.Slice_FromProto(mapCtx, in.DataStoreConnections, DataStoreConnection_FromProto)
 	return out
 }
+
 func KnowledgeConnectorSettings_ToProto(mapCtx *direct.MapContext, in *krm.KnowledgeConnectorSettings) *pb.KnowledgeConnectorSettings {
 	if in == nil {
 		return nil
@@ -1001,18 +1428,21 @@ func KnowledgeConnectorSettings_ToProto(mapCtx *direct.MapContext, in *krm.Knowl
 	out.DataStoreConnections = direct.Slice_ToProto(mapCtx, in.DataStoreConnections, DataStoreConnection_ToProto)
 	return out
 }
+
 func KnowledgeConnectorSettings_TargetPage_ToProto(mapCtx *direct.MapContext, in *string) *pb.KnowledgeConnectorSettings_TargetPage {
 	if in == nil {
 		return nil
 	}
 	return &pb.KnowledgeConnectorSettings_TargetPage{TargetPage: *in}
 }
+
 func KnowledgeConnectorSettings_TargetFlow_ToProto(mapCtx *direct.MapContext, in *string) *pb.KnowledgeConnectorSettings_TargetFlow {
 	if in == nil {
 		return nil
 	}
 	return &pb.KnowledgeConnectorSettings_TargetFlow{TargetFlow: *in}
 }
+
 func KnowledgeConnectorSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KnowledgeConnectorSettings) *krm.KnowledgeConnectorSettingsObservedState {
 	if in == nil {
 		return nil
@@ -1025,6 +1455,7 @@ func KnowledgeConnectorSettingsObservedState_FromProto(mapCtx *direct.MapContext
 	// MISSING: DataStoreConnections
 	return out
 }
+
 func KnowledgeConnectorSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.KnowledgeConnectorSettingsObservedState) *pb.KnowledgeConnectorSettings {
 	if in == nil {
 		return nil
@@ -1037,6 +1468,31 @@ func KnowledgeConnectorSettingsObservedState_ToProto(mapCtx *direct.MapContext, 
 	// MISSING: DataStoreConnections
 	return out
 }
+
+/* found existing non-generated mapping function "LlmModelSettings_FromProto", skipping
+func LlmModelSettings_FromProto(mapCtx *direct.MapContext, in *pb.LlmModelSettings) *krm.LlmModelSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LlmModelSettings{}
+	out.Model = direct.LazyPtr(in.GetModel())
+	out.PromptText = direct.LazyPtr(in.GetPromptText())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "LlmModelSettings_ToProto", skipping
+func LlmModelSettings_ToProto(mapCtx *direct.MapContext, in *krm.LlmModelSettings) *pb.LlmModelSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LlmModelSettings{}
+	out.Model = direct.ValueOf(in.Model)
+	out.PromptText = direct.ValueOf(in.PromptText)
+	return out
+}
+*/
+
 func NluSettings_FromProto(mapCtx *direct.MapContext, in *pb.NluSettings) *krm.NluSettings {
 	if in == nil {
 		return nil
@@ -1047,6 +1503,7 @@ func NluSettings_FromProto(mapCtx *direct.MapContext, in *pb.NluSettings) *krm.N
 	out.ModelTrainingMode = direct.Enum_FromProto(mapCtx, in.GetModelTrainingMode())
 	return out
 }
+
 func NluSettings_ToProto(mapCtx *direct.MapContext, in *krm.NluSettings) *pb.NluSettings {
 	if in == nil {
 		return nil
@@ -1057,6 +1514,94 @@ func NluSettings_ToProto(mapCtx *direct.MapContext, in *krm.NluSettings) *pb.Nlu
 	out.ModelTrainingMode = direct.Enum_ToProto[pb.NluSettings_ModelTrainingMode](mapCtx, in.ModelTrainingMode)
 	return out
 }
+
+/* found existing non-generated mapping function "ParameterDefinition_FromProto", skipping
+func ParameterDefinition_FromProto(mapCtx *direct.MapContext, in *pb.ParameterDefinition) *krm.ParameterDefinition {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ParameterDefinition{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.TypeSchema = TypeSchema_FromProto(mapCtx, in.GetTypeSchema())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ParameterDefinition_ToProto", skipping
+func ParameterDefinition_ToProto(mapCtx *direct.MapContext, in *krm.ParameterDefinition) *pb.ParameterDefinition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ParameterDefinition{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Type = direct.Enum_ToProto[pb.ParameterDefinition_ParameterType](mapCtx, in.Type)
+	out.TypeSchema = TypeSchema_ToProto(mapCtx, in.TypeSchema)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "Playbook_Instruction_FromProto", skipping
+func Playbook_Instruction_FromProto(mapCtx *direct.MapContext, in *pb.Playbook_Instruction) *krm.Playbook_Instruction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Playbook_Instruction{}
+	out.Guidelines = direct.LazyPtr(in.GetGuidelines())
+	out.Steps = direct.Slice_FromProto(mapCtx, in.Steps, Playbook_Step_FromProto)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "Playbook_Instruction_ToProto", skipping
+func Playbook_Instruction_ToProto(mapCtx *direct.MapContext, in *krm.Playbook_Instruction) *pb.Playbook_Instruction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Playbook_Instruction{}
+	out.Guidelines = direct.ValueOf(in.Guidelines)
+	out.Steps = direct.Slice_ToProto(mapCtx, in.Steps, Playbook_Step_ToProto)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "Playbook_Step_FromProto", skipping
+func Playbook_Step_FromProto(mapCtx *direct.MapContext, in *pb.Playbook_Step) *krm.Playbook_Step {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Playbook_Step{}
+	out.Text = direct.LazyPtr(in.GetText())
+	out.Steps = direct.Slice_FromProto(mapCtx, in.Steps, Playbook_Step_FromProto)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "Playbook_Step_ToProto", skipping
+func Playbook_Step_ToProto(mapCtx *direct.MapContext, in *krm.Playbook_Step) *pb.Playbook_Step {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Playbook_Step{}
+	if oneof := Playbook_Step_Text_ToProto(mapCtx, in.Text); oneof != nil {
+		out.Instruction = oneof
+	}
+	out.Steps = direct.Slice_ToProto(mapCtx, in.Steps, Playbook_Step_ToProto)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "Playbook_Step_Text_ToProto", skipping
+func Playbook_Step_Text_ToProto(mapCtx *direct.MapContext, in *string) *pb.Playbook_Step_Text {
+	if in == nil {
+		return nil
+	}
+	return &pb.Playbook_Step_Text{Text: *in}
+}
+*/
+
 func ResponseMessage_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage) *krm.ResponseMessage {
 	if in == nil {
 		return nil
@@ -1079,45 +1624,44 @@ func ResponseMessage_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage
 	return out
 }
 
-/*
-found existing non-generated mapping function "ResponseMessage_ToProto", skipping
-
-	func ResponseMessage_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage) *pb.ResponseMessage {
-		if in == nil {
-			return nil
-		}
-		out := &pb.ResponseMessage{}
-		if oneof := ResponseMessage_Text_ToProto(mapCtx, in.Text); oneof != nil {
-			out.Message = &pb.ResponseMessage_Text_{Text: oneof}
-		}
-		if oneof := direct.Struct_ToProto(mapCtx, in.Payload); oneof != nil {
-			out.Message = &pb.ResponseMessage_Payload{Payload: oneof}
-		}
-		if oneof := ResponseMessage_ConversationSuccess_ToProto(mapCtx, in.ConversationSuccess); oneof != nil {
-			out.Message = &pb.ResponseMessage_ConversationSuccess_{ConversationSuccess: oneof}
-		}
-		if oneof := ResponseMessage_OutputAudioText_ToProto(mapCtx, in.OutputAudioText); oneof != nil {
-			out.Message = &pb.ResponseMessage_OutputAudioText_{OutputAudioText: oneof}
-		}
-		if oneof := ResponseMessage_LiveAgentHandoff_ToProto(mapCtx, in.LiveAgentHandoff); oneof != nil {
-			out.Message = &pb.ResponseMessage_LiveAgentHandoff_{LiveAgentHandoff: oneof}
-		}
-		// MISSING: EndInteraction
-		if oneof := ResponseMessage_PlayAudio_ToProto(mapCtx, in.PlayAudio); oneof != nil {
-			out.Message = &pb.ResponseMessage_PlayAudio_{PlayAudio: oneof}
-		}
-		// MISSING: MixedAudio
-		if oneof := ResponseMessage_TelephonyTransferCall_ToProto(mapCtx, in.TelephonyTransferCall); oneof != nil {
-			out.Message = &pb.ResponseMessage_TelephonyTransferCall_{TelephonyTransferCall: oneof}
-		}
-		if oneof := ResponseMessage_KnowledgeInfoCard_ToProto(mapCtx, in.KnowledgeInfoCard); oneof != nil {
-			out.Message = &pb.ResponseMessage_KnowledgeInfoCard_{KnowledgeInfoCard: oneof}
-		}
-		out.ResponseType = direct.Enum_ToProto[pb.ResponseMessage_ResponseType](mapCtx, in.ResponseType)
-		out.Channel = direct.ValueOf(in.Channel)
-		return out
+/* found existing non-generated mapping function "ResponseMessage_ToProto", skipping
+func ResponseMessage_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage) *pb.ResponseMessage {
+	if in == nil {
+		return nil
 	}
+	out := &pb.ResponseMessage{}
+	if oneof := ResponseMessage_Text_ToProto(mapCtx, in.Text); oneof != nil {
+		out.Message = &pb.ResponseMessage_Text_{Text: oneof}
+	}
+	if oneof := direct.Struct_ToProto(mapCtx, in.Payload); oneof != nil {
+		out.Message = &pb.ResponseMessage_Payload{Payload: oneof}
+	}
+	if oneof := ResponseMessage_ConversationSuccess_ToProto(mapCtx, in.ConversationSuccess); oneof != nil {
+		out.Message = &pb.ResponseMessage_ConversationSuccess_{ConversationSuccess: oneof}
+	}
+	if oneof := ResponseMessage_OutputAudioText_ToProto(mapCtx, in.OutputAudioText); oneof != nil {
+		out.Message = &pb.ResponseMessage_OutputAudioText_{OutputAudioText: oneof}
+	}
+	if oneof := ResponseMessage_LiveAgentHandoff_ToProto(mapCtx, in.LiveAgentHandoff); oneof != nil {
+		out.Message = &pb.ResponseMessage_LiveAgentHandoff_{LiveAgentHandoff: oneof}
+	}
+	// MISSING: EndInteraction
+	if oneof := ResponseMessage_PlayAudio_ToProto(mapCtx, in.PlayAudio); oneof != nil {
+		out.Message = &pb.ResponseMessage_PlayAudio_{PlayAudio: oneof}
+	}
+	// MISSING: MixedAudio
+	if oneof := ResponseMessage_TelephonyTransferCall_ToProto(mapCtx, in.TelephonyTransferCall); oneof != nil {
+		out.Message = &pb.ResponseMessage_TelephonyTransferCall_{TelephonyTransferCall: oneof}
+	}
+	if oneof := ResponseMessage_KnowledgeInfoCard_ToProto(mapCtx, in.KnowledgeInfoCard); oneof != nil {
+		out.Message = &pb.ResponseMessage_KnowledgeInfoCard_{KnowledgeInfoCard: oneof}
+	}
+	out.ResponseType = direct.Enum_ToProto[pb.ResponseMessage_ResponseType](mapCtx, in.ResponseType)
+	out.Channel = direct.ValueOf(in.Channel)
+	return out
+}
 */
+
 func ResponseMessageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage) *krm.ResponseMessageObservedState {
 	if in == nil {
 		return nil
@@ -1137,6 +1681,7 @@ func ResponseMessageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Re
 	// MISSING: Channel
 	return out
 }
+
 func ResponseMessageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessageObservedState) *pb.ResponseMessage {
 	if in == nil {
 		return nil
@@ -1166,6 +1711,7 @@ func ResponseMessageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Res
 	// MISSING: Channel
 	return out
 }
+
 func ResponseMessage_ConversationSuccess_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_ConversationSuccess) *krm.ResponseMessage_ConversationSuccess {
 	if in == nil {
 		return nil
@@ -1176,6 +1722,7 @@ func ResponseMessage_ConversationSuccess_FromProto(mapCtx *direct.MapContext, in
 	}
 	return out
 }
+
 func ResponseMessage_ConversationSuccess_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_ConversationSuccess) *pb.ResponseMessage_ConversationSuccess {
 	if in == nil {
 		return nil
@@ -1184,6 +1731,7 @@ func ResponseMessage_ConversationSuccess_ToProto(mapCtx *direct.MapContext, in *
 	out.Metadata = direct.Struct_ToProto(mapCtx, &in.Metadata)
 	return out
 }
+
 func ResponseMessage_EndInteraction_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_EndInteraction) *krm.ResponseMessage_EndInteraction {
 	if in == nil {
 		return nil
@@ -1191,6 +1739,7 @@ func ResponseMessage_EndInteraction_FromProto(mapCtx *direct.MapContext, in *pb.
 	out := &krm.ResponseMessage_EndInteraction{}
 	return out
 }
+
 func ResponseMessage_EndInteraction_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_EndInteraction) *pb.ResponseMessage_EndInteraction {
 	if in == nil {
 		return nil
@@ -1198,6 +1747,7 @@ func ResponseMessage_EndInteraction_ToProto(mapCtx *direct.MapContext, in *krm.R
 	out := &pb.ResponseMessage_EndInteraction{}
 	return out
 }
+
 func ResponseMessage_KnowledgeInfoCard_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_KnowledgeInfoCard) *krm.ResponseMessage_KnowledgeInfoCard {
 	if in == nil {
 		return nil
@@ -1205,6 +1755,7 @@ func ResponseMessage_KnowledgeInfoCard_FromProto(mapCtx *direct.MapContext, in *
 	out := &krm.ResponseMessage_KnowledgeInfoCard{}
 	return out
 }
+
 func ResponseMessage_KnowledgeInfoCard_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_KnowledgeInfoCard) *pb.ResponseMessage_KnowledgeInfoCard {
 	if in == nil {
 		return nil
@@ -1212,6 +1763,7 @@ func ResponseMessage_KnowledgeInfoCard_ToProto(mapCtx *direct.MapContext, in *kr
 	out := &pb.ResponseMessage_KnowledgeInfoCard{}
 	return out
 }
+
 func ResponseMessage_LiveAgentHandoff_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_LiveAgentHandoff) *krm.ResponseMessage_LiveAgentHandoff {
 	if in == nil {
 		return nil
@@ -1222,6 +1774,7 @@ func ResponseMessage_LiveAgentHandoff_FromProto(mapCtx *direct.MapContext, in *p
 	}
 	return out
 }
+
 func ResponseMessage_LiveAgentHandoff_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_LiveAgentHandoff) *pb.ResponseMessage_LiveAgentHandoff {
 	if in == nil {
 		return nil
@@ -1230,6 +1783,7 @@ func ResponseMessage_LiveAgentHandoff_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Metadata = direct.Struct_ToProto(mapCtx, &in.Metadata)
 	return out
 }
+
 func ResponseMessage_MixedAudioObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_MixedAudio) *krm.ResponseMessage_MixedAudioObservedState {
 	if in == nil {
 		return nil
@@ -1238,6 +1792,7 @@ func ResponseMessage_MixedAudioObservedState_FromProto(mapCtx *direct.MapContext
 	out.Segments = direct.Slice_FromProto(mapCtx, in.Segments, ResponseMessage_MixedAudio_SegmentObservedState_FromProto)
 	return out
 }
+
 func ResponseMessage_MixedAudioObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_MixedAudioObservedState) *pb.ResponseMessage_MixedAudio {
 	if in == nil {
 		return nil
@@ -1246,6 +1801,7 @@ func ResponseMessage_MixedAudioObservedState_ToProto(mapCtx *direct.MapContext, 
 	out.Segments = direct.Slice_ToProto(mapCtx, in.Segments, ResponseMessage_MixedAudio_SegmentObservedState_ToProto)
 	return out
 }
+
 func ResponseMessage_MixedAudio_SegmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_MixedAudio_Segment) *krm.ResponseMessage_MixedAudio_SegmentObservedState {
 	if in == nil {
 		return nil
@@ -1256,6 +1812,7 @@ func ResponseMessage_MixedAudio_SegmentObservedState_FromProto(mapCtx *direct.Ma
 	out.AllowPlaybackInterruption = direct.LazyPtr(in.GetAllowPlaybackInterruption())
 	return out
 }
+
 func ResponseMessage_MixedAudio_SegmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_MixedAudio_SegmentObservedState) *pb.ResponseMessage_MixedAudio_Segment {
 	if in == nil {
 		return nil
@@ -1271,22 +1828,22 @@ func ResponseMessage_MixedAudio_SegmentObservedState_ToProto(mapCtx *direct.MapC
 	return out
 }
 
-/*
-found existing non-generated mapping function "ResponseMessage_MixedAudio_SegmentObservedState_Audio_ToProto", skipping
-
-	func ResponseMessage_MixedAudio_SegmentObservedState_Audio_ToProto(mapCtx *direct.MapContext, in []byte) *pb.ResponseMessage_MixedAudio_Segment_Audio {
-		if in == nil {
-			return nil
-		}
-		return &pb.ResponseMessage_MixedAudio_Segment_Audio{Audio: *in}
+/* found existing non-generated mapping function "ResponseMessage_MixedAudio_SegmentObservedState_Audio_ToProto", skipping
+func ResponseMessage_MixedAudio_SegmentObservedState_Audio_ToProto(mapCtx *direct.MapContext, in []byte) *pb.ResponseMessage_MixedAudio_Segment_Audio {
+	if in == nil {
+		return nil
 	}
+	return &pb.ResponseMessage_MixedAudio_Segment_Audio{Audio: *in}
+}
 */
+
 func ResponseMessage_MixedAudio_SegmentObservedState_Uri_ToProto(mapCtx *direct.MapContext, in *string) *pb.ResponseMessage_MixedAudio_Segment_Uri {
 	if in == nil {
 		return nil
 	}
 	return &pb.ResponseMessage_MixedAudio_Segment_Uri{Uri: *in}
 }
+
 func ResponseMessage_OutputAudioText_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_OutputAudioText) *krm.ResponseMessage_OutputAudioText {
 	if in == nil {
 		return nil
@@ -1297,6 +1854,7 @@ func ResponseMessage_OutputAudioText_FromProto(mapCtx *direct.MapContext, in *pb
 	// MISSING: AllowPlaybackInterruption
 	return out
 }
+
 func ResponseMessage_OutputAudioText_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_OutputAudioText) *pb.ResponseMessage_OutputAudioText {
 	if in == nil {
 		return nil
@@ -1311,18 +1869,21 @@ func ResponseMessage_OutputAudioText_ToProto(mapCtx *direct.MapContext, in *krm.
 	// MISSING: AllowPlaybackInterruption
 	return out
 }
+
 func ResponseMessage_OutputAudioText_Text_ToProto(mapCtx *direct.MapContext, in *string) *pb.ResponseMessage_OutputAudioText_Text {
 	if in == nil {
 		return nil
 	}
 	return &pb.ResponseMessage_OutputAudioText_Text{Text: *in}
 }
+
 func ResponseMessage_OutputAudioText_Ssml_ToProto(mapCtx *direct.MapContext, in *string) *pb.ResponseMessage_OutputAudioText_Ssml {
 	if in == nil {
 		return nil
 	}
 	return &pb.ResponseMessage_OutputAudioText_Ssml{Ssml: *in}
 }
+
 func ResponseMessage_OutputAudioTextObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_OutputAudioText) *krm.ResponseMessage_OutputAudioTextObservedState {
 	if in == nil {
 		return nil
@@ -1333,6 +1894,7 @@ func ResponseMessage_OutputAudioTextObservedState_FromProto(mapCtx *direct.MapCo
 	out.AllowPlaybackInterruption = direct.LazyPtr(in.GetAllowPlaybackInterruption())
 	return out
 }
+
 func ResponseMessage_OutputAudioTextObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_OutputAudioTextObservedState) *pb.ResponseMessage_OutputAudioText {
 	if in == nil {
 		return nil
@@ -1343,6 +1905,7 @@ func ResponseMessage_OutputAudioTextObservedState_ToProto(mapCtx *direct.MapCont
 	out.AllowPlaybackInterruption = direct.ValueOf(in.AllowPlaybackInterruption)
 	return out
 }
+
 func ResponseMessage_PlayAudio_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_PlayAudio) *krm.ResponseMessage_PlayAudio {
 	if in == nil {
 		return nil
@@ -1352,6 +1915,7 @@ func ResponseMessage_PlayAudio_FromProto(mapCtx *direct.MapContext, in *pb.Respo
 	// MISSING: AllowPlaybackInterruption
 	return out
 }
+
 func ResponseMessage_PlayAudio_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_PlayAudio) *pb.ResponseMessage_PlayAudio {
 	if in == nil {
 		return nil
@@ -1361,6 +1925,7 @@ func ResponseMessage_PlayAudio_ToProto(mapCtx *direct.MapContext, in *krm.Respon
 	// MISSING: AllowPlaybackInterruption
 	return out
 }
+
 func ResponseMessage_PlayAudioObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_PlayAudio) *krm.ResponseMessage_PlayAudioObservedState {
 	if in == nil {
 		return nil
@@ -1370,6 +1935,7 @@ func ResponseMessage_PlayAudioObservedState_FromProto(mapCtx *direct.MapContext,
 	out.AllowPlaybackInterruption = direct.LazyPtr(in.GetAllowPlaybackInterruption())
 	return out
 }
+
 func ResponseMessage_PlayAudioObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_PlayAudioObservedState) *pb.ResponseMessage_PlayAudio {
 	if in == nil {
 		return nil
@@ -1379,6 +1945,7 @@ func ResponseMessage_PlayAudioObservedState_ToProto(mapCtx *direct.MapContext, i
 	out.AllowPlaybackInterruption = direct.ValueOf(in.AllowPlaybackInterruption)
 	return out
 }
+
 func ResponseMessage_TelephonyTransferCall_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_TelephonyTransferCall) *krm.ResponseMessage_TelephonyTransferCall {
 	if in == nil {
 		return nil
@@ -1387,6 +1954,7 @@ func ResponseMessage_TelephonyTransferCall_FromProto(mapCtx *direct.MapContext, 
 	out.PhoneNumber = direct.LazyPtr(in.GetPhoneNumber())
 	return out
 }
+
 func ResponseMessage_TelephonyTransferCall_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_TelephonyTransferCall) *pb.ResponseMessage_TelephonyTransferCall {
 	if in == nil {
 		return nil
@@ -1397,12 +1965,14 @@ func ResponseMessage_TelephonyTransferCall_ToProto(mapCtx *direct.MapContext, in
 	}
 	return out
 }
+
 func ResponseMessage_TelephonyTransferCall_PhoneNumber_ToProto(mapCtx *direct.MapContext, in *string) *pb.ResponseMessage_TelephonyTransferCall_PhoneNumber {
 	if in == nil {
 		return nil
 	}
 	return &pb.ResponseMessage_TelephonyTransferCall_PhoneNumber{PhoneNumber: *in}
 }
+
 func ResponseMessage_Text_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_Text) *krm.ResponseMessage_Text {
 	if in == nil {
 		return nil
@@ -1412,6 +1982,7 @@ func ResponseMessage_Text_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMe
 	// MISSING: AllowPlaybackInterruption
 	return out
 }
+
 func ResponseMessage_Text_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_Text) *pb.ResponseMessage_Text {
 	if in == nil {
 		return nil
@@ -1421,6 +1992,7 @@ func ResponseMessage_Text_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMes
 	// MISSING: AllowPlaybackInterruption
 	return out
 }
+
 func ResponseMessage_TextObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_Text) *krm.ResponseMessage_TextObservedState {
 	if in == nil {
 		return nil
@@ -1430,6 +2002,7 @@ func ResponseMessage_TextObservedState_FromProto(mapCtx *direct.MapContext, in *
 	out.AllowPlaybackInterruption = direct.LazyPtr(in.GetAllowPlaybackInterruption())
 	return out
 }
+
 func ResponseMessage_TextObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_TextObservedState) *pb.ResponseMessage_Text {
 	if in == nil {
 		return nil
@@ -1439,6 +2012,7 @@ func ResponseMessage_TextObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	out.AllowPlaybackInterruption = direct.ValueOf(in.AllowPlaybackInterruption)
 	return out
 }
+
 func SecuritySettings_AudioExportSettings_FromProto(mapCtx *direct.MapContext, in *pb.SecuritySettings_AudioExportSettings) *krm.SecuritySettings_AudioExportSettings {
 	if in == nil {
 		return nil
@@ -1451,6 +2025,7 @@ func SecuritySettings_AudioExportSettings_FromProto(mapCtx *direct.MapContext, i
 	out.StoreTtsAudio = direct.LazyPtr(in.GetStoreTtsAudio())
 	return out
 }
+
 func SecuritySettings_AudioExportSettings_ToProto(mapCtx *direct.MapContext, in *krm.SecuritySettings_AudioExportSettings) *pb.SecuritySettings_AudioExportSettings {
 	if in == nil {
 		return nil
@@ -1463,6 +2038,7 @@ func SecuritySettings_AudioExportSettings_ToProto(mapCtx *direct.MapContext, in 
 	out.StoreTtsAudio = direct.ValueOf(in.StoreTtsAudio)
 	return out
 }
+
 func SecuritySettings_InsightsExportSettings_FromProto(mapCtx *direct.MapContext, in *pb.SecuritySettings_InsightsExportSettings) *krm.SecuritySettings_InsightsExportSettings {
 	if in == nil {
 		return nil
@@ -1471,6 +2047,7 @@ func SecuritySettings_InsightsExportSettings_FromProto(mapCtx *direct.MapContext
 	out.EnableInsightsExport = direct.LazyPtr(in.GetEnableInsightsExport())
 	return out
 }
+
 func SecuritySettings_InsightsExportSettings_ToProto(mapCtx *direct.MapContext, in *krm.SecuritySettings_InsightsExportSettings) *pb.SecuritySettings_InsightsExportSettings {
 	if in == nil {
 		return nil
@@ -1479,6 +2056,7 @@ func SecuritySettings_InsightsExportSettings_ToProto(mapCtx *direct.MapContext, 
 	out.EnableInsightsExport = direct.ValueOf(in.EnableInsightsExport)
 	return out
 }
+
 func ServiceDirectoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_ServiceDirectoryConfig) *krm.ServiceDirectoryConfig {
 	if in == nil {
 		return nil
@@ -1490,6 +2068,7 @@ func ServiceDirectoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_
 	out.GenericWebService = GenericWebService_FromProto(mapCtx, in.GetGenericWebService())
 	return out
 }
+
 func ServiceDirectoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.ServiceDirectoryConfig) *pb.Webhook_ServiceDirectoryConfig {
 	if in == nil {
 		return nil
@@ -1501,6 +2080,324 @@ func ServiceDirectoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.ServiceDi
 	out.GenericWebService = GenericWebService_ToProto(mapCtx, in.GenericWebService)
 	return out
 }
+
+func ToolCall_FromProto(mapCtx *direct.MapContext, in *pb.ToolCall) *krm.ToolCall {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ToolCall{}
+	out.Tool = direct.LazyPtr(in.GetTool())
+	out.Action = direct.LazyPtr(in.GetAction())
+	if v := direct.Struct_FromProto(mapCtx, in.GetInputParameters()); v != nil {
+		out.InputParameters = *v
+	}
+	return out
+}
+
+func ToolCall_ToProto(mapCtx *direct.MapContext, in *krm.ToolCall) *pb.ToolCall {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ToolCall{}
+	out.Tool = direct.ValueOf(in.Tool)
+	out.Action = direct.ValueOf(in.Action)
+	out.InputParameters = direct.Struct_ToProto(mapCtx, &in.InputParameters)
+	return out
+}
+
+func Tool_Authentication_FromProto(mapCtx *direct.MapContext, in *pb.Tool_Authentication) *krm.Tool_Authentication {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_Authentication{}
+	out.APIKeyConfig = Tool_Authentication_APIKeyConfig_FromProto(mapCtx, in.GetApiKeyConfig())
+	out.OauthConfig = Tool_Authentication_OAuthConfig_FromProto(mapCtx, in.GetOauthConfig())
+	out.ServiceAgentAuthConfig = Tool_Authentication_ServiceAgentAuthConfig_FromProto(mapCtx, in.GetServiceAgentAuthConfig())
+	out.BearerTokenConfig = Tool_Authentication_BearerTokenConfig_FromProto(mapCtx, in.GetBearerTokenConfig())
+	out.ServiceAccountAuthConfig = Tool_Authentication_ServiceAccountAuthConfig_FromProto(mapCtx, in.GetServiceAccountAuthConfig())
+	return out
+}
+
+func Tool_Authentication_ToProto(mapCtx *direct.MapContext, in *krm.Tool_Authentication) *pb.Tool_Authentication {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_Authentication{}
+	if oneof := Tool_Authentication_APIKeyConfig_ToProto(mapCtx, in.APIKeyConfig); oneof != nil {
+		out.AuthConfig = &pb.Tool_Authentication_ApiKeyConfig_{ApiKeyConfig: oneof}
+	}
+	if oneof := Tool_Authentication_OAuthConfig_ToProto(mapCtx, in.OauthConfig); oneof != nil {
+		out.AuthConfig = &pb.Tool_Authentication_OauthConfig{OauthConfig: oneof}
+	}
+	if oneof := Tool_Authentication_ServiceAgentAuthConfig_ToProto(mapCtx, in.ServiceAgentAuthConfig); oneof != nil {
+		out.AuthConfig = &pb.Tool_Authentication_ServiceAgentAuthConfig_{ServiceAgentAuthConfig: oneof}
+	}
+	if oneof := Tool_Authentication_BearerTokenConfig_ToProto(mapCtx, in.BearerTokenConfig); oneof != nil {
+		out.AuthConfig = &pb.Tool_Authentication_BearerTokenConfig_{BearerTokenConfig: oneof}
+	}
+	if oneof := Tool_Authentication_ServiceAccountAuthConfig_ToProto(mapCtx, in.ServiceAccountAuthConfig); oneof != nil {
+		out.AuthConfig = &pb.Tool_Authentication_ServiceAccountAuthConfig_{ServiceAccountAuthConfig: oneof}
+	}
+	return out
+}
+
+func Tool_Authentication_APIKeyConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_Authentication_ApiKeyConfig) *krm.Tool_Authentication_APIKeyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_Authentication_APIKeyConfig{}
+	out.KeyName = direct.LazyPtr(in.GetKeyName())
+	out.APIKey = direct.LazyPtr(in.GetApiKey())
+	out.SecretVersionForAPIKey = direct.LazyPtr(in.GetSecretVersionForApiKey())
+	out.RequestLocation = direct.Enum_FromProto(mapCtx, in.GetRequestLocation())
+	return out
+}
+
+func Tool_Authentication_APIKeyConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_Authentication_APIKeyConfig) *pb.Tool_Authentication_ApiKeyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_Authentication_ApiKeyConfig{}
+	out.KeyName = direct.ValueOf(in.KeyName)
+	out.ApiKey = direct.ValueOf(in.APIKey)
+	out.SecretVersionForApiKey = direct.ValueOf(in.SecretVersionForAPIKey)
+	out.RequestLocation = direct.Enum_ToProto[pb.Tool_Authentication_RequestLocation](mapCtx, in.RequestLocation)
+	return out
+}
+
+func Tool_Authentication_BearerTokenConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_Authentication_BearerTokenConfig) *krm.Tool_Authentication_BearerTokenConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_Authentication_BearerTokenConfig{}
+	out.Token = direct.LazyPtr(in.GetToken())
+	out.SecretVersionForToken = direct.LazyPtr(in.GetSecretVersionForToken())
+	return out
+}
+
+func Tool_Authentication_BearerTokenConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_Authentication_BearerTokenConfig) *pb.Tool_Authentication_BearerTokenConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_Authentication_BearerTokenConfig{}
+	out.Token = direct.ValueOf(in.Token)
+	out.SecretVersionForToken = direct.ValueOf(in.SecretVersionForToken)
+	return out
+}
+
+func Tool_Authentication_OAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_Authentication_OAuthConfig) *krm.Tool_Authentication_OAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_Authentication_OAuthConfig{}
+	out.OauthGrantType = direct.Enum_FromProto(mapCtx, in.GetOauthGrantType())
+	out.ClientID = direct.LazyPtr(in.GetClientId())
+	out.ClientSecret = direct.LazyPtr(in.GetClientSecret())
+	out.SecretVersionForClientSecret = direct.LazyPtr(in.GetSecretVersionForClientSecret())
+	out.TokenEndpoint = direct.LazyPtr(in.GetTokenEndpoint())
+	out.Scopes = in.Scopes
+	return out
+}
+
+func Tool_Authentication_OAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_Authentication_OAuthConfig) *pb.Tool_Authentication_OAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_Authentication_OAuthConfig{}
+	out.OauthGrantType = direct.Enum_ToProto[pb.Tool_Authentication_OAuthConfig_OauthGrantType](mapCtx, in.OauthGrantType)
+	out.ClientId = direct.ValueOf(in.ClientID)
+	out.ClientSecret = direct.ValueOf(in.ClientSecret)
+	out.SecretVersionForClientSecret = direct.ValueOf(in.SecretVersionForClientSecret)
+	out.TokenEndpoint = direct.ValueOf(in.TokenEndpoint)
+	out.Scopes = in.Scopes
+	return out
+}
+
+func Tool_Authentication_ServiceAccountAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_Authentication_ServiceAccountAuthConfig) *krm.Tool_Authentication_ServiceAccountAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_Authentication_ServiceAccountAuthConfig{}
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	return out
+}
+
+func Tool_Authentication_ServiceAccountAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_Authentication_ServiceAccountAuthConfig) *pb.Tool_Authentication_ServiceAccountAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_Authentication_ServiceAccountAuthConfig{}
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	return out
+}
+
+func Tool_Authentication_ServiceAgentAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_Authentication_ServiceAgentAuthConfig) *krm.Tool_Authentication_ServiceAgentAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_Authentication_ServiceAgentAuthConfig{}
+	out.ServiceAgentAuth = direct.Enum_FromProto(mapCtx, in.GetServiceAgentAuth())
+	return out
+}
+
+func Tool_Authentication_ServiceAgentAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_Authentication_ServiceAgentAuthConfig) *pb.Tool_Authentication_ServiceAgentAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_Authentication_ServiceAgentAuthConfig{}
+	out.ServiceAgentAuth = direct.Enum_ToProto[pb.Tool_Authentication_ServiceAgentAuthConfig_ServiceAgentAuth](mapCtx, in.ServiceAgentAuth)
+	return out
+}
+
+func Tool_DataStoreTool_FromProto(mapCtx *direct.MapContext, in *pb.Tool_DataStoreTool) *krm.Tool_DataStoreTool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_DataStoreTool{}
+	out.DataStoreConnections = direct.Slice_FromProto(mapCtx, in.DataStoreConnections, DataStoreConnection_FromProto)
+	out.FallbackPrompt = Tool_DataStoreTool_FallbackPrompt_FromProto(mapCtx, in.GetFallbackPrompt())
+	return out
+}
+
+func Tool_DataStoreTool_ToProto(mapCtx *direct.MapContext, in *krm.Tool_DataStoreTool) *pb.Tool_DataStoreTool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_DataStoreTool{}
+	out.DataStoreConnections = direct.Slice_ToProto(mapCtx, in.DataStoreConnections, DataStoreConnection_ToProto)
+	out.FallbackPrompt = Tool_DataStoreTool_FallbackPrompt_ToProto(mapCtx, in.FallbackPrompt)
+	return out
+}
+
+func Tool_DataStoreTool_FallbackPrompt_FromProto(mapCtx *direct.MapContext, in *pb.Tool_DataStoreTool_FallbackPrompt) *krm.Tool_DataStoreTool_FallbackPrompt {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_DataStoreTool_FallbackPrompt{}
+	return out
+}
+
+func Tool_DataStoreTool_FallbackPrompt_ToProto(mapCtx *direct.MapContext, in *krm.Tool_DataStoreTool_FallbackPrompt) *pb.Tool_DataStoreTool_FallbackPrompt {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_DataStoreTool_FallbackPrompt{}
+	return out
+}
+
+func Tool_FunctionTool_FromProto(mapCtx *direct.MapContext, in *pb.Tool_FunctionTool) *krm.Tool_FunctionTool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_FunctionTool{}
+	if v := direct.Struct_FromProto(mapCtx, in.GetInputSchema()); v != nil {
+		out.InputSchema = *v
+	}
+	if v := direct.Struct_FromProto(mapCtx, in.GetOutputSchema()); v != nil {
+		out.OutputSchema = *v
+	}
+	return out
+}
+
+func Tool_FunctionTool_ToProto(mapCtx *direct.MapContext, in *krm.Tool_FunctionTool) *pb.Tool_FunctionTool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_FunctionTool{}
+	out.InputSchema = direct.Struct_ToProto(mapCtx, &in.InputSchema)
+	out.OutputSchema = direct.Struct_ToProto(mapCtx, &in.OutputSchema)
+	return out
+}
+
+func Tool_OpenAPITool_FromProto(mapCtx *direct.MapContext, in *pb.Tool_OpenApiTool) *krm.Tool_OpenAPITool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_OpenAPITool{}
+	out.TextSchema = direct.LazyPtr(in.GetTextSchema())
+	out.Authentication = Tool_Authentication_FromProto(mapCtx, in.GetAuthentication())
+	out.TLSConfig = Tool_TLSConfig_FromProto(mapCtx, in.GetTlsConfig())
+	out.ServiceDirectoryConfig = Tool_ServiceDirectoryConfig_FromProto(mapCtx, in.GetServiceDirectoryConfig())
+	return out
+}
+
+func Tool_OpenAPITool_ToProto(mapCtx *direct.MapContext, in *krm.Tool_OpenAPITool) *pb.Tool_OpenApiTool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_OpenApiTool{}
+	if oneof := Tool_OpenAPITool_TextSchema_ToProto(mapCtx, in.TextSchema); oneof != nil {
+		out.Schema = oneof
+	}
+	out.Authentication = Tool_Authentication_ToProto(mapCtx, in.Authentication)
+	out.TlsConfig = Tool_TLSConfig_ToProto(mapCtx, in.TLSConfig)
+	out.ServiceDirectoryConfig = Tool_ServiceDirectoryConfig_ToProto(mapCtx, in.ServiceDirectoryConfig)
+	return out
+}
+
+func Tool_OpenAPITool_TextSchema_ToProto(mapCtx *direct.MapContext, in *string) *pb.Tool_OpenApiTool_TextSchema {
+	if in == nil {
+		return nil
+	}
+	return &pb.Tool_OpenApiTool_TextSchema{TextSchema: *in}
+}
+
+func Tool_ServiceDirectoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_ServiceDirectoryConfig) *krm.Tool_ServiceDirectoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_ServiceDirectoryConfig{}
+	out.Service = direct.LazyPtr(in.GetService())
+	return out
+}
+
+func Tool_ServiceDirectoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_ServiceDirectoryConfig) *pb.Tool_ServiceDirectoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_ServiceDirectoryConfig{}
+	out.Service = direct.ValueOf(in.Service)
+	return out
+}
+
+func Tool_TLSConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_TLSConfig) *krm.Tool_TLSConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_TLSConfig{}
+	out.CACerts = direct.Slice_FromProto(mapCtx, in.CaCerts, Tool_TLSConfig_CACert_FromProto)
+	return out
+}
+
+func Tool_TLSConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_TLSConfig) *pb.Tool_TLSConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_TLSConfig{}
+	out.CaCerts = direct.Slice_ToProto(mapCtx, in.CACerts, Tool_TLSConfig_CACert_ToProto)
+	return out
+}
+
+func Tool_TLSConfig_CACert_FromProto(mapCtx *direct.MapContext, in *pb.Tool_TLSConfig_CACert) *krm.Tool_TLSConfig_CACert {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_TLSConfig_CACert{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Cert = in.GetCert()
+	return out
+}
+
+func Tool_TLSConfig_CACert_ToProto(mapCtx *direct.MapContext, in *krm.Tool_TLSConfig_CACert) *pb.Tool_TLSConfig_CACert {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_TLSConfig_CACert{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Cert = in.Cert
+	return out
+}
+
 func TransitionRoute_FromProto(mapCtx *direct.MapContext, in *pb.TransitionRoute) *krm.TransitionRoute {
 	if in == nil {
 		return nil
@@ -1515,6 +2412,7 @@ func TransitionRoute_FromProto(mapCtx *direct.MapContext, in *pb.TransitionRoute
 	out.TargetFlow = direct.LazyPtr(in.GetTargetFlow())
 	return out
 }
+
 func TransitionRoute_ToProto(mapCtx *direct.MapContext, in *krm.TransitionRoute) *pb.TransitionRoute {
 	if in == nil {
 		return nil
@@ -1533,18 +2431,21 @@ func TransitionRoute_ToProto(mapCtx *direct.MapContext, in *krm.TransitionRoute)
 	}
 	return out
 }
+
 func TransitionRoute_TargetPage_ToProto(mapCtx *direct.MapContext, in *string) *pb.TransitionRoute_TargetPage {
 	if in == nil {
 		return nil
 	}
 	return &pb.TransitionRoute_TargetPage{TargetPage: *in}
 }
+
 func TransitionRoute_TargetFlow_ToProto(mapCtx *direct.MapContext, in *string) *pb.TransitionRoute_TargetFlow {
 	if in == nil {
 		return nil
 	}
 	return &pb.TransitionRoute_TargetFlow{TargetFlow: *in}
 }
+
 func TransitionRouteObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TransitionRoute) *krm.TransitionRouteObservedState {
 	if in == nil {
 		return nil
@@ -1559,6 +2460,7 @@ func TransitionRouteObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Tr
 	// MISSING: TargetFlow
 	return out
 }
+
 func TransitionRouteObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TransitionRouteObservedState) *pb.TransitionRoute {
 	if in == nil {
 		return nil
@@ -1573,6 +2475,59 @@ func TransitionRouteObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Tra
 	// MISSING: TargetFlow
 	return out
 }
+
+/* found existing non-generated mapping function "TypeSchema_FromProto", skipping
+func TypeSchema_FromProto(mapCtx *direct.MapContext, in *pb.TypeSchema) *krm.TypeSchema {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TypeSchema{}
+	out.InlineSchema = InlineSchema_FromProto(mapCtx, in.GetInlineSchema())
+	out.SchemaReference = TypeSchema_SchemaReference_FromProto(mapCtx, in.GetSchemaReference())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "TypeSchema_ToProto", skipping
+func TypeSchema_ToProto(mapCtx *direct.MapContext, in *krm.TypeSchema) *pb.TypeSchema {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TypeSchema{}
+	if oneof := InlineSchema_ToProto(mapCtx, in.InlineSchema); oneof != nil {
+		out.Schema = &pb.TypeSchema_InlineSchema{InlineSchema: oneof}
+	}
+	if oneof := TypeSchema_SchemaReference_ToProto(mapCtx, in.SchemaReference); oneof != nil {
+		out.Schema = &pb.TypeSchema_SchemaReference_{SchemaReference: oneof}
+	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "TypeSchema_SchemaReference_FromProto", skipping
+func TypeSchema_SchemaReference_FromProto(mapCtx *direct.MapContext, in *pb.TypeSchema_SchemaReference) *krm.TypeSchema_SchemaReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TypeSchema_SchemaReference{}
+	out.Tool = direct.LazyPtr(in.GetTool())
+	out.Schema = direct.LazyPtr(in.GetSchema())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "TypeSchema_SchemaReference_ToProto", skipping
+func TypeSchema_SchemaReference_ToProto(mapCtx *direct.MapContext, in *krm.TypeSchema_SchemaReference) *pb.TypeSchema_SchemaReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TypeSchema_SchemaReference{}
+	out.Tool = direct.ValueOf(in.Tool)
+	out.Schema = direct.ValueOf(in.Schema)
+	return out
+}
+*/
+
 func Webhook_FromProto(mapCtx *direct.MapContext, in *pb.Webhook) *krm.Webhook {
 	if in == nil {
 		return nil
@@ -1586,6 +2541,7 @@ func Webhook_FromProto(mapCtx *direct.MapContext, in *pb.Webhook) *krm.Webhook {
 	out.Disabled = direct.LazyPtr(in.GetDisabled())
 	return out
 }
+
 func Webhook_ToProto(mapCtx *direct.MapContext, in *krm.Webhook) *pb.Webhook {
 	if in == nil {
 		return nil
@@ -1603,6 +2559,7 @@ func Webhook_ToProto(mapCtx *direct.MapContext, in *krm.Webhook) *pb.Webhook {
 	out.Disabled = direct.ValueOf(in.Disabled)
 	return out
 }
+
 func Webhook_GenericWebService_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_GenericWebService) *krm.Webhook_GenericWebService {
 	if in == nil {
 		return nil
@@ -1621,6 +2578,7 @@ func Webhook_GenericWebService_FromProto(mapCtx *direct.MapContext, in *pb.Webho
 	out.ParameterMapping = in.ParameterMapping
 	return out
 }
+
 func Webhook_GenericWebService_ToProto(mapCtx *direct.MapContext, in *krm.Webhook_GenericWebService) *pb.Webhook_GenericWebService {
 	if in == nil {
 		return nil
@@ -1639,6 +2597,7 @@ func Webhook_GenericWebService_ToProto(mapCtx *direct.MapContext, in *krm.Webhoo
 	out.ParameterMapping = in.ParameterMapping
 	return out
 }
+
 func Webhook_GenericWebService_OAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_GenericWebService_OAuthConfig) *krm.Webhook_GenericWebService_OAuthConfig {
 	if in == nil {
 		return nil
@@ -1650,6 +2609,7 @@ func Webhook_GenericWebService_OAuthConfig_FromProto(mapCtx *direct.MapContext, 
 	out.Scopes = in.Scopes
 	return out
 }
+
 func Webhook_GenericWebService_OAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.Webhook_GenericWebService_OAuthConfig) *pb.Webhook_GenericWebService_OAuthConfig {
 	if in == nil {
 		return nil
@@ -1661,6 +2621,43 @@ func Webhook_GenericWebService_OAuthConfig_ToProto(mapCtx *direct.MapContext, in
 	out.Scopes = in.Scopes
 	return out
 }
+
+func Webhook_GenericWebService_SecretVersionHeaderValue_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_GenericWebService_SecretVersionHeaderValue) *krm.Webhook_GenericWebService_SecretVersionHeaderValue {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Webhook_GenericWebService_SecretVersionHeaderValue{}
+	out.SecretVersion = direct.LazyPtr(in.GetSecretVersion())
+	return out
+}
+
+func Webhook_GenericWebService_SecretVersionHeaderValue_ToProto(mapCtx *direct.MapContext, in *krm.Webhook_GenericWebService_SecretVersionHeaderValue) *pb.Webhook_GenericWebService_SecretVersionHeaderValue {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Webhook_GenericWebService_SecretVersionHeaderValue{}
+	out.SecretVersion = direct.ValueOf(in.SecretVersion)
+	return out
+}
+
+func Webhook_GenericWebService_ServiceAccountAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_GenericWebService_ServiceAccountAuthConfig) *krm.Webhook_GenericWebService_ServiceAccountAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Webhook_GenericWebService_ServiceAccountAuthConfig{}
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	return out
+}
+
+func Webhook_GenericWebService_ServiceAccountAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.Webhook_GenericWebService_ServiceAccountAuthConfig) *pb.Webhook_GenericWebService_ServiceAccountAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Webhook_GenericWebService_ServiceAccountAuthConfig{}
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	return out
+}
+
 func Webhook_ServiceDirectoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_ServiceDirectoryConfig) *krm.Webhook_ServiceDirectoryConfig {
 	if in == nil {
 		return nil
@@ -1670,6 +2667,7 @@ func Webhook_ServiceDirectoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.GenericWebService = Webhook_GenericWebService_FromProto(mapCtx, in.GetGenericWebService())
 	return out
 }
+
 func Webhook_ServiceDirectoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.Webhook_ServiceDirectoryConfig) *pb.Webhook_ServiceDirectoryConfig {
 	if in == nil {
 		return nil
