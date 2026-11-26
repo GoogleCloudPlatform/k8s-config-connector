@@ -154,7 +154,7 @@ Next step: config-connector ha setup --contexts=gke_proj-a_us-central1_cluster-a
 gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Configured  Leader
 gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Configured  Standby
 
-Lease: cnrm-system/kcc-multicluster-lease, held by cluster-a (renewed 4s ago)
+Lease: cnrm-system/kcc-multicluster-lease, held by gke_proj-a_us-central1_cluster-a (renewed 4s ago)
 HA Status: HEALTHY
 `,
 		},
@@ -171,7 +171,7 @@ HA Status: HEALTHY
 gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Configured      Leader
 gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Not configured  -
 
-Lease: cnrm-system/kcc-multicluster-lease, held by cluster-a (renewed 4s ago)
+Lease: cnrm-system/kcc-multicluster-lease, held by gke_proj-a_us-central1_cluster-a (renewed 4s ago)
 HA Status: ERROR
 Problems:
   - cluster "gke_proj-b_us-east1_cluster-b" does not have spec.experiments.multiClusterLease configured on ConfigConnector "configconnector.core.cnrm.cloud.google.com"; run ` + "`config-connector ha setup`" + ` or configure spec.experiments.multiClusterLease; it reconciles independently of the HA clusters, so more than one cluster may change the same resources
@@ -210,7 +210,7 @@ Problems:
 gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Configured  Leader
 gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Error       -
 
-Lease: cnrm-system/kcc-multicluster-lease, held by cluster-a (renewed 4s ago)
+Lease: cnrm-system/kcc-multicluster-lease, held by gke_proj-a_us-central1_cluster-a (renewed 4s ago)
 HA Status: ERROR
 Problems:
   - fetching ConfigConnector on cluster "gke_proj-b_us-east1_cluster-b": dial tcp 10.0.0.1:443: i/o timeout
@@ -229,7 +229,7 @@ Problems:
 gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Configured  Leader
 gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Error       -
 
-Lease: cnrm-system/kcc-multicluster-lease, held by cluster-a (renewed 4s ago)
+Lease: cnrm-system/kcc-multicluster-lease, held by gke_proj-a_us-central1_cluster-a (renewed 4s ago)
 HA Status: ERROR
 Problems:
   - cluster "gke_proj-b_us-east1_cluster-b": spec.experiments.multiClusterLease.gkeCluster is required

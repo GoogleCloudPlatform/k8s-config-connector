@@ -24,6 +24,7 @@ import (
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	operatork8s "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/kubecli"
 	syncerv1alpha1 "github.com/gke-labs/kube-etl/syncer/api/v1alpha1"
 	mclv1alpha1 "github.com/gke-labs/multicluster-leader-election/api/v1alpha1"
 	mclcontroller "github.com/gke-labs/multicluster-leader-election/controllers"
@@ -42,9 +43,11 @@ import (
 const (
 	testLeaseName      = "kcc-multicluster-lease"
 	testLeaseNamespace = "cnrm-system"
-	// Identities of the GKE clusters set by newConfigConnectorWithMCL.
-	testIdentityA = "projects/test-project/locations/us-central1/clusters/cluster-a"
-	testIdentityB = "projects/test-project/locations/us-central1/clusters/cluster-b"
+	testStatusContextC = "gke_proj-c_europe-west1_cluster-c"
+	// Election identities of the test clusters, matching their GKE contexts as `ha setup` sets them.
+	testIdentityA = "projects/proj-a/locations/us-central1/clusters/cluster-a"
+	testIdentityB = "projects/proj-b/locations/us-east1/clusters/cluster-b"
+	testIdentityC = "projects/proj-c/locations/europe-west1/clusters/cluster-c"
 	testRenewTime = "2026-11-10T18:05:56Z"
 )
 
@@ -58,6 +61,8 @@ type haFixture struct {
 	lease     *mclv1alpha1.MultiClusterLease
 	syncers   []*syncerv1alpha1.KRMSyncer
 	extraObjs []runtime.Object
+	// unreachable makes every read from the cluster fail.
+	unreachable bool
 }
 
 type haFixtures []*haFixture
@@ -188,21 +193,59 @@ func healthyWorkloadObjects(leaseNamespace string) []runtime.Object {
 // suspended; cluster-b is a standby whose syncer is syncing from cluster-a.
 func healthyHAFixtures() haFixtures {
 	return haFixtures{
-		{
-			context:   testStatusContextA,
-			cc:        newConfigConnectorWithMCL(testLeaseName, testLeaseNamespace, "cluster-a"),
-			lease:     newTestLease(testIdentityA, testRenewTime),
-			syncers:   []*syncerv1alpha1.KRMSyncer{newTestSyncer(testLeaseName, testIdentityA, true, syncerv1alpha1.ReasonSuspended, "Syncer is suspended")},
-			extraObjs: healthyWorkloadObjects(testLeaseNamespace),
-		},
-		{
-			context:   testStatusContextB,
-			cc:        newConfigConnectorWithMCL(testLeaseName, testLeaseNamespace, "cluster-b"),
-			lease:     newTestLease(testIdentityA, testRenewTime),
-			syncers:   []*syncerv1alpha1.KRMSyncer{newTestSyncer(testLeaseName, testIdentityA, false, syncerv1alpha1.ReasonSyncing, "Syncing")},
-			extraObjs: healthyWorkloadObjects(testLeaseNamespace),
-		},
+		newLeaderFixture(testStatusContextA),
+		newStandbyFixture(testStatusContextB, testIdentityA),
 	}
+}
+
+// newLeaderFixture returns a cluster that holds the lease, with a suspended syncer and healthy
+// HA workloads.
+func newLeaderFixture(context string) *haFixture {
+	identity := contextIdentity(context)
+	return &haFixture{
+		context: context,
+		cc:      newHAConfigConnector(context),
+		lease:   newTestLease(identity, testRenewTime),
+		syncers: []*syncerv1alpha1.KRMSyncer{
+			newTestSyncer(testLeaseName, identity, true, syncerv1alpha1.ReasonSuspended, "Syncer is suspended"),
+		},
+		extraObjs: healthyWorkloadObjects(testLeaseNamespace),
+	}
+}
+
+// newStandbyFixture returns a standby cluster that sees leader holding the lease, with a syncer
+// that is syncing from it and healthy HA workloads.
+func newStandbyFixture(context, leader string) *haFixture {
+	return &haFixture{
+		context: context,
+		cc:      newHAConfigConnector(context),
+		lease:   newTestLease(leader, testRenewTime),
+		syncers: []*syncerv1alpha1.KRMSyncer{
+			newTestSyncer(testLeaseName, leader, false, syncerv1alpha1.ReasonSyncing, "Syncing"),
+		},
+		extraObjs: healthyWorkloadObjects(testLeaseNamespace),
+	}
+}
+
+// newHAConfigConnector returns a ConfigConnector with multi-cluster HA configured, with the
+// gkeCluster that `ha setup` derives from the GKE context.
+func newHAConfigConnector(context string) *operatorv1beta1.ConfigConnector {
+	cc := newConfigConnectorWithMCL(testLeaseName, testLeaseNamespace, "cluster")
+	gke, _ := parseGKEContext(context)
+	gkeCluster := gke.gkeCluster()
+	cc.Spec.Experiments.MultiClusterLease.GKECluster = &gkeCluster
+	return cc
+}
+
+func contextIdentity(context string) string {
+	gke, _ := parseGKEContext(context)
+	gkeCluster := gke.gkeCluster()
+	return gkeCluster.ResourceName()
+}
+
+// unconfiguredFixture returns a cluster without multi-cluster HA.
+func unconfiguredFixture(context string) *haFixture {
+	return &haFixture{context: context, cc: newConfigConnectorWithoutMCL()}
 }
 
 func (fs haFixtures) handles(t *testing.T) []*clusterHandle {
@@ -217,7 +260,11 @@ func (fs haFixtures) handles(t *testing.T) []*clusterHandle {
 			objs = append(objs, s)
 		}
 		objs = append(objs, f.extraObjs...)
-		handles = append(handles, newFakeClusterHandle(t, f.context, objs...))
+		h := newFakeClusterHandle(t, f.context, objs...)
+		if f.unreachable {
+			h.client = &kubecli.Client{Client: &failingGetClient{Client: h.client.Client, err: errors.New("dial tcp 10.0.0.1:443: i/o timeout")}}
+		}
+		handles = append(handles, h)
 	}
 	return handles
 }
@@ -350,17 +397,9 @@ func TestHAStatusHealthy(t *testing.T) {
 	}
 }
 
-const testIdentityC = "projects/test-project/locations/us-central1/clusters/cluster-c"
-
 func threeClusterHAFixtures() haFixtures {
 	fs := healthyHAFixtures()
-	fs = append(fs, &haFixture{
-		context:   "gke_proj-c_us-central1_cluster-c",
-		cc:        newConfigConnectorWithMCL(testLeaseName, testLeaseNamespace, "cluster-c"),
-		lease:     newTestLease(testIdentityA, testRenewTime),
-		syncers:   []*syncerv1alpha1.KRMSyncer{newTestSyncer(testLeaseName, testIdentityA, false, syncerv1alpha1.ReasonSyncing, "Syncing")},
-		extraObjs: healthyWorkloadObjects(testLeaseNamespace),
-	})
+	fs = append(fs, newStandbyFixture("gke_proj-c_us-central1_cluster-c", testIdentityA))
 	return fs
 }
 
@@ -387,8 +426,10 @@ func TestHAStatusProblems(t *testing.T) {
 			},
 		},
 		{
-			name:   "duplicate gkeCluster",
-			mutate: func(fs haFixtures) { fs[1].cc.Spec.Experiments.MultiClusterLease.GKECluster.Name = "cluster-a" },
+			name: "duplicate gkeCluster",
+			mutate: func(fs haFixtures) {
+				*fs[1].cc.Spec.Experiments.MultiClusterLease.GKECluster = *fs[0].cc.Spec.Experiments.MultiClusterLease.GKECluster
+			},
 			wantProblems: []string{
 				`duplicate gkeCluster across clusters (identity "` + testIdentityA + `" shared by [gke_proj-a_us-central1_cluster-a, gke_proj-b_us-east1_cluster-b])`,
 			},
@@ -504,8 +545,10 @@ func TestHAStatusProblems(t *testing.T) {
 			name: "lease held by a cluster that wasn't given",
 			mutate: func(fs haFixtures) {
 				other := "projects/other/locations/europe-west1/clusters/cluster-c"
-				fs[0].lease = newTestLease(other, testRenewTime)
-				fs[1].lease = newTestLease(other, testRenewTime)
+				for _, f := range fs {
+					f.lease = newTestLease(other, testRenewTime)
+					f.syncers = []*syncerv1alpha1.KRMSyncer{newTestSyncer(testLeaseName, other, false, syncerv1alpha1.ReasonSyncing, "")}
+				}
 			},
 			wantProblems: []string{
 				`the lease is held by "projects/other/locations/europe-west1/clusters/cluster-c", which is not one of the clusters in --contexts`,
@@ -517,6 +560,10 @@ func TestHAStatusProblems(t *testing.T) {
 				other := "projects/other/locations/europe-west1/clusters/cluster-c"
 				fs[0].lease = newTestLease(other, testRenewTime)
 				fs[1].lease = newTestLease(testIdentityA, "2026-11-10T18:05:00Z")
+				// The syncers are checked against the agreed holder, even outside --contexts.
+				for _, f := range fs {
+					f.syncers = []*syncerv1alpha1.KRMSyncer{newTestSyncer(testLeaseName, other, false, syncerv1alpha1.ReasonSyncing, "")}
+				}
 			},
 			wantProblems: []string{
 				`cluster "gke_proj-b_us-east1_cluster-b": the lease held by "` + testIdentityA + `" has expired (last renewed at 2026-11-10T18:05:00Z, lease duration 15s)`,
@@ -704,56 +751,89 @@ func TestHAStatusProblems(t *testing.T) {
 }
 
 func TestHAStatusRoles(t *testing.T) {
+	notConfiguredB := `cluster "gke_proj-b_us-east1_cluster-b" does not have spec.experiments.multiClusterLease configured`
+	notConfiguredC := `cluster "gke_proj-c_europe-west1_cluster-c" does not have spec.experiments.multiClusterLease configured`
+	unreachableA := `fetching ConfigConnector on cluster "gke_proj-a_us-central1_cluster-a": dial tcp 10.0.0.1:443: i/o timeout`
+	unreachableC := `fetching ConfigConnector on cluster "gke_proj-c_europe-west1_cluster-c": dial tcp 10.0.0.1:443: i/o timeout`
+	leaseA := "Lease: cnrm-system/kcc-multicluster-lease, held by gke_proj-a_us-central1_cluster-a (renewed 4s ago)"
+
 	tests := []struct {
-		name      string
+		name string
+		// fixtures returns the clusters; healthyHAFixtures if nil.
+		fixtures  func() haFixtures
 		mutate    func(haFixtures)
 		wantState haState
 		wantRoles []clusterRole
 		// wantLease is the Lease line; empty means no Lease line.
 		wantLease string
+		// wantProblems are substrings of the expected problems, one per problem.
+		wantProblems []string
 	}{
+		// Every cluster configured.
 		{
 			name:      "cluster-a leads",
-			mutate:    func(haFixtures) {},
 			wantState: haStateHealthy,
 			wantRoles: []clusterRole{roleLeader, roleStandby},
-			wantLease: "Lease: cnrm-system/kcc-multicluster-lease, held by cluster-a (renewed 4s ago)",
+			wantLease: leaseA,
 		},
 		{
 			name: "cluster-b leads",
-			mutate: func(fs haFixtures) {
-				fs[0].lease = newTestLease(testIdentityB, testRenewTime)
-				fs[1].lease = newTestLease(testIdentityB, testRenewTime)
-				fs[0].syncers = []*syncerv1alpha1.KRMSyncer{newTestSyncer(testLeaseName, testIdentityB, false, syncerv1alpha1.ReasonSyncing, "")}
-				fs[1].syncers = []*syncerv1alpha1.KRMSyncer{newTestSyncer(testLeaseName, testIdentityB, true, syncerv1alpha1.ReasonSuspended, "")}
+			fixtures: func() haFixtures {
+				return haFixtures{newStandbyFixture(testStatusContextA, testIdentityB), newLeaderFixture(testStatusContextB)}
 			},
 			wantState: haStateHealthy,
 			wantRoles: []clusterRole{roleStandby, roleLeader},
-			wantLease: "Lease: cnrm-system/kcc-multicluster-lease, held by cluster-b (renewed 4s ago)",
+			wantLease: "Lease: cnrm-system/kcc-multicluster-lease, held by gke_proj-b_us-east1_cluster-b (renewed 4s ago)",
 		},
 		{
 			name: "leader known, standby not syncing",
 			mutate: func(fs haFixtures) {
 				fs[1].syncers = []*syncerv1alpha1.KRMSyncer{newTestSyncer(testLeaseName, testIdentityA, false, syncerv1alpha1.ReasonRemoteUnreachable, "Unauthorized")}
 			},
-			wantState: haStateError,
-			wantRoles: []clusterRole{roleLeader, roleStandby},
-			wantLease: "Lease: cnrm-system/kcc-multicluster-lease, held by cluster-a (renewed 4s ago)",
+			wantState:    haStateError,
+			wantRoles:    []clusterRole{roleLeader, roleStandby},
+			wantLease:    leaseA,
+			wantProblems: []string{"is not syncing (RemoteUnreachable): Unauthorized"},
 		},
 		{
-			name: "lease expired, so the leader is unknown",
+			name: "one lease missing, the other is live, so the leader is known",
+			mutate: func(fs haFixtures) {
+				fs[1].lease = nil
+			},
+			wantState:    haStateError,
+			wantRoles:    []clusterRole{roleLeader, roleStandby},
+			wantLease:    leaseA,
+			wantProblems: []string{`cluster "gke_proj-b_us-east1_cluster-b": MultiClusterLease cnrm-system/kcc-multicluster-lease not found`},
+		},
+		{
+			name: "all leases expired, so the leader is unknown",
 			mutate: func(fs haFixtures) {
 				fs[0].lease = newTestLease(testIdentityA, "2026-11-10T18:05:00Z")
 				fs[1].lease = newTestLease(testIdentityA, "2026-11-10T18:05:00Z")
 			},
-			wantState: haStateError,
-			wantRoles: []clusterRole{roleUnknown, roleUnknown},
+			wantState:    haStateError,
+			wantRoles:    []clusterRole{roleUnknown, roleUnknown},
+			wantProblems: []string{"has expired", "has expired"},
 		},
 		{
-			name:      "clusters disagree on the holder, so the leader is unknown",
-			mutate:    func(fs haFixtures) { fs[1].lease = newTestLease(testIdentityB, testRenewTime) },
-			wantState: haStateError,
-			wantRoles: []clusterRole{roleUnknown, roleUnknown},
+			name:         "clusters disagree on the holder, so the leader is unknown",
+			mutate:       func(fs haFixtures) { fs[1].lease = newTestLease(testIdentityB, testRenewTime) },
+			wantState:    haStateError,
+			wantRoles:    []clusterRole{roleUnknown, roleUnknown},
+			wantProblems: []string{"clusters disagree on the lease holder"},
+		},
+		{
+			name: "holder outside --contexts is named by its identity",
+			mutate: func(fs haFixtures) {
+				for _, f := range fs {
+					f.lease = newTestLease(testIdentityC, testRenewTime)
+					f.syncers = []*syncerv1alpha1.KRMSyncer{newTestSyncer(testLeaseName, testIdentityC, false, syncerv1alpha1.ReasonSyncing, "")}
+				}
+			},
+			wantState:    haStateError,
+			wantRoles:    []clusterRole{roleStandby, roleStandby},
+			wantLease:    "Lease: cnrm-system/kcc-multicluster-lease, held by " + testIdentityC + " (renewed 4s ago)",
+			wantProblems: []string{"which is not one of the clusters in --contexts"},
 		},
 		{
 			name: "no renew time reported",
@@ -764,39 +844,125 @@ func TestHAStatusRoles(t *testing.T) {
 			},
 			wantState: haStateHealthy,
 			wantRoles: []clusterRole{roleLeader, roleStandby},
-			wantLease: "Lease: cnrm-system/kcc-multicluster-lease, held by cluster-a\n",
+			wantLease: "Lease: cnrm-system/kcc-multicluster-lease, held by gke_proj-a_us-central1_cluster-a\n",
 		},
+		// Some clusters not configured, or not readable.
 		{
-			name:      "only cluster-a configured, and it holds the lease",
-			mutate:    unconfigureClusterB,
-			wantState: haStateError,
-			wantRoles: []clusterRole{roleLeader, roleNone},
-			wantLease: "Lease: cnrm-system/kcc-multicluster-lease, held by cluster-a (renewed 4s ago)",
-		},
-		{
-			name: "only cluster-a configured, and another cluster holds the lease",
+			name: "the leader can't be read, and the standby sees its live lease",
 			mutate: func(fs haFixtures) {
-				unconfigureClusterB(fs)
-				fs[0].lease = newTestLease(testIdentityB, testRenewTime)
+				fs[0].unreachable = true
 			},
-			wantState: haStateError,
-			wantRoles: []clusterRole{roleStandby, roleNone},
+			wantState:    haStateError,
+			wantRoles:    []clusterRole{roleNone, roleStandby},
+			wantLease:    leaseA,
+			wantProblems: []string{unreachableA},
+		},
+		{
+			name: "only cluster-a configured, and it holds the lease",
+			fixtures: func() haFixtures {
+				return haFixtures{newLeaderFixture(testStatusContextA), unconfiguredFixture(testStatusContextB)}
+			},
+			wantState:    haStateError,
+			wantRoles:    []clusterRole{roleLeader, roleNone},
+			wantLease:    leaseA,
+			wantProblems: []string{notConfiguredB + ` on ConfigConnector "configconnector.core.cnrm.cloud.google.com"; run ` + "`config-connector ha setup`" + ` or configure spec.experiments.multiClusterLease; it reconciles independently of the HA clusters, so more than one cluster may change the same resources`},
+		},
+		{
+			name: "only cluster-a configured, and cluster-b holds the lease",
+			fixtures: func() haFixtures {
+				return haFixtures{newStandbyFixture(testStatusContextA, testIdentityB), unconfiguredFixture(testStatusContextB)}
+			},
+			wantState:    haStateError,
+			wantRoles:    []clusterRole{roleStandby, roleNone},
+			wantLease:    "Lease: cnrm-system/kcc-multicluster-lease, held by gke_proj-b_us-east1_cluster-b (renewed 4s ago)",
+			wantProblems: []string{notConfiguredB},
 		},
 		{
 			name: "only cluster-a configured, and its lease expired",
+			fixtures: func() haFixtures {
+				return haFixtures{newLeaderFixture(testStatusContextA), unconfiguredFixture(testStatusContextB)}
+			},
 			mutate: func(fs haFixtures) {
-				unconfigureClusterB(fs)
 				fs[0].lease = newTestLease(testIdentityA, "2026-11-10T18:05:00Z")
 			},
 			wantState: haStateError,
 			wantRoles: []clusterRole{roleUnknown, roleNone},
+			wantProblems: []string{
+				notConfiguredB,
+				`cluster "gke_proj-a_us-central1_cluster-a": the lease held by "` + testIdentityA + `" has expired`,
+			},
+		},
+		{
+			name: "only cluster-a configured, and its KRMSyncer isn't suspended",
+			fixtures: func() haFixtures {
+				return haFixtures{newLeaderFixture(testStatusContextA), unconfiguredFixture(testStatusContextB)}
+			},
+			mutate: func(fs haFixtures) {
+				fs[0].syncers[0].Spec.Suspend = false
+			},
+			wantState: haStateError,
+			wantRoles: []clusterRole{roleLeader, roleNone},
+			wantLease: leaseA,
+			wantProblems: []string{
+				notConfiguredB,
+				`cluster "gke_proj-a_us-central1_cluster-a" (leader): KRMSyncer cnrm-system/kcc-multicluster-lease is not suspended`,
+			},
+		},
+		// Three clusters.
+		{
+			name: "three clusters, one can't be read",
+			fixtures: func() haFixtures {
+				c := unconfiguredFixture(testStatusContextC)
+				c.unreachable = true
+				return haFixtures{newLeaderFixture(testStatusContextA), newStandbyFixture(testStatusContextB, testIdentityA), c}
+			},
+			wantState:    haStateError,
+			wantRoles:    []clusterRole{roleLeader, roleStandby, roleNone},
+			wantLease:    leaseA,
+			wantProblems: []string{unreachableC},
+		},
+		{
+			name: "three clusters, the configured two use different leases",
+			fixtures: func() haFixtures {
+				b := newLeaderFixture(testStatusContextB)
+				b.cc.Spec.Experiments.MultiClusterLease.LeaseName = "other-lease"
+				return haFixtures{newLeaderFixture(testStatusContextA), b, unconfiguredFixture(testStatusContextC)}
+			},
+			wantState: haStateError,
+			wantRoles: []clusterRole{roleUnknown, roleUnknown, roleNone},
+			wantProblems: []string{
+				notConfiguredC,
+				`mismatched leaseName across clusters (gke_proj-a_us-central1_cluster-a="kcc-multicluster-lease", gke_proj-b_us-east1_cluster-b="other-lease")`,
+			},
+		},
+		{
+			name: "three clusters, the configured two disagree on the holder",
+			fixtures: func() haFixtures {
+				a := newStandbyFixture(testStatusContextA, testIdentityC)
+				a.syncers[0].Status.Conditions[0].Status = metav1.ConditionFalse
+				a.syncers[0].Status.Conditions[0].Reason = syncerv1alpha1.ReasonSyncFailed
+				c := unconfiguredFixture(testStatusContextC)
+				c.unreachable = true
+				return haFixtures{a, newLeaderFixture(testStatusContextB), c}
+			},
+			wantState: haStateError,
+			wantRoles: []clusterRole{roleUnknown, roleUnknown, roleNone},
+			wantProblems: []string{
+				unreachableC,
+				`clusters disagree on the lease holder ("` + testIdentityB + `" reported by [gke_proj-b_us-east1_cluster-b]; "` + testIdentityC + `" reported by [gke_proj-a_us-central1_cluster-a])`,
+			},
 		},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			fs := healthyHAFixtures()
-			tc.mutate(fs)
+			if tc.fixtures != nil {
+				fs = tc.fixtures()
+			}
+			if tc.mutate != nil {
+				tc.mutate(fs)
+			}
 
 			report, out := runHAStatus(t, fs)
 
@@ -815,15 +981,16 @@ func TestHAStatusRoles(t *testing.T) {
 			} else if !strings.Contains(out, tc.wantLease) {
 				t.Fatalf("expected output to contain %q, got:\n%s", tc.wantLease, out)
 			}
+			if len(report.problems) != len(tc.wantProblems) {
+				t.Fatalf("got %d problems, want %d; output:\n%s", len(report.problems), len(tc.wantProblems), out)
+			}
+			for i, want := range tc.wantProblems {
+				if !strings.Contains(report.problems[i], want) {
+					t.Fatalf("problem %d: got %q, want it to contain %q; output:\n%s", i, report.problems[i], want, out)
+				}
+			}
 		})
 	}
-}
-
-// unconfigureClusterB removes multi-cluster HA from cluster-b.
-func unconfigureClusterB(fs haFixtures) {
-	fs[1].cc = newConfigConnectorWithoutMCL()
-	fs[1].lease = nil
-	fs[1].syncers = nil
 }
 
 func TestLeaseExpired(t *testing.T) {
