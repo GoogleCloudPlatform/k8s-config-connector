@@ -15,6 +15,7 @@ Use this guide for a **Greenfield Step 3** PR (`Greenfield: Implement MockGCP an
 ## 1. Checks for both steps
 
 *   **Real-GCP baseline**: No `_http.log` or `_audit_probe.log` changed, unless the PR explains a fixture or request change and the new log comes from `hack/record-gcp`. No log or golden file was edited by hand.
+*   **Test harness & files untouched**: No changes to `pkg/test/resourcefixture/golden_alignment_test.go`, `tests/e2e/unified_test.go`, or scripts under `dev/tasks/` / `dev/ci/`. No ad-hoc unit test files added in `mockgcp/` or `pkg/controller/direct/`.
 *   **Normalizers**: `Previsit` is scoped to `<service_name>.googleapis.com` URLs. API-version and URL-prefix replacements are exact strings for this service only, with no broad wildcards.
 *   **No Standalone Unit Tests**: Verify no dedicated `*_test.go` files were added inside `mockgcp/mock<service>/`. Mock services are verified via `hack/compare-mock` and fixture alignment tests.
 *   **Dependency Hygiene**: Verify `git diff mockgcp/go.mod` contains no collateral version bumps or additions to unrelated packages.
