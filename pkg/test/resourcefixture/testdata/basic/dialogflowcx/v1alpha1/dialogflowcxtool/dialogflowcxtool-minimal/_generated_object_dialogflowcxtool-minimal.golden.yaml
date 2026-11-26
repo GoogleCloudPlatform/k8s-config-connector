@@ -29,7 +29,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/global/agents/aa771d89-00c7-4fe8-b1e6-7947d4b91660/tools/790fa71f-8288-4f5a-9f91-06fe977ab22c
+  externalRef: projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/tools/790fa71f-8288-4f5a-9f91-06fe977ab22c
   observedGeneration: 2
   observedState:
     toolType: CUSTOMIZED_TOOL

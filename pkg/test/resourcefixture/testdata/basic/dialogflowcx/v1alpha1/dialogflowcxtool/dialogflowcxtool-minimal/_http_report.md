@@ -4,7 +4,7 @@
 - **Resource Name:** `dialogflowcxtool-minimal-${uniqueId}`
 - **Source Log:** `_http.log` (8 total HTTP entries, 3 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:d9b0f3738295ffe1`
+- **Integrity Hash:** `sha256:f146a9f00cf7a815`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 

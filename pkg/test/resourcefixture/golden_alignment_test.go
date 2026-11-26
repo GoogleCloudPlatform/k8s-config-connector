@@ -1447,6 +1447,8 @@ func getPlaceholdersForKind(kind string) []string {
 		return []string{"${agentID}"}
 	case "DialogflowCXWebhook", "DialogflowWebhook":
 		return []string{"${agentID}", "${webhookID}"}
+	case "DialogflowCXTool":
+		return []string{"${agentID}", "${toolID}"}
 	}
 	return nil
 }

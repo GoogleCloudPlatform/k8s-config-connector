@@ -34,7 +34,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/global/agents/5d1cda79-5a98-47b9-8d8e-7b21e4872dd3/tools/483eb7b5-3a7e-4643-9b01-33dd34ff9b77
+  externalRef: projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/tools/483eb7b5-3a7e-4643-9b01-33dd34ff9b77
   observedGeneration: 2
   observedState:
     toolType: CUSTOMIZED_TOOL

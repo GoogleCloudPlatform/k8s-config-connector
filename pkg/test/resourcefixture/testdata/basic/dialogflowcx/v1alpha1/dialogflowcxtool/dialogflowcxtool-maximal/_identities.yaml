@@ -4,7 +4,7 @@
   name: dialogflowcxagent-${uniqueId}
   namespace: ${uniqueId}
   version: v1alpha1
-- caisURL: //dialogflow.googleapis.com/projects/${projectId}/locations/global/agents/5d1cda79-5a98-47b9-8d8e-7b21e4872dd3/tools/483eb7b5-3a7e-4643-9b01-33dd34ff9b77
+- caisURL: unknown
   group: dialogflowcx.cnrm.cloud.google.com
   kind: DialogflowCXTool
   name: dialogflowcxtool-maximal-${uniqueId}
