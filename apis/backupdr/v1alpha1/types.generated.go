@@ -68,13 +68,15 @@ type BackupPlanDetail struct {
 }
 */
 
+/* found existing non-generated go type "BackupSelectionConfig", skipping
+
 // +kcc:proto=google.cloud.backupdr.v1.BackupSelectionConfig
 type BackupSelectionConfig struct {
 	// Required. Immutable. The fully qualified URI of the backupdr data source.
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupSelectionConfig.data_source
-	// +required
 	DataSource *string `json:"dataSource,omitempty"`
 }
+*/
 
 /* unreachable type BindingSummary
 // +kcc:proto=google.cloud.backupdr.v1.BindingSummary
@@ -188,6 +190,8 @@ type PolicyEvaluationSummary struct {
 }
 */
 
+/* found existing non-generated go type "PostRestoreConfig", skipping
+
 // +kcc:proto=google.cloud.backupdr.v1.PostRestoreConfig
 type PostRestoreConfig struct {
 	// Optional. The `timeout` for this phase.
@@ -201,6 +205,9 @@ type PostRestoreConfig struct {
 	// +kcc:proto:field=google.cloud.backupdr.v1.PostRestoreConfig.cloud_run_job
 	CloudRunJob *string `json:"cloudRunJob,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "PreRestoreConfig", skipping
 
 // +kcc:proto=google.cloud.backupdr.v1.PreRestoreConfig
 type PreRestoreConfig struct {
@@ -215,6 +222,7 @@ type PreRestoreConfig struct {
 	// +kcc:proto:field=google.cloud.backupdr.v1.PreRestoreConfig.cloud_run_job
 	CloudRunJob *string `json:"cloudRunJob,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.backupdr.v1.RestoreTemplate", skipping
 
@@ -330,6 +338,8 @@ type RestoreVerificationPlan struct {
 }
 */
 
+/* found existing non-generated go type "VerificationConfig", skipping
+
 // +kcc:proto=google.cloud.backupdr.v1.VerificationConfig
 type VerificationConfig struct {
 	// Optional. The `timeout` for this phase.
@@ -343,6 +353,7 @@ type VerificationConfig struct {
 	// +kcc:proto:field=google.cloud.backupdr.v1.VerificationConfig.cloud_run_job
 	CloudRunJob *string `json:"cloudRunJob,omitempty"`
 }
+*/
 
 /* unreachable type WorkforceIdentityBasedManagementURI
 // +kcc:proto=google.cloud.backupdr.v1.WorkforceIdentityBasedManagementURI

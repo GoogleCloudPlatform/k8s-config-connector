@@ -1,3 +1,19 @@
+### [2026-11-26] Greenfield Step 1b: Triage judgement queue and finalize direct KRM types and identity for BackupDRRestoreTemplate
+- **Context**: Triaged `apis/backupdr/judgement_queue.yaml` and finalized KRM types and identity for `BackupDRRestoreTemplate` (Issue #16512).
+- **Details**:
+  1. Inlined `*parent.ProjectAndLocationRef` in `BackupDRRestoreTemplateSpec`, replacing `ProjectRef` and `Location`.
+  2. Moved nested types `BackupSelectionConfig`, `PreRestoreConfig`, `PostRestoreConfig`, and `VerificationConfig` into `backupdrrestoretemplate_types.go`.
+  3. Implemented `BackupDRDataSource` external-only reference and identity (`backupdrdatasource_identity.go`, `backupdrdatasource_reference.go`, and conformance test `backupdrdatasource_identity_test.go`) with CAI pattern `projects/{project}/locations/{location}/backupVaults/{backupVault}/dataSources/{dataSource}`. `GetNamespacedName()` returns empty and `Normalize()` validates `r.External`. Converted `dataSource` in `BackupSelectionConfig` to `dataSourceRef *BackupDRDataSourceRef`.
+  4. Converted `cloudRunJob` fields in `PreRestoreConfig`, `PostRestoreConfig`, and `VerificationConfig` to `cloudRunJobRef *runv1beta1.JobRef`.
+  5. Implemented handwritten ToProto mappers in `pkg/controller/direct/backupdr/restoretemplate_mappers.go` to handle mapping `dataSourceRef` and `cloudRunJobRef` into proto oneof wrappers (`BackupSelectionConfig.source` and `pre_restore_action`/`post_restore_action`/`verification_action`).
+  6. Moved `etag` from `Spec` to `ObservedState`, removing it from `tests/apichecks/testdata/exceptions/spec_dislike_etag.txt`.
+  7. Preserved `Spec.Labels` on greenfield direct resource `BackupDRRestoreTemplateSpec` per KCC conventions.
+  8. Verified CAI URL template `projects/{project}/locations/{location}/restoreTemplates/{restoreTemplate}` matching proto resource definition and resolved `identity-not-in-cai` as accepted.
+  9. Removed unverified REST documentation URL (`+kcc:guess=source-link reason=verify-resource-docs-link` and `+kcc:source:resource-docs=...`).
+  10. Triaged and resolved all 9 entries for `BackupDRRestoreTemplate` in `apis/backupdr/judgement_queue.yaml`.
+  11. Updated `tests/apichecks/testdata/exceptions/naming_violations.txt` and `alpha-missingfields.txt`.
+- **Impact**: Finalized direct KRM types, identity, external reference, and CRDs for `BackupDRRestoreTemplate`.
+
 ### [2026-11-26] Prepopulate direct KRM types, identity, judgement queue, and mappers for BackupDRRestoreTemplate
 - **Context**: Prepopulating BackupDRRestoreTemplate under `apis/backupdr/v1alpha1` (Greenfield Step 1a, Issue #15531).
 - **Protos & Dependencies**: RestoreTemplate proto (`google.cloud.backupdr.v1.RestoreTemplate`) is present in `origin/master` of googleapis. Added the protos under `mockgcp/apis/google/cloud/backupdr/v1/` and wired them in `dev/tools/controllerbuilder/generate-proto.sh` and `sourcelinks.go` (`kccProtoOverrides`). Upgraded `cloud.google.com/go/backupdr` to `v1.20.0` in `go.mod` and `mockgcp/go.mod` without replace directives.

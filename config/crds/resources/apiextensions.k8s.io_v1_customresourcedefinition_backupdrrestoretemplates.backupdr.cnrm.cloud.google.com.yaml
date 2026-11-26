@@ -66,33 +66,84 @@ spec:
               backupSelectionConfig:
                 description: Required. Backup selection configuration.
                 properties:
-                  dataSource:
+                  dataSourceRef:
                     description: Required. Immutable. The fully qualified URI of the
                       backupdr data source.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed BackupDRDataSource
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/backupVaults/{{backupVaultID}}/dataSources/{{dataSourceID}}".
+                        type: string
+                      name:
+                        description: The name of a BackupDRDataSource resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a BackupDRDataSource resource.
+                        type: string
+                    type: object
                 required:
-                - dataSource
+                - dataSourceRef
                 type: object
               description:
                 description: Optional. User-provided description of the restore template.
                 type: string
-              etag:
-                description: Optional. Etag for concurrency control.
-                type: string
               labels:
                 additionalProperties:
                   type: string
-                description: Optional. User-defined labels.
+                description: Optional. Resource labels to represent user provided
+                  metadata.
                 type: object
               location:
-                description: The location of this resource.
+                description: The location that this resource belongs to.
                 type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
               postRestoreConfig:
                 description: Optional. Post-restore configuration.
                 properties:
-                  cloudRunJob:
+                  cloudRunJobRef:
                     description: 'Cloud Run job action to execute. Format: `projects/{project}/locations/{location}/jobs/{job}`'
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed RunJob resource.
+                          Should be in the format "projects/{{projectID}}/locations/{{location}}/jobs/{{jobID}}".
+                        type: string
+                      name:
+                        description: The name of a RunJob resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a RunJob resource.
+                        type: string
+                    type: object
                   timeout:
                     description: Optional. The `timeout` for this phase. If set, the
                       `timeout` must be positive and less than or equal to 24 hours
@@ -102,9 +153,34 @@ spec:
               preRestoreConfig:
                 description: Optional. Pre-restore configuration.
                 properties:
-                  cloudRunJob:
+                  cloudRunJobRef:
                     description: 'Cloud Run job action to execute. Format: `projects/{project}/locations/{location}/jobs/{job}`'
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed RunJob resource.
+                          Should be in the format "projects/{{projectID}}/locations/{{location}}/jobs/{{jobID}}".
+                        type: string
+                      name:
+                        description: The name of a RunJob resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a RunJob resource.
+                        type: string
+                    type: object
                   timeout:
                     description: Optional. The `timeout` for this phase. If set, the
                       `timeout` must be positive and less than or equal to 24 hours
@@ -112,7 +188,7 @@ spec:
                     type: string
                 type: object
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -168,9 +244,34 @@ spec:
               verificationConfig:
                 description: Optional. Verification configuration.
                 properties:
-                  cloudRunJob:
+                  cloudRunJobRef:
                     description: 'Cloud Run job action to execute. Format: `projects/{project}/locations/{location}/jobs/{job}`'
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed RunJob resource.
+                          Should be in the format "projects/{{projectID}}/locations/{{location}}/jobs/{{jobID}}".
+                        type: string
+                      name:
+                        description: The name of a RunJob resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a RunJob resource.
+                        type: string
+                    type: object
                   timeout:
                     description: Optional. The `timeout` for this phase. If set, the
                       `timeout` must be positive and less than or equal to 24 hours
@@ -233,6 +334,9 @@ spec:
                   createTime:
                     description: Output only. The time when the restore template was
                       created.
+                    type: string
+                  etag:
+                    description: Optional. Etag for concurrency control.
                     type: string
                   executionSummary:
                     description: Output only. Summary of the last execution.

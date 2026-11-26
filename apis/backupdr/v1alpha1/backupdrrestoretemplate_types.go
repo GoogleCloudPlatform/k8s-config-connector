@@ -15,13 +15,12 @@
 // API sources for BackupDRRestoreTemplate, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/backupdr/v1/restore_template.proto
 // +kcc:source:service-docs=https://cloud.google.com/backup-disaster-recovery
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/backup-disaster-recovery/docs/reference/rest/v1/projects.locations.restoreTemplates
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	runv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -33,14 +32,12 @@ var BackupDRRestoreTemplateGVK = GroupVersion.WithKind("BackupDRRestoreTemplate"
 // +kcc:spec:proto=google.cloud.backupdr.v1.RestoreTemplate
 // +kcc:required-from-proto
 type BackupDRRestoreTemplateSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// Required. Defines the parent path of the resource.
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The BackupDRRestoreTemplate name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Optional. User-provided description of the restore template.
 	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreTemplate.description
 	Description *string `json:"description,omitempty"`
@@ -52,7 +49,7 @@ type BackupDRRestoreTemplateSpec struct {
 	// +required
 	ResourceType *string `json:"resourceType,omitempty"`
 
-	// Optional. User-defined labels.
+	// Optional. Resource labels to represent user provided metadata.
 	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreTemplate.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
@@ -86,10 +83,56 @@ type BackupDRRestoreTemplateSpec struct {
 	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreTemplate.restore_properties
 	// +required
 	RestoreProperties apiextensionsv1.JSON `json:"restoreProperties,omitempty"`
+}
 
-	// Optional. Etag for concurrency control.
-	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreTemplate.etag
-	Etag *string `json:"etag,omitempty"`
+// +kcc:proto=google.cloud.backupdr.v1.BackupSelectionConfig
+type BackupSelectionConfig struct {
+	// Required. Immutable. The fully qualified URI of the backupdr data source.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupSelectionConfig.data_source
+	// +required
+	DataSourceRef *BackupDRDataSourceRef `json:"dataSourceRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.backupdr.v1.PreRestoreConfig
+type PreRestoreConfig struct {
+	// Optional. The `timeout` for this phase.
+	//  If set, the `timeout` must be positive and less than or equal to 24 hours
+	//  (86400s).
+	// +kcc:proto:field=google.cloud.backupdr.v1.PreRestoreConfig.timeout
+	Timeout *string `json:"timeout,omitempty"`
+
+	// Cloud Run job action to execute.
+	//  Format: `projects/{project}/locations/{location}/jobs/{job}`
+	// +kcc:proto:field=google.cloud.backupdr.v1.PreRestoreConfig.cloud_run_job
+	CloudRunJobRef *runv1beta1.JobRef `json:"cloudRunJobRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.backupdr.v1.PostRestoreConfig
+type PostRestoreConfig struct {
+	// Optional. The `timeout` for this phase.
+	//  If set, the `timeout` must be positive and less than or equal to 24 hours
+	//  (86400s).
+	// +kcc:proto:field=google.cloud.backupdr.v1.PostRestoreConfig.timeout
+	Timeout *string `json:"timeout,omitempty"`
+
+	// Cloud Run job action to execute.
+	//  Format: `projects/{project}/locations/{location}/jobs/{job}`
+	// +kcc:proto:field=google.cloud.backupdr.v1.PostRestoreConfig.cloud_run_job
+	CloudRunJobRef *runv1beta1.JobRef `json:"cloudRunJobRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.backupdr.v1.VerificationConfig
+type VerificationConfig struct {
+	// Optional. The `timeout` for this phase.
+	//  If set, the `timeout` must be positive and less than or equal to 24 hours
+	//  (86400s).
+	// +kcc:proto:field=google.cloud.backupdr.v1.VerificationConfig.timeout
+	Timeout *string `json:"timeout,omitempty"`
+
+	// Cloud Run job action to execute.
+	//  Format: `projects/{project}/locations/{location}/jobs/{job}`
+	// +kcc:proto:field=google.cloud.backupdr.v1.VerificationConfig.cloud_run_job
+	CloudRunJobRef *runv1beta1.JobRef `json:"cloudRunJobRef,omitempty"`
 }
 
 // BackupDRRestoreTemplateStatus defines the config connector machine state of BackupDRRestoreTemplate
@@ -126,6 +169,10 @@ type BackupDRRestoreTemplateObservedState struct {
 	// Output only. Summary of the last execution.
 	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreTemplate.execution_summary
 	ExecutionSummary *ExecutionSummaryObservedState `json:"executionSummary,omitempty"`
+
+	// Optional. Etag for concurrency control.
+	// +kcc:proto:field=google.cloud.backupdr.v1.RestoreTemplate.etag
+	Etag *string `json:"etag,omitempty"`
 }
 
 // +genclient

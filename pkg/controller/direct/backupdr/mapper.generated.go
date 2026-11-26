@@ -27,6 +27,7 @@ import (
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
 	krmbackupdrv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
 	krmbackupdrv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
+	krmrunv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
 	monthpb "google.golang.org/genproto/googleapis/type/month"
@@ -46,6 +47,7 @@ func BackupDRAutoProtectionPolicyObservedState_v1alpha1_FromProto(mapCtx *direct
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
+
 func BackupDRAutoProtectionPolicyObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.BackupDRAutoProtectionPolicyObservedState) *pb.AutoProtectionPolicy {
 	if in == nil {
 		return nil
@@ -60,6 +62,7 @@ func BackupDRAutoProtectionPolicyObservedState_v1alpha1_ToProto(mapCtx *direct.M
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
+
 func BackupDRAutoProtectionPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoProtectionPolicy) *krmbackupdrv1alpha1.BackupDRAutoProtectionPolicySpec {
 	if in == nil {
 		return nil
@@ -71,6 +74,7 @@ func BackupDRAutoProtectionPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapConte
 	out.Criteria = Criteria_v1alpha1_FromProto(mapCtx, in.GetCriteria())
 	return out
 }
+
 func BackupDRAutoProtectionPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.BackupDRAutoProtectionPolicySpec) *pb.AutoProtectionPolicy {
 	if in == nil {
 		return nil
@@ -82,6 +86,7 @@ func BackupDRAutoProtectionPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext
 	out.Criteria = Criteria_v1alpha1_ToProto(mapCtx, in.Criteria)
 	return out
 }
+
 func BackupDRBackupPlanAssociationObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlanAssociation) *krmbackupdrv1beta1.BackupDRBackupPlanAssociationObservedState {
 	if in == nil {
 		return nil
@@ -98,6 +103,7 @@ func BackupDRBackupPlanAssociationObservedState_v1beta1_FromProto(mapCtx *direct
 	// MISSING: BackupPlanRevisionName
 	return out
 }
+
 func BackupDRBackupPlanAssociationObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.BackupDRBackupPlanAssociationObservedState) *pb.BackupPlanAssociation {
 	if in == nil {
 		return nil
@@ -134,26 +140,25 @@ func BackupDRBackupPlanAssociationSpec_v1beta1_FromProto(mapCtx *direct.MapConte
 }
 */
 
-/*
-found existing non-generated mapping function "BackupDRBackupPlanAssociationSpec_v1beta1_ToProto", skipping
-
-	func BackupDRBackupPlanAssociationSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.BackupDRBackupPlanAssociationSpec) *pb.BackupPlanAssociation {
-		if in == nil {
-			return nil
-		}
-		out := &pb.BackupPlanAssociation{}
-		// MISSING: Name
-		out.ResourceType = direct.ValueOf(in.ResourceType)
-		out.Resource = BackupDRBackupPlanAssociationSpec_Resource_ToProto(mapCtx, in.Resource)
-		if in.BackupPlanRef != nil {
-			out.BackupPlan = in.BackupPlanRef.External
-		}
-		// MISSING: CloudSQLInstanceBackupPlanAssociationProperties
-		// MISSING: BackupPlanRevisionID
-		// MISSING: BackupPlanRevisionName
-		return out
+/* found existing non-generated mapping function "BackupDRBackupPlanAssociationSpec_v1beta1_ToProto", skipping
+func BackupDRBackupPlanAssociationSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.BackupDRBackupPlanAssociationSpec) *pb.BackupPlanAssociation {
+	if in == nil {
+		return nil
 	}
+	out := &pb.BackupPlanAssociation{}
+	// MISSING: Name
+	out.ResourceType = direct.ValueOf(in.ResourceType)
+	out.Resource = BackupDRBackupPlanAssociationSpec_Resource_ToProto(mapCtx, in.Resource)
+	if in.BackupPlanRef != nil {
+		out.BackupPlan = in.BackupPlanRef.External
+	}
+	// MISSING: CloudSQLInstanceBackupPlanAssociationProperties
+	// MISSING: BackupPlanRevisionID
+	// MISSING: BackupPlanRevisionName
+	return out
+}
 */
+
 func BackupDRBackupPlanObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan) *krmbackupdrv1beta1.BackupDRBackupPlanObservedState {
 	if in == nil {
 		return nil
@@ -172,6 +177,7 @@ func BackupDRBackupPlanObservedState_v1beta1_FromProto(mapCtx *direct.MapContext
 	// MISSING: RevisionName
 	return out
 }
+
 func BackupDRBackupPlanObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.BackupDRBackupPlanObservedState) *pb.BackupPlan {
 	if in == nil {
 		return nil
@@ -259,29 +265,28 @@ func BackupDRBackupVaultObservedState_v1beta1_FromProto(mapCtx *direct.MapContex
 }
 */
 
-/*
-found existing non-generated mapping function "BackupDRBackupVaultObservedState_v1beta1_ToProto", skipping
-
-	func BackupDRBackupVaultObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.BackupDRBackupVaultObservedState) *pb.BackupVault {
-		if in == nil {
-			return nil
-		}
-		out := &pb.BackupVault{}
-		// MISSING: Name
-		// MISSING: Labels
-		out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-		out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-		out.Deletable = in.Deletable
-		out.Etag = in.Etag
-		out.State = direct.Enum_ToProto[pb.BackupVault_State](mapCtx, in.State)
-		out.BackupCount = direct.ValueOf(in.BackupCount)
-		out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
-		out.TotalStoredBytes = direct.ValueOf(in.TotalStoredBytes)
-		// MISSING: Uid
-		// (near miss): "Uid" vs "UID"
-		return out
+/* found existing non-generated mapping function "BackupDRBackupVaultObservedState_v1beta1_ToProto", skipping
+func BackupDRBackupVaultObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.BackupDRBackupVaultObservedState) *pb.BackupVault {
+	if in == nil {
+		return nil
 	}
+	out := &pb.BackupVault{}
+	// MISSING: Name
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Deletable = in.Deletable
+	out.Etag = in.Etag
+	out.State = direct.Enum_ToProto[pb.BackupVault_State](mapCtx, in.State)
+	out.BackupCount = direct.ValueOf(in.BackupCount)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	out.TotalStoredBytes = direct.ValueOf(in.TotalStoredBytes)
+	// MISSING: Uid
+	// (near miss): "Uid" vs "UID"
+	return out
+}
 */
+
 func BackupDRBackupVaultSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krmbackupdrv1beta1.BackupDRBackupVaultSpec {
 	if in == nil {
 		return nil
@@ -340,31 +345,30 @@ func BackupDRManagementServerObservedState_v1alpha1_FromProto(mapCtx *direct.Map
 }
 */
 
-/*
-found existing non-generated mapping function "BackupDRManagementServerObservedState_v1alpha1_ToProto", skipping
-
-	func BackupDRManagementServerObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.BackupDRManagementServerObservedState) *pb.ManagementServer {
-		if in == nil {
-			return nil
-		}
-		out := &pb.ManagementServer{}
-		// MISSING: Name
-		out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-		out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-		out.ManagementUri = ManagementURIObservedState_v1alpha1_ToProto(mapCtx, in.ManagementURI)
-		out.WorkforceIdentityBasedManagementUri = WorkforceIdentityBasedManagementURIObservedState_v1alpha1_ToProto(mapCtx, in.WorkforceIdentityBasedManagementURI)
-		out.State = direct.Enum_ToProto[pb.ManagementServer_InstanceState](mapCtx, in.State)
-		// MISSING: Etag
-		// MISSING: OAUTH2ClientID
-		// (near miss): "OAUTH2ClientID" vs "OAuth2ClientID"
-		// MISSING: WorkforceIdentityBasedOAUTH2ClientID
-		// (near miss): "WorkforceIdentityBasedOAUTH2ClientID" vs "WorkforceIdentityBasedOAuth2ClientID"
-		// MISSING: BaProxyURI
-		// MISSING: SatisfiesPzs
-		// MISSING: SatisfiesPzi
-		return out
+/* found existing non-generated mapping function "BackupDRManagementServerObservedState_v1alpha1_ToProto", skipping
+func BackupDRManagementServerObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.BackupDRManagementServerObservedState) *pb.ManagementServer {
+	if in == nil {
+		return nil
 	}
+	out := &pb.ManagementServer{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.ManagementUri = ManagementURIObservedState_v1alpha1_ToProto(mapCtx, in.ManagementURI)
+	out.WorkforceIdentityBasedManagementUri = WorkforceIdentityBasedManagementURIObservedState_v1alpha1_ToProto(mapCtx, in.WorkforceIdentityBasedManagementURI)
+	out.State = direct.Enum_ToProto[pb.ManagementServer_InstanceState](mapCtx, in.State)
+	// MISSING: Etag
+	// MISSING: OAUTH2ClientID
+	// (near miss): "OAUTH2ClientID" vs "OAuth2ClientID"
+	// MISSING: WorkforceIdentityBasedOAUTH2ClientID
+	// (near miss): "WorkforceIdentityBasedOAUTH2ClientID" vs "WorkforceIdentityBasedOAuth2ClientID"
+	// MISSING: BaProxyURI
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
 */
+
 func BackupDRManagementServerSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ManagementServer) *krmbackupdrv1alpha1.BackupDRManagementServerSpec {
 	if in == nil {
 		return nil
@@ -383,6 +387,7 @@ func BackupDRManagementServerSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, 
 	// MISSING: SatisfiesPzi
 	return out
 }
+
 func BackupDRManagementServerSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.BackupDRManagementServerSpec) *pb.ManagementServer {
 	if in == nil {
 		return nil
@@ -401,6 +406,7 @@ func BackupDRManagementServerSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	// MISSING: SatisfiesPzi
 	return out
 }
+
 func BackupDRRestoreTemplateObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RestoreTemplate) *krmbackupdrv1alpha1.BackupDRRestoreTemplateObservedState {
 	if in == nil {
 		return nil
@@ -411,8 +417,10 @@ func BackupDRRestoreTemplateObservedState_v1alpha1_FromProto(mapCtx *direct.MapC
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.ExecutionSummary = ExecutionSummaryObservedState_v1alpha1_FromProto(mapCtx, in.GetExecutionSummary())
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
 }
+
 func BackupDRRestoreTemplateObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.BackupDRRestoreTemplateObservedState) *pb.RestoreTemplate {
 	if in == nil {
 		return nil
@@ -423,8 +431,10 @@ func BackupDRRestoreTemplateObservedState_v1alpha1_ToProto(mapCtx *direct.MapCon
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.State = direct.Enum_ToProto[pb.RestoreTemplate_State](mapCtx, in.State)
 	out.ExecutionSummary = ExecutionSummaryObservedState_v1alpha1_ToProto(mapCtx, in.ExecutionSummary)
+	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
+
 func BackupDRRestoreTemplateSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RestoreTemplate) *krmbackupdrv1alpha1.BackupDRRestoreTemplateSpec {
 	if in == nil {
 		return nil
@@ -441,9 +451,9 @@ func BackupDRRestoreTemplateSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, i
 	if v := direct.Struct_FromProto(mapCtx, in.GetRestoreProperties()); v != nil {
 		out.RestoreProperties = *v
 	}
-	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
 }
+
 func BackupDRRestoreTemplateSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.BackupDRRestoreTemplateSpec) *pb.RestoreTemplate {
 	if in == nil {
 		return nil
@@ -458,9 +468,9 @@ func BackupDRRestoreTemplateSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	out.PostRestoreConfig = PostRestoreConfig_v1alpha1_ToProto(mapCtx, in.PostRestoreConfig)
 	out.VerificationConfig = VerificationConfig_v1alpha1_ToProto(mapCtx, in.VerificationConfig)
 	out.RestoreProperties = direct.Struct_ToProto(mapCtx, &in.RestoreProperties)
-	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
+
 func BackupPlanDetail_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlanDetail) *krmbackupdrv1alpha1.BackupPlanDetail {
 	if in == nil {
 		return nil
@@ -472,6 +482,7 @@ func BackupPlanDetail_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Backu
 	}
 	return out
 }
+
 func BackupPlanDetail_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.BackupPlanDetail) *pb.BackupPlanDetail {
 	if in == nil {
 		return nil
@@ -483,6 +494,7 @@ func BackupPlanDetail_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupd
 	}
 	return out
 }
+
 func BackupRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupRule) *krmbackupdrv1beta1.BackupRule {
 	if in == nil {
 		return nil
@@ -493,6 +505,7 @@ func BackupRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupRule) 
 	out.StandardSchedule = StandardSchedule_v1beta1_FromProto(mapCtx, in.GetStandardSchedule())
 	return out
 }
+
 func BackupRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.BackupRule) *pb.BackupRule {
 	if in == nil {
 		return nil
@@ -505,30 +518,38 @@ func BackupRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta
 	}
 	return out
 }
+
 func BackupSelectionConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BackupSelectionConfig) *krmbackupdrv1alpha1.BackupSelectionConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krmbackupdrv1alpha1.BackupSelectionConfig{}
-	out.DataSource = direct.LazyPtr(in.GetDataSource())
+	if in.GetDataSource() != "" {
+		out.DataSourceRef = &krmbackupdrv1alpha1.BackupDRDataSourceRef{External: in.GetDataSource()}
+	}
 	return out
 }
+
+/* found existing non-generated mapping function "BackupSelectionConfig_v1alpha1_ToProto", skipping
 func BackupSelectionConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.BackupSelectionConfig) *pb.BackupSelectionConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.BackupSelectionConfig{}
-	if oneof := BackupSelectionConfig_DataSource_ToProto(mapCtx, in.DataSource); oneof != nil {
-		out.Source = oneof
+	if in.DataSourceRef != nil {
+		out.DataSource = in.DataSourceRef.External
 	}
 	return out
 }
+*/
+
 func BackupSelectionConfig_DataSource_ToProto(mapCtx *direct.MapContext, in *string) *pb.BackupSelectionConfig_DataSource {
 	if in == nil {
 		return nil
 	}
 	return &pb.BackupSelectionConfig_DataSource{DataSource: *in}
 }
+
 func BackupWindow_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupWindow) *krmbackupdrv1beta1.BackupWindow {
 	if in == nil {
 		return nil
@@ -538,6 +559,7 @@ func BackupWindow_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupWind
 	out.EndHourOfDay = direct.LazyPtr(in.GetEndHourOfDay())
 	return out
 }
+
 func BackupWindow_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.BackupWindow) *pb.BackupWindow {
 	if in == nil {
 		return nil
@@ -547,6 +569,7 @@ func BackupWindow_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1be
 	out.EndHourOfDay = direct.ValueOf(in.EndHourOfDay)
 	return out
 }
+
 func BindingSummaryObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BindingSummary) *krmbackupdrv1alpha1.BindingSummaryObservedState {
 	if in == nil {
 		return nil
@@ -555,6 +578,7 @@ func BindingSummaryObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, i
 	out.ProjectCount = direct.LazyPtr(in.GetProjectCount())
 	return out
 }
+
 func BindingSummaryObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.BindingSummaryObservedState) *pb.BindingSummary {
 	if in == nil {
 		return nil
@@ -563,6 +587,7 @@ func BindingSummaryObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	out.ProjectCount = direct.ValueOf(in.ProjectCount)
 	return out
 }
+
 func Criteria_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Criteria) *krmbackupdrv1alpha1.Criteria {
 	if in == nil {
 		return nil
@@ -571,6 +596,7 @@ func Criteria_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Criteria) *kr
 	out.MatchingConditions = direct.Slice_FromProto(mapCtx, in.MatchingConditions, MatchingCondition_v1alpha1_FromProto)
 	return out
 }
+
 func Criteria_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.Criteria) *pb.Criteria {
 	if in == nil {
 		return nil
@@ -579,6 +605,7 @@ func Criteria_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha
 	out.MatchingConditions = direct.Slice_ToProto(mapCtx, in.MatchingConditions, MatchingCondition_v1alpha1_ToProto)
 	return out
 }
+
 func ExecutionSummaryObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionSummary) *krmbackupdrv1alpha1.ExecutionSummaryObservedState {
 	if in == nil {
 		return nil
@@ -588,6 +615,7 @@ func ExecutionSummaryObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext,
 	out.LastExecutionState = direct.Enum_FromProto(mapCtx, in.GetLastExecutionState())
 	return out
 }
+
 func ExecutionSummaryObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.ExecutionSummaryObservedState) *pb.ExecutionSummary {
 	if in == nil {
 		return nil
@@ -597,6 +625,7 @@ func ExecutionSummaryObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 	out.LastExecutionState = direct.Enum_ToProto[pb.RestoreTemplateExecution_ExecutionState](mapCtx, in.LastExecutionState)
 	return out
 }
+
 func KeyValuePair_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.KeyValuePair) *krmbackupdrv1alpha1.KeyValuePair {
 	if in == nil {
 		return nil
@@ -606,6 +635,7 @@ func KeyValuePair_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.KeyValueP
 	out.Values = in.Values
 	return out
 }
+
 func KeyValuePair_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.KeyValuePair) *pb.KeyValuePair {
 	if in == nil {
 		return nil
@@ -629,20 +659,19 @@ func ManagementURIObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 }
 */
 
-/*
-found existing non-generated mapping function "ManagementURIObservedState_v1alpha1_ToProto", skipping
-
-	func ManagementURIObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.ManagementURIObservedState) *pb.ManagementURI {
-		if in == nil {
-			return nil
-		}
-		out := &pb.ManagementURI{}
-		// MISSING: WebUi
-		// (near miss): "WebUi" vs "WebUI"
-		out.Api = direct.ValueOf(in.API)
-		return out
+/* found existing non-generated mapping function "ManagementURIObservedState_v1alpha1_ToProto", skipping
+func ManagementURIObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.ManagementURIObservedState) *pb.ManagementURI {
+	if in == nil {
+		return nil
 	}
+	out := &pb.ManagementURI{}
+	// MISSING: WebUi
+	// (near miss): "WebUi" vs "WebUI"
+	out.Api = direct.ValueOf(in.API)
+	return out
+}
 */
+
 func MatchingCondition_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MatchingCondition) *krmbackupdrv1alpha1.MatchingCondition {
 	if in == nil {
 		return nil
@@ -651,6 +680,7 @@ func MatchingCondition_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Matc
 	out.LabelCondition = KeyValuePair_v1alpha1_FromProto(mapCtx, in.GetLabelCondition())
 	return out
 }
+
 func MatchingCondition_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.MatchingCondition) *pb.MatchingCondition {
 	if in == nil {
 		return nil
@@ -662,21 +692,20 @@ func MatchingCondition_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackup
 	return out
 }
 
-/*
-found existing non-generated mapping function "NetworkConfig_v1alpha1_FromProto", skipping
-
-	func NetworkConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krmbackupdrv1alpha1.NetworkConfig {
-		if in == nil {
-			return nil
-		}
-		out := &krmbackupdrv1alpha1.NetworkConfig{}
-		if in.GetNetwork() != "" {
-			out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
-		}
-		out.PeeringMode = direct.Enum_FromProto(mapCtx, in.GetPeeringMode())
-		return out
+/* found existing non-generated mapping function "NetworkConfig_v1alpha1_FromProto", skipping
+func NetworkConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krmbackupdrv1alpha1.NetworkConfig {
+	if in == nil {
+		return nil
 	}
+	out := &krmbackupdrv1alpha1.NetworkConfig{}
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.PeeringMode = direct.Enum_FromProto(mapCtx, in.GetPeeringMode())
+	return out
+}
 */
+
 func NetworkConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.NetworkConfig) *pb.NetworkConfig {
 	if in == nil {
 		return nil
@@ -688,6 +717,7 @@ func NetworkConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1
 	out.PeeringMode = direct.Enum_ToProto[pb.NetworkConfig_PeeringMode](mapCtx, in.PeeringMode)
 	return out
 }
+
 func PolicyEvaluationSummaryObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PolicyEvaluationSummary) *krmbackupdrv1alpha1.PolicyEvaluationSummaryObservedState {
 	if in == nil {
 		return nil
@@ -698,6 +728,7 @@ func PolicyEvaluationSummaryObservedState_v1alpha1_FromProto(mapCtx *direct.MapC
 	out.FailedResourceCount = direct.LazyPtr(in.GetFailedResourceCount())
 	return out
 }
+
 func PolicyEvaluationSummaryObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.PolicyEvaluationSummaryObservedState) *pb.PolicyEvaluationSummary {
 	if in == nil {
 		return nil
@@ -708,52 +739,66 @@ func PolicyEvaluationSummaryObservedState_v1alpha1_ToProto(mapCtx *direct.MapCon
 	out.FailedResourceCount = direct.ValueOf(in.FailedResourceCount)
 	return out
 }
+
 func PostRestoreConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PostRestoreConfig) *krmbackupdrv1alpha1.PostRestoreConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krmbackupdrv1alpha1.PostRestoreConfig{}
 	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
-	out.CloudRunJob = direct.LazyPtr(in.GetCloudRunJob())
+	if in.GetCloudRunJob() != "" {
+		out.CloudRunJobRef = &krmrunv1beta1.JobRef{External: in.GetCloudRunJob()}
+	}
 	return out
 }
+
+/* found existing non-generated mapping function "PostRestoreConfig_v1alpha1_ToProto", skipping
 func PostRestoreConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.PostRestoreConfig) *pb.PostRestoreConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.PostRestoreConfig{}
 	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
-	if oneof := PostRestoreConfig_CloudRunJob_ToProto(mapCtx, in.CloudRunJob); oneof != nil {
-		out.PostRestoreAction = oneof
+	if in.CloudRunJobRef != nil {
+		out.CloudRunJob = in.CloudRunJobRef.External
 	}
 	return out
 }
+*/
+
 func PostRestoreConfig_CloudRunJob_ToProto(mapCtx *direct.MapContext, in *string) *pb.PostRestoreConfig_CloudRunJob {
 	if in == nil {
 		return nil
 	}
 	return &pb.PostRestoreConfig_CloudRunJob{CloudRunJob: *in}
 }
+
 func PreRestoreConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PreRestoreConfig) *krmbackupdrv1alpha1.PreRestoreConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krmbackupdrv1alpha1.PreRestoreConfig{}
 	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
-	out.CloudRunJob = direct.LazyPtr(in.GetCloudRunJob())
+	if in.GetCloudRunJob() != "" {
+		out.CloudRunJobRef = &krmrunv1beta1.JobRef{External: in.GetCloudRunJob()}
+	}
 	return out
 }
+
+/* found existing non-generated mapping function "PreRestoreConfig_v1alpha1_ToProto", skipping
 func PreRestoreConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.PreRestoreConfig) *pb.PreRestoreConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.PreRestoreConfig{}
 	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
-	if oneof := PreRestoreConfig_CloudRunJob_ToProto(mapCtx, in.CloudRunJob); oneof != nil {
-		out.PreRestoreAction = oneof
+	if in.CloudRunJobRef != nil {
+		out.CloudRunJob = in.CloudRunJobRef.External
 	}
 	return out
 }
+*/
+
 func PreRestoreConfig_CloudRunJob_ToProto(mapCtx *direct.MapContext, in *string) *pb.PreRestoreConfig_CloudRunJob {
 	if in == nil {
 		return nil
@@ -775,21 +820,20 @@ func RuleConfigInfoObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in
 }
 */
 
-/*
-found existing non-generated mapping function "RuleConfigInfoObservedState_v1beta1_ToProto", skipping
-
-	func RuleConfigInfoObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.RuleConfigInfoObservedState) *pb.RuleConfigInfo {
-		if in == nil {
-			return nil
-		}
-		out := &pb.RuleConfigInfo{}
-		out.RuleId = direct.ValueOf(in.RuleID)
-		out.LastBackupState = direct.Enum_ToProto[pb.RuleConfigInfo_LastBackupState](mapCtx, in.LastBackupState)
-		out.LastBackupError = direct.Status_ToProto(mapCtx, in.LastBackupError)
-		out.LastSuccessfulBackupConsistencyTime = direct.StringTimestamp_ToProto(mapCtx, in.LastSuccessfulBackupConsistencyTime)
-		return out
+/* found existing non-generated mapping function "RuleConfigInfoObservedState_v1beta1_ToProto", skipping
+func RuleConfigInfoObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.RuleConfigInfoObservedState) *pb.RuleConfigInfo {
+	if in == nil {
+		return nil
 	}
+	out := &pb.RuleConfigInfo{}
+	out.RuleId = direct.ValueOf(in.RuleID)
+	out.LastBackupState = direct.Enum_ToProto[pb.RuleConfigInfo_LastBackupState](mapCtx, in.LastBackupState)
+	out.LastBackupError = direct.Status_ToProto(mapCtx, in.LastBackupError)
+	out.LastSuccessfulBackupConsistencyTime = direct.StringTimestamp_ToProto(mapCtx, in.LastSuccessfulBackupConsistencyTime)
+	return out
+}
 */
+
 func StandardSchedule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.StandardSchedule) *krmbackupdrv1beta1.StandardSchedule {
 	if in == nil {
 		return nil
@@ -805,6 +849,7 @@ func StandardSchedule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Standa
 	out.TimeZone = direct.LazyPtr(in.GetTimeZone())
 	return out
 }
+
 func StandardSchedule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.StandardSchedule) *pb.StandardSchedule {
 	if in == nil {
 		return nil
@@ -820,32 +865,40 @@ func StandardSchedule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdr
 	out.TimeZone = direct.ValueOf(in.TimeZone)
 	return out
 }
+
 func VerificationConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VerificationConfig) *krmbackupdrv1alpha1.VerificationConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krmbackupdrv1alpha1.VerificationConfig{}
 	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
-	out.CloudRunJob = direct.LazyPtr(in.GetCloudRunJob())
+	if in.GetCloudRunJob() != "" {
+		out.CloudRunJobRef = &krmrunv1beta1.JobRef{External: in.GetCloudRunJob()}
+	}
 	return out
 }
+
+/* found existing non-generated mapping function "VerificationConfig_v1alpha1_ToProto", skipping
 func VerificationConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.VerificationConfig) *pb.VerificationConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.VerificationConfig{}
 	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
-	if oneof := VerificationConfig_CloudRunJob_ToProto(mapCtx, in.CloudRunJob); oneof != nil {
-		out.VerificationAction = oneof
+	if in.CloudRunJobRef != nil {
+		out.CloudRunJob = in.CloudRunJobRef.External
 	}
 	return out
 }
+*/
+
 func VerificationConfig_CloudRunJob_ToProto(mapCtx *direct.MapContext, in *string) *pb.VerificationConfig_CloudRunJob {
 	if in == nil {
 		return nil
 	}
 	return &pb.VerificationConfig_CloudRunJob{CloudRunJob: *in}
 }
+
 func WeekDayOfMonth_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.WeekDayOfMonth) *krmbackupdrv1beta1.WeekDayOfMonth {
 	if in == nil {
 		return nil
@@ -855,6 +908,7 @@ func WeekDayOfMonth_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.WeekDayO
 	out.DayOfWeek = direct.Enum_FromProto(mapCtx, in.GetDayOfWeek())
 	return out
 }
+
 func WeekDayOfMonth_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1beta1.WeekDayOfMonth) *pb.WeekDayOfMonth {
 	if in == nil {
 		return nil
@@ -864,6 +918,7 @@ func WeekDayOfMonth_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1
 	out.DayOfWeek = direct.Enum_ToProto[dayofweekpb.DayOfWeek](mapCtx, in.DayOfWeek)
 	return out
 }
+
 func WorkforceIdentityBasedManagementURIObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkforceIdentityBasedManagementURI) *krmbackupdrv1alpha1.WorkforceIdentityBasedManagementURIObservedState {
 	if in == nil {
 		return nil
@@ -873,6 +928,7 @@ func WorkforceIdentityBasedManagementURIObservedState_v1alpha1_FromProto(mapCtx 
 	out.ThirdPartyManagementURI = direct.LazyPtr(in.GetThirdPartyManagementUri())
 	return out
 }
+
 func WorkforceIdentityBasedManagementURIObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.WorkforceIdentityBasedManagementURIObservedState) *pb.WorkforceIdentityBasedManagementURI {
 	if in == nil {
 		return nil
