@@ -1,3 +1,14 @@
+### [2026-11-26] Greenfield Step 2: Implement direct controller, E2E fixtures, and fuzzer for BackupDRRestoreTemplate
+- **Context**: Greenfield Step 2 implementation for `BackupDRRestoreTemplate` (Issue #16531).
+- **Details**:
+  1. Generated direct controller (`backupdrrestoretemplate_controller.go`) and round-trip fuzzer (`backupdrrestoretemplate_fuzzer.generated.go`) using `controllerbuilder` one-shot commands (`generate-controller` and `generate-fuzzer --prepopulate-resource`).
+  2. Registered `BackupDRRestoreTemplate` with `k8s.ReconcilerTypeDirect` in `pkg/controller/resourceconfig/static_config.go`.
+  3. Created minimal and maximal test fixtures under `pkg/test/resourcefixture/testdata/basic/backupdr/v1alpha1/backupdrrestoretemplate/` covering all `BackupDRRestoreTemplateSpec` fields (`projectRef`, `location`, `resourceType`, `labels`, `description`, `backupSelectionConfig`, `preRestoreConfig`, `postRestoreConfig`, `verificationConfig`, and `restoreProperties`).
+  4. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` to remove all 13 fields now covered by fixtures.
+  5. Verified 200-seed fuzzer round-trip (`FOCUS=BackupDRRestoreTemplate go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`), CRD schema tests, and direct controller compilation.
+- **Observations & Learnings**:
+  - `backupdr.googleapis.com` RestoreTemplate operations (`CreateRestoreTemplate`) require allowlisting for "Automated Restore Verification" (`Project ... is not allowlisted for Automated Restore Verification. This feature is currently available for allowlisted projects only.`). Live recording against real GCP is blocked in non-allowlisted projects. Minimal and maximal fixtures are defined with valid references and configurations ready for mock implementation in Phase 3.
+
 ### [2026-11-26] Greenfield Step 1b: Triage judgement queue and finalize direct KRM types and identity for BackupDRRestoreTemplate
 - **Context**: Triaged `apis/backupdr/judgement_queue.yaml` and finalized KRM types and identity for `BackupDRRestoreTemplate` (Issue #16512).
 - **Details**:
