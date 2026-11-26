@@ -163,6 +163,28 @@
   - `well-known-proto-type`: Confirmed `google.protobuf.Value` representation and resolved as accepted.
   - `untriaged-bulk-generation`: Resolved with resolution `edited`.
 
+### [2026-11-25] Prepopulating DesignCenterApplication
+- **Context**: Prepopulating direct KRM types, identity, reference, mapper, and judgement queue for `DesignCenterApplication` (Issue #16468).
+- **Generation & Mapper Setup**:
+  - Added `--resource DesignCenterApplication:Application` to `generate-types` and `generate-identity` in `apis/designcenter/generate.sh`.
+  - Appended `google.cloud.config.v1` to `--service` on `generate-mapper` in `apis/designcenter/generate.sh` to emit mappers for `google.cloud.config.v1.TerraformError` referenced in `DeploymentErrorObservedState`.
+  - Handwrote `DeploymentMetadataObservedState` and `DeploymentGroupMetadataObservedState` mappers in `pkg/controller/direct/designcenter/designcenterapplication_mapper.go` to bridge output-only types pruned from spec/input mappings.
+  - Added `DesignCenterApplication` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Added `designcenterapplications.designcenter.cnrm.cloud.google.com` to `knownInvalidCRDs` in `tests/apichecks/crds_test.go` due to empty object schema on `status.observedState.compositeApplicationParameters.projectParametersMap` (from proto `ProjectParametersList` where all fields are output-only).
+  - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` with golden output for `DesignCenterApplication`.
+
+### [2026-11-26] Greenfield Step 1b: Triaging judgement queue and finalizing KRM types for DesignCenterApplication
+- **Context**: Triaged `apis/designcenter/judgement_queue.yaml` and finalized KRM types, identity, reference, and mappers for `DesignCenterApplication` (Issue #16508).
+- **Resolutions & Findings**:
+  - `location-or-parent-ref`, `parent-ref-guessed`, `identity-root-unknown`: `DesignCenterApplication` is a child resource under `DesignCenterSpace` (`projects/{project}/locations/{location}/spaces/{space}/applications/{application}`). Per `judgement/references/PARENT_AND_IDENTITY.md` (Case B), replaced `ProjectRef`, `Location`, and `SpaceRef` with required, immutable `ParentRef *DesignCenterSpaceRef` (`json:"parentRef"`).
+  - `identity-not-in-cai`: Verified template `//designcenter.googleapis.com/projects/{project}/locations/{location}/spaces/{space}/applications/{application}` against proto `google.api.resource` pattern and marked accepted.
+  - `verify-service-docs-link` & `verify-resource-docs-link`: Added service docs `https://cloud.google.com/application-design-center/docs` and REST reference `https://cloud.google.com/application-design-center/docs/reference/rest/v1/projects.locations.spaces.applications`.
+  - `serviceAccount`: Converted `ServiceAccount` to `ServiceAccountRef *refsv1beta1.IAMServiceAccountRef` (`json:"serviceAccountRef,omitempty"`), verified auto-generated proto mapping in `mapper.generated.go`.
+  - `message-map-derived` & empty schema fix: Defined `ProjectParametersList` and `DeploymentMetadata` in `designcenterapplication_types.go` with their output-only fields (`project_parameters` and output-only metadata fields) to avoid empty object schemas in OpenAPI/CRD generation. Implemented `DeploymentMetadata_FromProto`/`ToProto` in `designcenterapplication_mapper.go`. This resolved the empty object schema and allowed removing `designcenterapplications` from `knownInvalidCRDs` in `tests/apichecks/crds_test.go`.
+  - `possible-reference-by-description` on `serviceAccountMap` and `kubernetesServiceAccount`: Deferred to `tests/apichecks/testdata/exceptions/refs_deferred.txt`: `serviceAccountMap` is a `map[string]string` mapping component URIs to SA emails, and `kubernetesServiceAccount` is a Kubernetes SA within the target GKE namespace.
+  - `possible-reference-by-name` on `rolesAPIsConfig[].projectID` and `authoritative-proto-reference` on `roles[].role`: Resolved as `not-applicable` because `rolesAPIsConfig[].projectID` specifies the target project ID string, and `role` is an IAM role string name (`roles/editor`).
+  - `well-known-proto-type`: Confirmed `google.protobuf.Value` representation across 18 entries and marked resolved/accepted.
+  - `untriaged-bulk-generation`: Resolved with resolution `accepted`.
 
 
 
