@@ -87,6 +87,35 @@ entries:
     status: resolved
     resolution: accepted
     note: gcs path decomposable as bucketref plus path stays string
+  - kind: BigLakeHiveTable
+    group: bigquerybiglake.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: triaged BigLakeHiveTable; modelled parent as spec.parentRef (*BigLakeHiveDatabaseRef), removed projectRef, updated resource-docs link, and verified IdentityV2 and mappers
+  - kind: BigLakeHiveTable
+    group: bigquerybiglake.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/catalogs/{catalog}/databases/{database}/tables/{table}" contains ancestor segment(s) catalogs/{catalog}, databases/{database} with no matching reference or field on BigLakeHiveTableSpec
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*BigLakeHiveDatabaseRef) per the single-parent rule; removed projectRef
+  - kind: BigLakeHiveTable
+    group: bigquerybiglake.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.catalogs.databases.tables: https://docs.cloud.google.com/products/lakehouse/docs/reference/rest/v1/projects.catalogs.databases.tables, https://docs.cloud.google.com/bigquery/docs/reference/rest/v1/projects.catalogs.databases.tables'
+    status: resolved
+    resolution: edited
+    note: updated resource-docs URL to https://cloud.google.com/bigquery/docs/manage-open-source-metadata
+  - kind: BigLakeHiveTable
+    group: bigquerybiglake.cnrm.cloud.google.com
+    field: .spec.databaseRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to BigQueryBigLakeDatabaseRef, read from the databases segment of projects/{project}/catalogs/{catalog}/databases/{database}/tables/{table}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*BigLakeHiveDatabaseRef) per the single-parent rule; removed projectRef
   - kind: BigLakeIcebergCatalog
     group: bigquerybiglake.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

@@ -212,5 +212,34 @@
   8. Verified repo-wide golden log alignment test (`TestGoldenLogAlignment`) passes with zero diffs.
 - **Impact**: Greenfield Step 3 complete; `BigLakeHiveDatabase` mock service implemented, golden logs aligned, and e2e fixture suite passing.
 
+### [2026-11-26] Greenfield Step 1a: Prepopulate direct KRM types, identity, and judgement queue for BigLakeHiveTable
+- **Context**: Prepopulating direct KRM types, identity, reference, and `judgement_queue.yaml` for `BigLakeHiveTable` under `bigquerybiglake.cnrm.cloud.google.com/v1alpha1` (Issue #16485).
+- **Details**:
+  1. Verified `BigLakeHiveTable` corresponds to `google.cloud.biglake.hive.v1.HiveTable` from `hive_metastore.proto` under the GA package `google.cloud.biglake.hive.v1`.
+  2. Configured `apis/bigquerybiglake/generate.sh` to add `generate-types` with `--resource BigLakeHiveTable:HiveTable` and `--prepopulate-resource`, and `generate-identity` with `--pattern BigLakeHiveTable=projects/{project}/catalogs/{catalog}/databases/{database}/tables/{table}`.
+  3. Ran `./apis/bigquerybiglake/generate.sh`, generating `biglakehivetable_types.go`, `biglakehivetable_identity.generated.go`, `biglakehivetable_identity_generated_test.go`, `biglakehivetable_reference.generated.go`, updating `types.generated.go`, `mapper.generated.go`, and generating the CRD.
+  4. Confirmed `apis/bigquerybiglake/judgement_queue.yaml` was populated with open entries for `BigLakeHiveTable` including `untriaged-bulk-generation` (`status: open`).
+  5. Added `"BigLakeHiveTable"` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` sorted alphabetically.
+  6. Added URL template `//biglake.googleapis.com/projects/{}/catalogs/{}/databases/{}/tables/{}` to `pkg/gcpurls/registry_test.go` and verified `TestRegisteredTemplatesMatchCAI` passes.
+  7. Verified compilation of `apis/bigquerybiglake/...` and `pkg/controller/direct/bigquerybiglake/...`.
+  8. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...`.
+  9. Verified `./apis/bigquerybiglake/generate.sh` idempotency (producing zero uncommitted diffs), and confirmed all unit tests and `apichecks` pass.
+- **Impact**: Greenfield Step 1a complete; `BigLakeHiveTable` is prepopulated with open judgement queue entries ready for Step 1b triage.
+
+### [2026-11-26] Greenfield Step 1b: Triage judgement queue and finalize direct KRM types and identity for BigLakeHiveTable
+- **Context**: Triaging `apis/bigquerybiglake/judgement_queue.yaml` and finalizing direct KRM types, identity, and references for `BigLakeHiveTable` (Issue #16507).
+- **Details**:
+  1. Triaged and resolved all 4 entries in `apis/bigquerybiglake/judgement_queue.yaml` for `BigLakeHiveTable`.
+  2. Applied Case B (Child Resource of Another GCP Resource) from `judgement/references/PARENT_AND_IDENTITY.md`: modeled parent as required, immutable `spec.parentRef` (`*BigLakeHiveDatabaseRef`), removing `spec.projectRef` and `spec.databaseRef`. Resolved `parent-ref-guessed` and `identity-root-unknown`.
+  3. Re-ran `./apis/bigquerybiglake/generate.sh`, which automatically updated `getIdentityFromBigLakeHiveTableSpec` to normalize `spec.parentRef` and construct the identity `projects/{project}/catalogs/{catalog}/databases/{database}/tables/{table}`.
+  4. Updated resource-docs URL in `biglakehivetable_types.go` to `https://cloud.google.com/bigquery/docs/manage-open-source-metadata`, removed the guess annotation, and resolved `verify-resource-docs-link`.
+  5. Added comprehensive unit tests in `biglakehivetable_identity_test.go` covering `FromExternal` and `GetIdentity` (parentRef external with explicit resourceID, metadata.name fallback, missing parentRef, drift detection).
+  6. Resolved `untriaged-bulk-generation` (`edited`).
+  7. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...` to reflect replacing `spec.projectRef` with `spec.parentRef`.
+  8. Verified all unit tests, `apichecks`, and `gcpurls` tests pass cleanly.
+- **Impact**: Greenfield Step 1b complete; `BigLakeHiveTable` types, identity, references, CRD, and judgement queue triaged and fully verified.
+
+
+
 
 

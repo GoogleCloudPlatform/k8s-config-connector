@@ -62,6 +62,7 @@ ${CONTROLLERBUILDER} generate-types \
     --include-skipped-output \
     --resource BigLakeHiveCatalog:HiveCatalog \
     --resource BigLakeHiveDatabase:HiveDatabase \
+    --resource BigLakeHiveTable:HiveTable \
     --prepopulate-resource
 
 ${CONTROLLERBUILDER} generate-identity \
@@ -69,8 +70,10 @@ ${CONTROLLERBUILDER} generate-identity \
     --api-version "bigquerybiglake.cnrm.cloud.google.com/v1alpha1" \
     --resource BigLakeHiveCatalog:HiveCatalog \
     --resource BigLakeHiveDatabase:HiveDatabase \
+    --resource BigLakeHiveTable:HiveTable \
     --pattern BigLakeHiveCatalog=projects/{project}/catalogs/{catalog} \
-    --pattern BigLakeHiveDatabase=projects/{project}/catalogs/{catalog}/databases/{database}
+    --pattern BigLakeHiveDatabase=projects/{project}/catalogs/{catalog}/databases/{database} \
+    --pattern BigLakeHiveTable=projects/{project}/catalogs/{catalog}/databases/{database}/tables/{table}
 
 # --- v1beta1 ---
 
