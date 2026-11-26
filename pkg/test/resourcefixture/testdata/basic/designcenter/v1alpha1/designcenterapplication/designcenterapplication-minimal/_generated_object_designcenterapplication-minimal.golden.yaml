@@ -1,0 +1,287 @@
+apiVersion: designcenter.cnrm.cloud.google.com/v1alpha1
+kind: DesignCenterApplication
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: designcenterapplication-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  deploymentRegion: us-central1
+  parentRef:
+    name: dc-space-${uniqueId}
+  scope:
+    type: REGIONAL
+  source:
+    sharedTemplateRevisionURI: projects/gcpdesigncenter/locations/us-central1/spaces/googlespace/sharedTemplates/googlespace-simple-agent-runtime-1kqzt4m/revisions/r-2
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/applications/designcenterapplication-minimal-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    apphubApplication: projects/${projectId}/locations/us-central1/applications/designcenterapplication-minimal-${uniqueId}
+    componentParameters:
+    - componentParameterSchema:
+      - isRequired: true
+        key: display_name
+        type: string
+      - isRequired: true
+        key: project_id
+        type: string
+      - isRequired: true
+        key: region
+        type: string
+      - key: description
+        type: string
+      - key: kms_key_name
+        type: string
+      - key: spec
+        type: |-
+          object({
+              agent_framework = optional(string)
+              class_methods   = optional(list(any))
+              deployment_spec = optional(object({
+                container_concurrency = optional(number, 9)
+                env                   = optional(map(string), {})
+                max_instances         = optional(number, 100)
+                min_instances         = optional(number, 1)
+                psc_interface_config = optional(object({
+                  network_attachment = optional(string)
+                  dns_peering_configs = optional(list(object({
+                    domain         = string
+                    target_project = string
+                    target_network = string
+                  })), [])
+                }))
+                resource_limits = optional(map(string))
+                secret_env = optional(list(object({
+                  name = string
+                  secret_ref = object({
+                    secret  = string
+                    version = optional(string)
+                  })
+                })), [])
+              }))
+              package_spec = optional(object({
+                dependency_files_gcs_uri = optional(string)
+                pickle_object_gcs_uri    = optional(string)
+                python_version           = optional(string)
+                requirements_gcs_uri     = optional(string)
+              }))
+              container_spec = optional(object({
+                image_uri = string
+              }))
+              source_code_spec = optional(object({
+                inline_source = optional(object({
+                  source_archive = optional(string)
+                }))
+                image_spec = optional(object({
+                  build_args = optional(map(string))
+                }))
+                python_spec = optional(object({
+                  entrypoint_module = optional(string)
+                  entrypoint_object = optional(string)
+                  requirements_file = optional(string)
+                  version           = optional(string)
+                }))
+                developer_connect_source = optional(object({
+                  config = object({
+                    git_repository_link = string
+                    dir                 = string
+                    revision            = string
+                  })
+                }))
+              }))
+              service_account = optional(string)
+              identity_type   = optional(string, "SERVICE_ACCOUNT")
+            })
+      - defaultValue:
+          listValue: {}
+        key: google_managed_agent_gateway_config
+        type: |-
+          list(object({
+              gateway_type = string
+              gateway_id   = string
+            }))
+      - defaultValue:
+          listValue: {}
+        key: service_account_roles
+        type: list(string)
+      - defaultValue:
+          listValue: {}
+        key: effective_identity_roles
+        type: list(string)
+      - defaultValue:
+          listValue: {}
+        key: module_depends_on
+        type: list(string)
+      parameters:
+      - key: region
+        value:
+          stringValue: us-central1
+      - key: display_name
+        value:
+          stringValue: Agent Runtime
+      state: DRAFT
+    compositionType: STANDARD
+    createTime: "1970-01-01T00:00:00Z"
+    projectParameters:
+    - projectID: ${projectId}
+      roles:
+      - roles/apphub.editor
+      - roles/config.agent
+    rolesAPIsConfig:
+    - roles:
+      - systemProvided: true
+      - systemProvided: true
+    serializedApplicationTemplate:
+      components:
+      - apis:
+        - cloudresourcemanager.googleapis.com
+        - serviceusage.googleapis.com
+        - iamcredentials.googleapis.com
+        - iam.googleapis.com
+        - cloudbilling.googleapis.com
+        - cloudkms.googleapis.com
+        - servicenetworking.googleapis.com
+        - secretmanager.googleapis.com
+        - notebooks.googleapis.com
+        - aiplatform.googleapis.com
+        - iap.googleapis.com
+        - modelarmor.googleapis.com
+        - dlp.googleapis.com
+        componentParameterSchema:
+        - isRequired: true
+          key: display_name
+          type: string
+        - isRequired: true
+          key: project_id
+          type: string
+        - isRequired: true
+          key: region
+          type: string
+        - key: description
+          type: string
+        - key: kms_key_name
+          type: string
+        - key: spec
+          type: |-
+            object({
+                agent_framework = optional(string)
+                class_methods   = optional(list(any))
+                deployment_spec = optional(object({
+                  container_concurrency = optional(number, 9)
+                  env                   = optional(map(string), {})
+                  max_instances         = optional(number, 100)
+                  min_instances         = optional(number, 1)
+                  psc_interface_config = optional(object({
+                    network_attachment = optional(string)
+                    dns_peering_configs = optional(list(object({
+                      domain         = string
+                      target_project = string
+                      target_network = string
+                    })), [])
+                  }))
+                  resource_limits = optional(map(string))
+                  secret_env = optional(list(object({
+                    name = string
+                    secret_ref = object({
+                      secret  = string
+                      version = optional(string)
+                    })
+                  })), [])
+                }))
+                package_spec = optional(object({
+                  dependency_files_gcs_uri = optional(string)
+                  pickle_object_gcs_uri    = optional(string)
+                  python_version           = optional(string)
+                  requirements_gcs_uri     = optional(string)
+                }))
+                container_spec = optional(object({
+                  image_uri = string
+                }))
+                source_code_spec = optional(object({
+                  inline_source = optional(object({
+                    source_archive = optional(string)
+                  }))
+                  image_spec = optional(object({
+                    build_args = optional(map(string))
+                  }))
+                  python_spec = optional(object({
+                    entrypoint_module = optional(string)
+                    entrypoint_object = optional(string)
+                    requirements_file = optional(string)
+                    version           = optional(string)
+                  }))
+                  developer_connect_source = optional(object({
+                    config = object({
+                      git_repository_link = string
+                      dir                 = string
+                      revision            = string
+                    })
+                  }))
+                }))
+                service_account = optional(string)
+                identity_type   = optional(string, "SERVICE_ACCOUNT")
+              })
+        - defaultValue:
+            listValue: {}
+          key: google_managed_agent_gateway_config
+          type: |-
+            list(object({
+                gateway_type = string
+                gateway_id   = string
+              }))
+        - defaultValue:
+            listValue: {}
+          key: service_account_roles
+          type: list(string)
+        - defaultValue:
+            listValue: {}
+          key: effective_identity_roles
+          type: list(string)
+        - defaultValue:
+            listValue: {}
+          key: module_depends_on
+          type: list(string)
+        parameters:
+        - key: region
+          value:
+            stringValue: us-central1
+        - key: display_name
+          value:
+            stringValue: Agent Runtime
+        roles:
+        - roles/aiplatform.admin
+        - roles/compute.admin
+        - roles/compute.networkAdmin
+        - roles/notebooks.admin
+        - roles/iam.securityAdmin
+        - roles/iam.serviceAccountAdmin
+        - roles/iam.serviceAccountUser
+        - roles/cloudkms.admin
+        - roles/iam.roleAdmin
+        - roles/storage.admin
+        - roles/cloudkms.cryptoKeyEncrypterDecrypter
+        - roles/modelarmor.admin
+        - roles/modelarmor.floorSettingsAdmin
+        - roles/artifactregistry.reader
+        - roles/serviceusage.serviceUsageAdmin
+        sharedTemplateRevisionURI: projects/gcpdesigncenter/locations/us-central1/spaces/googlespace/sharedTemplates/googlespace-vertex-ai-agent-engine-1sx3p0y/revisions/r-10
+        uri: projects/gcpdesigncenter/locations/us-central1/spaces/googlespace/applicationTemplates/simple-agent-runtime/components/agent-runtime-1
+      compositionType: STANDARD
+      description: Google opinionated template that configures a single Agent Runtime
+        component.
+      displayName: Simple Agent Runtime
+      iacFormat: TERRAFORM
+      uri: projects/gcpdesigncenter/locations/us-central1/spaces/googlespace/applicationTemplates/simple-agent-runtime
+    state: DRAFT
+    updateTime: "1970-01-01T00:00:00Z"

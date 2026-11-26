@@ -1,0 +1,232 @@
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "enableGcpSharedTemplates": true,
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/applications/designcenterapplication-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "apphubApplication": "projects/${projectId}/locations/us-central1/applications/designcenterapplication-maximal-${uniqueId}",
+  "componentParameters": [
+    {
+      "component": "projects/gcpdesigncenter/locations/us-central1/spaces/googlespace/applicationTemplates/simple-agent-runtime/components/agent-runtime-1",
+      "componentParameterSchema": [
+        {
+          "isRequired": true,
+          "key": "display_name",
+          "type": "string"
+        },
+        {
+          "isRequired": true,
+          "key": "project_id",
+          "type": "string"
+        },
+        {
+          "isRequired": true,
+          "key": "region",
+          "type": "string"
+        },
+        {
+          "key": "description",
+          "type": "string"
+        },
+        {
+          "key": "kms_key_name",
+          "type": "string"
+        },
+        {
+          "key": "spec",
+          "type": "object({\n    agent_framework = optional(string)\n    class_methods   = optional(list(any))\n    deployment_spec = optional(object({\n      container_concurrency = optional(number, 9)\n      env                   = optional(map(string), {})\n      max_instances         = optional(number, 100)\n      min_instances         = optional(number, 1)\n      psc_interface_config = optional(object({\n        network_attachment = optional(string)\n        dns_peering_configs = optional(list(object({\n          domain         = string\n          target_project = string\n          target_network = string\n        })), [])\n      }))\n      resource_limits = optional(map(string))\n      secret_env = optional(list(object({\n        name = string\n        secret_ref = object({\n          secret  = string\n          version = optional(string)\n        })\n      })), [])\n    }))\n    package_spec = optional(object({\n      dependency_files_gcs_uri = optional(string)\n      pickle_object_gcs_uri    = optional(string)\n      python_version           = optional(string)\n      requirements_gcs_uri     = optional(string)\n    }))\n    container_spec = optional(object({\n      image_uri = string\n    }))\n    source_code_spec = optional(object({\n      inline_source = optional(object({\n        source_archive = optional(string)\n      }))\n      image_spec = optional(object({\n        build_args = optional(map(string))\n      }))\n      python_spec = optional(object({\n        entrypoint_module = optional(string)\n        entrypoint_object = optional(string)\n        requirements_file = optional(string)\n        version           = optional(string)\n      }))\n      developer_connect_source = optional(object({\n        config = object({\n          git_repository_link = string\n          dir                 = string\n          revision            = string\n        })\n      }))\n    }))\n    service_account = optional(string)\n    identity_type   = optional(string, \"SERVICE_ACCOUNT\")\n  })"
+        },
+        {
+          "defaultValue": [],
+          "key": "google_managed_agent_gateway_config",
+          "type": "list(object({\n    gateway_type = string\n    gateway_id   = string\n  }))"
+        },
+        {
+          "defaultValue": [],
+          "key": "service_account_roles",
+          "type": "list(string)"
+        },
+        {
+          "defaultValue": [],
+          "key": "effective_identity_roles",
+          "type": "list(string)"
+        },
+        {
+          "defaultValue": [],
+          "key": "module_depends_on",
+          "type": "list(string)"
+        }
+      ],
+      "parameters": [
+        {
+          "key": "region",
+          "value": "us-central1"
+        },
+        {
+          "key": "display_name",
+          "value": "Agent Runtime"
+        }
+      ],
+      "state": 1
+    }
+  ],
+  "compositionType": 1,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deploymentRegion": "us-central1",
+  "description": "Updated maximal application description for testing",
+  "displayName": "Updated Maximal Application Display Name",
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-${uniqueId}/applications/designcenterapplication-maximal-${uniqueId}",
+  "projectParameters": [
+    {
+      "projectId": "${projectId}",
+      "roles": [
+        "roles/apphub.editor",
+        "roles/config.agent"
+      ]
+    }
+  ],
+  "rolesApisConfig": [
+    {
+      "projectId": "${projectId}",
+      "roles": [
+        {
+          "role": "roles/apphub.editor",
+          "systemProvided": true
+        },
+        {
+          "role": "roles/config.agent",
+          "systemProvided": true
+        }
+      ]
+    }
+  ],
+  "scope": {
+    "type": 1
+  },
+  "serializedApplicationTemplate": {
+    "components": [
+      {
+        "apis": [
+          "cloudresourcemanager.googleapis.com",
+          "serviceusage.googleapis.com",
+          "iamcredentials.googleapis.com",
+          "iam.googleapis.com",
+          "cloudbilling.googleapis.com",
+          "cloudkms.googleapis.com",
+          "servicenetworking.googleapis.com",
+          "secretmanager.googleapis.com",
+          "notebooks.googleapis.com",
+          "aiplatform.googleapis.com",
+          "iap.googleapis.com",
+          "modelarmor.googleapis.com",
+          "dlp.googleapis.com"
+        ],
+        "componentParameterSchema": [
+          {
+            "isRequired": true,
+            "key": "display_name",
+            "type": "string"
+          },
+          {
+            "isRequired": true,
+            "key": "project_id",
+            "type": "string"
+          },
+          {
+            "isRequired": true,
+            "key": "region",
+            "type": "string"
+          },
+          {
+            "key": "description",
+            "type": "string"
+          },
+          {
+            "key": "kms_key_name",
+            "type": "string"
+          },
+          {
+            "key": "spec",
+            "type": "object({\n    agent_framework = optional(string)\n    class_methods   = optional(list(any))\n    deployment_spec = optional(object({\n      container_concurrency = optional(number, 9)\n      env                   = optional(map(string), {})\n      max_instances         = optional(number, 100)\n      min_instances         = optional(number, 1)\n      psc_interface_config = optional(object({\n        network_attachment = optional(string)\n        dns_peering_configs = optional(list(object({\n          domain         = string\n          target_project = string\n          target_network = string\n        })), [])\n      }))\n      resource_limits = optional(map(string))\n      secret_env = optional(list(object({\n        name = string\n        secret_ref = object({\n          secret  = string\n          version = optional(string)\n        })\n      })), [])\n    }))\n    package_spec = optional(object({\n      dependency_files_gcs_uri = optional(string)\n      pickle_object_gcs_uri    = optional(string)\n      python_version           = optional(string)\n      requirements_gcs_uri     = optional(string)\n    }))\n    container_spec = optional(object({\n      image_uri = string\n    }))\n    source_code_spec = optional(object({\n      inline_source = optional(object({\n        source_archive = optional(string)\n      }))\n      image_spec = optional(object({\n        build_args = optional(map(string))\n      }))\n      python_spec = optional(object({\n        entrypoint_module = optional(string)\n        entrypoint_object = optional(string)\n        requirements_file = optional(string)\n        version           = optional(string)\n      }))\n      developer_connect_source = optional(object({\n        config = object({\n          git_repository_link = string\n          dir                 = string\n          revision            = string\n        })\n      }))\n    }))\n    service_account = optional(string)\n    identity_type   = optional(string, \"SERVICE_ACCOUNT\")\n  })"
+          },
+          {
+            "defaultValue": [],
+            "key": "google_managed_agent_gateway_config",
+            "type": "list(object({\n    gateway_type = string\n    gateway_id   = string\n  }))"
+          },
+          {
+            "defaultValue": [],
+            "key": "service_account_roles",
+            "type": "list(string)"
+          },
+          {
+            "defaultValue": [],
+            "key": "effective_identity_roles",
+            "type": "list(string)"
+          },
+          {
+            "defaultValue": [],
+            "key": "module_depends_on",
+            "type": "list(string)"
+          }
+        ],
+        "parameters": [
+          {
+            "key": "region",
+            "value": "us-central1"
+          },
+          {
+            "key": "display_name",
+            "value": "Agent Runtime"
+          }
+        ],
+        "roles": [
+          "roles/aiplatform.admin",
+          "roles/compute.admin",
+          "roles/compute.networkAdmin",
+          "roles/notebooks.admin",
+          "roles/iam.securityAdmin",
+          "roles/iam.serviceAccountAdmin",
+          "roles/iam.serviceAccountUser",
+          "roles/cloudkms.admin",
+          "roles/iam.roleAdmin",
+          "roles/storage.admin",
+          "roles/cloudkms.cryptoKeyEncrypterDecrypter",
+          "roles/modelarmor.admin",
+          "roles/modelarmor.floorSettingsAdmin",
+          "roles/artifactregistry.reader",
+          "roles/serviceusage.serviceUsageAdmin"
+        ],
+        "sharedTemplateRevisionUri": "projects/gcpdesigncenter/locations/us-central1/spaces/googlespace/sharedTemplates/googlespace-vertex-ai-agent-engine-1sx3p0y/revisions/r-10",
+        "uri": "projects/gcpdesigncenter/locations/us-central1/spaces/googlespace/applicationTemplates/simple-agent-runtime/components/agent-runtime-1"
+      }
+    ],
+    "compositionType": 1,
+    "description": "Google opinionated template that configures a single Agent Runtime component.",
+    "displayName": "Simple Agent Runtime",
+    "iacFormat": 1,
+    "uri": "projects/gcpdesigncenter/locations/us-central1/spaces/googlespace/applicationTemplates/simple-agent-runtime"
+  },
+  "source": {
+    "sharedTemplateRevisionUri": "projects/gcpdesigncenter/locations/us-central1/spaces/googlespace/sharedTemplates/googlespace-simple-agent-runtime-1kqzt4m/revisions/r-2"
+  },
+  "state": 1,
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

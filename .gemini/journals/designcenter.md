@@ -195,6 +195,18 @@
   - **Lifecycle & Updates**: Verified Create, Update (`displayName`, `description`, `applyConditions`), and Delete phases against real GCP, passing all 7/7 HTTP report validation checks and re-reconciliation testing. Both fixtures produced rich `_audit_probe.log` entries with authentic service audit probe data.
   - **Validation**: 200-seed focused round-trip fuzzer (`TestFocusedMappers/DesignCenterPolicy`), `TestCRDFieldPresenceInTestsForAlpha`, and presubmit unit tests all passed cleanly.
 
+### [2026-11-26] Greenfield Step 2: Implement direct controller, fuzzer, and E2E fixtures for DesignCenterApplication
+- **Context**: Greenfield implementation of direct controller, round-trip fuzzer, and real-GCP recorded E2E fixtures for `DesignCenterApplication` (`designcenter.cnrm.cloud.google.com/v1alpha1`, Issue #16521).
+- **Resolutions & Findings**:
+  - **Controller and Fuzzer**: Generated using `controllerbuilder generate-controller` and `generate-fuzzer --prepopulate-resource`. The controller registers with `static_config.go` and uses the standard REST GAPIC client with `NormalizeGreenfieldReferences` and `CompareGreenfieldSpec`.
+  - **GCP API Nuances**:
+    - Creation of `Application` requires `scope.type` and `deploymentRegion` (required for regional-scoped applications).
+    - Source was configured using a shared template revision URI from the Google Catalog (`googlespace`), e.g. `projects/gcpdesigncenter/locations/us-central1/spaces/googlespace/sharedTemplates/googlespace-simple-agent-runtime-1kqzt4m/revisions/r-2`, under a parent `DesignCenterSpace` with `spec.enableGCPSharedTemplates: true`.
+    - Delete operation returns an LRO, which the controller waits on via `op.Wait(ctx)`.
+    - GCP returns `projectParameters[].roles` and `rolesApisConfig[].roles` in non-deterministic order. Added sort normalizers for `.projectParameters[].roles` and `.rolesApisConfig[].roles` (and in KRM status `.status.observedState.projectParameters[].roles` / `rolesAPIsConfig[].roles`) to ensure deterministic golden files.
+  - **Fixtures & Golden Logs**: Created `designcenterapplication-minimal` and `designcenterapplication-maximal` fixtures under parent `DesignCenterSpace`. Recorded against real GCP (`cnrm-barni-4`) using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`. Both minimal and maximal passed all 7/7 HTTP report validation checks and re-reconciliation testing.
+  - **Validation**: 200-seed focused round-trip fuzzer (`TestFocusedMappers/DesignCenterApplication`), CRD field presence checks, and presubmit unit tests all passed cleanly.
+
 
 
 
