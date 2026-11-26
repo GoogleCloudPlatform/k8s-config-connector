@@ -6225,19 +6225,18 @@
 [missing_field] crd=netappreplications.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=netappreplications.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=netappreplications.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.replicationSchedule" is not set in unstructured objects
-[missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.activeDirectory" is not set in unstructured objects
+[missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.activeDirectoryRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.allowAutoTiering" is not set in unstructured objects
 [missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.capacityGib" is not set in unstructured objects
 [missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.customPerformanceEnabled" is not set in unstructured objects
 [missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.enableHotTierAutoResize" is not set in unstructured objects
 [missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.hotTierSizeGib" is not set in unstructured objects
-[missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.kmsConfig" is not set in unstructured objects
-[missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.kmsConfigRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.ldapEnabled" is not set in unstructured objects
 [missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.mode" is not set in unstructured objects
-[missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.network" is not set in unstructured objects
+[missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.psaRange" is not set in unstructured objects
 [missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.qosType" is not set in unstructured objects

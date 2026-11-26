@@ -25,43 +25,57 @@ entries:
     group: netapp.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: inlined *parent.ProjectAndLocationRef, converted network, activeDirectory, and kmsConfig to typed refs, removed Spec.Labels, confirmed omitted deprecated globalAccessAllowed, and kept zone as plain string parameter
   - kind: NetAppStoragePool
     group: netapp.cnrm.cloud.google.com
     field: .spec.activeDirectory
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to netapp.googleapis.com/ActiveDirectory (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to activeDirectoryRef (*NetAppActiveDirectoryRef)
   - kind: NetAppStoragePool
     group: netapp.cnrm.cloud.google.com
     field: .spec.globalAccessAllowed
     reason: deprecated-field
     detail: the proto marks this field deprecated, so new Kinds leave it out of the Spec. If this Spec still has it, remove it by hand; add it back only if users still need it
-    status: open
+    status: resolved
+    resolution: accepted
+    note: deprecated field omitted from NetAppStoragePoolSpec
   - kind: NetAppStoragePool
     group: netapp.cnrm.cloud.google.com
     field: .spec.kmsConfig
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to netapp.googleapis.com/KmsConfig (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to kmsConfigRef (*NetAppKMSConfigRef)
   - kind: NetAppStoragePool
     group: netapp.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef
   - kind: NetAppStoragePool
     group: netapp.cnrm.cloud.google.com
     field: .spec.network
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to compute.googleapis.com/Network (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to networkRef (*computerefs.ComputeNetworkRef)
   - kind: NetAppStoragePool
     group: netapp.cnrm.cloud.google.com
     field: .spec.zone
     reason: location-or-parent-ref
     detail: proto defines a zone field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept as plain string parameter specifying the active zone for regional storagePool
   - kind: NetappQuotaRule
     group: netapp.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

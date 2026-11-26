@@ -20,7 +20,8 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,14 +32,11 @@ var NetAppStoragePoolGVK = GroupVersion.WithKind("NetAppStoragePool")
 // +kcc:spec:proto=google.cloud.netapp.v1.StoragePool
 // +kcc:required-from-proto
 type NetAppStoragePoolSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The NetAppStoragePool name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Required. Service level of the storage pool
 	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.service_level
 	// +required
@@ -53,24 +51,20 @@ type NetAppStoragePoolSpec struct {
 	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.description
 	Description *string `json:"description,omitempty"`
 
-	// Optional. Labels as key value pairs
-	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
 	// Required. VPC Network name.
-	//  Format: projects/{project}/global/networks/{network}
+	// Format: projects/{project}/global/networks/{network}
 	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.network
 	// +required
-	Network *string `json:"network,omitempty"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Optional. Specifies the Active Directory to be used for creating a SMB
-	//  volume.
+	// volume.
 	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.active_directory
-	ActiveDirectory *string `json:"activeDirectory,omitempty"`
+	ActiveDirectoryRef *NetAppActiveDirectoryRef `json:"activeDirectoryRef,omitempty"`
 
 	// Optional. Specifies the KMS config to be used for volume encryption.
 	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.kms_config
-	KMSConfig *string `json:"kmsConfig,omitempty"`
+	KMSConfigRef *NetAppKMSConfigRef `json:"kmsConfigRef,omitempty"`
 
 	// Optional. Flag indicating if the pool is NFS LDAP enabled or not.
 	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.ldap_enabled

@@ -61,10 +61,35 @@ spec:
           spec:
             description: NetAppStoragePoolSpec defines the desired state of NetAppStoragePool
             properties:
-              activeDirectory:
+              activeDirectoryRef:
                 description: Optional. Specifies the Active Directory to be used for
                   creating a SMB volume.
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed NetAppActiveDirectory
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/activeDirectories/{{activeDirectoryID}}".
+                    type: string
+                  name:
+                    description: The name of a NetAppActiveDirectory resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a NetAppActiveDirectory resource.
+                    type: string
+                type: object
               allowAutoTiering:
                 description: Optional. True if the storage pool supports Auto Tiering
                   enabled volumes. Default is false. Auto-tiering can be enabled after
@@ -94,33 +119,81 @@ spec:
                   storage pool size. It cannot be decreased once set.
                 format: int64
                 type: integer
-              kmsConfig:
+              kmsConfigRef:
                 description: Optional. Specifies the KMS config to be used for volume
                   encryption.
-                type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. Labels as key value pairs
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed NetAppKMSConfig
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/kmsConfigs/{{kmsConfigID}}".
+                    type: string
+                  name:
+                    description: The name of a NetAppKMSConfig resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a NetAppKMSConfig resource.
+                    type: string
                 type: object
               ldapEnabled:
                 description: Optional. Flag indicating if the pool is NFS LDAP enabled
                   or not.
                 type: boolean
               location:
-                description: The location of this resource.
+                description: The location that this resource belongs to.
                 type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
               mode:
                 description: Optional. Mode of the storage pool. This field is used
                   to control whether the user can perform the ONTAP operations on
                   the storage pool using the GCNV ONTAP Mode APIs. If not specified
                   during creation, it defaults to `DEFAULT`.
                 type: string
-              network:
+              networkRef:
                 description: 'Required. VPC Network name. Format: projects/{project}/global/networks/{network}'
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed ComputeNetwork
+                      resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
+                    type: string
+                  name:
+                    description: The name of a ComputeNetwork resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ComputeNetwork resource.
+                    type: string
+                type: object
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -195,7 +268,7 @@ spec:
             required:
             - capacityGib
             - location
-            - network
+            - networkRef
             - projectRef
             - serviceLevel
             type: object
