@@ -67,6 +67,75 @@ entries:
     status: resolved
     resolution: edited
     note: moved etag from Spec to ObservedState
+  - kind: BackupDRRestoreTemplate
+    group: backupdr.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: triaged all findings; replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef, converted dataSource to dataSourceRef (*BackupDRDataSourceRef), converted Cloud Run jobs to cloudRunJobRef (*runv1beta1.JobRef), moved etag from Spec to ObservedState, preserved Spec.Labels for greenfield direct resource, verified CAI URL format, and resolved docs link
+  - kind: BackupDRRestoreTemplate
+    group: backupdr.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//backupdr.googleapis.com/projects/{project}/locations/{location}/restoreTemplates/{restore_template}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: resolved
+    resolution: accepted
+    note: verified template against proto google.api.resource pattern
+  - kind: BackupDRRestoreTemplate
+    group: backupdr.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.restoreTemplates: https://docs.cloud.google.com/backup-disaster-recovery/docs/reference/rest/v1/projects.locations.restoreTemplates'
+    status: resolved
+    resolution: edited
+    note: removed unverifiable resource-docs link
+  - kind: BackupDRRestoreTemplate
+    group: backupdr.cnrm.cloud.google.com
+    field: .spec.backupSelectionConfig.dataSource
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to backupdr.googleapis.com/DataSource (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: converted to dataSourceRef (*BackupDRDataSourceRef)
+  - kind: BackupDRRestoreTemplate
+    group: backupdr.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: resolved
+    resolution: edited
+    note: moved etag from Spec to ObservedState
+  - kind: BackupDRRestoreTemplate
+    group: backupdr.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef
+  - kind: BackupDRRestoreTemplate
+    group: backupdr.cnrm.cloud.google.com
+    field: .spec.postRestoreConfig.cloudRunJob
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to run.googleapis.com/Job (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: converted to cloudRunJobRef (*runv1beta1.JobRef)
+  - kind: BackupDRRestoreTemplate
+    group: backupdr.cnrm.cloud.google.com
+    field: .spec.preRestoreConfig.cloudRunJob
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to run.googleapis.com/Job (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: converted to cloudRunJobRef (*runv1beta1.JobRef)
+  - kind: BackupDRRestoreTemplate
+    group: backupdr.cnrm.cloud.google.com
+    field: .spec.verificationConfig.cloudRunJob
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to run.googleapis.com/Job (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: converted to cloudRunJobRef (*runv1beta1.JobRef)
   - kind: BackupDRRestoreVerificationPlan
     group: backupdr.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

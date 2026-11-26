@@ -27,6 +27,7 @@ import "google/cloud/backupdr/v1/backupplanassociation.proto";
 import "google/cloud/backupdr/v1/backupvault.proto";
 import "google/cloud/backupdr/v1/backupvault_cloudsql.proto";
 import "google/cloud/backupdr/v1/datasourcereference.proto";
+import "google/cloud/backupdr/v1/restore_template.proto";
 import "google/cloud/backupdr/v1/restore_verification_plan.proto";
 import "google/longrunning/operations.proto";
 import "google/protobuf/empty.proto";
@@ -547,6 +548,65 @@ service BackupDR {
     option (google.api.method_signature) = "name";
     option (google.longrunning.operation_info) = {
       response_type: "google.protobuf.Empty"
+      metadata_type: "OperationMetadata"
+    };
+  }
+
+  // Creates a new RestoreTemplate in a given project and location.
+  rpc CreateRestoreTemplate(CreateRestoreTemplateRequest)
+      returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*}/restoreTemplates"
+      body: "restore_template"
+    };
+    option (google.api.method_signature) =
+        "parent,restore_template,restore_template_id";
+    option (google.longrunning.operation_info) = {
+      response_type: "RestoreTemplate"
+      metadata_type: "OperationMetadata"
+    };
+  }
+
+  // Deletes a RestoreTemplate.
+  rpc DeleteRestoreTemplate(DeleteRestoreTemplateRequest)
+      returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/restoreTemplates/*}"
+    };
+    option (google.api.method_signature) = "name";
+    option (google.longrunning.operation_info) = {
+      response_type: "google.protobuf.Empty"
+      metadata_type: "OperationMetadata"
+    };
+  }
+
+  // Gets details of a RestoreTemplate.
+  rpc GetRestoreTemplate(GetRestoreTemplateRequest) returns (RestoreTemplate) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/restoreTemplates/*}"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists RestoreTemplates in a given project and location.
+  rpc ListRestoreTemplates(ListRestoreTemplatesRequest)
+      returns (ListRestoreTemplatesResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*}/restoreTemplates"
+    };
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Updates the settings of a RestoreTemplate.
+  rpc UpdateRestoreTemplate(UpdateRestoreTemplateRequest)
+      returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{restore_template.name=projects/*/locations/*/restoreTemplates/*}"
+      body: "restore_template"
+    };
+    option (google.api.method_signature) = "restore_template,update_mask";
+    option (google.longrunning.operation_info) = {
+      response_type: "RestoreTemplate"
       metadata_type: "OperationMetadata"
     };
   }
