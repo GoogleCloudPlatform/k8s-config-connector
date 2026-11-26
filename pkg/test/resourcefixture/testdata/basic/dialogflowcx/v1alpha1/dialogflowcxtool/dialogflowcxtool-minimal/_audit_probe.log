@@ -1,0 +1,25 @@
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/aa771d89-00c7-4fe8-b1e6-7947d4b91660/tools/790fa71f-8288-4f5a-9f91-06fe977ab22c?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "description": "Minimal tool test updated",
+  "displayName": "tool-min-${uniqueId}",
+  "functionSpec": {
+    "inputSchema": {
+      "properties": {
+        "param1": {
+          "type": "string"
+        },
+        "param2": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "name": "projects/${projectId}/locations/global/agents/aa771d89-00c7-4fe8-b1e6-7947d4b91660/tools/790fa71f-8288-4f5a-9f91-06fe977ab22c",
+  "toolType": 1
+}

@@ -39,3 +39,10 @@
   - ServiceAccount reference: `serviceAccountRef` in `ServiceAccountAuthConfig` converted to `*refsv1beta1.IAMServiceAccountRef`.
   - ServiceDirectory reference: `serviceRef` in `ServiceDirectoryConfig` converted to `*servicedirectoryv1beta1.ServiceDirectoryServiceRef`.
 - **Non-Reference Auth Fields**: `clientID` is an OAuth provider client ID string, and `clientSecret` is a plaintext OAuth secret; both marked as `not-applicable` in `judgement_queue.yaml`.
+
+## DialogflowCXTool Direct Controller Implementation
+
+- **Regional / Global Endpoint Resolution**: REST client initialization for Dialogflow CX tools formats endpoint as `{location}-dialogflow.googleapis.com` for all locations including `global`.
+- **AdapterForObject Order of Reference Normalization**: `common.NormalizeGreenfieldReferences` is called prior to `obj.GetIdentity(ctx, reader)` to ensure `spec.parentRef` is normalized on the object in place before identity resolution.
+- **Function Tool Schema Validation**: Dialogflow CX API enforces JSON schema rules requiring `properties` to be specified when `type: "object"` in `Tool_FunctionTool.InputSchema`.
+

@@ -1,0 +1,276 @@
+# Phase: CREATE
+POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "timeZone": "America/New_York"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/aa771d89-00c7-4fe8-b1e6-7947d4b91660",
+  "startFlow": "projects/${projectId}/locations/global/agents/aa771d89-00c7-4fe8-b1e6-7947d4b91660/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/aa771d89-00c7-4fe8-b1e6-7947d4b91660/tools?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Faa771d89-00c7-4fe8-b1e6-7947d4b91660
+
+{
+  "description": "Minimal tool test",
+  "displayName": "tool-min-${uniqueId}",
+  "functionSpec": {
+    "inputSchema": {
+      "properties": {
+        "param1": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Minimal tool test",
+  "displayName": "tool-min-${uniqueId}",
+  "functionSpec": {
+    "inputSchema": {
+      "properties": {
+        "param1": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "name": "projects/${projectId}/locations/global/agents/aa771d89-00c7-4fe8-b1e6-7947d4b91660/tools/790fa71f-8288-4f5a-9f91-06fe977ab22c",
+  "toolType": 1
+}
+
+---
+
+# Phase: UPDATE
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/aa771d89-00c7-4fe8-b1e6-7947d4b91660/tools/790fa71f-8288-4f5a-9f91-06fe977ab22c?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Faa771d89-00c7-4fe8-b1e6-7947d4b91660%2Ftools%2F790fa71f-8288-4f5a-9f91-06fe977ab22c
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Minimal tool test",
+  "displayName": "tool-min-${uniqueId}",
+  "functionSpec": {
+    "inputSchema": {
+      "properties": {
+        "param1": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "name": "projects/${projectId}/locations/global/agents/aa771d89-00c7-4fe8-b1e6-7947d4b91660/tools/790fa71f-8288-4f5a-9f91-06fe977ab22c",
+  "toolType": 1
+}
+
+---
+
+PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/aa771d89-00c7-4fe8-b1e6-7947d4b91660/tools/790fa71f-8288-4f5a-9f91-06fe977ab22c?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CfunctionSpec
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: tool.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Faa771d89-00c7-4fe8-b1e6-7947d4b91660%2Ftools%2F790fa71f-8288-4f5a-9f91-06fe977ab22c
+
+{
+  "description": "Minimal tool test updated",
+  "displayName": "tool-min-${uniqueId}",
+  "functionSpec": {
+    "inputSchema": {
+      "properties": {
+        "param1": {
+          "type": "string"
+        },
+        "param2": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "name": "projects/${projectId}/locations/global/agents/aa771d89-00c7-4fe8-b1e6-7947d4b91660/tools/790fa71f-8288-4f5a-9f91-06fe977ab22c"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Minimal tool test updated",
+  "displayName": "tool-min-${uniqueId}",
+  "functionSpec": {
+    "inputSchema": {
+      "properties": {
+        "param1": {
+          "type": "string"
+        },
+        "param2": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "name": "projects/${projectId}/locations/global/agents/aa771d89-00c7-4fe8-b1e6-7947d4b91660/tools/790fa71f-8288-4f5a-9f91-06fe977ab22c",
+  "toolType": 1
+}
+
+---
+
+# Phase: DELETE
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/aa771d89-00c7-4fe8-b1e6-7947d4b91660/tools/790fa71f-8288-4f5a-9f91-06fe977ab22c?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Faa771d89-00c7-4fe8-b1e6-7947d4b91660%2Ftools%2F790fa71f-8288-4f5a-9f91-06fe977ab22c
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Minimal tool test updated",
+  "displayName": "tool-min-${uniqueId}",
+  "functionSpec": {
+    "inputSchema": {
+      "properties": {
+        "param1": {
+          "type": "string"
+        },
+        "param2": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "name": "projects/${projectId}/locations/global/agents/aa771d89-00c7-4fe8-b1e6-7947d4b91660/tools/790fa71f-8288-4f5a-9f91-06fe977ab22c",
+  "toolType": 1
+}
+
+---
+
+DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/aa771d89-00c7-4fe8-b1e6-7947d4b91660/tools/790fa71f-8288-4f5a-9f91-06fe977ab22c?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Faa771d89-00c7-4fe8-b1e6-7947d4b91660%2Ftools%2F790fa71f-8288-4f5a-9f91-06fe977ab22c
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/aa771d89-00c7-4fe8-b1e6-7947d4b91660?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Faa771d89-00c7-4fe8-b1e6-7947d4b91660
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/aa771d89-00c7-4fe8-b1e6-7947d4b91660",
+  "startFlow": "projects/${projectId}/locations/global/agents/aa771d89-00c7-4fe8-b1e6-7947d4b91660/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/aa771d89-00c7-4fe8-b1e6-7947d4b91660?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Faa771d89-00c7-4fe8-b1e6-7947d4b91660
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
