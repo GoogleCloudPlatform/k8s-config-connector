@@ -21,6 +21,44 @@
 # file does not have.
 
 entries:
+  - kind: LiveStreamClip
+    group: livestream.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: LiveStreamClip
+    group: livestream.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/channels/{channel}/clips/{clip}" contains ancestor segment(s) channels/{channel} with no matching reference or field on LiveStreamClipSpec
+    status: open
+  - kind: LiveStreamClip
+    group: livestream.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: found no docs root for this API; find the REST reference page by hand
+    status: open
+  - kind: LiveStreamClip
+    group: livestream.cnrm.cloud.google.com
+    reason: verify-service-docs-link
+    detail: neither the Discovery directory nor the service config names a docs page; add one
+    status: open
+  - kind: LiveStreamClip
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.channelRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to LiveStreamChannelRef, read from the channels segment of projects/{project}/locations/{location}/channels/{channel}/clips/{clip}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: LiveStreamClip
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/channels/{channel}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: LiveStreamClip
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.outputURI
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
   - kind: LiveStreamDVRSession
     group: livestream.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

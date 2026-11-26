@@ -50,3 +50,12 @@
   2. Implemented MockGCP support for `LiveStreamDVRSession` in `mockgcp/mocklivestream/dvrsessions.go` (`GetDvrSession`, `CreateDvrSession`, `UpdateDvrSession`, `DeleteDvrSession`, `ListDvrSessions`). Registered `LiveStreamDVRSession` in `config/tests/samples/create/harness.go`.
   3. Created minimal (`livestreamdvrsession-minimal`) and maximal (`livestreamdvrsession-maximal`) E2E test fixtures, passing `hack/compare-mock` and 100% of `alpha-missingfields.txt` coverage checks in `tests/apichecks`.
 
+### [2026-11-26] LiveStreamClip types and identity prepopulation
+- **Context**: Greenfield Step 1a prepopulation for `LiveStreamClip` (`livestream.cnrm.cloud.google.com/v1alpha1`).
+- **Findings**:
+  1. `LiveStreamClip` corresponds to proto `Clip` in `google.cloud.video.livestream.v1` with resource pattern `projects/{project}/locations/{location}/channels/{channel}/clips/{clip}`.
+  2. Configured `apis/livestream/generate.sh` with `generate-types --prepopulate-resource`, `generate-identity`, and `generate-mapper --prepopulate-resource`.
+  3. Added `LiveStreamClip` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. Scaffolded direct KRM types, identity, reference, CRD, and `judgement_queue.yaml` entries (with `untriaged-bulk-generation` in `open` state).
+
+

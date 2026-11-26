@@ -217,6 +217,7 @@ BLOCKED_KINDS=(
     "KMSEKMConnection"
     "KMSEkmConnection"
     "LiveStreamAsset"
+    "LiveStreamClip"
     "LiveStreamDVRSession"
     "LustreDirectoryPolicy"
     "LustreMirror"
