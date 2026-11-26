@@ -131,6 +131,14 @@ Create or update the file to match the canonical example. Key requirements:
    - Always use the standard got/want mismatch format for failures, e.g. `(-want +got):\n%s`.
    - **CRITICAL:** When creating/modifying an identity type, always run `TestGoldenIdentitiesYamlFiles` (defined in `pkg/cli/powertools/cais/cmd_test.go`) with `WRITE_GOLDEN_OUTPUT=1` using `WRITE_GOLDEN_OUTPUT=1 go test -v ./pkg/cli/powertools/cais/...` to generate or update the golden output `_identities.yaml` file(s) for the test fixtures. This prevents presubmit CI unit test failures.
 
-2. **Run Compilations and Linters**:
-   - Ensure the code compiles and there are no lint errors. You MUST always run `go vet ./...` and `go build ./...` before sending the PR to verify that your changes have not introduced any compilation errors across the entire project.
-   - If any CRDs, schemas, or reference definitions changed, always run `make resource-docs` to regenerate the resource documentation and prevent doc validation pipeline breakages.
+### Step 6: PR Description & Metadata
+
+* **Scope Boundaries**:
+  - **In Scope**: Implement `_identity.go` and `_reference.go` (or configure `generate-identity` in `apis/<service>/generate.sh`), and update CAIS golden identities (`WRITE_GOLDEN_OUTPUT=1 go test -v ./pkg/cli/powertools/cais/...`).
+  - **Out of Scope**: Do NOT create mappers (`mapper.generated.go`, `mappers.go`) or controller logic. Do NOT commit internal journal files or changes under `.gemini/skills/` to git branches.
+* **Code Health & Design**: Ensure the implementation follows the clean architecture and style rules in [reviewgen-code-health](file:///.gemini/skills/reviewgen-code-health/SKILL.md) (`.gemini/skills/reviewgen-code-health/SKILL.md`).
+* **Release Note Block**: Include the release note block set to `NONE`:
+  ```release-note
+  NONE
+  ```
+
