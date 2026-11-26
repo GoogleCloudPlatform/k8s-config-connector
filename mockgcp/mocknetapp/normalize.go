@@ -26,13 +26,12 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	if !strings.Contains(url, "netapp.googleapis.com") {
 		return
 	}
-
 	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
-	replacements.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
-	replacements.ReplacePath(".response.updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".metadata.createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".metadata.endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.updateTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

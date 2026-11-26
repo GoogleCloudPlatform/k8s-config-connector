@@ -236,7 +236,6 @@ BLOCKED_KINDS=(
     "ModelArmorTemplate"
     "NetappQuotaRule"
     "NetappReplication"
-    "NetAppStoragePool"
     "NetworkConnectivityDestination"
     "NetworkConnectivityPolicyBasedRoute"
     "NetworkConnectivityServiceConnectionToken"

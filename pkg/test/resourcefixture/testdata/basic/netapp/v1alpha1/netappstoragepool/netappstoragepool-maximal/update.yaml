@@ -1,0 +1,18 @@
+apiVersion: netapp.cnrm.cloud.google.com/v1alpha1
+kind: NetAppStoragePool
+metadata:
+  name: netappstoragepool-${uniqueId}
+  labels:
+    label-one: value-two
+    label-new: value-new
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
+  serviceLevel: STANDARD
+  capacityGib: 4096
+  networkRef:
+    external: projects/${projectId}/global/networks/default
+  description: "Updated description for maximal storage pool"
+  zone: us-central1-a
+  replicaZone: us-central1-b
