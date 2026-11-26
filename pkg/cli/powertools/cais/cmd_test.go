@@ -896,6 +896,58 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 			}
 
+			// Inject status.externalRef for DesignCenterApplicationTemplate to simulate a reconciled application template in static unit tests.
+			if u.GetKind() == "DesignCenterApplicationTemplate" && u.GroupVersionKind().Group == "designcenter.cnrm.cloud.google.com" {
+				if extRef, ok, _ := unstructured.NestedString(u.Object, "status", "externalRef"); !ok || extRef == "" {
+					templateID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+					if templateID == "" {
+						templateID = u.GetName()
+					}
+					var extRef string
+					if parentExt, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "external"); parentExt != "" {
+						extRef = fmt.Sprintf("%s/applicationTemplates/%s", strings.TrimSuffix(parentExt, "/"), templateID)
+					} else if parentName, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "name"); parentName != "" {
+						for _, other := range kccObjs {
+							if other.GetKind() == "DesignCenterSpace" && other.GetName() == parentName {
+								if otherExt, ok, _ := unstructured.NestedString(other.Object, "status", "externalRef"); ok && otherExt != "" {
+									extRef = fmt.Sprintf("%s/applicationTemplates/%s", strings.TrimSuffix(otherExt, "/"), templateID)
+								} else {
+									projectID, _, _ := unstructured.NestedString(other.Object, "spec", "projectRef", "external")
+									projectID = strings.TrimPrefix(projectID, "projects/")
+									if projectID == "" {
+										otherAnn := other.GetAnnotations()
+										if otherAnn != nil {
+											projectID = otherAnn["cnrm.cloud.google.com/project-id"]
+										}
+									}
+									if projectID == "" {
+										projectID = annotations["cnrm.cloud.google.com/project-id"]
+									}
+									if projectID == "" {
+										projectID = "mock-project"
+									}
+									location, _, _ := unstructured.NestedString(other.Object, "spec", "location")
+									if location == "" {
+										location = "us-central1"
+									}
+									spaceID, _, _ := unstructured.NestedString(other.Object, "spec", "resourceID")
+									if spaceID == "" {
+										spaceID = other.GetName()
+									}
+									extRef = fmt.Sprintf("projects/%s/locations/%s/spaces/%s/applicationTemplates/%s", projectID, location, spaceID, templateID)
+								}
+								break
+							}
+						}
+					}
+					if extRef != "" {
+						if err := unstructured.SetNestedField(u.Object, extRef, "status", "externalRef"); err != nil {
+							t.Fatalf("failed to inject status.externalRef for DesignCenterApplicationTemplate %s: %v", u.GetName(), err)
+						}
+					}
+				}
+			}
+
 			// Inject status.externalRef for BigLakeIcebergCatalog and BigLakeHiveCatalog to simulate a reconciled catalog in static unit tests.
 			if (u.GetKind() == "BigLakeIcebergCatalog" || u.GetKind() == "BigLakeHiveCatalog") && u.GroupVersionKind().Group == "bigquerybiglake.cnrm.cloud.google.com" {
 				projectID, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external")
@@ -1329,6 +1381,54 @@ func normalizeFixtureKCCObjects(allObjs []*unstructured.Unstructured) []*unstruc
 						if other.GetKind() == "DesignCenterCatalog" && other.GetName() == parentName {
 							if otherExt, ok, _ := unstructured.NestedString(other.Object, "status", "externalRef"); ok && otherExt != "" {
 								extRef = fmt.Sprintf("%s/templates/%s", strings.TrimSuffix(otherExt, "/"), templateID)
+							}
+							break
+						}
+					}
+				}
+				if extRef != "" {
+					_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+				}
+			}
+		}
+		if u.GetKind() == "DesignCenterApplicationTemplate" && group == "designcenter.cnrm.cloud.google.com" {
+			if extRef, ok, _ := unstructured.NestedString(u.Object, "status", "externalRef"); !ok || extRef == "" {
+				templateID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+				if templateID == "" {
+					templateID = u.GetName()
+				}
+				var extRef string
+				if parentExt, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "external"); parentExt != "" {
+					extRef = fmt.Sprintf("%s/applicationTemplates/%s", strings.TrimSuffix(parentExt, "/"), templateID)
+				} else if parentName, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "name"); parentName != "" {
+					for _, other := range allObjs {
+						if other.GetKind() == "DesignCenterSpace" && other.GetName() == parentName {
+							if otherExt, ok, _ := unstructured.NestedString(other.Object, "status", "externalRef"); ok && otherExt != "" {
+								extRef = fmt.Sprintf("%s/applicationTemplates/%s", strings.TrimSuffix(otherExt, "/"), templateID)
+							} else {
+								projectID, _, _ := unstructured.NestedString(other.Object, "spec", "projectRef", "external")
+								projectID = strings.TrimPrefix(projectID, "projects/")
+								if projectID == "" {
+									otherAnn := other.GetAnnotations()
+									if otherAnn != nil {
+										projectID = otherAnn["cnrm.cloud.google.com/project-id"]
+									}
+								}
+								if projectID == "" {
+									projectID = ann["cnrm.cloud.google.com/project-id"]
+								}
+								if projectID == "" {
+									projectID = "mock-project"
+								}
+								location, _, _ := unstructured.NestedString(other.Object, "spec", "location")
+								if location == "" {
+									location = "us-central1"
+								}
+								spaceID, _, _ := unstructured.NestedString(other.Object, "spec", "resourceID")
+								if spaceID == "" {
+									spaceID = other.GetName()
+								}
+								extRef = fmt.Sprintf("projects/%s/locations/%s/spaces/%s/applicationTemplates/%s", projectID, location, spaceID, templateID)
 							}
 							break
 						}

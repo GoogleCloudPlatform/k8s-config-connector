@@ -27,6 +27,7 @@ var allServices = []string{
 	"compute.googleapis.com",
 	"connectors.googleapis.com",
 	"dataflow.googleapis.com",
+	"designcenter.googleapis.com",
 	"dlp.googleapis.com",
 	"firebase.googleapis.com",
 	"firebasehosting.googleapis.com",
