@@ -163,7 +163,15 @@
   - `well-known-proto-type`: Confirmed `google.protobuf.Value` representation and resolved as accepted.
   - `untriaged-bulk-generation`: Resolved with resolution `edited`.
 
-
+### [2026-11-25] Prepopulating DesignCenterApplication
+- **Context**: Prepopulating direct KRM types, identity, reference, mapper, and judgement queue for `DesignCenterApplication` (Issue #16468).
+- **Generation & Mapper Setup**:
+  - Added `--resource DesignCenterApplication:Application` to `generate-types` and `generate-identity` in `apis/designcenter/generate.sh`.
+  - Appended `google.cloud.config.v1` to `--service` on `generate-mapper` in `apis/designcenter/generate.sh` to emit mappers for `google.cloud.config.v1.TerraformError` referenced in `DeploymentErrorObservedState`.
+  - Handwrote `DeploymentMetadataObservedState` and `DeploymentGroupMetadataObservedState` mappers in `pkg/controller/direct/designcenter/designcenterapplication_mapper.go` to bridge output-only types pruned from spec/input mappings.
+  - Added `DesignCenterApplication` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Added `designcenterapplications.designcenter.cnrm.cloud.google.com` to `knownInvalidCRDs` in `tests/apichecks/crds_test.go` due to empty object schema on `status.observedState.compositeApplicationParameters.projectParametersMap` (from proto `ProjectParametersList` where all fields are output-only).
+  - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` with golden output for `DesignCenterApplication`.
 
 
 
