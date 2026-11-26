@@ -87,7 +87,7 @@ func TestWhoMaySetServiceGeneratedResourceID(t *testing.T) {
 		isServerGenerated bool
 	}{
 		{
-			name: "DCL-based kind",
+			name: "DCL-based kind with server-generated ID",
 			gvk:  k8sschema.GroupVersionKind{Group: "monitoring.cnrm.cloud.google.com", Version: "v1beta1", Kind: "MonitoringGroup"},
 			spec: map[string]interface{}{
 				"displayName": "a group",
@@ -97,13 +97,30 @@ func TestWhoMaySetServiceGeneratedResourceID(t *testing.T) {
 			isServerGenerated: true,
 		},
 		{
-			name: "Terraform-based kind",
+			name: "Terraform-based kind with server-generated ID",
 			gvk:  k8sschema.GroupVersionKind{Group: "monitoring.cnrm.cloud.google.com", Version: "v1beta1", Kind: "MonitoringNotificationChannel"},
 			spec: map[string]interface{}{
 				"type":   "email",
 				"labels": map[string]interface{}{"email_address": "nobody@example.com"},
 			},
 			isServerGenerated: true,
+		},
+		{
+			name: "DCL-based kind with user-configured ID",
+			gvk:  k8sschema.GroupVersionKind{Group: "containeranalysis.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ContainerAnalysisNote"},
+			spec: map[string]interface{}{
+				"shortDescription": "a note",
+			},
+			isServerGenerated: false,
+		},
+		{
+			name: "Terraform-based kind with user-configured ID",
+			gvk:  k8sschema.GroupVersionKind{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeAddress"},
+			spec: map[string]interface{}{
+				"location":    "global",
+				"description": "an address",
+			},
+			isServerGenerated: false,
 		},
 		{
 			name: "LoggingLogMetric",
@@ -119,13 +136,14 @@ func TestWhoMaySetServiceGeneratedResourceID(t *testing.T) {
 		name         string
 		username     string
 		isController bool
+		isSyncer     bool
 	}{
-		{"a user", "jane@example.com", false},
-		{"the controller manager", "system:serviceaccount:cnrm-system:cnrm-controller-manager", true},
-		{"the controller manager of a namespace", "system:serviceaccount:cnrm-system:cnrm-controller-manager-team-a", true},
-		{"the KRM syncer", "system:serviceaccount:cnrm-system:kcc-syncer", false},
-		{"a kcc-syncer service account in another namespace", "system:serviceaccount:team-a:kcc-syncer", false},
-		{"the MultiClusterLease controller", "system:serviceaccount:cnrm-system:kcc-mcl", false},
+		{"a user", "jane@example.com", false, false},
+		{"the controller manager", "system:serviceaccount:cnrm-system:cnrm-controller-manager", true, false},
+		{"the controller manager of a namespace", "system:serviceaccount:cnrm-system:cnrm-controller-manager-team-a", true, false},
+		{"the KRM syncer", "system:serviceaccount:cnrm-system:kcc-syncer", false, true},
+		{"a kcc-syncer service account in another namespace", "system:serviceaccount:team-a:kcc-syncer", false, false},
+		{"the MultiClusterLease controller", "system:serviceaccount:cnrm-system:kcc-mcl", false, false},
 	}
 	changes := []struct {
 		name             string
@@ -144,7 +162,7 @@ func TestWhoMaySetServiceGeneratedResourceID(t *testing.T) {
 		for _, user := range users {
 			for _, change := range changes {
 				t.Run(kind.name+"/"+user.name+"/"+change.name, func(t *testing.T) {
-					wantAllowed := user.isController || change.allowAlways || (change.allowIfGenerated && kind.isServerGenerated)
+					wantAllowed := user.isController || change.allowAlways || (change.allowIfGenerated && kind.isServerGenerated && user.isSyncer)
 					specWithID := func(id interface{}) map[string]interface{} {
 						s := runtime.DeepCopyJSON(kind.spec)
 						if id != nil {

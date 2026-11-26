@@ -20,6 +20,10 @@ Copies of the two Go modules that Config Connector's multi-cluster leader electi
     - Change: the `*.cnrm.cloud.google.com` rule no longer matches `core.cnrm.cloud.google.com` and its subgroups (ConfigConnector, ConfigConnectorContext, MultiClusterLease).
     - Why: `ha setup` lets another cluster's syncer read only what the `cnrm-viewer` role covers, which excludes these groups, so the syncer must not watch them.
     - Not in upstream yet.
+  - **Union SyncFields across matching rules per KRMSyncer:**
+    - File: `kube-etl/syncer/controllers/krmsyncer_controller.go` (`mergeSyncFields`, called in `DynamicResourceReconciler.Reconcile`).
+    - Change: When multiple rules match an object for a KRMSyncer (such as a wildcard `["status"]` rule and a specific kind rule `["status", "spec.resourceID"]`), `SyncFields` are unioned so the object is patched once with all desired fields, preventing earlier rules from clearing fields set by later rules under Server-Side Apply.
+    - Not in upstream yet.
 
 ## Building a fork on its own
 
