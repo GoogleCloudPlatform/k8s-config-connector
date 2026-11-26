@@ -30,10 +30,6 @@ import (
 	"cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 )
 
-// mockMemoryLayerStorageSizeGibPerNode is the size per cluster node in GiB that
-// the mock reports for an enabled memory layer, matching the real service's 8 GiB/node.
-const mockMemoryLayerStorageSizeGibPerNode = 8
-
 // mockMemoryLayerEtag is the etag the mock hands out for an enabled memory layer,
 // matching the opaque value the other mockbigtable resources use.
 const mockMemoryLayerEtag = "abcdef0123A="
@@ -146,14 +142,7 @@ func (s *instanceAdminServer) UpdateMemoryLayer(ctx context.Context, req *adminp
 				stored.State = adminpb.MemoryLayer_DISABLED
 				stored.Etag = ""
 			} else {
-				// storage_size_gib is output only; the service decides it based on cluster nodes.
-				nodes := cluster.GetServeNodes()
-				if nodes <= 0 {
-					nodes = 1
-				}
-				stored.MemoryConfig = &adminpb.MemoryLayer_MemoryConfig{
-					StorageSizeGib: mockMemoryLayerStorageSizeGibPerNode * nodes,
-				}
+				stored.MemoryConfig = &adminpb.MemoryLayer_MemoryConfig{}
 				stored.State = adminpb.MemoryLayer_READY
 				stored.Etag = mockMemoryLayerEtag
 			}

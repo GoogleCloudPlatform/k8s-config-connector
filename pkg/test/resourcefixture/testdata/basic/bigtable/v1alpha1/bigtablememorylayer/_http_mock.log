@@ -280,9 +280,7 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.MemoryLayer",
     "etag": "abcdef0123A=",
-    "memoryConfig": {
-      "storageSizeGib": 24
-    },
+    "memoryConfig": {},
     "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer",
     "state": "READY"
   }
@@ -300,9 +298,7 @@ OK
 
 {
   "etag": "abcdef0123A=",
-  "memoryConfig": {
-    "storageSizeGib": 24
-  },
+  "memoryConfig": {},
   "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer",
   "state": "READY"
 }

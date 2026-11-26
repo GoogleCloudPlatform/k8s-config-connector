@@ -24,6 +24,4 @@ status:
   externalRef: projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer
   observedGeneration: 1
   observedState:
-    memoryConfig:
-      storageSizeGib: 24
     state: READY
