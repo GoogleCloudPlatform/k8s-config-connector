@@ -207,6 +207,15 @@
   - **Fixtures & Golden Logs**: Created `designcenterapplication-minimal` and `designcenterapplication-maximal` fixtures under parent `DesignCenterSpace`. Recorded against real GCP (`cnrm-barni-4`) using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`. Both minimal and maximal passed all 7/7 HTTP report validation checks and re-reconciliation testing.
   - **Validation**: 200-seed focused round-trip fuzzer (`TestFocusedMappers/DesignCenterApplication`), CRD field presence checks, and presubmit unit tests all passed cleanly.
 
+### [2026-11-26] Prepopulating DesignCenterComponent
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for DesignCenterComponent (Issue #16541).
+- **Findings & Solution**:
+  - Configured `apis/designcenter/generate.sh` with dedicated `--resource DesignCenterComponent:Component` under `generate-types` and `generate-identity`.
+  - Mechanically generated `designcentercomponent_types.go`, `designcentercomponent_identity.generated.go`, `designcentercomponent_reference.generated.go`, `designcentercomponent_identity_generated_test.go`, CRD manifest, deepcopy, and updated `pkg/controller/direct/designcenter/mapper.generated.go`.
+  - Added `DesignCenterComponent` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` in strict alphabetical order.
+  - Initialized open entries in `apis/designcenter/judgement_queue.yaml` for `DesignCenterComponent` (including `untriaged-bulk-generation` with `status: open`).
+  - Recorded untriaged missing fields in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+
 
 
 

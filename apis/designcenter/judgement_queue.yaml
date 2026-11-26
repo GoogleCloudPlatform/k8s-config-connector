@@ -892,6 +892,67 @@ entries:
     status: resolved
     resolution: accepted
     note: defined TerraformUiOutputDisplay in designcentercatalogtemplaterevision_types.go with output-only proto fields to populate CRD schema
+  - kind: DesignCenterComponent
+    group: designcenter.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: DesignCenterComponent
+    group: designcenter.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//designcenter.googleapis.com/projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/components/{component}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: DesignCenterComponent
+    group: designcenter.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/components/{component}" contains ancestor segment(s) spaces/{space}, applicationTemplates/{application_template} with no matching reference or field on DesignCenterComponentSpec
+    status: open
+  - kind: DesignCenterComponent
+    group: designcenter.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: found no docs root for this API; find the REST reference page by hand
+    status: open
+  - kind: DesignCenterComponent
+    group: designcenter.cnrm.cloud.google.com
+    reason: verify-service-docs-link
+    detail: neither the Discovery directory nor the service config names a docs page; add one
+    status: open
+  - kind: DesignCenterComponent
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.applicationInfo.apphubApplicationID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: DesignCenterComponent
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.applicationTemplateRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to DesignCenterApplicationTemplateRef, read from the applicationTemplates segment of projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/components/{component}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: DesignCenterComponent
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: DesignCenterComponent
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.parameters[].value
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: open
+  - kind: DesignCenterComponent
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.componentParameterSchema[].defaultValue
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: open
+  - kind: DesignCenterComponent
+    group: designcenter.cnrm.cloud.google.com
+    field: .status.observedState.connectionsParameters[].parameters[].value
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: open
   - kind: DesignCenterPolicy
     group: designcenter.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

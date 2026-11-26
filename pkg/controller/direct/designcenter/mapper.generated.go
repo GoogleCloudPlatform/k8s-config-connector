@@ -1279,6 +1279,72 @@ func DesignCenterCatalogTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krm.
 	return out
 }
 
+func DesignCenterComponentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Component) *krm.DesignCenterComponentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DesignCenterComponentObservedState{}
+	// MISSING: Name
+	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, ParameterObservedState_FromProto)
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Roles = in.Roles
+	out.APIs = in.Apis
+	out.ConnectionsParameters = direct.Slice_FromProto(mapCtx, in.ConnectionsParameters, ConnectionParametersObservedState_FromProto)
+	out.ComponentParameterSchema = direct.Slice_FromProto(mapCtx, in.ComponentParameterSchema, ComponentParameterSchemaObservedState_FromProto)
+	return out
+}
+
+func DesignCenterComponentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DesignCenterComponentObservedState) *pb.Component {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Component{}
+	// MISSING: Name
+	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, ParameterObservedState_ToProto)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Roles = in.Roles
+	out.Apis = in.APIs
+	out.ConnectionsParameters = direct.Slice_ToProto(mapCtx, in.ConnectionsParameters, ConnectionParametersObservedState_ToProto)
+	out.ComponentParameterSchema = direct.Slice_ToProto(mapCtx, in.ComponentParameterSchema, ComponentParameterSchemaObservedState_ToProto)
+	return out
+}
+
+func DesignCenterComponentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Component) *krm.DesignCenterComponentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DesignCenterComponentSpec{}
+	// MISSING: Name
+	out.SharedTemplateRevisionURI = direct.LazyPtr(in.GetSharedTemplateRevisionUri())
+	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, Parameter_FromProto)
+	// MISSING: Apis
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.ApplicationInfo = ComponentApplicationInfo_FromProto(mapCtx, in.GetApplicationInfo())
+	out.UseAsRootModule = direct.LazyPtr(in.GetUseAsRootModule())
+	out.InputVariableAliases = direct.Slice_FromProto(mapCtx, in.InputVariableAliases, InputVariableAlias_FromProto)
+	out.ApplicationTemplateRevisionURI = direct.LazyPtr(in.GetApplicationTemplateRevisionUri())
+	return out
+}
+
+func DesignCenterComponentSpec_ToProto(mapCtx *direct.MapContext, in *krm.DesignCenterComponentSpec) *pb.Component {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Component{}
+	// MISSING: Name
+	out.SharedTemplateRevisionUri = direct.ValueOf(in.SharedTemplateRevisionURI)
+	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, Parameter_ToProto)
+	// MISSING: Apis
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.ApplicationInfo = ComponentApplicationInfo_ToProto(mapCtx, in.ApplicationInfo)
+	out.UseAsRootModule = direct.ValueOf(in.UseAsRootModule)
+	out.InputVariableAliases = direct.Slice_ToProto(mapCtx, in.InputVariableAliases, InputVariableAlias_ToProto)
+	out.ApplicationTemplateRevisionUri = direct.ValueOf(in.ApplicationTemplateRevisionURI)
+	return out
+}
+
 func DesignCenterPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krm.DesignCenterPolicyObservedState {
 	if in == nil {
 		return nil
@@ -1865,6 +1931,26 @@ func IacFormatInfo_ToProto(mapCtx *direct.MapContext, in *krm.IacFormatInfo) *pb
 	out := &pb.IacFormatInfo{}
 	out.Flavor = direct.ValueOf(in.Flavor)
 	out.Version = direct.ValueOf(in.Version)
+	return out
+}
+
+func InputVariableAlias_FromProto(mapCtx *direct.MapContext, in *pb.InputVariableAlias) *krm.InputVariableAlias {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InputVariableAlias{}
+	out.Variable = direct.LazyPtr(in.GetVariable())
+	out.Alias = direct.LazyPtr(in.GetAlias())
+	return out
+}
+
+func InputVariableAlias_ToProto(mapCtx *direct.MapContext, in *krm.InputVariableAlias) *pb.InputVariableAlias {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InputVariableAlias{}
+	out.Variable = direct.ValueOf(in.Variable)
+	out.Alias = direct.ValueOf(in.Alias)
 	return out
 }
 
