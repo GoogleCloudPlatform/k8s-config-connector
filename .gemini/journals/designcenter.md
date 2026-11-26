@@ -216,6 +216,18 @@
   - Initialized open entries in `apis/designcenter/judgement_queue.yaml` for `DesignCenterComponent` (including `untriaged-bulk-generation` with `status: open`).
   - Recorded untriaged missing fields in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 
+### [2026-11-26] Greenfield Step 1b: Triaging judgement queue and finalizing KRM types for DesignCenterComponent
+- **Context**: Triaged `apis/designcenter/judgement_queue.yaml` and finalized KRM types, identity, and reference types for `DesignCenterComponent` (Issue #16544).
+- **Resolutions & Findings**:
+  - `location-or-parent-ref`, `parent-ref-guessed`, `identity-root-unknown`: `DesignCenterComponent` is a child resource under `DesignCenterApplicationTemplate` (`projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/components/{component}`). Per `judgement/references/PARENT_AND_IDENTITY.md` (Case B), replaced `ProjectRef`, `Location`, and `ApplicationTemplateRef` with required, immutable `ParentRef *DesignCenterApplicationTemplateRef` (`json:"parentRef"`).
+  - `identity-not-in-cai`: Verified template `//designcenter.googleapis.com/projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/components/{component}` against proto `google.api.resource` pattern and marked accepted.
+  - `verify-service-docs-link` & `verify-resource-docs-link`: Added service docs `https://cloud.google.com/application-design-center/docs` and REST reference `https://cloud.google.com/application-design-center/docs/reference/rest/v1/projects.locations.spaces.applicationTemplates.components`.
+  - `possible-reference-by-name` on `.spec.applicationInfo.apphubApplicationID`: Resolved as `not-applicable` because it is a user-defined ID string for the created App Hub application, not a reference to an existing resource.
+  - `well-known-proto-type`: Confirmed `google.protobuf.Value` representation across parameters and observedState schema entries and marked resolved/accepted.
+  - `untriaged-bulk-generation`: Resolved with resolution `edited`.
+  - Updated golden exceptions in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+
+
 
 
 

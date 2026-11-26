@@ -3843,7 +3843,6 @@
 [missing_field] crd=designcentercomponents.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=designcentercomponents.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputVariableAliases[].alias" is not set in unstructured objects
 [missing_field] crd=designcentercomponents.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputVariableAliases[].variable" is not set in unstructured objects
-[missing_field] crd=designcentercomponents.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=designcentercomponents.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.parameters[].key" is not set in unstructured objects
 [missing_field] crd=designcentercomponents.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.parameters[].value.boolValue" is not set in unstructured objects
 [missing_field] crd=designcentercomponents.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.parameters[].value.listValue.values[]" is not set in unstructured objects
@@ -3851,7 +3850,7 @@
 [missing_field] crd=designcentercomponents.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.parameters[].value.numberValue" is not set in unstructured objects
 [missing_field] crd=designcentercomponents.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.parameters[].value.stringValue" is not set in unstructured objects
 [missing_field] crd=designcentercomponents.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.parameters[].value.structValue" is not set in unstructured objects
-[missing_field] crd=designcentercomponents.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=designcentercomponents.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=designcentercomponents.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.sharedTemplateRevisionURI" is not set in unstructured objects
 [missing_field] crd=designcentercomponents.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.useAsRootModule" is not set in unstructured objects
 [missing_field] crd=designcenterpolicies.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudControlConfigs[].cloudControlRef" is not set; neither 'external' nor 'name' are set

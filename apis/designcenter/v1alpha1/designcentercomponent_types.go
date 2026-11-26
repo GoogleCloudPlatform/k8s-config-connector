@@ -14,15 +14,12 @@
 
 // API sources for DesignCenterComponent, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/547f8fdb4b91dbac70d540b3757520f0608ae356/google/cloud/designcenter/v1/authoring.proto
-// +kcc:guess=source-link reason=verify-service-docs-link
-// +kcc:source:service-docs=
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=
+// +kcc:source:service-docs=https://cloud.google.com/application-design-center/docs
+// +kcc:source:resource-docs=https://cloud.google.com/application-design-center/docs/reference/rest/v1/projects.locations.spaces.applicationTemplates.components
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -33,15 +30,10 @@ var DesignCenterComponentGVK = GroupVersion.WithKind("DesignCenterComponent")
 // +kcc:spec:proto=google.cloud.designcenter.v1.Component
 // +kcc:required-from-proto
 type DesignCenterComponentSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template} this resource belongs to.
-	// +kcc:guess
-	// ApplicationTemplateRef *DesignCenterApplicationTemplateRef `json:"applicationTemplateRef,omitempty"`
+	// The DesignCenterApplicationTemplate this DesignCenterComponent is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *DesignCenterApplicationTemplateRef `json:"parentRef"`
 
 	// The DesignCenterComponent name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

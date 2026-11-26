@@ -186,9 +186,6 @@ spec:
                   - variable
                   type: object
                 type: array
-              location:
-                description: The location of this resource.
-                type: string
               parameters:
                 description: Optional. The component parameters.
                 items:
@@ -229,8 +226,9 @@ spec:
                   - key
                   type: object
                 type: array
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The DesignCenterApplicationTemplate this DesignCenterComponent
+                  is created under.
                 oneOf:
                 - not:
                     required:
@@ -247,20 +245,20 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed DesignCenterApplicationTemplate
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/spaces/{{spaceID}}/applicationTemplates/{{applicationTemplateID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a DesignCenterApplicationTemplate resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a DesignCenterApplicationTemplate
+                      resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The DesignCenterComponent name. If not given, the metadata.name
                   will be used.
@@ -276,8 +274,7 @@ spec:
                   of a separate terraform root module.
                 type: boolean
             required:
-            - location
-            - projectRef
+            - parentRef
             - sharedTemplateRevisionURI
             type: object
           status:
