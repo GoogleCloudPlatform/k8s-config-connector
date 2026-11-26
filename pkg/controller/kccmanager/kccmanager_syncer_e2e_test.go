@@ -40,6 +40,7 @@ import (
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	syncerv1alpha1 "github.com/gke-labs/kube-etl/syncer/api/v1alpha1"
 	mclv1alpha1 "github.com/gke-labs/multicluster-leader-election/api/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 func TestSyncerIntegration_OnStartedLeading_CacheSafety(t *testing.T) {
@@ -476,6 +477,7 @@ func startSyncerEnvtest(t *testing.T) (*rest.Config, client.Client) {
 	_ = mclv1alpha1.AddToScheme(scheme)
 	_ = operatorv1beta1.AddToScheme(scheme)
 	_ = syncerv1alpha1.AddToScheme(scheme)
+	_ = apiextensionsv1.AddToScheme(scheme)
 
 	kubeClient, err := client.New(cfg, client.Options{Scheme: scheme})
 	if err != nil {

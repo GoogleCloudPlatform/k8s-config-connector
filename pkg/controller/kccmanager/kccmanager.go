@@ -531,9 +531,15 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 					sort.Strings(watchNamespaces)
 				}
 
+				syncerDiscovery, err := newSyncerDiscovery(mgr.GetConfig())
+				if err != nil {
+					return nil, fmt.Errorf("error creating discovery client for the syncer integration: %w", err)
+				}
+
 				syncerInteg = &SyncerIntegration{
 					client:    mgr.GetClient(),
 					apiReader: mgr.GetAPIReader(),
+					discovery: syncerDiscovery,
 					leaseNN: types.NamespacedName{
 						Namespace: mclConfig.Namespace,
 						Name:      mclConfig.LeaseName,
