@@ -53,11 +53,19 @@ ${CONTROLLERBUILDER} generate-types \
     --prepopulate-resource \
     --resource BackupDRAutoProtectionPolicy:AutoProtectionPolicy
 
+${CONTROLLERBUILDER} generate-types \
+    --service google.cloud.backupdr.v1 \
+    --api-version backupdr.cnrm.cloud.google.com/v1alpha1 \
+    --include-skipped-output \
+    --resource BackupDRRestoreTemplate:RestoreTemplate \
+    --prepopulate-resource
+
 ${CONTROLLERBUILDER} generate-identity \
     --service google.cloud.backupdr.v1 \
     --api-version backupdr.cnrm.cloud.google.com/v1alpha1 \
     --resource BackupDRRestoreVerificationPlan:RestoreVerificationPlan \
-    --resource BackupDRAutoProtectionPolicy:AutoProtectionPolicy
+    --resource BackupDRAutoProtectionPolicy:AutoProtectionPolicy \
+    --resource BackupDRRestoreTemplate:RestoreTemplate
 
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \

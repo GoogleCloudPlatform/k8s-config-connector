@@ -1,3 +1,12 @@
+### [2026-11-26] Prepopulate direct KRM types, identity, judgement queue, and mappers for BackupDRRestoreTemplate
+- **Context**: Prepopulating BackupDRRestoreTemplate under `apis/backupdr/v1alpha1` (Greenfield Step 1a, Issue #15531).
+- **Protos & Dependencies**: RestoreTemplate proto (`google.cloud.backupdr.v1.RestoreTemplate`) is present in `origin/master` of googleapis. Added the protos under `mockgcp/apis/google/cloud/backupdr/v1/` and wired them in `dev/tools/controllerbuilder/generate-proto.sh` and `sourcelinks.go` (`kccProtoOverrides`). Upgraded `cloud.google.com/go/backupdr` to `v1.20.0` in `go.mod` and `mockgcp/go.mod` without replace directives.
+- **Mappers**: Generated direct mappers with `--prepopulate-resource` in `apis/backupdr/generate.sh` into `pkg/controller/direct/backupdr/mapper.generated.go`. In `pkg/controller/direct/backupdr/backupdrbackupplanassociation_fuzzer.go`, marked new fields introduced in v1.20.0 (`.alloydb_cluster_backup_plan_association_properties` and `.auto_protection_policy_binding`) as untriaged per `.gemini/skills/update-client-library-version/SKILL.md`.
+- **Identity & References**: Generated `backupdrrestoretemplate_identity.generated.go` and `backupdrrestoretemplate_reference.generated.go` with pattern `projects/{project}/locations/{location}/restoreTemplates/{restore_template}`. Conformance tests pass.
+- **Judgement Queue**: Generated `apis/backupdr/judgement_queue.yaml` with open `untriaged-bulk-generation` and related entries for Step 1b triage.
+- **Release Bundle**: Added `BackupDRRestoreTemplate` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+- **Exceptions**: Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` and `spec_dislike_etag.txt` with `backupdrrestoretemplates` entries.
+
 ### [2026-11-16] Greenfield Step 2: Implement direct controller, E2E fixtures, and fuzzer for BackupDRAutoProtectionPolicy
 - **Context**: Greenfield Step 2 implementation for `BackupDRAutoProtectionPolicy` (Issue #15802).
 - **Details**:

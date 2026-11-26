@@ -191,15 +191,19 @@ func (r *Resolver) links(ctx context.Context, in input) []Link {
 // from mockgcp/apis before compiling. Types generated from them follow the
 // KCC copy, so the link does too.
 var kccProtoOverrides = map[string]bool{
-	"google/cloud/backupdr/v1/autoprotectionpolicy.proto": true,
-	"google/cloud/backupdr/v1/backupdr.proto":             true,
-	"google/cloud/biglake/hive/v1/hive_metastore.proto":   true,
-	"google/cloud/biglake/v1/iceberg_rest_catalog.proto":  true,
-	"google/cloud/config/v1/config.proto":                 true,
-	"google/cloud/dataplex/v1/catalog.proto":              true,
-	"google/cloud/lustre/v1/mirror.proto":                 true,
-	"google/logging/v2/logging_config.proto":              true,
-	"google/privacy/dlp/v2/dlp.proto":                     true,
+	"google/cloud/backupdr/v1/autoprotectionpolicy.proto":       true,
+	"google/cloud/backupdr/v1/backupdr.proto":                  true,
+	"google/cloud/backupdr/v1/restore_template.proto":          true,
+	"google/cloud/backupdr/v1/restore_template_common.proto":   true,
+	"google/cloud/backupdr/v1/restore_template_execution.proto": true,
+	"google/cloud/backupdr/v1/restore_verification_plan.proto": true,
+	"google/cloud/biglake/hive/v1/hive_metastore.proto":        true,
+	"google/cloud/biglake/v1/iceberg_rest_catalog.proto":       true,
+	"google/cloud/config/v1/config.proto":                      true,
+	"google/cloud/dataplex/v1/catalog.proto":                   true,
+	"google/cloud/lustre/v1/mirror.proto":                      true,
+	"google/logging/v2/logging_config.proto":                   true,
+	"google/privacy/dlp/v2/dlp.proto":                          true,
 }
 
 func (r *Resolver) protoLink(path string) Link {

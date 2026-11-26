@@ -126,11 +126,9 @@ cp ${REPO_ROOT}/mockgcp/apis/google/cloud/lustre/v1/* google/cloud/lustre/v1/
 mkdir -p google/cloud/dataplex/v1
 cp ${REPO_ROOT}/mockgcp/apis/google/cloud/dataplex/v1/catalog.proto google/cloud/dataplex/v1/catalog.proto
 
-# Overwrite backupdr protos with the updated version that has AutoProtectionPolicy and RestoreVerificationPlan
+# Overwrite backupdr protos with the updated version that has AutoProtectionPolicy, RestoreVerificationPlan and RestoreTemplate
 mkdir -p google/cloud/backupdr/v1
-cp ${REPO_ROOT}/mockgcp/apis/google/cloud/backupdr/v1/autoprotectionpolicy.proto google/cloud/backupdr/v1/autoprotectionpolicy.proto
-cp ${REPO_ROOT}/mockgcp/apis/google/cloud/backupdr/v1/backupdr.proto google/cloud/backupdr/v1/backupdr.proto
-cp ${REPO_ROOT}/mockgcp/apis/google/cloud/backupdr/v1/restore_verification_plan.proto google/cloud/backupdr/v1/restore_verification_plan.proto
+cp ${REPO_ROOT}/mockgcp/apis/google/cloud/backupdr/v1/* google/cloud/backupdr/v1/
 
 # Overwrite logging_config.proto with the updated version that has LogScope
 mkdir -p google/logging/v2
