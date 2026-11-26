@@ -23,7 +23,6 @@ import (
 	"testing"
 	"time"
 
-	operatork8s "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
@@ -83,6 +82,7 @@ func TestStatusWorkloadChecks(t *testing.T) {
 				for _, f := range fs {
 					f.cc.Spec.Mode = "cluster"
 					f.extraObjs = nil
+					f.managers = nil
 				}
 			},
 			wantState:    haStateHealthy,
@@ -185,18 +185,11 @@ func TestStatusWorkloadChecks(t *testing.T) {
 			now:  testNow,
 			mutate: func(fs haFixtures) {
 				fs[1].cc.Spec.Mode = "cluster"
-				var filtered []runtime.Object
-				for _, obj := range fs[1].extraObjs {
-					if _, ok := obj.(*appsv1.StatefulSet); ok {
-						continue
-					}
-					filtered = append(filtered, obj)
-				}
-				fs[1].extraObjs = filtered
+				fs[1].managers = nil
 			},
 			wantState: haStateError,
 			wantProblems: []string{
-				`cluster "gke_proj-b_us-east1_cluster-b": Config Connector's manager StatefulSet not found`,
+				`cluster "gke_proj-b_us-east1_cluster-b": no StatefulSet of Config Connector's manager found; this cluster cannot take over`,
 			},
 		},
 		{
@@ -206,14 +199,7 @@ func TestStatusWorkloadChecks(t *testing.T) {
 				for _, f := range fs {
 					f.cc.Spec.Mode = "namespaced"
 				}
-				var filtered []runtime.Object
-				for _, obj := range fs[1].extraObjs {
-					if _, ok := obj.(*appsv1.StatefulSet); ok {
-						continue
-					}
-					filtered = append(filtered, obj)
-				}
-				fs[1].extraObjs = filtered
+				fs[1].managers = nil
 			},
 			wantState:    haStateHealthy,
 			wantProblems: nil,
@@ -222,56 +208,42 @@ func TestStatusWorkloadChecks(t *testing.T) {
 			name: "Manager StatefulSet: 0 replicas with failoverReplicasAnnotation",
 			now:  testNow,
 			mutate: func(fs haFixtures) {
-				for _, obj := range fs[1].extraObjs {
-					if m, ok := obj.(*appsv1.StatefulSet); ok {
-						m.Spec.Replicas = ptrInt32(0)
-						m.Annotations = map[string]string{failoverReplicasAnnotation: "1"}
-					}
-				}
+				fs[1].managers[0].Spec.Replicas = ptrInt32(0)
+				fs[1].managers[0].Annotations = map[string]string{failoverReplicasAnnotation: "1"}
 			},
 			wantState: haStateError,
 			wantProblems: []string{
-				`cluster "gke_proj-b_us-east1_cluster-b": Config Connector's manager is stopped: failover scaled StatefulSet cnrm-system/cnrm-controller-manager-system to 0 and has not started it again; if no failover is running, run "config-connector ha failover" again, which starts it`,
+				`cluster "gke_proj-b_us-east1_cluster-b": Config Connector's manager is not running (StatefulSet cnrm-system/cnrm-controller-manager was stopped by ha failover; running ha failover again starts it); this cluster cannot take over`,
 			},
 		},
 		{
 			name: "Manager StatefulSet: 0 replicas without annotation",
 			now:  testNow,
 			mutate: func(fs haFixtures) {
-				for _, obj := range fs[1].extraObjs {
-					if m, ok := obj.(*appsv1.StatefulSet); ok {
-						m.Spec.Replicas = ptrInt32(0)
-					}
-				}
+				fs[1].managers[0].Spec.Replicas = ptrInt32(0)
 			},
 			wantState: haStateError,
 			wantProblems: []string{
-				`cluster "gke_proj-b_us-east1_cluster-b": Config Connector's manager is stopped: StatefulSet cnrm-system/cnrm-controller-manager-system is scaled to 0`,
+				`cluster "gke_proj-b_us-east1_cluster-b": Config Connector's manager is not running (StatefulSet cnrm-system/cnrm-controller-manager is scaled to 0); this cluster cannot take over`,
 			},
 		},
 		{
 			name: "Leader manager StatefulSet scaled to 0",
 			now:  testNow,
 			mutate: func(fs haFixtures) {
-				for _, obj := range fs[0].extraObjs {
-					if m, ok := obj.(*appsv1.StatefulSet); ok {
-						m.Spec.Replicas = ptrInt32(0)
-					}
-				}
+				fs[0].managers[0].Spec.Replicas = ptrInt32(0)
 			},
 			wantState: haStateError,
 			wantProblems: []string{
-				`cluster "gke_proj-a_us-central1_cluster-a": Config Connector's manager is stopped: StatefulSet cnrm-system/cnrm-controller-manager-system is scaled to 0`,
+				`cluster "gke_proj-a_us-central1_cluster-a" (leader): Config Connector's manager is not running (StatefulSet cnrm-system/cnrm-controller-manager is scaled to 0); nothing reconciles until it runs again or another cluster takes the lease`,
 			},
 		},
 		{
 			name: "Manager StatefulSet: 1 replica, 0 ready; container waiting CrashLoopBackOff",
 			now:  testNow,
 			mutate: func(fs haFixtures) {
+				fs[1].managers[0].Status.ReadyReplicas = 0
 				for _, obj := range fs[1].extraObjs {
-					if m, ok := obj.(*appsv1.StatefulSet); ok {
-						m.Status.ReadyReplicas = 0
-					}
 					if p, ok := obj.(*corev1.Pod); ok && strings.HasPrefix(p.Name, "cnrm-controller-manager-system") {
 						p.Status.ContainerStatuses = []corev1.ContainerStatus{
 							{
@@ -295,8 +267,43 @@ func TestStatusWorkloadChecks(t *testing.T) {
 			},
 			wantState: haStateError,
 			wantProblems: []string{
-				`cluster "gke_proj-b_us-east1_cluster-b": Config Connector's manager is not ready: StatefulSet cnrm-system/cnrm-controller-manager-system has 0 of 1 pods ready; pod "cnrm-controller-manager-system-0" container "manager" is waiting: CrashLoopBackOff (back-off 5m0s); it last exited with code 1 (Error)`,
+				`cluster "gke_proj-b_us-east1_cluster-b": Config Connector's manager is not running (StatefulSet cnrm-system/cnrm-controller-manager has 0 of 1 pods ready); this cluster cannot take over; pod "cnrm-controller-manager-system-0" container "manager" is waiting: CrashLoopBackOff (back-off 5m0s); it last exited with code 1 (Error)`,
 			},
+		},
+		{
+			name: "Manager StatefulSet: 1 replica, 0 ready, container running 20s, 7 restarts (not duplicated by check 5)",
+			now:  testNow,
+			mutate: func(fs haFixtures) {
+				fs[1].managers[0].Status.ReadyReplicas = 0
+				for _, obj := range fs[1].extraObjs {
+					if p, ok := obj.(*corev1.Pod); ok && strings.HasPrefix(p.Name, "cnrm-controller-manager-system") {
+						p.Status.ContainerStatuses = []corev1.ContainerStatus{
+							{
+								Name: "manager",
+								State: corev1.ContainerState{
+									Running: &corev1.ContainerStateRunning{
+										StartedAt: metav1.NewTime(testNow.Add(-20 * time.Second)),
+									},
+								},
+								RestartCount: 7,
+								LastTerminationState: corev1.ContainerState{
+									Terminated: &corev1.ContainerStateTerminated{
+										StartedAt:  metav1.NewTime(testNow.Add(-23 * time.Second)),
+										FinishedAt: metav1.NewTime(testNow.Add(-20 * time.Second)),
+										ExitCode:   1,
+										Reason:     "Error",
+									},
+								},
+							},
+						}
+					}
+				}
+			},
+			wantState: haStateError,
+			wantProblems: []string{
+				`cluster "gke_proj-b_us-east1_cluster-b": Config Connector's manager is not running (StatefulSet cnrm-system/cnrm-controller-manager has 0 of 1 pods ready); this cluster cannot take over; pod "cnrm-controller-manager-system-0" container "manager" is running; 7 restarts; it last exited with code 1 (Error)`,
+			},
+			wantWarnings: nil,
 		},
 		{
 			name: "Namespaced mode: two manager StatefulSets, one not ready",
@@ -305,39 +312,14 @@ func TestStatusWorkloadChecks(t *testing.T) {
 				for _, f := range fs {
 					f.cc.Spec.Mode = "namespaced"
 				}
-				stsTeamA := &appsv1.StatefulSet{
-					ObjectMeta: metav1.ObjectMeta{
-						Name:      "cnrm-controller-manager-team-a",
-						Namespace: "cnrm-system",
-						Labels:    map[string]string{operatork8s.KCCSystemComponentLabel: operatork8s.KCCControllerManagerComponent},
-					},
-					Spec: appsv1.StatefulSetSpec{
-						Replicas: ptrInt32(1),
-						Selector: &metav1.LabelSelector{
-							MatchLabels: map[string]string{operatork8s.KCCSystemComponentLabel: operatork8s.KCCControllerManagerComponent, "team": "a"},
-						},
-					},
-					Status: appsv1.StatefulSetStatus{Replicas: 1, ReadyReplicas: 1},
-				}
-				stsTeamB := &appsv1.StatefulSet{
-					ObjectMeta: metav1.ObjectMeta{
-						Name:      "cnrm-controller-manager-team-b",
-						Namespace: "cnrm-system",
-						Labels:    map[string]string{operatork8s.KCCSystemComponentLabel: operatork8s.KCCControllerManagerComponent},
-					},
-					Spec: appsv1.StatefulSetSpec{
-						Replicas: ptrInt32(1),
-						Selector: &metav1.LabelSelector{
-							MatchLabels: map[string]string{operatork8s.KCCSystemComponentLabel: operatork8s.KCCControllerManagerComponent, "team": "b"},
-						},
-					},
-					Status: appsv1.StatefulSetStatus{Replicas: 1, ReadyReplicas: 0},
-				}
-				fs[1].extraObjs = append(fs[1].extraObjs, stsTeamA, stsTeamB)
+				stsTeamA := newReadyTestManagerStatefulSet(testLeaseNamespace, "cnrm-controller-manager-team-a", "team-a")
+				stsTeamB := newReadyTestManagerStatefulSet(testLeaseNamespace, "cnrm-controller-manager-team-b", "team-b")
+				stsTeamB.Status.ReadyReplicas = 0
+				fs[1].managers = []*appsv1.StatefulSet{stsTeamA, stsTeamB}
 			},
 			wantState: haStateError,
 			wantProblems: []string{
-				`cluster "gke_proj-b_us-east1_cluster-b": Config Connector's manager is not ready: StatefulSet cnrm-system/cnrm-controller-manager-team-b has 0 of 1 pods ready`,
+				`cluster "gke_proj-b_us-east1_cluster-b": the manager of namespace "team-b" is not running (StatefulSet cnrm-system/cnrm-controller-manager-team-b has 0 of 1 pods ready); this cluster would not reconcile that namespace as the leader`,
 			},
 		},
 		{

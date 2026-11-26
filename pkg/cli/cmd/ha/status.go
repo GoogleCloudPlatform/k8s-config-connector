@@ -38,11 +38,24 @@ func newStatusOptions() statusOptions {
 	return statusOptions{}
 }
 
+const statusLong = `Display multi-cluster high availability leadership, manager, and replication status.
+
+Status inspects each cluster named in --contexts and checks:
+  - the clusters share a consistent MultiClusterLease configuration;
+  - each cluster's lease backend is healthy and the lease has a live holder;
+  - all clusters agree on the current leader;
+  - Config Connector's manager StatefulSets are running and ready;
+  - KRMSyncers are suspended on the leader and actively syncing on standbys.
+
+In namespaced mode, all managers on a cluster share the multi-cluster lease under the
+cluster's identity, so leadership never moves for one namespace alone.`
+
 func NewStatusCmd() *cobra.Command {
 	opts := newStatusOptions()
 	cmd := &cobra.Command{
 		Use:   "status",
 		Short: "Display multi-cluster high availability leadership and replication status",
+		Long:  statusLong,
 		Args:  cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.stdout = cmd.OutOrStdout()
@@ -265,7 +278,7 @@ func buildStatusReport(clusters []*clusterStatus, now time.Time) *statusReport {
 				continue
 			}
 			if c.workloads != nil {
-				probs, warns := c.workloads.checkWorkloads(c.gke.contextName, c.state, now)
+				probs, warns := c.workloads.checkWorkloads(c.gke.contextName, c.state, c.role == roleLeader, now)
 				r.problems = append(r.problems, probs...)
 				r.warnings = append(r.warnings, warns...)
 			}

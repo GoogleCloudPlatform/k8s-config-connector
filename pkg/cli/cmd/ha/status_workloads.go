@@ -144,7 +144,7 @@ func fetchClusterWorkloads(ctx context.Context, h *clusterHandle, cc *operatorv1
 }
 
 // checkWorkloads evaluates the workloads on a cluster against checks 1-5 and missing workload rules.
-func (cw *clusterWorkloads) checkWorkloads(contextName string, state *clusterHAState, now time.Time) ([]string, []string) {
+func (cw *clusterWorkloads) checkWorkloads(contextName string, state *clusterHAState, isLeader bool, now time.Time) ([]string, []string) {
 	var problems []string
 	var warnings []string
 	mclSpec := multiClusterLeaseSpec(state.configConnector)
@@ -156,11 +156,20 @@ func (cw *clusterWorkloads) checkWorkloads(contextName string, state *clusterHAS
 	// Missing workloads check
 	if len(cw.managers) == 0 {
 		if state.configConnector.GetMode() != operatork8s.NamespacedMode {
-			msg := fmt.Sprintf("cluster %q: Config Connector's manager StatefulSet not found", contextName)
 			if cw.isHASetupManaged {
-				problems = append(problems, msg)
+				clusterPart := fmt.Sprintf("cluster %q", contextName)
+				if isLeader {
+					clusterPart += " (leader)"
+				}
+				var consequencePart string
+				if isLeader {
+					consequencePart = "nothing reconciles until it runs again or another cluster takes the lease"
+				} else {
+					consequencePart = "this cluster cannot take over"
+				}
+				problems = append(problems, fmt.Sprintf("%s: no StatefulSet of Config Connector's manager found; %s", clusterPart, consequencePart))
 			} else {
-				warnings = append(warnings, msg)
+				warnings = append(warnings, fmt.Sprintf("cluster %q: Config Connector's manager StatefulSet not found", contextName))
 			}
 		}
 	}
@@ -187,22 +196,9 @@ func (cw *clusterWorkloads) checkWorkloads(contextName string, state *clusterHAS
 
 	// Checks 1-3 on Manager StatefulSets
 	for _, mw := range cw.managers {
-		m := mw.sts
-		if m.replicas() == 0 {
-			if _, annotated := m.Annotations[failoverReplicasAnnotation]; annotated {
-				problems = append(problems, fmt.Sprintf("cluster %q: Config Connector's manager is stopped: failover scaled StatefulSet %s to 0 and has not started it again; if no failover is running, run \"config-connector ha failover\" again, which starts it", contextName, m.key()))
-			} else {
-				problems = append(problems, fmt.Sprintf("cluster %q: Config Connector's manager is stopped: StatefulSet %s is scaled to 0", contextName, m.key()))
-			}
-			reportedWorkloads[m.StatefulSet] = true
-		} else if pending := m.pendingReady(); pending != "" {
-			details := describePodContainers(mw.pods)
-			msg := fmt.Sprintf("Config Connector's manager is not ready: %s", pending)
-			if len(details) > 0 {
-				msg = strings.Join(append([]string{msg}, details...), "; ")
-			}
-			problems = append(problems, fmt.Sprintf("cluster %q: %s", contextName, msg))
-			reportedWorkloads[m.StatefulSet] = true
+		if prob, reported := checkManager(contextName, mw, isLeader); reported {
+			problems = append(problems, prob)
+			reportedWorkloads[mw.sts.StatefulSet] = true
 		}
 	}
 
@@ -236,6 +232,63 @@ func (cw *clusterWorkloads) checkWorkloads(contextName string, state *clusterHAS
 	}
 
 	return problems, warnings
+}
+
+func checkManager(contextName string, mw *managerWorkload, isLeader bool) (string, bool) {
+	m := mw.sts
+	replicas := m.replicas()
+	pendingReady := m.pendingReady()
+	if replicas > 0 && pendingReady == "" {
+		return "", false
+	}
+
+	clusterPart := fmt.Sprintf("cluster %q", contextName)
+	if isLeader {
+		clusterPart += " (leader)"
+	}
+
+	scopedNamespace := m.Labels[operatork8s.NamespacedComponentLabel]
+	var managerPart string
+	if scopedNamespace != "" {
+		managerPart = fmt.Sprintf("the manager of namespace %q", scopedNamespace)
+	} else {
+		managerPart = "Config Connector's manager"
+	}
+
+	var reasonPart string
+	if replicas == 0 {
+		if _, hasFailoverReplicas := m.Annotations[failoverReplicasAnnotation]; hasFailoverReplicas {
+			reasonPart = fmt.Sprintf("StatefulSet %s was stopped by ha failover; running ha failover again starts it", m.key())
+		} else {
+			reasonPart = fmt.Sprintf("StatefulSet %s is scaled to 0", m.key())
+		}
+	} else {
+		reasonPart = pendingReady
+	}
+
+	var consequencePart string
+	if isLeader {
+		if scopedNamespace != "" {
+			consequencePart = "no cluster reconciles that namespace. The cluster keeps the lease while another of its managers runs: start the manager, or move leadership to a cluster where it runs with config-connector ha failover"
+		} else {
+			consequencePart = "nothing reconciles until it runs again or another cluster takes the lease"
+		}
+	} else {
+		if scopedNamespace != "" {
+			consequencePart = "this cluster would not reconcile that namespace as the leader"
+		} else {
+			consequencePart = "this cluster cannot take over"
+		}
+	}
+
+	msg := fmt.Sprintf("%s: %s is not running (%s); %s", clusterPart, managerPart, reasonPart, consequencePart)
+	if replicas > 0 {
+		details := describePodContainers(mw.pods)
+		if len(details) > 0 {
+			msg = strings.Join(append([]string{msg}, details...), "; ")
+		}
+	}
+	return msg, true
 }
 
 func checkDeployment(contextName string, dw *deploymentWorkload) (string, bool) {
