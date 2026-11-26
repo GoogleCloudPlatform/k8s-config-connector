@@ -58,4 +58,15 @@
   3. Added `LiveStreamClip` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
   4. Scaffolded direct KRM types, identity, reference, CRD, and `judgement_queue.yaml` entries (with `untriaged-bulk-generation` in `open` state).
 
+### [2026-11-26] LiveStreamClip types judgement triage
+- **Context**: Triaging judgement queue and finalizing KRM types, identity, and reference types for `LiveStreamClip` (`livestream.cnrm.cloud.google.com/v1alpha1`).
+- **Findings**:
+  1. `LiveStreamClip` is a child resource under `LiveStreamChannel` with resource pattern `projects/{project}/locations/{location}/channels/{channel}/clips/{clip}`.
+  2. Modeled its parent as required, immutable `spec.parentRef` (`*LiveStreamChannelRef`), removing `ProjectRef` and `Location` from `LiveStreamClipSpec`.
+  3. Preserved `spec.labels` in `LiveStreamClipSpec` as greenfield direct resources manage proto labels in Spec rather than metadata.labels.
+  4. Retained `--prepopulate-resource` on `generate-types` for `LiveStreamClip` and on `generate-mapper` in `generate.sh` to keep `manifestKey` marked `required` under `spec.clipManifests[]` and support mapper generation.
+  5. Resolved `reference-not-representable` on `.spec.outputURI` as `accepted` because GCS paths cannot be decomposed into canonical references currently.
+  6. Updated REST documentation links to `https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels.clips` and service-docs to `https://cloud.google.com/livestream/docs/reference/rest`.
+
+
 

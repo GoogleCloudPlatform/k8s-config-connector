@@ -81,9 +81,6 @@ spec:
                 description: The labels associated with this resource. Each label
                   is a key-value pair.
                 type: object
-              location:
-                description: The location of this resource.
-                type: string
               outputType:
                 description: Optional. OutputType of the clip. If not specified, the
                   default value is MANIFEST.
@@ -96,8 +93,9 @@ spec:
                   in `clip_manifests.output_uri` for each manifest. Example: "output_uri":
                   "gs://my-bucket/clip-outputs" "clip_manifests.output_uri": "gs://my-bucket/clip-outputs/main.m3u8"'
                 type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The LiveStreamChannel that this LiveStreamClip belongs
+                  to.
                 oneOf:
                 - not:
                     required:
@@ -114,20 +112,19 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed LiveStreamChannel
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/channels/{{channelID}}"
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a LiveStreamChannel resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a LiveStreamChannel resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The LiveStreamClip name. If not given, the metadata.name
                   will be used.
@@ -152,8 +149,7 @@ spec:
                 type: array
             required:
             - clipManifests
-            - location
-            - projectRef
+            - parentRef
             type: object
           status:
             description: LiveStreamClipStatus defines the config connector machine
