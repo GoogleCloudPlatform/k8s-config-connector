@@ -21,6 +21,7 @@
 // resource: LiveStreamChannel:Channel
 // resource: LiveStreamInput:Input
 // resource: LiveStreamDVRSession:DvrSession
+// resource: LiveStreamClip:Clip
 
 package v1alpha1
 
@@ -137,6 +138,34 @@ type Channel_Output struct {
 	// URI for the output file(s). For example, `gs://my-bucket/outputs/`.
 	// +kcc:proto:field=google.cloud.video.livestream.v1.Channel.Output.uri
 	URI *string `json:"uri,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.livestream.v1.Clip.ClipManifest
+type Clip_ClipManifest struct {
+	// Required. A unique key that identifies a manifest config in the parent
+	//  channel. This key is the same as `channel.manifests.key` for the selected
+	//  manifest.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.Clip.ClipManifest.manifest_key
+	// +required
+	ManifestKey *string `json:"manifestKey,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.livestream.v1.Clip.Slice
+type Clip_Slice struct {
+	// A slice in form of a tuple of Unix epoch time.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.Clip.Slice.time_slice
+	TimeSlice *Clip_TimeSlice `json:"timeSlice,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.livestream.v1.Clip.TimeSlice
+type Clip_TimeSlice struct {
+	// The mark-in Unix epoch time in the original live stream manifest.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.Clip.TimeSlice.markin_time
+	MarkinTime *string `json:"markinTime,omitempty"`
+
+	// The mark-out Unix epoch time in the original live stream manifest.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.Clip.TimeSlice.markout_time
+	MarkoutTime *string `json:"markoutTime,omitempty"`
 }
 
 // +kcc:proto=google.cloud.video.livestream.v1.DvrSession.DvrManifest
@@ -686,6 +715,18 @@ type TimeZone struct {
 	// Optional. IANA Time Zone Database version number, e.g. "2019a".
 	// +kcc:proto:field=google.type.TimeZone.version
 	Version *string `json:"version,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.video.livestream.v1.Clip.ClipManifest
+type Clip_ClipManifestObservedState struct {
+	// Output only. The output URI of the generated clip manifest. This field
+	//  will be populated when the CreateClip request is accepted. Current output
+	//  format is provided below but may change in the future. Please read this
+	//  field to get the uri to the generated clip manifest. Format:
+	//  {clip.output_uri}/{channel.manifest.fileName} Example:
+	//  gs://my-bucket/clip-outputs/main.m3u8
+	// +kcc:proto:field=google.cloud.video.livestream.v1.Clip.ClipManifest.output_uri
+	OutputURI *string `json:"outputURI,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.video.livestream.v1.DvrSession.DvrManifest

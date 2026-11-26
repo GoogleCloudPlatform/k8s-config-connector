@@ -168,6 +168,78 @@ func Channel_Output_ToProto(mapCtx *direct.MapContext, in *krm.Channel_Output) *
 	out.Uri = direct.ValueOf(in.URI)
 	return out
 }
+func Clip_ClipManifest_FromProto(mapCtx *direct.MapContext, in *pb.Clip_ClipManifest) *krm.Clip_ClipManifest {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Clip_ClipManifest{}
+	out.ManifestKey = direct.LazyPtr(in.GetManifestKey())
+	// MISSING: OutputURI
+	return out
+}
+func Clip_ClipManifest_ToProto(mapCtx *direct.MapContext, in *krm.Clip_ClipManifest) *pb.Clip_ClipManifest {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Clip_ClipManifest{}
+	out.ManifestKey = direct.ValueOf(in.ManifestKey)
+	// MISSING: OutputURI
+	return out
+}
+func Clip_ClipManifestObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Clip_ClipManifest) *krm.Clip_ClipManifestObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Clip_ClipManifestObservedState{}
+	// MISSING: ManifestKey
+	out.OutputURI = direct.LazyPtr(in.GetOutputUri())
+	return out
+}
+func Clip_ClipManifestObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Clip_ClipManifestObservedState) *pb.Clip_ClipManifest {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Clip_ClipManifest{}
+	// MISSING: ManifestKey
+	out.OutputUri = direct.ValueOf(in.OutputURI)
+	return out
+}
+func Clip_Slice_FromProto(mapCtx *direct.MapContext, in *pb.Clip_Slice) *krm.Clip_Slice {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Clip_Slice{}
+	out.TimeSlice = Clip_TimeSlice_FromProto(mapCtx, in.GetTimeSlice())
+	return out
+}
+func Clip_Slice_ToProto(mapCtx *direct.MapContext, in *krm.Clip_Slice) *pb.Clip_Slice {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Clip_Slice{}
+	if oneof := Clip_TimeSlice_ToProto(mapCtx, in.TimeSlice); oneof != nil {
+		out.Kind = &pb.Clip_Slice_TimeSlice{TimeSlice: oneof}
+	}
+	return out
+}
+func Clip_TimeSlice_FromProto(mapCtx *direct.MapContext, in *pb.Clip_TimeSlice) *krm.Clip_TimeSlice {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Clip_TimeSlice{}
+	out.MarkinTime = direct.StringTimestamp_FromProto(mapCtx, in.GetMarkinTime())
+	out.MarkoutTime = direct.StringTimestamp_FromProto(mapCtx, in.GetMarkoutTime())
+	return out
+}
+func Clip_TimeSlice_ToProto(mapCtx *direct.MapContext, in *krm.Clip_TimeSlice) *pb.Clip_TimeSlice {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Clip_TimeSlice{}
+	out.MarkinTime = direct.StringTimestamp_ToProto(mapCtx, in.MarkinTime)
+	out.MarkoutTime = direct.StringTimestamp_ToProto(mapCtx, in.MarkoutTime)
+	return out
+}
 func DvrSession_DvrManifest_FromProto(mapCtx *direct.MapContext, in *pb.DvrSession_DvrManifest) *krm.DvrSession_DvrManifest {
 	if in == nil {
 		return nil
@@ -608,6 +680,60 @@ func LiveStreamChannelSpec_ToProto(mapCtx *direct.MapContext, in *krm.LiveStream
 	out.InputConfig = InputConfig_ToProto(mapCtx, in.InputConfig)
 	out.RetentionConfig = RetentionConfig_ToProto(mapCtx, in.RetentionConfig)
 	out.StaticOverlays = direct.Slice_ToProto(mapCtx, in.StaticOverlays, StaticOverlay_ToProto)
+	return out
+}
+func LiveStreamClipObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Clip) *krm.LiveStreamClipObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LiveStreamClipObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	out.ClipManifests = direct.Slice_FromProto(mapCtx, in.ClipManifests, Clip_ClipManifestObservedState_FromProto)
+	return out
+}
+func LiveStreamClipObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LiveStreamClipObservedState) *pb.Clip {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Clip{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.Clip_State](mapCtx, in.State)
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
+	out.ClipManifests = direct.Slice_ToProto(mapCtx, in.ClipManifests, Clip_ClipManifestObservedState_ToProto)
+	return out
+}
+func LiveStreamClipSpec_FromProto(mapCtx *direct.MapContext, in *pb.Clip) *krm.LiveStreamClipSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LiveStreamClipSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.OutputURI = direct.LazyPtr(in.GetOutputUri())
+	out.Slices = direct.Slice_FromProto(mapCtx, in.Slices, Clip_Slice_FromProto)
+	out.ClipManifests = direct.Slice_FromProto(mapCtx, in.ClipManifests, Clip_ClipManifest_FromProto)
+	out.OutputType = direct.Enum_FromProto(mapCtx, in.GetOutputType())
+	return out
+}
+func LiveStreamClipSpec_ToProto(mapCtx *direct.MapContext, in *krm.LiveStreamClipSpec) *pb.Clip {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Clip{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.OutputUri = direct.ValueOf(in.OutputURI)
+	out.Slices = direct.Slice_ToProto(mapCtx, in.Slices, Clip_Slice_ToProto)
+	out.ClipManifests = direct.Slice_ToProto(mapCtx, in.ClipManifests, Clip_ClipManifest_ToProto)
+	out.OutputType = direct.Enum_ToProto[pb.Clip_OutputType](mapCtx, in.OutputType)
 	return out
 }
 func LiveStreamDVRSessionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DvrSession) *krm.LiveStreamDVRSessionObservedState {
