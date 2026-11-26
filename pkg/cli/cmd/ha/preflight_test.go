@@ -62,9 +62,6 @@ func TestFetchClusterHAStateToleratesMissingHACRDs(t *testing.T) {
 	if err := operatorv1beta1.AddToScheme(schemeWithoutHACRDs); err != nil {
 		t.Fatalf("AddToScheme failed: %v", err)
 	}
-	if err := appsv1.AddToScheme(schemeWithoutHACRDs); err != nil {
-		t.Fatalf("AddToScheme appsv1 failed: %v", err)
-	}
 	cc := newConfigConnectorWithMCL("kcc-lease", "cnrm-system", "cluster-a-id")
 	fakeClient := fake.NewClientBuilder().WithScheme(schemeWithoutHACRDs).WithRuntimeObjects(cc).Build()
 	handle := &clusterHandle{

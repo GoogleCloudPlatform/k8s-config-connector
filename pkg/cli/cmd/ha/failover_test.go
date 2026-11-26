@@ -629,8 +629,8 @@ func TestFailoverHungClusterDoesNotStarveOtherClusters(t *testing.T) {
 		a.rejectRead = func(ctx context.Context, obj runtime.Object) error {
 			if _, ok := obj.(*appsv1.StatefulSetList); ok {
 				reads++
-				// Let preflight and currentLeader read cluster-a, then stall when finishEarlierFailover starts target.
-				if reads > 2 {
+				// Let currentLeader read cluster-a, then stall when finishEarlierFailover starts target.
+				if reads > 1 {
 					<-ctx.Done()
 					return ctx.Err()
 				}

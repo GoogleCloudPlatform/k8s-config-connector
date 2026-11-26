@@ -264,9 +264,6 @@ func buildStatusReport(clusters []*clusterStatus, now time.Time) *statusReport {
 	if len(configured) > 0 {
 		states := make([]*clusterHAState, 0, len(configured))
 		for _, c := range configured {
-			if c.workloads != nil && c.state != nil {
-				c.state.isHASetupManaged = c.workloads.isHASetupManaged
-			}
 			states = append(states, c.state)
 		}
 		leader, problems := haProblems(states, r.contextIdentities(), now)
@@ -281,7 +278,7 @@ func buildStatusReport(clusters []*clusterStatus, now time.Time) *statusReport {
 				continue
 			}
 			if c.workloads != nil {
-				probs, warns := c.workloads.checkWorkloads(c.gke.contextName, c.state, now)
+				probs, warns := c.workloads.checkWorkloads(c.gke.contextName, c.state, c.role == roleLeader, now)
 				r.problems = append(r.problems, probs...)
 				r.warnings = append(r.warnings, warns...)
 			}

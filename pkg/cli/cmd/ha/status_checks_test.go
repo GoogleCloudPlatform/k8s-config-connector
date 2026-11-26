@@ -90,7 +90,7 @@ func newTestManagerSTS(namespace string) *appsv1.StatefulSet {
 	}
 }
 
-func healthyWorkloadObjects(leaseNamespace string, managerSts *appsv1.StatefulSet) []runtime.Object {
+func healthyWorkloadObjects(leaseNamespace string) []runtime.Object {
 	role := &rbacv1.Role{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      managerHARoleName,
@@ -186,11 +186,7 @@ func healthyWorkloadObjects(leaseNamespace string, managerSts *appsv1.StatefulSe
 			},
 		},
 	}
-	objs := []runtime.Object{role, managerPod, mclDeploy, mclPod, syncerDeploy, syncerPod}
-	if managerSts != nil {
-		objs = append([]runtime.Object{role, managerSts}, objs[1:]...)
-	}
-	return objs
+	return []runtime.Object{role, managerPod, mclDeploy, mclPod, syncerDeploy, syncerPod}
 }
 
 // healthyHAFixtures returns a healthy pair: cluster-a holds the lease and its syncer is
@@ -215,7 +211,7 @@ func newLeaderFixture(context string) *haFixture {
 			newTestSyncer(testLeaseName, identity, true, syncerv1alpha1.ReasonSuspended, "Syncer is suspended"),
 		},
 		managers:  []*appsv1.StatefulSet{sts},
-		extraObjs: healthyWorkloadObjects(testLeaseNamespace, sts),
+		extraObjs: healthyWorkloadObjects(testLeaseNamespace),
 	}
 }
 
@@ -231,7 +227,7 @@ func newStandbyFixture(context, leader string) *haFixture {
 			newTestSyncer(testLeaseName, leader, false, syncerv1alpha1.ReasonSyncing, "Syncing"),
 		},
 		managers:  []*appsv1.StatefulSet{sts},
-		extraObjs: healthyWorkloadObjects(testLeaseNamespace, sts),
+		extraObjs: healthyWorkloadObjects(testLeaseNamespace),
 	}
 }
 
@@ -239,6 +235,7 @@ func newStandbyFixture(context, leader string) *haFixture {
 // gkeCluster that `ha setup` derives from the GKE context.
 func newHAConfigConnector(context string) *operatorv1beta1.ConfigConnector {
 	cc := newConfigConnectorWithMCL(testLeaseName, testLeaseNamespace, "cluster")
+	cc.Spec.Mode = "cluster"
 	gke, _ := parseGKEContext(context)
 	gkeCluster := gke.gkeCluster()
 	cc.Spec.Experiments.MultiClusterLease.GKECluster = &gkeCluster
@@ -267,42 +264,10 @@ func (fs haFixtures) handles(t *testing.T) []*clusterHandle {
 		for _, s := range f.syncers {
 			objs = append(objs, s)
 		}
-		managers := f.managers
-		if f.extraObjs == nil {
-			managers = nil
-		} else {
-			hasExtraSTS := false
-			for _, obj := range f.extraObjs {
-				if _, ok := obj.(*appsv1.StatefulSet); ok {
-					hasExtraSTS = true
-					break
-				}
-			}
-			if len(f.extraObjs) > 0 && !hasExtraSTS {
-				managers = nil
-			}
-		}
-		for _, m := range managers {
+		for _, m := range f.managers {
 			objs = append(objs, m)
 		}
-		for _, obj := range f.extraObjs {
-			if sts, ok := obj.(*appsv1.StatefulSet); ok {
-				if f.managers == nil {
-					continue
-				}
-				inManagers := false
-				for _, m := range managers {
-					if m == sts || (m.Namespace == sts.Namespace && m.Name == sts.Name) {
-						inManagers = true
-						break
-					}
-				}
-				if inManagers {
-					continue
-				}
-			}
-			objs = append(objs, obj)
-		}
+		objs = append(objs, f.extraObjs...)
 		h := newFakeClusterHandle(t, f.context, objs...)
 		if f.unreachable {
 			h.client = &kubecli.Client{Client: &failingGetClient{Client: h.client.Client, err: errors.New("dial tcp 10.0.0.1:443: i/o timeout")}}
@@ -323,42 +288,10 @@ func (fs haFixtures) handlesWithPendingDeployments(t *testing.T) []*clusterHandl
 		for _, s := range f.syncers {
 			objs = append(objs, s)
 		}
-		managers := f.managers
-		if f.extraObjs == nil {
-			managers = nil
-		} else {
-			hasExtraSTS := false
-			for _, obj := range f.extraObjs {
-				if _, ok := obj.(*appsv1.StatefulSet); ok {
-					hasExtraSTS = true
-					break
-				}
-			}
-			if len(f.extraObjs) > 0 && !hasExtraSTS {
-				managers = nil
-			}
-		}
-		for _, m := range managers {
+		for _, m := range f.managers {
 			objs = append(objs, m)
 		}
-		for _, obj := range f.extraObjs {
-			if sts, ok := obj.(*appsv1.StatefulSet); ok {
-				if f.managers == nil {
-					continue
-				}
-				inManagers := false
-				for _, m := range managers {
-					if m == sts || (m.Namespace == sts.Namespace && m.Name == sts.Name) {
-						inManagers = true
-						break
-					}
-				}
-				if inManagers {
-					continue
-				}
-			}
-			objs = append(objs, obj)
-		}
+		objs = append(objs, f.extraObjs...)
 		handles = append(handles, newFakeClusterHandleWithPendingDeployments(t, f.context, objs...))
 	}
 	return handles
@@ -955,6 +888,31 @@ func TestHAStatusProblems(t *testing.T) {
 			wantProblems: []string{
 				`cluster "gke_proj-b_us-east1_cluster-b": the lease held by "` + testIdentityA + `" has expired (last renewed at 2026-11-10T18:05:00Z, lease duration 15s)`,
 				`cluster "gke_proj-a_us-central1_cluster-a" (leader): Config Connector's manager is not running (StatefulSet cnrm-system/cnrm-controller-manager is scaled to 0); nothing reconciles until it runs again or another cluster takes the lease`,
+			},
+		},
+		{
+			name: "all leases expired and a manager that is down",
+			mutate: func(fs haFixtures) {
+				fs[0].lease = newTestLease(testIdentityA, "2026-11-10T18:05:00Z")
+				fs[1].lease = newTestLease(testIdentityA, "2026-11-10T18:05:00Z")
+				zero := int32(0)
+				fs[0].managers[0].Spec.Replicas = &zero
+				fs[0].managers[0].Status.Replicas = 0
+				fs[0].managers[0].Status.ReadyReplicas = 0
+			},
+			wantProblems: []string{
+				`cluster "gke_proj-a_us-central1_cluster-a": the lease held by "` + testIdentityA + `" has expired (last renewed at 2026-11-10T18:05:00Z, lease duration 15s)`,
+				`cluster "gke_proj-b_us-east1_cluster-b": the lease held by "` + testIdentityA + `" has expired (last renewed at 2026-11-10T18:05:00Z, lease duration 15s)`,
+				`cluster "gke_proj-a_us-central1_cluster-a": Config Connector's manager is not running (StatefulSet cnrm-system/cnrm-controller-manager is scaled to 0); this cluster cannot take over`,
+			},
+		},
+		{
+			name: "leader with no manager StatefulSet",
+			mutate: func(fs haFixtures) {
+				fs[0].managers = nil
+			},
+			wantProblems: []string{
+				`cluster "gke_proj-a_us-central1_cluster-a" (leader): no StatefulSet of Config Connector's manager found; nothing reconciles until it runs again or another cluster takes the lease`,
 			},
 		},
 	}
