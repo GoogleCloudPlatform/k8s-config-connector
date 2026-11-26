@@ -22,5 +22,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/global/agents/3b72e995-aa60-428f-84a4-cd420c50d6e3/generators/93af9224-55e2-4529-9651-33fad7ce4ada
+  externalRef: projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/generators/93af9224-55e2-4529-9651-33fad7ce4ada
   observedGeneration: 2
