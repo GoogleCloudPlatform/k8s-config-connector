@@ -1,0 +1,26 @@
+apiVersion: dialogflowcx.cnrm.cloud.google.com/v1alpha1
+kind: DialogflowCXGenerator
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: dialogflowcxgenerator-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: generator-updated-${uniqueId}
+  parentRef:
+    name: dialogflowcxagent-${uniqueId}
+  promptText:
+    text: 'Summarize the customer query and intent: $conversation'
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/agents/3b72e995-aa60-428f-84a4-cd420c50d6e3/generators/93af9224-55e2-4529-9651-33fad7ce4ada
+  observedGeneration: 2

@@ -1,0 +1,32 @@
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/3b72e995-aa60-428f-84a4-cd420c50d6e3?alt=json
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/3b72e995-aa60-428f-84a4-cd420c50d6e3",
+  "startFlow": "projects/${projectId}/locations/global/agents/3b72e995-aa60-428f-84a4-cd420c50d6e3/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/3b72e995-aa60-428f-84a4-cd420c50d6e3/generators/93af9224-55e2-4529-9651-33fad7ce4ada?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "displayName": "generator-updated-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/3b72e995-aa60-428f-84a4-cd420c50d6e3/generators/93af9224-55e2-4529-9651-33fad7ce4ada",
+  "promptText": {
+    "text": "Summarize the customer query and intent: $conversation"
+  }
+}

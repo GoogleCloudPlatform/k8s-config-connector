@@ -1,0 +1,36 @@
+apiVersion: dialogflowcx.cnrm.cloud.google.com/v1alpha1
+kind: DialogflowCXGenerator
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: dialogflowcxgenerator-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: generator-max-updated-${uniqueId}
+  modelParameter:
+    maxDecodeSteps: 150
+    temperature: 0.7
+    topK: 30
+    topP: 0.95
+  parentRef:
+    name: dialogflowcxagent-${uniqueId}
+  placeholders:
+  - id: topic_id
+    name: topic
+  - id: topic_id_2
+    name: topic2
+  promptText:
+    text: Summarize $conversation for topic $topic and subtopic $topic2
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/agents/71b71683-20a4-475f-b949-80a5e45a561f/generators/617434c9-6885-4e52-bf3f-4e085ce4de44
+  observedGeneration: 2
