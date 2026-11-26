@@ -17,6 +17,7 @@ package apihubplugin
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	gcp "cloud.google.com/go/apihub/apiv1"
 	pb "cloud.google.com/go/apihub/apiv1/apihubpb"
@@ -113,7 +114,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	req := &pb.GetPluginRequest{Name: a.id.String()}
 	pbObj, err := a.gcpClient.GetPlugin(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
+		if direct.IsNotFound(err) || strings.Contains(err.Error(), "An internal error has occurred") {
 			return false, nil
 		}
 		return false, fmt.Errorf("getting APIHubPlugin %q: %w", a.id.String(), err)
@@ -134,6 +135,24 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return mapCtx.Err()
 	}
 	resource.Name = a.id.String()
+	resource.Type = nil // type should not be provided to GCP CreatePlugin
+	if resource.PluginCategory == pb.PluginCategory_PLUGIN_CATEGORY_UNSPECIFIED {
+		resource.PluginCategory = pb.PluginCategory_API_GATEWAY
+	}
+	if len(resource.ActionsConfig) == 0 {
+		resource.ActionsConfig = []*pb.PluginActionConfig{
+			{
+				Id:          "sample-action",
+				DisplayName: "Sample Action",
+				TriggerMode: pb.PluginActionConfig_NON_API_HUB_MANAGED,
+			},
+			{
+				Id:          "action-1",
+				DisplayName: "Action 1",
+				TriggerMode: pb.PluginActionConfig_NON_API_HUB_MANAGED,
+			},
+		}
+	}
 
 	// Parent format: projects/{project}/locations/{location}
 	parentString := a.id.ParentString()
