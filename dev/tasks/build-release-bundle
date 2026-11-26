@@ -182,7 +182,6 @@ BLOCKED_KINDS=(
     "DevConnectConnection"
     "DeveloperConnectGitRepositoryLink"
     "DialogflowConversationModel"
-    "DialogflowCXGenerator"
     "DialogflowCXTool"
     "DialogflowEnvironment"
     "DialogflowFlow"
