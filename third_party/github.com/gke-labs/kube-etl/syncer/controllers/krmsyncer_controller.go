@@ -533,10 +533,10 @@ func (r *DynamicResourceReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 		errs := []error{readErr}
 		if readErr == nil {
 			errs = errs[:0]
-			for _, rule := range rules {
-				if err := r.syncRule(ctx, krmsyncer, rule, req, u, isDeleted); err != nil {
-					errs = append(errs, err)
-				}
+			rule := rules[0]
+			rule.SyncFields = mergeSyncFields(rules)
+			if err := r.syncRule(ctx, krmsyncer, rule, req, u, isDeleted); err != nil {
+				errs = append(errs, err)
 			}
 		}
 		if len(errs) > 0 {
@@ -577,6 +577,26 @@ func (r *DynamicResourceReconciler) matchingRules(krmsyncer *krmv1alpha1.KRMSync
 		rules = append(rules, rule)
 	}
 	return rules
+}
+
+// mergeSyncFields unions SyncFields across all matching rules, preserving order and
+// deduplicating fields. If a rule has empty SyncFields, it defaults to ["status"].
+func mergeSyncFields(rules []krmv1alpha1.ResourceRule) []string {
+	var merged []string
+	seen := make(map[string]bool)
+	for _, rule := range rules {
+		fields := rule.SyncFields
+		if len(fields) == 0 {
+			fields = []string{"status"}
+		}
+		for _, f := range fields {
+			if !seen[f] {
+				seen[f] = true
+				merged = append(merged, f)
+			}
+		}
+	}
+	return merged
 }
 
 // syncRule syncs the source object u (or its deletion) to the destination of

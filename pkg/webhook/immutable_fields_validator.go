@@ -118,10 +118,12 @@ func (a *immutableFieldsValidatorHandler) Handle(_ context.Context, req admissio
 		return admission.Errored(http.StatusForbidden, err)
 	}
 
+	isSyncer := req.AdmissionRequest.UserInfo.Username == SyncerServiceAccount
+
 	gk := oldObj.GroupVersionKind().GroupKind()
 	switch gk {
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
-		return validateImmutableFieldsForLoggingLogMetricResource(oldSpec, spec)
+		return validateImmutableFieldsForLoggingLogMetricResource(obj, oldSpec, spec, isSyncer)
 	case schema.GroupKind{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubFeatureMembership"}:
 		return validateImmutableFieldsForGKEHubFeatureMembershipResource(oldSpec, spec)
 	}
@@ -132,9 +134,9 @@ func (a *immutableFieldsValidatorHandler) Handle(_ context.Context, req admissio
 	}
 
 	if dclmetadata.IsDCLBasedResourceKind(obj.GroupVersionKind(), a.serviceMetadataLoader) {
-		return validateImmutableFieldsForDCLBasedResource(obj, oldObj, spec, oldSpec, a.dclSchemaLoader, a.serviceMetadataLoader)
+		return validateImmutableFieldsForDCLBasedResource(obj, oldObj, spec, oldSpec, a.dclSchemaLoader, a.serviceMetadataLoader, isSyncer)
 	}
-	return validateImmutableFieldsForTFBasedResource(obj, oldObj, spec, oldSpec, a.smLoader, a.tfResourceMap)
+	return validateImmutableFieldsForTFBasedResource(obj, oldObj, spec, oldSpec, a.smLoader, a.tfResourceMap, isSyncer)
 }
 
 func validateImmutableStateIntoSpecAnnotation(obj, oldObj *unstructured.Unstructured) error {
@@ -146,7 +148,7 @@ func validateImmutableStateIntoSpecAnnotation(obj, oldObj *unstructured.Unstruct
 	return nil
 }
 
-func validateImmutableFieldsForDCLBasedResource(obj, oldObj *unstructured.Unstructured, spec, oldSpec map[string]interface{}, dclSchemaLoader dclschemaloader.DCLSchemaLoader, serviceMetadataLoader dclmetadata.ServiceMetadataLoader) admission.Response {
+func validateImmutableFieldsForDCLBasedResource(obj, oldObj *unstructured.Unstructured, spec, oldSpec map[string]interface{}, dclSchemaLoader dclschemaloader.DCLSchemaLoader, serviceMetadataLoader dclmetadata.ServiceMetadataLoader, isSyncer bool) admission.Response {
 	gvk := obj.GroupVersionKind()
 	schema, err := dclschemaloader.GetDCLSchemaForGVK(gvk, serviceMetadataLoader, dclSchemaLoader)
 	if err != nil {
@@ -167,7 +169,8 @@ func validateImmutableFieldsForDCLBasedResource(obj, oldObj *unstructured.Unstru
 		return admission.Errored(http.StatusBadRequest,
 			fmt.Errorf("error validating container annotations: %w", err))
 	}
-	if isResourceIDModified(spec, oldSpec) {
+	isServerGenerated := isDCLResourceIDFieldServerGenerated(schema)
+	if isResourceIDMutationForbidden(spec, oldSpec, obj.GetName(), isServerGenerated, isSyncer) {
 		return admission.Errored(http.StatusForbidden,
 			k8s.NewImmutableFieldsMutationError([]string{k8s.ResourceIDFieldPath}))
 	}
@@ -295,7 +298,7 @@ func getQualifiedFieldName(prefix string, fieldName string) string {
 	return qualifiedName
 }
 
-func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstructured, spec, oldSpec map[string]interface{}, smLoader *servicemappingloader.ServiceMappingLoader, tfResourceMap map[string]*tfschema.Resource) admission.Response {
+func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstructured, spec, oldSpec map[string]interface{}, smLoader *servicemappingloader.ServiceMappingLoader, tfResourceMap map[string]*tfschema.Resource, isSyncer bool) admission.Response {
 	rc, err := smLoader.GetResourceConfig(obj)
 	if err != nil {
 		return admission.Errored(http.StatusBadRequest,
@@ -313,7 +316,7 @@ func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstruc
 			fmt.Errorf("unknown resource %v", rc.Name))
 	}
 
-	if findChangesOnImmutableResourceIDField(spec, oldSpec, rc) {
+	if findChangesOnImmutableResourceIDField(obj, spec, oldSpec, rc, isSyncer) {
 		return admission.Errored(http.StatusForbidden,
 			k8s.NewImmutableFieldsMutationError([]string{k8s.ResourceIDFieldPath}))
 	}
@@ -368,8 +371,12 @@ func validateImmutableFieldsForGKEHubFeatureMembershipResource(oldSpec, spec map
 	return allowedResponse
 }
 
-func validateImmutableFieldsForLoggingLogMetricResource(oldSpec, spec map[string]interface{}) admission.Response {
-	if isResourceIDModified(oldSpec, spec) {
+func validateImmutableFieldsForLoggingLogMetricResource(obj *unstructured.Unstructured, oldSpec, spec map[string]interface{}, isSyncer bool) admission.Response {
+	resourceName := ""
+	if obj != nil {
+		resourceName = obj.GetName()
+	}
+	if isResourceIDMutationForbidden(spec, oldSpec, resourceName, false, isSyncer) {
 		return admission.Errored(http.StatusForbidden,
 			k8s.NewImmutableFieldsMutationError([]string{k8s.ResourceIDFieldPath}))
 	}
@@ -503,16 +510,77 @@ func handleIAMAuditConfig(oldSpec, newSpec map[string]interface{}) admission.Res
 	return allowedResponse
 }
 
-func findChangesOnImmutableResourceIDField(spec, oldSpec map[string]interface{}, rc *corekccv1alpha1.ResourceConfig) bool {
+func findChangesOnImmutableResourceIDField(obj *unstructured.Unstructured, spec, oldSpec map[string]interface{}, rc *corekccv1alpha1.ResourceConfig, isSyncer bool) bool {
 	if rc.ResourceID.TargetField == "" {
 		return false
 	}
 
-	return isResourceIDModified(spec, oldSpec)
+	isServerGenerated := krmtotf.IsResourceIDFieldServerGenerated(rc)
+	resourceName := ""
+	if obj != nil {
+		resourceName = obj.GetName()
+	}
+	return isResourceIDMutationForbidden(spec, oldSpec, resourceName, isServerGenerated, isSyncer)
 }
 
-func isResourceIDModified(spec, oldSpec map[string]interface{}) bool {
-	return !reflect.DeepEqual(spec[k8s.ResourceIDFieldName], oldSpec[k8s.ResourceIDFieldName])
+func isDCLResourceIDFieldServerGenerated(schema *openapi.Schema) bool {
+	if schema == nil {
+		return false
+	}
+	nameFieldSchema, found := dclextension.GetNameFieldSchema(schema)
+	if !found {
+		return false
+	}
+	isServerGenerated, err := dclextension.IsResourceIDFieldServerGenerated(nameFieldSchema)
+	if err != nil {
+		return false
+	}
+	return isServerGenerated
+}
+
+func isResourceIDMutationForbidden(newSpec, oldSpec map[string]interface{}, resourceName string, isServerGenerated bool, isSyncer bool) bool {
+	var oldVal, newVal interface{}
+	var oldHas, newHas bool
+	if oldSpec != nil {
+		oldVal, oldHas = oldSpec[k8s.ResourceIDFieldName]
+	}
+	if newSpec != nil {
+		newVal, newHas = newSpec[k8s.ResourceIDFieldName]
+	}
+
+	if reflect.DeepEqual(oldVal, newVal) {
+		return false
+	}
+
+	// An existing resourceID (present and non-nil) cannot be modified or cleared.
+	if oldHas && oldVal != nil {
+		return true
+	}
+
+	// Missing -> set:
+	// If new value is not present, nil, not a string, or explicitly empty (""), reject it.
+	// E.g. spec: {} -> spec: {resourceID: ""} remains rejected.
+	if !newHas || newVal == nil {
+		return true
+	}
+	newID, ok := newVal.(string)
+	if !ok || newID == "" {
+		return true
+	}
+
+	// For user-configured IDs, setting resourceID when previously omitted is only allowed if it
+	// matches metadata.name (i.e. the default value), meaning the resource ID does not actually change.
+	if newID == resourceName {
+		return false
+	}
+
+	// For resources with server-generated IDs, permit the KRM syncer (system:serviceaccount:cnrm-system:kcc-syncer)
+	// to set the generated ID (which differs from metadata.name) onto a standby cluster's object.
+	if isServerGenerated && isSyncer {
+		return false
+	}
+
+	return true
 }
 
 func findChangesOnImmutableLocationField(obj map[string]interface{}, oldObj map[string]interface{}, rc *corekccv1alpha1.ResourceConfig) bool {

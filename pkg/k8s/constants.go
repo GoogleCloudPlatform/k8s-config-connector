@@ -28,6 +28,7 @@ const (
 	APIDomainSuffix                      = ".cnrm.cloud.google.com"
 	SystemNamespace                      = "cnrm-system"
 	ControllerManagerNamePrefix          = "cnrm-controller-manager"
+	SyncerServiceAccountName             = "kcc-syncer"
 	ControllerMaxConcurrentReconciles    = 20
 	ReconcileDeadline                    = 59 * time.Minute
 	TimeToLeaseExpiration                = 40 * time.Minute

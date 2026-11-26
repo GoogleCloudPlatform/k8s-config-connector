@@ -20,6 +20,8 @@ import (
 	"io"
 	"strings"
 	"time"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 )
 
 // gcpProvisioner provisions the GCS lease bucket and IAM bindings required for multi-cluster HA.
@@ -245,9 +247,9 @@ func dedupeProjects(clusters []gkeClusterInfo) []gkeClusterInfo {
 }
 
 const (
-	gcpWorkloadIdentityNamespace = "cnrm-system"
+	gcpWorkloadIdentityNamespace = k8s.SystemNamespace
 	gcpMCLServiceAccountName     = "kcc-mcl"
-	gcpSyncerServiceAccountName  = "kcc-syncer"
+	gcpSyncerServiceAccountName  = k8s.SyncerServiceAccountName
 )
 
 func (p *gcpProvisioner) runIAMBindingWithRetry(ctx context.Context, retry bool, name string, args ...string) error {

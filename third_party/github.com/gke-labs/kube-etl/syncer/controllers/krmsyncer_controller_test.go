@@ -805,6 +805,56 @@ func TestFilterFields(t *testing.T) {
 	assert.False(t, found)
 }
 
+func TestMergeSyncFields(t *testing.T) {
+	tests := []struct {
+		name  string
+		rules []krmv1alpha1.ResourceRule
+		want  []string
+	}{
+		{
+			name: "overlapping status and status + spec.resourceID",
+			rules: []krmv1alpha1.ResourceRule{
+				{SyncFields: []string{"status"}},
+				{SyncFields: []string{"status", "spec.resourceID"}},
+			},
+			want: []string{"status", "spec.resourceID"},
+		},
+		{
+			name: "reverse order: status + spec.resourceID then status",
+			rules: []krmv1alpha1.ResourceRule{
+				{SyncFields: []string{"status", "spec.resourceID"}},
+				{SyncFields: []string{"status"}},
+			},
+			want: []string{"status", "spec.resourceID"},
+		},
+		{
+			name: "empty syncFields defaults to status",
+			rules: []krmv1alpha1.ResourceRule{
+				{SyncFields: nil},
+				{SyncFields: []string{"spec.resourceID"}},
+			},
+			want: []string{"status", "spec.resourceID"},
+		},
+		{
+			name: "multiple overlapping rules deduplicated",
+			rules: []krmv1alpha1.ResourceRule{
+				{SyncFields: []string{"status"}},
+				{SyncFields: []string{"status"}},
+				{SyncFields: []string{"spec.resourceID"}},
+				{SyncFields: []string{"status", "spec.resourceID"}},
+			},
+			want: []string{"status", "spec.resourceID"},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := mergeSyncFields(tt.rules)
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}
+
 func TestSyncerSyncMissingNamespace(t *testing.T) {
 	ctx := t.Context()
 	ns := "missing-dest-ns"
