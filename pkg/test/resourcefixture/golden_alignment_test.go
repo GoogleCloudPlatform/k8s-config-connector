@@ -552,6 +552,7 @@ func cleanURL(u string) string {
 	u = regexp.MustCompile(`/revisions/[0-9]+`).ReplaceAllString(u, "/revisions/${qaScorecardRevisionID}")
 	u = regexp.MustCompile(`/teamFolders/[0-9a-fA-F-]+`).ReplaceAllString(u, "/teamFolders/2ba614be-5147-410a-ad89-bab4ff528497")
 	u = regexp.MustCompile(`/webhooks/[0-9a-fA-F-]+`).ReplaceAllString(u, "/webhooks/${webhookID}")
+	u = regexp.MustCompile(`/generators/[0-9a-fA-F-]+`).ReplaceAllString(u, "/generators/${generatorID}")
 	u = regexp.MustCompile(`/backupRuns/[0-9]+`).ReplaceAllLiteralString(u, "/backupRuns/${backupID}")
 	u = regexp.MustCompile(`/evaluations/[0-9a-zA-Z=_-]+`).ReplaceAllString(u, "/evaluations/${evaluationID}")
 	return u

@@ -1,0 +1,291 @@
+# Phase: CREATE
+POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "timeZone": "America/New_York"
+}
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75",
+  "startFlow": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+POST https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/generators?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2F9ff582e4-9e01-416e-b373-418b2e4f4e75
+
+{
+  "displayName": "generator-max-${uniqueId}",
+  "modelParameter": {
+    "maxDecodeSteps": 100,
+    "temperature": 0.5,
+    "topK": 20,
+    "topP": 0.9
+  },
+  "placeholders": [
+    {
+      "id": "topic_id",
+      "name": "topic"
+    }
+  ],
+  "promptText": {
+    "text": "Summarize $conversation for topic $topic"
+  }
+}
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "generator-max-${uniqueId}",
+  "modelParameter": {
+    "maxDecodeSteps": 100,
+    "temperature": 0.5,
+    "topK": 20,
+    "topP": 0.9
+  },
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/generators/617434c9-6885-4e52-bf3f-4e085ce4de44",
+  "placeholders": [
+    {
+      "id": "topic_id",
+      "name": "topic"
+    }
+  ],
+  "promptText": {
+    "text": "Summarize $conversation for topic $topic"
+  }
+}
+
+---
+
+# Phase: UPDATE
+GET https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/generators/617434c9-6885-4e52-bf3f-4e085ce4de44?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2F9ff582e4-9e01-416e-b373-418b2e4f4e75%2Fgenerators%2F617434c9-6885-4e52-bf3f-4e085ce4de44
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "generator-max-${uniqueId}",
+  "modelParameter": {
+    "maxDecodeSteps": 100,
+    "temperature": 0.5,
+    "topK": 20,
+    "topP": 0.9
+  },
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/generators/617434c9-6885-4e52-bf3f-4e085ce4de44",
+  "placeholders": [
+    {
+      "id": "topic_id",
+      "name": "topic"
+    }
+  ],
+  "promptText": {
+    "text": "Summarize $conversation for topic $topic"
+  }
+}
+
+---
+
+PATCH https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/generators/617434c9-6885-4e52-bf3f-4e085ce4de44?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2CmodelParameter%2Cplaceholders%2CpromptText
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: generator.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2F9ff582e4-9e01-416e-b373-418b2e4f4e75%2Fgenerators%2F617434c9-6885-4e52-bf3f-4e085ce4de44
+
+{
+  "displayName": "generator-max-updated-${uniqueId}",
+  "modelParameter": {
+    "maxDecodeSteps": 150,
+    "temperature": 0.7,
+    "topK": 30,
+    "topP": 0.95
+  },
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/generators/617434c9-6885-4e52-bf3f-4e085ce4de44",
+  "placeholders": [
+    {
+      "id": "topic_id",
+      "name": "topic"
+    },
+    {
+      "id": "topic_id_2",
+      "name": "topic2"
+    }
+  ],
+  "promptText": {
+    "text": "Summarize $conversation for topic $topic and subtopic $topic2"
+  }
+}
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "generator-max-updated-${uniqueId}",
+  "modelParameter": {
+    "maxDecodeSteps": 150,
+    "temperature": 0.7,
+    "topK": 30,
+    "topP": 0.95
+  },
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/generators/617434c9-6885-4e52-bf3f-4e085ce4de44",
+  "placeholders": [
+    {
+      "id": "topic_id",
+      "name": "topic"
+    },
+    {
+      "id": "topic_id_2",
+      "name": "topic2"
+    }
+  ],
+  "promptText": {
+    "text": "Summarize $conversation for topic $topic and subtopic $topic2"
+  }
+}
+
+---
+
+# Phase: DELETE
+GET https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/generators/617434c9-6885-4e52-bf3f-4e085ce4de44?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2F9ff582e4-9e01-416e-b373-418b2e4f4e75%2Fgenerators%2F617434c9-6885-4e52-bf3f-4e085ce4de44
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "generator-max-updated-${uniqueId}",
+  "modelParameter": {
+    "maxDecodeSteps": 150,
+    "temperature": 0.7,
+    "topK": 30,
+    "topP": 0.95
+  },
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/generators/617434c9-6885-4e52-bf3f-4e085ce4de44",
+  "placeholders": [
+    {
+      "id": "topic_id",
+      "name": "topic"
+    },
+    {
+      "id": "topic_id_2",
+      "name": "topic2"
+    }
+  ],
+  "promptText": {
+    "text": "Summarize $conversation for topic $topic and subtopic $topic2"
+  }
+}
+
+---
+
+DELETE https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/generators/617434c9-6885-4e52-bf3f-4e085ce4de44?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2F9ff582e4-9e01-416e-b373-418b2e4f4e75%2Fgenerators%2F617434c9-6885-4e52-bf3f-4e085ce4de44
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2F9ff582e4-9e01-416e-b373-418b2e4f4e75
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75",
+  "startFlow": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2F9ff582e4-9e01-416e-b373-418b2e4f4e75
+
+200 OK
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

@@ -1,0 +1,48 @@
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/71b71683-20a4-475f-b949-80a5e45a561f?alt=json
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/71b71683-20a4-475f-b949-80a5e45a561f",
+  "startFlow": "projects/${projectId}/locations/global/agents/71b71683-20a4-475f-b949-80a5e45a561f/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/71b71683-20a4-475f-b949-80a5e45a561f/generators/617434c9-6885-4e52-bf3f-4e085ce4de44?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "displayName": "generator-max-updated-${uniqueId}",
+  "modelParameter": {
+    "maxDecodeSteps": 150,
+    "temperature": 0.7,
+    "topK": 30,
+    "topP": 0.95
+  },
+  "name": "projects/${projectId}/locations/global/agents/71b71683-20a4-475f-b949-80a5e45a561f/generators/617434c9-6885-4e52-bf3f-4e085ce4de44",
+  "placeholders": [
+    {
+      "id": "topic_id",
+      "name": "topic"
+    },
+    {
+      "id": "topic_id_2",
+      "name": "topic2"
+    }
+  ],
+  "promptText": {
+    "text": "Summarize $conversation for topic $topic and subtopic $topic2"
+  }
+}

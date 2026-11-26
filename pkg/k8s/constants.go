@@ -146,6 +146,7 @@ var (
 
 	LastChangedCookieAnnotation = FormatAnnotation("last-changed-cookie")
 
+	ReconcilerAnnotation      = FormatAnnotation("reconciler")
 	AlphaReconcilerAnnotation = "alpha.cnrm.cloud.google.com/reconciler"
 
 	// TODO(kcc-eng): Adjust the timeout back down after b/237398742 is fixed.

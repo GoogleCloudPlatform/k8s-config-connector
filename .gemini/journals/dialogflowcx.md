@@ -16,6 +16,13 @@
 - **Server-Generated ID**: `CreateGeneratorRequest` does not accept a client-assigned ID parameter (`name` is populated automatically by Dialogflow on creation), so `DialogflowCXGeneratorIdentity` implements `identity.ServerGeneratedIdentity` and `spec.resourceID` is optional and used for acquisition only.
 - **ObservedState**: The `Generator` proto message defines no `OUTPUT_ONLY` fields other than `name` (which maps to identity/externalRef); hence `ObservedState` is commented out in status.
 
+## DialogflowCXGenerator Direct Controller & E2E Fixtures
+
+- **Server-Generated ID & Parent Hierarchy**: `DialogflowCXGenerator` is a child resource under `DialogflowCXAgent`. `CreateGeneratorRequest` creates the resource under parent `projects/{project}/locations/{location}/agents/{agent}` and GCP assigns the UUID. The controller uses `a.id.FromExternal(created.GetName())` and updates `status.ExternalRef`.
+- **Placeholder Validation**: GCP enforces that any custom placeholder specified in `spec.placeholders` must be present with a `$` prefix in `spec.promptText.text` (e.g. `name: "topic"` requires `$topic` in prompt text); otherwise, API returns `INVALID_ARGUMENT (Placeholder name '$<name>' must be present in the prompt text)`.
+- **DialogflowCXAgentRef Resolution with Fallback**: When `DialogflowCXAgent` is managed by the Terraform reconciler (the default in `static_config.go`), `status.externalRef` is absent. `DialogflowCXAgentRef.Normalize` was updated to use `refs.NormalizeWithFallback` extracting the agent's external reference from `status.startFlow` (`projects/.../agents/.../flows/...`). In addition, `cnrm.cloud.google.com/reconciler: direct` was added to test fixture `dependencies.yaml`.
+- **Round-Trip Fuzzer**: Proto field `.llm_model_settings` is unmapped in KRM and marked with `f.Unimplemented_NotYetTriaged(".llm_model_settings")` in `dialogflowcxgenerator_fuzzer.generated.go`.
+
 ## DialogflowCXTool Prepopulation Notes
 
 - **Proto Source Overlay**: `google/cloud/dialogflow/cx/v3/tool.proto` is mirrored into `mockgcp/apis/google/cloud/dialogflow/cx/v3/` along with `data_store_connection.proto` and `dialogflow_v3.yaml` and compiled into `.build/googleapis.pb` via `dev/tools/controllerbuilder/generate-proto.sh`.
@@ -32,4 +39,3 @@
   - ServiceAccount reference: `serviceAccountRef` in `ServiceAccountAuthConfig` converted to `*refsv1beta1.IAMServiceAccountRef`.
   - ServiceDirectory reference: `serviceRef` in `ServiceDirectoryConfig` converted to `*servicedirectoryv1beta1.ServiceDirectoryServiceRef`.
 - **Non-Reference Auth Fields**: `clientID` is an OAuth provider client ID string, and `clientSecret` is a plaintext OAuth secret; both marked as `not-applicable` in `judgement_queue.yaml`.
-
