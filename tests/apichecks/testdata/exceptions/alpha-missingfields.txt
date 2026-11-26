@@ -3774,23 +3774,17 @@
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectionConfigs[].sourceComponentParameters[].value.stringValue" is not set in unstructured objects
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectionConfigs[].sourceComponentParameters[].value.structValue" is not set in unstructured objects
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.deploymentProject" is not set in unstructured objects
-[missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.deploymentRegion" is not set in unstructured objects
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.deploymentTarget.gkeDeploymentTarget.clusterSelfLink" is not set in unstructured objects
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.deploymentTarget.gkeDeploymentTarget.kubernetesServiceAccount" is not set in unstructured objects
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.deploymentTarget.gkeDeploymentTarget.kubernetesServiceAccountCreation" is not set in unstructured objects
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.deploymentTarget.gkeDeploymentTarget.namespace" is not set in unstructured objects
-[missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.importExistingResources" is not set in unstructured objects
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.paramsUpdateStrategy" is not set in unstructured objects
-[missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolesAPIsConfig[].apis[].api" is not set in unstructured objects
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolesAPIsConfig[].projectID" is not set in unstructured objects
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolesAPIsConfig[].roles[].role" is not set in unstructured objects
-[missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.scope.type" is not set in unstructured objects
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.applicationTemplateRevision" is not set in unstructured objects
-[missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.sharedTemplateRevisionURI" is not set in unstructured objects
 [missing_field] crd=designcenterapplications.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.type" is not set in unstructured objects
 [missing_field] crd=designcenterapplicationtemplates.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.applicationParameters[].value.boolValue" is not set in unstructured objects
 [missing_field] crd=designcenterapplicationtemplates.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.applicationParameters[].value.listValue.values[]" is not set in unstructured objects

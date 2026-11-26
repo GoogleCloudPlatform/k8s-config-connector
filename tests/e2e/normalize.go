@@ -181,6 +181,12 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		visitor.SortSliceBy(".spec.cleanupPolicies", "id")
 	}
 
+	// Specific to Design Center
+	if u.GroupVersionKind().Group == "designcenter.cnrm.cloud.google.com" {
+		visitor.sortSlices.Insert(".status.observedState.projectParameters[].roles")
+		visitor.sortSlices.Insert(".status.observedState.rolesAPIsConfig[].roles")
+	}
+
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
 
@@ -1579,6 +1585,14 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		visitor.replacePaths[".expiresAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
 		visitor.replacePaths[".createdAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
 		visitor.replacePaths[".lastModifiedAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+	}
+
+	// Specific to Design Center
+	{
+		visitor.sortSlices.Insert(".projectParameters[].roles")
+		visitor.sortSlices.Insert(".response.projectParameters[].roles")
+		visitor.sortSlices.Insert(".rolesApisConfig[].roles")
+		visitor.sortSlices.Insert(".response.rolesApisConfig[].roles")
 	}
 
 	for _, event := range events {
