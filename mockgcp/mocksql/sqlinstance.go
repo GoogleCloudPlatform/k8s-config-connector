@@ -162,6 +162,13 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 	}
 	obj.State = pb.DatabaseInstance_RUNNABLE
 
+	// Fault injected through RunTestCommand: like real GCP, the instance is kept, but in
+	// FAILED state, and the operation reports the error (see the startLRO callback below).
+	createFailure := s.takeNextInstanceCreateFailure()
+	if createFailure != nil {
+		obj.State = pb.DatabaseInstance_FAILED
+	}
+
 	obj.ServerCaCert = &pb.SslCert{
 		CertSerialNumber: "0",
 		Cert:             "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -276,6 +283,9 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 	}
 
 	return s.operations.startLRO(ctx, op, obj, func() (proto.Message, error) {
+		if createFailure != nil {
+			return nil, createFailure
+		}
 		return obj, nil
 	})
 }
@@ -961,6 +971,10 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 		return nil, err
 	}
 
+	if err := checkInstanceCanBeChanged(obj); err != nil {
+		return nil, err
+	}
+
 	if settings := req.GetBody().GetSettings(); settings != nil {
 		if newEdition := settings.Edition; newEdition != pb.Settings_EDITION_UNSPECIFIED && obj.Settings.Edition != newEdition {
 			// Changing edition may impact defaults, so we reset some fields to allow
@@ -1114,6 +1128,10 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 
 	existing := &pb.DatabaseInstance{}
 	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+		return nil, err
+	}
+
+	if err := checkInstanceCanBeChanged(existing); err != nil {
 		return nil, err
 	}
 
@@ -1385,4 +1403,13 @@ var availableDatabaseVersions = []availableDatabaseVersion{
 	{Version: "8.0.41"},
 	{Version: "8.0.42"},
 	{Version: "8.0.43"},
+}
+
+// checkInstanceCanBeChanged mirrors real GCP, which rejects changes to an instance in
+// FAILED state with HTTP 409.
+func checkInstanceCanBeChanged(instance *pb.DatabaseInstance) error {
+	if instance.GetState() == pb.DatabaseInstance_FAILED {
+		return status.Errorf(codes.Aborted, "The instance or operation is not in an appropriate state to handle the request.")
+	}
+	return nil
 }
