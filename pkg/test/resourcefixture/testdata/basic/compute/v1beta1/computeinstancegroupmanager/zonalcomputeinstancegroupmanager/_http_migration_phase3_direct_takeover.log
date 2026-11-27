@@ -1,0 +1,328 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&instance_group_manager=${instanceGroupManagerID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoHealingPolicies": [
+    {
+      "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}",
+      "initialDelaySec": 300
+    }
+  ],
+  "baseInstanceName": "app",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "currentActions": {
+    "abandoning": 1,
+    "creating": 1,
+    "creatingWithoutRetries": 1,
+    "deleting": 1,
+    "none": 1,
+    "recreating": 1,
+    "refreshing": 1,
+    "restarting": 1,
+    "resuming": 1,
+    "starting": 1,
+    "stopping": 1,
+    "suspending": 1,
+    "verifying": 1
+  },
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "instanceGroup": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupManagerID}",
+  "instanceLifecyclePolicy": {
+    "defaultActionOnFailure": "REPAIR",
+    "forceUpdateOnRepair": "NO",
+    "onFailedHealthCheck": "DEFAULT_ACTION"
+  },
+  "instanceTemplate": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/computeinstancetemplate-${uniqueId}",
+  "kind": "compute#instanceGroupManager",
+  "listManagedInstancesResults": "PAGELESS",
+  "name": "${instanceGroupManagerID}",
+  "satisfiesPzs": true,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
+  "standbyPolicy": {
+    "mode": "MANUAL"
+  },
+  "statefulPolicy": {
+    "preservedState": {
+      "disks": {
+        "disk-a": {
+          "autoDelete": "ON_PERMANENT_INSTANCE_DELETION"
+        },
+        "disk-b": {
+          "autoDelete": "NEVER"
+        }
+      }
+    }
+  },
+  "status": {
+    "allInstancesConfig": {
+      "effective": true
+    },
+    "isStable": false,
+    "stateful": {
+      "hasStatefulConfig": true,
+      "perInstanceConfigs": {
+        "allEffective": true
+      }
+    },
+    "versionTarget": {
+      "isReached": true
+    }
+  },
+  "targetSize": 3,
+  "targetSizePolicy": {
+    "mode": "INDIVIDUAL"
+  },
+  "targetStoppedSize": 0,
+  "targetSuspendedSize": 0,
+  "updatePolicy": {
+    "maxSurge": {
+      "calculated": 3,
+      "fixed": 3
+    },
+    "maxUnavailable": {
+      "calculated": 3,
+      "fixed": 3
+    },
+    "minimalAction": "RESTART",
+    "replacementMethod": "SUBSTITUTE",
+    "type": "OPPORTUNISTIC"
+  },
+  "versions": [
+    {
+      "instanceTemplate": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/computeinstancetemplate-${uniqueId}",
+      "targetSize": {
+        "calculated": 3
+      }
+    }
+  ],
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&instance_group_manager=${instanceGroupManagerID}
+
+{
+  "autoHealingPolicies": [
+    {
+      "healthCheck": "projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}",
+      "initialDelaySec": 300
+    }
+  ],
+  "baseInstanceName": "app",
+  "instanceTemplate": "projects/${projectId}/global/instanceTemplates/computeinstancetemplate-${uniqueId}",
+  "name": "${instanceGroupManagerID}",
+  "statefulPolicy": {
+    "preservedState": {
+      "disks": {
+        "disk-a": {
+          "autoDelete": "ON_PERMANENT_INSTANCE_DELETION"
+        },
+        "disk-b": {
+          "autoDelete": "NEVER"
+        }
+      }
+    }
+  },
+  "targetSize": 3,
+  "updatePolicy": {
+    "maxSurge": {
+      "fixed": 3
+    },
+    "maxUnavailable": {
+      "fixed": 3
+    },
+    "minimalAction": "RESTART"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "patch",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${instanceGroupManagerID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "patch",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${instanceGroupManagerID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&instance_group_manager=${instanceGroupManagerID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoHealingPolicies": [
+    {
+      "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}",
+      "initialDelaySec": 300
+    }
+  ],
+  "baseInstanceName": "app",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "currentActions": {
+    "abandoning": 1,
+    "creating": 1,
+    "creatingWithoutRetries": 1,
+    "deleting": 1,
+    "none": 1,
+    "recreating": 1,
+    "refreshing": 1,
+    "restarting": 1,
+    "resuming": 1,
+    "starting": 1,
+    "stopping": 1,
+    "suspending": 1,
+    "verifying": 1
+  },
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "instanceGroup": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupManagerID}",
+  "instanceLifecyclePolicy": {
+    "defaultActionOnFailure": "REPAIR",
+    "forceUpdateOnRepair": "NO",
+    "onFailedHealthCheck": "DEFAULT_ACTION"
+  },
+  "instanceTemplate": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/computeinstancetemplate-${uniqueId}",
+  "kind": "compute#instanceGroupManager",
+  "listManagedInstancesResults": "PAGELESS",
+  "name": "${instanceGroupManagerID}",
+  "satisfiesPzs": true,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
+  "standbyPolicy": {
+    "mode": "MANUAL"
+  },
+  "statefulPolicy": {
+    "preservedState": {
+      "disks": {
+        "disk-a": {
+          "autoDelete": "ON_PERMANENT_INSTANCE_DELETION"
+        },
+        "disk-b": {
+          "autoDelete": "NEVER"
+        }
+      }
+    }
+  },
+  "status": {
+    "allInstancesConfig": {
+      "effective": true
+    },
+    "isStable": false,
+    "stateful": {
+      "hasStatefulConfig": true,
+      "perInstanceConfigs": {
+        "allEffective": true
+      }
+    },
+    "versionTarget": {
+      "isReached": true
+    }
+  },
+  "targetSize": 3,
+  "targetSizePolicy": {
+    "mode": "INDIVIDUAL"
+  },
+  "targetStoppedSize": 0,
+  "targetSuspendedSize": 0,
+  "updatePolicy": {
+    "maxSurge": {
+      "calculated": 3,
+      "fixed": 3
+    },
+    "maxUnavailable": {
+      "calculated": 3,
+      "fixed": 3
+    },
+    "minimalAction": "RESTART",
+    "replacementMethod": "SUBSTITUTE",
+    "type": "OPPORTUNISTIC"
+  },
+  "versions": [
+    {
+      "instanceTemplate": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/computeinstancetemplate-${uniqueId}",
+      "targetSize": {
+        "calculated": 3
+      }
+    }
+  ],
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
