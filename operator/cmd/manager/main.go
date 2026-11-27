@@ -30,6 +30,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/profiler"
 
 	flag "github.com/spf13/pflag"
+	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
@@ -40,9 +41,33 @@ var (
 	setupLog = ctrl.Log.WithName("setup")
 )
 
+const defaultLeaderElectionID = "configconnector-operator-leader-election"
+
+func newManagerOptions(scheme *runtime.Scheme, metricsAddr string, enableLeaderElection bool, leaderElectionID string) ctrl.Options {
+	opts := ctrl.Options{
+		Scheme: scheme,
+		Metrics: server.Options{
+			BindAddress: metricsAddr,
+		},
+		LeaderElection:   enableLeaderElection,
+		LeaderElectionID: leaderElectionID,
+		// main exits as soon as the manager stops, so the lease can be released
+		// on shutdown to let a standby replica take over without waiting for it to expire.
+		LeaderElectionReleaseOnCancel: true,
+		WebhookServer: webhook.NewServer(webhook.Options{
+			Port: 9443,
+		}),
+	}
+	// Disable the caching for the client. The cached reader will lazily list structured resources cross namespaces.
+	// The operator mostly only cares about resources in cnrm-system namespace.
+	nocache.TurnOffAllCaching(&opts)
+	return opts
+}
+
 func main() {
 	var metricsAddr string
 	var enableLeaderElection bool
+	var leaderElectionID string
 	var repoPath string
 	var enablePprof bool
 	var pprofPort int
@@ -54,6 +79,8 @@ func main() {
 	flag.StringVar(&metricsAddr, "metrics-addr", ":8080", "The address the metric endpoint binds to.")
 	flag.BoolVar(&enableLeaderElection, "enable-leader-election", false,
 		"Enable leader election for controller manager. Enabling this will ensure there is only one active controller manager.")
+	flag.StringVar(&leaderElectionID, "leader-election-id", defaultLeaderElectionID,
+		"The name of the Lease object used for leader election. Only used if --enable-leader-election is set.")
 	flag.BoolVar(&enablePprof, "enable-pprof", false, "Enable the pprof server.")
 	flag.IntVar(&pprofPort, "pprof-port", 6060, "The port that the pprof server binds to if enabled.")
 
@@ -91,19 +118,7 @@ func main() {
 
 	scheme := controllers.BuildScheme()
 
-	opts := ctrl.Options{
-		Scheme: scheme,
-		Metrics: server.Options{
-			BindAddress: metricsAddr,
-		},
-		LeaderElection: enableLeaderElection,
-		WebhookServer: webhook.NewServer(webhook.Options{
-			Port: 9443,
-		}),
-	}
-	// Disable the caching for the client. The cached reader will lazily list structured resources cross namespaces.
-	// The operator mostly only cares about resources in cnrm-system namespace.
-	nocache.TurnOffAllCaching(&opts)
+	opts := newManagerOptions(scheme, metricsAddr, enableLeaderElection, leaderElectionID)
 
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), opts)
 	if err != nil {
