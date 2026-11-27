@@ -1,0 +1,274 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: kmscryptokeyversions.kms.cnrm.cloud.google.com
+spec:
+  group: kms.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: KMSCryptoKeyVersion
+    listKind: KMSCryptoKeyVersionList
+    plural: kmscryptokeyversions
+    shortNames:
+    - gcpkmscryptokeyversion
+    - gcpkmscryptokeyversions
+    singular: kmscryptokeyversion
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: KMSCryptoKeyVersion is the Schema for the KMSCryptoKeyVersion
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: KMSCryptoKeyVersionSpec defines the desired state of KMSCryptoKeyVersion
+            properties:
+              externalProtectionLevelOptions:
+                description: ExternalProtectionLevelOptions stores a group of additional
+                  fields for configuring a [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                  that are specific to the [EXTERNAL][google.cloud.kms.v1.ProtectionLevel.EXTERNAL]
+                  protection level and [EXTERNAL_VPC][google.cloud.kms.v1.ProtectionLevel.EXTERNAL_VPC]
+                  protection levels.
+                properties:
+                  ekmConnectionKeyPath:
+                    description: The path to the external key material on the EKM
+                      when using [EkmConnection][google.cloud.kms.v1.EkmConnection]
+                      e.g., "v0/my/key". Set this field instead of external_key_uri
+                      when using an [EkmConnection][google.cloud.kms.v1.EkmConnection].
+                    type: string
+                  externalKeyURI:
+                    description: The URI for an external resource that this [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                      represents.
+                    type: string
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The KMSCryptoKeyVersion name. If not given, the metadata.name
+                  will be used.
+                type: string
+              state:
+                description: The current state of the [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
+                type: string
+            required:
+            - location
+            type: object
+          status:
+            description: KMSCryptoKeyVersionStatus defines the config connector machine
+              state of KMSCryptoKeyVersion
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the KMSCryptoKeyVersion resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  algorithm:
+                    description: Output only. The [CryptoKeyVersionAlgorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm]
+                      that this [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                      supports.
+                    type: string
+                  attestation:
+                    description: Output only. Statement that was generated and signed
+                      by the HSM at key creation time. Use this statement to verify
+                      attributes of the key as stored on the HSM, independently of
+                      Google. Only provided for key versions with [protection_level][google.cloud.kms.v1.CryptoKeyVersion.protection_level]
+                      [HSM][google.cloud.kms.v1.ProtectionLevel.HSM].
+                    properties:
+                      certChains:
+                        description: Output only. The certificate chains needed to
+                          validate the attestation
+                        properties:
+                          caviumCerts:
+                            description: Cavium certificate chain corresponding to
+                              the attestation.
+                            items:
+                              type: string
+                            type: array
+                          googleCardCerts:
+                            description: Google card certificate chain corresponding
+                              to the attestation.
+                            items:
+                              type: string
+                            type: array
+                          googlePartitionCerts:
+                            description: Google partition certificate chain corresponding
+                              to the attestation.
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                      content:
+                        description: Output only. The attestation data provided by
+                          the HSM when the key operation was performed.
+                        format: byte
+                        type: string
+                      format:
+                        description: Output only. The format of the attestation data.
+                        type: string
+                    type: object
+                  createTime:
+                    description: Output only. The time at which this [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                      was created.
+                    type: string
+                  destroyEventTime:
+                    description: Output only. The time this CryptoKeyVersion's key
+                      material was destroyed. Only present if [state][google.cloud.kms.v1.CryptoKeyVersion.state]
+                      is [DESTROYED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROYED].
+                    type: string
+                  destroyTime:
+                    description: Output only. The time this [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s
+                      key material is scheduled for destruction. Only present if [state][google.cloud.kms.v1.CryptoKeyVersion.state]
+                      is [DESTROY_SCHEDULED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROY_SCHEDULED].
+                    type: string
+                  externalDestructionFailureReason:
+                    description: Output only. The root cause of the most recent external
+                      destruction failure. Only present if [state][google.cloud.kms.v1.CryptoKeyVersion.state]
+                      is [EXTERNAL_DESTRUCTION_FAILED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.EXTERNAL_DESTRUCTION_FAILED].
+                    type: string
+                  generateTime:
+                    description: Output only. The time this [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s
+                      key material was generated.
+                    type: string
+                  generationFailureReason:
+                    description: Output only. The root cause of the most recent generation
+                      failure. Only present if [state][google.cloud.kms.v1.CryptoKeyVersion.state]
+                      is [GENERATION_FAILED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.GENERATION_FAILED].
+                    type: string
+                  importFailureReason:
+                    description: Output only. The root cause of the most recent import
+                      failure. Only present if [state][google.cloud.kms.v1.CryptoKeyVersion.state]
+                      is [IMPORT_FAILED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.IMPORT_FAILED].
+                    type: string
+                  importJob:
+                    description: Output only. The name of the [ImportJob][google.cloud.kms.v1.ImportJob]
+                      used in the most recent import of this [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
+                      Only present if the underlying key material was imported.
+                    type: string
+                  importTime:
+                    description: Output only. The time at which this [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s
+                      key material was most recently imported.
+                    type: string
+                  protectionLevel:
+                    description: Output only. The [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel]
+                      describing how crypto operations are performed with this [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
+                    type: string
+                  reimportEligible:
+                    description: Output only. Whether or not this key version is eligible
+                      for reimport, by being specified as a target in [ImportCryptoKeyVersionRequest.crypto_key_version][google.cloud.kms.v1.ImportCryptoKeyVersionRequest.crypto_key_version].
+                    type: boolean
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
