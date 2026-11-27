@@ -15,7 +15,7 @@ For detailed instructions, please see [4-add-controller.md](./4-add-controller.m
 
 * Update all direct controller imports to use  the `v1beta1` api of your resource
 
-* For all the fixtures tests under [pkg/test/resourcefixture/testdata](pkg/test/resourcefixture/testdata) make sure your resources use the `v1beta1` version.
+* For all the fixtures tests under [pkg/test/resourcefixture/testdata](../../../pkg/test/resourcefixture/testdata) make sure your resources use the `v1beta1` version.
 
 * Add `kubebuilder:storageversion` tag to `v1beta1 `API. [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/1b19153411653329177f4ba0991c982f36970707/apis/cloudbuild/v1beta1/workerpool_types.go#L155)
 
@@ -29,7 +29,7 @@ For detailed instructions, please see [4-add-controller.md](./4-add-controller.m
 
 ## 5.4 Add samples 
 
-1.  Make sure a <kind> directory exist under [config/samples/resources](config/samples/resources).
+1.  Make sure a <kind> directory exist under [config/samples/resources](../../../config/samples/resources).
     For example, if the kind is `spannerinstance`, the directory should be `config/samples/resources/spannerinstance`.
 1.  Make sure a a sample YAML file named `<service>-<version>-<kind>.yaml` exist under the directory. 
 1.  Look at example in pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<kind>-minimal/create.yaml to fill in the content for the sample YAML.
@@ -37,7 +37,7 @@ For detailed instructions, please see [4-add-controller.md](./4-add-controller.m
     - The `.metadata.name` is in the format `<kind>-sample` (lower case).
     - If the resource has a `.spec.projectRef` field, use `projects/${PROJECT_ID?}` literally as `.spec.projectRef.external` value. 
 1.  Enable your service API in [SUPPORTED_SERVICES](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/scripts/shared-vars-public.sh#L32) if it's not there.
-1.  If the test takes more than 10 minutes to finish, add it to LONG_RUNNING_SAMPLES_TESTS_REGEX in [./scripts/shared-vars-public.sh](./scripts/shared-vars-public.sh).
+1.  If the test takes more than 10 minutes to finish, add it to LONG_RUNNING_SAMPLES_TESTS_REGEX in [scripts/shared-vars-public.sh](../../../scripts/shared-vars-public.sh).
 
 ### Run/Disable Sample Tests
 
@@ -79,7 +79,7 @@ All beta resource can have a Google Reference documentation Connector
 1.  Update
     [scripts/generate-google3-docs/resource-reference/overview.md](./../../../scripts/generate-google3-docs/resource-reference/overview.md)
     by adding a row for your resource to the resource table. Note that {{spanner_name}} is the template variable for Cloud Spanner. 
-    The template variables for gcp product names can be found [here](https://source.corp.google.com/piper///depot/google3/third_party/devsite/cloud/en/_shared/_product_names.html).
+    Product name template variables follow standard Cloud documentation macros (see existing templates in [scripts/generate-google3-docs/resource-reference/templates](./../../../scripts/generate-google3-docs/resource-reference/templates)).
     
 1.  Update
     [scripts/generate-google3-docs/resource-reference/_toc.yaml](./../../../scripts/generate-google3-docs/resource-reference/_toc.yaml)
@@ -90,6 +90,24 @@ All beta resource can have a Google Reference documentation Connector
 
 1. Wait for the next Config Connector release, the release sheriff will publish the reference doc in Google based on the auto-generated doc folder. 
 
-## 5.6 Add reference document 
+## 5.6 Release Notes
 
-Once you finish adding an Alpha resource, a Beta resource, or new fields to existing resources, you can add a [releasenote](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/docs/releasenotes) for the next release. The release sheriff will publish the note.
+Config Connector uses PR release note blocks to curate release notes automatically. Do not manually create release note files under `docs/releasenotes/`.
+
+When submitting a pull request that adds an Alpha or Beta resource, adds new fields, or introduces user-facing fixes:
+
+1. Include a ````release-note```` block in your GitHub PR description:
+   ```markdown
+   ```release-note
+   Added support for `<Kind>` resource under `<service>.cnrm.cloud.google.com`.
+   ```
+   ```
+
+2. For internal or intermediate PRs that do not require a user-facing release note, use:
+   ```markdown
+   ```release-note
+   NONE
+   ```
+   ```
+
+3. During the release process, the release sheriff runs `dev/tasks/gather-release-notes` to collect all release notes from merged PRs since the last release tag into the release notes document.
