@@ -36,7 +36,6 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version datalabeling.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --resource DataLabelingInstruction:Instruction \
-  --resource DataLabelingAnnotationSpecSet:AnnotationSpecSet \
   --resource DataLabelingEvaluationJob:EvaluationJob \
   --prune-unused-types=false
 

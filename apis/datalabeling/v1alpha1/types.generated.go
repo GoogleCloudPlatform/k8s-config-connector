@@ -18,7 +18,6 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.datalabeling.v1beta1
 // resource: DataLabelingInstruction:Instruction
-// resource: DataLabelingAnnotationSpecSet:AnnotationSpecSet
 // resource: DataLabelingEvaluationJob:EvaluationJob
 
 package v1alpha1
@@ -38,38 +37,6 @@ type AnnotationSpec struct {
 	// +kcc:proto:field=google.cloud.datalabeling.v1beta1.AnnotationSpec.description
 	Description *string `json:"description,omitempty"`
 }
-
-/* found existing non-generated go type with proto tag "google.cloud.datalabeling.v1beta1.AnnotationSpecSet", skipping
-
-// +kcc:proto=google.cloud.datalabeling.v1beta1.AnnotationSpecSet
-type AnnotationSpecSet struct {
-	// Output only. The AnnotationSpecSet resource name in the following format:
-	//
-	//  "projects/<var>{project_id}</var>/annotationSpecSets/<var>{annotation_spec_set_id}</var>"
-	// +kcc:proto:field=google.cloud.datalabeling.v1beta1.AnnotationSpecSet.name
-	Name *string `json:"name,omitempty"`
-
-	// Required. The display name for AnnotationSpecSet that you define when you
-	//  create it. Maximum of 64 characters.
-	// +kcc:proto:field=google.cloud.datalabeling.v1beta1.AnnotationSpecSet.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Optional. User-provided description of the annotation specification set.
-	//  The description can be up to 10,000 characters long.
-	// +kcc:proto:field=google.cloud.datalabeling.v1beta1.AnnotationSpecSet.description
-	Description *string `json:"description,omitempty"`
-
-	// Required. The array of AnnotationSpecs that you define when you create the
-	//  AnnotationSpecSet. These are the possible labels for the labeling task.
-	// +kcc:proto:field=google.cloud.datalabeling.v1beta1.AnnotationSpecSet.annotation_specs
-	AnnotationSpecs []AnnotationSpec `json:"annotationSpecs,omitempty"`
-
-	// Output only. The names of any related resources that are blocking changes
-	//  to the annotation spec set.
-	// +kcc:proto:field=google.cloud.datalabeling.v1beta1.AnnotationSpecSet.blocking_resources
-	BlockingResources []string `json:"blockingResources,omitempty"`
-}
-*/
 
 // +kcc:proto=google.cloud.datalabeling.v1beta1.Attempt
 type Attempt struct {
