@@ -1,0 +1,14 @@
+6d5
+<     cnrm.cloud.google.com/state-into-spec: absent
+10c9
+<   generation: 3
+---
+>   generation: 2
+19d17
+<   resourceID: 23a423c3-e060-469a-92ad-db344e601c4c
+26a25
+>   externalRef: projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf/flows/23a423c3-e060-469a-92ad-db344e601c4c
+28c27
+<   observedGeneration: 3
+---
+>   observedGeneration: 2
