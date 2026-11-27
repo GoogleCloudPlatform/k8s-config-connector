@@ -1,0 +1,49 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "10"
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  name: iampartialpolicy-sample-project
+  namespace: ${projectId}
+spec:
+  bindings:
+  - members:
+    - member: serviceAccount:iampartialpolicy-dep-project@iampartialpolicy-dep-project.iam.gserviceaccount.com
+    role: roles/storage.admin
+  - members:
+    - memberFrom:
+        serviceAccountRef:
+          name: iampartialpolicy-dep-project
+    role: roles/editor
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    name: iampartialpolicy-dep-project
+status:
+  allBindings:
+  - members:
+    - serviceAccount:iampartialpolicy-dep-project@iampartialpolicy-dep-project.iam.gserviceaccount.com
+    role: roles/editor
+  - members:
+    - serviceAccount:iampartialpolicy-dep-project@iampartialpolicy-dep-project.iam.gserviceaccount.com
+    role: roles/storage.admin
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  lastAppliedBindings:
+  - members:
+    - serviceAccount:iampartialpolicy-dep-project@iampartialpolicy-dep-project.iam.gserviceaccount.com
+    role: roles/editor
+  - members:
+    - serviceAccount:iampartialpolicy-dep-project@iampartialpolicy-dep-project.iam.gserviceaccount.com
+    role: roles/storage.admin
+  observedGeneration: 1

@@ -1,0 +1,8 @@
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnector
+metadata:
+  generation: 3
+  name: configconnector.core.cnrm.cloud.google.com
+spec:
+  actuationMode: Reconciling
+  mode: cluster

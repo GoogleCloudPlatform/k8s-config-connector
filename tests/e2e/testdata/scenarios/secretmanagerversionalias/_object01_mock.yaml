@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  secretData: SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=
+kind: Secret
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  name: secret-dep-${uniqueId}
+  namespace: ${projectId}
+type: Opaque

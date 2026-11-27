@@ -1,0 +1,81 @@
+GRPC /google.storage.control.v2.StorageControl/GetAnywhereCache
+
+{
+  "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a",
+  "requestId": "1234"
+}
+
+OK
+
+{
+  "admissionPolicy": "admit-on-first-miss",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a",
+  "state": "disabled",
+  "ttl": "86400s",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "zone": "us-central1-a"
+}
+
+---
+
+GRPC /google.storage.control.v2.StorageControl/ResumeAnywhereCache
+
+{
+  "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a",
+  "requestId": "1234"
+}
+
+OK
+
+{
+  "admissionPolicy": "admit-on-first-miss",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a",
+  "state": "running",
+  "ttl": "86400s",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "zone": "us-central1-a"
+}
+
+---
+
+GRPC /google.storage.control.v2.StorageControl/PauseAnywhereCache
+
+{
+  "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a",
+  "requestId": "1234"
+}
+
+OK
+
+{
+  "admissionPolicy": "admit-on-first-miss",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a",
+  "state": "paused",
+  "ttl": "86400s",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "zone": "us-central1-a"
+}
+
+---
+
+GRPC /google.storage.control.v2.StorageControl/GetAnywhereCache
+
+{
+  "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a",
+  "requestId": "1234"
+}
+
+OK
+
+{
+  "admissionPolicy": "admit-on-first-miss",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a",
+  "state": "paused",
+  "ttl": "86400s",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "zone": "us-central1-a"
+}
