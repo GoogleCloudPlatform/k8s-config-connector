@@ -215,6 +215,7 @@ BLOCKED_KINDS=(
     "GSuiteAddonsDeployment"
     "IAMAccessPolicy"
     "IAMPrincipalAccessBoundaryPolicy"
+    "IAMWorkloadIdentityPoolManagedIdentity"
     "IAPTunnelDestGroup"
     "InfraManagerDeploymentGroup"
     "KMSEKMConnection"
