@@ -282,7 +282,7 @@ func (d *Data) IsNonDeletable() bool {
 		"CloudBuildBuild", "CloudDeployRelease",
 		"ComputeProjectMetadata", "ComputeSharedVPCHostProject",
 		"DataflowFlexTemplateJob", "DataflowJob",
-		"DiscoveryEngineUserStore", "DiscoveryEngineLicenseConfig", "DiscoveryEngineWidgetConfig",
+		"DiscoveryEngineACLConfig", "DiscoveryEngineUserStore", "DiscoveryEngineLicenseConfig", "DiscoveryEngineWidgetConfig",
 		"FirestoreField",
 		"IAPSettings",
 		"Service", "ServiceIdentity",

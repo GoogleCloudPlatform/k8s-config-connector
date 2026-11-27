@@ -162,4 +162,12 @@
   5. Triaged all 6 judgement queue entries for `DiscoveryEngineCMEKConfig` in `apis/discoveryengine/judgement_queue.yaml`.
 - **Impact**: Fully resolves Greenfield Step 1b for `DiscoveryEngineCMEKConfig`, passing all API compatibility and schema checks.
 
+### [2026-11-24] DiscoveryEngineACLConfig Step 2 Controller Implementation
+- **Context**: Greenfield Step 2 implementation (direct controller, fuzzer, and E2E fixtures) for `DiscoveryEngineACLConfig` (Issue #16405).
+- **Details & Learnings**:
+  1. **Singleton & Lifecycle Pattern**: `AclConfigService` in GCP only provides `GetAclConfig` and `UpdateAclConfig` RPCs (no `CreateAclConfig` or `DeleteAclConfig`). In `Create()`, the controller updates the singleton GCP resource. In `Delete()`, it logs deletion not supported and removes the finalizer without deleting the GCP resource. Added `DiscoveryEngineACLConfig` to `IsNonDeletable()` in `pkg/test/httplogreport/fixture/loader.go` and `loader_test.go`.
+  2. **Default / Zero-State Normalization**: When `idpConfig` is not configured or reset, GCP returns `{name: "...", idpConfig: {}}`. In `CompareGreenfieldSpec`, added a `normalize` hook to set `p.IdpConfig = nil` when `p.IdpConfig.IdpType == IDP_TYPE_UNSPECIFIED && p.IdpConfig.ExternalIdpConfig == nil` so that minimal `create.yaml` without `idpConfig` reconciles cleanly without false diffs against the default GCP state.
+  3. **Third-Party IDP Workforce Pools**: For `idpType: THIRD_PARTY`, GCP validates that referenced workforce pool resources (`locations/global/workforcePools/<name>`) exist in the organization. Pre-existing pools (`dummy-pool` and `test-pool`) in the test organization were used in maximal fixtures to verify initial creation and updating across workforce pools.
+  4. **Validation**: Both minimal and maximal fixtures recorded cleanly against real GCP with 7/7 checks passed in `_http_report.md`. Audit probe logs verified real GCP interactions (`X-Audit-Probe: true`). Round-trip fuzzer passed cleanly. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` to reflect the newly covered fields.
+
 

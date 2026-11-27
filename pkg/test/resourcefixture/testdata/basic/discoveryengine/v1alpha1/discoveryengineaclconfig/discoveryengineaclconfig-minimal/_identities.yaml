@@ -1,0 +1,6 @@
+- caisURL: //discoveryengine.googleapis.com/projects/${projectId}/locations/global/aclConfig
+  group: discoveryengine.cnrm.cloud.google.com
+  kind: DiscoveryEngineACLConfig
+  name: discoveryengineaclconfig-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
