@@ -496,6 +496,18 @@ func (m *gcpClient) newInstanceGroupManagersClient(ctx context.Context) (*comput
 	return client, err
 }
 
+func (m *gcpClient) newInstanceGroupManagerResizeRequestsClient(ctx context.Context) (*compute.InstanceGroupManagerResizeRequestsClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewInstanceGroupManagerResizeRequestsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building ComputeInstanceGroupManagerResizeRequests client: %w", err)
+	}
+	return client, err
+}
+
 func (m *gcpClient) newRegionInstanceGroupManagersClient(ctx context.Context) (*compute.RegionInstanceGroupManagersClient, error) {
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
