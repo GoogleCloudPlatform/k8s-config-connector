@@ -1,0 +1,678 @@
+# Phase: CREATE
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces?%24alt=json%3Benum-encoding%3Dint&spaceId=dc-space-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "enableGcpSharedTemplates": true
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "enableGcpSharedTemplates": true,
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates/dc-app-template-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-max-${uniqueId}%2FapplicationTemplates%2Fdc-app-template-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates/dc-app-template-max-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates?%24alt=json%3Benum-encoding%3Dint&applicationTemplateId=dc-app-template-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-max-${uniqueId}
+
+{
+  "compositionType": 2
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "compositionType": 2,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "iacFormat": 1,
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates/dc-app-template-max-${uniqueId}",
+  "serializedApplicationTemplate": {
+    "compositionType": 2,
+    "iacFormat": 1,
+    "uri": "projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates/dc-app-template-max-${uniqueId}"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates/dc-app-template-max-${uniqueId}/components/designcentercomponent-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-max-${uniqueId}%2FapplicationTemplates%2Fdc-app-template-max-${uniqueId}%2Fcomponents%2Fdesigncentercomponent-maximal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates/dc-app-template-max-${uniqueId}/components/designcentercomponent-maximal-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates/dc-app-template-max-${uniqueId}/components?%24alt=json%3Benum-encoding%3Dint&componentId=designcentercomponent-maximal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-max-${uniqueId}%2FapplicationTemplates%2Fdc-app-template-max-${uniqueId}
+
+{
+  "displayName": "Maximal Component Initial",
+  "inputVariableAliases": [
+    {
+      "alias": "runtime_name",
+      "variable": "agent-runtime-1_display_name"
+    }
+  ],
+  "parameters": [
+    {
+      "key": "agent-runtime-1_display_name",
+      "value": "my-agent-runtime"
+    },
+    {
+      "key": "agent-runtime-1_project_id",
+      "value": "${projectId}"
+    },
+    {
+      "key": "agent-runtime-1_region",
+      "value": "us-central1"
+    }
+  ],
+  "sharedTemplateRevisionUri": "projects/gcpdesigncenter/locations/us-central1/spaces/googlespace/sharedTemplates/googlespace-simple-agent-runtime-1kqzt4m/revisions/r-2"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "apis": [
+    "cloudbilling.googleapis.com",
+    "servicenetworking.googleapis.com",
+    "notebooks.googleapis.com",
+    "aiplatform.googleapis.com",
+    "iap.googleapis.com",
+    "iamcredentials.googleapis.com",
+    "cloudkms.googleapis.com",
+    "secretmanager.googleapis.com",
+    "modelarmor.googleapis.com",
+    "dlp.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
+    "serviceusage.googleapis.com",
+    "iam.googleapis.com"
+  ],
+  "componentParameterSchema": [
+    {
+      "isRequired": true,
+      "key": "agent-runtime-1_display_name",
+      "type": "string"
+    },
+    {
+      "isRequired": true,
+      "key": "agent-runtime-1_project_id",
+      "type": "string"
+    },
+    {
+      "isRequired": true,
+      "key": "agent-runtime-1_region",
+      "type": "string"
+    }
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Maximal Component Initial",
+  "inputVariableAliases": [
+    {
+      "alias": "runtime_name",
+      "variable": "agent-runtime-1_display_name"
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates/dc-app-template-max-${uniqueId}/components/designcentercomponent-maximal-${uniqueId}",
+  "parameters": [
+    {
+      "key": "agent-runtime-1_display_name",
+      "value": "my-agent-runtime"
+    },
+    {
+      "key": "agent-runtime-1_project_id",
+      "value": "${projectId}"
+    },
+    {
+      "key": "agent-runtime-1_region",
+      "value": "us-central1"
+    }
+  ],
+  "roles": [
+    "roles/modelarmor.admin",
+    "roles/modelarmor.floorSettingsAdmin",
+    "roles/artifactregistry.reader",
+    "roles/compute.admin",
+    "roles/compute.networkAdmin",
+    "roles/iam.securityAdmin",
+    "roles/iam.serviceAccountAdmin",
+    "roles/cloudkms.admin",
+    "roles/storage.admin",
+    "roles/cloudkms.cryptoKeyEncrypterDecrypter",
+    "roles/aiplatform.admin",
+    "roles/notebooks.admin",
+    "roles/iam.serviceAccountUser",
+    "roles/iam.roleAdmin",
+    "roles/serviceusage.serviceUsageAdmin"
+  ],
+  "sharedTemplateRevisionUri": "projects/gcpdesigncenter/locations/us-central1/spaces/googlespace/sharedTemplates/googlespace-simple-agent-runtime-1kqzt4m/revisions/r-2",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: UPDATE
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates/dc-app-template-max-${uniqueId}/components/designcentercomponent-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-max-${uniqueId}%2FapplicationTemplates%2Fdc-app-template-max-${uniqueId}%2Fcomponents%2Fdesigncentercomponent-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "apis": [
+    "cloudbilling.googleapis.com",
+    "servicenetworking.googleapis.com",
+    "notebooks.googleapis.com",
+    "aiplatform.googleapis.com",
+    "iap.googleapis.com",
+    "iamcredentials.googleapis.com",
+    "cloudkms.googleapis.com",
+    "secretmanager.googleapis.com",
+    "modelarmor.googleapis.com",
+    "dlp.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
+    "serviceusage.googleapis.com",
+    "iam.googleapis.com"
+  ],
+  "componentParameterSchema": [
+    {
+      "isRequired": true,
+      "key": "agent-runtime-1_display_name",
+      "type": "string"
+    },
+    {
+      "isRequired": true,
+      "key": "agent-runtime-1_project_id",
+      "type": "string"
+    },
+    {
+      "isRequired": true,
+      "key": "agent-runtime-1_region",
+      "type": "string"
+    }
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Maximal Component Initial",
+  "inputVariableAliases": [
+    {
+      "alias": "runtime_name",
+      "variable": "agent-runtime-1_display_name"
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates/dc-app-template-max-${uniqueId}/components/designcentercomponent-maximal-${uniqueId}",
+  "parameters": [
+    {
+      "key": "agent-runtime-1_display_name",
+      "value": "my-agent-runtime"
+    },
+    {
+      "key": "agent-runtime-1_project_id",
+      "value": "${projectId}"
+    },
+    {
+      "key": "agent-runtime-1_region",
+      "value": "us-central1"
+    }
+  ],
+  "roles": [
+    "roles/modelarmor.admin",
+    "roles/modelarmor.floorSettingsAdmin",
+    "roles/artifactregistry.reader",
+    "roles/compute.admin",
+    "roles/compute.networkAdmin",
+    "roles/iam.securityAdmin",
+    "roles/iam.serviceAccountAdmin",
+    "roles/cloudkms.admin",
+    "roles/storage.admin",
+    "roles/cloudkms.cryptoKeyEncrypterDecrypter",
+    "roles/aiplatform.admin",
+    "roles/notebooks.admin",
+    "roles/iam.serviceAccountUser",
+    "roles/iam.roleAdmin",
+    "roles/serviceusage.serviceUsageAdmin"
+  ],
+  "sharedTemplateRevisionUri": "projects/gcpdesigncenter/locations/us-central1/spaces/googlespace/sharedTemplates/googlespace-simple-agent-runtime-1kqzt4m/revisions/r-2",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates/dc-app-template-max-${uniqueId}/components/designcentercomponent-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2CinputVariableAliases%2CuseAsRootModule
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: component.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-max-${uniqueId}%2FapplicationTemplates%2Fdc-app-template-max-${uniqueId}%2Fcomponents%2Fdesigncentercomponent-maximal-${uniqueId}
+
+{
+  "displayName": "Maximal Component Updated",
+  "inputVariableAliases": [
+    {
+      "alias": "updated_runtime_name",
+      "variable": "agent-runtime-1_display_name"
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates/dc-app-template-max-${uniqueId}/components/designcentercomponent-maximal-${uniqueId}",
+  "parameters": [
+    {
+      "key": "agent-runtime-1_display_name",
+      "value": "my-agent-runtime"
+    },
+    {
+      "key": "agent-runtime-1_project_id",
+      "value": "${projectId}"
+    },
+    {
+      "key": "agent-runtime-1_region",
+      "value": "us-central1"
+    }
+  ],
+  "sharedTemplateRevisionUri": "projects/gcpdesigncenter/locations/us-central1/spaces/googlespace/sharedTemplates/googlespace-simple-agent-runtime-1kqzt4m/revisions/r-2",
+  "useAsRootModule": true
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "apis": [
+    "cloudbilling.googleapis.com",
+    "servicenetworking.googleapis.com",
+    "notebooks.googleapis.com",
+    "aiplatform.googleapis.com",
+    "iap.googleapis.com",
+    "iamcredentials.googleapis.com",
+    "cloudkms.googleapis.com",
+    "secretmanager.googleapis.com",
+    "modelarmor.googleapis.com",
+    "dlp.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
+    "serviceusage.googleapis.com",
+    "iam.googleapis.com"
+  ],
+  "componentParameterSchema": [
+    {
+      "isRequired": true,
+      "key": "agent-runtime-1_display_name",
+      "type": "string"
+    },
+    {
+      "isRequired": true,
+      "key": "agent-runtime-1_project_id",
+      "type": "string"
+    },
+    {
+      "isRequired": true,
+      "key": "agent-runtime-1_region",
+      "type": "string"
+    }
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Maximal Component Updated",
+  "inputVariableAliases": [
+    {
+      "alias": "updated_runtime_name",
+      "variable": "agent-runtime-1_display_name"
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates/dc-app-template-max-${uniqueId}/components/designcentercomponent-maximal-${uniqueId}",
+  "parameters": [
+    {
+      "key": "agent-runtime-1_display_name",
+      "value": "my-agent-runtime"
+    },
+    {
+      "key": "agent-runtime-1_project_id",
+      "value": "${projectId}"
+    },
+    {
+      "key": "agent-runtime-1_region",
+      "value": "us-central1"
+    }
+  ],
+  "roles": [
+    "roles/modelarmor.admin",
+    "roles/modelarmor.floorSettingsAdmin",
+    "roles/artifactregistry.reader",
+    "roles/compute.admin",
+    "roles/compute.networkAdmin",
+    "roles/iam.securityAdmin",
+    "roles/iam.serviceAccountAdmin",
+    "roles/cloudkms.admin",
+    "roles/storage.admin",
+    "roles/cloudkms.cryptoKeyEncrypterDecrypter",
+    "roles/aiplatform.admin",
+    "roles/notebooks.admin",
+    "roles/iam.serviceAccountUser",
+    "roles/iam.roleAdmin",
+    "roles/serviceusage.serviceUsageAdmin"
+  ],
+  "sharedTemplateRevisionUri": "projects/gcpdesigncenter/locations/us-central1/spaces/googlespace/sharedTemplates/googlespace-simple-agent-runtime-1kqzt4m/revisions/r-2",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "useAsRootModule": true
+}
+
+---
+
+# Phase: DELETE
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates/dc-app-template-max-${uniqueId}/components/designcentercomponent-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-max-${uniqueId}%2FapplicationTemplates%2Fdc-app-template-max-${uniqueId}%2Fcomponents%2Fdesigncentercomponent-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "apis": [
+    "cloudbilling.googleapis.com",
+    "servicenetworking.googleapis.com",
+    "notebooks.googleapis.com",
+    "aiplatform.googleapis.com",
+    "iap.googleapis.com",
+    "iamcredentials.googleapis.com",
+    "cloudkms.googleapis.com",
+    "secretmanager.googleapis.com",
+    "modelarmor.googleapis.com",
+    "dlp.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
+    "serviceusage.googleapis.com",
+    "iam.googleapis.com"
+  ],
+  "componentParameterSchema": [
+    {
+      "isRequired": true,
+      "key": "agent-runtime-1_display_name",
+      "type": "string"
+    },
+    {
+      "isRequired": true,
+      "key": "agent-runtime-1_project_id",
+      "type": "string"
+    },
+    {
+      "isRequired": true,
+      "key": "agent-runtime-1_region",
+      "type": "string"
+    }
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Maximal Component Updated",
+  "inputVariableAliases": [
+    {
+      "alias": "updated_runtime_name",
+      "variable": "agent-runtime-1_display_name"
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates/dc-app-template-max-${uniqueId}/components/designcentercomponent-maximal-${uniqueId}",
+  "parameters": [
+    {
+      "key": "agent-runtime-1_display_name",
+      "value": "my-agent-runtime"
+    },
+    {
+      "key": "agent-runtime-1_project_id",
+      "value": "${projectId}"
+    },
+    {
+      "key": "agent-runtime-1_region",
+      "value": "us-central1"
+    }
+  ],
+  "roles": [
+    "roles/modelarmor.admin",
+    "roles/modelarmor.floorSettingsAdmin",
+    "roles/artifactregistry.reader",
+    "roles/compute.admin",
+    "roles/compute.networkAdmin",
+    "roles/iam.securityAdmin",
+    "roles/iam.serviceAccountAdmin",
+    "roles/cloudkms.admin",
+    "roles/storage.admin",
+    "roles/cloudkms.cryptoKeyEncrypterDecrypter",
+    "roles/aiplatform.admin",
+    "roles/notebooks.admin",
+    "roles/iam.serviceAccountUser",
+    "roles/iam.roleAdmin",
+    "roles/serviceusage.serviceUsageAdmin"
+  ],
+  "sharedTemplateRevisionUri": "projects/gcpdesigncenter/locations/us-central1/spaces/googlespace/sharedTemplates/googlespace-simple-agent-runtime-1kqzt4m/revisions/r-2",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "useAsRootModule": true
+}
+
+---
+
+DELETE https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates/dc-app-template-max-${uniqueId}/components/designcentercomponent-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-max-${uniqueId}%2FapplicationTemplates%2Fdc-app-template-max-${uniqueId}%2Fcomponents%2Fdesigncentercomponent-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates/dc-app-template-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-max-${uniqueId}%2FapplicationTemplates%2Fdc-app-template-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "compositionType": 2,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "iacFormat": 1,
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates/dc-app-template-max-${uniqueId}",
+  "serializedApplicationTemplate": {
+    "compositionType": 2,
+    "iacFormat": 1,
+    "uri": "projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates/dc-app-template-max-${uniqueId}"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates/dc-app-template-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-max-${uniqueId}%2FapplicationTemplates%2Fdc-app-template-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "enableGcpSharedTemplates": true,
+  "name": "projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://designcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fspaces%2Fdc-space-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

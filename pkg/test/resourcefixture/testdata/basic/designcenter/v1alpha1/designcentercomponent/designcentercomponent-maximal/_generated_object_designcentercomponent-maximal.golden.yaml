@@ -1,0 +1,92 @@
+apiVersion: designcenter.cnrm.cloud.google.com/v1alpha1
+kind: DesignCenterComponent
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: designcentercomponent-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: Maximal Component Updated
+  inputVariableAliases:
+  - alias: updated_runtime_name
+    variable: agent-runtime-1_display_name
+  parameters:
+  - key: agent-runtime-1_display_name
+    value:
+      stringValue: my-agent-runtime
+  - key: agent-runtime-1_project_id
+    value:
+      stringValue: ${projectId}
+  - key: agent-runtime-1_region
+    value:
+      stringValue: us-central1
+  parentRef:
+    name: dc-app-template-max-${uniqueId}
+  sharedTemplateRevisionURI: projects/gcpdesigncenter/locations/us-central1/spaces/googlespace/sharedTemplates/googlespace-simple-agent-runtime-1kqzt4m/revisions/r-2
+  useAsRootModule: true
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/spaces/dc-space-max-${uniqueId}/applicationTemplates/dc-app-template-max-${uniqueId}/components/designcentercomponent-maximal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    apis:
+    - cloudbilling.googleapis.com
+    - servicenetworking.googleapis.com
+    - notebooks.googleapis.com
+    - aiplatform.googleapis.com
+    - iap.googleapis.com
+    - iamcredentials.googleapis.com
+    - cloudkms.googleapis.com
+    - secretmanager.googleapis.com
+    - modelarmor.googleapis.com
+    - dlp.googleapis.com
+    - cloudresourcemanager.googleapis.com
+    - serviceusage.googleapis.com
+    - iam.googleapis.com
+    componentParameterSchema:
+    - isRequired: true
+      key: agent-runtime-1_display_name
+      type: string
+    - isRequired: true
+      key: agent-runtime-1_project_id
+      type: string
+    - isRequired: true
+      key: agent-runtime-1_region
+      type: string
+    createTime: "1970-01-01T00:00:00Z"
+    parameters:
+    - key: agent-runtime-1_display_name
+      value:
+        stringValue: my-agent-runtime
+    - key: agent-runtime-1_project_id
+      value:
+        stringValue: ${projectId}
+    - key: agent-runtime-1_region
+      value:
+        stringValue: us-central1
+    roles:
+    - roles/modelarmor.admin
+    - roles/modelarmor.floorSettingsAdmin
+    - roles/artifactregistry.reader
+    - roles/compute.admin
+    - roles/compute.networkAdmin
+    - roles/iam.securityAdmin
+    - roles/iam.serviceAccountAdmin
+    - roles/cloudkms.admin
+    - roles/storage.admin
+    - roles/cloudkms.cryptoKeyEncrypterDecrypter
+    - roles/aiplatform.admin
+    - roles/notebooks.admin
+    - roles/iam.serviceAccountUser
+    - roles/iam.roleAdmin
+    - roles/serviceusage.serviceUsageAdmin
+    updateTime: "1970-01-01T00:00:00Z"
