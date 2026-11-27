@@ -27,6 +27,8 @@ import (
 	syncercrd "github.com/gke-labs/kube-etl/syncer/config/crd"
 	mclcrd "github.com/gke-labs/multicluster-leader-election/config/crd/bases"
 	"github.com/google/go-cmp/cmp"
+	appsv1 "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -223,6 +225,46 @@ func TestCnrmViewerCoversEveryGroupThatASyncerWatches(t *testing.T) {
 		if syncerWildcardMatches(systemGroup) {
 			t.Errorf("the syncer's wildcard matches system group %q, which cnrm-viewer doesn't cover", systemGroup)
 		}
+	}
+}
+
+// TestSyncerControllerManagerMemoryRequirements guards against regressing syncer-controller-manager's
+// memory request/limit back to the kube-etl scaffold's 64Mi/128Mi.
+func TestSyncerControllerManagerMemoryRequirements(t *testing.T) {
+	objs := newTestManifestBuilder("cluster").buildClusterObjects()
+	var syncerDep *appsv1.Deployment
+	for _, obj := range objs {
+		if dep, ok := obj.(*appsv1.Deployment); ok && dep.Name == "syncer-controller-manager" {
+			syncerDep = dep
+			break
+		}
+	}
+	if syncerDep == nil {
+		t.Fatalf("Deployment syncer-controller-manager not found in cluster objects")
+	}
+
+	var managerContainer *corev1.Container
+	for i := range syncerDep.Spec.Template.Spec.Containers {
+		c := &syncerDep.Spec.Template.Spec.Containers[i]
+		if c.Name == "manager" {
+			managerContainer = c
+			break
+		}
+	}
+	if managerContainer == nil {
+		t.Fatalf("container manager not found in syncer-controller-manager Deployment")
+	}
+
+	gotRequest := managerContainer.Resources.Requests.Memory().String()
+	wantRequest := "256Mi"
+	if gotRequest != wantRequest {
+		t.Errorf("syncer-controller-manager memory request = %q, want %q", gotRequest, wantRequest)
+	}
+
+	gotLimit := managerContainer.Resources.Limits.Memory().String()
+	wantLimit := "1Gi"
+	if gotLimit != wantLimit {
+		t.Errorf("syncer-controller-manager memory limit = %q, want %q", gotLimit, wantLimit)
 	}
 }
 

@@ -319,13 +319,16 @@ func (b *manifestBuilder) syncerComponent() controllerComponent {
 			b.buildSyncerAdminBinding(),
 			b.buildSyncerPeersBinding(),
 		},
-		// The security context, requests and limits are the fork's (config/manager/manager.yaml).
+		// The security context and CPU settings match the fork's (config/manager/manager.yaml).
+		// Memory is higher than the fork's 64Mi/128Mi scaffold because Config Connector's
+		// "*.cnrm.cloud.google.com" rule starts unstructured remote informers across ~276+ CRDs
+		// and keeps prior remote caches across leader/endpoint changes.
 		podSecurityContext: &corev1.PodSecurityContext{RunAsNonRoot: &runAsNonRoot},
 		container: corev1.Container{
 			Name:            "manager",
 			Image:           b.syncerImage,
 			Args:            []string{syncerDefaultSyncPeriodArg},
-			Resources:       resourceRequirements("10m", "64Mi", "500m", "128Mi"),
+			Resources:       resourceRequirements("10m", "256Mi", "500m", "1Gi"),
 			SecurityContext: unprivilegedSecurityContext(),
 		},
 	}
