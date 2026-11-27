@@ -16,12 +16,15 @@ package spanner
 
 import (
 	"context"
+	"net/http"
 	"testing"
 
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -223,6 +226,72 @@ func TestSpannerBackupSchedule_NormalizeReferences(t *testing.T) {
 		}
 		if protoObj.EncryptionConfig != nil {
 			t.Errorf("protoObj.EncryptionConfig = %v, want nil", protoObj.EncryptionConfig)
+		}
+	})
+
+	t.Run("returns error when referenced key is not found", func(t *testing.T) {
+		obj := &krm.SpannerBackupSchedule{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test-schedule",
+				Namespace: "test-ns",
+			},
+			Spec: krm.SpannerBackupScheduleSpec{
+				EncryptionConfig: &krm.CreateBackupEncryptionConfig{
+					KMSKeyRef: &kmsv1beta1.KMSCryptoKeyRef{
+						Name: "nonexistent-key",
+					},
+				},
+			},
+		}
+
+		if err := common.NormalizeReferences(ctx, reader, obj, nil); err == nil {
+			t.Fatalf("NormalizeReferences() expected error for nonexistent key, got nil")
+		}
+	})
+
+	t.Run("AdapterForObject succeeds when referenced KMS key does not exist", func(t *testing.T) {
+		obj := &krm.SpannerBackupSchedule{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test-schedule",
+				Namespace: "test-ns",
+			},
+			Spec: krm.SpannerBackupScheduleSpec{
+				DatabaseRef: &krm.SpannerDatabaseRef{
+					External: "projects/test-project/instances/test-instance/databases/test-db",
+				},
+				EncryptionConfig: &krm.CreateBackupEncryptionConfig{
+					KMSKeyRef: &kmsv1beta1.KMSCryptoKeyRef{
+						Name: "nonexistent-key",
+					},
+					KMSKeyRefs: []*kmsv1beta1.KMSCryptoKeyRef{
+						{Name: "nonexistent-key"},
+					},
+				},
+			},
+		}
+
+		u, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+		if err != nil {
+			t.Fatalf("ToUnstructured failed: %v", err)
+		}
+		unstructuredObj := &unstructured.Unstructured{Object: u}
+		unstructuredObj.SetGroupVersionKind(krm.SpannerBackupScheduleGVK)
+
+		emptyReader := fake.NewClientBuilder().WithScheme(scheme).Build()
+		cfg := config.ControllerConfig{
+			HTTPClient: &http.Client{},
+		}
+		model := &modelBackupSchedule{config: cfg}
+		op := &directbase.AdapterForObjectOperation{
+			Object: unstructuredObj,
+			Reader: emptyReader,
+		}
+		adapter, err := model.AdapterForObject(ctx, op)
+		if err != nil {
+			t.Fatalf("AdapterForObject() unexpected error when KMS key is missing: %v", err)
+		}
+		if adapter == nil {
+			t.Fatalf("AdapterForObject() returned nil adapter")
 		}
 	})
 
