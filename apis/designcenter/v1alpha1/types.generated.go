@@ -25,6 +25,7 @@
 // resource: DesignCenterApplicationTemplate:ApplicationTemplate
 // resource: DesignCenterApplication:Application
 // resource: DesignCenterComponent:Component
+// resource: DesignCenterConnection:Connection
 
 package v1alpha1
 
@@ -570,6 +571,32 @@ type CompositeApplicationParameters struct {
 	// +kcc:proto:field=google.cloud.designcenter.v1.CompositeApplicationParameters.service_account_map
 	ServiceAccountMap map[string]string `json:"serviceAccountMap,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.designcenter.v1.Connection", skipping
+
+// +kcc:proto=google.cloud.designcenter.v1.Connection
+type Connection struct {
+	// Identifier. The connection name.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Connection.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The destination component URI used to generate the connection.
+	//  Format is
+	//  `projects/$project/locations/$location/spaces/$space/applicationTemplates/$application_template/components/$component`
+	// +kcc:proto:field=google.cloud.designcenter.v1.Connection.destination_component_uri
+	DestinationComponentURI *string `json:"destinationComponentURI,omitempty"`
+
+	// Optional. The parameters of the connection associated with the source
+	//  component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Connection.source_component_parameters
+	SourceComponentParameters []Parameter `json:"sourceComponentParameters,omitempty"`
+
+	// Optional. The parameters of the connection associated with the destination
+	//  component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Connection.destination_component_parameters
+	DestinationComponentParameters []Parameter `json:"destinationComponentParameters,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.designcenter.v1.ConnectionConfig
 type ConnectionConfig struct {
@@ -2140,6 +2167,34 @@ type CompositeApplicationParametersObservedState struct {
 	ProjectParametersMap map[string]ProjectParametersList `json:"projectParametersMap,omitempty"`
 }
 
+/* found existing non-generated go type with proto tag "google.cloud.designcenter.v1.Connection", skipping
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.Connection
+type ConnectionObservedState struct {
+	// Output only. The connection creation timestamp.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Connection.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The connection update timestamp.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Connection.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Optional. The parameters of the connection associated with the source
+	//  component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Connection.source_component_parameters
+	SourceComponentParameters []ParameterObservedState `json:"sourceComponentParameters,omitempty"`
+
+	// Optional. The parameters of the connection associated with the destination
+	//  component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Connection.destination_component_parameters
+	DestinationComponentParameters []ParameterObservedState `json:"destinationComponentParameters,omitempty"`
+
+	// Output only. The type of the connection (data or logical).
+	// +kcc:proto:field=google.cloud.designcenter.v1.Connection.dependency_type
+	DependencyType *string `json:"dependencyType,omitempty"`
+}
+*/
+
 // +kcc:observedstate:proto=google.cloud.designcenter.v1.ConnectionConfig
 type ConnectionConfigObservedState struct {
 	// Optional. The parameters of the connection associated with the source
@@ -2423,21 +2478,16 @@ type MetadataInputSpecObservedState struct {
 	Requirements *TemplateRequirementsObservedState `json:"requirements,omitempty"`
 }
 
+/* found existing non-generated go type "ParameterObservedState", skipping
+
 // +kcc:observedstate:proto=google.cloud.designcenter.v1.Parameter
 type ParameterObservedState struct {
-	// Required. The key of the parameter.
-	// +kcc:proto:field=google.cloud.designcenter.v1.Parameter.key
-	Key *string `json:"key,omitempty"`
-
-	// Optional. The value of the parameter.
-	// +kcc:proto:field=google.cloud.designcenter.v1.Parameter.value
-	Value *Value `json:"value,omitempty"`
-
 	// Output only. Indicates if the parameter is read-only (driven by
 	//  expression).
 	// +kcc:proto:field=google.cloud.designcenter.v1.Parameter.read_only
 	ReadOnly *bool `json:"readOnly,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.designcenter.v1.Policy", skipping
 

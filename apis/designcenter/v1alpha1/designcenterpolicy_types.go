@@ -155,3 +155,19 @@ type DesignCenterPolicyList struct {
 func init() {
 	SchemeBuilder.Register(&DesignCenterPolicy{}, &DesignCenterPolicyList{})
 }
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.Parameter
+type ParameterObservedState struct {
+	// Required. The key of the parameter.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Parameter.key
+	Key *string `json:"key,omitempty"`
+
+	// Optional. The value of the parameter.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Parameter.value
+	Value *Value `json:"value,omitempty"`
+
+	// Output only. Indicates if the parameter is read-only (driven by
+	//  expression).
+	// +kcc:proto:field=google.cloud.designcenter.v1.Parameter.read_only
+	ReadOnly *bool `json:"readOnly,omitempty"`
+}

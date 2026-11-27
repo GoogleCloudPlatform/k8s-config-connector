@@ -1345,6 +1345,64 @@ func DesignCenterComponentSpec_ToProto(mapCtx *direct.MapContext, in *krm.Design
 	return out
 }
 
+func DesignCenterConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Connection) *krm.DesignCenterConnectionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DesignCenterConnectionObservedState{}
+	// MISSING: Name
+	// MISSING: DestinationComponentURI
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.SourceComponentParameters = direct.Slice_FromProto(mapCtx, in.SourceComponentParameters, ParameterObservedState_FromProto)
+	out.DestinationComponentParameters = direct.Slice_FromProto(mapCtx, in.DestinationComponentParameters, ParameterObservedState_FromProto)
+	out.DependencyType = direct.Enum_FromProto(mapCtx, in.GetDependencyType())
+	return out
+}
+
+func DesignCenterConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DesignCenterConnectionObservedState) *pb.Connection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Connection{}
+	// MISSING: Name
+	// MISSING: DestinationComponentURI
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.SourceComponentParameters = direct.Slice_ToProto(mapCtx, in.SourceComponentParameters, ParameterObservedState_ToProto)
+	out.DestinationComponentParameters = direct.Slice_ToProto(mapCtx, in.DestinationComponentParameters, ParameterObservedState_ToProto)
+	out.DependencyType = direct.Enum_ToProto[pb.ConnectionDependencyType](mapCtx, in.DependencyType)
+	return out
+}
+
+/* found existing non-generated mapping function "DesignCenterConnectionSpec_FromProto", skipping
+func DesignCenterConnectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Connection) *krm.DesignCenterConnectionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DesignCenterConnectionSpec{}
+	// MISSING: Name
+	// MISSING: DestinationComponentURI
+	out.SourceComponentParameters = direct.Slice_FromProto(mapCtx, in.SourceComponentParameters, Parameter_FromProto)
+	out.DestinationComponentParameters = direct.Slice_FromProto(mapCtx, in.DestinationComponentParameters, Parameter_FromProto)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "DesignCenterConnectionSpec_ToProto", skipping
+func DesignCenterConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm.DesignCenterConnectionSpec) *pb.Connection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Connection{}
+	// MISSING: Name
+	// MISSING: DestinationComponentURI
+	out.SourceComponentParameters = direct.Slice_ToProto(mapCtx, in.SourceComponentParameters, Parameter_ToProto)
+	out.DestinationComponentParameters = direct.Slice_ToProto(mapCtx, in.DestinationComponentParameters, Parameter_ToProto)
+	return out
+}
+*/
+
 func DesignCenterPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krm.DesignCenterPolicyObservedState {
 	if in == nil {
 		return nil

@@ -975,6 +975,81 @@ entries:
     status: resolved
     resolution: accepted
     note: confirmed generated struct Value KRM representation and Value_ToProto mapping
+  - kind: DesignCenterConnection
+    group: designcenter.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: triaged DesignCenterConnection; modelled spec.parentRef (*DesignCenterComponentRef), converted destinationComponentURI to destinationComponentRef (*DesignCenterComponentRef), removed ProjectRef and Location, and added API doc links
+  - kind: DesignCenterConnection
+    group: designcenter.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//designcenter.googleapis.com/projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/components/{component}/connections/{connection}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: resolved
+    resolution: accepted
+    note: verified template against proto google.api.resource pattern
+  - kind: DesignCenterConnection
+    group: designcenter.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/components/{component}/connections/{connection}" contains ancestor segment(s) spaces/{space}, applicationTemplates/{application_template}, components/{component} with no matching reference or field on DesignCenterConnectionSpec
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DesignCenterComponentRef); removed ProjectRef and Location
+  - kind: DesignCenterConnection
+    group: designcenter.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: found no docs root for this API; find the REST reference page by hand
+    status: resolved
+    resolution: edited
+    note: added resource REST reference URL
+  - kind: DesignCenterConnection
+    group: designcenter.cnrm.cloud.google.com
+    reason: verify-service-docs-link
+    detail: neither the Discovery directory nor the service config names a docs page; add one
+    status: resolved
+    resolution: edited
+    note: added service docs URL
+  - kind: DesignCenterConnection
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.componentRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to DesignCenterComponentRef, read from the components segment of projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/components/{component}/connections/{connection}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DesignCenterComponentRef); removed ProjectRef and Location
+  - kind: DesignCenterConnection
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.destinationComponentParameters[].value
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
+  - kind: DesignCenterConnection
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.destinationComponentURI
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to designcenter.googleapis.com/Component (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: resolved
+    resolution: edited
+    note: converted to destinationComponentRef (*DesignCenterComponentRef)
+  - kind: DesignCenterConnection
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/components/{component}, which already names the location; a reference to it could replace location and the root reference
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DesignCenterComponentRef); removed ProjectRef and Location
+  - kind: DesignCenterConnection
+    group: designcenter.cnrm.cloud.google.com
+    field: .spec.sourceComponentParameters[].value
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: resolved
+    resolution: accepted
+    note: confirmed generated struct Value KRM representation and Value_ToProto mapping
   - kind: DesignCenterPolicy
     group: designcenter.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
