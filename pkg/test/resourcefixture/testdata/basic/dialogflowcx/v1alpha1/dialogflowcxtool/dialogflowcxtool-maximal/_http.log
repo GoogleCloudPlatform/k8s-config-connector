@@ -1,0 +1,225 @@
+# Phase: CREATE
+POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "timeZone": "America/New_York"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/5d1cda79-5a98-47b9-8d8e-7b21e4872dd3",
+  "startFlow": "projects/${projectId}/locations/global/agents/5d1cda79-5a98-47b9-8d8e-7b21e4872dd3/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/5d1cda79-5a98-47b9-8d8e-7b21e4872dd3/tools?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2F5d1cda79-5a98-47b9-8d8e-7b21e4872dd3
+
+{
+  "description": "Maximal tool test",
+  "displayName": "tool-max-${uniqueId}",
+  "openApiSpec": {
+    "textSchema": "openapi: 3.0.0\ninfo:\n  title: Sample API\n  version: 1.0.0\npaths:\n  /test:\n    get:\n      summary: Test endpoint\n      responses:\n        '200':\n          description: OK\n"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Maximal tool test",
+  "displayName": "tool-max-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/5d1cda79-5a98-47b9-8d8e-7b21e4872dd3/tools/483eb7b5-3a7e-4643-9b01-33dd34ff9b77",
+  "openApiSpec": {
+    "textSchema": "openapi: 3.0.0\ninfo:\n  title: Sample API\n  version: 1.0.0\npaths:\n  /test:\n    get:\n      summary: Test endpoint\n      responses:\n        '200':\n          description: OK\n"
+  },
+  "toolType": 1
+}
+
+---
+
+# Phase: UPDATE
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/5d1cda79-5a98-47b9-8d8e-7b21e4872dd3/tools/483eb7b5-3a7e-4643-9b01-33dd34ff9b77?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2F5d1cda79-5a98-47b9-8d8e-7b21e4872dd3%2Ftools%2F483eb7b5-3a7e-4643-9b01-33dd34ff9b77
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Maximal tool test",
+  "displayName": "tool-max-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/5d1cda79-5a98-47b9-8d8e-7b21e4872dd3/tools/483eb7b5-3a7e-4643-9b01-33dd34ff9b77",
+  "openApiSpec": {
+    "textSchema": "openapi: 3.0.0\ninfo:\n  title: Sample API\n  version: 1.0.0\npaths:\n  /test:\n    get:\n      summary: Test endpoint\n      responses:\n        '200':\n          description: OK\n"
+  },
+  "toolType": 1
+}
+
+---
+
+PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/5d1cda79-5a98-47b9-8d8e-7b21e4872dd3/tools/483eb7b5-3a7e-4643-9b01-33dd34ff9b77?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CopenApiSpec
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: tool.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2F5d1cda79-5a98-47b9-8d8e-7b21e4872dd3%2Ftools%2F483eb7b5-3a7e-4643-9b01-33dd34ff9b77
+
+{
+  "description": "Maximal tool test updated",
+  "displayName": "tool-max-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/5d1cda79-5a98-47b9-8d8e-7b21e4872dd3/tools/483eb7b5-3a7e-4643-9b01-33dd34ff9b77",
+  "openApiSpec": {
+    "textSchema": "openapi: 3.0.0\ninfo:\n  title: Sample API Updated\n  version: 1.0.1\npaths:\n  /test:\n    get:\n      summary: Test endpoint updated\n      responses:\n        '200':\n          description: OK\n"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Maximal tool test updated",
+  "displayName": "tool-max-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/5d1cda79-5a98-47b9-8d8e-7b21e4872dd3/tools/483eb7b5-3a7e-4643-9b01-33dd34ff9b77",
+  "openApiSpec": {
+    "textSchema": "openapi: 3.0.0\ninfo:\n  title: Sample API Updated\n  version: 1.0.1\npaths:\n  /test:\n    get:\n      summary: Test endpoint updated\n      responses:\n        '200':\n          description: OK\n"
+  },
+  "toolType": 1
+}
+
+---
+
+# Phase: DELETE
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/5d1cda79-5a98-47b9-8d8e-7b21e4872dd3/tools/483eb7b5-3a7e-4643-9b01-33dd34ff9b77?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2F5d1cda79-5a98-47b9-8d8e-7b21e4872dd3%2Ftools%2F483eb7b5-3a7e-4643-9b01-33dd34ff9b77
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Maximal tool test updated",
+  "displayName": "tool-max-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/5d1cda79-5a98-47b9-8d8e-7b21e4872dd3/tools/483eb7b5-3a7e-4643-9b01-33dd34ff9b77",
+  "openApiSpec": {
+    "textSchema": "openapi: 3.0.0\ninfo:\n  title: Sample API Updated\n  version: 1.0.1\npaths:\n  /test:\n    get:\n      summary: Test endpoint updated\n      responses:\n        '200':\n          description: OK\n"
+  },
+  "toolType": 1
+}
+
+---
+
+DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/5d1cda79-5a98-47b9-8d8e-7b21e4872dd3/tools/483eb7b5-3a7e-4643-9b01-33dd34ff9b77?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2F5d1cda79-5a98-47b9-8d8e-7b21e4872dd3%2Ftools%2F483eb7b5-3a7e-4643-9b01-33dd34ff9b77
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/5d1cda79-5a98-47b9-8d8e-7b21e4872dd3?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2F5d1cda79-5a98-47b9-8d8e-7b21e4872dd3
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/5d1cda79-5a98-47b9-8d8e-7b21e4872dd3",
+  "startFlow": "projects/${projectId}/locations/global/agents/5d1cda79-5a98-47b9-8d8e-7b21e4872dd3/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/5d1cda79-5a98-47b9-8d8e-7b21e4872dd3?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2F5d1cda79-5a98-47b9-8d8e-7b21e4872dd3
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

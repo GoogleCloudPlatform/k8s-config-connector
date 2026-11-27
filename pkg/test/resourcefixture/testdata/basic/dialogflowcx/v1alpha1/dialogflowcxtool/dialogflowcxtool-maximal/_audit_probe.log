@@ -1,0 +1,15 @@
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/5d1cda79-5a98-47b9-8d8e-7b21e4872dd3/tools/483eb7b5-3a7e-4643-9b01-33dd34ff9b77?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "description": "Maximal tool test updated",
+  "displayName": "tool-max-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/5d1cda79-5a98-47b9-8d8e-7b21e4872dd3/tools/483eb7b5-3a7e-4643-9b01-33dd34ff9b77",
+  "openApiSpec": {
+    "textSchema": "openapi: 3.0.0\ninfo:\n  title: Sample API Updated\n  version: 1.0.1\npaths:\n  /test:\n    get:\n      summary: Test endpoint updated\n      responses:\n        '200':\n          description: OK\n"
+  },
+  "toolType": 1
+}
