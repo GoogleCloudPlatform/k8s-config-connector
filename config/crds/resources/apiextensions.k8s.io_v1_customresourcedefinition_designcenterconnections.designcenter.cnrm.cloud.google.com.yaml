@@ -103,15 +103,9 @@ spec:
                   - key
                   type: object
                 type: array
-              destinationComponentURI:
-                description: Required. The destination component URI used to generate
-                  the connection. Format is `projects/$project/locations/$location/spaces/$space/applicationTemplates/$application_template/components/$component`
-                type: string
-              location:
-                description: The location of this resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              destinationComponentRef:
+                description: Required. The destination component used to generate
+                  the connection.
                 oneOf:
                 - not:
                     required:
@@ -128,20 +122,48 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed DesignCenterComponent
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/spaces/{{spaceID}}/applicationTemplates/{{applicationTemplateID}}/components/{{componentID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a DesignCenterComponent resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a DesignCenterComponent resource.
                     type: string
                 type: object
+              parentRef:
+                description: The DesignCenterComponent this DesignCenterConnection
+                  is created under.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed DesignCenterComponent
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/spaces/{{spaceID}}/applicationTemplates/{{applicationTemplateID}}/components/{{componentID}}".
+                    type: string
+                  name:
+                    description: The name of a DesignCenterComponent resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a DesignCenterComponent resource.
+                    type: string
+                type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The DesignCenterConnection name. If not given, the metadata.name
                   will be used.
@@ -188,9 +210,8 @@ spec:
                   type: object
                 type: array
             required:
-            - destinationComponentURI
-            - location
-            - projectRef
+            - destinationComponentRef
+            - parentRef
             type: object
           status:
             description: DesignCenterConnectionStatus defines the config connector

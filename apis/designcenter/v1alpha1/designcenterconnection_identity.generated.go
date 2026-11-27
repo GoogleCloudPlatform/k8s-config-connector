@@ -24,6 +24,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -81,42 +82,19 @@ func getIdentityFromDesignCenterConnectionSpec(ctx context.Context, reader clien
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	if obj.Spec.ParentRef == nil {
+		return nil, fmt.Errorf("spec.parentRef is required")
 	}
-
-	location, err := refs.GetLocation(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location: %w", err)
+	parentRef := *obj.Spec.ParentRef
+	if err := parentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, fmt.Errorf("resolving spec.parentRef: %w", err)
 	}
-
-	// +kcc:guess reason=identity-root-unknown
-	space := ""
-	if space == "" {
-		return nil, fmt.Errorf("cannot resolve space for DesignCenterConnection")
+	parsed := &DesignCenterConnectionIdentity{}
+	if err := parsed.FromExternal(strings.TrimSuffix(parentRef.GetExternal(), "/") + "/connections" + "/" + resourceID); err != nil {
+		return nil, fmt.Errorf("parsing spec.parentRef external=%q: %w", parentRef.GetExternal(), err)
 	}
-
-	// +kcc:guess reason=identity-root-unknown
-	applicationTemplate := ""
-	if applicationTemplate == "" {
-		return nil, fmt.Errorf("cannot resolve application_template for DesignCenterConnection")
-	}
-
-	// +kcc:guess reason=identity-root-unknown
-	component := ""
-	if component == "" {
-		return nil, fmt.Errorf("cannot resolve component for DesignCenterConnection")
-	}
-
-	return &DesignCenterConnectionIdentity{
-		Project:             projectID,
-		Location:            location,
-		Space:               space,
-		ApplicationTemplate: applicationTemplate,
-		Component:           component,
-		Connection:          resourceID,
-	}, nil
+	parsed.Connection = resourceID
+	return parsed, nil
 }
 
 func (obj *DesignCenterConnection) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {

@@ -248,6 +248,18 @@
   - Initialized open entries in `apis/designcenter/judgement_queue.yaml` for `DesignCenterConnection` (`untriaged-bulk-generation` with `status: open`).
   - Recorded untriaged missing fields in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 
+### [2026-11-27] Greenfield Step 1b: Triaging judgement queue and finalizing KRM types for DesignCenterConnection
+- **Context**: Triaged `apis/designcenter/judgement_queue.yaml` and finalized KRM types, identity, and reference types for `DesignCenterConnection` (Issue #16571).
+- **Resolutions & Findings**:
+  - `location-or-parent-ref`, `parent-ref-guessed`, `identity-root-unknown`: `DesignCenterConnection` is a child resource under `DesignCenterComponent` (`projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/components/{component}/connections/{connection}`). Per `judgement/references/PARENT_AND_IDENTITY.md` (Case B), replaced `ProjectRef`, `Location`, and `ComponentRef` with required, immutable `ParentRef *DesignCenterComponentRef` (`json:"parentRef"`).
+  - `authoritative-proto-reference`: Converted `.spec.destinationComponentURI` to `DestinationComponentRef *DesignCenterComponentRef` (`json:"destinationComponentRef"`). Added custom mapper functions `DesignCenterConnectionSpec_FromProto` and `DesignCenterConnectionSpec_ToProto` in `pkg/controller/direct/designcenter/designcenterconnection_mapper.go` to cleanly map the `destination_component_uri` field.
+  - `identity-not-in-cai`: Verified template `//designcenter.googleapis.com/projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/components/{component}/connections/{connection}` against proto `google.api.resource` pattern and marked accepted.
+  - `verify-service-docs-link` & `verify-resource-docs-link`: Added service docs `https://cloud.google.com/application-design-center/docs` and REST reference `https://cloud.google.com/application-design-center/docs/reference/rest/v1/projects.locations.spaces.applicationTemplates.components.connections`.
+  - `well-known-proto-type`: Confirmed `google.protobuf.Value` representation across parameters and marked resolved/accepted.
+  - `untriaged-bulk-generation`: Resolved with resolution `edited`.
+  - Updated golden exceptions in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+
+
 
 
 

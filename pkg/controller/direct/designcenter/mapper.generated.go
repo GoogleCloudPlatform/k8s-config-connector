@@ -1351,6 +1351,7 @@ func DesignCenterConnectionObservedState_FromProto(mapCtx *direct.MapContext, in
 	}
 	out := &krm.DesignCenterConnectionObservedState{}
 	// MISSING: Name
+	// MISSING: DestinationComponentURI
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.SourceComponentParameters = direct.Slice_FromProto(mapCtx, in.SourceComponentParameters, ParameterObservedState_FromProto)
@@ -1365,6 +1366,7 @@ func DesignCenterConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *
 	}
 	out := &pb.Connection{}
 	// MISSING: Name
+	// MISSING: DestinationComponentURI
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.SourceComponentParameters = direct.Slice_ToProto(mapCtx, in.SourceComponentParameters, ParameterObservedState_ToProto)
@@ -1373,29 +1375,33 @@ func DesignCenterConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *
 	return out
 }
 
+/* found existing non-generated mapping function "DesignCenterConnectionSpec_FromProto", skipping
 func DesignCenterConnectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Connection) *krm.DesignCenterConnectionSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.DesignCenterConnectionSpec{}
 	// MISSING: Name
-	out.DestinationComponentURI = direct.LazyPtr(in.GetDestinationComponentUri())
+	// MISSING: DestinationComponentURI
 	out.SourceComponentParameters = direct.Slice_FromProto(mapCtx, in.SourceComponentParameters, Parameter_FromProto)
 	out.DestinationComponentParameters = direct.Slice_FromProto(mapCtx, in.DestinationComponentParameters, Parameter_FromProto)
 	return out
 }
+*/
 
+/* found existing non-generated mapping function "DesignCenterConnectionSpec_ToProto", skipping
 func DesignCenterConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm.DesignCenterConnectionSpec) *pb.Connection {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Connection{}
 	// MISSING: Name
-	out.DestinationComponentUri = direct.ValueOf(in.DestinationComponentURI)
+	// MISSING: DestinationComponentURI
 	out.SourceComponentParameters = direct.Slice_ToProto(mapCtx, in.SourceComponentParameters, Parameter_ToProto)
 	out.DestinationComponentParameters = direct.Slice_ToProto(mapCtx, in.DestinationComponentParameters, Parameter_ToProto)
 	return out
 }
+*/
 
 func DesignCenterPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krm.DesignCenterPolicyObservedState {
 	if in == nil {
