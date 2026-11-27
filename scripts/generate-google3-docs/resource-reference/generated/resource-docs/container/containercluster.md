@@ -247,6 +247,7 @@ maintenancePolicy:
   - endTime: string
     exclusionName: string
     exclusionOptions:
+      endTimeBehavior: string
       scope: string
     startTime: string
   recurringWindow:
@@ -2157,7 +2158,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
     <tr>
         <td>
             <p><code>maintenancePolicy.maintenanceExclusion[].endTime</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -2182,6 +2183,16 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         <td>
             <p><code class="apitype">object</code></p>
             <p>Maintenance exclusion related options.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.maintenanceExclusion[].exclusionOptions.endTimeBehavior</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The behavior of the exclusion end time. Valid value: UNTIL_END_OF_SUPPORT.</p>
         </td>
     </tr>
     <tr>
