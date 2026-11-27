@@ -39,7 +39,6 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DataplexTask:Task \
   --resource DataplexEntryGroup:EntryGroup \
   --resource DataplexEntryType:EntryType \
-  --resource DataplexDataTaxonomy:DataTaxonomy \
   --resource DataplexAspectType:AspectType \
   --resource DataplexDataScan:DataScan \
   --resource DataplexMetadataJob:MetadataJob \
@@ -62,7 +61,6 @@ ${CONTROLLERBUILDER} generate-types \
   --prepopulate-resource \
   --resource DataplexAsset:Asset \
   --resource DataplexDataAsset:DataAsset \
-  --resource DataplexDataAttribute:DataAttribute \
   --resource DataplexEncryptionConfig:EncryptionConfig \
   --resource DataplexEntity:Entity \
   --resource DataplexEntry:Entry \
@@ -79,7 +77,6 @@ ${CONTROLLERBUILDER} generate-identity \
   --api-version dataplex.cnrm.cloud.google.com/v1alpha1 \
   --resource DataplexAsset:Asset \
   --resource DataplexDataAsset:DataAsset \
-  --resource DataplexDataAttribute:DataAttribute \
   --resource DataplexEncryptionConfig:EncryptionConfig \
   --resource DataplexEntity:Entity \
   --resource DataplexEntry:Entry \

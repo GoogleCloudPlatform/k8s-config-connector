@@ -68,5 +68,45 @@
       "CloudIoTRegistry"
     ],
     "evidence": "Google Cloud IoT Core service was retired on August 16, 2023. [Cloud IoT Core Resource Hub](https://docs.cloud.google.com/eventarc/docs/event-types#triggers-events)"
+  },
+  {
+    "name": "Document AI Warehouse",
+    "service": "contentwarehouse.googleapis.com",
+    "kinds": [
+      "ContentWarehouseDocument",
+      "ContentWarehouseDocumentLink",
+      "ContentWarehouseRuleSet",
+      "ContentWarehouseSynonymSet"
+    ],
+    "evidence": "Document AI Warehouse was deprecated on January 16, 2024 and permanently shut down on January 16, 2025; API calls return HTTP 502 (#15863)."
+  },
+  {
+    "name": "Dataplex Attribute Store",
+    "service": "dataplex.googleapis.com",
+    "kinds": [
+      "DataplexDataAttribute",
+      "DataplexDataAttributeBinding",
+      "DataplexDataTaxonomy"
+    ],
+    "evidence": "Dataplex Attribute Store (`DataTaxonomy`, `DataAttribute`, `DataAttributeBinding`) was deprecated on February 18, 2025 and shut down on February 18, 2026 in favor of Knowledge Catalog tags and policy tags (#15800)."
+  },
+  {
+    "name": "Vision Product Search",
+    "service": "vision.googleapis.com",
+    "kinds": [
+      "VisionProduct",
+      "VisionProductSet",
+      "VisionReferenceImage"
+    ],
+    "evidence": "Vision Product Search no longer onboards new projects (API rejects creation directing users to Vision Warehouse) (#16326)."
+  },
+  {
+    "name": "Rapid Migration Assessment",
+    "service": "rapidmigrationassessment.googleapis.com",
+    "kinds": [
+      "RapidMigrationAssessmentAnnotation",
+      "RapidMigrationAssessmentCollector"
+    ],
+    "evidence": "Rapid Migration Assessment was consolidated into Migration Center; the `rapidmigrationassessment.googleapis.com` API backend is shut down and returns HTTP 502 (#16302)."
   }
 ]

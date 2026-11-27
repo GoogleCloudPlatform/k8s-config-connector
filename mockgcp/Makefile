@@ -102,10 +102,8 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/metastore/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/gkebackup/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/run/v2/*.proto \
-		./third_party/googleapis/mockgcp/cloud/rapidmigrationassessment/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/connectors/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/contentwarehouse/v1/*.proto \
-		./third_party/googleapis/mockgcp/monitoring/dashboard/v1/*.proto \
+		./third_party/googleapis/monitoring/dashboard/v1/*.proto \
 		./third_party/googleapis/mockgcp/devtools/sourcerepo/v1/*.proto
 
 
@@ -140,7 +138,6 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/apihub/v1/*.proto \
 		./third_party/googleapis/google/cloud/dataform/v1/*.proto \
 		./third_party/googleapis/google/cloud/licensemanager/v1/*.proto \
-		./third_party/googleapis/google/cloud/vision/v1/*.proto \
 		./third_party/googleapis/google/cloud/developerconnect/v1/*.proto \
 		./apis/google/cloud/vectorsearch/v1/*.proto \
 		./apis/google/cloud/observability/v1/*.proto \

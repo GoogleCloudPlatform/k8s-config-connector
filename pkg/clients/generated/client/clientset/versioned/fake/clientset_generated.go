@@ -171,8 +171,6 @@ import (
 	fakecontaineranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1beta1/fake"
 	containerattachedv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containerattached/v1beta1"
 	fakecontainerattachedv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containerattached/v1beta1/fake"
-	contentwarehousev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/contentwarehouse/v1alpha1"
-	fakecontentwarehousev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/contentwarehouse/v1alpha1/fake"
 	datacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1alpha1"
 	fakedatacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1alpha1/fake"
 	datacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1beta1"
@@ -355,8 +353,6 @@ import (
 	fakepubsublitev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsublite/v1alpha1/fake"
 	pubsublitev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsublite/v1beta1"
 	fakepubsublitev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsublite/v1beta1/fake"
-	rapidmigrationassessmentv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/rapidmigrationassessment/v1alpha1"
-	fakerapidmigrationassessmentv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/rapidmigrationassessment/v1alpha1/fake"
 	recaptchaenterprisev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/recaptchaenterprise/v1alpha1"
 	fakerecaptchaenterprisev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/recaptchaenterprise/v1alpha1/fake"
 	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/recaptchaenterprise/v1beta1"
@@ -431,8 +427,6 @@ import (
 	fakevertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1beta1/fake"
 	videostitcherv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/videostitcher/v1alpha1"
 	fakevideostitcherv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/videostitcher/v1alpha1/fake"
-	visionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vision/v1alpha1"
-	fakevisionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vision/v1alpha1/fake"
 	visionaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/visionai/v1alpha1"
 	fakevisionaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/visionai/v1alpha1/fake"
 	vmmigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmmigration/v1alpha1"
@@ -894,11 +888,6 @@ func (c *Clientset) ContainerattachedV1beta1() containerattachedv1beta1.Containe
 	return &fakecontainerattachedv1beta1.FakeContainerattachedV1beta1{Fake: &c.Fake}
 }
 
-// ContentwarehouseV1alpha1 retrieves the ContentwarehouseV1alpha1Client
-func (c *Clientset) ContentwarehouseV1alpha1() contentwarehousev1alpha1.ContentwarehouseV1alpha1Interface {
-	return &fakecontentwarehousev1alpha1.FakeContentwarehouseV1alpha1{Fake: &c.Fake}
-}
-
 // DatacatalogV1alpha1 retrieves the DatacatalogV1alpha1Client
 func (c *Clientset) DatacatalogV1alpha1() datacatalogv1alpha1.DatacatalogV1alpha1Interface {
 	return &fakedatacatalogv1alpha1.FakeDatacatalogV1alpha1{Fake: &c.Fake}
@@ -1354,11 +1343,6 @@ func (c *Clientset) PubsubliteV1beta1() pubsublitev1beta1.PubsubliteV1beta1Inter
 	return &fakepubsublitev1beta1.FakePubsubliteV1beta1{Fake: &c.Fake}
 }
 
-// RapidmigrationassessmentV1alpha1 retrieves the RapidmigrationassessmentV1alpha1Client
-func (c *Clientset) RapidmigrationassessmentV1alpha1() rapidmigrationassessmentv1alpha1.RapidmigrationassessmentV1alpha1Interface {
-	return &fakerapidmigrationassessmentv1alpha1.FakeRapidmigrationassessmentV1alpha1{Fake: &c.Fake}
-}
-
 // RecaptchaenterpriseV1alpha1 retrieves the RecaptchaenterpriseV1alpha1Client
 func (c *Clientset) RecaptchaenterpriseV1alpha1() recaptchaenterprisev1alpha1.RecaptchaenterpriseV1alpha1Interface {
 	return &fakerecaptchaenterprisev1alpha1.FakeRecaptchaenterpriseV1alpha1{Fake: &c.Fake}
@@ -1542,11 +1526,6 @@ func (c *Clientset) VertexaiV1beta1() vertexaiv1beta1.VertexaiV1beta1Interface {
 // VideostitcherV1alpha1 retrieves the VideostitcherV1alpha1Client
 func (c *Clientset) VideostitcherV1alpha1() videostitcherv1alpha1.VideostitcherV1alpha1Interface {
 	return &fakevideostitcherv1alpha1.FakeVideostitcherV1alpha1{Fake: &c.Fake}
-}
-
-// VisionV1alpha1 retrieves the VisionV1alpha1Client
-func (c *Clientset) VisionV1alpha1() visionv1alpha1.VisionV1alpha1Interface {
-	return &fakevisionv1alpha1.FakeVisionV1alpha1{Fake: &c.Fake}
 }
 
 // VisionaiV1alpha1 retrieves the VisionaiV1alpha1Client

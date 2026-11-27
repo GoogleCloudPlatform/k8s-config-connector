@@ -99,7 +99,6 @@ import (
 	containeranalysisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1alpha1"
 	containeranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1beta1"
 	containerattachedv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containerattached/v1beta1"
-	contentwarehousev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/contentwarehouse/v1alpha1"
 	datacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1alpha1"
 	datacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1beta1"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataflow/v1beta1"
@@ -191,7 +190,6 @@ import (
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsub/v1beta1"
 	pubsublitev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsublite/v1alpha1"
 	pubsublitev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsublite/v1beta1"
-	rapidmigrationassessmentv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/rapidmigrationassessment/v1alpha1"
 	recaptchaenterprisev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/recaptchaenterprise/v1alpha1"
 	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/recaptchaenterprise/v1beta1"
 	redisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/redis/v1alpha1"
@@ -229,7 +227,6 @@ import (
 	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1alpha1"
 	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1beta1"
 	videostitcherv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/videostitcher/v1alpha1"
-	visionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vision/v1alpha1"
 	visionaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/visionai/v1alpha1"
 	vmmigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmmigration/v1alpha1"
 	vmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1alpha1"
@@ -320,7 +317,6 @@ type Interface interface {
 	ContaineranalysisV1alpha1() containeranalysisv1alpha1.ContaineranalysisV1alpha1Interface
 	ContaineranalysisV1beta1() containeranalysisv1beta1.ContaineranalysisV1beta1Interface
 	ContainerattachedV1beta1() containerattachedv1beta1.ContainerattachedV1beta1Interface
-	ContentwarehouseV1alpha1() contentwarehousev1alpha1.ContentwarehouseV1alpha1Interface
 	DatacatalogV1alpha1() datacatalogv1alpha1.DatacatalogV1alpha1Interface
 	DatacatalogV1beta1() datacatalogv1beta1.DatacatalogV1beta1Interface
 	DataflowV1beta1() dataflowv1beta1.DataflowV1beta1Interface
@@ -412,7 +408,6 @@ type Interface interface {
 	PubsubV1beta1() pubsubv1beta1.PubsubV1beta1Interface
 	PubsubliteV1alpha1() pubsublitev1alpha1.PubsubliteV1alpha1Interface
 	PubsubliteV1beta1() pubsublitev1beta1.PubsubliteV1beta1Interface
-	RapidmigrationassessmentV1alpha1() rapidmigrationassessmentv1alpha1.RapidmigrationassessmentV1alpha1Interface
 	RecaptchaenterpriseV1alpha1() recaptchaenterprisev1alpha1.RecaptchaenterpriseV1alpha1Interface
 	RecaptchaenterpriseV1beta1() recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Interface
 	RedisV1alpha1() redisv1alpha1.RedisV1alpha1Interface
@@ -450,7 +445,6 @@ type Interface interface {
 	VertexaiV1alpha1() vertexaiv1alpha1.VertexaiV1alpha1Interface
 	VertexaiV1beta1() vertexaiv1beta1.VertexaiV1beta1Interface
 	VideostitcherV1alpha1() videostitcherv1alpha1.VideostitcherV1alpha1Interface
-	VisionV1alpha1() visionv1alpha1.VisionV1alpha1Interface
 	VisionaiV1alpha1() visionaiv1alpha1.VisionaiV1alpha1Interface
 	VmmigrationV1alpha1() vmmigrationv1alpha1.VmmigrationV1alpha1Interface
 	VmwareengineV1alpha1() vmwareenginev1alpha1.VmwareengineV1alpha1Interface
@@ -539,7 +533,6 @@ type Clientset struct {
 	containeranalysisV1alpha1        *containeranalysisv1alpha1.ContaineranalysisV1alpha1Client
 	containeranalysisV1beta1         *containeranalysisv1beta1.ContaineranalysisV1beta1Client
 	containerattachedV1beta1         *containerattachedv1beta1.ContainerattachedV1beta1Client
-	contentwarehouseV1alpha1         *contentwarehousev1alpha1.ContentwarehouseV1alpha1Client
 	datacatalogV1alpha1              *datacatalogv1alpha1.DatacatalogV1alpha1Client
 	datacatalogV1beta1               *datacatalogv1beta1.DatacatalogV1beta1Client
 	dataflowV1beta1                  *dataflowv1beta1.DataflowV1beta1Client
@@ -631,7 +624,6 @@ type Clientset struct {
 	pubsubV1beta1                    *pubsubv1beta1.PubsubV1beta1Client
 	pubsubliteV1alpha1               *pubsublitev1alpha1.PubsubliteV1alpha1Client
 	pubsubliteV1beta1                *pubsublitev1beta1.PubsubliteV1beta1Client
-	rapidmigrationassessmentV1alpha1 *rapidmigrationassessmentv1alpha1.RapidmigrationassessmentV1alpha1Client
 	recaptchaenterpriseV1alpha1      *recaptchaenterprisev1alpha1.RecaptchaenterpriseV1alpha1Client
 	recaptchaenterpriseV1beta1       *recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Client
 	redisV1alpha1                    *redisv1alpha1.RedisV1alpha1Client
@@ -669,7 +661,6 @@ type Clientset struct {
 	vertexaiV1alpha1                 *vertexaiv1alpha1.VertexaiV1alpha1Client
 	vertexaiV1beta1                  *vertexaiv1beta1.VertexaiV1beta1Client
 	videostitcherV1alpha1            *videostitcherv1alpha1.VideostitcherV1alpha1Client
-	visionV1alpha1                   *visionv1alpha1.VisionV1alpha1Client
 	visionaiV1alpha1                 *visionaiv1alpha1.VisionaiV1alpha1Client
 	vmmigrationV1alpha1              *vmmigrationv1alpha1.VmmigrationV1alpha1Client
 	vmwareengineV1alpha1             *vmwareenginev1alpha1.VmwareengineV1alpha1Client
@@ -1049,11 +1040,6 @@ func (c *Clientset) ContaineranalysisV1beta1() containeranalysisv1beta1.Containe
 // ContainerattachedV1beta1 retrieves the ContainerattachedV1beta1Client
 func (c *Clientset) ContainerattachedV1beta1() containerattachedv1beta1.ContainerattachedV1beta1Interface {
 	return c.containerattachedV1beta1
-}
-
-// ContentwarehouseV1alpha1 retrieves the ContentwarehouseV1alpha1Client
-func (c *Clientset) ContentwarehouseV1alpha1() contentwarehousev1alpha1.ContentwarehouseV1alpha1Interface {
-	return c.contentwarehouseV1alpha1
 }
 
 // DatacatalogV1alpha1 retrieves the DatacatalogV1alpha1Client
@@ -1511,11 +1497,6 @@ func (c *Clientset) PubsubliteV1beta1() pubsublitev1beta1.PubsubliteV1beta1Inter
 	return c.pubsubliteV1beta1
 }
 
-// RapidmigrationassessmentV1alpha1 retrieves the RapidmigrationassessmentV1alpha1Client
-func (c *Clientset) RapidmigrationassessmentV1alpha1() rapidmigrationassessmentv1alpha1.RapidmigrationassessmentV1alpha1Interface {
-	return c.rapidmigrationassessmentV1alpha1
-}
-
 // RecaptchaenterpriseV1alpha1 retrieves the RecaptchaenterpriseV1alpha1Client
 func (c *Clientset) RecaptchaenterpriseV1alpha1() recaptchaenterprisev1alpha1.RecaptchaenterpriseV1alpha1Interface {
 	return c.recaptchaenterpriseV1alpha1
@@ -1699,11 +1680,6 @@ func (c *Clientset) VertexaiV1beta1() vertexaiv1beta1.VertexaiV1beta1Interface {
 // VideostitcherV1alpha1 retrieves the VideostitcherV1alpha1Client
 func (c *Clientset) VideostitcherV1alpha1() videostitcherv1alpha1.VideostitcherV1alpha1Interface {
 	return c.videostitcherV1alpha1
-}
-
-// VisionV1alpha1 retrieves the VisionV1alpha1Client
-func (c *Clientset) VisionV1alpha1() visionv1alpha1.VisionV1alpha1Interface {
-	return c.visionV1alpha1
 }
 
 // VisionaiV1alpha1 retrieves the VisionaiV1alpha1Client
@@ -2091,10 +2067,6 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
-	cs.contentwarehouseV1alpha1, err = contentwarehousev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
-	if err != nil {
-		return nil, err
-	}
 	cs.datacatalogV1alpha1, err = datacatalogv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2459,10 +2431,6 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
-	cs.rapidmigrationassessmentV1alpha1, err = rapidmigrationassessmentv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
-	if err != nil {
-		return nil, err
-	}
 	cs.recaptchaenterpriseV1alpha1, err = recaptchaenterprisev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2611,10 +2579,6 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
-	cs.visionV1alpha1, err = visionv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
-	if err != nil {
-		return nil, err
-	}
 	cs.visionaiV1alpha1, err = visionaiv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2746,7 +2710,6 @@ func New(c rest.Interface) *Clientset {
 	cs.containeranalysisV1alpha1 = containeranalysisv1alpha1.New(c)
 	cs.containeranalysisV1beta1 = containeranalysisv1beta1.New(c)
 	cs.containerattachedV1beta1 = containerattachedv1beta1.New(c)
-	cs.contentwarehouseV1alpha1 = contentwarehousev1alpha1.New(c)
 	cs.datacatalogV1alpha1 = datacatalogv1alpha1.New(c)
 	cs.datacatalogV1beta1 = datacatalogv1beta1.New(c)
 	cs.dataflowV1beta1 = dataflowv1beta1.New(c)
@@ -2838,7 +2801,6 @@ func New(c rest.Interface) *Clientset {
 	cs.pubsubV1beta1 = pubsubv1beta1.New(c)
 	cs.pubsubliteV1alpha1 = pubsublitev1alpha1.New(c)
 	cs.pubsubliteV1beta1 = pubsublitev1beta1.New(c)
-	cs.rapidmigrationassessmentV1alpha1 = rapidmigrationassessmentv1alpha1.New(c)
 	cs.recaptchaenterpriseV1alpha1 = recaptchaenterprisev1alpha1.New(c)
 	cs.recaptchaenterpriseV1beta1 = recaptchaenterprisev1beta1.New(c)
 	cs.redisV1alpha1 = redisv1alpha1.New(c)
@@ -2876,7 +2838,6 @@ func New(c rest.Interface) *Clientset {
 	cs.vertexaiV1alpha1 = vertexaiv1alpha1.New(c)
 	cs.vertexaiV1beta1 = vertexaiv1beta1.New(c)
 	cs.videostitcherV1alpha1 = videostitcherv1alpha1.New(c)
-	cs.visionV1alpha1 = visionv1alpha1.New(c)
 	cs.visionaiV1alpha1 = visionaiv1alpha1.New(c)
 	cs.vmmigrationV1alpha1 = vmmigrationv1alpha1.New(c)
 	cs.vmwareengineV1alpha1 = vmwareenginev1alpha1.New(c)

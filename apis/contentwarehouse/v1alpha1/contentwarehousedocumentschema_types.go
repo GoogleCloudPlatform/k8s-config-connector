@@ -200,3 +200,39 @@ type PropertyDefinition struct {
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.schema_sources
 	SchemaSources []PropertyDefinition_SchemaSource `json:"schemaSources,omitempty"`
 }
+
+// +kcc:proto=google.cloud.contentwarehouse.v1.DateTimeTypeOptions
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:XPreserveUnknownFields
+type DateTimeTypeOptions struct {
+}
+
+// +kcc:proto=google.cloud.contentwarehouse.v1.FloatTypeOptions
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:XPreserveUnknownFields
+type FloatTypeOptions struct {
+}
+
+// +kcc:proto=google.cloud.contentwarehouse.v1.IntegerTypeOptions
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:XPreserveUnknownFields
+type IntegerTypeOptions struct {
+}
+
+// +kcc:proto=google.cloud.contentwarehouse.v1.MapTypeOptions
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:XPreserveUnknownFields
+type MapTypeOptions struct {
+}
+
+// +kcc:proto=google.cloud.contentwarehouse.v1.TextTypeOptions
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:XPreserveUnknownFields
+type TextTypeOptions struct {
+}
+
+// +kcc:proto=google.cloud.contentwarehouse.v1.TimestampTypeOptions
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:XPreserveUnknownFields
+type TimestampTypeOptions struct {
+}

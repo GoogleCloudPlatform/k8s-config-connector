@@ -32,9 +32,7 @@ import (
 type DataplexV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	DataplexAspectTypesGetter
-	DataplexDataAttributeBindingsGetter
 	DataplexDataScansGetter
-	DataplexDataTaxonomiesGetter
 	DataplexEntryGroupsGetter
 	DataplexEntryTypesGetter
 	DataplexGlossariesGetter
@@ -53,16 +51,8 @@ func (c *DataplexV1alpha1Client) DataplexAspectTypes(namespace string) DataplexA
 	return newDataplexAspectTypes(c, namespace)
 }
 
-func (c *DataplexV1alpha1Client) DataplexDataAttributeBindings(namespace string) DataplexDataAttributeBindingInterface {
-	return newDataplexDataAttributeBindings(c, namespace)
-}
-
 func (c *DataplexV1alpha1Client) DataplexDataScans(namespace string) DataplexDataScanInterface {
 	return newDataplexDataScans(c, namespace)
-}
-
-func (c *DataplexV1alpha1Client) DataplexDataTaxonomies(namespace string) DataplexDataTaxonomyInterface {
-	return newDataplexDataTaxonomies(c, namespace)
 }
 
 func (c *DataplexV1alpha1Client) DataplexEntryGroups(namespace string) DataplexEntryGroupInterface {

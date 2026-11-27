@@ -32,10 +32,10 @@ import (
 type AiplatformV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	AIPlatformModelsGetter
-	VertexAIFeatureOnlineStoresGetter
-	VertexAIPipelineJobsGetter
 	AIPlatformSchedulesGetter
 	AIPlatformSpecialistPoolsGetter
+	VertexAIFeatureOnlineStoresGetter
+	VertexAIPipelineJobsGetter
 	VertexAIStudiesGetter
 	VertexAITrainingPipelinesGetter
 	VertexAITuningJobsGetter
@@ -50,20 +50,20 @@ func (c *AiplatformV1alpha1Client) AIPlatformModels(namespace string) AIPlatform
 	return newAIPlatformModels(c, namespace)
 }
 
-func (c *AiplatformV1alpha1Client) VertexAIFeatureOnlineStores(namespace string) VertexAIFeatureOnlineStoreInterface {
-	return newVertexAIFeatureOnlineStores(c, namespace)
-}
-
-func (c *AiplatformV1alpha1Client) VertexAIPipelineJobs(namespace string) VertexAIPipelineJobInterface {
-	return newVertexAIPipelineJobs(c, namespace)
-}
-
 func (c *AiplatformV1alpha1Client) AIPlatformSchedules(namespace string) AIPlatformScheduleInterface {
 	return newAIPlatformSchedules(c, namespace)
 }
 
 func (c *AiplatformV1alpha1Client) AIPlatformSpecialistPools(namespace string) AIPlatformSpecialistPoolInterface {
 	return newAIPlatformSpecialistPools(c, namespace)
+}
+
+func (c *AiplatformV1alpha1Client) VertexAIFeatureOnlineStores(namespace string) VertexAIFeatureOnlineStoreInterface {
+	return newVertexAIFeatureOnlineStores(c, namespace)
+}
+
+func (c *AiplatformV1alpha1Client) VertexAIPipelineJobs(namespace string) VertexAIPipelineJobInterface {
+	return newVertexAIPipelineJobs(c, namespace)
 }
 
 func (c *AiplatformV1alpha1Client) VertexAIStudies(namespace string) VertexAIStudyInterface {

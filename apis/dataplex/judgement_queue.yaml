@@ -146,54 +146,6 @@ entries:
     status: resolved
     resolution: not-applicable
     note: kept as string; holds a polymorphic full IAM resource name (//bigquery.googleapis.com/...) for BigQuery tables or datasets, which cannot be represented as a single reference
-  - kind: DataplexDataAttribute
-    group: dataplex.cnrm.cloud.google.com
-    reason: untriaged-bulk-generation
-    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
-  - kind: DataplexDataAttribute
-    group: dataplex.cnrm.cloud.google.com
-    reason: deprecated-resource
-    detail: the proto marks message google.cloud.dataplex.v1.DataAttribute deprecated (option deprecated = true); confirm whether this resource should be generated
-    status: open
-  - kind: DataplexDataAttribute
-    group: dataplex.cnrm.cloud.google.com
-    reason: identity-not-in-cai
-    detail: template "//dataplex.googleapis.com/projects/{project}/locations/{location}/dataTaxonomies/{dataTaxonomy}/attributes/{data_attribute_id}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
-    status: open
-  - kind: DataplexDataAttribute
-    group: dataplex.cnrm.cloud.google.com
-    reason: identity-root-unknown
-    detail: pattern "projects/{project}/locations/{location}/dataTaxonomies/{dataTaxonomy}/attributes/{data_attribute_id}" contains ancestor segment(s) dataTaxonomies/{dataTaxonomy} with no matching reference or field on DataplexDataAttributeSpec
-    status: open
-  - kind: DataplexDataAttribute
-    group: dataplex.cnrm.cloud.google.com
-    reason: identity-server-generated-id
-    detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
-    status: open
-  - kind: DataplexDataAttribute
-    group: dataplex.cnrm.cloud.google.com
-    reason: parent-ref-not-modelled
-    detail: the parent is projects/{project}/locations/{location}/dataTaxonomies/{dataTaxonomy}, and no DataTaxonomyRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
-  - kind: DataplexDataAttribute
-    group: dataplex.cnrm.cloud.google.com
-    field: .spec.etag
-    reason: etag-in-spec
-    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
-    status: open
-  - kind: DataplexDataAttribute
-    group: dataplex.cnrm.cloud.google.com
-    field: .spec.location
-    reason: location-or-parent-ref
-    detail: the parent is projects/{project}/locations/{location}/dataTaxonomies/{dataTaxonomy}, which already names the location; a reference to it could replace location and the root reference
-    status: open
-  - kind: DataplexDataAttribute
-    group: dataplex.cnrm.cloud.google.com
-    field: .spec.parentID
-    reason: authoritative-proto-reference
-    detail: the proto marks this field as a reference to dataplex.googleapis.com/DataAttribute (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
   - kind: DataplexEncryptionConfig
     group: dataplex.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
