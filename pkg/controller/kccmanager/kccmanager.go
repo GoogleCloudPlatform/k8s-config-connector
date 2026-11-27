@@ -36,6 +36,7 @@ import (
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpwatch"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
@@ -117,6 +118,10 @@ type Config struct {
 	// ScopedNamespace is the namespace that the manager is scoped to.
 	// If empty, the manager is cluster-scoped.
 	ScopedNamespace string
+
+	// IdentityResolver, if set, picks the GCP credentials for each KRM object.
+	// See the identity package.
+	IdentityResolver identity.Resolver
 
 	// used for smoke testing only; options not meant to be used in production.
 	testConfig
@@ -367,12 +372,15 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		return nil, fmt.Errorf("error validating manager options: BaseContext is unexpectedly set")
 	}
 	opts.BaseContext = func() context.Context {
+		// For identity.ForObject.
+		baseCtx := identity.WithResolver(ctx, cfg.IdentityResolver)
+
 		// If listener already exists, do not add another
-		if _, exists := structuredreporting.GetListenerFromContext(ctx); !exists {
-			return structuredreporting.ContextWithListener(ctx, &structuredreporting.LogFieldUpdates{})
+		if _, exists := structuredreporting.GetListenerFromContext(baseCtx); !exists {
+			return structuredreporting.ContextWithListener(baseCtx, &structuredreporting.LogFieldUpdates{})
 		}
 
-		return ctx
+		return baseCtx
 	}
 
 	if opts.Scheme == nil {
@@ -418,6 +426,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		UserAgent:                  gcp.KCCUserAgent(),
 		EnableMetricsTransport:     cfg.EnableMetricsTransport,
 		SkipNameValidation:         cfg.SkipNameValidation,
+		IdentityResolver:           cfg.IdentityResolver,
 	}
 	if !cfg.skipControllerRegistration {
 		// Bootstrap the Google Terraform provider
@@ -449,8 +458,9 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		dclOptions.HTTPClient = cfg.HTTPClient
 		dclOptions.UserAgent = gcp.KCCUserAgent()
 		dclOptions.EnableMetricsTransport = cfg.EnableMetricsTransport
+		dclOptions.IdentityResolver = cfg.IdentityResolver
 
-		dclConfig, err := clientconfig.New(ctx, dclOptions)
+		dclConfig, dclHTTPClient, err := clientconfig.NewConfigAndClient(ctx, dclOptions)
 		if err != nil {
 			return nil, fmt.Errorf("error creating a DCL client config: %w", err)
 		}
@@ -471,37 +481,25 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		}
 
 		rd = controller.Deps{
-			TFProvider:   provider,
-			TFLoader:     smLoader,
-			DCLConfig:    dclConfig,
-			DCLConverter: dclConverter,
+			TFProvider:    provider,
+			TFLoader:      smLoader,
+			DCLConfig:     dclConfig,
+			DCLHTTPClient: dclHTTPClient,
+			DCLConverter:  dclConverter,
 			Defaulters: []k8s.Defaulter{
 				stateIntoSpecDefaulter,
 			},
 			SkipNameValidation: cfg.SkipNameValidation,
 		}
 
-		fetcher, err := gcpwatch.NewIAMFetcher(ctx, controllerConfig)
-		if err != nil {
-			return nil, fmt.Errorf("creating resource fetcher: %w", err)
-		}
-		rd.DependencyTracker = gcpwatch.NewDependencyTracker(fetcher)
-
-		pollInterval := gcpwatch.DefaultPollInterval
-		if interval := os.Getenv("TEST_DEPENDENCY_TRACKER_POLL_INTERVAL"); interval != "" {
-			intInterval, err := strconv.Atoi(interval)
-			if err != nil {
-				return nil, fmt.Errorf("parsing TEST_DEPENDENCY_TRACKER_POLL_INTERVAL: %w", err)
+		// The dependency tracker polls GCP outside any reconcile, so it has no
+		// object to resolve credentials for and would use the default ones.
+		// Without it, IAMPartialPolicy drift is still corrected on each reconcile.
+		if cfg.IdentityResolver == nil {
+			if err := startDependencyTracker(ctx, &rd, controllerConfig); err != nil {
+				return nil, err
 			}
-			pollInterval = time.Duration(intInterval) * time.Second
 		}
-		go func() {
-			rd.DependencyTracker.PollForever(ctx, &gcpwatch.PollConfig{
-				InitialDelay: gcpwatch.DefaultInitialDelay,
-				MinInterval:  gcpwatch.DefaultMinInterval,
-				PollInterval: pollInterval,
-			})
-		}()
 	}
 
 	// Register the registration controller, which will dynamically create controllers for
@@ -616,5 +614,31 @@ func addSchemes(scheme *runtime.Scheme) error {
 	if err := syncerv1alpha1.AddToScheme(scheme); err != nil {
 		return fmt.Errorf("error adding 'syncerv1alpha1' resources to the scheme: %w", err)
 	}
+	return nil
+}
+
+// startDependencyTracker sets rd.DependencyTracker and starts polling it.
+func startDependencyTracker(ctx context.Context, rd *controller.Deps, controllerConfig *config.ControllerConfig) error {
+	fetcher, err := gcpwatch.NewIAMFetcher(ctx, controllerConfig)
+	if err != nil {
+		return fmt.Errorf("creating resource fetcher: %w", err)
+	}
+	rd.DependencyTracker = gcpwatch.NewDependencyTracker(fetcher)
+
+	pollInterval := gcpwatch.DefaultPollInterval
+	if interval := os.Getenv("TEST_DEPENDENCY_TRACKER_POLL_INTERVAL"); interval != "" {
+		intInterval, err := strconv.Atoi(interval)
+		if err != nil {
+			return fmt.Errorf("parsing TEST_DEPENDENCY_TRACKER_POLL_INTERVAL: %w", err)
+		}
+		pollInterval = time.Duration(intInterval) * time.Second
+	}
+	go func() {
+		rd.DependencyTracker.PollForever(ctx, &gcpwatch.PollConfig{
+			InitialDelay: gcpwatch.DefaultInitialDelay,
+			MinInterval:  gcpwatch.DefaultMinInterval,
+			PollInterval: pollInterval,
+		})
+	}()
 	return nil
 }

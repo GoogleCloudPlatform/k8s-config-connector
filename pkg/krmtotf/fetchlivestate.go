@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/tfidentity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -113,9 +114,12 @@ func FetchLiveStateForDelete(ctx context.Context, resource *Resource, provider *
 }
 
 func fetchLiveStateFromID(ctx context.Context, id string, resource *Resource, provider *tfschema.Provider, kubeClient client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (*terraform.InstanceState, error) {
+	provider, err := tfidentity.Provider(ctx, provider)
+	if err != nil {
+		return nil, err
+	}
 	// Get the imported resource
 	var state *terraform.InstanceState
-	var err error
 	if resource.ResourceConfig.SkipImport {
 		state = &terraform.InstanceState{ID: id}
 	} else {
@@ -174,6 +178,10 @@ func FetchLiveStateForCreateAndUpdate(ctx context.Context, resource *Resource, p
 // As a result of this being best-effort, the returned state may not have
 // every field required in a fully valid InstanceState.
 func ImportState(ctx context.Context, id string, tfInfo *terraform.InstanceInfo, provider *tfschema.Provider) (*terraform.InstanceState, error) {
+	provider, err := tfidentity.Provider(ctx, provider)
+	if err != nil {
+		return nil, err
+	}
 	importedResources, err := provider.ImportState(ctx, tfInfo, id)
 	if err != nil {
 		return nil, fmt.Errorf("error importing resource: %w", err)

@@ -15,6 +15,8 @@
 package controller
 
 import (
+	"net/http"
+
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
@@ -29,6 +31,7 @@ type Deps struct {
 	TFProvider        *tfschema.Provider
 	TFLoader          *servicemappingloader.ServiceMappingLoader
 	DCLConfig         *dcl.Config
+	DCLHTTPClient     *http.Client // DCLConfig's HTTP client; see clientconfig.ForCredentials.
 	DCLConverter      *conversion.Converter
 	Defaulters        []k8s.Defaulter
 	JitterGen         jitter.Generator

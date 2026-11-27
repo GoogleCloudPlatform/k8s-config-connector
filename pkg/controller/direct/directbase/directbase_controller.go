@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceactuation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -266,6 +267,10 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 	if skip {
 		logger.V(2).Info("Skipping reconcile as nothing has changed and 0 reconcile period is set", "resource", request.NamespacedName)
 		return reconcile.Result{}, nil
+	}
+	ctx, err = identity.ForObject(ctx, identity.Target{GroupKind: r.gvk.GroupKind(), Object: obj})
+	if err != nil {
+		return reconcile.Result{}, err
 	}
 
 	requeue, err := runCtx.doReconcile(ctx, obj)

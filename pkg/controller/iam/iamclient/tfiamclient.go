@@ -30,6 +30,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 	tfresource "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/resource"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/tfidentity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"k8s.io/apimachinery/pkg/api/errors"
@@ -49,7 +50,20 @@ type TFIAMClient struct {
 	smLoader   *servicemappingloader.ServiceMappingLoader
 }
 
+// meta returns the provider meta for the identity in ctx. See tfidentity.Provider.
+func (t *TFIAMClient) meta(ctx context.Context) (interface{}, error) {
+	provider, err := tfidentity.Provider(ctx, t.provider)
+	if err != nil {
+		return nil, err
+	}
+	return provider.Meta(), nil
+}
+
 func (t *TFIAMClient) SetPolicyMember(ctx context.Context, policyMember *v1beta1.IAMPolicyMember) (*v1beta1.IAMPolicyMember, error) {
+	meta, err := t.meta(ctx)
+	if err != nil {
+		return nil, err
+	}
 	rc, err := t.getResourceConfigForReferencedResource(ctx, policyMember)
 	if err != nil {
 		return nil, fmt.Errorf("error getting resource config for referenced resource: %w", err)
@@ -69,7 +83,7 @@ func (t *TFIAMClient) SetPolicyMember(ctx context.Context, policyMember *v1beta1
 	if err != nil {
 		return nil, fmt.Errorf("error creating resource config: %w", err)
 	}
-	diff, err := resource.TFResource.Diff(ctx, liveState, cfg, t.provider.Meta())
+	diff, err := resource.TFResource.Diff(ctx, liveState, cfg, meta)
 	if err != nil {
 		return nil, fmt.Errorf("error calculating diff: %w", err)
 	}
@@ -106,7 +120,7 @@ func (t *TFIAMClient) SetPolicyMember(ctx context.Context, policyMember *v1beta1
 		structuredreporting.ReportDiff(ctx, report)
 	}
 
-	newState, diagnostics := resource.TFResource.Apply(ctx, liveState, diff, t.provider.Meta())
+	newState, diagnostics := resource.TFResource.Apply(ctx, liveState, diff, meta)
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
 		return nil, fmt.Errorf("error applying changes: %w", err)
 	}
@@ -136,6 +150,10 @@ func (t *TFIAMClient) GetPolicyMember(ctx context.Context, policyMember *v1beta1
 }
 
 func (t *TFIAMClient) DeletePolicyMember(ctx context.Context, policyMember *v1beta1.IAMPolicyMember) error {
+	meta, err := t.meta(ctx)
+	if err != nil {
+		return err
+	}
 	rc, err := t.getResourceConfigForReferencedResource(ctx, policyMember)
 	if err != nil {
 		return fmt.Errorf("error getting resource config for referenced resource: %w", err)
@@ -154,7 +172,7 @@ func (t *TFIAMClient) DeletePolicyMember(ctx context.Context, policyMember *v1be
 	if liveState.Empty() {
 		return ErrNotFound
 	}
-	_, diagnostics := resource.TFResource.Apply(ctx, liveState, &terraform.InstanceDiff{Destroy: true}, t.provider.Meta())
+	_, diagnostics := resource.TFResource.Apply(ctx, liveState, &terraform.InstanceDiff{Destroy: true}, meta)
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
 		return fmt.Errorf("error deleting IAMPolicyMember: %w", err)
 	}
@@ -162,6 +180,10 @@ func (t *TFIAMClient) DeletePolicyMember(ctx context.Context, policyMember *v1be
 }
 
 func (t *TFIAMClient) SetPolicy(ctx context.Context, policy *v1beta1.IAMPolicy) (*v1beta1.IAMPolicy, error) {
+	meta, err := t.meta(ctx)
+	if err != nil {
+		return nil, err
+	}
 	rc, err := t.getResourceConfigForReferencedResource(ctx, policy)
 	if err != nil {
 		return nil, fmt.Errorf("error getting resource config for referenced resource: %w", err)
@@ -184,7 +206,7 @@ func (t *TFIAMClient) SetPolicy(ctx context.Context, policy *v1beta1.IAMPolicy) 
 	if err != nil {
 		return nil, fmt.Errorf("error creating resource config: %w", err)
 	}
-	diff, err := resource.TFResource.Diff(ctx, liveState, cfg, t.provider.Meta())
+	diff, err := resource.TFResource.Diff(ctx, liveState, cfg, meta)
 	if err != nil {
 		return nil, fmt.Errorf("error calculating diff: %w", err)
 	}
@@ -195,7 +217,7 @@ func (t *TFIAMClient) SetPolicy(ctx context.Context, policy *v1beta1.IAMPolicy) 
 		logger.Info("underlying resource is already up to date", "resource", k8s.GetNamespacedName(policy))
 		return policy, nil
 	}
-	newState, diagnostics := resource.TFResource.Apply(ctx, liveState, diff, t.provider.Meta())
+	newState, diagnostics := resource.TFResource.Apply(ctx, liveState, diff, meta)
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
 		return nil, fmt.Errorf("error applying changes: %w", err)
 	}
@@ -228,6 +250,10 @@ func (t *TFIAMClient) GetPolicy(ctx context.Context, policy *v1beta1.IAMPolicy) 
 }
 
 func (t *TFIAMClient) DeletePolicy(ctx context.Context, policy *v1beta1.IAMPolicy) error {
+	meta, err := t.meta(ctx)
+	if err != nil {
+		return err
+	}
 	rc, err := t.getResourceConfigForReferencedResource(ctx, policy)
 	if err != nil {
 		return fmt.Errorf("error getting resource config for referenced resource: %w", err)
@@ -249,7 +275,7 @@ func (t *TFIAMClient) DeletePolicy(ctx context.Context, policy *v1beta1.IAMPolic
 	if liveState.Empty() {
 		return ErrNotFound
 	}
-	_, diagnostics := resource.TFResource.Apply(ctx, liveState, &terraform.InstanceDiff{Destroy: true}, t.provider.Meta())
+	_, diagnostics := resource.TFResource.Apply(ctx, liveState, &terraform.InstanceDiff{Destroy: true}, meta)
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
 		return fmt.Errorf("error deleting IAMPolicy: %w", err)
 	}
@@ -257,6 +283,10 @@ func (t *TFIAMClient) DeletePolicy(ctx context.Context, policy *v1beta1.IAMPolic
 }
 
 func (t *TFIAMClient) SetAuditConfig(ctx context.Context, auditConfig *v1beta1.IAMAuditConfig) (*v1beta1.IAMAuditConfig, error) {
+	meta, err := t.meta(ctx)
+	if err != nil {
+		return nil, err
+	}
 	rc, err := t.getResourceConfigForReferencedResource(ctx, auditConfig)
 	if err != nil {
 		return nil, fmt.Errorf("error getting resource config for referenced resource: %w", err)
@@ -276,7 +306,7 @@ func (t *TFIAMClient) SetAuditConfig(ctx context.Context, auditConfig *v1beta1.I
 	if err != nil {
 		return nil, fmt.Errorf("error creating resource config: %w", err)
 	}
-	diff, err := resource.TFResource.Diff(ctx, liveState, cfg, t.provider.Meta())
+	diff, err := resource.TFResource.Diff(ctx, liveState, cfg, meta)
 	if err != nil {
 		return nil, fmt.Errorf("error calculating diff: %w", err)
 	}
@@ -310,7 +340,7 @@ func (t *TFIAMClient) SetAuditConfig(ctx context.Context, auditConfig *v1beta1.I
 		report.IsNewObject = liveState.Empty()
 		structuredreporting.ReportDiff(ctx, report)
 	}
-	newState, diagnostics := resource.TFResource.Apply(ctx, liveState, diff, t.provider.Meta())
+	newState, diagnostics := resource.TFResource.Apply(ctx, liveState, diff, meta)
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
 		return nil, fmt.Errorf("error applying changes: %w", err)
 	}
@@ -340,6 +370,10 @@ func (t *TFIAMClient) GetAuditConfig(ctx context.Context, auditConfig *v1beta1.I
 }
 
 func (t *TFIAMClient) DeleteAuditConfig(ctx context.Context, auditConfig *v1beta1.IAMAuditConfig) error {
+	meta, err := t.meta(ctx)
+	if err != nil {
+		return err
+	}
 	rc, err := t.getResourceConfigForReferencedResource(ctx, auditConfig)
 	if err != nil {
 		return fmt.Errorf("error getting resource config for referenced resource: %w", err)
@@ -358,7 +392,7 @@ func (t *TFIAMClient) DeleteAuditConfig(ctx context.Context, auditConfig *v1beta
 	if liveState.Empty() {
 		return ErrNotFound
 	}
-	_, diagnostics := resource.TFResource.Apply(ctx, liveState, &terraform.InstanceDiff{Destroy: true}, t.provider.Meta())
+	_, diagnostics := resource.TFResource.Apply(ctx, liveState, &terraform.InstanceDiff{Destroy: true}, meta)
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
 		return fmt.Errorf("error deleting IAMAuditConfig: %w", err)
 	}

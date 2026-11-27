@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leasable"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/tfidentity"
 
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
@@ -67,6 +68,10 @@ func NewLeaser(tfProvider *tfschema.Provider, smLoader *servicemappingloader.Ser
 //
 // To 'always' renew the lease, pass in a 'renewalMin' that is equal to the duration.
 func (l *Leaser) Obtain(ctx context.Context, u *unstructured.Unstructured, ownerID string, duration time.Duration, renewalMin time.Duration) error {
+	provider, err := tfidentity.Provider(ctx, l.tfProvider)
+	if err != nil {
+		return err
+	}
 	if err := l.validateUnstructuredSupportsLocking(u); err != nil {
 		return err
 	}
@@ -89,14 +94,14 @@ func (l *Leaser) Obtain(ctx context.Context, u *unstructured.Unstructured, owner
 	if err != nil {
 		return fmt.Errorf("error expanding resource configuration: %w", err)
 	}
-	diff, err := resource.TFResource.Diff(ctx, liveState, config, l.tfProvider.Meta())
+	diff, err := resource.TFResource.Diff(ctx, liveState, config, provider.Meta())
 	if err != nil {
 		return fmt.Errorf("error calculating diff: %w", err)
 	}
 	if diff.Empty() {
 		return nil
 	}
-	_, diagnostics := resource.TFResource.Apply(ctx, liveState, diff, l.tfProvider.Meta())
+	_, diagnostics := resource.TFResource.Apply(ctx, liveState, diff, provider.Meta())
 
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
 		return fmt.Errorf("error applying resource change: %w", err)
@@ -139,6 +144,10 @@ func (l *Leaser) softObtain(labels map[string]string, ownerID string, duration t
 }
 
 func (l *Leaser) Release(ctx context.Context, u *unstructured.Unstructured, ownerID string) error {
+	provider, err := tfidentity.Provider(ctx, l.tfProvider)
+	if err != nil {
+		return err
+	}
 	if err := l.validateUnstructuredSupportsLocking(u); err != nil {
 		return err
 	}
@@ -162,11 +171,11 @@ func (l *Leaser) Release(ctx context.Context, u *unstructured.Unstructured, owne
 	if err != nil {
 		return fmt.Errorf("error expanding resource configuration: %w", err)
 	}
-	diff, err := resource.TFResource.Diff(ctx, liveState, config, l.tfProvider.Meta())
+	diff, err := resource.TFResource.Diff(ctx, liveState, config, provider.Meta())
 	if err != nil {
 		return fmt.Errorf("error calculating diff: %w", err)
 	}
-	_, diagnostics := resource.TFResource.Apply(ctx, liveState, diff, l.tfProvider.Meta())
+	_, diagnostics := resource.TFResource.Apply(ctx, liveState, diff, provider.Meta())
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
 		return fmt.Errorf("error applying resource change: %w", err)
 	}

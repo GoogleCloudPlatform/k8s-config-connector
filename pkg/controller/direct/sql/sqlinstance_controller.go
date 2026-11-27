@@ -1054,7 +1054,6 @@ func (a *sqlInstanceAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 
 func (a *sqlInstanceAdapter) pollForLROCompletion(ctx context.Context, op *api.Operation, verb string) error {
 	log := klog.FromContext(ctx)
-	var err error
 
 	pollingBackoff := gax.Backoff{
 		Initial:    time.Second,
@@ -1070,10 +1069,11 @@ func (a *sqlInstanceAdapter) pollForLROCompletion(ctx context.Context, op *api.O
 		if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
 			return fmt.Errorf("waiting for SQLInstance %s %s failed: %w", a.resourceID, verb, err)
 		}
-		op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
+		latest, err := a.sqlOperationsClient.Get(a.projectID, op.Name).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("getting SQLInstance %s %s operation %s failed: %w", a.resourceID, verb, op.Name, err)
 		}
+		op = latest
 	}
 
 	return nil

@@ -20,8 +20,10 @@ import (
 	"net/http"
 	"time"
 
+	"cloud.google.com/go/auth/httptransport"
 	cloudresourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/identity"
 	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"golang.org/x/oauth2"
 	"google.golang.org/api/option"
@@ -61,6 +63,10 @@ type ControllerConfig struct {
 
 	// SkipNameValidation bypasses the duplicate controller name check during registration
 	SkipNameValidation bool
+
+	// IdentityResolver, if set, picks the GCP credentials for each KRM object.
+	// See the identity package.
+	IdentityResolver identity.Resolver
 }
 
 func (c *ControllerConfig) Init(ctx context.Context) error {
@@ -112,11 +118,18 @@ func (c *ControllerConfig) RESTClientOptions(options ...RESTClientOption) ([]opt
 		opts = append(opts, option.WithUserAgent(c.UserAgent))
 	}
 
-	if c.HTTPClient != nil {
+	// With an IdentityResolver, build our own HTTP client: one built by the
+	// client library caches the first token.
+	if c.HTTPClient != nil || c.IdentityResolver != nil {
 		httpClient := &http.Client{}
-		*httpClient = *c.HTTPClient
+		if c.HTTPClient != nil {
+			*httpClient = *c.HTTPClient
+		}
 
-		transport := c.HTTPClient.Transport
+		transport := httpClient.Transport
+		if transport == nil {
+			transport = http.DefaultTransport
+		}
 		if c.EnableMetricsTransport {
 			transport = metricstransport.NewMetricsTransport(transport)
 		}
@@ -125,6 +138,11 @@ func (c *ControllerConfig) RESTClientOptions(options ...RESTClientOption) ([]opt
 			config:       *c,
 			quotaProject: quotaProject,
 			inner:        transport,
+		}
+		if c.IdentityResolver != nil {
+			if err := httptransport.AddAuthorizationMiddleware(httpClient, identity.NewAuthCredentials()); err != nil {
+				return nil, err
+			}
 		}
 		opts = append(opts, option.WithHTTPClient(httpClient))
 
@@ -156,11 +174,21 @@ func (c *ControllerConfig) GRPCClientOptions() ([]option.ClientOption, error) {
 	if c.UserAgent != "" {
 		opts = append(opts, option.WithUserAgent(c.UserAgent))
 	}
+	quotaProject := ""
 	if c.UserProjectOverride && c.BillingProject != "" {
-		opts = append(opts, option.WithQuotaProject(c.BillingProject))
+		quotaProject = c.BillingProject
 	}
-	if c.GCPTokenSource != nil {
-		opts = append(opts, option.WithTokenSource(c.GCPTokenSource))
+	if c.IdentityResolver != nil {
+		// Disable library auth so it cannot fall back to default credentials.
+		perRPC := identity.NewPerRPCCredentials(quotaProject)
+		opts = append(opts, option.WithoutAuthentication(), option.WithGRPCDialOption(grpc.WithPerRPCCredentials(perRPC)))
+	} else {
+		if quotaProject != "" {
+			opts = append(opts, option.WithQuotaProject(quotaProject))
+		}
+		if c.GCPTokenSource != nil {
+			opts = append(opts, option.WithTokenSource(c.GCPTokenSource))
+		}
 	}
 	if c.GRPCUnaryClientInterceptor != nil {
 		opts = append(opts, option.WithGRPCDialOption(grpc.WithUnaryInterceptor(c.GRPCUnaryClientInterceptor)))
@@ -197,7 +225,8 @@ func (c *ControllerConfig) NewAuthenticatedHTTPClient(ctx context.Context) (*htt
 	if err != nil {
 		return nil, fmt.Errorf("error creating REST client options: %w", err)
 	}
-	if c.HTTPClient != nil {
+	if c.HTTPClient != nil || c.IdentityResolver != nil {
+		// opts carries the HTTP client built by RESTClientOptions.
 		c, _, err := ghttptransport.NewClient(ctx, opts...)
 		return c, err
 	}
