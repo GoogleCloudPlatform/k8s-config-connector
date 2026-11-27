@@ -51,11 +51,15 @@ type trainingPipelineModel struct {
 	config *config.ControllerConfig
 }
 
-func (m *trainingPipelineModel) client(ctx context.Context) (*gcp.PipelineClient, error) {
+func (m *trainingPipelineModel) client(ctx context.Context, location string) (*gcp.PipelineClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.GRPCClientOptions()
 	if err != nil {
 		return nil, err
+	}
+	if location != "" {
+		endpoint := fmt.Sprintf("%s-aiplatform.googleapis.com:443", location)
+		opts = append(opts, option.WithEndpoint(endpoint))
 	}
 	gcpClient, err := gcp.NewPipelineClient(ctx, opts...)
 	if err != nil {
@@ -80,15 +84,15 @@ func (m *trainingPipelineModel) AdapterForObject(ctx context.Context, reader *di
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
-	// Get PipelineClient client
-	gcpClient, err := m.client(ctx)
-	if err != nil {
-		return nil, err
-	}
-
 	typedID, ok := id.(*krm.VertexAITrainingPipelineIdentity)
 	if !ok {
 		return nil, fmt.Errorf("expected VertexAITrainingPipelineIdentity, got %T", id)
+	}
+
+	// Get PipelineClient client
+	gcpClient, err := m.client(ctx, typedID.Location)
+	if err != nil {
+		return nil, err
 	}
 
 	mapCtx := &direct.MapContext{}
@@ -126,6 +130,10 @@ type TrainingPipelineAdapter struct {
 var _ directbase.Adapter = &TrainingPipelineAdapter{}
 
 func (a *TrainingPipelineAdapter) Find(ctx context.Context) (bool, error) {
+	if a.id.TrainingPipeline == "" {
+		return false, nil
+	}
+
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting VertexAITrainingPipeline", "name", a.id.String())
 
@@ -155,9 +163,7 @@ func (a *TrainingPipelineAdapter) Find(ctx context.Context) (bool, error) {
 
 func (a *TrainingPipelineAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating VertexAITrainingPipeline", "name", a.id.String())
-
-	a.desiredpb.Name = a.id.String()
+	log.V(2).Info("creating VertexAITrainingPipeline", "parent", a.id.ParentString())
 
 	req := &pb.CreateTrainingPipelineRequest{
 		Parent:           a.id.ParentString(),
@@ -166,10 +172,10 @@ func (a *TrainingPipelineAdapter) Create(ctx context.Context, createOp *directba
 
 	created, err := a.gcpClient.CreateTrainingPipeline(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating VertexAITrainingPipeline %q: %w", a.id.String(), err)
+		return fmt.Errorf("creating VertexAITrainingPipeline: %w", err)
 	}
 
-	log.V(2).Info("successfully created VertexAITrainingPipeline", "name", a.id.String())
+	log.V(2).Info("successfully created VertexAITrainingPipeline", "name", created.GetName())
 
 	return a.updateStatus(ctx, createOp, created)
 }
@@ -236,6 +242,9 @@ func (a *TrainingPipelineAdapter) updateStatus(ctx context.Context, op directbas
 	if mapCtx.Err() != nil {
 		return fmt.Errorf("mapping status: %w", mapCtx.Err())
 	}
+	if err := a.id.FromExternal(latest.GetName()); err != nil {
+		return fmt.Errorf("parsing TrainingPipeline name %q: %w", latest.GetName(), err)
+	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return op.UpdateStatus(ctx, status, nil)
 }
@@ -244,6 +253,44 @@ func (a *TrainingPipelineAdapter) Delete(ctx context.Context, deleteOp *directba
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting VertexAITrainingPipeline", "name", a.id.String())
 
+	if a.id.TrainingPipeline == "" {
+		return true, nil
+	}
+
+	// 1. Get the current state of the TrainingPipeline first
+	getReq := &pb.GetTrainingPipelineRequest{
+		Name: a.id.String(),
+	}
+	actual, err := a.gcpClient.GetTrainingPipeline(ctx, getReq)
+	if err != nil {
+		if direct.IsNotFound(err) {
+			return true, nil
+		}
+		return false, fmt.Errorf("getting TrainingPipeline before deletion %q: %w", a.id.String(), err)
+	}
+
+	// 2. If the state is not terminal, initiate/wait for cancellation
+	isTerminal := func(state pb.PipelineState) bool {
+		return state == pb.PipelineState_PIPELINE_STATE_SUCCEEDED ||
+			state == pb.PipelineState_PIPELINE_STATE_FAILED ||
+			state == pb.PipelineState_PIPELINE_STATE_CANCELLED
+	}
+
+	if !isTerminal(actual.State) {
+		if actual.State != pb.PipelineState_PIPELINE_STATE_CANCELLING {
+			log.V(2).Info("cancelling VertexAITrainingPipeline before deletion", "name", a.id.String(), "currentState", actual.State)
+			cancelReq := &pb.CancelTrainingPipelineRequest{
+				Name: a.id.String(),
+			}
+			if err := a.gcpClient.CancelTrainingPipeline(ctx, cancelReq); err != nil {
+				log.Error(err, "error cancelling VertexAITrainingPipeline", "name", a.id.String())
+				return false, fmt.Errorf("cancelling VertexAITrainingPipeline %q: %w", a.id.String(), err)
+			}
+		}
+		return false, fmt.Errorf("VertexAITrainingPipeline %q is in state %s; waiting for terminal state before deletion", a.id.String(), actual.State)
+	}
+
+	// 3. Delete the TrainingPipeline
 	req := &pb.DeleteTrainingPipelineRequest{
 		Name: a.id.String(),
 	}
@@ -280,6 +327,20 @@ func compareTrainingPipeline(ctx context.Context, actual, desired *pb.TrainingPi
 	}
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)
+
+	// Since TrainingPipeline is immutable, we align or copy server-populated / restructured fields to avoid false positive diffs:
+	// 1. model_id is INPUT_ONLY and not returned in actual by GCP:
+	if maskedActual.ModelId == "" && clonedDesired.ModelId != "" {
+		maskedActual.ModelId = clonedDesired.ModelId
+	}
+	// 2. TrainingTaskInputs is a dynamic proto Value/Struct that GCP normalizes (e.g. diskSpec defaulting, replicaCount stringification):
+	clonedDesired.TrainingTaskInputs = maskedActual.TrainingTaskInputs
+	// 3. ModelToUpload has server-defaulted subfields (like empty predictSchemata):
+	if clonedDesired.ModelToUpload != nil && maskedActual.ModelToUpload != nil {
+		if clonedDesired.ModelToUpload.PredictSchemata == nil && maskedActual.ModelToUpload.PredictSchemata != nil {
+			clonedDesired.ModelToUpload.PredictSchemata = maskedActual.ModelToUpload.PredictSchemata
+		}
+	}
 
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {

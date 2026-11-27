@@ -291,7 +291,6 @@ BLOCKED_KINDS=(
     "AIPlatformSchedule"
     "AIPlatformSpecialistPool"
     "VertexAIStudy"
-    "VertexAITrainingPipeline"
     "VertexAITuningJob"
     "VideoStitcherCDNKey"
     "VideoStitcherLiveConfig"

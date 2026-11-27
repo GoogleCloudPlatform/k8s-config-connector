@@ -232,7 +232,7 @@ func (s *pipelineService) GetTrainingPipeline(ctx context.Context, req *pb.GetTr
 }
 
 func (s *pipelineService) CreateTrainingPipeline(ctx context.Context, req *pb.CreateTrainingPipelineRequest) (*pb.TrainingPipeline, error) {
-	id := fmt.Sprintf("tp-%d", time.Now().UnixNano())
+	id := fmt.Sprintf("%d", time.Now().UnixNano())
 	if req.GetTrainingPipeline().GetName() != "" {
 		if name, err := s.parseTrainingPipelineName(req.GetTrainingPipeline().GetName()); err == nil {
 			id = name.TrainingPipelineID
@@ -254,17 +254,42 @@ func (s *pipelineService) CreateTrainingPipeline(ctx context.Context, req *pb.Cr
 
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
-	obj.StartTime = timestamppb.New(now)
-	obj.EndTime = timestamppb.New(now.Add(5 * time.Second))
 
-	obj.State = pb.PipelineState_PIPELINE_STATE_SUCCEEDED
+	obj.State = pb.PipelineState_PIPELINE_STATE_PENDING
 
-	// If there's a ModelToUpload, let's make sure its metadata and names are populated
+	obj.ModelId = ""
+
+	// If there's a ModelToUpload, let's make sure its metadata is populated
 	if obj.ModelToUpload != nil {
-		obj.ModelToUpload.Name = fqn + "/model"
 		staticTime := timestamppb.New(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC))
 		obj.ModelToUpload.CreateTime = staticTime
 		obj.ModelToUpload.UpdateTime = staticTime
+		if obj.ModelToUpload.PredictSchemata == nil {
+			obj.ModelToUpload.PredictSchemata = &pb.PredictSchemata{}
+		}
+	}
+
+	// In real GCP, custom task trainingTaskInputs default diskSpec and convert replicaCount to string in workerPoolSpecs
+	if obj.TrainingTaskInputs != nil && obj.TrainingTaskInputs.GetStructValue() != nil {
+		if wp, ok := obj.TrainingTaskInputs.GetStructValue().Fields["workerPoolSpecs"]; ok && wp.GetListValue() != nil {
+			for _, v := range wp.GetListValue().Values {
+				if s := v.GetStructValue(); s != nil {
+					if _, ok := s.Fields["diskSpec"]; !ok {
+						s.Fields["diskSpec"] = structpb.NewStructValue(&structpb.Struct{
+							Fields: map[string]*structpb.Value{
+								"bootDiskSizeGb": structpb.NewNumberValue(100),
+								"bootDiskType":   structpb.NewStringValue("pd-ssd"),
+							},
+						})
+					}
+					if rc, ok := s.Fields["replicaCount"]; ok {
+						if rc.GetNumberValue() != 0 {
+							s.Fields["replicaCount"] = structpb.NewStringValue(fmt.Sprintf("%d", int64(rc.GetNumberValue())))
+						}
+					}
+				}
+			}
+		}
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -272,6 +297,26 @@ func (s *pipelineService) CreateTrainingPipeline(ctx context.Context, req *pb.Cr
 	}
 
 	return obj, nil
+}
+
+func (s *pipelineService) CancelTrainingPipeline(ctx context.Context, req *pb.CancelTrainingPipelineRequest) (*emptypb.Empty, error) {
+	name, err := s.parseTrainingPipelineName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.TrainingPipeline{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	obj.State = pb.PipelineState_PIPELINE_STATE_CANCELLED
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return &emptypb.Empty{}, nil
 }
 
 func (s *pipelineService) DeleteTrainingPipeline(ctx context.Context, req *pb.DeleteTrainingPipelineRequest) (*longrunning.Operation, error) {

@@ -1275,6 +1275,13 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 					replacement.PathIDs[buildID] = "${buildID}"
 				}
 			}
+			if u.GetKind() == "VertexAITrainingPipeline" {
+				parts := strings.Split(s, "/")
+				if len(parts) > 0 {
+					trainingPipelineID := parts[len(parts)-1]
+					replacement.PathIDs[trainingPipelineID] = "${trainingPipelineID}"
+				}
+			}
 		}
 		return s
 	})
@@ -1416,6 +1423,26 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 				for _, match := range matches {
 					if len(match) > 1 {
 						normalizer.Replacements.PathIDs[match[1]] = "${buildID}"
+					}
+				}
+			}
+		}
+	}
+
+	// Find VertexAITrainingPipeline trainingPipeline IDs in URL or Body and add to PathIDs
+	trainingPipelineIDRegex := regexp.MustCompile(`/trainingPipelines/([a-zA-Z0-9_-]+)`)
+	for _, event := range events {
+		if !strings.Contains(event.Request.URL, "aiplatform") {
+			continue
+		}
+		if matches := trainingPipelineIDRegex.FindStringSubmatch(event.Request.URL); len(matches) > 1 {
+			normalizer.Replacements.PathIDs[matches[1]] = "${trainingPipelineID}"
+		}
+		if event.Response.Body != "" {
+			if matches := trainingPipelineIDRegex.FindAllStringSubmatch(event.Response.Body, -1); len(matches) > 0 {
+				for _, match := range matches {
+					if len(match) > 1 {
+						normalizer.Replacements.PathIDs[match[1]] = "${trainingPipelineID}"
 					}
 				}
 			}

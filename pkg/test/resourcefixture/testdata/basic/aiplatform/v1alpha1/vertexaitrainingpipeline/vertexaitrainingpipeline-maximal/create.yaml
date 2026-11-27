@@ -24,24 +24,14 @@ spec:
   trainingTaskDefinition: "gs://google-cloud-aiplatform/schema/trainingjob/definition/custom_task_1.0.0.yaml"
   trainingTaskInputs:
     structValue:
-      fields:
-        workerPoolSpecs:
-          listValue:
-            values:
-              - structValue:
-                  fields:
-                    machineSpec:
-                      structValue:
-                        fields:
-                          machineType:
-                            stringValue: "n1-standard-4"
-                    replicaCount:
-                      stringValue: "1"
-                    containerSpec:
-                      structValue:
-                        fields:
-                          imageUri:
-                            stringValue: "gcr.io/google-samples/hello-app:1.0"
+      baseOutputDirectory:
+        outputUriPrefix: gs://tpipe-max-dep-${uniqueId}/output
+      workerPoolSpecs:
+        - machineSpec:
+            machineType: "n1-standard-4"
+          replicaCount: 1
+          containerSpec:
+            imageUri: "gcr.io/google-samples/hello-app:1.0"
   modelID: "model_${uniqueId}"
   modelToUpload:
     projectRef:
@@ -50,5 +40,6 @@ spec:
     displayName: "Uploaded Model"
     containerSpec:
       imageURI: "gcr.io/google-samples/hello-app:1.0"
+    artifactURI: gs://tpipe-max-dep-${uniqueId}/model
   labels:
     key-one: value-one

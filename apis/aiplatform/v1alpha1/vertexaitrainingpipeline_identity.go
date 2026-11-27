@@ -66,10 +66,7 @@ func (i *VertexAITrainingPipelineIdentity) ParentString() string {
 }
 
 func getIdentityFromVertexAITrainingPipelineSpec(ctx context.Context, reader client.Reader, obj *VertexAITrainingPipeline) (*VertexAITrainingPipelineIdentity, error) {
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
 	location, err := refs.GetLocation(obj)
 	if err != nil {
@@ -103,10 +100,29 @@ func (obj *VertexAITrainingPipeline) GetIdentity(ctx context.Context, reader cli
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change VertexAITrainingPipeline identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		if !IsProjectIDMatch(statusIdentity.Project, specIdentity.Project) {
+			return nil, fmt.Errorf("cannot change VertexAITrainingPipeline project (old=%q, new=%q)", statusIdentity.Project, specIdentity.Project)
 		}
+		if statusIdentity.Location != specIdentity.Location {
+			return nil, fmt.Errorf("cannot change VertexAITrainingPipeline location (old=%q, new=%q)", statusIdentity.Location, specIdentity.Location)
+		}
+
+		if specIdentity.TrainingPipeline != "" {
+			if statusIdentity.TrainingPipeline != specIdentity.TrainingPipeline {
+				return nil, fmt.Errorf("cannot change VertexAITrainingPipeline identity (old=%q, new=%q)", statusIdentity.TrainingPipeline, specIdentity.TrainingPipeline)
+			}
+		}
+
+		return statusIdentity, nil
 	}
 
 	return specIdentity, nil
+}
+
+// ExternalIdentifier returns the GCP external identifier (the GCP URL).
+func (obj *VertexAITrainingPipeline) ExternalIdentifier() *string {
+	if obj.Status.ExternalRef != nil {
+		return obj.Status.ExternalRef
+	}
+	return nil
 }
