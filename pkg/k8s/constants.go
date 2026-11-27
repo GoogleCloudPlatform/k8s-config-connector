@@ -63,6 +63,7 @@ const (
 	ManagementConflict                   = "ManagementConflict"
 	PreActuationTransformFailed          = "PreActuationTransformFailed"
 	PostActuationTransformFailed         = "PostActuationTransformFailed"
+	ServiceEndpointUnavailable           = "ServiceEndpointUnavailable"
 	DeletionPolicyDelete                 = "delete"
 	DeletionPolicyAbandon                = "abandon"
 	AnnotationPrefix                     = CNRMGroup
