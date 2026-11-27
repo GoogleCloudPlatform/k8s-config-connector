@@ -48,6 +48,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DesignCenterApplicationTemplate:ApplicationTemplate \
   --resource DesignCenterApplication:Application \
   --resource DesignCenterComponent:Component \
+  --resource DesignCenterConnection:Connection \
   --prepopulate-resource
 
 ${CONTROLLERBUILDER} generate-identity \
@@ -61,7 +62,8 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource DesignCenterCatalogTemplateRevision:CatalogTemplateRevision \
   --resource DesignCenterApplicationTemplate:ApplicationTemplate \
   --resource DesignCenterApplication:Application \
-  --resource DesignCenterComponent:Component
+  --resource DesignCenterComponent:Component \
+  --resource DesignCenterConnection:Connection
 
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \

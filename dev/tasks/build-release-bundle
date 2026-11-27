@@ -176,6 +176,7 @@ BLOCKED_KINDS=(
     "DataplexEncryptionConfig"
     "DataplexEntryLink"
     "DataplexEnvironment"
+    "DesignCenterConnection"
     "DevConnectConnection"
     "DeveloperConnectGitRepositoryLink"
     "DialogflowConversationModel"

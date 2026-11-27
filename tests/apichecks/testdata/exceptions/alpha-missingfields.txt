@@ -3845,6 +3845,23 @@
 [missing_field] crd=designcentercomponents.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.parameters[].value.nullValue" is not set in unstructured objects
 [missing_field] crd=designcentercomponents.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.parameters[].value.numberValue" is not set in unstructured objects
 [missing_field] crd=designcentercomponents.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.parameters[].value.structValue" is not set in unstructured objects
+[missing_field] crd=designcenterconnections.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationComponentParameters[].key" is not set in unstructured objects
+[missing_field] crd=designcenterconnections.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationComponentParameters[].value.boolValue" is not set in unstructured objects
+[missing_field] crd=designcenterconnections.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationComponentParameters[].value.listValue.values[]" is not set in unstructured objects
+[missing_field] crd=designcenterconnections.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationComponentParameters[].value.nullValue" is not set in unstructured objects
+[missing_field] crd=designcenterconnections.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationComponentParameters[].value.numberValue" is not set in unstructured objects
+[missing_field] crd=designcenterconnections.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationComponentParameters[].value.stringValue" is not set in unstructured objects
+[missing_field] crd=designcenterconnections.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationComponentParameters[].value.structValue" is not set in unstructured objects
+[missing_field] crd=designcenterconnections.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationComponentURI" is not set in unstructured objects
+[missing_field] crd=designcenterconnections.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=designcenterconnections.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=designcenterconnections.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceComponentParameters[].key" is not set in unstructured objects
+[missing_field] crd=designcenterconnections.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceComponentParameters[].value.boolValue" is not set in unstructured objects
+[missing_field] crd=designcenterconnections.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceComponentParameters[].value.listValue.values[]" is not set in unstructured objects
+[missing_field] crd=designcenterconnections.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceComponentParameters[].value.nullValue" is not set in unstructured objects
+[missing_field] crd=designcenterconnections.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceComponentParameters[].value.numberValue" is not set in unstructured objects
+[missing_field] crd=designcenterconnections.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceComponentParameters[].value.stringValue" is not set in unstructured objects
+[missing_field] crd=designcenterconnections.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceComponentParameters[].value.structValue" is not set in unstructured objects
 [missing_field] crd=designcenterpolicies.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudControlConfigs[].cloudControlRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=designcenterpolicies.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudControlConfigs[].parameters[].key" is not set in unstructured objects
 [missing_field] crd=designcenterpolicies.designcenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudControlConfigs[].parameters[].value.boolValue" is not set in unstructured objects

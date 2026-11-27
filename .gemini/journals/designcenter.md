@@ -238,6 +238,16 @@
   - **Fixtures & Golden Logs**: Created `designcentercomponent-minimal` and `designcentercomponent-maximal` fixtures with parent `DesignCenterApplicationTemplate` (COMPOSITE) and ancestor `DesignCenterSpace`. Recorded against real GCP (`cnrm-barni-4`) using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`. Both minimal and maximal passed all 7/7 HTTP report validation checks and re-reconciliation testing.
   - **Validation**: 200-seed focused round-trip fuzzer (`TestFocusedMappers/DesignCenterComponent`), CRD field presence checks, and presubmit unit tests all passed cleanly.
 
+### [2026-11-27] Prepopulating DesignCenterConnection
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for DesignCenterConnection (Issue #16566).
+- **Findings & Solution**:
+  - Configured `apis/designcenter/generate.sh` with dedicated `--resource DesignCenterConnection:Connection` under `generate-types` and `generate-identity`.
+  - Mechanically generated `designcenterconnection_types.go`, `designcenterconnection_identity.generated.go`, `designcenterconnection_reference.generated.go`, `designcenterconnection_identity_generated_test.go`, CRD manifest, deepcopy, and updated `pkg/controller/direct/designcenter/mapper.generated.go`.
+  - To prevent CRD backward-compatibility breakages for existing DesignCenter CRDs (`DesignCenterApplication`, `DesignCenterApplicationTemplate`, `DesignCenterCatalogTemplateRevision`, `DesignCenterComponent`), declared `ParameterObservedState` in `designcenterpolicy_types.go` with `Key`, `Value`, and `ReadOnly` fields so `controllerbuilder` preserves those fields in `types.generated.go`.
+  - Added `DesignCenterConnection` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` in strict alphabetical order.
+  - Initialized open entries in `apis/designcenter/judgement_queue.yaml` for `DesignCenterConnection` (`untriaged-bulk-generation` with `status: open`).
+  - Recorded untriaged missing fields in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+
 
 
 
