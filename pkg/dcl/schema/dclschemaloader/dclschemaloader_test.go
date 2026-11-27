@@ -251,3 +251,58 @@ func TestDCLSchemaLoader_CheckPropertiesForRefs(t *testing.T) {
 		})
 	}
 }
+
+func TestPatchNetworkServicesHTTPRoute(t *testing.T) {
+	loader, err := New()
+	if err != nil {
+		t.Fatal(err)
+	}
+	stv := dclunstruct.ServiceTypeVersion{
+		Service: "networkservices",
+		Type:    "HttpRoute",
+		Version: "ga",
+	}
+	schema, err := loader.GetDCLSchema(stv)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	// Verify destinations[].serviceName has Storage/Bucket in x-dcl-references
+	rules := schema.Properties["rules"]
+	destinations := rules.Items.Properties["action"].Properties["destinations"]
+	serviceName := destinations.Items.Properties["serviceName"]
+	refs, ok := serviceName.Extension["x-dcl-references"].([]interface{})
+	if !ok {
+		t.Fatalf("expected []interface{} for x-dcl-references, got %T", serviceName.Extension["x-dcl-references"])
+	}
+	hasStorageBucket := func(refs []interface{}) bool {
+		for _, r := range refs {
+			switch m := r.(type) {
+			case map[string]interface{}:
+				if m["resource"] == "Storage/Bucket" {
+					return true
+				}
+			case map[interface{}]interface{}:
+				if m["resource"] == "Storage/Bucket" {
+					return true
+				}
+			}
+		}
+		return false
+	}
+
+	if !hasStorageBucket(refs) {
+		t.Errorf("expected Storage/Bucket in rules.action.destinations.serviceName x-dcl-references, got %v", refs)
+	}
+
+	// Verify requestMirrorPolicy.destination.serviceName has Storage/Bucket in x-dcl-references
+	mirror := rules.Items.Properties["action"].Properties["requestMirrorPolicy"]
+	mirrorServiceName := mirror.Properties["destination"].Properties["serviceName"]
+	mirrorRefs, ok := mirrorServiceName.Extension["x-dcl-references"].([]interface{})
+	if !ok {
+		t.Fatalf("expected []interface{} for mirror x-dcl-references, got %T", mirrorServiceName.Extension["x-dcl-references"])
+	}
+	if !hasStorageBucket(mirrorRefs) {
+		t.Errorf("expected Storage/Bucket in rules.action.requestMirrorPolicy.destination.serviceName x-dcl-references, got %v", mirrorRefs)
+	}
+}
