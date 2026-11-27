@@ -25,7 +25,6 @@ spec:
   edition: ENTERPRISE_PLUS
   ignoreIdleSlots: false
   location: us-west2
-  secondaryLocation: us-east1
   projectRef:
     external: ${projectId}
   resourceID: bigqueryreservationreservation${uniqueId}
@@ -44,7 +43,6 @@ spec:
   edition: ENTERPRISE_PLUS
   ignoreIdleSlots: false
   location: us-west2
-  secondaryLocation: us-east1
   projectRef:
     external: ${projectId}
   resourceID: bqreservation2${uniqueId}

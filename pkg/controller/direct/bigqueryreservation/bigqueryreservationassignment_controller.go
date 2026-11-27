@@ -30,6 +30,7 @@ import (
 
 	pb "cloud.google.com/go/bigquery/reservation/apiv1/reservationpb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -222,6 +223,33 @@ func (a *AssignmentAdapter) moveAssignment(ctx context.Context, updateOp *direct
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
+// computeAssignmentUpdate determines which fields need update, preserving unspecified fields for schedulingPolicy.
+func computeAssignmentUpdate(desiredSpec *krm.BigQueryReservationAssignmentSpec, desiredPb *pb.Assignment, actual *pb.Assignment, report *structuredreporting.Diff) []string {
+	paths := []string{}
+
+	if desiredSpec.SchedulingPolicy != nil {
+		if desiredPb.SchedulingPolicy == nil {
+			desiredPb.SchedulingPolicy = &pb.SchedulingPolicy{}
+		}
+		if actual.GetSchedulingPolicy() != nil {
+			if desiredPb.SchedulingPolicy.Concurrency == nil && actual.GetSchedulingPolicy().Concurrency != nil {
+				desiredPb.SchedulingPolicy.Concurrency = actual.GetSchedulingPolicy().Concurrency
+			}
+			if desiredPb.SchedulingPolicy.MaxSlots == nil && actual.GetSchedulingPolicy().MaxSlots != nil {
+				desiredPb.SchedulingPolicy.MaxSlots = actual.GetSchedulingPolicy().MaxSlots
+			}
+		}
+		if !proto.Equal(desiredPb.GetSchedulingPolicy(), actual.GetSchedulingPolicy()) {
+			if report != nil {
+				report.AddField("scheduling_policy", actual.GetSchedulingPolicy(), desiredPb.GetSchedulingPolicy())
+			}
+			paths = append(paths, "scheduling_policy")
+		}
+	}
+
+	return paths
+}
+
 // Otherwise, handle fields update
 func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *directbase.UpdateOperation, desiredSpec *krm.BigQueryReservationAssignmentSpec) error {
 	log := klog.FromContext(ctx)
@@ -232,14 +260,15 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	desiredPb.Name = a.actual.GetName()
 
-	paths := []string{}
-	// TODO
-	// The current proto file doesn't have mutable fields
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	paths := computeAssignmentUpdate(desiredSpec, desiredPb, a.actual, report)
 
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		status := &krm.BigQueryReservationAssignmentStatus{}
+		status.ExternalRef = direct.LazyPtr(a.actual.GetName())
 		status.ObservedState = BigQueryReservationAssignmentObservedState_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
@@ -247,14 +276,11 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-	for _, path := range paths {
-		report.AddField(path, nil, nil)
-	}
 	structuredreporting.ReportDiff(ctx, report)
 
 	updateMask := &fieldmaskpb.FieldMask{
-		Paths: paths}
+		Paths: paths,
+	}
 
 	req := &pb.UpdateAssignmentRequest{
 		UpdateMask: updateMask,
@@ -268,6 +294,7 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 	log.V(2).Info("successfully updated assignment", "name", a.id.String())
 
 	status := &krm.BigQueryReservationAssignmentStatus{}
+	status.ExternalRef = direct.LazyPtr(updated.GetName())
 	status.ObservedState = BigQueryReservationAssignmentObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()

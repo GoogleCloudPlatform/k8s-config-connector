@@ -34,6 +34,7 @@ func BigQueryReservationAssignmentFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	f.SpecFields.Insert(".job_type")
+	f.SpecFields.Insert(".scheduling_policy")
 
 	f.StatusFields.Insert(".state")
 
@@ -43,9 +44,7 @@ func BigQueryReservationAssignmentFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".enable_gemini_in_bigquery")
 	f.UnimplementedFields.Insert(".principal")
 
-	f.Unimplemented_NotYetTriaged(".scheduling_policy")
 	f.Unimplemented_NotYetTriaged(".precedence")
 	f.Unimplemented_NotYetTriaged(".condition")
-
 	return f
 }
