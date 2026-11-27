@@ -162,4 +162,18 @@
   5. Triaged all 6 judgement queue entries for `DiscoveryEngineCMEKConfig` in `apis/discoveryengine/judgement_queue.yaml`.
 - **Impact**: Fully resolves Greenfield Step 1b for `DiscoveryEngineCMEKConfig`, passing all API compatibility and schema checks.
 
+### [2026-11-25] DiscoveryEngineCMEKConfig Step 2 Controller Implementation
+- **Context**: Greenfield Step 2 implementation (direct controller, fuzzer, and E2E fixtures) for `DiscoveryEngineCMEKConfig` (Issue #16425).
+- **Details & Learnings**:
+  1. **Provisioning via Update RPC**: The GCP `CmekConfigService` defines `GetCmekConfig`, `ListCmekConfigs`, `UpdateCmekConfig`, and `DeleteCmekConfig` RPCs (no `CreateCmekConfig`). `UpdateCmekConfig` provisions and updates the CMEK config. In `Create()`, the controller invokes `UpdateCmekConfig`.
+  2. **Regional Endpoints**: CMEK configs are supported in `us` and `eu` (multi-regions), but not `global` (returns `400: CMEK is not supported in location 'global'`). Regional endpoints (`us-discoveryengine.googleapis.com:443`, `eu-discoveryengine.googleapis.com:443`) are configured in `m.client()` based on `id.Location`.
+  3. **Strict Quota Limits**: GCP enforces a consumer quota of `1` CMEK configuration per project, and `5` write requests per day (`discoveryengine.googleapis.com/cmek_config_write_requests`).
+  4. **Field Immutability**: Once created, `kmsKey` cannot be updated on an existing `CmekConfig` resource (`FAILED_PRECONDITION: The following KMS key: ... is already connected to this CmekConfig resource. Please create a new CmekConfig resource if a new KMS key is needed.`). Since `DiscoveryEngineCMEKConfig` has no mutable fields, `update.yaml` is omitted from test fixtures per Greenfield guidelines.
+  5. **Location & Key Constraints**:
+     - For `location: us`, the primary KMS key must reside in `us` (multi-region).
+     - When `singleRegionKeys` is specified for `us`, GCP requires keys in 3 specific regions: `us-central1`, `us-east1`, and `us-west1`.
+     - The Discovery Engine service agent (`service-${projectNumber}@gcp-sa-discoveryengine.iam.gserviceaccount.com`) must be granted `roles/cloudkms.cryptoKeyEncrypterDecrypter` on all referenced KMS keys.
+  6. **Validation**: Round-trip fuzzer passed `TestFocusedMappers/DiscoveryEngineCMEKConfig` (200/200 seeds). CAI template matching and label validation passed.
+
+
 
