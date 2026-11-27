@@ -25,15 +25,21 @@ entries:
     group: redis.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: inlined *parent.ProjectAndLocationRef, verified client-specified ID, confirmed no missing references, and updated resource docs link
   - kind: RedisACLPolicy
     group: redis.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: 'none of these loaded as a page ending in /v1/projects.locations.aclPolicies: https://docs.cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.aclPolicies, https://docs.cloud.google.com/memorystore/docs/reference/rest/v1/projects.locations.aclPolicies'
-    status: open
+    status: resolved
+    resolution: edited
+    note: updated resource docs link to https://cloud.google.com/memorystore/docs/cluster/reference/rest/v1/projects.locations.aclPolicies
   - kind: RedisACLPolicy
     group: redis.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef
