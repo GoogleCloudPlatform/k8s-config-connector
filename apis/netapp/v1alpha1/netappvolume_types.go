@@ -20,7 +20,7 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,14 +31,11 @@ var NetAppVolumeGVK = GroupVersion.WithKind("NetAppVolume")
 // +kcc:spec:proto=google.cloud.netapp.v1.Volume
 // +kcc:required-from-proto
 type NetAppVolumeSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The NetAppVolume name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Required. Share name of the volume
 	// +kcc:proto:field=google.cloud.netapp.v1.Volume.share_name
 	// +required
@@ -47,7 +44,7 @@ type NetAppVolumeSpec struct {
 	// Required. StoragePool name of the volume
 	// +kcc:proto:field=google.cloud.netapp.v1.Volume.storage_pool
 	// +required
-	StoragePool *string `json:"storagePool,omitempty"`
+	StoragePoolRef *NetAppStoragePoolRef `json:"storagePoolRef,omitempty"`
 
 	// Required. Capacity in GIB of the volume
 	// +kcc:proto:field=google.cloud.netapp.v1.Volume.capacity_gib
@@ -303,4 +300,145 @@ type NetAppVolumeList struct {
 
 func init() {
 	SchemeBuilder.Register(&NetAppVolume{}, &NetAppVolumeList{})
+}
+
+// +kcc:proto=google.cloud.netapp.v1.BackupConfig
+type BackupConfig struct {
+	// Optional. When specified, schedule backups will be created based on the
+	//  policy configuration.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupConfig.backup_policies
+	BackupPolicyRefs []BackupPolicyRef `json:"backupPolicyRefs,omitempty"`
+
+	// Optional. Name of backup vault.
+	//  Format:
+	//  projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupConfig.backup_vault
+	BackupVaultRef *BackupVaultRef `json:"backupVaultRef,omitempty"`
+
+	// Optional. When set to true, scheduled backup is enabled on the volume.
+	//  This field should be nil when there's no backup policy attached.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupConfig.scheduled_backup_enabled
+	ScheduledBackupEnabled *bool `json:"scheduledBackupEnabled,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.netapp.v1.BackupConfig
+type BackupConfigObservedState struct {
+	// Output only. Total size of all backups in a chain in bytes = baseline
+	//  backup size + sum(incremental backup size).
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupConfig.backup_chain_bytes
+	BackupChainBytes *int64 `json:"backupChainBytes,omitempty"`
+}
+
+// +kcc:proto=google.cloud.netapp.v1.BlockDevice
+type BlockDevice struct {
+	// Optional. User-defined name for the block device, unique within the volume.
+	//  In case no user input is provided, name will be auto-generated in the
+	//  backend. The name must meet the following requirements:
+	//  *   Be between 1 and 255 characters long.
+	//  *   Contain only uppercase or lowercase letters (A-Z, a-z), numbers (0-9),
+	//      and the following special characters: "-", "_", "}", "{", ".".
+	//  *   Spaces are not allowed.
+	// +kcc:proto:field=google.cloud.netapp.v1.BlockDevice.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. A list of host groups that identify hosts that can mount the
+	//  block volume. Format:
+	//  `projects/{project_id}/locations/{location}/hostGroups/{host_group_id}`
+	//  This field can be updated after the block device is created.
+	// +kcc:proto:field=google.cloud.netapp.v1.BlockDevice.host_groups
+	HostGroupRefs []NetAppHostGroupRef `json:"hostGroupRefs,omitempty"`
+
+	// Optional. The size of the block device in GiB.
+	//  Any value provided for the `size_gib` field during volume creation is
+	//  ignored. The block device's size is system-managed and will be set to match
+	//  the parent Volume's `capacity_gib`.
+	// +kcc:proto:field=google.cloud.netapp.v1.BlockDevice.size_gib
+	SizeGib *int64 `json:"sizeGib,omitempty"`
+
+	// Required. Immutable. The OS type of the volume.
+	//  This field can't be changed after the block device is created.
+	// +kcc:proto:field=google.cloud.netapp.v1.BlockDevice.os_type
+	// +required
+	OSType *string `json:"osType,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.netapp.v1.BlockDevice
+type BlockDeviceObservedState struct {
+	// Output only. Device identifier of the block volume. This represents
+	//  `lun_serial_number` for iSCSI volumes.
+	// +kcc:proto:field=google.cloud.netapp.v1.BlockDevice.identifier
+	Identifier *string `json:"identifier,omitempty"`
+}
+
+// +kcc:proto=google.cloud.netapp.v1.HybridReplicationParameters
+type HybridReplicationParameters struct {
+	// Required. Desired name for the replication of this volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.replication
+	// +required
+	ReplicationRef *NetappReplicationRef `json:"replicationRef,omitempty"`
+
+	// Required. Name of the user's local source volume to be peered with the
+	//  destination volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.peer_volume_name
+	// +required
+	PeerVolumeName *string `json:"peerVolumeName,omitempty"`
+
+	// Required. Name of the user's local source cluster to be peered with the
+	//  destination cluster.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.peer_cluster_name
+	// +required
+	PeerClusterName *string `json:"peerClusterName,omitempty"`
+
+	// Required. Name of the user's local source vserver svm to be peered with the
+	//  destination vserver svm.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.peer_svm_name
+	// +required
+	PeerSvmName *string `json:"peerSvmName,omitempty"`
+
+	// Required. List of node ip addresses to be peered with.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.peer_ip_addresses
+	// +required
+	PeerIPAddresses []string `json:"peerIPAddresses,omitempty"`
+
+	// Optional. Name of source cluster location associated with the Hybrid
+	//  replication. This is a free-form field for the display purpose only.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.cluster_location
+	ClusterLocation *string `json:"clusterLocation,omitempty"`
+
+	// Optional. Description of the replication.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Labels to be added to the replication as the key value pairs.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Replication Schedule for the replication created.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.replication_schedule
+	ReplicationSchedule *string `json:"replicationSchedule,omitempty"`
+
+	// Optional. Type of the hybrid replication.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.hybrid_replication_type
+	HybridReplicationType *string `json:"hybridReplicationType,omitempty"`
+
+	// Optional. Constituent volume count for large volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.large_volume_constituent_count
+	LargeVolumeConstituentCount *int32 `json:"largeVolumeConstituentCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.netapp.v1.RestoreParameters
+type RestoreParameters struct {
+	// Full name of the snapshot resource.
+	//  Format:
+	//  projects/{project}/locations/{location}/volumes/{volume}/snapshots/{snapshot}
+	// +kcc:proto:field=google.cloud.netapp.v1.RestoreParameters.source_snapshot
+	SourceSnapshotRef *NetAppSnapshotRef `json:"sourceSnapshotRef,omitempty"`
+
+	// Full name of the backup resource.
+	//  Format for standard backup:
+	//  projects/{project}/locations/{location}/backupVaults/{backup_vault_id}/backups/{backup_id}
+	//  Format for BackupDR backup:
+	//  projects/{project}/locations/{location}/backupVaults/{backup_vault}/dataSources/{data_source}/backups/{backup}
+	// +kcc:proto:field=google.cloud.netapp.v1.RestoreParameters.source_backup
+	SourceBackupRef *NetAppBackupRef `json:"sourceBackupRef,omitempty"`
 }

@@ -6386,10 +6386,10 @@
 [missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.totalIops" is not set in unstructured objects
 [missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.totalThroughputMibps" is not set in unstructured objects
 [missing_field] crd=netappstoragepools.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.type" is not set in unstructured objects
-[missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupConfig.backupPolicies[]" is not set in unstructured objects
-[missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupConfig.backupVault" is not set in unstructured objects
+[missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupConfig.backupPolicyRefs[]" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupConfig.backupVaultRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupConfig.scheduledBackupEnabled" is not set in unstructured objects
-[missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.blockDevices[].hostGroups[]" is not set in unstructured objects
+[missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.blockDevices[].hostGroupRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.blockDevices[].name" is not set in unstructured objects
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.blockDevices[].osType" is not set in unstructured objects
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.blockDevices[].sizeGib" is not set in unstructured objects
@@ -6428,7 +6428,7 @@
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.hybridReplicationParameters.peerIPAddresses[]" is not set in unstructured objects
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.hybridReplicationParameters.peerSvmName" is not set in unstructured objects
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.hybridReplicationParameters.peerVolumeName" is not set in unstructured objects
-[missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.hybridReplicationParameters.replication" is not set in unstructured objects
+[missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.hybridReplicationParameters.replicationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.hybridReplicationParameters.replicationSchedule" is not set in unstructured objects
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.kerberosEnabled" is not set in unstructured objects
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
@@ -6438,8 +6438,8 @@
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.multipleEndpoints" is not set in unstructured objects
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.protocols[]" is not set in unstructured objects
-[missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.restoreParameters.sourceBackup" is not set in unstructured objects
-[missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.restoreParameters.sourceSnapshot" is not set in unstructured objects
+[missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.restoreParameters.sourceBackupRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.restoreParameters.sourceSnapshotRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.restrictedActions[]" is not set in unstructured objects
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.securityStyle" is not set in unstructured objects
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.shareName" is not set in unstructured objects
@@ -6460,7 +6460,7 @@
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.snapshotPolicy.weeklySchedule.hour" is not set in unstructured objects
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.snapshotPolicy.weeklySchedule.minute" is not set in unstructured objects
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.snapshotPolicy.weeklySchedule.snapshotsToKeep" is not set in unstructured objects
-[missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.storagePool" is not set in unstructured objects
+[missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.storagePoolRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.throughputMibps" is not set in unstructured objects
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.tieringPolicy.coolingThresholdDays" is not set in unstructured objects
 [missing_field] crd=netappvolumes.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.tieringPolicy.hotTierBypassModeEnabled" is not set in unstructured objects

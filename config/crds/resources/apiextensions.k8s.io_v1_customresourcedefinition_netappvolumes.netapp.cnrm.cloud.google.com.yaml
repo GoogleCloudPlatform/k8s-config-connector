@@ -64,15 +64,66 @@ spec:
               backupConfig:
                 description: BackupConfig of the volume.
                 properties:
-                  backupPolicies:
+                  backupPolicyRefs:
                     description: Optional. When specified, schedule backups will be
                       created based on the policy configuration.
                     items:
-                      type: string
+                      description: BackupPolicyRef is a reference to a NetAppBackupPolicy.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed NetAppBackupPolicy
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/backuppolicys/{{backuppolicyID}}".
+                          type: string
+                        name:
+                          description: The name of a NetAppBackupPolicy resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a NetAppBackupPolicy resource.
+                          type: string
+                      type: object
                     type: array
-                  backupVault:
+                  backupVaultRef:
                     description: 'Optional. Name of backup vault. Format: projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}'
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed NetAppBackupVault
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/backupVaults/{{backupvaultID}}".
+                        type: string
+                      name:
+                        description: The name of a NetAppBackupVault resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a NetAppBackupVault resource.
+                        type: string
+                    type: object
                   scheduledBackupEnabled:
                     description: Optional. When set to true, scheduled backup is enabled
                       on the volume. This field should be nil when there's no backup
@@ -84,12 +135,38 @@ spec:
                   one block device is permitted per Volume.
                 items:
                   properties:
-                    hostGroups:
+                    hostGroupRefs:
                       description: 'Optional. A list of host groups that identify
                         hosts that can mount the block volume. Format: `projects/{project_id}/locations/{location}/hostGroups/{host_group_id}`
                         This field can be updated after the block device is created.'
                       items:
-                        type: string
+                        description: NetAppHostGroupRef is a reference to a GCP NetAppHostGroup.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed NetAppHostGroup
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/hostGroups/{{hostGroupID}}".
+                            type: string
+                          name:
+                            description: The name of a NetAppHostGroup resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a NetAppHostGroup resource.
+                            type: string
+                        type: object
                       type: array
                     name:
                       description: 'Optional. User-defined name for the block device,
@@ -175,11 +252,6 @@ spec:
                     description: Optional. Expiration time for the peering command
                       to be executed on user's ONTAP.
                     type: string
-                required:
-                - peerClusterName
-                - peerIPAddresses
-                - peerSvmName
-                - peerVolumeName
                 type: object
               capacityGib:
                 description: Required. Capacity in GIB of the volume
@@ -264,8 +336,6 @@ spec:
                           type: string
                       type: object
                     type: array
-                required:
-                - rules
                 type: object
               hybridReplicationParameters:
                 description: Optional. The Hybrid Replication parameters for the volume.
@@ -309,10 +379,35 @@ spec:
                     description: Required. Name of the user's local source volume
                       to be peered with the destination volume.
                     type: string
-                  replication:
+                  replicationRef:
                     description: Required. Desired name for the replication of this
                       volume.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed NetappReplication
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/volumes/{{volumeID}}/replications/{{replicationID}}".
+                        type: string
+                      name:
+                        description: The name of a NetappReplication resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a NetappReplication resource.
+                        type: string
+                    type: object
                   replicationSchedule:
                     description: Optional. Replication Schedule for the replication
                       created.
@@ -322,7 +417,7 @@ spec:
                 - peerIPAddresses
                 - peerSvmName
                 - peerVolumeName
-                - replication
+                - replicationRef
                 type: object
               kerberosEnabled:
                 description: Optional. Flag indicating if the volume is a kerberos
@@ -355,8 +450,11 @@ spec:
                     type: integer
                 type: object
               location:
-                description: The location of this resource.
+                description: The location that this resource belongs to.
                 type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
               multipleEndpoints:
                 description: Optional. Flag indicating if the volume will have an
                   IP address per node for volumes supporting multiple IP endpoints.
@@ -364,7 +462,7 @@ spec:
                   endpoints.
                 type: boolean
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -408,14 +506,24 @@ spec:
                 description: Optional. Specifies the source of the volume to be created
                   from.
                 properties:
-                  sourceBackup:
+                  sourceBackupRef:
                     description: 'Full name of the backup resource. Format for standard
                       backup: projects/{project}/locations/{location}/backupVaults/{backup_vault_id}/backups/{backup_id}
                       Format for BackupDR backup: projects/{project}/locations/{location}/backupVaults/{backup_vault}/dataSources/{data_source}/backups/{backup}'
-                    type: string
-                  sourceSnapshot:
+                    properties:
+                      external:
+                        description: A reference to an externally managed NetAppBackup
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/backupVaults/{{backupVaultID}}/backups/{{backupID}}".
+                        type: string
+                    type: object
+                  sourceSnapshotRef:
                     description: 'Full name of the snapshot resource. Format: projects/{project}/locations/{location}/volumes/{volume}/snapshots/{snapshot}'
-                    type: string
+                    properties:
+                      external:
+                        description: A reference to an externally managed NetAppSnapshot
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/volumes/{{volumeID}}/snapshots/{{snapshotID}}".
+                        type: string
+                    type: object
                 type: object
               restrictedActions:
                 description: Optional. List of actions that are restricted on this
@@ -521,9 +629,34 @@ spec:
                         type: number
                     type: object
                 type: object
-              storagePool:
+              storagePoolRef:
                 description: Required. StoragePool name of the volume
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed NetAppStoragePool
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/storagePools/{{storagePoolID}}".
+                    type: string
+                  name:
+                    description: The name of a NetAppStoragePool resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a NetAppStoragePool resource.
+                    type: string
+                type: object
               throughputMibps:
                 description: Optional. Throughput of the volume (in MiB/s)
                 type: number
@@ -557,7 +690,7 @@ spec:
             - projectRef
             - protocols
             - shareName
-            - storagePool
+            - storagePoolRef
             type: object
           status:
             description: NetAppVolumeStatus defines the config connector machine state

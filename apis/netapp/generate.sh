@@ -45,7 +45,8 @@ ${CONTROLLERBUILDER} generate-types \
   --resource NetAppBackupPolicy:BackupPolicy \
   --resource NetAppBackupVault:BackupVault \
   --resource NetAppHostGroup:HostGroup \
-  --resource NetAppKMSConfig:KmsConfig
+  --resource NetAppKMSConfig:KmsConfig \
+  --resource NetAppVolume:Volume
 
 ${CONTROLLERBUILDER} generate-types \
   --proto-source-path ${PROTO_OUT} \
@@ -55,8 +56,7 @@ ${CONTROLLERBUILDER} generate-types \
   --prepopulate-resource \
   --resource NetAppStoragePool:StoragePool \
   --resource NetappQuotaRule:QuotaRule \
-  --resource NetappReplication:Replication \
-  --resource NetAppVolume:Volume
+  --resource NetappReplication:Replication
 
 ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${PROTO_OUT} \

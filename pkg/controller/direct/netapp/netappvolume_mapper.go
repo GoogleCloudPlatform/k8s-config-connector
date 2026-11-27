@@ -61,3 +61,61 @@ func SimpleExportPolicyRule_ToProto(mapCtx *direct.MapContext, in *krm.SimpleExp
 	out.AnonUid = in.AnonUid
 	return out
 }
+
+func BackupConfig_FromProto(mapCtx *direct.MapContext, in *pb.BackupConfig) *krm.BackupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackupConfig{}
+	if in.GetBackupVault() != "" {
+		out.BackupVaultRef = &krm.BackupVaultRef{External: in.GetBackupVault()}
+	}
+	for _, item := range in.BackupPolicies {
+		out.BackupPolicyRefs = append(out.BackupPolicyRefs, krm.BackupPolicyRef{External: item})
+	}
+	out.ScheduledBackupEnabled = in.ScheduledBackupEnabled
+	return out
+}
+
+func BackupConfig_ToProto(mapCtx *direct.MapContext, in *krm.BackupConfig) *pb.BackupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackupConfig{}
+	if in.BackupVaultRef != nil {
+		out.BackupVault = in.BackupVaultRef.External
+	}
+	for _, item := range in.BackupPolicyRefs {
+		out.BackupPolicies = append(out.BackupPolicies, item.External)
+	}
+	out.ScheduledBackupEnabled = in.ScheduledBackupEnabled
+	return out
+}
+
+func RestoreParameters_FromProto(mapCtx *direct.MapContext, in *pb.RestoreParameters) *krm.RestoreParameters {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RestoreParameters{}
+	if in.GetSourceSnapshot() != "" {
+		out.SourceSnapshotRef = &krm.NetAppSnapshotRef{External: in.GetSourceSnapshot()}
+	}
+	if in.GetSourceBackup() != "" {
+		out.SourceBackupRef = &krm.NetAppBackupRef{External: in.GetSourceBackup()}
+	}
+	return out
+}
+
+func RestoreParameters_ToProto(mapCtx *direct.MapContext, in *krm.RestoreParameters) *pb.RestoreParameters {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RestoreParameters{}
+	if in.SourceSnapshotRef != nil {
+		out.Source = &pb.RestoreParameters_SourceSnapshot{SourceSnapshot: in.SourceSnapshotRef.External}
+	}
+	if in.SourceBackupRef != nil {
+		out.Source = &pb.RestoreParameters_SourceBackup{SourceBackup: in.SourceBackupRef.External}
+	}
+	return out
+}

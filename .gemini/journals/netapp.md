@@ -29,3 +29,18 @@
 - **Fixtures & Tests**:
   - `netappstoragepool-minimal` and `netappstoragepool-maximal` fixtures recorded and verified against real GCP with clean CREATE -> UPDATE -> RE-RECONCILE -> DELETE lifecycles.
 
+### [2026-11-27] NetAppVolume Types Finalization
+- **Context**: Greenfield Step 1b types finalization and judgement queue triage for `NetAppVolume`.
+- **Hierarchy & References**:
+  - `Volume` is regional project-parented (`projects/{project}/locations/{location}/volumes/{volume}`), so `ProjectRef` and `Location` were replaced by inlined `*parent.ProjectAndLocationRef`.
+  - Converted `storagePool` to `storagePoolRef` (`*NetAppStoragePoolRef`).
+  - Converted `backupConfig.backupPolicies` to `backupPolicyRefs` (`[]BackupPolicyRef`) and `backupConfig.backupVault` to `backupVaultRef` (`*BackupVaultRef`).
+  - Converted `blockDevices[].hostGroups` to `hostGroupRefs` (`[]NetAppHostGroupRef`).
+  - Converted `hybridReplicationParameters.replication` to `replicationRef` (`*NetappReplicationRef`).
+  - Created external-only references `NetAppBackupRef` and `NetAppSnapshotRef` for `restoreParameters.sourceBackupRef` and `restoreParameters.sourceSnapshotRef`.
+- **Fields & Conventions**:
+  - `spec.labels` is preserved on `NetAppVolumeSpec` per Greenfield direct conventions.
+  - Moved child structs `BackupConfig` (plus `BackupConfigObservedState`), `BlockDevice` (plus `BlockDeviceObservedState`), `HybridReplicationParameters`, and `RestoreParameters` into `netappvolume_types.go`.
+  - Added custom mapper functions in `pkg/controller/direct/netapp/netappvolume_mapper.go` for `BackupConfig` and `RestoreParameters` to handle irregular pluralization and oneof proto source fields.
+
+
