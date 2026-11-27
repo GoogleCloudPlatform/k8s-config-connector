@@ -77,6 +77,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.RemovePath(".maintenanceVersion")
 	replacements.RemovePath(".response.maintenanceVersion")
 
+	// Remove activeZones from HTTP logs to align with historical real GCP logs that lacked activeZones
+	replacements.RemovePath(".zoneDistributionConfig.activeZones")
+	replacements.RemovePath(".response.zoneDistributionConfig.activeZones")
+
 	// Sort connections slice to ensure deterministic comparison
 	replacements.SortSlice(".clusterEndpoints[].connections")
 	replacements.SortSlice(".response.clusterEndpoints[].connections")

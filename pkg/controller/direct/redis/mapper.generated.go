@@ -945,6 +945,7 @@ func RedisClusterObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 	out.PSCConnections = direct.Slice_FromProto(mapCtx, in.PscConnections, PSCConnectionObservedState_v1beta1_FromProto)
 	out.StateInfo = Cluster_StateInfo_v1beta1_FromProto(mapCtx, in.GetStateInfo())
 	out.PreciseSizeGB = in.PreciseSizeGb
+	out.ZoneDistributionConfig = ZoneDistributionConfigObservedState_v1beta1_FromProto(mapCtx, in.GetZoneDistributionConfig())
 	out.CrossClusterReplicationConfig = CrossClusterReplicationConfigObservedState_v1beta1_FromProto(mapCtx, in.GetCrossClusterReplicationConfig())
 	out.MaintenancePolicy = ClusterMaintenancePolicyObservedState_v1beta1_FromProto(mapCtx, in.GetMaintenancePolicy())
 	out.MaintenanceSchedule = ClusterMaintenanceScheduleObservedState_v1beta1_FromProto(mapCtx, in.GetMaintenanceSchedule())
@@ -974,6 +975,7 @@ func RedisClusterObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	out.PscConnections = direct.Slice_ToProto(mapCtx, in.PSCConnections, PSCConnectionObservedState_v1beta1_ToProto)
 	out.StateInfo = Cluster_StateInfo_v1beta1_ToProto(mapCtx, in.StateInfo)
 	out.PreciseSizeGb = in.PreciseSizeGB
+	out.ZoneDistributionConfig = ZoneDistributionConfigObservedState_v1beta1_ToProto(mapCtx, in.ZoneDistributionConfig)
 	out.CrossClusterReplicationConfig = CrossClusterReplicationConfigObservedState_v1beta1_ToProto(mapCtx, in.CrossClusterReplicationConfig)
 	out.MaintenancePolicy = ClusterMaintenancePolicyObservedState_v1beta1_ToProto(mapCtx, in.MaintenancePolicy)
 	out.MaintenanceSchedule = ClusterMaintenanceScheduleObservedState_v1beta1_ToProto(mapCtx, in.MaintenanceSchedule)
@@ -1188,6 +1190,8 @@ func ZoneDistributionConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	out := &krmredisv1beta1.ZoneDistributionConfig{}
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
 	out.Zone = direct.LazyPtr(in.GetZone())
+	out.Zones = in.Zones
+	// MISSING: ActiveZones
 	return out
 }
 func ZoneDistributionConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmredisv1beta1.ZoneDistributionConfig) *pb.ZoneDistributionConfig {
@@ -1197,5 +1201,35 @@ func ZoneDistributionConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmre
 	out := &pb.ZoneDistributionConfig{}
 	out.Mode = direct.Enum_ToProto[pb.ZoneDistributionConfig_ZoneDistributionMode](mapCtx, in.Mode)
 	out.Zone = direct.ValueOf(in.Zone)
+	out.Zones = in.Zones
+	// MISSING: ActiveZones
 	return out
 }
+
+/* found existing non-generated mapping function "ZoneDistributionConfigObservedState_v1beta1_FromProto", skipping
+func ZoneDistributionConfigObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ZoneDistributionConfig) *krmredisv1beta1.ZoneDistributionConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmredisv1beta1.ZoneDistributionConfigObservedState{}
+	// MISSING: Mode
+	// MISSING: Zone
+	// MISSING: Zones
+	out.ActiveZones = in.ActiveZones
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ZoneDistributionConfigObservedState_v1beta1_ToProto", skipping
+func ZoneDistributionConfigObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmredisv1beta1.ZoneDistributionConfigObservedState) *pb.ZoneDistributionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ZoneDistributionConfig{}
+	// MISSING: Mode
+	// MISSING: Zone
+	// MISSING: Zones
+	out.ActiveZones = in.ActiveZones
+	return out
+}
+*/
