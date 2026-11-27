@@ -843,6 +843,11 @@ spec:
           tfField: project
     - name: google_compute_instance
       kind: ComputeInstance
+      # The provider Read sets desired_status only when the prior state has a
+      # value. KCC imports the state again on every reconcile, so without this the
+      # diff is always "" => spec.desiredStatus and calls instances.start or stop.
+      mutableButUnreadableFields:
+        - desired_status
       metadataMapping:
         name: name
         labels: labels
@@ -950,6 +955,9 @@ spec:
           tfField: project
     - name: google_compute_instance_from_template
       kind: ComputeInstance
+      # Same Read as google_compute_instance, see the note there.
+      mutableButUnreadableFields:
+        - desired_status
       metadataMapping:
         name: name
         labels: labels
