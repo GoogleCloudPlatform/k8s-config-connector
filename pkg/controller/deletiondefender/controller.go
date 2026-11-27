@@ -71,7 +71,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, opt c
 		ControllerManagedBy(mgr).
 		Named(controllerName).
 		WithOptions(opt).
-		For(obj, builder.OnlyMetadata).
+		For(obj, builder.OnlyMetadata, builder.WithPredicates(Predicate{})).
 		Build(r)
 	if err != nil {
 		return fmt.Errorf("error creating new controller: %w", err)
