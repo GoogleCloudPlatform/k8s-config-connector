@@ -96,7 +96,6 @@ import (
 	containeranalysisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/containeranalysis/v1alpha1"
 	containeranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/containeranalysis/v1beta1"
 	containerattachedv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/containerattached/v1beta1"
-	contentwarehousev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/contentwarehouse/v1alpha1"
 	datacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1alpha1"
 	datacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1beta1"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataflow/v1beta1"
@@ -188,7 +187,6 @@ import (
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/pubsub/v1beta1"
 	pubsublitev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/pubsublite/v1alpha1"
 	pubsublitev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/pubsublite/v1beta1"
-	rapidmigrationassessmentv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/rapidmigrationassessment/v1alpha1"
 	recaptchaenterprisev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/recaptchaenterprise/v1alpha1"
 	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/recaptchaenterprise/v1beta1"
 	redisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/redis/v1alpha1"
@@ -226,7 +224,6 @@ import (
 	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1alpha1"
 	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1beta1"
 	videostitcherv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/videostitcher/v1alpha1"
-	visionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vision/v1alpha1"
 	visionaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/visionai/v1alpha1"
 	vmmigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vmmigration/v1alpha1"
 	vmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vmwareengine/v1alpha1"
@@ -321,7 +318,6 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	containeranalysisv1alpha1.AddToScheme,
 	containeranalysisv1beta1.AddToScheme,
 	containerattachedv1beta1.AddToScheme,
-	contentwarehousev1alpha1.AddToScheme,
 	datacatalogv1alpha1.AddToScheme,
 	datacatalogv1beta1.AddToScheme,
 	dataflowv1beta1.AddToScheme,
@@ -413,7 +409,6 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	pubsubv1beta1.AddToScheme,
 	pubsublitev1alpha1.AddToScheme,
 	pubsublitev1beta1.AddToScheme,
-	rapidmigrationassessmentv1alpha1.AddToScheme,
 	recaptchaenterprisev1alpha1.AddToScheme,
 	recaptchaenterprisev1beta1.AddToScheme,
 	redisv1alpha1.AddToScheme,
@@ -451,7 +446,6 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	vertexaiv1alpha1.AddToScheme,
 	vertexaiv1beta1.AddToScheme,
 	videostitcherv1alpha1.AddToScheme,
-	visionv1alpha1.AddToScheme,
 	visionaiv1alpha1.AddToScheme,
 	vmmigrationv1alpha1.AddToScheme,
 	vmwareenginev1alpha1.AddToScheme,

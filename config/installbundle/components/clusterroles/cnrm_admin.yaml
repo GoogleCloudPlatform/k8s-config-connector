@@ -1724,18 +1724,6 @@ rules:
   - patch
   - delete
 - apiGroups:
-  - rapidmigrationassessment.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
   - recaptchaenterprise.cnrm.cloud.google.com
   resources:
   - '*'
@@ -2097,18 +2085,6 @@ rules:
   - delete
 - apiGroups:
   - videostitcher.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
-  - vision.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

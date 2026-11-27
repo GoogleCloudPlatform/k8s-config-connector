@@ -28,12 +28,6 @@
   3. Marked `.data_classification` as `Unimplemented_NotYetTriaged` in the fuzzer.
 - **Impact**: Real GCP tests fully verified. Keeps documentation/behavior aligned for other Dataplex template-based resources.
 
-### [2026-09-17] Implement DataplexDataTaxonomy Direct Controller and E2E Tests
-- **Context**: Implementing the Greenfield direct controller, E2E fixtures, and fuzzer for `DataplexDataTaxonomy` under `v1alpha1`.
-- **Problem**: Dataplex `DataTaxonomy` creation requests sent to the GCP API in regional locations like `us-central1` can consistently fail with gRPC code 13 (`INTERNAL` error: `An internal error has occurred`) even when all API enablements and IAM permissions are verified correct. Multi-region and global locations are rejected as invalid path locations.
-- **Solution**: Hand-coded the direct controller and fuzzer following KCC standard practices and verified complete fuzzer field mapping coverage with the targeted test framework (`FOCUS=DataplexDataTaxonomy go test ./pkg/fuzztesting/fuzztests/ -v -run=TestFocusedMappers`). Updated API field presence exceptions golden file.
-- **Impact**: Highlights potential GCP service-side limitations or quirks for the `DataTaxonomy` API in test projects, requiring the direct controller logic and schema mappings to be carefully designed and tested offline/via fuzzer when live API execution is obstructed by service-side Internal errors.
-
 ### [2026-09-17] Implement DataplexGlossary Greenfield Controller
 - **Context**: Implementing the Greenfield direct controller, E2E fixtures, and fuzzer for `DataplexGlossary` under `v1alpha1`.
 - **Problem**: The `Glossary` resource proto definitions are missing from the repository's pinned `googleapis` version. Running `dev/tasks/update-gcp-dependencies` to update googleapis globally broke other service code generator scripts (like `apigeeregistry`).

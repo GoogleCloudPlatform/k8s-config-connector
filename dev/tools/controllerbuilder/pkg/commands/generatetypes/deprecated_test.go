@@ -84,6 +84,22 @@ func TestDeprecatedResourceReason(t *testing.T) {
 			wantDeprecated:    true,
 			wantSubstr:        "Cloud IoT Core (google.cloud.iot.v1) is deprecated",
 		},
+		{
+			name:              "curated deprecated package (contentwarehouse) without proto deprecated options",
+			pkg:               "google.cloud.contentwarehouse.v1",
+			serviceDeprecated: false,
+			rpcDeprecated:     []bool{false, false, false, false},
+			wantDeprecated:    true,
+			wantSubstr:        "Document AI Warehouse (google.cloud.contentwarehouse.v1) is deprecated",
+		},
+		{
+			name:              "curated deprecated package (rapidmigrationassessment) without proto deprecated options",
+			pkg:               "google.cloud.rapidmigrationassessment.v1",
+			serviceDeprecated: false,
+			rpcDeprecated:     []bool{false, false, false, false},
+			wantDeprecated:    true,
+			wantSubstr:        "Rapid Migration Assessment (google.cloud.rapidmigrationassessment.v1) is deprecated",
+		},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			pbPath := writeDeprecatedTestProto(t, t.TempDir(), tc.pkg, tc.serviceDeprecated, tc.rpcDeprecated)

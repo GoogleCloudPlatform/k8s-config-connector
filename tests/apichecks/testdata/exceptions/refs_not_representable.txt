@@ -164,4 +164,3 @@
 [not_representable] crd=visionaiprocessors.visionai.cnrm.cloud.google.com version=v1alpha1: field ".spec.customProcessorSourceInfo.modelSchema.instancesSchema.uris" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=visionaiprocessors.visionai.cnrm.cloud.google.com version=v1alpha1: field ".spec.customProcessorSourceInfo.modelSchema.parametersSchema.uris" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=visionaiprocessors.visionai.cnrm.cloud.google.com version=v1alpha1: field ".spec.customProcessorSourceInfo.modelSchema.predictionsSchema.uris" reason=gcs-path-decomposable-as-bucketref-plus-path
-[not_representable] crd=visionreferenceimages.vision.cnrm.cloud.google.com version=v1alpha1: field ".spec.uri" reason=gcs-path-decomposable-as-bucketref-plus-path

@@ -335,6 +335,7 @@ type Content_SQLScript struct {
 	Engine *string `json:"engine,omitempty"`
 }
 
+/* unreachable type DataAccessSpec
 // +kcc:proto=google.cloud.dataplex.v1.DataAccessSpec
 type DataAccessSpec struct {
 	// Optional. The format of strings follows the pattern followed by IAM in the
@@ -344,6 +345,7 @@ type DataAccessSpec struct {
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataAccessSpec.readers
 	Readers []string `json:"readers,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.dataplex.v1.DataAsset.AccessGroupConfig
 type DataAsset_AccessGroupConfig struct {
@@ -480,6 +482,7 @@ type DataDiscoverySpec_StorageConfig_JsonOptions struct {
 	TypeInferenceDisabled *bool `json:"typeInferenceDisabled,omitempty"`
 }
 
+/* unreachable type DataDiscoverySpec_StorageConfig_UnstructuredDataOptions
 // +kcc:proto=google.cloud.dataplex.v1.DataDiscoverySpec.StorageConfig.UnstructuredDataOptions
 type DataDiscoverySpec_StorageConfig_UnstructuredDataOptions struct {
 	// Optional. Specifies whether deeper semantic inference over the objects'
@@ -487,6 +490,7 @@ type DataDiscoverySpec_StorageConfig_UnstructuredDataOptions struct {
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataDiscoverySpec.StorageConfig.UnstructuredDataOptions.semantic_inference_enabled
 	SemanticInferenceEnabled *bool `json:"semanticInferenceEnabled,omitempty"`
 }
+*/
 
 /* unreachable type DataDocumentationResult
 // +kcc:proto=google.cloud.dataplex.v1.DataDocumentationResult
@@ -937,6 +941,7 @@ type DataQualityRule struct {
 	Suspended *bool `json:"suspended,omitempty"`
 }
 
+/* unreachable type DataQualityRule_DebugQuery
 // +kcc:proto=google.cloud.dataplex.v1.DataQualityRule.DebugQuery
 type DataQualityRule_DebugQuery struct {
 	// Optional. Specifies the description of the debug query.
@@ -949,6 +954,7 @@ type DataQualityRule_DebugQuery struct {
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityRule.DebugQuery.sql_statement
 	SQLStatement *string `json:"sqlStatement,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.dataplex.v1.DataQualityRule.RangeExpectation
 type DataQualityRule_RangeExpectation struct {
@@ -1073,6 +1079,7 @@ type DataQualityRule_TableConditionExpectation struct {
 	SQLExpression *string `json:"sqlExpression,omitempty"`
 }
 
+/* unreachable type DataQualityRule_TemplateReference
 // +kcc:proto=google.cloud.dataplex.v1.DataQualityRule.TemplateReference
 type DataQualityRule_TemplateReference struct {
 	// Required. The template entry name. Entry must be of EntryType
@@ -1087,6 +1094,7 @@ type DataQualityRule_TemplateReference struct {
 	// TODO: unsupported map type with key string and value message
 
 }
+*/
 
 /* unreachable type DataQualityRule_TemplateReference_ParameterValue
 // +kcc:proto=google.cloud.dataplex.v1.DataQualityRule.TemplateReference.ParameterValue
@@ -1512,6 +1520,7 @@ type Lake_MetastoreStatus struct {
 	Endpoint *string `json:"endpoint,omitempty"`
 }
 
+/* unreachable type ResourceAccessSpec
 // +kcc:proto=google.cloud.dataplex.v1.ResourceAccessSpec
 type ResourceAccessSpec struct {
 	// Optional. The format of strings follows the pattern followed by IAM in the
@@ -1528,6 +1537,7 @@ type ResourceAccessSpec struct {
 	// +kcc:proto:field=google.cloud.dataplex.v1.ResourceAccessSpec.owners
 	Owners []string `json:"owners,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.dataplex.v1.ScannedData
 type ScannedData struct {
@@ -1808,6 +1818,7 @@ type Trigger struct {
 	Schedule *Trigger_Schedule `json:"schedule,omitempty"`
 }
 
+/* unreachable type Trigger_OneTime
 // +kcc:proto=google.cloud.dataplex.v1.Trigger.OneTime
 type Trigger_OneTime struct {
 	// Optional. Time to live for OneTime scans.
@@ -1818,6 +1829,7 @@ type Trigger_OneTime struct {
 	// +kcc:proto:field=google.cloud.dataplex.v1.Trigger.OneTime.ttl_after_scan_completion
 	TTLAfterScanCompletion *string `json:"ttlAfterScanCompletion,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.dataplex.v1.Trigger.Schedule
 type Trigger_Schedule struct {
@@ -2124,6 +2136,7 @@ type DataProfileResult_PostScanActionsResult_BigQueryExportResultObservedState s
 }
 */
 
+/* unreachable type DataProfileResult_ProfileObservedState
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.DataProfileResult.Profile
 type DataProfileResult_ProfileObservedState struct {
 	// Output only. List of fields with structural and profile information for
@@ -2131,7 +2144,9 @@ type DataProfileResult_ProfileObservedState struct {
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.fields
 	Fields []DataProfileResult_Profile_FieldObservedState `json:"fields,omitempty"`
 }
+*/
 
+/* unreachable type DataProfileResult_Profile_FieldObservedState
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.DataProfileResult.Profile.Field
 type DataProfileResult_Profile_FieldObservedState struct {
 	// Output only. The name of the field.
@@ -2159,7 +2174,9 @@ type DataProfileResult_Profile_FieldObservedState struct {
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.profile
 	Profile *DataProfileResult_Profile_Field_ProfileInfoObservedState `json:"profile,omitempty"`
 }
+*/
 
+/* unreachable type DataProfileResult_Profile_Field_ProfileInfoObservedState
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo
 type DataProfileResult_Profile_Field_ProfileInfoObservedState struct {
 	// Output only. Ratio of rows with null value against total scanned
@@ -2194,7 +2211,9 @@ type DataProfileResult_Profile_Field_ProfileInfoObservedState struct {
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.double_profile
 	DoubleProfile *DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfoObservedState `json:"doubleProfile,omitempty"`
 }
+*/
 
+/* unreachable type DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfoObservedState
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.DoubleFieldInfo
 type DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfoObservedState struct {
 	// Output only. Average of non-null values in the scanned data. NaN,
@@ -2232,7 +2251,9 @@ type DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfoObservedState st
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.DoubleFieldInfo.max
 	Max *float64 `json:"max,omitempty"`
 }
+*/
 
+/* unreachable type DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfoObservedState
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.IntegerFieldInfo
 type DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfoObservedState struct {
 	// Output only. Average of non-null values in the scanned data. NaN,
@@ -2270,7 +2291,9 @@ type DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfoObservedState s
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.IntegerFieldInfo.max
 	Max *int64 `json:"max,omitempty"`
 }
+*/
 
+/* unreachable type DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfoObservedState
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.StringFieldInfo
 type DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfoObservedState struct {
 	// Output only. Minimum length of non-null values in the scanned data.
@@ -2285,7 +2308,9 @@ type DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfoObservedState st
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.StringFieldInfo.average_length
 	AverageLength *float64 `json:"averageLength,omitempty"`
 }
+*/
 
+/* unreachable type DataProfileResult_Profile_Field_ProfileInfo_TopNValueObservedState
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.TopNValue
 type DataProfileResult_Profile_Field_ProfileInfo_TopNValueObservedState struct {
 	// Output only. String value of a top N non-null value.
@@ -2301,6 +2326,7 @@ type DataProfileResult_Profile_Field_ProfileInfo_TopNValueObservedState struct {
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.TopNValue.ratio
 	Ratio *float64 `json:"ratio,omitempty"`
 }
+*/
 
 /* unreachable type DataQualityDimensionObservedState
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.DataQualityDimension
@@ -2355,6 +2381,7 @@ type DataQualityResultObservedState struct {
 	PostScanActionsResult *DataQualityResult_PostScanActionsResultObservedState `json:"postScanActionsResult,omitempty"`
 }
 
+/* unreachable type DataQualityResult_AnomalyDetectionGeneratedAssetsObservedState
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.DataQualityResult.AnomalyDetectionGeneratedAssets
 type DataQualityResult_AnomalyDetectionGeneratedAssetsObservedState struct {
 	// Output only. The result table for anomaly detection.
@@ -2384,6 +2411,7 @@ type DataQualityResult_AnomalyDetectionGeneratedAssetsObservedState struct {
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityResult.AnomalyDetectionGeneratedAssets.volume_intermediate_table
 	VolumeIntermediateTable *string `json:"volumeIntermediateTable,omitempty"`
 }
+*/
 
 /* unreachable type DataQualityResult_PostScanActionsResult_BigQueryExportResultObservedState
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.DataQualityResult.PostScanActionsResult.BigQueryExportResult
@@ -2666,12 +2694,14 @@ type DataQualitySpecObservedState struct {
 }
 */
 
+/* unreachable type DataScanCatalogPublishingStatusObservedState
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.DataScanCatalogPublishingStatus
 type DataScanCatalogPublishingStatusObservedState struct {
 	// Output only. Execution state for publishing.
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataScanCatalogPublishingStatus.state
 	State *string `json:"state,omitempty"`
 }
+*/
 
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.EncryptionConfig.FailureDetails
 type EncryptionConfig_FailureDetailsObservedState struct {
@@ -2738,13 +2768,16 @@ type Environment_SessionStatusObservedState struct {
 	Active *bool `json:"active,omitempty"`
 }
 
+/* unreachable type ScannedDataObservedState
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.ScannedData
 type ScannedDataObservedState struct {
 	// The range denoted by values of an incremental field
 	// +kcc:proto:field=google.cloud.dataplex.v1.ScannedData.incremental_field
 	IncrementalField *ScannedData_IncrementalFieldObservedState `json:"incrementalField,omitempty"`
 }
+*/
 
+/* unreachable type ScannedData_IncrementalFieldObservedState
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.ScannedData.IncrementalField
 type ScannedData_IncrementalFieldObservedState struct {
 	// Output only. The field that contains values which monotonically increases
@@ -2760,6 +2793,7 @@ type ScannedData_IncrementalFieldObservedState struct {
 	// +kcc:proto:field=google.cloud.dataplex.v1.ScannedData.IncrementalField.end
 	End *string `json:"end,omitempty"`
 }
+*/
 
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.StorageAccess
 type StorageAccessObservedState struct {

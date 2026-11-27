@@ -2499,13 +2499,6 @@ validated: null
 ---
 service: contentwarehouse
 package: google.cloud.contentwarehouse.v1
-proto: Document
-kind: ContentwarehouseDocument
-protopath: google.cloud.contentwarehouse.v1.Document
-validated: null
----
-service: contentwarehouse
-package: google.cloud.contentwarehouse.v1
 proto: DocumentLink
 kind: ContentwarehouseDocumentLink
 protopath: google.cloud.contentwarehouse.v1.DocumentLink
@@ -2516,20 +2509,6 @@ package: google.cloud.contentwarehouse.v1
 proto: DocumentSchema
 kind: ContentwarehouseDocumentSchema
 protopath: google.cloud.contentwarehouse.v1.DocumentSchema
-validated: null
----
-service: contentwarehouse
-package: google.cloud.contentwarehouse.v1
-proto: RuleSet
-kind: ContentwarehouseRuleSet
-protopath: google.cloud.contentwarehouse.v1.RuleSet
-validated: null
----
-service: contentwarehouse
-package: google.cloud.contentwarehouse.v1
-proto: SynonymSet
-kind: ContentwarehouseSynonymSet
-protopath: google.cloud.contentwarehouse.v1.SynonymSet
 validated: null
 ---
 service: datacatalog
@@ -2824,27 +2803,6 @@ package: google.cloud.dataplex.v1
 proto: MetadataJob
 kind: DataplexMetadataJob
 protopath: google.cloud.dataplex.v1.MetadataJob
-validated: null
----
-service: dataplex
-package: google.cloud.dataplex.v1
-proto: DataTaxonomy
-kind: DataplexDataTaxonomy
-protopath: google.cloud.dataplex.v1.DataTaxonomy
-validated: null
----
-service: dataplex
-package: google.cloud.dataplex.v1
-proto: DataAttribute
-kind: DataplexDataAttribute
-protopath: google.cloud.dataplex.v1.DataAttribute
-validated: null
----
-service: dataplex
-package: google.cloud.dataplex.v1
-proto: DataAttributeBinding
-kind: DataplexDataAttributeBinding
-protopath: google.cloud.dataplex.v1.DataAttributeBinding
 validated: null
 ---
 service: dataplex
@@ -5411,13 +5369,6 @@ validated: null
 ---
 service: rapidmigrationassessment
 package: google.cloud.rapidmigrationassessment.v1
-proto: Collector
-kind: RapidmigrationassessmentCollector
-protopath: google.cloud.rapidmigrationassessment.v1.Collector
-validated: null
----
-service: rapidmigrationassessment
-package: google.cloud.rapidmigrationassessment.v1
 proto: Annotation
 kind: RapidmigrationassessmentAnnotation
 protopath: google.cloud.rapidmigrationassessment.v1.Annotation
@@ -6877,69 +6828,6 @@ package: google.cloud.video.transcoder.v1
 proto: JobTemplate
 kind: VideoJobTemplate
 protopath: google.cloud.video.transcoder.v1.JobTemplate
-validated: null
----
-service: vision
-package: google.cloud.vision.v1
-proto: Product
-kind: VisionProduct
-protopath: google.cloud.vision.v1.Product
-validated: null
----
-service: vision
-package: google.cloud.vision.v1
-proto: ProductSet
-kind: VisionProductSet
-protopath: google.cloud.vision.v1.ProductSet
-validated: null
----
-service: vision
-package: google.cloud.vision.v1
-proto: ReferenceImage
-kind: VisionReferenceImage
-protopath: google.cloud.vision.v1.ReferenceImage
-validated: null
----
-service: vision
-package: google.cloud.vision.v1p3beta1
-proto: Product
-kind: VisionProduct
-protopath: google.cloud.vision.v1p3beta1.Product
-validated: null
----
-service: vision
-package: google.cloud.vision.v1p3beta1
-proto: ProductSet
-kind: VisionProductSet
-protopath: google.cloud.vision.v1p3beta1.ProductSet
-validated: null
----
-service: vision
-package: google.cloud.vision.v1p3beta1
-proto: ReferenceImage
-kind: VisionReferenceImage
-protopath: google.cloud.vision.v1p3beta1.ReferenceImage
-validated: null
----
-service: vision
-package: google.cloud.vision.v1p4beta1
-proto: Product
-kind: VisionProduct
-protopath: google.cloud.vision.v1p4beta1.Product
-validated: null
----
-service: vision
-package: google.cloud.vision.v1p4beta1
-proto: ProductSet
-kind: VisionProductSet
-protopath: google.cloud.vision.v1p4beta1.ProductSet
-validated: null
----
-service: vision
-package: google.cloud.vision.v1p4beta1
-proto: ReferenceImage
-kind: VisionReferenceImage
-protopath: google.cloud.vision.v1p4beta1.ReferenceImage
 validated: null
 ---
 service: visionai

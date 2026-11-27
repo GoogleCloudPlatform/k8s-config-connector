@@ -43,7 +43,6 @@ type MockService struct {
 	// Store the underlying GRPC servers
 	dataplexService         *DataplexService
 	catalogService          *CatalogService
-	dataTaxonomyService     *DataTaxonomyService
 	dataProductService      *DataProductService
 	dataScanService         *DataScanService
 	businessGlossaryService *BusinessGlossaryService
@@ -69,7 +68,6 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	}
 	s.dataplexService = &DataplexService{MockService: s}
 	s.catalogService = &CatalogService{MockService: s}
-	s.dataTaxonomyService = &DataTaxonomyService{MockService: s}
 	s.dataProductService = &DataProductService{MockService: s}
 	s.dataScanService = &DataScanService{MockService: s}
 	s.businessGlossaryService = &BusinessGlossaryService{MockService: s}
@@ -88,7 +86,6 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDataplexServiceServer(grpcServer, s.dataplexService)
 	pb.RegisterCatalogServiceServer(grpcServer, s.catalogService)
-	pb.RegisterDataTaxonomyServiceServer(grpcServer, s.dataTaxonomyService)
 	pb.RegisterDataProductServiceServer(grpcServer, s.dataProductService)
 	pb.RegisterDataScanServiceServer(grpcServer, s.dataScanService)
 	pb.RegisterBusinessGlossaryServiceServer(grpcServer, s.businessGlossaryService)
@@ -103,7 +100,6 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	grpcMux.AddService(pb.NewDataplexServiceClient(conn))
 	grpcMux.AddService(pb.NewCatalogServiceClient(conn))
-	grpcMux.AddService(pb.NewDataTaxonomyServiceClient(conn))
 	grpcMux.AddService(pb.NewDataProductServiceClient(conn))
 	grpcMux.AddService(pb.NewDataScanServiceClient(conn))
 	grpcMux.AddService(pb.NewBusinessGlossaryServiceClient(conn))

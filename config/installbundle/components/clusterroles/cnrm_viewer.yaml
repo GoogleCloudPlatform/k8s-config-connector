@@ -1151,14 +1151,6 @@ rules:
   - list
   - watch
 - apiGroups:
-  - rapidmigrationassessment.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
   - recaptchaenterprise.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1400,14 +1392,6 @@ rules:
   - watch
 - apiGroups:
   - videostitcher.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - vision.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

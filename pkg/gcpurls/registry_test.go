@@ -140,9 +140,6 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//datalabeling.googleapis.com/projects/{}/evaluationJobs/{}":     true,
 		"//datalabeling.googleapis.com/projects/{}/instructions/{}":       true,
 
-		// Dataplex
-		"//dataplex.googleapis.com/projects/{}/locations/{}/dataAttributeBindings/{}": true,
-		"//dataplex.googleapis.com/projects/{}/locations/{}/dataTaxonomies/{}":        true,
 		// Dataproc
 		"//dataproc.googleapis.com/v1/projects/{}/regions/{}/clusters/{}": true,
 
@@ -207,8 +204,6 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// Translate
 		"//translate.googleapis.com/projects/{}/locations/{}/adaptiveMtDatasets/{}": true,
-
-		// Vision
 
 		// Vision AI
 		"//visionai.googleapis.com/projects/{}/locations/{}/applications/{}": true,

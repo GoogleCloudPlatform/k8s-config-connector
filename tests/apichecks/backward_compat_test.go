@@ -16,6 +16,7 @@ package lint
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"maps"
@@ -91,6 +92,9 @@ func checkCRDFileBackwardCompatibility(repoRoot, baseRev, relCRDPath string) str
 	newBytes, err := os.ReadFile(filepath.Join(repoRoot, relCRDPath))
 	if err != nil {
 		if os.IsNotExist(err) {
+			if isKindDeprecated(repoRoot, kind) {
+				return ""
+			}
 			return fmt.Sprintf("%s (%s.%s): CRD file was deleted for a triaged or pre-existing resource", relCRDPath, kind, group)
 		}
 		return fmt.Sprintf("%s: reading current CRD: %v", relCRDPath, err)
@@ -1138,4 +1142,26 @@ type CompletelyUnrelatedName struct {
 	if !slices.Equal(got, want) {
 		t.Errorf("checkFileProtoStructs() = %v, want %v", got, want)
 	}
+}
+
+func isKindDeprecated(repoRoot, kind string) bool {
+	path := filepath.Join(repoRoot, "hack/tools/greenfield/deprecated_services.json")
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return false
+	}
+	var services []struct {
+		Kinds []string `json:"kinds"`
+	}
+	if err := json.Unmarshal(data, &services); err != nil {
+		return false
+	}
+	for _, s := range services {
+		for _, k := range s.Kinds {
+			if k == kind {
+				return true
+			}
+		}
+	}
+	return false
 }

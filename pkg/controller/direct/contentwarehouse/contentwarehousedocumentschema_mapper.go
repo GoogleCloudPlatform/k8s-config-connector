@@ -18,26 +18,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/contentwarehouse/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	pb "google.golang.org/genproto/googleapis/cloud/contentwarehouse/v1"
-	iampb "google.golang.org/genproto/googleapis/iam/v1"
 )
-
-func Policy_FromProto(mapCtx *direct.MapContext, in *iampb.Policy) *krm.Policy {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Policy{}
-	out.Version = direct.LazyPtr(in.GetVersion())
-	return out
-}
-
-func Policy_ToProto(mapCtx *direct.MapContext, in *krm.Policy) *iampb.Policy {
-	if in == nil {
-		return nil
-	}
-	out := &iampb.Policy{}
-	out.Version = direct.ValueOf(in.Version)
-	return out
-}
 
 func PropertyDefinition_FromProto(mapCtx *direct.MapContext, in *pb.PropertyDefinition) *krm.PropertyDefinition {
 	if in == nil {

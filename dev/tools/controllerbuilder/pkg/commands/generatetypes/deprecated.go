@@ -54,6 +54,17 @@ var knownDeprecatedProtoPackages = map[string]string{
 	// RPCs, even though Vertex AI Workbench legacy v1 user-managed and managed
 	// notebooks were deprecated and shut down in favor of google.cloud.notebooks.v2.
 	"google.cloud.notebooks.v1": "AI Platform / Vertex AI Workbench v1 (google.cloud.notebooks.v1) is deprecated in favor of google.cloud.notebooks.v2",
+
+	// Cannot be detected from proto descriptors: google/cloud/contentwarehouse/v1/
+	// service definitions do not set `option deprecated = true;`, even though
+	// Document AI Warehouse was deprecated on January 16, 2024 and permanently
+	// shut down on January 16, 2025.
+	"google.cloud.contentwarehouse.v1": "Document AI Warehouse (google.cloud.contentwarehouse.v1) is deprecated and shut down",
+
+	// Cannot be detected from proto descriptors: google/cloud/rapidmigrationassessment/v1/
+	// service definitions do not set `option deprecated = true;`, even though
+	// Rapid Migration Assessment was consolidated into Migration Center and its backend is shut down.
+	"google.cloud.rapidmigrationassessment.v1": "Rapid Migration Assessment (google.cloud.rapidmigrationassessment.v1) is deprecated and consolidated into Migration Center",
 }
 
 // deprecatedResourceReason reports whether a resource proto message is
