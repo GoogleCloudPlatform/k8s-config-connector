@@ -54,71 +54,95 @@ entries:
     group: discoveryengine.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged judgement queue, configured spec.parentRef (*DiscoveryEngineEngineRef) per Case B, removed projectRef and location, implemented refs.Ref on DiscoveryEngineEngineRef, and regenerated identity via controllerbuilder
   - kind: DiscoveryEngineAssistant
     group: discoveryengine.cnrm.cloud.google.com
     reason: empty-observedstate
     detail: nothing was generated into status.observedState; the proto probably marks no field OUTPUT_ONLY, so output fields landed in the Spec. Decide what belongs in status
-    status: open
+    status: resolved
+    resolution: accepted
+    note: output-only timestamp fields (create_time, update_time) are managed at the KRM level or status.conditions
   - kind: DiscoveryEngineAssistant
     group: discoveryengine.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/assistants/{assistant}" contains ancestor segment(s) collections/{collection}, engines/{engine} with no matching reference or field on DiscoveryEngineAssistantSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: resolved by modeling spec.parentRef (*DiscoveryEngineEngineRef) per Case B
   - kind: DiscoveryEngineAssistant
     group: discoveryengine.cnrm.cloud.google.com
-    field: .spec.customerPolicy.dataProtectionPolicy.sensitiveDataProtectionPolicy.policy
+    field: .spec.customerPolicy.dataProtectionPolicy.sensitiveDataProtectionPolicy.policyRef
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dlp.googleapis.com/ContentPolicy (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to policyRef (*dlpv1alpha1.DLPContentPolicyRef)
   - kind: DiscoveryEngineAssistant
     group: discoveryengine.cnrm.cloud.google.com
-    field: .spec.customerPolicy.modelArmorConfig.responseTemplate
+    field: .spec.customerPolicy.modelArmorConfig.responseTemplateRef
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to modelarmor.googleapis.com/Template (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to responseTemplateRef (*modelarmorv1alpha1.ModelArmorTemplateRef)
   - kind: DiscoveryEngineAssistant
     group: discoveryengine.cnrm.cloud.google.com
-    field: .spec.customerPolicy.modelArmorConfig.userPromptTemplate
+    field: .spec.customerPolicy.modelArmorConfig.userPromptTemplateRef
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to modelarmor.googleapis.com/Template (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to userPromptTemplateRef (*modelarmorv1alpha1.ModelArmorTemplateRef)
   - kind: DiscoveryEngineAssistant
     group: discoveryengine.cnrm.cloud.google.com
     field: .spec.enabledTools
     reason: message-map-derived
     detail: derived as map[string]Assistant_ToolList from proto google.cloud.discoveryengine.v1.Assistant.ToolList; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: omitted from spec; proto explicitly notes 'not implemented yet. Use enabled_actions instead' and DataConnector is unreleased
   - kind: DiscoveryEngineAssistant
     group: discoveryengine.cnrm.cloud.google.com
     field: .spec.enabledTools
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{projectId}/locations/{locationId}/collections/{collectionId}/dataconnector"
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: omitted from spec; proto explicitly notes 'not implemented yet. Use enabled_actions instead' and DataConnector is unreleased
   - kind: DiscoveryEngineAssistant
     group: discoveryengine.cnrm.cloud.google.com
     field: .spec.engineRef
     reason: parent-ref-guessed
     detail: emitted as a reference to DiscoveryEngineEngineRef, read from the engines segment of projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/assistants/{assistant}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled parent hierarchy as spec.parentRef (*DiscoveryEngineEngineRef) per Case B
   - kind: DiscoveryEngineAssistant
     group: discoveryengine.cnrm.cloud.google.com
     field: .spec.generationConfig.allowedModelIDs
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: accepted
+    note: model IDs are external model identifiers (e.g. gemini-1.5-flash), not KCC resource references
   - kind: DiscoveryEngineAssistant
     group: discoveryengine.cnrm.cloud.google.com
     field: .spec.generationConfig.defaultModelID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: accepted
+    note: model ID is an external model identifier (e.g. gemini-1.5-flash), not a KCC resource reference
   - kind: DiscoveryEngineAssistant
     group: discoveryengine.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/collections/{collection}/engines/{engine}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled parent hierarchy as spec.parentRef (*DiscoveryEngineEngineRef); removed projectRef and location per Case B
   - kind: DiscoveryEngineCMEKConfig
     group: discoveryengine.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

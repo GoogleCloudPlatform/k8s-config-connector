@@ -1293,7 +1293,7 @@ spec:
                                 external:
                                   description: A reference to an externally managed
                                     DiscoveryEngineEngine resource. Should be in the
-                                    format "projects/{{projectID}}/locations/{{location}}/engines/{{engineID}}".
+                                    format "projects/{{projectID}}/locations/{{location}}/collections/{{collectionID}}/engines/{{engineID}}".
                                   type: string
                                 name:
                                   description: The name of a DiscoveryEngineEngine
