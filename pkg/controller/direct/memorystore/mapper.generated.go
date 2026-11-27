@@ -783,6 +783,7 @@ func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *m
 	out.Uid = direct.LazyPtr(in.GetUid())
 	// MISSING: DiscoveryEndpoints
 	out.NodeConfig = NodeConfigObservedState_FromProto(mapCtx, in.GetNodeConfig())
+	out.ZoneDistributionConfig = ZoneDistributionConfigObservedState_FromProto(mapCtx, in.GetZoneDistributionConfig())
 	// MISSING: PSCAutoConnections
 	// MISSING: PSCAttachmentDetails
 	// (near miss): "PSCAttachmentDetails" vs "PscAttachmentDetails"
@@ -826,6 +827,7 @@ func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Uid = direct.ValueOf(in.Uid)
 	// MISSING: DiscoveryEndpoints
 	out.NodeConfig = NodeConfigObservedState_ToProto(mapCtx, in.NodeConfig)
+	out.ZoneDistributionConfig = ZoneDistributionConfigObservedState_ToProto(mapCtx, in.ZoneDistributionConfig)
 	// MISSING: PSCAutoConnections
 	// MISSING: PSCAttachmentDetails
 	// (near miss): "PSCAttachmentDetails" vs "PscAttachmentDetails"
@@ -1293,6 +1295,30 @@ func ZoneDistributionConfig_ToProto(mapCtx *direct.MapContext, in *krm.ZoneDistr
 	// MISSING: Zones
 	// MISSING: ActiveZones
 	out.Mode = direct.Enum_ToProto[memorystorepb.ZoneDistributionConfig_ZoneDistributionMode](mapCtx, in.Mode)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ZoneDistributionConfigObservedState_FromProto", skipping
+func ZoneDistributionConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ZoneDistributionConfig) *krm.ZoneDistributionConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ZoneDistributionConfigObservedState{}
+	// MISSING: Zone
+	// MISSING: Mode
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ZoneDistributionConfigObservedState_ToProto", skipping
+func ZoneDistributionConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ZoneDistributionConfigObservedState) *pb.ZoneDistributionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ZoneDistributionConfig{}
+	// MISSING: Zone
+	// MISSING: Mode
 	return out
 }
 */
