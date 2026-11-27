@@ -67,6 +67,10 @@ func ResourceAppEngineServiceSplitTraffic() *schema.Resource {
 							Required:    true,
 							Description: `Mapping from version IDs within the service to fractional (0.000, 1] allocations of traffic for that version. Each version can be specified only once, but some versions in the service may not have any traffic allocation. Services that have traffic allocated cannot be deleted until either the service is deleted or their traffic allocation is removed. Allocations must sum to 1. Up to two decimal place precision is supported for IP-based splits and up to three decimal places is supported for cookie-based splits.`,
 							Elem:        &schema.Schema{Type: schema.TypeString},
+
+							// Read returns the numbers App Engine stores (0.5), while users can
+							// write the same value differently ("0.50"); compare them as numbers.
+							DiffSuppressFunc: appEngineServiceSplitTrafficAllocationDiffSuppress,
 						},
 						"shard_by": {
 							Type:         schema.TypeString,
@@ -223,9 +227,10 @@ func resourceAppEngineServiceSplitTrafficRead(d *schema.ResourceData, meta inter
 		return fmt.Errorf("Error reading ServiceSplitTraffic: %s", err)
 	}
 
-	if err := d.Set("migrate_traffic", false); err != nil {
-		return fmt.Errorf("Error reading ServiceSplitTraffic: %s", err)
-	}
+	// migrate_traffic is not read back: it is a request-only parameter (the migrateTraffic
+	// query parameter of UpdateService) that App Engine never returns. Config Connector puts
+	// the desired value into the live state before diffing; see
+	// pkg/resourceoverrides/appengine_servicesplittraffic.go.
 
 	return nil
 }
@@ -281,6 +286,15 @@ func resourceAppEngineServiceSplitTrafficUpdate(d *schema.ResourceData, meta int
 	if d.HasChange("split") {
 		updateMask = append(updateMask, "split")
 	}
+
+	if len(updateMask) == 0 {
+		// Nothing to send. migrate_traffic only controls how a change to split is rolled
+		// out, so a change to migrate_traffic alone changes nothing on the service, and App
+		// Engine rejects migrateTraffic=true when the update mask does not include split.
+		log.Printf("[DEBUG] No fields to update for ServiceSplitTraffic %q, skipping PATCH", d.Id())
+		return resourceAppEngineServiceSplitTrafficRead(d, meta)
+	}
+
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
 	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
@@ -382,6 +396,24 @@ func flattenAppEngineServiceSplitTrafficSplit(v interface{}, d *schema.ResourceD
 		}
 	}
 	return []interface{}{transformed}
+}
+
+// appEngineServiceSplitTrafficAllocationDiffSuppress ignores allocations that differ only in
+// how the number is written, for example "0.50" in the config and 0.5 returned by App Engine.
+// A change in the number of versions (the ".%" count) is never suppressed.
+func appEngineServiceSplitTrafficAllocationDiffSuppress(k, old, new string, d *schema.ResourceData) bool {
+	if strings.HasSuffix(k, ".%") {
+		return false
+	}
+	oldValue, err := strconv.ParseFloat(old, 64)
+	if err != nil {
+		return false
+	}
+	newValue, err := strconv.ParseFloat(new, 64)
+	if err != nil {
+		return false
+	}
+	return oldValue == newValue
 }
 
 func expandAppEngineServiceSplitTrafficService(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
