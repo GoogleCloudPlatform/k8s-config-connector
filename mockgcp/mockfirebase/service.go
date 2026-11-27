@@ -31,14 +31,12 @@ func init() {
 	mockgcpregistry.Register(New)
 }
 
-// MockService represents a mocked firebase service.
 type MockService struct {
 	*common.MockEnvironment
 	storage    storage.Storage
 	operations *operations.Operations
 }
 
-// New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment: env,
@@ -54,11 +52,17 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterProjectsServerServer(grpcServer, &projectsServer{MockService: s})
+	pb.RegisterProjectsAndroidAppsServerServer(grpcServer, &androidAppsServer{MockService: s})
+	pb.RegisterProjectsWebAppsServerServer(grpcServer, &webAppsServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterProjectsServerHandler)
+		pb.RegisterProjectsServerHandler,
+		pb.RegisterProjectsAndroidAppsServerHandler,
+		pb.RegisterProjectsWebAppsServerHandler,
+		s.operations.RegisterOperationsPath("/v1beta1/operations/{name=**}"),
+	)
 	if err != nil {
 		return nil, err
 	}

@@ -277,7 +277,9 @@ func rewriteTypes(any *anypb.Any) {
 	// The go client SDK for GCP uses the protos for some services,
 	// so we need to "get out of the way" to avoid conflicts.
 	// We rename our protos from google. => mockgcp.
-	if strings.HasPrefix(any.TypeUrl, "type.googleapis.com/mockgcp.") {
+	if strings.HasPrefix(any.TypeUrl, "type.googleapis.com/mockgcp.cloud.firebase.v1beta1.") {
+		any.TypeUrl = "type.googleapis.com/google.firebase.service.v1beta1." + strings.TrimPrefix(any.TypeUrl, "type.googleapis.com/mockgcp.cloud.firebase.v1beta1.")
+	} else if strings.HasPrefix(any.TypeUrl, "type.googleapis.com/mockgcp.") {
 		any.TypeUrl = "type.googleapis.com/google." + strings.TrimPrefix(any.TypeUrl, "type.googleapis.com/mockgcp.")
 	}
 	// Direct controllers for VertexAI (aiplatform) use v1 clients under the hood,

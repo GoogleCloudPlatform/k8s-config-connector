@@ -456,7 +456,7 @@ func validateTypedBlocksRecursive(reg *descriptorRegistry, stanzaIdx int, method
 		} else {
 			msgDesc := reg.findMessageByFullName(typeURL)
 			if msgDesc == nil {
-				if reg.hasProtoPackageForType(typeURL) && !isUnvendoredRealGCPTypeURL(typeURL) {
+				if !allowUnknown && reg.hasProtoPackageForType(typeURL) && !isUnvendoredRealGCPTypeURL(typeURL) {
 					*errs = append(*errs, fmt.Sprintf("stanza #%d (`%s`) %s has unknown protobuf `@type` %q not found in descriptor set", stanzaIdx, method, location, typeURL))
 				}
 			} else {

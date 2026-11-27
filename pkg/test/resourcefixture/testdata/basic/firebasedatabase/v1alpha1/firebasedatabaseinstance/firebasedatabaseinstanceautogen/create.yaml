@@ -20,4 +20,4 @@ spec:
   projectRef:
     external: "${projectId}"
   region: us-central1
-  resourceID: firebasedatabaseinstance${uniqueId}
+  resourceID: rtdb${uniqueId}
