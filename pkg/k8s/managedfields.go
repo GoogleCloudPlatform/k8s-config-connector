@@ -18,6 +18,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"sort"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
@@ -442,6 +443,9 @@ func jsonSchemaToAtom(jsonSchema *apiextensions.JSONSchemaProps) schema.Atom {
 					},
 				})
 			}
+			sort.Slice(res.Map.Fields, func(i, j int) bool {
+				return res.Map.Fields[i].Name < res.Map.Fields[j].Name
+			})
 			break
 		}
 		if jsonSchema.AdditionalProperties != nil {
