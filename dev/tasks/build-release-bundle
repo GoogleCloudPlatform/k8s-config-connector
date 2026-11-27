@@ -214,6 +214,7 @@ BLOCKED_KINDS=(
     "GrafeasNote"
     "GSuiteAddonsDeployment"
     "IAMAccessPolicy"
+    "IAMPolicyBinding"
     "IAMPrincipalAccessBoundaryPolicy"
     "IAPTunnelDestGroup"
     "InfraManagerDeploymentGroup"

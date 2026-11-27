@@ -54,6 +54,38 @@ entries:
     reason: location-or-parent-ref
     detail: the parent is organizations/{organization}/locations/{location}, and no shared reference type covers it yet; keep location unless one is added
     status: open
+  - kind: IAMPolicyBinding
+    group: iam.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: IAMPolicyBinding
+    group: iam.cnrm.cloud.google.com
+    reason: identity-multi-pattern
+    detail: proto message google.iam.v3.PolicyBinding declares 3 resource name patterns (organizations/{organization}/locations/{location}/policyBindings/{policy_binding}, folders/{folder}/locations/{location}/policyBindings/{policy_binding}, projects/{project}/locations/{location}/policyBindings/{policy_binding}); generated identity uses "organizations/{organization}/locations/{location}/policyBindings/{policy_binding}" (pass --pattern IAMPolicyBinding=<pattern> to override)
+    status: open
+  - kind: IAMPolicyBinding
+    group: iam.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: open
+  - kind: IAMPolicyBinding
+    group: iam.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is organizations/{organization}/locations/{location}, and no shared reference type covers it yet; keep location unless one is added
+    status: open
+  - kind: IAMPolicyBinding
+    group: iam.cnrm.cloud.google.com
+    field: .spec.policy
+    reason: possible-reference-by-description-loose
+    status: open
+  - kind: IAMPolicyBinding
+    group: iam.cnrm.cloud.google.com
+    field: .spec.target
+    reason: possible-reference-by-description-loose
+    status: open
   - kind: IAMPrincipalAccessBoundaryPolicy
     group: iam.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

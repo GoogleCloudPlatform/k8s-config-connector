@@ -21,12 +21,14 @@
 // krm.version: v1beta1
 // proto.service: google.iam.admin.v1
 // proto.service: google.iam.v2
+// proto.service: google.iam.v3
 
 package iam
 
 import (
 	pb "cloud.google.com/go/iam/admin/apiv1/adminpb"
 	iampb "cloud.google.com/go/iam/apiv2/iampb"
+	apiv3iampb "cloud.google.com/go/iam/apiv3/iampb"
 	krmiamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1alpha1"
 	krmiamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -97,6 +99,106 @@ func IAMDenyPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmiamv1a
 	// MISSING: DeleteTime
 	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, PolicyRule_v1alpha1_ToProto)
 	// MISSING: ManagingAuthority
+	return out
+}
+func IAMPolicyBindingObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *apiv3iampb.PolicyBinding) *krmiamv1alpha1.IAMPolicyBindingObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmiamv1alpha1.IAMPolicyBindingObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.PolicyUid = direct.LazyPtr(in.GetPolicyUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func IAMPolicyBindingObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmiamv1alpha1.IAMPolicyBindingObservedState) *apiv3iampb.PolicyBinding {
+	if in == nil {
+		return nil
+	}
+	out := &apiv3iampb.PolicyBinding{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.PolicyUid = direct.ValueOf(in.PolicyUid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func IAMPolicyBindingSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *apiv3iampb.PolicyBinding) *krmiamv1alpha1.IAMPolicyBindingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmiamv1alpha1.IAMPolicyBindingSpec{}
+	// MISSING: Name
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Annotations = in.Annotations
+	out.Target = PolicyBinding_Target_v1alpha1_FromProto(mapCtx, in.GetTarget())
+	out.PolicyKind = direct.Enum_FromProto(mapCtx, in.GetPolicyKind())
+	out.Policy = direct.LazyPtr(in.GetPolicy())
+	out.Condition = Expr_v1alpha1_FromProto(mapCtx, in.GetCondition())
+	return out
+}
+func IAMPolicyBindingSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmiamv1alpha1.IAMPolicyBindingSpec) *apiv3iampb.PolicyBinding {
+	if in == nil {
+		return nil
+	}
+	out := &apiv3iampb.PolicyBinding{}
+	// MISSING: Name
+	out.Etag = direct.ValueOf(in.Etag)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Annotations = in.Annotations
+	out.Target = PolicyBinding_Target_v1alpha1_ToProto(mapCtx, in.Target)
+	out.PolicyKind = direct.Enum_ToProto[apiv3iampb.PolicyBinding_PolicyKind](mapCtx, in.PolicyKind)
+	out.Policy = direct.ValueOf(in.Policy)
+	out.Condition = Expr_v1alpha1_ToProto(mapCtx, in.Condition)
+	return out
+}
+func IAMPrincipalAccessBoundaryPolicyObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *apiv3iampb.PrincipalAccessBoundaryPolicy) *krmiamv1alpha1.IAMPrincipalAccessBoundaryPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmiamv1alpha1.IAMPrincipalAccessBoundaryPolicyObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func IAMPrincipalAccessBoundaryPolicyObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmiamv1alpha1.IAMPrincipalAccessBoundaryPolicyObservedState) *apiv3iampb.PrincipalAccessBoundaryPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &apiv3iampb.PrincipalAccessBoundaryPolicy{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func IAMPrincipalAccessBoundaryPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *apiv3iampb.PrincipalAccessBoundaryPolicy) *krmiamv1alpha1.IAMPrincipalAccessBoundaryPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmiamv1alpha1.IAMPrincipalAccessBoundaryPolicySpec{}
+	// MISSING: Name
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Annotations = in.Annotations
+	out.Details = PrincipalAccessBoundaryPolicyDetails_v1alpha1_FromProto(mapCtx, in.GetDetails())
+	return out
+}
+func IAMPrincipalAccessBoundaryPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmiamv1alpha1.IAMPrincipalAccessBoundaryPolicySpec) *apiv3iampb.PrincipalAccessBoundaryPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &apiv3iampb.PrincipalAccessBoundaryPolicy{}
+	// MISSING: Name
+	out.Etag = direct.ValueOf(in.Etag)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Annotations = in.Annotations
+	out.Details = PrincipalAccessBoundaryPolicyDetails_v1alpha1_ToProto(mapCtx, in.Details)
 	return out
 }
 func IAMServiceAccountKeyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAccountKey) *krmiamv1beta1.IAMServiceAccountKeyObservedState {
@@ -201,6 +303,30 @@ func IAMServiceAccountSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmiam
 	out.Disabled = direct.ValueOf(in.Disabled)
 	return out
 }
+func PolicyBinding_Target_v1alpha1_FromProto(mapCtx *direct.MapContext, in *apiv3iampb.PolicyBinding_Target) *krmiamv1alpha1.PolicyBinding_Target {
+	if in == nil {
+		return nil
+	}
+	out := &krmiamv1alpha1.PolicyBinding_Target{}
+	out.PrincipalSet = direct.LazyPtr(in.GetPrincipalSet())
+	return out
+}
+func PolicyBinding_Target_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmiamv1alpha1.PolicyBinding_Target) *apiv3iampb.PolicyBinding_Target {
+	if in == nil {
+		return nil
+	}
+	out := &apiv3iampb.PolicyBinding_Target{}
+	if oneof := PolicyBinding_Target_PrincipalSet_ToProto(mapCtx, in.PrincipalSet); oneof != nil {
+		out.Target = oneof
+	}
+	return out
+}
+func PolicyBinding_Target_PrincipalSet_ToProto(mapCtx *direct.MapContext, in *string) *apiv3iampb.PolicyBinding_Target_PrincipalSet {
+	if in == nil {
+		return nil
+	}
+	return &apiv3iampb.PolicyBinding_Target_PrincipalSet{PrincipalSet: *in}
+}
 func PolicyRule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *iampb.PolicyRule) *krmiamv1alpha1.PolicyRule {
 	if in == nil {
 		return nil
@@ -219,5 +345,43 @@ func PolicyRule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmiamv1alpha1.P
 		out.Kind = &iampb.PolicyRule_DenyRule{DenyRule: oneof}
 	}
 	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func PrincipalAccessBoundaryPolicyDetails_v1alpha1_FromProto(mapCtx *direct.MapContext, in *apiv3iampb.PrincipalAccessBoundaryPolicyDetails) *krmiamv1alpha1.PrincipalAccessBoundaryPolicyDetails {
+	if in == nil {
+		return nil
+	}
+	out := &krmiamv1alpha1.PrincipalAccessBoundaryPolicyDetails{}
+	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, PrincipalAccessBoundaryPolicyRule_v1alpha1_FromProto)
+	out.EnforcementVersion = direct.LazyPtr(in.GetEnforcementVersion())
+	return out
+}
+func PrincipalAccessBoundaryPolicyDetails_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmiamv1alpha1.PrincipalAccessBoundaryPolicyDetails) *apiv3iampb.PrincipalAccessBoundaryPolicyDetails {
+	if in == nil {
+		return nil
+	}
+	out := &apiv3iampb.PrincipalAccessBoundaryPolicyDetails{}
+	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, PrincipalAccessBoundaryPolicyRule_v1alpha1_ToProto)
+	out.EnforcementVersion = direct.ValueOf(in.EnforcementVersion)
+	return out
+}
+func PrincipalAccessBoundaryPolicyRule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *apiv3iampb.PrincipalAccessBoundaryPolicyRule) *krmiamv1alpha1.PrincipalAccessBoundaryPolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &krmiamv1alpha1.PrincipalAccessBoundaryPolicyRule{}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Resources = in.Resources
+	out.Effect = direct.Enum_FromProto(mapCtx, in.GetEffect())
+	return out
+}
+func PrincipalAccessBoundaryPolicyRule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmiamv1alpha1.PrincipalAccessBoundaryPolicyRule) *apiv3iampb.PrincipalAccessBoundaryPolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &apiv3iampb.PrincipalAccessBoundaryPolicyRule{}
+	out.Description = direct.ValueOf(in.Description)
+	out.Resources = in.Resources
+	out.Effect = direct.Enum_ToProto[apiv3iampb.PrincipalAccessBoundaryPolicyRule_Effect](mapCtx, in.Effect)
 	return out
 }
