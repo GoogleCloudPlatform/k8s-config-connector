@@ -60,6 +60,7 @@ const (
 	DependencyNotReady                   = "DependencyNotReady"
 	DependencyNotFound                   = "DependencyNotFound"
 	DependencyInvalid                    = "DependencyInvalid"
+	ServiceEndpointUnavailable           = "ServiceEndpointUnavailable"
 	ManagementConflict                   = "ManagementConflict"
 	PreActuationTransformFailed          = "PreActuationTransformFailed"
 	PostActuationTransformFailed         = "PostActuationTransformFailed"
