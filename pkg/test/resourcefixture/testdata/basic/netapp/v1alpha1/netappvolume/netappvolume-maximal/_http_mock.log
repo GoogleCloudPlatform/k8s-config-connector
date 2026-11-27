@@ -1,0 +1,783 @@
+# Phase: CREATE
+GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/storagePools/netappvolume-dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FstoragePools%2Fnetappvolume-dep-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/storagePools/netappvolume-dep-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/storagePools?%24alt=json%3Benum-encoding%3Dint&storagePoolId=netappvolume-dep-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "capacityGib": "2048",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "network": "projects/${projectId}/global/networks/default",
+  "serviceLevel": 3
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/storagePools/netappvolume-dep-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/storagePools/netappvolume-dep-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.StoragePool",
+    "availableThroughputMibps": 32,
+    "capacityGib": "2048",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "encryptionType": "SERVICE_MANAGED",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "mode": "MODE_UNSPECIFIED",
+    "name": "projects/${projectId}/locations/us-central1/storagePools/netappvolume-dep-${uniqueId}",
+    "network": "projects/${projectNumber}/global/networks/default",
+    "qosType": "AUTO",
+    "serviceLevel": "STANDARD",
+    "state": "READY",
+    "totalThroughputMibps": "32",
+    "type": "FILE"
+  }
+}
+
+---
+
+GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/volumes/netappvolume-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fvolumes%2Fnetappvolume-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/volumes/netappvolume-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/volumes?%24alt=json%3Benum-encoding%3Dint&volumeId=netappvolume-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "capacityGib": "100",
+  "description": "Initial maximal volume",
+  "exportPolicy": {
+    "rules": [
+      {
+        "accessType": 2,
+        "allowedClients": "10.0.0.0/24",
+        "nfsv3": true,
+        "nfsv4": false
+      }
+    ]
+  },
+  "labels": {
+    "env": "test"
+  },
+  "protocols": [
+    1
+  ],
+  "securityStyle": 2,
+  "shareName": "share${uniqueId}",
+  "snapshotDirectory": true,
+  "snapshotPolicy": {
+    "dailySchedule": {
+      "hour": 2,
+      "minute": 30,
+      "snapshotsToKeep": 5
+    },
+    "enabled": true
+  },
+  "storagePool": "netappvolume-dep-${uniqueId}",
+  "unixPermissions": "0770"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/volumes/netappvolume-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/volumes/netappvolume-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.Volume",
+    "capacityGib": "100",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Initial maximal volume",
+    "encryptionType": "SERVICE_MANAGED",
+    "exportPolicy": {
+      "rules": [
+        {
+          "accessType": "READ_WRITE",
+          "allowedClients": "10.0.0.0/24",
+          "hasRootAccess": "true",
+          "kerberos5ReadOnly": false,
+          "kerberos5ReadWrite": false,
+          "kerberos5iReadOnly": false,
+          "kerberos5iReadWrite": false,
+          "kerberos5pReadOnly": false,
+          "kerberos5pReadWrite": false,
+          "nfsv3": true,
+          "nfsv4": false,
+          "squashMode": "NO_ROOT_SQUASH"
+        }
+      ]
+    },
+    "labels": {
+      "env": "test"
+    },
+    "mountOptions": [
+      {
+        "export": "/share${uniqueId}",
+        "exportFull": "192.168.22.36:/share${uniqueId}",
+        "instructions": "Setting up your instance\nOpen an SSH client and connect to your instance.\nInstall the nfs client on your instance.\nOn Red Hat Enterprise Linux or SuSE Linux instance:\nsudo yum install -y nfs-utils\nOn an Ubuntu or Debian instance:\nsudo apt-get install nfs-common\n\nMounting your volume\nCreate a new directory on your instance, such as \"/share${uniqueId}\":\nsudo mkdir /share${uniqueId}\nMount your volume using the example command below:\nsudo mount -t nfs -o rw,hard,rsize=65536,wsize=65536,vers=3,tcp 192.168.22.36:/share${uniqueId} /share${uniqueId}\nNote. Please use mount options appropriate for your specific workloads when known.",
+        "ipAddress": "192.168.22.36",
+        "protocol": "NFSV3"
+      }
+    ],
+    "name": "projects/${projectId}/locations/us-central1/volumes/netappvolume-${uniqueId}",
+    "network": "projects/${projectNumber}/global/networks/default",
+    "protocols": [
+      "NFSV3"
+    ],
+    "securityStyle": "UNIX",
+    "serviceLevel": "STANDARD",
+    "shareName": "share${uniqueId}",
+    "snapshotDirectory": true,
+    "snapshotPolicy": {
+      "dailySchedule": {
+        "hour": 2,
+        "minute": 30,
+        "snapshotsToKeep": 5
+      },
+      "enabled": true,
+      "hourlySchedule": {
+        "minute": 0,
+        "snapshotsToKeep": 0
+      },
+      "monthlySchedule": {
+        "daysOfMonth": "",
+        "hour": 0,
+        "minute": 0,
+        "snapshotsToKeep": 0
+      },
+      "weeklySchedule": {
+        "day": "",
+        "hour": 0,
+        "minute": 0,
+        "snapshotsToKeep": 0
+      }
+    },
+    "state": "READY",
+    "stateDetails": "Available for use",
+    "storagePool": "netappvolume-dep-${uniqueId}",
+    "throughputMibps": 1.562,
+    "unixPermissions": "0770"
+  }
+}
+
+---
+
+# Phase: UPDATE
+GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/volumes/netappvolume-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fvolumes%2Fnetappvolume-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "capacityGib": "100",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Initial maximal volume",
+  "encryptionType": 1,
+  "exportPolicy": {
+    "rules": [
+      {
+        "accessType": 2,
+        "allowedClients": "10.0.0.0/24",
+        "hasRootAccess": "true",
+        "kerberos5ReadOnly": false,
+        "kerberos5ReadWrite": false,
+        "kerberos5iReadOnly": false,
+        "kerberos5iReadWrite": false,
+        "kerberos5pReadOnly": false,
+        "kerberos5pReadWrite": false,
+        "nfsv3": true,
+        "nfsv4": false,
+        "squashMode": 1
+      }
+    ]
+  },
+  "labels": {
+    "env": "test"
+  },
+  "mountOptions": [
+    {
+      "export": "/share${uniqueId}",
+      "exportFull": "192.168.22.36:/share${uniqueId}",
+      "instructions": "Setting up your instance\nOpen an SSH client and connect to your instance.\nInstall the nfs client on your instance.\nOn Red Hat Enterprise Linux or SuSE Linux instance:\nsudo yum install -y nfs-utils\nOn an Ubuntu or Debian instance:\nsudo apt-get install nfs-common\n\nMounting your volume\nCreate a new directory on your instance, such as \"/share${uniqueId}\":\nsudo mkdir /share${uniqueId}\nMount your volume using the example command below:\nsudo mount -t nfs -o rw,hard,rsize=65536,wsize=65536,vers=3,tcp 192.168.22.36:/share${uniqueId} /share${uniqueId}\nNote. Please use mount options appropriate for your specific workloads when known.",
+      "ipAddress": "192.168.22.36",
+      "protocol": 1
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-central1/volumes/netappvolume-${uniqueId}",
+  "network": "projects/${projectNumber}/global/networks/default",
+  "protocols": [
+    1
+  ],
+  "securityStyle": 2,
+  "serviceLevel": 3,
+  "shareName": "share${uniqueId}",
+  "snapshotDirectory": true,
+  "snapshotPolicy": {
+    "dailySchedule": {
+      "hour": 2,
+      "minute": 30,
+      "snapshotsToKeep": 5
+    },
+    "enabled": true
+  },
+  "state": 1,
+  "stateDetails": "Available for use",
+  "storagePool": "netappvolume-dep-${uniqueId}",
+  "throughputMibps": 1.562,
+  "unixPermissions": "0770"
+}
+
+---
+
+PATCH https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/volumes/netappvolume-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=capacityGib%2Cdescription%2CexportPolicy%2Clabels%2CsnapshotPolicy%2CunixPermissions
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: volume.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fvolumes%2Fnetappvolume-${uniqueId}
+
+{
+  "capacityGib": "150",
+  "description": "Updated maximal volume",
+  "exportPolicy": {
+    "rules": [
+      {
+        "accessType": 2,
+        "allowedClients": "10.0.1.0/24",
+        "nfsv3": true,
+        "nfsv4": false
+      }
+    ]
+  },
+  "labels": {
+    "env": "staging"
+  },
+  "name": "projects/${projectId}/locations/us-central1/volumes/netappvolume-${uniqueId}",
+  "protocols": [
+    1
+  ],
+  "securityStyle": 2,
+  "shareName": "share${uniqueId}",
+  "snapshotDirectory": true,
+  "snapshotPolicy": {
+    "dailySchedule": {
+      "hour": 3,
+      "minute": 30,
+      "snapshotsToKeep": 5
+    },
+    "enabled": true
+  },
+  "storagePool": "netappvolume-dep-${uniqueId}",
+  "throughputMibps": 1.562,
+  "unixPermissions": "0775"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/volumes/netappvolume-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/volumes/netappvolume-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.Volume",
+    "capacityGib": "150",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated maximal volume",
+    "encryptionType": "SERVICE_MANAGED",
+    "exportPolicy": {
+      "rules": [
+        {
+          "accessType": "READ_WRITE",
+          "allowedClients": "10.0.1.0/24",
+          "hasRootAccess": "true",
+          "kerberos5ReadOnly": false,
+          "kerberos5ReadWrite": false,
+          "kerberos5iReadOnly": false,
+          "kerberos5iReadWrite": false,
+          "kerberos5pReadOnly": false,
+          "kerberos5pReadWrite": false,
+          "nfsv3": true,
+          "nfsv4": false,
+          "squashMode": "NO_ROOT_SQUASH"
+        }
+      ]
+    },
+    "labels": {
+      "env": "staging"
+    },
+    "mountOptions": [
+      {
+        "export": "/share${uniqueId}",
+        "exportFull": "192.168.22.36:/share${uniqueId}",
+        "instructions": "Setting up your instance\nOpen an SSH client and connect to your instance.\nInstall the nfs client on your instance.\nOn Red Hat Enterprise Linux or SuSE Linux instance:\nsudo yum install -y nfs-utils\nOn an Ubuntu or Debian instance:\nsudo apt-get install nfs-common\n\nMounting your volume\nCreate a new directory on your instance, such as \"/share${uniqueId}\":\nsudo mkdir /share${uniqueId}\nMount your volume using the example command below:\nsudo mount -t nfs -o rw,hard,rsize=65536,wsize=65536,vers=3,tcp 192.168.22.36:/share${uniqueId} /share${uniqueId}\nNote. Please use mount options appropriate for your specific workloads when known.",
+        "ipAddress": "192.168.22.36",
+        "protocol": "NFSV3"
+      }
+    ],
+    "name": "projects/${projectId}/locations/us-central1/volumes/netappvolume-${uniqueId}",
+    "network": "projects/${projectNumber}/global/networks/default",
+    "protocols": [
+      "NFSV3"
+    ],
+    "securityStyle": "UNIX",
+    "serviceLevel": "STANDARD",
+    "shareName": "share${uniqueId}",
+    "snapshotDirectory": true,
+    "snapshotPolicy": {
+      "dailySchedule": {
+        "hour": 3,
+        "minute": 30,
+        "snapshotsToKeep": 5
+      },
+      "enabled": true,
+      "hourlySchedule": {
+        "minute": 0,
+        "snapshotsToKeep": 0
+      },
+      "monthlySchedule": {
+        "daysOfMonth": "",
+        "hour": 0,
+        "minute": 0,
+        "snapshotsToKeep": 0
+      },
+      "weeklySchedule": {
+        "day": "",
+        "hour": 0,
+        "minute": 0,
+        "snapshotsToKeep": 0
+      }
+    },
+    "state": "READY",
+    "stateDetails": "Available for use",
+    "storagePool": "netappvolume-dep-${uniqueId}",
+    "throughputMibps": 2.344,
+    "unixPermissions": "0775"
+  }
+}
+
+---
+
+# Phase: DELETE
+GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/volumes/netappvolume-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fvolumes%2Fnetappvolume-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "capacityGib": "150",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated maximal volume",
+  "encryptionType": 1,
+  "exportPolicy": {
+    "rules": [
+      {
+        "accessType": 2,
+        "allowedClients": "10.0.1.0/24",
+        "hasRootAccess": "true",
+        "kerberos5ReadOnly": false,
+        "kerberos5ReadWrite": false,
+        "kerberos5iReadOnly": false,
+        "kerberos5iReadWrite": false,
+        "kerberos5pReadOnly": false,
+        "kerberos5pReadWrite": false,
+        "nfsv3": true,
+        "nfsv4": false,
+        "squashMode": 1
+      }
+    ]
+  },
+  "labels": {
+    "env": "staging"
+  },
+  "mountOptions": [
+    {
+      "export": "/share${uniqueId}",
+      "exportFull": "192.168.22.36:/share${uniqueId}",
+      "instructions": "Setting up your instance\nOpen an SSH client and connect to your instance.\nInstall the nfs client on your instance.\nOn Red Hat Enterprise Linux or SuSE Linux instance:\nsudo yum install -y nfs-utils\nOn an Ubuntu or Debian instance:\nsudo apt-get install nfs-common\n\nMounting your volume\nCreate a new directory on your instance, such as \"/share${uniqueId}\":\nsudo mkdir /share${uniqueId}\nMount your volume using the example command below:\nsudo mount -t nfs -o rw,hard,rsize=65536,wsize=65536,vers=3,tcp 192.168.22.36:/share${uniqueId} /share${uniqueId}\nNote. Please use mount options appropriate for your specific workloads when known.",
+      "ipAddress": "192.168.22.36",
+      "protocol": 1
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-central1/volumes/netappvolume-${uniqueId}",
+  "network": "projects/${projectNumber}/global/networks/default",
+  "protocols": [
+    1
+  ],
+  "securityStyle": 2,
+  "serviceLevel": 3,
+  "shareName": "share${uniqueId}",
+  "snapshotDirectory": true,
+  "snapshotPolicy": {
+    "dailySchedule": {
+      "hour": 3,
+      "minute": 30,
+      "snapshotsToKeep": 5
+    },
+    "enabled": true
+  },
+  "state": 1,
+  "stateDetails": "Available for use",
+  "storagePool": "netappvolume-dep-${uniqueId}",
+  "throughputMibps": 2.344,
+  "unixPermissions": "0775"
+}
+
+---
+
+DELETE https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/volumes/netappvolume-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fvolumes%2Fnetappvolume-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/volumes/netappvolume-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/volumes/netappvolume-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/storagePools/netappvolume-dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FstoragePools%2Fnetappvolume-dep-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "availableThroughputMibps": 32,
+  "capacityGib": "2048",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "encryptionType": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "mode": 0,
+  "name": "projects/${projectId}/locations/us-central1/storagePools/netappvolume-dep-${uniqueId}",
+  "network": "projects/${projectNumber}/global/networks/default",
+  "qosType": 1,
+  "serviceLevel": 3,
+  "state": 1,
+  "totalThroughputMibps": "32",
+  "type": 1
+}
+
+---
+
+DELETE https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/storagePools/netappvolume-dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FstoragePools%2Fnetappvolume-dep-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/storagePools/netappvolume-dep-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/storagePools/netappvolume-dep-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
