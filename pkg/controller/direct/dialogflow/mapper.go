@@ -59,8 +59,58 @@ func ResponseMessage_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage)
 	if oneof := ResponseMessage_KnowledgeInfoCard_ToProto(mapCtx, in.KnowledgeInfoCard); oneof != nil {
 		out.Message = &pb.ResponseMessage_KnowledgeInfoCard_{KnowledgeInfoCard: oneof}
 	}
+	if oneof := ToolCall_ToProto(mapCtx, in.ToolCall); oneof != nil {
+		out.Message = &pb.ResponseMessage_ToolCall{ToolCall: oneof}
+	}
 	out.ResponseType = direct.Enum_ToProto[pb.ResponseMessage_ResponseType](mapCtx, in.ResponseType)
 	out.Channel = direct.ValueOf(in.Channel)
+	return out
+}
+
+func ResponseMessage_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage) *krm.ResponseMessage {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResponseMessage{}
+	out.Text = ResponseMessage_Text_FromProto(mapCtx, in.GetText())
+	if v := direct.Struct_FromProto(mapCtx, in.GetPayload()); v != nil {
+		out.Payload = *v
+	}
+	out.ConversationSuccess = ResponseMessage_ConversationSuccess_FromProto(mapCtx, in.GetConversationSuccess())
+	out.OutputAudioText = ResponseMessage_OutputAudioText_FromProto(mapCtx, in.GetOutputAudioText())
+	out.LiveAgentHandoff = ResponseMessage_LiveAgentHandoff_FromProto(mapCtx, in.GetLiveAgentHandoff())
+	// MISSING: EndInteraction
+	out.PlayAudio = ResponseMessage_PlayAudio_FromProto(mapCtx, in.GetPlayAudio())
+	// MISSING: MixedAudio
+	out.TelephonyTransferCall = ResponseMessage_TelephonyTransferCall_FromProto(mapCtx, in.GetTelephonyTransferCall())
+	out.KnowledgeInfoCard = ResponseMessage_KnowledgeInfoCard_FromProto(mapCtx, in.GetKnowledgeInfoCard())
+	out.ToolCall = ToolCall_FromProto(mapCtx, in.GetToolCall())
+	out.ResponseType = direct.Enum_FromProto(mapCtx, in.GetResponseType())
+	out.Channel = direct.LazyPtr(in.GetChannel())
+	return out
+}
+
+func ToolCall_FromProto(mapCtx *direct.MapContext, in *pb.ToolCall) *krm.ToolCall {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ToolCall{}
+	out.Tool = direct.LazyPtr(in.GetTool())
+	out.Action = direct.LazyPtr(in.GetAction())
+	if v := direct.Struct_FromProto(mapCtx, in.GetInputParameters()); v != nil {
+		out.InputParameters = *v
+	}
+	return out
+}
+
+func ToolCall_ToProto(mapCtx *direct.MapContext, in *krm.ToolCall) *pb.ToolCall {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ToolCall{}
+	out.Tool = direct.ValueOf(in.Tool)
+	out.Action = direct.ValueOf(in.Action)
+	out.InputParameters = direct.Struct_ToProto(mapCtx, &in.InputParameters)
 	return out
 }
 
