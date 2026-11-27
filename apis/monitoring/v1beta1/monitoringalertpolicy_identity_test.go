@@ -56,6 +56,30 @@ func TestMonitoringAlertPolicyIdentity_FromExternal(t *testing.T) {
 				AlertPolicy: "my-policy",
 			},
 		},
+		{
+			name: "colon-partitioned project",
+			ref:  "projects/partition:sample-project/alertPolicies/my-policy",
+			want: &MonitoringAlertPolicyIdentity{
+				Project:     "partition:sample-project",
+				AlertPolicy: "my-policy",
+			},
+		},
+		{
+			name: "sovereign universe endpoint with colon-partitioned project",
+			ref:  "//monitoring.custom.universe.goog/v3/projects/partition:sample-project/alertPolicies/my-policy",
+			want: &MonitoringAlertPolicyIdentity{
+				Project:     "partition:sample-project",
+				AlertPolicy: "my-policy",
+			},
+		},
+		{
+			name: "sovereign universe https url",
+			ref:  "https://monitoring.custom.universe.goog/projects/partition:sample-project/alertPolicies/my-policy",
+			want: &MonitoringAlertPolicyIdentity{
+				Project:     "partition:sample-project",
+				AlertPolicy: "my-policy",
+			},
+		},
 	}
 
 	for _, tt := range tests {

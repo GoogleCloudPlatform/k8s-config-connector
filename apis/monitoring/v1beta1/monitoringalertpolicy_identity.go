@@ -79,8 +79,12 @@ func (i *MonitoringAlertPolicyIdentity) FromExternal(ref string) error {
 	normalized = strings.TrimPrefix(normalized, "https:")
 	normalized = strings.TrimPrefix(normalized, "http:")
 	normalized = strings.TrimPrefix(normalized, "//")
-	normalized = strings.TrimPrefix(normalized, "monitoring.googleapis.com/")
-	normalized = strings.TrimPrefix(normalized, "v3/")
+	if idx := strings.Index(normalized, "/projects/"); idx != -1 {
+		normalized = normalized[idx+1:]
+	} else {
+		normalized = strings.TrimPrefix(normalized, "monitoring.googleapis.com/")
+		normalized = strings.TrimPrefix(normalized, "v3/")
+	}
 
 	// This relative format is a very special case and unusual for a GCP API.
 	// For example, the IncidentList resource under Monitoring Dashboard explicitly
@@ -98,6 +102,13 @@ func (i *MonitoringAlertPolicyIdentity) FromExternal(ref string) error {
 			i.AlertPolicy = parts[1]
 			return nil
 		}
+	}
+
+	tokens := strings.Split(normalized, "/")
+	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "alertPolicies" && tokens[1] != "" && tokens[3] != "" {
+		i.Project = tokens[1]
+		i.AlertPolicy = tokens[3]
+		return nil
 	}
 
 	parsed, match, err := MonitoringAlertPolicyIdentityFormat.Parse(normalized)
