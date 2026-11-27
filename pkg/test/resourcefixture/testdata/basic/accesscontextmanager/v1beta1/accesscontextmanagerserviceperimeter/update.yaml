@@ -28,6 +28,22 @@ spec:
   status:
     restrictedServices:
     - "bigquery.googleapis.com"
+    egressPolicies:
+      - egressFrom:
+          identities:
+          - group: kcc-eng@google.com
+      - egressTo:
+          resources:
+          - projectRef:
+              name: project-${uniqueId}
+    ingressPolicies:
+      - ingressFrom:
+          identities:
+            - group: kcc-eng@google.com
+      - ingressTo:
+          resources:
+            - projectRef:
+                name: project-${uniqueId}
   spec:
     accessLevels:
       - name: acl${uniqueId}
@@ -41,6 +57,7 @@ spec:
           identities:
           - serviceAccountRef:
               name: gsa-${uniqueId}
+          - group: kcc-eng@google.com
       - egressTo:
           resources:
           - projectRef:
@@ -50,6 +67,7 @@ spec:
           identities:
             - serviceAccountRef:
                 name: gsa-${uniqueId}
+            - group: kcc-eng@google.com
           sources:
             - accessLevelRef:
                 name: acl${uniqueId}
