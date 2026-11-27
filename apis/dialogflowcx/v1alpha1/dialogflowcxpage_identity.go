@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -73,17 +74,28 @@ func (obj *DialogflowCXPage) GetIdentity(ctx context.Context, reader client.Read
 		externalRef = common.ValueOf(obj.Status.Name)
 	}
 	if externalRef != "" {
-		statusIdentity := &DialogflowCXPageIdentity{}
-		if err := statusIdentity.FromExternal(externalRef); err != nil {
-			return nil, err
-		}
+		// To preserve backward compatibility with Terraform, status.Name can be just the page ID
+		// (e.g. "81da70d7-7e4a-4e8d-b3f4-108d39ee8fbb") or the full path. If it doesn't contain a "/", it's
+		// the short ID; we can verify it directly against specIdentity.Page.
+		if !strings.Contains(externalRef, "/") {
+			if specIdentity.Page == "" {
+				specIdentity.Page = externalRef
+			} else if specIdentity.Page != externalRef {
+				return nil, fmt.Errorf("cannot change DialogflowCXPage identity (old=%q, new=%q)", externalRef, specIdentity.Page)
+			}
+		} else {
+			statusIdentity := &DialogflowCXPageIdentity{}
+			if err := statusIdentity.FromExternal(externalRef); err != nil {
+				return nil, err
+			}
 
-		if specIdentity.Page == "" {
-			specIdentity.Page = statusIdentity.Page
-		}
+			if specIdentity.Page == "" {
+				specIdentity.Page = statusIdentity.Page
+			}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change DialogflowCXPage identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			if statusIdentity.String() != specIdentity.String() {
+				return nil, fmt.Errorf("cannot change DialogflowCXPage identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			}
 		}
 	}
 

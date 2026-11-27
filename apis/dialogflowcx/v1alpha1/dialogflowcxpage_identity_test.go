@@ -210,6 +210,24 @@ func TestDialogflowCXPage_GetIdentity(t *testing.T) {
 			},
 		},
 		{
+			name: "spec without resourceID, resolved from short status.name (e.g. Terraform provider)",
+			obj: &DialogflowCXPage{
+				Spec: DialogflowCXPageSpec{
+					Parent: common.LazyPtr("projects/my-project/locations/us-central1/agents/my-agent/flows/my-flow"),
+				},
+				Status: DialogflowCXPageStatus{
+					Name: common.LazyPtr("server-id-short"),
+				},
+			},
+			want: &DialogflowCXPageIdentity{
+				Project:  "my-project",
+				Location: "us-central1",
+				Agent:    "my-agent",
+				Flow:     "my-flow",
+				Page:     "server-id-short",
+			},
+		},
+		{
 			name: "drift detection error when spec resourceID does not match status",
 			obj: &DialogflowCXPage{
 				Spec: DialogflowCXPageSpec{
@@ -339,6 +357,25 @@ func TestDialogflowCXPageRef_Normalize(t *testing.T) {
 		},
 	}
 
+	readyObjWithShortName := &DialogflowCXPage{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "ready-short-name",
+			Namespace: "test-ns",
+		},
+		Spec: DialogflowCXPageSpec{
+			Parent: common.LazyPtr("projects/my-project/locations/us-central1/agents/my-agent/flows/my-flow"),
+		},
+		Status: DialogflowCXPageStatus{
+			Conditions: []k8sv1alpha1.Condition{
+				{
+					Type:   "Ready",
+					Status: "True",
+				},
+			},
+			Name: common.LazyPtr("page-short-uuid"),
+		},
+	}
+
 	readyObjWithSpecOnly := &DialogflowCXPage{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "ready-spec",
@@ -378,7 +415,7 @@ func TestDialogflowCXPageRef_Normalize(t *testing.T) {
 
 	fakeClient := fake.NewClientBuilder().
 		WithScheme(scheme).
-		WithObjects(readyObjWithExternalRef, readyObjWithName, readyObjWithSpecOnly, notReadyObj).
+		WithObjects(readyObjWithExternalRef, readyObjWithName, readyObjWithShortName, readyObjWithSpecOnly, notReadyObj).
 		Build()
 
 	tests := []struct {
@@ -424,6 +461,16 @@ func TestDialogflowCXPageRef_Normalize(t *testing.T) {
 			defaultNamespace: "test-ns",
 			wantErr:          false,
 			wantExternal:     "projects/my-project/locations/us-central1/agents/my-agent/flows/my-flow/pages/page-2",
+		},
+		{
+			name: "by name and namespace when ready with short status.name",
+			ref: &DialogflowCXPageRef{
+				Name:      "ready-short-name",
+				Namespace: "test-ns",
+			},
+			defaultNamespace: "test-ns",
+			wantErr:          false,
+			wantExternal:     "projects/my-project/locations/us-central1/agents/my-agent/flows/my-flow/pages/page-short-uuid",
 		},
 		{
 			name: "by name and namespace when ready with spec fallback",
