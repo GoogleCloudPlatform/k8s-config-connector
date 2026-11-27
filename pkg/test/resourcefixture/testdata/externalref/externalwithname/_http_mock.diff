@@ -1,48 +1,47 @@
-77c77
+0a1
+> # Phase: CREATE
+77c78
 < GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
 ---
 > GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-100c100
+100c101
 < PUT https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
 ---
 > PUT https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-105,106d104
+105,106d105
 <   "deadLetterPolicy": null,
 <   "expirationPolicy": null,
-111c109
+111c110
 <   "messageRetentionDuration": "604800s",
 ---
 >   "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
-134d131
-<   "messageRetentionDuration": "604800s",
-137c134
+137c136
 <   "state": "ACTIVE",
 ---
 >   "state": 1,
-143c140
+143c142
 < GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
 ---
 > GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-166c163
+166c165
 < GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
 ---
 > GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-188d184
-<   "messageRetentionDuration": "604800s",
-191c187
+191c190
 <   "state": "ACTIVE",
 ---
 >   "state": 1,
-197c193
+197c196,197
 < PATCH https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json&updateMask=ackDeadlineSeconds
 ---
+> # Phase: UPDATE
 > PATCH https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-203,206d198
+203,206d202
 <     "deadLetterPolicy": null,
 <     "expirationPolicy": {
 <       "ttl": "2678400s"
 <     },
-211,212c203,206
+211,212c207,210
 <     "messageRetentionDuration": "604800s"
 <   }
 ---
@@ -50,23 +49,20 @@
 >     "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
 >   },
 >   "updateMask": "ackDeadlineSeconds"
-234d227
-<   "messageRetentionDuration": "604800s",
-241c234
+241c239
 <   "state": "ACTIVE",
 ---
 >   "state": 1,
-247c240
+247c245,246
 < GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
 ---
+> # Phase: DELETE
 > GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-269d261
-<   "messageRetentionDuration": "604800s",
-272c264
+272c271
 <   "state": "ACTIVE",
 ---
 >   "state": 1,
-278c270
+278c277
 < DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
 ---
 > DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint

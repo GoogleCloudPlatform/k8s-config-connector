@@ -109,6 +109,8 @@ func (m *SubscriptionModel) AdapterForObject(ctx context.Context, op *directbase
 		obj.Spec.DeadLetterPolicy.DeadLetterTopicRef.External = "projects/" + projectID + "/topics/" + obj.Spec.DeadLetterPolicy.DeadLetterTopicRef.External
 	}
 
+	normalizeLegacyBigQueryTableRef(obj)
+
 	// Always call common.NormalizeReferences to resolve any resource references:
 	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
@@ -138,6 +140,23 @@ func (m *SubscriptionModel) AdapterForObject(ctx context.Context, op *directbase
 		id:        subscriptionId,
 		desired:   desired,
 	}, nil
+}
+
+// normalizeLegacyBigQueryTableRef supports backward compatibility for legacy
+// BigQuery table external references. The Terraform-based controller sends
+// tableRef as "{project}.{dataset}.{table}" (servicemapping valueTemplate
+// "{{project}}.{{dataset_id}}.{{value}}"), documented that format for
+// tableRef.external, and passed "{project}:{dataset}.{table}" through as well.
+// Both are converted to the canonical
+// "projects/{project}/datasets/{dataset}/tables/{table}" format before
+// standard reference normalization.
+func normalizeLegacyBigQueryTableRef(obj *krm.PubSubSubscription) {
+	if obj.Spec.BigqueryConfig == nil || obj.Spec.BigqueryConfig.TableRef == nil {
+		return
+	}
+	if tableID, ok := ParsePubSubBigQueryTable(obj.Spec.BigqueryConfig.TableRef.External); ok {
+		obj.Spec.BigqueryConfig.TableRef.External = tableID.String()
+	}
 }
 
 func (m *SubscriptionModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {

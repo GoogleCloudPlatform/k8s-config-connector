@@ -25,12 +25,12 @@ package pubsub
 
 import (
 	pb "cloud.google.com/go/pubsub/v2/apiv1/pubsubpb"
-	krmbigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	krmstoragev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+/* found existing non-generated mapping function "BigQueryConfig_FromProto", skipping
 func BigQueryConfig_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryConfig) *krm.BigQueryConfig {
 	if in == nil {
 		return nil
@@ -47,22 +47,28 @@ func BigQueryConfig_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryConfig) 
 	// MISSING: ServiceAccountEmail
 	return out
 }
-func BigQueryConfig_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryConfig) *pb.BigQueryConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "BigQueryConfig_ToProto", skipping
+
+	func BigQueryConfig_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryConfig) *pb.BigQueryConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.BigQueryConfig{}
+		if in.TableRef != nil {
+			out.Table = in.TableRef.External
+		}
+		out.UseTopicSchema = direct.ValueOf(in.UseTopicSchema)
+		out.WriteMetadata = direct.ValueOf(in.WriteMetadata)
+		out.DropUnknownFields = direct.ValueOf(in.DropUnknownFields)
+		// MISSING: State
+		// MISSING: UseTableSchema
+		// MISSING: ServiceAccountEmail
+		return out
 	}
-	out := &pb.BigQueryConfig{}
-	if in.TableRef != nil {
-		out.Table = in.TableRef.External
-	}
-	out.UseTopicSchema = direct.ValueOf(in.UseTopicSchema)
-	out.WriteMetadata = direct.ValueOf(in.WriteMetadata)
-	out.DropUnknownFields = direct.ValueOf(in.DropUnknownFields)
-	// MISSING: State
-	// MISSING: UseTableSchema
-	// MISSING: ServiceAccountEmail
-	return out
-}
+*/
 func CloudStorageConfig_FromProto(mapCtx *direct.MapContext, in *pb.CloudStorageConfig) *krm.CloudStorageConfig {
 	if in == nil {
 		return nil
