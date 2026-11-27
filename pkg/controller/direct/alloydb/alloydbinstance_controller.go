@@ -18,9 +18,13 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"slices"
+	"strconv"
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -114,6 +118,46 @@ func validateConfig(spec *krm.AlloyDBInstanceSpec) error {
 	return nil
 }
 
+func resolvePSCReferences(ctx context.Context, reader client.Reader, obj *krm.AlloyDBInstance) error {
+	if obj.Spec.PSCInstanceConfig == nil {
+		return nil
+	}
+	psc := obj.Spec.PSCInstanceConfig
+	for i := range psc.AllowedConsumerProjectRefs {
+		proj, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), &psc.AllowedConsumerProjectRefs[i])
+		if err != nil {
+			return fmt.Errorf("resolving spec.pscInstanceConfig.allowedConsumerProjectRefs[%d]: %w", i, err)
+		}
+		psc.AllowedConsumerProjectRefs[i].SetExternal(proj.ProjectID)
+	}
+	for i := range psc.PSCAutoConnections {
+		if psc.PSCAutoConnections[i].ConsumerProjectRef != nil {
+			proj, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), psc.PSCAutoConnections[i].ConsumerProjectRef)
+			if err != nil {
+				return fmt.Errorf("resolving spec.pscInstanceConfig.pscAutoConnections[%d].consumerProjectRef: %w", i, err)
+			}
+			psc.PSCAutoConnections[i].ConsumerProjectRef.SetExternal(proj.ProjectID)
+		}
+		if psc.PSCAutoConnections[i].ConsumerNetworkRef != nil {
+			if err := psc.PSCAutoConnections[i].ConsumerNetworkRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+				return fmt.Errorf("resolving spec.pscInstanceConfig.pscAutoConnections[%d].consumerNetworkRef: %w", i, err)
+			}
+		}
+	}
+	for i := range psc.PSCInterfaceConfigs {
+		naRef := psc.PSCInterfaceConfigs[i].NetworkAttachmentResourceRef
+		if naRef != nil {
+			if naRef.External != "" {
+				naRef.External = strings.TrimPrefix(apirefs.TrimComputeURIPrefix(strings.TrimSpace(naRef.External)), "/")
+			}
+			if err := naRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+				return fmt.Errorf("resolving spec.pscInstanceConfig.pscInterfaceConfigs[%d].networkAttachmentResourceRef: %w", i, err)
+			}
+		}
+	}
+	return nil
+}
+
 func (m *instanceModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader
@@ -134,10 +178,11 @@ func (m *instanceModel) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, err
 	}
 	return &instanceAdapter{
-		id:        id,
-		gcpClient: gcpClient,
-		reader:    reader,
-		desired:   obj,
+		id:            id,
+		gcpClient:     gcpClient,
+		reader:        reader,
+		desired:       obj,
+		projectMapper: m.config.ProjectMapper,
 	}, nil
 }
 
@@ -147,11 +192,12 @@ func (m *instanceModel) AdapterForURL(ctx context.Context, url string) (directba
 }
 
 type instanceAdapter struct {
-	id        *krm.AlloyDBInstanceIdentity
-	gcpClient *gcp.AlloyDBAdminClient
-	reader    client.Reader
-	desired   *krm.AlloyDBInstance
-	actual    *alloydbpb.Instance
+	id            *krm.AlloyDBInstanceIdentity
+	gcpClient     *gcp.AlloyDBAdminClient
+	reader        client.Reader
+	desired       *krm.AlloyDBInstance
+	actual        *alloydbpb.Instance
+	projectMapper *projects.ProjectMapper
 }
 
 var _ directbase.Adapter = &instanceAdapter{}
@@ -185,15 +231,17 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	log.V(2).Info("creating instance", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	if err := resolveInstanceType(ctx, a.reader, a.desired, false); err != nil {
-		return err
-	}
-
-	if err := validateConfig(&a.desired.Spec); err != nil {
-		return err
-	}
-
 	desired := a.desired.DeepCopy()
+	if err := resolveInstanceType(ctx, a.reader, desired, false); err != nil {
+		return err
+	}
+	if err := resolvePSCReferences(ctx, a.reader, desired); err != nil {
+		return err
+	}
+	if err := validateConfig(&desired.Spec); err != nil {
+		return err
+	}
+
 	resource := AlloyDBInstanceSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -205,7 +253,7 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	resource.Labels["managed-by-cnrm"] = "true"
 
 	var created *alloydbpb.Instance
-	instanceType := a.desired.Spec.InstanceTypeRef.External
+	instanceType := desired.Spec.InstanceTypeRef.External
 	if instanceType == "SECONDARY" {
 		req := &alloydbpb.CreateSecondaryInstanceRequest{
 			Parent:     a.id.ParentString(),
@@ -256,11 +304,14 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	log.V(2).Info("updating instance", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	if err := resolveInstanceType(ctx, a.reader, a.desired, false); err != nil {
+	desired := a.desired.DeepCopy()
+	if err := resolveInstanceType(ctx, a.reader, desired, false); err != nil {
 		return err
 	}
-
-	if err := validateConfig(&a.desired.Spec); err != nil {
+	if err := resolvePSCReferences(ctx, a.reader, desired); err != nil {
+		return err
+	}
+	if err := validateConfig(&desired.Spec); err != nil {
 		return err
 	}
 
@@ -270,7 +321,7 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	}
 
 	// TODO: Change to CompareProtoMessage once we support all the files in the instance pb.
-	updatePaths, err := compareInstance(ctx, parsedActual, &a.desired.Spec)
+	updatePaths, err := compareInstance(ctx, parsedActual, &desired.Spec, a.projectMapper)
 	if err != nil {
 		return err
 	}
@@ -309,7 +360,7 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: updatePaths,
 	}
-	desiredPb := AlloyDBInstanceSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desiredPb := AlloyDBInstanceSpec_ToProto(mapCtx, &desired.Spec)
 	desiredPb.Labels = desiredLabels
 	desiredPb.Name = a.id.String()
 	req := &alloydbpb.UpdateInstanceRequest{
@@ -389,9 +440,190 @@ func stringPtrChanged(actual, desired *string, basePath string, log klog.Logger)
 	return "", false
 }
 
+func canonicalizeProjectSetRaw(items []refsv1beta1.ProjectRef) []string {
+	if len(items) == 0 {
+		return nil
+	}
+	seen := make(map[string]bool, len(items))
+	out := make([]string, 0, len(items))
+	for _, item := range items {
+		trimmed := strings.TrimPrefix(strings.TrimSpace(item.External), "projects/")
+		if !seen[trimmed] {
+			seen[trimmed] = true
+			out = append(out, trimmed)
+		}
+	}
+	slices.Sort(out)
+	return out
+}
+
+func resolveProjectToNumberString(ctx context.Context, projectMapper *projects.ProjectMapper, item string) string {
+	trimmed := strings.TrimPrefix(strings.TrimSpace(item), "projects/")
+	if trimmed == "" || projectMapper == nil {
+		return trimmed
+	}
+	num, err := projectMapper.LookupProjectNumber(ctx, trimmed)
+	if err != nil {
+		klog.FromContext(ctx).V(2).Info("unable to resolve project to number for comparison; falling back to raw value", "project", trimmed, "error", err)
+		return trimmed
+	}
+	return strconv.FormatInt(num, 10)
+}
+
+func resolveProjectSegmentInPath(ctx context.Context, projectMapper *projects.ProjectMapper, resourcePath string) string {
+	trimmed := strings.TrimPrefix(apirefs.TrimComputeURIPrefix(strings.TrimSpace(resourcePath)), "/")
+	if trimmed == "" || projectMapper == nil {
+		return trimmed
+	}
+	parts := strings.Split(trimmed, "/")
+	if len(parts) >= 2 && parts[0] == "projects" && parts[1] != "" {
+		num, err := projectMapper.LookupProjectNumber(ctx, parts[1])
+		if err != nil {
+			klog.FromContext(ctx).V(2).Info("unable to resolve project in resource path for comparison; falling back to raw path", "path", trimmed, "error", err)
+			return trimmed
+		}
+		parts[1] = strconv.FormatInt(num, 10)
+		return strings.Join(parts, "/")
+	}
+	return trimmed
+}
+
+func allowedConsumerProjectsChanged(ctx context.Context, actual, desired []refsv1beta1.ProjectRef, projectMapper *projects.ProjectMapper) bool {
+	rawActual := canonicalizeProjectSetRaw(actual)
+	rawDesired := canonicalizeProjectSetRaw(desired)
+	if slices.Equal(rawActual, rawDesired) {
+		return false
+	}
+	if projectMapper == nil {
+		return true
+	}
+	resolveSet := func(items []string) []string {
+		seen := make(map[string]bool, len(items))
+		out := make([]string, 0, len(items))
+		for _, item := range items {
+			resolved := resolveProjectToNumberString(ctx, projectMapper, item)
+			if !seen[resolved] {
+				seen[resolved] = true
+				out = append(out, resolved)
+			}
+		}
+		slices.Sort(out)
+		return out
+	}
+	return !slices.Equal(resolveSet(rawActual), resolveSet(rawDesired))
+}
+
+type pscAutoConnPair struct {
+	project string
+	network string
+}
+
+func sortAutoConnPairs(pairs []pscAutoConnPair) {
+	slices.SortFunc(pairs, func(a, b pscAutoConnPair) int {
+		if c := strings.Compare(a.project, b.project); c != 0 {
+			return c
+		}
+		return strings.Compare(a.network, b.network)
+	})
+}
+
+func canonicalizeAutoConnectionsRaw(items []krm.Instance_PSCAutoConnectionConfig) []pscAutoConnPair {
+	if len(items) == 0 {
+		return nil
+	}
+	seen := make(map[pscAutoConnPair]bool, len(items))
+	out := make([]pscAutoConnPair, 0, len(items))
+	for _, item := range items {
+		var projExternal, netExternal string
+		if item.ConsumerProjectRef != nil {
+			projExternal = item.ConsumerProjectRef.External
+		}
+		if item.ConsumerNetworkRef != nil {
+			netExternal = item.ConsumerNetworkRef.External
+		}
+		pair := pscAutoConnPair{
+			project: strings.TrimPrefix(strings.TrimSpace(projExternal), "projects/"),
+			network: strings.TrimPrefix(apirefs.TrimComputeURIPrefix(strings.TrimSpace(netExternal)), "/"),
+		}
+		if !seen[pair] {
+			seen[pair] = true
+			out = append(out, pair)
+		}
+	}
+	sortAutoConnPairs(out)
+	return out
+}
+
+func pscAutoConnectionsChanged(ctx context.Context, actual, desired []krm.Instance_PSCAutoConnectionConfig, projectMapper *projects.ProjectMapper) bool {
+	rawActual := canonicalizeAutoConnectionsRaw(actual)
+	rawDesired := canonicalizeAutoConnectionsRaw(desired)
+	if slices.Equal(rawActual, rawDesired) {
+		return false
+	}
+	if projectMapper == nil {
+		return true
+	}
+	resolvePairs := func(pairs []pscAutoConnPair) []pscAutoConnPair {
+		seen := make(map[pscAutoConnPair]bool, len(pairs))
+		out := make([]pscAutoConnPair, 0, len(pairs))
+		for _, pair := range pairs {
+			resolved := pscAutoConnPair{
+				project: resolveProjectToNumberString(ctx, projectMapper, pair.project),
+				network: resolveProjectSegmentInPath(ctx, projectMapper, pair.network),
+			}
+			if !seen[resolved] {
+				seen[resolved] = true
+				out = append(out, resolved)
+			}
+		}
+		sortAutoConnPairs(out)
+		return out
+	}
+	return !slices.Equal(resolvePairs(rawActual), resolvePairs(rawDesired))
+}
+
+func pscInterfaceConfigsChanged(ctx context.Context, actual, desired []krm.Instance_PSCInterfaceConfig, projectMapper *projects.ProjectMapper) bool {
+	if len(actual) != len(desired) {
+		return true
+	}
+	if len(desired) == 0 {
+		return false
+	}
+	canonicalizeRaw := func(items []krm.Instance_PSCInterfaceConfig) []string {
+		out := make([]string, 0, len(items))
+		for _, item := range items {
+			var naExternal string
+			if item.NetworkAttachmentResourceRef != nil {
+				naExternal = item.NetworkAttachmentResourceRef.External
+			}
+			na := strings.TrimPrefix(apirefs.TrimComputeURIPrefix(strings.TrimSpace(naExternal)), "/")
+			out = append(out, na)
+		}
+		slices.Sort(out)
+		return out
+	}
+	rawActual := canonicalizeRaw(actual)
+	rawDesired := canonicalizeRaw(desired)
+	if slices.Equal(rawActual, rawDesired) {
+		return false
+	}
+	if projectMapper == nil {
+		return true
+	}
+	resolveSlice := func(items []string) []string {
+		out := make([]string, 0, len(items))
+		for _, item := range items {
+			out = append(out, resolveProjectSegmentInPath(ctx, projectMapper, item))
+		}
+		slices.Sort(out)
+		return out
+	}
+	return !slices.Equal(resolveSlice(rawActual), resolveSlice(rawDesired))
+}
+
 // HELPER FUNCTION ENDS
 
-func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSpec) (updatePaths []string, err error) {
+func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSpec, projectMapper *projects.ProjectMapper) (updatePaths []string, err error) {
 	log := klog.FromContext(ctx)
 	updatePaths = make([]string, 0)
 	if !reflect.DeepEqual(actual.Annotations, desired.Annotations) {
@@ -523,6 +755,47 @@ func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSp
 			updatePaths = append(updatePaths, path)
 		}
 		if path, changed := unsignedInt32PtrChanged(actualInsights.QueryPlansPerMinute, desiredInsights.QueryPlansPerMinute, "query_insights_config.query_plans_per_minute", log); changed {
+			updatePaths = append(updatePaths, path)
+		}
+	}
+
+	if desired.PSCInstanceConfig != nil {
+		actualPSC := actual.PSCInstanceConfig
+		if actualPSC == nil {
+			actualPSC = &krm.Instance_PSCInstanceConfig{}
+		}
+		desiredPSC := desired.PSCInstanceConfig
+
+		if desiredPSC.AllowedConsumerProjectRefs != nil {
+			if allowedConsumerProjectsChanged(ctx, actualPSC.AllowedConsumerProjectRefs, desiredPSC.AllowedConsumerProjectRefs, projectMapper) {
+				log.V(2).Info("'spec.pscInstanceConfig.allowedConsumerProjectRefs' field is updated (-old +new)", cmp.Diff(actualPSC.AllowedConsumerProjectRefs, desiredPSC.AllowedConsumerProjectRefs))
+				updatePaths = append(updatePaths, "psc_instance_config.allowed_consumer_projects")
+			}
+		}
+		if desiredPSC.PSCInterfaceConfigs != nil {
+			if pscInterfaceConfigsChanged(ctx, actualPSC.PSCInterfaceConfigs, desiredPSC.PSCInterfaceConfigs, projectMapper) {
+				log.V(2).Info("'spec.pscInstanceConfig.pscInterfaceConfigs' field is updated (-old +new)", cmp.Diff(actualPSC.PSCInterfaceConfigs, desiredPSC.PSCInterfaceConfigs))
+				updatePaths = append(updatePaths, "psc_instance_config.psc_interface_configs")
+			}
+		}
+		if desiredPSC.PSCAutoConnections != nil {
+			if pscAutoConnectionsChanged(ctx, actualPSC.PSCAutoConnections, desiredPSC.PSCAutoConnections, projectMapper) {
+				log.V(2).Info("'spec.pscInstanceConfig.pscAutoConnections' field is updated (-old +new)", cmp.Diff(actualPSC.PSCAutoConnections, desiredPSC.PSCAutoConnections))
+				updatePaths = append(updatePaths, "psc_instance_config.psc_auto_connections")
+			}
+		}
+		desiredDNSState := desiredPSC.PSCAutoDNSState
+		if v := direct.ValueOf(desiredDNSState); v == "" || v == "PSC_AUTO_DNS_STATE_UNSPECIFIED" {
+			desiredDNSState = nil
+		}
+		if path, changed := stringPtrChanged(actualPSC.PSCAutoDNSState, desiredDNSState, "psc_instance_config.psc_auto_dns_state", log); changed {
+			updatePaths = append(updatePaths, path)
+		}
+		desiredPolicyState := desiredPSC.PSCAutoConnectionPolicyState
+		if v := direct.ValueOf(desiredPolicyState); v == "" || v == "PSC_AUTO_CONNECTION_POLICY_STATE_UNSPECIFIED" {
+			desiredPolicyState = nil
+		}
+		if path, changed := stringPtrChanged(actualPSC.PSCAutoConnectionPolicyState, desiredPolicyState, "psc_instance_config.psc_auto_connection_policy_state", log); changed {
 			updatePaths = append(updatePaths, path)
 		}
 	}

@@ -98,6 +98,62 @@ func TestValuesCompatible(t *testing.T) {
 			diffPath: "spec.columnLayout.columns",
 			want:     true,
 		},
+		{
+			name:        "plural ProjectRefs slice matched against GCP project numbers",
+			foundVal:    []any{"${projectNumber}"},
+			expectedVal: []any{map[string]any{"external": "${projectId}"}},
+			createVal:   nil,
+			diffPath:    "spec.pscInstanceConfig.allowedConsumerProjectRefs",
+			want:        true,
+		},
+		{
+			name:        "plural Refs slice rejects stale unnormalized element",
+			foundVal:    []any{"proj-a"},
+			expectedVal: []any{map[string]any{"external": "proj-b"}},
+			createVal:   []any{map[string]any{"external": "proj-a"}},
+			diffPath:    "spec.x.fooRefs",
+			want:        false,
+		},
+		{
+			name: "slice of structs with nested Ref normalized to placeholder",
+			foundVal: []any{
+				map[string]any{
+					"networkAttachmentResource": "projects/${projectId}/regions/europe-west1/networkAttachments/${networkAttachmentID}",
+				},
+			},
+			expectedVal: []any{
+				map[string]any{
+					"networkAttachmentResourceRef": map[string]any{"name": "na-2-${uniqueId}"},
+				},
+			},
+			createVal: []any{
+				map[string]any{
+					"networkAttachmentResourceRef": map[string]any{"name": "na-${uniqueId}"},
+				},
+			},
+			diffPath: "spec.pscInstanceConfig.pscInterfaceConfigs",
+			want:     true,
+		},
+		{
+			name: "slice of structs with nested Ref rejects stale unnormalized resource",
+			foundVal: []any{
+				map[string]any{
+					"networkAttachmentResource": "projects/my-proj/regions/europe-west1/networkAttachments/na-1",
+				},
+			},
+			expectedVal: []any{
+				map[string]any{
+					"networkAttachmentResourceRef": map[string]any{"name": "na-2"},
+				},
+			},
+			createVal: []any{
+				map[string]any{
+					"networkAttachmentResourceRef": map[string]any{"name": "na-1"},
+				},
+			},
+			diffPath: "spec.pscInstanceConfig.pscInterfaceConfigs",
+			want:     false,
+		},
 	}
 
 	for _, tc := range tests {

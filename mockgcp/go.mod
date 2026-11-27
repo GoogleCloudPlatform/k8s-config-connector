@@ -16,7 +16,7 @@ require (
 	cloud.google.com/go/accesscontextmanager v1.14.0
 	cloud.google.com/go/agentidentity v0.1.0
 	cloud.google.com/go/aiplatform v1.127.0
-	cloud.google.com/go/alloydb v1.26.0
+	cloud.google.com/go/alloydb v1.30.0
 	cloud.google.com/go/analytics v0.35.0
 	cloud.google.com/go/apigateway v1.12.0
 	cloud.google.com/go/apihub v1.0.0

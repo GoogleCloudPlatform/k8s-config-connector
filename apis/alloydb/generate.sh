@@ -29,9 +29,23 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
+
+PROTO_SHA="da1f35d9096888cca86cb2c59fab46c9ea08b39e"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+# Unset SKIP_GENERATE_PROTOS so this specific script fetches the newer proto
+OLD_SKIP_GENERATE_PROTOS="${SKIP_GENERATE_PROTOS:-}"
+unset SKIP_GENERATE_PROTOS
+
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+
+# Restore SKIP_GENERATE_PROTOS
+if [[ -n "${OLD_SKIP_GENERATE_PROTOS}" ]]; then
+  export SKIP_GENERATE_PROTOS="${OLD_SKIP_GENERATE_PROTOS}"
+fi
 
 ${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.alloydb.v1beta \
   --api-version alloydb.cnrm.cloud.google.com/v1beta1 \
   --resource AlloyDBCluster:Cluster \
@@ -39,7 +53,10 @@ ${CONTROLLERBUILDER} generate-types \
   --resource AlloyDBBackup:Backup \
   --resource AlloyDBUser:User
 
-${CONTROLLERBUILDER} generate-mapper --service google.cloud.alloydb.v1beta --api-version alloydb.cnrm.cloud.google.com/v1beta1
+${CONTROLLERBUILDER} generate-mapper \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.alloydb.v1beta \
+  --api-version alloydb.cnrm.cloud.google.com/v1beta1
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
