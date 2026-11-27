@@ -1,0 +1,14 @@
+apiVersion: netapp.cnrm.cloud.google.com/v1alpha1
+kind: NetAppVolume
+metadata:
+  name: netappvolume-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
+  storagePoolRef:
+    name: netappvolume-dep-${uniqueId}
+  shareName: share${uniqueId}
+  capacityGib: 100
+  protocols:
+    - NFSV3

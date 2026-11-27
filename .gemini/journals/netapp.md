@@ -43,4 +43,13 @@
   - Moved child structs `BackupConfig` (plus `BackupConfigObservedState`), `BlockDevice` (plus `BlockDeviceObservedState`), `HybridReplicationParameters`, and `RestoreParameters` into `netappvolume_types.go`.
   - Added custom mapper functions in `pkg/controller/direct/netapp/netappvolume_mapper.go` for `BackupConfig` and `RestoreParameters` to handle irregular pluralization and oneof proto source fields.
 
+### [2026-11-27] NetAppVolume Greenfield Direct Controller
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for Greenfield resource `NetAppVolume`.
+- **GCP NetApp Volumes API Behaviors**:
+  1. `storagePool`: GCP NetApp Volumes requires `storagePool` in `CreateVolumeRequest` and `UpdateVolumeRequest` payloads to be the short storage pool ID (`<storagePoolId>`) rather than the fully-qualified resource name (`projects/<project>/locations/<location>/storagePools/<name>`). Supplying the full resource name causes the backend to prepend the parent resource prefix, producing `GetInternalStoragePool failed for "projects/.../locations/.../storagePools/projects/...": Malformed name`. Normalized `StoragePool` to `tokens[len(tokens)-1]` in `VolumeAdapter.Create`, `VolumeAdapter.Update`, and the `normalize` callback in `CompareGreenfieldSpec`. In `VolumeAdapter.Export`, formatted the exported `StoragePoolRef.External` back to the canonical fully-qualified resource URL.
+  2. `Private Service Access (PSA)`: GCP Cloud NetApp Volumes requires VPC peering with service `netapp.servicenetworking.goog` on the consumer network (e.g. `gcloud services vpc-peerings connect --service=netapp.servicenetworking.goog`).
+  3. `Fuzzer FilterStatus for Volume_CloneDetails`: The Go client protobuf struct `pb.Volume_CloneDetails` includes `SplitState` (added in newer SDK releases), which is not part of the pinned KRM `Volume_CloneDetailsObservedState`. Configured `f.FilterStatus` in `netappvolume_fuzzer.generated.go` to zero out `SplitState` during fuzz round-trips.
+- **Fixtures & Tests**:
+  - `netappvolume-minimal` and `netappvolume-maximal` recorded against real GCP. Both fixtures passed all 7 automated checks (V1 through V7) in `_http_report.md` with complete and clean CREATE -> UPDATE -> RE-RECONCILE -> DELETE lifecycles.
+
 

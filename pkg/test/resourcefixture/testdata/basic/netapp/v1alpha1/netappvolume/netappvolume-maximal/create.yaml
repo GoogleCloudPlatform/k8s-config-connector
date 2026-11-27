@@ -1,0 +1,32 @@
+apiVersion: netapp.cnrm.cloud.google.com/v1alpha1
+kind: NetAppVolume
+metadata:
+  name: netappvolume-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
+  storagePoolRef:
+    name: netappvolume-dep-${uniqueId}
+  shareName: share${uniqueId}
+  capacityGib: 100
+  protocols:
+    - NFSV3
+  description: "Initial maximal volume"
+  labels:
+    env: test
+  unixPermissions: "0770"
+  securityStyle: UNIX
+  snapshotDirectory: true
+  exportPolicy:
+    rules:
+      - allowedClients: "10.0.0.0/24"
+        accessType: READ_WRITE
+        nfsv3: true
+        nfsv4: false
+  snapshotPolicy:
+    enabled: true
+    dailySchedule:
+      hour: 2
+      minute: 30
+      snapshotsToKeep: 5
