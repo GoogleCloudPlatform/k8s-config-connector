@@ -18,7 +18,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -86,8 +86,7 @@ type Reconciler struct {
 	resourceLeaser *leaser.ResourceLeaser
 	defaulters     []k8s.Defaulter
 	mgr            manager.Manager
-	schemaRef      *k8s.SchemaReference
-	schemaRefMu    sync.RWMutex
+	schemaRef      atomic.Pointer[k8s.SchemaReference]
 	logger         logr.Logger
 	// DCL related fields
 	schema    *openapi.Schema
@@ -150,7 +149,7 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 		return nil, err
 	}
 
-	return &Reconciler{
+	r := &Reconciler{
 		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
 			mgr.GetClient(),
 			mgr.GetEventRecorderFor(controllerName),
@@ -158,12 +157,7 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 		ReconcilerMetrics: metrics.ReconcilerMetrics{
 			ResourceNameLabel: metrics.ResourceNameLabel,
 		},
-		mgr: mgr,
-		schemaRef: &k8s.SchemaReference{
-			CRD:        crd,
-			JSONSchema: k8s.GetOpenAPIV3SchemaFromCRD(crd),
-			GVK:        gvk,
-		},
+		mgr:                        mgr,
 		resourceLeaser:             leaser.NewResourceLeaser(nil, nil, mgr.GetClient()),
 		defaulters:                 defaulters,
 		schema:                     dclSchema,
@@ -175,22 +169,23 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 		resourceWatcherRoutines:    resourceWatcherRoutines,
 		jitterGenerator:            jitterGenerator,
 		controllerName:             controllerName,
-	}, nil
+	}
+	r.schemaRef.Store(k8s.NewSchemaReference(crd))
+	return r, nil
 }
 
 func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res reconcile.Result, err error) {
 	ctx = metricstransport.WithControllerName(ctx, r.controllerName)
 
-	r.schemaRefMu.RLock()
-	defer r.schemaRefMu.RUnlock()
+	schemaRef := r.schemaRef.Load()
 	r.logger.V(1).Info("starting reconcile", "resource", req.NamespacedName)
 	startTime := time.Now()
-	r.RecordReconcileWorkers(ctx, r.schemaRef.GVK)
+	r.RecordReconcileWorkers(ctx, schemaRef.GVK)
 	defer r.AfterReconcile()
-	defer r.RecordReconcileMetrics(ctx, r.schemaRef.GVK, req.Namespace, req.Name, startTime, &err)
+	defer r.RecordReconcileMetrics(ctx, schemaRef.GVK, req.Namespace, req.Name, startTime, &err)
 
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(r.schemaRef.GVK)
+	u.SetGroupVersionKind(schemaRef.GVK)
 
 	if err := k8s.FetchUnstructured(ctx, r.Client, req.NamespacedName, u); err != nil {
 		if apierrors.IsNotFound(err) {
@@ -238,7 +233,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	case v1beta1.Reconciling:
 		r.logger.V(2).Info("Actuating a resource as actuation mode is \"Reconciling\"", "resource", req.NamespacedName)
 	case v1beta1.Paused:
-		jitteredPeriod, err := r.jitterGenerator.JitteredReenqueue(r.schemaRef.GVK, u)
+		jitteredPeriod, err := r.jitterGenerator.JitteredReenqueue(schemaRef.GVK, u)
 		if err != nil {
 			return reconcile.Result{}, err
 		}
@@ -260,14 +255,14 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if err := resourceoverrides.Handler.PreActuationTransform(&resource.Resource); err != nil {
 		return reconcile.Result{}, r.HandlePreActuationTransformFailed(ctx, &resource.Resource, fmt.Errorf("error applying pre-actuation transformation to resource '%v': %w", req.NamespacedName.String(), err))
 	}
-	requeue, err := r.sync(ctx, resource)
+	requeue, err := r.sync(ctx, resource, schemaRef.JSONSchema)
 	if err != nil {
 		return reconcile.Result{}, err
 	}
 	if requeue {
 		return reconcile.Result{Requeue: true}, nil
 	}
-	jitteredPeriod, err := r.jitterGenerator.JitteredReenqueue(r.schemaRef.GVK, u)
+	jitteredPeriod, err := r.jitterGenerator.JitteredReenqueue(schemaRef.GVK, u)
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("error generating reconcile interval for resource %v", resource.GetNamespacedName())
 	}
@@ -275,7 +270,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 }
 
-func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource) (requeue bool, err error) {
+func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource, jsonSchema *apiextensions.JSONSchemaProps) (requeue bool, err error) {
 	// isolate any panics to only this function
 	defer execution.RecoverWithInternalError(&err)
 
@@ -317,7 +312,7 @@ func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource) (requeue 
 		return false, r.HandleObtainLeaseFailed(ctx, &resource.Resource, err)
 	}
 	// construct the trimmed desired state by only preserving k8s-managed fields
-	desired, err := r.constructDesiredStateWithManagedFields(resource)
+	desired, err := r.constructDesiredStateWithManagedFields(resource, jsonSchema)
 	if err != nil {
 		return false, r.HandleUpdateFailed(ctx, &resource.Resource, err)
 	}
@@ -559,13 +554,13 @@ func (r *Reconciler) updateSpecAndStatusWithLiveState(ctx context.Context, liveL
 	return false, r.HandleUpToDate(ctx, &resource.Resource)
 }
 
-func (r *Reconciler) constructDesiredStateWithManagedFields(original *dcl.Resource) (*dcl.Resource, error) {
+func (r *Reconciler) constructDesiredStateWithManagedFields(original *dcl.Resource, jsonSchema *apiextensions.JSONSchemaProps) (*dcl.Resource, error) {
 	gvk := original.GroupVersionKind()
 	hierarchicalRefs, err := dcl.GetHierarchicalReferencesForGVK(gvk, r.converter.MetadataLoader, r.converter.SchemaLoader)
 	if err != nil {
 		return nil, fmt.Errorf("error getting hierarchical references supported by GroupVersionKind %v: %w", gvk, err)
 	}
-	trimmed, err := k8s.ConstructTrimmedSpecWithManagedFields(&original.Resource, r.schemaRef.JSONSchema, hierarchicalRefs)
+	trimmed, err := k8s.ConstructTrimmedSpecWithManagedFields(&original.Resource, jsonSchema, hierarchicalRefs)
 	if err != nil {
 		return nil, err
 	}
@@ -748,9 +743,16 @@ func (r *Reconciler) getStateHint(liveLite *unstructured.Unstructured) (*dclunst
 var _ k8s.SchemaReferenceUpdater = &Reconciler{}
 
 func (r *Reconciler) UpdateSchema(crd *apiextensions.CustomResourceDefinition) error {
-	r.schemaRefMu.Lock()
-	defer r.schemaRefMu.Unlock()
-	return k8s.UpdateSchema(r.schemaRef, crd)
+	newRef, err := k8s.NewUpdatedSchemaReference(r.schemaRef.Load(), crd)
+	if err != nil {
+		return err
+	}
+	r.schemaRef.Store(newRef)
+	return nil
+}
+
+func (r *Reconciler) SchemaReference() *k8s.SchemaReference {
+	return r.schemaRef.Load()
 }
 
 func updateMutableButUnreadableFieldsAnnotationFor(resource *dcl.Resource) error {
