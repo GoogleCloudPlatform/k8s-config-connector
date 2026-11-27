@@ -61,11 +61,11 @@ type AIPlatformCachedContentSpec struct {
 	// Optional. Input only. Immutable. Developer set system instruction.
 	//  Currently, text only
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.system_instruction
-	SystemInstruction *Content `json:"systemInstruction,omitempty"`
+	SystemInstruction *ContentWithRequired `json:"systemInstruction,omitempty"`
 
 	// Optional. Input only. Immutable. The content to cache
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.contents
-	Contents []Content `json:"contents,omitempty"`
+	Contents []ContentWithRequired `json:"contents,omitempty"`
 
 	// Optional. Input only. Immutable. A list of `Tools` the model may use to
 	//  generate the next response
@@ -81,7 +81,7 @@ type AIPlatformCachedContentSpec struct {
 	//  `CachedContent`. If set, this `CachedContent` and all its sub-resources
 	//  will be secured by this key.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.encryption_spec
-	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
+	EncryptionSpec *EncryptionSpecWithRequired `json:"encryptionSpec,omitempty"`
 }
 
 // AIPlatformCachedContentStatus defines the config connector machine state of AIPlatformCachedContent

@@ -103,6 +103,8 @@ spec:
                         description: The namespace of a KMSCryptoKey resource.
                         type: string
                     type: object
+                required:
+                - kmsKeyRef
                 type: object
               explanationSpec:
                 description: Optional model explanation spec. It is used for feature
@@ -338,8 +340,8 @@ spec:
                           [instance][google.cloud.aiplatform.v1.ExplainRequest.instances].
                         type: object
                       latentSpaceSource:
-                        description: Name of the source to generate embeddings for
-                          example based explanations.
+                        description: Points to a YAML file stored on Google Cloud
+                          Storage describing the format of the [ExplanationMetadata.latent_space_source].
                         type: string
                       outputs:
                         additionalProperties:
@@ -405,6 +407,9 @@ spec:
 
                           Currently only one key is allowed.
                         type: object
+                    required:
+                    - inputs
+                    - outputs
                     type: object
                   parameters:
                     description: Required. Parameters that configure explaining of
@@ -433,6 +438,8 @@ spec:
                                     items:
                                       type: string
                                     type: array
+                                required:
+                                - uris
                                 type: object
                             type: object
                           nearestNeighborSearchConfig:
@@ -578,6 +585,8 @@ spec:
                                Valid range of its value is [1, 100], inclusively.
                             format: int32
                             type: integer
+                        required:
+                        - stepCount
                         type: object
                       sampledShapleyAttribution:
                         description: 'An attribution method that approximates Shapley
@@ -594,6 +603,8 @@ spec:
                                Valid range of its value is [1, 50], inclusively.
                             format: int32
                             type: integer
+                        required:
+                        - pathCount
                         type: object
                       topK:
                         description: If populated, returns attributions for top K
@@ -706,6 +717,8 @@ spec:
                                Valid range of its value is [1, 100], inclusively.
                             format: int32
                             type: integer
+                        required:
+                        - stepCount
                         type: object
                     type: object
                 required:
@@ -1046,6 +1059,8 @@ spec:
                                     items:
                                       type: string
                                     type: array
+                                required:
+                                - reservationAffinityType
                                 type: object
                               tpuTopology:
                                 description: 'Immutable. The topology of the TPUs.
@@ -1060,8 +1075,8 @@ spec:
                             format: int32
                             type: integer
                           spot:
-                            description: Optional. If true, schedule the deployment
-                              workload on [spot VMs](https://cloud.google.com/kubernetes-engine/docs/concepts/spot-vms).
+                            description: Optional. Immutable. If true, the batch workload
+                              will be run on spot VM.
                             type: boolean
                           startingReplicaCount:
                             description: Immutable. The number of machine replicas
@@ -1074,7 +1089,8 @@ spec:
                         - machineSpec
                         type: object
                       defaultAlertCondition:
-                        description: Default alert condition for all the features.
+                        description: Optional default alert condition applied to all
+                          the features.
                         properties:
                           threshold:
                             description: A condition that compares a stats value against
