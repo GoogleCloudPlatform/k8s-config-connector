@@ -57,14 +57,19 @@ func ResourceStorageBucket() *schema.Resource {
 			"encryption": {
 				Type:     schema.TypeList,
 				Optional: true,
+				Computed: true,
 				MaxItems: 1,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"default_kms_key_name": {
 							Type:        schema.TypeString,
-							Required:    true,
+							Optional:    true,
+							Computed:    true,
 							Description: `A Cloud KMS key that will be used to encrypt objects inserted into this bucket, if no encryption method is specified. You must pay attention to whether the crypto key is available in the location that this bucket is created in. See the docs for more details.`,
 						},
+						"customer_managed_encryption_enforcement_config":  bucketEncryptionEnforcementConfigSchema("customer-managed encryption keys (CMEK)"),
+						"customer_supplied_encryption_enforcement_config": bucketEncryptionEnforcementConfigSchema("customer-supplied encryption keys (CSEK)"),
+						"google_managed_encryption_enforcement_config":    bucketEncryptionEnforcementConfigSchema("Google-managed encryption keys (GMEK)"),
 					},
 				},
 				Description: `The bucket's encryption configuration.`,
@@ -1094,20 +1099,54 @@ func flattenCors(corsRules []*storage.BucketCors) []map[string]interface{} {
 	return corsRulesSchema
 }
 
+func bucketEncryptionEnforcementConfigSchema(encryptionType string) *schema.Schema {
+	return &schema.Schema{
+		Type:        schema.TypeList,
+		Optional:    true,
+		Computed:    true,
+		MaxItems:    1,
+		Description: fmt.Sprintf("Controls whether new objects can be encrypted with %s. If omitted, the existing configuration is preserved.", encryptionType),
+		Elem: &schema.Resource{
+			Schema: map[string]*schema.Schema{
+				"restriction_mode": {
+					Type:         schema.TypeString,
+					Required:     true,
+					ValidateFunc: validation.StringInSlice([]string{"NotRestricted", "FullyRestricted"}, false),
+					Description:  `Whether this encryption type is allowed for new objects. Supported values are "NotRestricted" and "FullyRestricted".`,
+				},
+			},
+		},
+	}
+}
+
 func expandBucketEncryption(configured interface{}) *storage.BucketEncryption {
 	encs := configured.([]interface{})
 	if len(encs) == 0 || encs[0] == nil {
 		return nil
 	}
 	enc := encs[0].(map[string]interface{})
-	keyname := enc["default_kms_key_name"]
-	if keyname == nil || keyname.(string) == "" {
-		return nil
+	bucketenc := &storage.BucketEncryption{}
+	if v, ok := enc["default_kms_key_name"].(string); ok {
+		bucketenc.DefaultKmsKeyName = v
 	}
-	bucketenc := &storage.BucketEncryption{
-		DefaultKmsKeyName: keyname.(string),
+	if mode := expandBucketEncryptionRestrictionMode(enc["customer_managed_encryption_enforcement_config"]); mode != "" {
+		bucketenc.CustomerManagedEncryptionEnforcementConfig = &storage.BucketEncryptionCustomerManagedEncryptionEnforcementConfig{RestrictionMode: mode}
+	}
+	if mode := expandBucketEncryptionRestrictionMode(enc["customer_supplied_encryption_enforcement_config"]); mode != "" {
+		bucketenc.CustomerSuppliedEncryptionEnforcementConfig = &storage.BucketEncryptionCustomerSuppliedEncryptionEnforcementConfig{RestrictionMode: mode}
+	}
+	if mode := expandBucketEncryptionRestrictionMode(enc["google_managed_encryption_enforcement_config"]); mode != "" {
+		bucketenc.GoogleManagedEncryptionEnforcementConfig = &storage.BucketEncryptionGoogleManagedEncryptionEnforcementConfig{RestrictionMode: mode}
 	}
 	return bucketenc
+}
+
+func expandBucketEncryptionRestrictionMode(configured interface{}) string {
+	configs, ok := configured.([]interface{})
+	if !ok || len(configs) == 0 || configs[0] == nil {
+		return ""
+	}
+	return configs[0].(map[string]interface{})["restriction_mode"].(string)
 }
 
 func flattenBucketEncryption(enc *storage.BucketEncryption) []map[string]interface{} {
@@ -1117,9 +1156,19 @@ func flattenBucketEncryption(enc *storage.BucketEncryption) []map[string]interfa
 		return encryption
 	}
 
-	encryption = append(encryption, map[string]interface{}{
+	config := map[string]interface{}{
 		"default_kms_key_name": enc.DefaultKmsKeyName,
-	})
+	}
+	if enc.CustomerManagedEncryptionEnforcementConfig != nil {
+		config["customer_managed_encryption_enforcement_config"] = []map[string]interface{}{{"restriction_mode": enc.CustomerManagedEncryptionEnforcementConfig.RestrictionMode}}
+	}
+	if enc.CustomerSuppliedEncryptionEnforcementConfig != nil {
+		config["customer_supplied_encryption_enforcement_config"] = []map[string]interface{}{{"restriction_mode": enc.CustomerSuppliedEncryptionEnforcementConfig.RestrictionMode}}
+	}
+	if enc.GoogleManagedEncryptionEnforcementConfig != nil {
+		config["google_managed_encryption_enforcement_config"] = []map[string]interface{}{{"restriction_mode": enc.GoogleManagedEncryptionEnforcementConfig.RestrictionMode}}
+	}
+	encryption = append(encryption, config)
 
 	return encryption
 }

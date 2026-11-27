@@ -132,9 +132,24 @@ type StorageBucketCustomPlacementConfig struct {
 }
 
 type StorageBucketEncryption struct {
+	/* Controls whether new objects can be encrypted with customer-managed encryption keys (CMEK). If omitted, the existing configuration is preserved. */
+	CustomerManagedEncryptionEnforcementConfig *StorageBucketEncryptionEnforcementConfig `json:"customerManagedEncryptionEnforcementConfig,omitempty"`
+
+	/* Controls whether new objects can be encrypted with customer-supplied encryption keys (CSEK). If omitted, the existing configuration is preserved. */
+	CustomerSuppliedEncryptionEnforcementConfig *StorageBucketEncryptionEnforcementConfig `json:"customerSuppliedEncryptionEnforcementConfig,omitempty"`
+
+	/* Controls whether new objects can be encrypted with Google-managed encryption keys (GMEK). If omitted, the existing configuration is preserved. */
+	GoogleManagedEncryptionEnforcementConfig *StorageBucketEncryptionEnforcementConfig `json:"googleManagedEncryptionEnforcementConfig,omitempty"`
+
 	/* A reference to the KMS Crypto Key that will be used to encrypt objects inserted into this bucket. */
+	KmsKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+}
+
+type StorageBucketEncryptionEnforcementConfig struct {
+	/* Whether this encryption type is allowed for new objects. Supported values are "NotRestricted" and "FullyRestricted". */
+	// +kubebuilder:validation:Enum=NotRestricted;FullyRestricted
 	// +required
-	KmsKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef"`
+	RestrictionMode string `json:"restrictionMode"`
 }
 
 type StorageBucketLifecycleRule struct {

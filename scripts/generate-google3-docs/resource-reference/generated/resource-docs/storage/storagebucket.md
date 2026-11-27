@@ -113,6 +113,12 @@ customPlacementConfig:
   - string
 defaultEventBasedHold: boolean
 encryption:
+  customerManagedEncryptionEnforcementConfig:
+    restrictionMode: string
+  customerSuppliedEncryptionEnforcementConfig:
+    restrictionMode: string
+  googleManagedEncryptionEnforcementConfig:
+    restrictionMode: string
   kmsKeyRef:
     external: string
     name: string
@@ -360,8 +366,68 @@ website:
     </tr>
     <tr>
         <td>
-            <p><code>encryption.kmsKeyRef</code></p>
+            <p><code>encryption.customerManagedEncryptionEnforcementConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Controls whether new objects can be encrypted with customer-managed encryption keys (CMEK). If omitted, the existing configuration is preserved.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>encryption.customerManagedEncryptionEnforcementConfig.restrictionMode</code></p>
             <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Whether this encryption type is allowed for new objects. Supported values are "NotRestricted" and "FullyRestricted".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>encryption.customerSuppliedEncryptionEnforcementConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Controls whether new objects can be encrypted with customer-supplied encryption keys (CSEK). If omitted, the existing configuration is preserved.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>encryption.customerSuppliedEncryptionEnforcementConfig.restrictionMode</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Whether this encryption type is allowed for new objects. Supported values are "NotRestricted" and "FullyRestricted".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>encryption.googleManagedEncryptionEnforcementConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Controls whether new objects can be encrypted with Google-managed encryption keys (GMEK). If omitted, the existing configuration is preserved.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>encryption.googleManagedEncryptionEnforcementConfig.restrictionMode</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Whether this encryption type is allowed for new objects. Supported values are "NotRestricted" and "FullyRestricted".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>encryption.kmsKeyRef</code></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
