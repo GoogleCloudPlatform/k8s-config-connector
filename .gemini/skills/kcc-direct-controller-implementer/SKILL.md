@@ -124,7 +124,7 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
     YOU MUST COMMIT ALL RESULTING CHANGES.
 
 7.  **Validation & Last-Mile Tests**:
-    Run the following tests to ensure CI compliance:
+    Run the following tests to ensure CI compliance (do NOT create individual CI presubmit scripts):
     - **Fuzzing**: `dev/ci/presubmits/fuzz-roundtrippers`
     - **E2E Scaffolding**: `dev/ci/presubmits/tests-e2e-fixtures-suite <service>`
     - **Schema Integrity**: `go test ./pkg/crd/template/...`
