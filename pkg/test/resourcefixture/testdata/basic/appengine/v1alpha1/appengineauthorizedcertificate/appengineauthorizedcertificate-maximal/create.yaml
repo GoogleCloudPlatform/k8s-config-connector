@@ -1,0 +1,71 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: appengine.cnrm.cloud.google.com/v1alpha1
+kind: AppEngineAuthorizedCertificate
+metadata:
+  name: appengineauthorizedcertificate-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  displayName: AppEngine Authorized Certificate ${uniqueId}
+  certificateRawData:
+    publicCertificate: |-
+      -----BEGIN CERTIFICATE-----
+      MIIDDTCCAfWgAwIBAgIUMhbkuyxBVyQ+LE65f2OPPsNbzUAwDQYJKoZIhvcNAQEL
+      BQAwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wHhcNMjYxMTE2MDE0MjMzWhcNMjcx
+      MTE2MDE0MjMzWjAWMRQwEgYDVQQDDAtleGFtcGxlLmNvbTCCASIwDQYJKoZIhvcN
+      AQEBBQADggEPADCCAQoCggEBALbncVBFmIE/lVVXdY9E+B5NKZcTlhuhbNofx/Jt
+      OG+JO3pbOtMAnSwTOowV+StxjKLU87A3np0uBv9Uc9cW/PHqcyBCgwQAhiIm8JT+
+      auwPHxIQTJ2g2RXiQ1WEVbTPP4cg/UDoO+oe28kOXIwj+lWtb0v/HYeR39vNynUM
+      OrZJHah2IK/WrHf7NirGnOPkAACMoMxPyQADfP8KnQFdY6wDtNsQCQHUpqixMHDg
+      L+eO1fC4snIuiLVUQyFrVqjWaJ384Yuob9IACo2tqAhDhp3Fxaef37EUPxs0KQ5Z
+      wUskcQPFcH2XAKeepZiKIQ1HhUpj3CaKCPgHntQBTj1V220CAwEAAaNTMFEwHQYD
+      VR0OBBYEFDeg7SXprv+1K6SRcBCN0AH1vsJFMB8GA1UdIwQYMBaAFDeg7SXprv+1
+      K6SRcBCN0AH1vsJFMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEB
+      AJWjKKfTbhWdHMvD7i3vo4BEKDMPQqlOg0s3nNISAwvIt4eNDFXhppRcFypXt6Kj
+      3UYLyqoohABIKwbaaM33tra56okTbbb2ABe1+9BlZ+g69HI+0rP6+BTpDyY3k5sY
+      tyTZJGpNp4rlcY5igy1OIA5PxEywGM3PLfnHHwJguZzom56Ilg/+V95F/DiCHbSH
+      dEmTiyOpLzHsMvGbVJ1YKL9tx/UoSKRSoVHRCD+8rBgukOMb6iMGi+bebOmLXbpP
+      138gPr0JzSYxjBzucFaBpuGvvPMHwp4aJ7rSesnMmp2MOFIK8Rnqdg7D6VKVB8h6
+      BwOAwoJZ9mXVqfh/aeq2Zgs=
+      -----END CERTIFICATE-----
+    privateKey: |-
+      -----BEGIN RSA PRIVATE KEY-----
+      MIIEowIBAAKCAQEAtudxUEWYgT+VVVd1j0T4Hk0plxOWG6Fs2h/H8m04b4k7els6
+      0wCdLBM6jBX5K3GMotTzsDeenS4G/1Rz1xb88epzIEKDBACGIibwlP5q7A8fEhBM
+      naDZFeJDVYRVtM8/hyD9QOg76h7byQ5cjCP6Va1vS/8dh5Hf283KdQw6tkkdqHYg
+      r9asd/s2Ksac4+QAAIygzE/JAAN8/wqdAV1jrAO02xAJAdSmqLEwcOAv547V8Liy
+      ci6ItVRDIWtWqNZonfzhi6hv0gAKja2oCEOGncXFp5/fsRQ/GzQpDlnBSyRxA8Vw
+      fZcAp56lmIohDUeFSmPcJooI+Aee1AFOPVXbbQIDAQABAoIBACKtf+DpyQ/cR8pt
+      8haPS4GnPJbtujyT3wj+FJFEnvoaqUG6EU2XJLWKEcQkmGDhvvnSaT+EVBjV9LKt
+      RudFbwDI5Dn+EkwMc2H/Qwbks8380fXBTF1odTA+fWi11fAZiSBsI0gOn+l0H1Sf
+      2fEiEyDyaJMek/EzuZ85hcSqZGlR4ia6tdZLrCW5iyiXUxniZQUDzGVW9HojCPYe
+      RzUY4Lwk5UeSJHRa5mt5LW7NB1OVWZ2TvaMyN5y8NIrEVnsYU5BwdQQh+xUYsgwt
+      SElsM3zzNIyYVzd1i1P1raVgBX6YAIzpvQof/Oz0oLdVSbyKjSFpesbAKgBEjTqO
+      +qoF5CECgYEA6/UE2Z4AQxjAJVelhiK7SFn3oyZE+iKCKF22tKpnIDAGWYCeS7HR
+      yC1SDFrrVUPcbYYLN27GndbZt9avwvjbOH14I6Y9iGutqtbQQkgw/6w7dclsnrXM
+      PqnGq7HF2BV0CkrFTsVkEYTeHRJ5jm4Zh7IqYWsLiTn7XsGMkJowVt0CgYEAxnDD
+      r/qeNVd9jad+LbuOIFXajDTvmxlN9z6v3IbMxeZJfvyMdfcSayPJg95cUZO54fGb
+      ug8kZ/MYdXQbCOsv8s7BgrkcgX8nGEGTnp68v83aLcD82yVl9mtz58DbwW8EMzzv
+      UiDsIa+U1MvI1RcFKaJEII89la+Nfd4utREFJdECgYA/oRZKvPHjJiSCrW0EjA8n
+      BqPiCirlrTKeQg9IDv+6TVkY/7cwQGaK7bXHgSkfGCq0GkaiDyxeWhbiHXHOSR+M
+      z0D7lBPZ2ve9LyqABUm5WK+8JrI05l+KsmvR1yG8EKT3NYyZnl9K3iKrglTnVMdr
+      sV7+YEh/G/Sua9FFGV9ZvQKBgQCSGM9Zro/wAbvkIJ5bGSyoTc0bUJXfgJ/QGgzr
+      tSrpwIP3xAO9jeu3iZ+BQKKDRNmjqXfXYfKRvX4SayrERDMG9oWtso90H6Muzoja
+      TU/1fp7U9LK0vTH2XGH3DBw+q3dSKdighLCUlGpkyKvRhqM8ZcT2m77hh2AKfRuy
+      HxfFIQKBgDiRuYxagRa94fI76ICEMQcC4PXvxtDE6cmsj+EwDeP9SjBAqcujg37+
+      4qeCdn681hCVhPyzxcSshLG3bHRL4mnxhhcQtHzpOhdbzHnAQbHQCYjdduRQSyqe
+      dtFrVvbrtL4pUDMmWRq2P82eNxQkoUI8yBF87CxdrPMTD0fN+KK4
+      -----END RSA PRIVATE KEY-----

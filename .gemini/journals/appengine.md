@@ -19,3 +19,21 @@
   5. Resolved all 6 `judgement_queue.yaml` entries for `AppEngineAuthorizedCertificate`.
   6. Regenerated CRD, deepcopy, identity, and mappers via `apis/appengine/generate.sh`.
 - **Impact**: Types, identity, CRD, and mappers are finalized and ready for controller implementation in Step 2.
+
+### [2026-11-16] AppEngineAuthorizedCertificate Controller Implementation and Real-GCP E2E Testing
+- **Context**: Implemented direct controller, round-trip fuzzer, and minimal/maximal E2E fixtures for `AppEngineAuthorizedCertificate` (`appengine.cnrm.cloud.google.com/v1alpha1`).
+- **Generation & Controller Architecture**:
+  1. Generated direct controller via `controllerbuilder generate-controller` and round-trip fuzzer via `generate-fuzzer` with `--prepopulate-resource`.
+  2. Registered controller in `pkg/controller/resourceconfig/static_config.go` via `dev/tasks/generate_static_config.py`.
+  3. Ensured `AdapterForObject` invokes `common.NormalizeGreenfieldReferences(ctx, reader, obj, nil)` before `GetIdentity`.
+  4. Verified `Update` uses canonical `common.CompareGreenfieldSpec` with `structuredreporting.ReportDiff`.
+  5. Handled server-generated identity via `a.id.FromExternal(created.Name)` and `status.ExternalRef = direct.LazyPtr(a.id.String())`.
+- **Real-GCP E2E Recording Blocker**:
+  - `RECORD_AUDIT_PROBE=1 ./hack/record-gcp` was executed against real GCP project `cnrm-barni-4`.
+  - App Engine Admin API (`apps.authorizedCertificates.create`) strictly enforces domain ownership verification via Google Search Console / Webmaster Central for custom SSL certificates, returning:
+    `com.google.net.rpc3.RpcException: Caller is not authorized to administer this certificate. You must be a verified owner of the certificate's domain(s) <domain> to create, modify, or delete this resource. Your authorized domain(s) are . If you own the certificate domain(s), you can obtain authorization by verifying ownership via the Search Console: https://search.google.com/search-console/welcome.`
+  - The test principal `overseer-kcc-tester@cnrm-barni-4.iam.gserviceaccount.com` has no verified domains in Search Console (`apps/cnrm-barni-4/authorizedDomains` is empty).
+  - Authentic Cloud Audit Log entries (`google.appengine.v1.AuthorizedCertificates.CreateAuthorizedCertificate`) were confirmed in `cnrm-barni-4`.
+  - Minimal and maximal test fixtures were scaffolded with valid 2048-bit RSA private keys and x.509 PEM certificates (`create.yaml` and `update.yaml`).
+  - Failed `_http.log`, `_http_report.md`, and `_generated_object_*.golden.yaml` were omitted so failing test run artifacts are not committed; golden logs and hermetic verification will be completed in Step 3/4 via MockGCP (`hack/compare-mock`), consistent with `AppEngineDomainMapping`.
+- **Impact**: Controller, fuzzer, static config, and E2E fixtures are established for Step 2; hermetic MockGCP service implementation is deferred to Step 3.
