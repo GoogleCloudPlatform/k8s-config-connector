@@ -1,0 +1,44 @@
+apiVersion: dialogflowcx.cnrm.cloud.google.com/v1alpha1
+kind: DialogflowCXEntityType
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: dialogflowcxentitytype-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  autoExpansionMode: AUTO_EXPANSION_MODE_DEFAULT
+  displayName: entitytype-max-${uniqueId}
+  enableFuzzyExtraction: true
+  entities:
+  - synonyms:
+    - synonym1
+    - synonym2
+    - synonym3
+    value: value1
+  - synonyms:
+    - synonym3
+    - synonym4
+    value: value2
+  excludedPhrases:
+  - value: excluded1
+  - value: excluded2
+  kind: KIND_MAP
+  parent: projects/${projectId}/locations/global/agents/4888fac5-5f1c-401e-a5e2-fe19d1f0bebf
+  redact: true
+  resourceID: df4e8490-e1ba-4035-99de-ba3fdd265a33
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  name: df4e8490-e1ba-4035-99de-ba3fdd265a33
+  observedGeneration: 3

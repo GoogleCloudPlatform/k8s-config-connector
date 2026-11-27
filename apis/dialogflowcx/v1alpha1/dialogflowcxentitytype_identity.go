@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -71,17 +72,28 @@ func (obj *DialogflowCXEntityType) GetIdentity(ctx context.Context, reader clien
 		externalRef = common.ValueOf(obj.Status.Name)
 	}
 	if externalRef != "" {
-		statusIdentity := &DialogflowCXEntityTypeIdentity{}
-		if err := statusIdentity.FromExternal(externalRef); err != nil {
-			return nil, err
-		}
+		// To preserve backward compatibility with Terraform, status.Name can be just the entityType ID
+		// (e.g. "13c4c465-0c78-4834-9f62-ff93d1a73f8f") or the full path. If it doesn't contain a "/", it's
+		// the short ID; we can verify it directly against specIdentity.EntityType.
+		if !strings.Contains(externalRef, "/") {
+			if specIdentity.EntityType == "" {
+				specIdentity.EntityType = externalRef
+			} else if specIdentity.EntityType != externalRef {
+				return nil, fmt.Errorf("cannot change DialogflowCXEntityType identity (old=%q, new=%q)", externalRef, specIdentity.EntityType)
+			}
+		} else {
+			statusIdentity := &DialogflowCXEntityTypeIdentity{}
+			if err := statusIdentity.FromExternal(externalRef); err != nil {
+				return nil, err
+			}
 
-		if specIdentity.EntityType == "" {
-			specIdentity.EntityType = statusIdentity.EntityType
-		}
+			if specIdentity.EntityType == "" {
+				specIdentity.EntityType = statusIdentity.EntityType
+			}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change DialogflowCXEntityType identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			if statusIdentity.String() != specIdentity.String() {
+				return nil, fmt.Errorf("cannot change DialogflowCXEntityType identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			}
 		}
 	}
 
