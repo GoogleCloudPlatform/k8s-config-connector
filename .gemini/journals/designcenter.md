@@ -259,6 +259,22 @@
   - `untriaged-bulk-generation`: Resolved with resolution `edited`.
   - Updated golden exceptions in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 
+### [2026-11-27] Greenfield Step 2: Implement direct controller, E2E fixtures, and fuzzer for DesignCenterConnection
+- **Context**: Implemented direct controller, round-trip fuzzer, and minimal/maximal E2E fixtures for `DesignCenterConnection` (`designcenter.cnrm.cloud.google.com/v1alpha1`) (Issue #16576).
+- **Controller & Fuzzer Generation**:
+  - Ran one-shot `controllerbuilder generate-controller` and `controllerbuilder generate-fuzzer` with `--prepopulate-resource`.
+  - Registered `DesignCenterConnection` in `pkg/controller/resourceconfig/static_config.go` with `k8s.ReconcilerTypeDirect`.
+  - Verified 200-seed round-trip fuzzer passes for Spec and Status.
+- **Fixture Design & GCP Nuances**:
+  - `DesignCenterConnection` requires `parentRef` pointing to a source `DesignCenterComponent` and `destinationComponentRef` pointing to a target `DesignCenterComponent` within the same `COMPOSITE` `DesignCenterApplicationTemplate`.
+  - Minimal fixture connects a Cloud Run frontend component to a Secret Manager component.
+  - In `update.yaml`, mutated `sourceComponentParameters` (e.g. `service_account_project_roles`) and `destinationComponentParameters` (e.g. `secret_data`).
+  - Recorded authentic golden HTTP logs against real GCP (`cnrm-barni-4`) using `./hack/record-gcp`.
+  - Re-reconciliation and SSA testing passed cleanly with ratcheting enabled.
+- **Validator & Tooling Findings**:
+  - `pkg/test/httplogreport/specdiff/differ.go`: Added `unwrapKRMValue` unwrapping helper to `jsonContainsExpected` so that `google.protobuf.Value` KRM representations (such as `{listValue: {values: [...]}}` or `{stringValue: "..."}`) match the serialized JSON payload sent to and returned by the GCP API.
+
+
 
 
 

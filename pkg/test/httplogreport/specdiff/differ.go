@@ -607,7 +607,55 @@ func valuesCompatible(foundVal, expectedVal, createVal any, diffPath string) boo
 	return false
 }
 
+func unwrapKRMValue(val any) any {
+	m, ok := val.(map[string]any)
+	if !ok {
+		return val
+	}
+	// Check if this map represents a KRM google.protobuf.Value
+	isKRMValue := false
+	for _, k := range []string{"nullValue", "numberValue", "stringValue", "boolValue", "structValue", "listValue"} {
+		if _, has := m[k]; has {
+			isKRMValue = true
+			break
+		}
+	}
+	if !isKRMValue {
+		return val
+	}
+	if v, has := m["nullValue"]; has && v != nil {
+		return nil
+	}
+	if v, has := m["numberValue"]; has && v != nil {
+		return v
+	}
+	if v, has := m["stringValue"]; has && v != nil {
+		return v
+	}
+	if v, has := m["boolValue"]; has && v != nil {
+		return v
+	}
+	if v, has := m["structValue"]; has && v != nil {
+		return unwrapKRMValue(v)
+	}
+	if v, has := m["listValue"]; has && v != nil {
+		if lvMap, lvOk := v.(map[string]any); lvOk {
+			if vals, hasVals := lvMap["values"].([]any); hasVals {
+				unwrappedList := make([]any, len(vals))
+				for i, elem := range vals {
+					unwrappedList[i] = unwrapKRMValue(elem)
+				}
+				return unwrappedList
+			}
+		}
+		return unwrapKRMValue(v)
+	}
+	return val
+}
+
 func jsonContainsExpected(actual, expected any) bool {
+	expected = unwrapKRMValue(expected)
+	actual = unwrapKRMValue(actual)
 	if actual == nil && expected == nil {
 		return true
 	}
