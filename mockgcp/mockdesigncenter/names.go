@@ -276,3 +276,37 @@ func (s *MockService) parseApplicationName(name string) (*applicationName, error
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
+
+type componentName struct {
+	Project             *projects.ProjectData
+	Location            string
+	Space               string
+	ApplicationTemplate string
+	Component           string
+}
+
+func (n *componentName) String() string {
+	return fmt.Sprintf("projects/%s/locations/%s/spaces/%s/applicationTemplates/%s/components/%s", n.Project.ID, n.Location, n.Space, n.ApplicationTemplate, n.Component)
+}
+
+func (n *componentName) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s/spaces/%s/applicationTemplates/%s", n.Project.ID, n.Location, n.Space, n.ApplicationTemplate)
+}
+
+func (s *MockService) parseComponentName(name string) (*componentName, error) {
+	tokens := strings.Split(name, "/")
+	if len(tokens) == 10 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "spaces" && tokens[6] == "applicationTemplates" && tokens[8] == "components" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+		return &componentName{
+			Project:             project,
+			Location:            tokens[3],
+			Space:               tokens[5],
+			ApplicationTemplate: tokens[7],
+			Component:           tokens[9],
+		}, nil
+	}
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
