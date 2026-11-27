@@ -3,6 +3,10 @@
 The following guidelines will help you identify potential reference fields and
 configure them in service mappings.
 
+For end-user dependency management patterns, resolution mechanics, and practical reference manifests, see:
+* [Config Connector Core Principles: Dependency Management](docs/guides/core-principles.md#4-dependency-management)
+* [Practical Complex Examples](docs/guides/practical-examples.md)
+
 ## What is a reference field?
 
 Config Connector uses the concept of
