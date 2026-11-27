@@ -19,8 +19,8 @@ import (
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -90,7 +90,7 @@ func (obj *GKEHubScopeRBACRoleBinding) GetIdentity(ctx context.Context, reader c
 		return nil, err
 	}
 
-	resourceID := direct.ValueOf(obj.Spec.RBACRoleBindingID)
+	resourceID := ptr.ValueOf(obj.Spec.RBACRoleBindingID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}

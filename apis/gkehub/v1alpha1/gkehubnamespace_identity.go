@@ -18,10 +18,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/ptr"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -111,9 +110,9 @@ func getIdentityFromGKEHubNamespaceSpec(ctx context.Context, reader client.Reade
 		return nil, fmt.Errorf("could not derive scopeID from scopeRef")
 	}
 
-	namespaceID := direct.ValueOf(gkeHubNamespace.Spec.NamespaceID)
+	namespaceID := ptr.ValueOf(gkeHubNamespace.Spec.NamespaceID)
 	if namespaceID == "" {
-		namespaceID = direct.ValueOf(gkeHubNamespace.Spec.ResourceID)
+		namespaceID = ptr.ValueOf(gkeHubNamespace.Spec.ResourceID)
 	}
 	if namespaceID == "" {
 		namespaceID = gkeHubNamespace.GetName()
@@ -128,7 +127,7 @@ func (obj *GKEHubNamespace) GetIdentity(ctx context.Context, reader client.Reade
 		return nil, err
 	}
 
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	externalRef := ptr.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
 		statusIdentity := &GKEHubNamespaceIdentity{}
