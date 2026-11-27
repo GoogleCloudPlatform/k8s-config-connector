@@ -1,0 +1,188 @@
+GET https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}?alt=json
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "appGateway \"projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/appGateways?alt=json&app_gateway_id=beyondcorpappgateway${uniqueId}
+Content-Type: application/json
+
+{
+  "displayName": "Sample Gateway",
+  "hostType": "GCP_REGIONAL_MIG",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "type": "TCP_PROXY"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.beyondcorp.appgateways.v1.AppGatewayOperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.beyondcorp.appgateways.v1.AppGatewayOperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.beyondcorp.appgateways.v1.AppGateway",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Sample Gateway",
+    "hostType": "GCP_REGIONAL_MIG",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}",
+    "state": "CREATED",
+    "type": "TCP_PROXY",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "uri": "//beyondcorp.googleapis.com/projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}"
+  }
+}
+
+---
+
+GET https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Sample Gateway",
+  "hostType": "GCP_REGIONAL_MIG",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}",
+  "state": "CREATED",
+  "type": "TCP_PROXY",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uri": "//beyondcorp.googleapis.com/projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}"
+}
+
+---
+
+DELETE https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.beyondcorp.appgateways.v1.AppGatewayOperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.beyondcorp.appgateways.v1.AppGatewayOperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
