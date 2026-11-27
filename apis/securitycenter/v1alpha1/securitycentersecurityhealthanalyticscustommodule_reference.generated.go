@@ -36,7 +36,7 @@ var _ refs.Ref = &SecuritycenterSecurityHealthAnalyticsCustomModuleRef{}
 // SecuritycenterSecurityHealthAnalyticsCustomModuleRef is a reference to a GCP SecuritycenterSecurityHealthAnalyticsCustomModule resource.
 type SecuritycenterSecurityHealthAnalyticsCustomModuleRef struct {
 	// A reference to an externally managed SecuritycenterSecurityHealthAnalyticsCustomModule resource.
-	// Should be in the format "organizations/{{organizationID}}/securityHealthAnalyticsSettings/customModules/{{customModuleID}}".
+	// Should be in the format "projects/{{projectID}}/securityHealthAnalyticsSettings/customModules/{{customModuleID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a SecuritycenterSecurityHealthAnalyticsCustomModule resource.
