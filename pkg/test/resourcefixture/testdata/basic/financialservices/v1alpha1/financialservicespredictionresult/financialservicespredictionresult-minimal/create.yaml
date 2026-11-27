@@ -1,0 +1,17 @@
+apiVersion: financialservices.cnrm.cloud.google.com/v1alpha1
+kind: FinancialServicesPredictionResult
+metadata:
+  name: financialservicespredictionresult-${uniqueId}
+spec:
+  parentRef:
+    name: financialservicesinstance-${uniqueId}
+  datasetRef:
+    external: projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/datasets/dataset-${uniqueId}
+  modelRef:
+    external: projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/models/model-${uniqueId}
+  endTime: "2024-01-01T00:00:00Z"
+  predictionPeriods: 1
+  outputs:
+    predictionDestination:
+      tableURI: bq://${projectId}.dataset.table
+      writeDisposition: WRITE_DISPOSITION_UNSPECIFIED

@@ -156,3 +156,34 @@ func (s *MockService) parseEngineConfigName(name string) (*engineConfigName, err
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is malformed", name)
 }
+
+// predictionResultName is a parsed predictionResult name
+type predictionResultName struct {
+	Instance         *instanceName
+	PredictionResult string
+}
+
+func (n *predictionResultName) String() string {
+	return n.Instance.String() + "/predictionResults/" + n.PredictionResult
+}
+
+// parsePredictionResultName parses a string into a predictionResultName.
+// The expected form is projects/<projectID>/locations/<region>/instances/<instanceID>/predictionResults/<id>
+func (s *MockService) parsePredictionResultName(name string) (*predictionResultName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "instances" && tokens[6] == "predictionResults" && tokens[7] != "" {
+		inst, err := s.parseInstanceName(strings.Join(tokens[:6], "/"))
+		if err != nil {
+			return nil, err
+		}
+
+		name := &predictionResultName{
+			Instance:         inst,
+			PredictionResult: tokens[7],
+		}
+
+		return name, nil
+	}
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is malformed", name)
+}
