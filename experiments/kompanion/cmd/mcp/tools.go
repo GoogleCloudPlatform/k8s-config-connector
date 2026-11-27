@@ -25,6 +25,7 @@ import (
 
 	"github.com/mark3labs/mcp-go/mcp"
 	"golang.org/x/sync/errgroup"
+	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -593,3 +594,124 @@ func (sc *serverContext) getKCCGVRs() ([]schema.GroupVersionResource, error) {
 	sc.kccGVRs = gvrs
 	return gvrs, nil
 }
+
+func (sc *serverContext) handleGetKCCLogs(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	namespace, _ := request.RequireString("namespace")
+	name, _ := request.RequireString("name")
+	lines := request.GetInt("lines", 50)
+
+	// Find the manager pod
+	pods, err := sc.kubeClient.CoreV1().Pods("cnrm-system").List(ctx, metav1.ListOptions{
+		LabelSelector: "cnrm.cloud.google.com/component=cnrm-controller-manager",
+	})
+	if err != nil || len(pods.Items) == 0 {
+		return mcp.NewToolResultError("failed to find cnrm-controller-manager pod"), nil
+	}
+
+	podName := pods.Items[0].Name
+	logOpts := &corev1.PodLogOptions{
+		Container: "manager",
+		TailLines: int64ptr(int64(lines * 100)), // Wider window for better filtering
+	}
+	req := sc.kubeClient.CoreV1().Pods("cnrm-system").GetLogs(podName, logOpts)
+	podLogs, err := req.Stream(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(fmt.Sprintf("failed to stream logs: %v", err)), nil
+	}
+	defer podLogs.Close()
+
+	buf := new(strings.Builder)
+	_, _ = io.Copy(buf, podLogs)
+
+	// IMPROVED: Multi-pattern fuzzy search
+	patterns := []string{
+		fmt.Sprintf("\"name\":\"%s\"", name),
+		fmt.Sprintf("\"namespace\":\"%s\"", namespace),
+		fmt.Sprintf(" %s/%s ", namespace, name),
+	}
+
+	var filteredLogs []string
+	for _, line := range strings.Split(buf.String(), "\n") {
+		match := false
+		for _, p := range patterns {
+			if strings.Contains(line, p) {
+				match = true
+				break
+			}
+		}
+		if match {
+			filteredLogs = append(filteredLogs, line)
+		}
+	}
+
+	if len(filteredLogs) == 0 {
+		return mcp.NewToolResultText("No logs found for this resource. The controller may not have reached the reconciliation phase yet, or it may have failed at the registration phase."), nil
+	}
+
+	if len(filteredLogs) > int(lines) {
+		filteredLogs = filteredLogs[len(filteredLogs)-int(lines):]
+	}
+
+	return mcp.NewToolResultText(strings.Join(filteredLogs, "\n")), nil
+}
+
+func (sc *serverContext) handleListKCCEvents(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	kind, _ := request.RequireString("kind")
+	namespace, _ := request.RequireString("namespace")
+	name, _ := request.RequireString("name")
+
+	// Get events for the resource
+	events, err := sc.kubeClient.CoreV1().Events(namespace).List(ctx, metav1.ListOptions{
+		FieldSelector: fmt.Sprintf("involvedObject.name=%s,involvedObject.kind=%s", name, kind),
+	})
+	if err != nil {
+		return mcp.NewToolResultError(fmt.Sprintf("failed to list events: %v", err)), nil
+	}
+
+	if len(events.Items) == 0 {
+		return mcp.NewToolResultText("No Kubernetes events found for this resource."), nil
+	}
+
+	var sb strings.Builder
+	sb.WriteString(fmt.Sprintf("Kubernetes Events for %s/%s (%s):\n\n", namespace, name, kind))
+	for _, e := range events.Items {
+		sb.WriteString(fmt.Sprintf("- Type: %s, Reason: %s, Count: %d, Message: %s\n", e.Type, e.Reason, e.Count, e.Message))
+	}
+
+	return mcp.NewToolResultText(sb.String()), nil
+}
+
+func (sc *serverContext) handleDiagnoseKCCSystem(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	var sb strings.Builder
+	sb.WriteString("KCC System Diagnosis:\n\n")
+
+	namespaces := []string{"cnrm-system", "configconnector-operator-system"}
+	for _, ns := range namespaces {
+		sb.WriteString(fmt.Sprintf("Namespace: %s\n", ns))
+		pods, err := sc.kubeClient.CoreV1().Pods(ns).List(ctx, metav1.ListOptions{})
+		if err != nil {
+			sb.WriteString(fmt.Sprintf("  ❌ Failed to list pods: %v\n", err))
+			continue
+		}
+		if len(pods.Items) == 0 {
+			sb.WriteString("  ⚠️  No pods found.\n")
+			continue
+		}
+		for _, pod := range pods.Items {
+			status := "Running"
+			if pod.Status.Phase != corev1.PodRunning {
+				status = string(pod.Status.Phase)
+			}
+			image := ""
+			if len(pod.Spec.Containers) > 0 {
+				image = pod.Spec.Containers[0].Image
+			}
+			sb.WriteString(fmt.Sprintf("  - Pod: %s, Status: %s, Image: %s\n", pod.Name, status, image))
+		}
+		sb.WriteString("\n")
+	}
+
+	return mcp.NewToolResultText(sb.String()), nil
+}
+
+func int64ptr(i int64) *int64 { return &i }
