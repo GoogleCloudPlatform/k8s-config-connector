@@ -251,7 +251,7 @@ func TestCheckLeaderEndpointsWarningTableRows(t *testing.T) {
 				"privateClusterConfig": {"privateEndpoint": "10.0.0.2", "masterGlobalAccessConfig": {"enabled": true}},
 				"networkConfig": {"network": "projects/p/global/networks/vpc-b"}
 			}`,
-			wantWarning: "the clusters need a route between their VPC networks (VPC peering, Cloud VPN or Interconnect)",
+			wantWarning: "the clusters are in different VPC networks: PrivateIP requires Cloud VPN or Cloud Interconnect between the VPCs (VPC Network Peering cannot reach GKE private endpoints); otherwise use --leader-endpoint-type=DNS",
 		},
 		{
 			name:         "PrivateIP privateEndpointEnforcementEnabled warns",
