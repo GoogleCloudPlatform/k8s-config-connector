@@ -1,0 +1,31 @@
+apiVersion: backupdr.cnrm.cloud.google.com/v1alpha1
+kind: BackupDRRestoreTemplate
+metadata:
+  name: backupdrrestoretemplate-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
+  description: BackupDR restore template maximal test
+  resourceType: compute.googleapis.com/Instance
+  labels:
+    env: test
+    tier: standard
+  backupSelectionConfig:
+    dataSourceRef:
+      external: projects/${projectId}/locations/us-central1/backupVaults/backupvault-${uniqueId}/dataSources/datasource-${uniqueId}
+  preRestoreConfig:
+    timeout: 3600s
+    cloudRunJobRef:
+      external: projects/${projectId}/locations/us-central1/jobs/prerestore-job-${uniqueId}
+  postRestoreConfig:
+    timeout: 3600s
+    cloudRunJobRef:
+      external: projects/${projectId}/locations/us-central1/jobs/postrestore-job-${uniqueId}
+  verificationConfig:
+    timeout: 3600s
+    cloudRunJobRef:
+      external: projects/${projectId}/locations/us-central1/jobs/verify-job-${uniqueId}
+  restoreProperties:
+    targetEnvironment: projects/${projectId}/zones/us-central1-a
+    machineType: n1-standard-1
