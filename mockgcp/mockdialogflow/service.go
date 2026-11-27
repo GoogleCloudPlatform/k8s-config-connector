@@ -70,6 +70,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterSipTrunksServer(grpcServer, &sipTrunksServer{MockService: s})
 	pb.RegisterGeneratorsServer(grpcServer, &generatorsServer{MockService: s})
 	pb.RegisterKnowledgeBasesServer(grpcServer, &knowledgeBasesServer{MockService: s})
+	pb.RegisterAgentsServer(grpcServer, &agentsServer{MockService: s})
 	pb_v2.RegisterConversationDatasetsServer(grpcServer, &conversationDatasetsServer{MockService: s})
 	pb_v2.RegisterCompanionAgentsServer(grpcServer, &companionAgentsServer{MockService: s})
 	pb_v2.RegisterGeneratorEvaluationsServer(grpcServer, &generatorEvaluationsServer{MockService: s})
@@ -87,6 +88,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		grpcpb.RegisterSipTrunksHandler,
 		grpcpb.RegisterGeneratorsHandler,
 		grpcpb.RegisterKnowledgeBasesHandler,
+		grpcpb.RegisterAgentsHandler,
 		RegisterConversationDatasetsHandler,
 		RegisterCompanionAgentsHandler,
 		RegisterGeneratorEvaluationsHandler,

@@ -1,0 +1,198 @@
+# Phase: CREATE
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/agent?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "com.google.apps.framework.request.NotFoundException: No DesignTimeAgent found for project '${projectId}'.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dialogflow.googleapis.com/v2/projects/${projectId}/agent?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "apiVersion": "API_VERSION_V2_BETA_1",
+  "classificationThreshold": 0.5,
+  "defaultLanguageCode": "en",
+  "description": "Initial description",
+  "displayName": "max-${uniqueId}",
+  "enableLogging": true,
+  "matchMode": "MATCH_MODE_HYBRID",
+  "supportedLanguageCodes": [
+    "fr",
+    "es"
+  ],
+  "timeZone": "America/New_York"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "apiVersion": "API_VERSION_V2_BETA_1",
+  "classificationThreshold": 0.5,
+  "defaultLanguageCode": "en",
+  "description": "Initial description",
+  "displayName": "max-${uniqueId}",
+  "enableLogging": true,
+  "matchMode": "MATCH_MODE_HYBRID",
+  "parent": "projects/${projectId}",
+  "supportedLanguageCodes": [
+    "fr",
+    "es"
+  ],
+  "tier": "TIER_STANDARD",
+  "timeZone": "America/New_York"
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/agent?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "apiVersion": "API_VERSION_V2_BETA_1",
+  "classificationThreshold": 0.5,
+  "defaultLanguageCode": "en",
+  "description": "Initial description",
+  "displayName": "max-${uniqueId}",
+  "enableLogging": true,
+  "matchMode": "MATCH_MODE_HYBRID",
+  "parent": "projects/${projectId}",
+  "supportedLanguageCodes": [
+    "fr",
+    "es"
+  ],
+  "tier": "TIER_STANDARD",
+  "timeZone": "America/New_York"
+}
+
+---
+
+# Phase: UPDATE
+POST https://dialogflow.googleapis.com/v2/projects/${projectId}/agent?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "apiVersion": "API_VERSION_V2",
+  "classificationThreshold": 0.7,
+  "defaultLanguageCode": "en",
+  "description": "Updated description",
+  "displayName": "max-up-${uniqueId}",
+  "matchMode": "MATCH_MODE_ML_ONLY",
+  "supportedLanguageCodes": [
+    "de"
+  ],
+  "timeZone": "Europe/London"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "apiVersion": "API_VERSION_V2",
+  "classificationThreshold": 0.7,
+  "defaultLanguageCode": "en",
+  "description": "Updated description",
+  "displayName": "max-up-${uniqueId}",
+  "matchMode": "MATCH_MODE_ML_ONLY",
+  "parent": "projects/${projectId}",
+  "supportedLanguageCodes": [
+    "de"
+  ],
+  "tier": "TIER_STANDARD",
+  "timeZone": "Europe/London"
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/agent?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "apiVersion": "API_VERSION_V2",
+  "classificationThreshold": 0.7,
+  "defaultLanguageCode": "en",
+  "description": "Updated description",
+  "displayName": "max-up-${uniqueId}",
+  "matchMode": "MATCH_MODE_ML_ONLY",
+  "parent": "projects/${projectId}",
+  "supportedLanguageCodes": [
+    "de"
+  ],
+  "tier": "TIER_STANDARD",
+  "timeZone": "Europe/London"
+}
+
+---
+
+# Phase: DELETE
+DELETE https://dialogflow.googleapis.com/v2/projects/${projectId}/agent?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

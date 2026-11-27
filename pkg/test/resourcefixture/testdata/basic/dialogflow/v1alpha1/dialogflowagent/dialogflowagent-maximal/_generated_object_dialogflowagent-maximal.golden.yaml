@@ -1,0 +1,35 @@
+apiVersion: dialogflow.cnrm.cloud.google.com/v1alpha1
+kind: DialogflowAgent
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: dialogflowagent-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  apiVersion: API_VERSION_V2
+  classificationThreshold: 0.7
+  defaultLanguageCode: en
+  description: Updated description
+  displayName: max-up-${uniqueId}
+  enableLogging: false
+  matchMode: MATCH_MODE_ML_ONLY
+  resourceID: ${projectId}
+  supportedLanguageCodes:
+  - de
+  timeZone: Europe/London
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 2
