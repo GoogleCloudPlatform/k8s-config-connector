@@ -1,0 +1,36 @@
+# Phase: DELETE
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoreindex-acquire-db-${uniqueId}/collectionGroups/Customer-${uniqueId}/indexes/${indexID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoreindex-acquire-db-${uniqueId}%2FcollectionGroups%2FCustomer-${uniqueId}%2Findexes%2F${indexID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "density": 1,
+  "fields": [
+    {
+      "fieldPath": "email",
+      "order": 1
+    },
+    {
+      "fieldPath": "createdAt",
+      "order": 2
+    },
+    {
+      "fieldPath": "__name__",
+      "order": 2
+    }
+  ],
+  "name": "projects/${projectId}/databases/firestoreindex-acquire-db-${uniqueId}/collectionGroups/Customer-${uniqueId}/indexes/${indexID}",
+  "queryScope": 2,
+  "state": 2
+}

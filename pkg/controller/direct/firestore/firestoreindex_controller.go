@@ -81,6 +81,7 @@ func (m *firestoreIndexModel) AdapterForObject(ctx context.Context, op *directba
 		id:                   id.(*krm.FirestoreIndexIdentity),
 		firestoreAdminClient: firestoreAdminClient,
 		desired:              desired,
+		acquisition:          direct.ValueOf(obj.Spec.ResourceID) != "",
 	}, nil
 }
 
@@ -113,6 +114,7 @@ type firestoreIndexAdapter struct {
 	firestoreAdminClient *apiv1.FirestoreAdminClient
 	desired              *pb.Index
 	actual               *pb.Index
+	acquisition          bool
 }
 
 var _ directbase.Adapter = &firestoreIndexAdapter{}
@@ -131,6 +133,9 @@ func (a *firestoreIndexAdapter) Find(ctx context.Context) (bool, error) {
 	obj, err := a.firestoreAdminClient.GetIndex(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
+			if a.acquisition {
+				return false, fmt.Errorf("FirestoreIndex %q can't be acquired: %w; unset 'spec.resourceID' if you want to create it", fqn, err)
+			}
 			return false, nil
 		}
 		return false, fmt.Errorf("getting FirestoreIndex %q: %w", fqn, err)
@@ -174,11 +179,54 @@ func (a *firestoreIndexAdapter) Create(ctx context.Context, createOp *directbase
 }
 
 func (a *firestoreIndexAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	// All fields in FirestoreIndexSpec are immutable.
-	// We only need to update the status.
+	// All fields in FirestoreIndexSpec are immutable. An explicitly acquired
+	// index must already have the requested definition because it cannot be
+	// updated in place.
+	if a.acquisition && !firestoreIndexDefinitionsEqual(a.desired, a.actual) {
+		return fmt.Errorf("cannot acquire FirestoreIndex %q: existing index definition does not match spec", a.id.String())
+	}
+
 	status := &krm.FirestoreIndexStatus{}
 	status.Name = direct.PtrTo(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
+}
+
+func firestoreIndexDefinitionsEqual(desired, actual *pb.Index) bool {
+	if desired == nil || actual == nil {
+		return desired == actual
+	}
+
+	desired = normalizeFirestoreIndexDefinition(desired)
+	actual = normalizeFirestoreIndexDefinition(actual)
+	return proto.Equal(desired, actual)
+}
+
+func normalizeFirestoreIndexDefinition(index *pb.Index) *pb.Index {
+	index = proto.CloneOf(index)
+	index.Name = ""
+	index.State = pb.Index_STATE_UNSPECIFIED
+	index.Density = pb.Index_DENSITY_UNSPECIFIED
+	index.Multikey = false
+	index.ShardCount = 0
+	index.Unique = false
+
+	if index.QueryScope == pb.Index_QUERY_SCOPE_UNSPECIFIED {
+		index.QueryScope = pb.Index_COLLECTION
+	}
+
+	if len(index.Fields) > 0 && index.Fields[len(index.Fields)-1].GetFieldPath() != "__name__" {
+		order := pb.Index_IndexField_ASCENDING
+		lastOrder := index.Fields[len(index.Fields)-1].GetOrder()
+		if index.ApiScope != pb.Index_DATASTORE_MODE_API && lastOrder != pb.Index_IndexField_ORDER_UNSPECIFIED {
+			order = lastOrder
+		}
+		index.Fields = append(index.Fields, &pb.Index_IndexField{
+			FieldPath: "__name__",
+			ValueMode: &pb.Index_IndexField_Order_{Order: order},
+		})
+	}
+
+	return index
 }
 
 func (a *firestoreIndexAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
@@ -199,6 +247,7 @@ func (a *firestoreIndexAdapter) Export(ctx context.Context) (*unstructured.Unstr
 
 	obj.SetGroupVersionKind(krm.FirestoreIndexGVK)
 	obj.Name = a.id.Index
+	obj.Spec.ResourceID = direct.PtrTo(a.id.Index)
 	obj.Spec.Collection = a.id.CollectionGroup
 	if a.id.Database != "(default)" {
 		obj.Spec.Database = direct.PtrTo(a.id.Database)

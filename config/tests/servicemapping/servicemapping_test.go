@@ -43,6 +43,33 @@ var (
 	emptyIAMConfig  = v1alpha1.IAMConfig{}
 )
 
+func TestFirestoreIndexResourceIDMapping(t *testing.T) {
+	t.Parallel()
+
+	smLoader := testservicemappingloader.New(t)
+	gvk := k8sschema.GroupVersionKind{
+		Group:   "firestore.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "FirestoreIndex",
+	}
+	resourceConfigs, err := smLoader.GetResourceConfigs(gvk)
+	if err != nil {
+		t.Fatalf("getting FirestoreIndex resource config: %v", err)
+	}
+	if len(resourceConfigs) != 1 {
+		t.Fatalf("got %d FirestoreIndex resource configs, want 1", len(resourceConfigs))
+	}
+
+	got := resourceConfigs[0].ResourceID
+	if got.TargetField != "name" {
+		t.Errorf("resourceID.targetField = %q, want %q", got.TargetField, "name")
+	}
+	wantTemplate := "projects/{{project}}/databases/{{database}}/collectionGroups/{{collection}}/indexes/{{value}}"
+	if got.ValueTemplate != wantTemplate {
+		t.Errorf("resourceID.valueTemplate = %q, want %q", got.ValueTemplate, wantTemplate)
+	}
+}
+
 func TestIDTemplateCanBeUsedToMatchResourceNameShouldHaveValue(t *testing.T) {
 	t.Parallel()
 	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()

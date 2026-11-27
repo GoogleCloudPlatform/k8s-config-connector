@@ -447,12 +447,17 @@ func TestE2EScript(t *testing.T) {
 
 					case "ABANDON-AND-REACQUIRE-WITH-GENERATED-ID":
 						existing := readObject(h, obj.GroupVersionKind(), obj.GetNamespace(), obj.GetName())
-						// Get the server generated id from spec.resourceID(legacy) or status.externalRef(direct)
+						// Get the server-generated ID from spec.resourceID (legacy),
+						// status.externalRef (direct), or another resource-specific
+						// external identity field such as FirestoreIndex status.name.
 						resourceID, _, _ := unstructured.NestedString(existing.Object, "spec", "resourceID")
 						if resourceID == "" {
 							externalRef, _, _ := unstructured.NestedString(existing.Object, "status", "externalRef")
 							if externalRef == "" {
-								h.Fatalf("object did not have spec.resourceID or status.externalRef: %v", existing.Object)
+								externalRef, _, _ = unstructured.NestedString(existing.Object, "status", "name")
+							}
+							if externalRef == "" {
+								h.Fatalf("object did not have spec.resourceID, status.externalRef, or status.name: %v", existing.Object)
 							}
 							tokens := strings.Split(externalRef, "/")
 							resourceID = tokens[len(tokens)-1]

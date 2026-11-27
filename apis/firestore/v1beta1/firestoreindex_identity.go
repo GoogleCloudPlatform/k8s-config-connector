@@ -104,7 +104,7 @@ func getIdentityFromFirestoreIndexSpec(ctx context.Context, reader client.Reader
 		Project:         projectID,
 		Database:        database,
 		CollectionGroup: collection,
-		Index:           "", // Will be populated from status or creation
+		Index:           common.ValueOf(spec.ResourceID),
 	}
 
 	return identity, nil
@@ -125,6 +125,9 @@ func (obj *FirestoreIndex) GetIdentity(ctx context.Context, reader client.Reader
 
 		if statusIdentity.Project != specIdentity.Project || statusIdentity.Database != specIdentity.Database || statusIdentity.CollectionGroup != specIdentity.CollectionGroup {
 			return nil, fmt.Errorf("cannot change FirestoreIndex identity (old=%q, new parent=%q)", externalRef, specIdentity.Parent().String())
+		}
+		if specIdentity.Index != "" && specIdentity.Index != statusIdentity.Index {
+			return nil, fmt.Errorf("cannot change FirestoreIndex resourceID (old=%q, new=%q)", statusIdentity.Index, specIdentity.Index)
 		}
 
 		specIdentity.Index = statusIdentity.Index

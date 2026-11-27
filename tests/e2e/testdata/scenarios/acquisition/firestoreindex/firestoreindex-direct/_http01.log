@@ -1,0 +1,89 @@
+POST https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoreindex-acquire-db-${uniqueId}/collectionGroups/Customer-${uniqueId}/indexes?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Fdatabases%2Ffirestoreindex-acquire-db-${uniqueId}%2FcollectionGroups%2FCustomer-${uniqueId}
+
+{
+  "fields": [
+    {
+      "fieldPath": "email",
+      "order": 1
+    },
+    {
+      "fieldPath": "createdAt",
+      "order": 2
+    }
+  ],
+  "queryScope": 2
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.IndexOperationMetadata",
+    "index": "projects/${projectId}/databases/firestoreindex-acquire-db-${uniqueId}/collectionGroups/Customer-${uniqueId}/indexes/${indexID}",
+    "startTime": "2024-04-01T12:34:56.123456Z",
+    "state": 1
+  },
+  "name": "projects/${projectId}/databases/firestoreindex-acquire-db-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoreindex-acquire-db-${uniqueId}/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoreindex-acquire-db-${uniqueId}%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.IndexOperationMetadata",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "index": "projects/${projectId}/databases/firestoreindex-acquire-db-${uniqueId}/collectionGroups/Customer-${uniqueId}/indexes/${indexID}",
+    "progressDocuments": {},
+    "startTime": "2024-04-01T12:34:56.123456Z",
+    "state": "SUCCESSFUL"
+  },
+  "name": "projects/${projectId}/databases/firestoreindex-acquire-db-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.Index",
+    "density": "SPARSE_ALL",
+    "fields": [
+      {
+        "fieldPath": "email",
+        "order": "ASCENDING"
+      },
+      {
+        "fieldPath": "createdAt",
+        "order": "DESCENDING"
+      },
+      {
+        "fieldPath": "__name__",
+        "order": "DESCENDING"
+      }
+    ],
+    "name": "projects/${projectId}/databases/firestoreindex-acquire-db-${uniqueId}/collectionGroups/Customer-${uniqueId}/indexes/${indexID}",
+    "queryScope": "COLLECTION_GROUP",
+    "state": "READY"
+  }
+}

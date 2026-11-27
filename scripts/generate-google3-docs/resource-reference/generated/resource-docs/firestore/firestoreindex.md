@@ -78,6 +78,7 @@ fields:
   fieldPath: string
   order: string
 queryScope: string
+resourceID: string
 ```
 
 <table class="properties responsive">
@@ -175,6 +176,16 @@ queryScope: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>Immutable. The scope at which a query is run. Default value: "COLLECTION" Possible values: ["COLLECTION", "COLLECTION_GROUP", "COLLECTION_RECURSIVE"].</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>resourceID</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Immutable. Optional. The service-generated index ID. Used for acquisition only. Leave unset to create a new resource.</p>
         </td>
     </tr>
 </tbody>

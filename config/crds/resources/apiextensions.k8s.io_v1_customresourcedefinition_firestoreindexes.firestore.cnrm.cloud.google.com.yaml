@@ -105,6 +105,10 @@ spec:
                   value: "COLLECTION" Possible values: ["COLLECTION", "COLLECTION_GROUP",
                   "COLLECTION_RECURSIVE"].'
                 type: string
+              resourceID:
+                description: Immutable. Optional. The service-generated index ID.
+                  Used for acquisition only. Leave unset to create a new resource.
+                type: string
             required:
             - collection
             - fields
