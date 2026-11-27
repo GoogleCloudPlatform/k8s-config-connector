@@ -565,6 +565,13 @@ func resourceDnsRecordSetUpdate(d *schema.ResourceData, meta interface{}) error 
 		return err
 	}
 
+	newRrdatas := expandDnsRecordSetRrdata(d.Get("rrdatas").([]interface{}))
+	if newRoutingPolicy != nil {
+		// rrdatas and routing_policy are mutually exclusive, but the prior rrdatas
+		// can still be set when a static record set is converted to a routing policy.
+		newRrdatas = nil
+	}
+
 	chg := &dns.Change{
 		Deletions: []*dns.ResourceRecordSet{
 			{
@@ -580,7 +587,7 @@ func resourceDnsRecordSetUpdate(d *schema.ResourceData, meta interface{}) error 
 				Name:          recordName,
 				Type:          newType.(string),
 				Ttl:           int64(newTtl.(int)),
-				Rrdatas:       expandDnsRecordSetRrdata(d.Get("rrdatas").([]interface{})),
+				Rrdatas:       newRrdatas,
 				RoutingPolicy: newRoutingPolicy,
 			},
 		},
@@ -645,6 +652,11 @@ func expandDnsRecordSetRoutingPolicy(configured []interface{}, d tpgresource.Ter
 	wrrRawItems, _ := data["wrr"].([]interface{})
 	geoRawItems, _ := data["geo"].([]interface{})
 	rawPrimaryBackup, _ := data["primary_backup"].([]interface{})
+	// The prior value of a routing policy that is being added contains nil
+	// placeholders for its nested blocks; they carry no configuration.
+	wrrRawItems = dropNilItems(wrrRawItems)
+	geoRawItems = dropNilItems(geoRawItems)
+	rawPrimaryBackup = dropNilItems(rawPrimaryBackup)
 
 	if len(wrrRawItems) > 0 {
 		wrrItems, err := expandDnsRecordSetRoutingPolicyWrrItems(wrrRawItems, d, config)
@@ -687,7 +699,17 @@ func expandDnsRecordSetRoutingPolicy(configured []interface{}, d tpgresource.Ter
 		return rp, nil
 	}
 
-	return nil, nil // unreachable here if ps is valid data
+	return nil, nil
+}
+
+func dropNilItems(raw []interface{}) []interface{} {
+	items := make([]interface{}, 0, len(raw))
+	for _, item := range raw {
+		if item != nil {
+			items = append(items, item)
+		}
+	}
+	return items
 }
 
 func expandDnsRecordSetRoutingPolicyWrrItems(configured []interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) ([]*dns.RRSetRoutingPolicyWrrPolicyWrrPolicyItem, error) {
