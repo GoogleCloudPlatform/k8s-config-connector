@@ -1,0 +1,12 @@
+- caisURL: //netapp.googleapis.com/projects/${projectId}/locations/us-central1/storagePools/netappvolume-dep-${uniqueId}
+  group: netapp.cnrm.cloud.google.com
+  kind: NetAppStoragePool
+  name: netappvolume-dep-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //netapp.googleapis.com/projects/${projectId}/locations/us-central1/volumes/netappvolume-${uniqueId}
+  group: netapp.cnrm.cloud.google.com
+  kind: NetAppVolume
+  name: netappvolume-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

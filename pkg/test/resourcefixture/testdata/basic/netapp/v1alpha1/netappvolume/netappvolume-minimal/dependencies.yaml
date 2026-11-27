@@ -1,0 +1,12 @@
+apiVersion: netapp.cnrm.cloud.google.com/v1alpha1
+kind: NetAppStoragePool
+metadata:
+  name: netappvolume-dep-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
+  serviceLevel: STANDARD
+  capacityGib: 2048
+  networkRef:
+    external: projects/${projectId}/global/networks/default

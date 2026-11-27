@@ -1,0 +1,75 @@
+apiVersion: netapp.cnrm.cloud.google.com/v1alpha1
+kind: NetAppVolume
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: netappvolume-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  capacityGib: 150
+  description: Updated maximal volume
+  exportPolicy:
+    rules:
+    - accessType: READ_WRITE
+      allowedClients: 10.0.1.0/24
+      nfsv3: true
+      nfsv4: false
+  labels:
+    env: staging
+  location: us-central1
+  projectRef:
+    external: projects/${projectId}
+  protocols:
+  - NFSV3
+  securityStyle: UNIX
+  shareName: share${uniqueId}
+  snapshotDirectory: true
+  snapshotPolicy:
+    dailySchedule:
+      hour: 3
+      minute: 30
+      snapshotsToKeep: 5
+    enabled: true
+  storagePoolRef:
+    name: netappvolume-dep-${uniqueId}
+  unixPermissions: "0775"
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/volumes/netappvolume-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    encryptionType: SERVICE_MANAGED
+    mountOptions:
+    - export: /share${uniqueId}
+      exportFull: 192.168.22.36:/share${uniqueId}
+      instructions: |-
+        Setting up your instance
+        Open an SSH client and connect to your instance.
+        Install the nfs client on your instance.
+        On Red Hat Enterprise Linux or SuSE Linux instance:
+        sudo yum install -y nfs-utils
+        On an Ubuntu or Debian instance:
+        sudo apt-get install nfs-common
+
+        Mounting your volume
+        Create a new directory on your instance, such as "/share${uniqueId}":
+        sudo mkdir /share${uniqueId}
+        Mount your volume using the example command below:
+        sudo mount -t nfs -o rw,hard,rsize=65536,wsize=65536,vers=3,tcp 192.168.22.36:/share${uniqueId} /share${uniqueId}
+        Note. Please use mount options appropriate for your specific workloads when known.
+      ipAddress: 192.168.22.36
+      protocol: NFSV3
+    network: projects/${projectNumber}/global/networks/default
+    serviceLevel: STANDARD
+    state: READY
+    stateDetails: Available for use
