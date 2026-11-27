@@ -24,6 +24,7 @@
 // resource: DesignCenterCatalogTemplateRevision:CatalogTemplateRevision
 // resource: DesignCenterApplicationTemplate:ApplicationTemplate
 // resource: DesignCenterApplication:Application
+// resource: DesignCenterComponent:Component
 
 package v1alpha1
 
@@ -448,6 +449,47 @@ type CloudControlConfig struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.designcenter.v1.Component", skipping
+
+// +kcc:proto=google.cloud.designcenter.v1.Component
+type Component struct {
+	// Identifier. The component name.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Component.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Immutable. The shared template used to generate the component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Component.shared_template_revision_uri
+	SharedTemplateRevisionURI *string `json:"sharedTemplateRevisionURI,omitempty"`
+
+	// Optional. The component parameters.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Component.parameters
+	Parameters []Parameter `json:"parameters,omitempty"`
+
+	// Optional. The component display name.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Component.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The application associated with the component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Component.application_info
+	ApplicationInfo *ComponentApplicationInfo `json:"applicationInfo,omitempty"`
+
+	// Optional. Whether the component is exported as a separate terraform root
+	//  module in a composite application template. If this is false, then native
+	//  components will be exported as a submodule of a separate terraform root
+	//  module.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Component.use_as_root_module
+	UseAsRootModule *bool `json:"useAsRootModule,omitempty"`
+
+	// Optional. Input variable aliases defined on this live component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Component.input_variable_aliases
+	InputVariableAliases []InputVariableAlias `json:"inputVariableAliases,omitempty"`
+
+	// Optional. The application template revision used to generate the component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Component.application_template_revision_uri
+	ApplicationTemplateRevisionURI *string `json:"applicationTemplateRevisionURI,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.designcenter.v1.ComponentApplicationInfo
 type ComponentApplicationInfo struct {
 	// Required. The application ID of the apphub application. The ID must be 1-63
@@ -867,20 +909,20 @@ type InferredMetadata struct {
 }
 */
 
-/* unreachable type InputVariableAlias
 // +kcc:proto=google.cloud.designcenter.v1.InputVariableAlias
 type InputVariableAlias struct {
 	// Required. Name of the input variable inside the component's underlying
 	//  template or module.
 	// +kcc:proto:field=google.cloud.designcenter.v1.InputVariableAlias.variable
+	// +required
 	Variable *string `json:"variable,omitempty"`
 
 	// Required. Alias for the variable name to be exposed at the root level of
 	//  the composite template.
 	// +kcc:proto:field=google.cloud.designcenter.v1.InputVariableAlias.alias
+	// +required
 	Alias *string `json:"alias,omitempty"`
 }
-*/
 
 /* unreachable type LogicalProduct
 // +kcc:proto=google.cloud.designcenter.v1.LogicalProduct
@@ -1957,6 +1999,43 @@ type CloudControlConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.designcenter.v1.CloudControlConfig.parameters
 	Parameters []ParameterObservedState `json:"parameters,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.designcenter.v1.Component", skipping
+
+// +kcc:observedstate:proto=google.cloud.designcenter.v1.Component
+type ComponentObservedState struct {
+	// Optional. The component parameters.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Component.parameters
+	Parameters []ParameterObservedState `json:"parameters,omitempty"`
+
+	// Output only. The component creation timestamp.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Component.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The component update timestamp.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Component.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. IAM roles required by the service account to deploy the
+	//  component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Component.roles
+	Roles []string `json:"roles,omitempty"`
+
+	// Output only. APIs required to be enabled to deploy the component, in the
+	//  form of "*.googleapis.com".
+	// +kcc:proto:field=google.cloud.designcenter.v1.Component.apis
+	APIs []string `json:"apis,omitempty"`
+
+	// Output only. The connection parameters of the component.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Component.connections_parameters
+	ConnectionsParameters []ConnectionParametersObservedState `json:"connectionsParameters,omitempty"`
+
+	// Output only. The component parameter schema, which includes possible
+	//  parameter values. values.
+	// +kcc:proto:field=google.cloud.designcenter.v1.Component.component_parameter_schema
+	ComponentParameterSchema []ComponentParameterSchemaObservedState `json:"componentParameterSchema,omitempty"`
+}
+*/
 
 // +kcc:observedstate:proto=google.cloud.designcenter.v1.ComponentApplicationInfo
 type ComponentApplicationInfoObservedState struct {
