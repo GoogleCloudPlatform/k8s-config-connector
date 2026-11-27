@@ -75,6 +75,16 @@ func TestNonDeclarativePatternReason(t *testing.T) {
 			wantSubstr: `ephemeral runtime collection "sessions"`,
 		},
 		{
+			pattern:    "projects/{project}/deviceSessions/{session}",
+			wantMatch:  true,
+			wantSubstr: `ephemeral runtime collection "deviceSessions"`,
+		},
+		{
+			pattern:    "projects/{project}/locations/{location}/channels/{channel}/dvrSessions/{dvr_session}",
+			wantMatch:  true,
+			wantSubstr: `ephemeral window collection "dvrSessions"`,
+		},
+		{
 			pattern:    "projects/{project}/locations/{location}/conversations/{conversation}/participants/{participant}",
 			wantMatch:  true,
 			wantSubstr: `ephemeral runtime collection "conversations"`,
@@ -85,9 +95,34 @@ func TestNonDeclarativePatternReason(t *testing.T) {
 			wantSubstr: `ephemeral execution collection "runs"`,
 		},
 		{
+			pattern:    "projects/{project}/locations/{location}/imageImports/{job}",
+			wantMatch:  true,
+			wantSubstr: `ephemeral execution collection "imageImports"`,
+		},
+		{
+			pattern:    "projects/{project}/locations/{location}/repositories/{repository}/workflowInvocations/{workflow_invocation}",
+			wantMatch:  true,
+			wantSubstr: `ephemeral execution collection "workflowInvocations"`,
+		},
+		{
+			pattern:    "projects/{project}/locations/{location}/trainingPipelines/{training_pipeline}",
+			wantMatch:  true,
+			wantSubstr: `ephemeral execution collection "trainingPipelines"`,
+		},
+		{
+			pattern:    "projects/{project}/locations/{location}/migrationJobs/{migration_job}",
+			wantMatch:  true,
+			wantSubstr: `ephemeral execution collection "migrationJobs"`,
+		},
+		{
 			pattern:    "projects/{project}/locations/{location}/repositories/{repository}/pullRequests/{pull_request}/pullRequestComments/{pull_request_comment}",
 			wantMatch:  true,
 			wantSubstr: `ephemeral activity collection "pullRequests"`,
+		},
+		{
+			pattern:    "projects/{project}/locations/{location}/unitOperations/{unitOperation}",
+			wantMatch:  true,
+			wantSubstr: `ephemeral execution collection "unitOperations"`,
 		},
 		{
 			pattern:    "projects/{project}/locations/{location}/repositories/{repository}/issues/{issue}/issueComments/{issue_comment}",
@@ -104,6 +139,11 @@ func TestNonDeclarativePatternReason(t *testing.T) {
 			pattern:    "projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}",
 			wantMatch:  true,
 			wantSubstr: `data-plane document leaf collection "documents"`,
+		},
+		{
+			pattern:    "projects/{project}/locations/{location}/ragCorpora/{rag_corpus}/ragFiles/{rag_file}",
+			wantMatch:  true,
+			wantSubstr: `data-plane document leaf collection "ragFiles"`,
 		},
 		{
 			pattern:    "projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}/products/{product}",
@@ -156,6 +196,56 @@ func TestNonDeclarativePatternReason(t *testing.T) {
 			pattern:    "projects/{project}/locations/{location}/backupVaults/{backup_vault}/backups/{backup}",
 			wantMatch:  true,
 			wantSubstr: `point-in-time backup leaf collection "backups"`,
+		},
+		{
+			pattern:    "projects/{project}/locations/{location}/sources/{source}/utilizationReports/{utilization_report}",
+			wantMatch:  true,
+			wantSubstr: `point-in-time snapshot leaf collection "utilizationReports"`,
+		},
+		{
+			pattern:    "projects/{project}/snoozes/{snooze}",
+			wantMatch:  true,
+			wantSubstr: `ephemeral window collection "snoozes"`,
+		},
+		{
+			pattern:    "projects/{project}/locations/{location}/replays/{replay}",
+			wantMatch:  true,
+			wantSubstr: `ephemeral execution collection "replays"`,
+		},
+		{
+			pattern:    "projects/{project}/locations/{location}/entitlements/{entitlement}/grants/{grant}",
+			wantMatch:  true,
+			wantSubstr: `ephemeral execution collection "grants"`,
+		},
+		{
+			pattern:    "projects/{project}/cases/{case}/comments/{comment}",
+			wantMatch:  true,
+			wantSubstr: `ephemeral activity collection "cases"`,
+		},
+		{
+			pattern:    "projects/{project}/locations/{location}/liveSessions/{live_session}",
+			wantMatch:  true,
+			wantSubstr: `ephemeral runtime collection "liveSessions"`,
+		},
+		{
+			pattern:    "projects/{project}/locations/{location}/glossaries/{glossary}/glossaryEntries/{glossary_entry}",
+			wantMatch:  true,
+			wantSubstr: `data-plane glossary entry leaf collection "glossaryEntries"`,
+		},
+		{
+			pattern:    "projects/{project}/locations/{location}/productSets/{product_set}",
+			wantMatch:  true,
+			wantSubstr: `data-plane catalog leaf collection "productSets"`,
+		},
+		{
+			pattern:    "projects/{project}/locations/{location}/products/{product}/referenceImages/{reference_image}",
+			wantMatch:  true,
+			wantSubstr: `data-plane catalog item leaf collection "referenceImages"`,
+		},
+		{
+			pattern:    "projects/{project}/locations/{location}/sources/{source}/diskMigrationJobs/{disk_migration_job}",
+			wantMatch:  true,
+			wantSubstr: `ephemeral execution collection "diskMigrationJobs"`,
 		},
 		{
 			pattern:    "projects/{project}/locations/{location}/volumes/{volume}/snapshots/{snapshot}",
@@ -461,4 +551,113 @@ func writeWidgetServiceProtoWithMethods(t *testing.T, dir, pattern string, metho
 	path := filepath.Join(dir, "widget_service.pb")
 	writeFile(t, path, string(b))
 	return path
+}
+
+func checkResourceTypeNonDeclarative(t *testing.T, filename, pkg, msgName, resType, pattern string) (string, bool) {
+	t.Helper()
+	str := descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()
+	msgOpts := &descriptorpb.MessageOptions{}
+	proto.SetExtension(msgOpts, annotations.E_Resource, &annotations.ResourceDescriptor{
+		Type:    resType,
+		Pattern: []string{pattern},
+	})
+	fds := &descriptorpb.FileDescriptorSet{File: []*descriptorpb.FileDescriptorProto{{
+		Name:    proto.String(filename),
+		Package: proto.String(pkg),
+		Syntax:  proto.String("proto3"),
+		MessageType: []*descriptorpb.DescriptorProto{{
+			Name:    proto.String(msgName),
+			Options: msgOpts,
+			Field: []*descriptorpb.FieldDescriptorProto{
+				{Name: proto.String("name"), Number: proto.Int32(1), Type: str},
+			},
+		}},
+	}}}
+	b, err := proto.Marshal(fds)
+	if err != nil {
+		t.Fatalf("marshalling descriptor set: %v", err)
+	}
+	path := filepath.Join(t.TempDir(), msgName+".pb")
+	writeFile(t, path, string(b))
+	api, err := protoapi.LoadProto(path, "")
+	if err != nil {
+		t.Fatalf("LoadProto(%s): %v", resType, err)
+	}
+	d, err := api.Files().FindDescriptorByName(protoreflect.FullName(pkg + "." + msgName))
+	if err != nil {
+		t.Fatalf("FindDescriptorByName(%s): %v", msgName, err)
+	}
+	return nonDeclarativeResourceReason(api, d.(protoreflect.MessageDescriptor))
+}
+
+func TestNonDeclarativeDataPlaneResourceTypes(t *testing.T) {
+	reason, got := checkResourceTypeNonDeclarative(
+		t,
+		"google/cloud/bigquery/storage/v1/stream.proto",
+		"google.cloud.bigquery.storage.v1",
+		"WriteStream",
+		"bigquerystorage.googleapis.com/WriteStream",
+		"projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}",
+	)
+	if !got || !strings.Contains(reason, "data-plane stream") {
+		t.Fatalf("WriteStream: got (%q, %v), want match containing 'data-plane stream'", reason, got)
+	}
+
+	if reason, got := checkResourceTypeNonDeclarative(
+		t,
+		"google/cloud/datastream/v1/datastream_resources.proto",
+		"google.cloud.datastream.v1",
+		"Stream",
+		"datastream.googleapis.com/Stream",
+		"projects/{project}/locations/{location}/streams/{stream}",
+	); got {
+		t.Fatalf("datastream.googleapis.com/Stream unexpectedly flagged: %q", reason)
+	}
+
+	if reason, got := checkResourceTypeNonDeclarative(
+		t,
+		"google/devtools/artifactregistry/v1/file.proto",
+		"google.devtools.artifactregistry.v1",
+		"File",
+		"artifactregistry.googleapis.com/File",
+		"projects/{project}/locations/{location}/repositories/{repository}/files/{file}",
+	); !got || !strings.Contains(reason, "data-plane artifact file") {
+		t.Fatalf("artifactregistry.googleapis.com/File: got (%q, %v), want match containing 'data-plane artifact file'", reason, got)
+	}
+
+	if reason, got := checkResourceTypeNonDeclarative(
+		t,
+		"google/devtools/artifactregistry/v1/package.proto",
+		"google.devtools.artifactregistry.v1",
+		"Package",
+		"artifactregistry.googleapis.com/Package",
+		"projects/{project}/locations/{location}/repositories/{repository}/packages/{package}",
+	); !got || !strings.Contains(reason, "data-plane artifact package") {
+		t.Fatalf("artifactregistry.googleapis.com/Package: got (%q, %v), want match containing 'data-plane artifact package'", reason, got)
+	}
+}
+
+func TestNonDeclarativeEphemeralResourceTypes(t *testing.T) {
+	reason, got := checkResourceTypeNonDeclarative(
+		t,
+		"google/cloud/video/transcoder/v1/resources.proto",
+		"google.cloud.video.transcoder.v1",
+		"Job",
+		"transcoder.googleapis.com/Job",
+		"projects/{project}/locations/{location}/jobs/{job}",
+	)
+	if !got || !strings.Contains(reason, "ephemeral execution") {
+		t.Fatalf("transcoder.googleapis.com/Job: got (%q, %v), want match containing 'ephemeral execution'", reason, got)
+	}
+
+	if reason, got := checkResourceTypeNonDeclarative(
+		t,
+		"google/cloud/run/v2/job.proto",
+		"google.cloud.run.v2",
+		"Job",
+		"run.googleapis.com/Job",
+		"projects/{project}/locations/{location}/jobs/{job}",
+	); got {
+		t.Fatalf("run.googleapis.com/Job unexpectedly flagged: %q", reason)
+	}
 }

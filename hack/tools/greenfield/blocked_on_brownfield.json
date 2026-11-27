@@ -1,0 +1,17 @@
+{
+  "description": "Unreleased Google Cloud resources dropped under drop_reason 'blocked-on-brownfield' because implementation or E2E testing requires new fields or features in an existing KCC brownfield/parent resource (#16072).",
+  "exclusions": [
+    {
+      "pattern": "^compute\\.googleapis\\.com/InstanceGroupManagerResizeRequest$",
+      "reason": "Blocked on brownfield ComputeInstanceGroupManager (v1beta1) lacking instanceLifecyclePolicy.defaultActionOnFailure=DO_NOTHING to disable auto-repair (#16072, #15990)."
+    },
+    {
+      "pattern": "^firestore\\.googleapis\\.com/UserCreds$",
+      "reason": "Blocked on FirestoreDatabase (v1beta1) lacking databaseEdition=ENTERPRISE required for UserCreds creation (#16072, #15331)."
+    },
+    {
+      "pattern": "^networksecurity\\.googleapis\\.com/SACAttachment$",
+      "reason": "Blocked on brownfield NetworkConnectivitySpoke (v1beta1 DCL) lacking NCC Gateway spoke fields such as linkedGateway (#16072, #15326)."
+    }
+  ]
+}

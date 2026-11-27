@@ -792,12 +792,15 @@ CRD_REL = "config/crds/resources"
 STATIC_CONFIG_REL = "pkg/controller/resourceconfig/static_config.go"
 DIRECT_CONTROLLERS_REL = "pkg/controller/direct"
 APIS_REL = "apis"
+BUILD_RELEASE_BUNDLE_REL = "dev/tasks/build-release-bundle"
 # Rule data next to this script (GREENFIELD_REL) that the list is computed from.
-RULE_FILES = ("coverage_skip.json", "policy_exclusions.json", "deprecated_services.json", "cp_resources_list.json")
+RULE_FILES = ("coverage_skip.json", "policy_exclusions.json", "deprecated_services.json", "cp_resources_list.json",
+              "manual_setup.json", "blocked_on_brownfield.json", "non_blocking_test_requirements.json")
 # Every file of the KCC tree that the list is computed from. meta.kcc_ref is the newest commit that changed one
 # of them (see kcc_input_commit), so the list only changes when its inputs do. Read them through kcc_input_path.
 KCC_INPUT_PATHS = (APIS_REL, CRD_REL, DIRECT_CONTROLLERS_REL, STATIC_CONFIG_REL, ND_REL, DEP_REL,
-                   SERVICE_PREFIXES_REL) + tuple("%s/%s" % (GREENFIELD_REL, f) for f in RULE_FILES)
+                   SERVICE_PREFIXES_REL, BUILD_RELEASE_BUNDLE_REL) + tuple(
+                       "%s/%s" % (GREENFIELD_REL, f) for f in RULE_FILES)
 # Mirrors isNonGAProto in dev/tools/controllerbuilder/pkg/commands/generatetypes/generatetypescommand.go.
 NONGA_SEGMENT_RE = re.compile(r"(?i)^v[0-9]+[a-z0-9]*(alpha|beta)[a-z0-9]*$")
 VERSION_SEGMENT_RE = re.compile(r"^v\d+[a-z0-9]*$")
@@ -827,8 +830,37 @@ STATUS_SHORT = {STATUS_NET_NEW: "net-new", STATUS_BROWNFIELD: "brownfield", STAT
 STABILITY_STABLE = "stable"
 STABILITY_ALPHA = "alpha"
 # Drop reasons in precedence order; policy:<reason> drops (policy_exclusions.json) sort last.
-DROP_ORDER = ["skip-list", "example-api", "deprecated", "non-ga-only", "no-crud", "read-only",
-              "nondeclarative:pattern", "nondeclarative:bulk-rpc"]
+DROP_ORDER = ["deprecated", "non-ga-only", "no-public-proto",
+              "no-crud", "read-only",
+              "nondeclarative:no-actual-state", "nondeclarative:ephemeral",
+              "nondeclarative:data-plane", "nondeclarative:bulk-rpc",
+              "skip-list", "example-api", "non-gcp-env",
+              "manual-setup", "blocked-on-brownfield", "parent-dropped"]
+
+# Proto packages and physical-hardware resources targeting non-GCP deployments/environments.
+NON_GCP_ENV_PACKAGES = (
+    ("google.spanner.admin.omni.", "Spanner Omni deployment (%s), non-GCP environment"),
+    ("google.spanner.auth.", "Spanner Omni standalone user auth (%s), non-GCP environment"),
+    ("google.devtools.resultstore.", "Bazel ResultStore (%s), non-GCP build tool service"),
+    ("google.cloud.gsuiteaddons.", "Google Workspace add-ons (%s), non-GCP environment"),
+    ("google.cloud.gdchardwaremanagement.", "Google Distributed Cloud physical rack/hardware ordering (%s), non-GCP environment"),
+    ("google.cloud.baremetalsolution.", "Bare Metal Solution dedicated physical bare-metal hardware under specialized allowlist-only access (%s), non-GCP environment"),
+)
+NON_GCP_ENV_RESOURCE_TYPES = {
+    "cloudkms.googleapis.com/SingleTenantHsmInstance": "Physical single-tenant HSM hardware allocation (#16010, #16003), non-GCP environment",
+    "cloudkms.googleapis.com/SingleTenantHsmInstanceProposal": "Physical single-tenant HSM hardware proposal (#16010), non-GCP environment",
+    "compute.googleapis.com/Interconnect": "Physical carrier colocation cross-connect and LOA-CFA hardware, non-GCP environment",
+    "compute.googleapis.com/WireGroup": "Physical colocation interconnect wire attachments, non-GCP environment",
+    "vmwareengine.googleapis.com/Cluster": "Dedicated VMware Engine bare-metal VE1 node hardware allocation (#15133), non-GCP environment",
+    "vmwareengine.googleapis.com/DnsForwarding": "VMware Engine PrivateCloud DNS forwarding backed by dedicated bare-metal hardware, non-GCP environment",
+    "vmwareengine.googleapis.com/HcxActivationKey": "VMware Engine HCX activation key backed by dedicated bare-metal hardware, non-GCP environment",
+    "vmwareengine.googleapis.com/LoggingServer": "VMware Engine logging server backed by dedicated bare-metal hardware, non-GCP environment",
+    "vmwareengine.googleapis.com/ManagementDnsZoneBinding": "VMware Engine management DNS zone binding backed by dedicated bare-metal hardware (#15133), non-GCP environment",
+    "vmwareengine.googleapis.com/Subnet": "VMware Engine subnet backed by dedicated bare-metal hardware, non-GCP environment",
+    "vmmigration.googleapis.com/DatacenterConnector": "On-prem VMware OVA connector appliance requiring external vCenter environment, non-GCP environment",
+    "vmmigration.googleapis.com/MigratingVm": "External VMware vCenter/AWS source VM migration targeting non-GCP source VM inventory, non-GCP environment",
+    "vmmigration.googleapis.com/Source": "External VMware vCenter/AWS migration source environment outside GCP, non-GCP environment",
+}
 
 MANAGEABILITY_COLUMNS = [
     "id", "bucket", "kcc_status", "kcc_stability", "api_group", "api_family", "kind", "resource_type", "service",
@@ -1334,7 +1366,8 @@ def _read_text(path):
 
 
 class ManageabilityClassifier:
-    def __init__(self, files, googleapis_sha, proto_root, kcc_dir, kcc_ref, script_dir, pins, blob_reader):
+    def __init__(self, files, googleapis_sha, proto_root, kcc_dir, kcc_ref, script_dir, pins, blob_reader,
+                 gcp_only=False):
         self.googleapis_sha = googleapis_sha
         self.proto_root = proto_root
         self.kcc_dir = kcc_dir
@@ -1342,6 +1375,7 @@ class ManageabilityClassifier:
         self.script_dir = script_dir
         self.pins = pins  # [(sha, users, {message full name -> proto file})], global pin first
         self.blobs = blob_reader
+        self.gcp_only = gcp_only
         self._line_cache = {}
         self._index(files)
         self._load_rules()
@@ -1363,63 +1397,102 @@ class ManageabilityClassifier:
         return _read_text(path) if os.path.exists(path) else ""
 
     def _load_rules(self):
-        # nondeclarative.go: collection maps, bulk prefixes and rule line numbers.
-        self.ephemeral, self.leaf, self.bulk_prefixes = {}, {}, []
-        self.nd_rule_lines = {}
-        block = None
+        self._load_nondeclarative_rules()
+        self._load_known_deprecated()
+        # JSON configs from the analyzed KCC tree (so output depends only on the SHA inputs), with line numbers
+        # for permalinks. Falls back to the copies next to this script for older KCC trees that lack them.
+        self.config_fallbacks = []
+        self.skips = self._load_patterns("coverage_skip.json", "skips")
+        self.policy = self._load_patterns("policy_exclusions.json", "exclusions")
+        self.manual_setup = self._load_patterns("manual_setup.json", "exclusions")
+        self.blocked_on_brownfield = self._load_patterns("blocked_on_brownfield.json", "exclusions")
+        self.non_blocking_test_reqs = self._load_patterns("non_blocking_test_requirements.json", "flags")
+        self._load_blocked_kinds()
+        self._load_deprecated_kinds()
+        self._load_cp_keys()
+        self._load_kind_naming()
+
+    def _load_nondeclarative_rules(self):
+        """Loads collection/resource-type maps, bulk prefixes, and rule line numbers from nondeclarative.go."""
+        self.ephemeral, self.leaf = {}, {}
+        self.ephemeral_types, self.data_plane_types = {}, {}
+        self.bulk_prefixes, self.nd_rule_lines = [], {}
         nd = self._kcc_text(ND_REL)
         if not nd:
             print("[WARN] %s not found; non-declarative drops are disabled" % ND_REL)
+        block_targets = {
+            "var ephemeralCollectionSegments": self.ephemeral,
+            "var nonDeclarativeLeafCollections": self.leaf,
+            "var nonDeclarativeEphemeralResourceTypes": self.ephemeral_types,
+            "var nonDeclarativeDataPlaneResourceTypes": self.data_plane_types,
+            "var bulkDataPlaneRPCPrefixes": self.bulk_prefixes,
+        }
+        rule_needles = (
+            ("1.1", "if !hasCreate && !hasUpdate && (hasGet || hasDelete)"),
+            ("1.2", "if hasCreate && !hasUpdate && (!hasDelete || hasCancel)"),
+            ("3.1", "if len(bulkRPCs) > 0"),
+        )
+        block = None
         for i, ln in enumerate(nd.splitlines(), 1):
-            if ln.startswith("var ephemeralCollectionSegments"):
-                block = self.ephemeral
-            elif ln.startswith("var nonDeclarativeLeafCollections"):
-                block = self.leaf
-            elif ln.startswith("var bulkDataPlaneRPCPrefixes"):
-                block = self.bulk_prefixes
+            matched_header = next((target for prefix, target in block_targets.items() if ln.startswith(prefix)), None)
+            if matched_header is not None:
+                block = matched_header
             elif ln.startswith("}"):
                 block = None
             elif isinstance(block, dict):
-                m = re.match(r'^\s+"(\w+)": "([^"]+)",', ln)
+                m = re.match(r'^\s+"([^"]+)":\s+"([^"]+)",', ln)
                 if m:
                     block[m.group(1)] = (m.group(2), i)
             elif isinstance(block, list):
                 m = re.match(r'^\s+"(\w+)",', ln)
                 if m:
                     block.append(m.group(1))
-            for key, needle in (("1.1", "if !hasCreate && !hasUpdate && (hasGet || hasDelete)"),
-                                ("1.2", "if hasCreate && !hasUpdate && (!hasDelete || hasCancel)"),
-                                ("3.1", "if len(bulkRPCs) > 0")):
+            for key, needle in rule_needles:
                 if needle in ln:
                     self.nd_rule_lines[key] = i
-        # deprecated.go: retired GA packages without `option deprecated`.
+
+    def _load_known_deprecated(self):
+        """Loads retired GA packages without `option deprecated` from deprecated.go."""
         self.known_deprecated = {}
         for i, ln in enumerate(self._kcc_text(DEP_REL).splitlines(), 1):
             m = re.match(r'^\s+"(google\.[\w.]+)": "([^"]+)",', ln)
             if m:
                 self.known_deprecated[m.group(1)] = (m.group(2), i)
-        # JSON configs from the analyzed KCC tree (so output depends only on the SHA inputs), with line numbers
-        # for permalinks. Falls back to the copies next to this script for older KCC trees that lack them.
-        self.config_fallbacks = []
-        self.skips = self._load_patterns("coverage_skip.json", "skips")
-        self.policy = self._load_patterns("policy_exclusions.json", "exclusions")
+
+    def _load_blocked_kinds(self):
+        """Loads unreleased alpha kinds listed in dev/tasks/build-release-bundle's BLOCKED_KINDS array."""
+        self.blocked_kinds = set()
+        bundle_script = self._kcc_text(BUILD_RELEASE_BUNDLE_REL)
+        m_blocked = (re.search(r"BLOCKED_KINDS=\(\s*\n(.*?)\n\)", bundle_script, re.S)
+                     or re.search(r"BLOCKED_KINDS=\((.*?)\)", bundle_script, re.S))
+        if not m_blocked:
+            return
+        for ln in m_blocked.group(1).splitlines():
+            val = ln.split("#")[0].strip().strip('"').strip("'")
+            if val:
+                self.blocked_kinds.add(val.lower())
+
+    def _load_deprecated_kinds(self):
         self.deprecated_kinds = {}
         path = self._config_path("deprecated_services.json")
-        if path:
-            text = _read_text(path)
-            lines = text.splitlines()
-            for item in json.loads(text):
-                base = item["service"].replace(".googleapis.com", "").lower()
-                ln = next((i for i, l in enumerate(lines, 1) if '"service": "%s"' % item["service"] in l), None)
-                for kind in item["kinds"]:
-                    self.deprecated_kinds[(base, kind.lower())] = (item["name"], item["evidence"], ln)
+        if not path:
+            return
+        text = _read_text(path)
+        lines = text.splitlines()
+        for item in json.loads(text):
+            base = item["service"].replace(".googleapis.com", "").lower()
+            ln = next((i for i, l in enumerate(lines, 1) if '"service": "%s"' % item["service"] in l), None)
+            for kind in item["kinds"]:
+                self.deprecated_kinds[(base, kind.lower())] = (item["name"], item["evidence"], ln)
+
+    def _load_cp_keys(self):
         self.cp_keys = set()
         path = self._config_path("cp_resources_list.json")
-        if path:
-            for item in json.loads(_read_text(path)):
-                self.cp_keys.add(("res", item.get("resource", "").lower()))
-                self.cp_keys.add(("kind", _norm(item.get("kind", ""))))
-        self._load_kind_naming()
+        if not path:
+            return
+        for item in json.loads(_read_text(path)):
+            self.cp_keys.add(("res", item.get("resource", "").lower()))
+            self.cp_keys.add(("kind", _norm(item.get("kind", ""))))
 
     def _load_kind_naming(self):
         """Loads the service prefixes and acronyms that Kind names are built from (SERVICE_PREFIXES_REL).
@@ -1655,16 +1728,16 @@ class ManageabilityClassifier:
         return f, sorted(set(bulk))
 
     def nd_pattern_reason(self, patterns):
-        """Port of nonDeclarativePatternReason: (segment, category, line, pattern) or None."""
+        """Port of nonDeclarativePatternReason: (rule_kind, segment, category, line, pattern) or None."""
         for p in patterns:
             lits = _pattern_literals(p)
             if not lits:
                 continue
             for seg in lits:
                 if seg in self.ephemeral:
-                    return seg, self.ephemeral[seg][0], self.ephemeral[seg][1], p
+                    return "ephemeral", seg, self.ephemeral[seg][0], self.ephemeral[seg][1], p
             if lits[-1] in self.leaf:
-                return lits[-1], self.leaf[lits[-1]][0], self.leaf[lits[-1]][1], p
+                return "data-plane", lits[-1], self.leaf[lits[-1]][0], self.leaf[lits[-1]][1], p
         return None
 
     def method_manages(self, m, msg):
@@ -1897,12 +1970,77 @@ class ManageabilityClassifier:
         return resources
 
     # --- classification -----------------------------------------------------------
+    @staticmethod
+    def _norm_resource_pattern(pattern):
+        """Normalizes a resource pattern to comparable literal/wildcard segments."""
+        segs = [s.strip() for s in pattern.strip().split("/") if s.strip()]
+        if segs and VERSION_SEGMENT_RE.match(segs[0]):
+            segs = segs[1:]
+        return tuple("*" if s.startswith("{") or s == "*" else s for s in segs)
+
+    _PLATFORM_ROOT_PATTERNS = frozenset([
+        ("projects", "*"),
+        ("organizations", "*"),
+        ("folders", "*"),
+        ("billingAccounts", "*"),
+        ("projects", "*", "locations", "*"),
+        ("projects", "*", "regions", "*"),
+        ("projects", "*", "zones", "*"),
+        ("organizations", "*", "locations", "*"),
+        ("folders", "*", "locations", "*"),
+        ("billingAccounts", "*", "locations", "*"),
+    ])
+
+    def _apply_parent_dropped(self, records, patterns_by_idx):
+        """Drops resources whose every resource pattern has a dropped ancestor (fixed-point)."""
+        pat_index = defaultdict(list)
+        for i, rec in enumerate(records):
+            for pat in patterns_by_idx[i]:
+                np = self._norm_resource_pattern(pat)
+                if len(np) >= 2:
+                    pat_index[(rec["api_group"], rec["service"], np)].append(rec)
+
+        while True:
+            changed = []
+            for i, rec in enumerate(records):
+                if rec["bucket"] == BUCKET_DROPPED:
+                    continue
+                norm_pats = [self._norm_resource_pattern(p) for p in patterns_by_idx[i] if p.strip()]
+                if not norm_pats:
+                    continue
+                pat_hits = []
+                for np in norm_pats:
+                    hit = None
+                    for k in range(len(np) - 1, 1, -1):
+                        anc = np[:k]
+                        if anc in self._PLATFORM_ROOT_PATTERNS:
+                            continue
+                        cands = pat_index.get((rec["api_group"], rec["service"], anc), [])
+                        if cands and all(c["bucket"] == BUCKET_DROPPED for c in cands):
+                            hit = cands[0]
+                            break
+                    pat_hits.append(hit)
+                if all(h is not None for h in pat_hits):
+                    changed.append((rec, pat_hits[0]))
+            if not changed:
+                break
+            for rec, parent_rec in changed:
+                rec["bucket"] = BUCKET_DROPPED
+                rec["drop_reason"] = "parent-dropped"
+                rec["drop_detail"] = "parent resource %s is dropped (%s)" % (
+                    parent_rec["id"], parent_rec["drop_reason"])
+                rec["drop_link"] = parent_rec["drop_link"] or parent_rec["proto_link"]
+                rec["all_drop_reasons"] = "parent-dropped"
+
     def classify(self):
         records = []
+        patterns_by_idx = []
         self.matched_kinds = set()
         global_pin = self.pins[0][0] if self.pins else None
         for R in self.universe():
             records.append(self._classify_one(R, global_pin))
+            patterns_by_idx.append(list(R["patterns"]))
+        self._apply_parent_dropped(records, patterns_by_idx)
         # Every KCC kind is on the list: the ones no googleapis resource maps to get a row of their own. They are
         # sub-objects of another resource, kinds of APIs that publish no protos, kinds that only exist in KCC
         # (KCC_ONLY_KINDS), and resources that the protos don't declare as one.
@@ -1919,25 +2057,16 @@ class ManageabilityClassifier:
             records.append(rec)
         return records
 
-    def _classify_one(self, R, global_pin):
-        msg, pkg, name = R["msg"], R["msg"]["pkg"], R["msg"]["name"]
-        service = R["type"].split("/")[0].split(".")[0]
-        patterns = R["patterns"]
-        collection = _collection_of(patterns[0]) if patterns else ""
-        if not collection and R["plural"]:
-            collection = R["plural"]
-        prefix, prefix_status = self._service_prefix(service, pkg)
-        predicted = self._predicted_kind(service, pkg, name)
-        api_group, api_family = api_group_of(pkg)
-        rec = {"id": R["id"], "resource_type": R["type"], "service": service, "api_group": api_group,
-               "api_family": api_family, "api_area": ".".join(pkg.split(".")[:2]),
-               "proto_message": msg["full"][1:], "proto_link": self.gapi_link(msg["file"], "message", name),
-               "ga": R["is_ga"], "unannotated": "yes" if R["synthesized"] is not None else "",
-               "other_packages": ";".join(R["other_pkgs"]), "patterns": " | ".join(patterns[:3]),
-               "layer": self.layer(patterns), "predicted_kind": predicted}
-        drops, flags = [], []
+    def _first_pattern_match(self, patterns, resource_type):
+        for rx, why, rel, ln in patterns:
+            if rx.match(resource_type):
+                return why, self.kcc_link(rel, ln)
+        return None
 
-        # KCC kinds: exact +kcc:proto matches, plus heuristics for TF/DCL kinds (never annotated).
+    def _resolve_kcc_kinds(self, R, service, pkg, name, prefix, prefix_status, predicted):
+        """Matches KCC CRDs for one resource and returns (rec_updates, is_unreleased, flags)."""
+        msg = R["msg"]
+        flags = []
         kinds = set(self.proto_to_kinds.get(self._proto_key(msg["full"][1:]), set()))
         match = "proto" if kinds else ""
         extra = {k for k in self.heuristic_kinds(service, name, pkg) if k not in self.annotated_kinds}
@@ -1951,10 +2080,14 @@ class ManageabilityClassifier:
             kinds = {k for k in MANUAL_KIND_OVERRIDES[R["type"]] if k in self.crd}
             match = "manual"
         self.matched_kinds |= kinds
-        rec["kcc_kinds"] = ";".join(sorted(self.kind_label(k) for k in kinds))
-        rec["kcc_match"] = match
+
+        updates = {
+            "kcc_kinds": ";".join(sorted(self.kind_label(k) for k in kinds)),
+            "kcc_match": match,
+        }
         if not kinds:
-            rec["kcc_status"], rec["kcc_stability"], rec["kind"], rec["kcc_link"] = STATUS_NET_NEW, "", predicted, ""
+            updates.update(kcc_status=STATUS_NET_NEW, kcc_stability="", kind=predicted, kcc_link="")
+            is_unreleased = True
             # The Kind is only a suggestion here: say when it can't be used as it is.
             if prefix_status != "approved":
                 flags.append("kind-prefix:" + prefix_status)
@@ -1963,110 +2096,145 @@ class ManageabilityClassifier:
                 flags.append("kind-name:repeats-prefix(%s)" % once)
         else:
             # What KCC has is recorded here and never drops the row: the bucket only says what the API can do.
-            rec["kcc_status"], rec["kcc_stability"], described = self.kcc_support(kinds)
-            rec["kind"] = described[0]
-            rec["kcc_link"] = self.kcc_link(self.crd[described[0]]["file"])
-        rec["in_cp_list"] = "yes" if (("res", ("%s/%s" % (service, singularize_name(name))).lower()) in self.cp_keys
-                                      or ("kind", _norm(rec["kind"])) in self.cp_keys) else ""
+            status, stability, described = self.kcc_support(kinds)
+            updates.update(
+                kcc_status=status,
+                kcc_stability=stability,
+                kind=described[0],
+                kcc_link=self.kcc_link(self.crd[described[0]]["file"]),
+            )
+            is_unreleased = (status == STATUS_TYPES_ONLY or
+                             (stability != STABILITY_STABLE and
+                              all(k.lower() in self.blocked_kinds for k in described)))
 
-        # D1 skip list / example APIs
-        for rx, why, rel, ln in self.skips:
-            if rx.match(R["type"]):
-                drops.append(("skip-list", why, self.kcc_link(rel, ln)))
-                break
-        if pkg.startswith("google.example."):
-            drops.append(("example-api", "googleapis sample API (%s), not a real service" % pkg, rec["proto_link"]))
-        # D2 deprecated
+        updates["in_cp_list"] = "yes" if (
+            ("res", ("%s/%s" % (service, singularize_name(name))).lower()) in self.cp_keys
+            or ("kind", _norm(updates["kind"])) in self.cp_keys
+        ) else ""
+        return updates, is_unreleased, flags
+
+    def _collect_static_drops(self, R, msg, pkg, service, kind, predicted, proto_link):
+        """Evaluates non-RPC static drop reasons (deprecated, non-GA, empty proto, skip-list, non-GCP env)."""
+        drops = []
+        # D1 deprecated
         dep = self.deprecated_reason(msg)
         if dep:
             drops.append(("deprecated", dep[0], dep[1]))
-        for k in (rec["kind"], predicted):
+        for k in (kind, predicted):
             hit = self.deprecated_kinds.get((service, k.lower()))
             if hit:
                 drops.append(("deprecated", "%s: %s" % (hit[0], hit[1]),
                               self.kcc_link("%s/deprecated_services.json" % GREENFIELD_REL, hit[2])))
                 break
-        # D3 non-GA only
+        # D2 non-GA only
         if not R["is_ga"]:
             drops.append(("non-ga-only", "only defined in non-GA package %s (generate-types rejects without "
-                                         "--allow-non-ga-proto)" % pkg, rec["proto_link"]))
+                                         "--allow-non-ga-proto)" % pkg, proto_link))
+        # D3 no-public-proto (public proto message contains no fields / empty proto)
+        if not msg["fields"]:
+            drops.append(("no-public-proto", "public proto message %s has no fields (empty proto)" % msg["full"][1:],
+                          proto_link))
+        # D4 skip list and example APIs (legacy manageability mode only; skipped under --gcp-only) / non-GCP envs
+        if not self.gcp_only:
+            skip_hit = self._first_pattern_match(self.skips, R["type"])
+            if skip_hit:
+                drops.append(("skip-list", skip_hit[0], skip_hit[1]))
+            if pkg.startswith("google.example."):
+                drops.append(("example-api", "googleapis sample API (%s), not a real service" % pkg, proto_link))
+        for env_prefix, desc in NON_GCP_ENV_PACKAGES:
+            if pkg.startswith(env_prefix):
+                drops.append(("non-gcp-env", desc % pkg, proto_link))
+                return drops
+        if R["type"] in NON_GCP_ENV_RESOURCE_TYPES:
+            drops.append(("non-gcp-env", NON_GCP_ENV_RESOURCE_TYPES[R["type"]], proto_link))
+        return drops
 
-        # Operations
+    def _resolve_ops_and_read(self, R, pkg, name, patterns, collection, proto_link):
+        """Resolves CRUDL operations, RPC flags, and READ viability."""
         ops, deprecated_rpcs = self.ops_for(pkg, name, patterns, collection, R["plural"], R["synthesized"])
+        flags, drops = [], []
         if deprecated_rpcs:
             flags.append("deprecated-rpc:" + ",".join(deprecated_rpcs))
+
         C = bool(ops["C"] or ops["Calias"])
         U = bool(ops["U"] or ops["Ualias"])
         D = bool(ops["D"] or ops["Dtag"] or ops["Dalias"])
         G = bool(ops["R"] or ops["Ralias"])
         L = bool(ops["L"])
-        for key, flag in (("Calias", "alias:bulk/upsert"), ("Ualias", "alias:bulk/upsert"), ("Ralias", "alias:read"),
-                          ("Dalias", "alias:one-shot")):
+        for key, flag in (("Calias", "alias:bulk/upsert"), ("Ualias", "alias:bulk/upsert"),
+                          ("Ralias", "alias:read"), ("Dalias", "alias:one-shot")):
             if ops[key]:
                 flags.append("%s(%s)" % (flag, ",".join(ops[key])))
         if ops["Dtag"] and not ops["D"]:
             flags.append("delete-via:" + ",".join(ops["Dtag"]))
-        rec["ops"] = " ".join(x for x, b in (("C", C), ("R", G), ("U", U), ("D", D), ("L", L)) if b)
-        rec["rpcs"] = "; ".join("%s=%s" % (k, ",".join(v)) for k, v in ops.items() if v)
 
-        # READ resolution: List counts as Get only for server-generated IDs.
         sg = self.server_generated(pkg, ["Create" + name, "Insert" + name])
-        rec["server_generated_id"] = {True: "yes", False: "no", None: "unknown (no Create RPC)"}[sg]
         read_ok, review = G, ""
         if not G:
             if L and sg:
                 read_ok = True
                 flags.append("read-via-list")
+            elif L:
+                review = "review:list-only"
             else:
-                review = "review:list-only" if L else "review:no-read"
+                drops.append(("nondeclarative:no-actual-state",
+                              "neither Get nor List-with-server-generated-ID RPC (no actual state to reconcile)",
+                              proto_link))
 
-        # nondeclarative.go verdict (tool parity for annotated resources)
+        op_updates = {
+            "ops": " ".join(x for x, b in (("C", C), ("R", G), ("U", U), ("D", D), ("L", L)) if b),
+            "rpcs": "; ".join("%s=%s" % (k, ",".join(v)) for k, v in ops.items() if v),
+            "server_generated_id": {True: "yes", False: "no", None: "unknown (no Create RPC)"}[sg],
+        }
+        return ops, (C, U, D, G, L), read_ok, review, op_updates, flags, drops
+
+    def _evaluate_nondeclarative(self, R, pkg, name, patterns, collection, ops, C, U):
+        """Mirrors nondeclarative.go checks for tool parity, ephemeral/data-plane rules, and one-shot jobs."""
         nd = ""
         pr = self.nd_pattern_reason(patterns)
+        is_one_shot = False
+        flags, drops = [], []
         if R["synthesized"] is None:
             f, bulk = self.nd_rpc_flags(pkg, name, patterns, collection)
             one_shot_tool = f["C"] and not f["U"] and (not f["D"] or f["Cancel"])
             if pr:
-                nd = "pattern %r has %s collection %r" % (pr[3], pr[1], pr[0])
+                nd = "pattern %r has %s collection %r" % (pr[4], pr[2], pr[1])
             elif not f["C"] and not f["U"] and (f["G"] or f["D"]):
                 nd = "1.1 read-only/discovered"
             elif one_shot_tool:
                 nd = "1.2 one-shot (delete=%s, cancel=%s)" % (f["D"], f["Cancel"])
             elif bulk:
                 nd = "3.1 bulk RPCs %s" % ",".join(bulk)
-            if one_shot_tool or (C and not U and not (ops["D"] or ops["Dtag"])):
-                flags.append("nondeclarative:one-shot")
+            is_one_shot = one_shot_tool or (C and not U and not (ops["D"] or ops["Dtag"]))
             if bulk:
                 drops.append(("nondeclarative:bulk-rpc", "bulk/purge RPCs %s (Criterion 3.1)" % ",".join(bulk),
                               self.kcc_link(ND_REL, self.nd_rule_lines.get("3.1"))))
-        elif C and not U and not D:
+        elif C and not U and (not (ops["D"] or ops["Dtag"]) or bool(ops["Dalias"])):
+            is_one_shot = True
+
+        if is_one_shot:
             flags.append("nondeclarative:one-shot")
+            if name == "Job" or name.endswith("Job"):
+                drops.append(("nondeclarative:ephemeral", "one-shot job (ephemeral state; Criterion 1.2)",
+                              self.kcc_link(ND_REL, self.nd_rule_lines.get("1.2"))))
         if pr:
-            drops.append(("nondeclarative:pattern", "%s collection %r (Criteria 2/3)" % (pr[1], pr[0]),
-                          self.kcc_link(ND_REL, pr[2])))
-        rec["nondeclarative_go"] = nd
+            drop_reason = "nondeclarative:" + pr[0]
+            criterion = "Criterion 2" if pr[0] == "ephemeral" else "Criterion 3"
+            drops.append((drop_reason, "%s collection %r (%s)" % (pr[2], pr[1], criterion),
+                          self.kcc_link(ND_REL, pr[3])))
+        for lookup, drop_reason, criterion in (
+            (self.ephemeral_types, "nondeclarative:ephemeral", "Criterion 2"),
+            (self.data_plane_types, "nondeclarative:data-plane", "Criterion 3"),
+        ):
+            hit = lookup.get(R["type"])
+            if hit:
+                drops.append((drop_reason, "%s (%s)" % (hit[0], criterion), self.kcc_link(ND_REL, hit[1])))
+                if not nd:
+                    nd = "resource type %r is %s" % (R["type"], hit[0])
+        return nd, flags, drops
 
-        # D9 / D5
-        if not (C or U or D or G or L):
-            drops.append(("no-crud", "no Create/Get/Update/Delete/List RPCs in %s" % pkg, rec["proto_link"]))
-        elif not C and not U:
-            drops.append(("read-only", "neither CREATE nor UPDATE (nondeclarative.go Criterion 1.1)",
-                          self.kcc_link(ND_REL, self.nd_rule_lines.get("1.1"))))
-        # Policy exclusions (policy_exclusions.json)
-        for rx, why, rel, ln in self.policy:
-            if rx.match(R["type"]):
-                drops.append(("policy:" + why, "excluded by policy review: %s" % why, self.kcc_link(rel, ln)))
-                break
-
-        # Earliest KCC googleapis pin with this message.
-        sha, users, link = self.first_pin(msg)
-        rec["in_local_googleapis"] = sha[:8] if sha else "master only"
-        rec["first_googleapis_sha"] = sha or self.googleapis_sha
-        rec["first_googleapis_link"] = link or rec["proto_link"]
-        if sha != global_pin:
-            flags.append("not-in-kcc-pinned-googleapis")
-
-        # Bucket
+    def _finalize_bucket(self, rec, R, is_unreleased, read_ok, review, C, U, D, drops, flags):
+        """Selects primary drop reason or manageability bucket and populates final flag string."""
         drops.sort(key=lambda d: DROP_ORDER.index(d[0]) if d[0] in DROP_ORDER else len(DROP_ORDER))
         if drops:
             rec["bucket"] = BUCKET_DROPPED
@@ -2074,6 +2242,10 @@ class ManageabilityClassifier:
             rec["all_drop_reasons"] = "; ".join(sorted({d[0] for d in drops}, key=lambda c: DROP_ORDER.index(c)
                                                        if c in DROP_ORDER else len(DROP_ORDER)))
         else:
+            if is_unreleased:
+                for rx, flag_name, _rel, _ln in self.non_blocking_test_reqs:
+                    if rx.match(R["type"]):
+                        flags.append(flag_name)
             rec["drop_reason"] = rec["drop_detail"] = rec["drop_link"] = rec["all_drop_reasons"] = ""
             if review:
                 rec["bucket"] = BUCKET_REVIEW
@@ -2090,7 +2262,72 @@ class ManageabilityClassifier:
         if rec["kcc_status"] == STATUS_BROWNFIELD:
             flags.append("brownfield")
         rec["flags"] = "; ".join(flags)
+
+    def _classify_one(self, R, global_pin):
+        msg, pkg, name = R["msg"], R["msg"]["pkg"], R["msg"]["name"]
+        service = R["type"].split("/")[0].split(".")[0]
+        patterns = R["patterns"]
+        collection = (_collection_of(patterns[0]) if patterns else "") or R["plural"]
+        prefix, prefix_status = self._service_prefix(service, pkg)
+        predicted = self._predicted_kind(service, pkg, name)
+        api_group, api_family = api_group_of(pkg)
+        rec = {"id": R["id"], "resource_type": R["type"], "service": service, "api_group": api_group,
+               "api_family": api_family, "api_area": ".".join(pkg.split(".")[:2]),
+               "proto_message": msg["full"][1:], "proto_link": self.gapi_link(msg["file"], "message", name),
+               "ga": R["is_ga"], "unannotated": "yes" if R["synthesized"] is not None else "",
+               "other_packages": ";".join(R["other_pkgs"]), "patterns": " | ".join(patterns[:3]),
+               "layer": self.layer(patterns), "predicted_kind": predicted}
+
+        kcc_updates, is_unreleased, flags = self._resolve_kcc_kinds(
+            R, service, pkg, name, prefix, prefix_status, predicted)
+        rec.update(kcc_updates)
+
+        drops = self._collect_static_drops(R, msg, pkg, service, rec["kind"], predicted, rec["proto_link"])
+
+        ops, (C, U, D, G, L), read_ok, review, op_updates, op_flags, op_drops = self._resolve_ops_and_read(
+            R, pkg, name, patterns, collection, rec["proto_link"])
+        rec.update(op_updates)
+        flags.extend(op_flags)
+        drops.extend(op_drops)
+
+        nd, nd_flags, nd_drops = self._evaluate_nondeclarative(R, pkg, name, patterns, collection, ops, C, U)
+        rec["nondeclarative_go"] = nd
+        flags.extend(nd_flags)
+        drops.extend(nd_drops)
+
+        # D9 / D5
+        if not (C or U or D or G or L):
+            drops.append(("no-crud", "no Create/Get/Update/Delete/List RPCs in %s" % pkg, rec["proto_link"]))
+        elif not C and not U:
+            drops.append(("read-only", "neither CREATE nor UPDATE (nondeclarative.go Criterion 1.1)",
+                          self.kcc_link(ND_REL, self.nd_rule_lines.get("1.1"))))
+
+        # Unreleased-only drops and legacy policy exclusions
+        if is_unreleased:
+            for pattern_list, reason in ((self.manual_setup, "manual-setup"),
+                                         (self.blocked_on_brownfield, "blocked-on-brownfield")):
+                hit = self._first_pattern_match(pattern_list, R["type"])
+                if hit:
+                    drops.append((reason, hit[0], hit[1]))
+        if not self.gcp_only:
+            hit = self._first_pattern_match(self.policy, R["type"])
+            if hit:
+                drops.append(("policy:" + hit[0], "excluded by policy review: %s" % hit[0], hit[1]))
+
+        # Earliest KCC googleapis pin with this message.
+        sha, _users, link = self.first_pin(msg)
+        rec["in_local_googleapis"] = sha[:8] if sha else "master only"
+        rec["first_googleapis_sha"] = sha or self.googleapis_sha
+        rec["first_googleapis_link"] = link or rec["proto_link"]
+        if sha != global_pin:
+            flags.append("not-in-kcc-pinned-googleapis")
+
+        self._finalize_bucket(rec, R, is_unreleased, read_ok, review, C, U, D, drops, flags)
         return rec
+
+
+GCP_UNSUPPORTED_COLUMNS = ["resource_type", "kind", "service", "kcc_status"]
+GCP_UNSUPPORTED_STATUSES = frozenset([STATUS_NET_NEW, STATUS_TYPES_ONLY])
 
 
 def _sorted_rows(records):
@@ -2100,15 +2337,111 @@ def _sorted_rows(records):
     return [{col: r.get(col, "") for col in MANAGEABILITY_COLUMNS} for r in rows]
 
 
-def manageability_counts(rows, stable_only=False):
+def manageability_counts(rows, stable_only=False, api_groups=API_GROUP_ORDER):
     """Rows per API group, bucket and KCC status. stable_only counts the rows that a stable KCC kind serves."""
     counts = {}
-    for group in API_GROUP_ORDER:
+    for group in api_groups:
         c = Counter((r["bucket"], r["kcc_status"]) for r in rows if r["api_group"] == group
                     and (not stable_only or r["kcc_stability"] == STABILITY_STABLE))
         counts[group] = {b: {s: c[(b, s)] for s in STATUS_ORDER if c[(b, s)]}
                          for b in BUCKET_ORDER if any(c[(b, s)] for s in STATUS_ORDER)}
     return counts
+
+
+def _pattern_literal_sets(patterns_str):
+    return {tuple(_pattern_literals(p.strip())) for p in patterns_str.split("|") if p.strip()}
+
+
+def scope_gcp_resources(records):
+    """Scopes classified rows to GCP resources from googleapis only, stripping dirty duplicate declarations.
+
+    Excludes Other Google APIs and synthetic KCC-only "No googleapis resource" rows. When multiple googleapis
+    packages declare the same resource_type, strips:
+      - cross-service no-crud re-declarations when a GA row with ops exists for that resource_type;
+      - old renamed non-ga-only beta packages whose URL patterns overlap a GA row for that resource_type.
+    Genuinely distinct APIs sharing a service domain (e.g. Dialogflow ES vs CX, BigLake Hive/Iceberg) are kept.
+    """
+    gcp_raw = [r for r in records if r["api_group"] == API_GROUP_CLOUD and r["bucket"] != BUCKET_NO_GOOGLEAPIS]
+    by_rt = defaultdict(list)
+    for r in gcp_raw:
+        by_rt[r["resource_type"]].append(r)
+
+    removed = []
+    removed_ids = set()
+    for rt, group in sorted(by_rt.items()):
+        if len(group) <= 1:
+            continue
+        ga_with_ops = [r for r in group if r["ga"] and r["drop_reason"] != "no-crud"]
+        if not ga_with_ops:
+            continue
+        ga_patterns = set().union(*(_pattern_literal_sets(r["patterns"]) for r in ga_with_ops))
+        for r in group:
+            dup_kind = None
+            if r["drop_reason"] == "no-crud":
+                dup_kind = "duplicate:foreign-no-crud"
+            elif r["drop_reason"] == "non-ga-only" and (_pattern_literal_sets(r["patterns"]) & ga_patterns):
+                dup_kind = "duplicate:superseded-non-ga"
+            if dup_kind:
+                removed_ids.add(r["id"])
+                removed.append({
+                    "id": r["id"],
+                    "resource_type": rt,
+                    "proto_message": r["proto_message"],
+                    "drop_reason": r["drop_reason"],
+                    "reason": dup_kind,
+                })
+
+    kept = []
+    remaining_per_rt = Counter(r["resource_type"] for r in gcp_raw if r["id"] not in removed_ids)
+    for r in gcp_raw:
+        if r["id"] in removed_ids:
+            continue
+        rec = dict(r)
+        # Drop the "[pkg_family]" suffix once dirty duplicates are gone and only one row remains for this resource_type.
+        if remaining_per_rt[rec["resource_type"]] == 1:
+            rec["id"] = rec["resource_type"]
+        kept.append(rec)
+
+    removed.sort(key=lambda d: (d["resource_type"], d["proto_message"]))
+    return kept, removed
+
+
+def gcp_resource_summary(records, removed_duplicates):
+    """GCP-resource-only counts (no KCC-kind summary, no Other Google APIs)."""
+    in_scope = [r for r in records if r["bucket"] != BUCKET_DROPPED]
+    dropped = [r for r in records if r["bucket"] == BUCKET_DROPPED]
+    supported = [r for r in in_scope if r["kcc_status"] not in GCP_UNSUPPORTED_STATUSES]
+    types_only = [r for r in in_scope if r["kcc_status"] == STATUS_TYPES_ONLY]
+    net_new = [r for r in in_scope if r["kcc_status"] == STATUS_NET_NEW]
+    return {
+        "total": len(records),
+        "in_scope": len(in_scope),
+        "in_scope_supported": len(supported),
+        "in_scope_types_only": len(types_only),
+        "in_scope_net_new": len(net_new),
+        "in_scope_unsupported": len(types_only) + len(net_new),
+        "dropped": len(dropped),
+        "drop_reasons": dict(sorted(Counter(r["drop_reason"] for r in dropped).items(), key=lambda kv: (-kv[1], kv[0]))),
+        "removed_duplicates": len(removed_duplicates),
+        "removed_duplicate_rows": removed_duplicates,
+    }
+
+
+CANDIDATE_BUCKET_ORDER = {BUCKET_FM: 0, BUCKET_PM_NO_DELETE: 1, BUCKET_PM_NO_CREATE: 2, BUCKET_REVIEW: 3}
+CANDIDATE_LAYER_ORDER = {"Easy (Leaf)": 0, "Next Layer (1 Parent)": 1, "Next Next Layer (2 Parents)": 2, "Deeply Nested": 3}
+
+
+def _write_json(path, payload):
+    with open(path, "w", newline="\n") as f:
+        json.dump(payload, f, indent=1)
+        f.write("\n")
+
+
+def _write_csv(path, fieldnames, rows):
+    with open(path, "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=fieldnames, lineterminator="\n")
+        w.writeheader()
+        w.writerows(rows)
 
 
 def write_manageability_outputs(records, out_dir, meta):
@@ -2118,34 +2451,83 @@ def write_manageability_outputs(records, out_dir, meta):
     doc = {"meta": dict(meta, counts=manageability_counts(rows), stable_counts=manageability_counts(rows, True)),
            "resources": rows}
     json_path = os.path.join(out_dir, "manageability_list.json")
-    with open(json_path, "w", newline="\n") as f:
-        json.dump(doc, f, indent=1)
-        f.write("\n")
     csv_path = os.path.join(out_dir, "manageability_list.csv")
-    with open(csv_path, "w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=MANAGEABILITY_COLUMNS, lineterminator="\n")
-        w.writeheader()
-        w.writerows(rows)
+    _write_json(json_path, doc)
+    _write_csv(csv_path, MANAGEABILITY_COLUMNS, rows)
     return json_path, csv_path
 
 
-def print_manageability_summary(records, k, kcc_kinds):
+def write_gcp_only_outputs(records, removed_duplicates, out_dir, meta):
+    """Writes gcp_resources_all.{json,csv} and compact gcp_resources_unsupported.{csv,json}."""
+    os.makedirs(out_dir, exist_ok=True)
+    rows = _sorted_rows(records)
+    summary = gcp_resource_summary(rows, removed_duplicates)
+    all_meta = dict(
+        meta,
+        gcp_resources=summary,
+        counts=manageability_counts(rows, api_groups=(API_GROUP_CLOUD,)),
+        stable_counts=manageability_counts(rows, True, api_groups=(API_GROUP_CLOUD,)),
+    )
+    all_json = os.path.join(out_dir, "gcp_resources_all.json")
+    all_csv = os.path.join(out_dir, "gcp_resources_all.csv")
+    _write_json(all_json, {"meta": all_meta, "resources": rows})
+    _write_csv(all_csv, MANAGEABILITY_COLUMNS, rows)
+
+    unsupported_src = [r for r in rows if r["bucket"] != BUCKET_DROPPED and r["kcc_status"] in GCP_UNSUPPORTED_STATUSES]
+    unsupported_src.sort(key=lambda r: (r["service"], r["resource_type"], r["kind"]))
+    unsupported_rows = [{col: r.get(col, "") for col in GCP_UNSUPPORTED_COLUMNS} for r in unsupported_src]
+
+    unsup_csv = os.path.join(out_dir, "gcp_resources_unsupported.csv")
+    unsup_json = os.path.join(out_dir, "gcp_resources_unsupported.json")
+    _write_csv(unsup_csv, GCP_UNSUPPORTED_COLUMNS, unsupported_rows)
+
+    unsup_meta = {
+        "schema_version": meta["schema_version"],
+        "googleapis_sha": meta["googleapis_sha"],
+        "kcc_ref": meta["kcc_ref"],
+        "count": len(unsupported_rows),
+        "by_kcc_status": {s: sum(1 for r in unsupported_rows if r["kcc_status"] == s)
+                          for s in STATUS_ORDER if any(r["kcc_status"] == s for r in unsupported_rows)},
+    }
+    _write_json(unsup_json, {"meta": unsup_meta, "resources": unsupported_rows})
+    return all_json, all_csv, unsup_csv, unsup_json
+
+
+def _print_bucket_matrices(sections):
+    """Prints one or more (title, rows) bucket x KCC-status tables using a shared column width."""
     width = max(len(b) for b in BUCKET_ORDER)
     header = "%-*s %s  total" % (width, "bucket", " ".join("%11s" % STATUS_SHORT[s] for s in STATUS_ORDER))
+    for title, part in sections:
+        if not part:
+            continue
+        counts = Counter((r["bucket"], r["kcc_status"]) for r in part)
+        print("\n--- %s ---" % title)
+        print(header)
+        for b in BUCKET_ORDER:
+            vals = [counts.get((b, s), 0) for s in STATUS_ORDER]
+            if sum(vals):
+                print("%-*s %s  %5d" % (width, b, " ".join("%11s" % (v or "") for v in vals), sum(vals)))
+
+
+def _print_top_candidates(title, candidates, k, include_status=False):
+    print("\n--- %s (%d total) ---" % (title, len(candidates)))
+    for r in candidates[:k]:
+        suffix = " [%s]" % r["kcc_status"] if include_status else ""
+        print("  - %s (%s)%s" % (r["kind"], r["resource_type"], suffix))
+        print("    Bucket: %s | Layer: %s | Ops: %s" % (r["bucket"], r["layer"] or "?", r["ops"]))
+        flags = [f for f in r["flags"].split("; ") if f]
+        if flags:
+            print("    Flags:  %s" % ", ".join(flags))
+
+
+def print_manageability_summary(records, k, kcc_kinds):
+    sections = []
     for group in API_GROUP_ORDER:
         rows = [r for r in records if r["api_group"] == group]
         stable = [r for r in rows if r["kcc_stability"] == STABILITY_STABLE]
-        for title, part in (("%s (bucket x KCC status)" % group, rows),
-                            ("%s: of those, the rows a stable (v1beta1) KCC kind serves" % group, stable)):
-            if not part:
-                continue
-            counts = Counter((r["bucket"], r["kcc_status"]) for r in part)
-            print("\n--- %s ---" % title)
-            print(header)
-            for b in BUCKET_ORDER:
-                vals = [counts.get((b, s), 0) for s in STATUS_ORDER]
-                if sum(vals):
-                    print("%-*s %s  %5d" % (width, b, " ".join("%11s" % (v or "") for v in vals), sum(vals)))
+        sections.append(("%s (bucket x KCC status)" % group, rows))
+        sections.append(("%s: of those, the rows a stable (v1beta1) KCC kind serves" % group, stable))
+    _print_bucket_matrices(sections)
     print("\nKCC kinds: all %d are on the list, %d on a googleapis resource and %d under \"%s\"." % (
         kcc_kinds["total"], kcc_kinds["with_googleapis_resource"], kcc_kinds["without_googleapis_resource"],
         BUCKET_NO_GOOGLEAPIS))
@@ -2154,25 +2536,44 @@ def print_manageability_summary(records, k, kcc_kinds):
     for reason, n in Counter(r["drop_reason"] for r in dropped).most_common():
         cloud = sum(1 for r in dropped if r["drop_reason"] == reason and r["api_group"] == API_GROUP_CLOUD)
         print("  %5d %5d  %s" % (cloud, n - cloud, reason))
-    order = {BUCKET_FM: 0, BUCKET_PM_NO_DELETE: 1, BUCKET_PM_NO_CREATE: 2, BUCKET_REVIEW: 3}
-    layers = {"Easy (Leaf)": 0, "Next Layer (1 Parent)": 1, "Next Next Layer (2 Parents)": 2, "Deeply Nested": 3}
-    new = [r for r in records if r["kcc_status"] == STATUS_NET_NEW and r["bucket"] in order]
-    cloud_new = sorted((r for r in new if r["api_group"] == API_GROUP_CLOUD),
-                       key=lambda r: (order[r["bucket"]], layers.get(r["layer"], 4), r["id"]))
+    new = [r for r in records if r["kcc_status"] == STATUS_NET_NEW and r["bucket"] in CANDIDATE_BUCKET_ORDER]
+    cloud_new = sorted(
+        (r for r in new if r["api_group"] == API_GROUP_CLOUD),
+        key=lambda r: (CANDIDATE_BUCKET_ORDER[r["bucket"]], CANDIDATE_LAYER_ORDER.get(r["layer"], 4), r["id"]),
+    )
     other_new = Counter(r["api_family"] for r in new if r["api_group"] == API_GROUP_OTHER)
-    print("\n--- Top %d net-new Google Cloud candidates (%d total) ---" % (k, len(cloud_new)))
-    for r in cloud_new[:k]:
-        print("  - %s (%s)" % (r["kind"], r["resource_type"]))
-        print("    Bucket: %s | Layer: %s | Ops: %s" % (r["bucket"], r["layer"] or "?", r["ops"]))
-        flags = [f for f in r["flags"].split("; ") if f]
-        if flags:
-            print("    Flags:  %s" % ", ".join(flags))
+    _print_top_candidates("Top %d net-new Google Cloud candidates" % k, cloud_new, k)
     print("\nOther Google APIs: %d net-new candidates (%s)" % (
         sum(other_new.values()), ", ".join("%s %d" % kv for kv in sorted(other_new.items()))))
 
 
+def print_gcp_only_summary(records, removed_duplicates, k):
+    summary = gcp_resource_summary(records, removed_duplicates)
+    stable = [r for r in records if r["kcc_stability"] == STABILITY_STABLE]
+    _print_bucket_matrices((
+        ("Google Cloud googleapis resources (bucket x KCC status)", records),
+        ("Google Cloud: of those, the rows a stable (v1beta1) KCC kind serves", stable),
+    ))
+    in_scope = summary["in_scope"]
+    pct = (100.0 * summary["in_scope_supported"] / in_scope) if in_scope else 0.0
+    print("\nGCP resources (googleapis, deduplicated): %d total = %d in-scope + %d dropped "
+          "(%d dirty duplicate declarations stripped)." % (
+              summary["total"], in_scope, summary["dropped"], summary["removed_duplicates"]))
+    print("In-scope parity: %d/%d (%.1f%%) supported by a controller; %d unsupported (%d net-new, %d types-only)." % (
+        summary["in_scope_supported"], in_scope, pct, summary["in_scope_unsupported"],
+        summary["in_scope_net_new"], summary["in_scope_types_only"]))
+    print("\n--- Drop reasons (Google Cloud) ---")
+    for reason, n in summary["drop_reasons"].items():
+        print("  %5d  %s" % (n, reason))
+    unsupported = sorted(
+        (r for r in records if r["bucket"] in CANDIDATE_BUCKET_ORDER and r["kcc_status"] in GCP_UNSUPPORTED_STATUSES),
+        key=lambda r: (CANDIDATE_BUCKET_ORDER[r["bucket"]], CANDIDATE_LAYER_ORDER.get(r["layer"], 4), r["id"]),
+    )
+    _print_top_candidates("Top %d unsupported Google Cloud candidates" % k, unsupported, k, include_status=True)
+
+
 def run_manageability(googleapis_sha, proto_root, googleapis_repo, kcc_dir, kcc_sha, temp_dir, out_dir, k,
-                      fetch_pins=True):
+                      fetch_pins=True, gcp_only=False):
     full_sha = resolve_commit(googleapis_repo, googleapis_sha) or googleapis_sha
     pb = compile_descriptor_set(proto_root, os.path.join(temp_dir, "googleapis-%s.pb" % full_sha))
     files = decode_descriptor_set(pb)
@@ -2213,16 +2614,26 @@ def run_manageability(googleapis_sha, proto_root, googleapis_repo, kcc_dir, kcc_
               % (len(uncommitted), ", ".join(uncommitted[:5]), ", ..." if len(uncommitted) > 5 else ""))
     script_dir = os.path.dirname(os.path.abspath(__file__))
     classifier = ManageabilityClassifier(files, full_sha, proto_root, kcc_dir, kcc_ref, script_dir, pins,
-                                         GitBlobReader(googleapis_repo))
+                                         GitBlobReader(googleapis_repo), gcp_only=gcp_only)
     records = classifier.classify()
+    # No timestamps or local paths: the JSON only depends on the inputs it records here.
+    base_meta = {"schema_version": 2, "googleapis_sha": full_sha, "kcc_ref": kcc_ref,
+                 "kcc_uncommitted_inputs": uncommitted,
+                 "googleapis_pins": [{"sha": sha, "used_by": users} for sha, users, _ in pins],
+                 "skipped_googleapis_pins": skipped, "config_fallbacks": sorted(set(classifier.config_fallbacks)),
+                 "kind_naming": classifier.kind_naming}
+    if gcp_only:
+        gcp_records, removed_dups = scope_gcp_resources(records)
+        all_json, all_csv, unsup_csv, unsup_json = write_gcp_only_outputs(gcp_records, removed_dups, out_dir, base_meta)
+        print_gcp_only_summary(gcp_records, removed_dups, k)
+        print("\n[SAVED] Full GCP resources written to %s and %s" % (all_json, all_csv))
+        print("[SAVED] Unsupported GCP resources written to %s and %s" % (unsup_csv, unsup_json))
+        return
+
     matched = len(classifier.matched_kinds)
     kcc_kinds = {"total": len(classifier.crd), "with_googleapis_resource": matched,
                  "without_googleapis_resource": len(classifier.crd) - matched}
-    # No timestamps or local paths: the JSON only depends on the inputs it records here.
-    meta = {"schema_version": 2, "googleapis_sha": full_sha, "kcc_ref": kcc_ref, "kcc_uncommitted_inputs": uncommitted,
-            "googleapis_pins": [{"sha": sha, "used_by": users} for sha, users, _ in pins],
-            "skipped_googleapis_pins": skipped, "config_fallbacks": sorted(set(classifier.config_fallbacks)),
-            "kind_naming": classifier.kind_naming, "kcc_kinds": kcc_kinds}
+    meta = dict(base_meta, kcc_kinds=kcc_kinds)
     json_path, csv_path = write_manageability_outputs(records, out_dir, meta)
     print_manageability_summary(records, k, kcc_kinds)
     print("\n[SAVED] Manageability list written to %s and %s" % (json_path, csv_path))
@@ -2241,6 +2652,11 @@ def main():
     parser.add_argument("--manageability", action="store_true",
                         help="classify every googleapis resource (Fully/Partially Manageable, Needs review, Dropped "
                              "with reason) and write manageability_list.json/.csv; requires protoc")
+    parser.add_argument("--gcp-only", action="store_true",
+                        help="run protoc-based manageability classification scoped strictly to GCP resources from "
+                             "googleapis (excludes Other Google APIs, KCC-only rows, and dirty duplicate declarations) "
+                             "and write gcp_resources_all.{json,csv} and compact gcp_resources_unsupported.{csv,json} "
+                             "without touching manageability_list.{json,csv}")
     parser.add_argument("--googleapis-repo",
                         help="use this local googleapis git clone (e.g. .build/third_party/googleapis) instead of "
                              "cloning; protos are exported with `git archive`, so its checkout is not modified")
@@ -2267,10 +2683,10 @@ def main():
     if args.kcc_sha.upper() != "LOCAL":
         prepare_repo("https://github.com/GoogleCloudPlatform/k8s-config-connector.git", kcc_dir, args.kcc_sha)
 
-    if args.manageability:
+    if args.manageability or args.gcp_only:
         out_dir = args.output_dir or os.path.dirname(os.path.abspath(__file__))
         run_manageability(args.googleapis_sha, googleapis_dir, googleapis_repo, kcc_dir, args.kcc_sha, temp_dir,
-                          out_dir, args.k, fetch_pins=not args.no_fetch_pins)
+                          out_dir, args.k, fetch_pins=not args.no_fetch_pins, gcp_only=args.gcp_only)
         if not (args.update_gap or args.resources_list):
             return
 

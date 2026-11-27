@@ -16,7 +16,7 @@ It is used to identify gaps in resource coverage and prioritize the "easiest" ne
 
 ```bash
 python3 hack/tools/greenfield/calculate_coverage.py <googleapis_sha> <kcc_sha> [k] [--update-gap] [--resources-list] \
-    [--manageability] [--googleapis-repo PATH] [--output-dir DIR] [--no-fetch-pins]
+    [--manageability] [--gcp-only] [--googleapis-repo PATH] [--output-dir DIR] [--no-fetch-pins]
 ```
 
 ### Parameters
@@ -27,8 +27,11 @@ python3 hack/tools/greenfield/calculate_coverage.py <googleapis_sha> <kcc_sha> [
 - `--update-gap`: (Optional) If provided, updates the `gap_analysis.txt` file with the coverage snapshot.
 - `--resources-list`: (Optional) If provided, outputs a full structured list of all resources with their layer and CRUD status to `resources_list.json`.
 - `--manageability`: (Optional) Classifies every googleapis resource with the manageability rules below and writes `manageability_list.json` and `manageability_list.csv`. Requires `protoc`. When it's the only output flag, the legacy analysis is skipped.
+- `--gcp-only`: (Optional) Standalone `protoc`-based classification mode scoped strictly to Google Cloud resources defined in `googleapis` (excluding `Other Google APIs`, synthetic `No googleapis resource` KCC-only rows, dirty duplicate/foreign proto declarations, and ignoring `coverage_skip.json` legacy gap skips). Takes precedence over `--manageability` and writes two outputs without touching `manageability_list.{json,csv}`:
+  - `gcp_resources_all.json` / `gcp_resources_all.csv`: every deduplicated Google Cloud resource in `googleapis` with all manageability/drop rules applied.
+  - `gcp_resources_unsupported.csv` / `gcp_resources_unsupported.json`: compact 4-column list (`resource_type`, `kind`, `service`, `kcc_status`) of non-dropped Google Cloud resources without a KCC controller yet (`net-new` and `in progress (types only)`).
 - `--googleapis-repo PATH`: (Optional) Use an existing local googleapis clone (for example `.build/third_party/googleapis`) instead of cloning into `$TMPDIR/kcc_coverage`. The protos are exported with `git archive`, so the clone's checkout isn't modified. The commit must already be fetched.
-- `--output-dir DIR`: (Optional) Where to write the manageability files. Defaults to this directory.
+- `--output-dir DIR`: (Optional) Where to write the manageability / GCP-only files. Defaults to this directory.
 - `--no-fetch-pins`: (Optional) Don't fetch missing googleapis pin commits. The output is then incomplete for the pin columns, and the skipped pins are listed in the JSON `meta`.
 
 ### Example
@@ -82,17 +85,24 @@ Unlike the legacy analysis, it compiles all googleapis protos with `protoc` and 
 
 | Reason | Rule |
 |---|---|
-| `skip-list` | Matches `coverage_skip.json`. |
-| `example-api` | `google.example.*` sample APIs. |
 | `deprecated` | Deprecated proto package, service or RPCs, or listed in `deprecated_services.json`. |
 | `non-ga-only` | Only defined in alpha/beta packages. |
+| `no-public-proto` | Resource has no public proto or only an empty proto message containing no fields (`0` hits in current `googleapis`). |
 | `no-crud` | No CRUD or List RPCs. |
 | `read-only` | Neither CREATE nor UPDATE. |
-| `nondeclarative:pattern` | Ephemeral, data-plane, snapshot or backup collection. |
+| `nondeclarative:no-actual-state` | `review:no-read` resources (neither `Get` nor `List` with server-generated ID); applies to all resources including already-supported kinds. |
+| `nondeclarative:ephemeral` | Ephemeral collection (`ephemeralCollectionSegments`), ephemeral resource type (`nonDeclarativeEphemeralResourceTypes`), or one-shot job (`CREATE` without `UPDATE`, and no `DELETE` or has `Cancel`, matching `*Job`). |
+| `nondeclarative:data-plane` | Data-plane, version-snapshot, experiment/eval, or point-in-time backup/snapshot leaf collection (`nonDeclarativeLeafCollections`), or data-plane resource type (`nonDeclarativeDataPlaneResourceTypes`). |
 | `nondeclarative:bulk-rpc` | Collection has bulk or purge RPCs. |
-| `policy:<reason>` | Listed in `policy_exclusions.json`: Datapath API, Private Cloud, Drip risk. |
+| `skip-list` | Matches `coverage_skip.json` (skipped under `--gcp-only`). |
+| `example-api` | `google.example.*` sample APIs (skipped under `--gcp-only`). |
+| `non-gcp-env` | API or resource targets non-GCP environments/physical hardware (`google.spanner.admin.omni.*`, `google.spanner.auth.*`, `google.devtools.resultstore.*`, `google.cloud.gsuiteaddons.*`, `google.cloud.gdchardwaremanagement.*`, plus physical hardware `compute/{Interconnect,WireGroup}`, `cloudkms/SingleTenantHsmInstance*`, `vmwareengine/*` bare-metal nodes, and external-env `vmmigration/{DatacenterConnector,MigratingVm,Source}`). See [MANUAL_SETUP_AND_NON_GCP_ENV.md](./MANUAL_SETUP_AND_NON_GCP_ENV.md). |
+| `manual-setup` | Listed in `manual_setup.json` (unreleased resources only): requires service-team project allowlisting or Console UI opt-in, commercial/partner enrollment, verified external assets (BYOIP/domains/EKM), a separate testing organization, or an isolated project requiring billing setup. See [MANUAL_SETUP_AND_NON_GCP_ENV.md](./MANUAL_SETUP_AND_NON_GCP_ENV.md). |
+| `blocked-on-brownfield` | Listed in `blocked_on_brownfield.json` (unreleased resources only): requires new fields or features on an existing KCC brownfield/parent resource (`#16072`). |
+| `parent-dropped` | All resource patterns sit under a `Dropped` ancestor resource (excluding platform roots like `projects/*`, `locations/*`, `organizations/*`, `folders/*`, `billingAccounts/*`). |
+| `policy:<reason>` | Listed in `policy_exclusions.json` (skipped under `--gcp-only`): Datapath API, Private Cloud, Drip risk. |
 
-A resource is never dropped because KCC already supports it. A supported resource that matches one of these rules is dropped like any other and keeps its `kcc_status`: `serviceusage.googleapis.com/Service` is `read-only` here, and KCC serves it as a stable kind.
+Except for unreleased-only rules (`manual-setup`, `blocked-on-brownfield`, and the flags in `non_blocking_test_requirements.json`), which only apply to unreleased resources (`net-new`, `types-only`, or listed in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`), a resource is never excluded merely because KCC already supports it: e.g. `serviceusage.googleapis.com/Service` is `read-only` here and KCC serves it as a stable kind.
 
 **KCC status** (`kcc_status`) says what KCC has for the resource:
 - `net-new`: no KCC kind yet.
@@ -128,7 +138,10 @@ The API's service prefix is found the way that test finds it, from the proto pac
 
 | Flag | Meaning |
 |---|---|
-| `nondeclarative:one-shot` | CREATE without UPDATE, and no DELETE or a `Cancel` RPC. `generate-types` needs `--allow-non-declarative`. |
+| `nondeclarative:one-shot` | CREATE without UPDATE, and no DELETE or a `Cancel` RPC. `generate-types` needs `--allow-non-declarative` (`*Job` resources are dropped as `nondeclarative:ephemeral`; non-job resources keep this flag without being dropped). |
+| `self-permission-setup` | Listed in `non_blocking_test_requirements.json` (unreleased only): requires granting self-service IAM role(s) on the test org/project. Not dropped. |
+| `new-folder-needed` | Listed in `non_blocking_test_requirements.json` (unreleased only): org/folder-only resource testable by creating a disposable `kind: Folder` in `dependencies.yaml`. Not dropped. |
+| `isolated-project-needed` | Listed in `non_blocking_test_requirements.json` (unreleased only): project singleton/settings resource testable without billing by creating a disposable `kind: Project` in `dependencies.yaml`. Not dropped. |
 | `alias:*` | The op only comes from a flagged alias verb. |
 | `delete-via:*` | DELETE comes from `Destroy`, `Disable`, `Deactivate` or `Remove`. |
 | `read-via-list` | READ is inferred from `List`. |
@@ -195,31 +208,33 @@ To get identical output on any machine:
 - Let the script fetch pins: `meta.skipped_googleapis_pins` must be empty.
 - `meta.config_fallbacks` lists any rule file the analyzed tree didn't have, which then came from the script's own checkout.
 
-### Checked-in snapshot
+### Checked-in snapshots
 
-[`manageability_list.json`](manageability_list.json) is a checked-in run of this mode, so the list can be read without running the script. Its `meta` block names the googleapis and KCC commits it was generated from.
+[`manageability_list.json`](manageability_list.json) (`--manageability`), [`gcp_resources_all.json`](gcp_resources_all.json), and [`gcp_resources_unsupported.json`](gcp_resources_unsupported.json) (`--gcp-only`) are checked-in JSON snapshots so the lists can be read without running the script. Each `meta` block names the `googleapis` and KCC commits it was generated from.
 
-To update it to the newest googleapis, run the mode from the repo root without `--output-dir`, which writes next to the script:
+To update them to the newest `googleapis`, run the desired mode from the repo root without `--output-dir`, which writes next to the script (pass `--gcp-only` alone—do not combine it with `--manageability`):
 
 ```bash
 git -C .build/third_party/googleapis fetch --depth 1 origin master
 python3 hack/tools/greenfield/calculate_coverage.py origin/master LOCAL 20 --manageability \
     --googleapis-repo .build/third_party/googleapis
+python3 hack/tools/greenfield/calculate_coverage.py origin/master LOCAL 20 --gcp-only \
+    --googleapis-repo .build/third_party/googleapis
 ```
 
-To regenerate it from the googleapis commit it already uses, pass that commit:
+To regenerate a snapshot from the `googleapis` commit it already uses, pass that commit:
 
 ```bash
-sha=$(jq -r .meta.googleapis_sha hack/tools/greenfield/manageability_list.json)
+sha=$(jq -r .meta.googleapis_sha hack/tools/greenfield/gcp_resources_all.json)
 git -C .build/third_party/googleapis fetch --depth 1 origin "$sha"
-python3 hack/tools/greenfield/calculate_coverage.py "$sha" LOCAL 20 --manageability \
+python3 hack/tools/greenfield/calculate_coverage.py "$sha" LOCAL 20 --gcp-only \
     --googleapis-repo .build/third_party/googleapis
 git status --short hack/tools/greenfield
 ```
 
 The run is idempotent: `git status` prints nothing when the list is up to date with the checkout, however often it runs. A change to the script or to a KCC input shows up as a diff of the list.
 
-A change to the script and the list it regenerates can go in one commit. A change to a KCC input, such as `policy_exclusions.json`, has to be committed before the list is generated (`meta.kcc_uncommitted_inputs`). Only the JSON is checked in: the `manageability_list.csv` written next to it has the same rows and is ignored by git.
+A change to the script and the list it regenerates can go in one commit. A change to a KCC input, such as `policy_exclusions.json`, has to be committed before the list is generated (`meta.kcc_uncommitted_inputs`). Only the JSON files are checked in: the companion `.csv` files (`manageability_list.csv`, `gcp_resources_all.csv`, `gcp_resources_unsupported.csv`) have the same rows and are not checked in (`manageability_list.csv` is ignored by git).
 
 ## Unified Resource Policy
 

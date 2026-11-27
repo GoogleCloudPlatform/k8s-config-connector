@@ -68,5 +68,51 @@
       "CloudIoTRegistry"
     ],
     "evidence": "Google Cloud IoT Core service was retired on August 16, 2023. [Cloud IoT Core Resource Hub](https://docs.cloud.google.com/eventarc/docs/event-types#triggers-events)"
+  },
+  {
+    "name": "IAP OAuth Admin API",
+    "service": "iap.googleapis.com",
+    "kinds": [
+      "IAPBrand",
+      "IAPIdentityAwareProxyClient"
+    ],
+    "evidence": "The IAP OAuth Admin API (Brand and IdentityAwareProxyClient) was deprecated on January 22, 2025, blocked for new projects on January 19, 2026, and shut down on March 19, 2026. TunnelDestGroup remains active. [IAP Deprecations](https://cloud.google.com/iap/docs/deprecations)"
+  },
+  {
+    "name": "Vertex AI Data Labeling",
+    "service": "aiplatform.googleapis.com",
+    "kinds": [
+      "VertexAIDataLabelingJob",
+      "AIPlatformDataLabelingJob"
+    ],
+    "evidence": "Vertex AI Data Labeling (DataLabelingJob) was deprecated on June 30, 2023 and shut down on October 3, 2024. [Vertex AI Deprecations](https://cloud.google.com/vertex-ai/docs/deprecations#vertex-ai-data-labeling)"
+  },
+  {
+    "name": "Backup and DR Legacy Management Console",
+    "service": "backupdr.googleapis.com",
+    "kinds": [
+      "BackupDRManagementServer"
+    ],
+    "evidence": "Backup and DR legacy Management Console (ManagementServer) ended new deployments on July 31, 2026 (deprecated September 30, 2026; end of backups September 30, 2027). Native BackupVault/BackupPlan remain active. [Backup and DR Deprecations](https://cloud.google.com/backup-disaster-recovery/docs/deprecations)"
+  },
+  {
+    "name": "Security Command Center OrganizationSettings",
+    "service": "securitycenter.googleapis.com",
+    "kinds": [
+      "SecurityCenterOrganizationSettings"
+    ],
+    "evidence": "OrganizationSettings is a singleton (no Create) whose sole write RPC (UpdateOrganizationSettings) is deprecated for legacy Asset Discovery (deprecated June 20, 2023 and removed June 20, 2024), leaving only read access. [organizations.updateOrganizationSettings](https://cloud.google.com/security-command-center/docs/reference/rest/v1/organizations/updateOrganizationSettings)"
+  },
+  {
+    "name": "Anthos Multi-Cloud (AWS and Azure)",
+    "service": "gkemulticloud.googleapis.com",
+    "kinds": [
+      "GKEMultiCloudAWSCluster",
+      "GKEMultiCloudAWSNodePool",
+      "GKEMultiCloudAzureCluster",
+      "GKEMultiCloudAzureNodePool",
+      "GKEMultiCloudAzureClient"
+    ],
+    "evidence": "GKE on AWS and GKE on Azure entered maintenance mode on March 17, 2025 with End of Life on March 17, 2027 (GKE Attached Clusters remain active)."
   }
 ]

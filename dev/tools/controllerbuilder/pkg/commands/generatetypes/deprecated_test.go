@@ -84,6 +84,22 @@ func TestDeprecatedResourceReason(t *testing.T) {
 			wantDeprecated:    true,
 			wantSubstr:        "Cloud IoT Core (google.cloud.iot.v1) is deprecated",
 		},
+		{
+			name:              "curated deprecated package (visionai) without proto deprecated options",
+			pkg:               "google.cloud.visionai.v1",
+			serviceDeprecated: false,
+			rpcDeprecated:     []bool{false, false, false, false},
+			wantDeprecated:    true,
+			wantSubstr:        "Vertex AI Vision (google.cloud.visionai.v1) reached EOL",
+		},
+		{
+			name:              "curated deprecated package (sourcerepo) without proto deprecated options",
+			pkg:               "google.devtools.sourcerepo.v1",
+			serviceDeprecated: false,
+			rpcDeprecated:     []bool{false, false, false, false},
+			wantDeprecated:    true,
+			wantSubstr:        "Cloud Source Repositories (google.devtools.sourcerepo.v1) reached End of Sale",
+		},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			pbPath := writeDeprecatedTestProto(t, t.TempDir(), tc.pkg, tc.serviceDeprecated, tc.rpcDeprecated)
@@ -104,6 +120,82 @@ func TestDeprecatedResourceReason(t *testing.T) {
 				t.Errorf("deprecatedResourceReason() reason = %q, want substring %q", reason, tc.wantSubstr)
 			}
 		})
+	}
+}
+
+func TestDeprecatedResourceReasonCuratedMessage(t *testing.T) {
+	str := descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()
+	orgSettingsOpts := &descriptorpb.MessageOptions{}
+	proto.SetExtension(orgSettingsOpts, annotations.E_Resource, &annotations.ResourceDescriptor{
+		Type:    "securitycenter.googleapis.com/OrganizationSettings",
+		Pattern: []string{"organizations/{organization}/organizationSettings"},
+	})
+	otherOpts := &descriptorpb.MessageOptions{}
+	proto.SetExtension(otherOpts, annotations.E_Resource, &annotations.ResourceDescriptor{
+		Type:    "securitycenter.googleapis.com/MuteConfig",
+		Pattern: []string{"organizations/{organization}/muteConfigs/{mute_config}"},
+	})
+	fds := &descriptorpb.FileDescriptorSet{File: []*descriptorpb.FileDescriptorProto{{
+		Name:    proto.String("google/cloud/securitycenter/v1/test.proto"),
+		Package: proto.String("google.cloud.securitycenter.v1"),
+		Syntax:  proto.String("proto3"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name:    proto.String("OrganizationSettings"),
+				Options: orgSettingsOpts,
+				Field:   []*descriptorpb.FieldDescriptorProto{{Name: proto.String("name"), Number: proto.Int32(1), Type: str}},
+			},
+			{
+				Name:    proto.String("MuteConfig"),
+				Options: otherOpts,
+				Field:   []*descriptorpb.FieldDescriptorProto{{Name: proto.String("name"), Number: proto.Int32(1), Type: str}},
+			},
+		},
+		Service: []*descriptorpb.ServiceDescriptorProto{{
+			Name: proto.String("SecurityCenter"),
+			Method: []*descriptorpb.MethodDescriptorProto{
+				{
+					Name:       proto.String("GetOrganizationSettings"),
+					InputType:  proto.String(".google.cloud.securitycenter.v1.OrganizationSettings"),
+					OutputType: proto.String(".google.cloud.securitycenter.v1.OrganizationSettings"),
+				},
+				{
+					Name:       proto.String("CreateMuteConfig"),
+					InputType:  proto.String(".google.cloud.securitycenter.v1.MuteConfig"),
+					OutputType: proto.String(".google.cloud.securitycenter.v1.MuteConfig"),
+				},
+			},
+		}},
+	}}}
+
+	b, err := proto.Marshal(fds)
+	if err != nil {
+		t.Fatalf("marshalling descriptor set: %v", err)
+	}
+	pbPath := filepath.Join(t.TempDir(), "scc.pb")
+	writeFile(t, pbPath, string(b))
+
+	api, err := protoapi.LoadProto(pbPath, "")
+	if err != nil {
+		t.Fatalf("LoadProto: %v", err)
+	}
+
+	orgDesc, err := api.Files().FindDescriptorByName("google.cloud.securitycenter.v1.OrganizationSettings")
+	if err != nil {
+		t.Fatalf("FindDescriptorByName OrganizationSettings: %v", err)
+	}
+	if reason, deprecated := deprecatedResourceReason(api, orgDesc.(protoreflect.MessageDescriptor)); !deprecated {
+		t.Errorf("expected OrganizationSettings to be detected as deprecated, got false")
+	} else if !strings.Contains(reason, "OrganizationSettings") {
+		t.Errorf("unexpected reason for OrganizationSettings: %q", reason)
+	}
+
+	muteDesc, err := api.Files().FindDescriptorByName("google.cloud.securitycenter.v1.MuteConfig")
+	if err != nil {
+		t.Fatalf("FindDescriptorByName MuteConfig: %v", err)
+	}
+	if reason, deprecated := deprecatedResourceReason(api, muteDesc.(protoreflect.MessageDescriptor)); deprecated {
+		t.Errorf("expected active MuteConfig in google.cloud.securitycenter.v1 not to be deprecated, got reason: %q", reason)
 	}
 }
 
