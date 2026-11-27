@@ -3,7 +3,6 @@ kind: DialogflowCXWebhook
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -29,5 +28,6 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606
   name: 4150c119-76bc-4592-b12d-8d65e0b22606
   observedGeneration: 3
