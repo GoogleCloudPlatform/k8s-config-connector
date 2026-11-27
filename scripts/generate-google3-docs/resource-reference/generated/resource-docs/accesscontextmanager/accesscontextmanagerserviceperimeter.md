@@ -69,7 +69,8 @@ spec:
   egressPolicies:
   - egressFrom:
       identities:
-      - serviceAccountRef:
+      - group: string
+        serviceAccountRef:
           external: string
           name: string
           namespace: string
@@ -91,7 +92,8 @@ spec:
   ingressPolicies:
   - ingressFrom:
       identities:
-      - serviceAccountRef:
+      - group: string
+        serviceAccountRef:
           external: string
           name: string
           namespace: string
@@ -136,7 +138,8 @@ status:
   egressPolicies:
   - egressFrom:
       identities:
-      - serviceAccountRef:
+      - group: string
+        serviceAccountRef:
           external: string
           name: string
           namespace: string
@@ -158,7 +161,8 @@ status:
   ingressPolicies:
   - ingressFrom:
       identities:
-      - serviceAccountRef:
+      - group: string
+        serviceAccountRef:
           external: string
           name: string
           namespace: string
@@ -388,7 +392,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>(Optional) A list of identities that are allowed access through this EgressPolicy. Should be in the format of email address. The email address should represent individual user or service account only.</p>
+            <p>(Optional) A list of identities that are allowed access through this EgressPolicy. Should be in the format of email address. The email address should represent an individual user, service account, or Google group.</p>
         </td>
     </tr>
     <tr>
@@ -399,6 +403,16 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         <td>
             <p><code class="apitype">object</code></p>
             <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>spec.egressPolicies[].egressFrom.identities[].group</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A Google group identity, in the format of a Google Groups email address.</p>
         </td>
     </tr>
     <tr>
@@ -658,7 +672,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>(Optional) A list of identities that are allowed access through this ingress policy. Should be in the format of email address. The email address should represent individual user or service account only.</p>
+            <p>(Optional) A list of identities that are allowed access through this ingress policy. Should be in the format of email address. The email address should represent an individual user, service account, or Google group.</p>
         </td>
     </tr>
     <tr>
@@ -669,6 +683,16 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         <td>
             <p><code class="apitype">object</code></p>
             <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>spec.ingressPolicies[].ingressFrom.identities[].group</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A Google group identity, in the format of a Google Groups email address.</p>
         </td>
     </tr>
     <tr>
@@ -1188,7 +1212,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>(Optional) A list of identities that are allowed access through this EgressPolicy. Should be in the format of email address. The email address should represent individual user or service account only.</p>
+            <p>(Optional) A list of identities that are allowed access through this EgressPolicy. Should be in the format of email address. The email address should represent an individual user, service account, or Google group.</p>
         </td>
     </tr>
     <tr>
@@ -1199,6 +1223,16 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         <td>
             <p><code class="apitype">object</code></p>
             <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>egressPolicies[].egressFrom.identities[].group</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A Google group identity, in the format of a Google Groups email address.</p>
         </td>
     </tr>
     <tr>
@@ -1458,7 +1492,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>(Optional) A list of identities that are allowed access through this ingress policy. Should be in the format of email address. The email address should represent individual user or service account only.</p>
+            <p>(Optional) A list of identities that are allowed access through this ingress policy. Should be in the format of email address. The email address should represent an individual user, service account, or Google group.</p>
         </td>
     </tr>
     <tr>
@@ -1469,6 +1503,16 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         <td>
             <p><code class="apitype">object</code></p>
             <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ingressPolicies[].ingressFrom.identities[].group</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A Google group identity, in the format of a Google Groups email address.</p>
         </td>
     </tr>
     <tr>
