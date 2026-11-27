@@ -506,8 +506,9 @@ spec:
                     format: int64
                     type: integer
                   diskType:
-                    description: 'Immutable. The type of data disk: PD_SSD or PD_HDD.
-                      Defaults to PD_SSD.'
+                    description: 'Immutable. The type of data disk: PD_SSD, PD_HDD,
+                      or HYPERDISK_BALANCED. Defaults to PD_SSD for Enterprise edition
+                      in standard regions.'
                     type: string
                   edition:
                     description: The edition of the instance, can be ENTERPRISE or

@@ -56,7 +56,7 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 		// GCP default AvailailbilityType is ZONAL.
 		out.Settings.AvailabilityType = "ZONAL"
 	}
-	if in.Spec.Settings.BackupConfiguration == nil && actual != nil && !actual.Settings.BackupConfiguration.Enabled {
+	if in.Spec.Settings.BackupConfiguration == nil && actual != nil && actual.Settings != nil && actual.Settings.BackupConfiguration != nil && !actual.Settings.BackupConfiguration.Enabled {
 		// If desired backupConfiguration is not specified and actual is disabled, use the actual.
 		out.Settings.BackupConfiguration = actual.Settings.BackupConfiguration
 	}
@@ -81,8 +81,15 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 		out.Settings.ConnectorEnforcement = "NOT_REQUIRED"
 	}
 	if in.Spec.Settings.DiskType == nil {
-		// GCP default DiskType is PD_SSD.
-		out.Settings.DataDiskType = "PD_SSD"
+		if actual != nil && actual.Settings != nil && actual.Settings.DataDiskType != "" {
+			// If desired DiskType is not specified and instance exists, preserve the actual disk type.
+			out.Settings.DataDiskType = actual.Settings.DataDiskType
+		} else if direct.ValueOf(in.Spec.Settings.Edition) != "ENTERPRISE_PLUS" {
+			// GCP default DiskType is PD_SSD for Enterprise edition.
+			// For Enterprise Plus, leave DataDiskType unset so the server chooses the appropriate default
+			// (such as HYPERDISK_BALANCED or PD_SSD depending on the region/environment).
+			out.Settings.DataDiskType = "PD_SSD"
+		}
 	}
 	if in.Spec.Settings.Edition == nil {
 		// Apply client side GCP default Edition is ENTERPRISE.
