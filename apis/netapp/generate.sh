@@ -55,7 +55,8 @@ ${CONTROLLERBUILDER} generate-types \
   --prepopulate-resource \
   --resource NetAppStoragePool:StoragePool \
   --resource NetappQuotaRule:QuotaRule \
-  --resource NetappReplication:Replication
+  --resource NetappReplication:Replication \
+  --resource NetAppVolume:Volume
 
 ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${PROTO_OUT} \
@@ -63,7 +64,8 @@ ${CONTROLLERBUILDER} generate-identity \
   --api-version netapp.cnrm.cloud.google.com/v1alpha1 \
   --resource NetAppStoragePool:StoragePool \
   --resource NetappQuotaRule:QuotaRule \
-  --resource NetappReplication:Replication
+  --resource NetappReplication:Replication \
+  --resource NetAppVolume:Volume
 
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \
