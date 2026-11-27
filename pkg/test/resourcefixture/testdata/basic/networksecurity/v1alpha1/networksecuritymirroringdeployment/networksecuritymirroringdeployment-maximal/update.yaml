@@ -3,14 +3,13 @@ kind: NetworkSecurityMirroringDeployment
 metadata:
   labels:
     key-one: value-one
-    key-two: value-two
   name: mirroringdep-max-${uniqueId}
 spec:
   projectRef:
     external: "projects/${projectId}"
-  location: us-central1
+  location: us-central1-a
   forwardingRuleRef:
-    external: "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}"
+    name: computeforwardingrule-max-${uniqueId}
   mirroringDeploymentGroupRef:
-    external: "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}"
-  description: "Updated description for maximal mirroring deployment"
+    name: mirroringdg-max-${uniqueId}
+  description: "Updated maximal mirroring deployment description"

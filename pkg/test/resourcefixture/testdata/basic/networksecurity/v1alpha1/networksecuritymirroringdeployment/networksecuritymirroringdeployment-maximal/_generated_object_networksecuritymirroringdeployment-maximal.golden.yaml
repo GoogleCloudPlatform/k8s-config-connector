@@ -8,16 +8,15 @@ metadata:
   labels:
     cnrm-test: "true"
     key-one: value-one
-    key-two: value-two
   name: mirroringdep-max-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  description: Updated description for maximal mirroring deployment
+  description: Updated maximal mirroring deployment description
   forwardingRuleRef:
-    external: projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}
-  location: us-central1
+    name: ${forwardingRuleID}
+  location: us-central1-a
   mirroringDeploymentGroupRef:
-    external: projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}
+    name: mirroringdg-max-${uniqueId}
   projectRef:
     external: projects/${projectId}
 status:
@@ -27,7 +26,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-max-${uniqueId}
+  externalRef: projects/${projectId}/locations/us-central1-a/mirroringDeployments/mirroringdep-max-${uniqueId}
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
