@@ -34,7 +34,7 @@ type CloudSupportSupportEventSubscriptionSpec struct {
 	// +kubebuilder:validation:Required
 	PubSubTopicRef *pubsubv1beta1.PubSubTopicRef `json:"pubSubTopicRef"`
 
-	// The CloudSupportSupportEventSubscription name. If not given, the metadata.name will be used.
+	// The CloudSupportSupportEventSubscription name. If not given, it will be server generated.
 	// +kubebuilder:validation:Optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
