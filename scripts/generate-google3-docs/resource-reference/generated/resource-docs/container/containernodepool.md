@@ -192,6 +192,8 @@ nodeConfig:
     maintenanceInterval: string
   imageType: string
   kubeletConfig:
+    allowedUnsafeSysctls:
+    - string
     cpuCfsQuota: boolean
     cpuCfsQuotaPeriod: string
     cpuManagerPolicy: string
@@ -1610,6 +1612,26 @@ version: string
         <td>
             <p><code class="apitype">object</code></p>
             <p>Node kubelet configs.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.kubeletConfig.allowedUnsafeSysctls</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>Defines a comma-separated allowlist of unsafe sysctls or sysctl patterns which can be set on the Pods.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.kubeletConfig.allowedUnsafeSysctls[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
         </td>
     </tr>
     <tr>
