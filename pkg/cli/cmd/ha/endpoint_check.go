@@ -197,7 +197,7 @@ func checkLeaderEndpoints(ctx context.Context, configurers []*clusterConfigurer,
 				}
 
 				if sDesc.NetworkConfig.Network != "" && lDesc.NetworkConfig.Network != "" && sDesc.NetworkConfig.Network != lDesc.NetworkConfig.Network {
-					warn("the clusters are in different VPC networks: PrivateIP requires Cloud VPN or Cloud Interconnect between the VPCs (VPC Network Peering cannot reach GKE private endpoints); otherwise use --leader-endpoint-type=DNS")
+					warn("the clusters are in different VPC networks: PrivateIP requires Cloud VPN or Cloud Interconnect (VPC Network Peering cannot reach GKE private endpoints); otherwise use --leader-endpoint-type=DNS")
 				}
 
 				if lDesc.MasterAuthorizedNetworksConfig.PrivateEndpointEnforcementEnabled {
