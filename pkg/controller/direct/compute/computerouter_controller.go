@@ -23,6 +23,7 @@ package compute
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	compute "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
@@ -35,6 +36,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -317,10 +319,24 @@ func compareComputeRouter(ctx context.Context, actual, desired *computepb.Router
 	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *computepb.Router) {
-		// Even if empty, it's a good pattern to define and populate GCP/server defaults here
+		if obj.Region != nil {
+			*obj.Region = lastComponent(*obj.Region)
+		}
+		if obj.Network != nil {
+			*obj.Network = refs.TrimComputeURIPrefix(*obj.Network)
+		}
 	}
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)
+
+	// If one network reference is a short name and the other is a full relative resource path, match by resource name.
+	if clonedDesired.Network != nil && maskedActual.Network != nil {
+		if !strings.Contains(*clonedDesired.Network, "/") && lastComponent(*maskedActual.Network) == *clonedDesired.Network {
+			clonedDesired.Network = maskedActual.Network
+		} else if !strings.Contains(*maskedActual.Network, "/") && lastComponent(*clonedDesired.Network) == *maskedActual.Network {
+			maskedActual.Network = clonedDesired.Network
+		}
+	}
 
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
