@@ -27,6 +27,7 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 type RoutersV1 struct {
@@ -55,6 +56,12 @@ func (s *RoutersV1) Get(ctx context.Context, req *pb.GetRouterRequest) (*pb.Rout
 		obj.EncryptedInterconnectRouter = nil
 	}
 
+	// The API keeps an MD5 authentication key's value but never returns it:
+	// a read has each key's name only.
+	for _, key := range obj.Md5AuthenticationKeys {
+		key.Key = nil
+	}
+
 	return obj, nil
 }
 
@@ -66,6 +73,20 @@ func (s *RoutersV1) Insert(ctx context.Context, req *pb.InsertRouterRequest) (*p
 	}
 
 	fqn := name.String()
+
+	// The API refuses to insert a router with more than one feature (seen
+	// with interfaces, BGP peers, NATs and MD5 keys together; which
+	// combinations it allows is not known, so any two are refused here).
+	r := req.GetRouterResource()
+	features := 0
+	for _, n := range []int{len(r.Interfaces), len(r.BgpPeers), len(r.Nats), len(r.Md5AuthenticationKeys)} {
+		if n > 0 {
+			features++
+		}
+	}
+	if features > 1 {
+		return nil, status.Errorf(codes.InvalidArgument, "Creating a router with multiple features is currently unsupported.")
+	}
 
 	id := s.generateID()
 
@@ -191,7 +212,45 @@ func (s *RoutersV1) Update(ctx context.Context, req *pb.UpdateRouterRequest) (*p
 		return nil, err
 	}
 
-	updated := proto.Clone(req.GetRouterResource()).(*pb.Router)
+	// The API refuses an update of more than one feature (seen live). Here
+	// the features are the interfaces, the BGP peers with the MD5 keys (as
+	// Terraform's google_compute_router_peer writes them together), and the
+	// NATs; which others count is not known.
+	r := proto.CloneOf(req.GetRouterResource())
+	// A key sent without its value keeps the stored one; a key sent with a
+	// value is a change of the keys, whatever the value.
+	keysChanged := len(r.Md5AuthenticationKeys) != len(existing.Md5AuthenticationKeys)
+	for _, k := range r.Md5AuthenticationKeys {
+		if k.Key != nil {
+			keysChanged = true
+			continue
+		}
+		found := false
+		for _, e := range existing.Md5AuthenticationKeys {
+			if e.GetName() == k.GetName() {
+				k.Key, found = e.Key, true
+			}
+		}
+		if !found {
+			keysChanged = true
+		}
+	}
+	var changed []string
+	if !sameFeature(&pb.Router{Interfaces: existing.Interfaces}, &pb.Router{Interfaces: r.Interfaces}) {
+		changed = append(changed, "interfaces")
+	}
+	if keysChanged || !sameFeature(&pb.Router{BgpPeers: existing.BgpPeers}, &pb.Router{BgpPeers: r.BgpPeers}) {
+		changed = append(changed, "bgpPeers")
+	}
+	if !sameFeature(&pb.Router{Nats: withNatDefaults(existing.Nats)}, &pb.Router{Nats: withNatDefaults(r.Nats)}) {
+		changed = append(changed, "nats")
+	}
+	if len(changed) > 1 {
+		// The API's message, followed by the features that changed.
+		return nil, status.Errorf(codes.InvalidArgument, "Updating multiple Router features is currently unsupported. (mockgcp: %s changed)", strings.Join(changed, ", "))
+	}
+
+	updated := proto.Clone(r).(*pb.Router)
 	updated.SelfLink = existing.SelfLink
 	updated.CreationTimestamp = existing.CreationTimestamp
 	updated.Id = existing.Id
@@ -237,6 +296,57 @@ func (s *RoutersV1) Delete(ctx context.Context, req *pb.DeleteRouterRequest) (*p
 	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
 		return deleted, nil
 	})
+}
+
+// sameFeature compares two routers' features as the API would: a field set
+// to its zero value is the same as one left out (a read sends them back
+// set, as JSON carries them).
+func sameFeature(a, b *pb.Router) bool {
+	a, b = proto.CloneOf(a), proto.CloneOf(b)
+	clearZeros(a.ProtoReflect())
+	clearZeros(b.ProtoReflect())
+	return proto.Equal(a, b)
+}
+
+// withNatDefaults fills in what rewriteRouterResponse adds to a read NAT,
+// so that a NAT sent back as read compares equal to the stored one.
+func withNatDefaults(nats []*pb.RouterNat) []*pb.RouterNat {
+	var out []*pb.RouterNat
+	for _, n := range nats {
+		n = proto.CloneOf(n)
+		if n.AutoNetworkTier == nil {
+			n.AutoNetworkTier = PtrTo("PREMIUM")
+		}
+		if len(n.EndpointTypes) == 0 {
+			n.EndpointTypes = []string{"ENDPOINT_TYPE_VM"}
+		}
+		if n.Type == nil {
+			n.Type = PtrTo("PUBLIC")
+		}
+		out = append(out, n)
+	}
+	return out
+}
+
+func clearZeros(m protoreflect.Message) {
+	var zeros []protoreflect.FieldDescriptor
+	m.Range(func(fd protoreflect.FieldDescriptor, v protoreflect.Value) bool {
+		switch {
+		case fd.IsList() && fd.Kind() == protoreflect.MessageKind:
+			for i := 0; i < v.List().Len(); i++ {
+				clearZeros(v.List().Get(i).Message())
+			}
+		case fd.IsMap() || fd.IsList():
+		case fd.Kind() == protoreflect.MessageKind:
+			clearZeros(v.Message())
+		case v.Equal(fd.Default()):
+			zeros = append(zeros, fd)
+		}
+		return true
+	})
+	for _, fd := range zeros {
+		m.Clear(fd)
+	}
 }
 
 type routerName struct {
