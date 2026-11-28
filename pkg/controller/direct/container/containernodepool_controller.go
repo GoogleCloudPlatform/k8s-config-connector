@@ -288,6 +288,25 @@ func (a *nodePoolAdapter) normalizeNodePool(ctx context.Context, pbNodePool *pb.
 		as.Enabled = true
 	}
 
+	// Suppress diffs for GKE server-managed resource labels prefixed with "goog-gke"
+	// (e.g. "goog-gke-node-pool-provisioning-model") unless explicitly specified by the user.
+	if cfg := pbNodePool.GetConfig(); cfg != nil && len(cfg.ResourceLabels) > 0 {
+		var desiredResourceLabels map[string]string
+		if a.desiredKRM != nil && a.desiredKRM.Spec.NodeConfig != nil {
+			desiredResourceLabels = a.desiredKRM.Spec.NodeConfig.ResourceLabels
+		}
+		for k := range cfg.ResourceLabels {
+			if strings.HasPrefix(k, "goog-gke") {
+				if _, explicitlySet := desiredResourceLabels[k]; !explicitlySet {
+					delete(cfg.ResourceLabels, k)
+				}
+			}
+		}
+		if len(cfg.ResourceLabels) == 0 {
+			cfg.ResourceLabels = nil
+		}
+	}
+
 	if netConfig := pbNodePool.GetNetworkConfig(); netConfig != nil {
 		if netConfig.GetSubnetwork() != "" {
 			canonicalized, err := computev1beta1.CanonicalizeSubnetworkValue(ctx, netConfig.GetSubnetwork(), a.id.Project, a.id.LocationValue(), nil)

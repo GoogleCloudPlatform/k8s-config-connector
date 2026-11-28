@@ -1047,3 +1047,176 @@ func TestContainerNodePool_Update_Gvnic(t *testing.T) {
 		t.Errorf("expected diffRes to be empty after removing updatePaths, got %v", diffRes.FieldMask.GetPaths())
 	}
 }
+
+func TestContainerNodePool_ResourceLabels_IgnoreGKEAutoLabels(t *testing.T) {
+	ctx := context.Background()
+
+	newAdapter := func(desired *krm.ContainerNodePool, actual *pb.NodePool) *nodePoolAdapter {
+		return &nodePoolAdapter{
+			id: &krm.ContainerNodePoolIdentity{
+				Project:  "test-project",
+				Location: "us-central1-a",
+				Cluster:  "test-cluster",
+				NodePool: "test-pool",
+			},
+			desiredKRM: desired,
+			actual:     actual,
+		}
+	}
+
+	t.Run("no diff when GKE adds goog-gke-node-pool-provisioning-model alongside user resourceLabels", func(t *testing.T) {
+		desired := &krm.ContainerNodePool{
+			Spec: krm.ContainerNodePoolSpec{
+				NodeConfig: &krm.NodePoolNodeConfig{
+					ResourceLabels: map[string]string{
+						"service_name": "my-service",
+					},
+				},
+			},
+		}
+		actual := &pb.NodePool{
+			Config: &pb.NodeConfig{
+				ResourceLabels: map[string]string{
+					"service_name":                          "my-service",
+					"goog-gke-node-pool-provisioning-model": "on-demand",
+				},
+			},
+		}
+
+		adapter := newAdapter(desired, actual)
+		diffRes, err := common.CompareSpecifiedSpec(
+			ctx,
+			&desired.Spec,
+			actual,
+			ContainerNodePoolSpec_FromProto,
+			ContainerNodePoolSpec_ToProto,
+			adapter.normalizeNodePool,
+			true,
+		)
+		if err != nil {
+			t.Fatalf("unexpected error comparing specs: %v", err)
+		}
+		if !diffRes.Empty() {
+			t.Fatalf("expected no diff when only GKE-managed goog-gke label differs, got paths: %v", diffRes.FieldMask.GetPaths())
+		}
+	})
+
+	t.Run("detects diff when user modifies custom resourceLabels while GKE auto label is present", func(t *testing.T) {
+		desired := &krm.ContainerNodePool{
+			Spec: krm.ContainerNodePoolSpec{
+				NodeConfig: &krm.NodePoolNodeConfig{
+					ResourceLabels: map[string]string{
+						"service_name": "new-service",
+					},
+				},
+			},
+		}
+		actual := &pb.NodePool{
+			Config: &pb.NodeConfig{
+				ResourceLabels: map[string]string{
+					"service_name":                          "old-service",
+					"goog-gke-node-pool-provisioning-model": "on-demand",
+				},
+			},
+		}
+
+		adapter := newAdapter(desired, actual)
+		diffRes, err := common.CompareSpecifiedSpec(
+			ctx,
+			&desired.Spec,
+			actual,
+			ContainerNodePoolSpec_FromProto,
+			ContainerNodePoolSpec_ToProto,
+			adapter.normalizeNodePool,
+			true,
+		)
+		if err != nil {
+			t.Fatalf("unexpected error comparing specs: %v", err)
+		}
+		if !diffRes.HasPathWithPrefix("config.resource_labels") {
+			t.Fatalf("expected diff on config.resource_labels, got paths: %v", diffRes.FieldMask.GetPaths())
+		}
+
+		updateReq, updatePaths := adapter.buildUpdateNodePoolRequest(diffRes)
+		if len(updatePaths) == 0 {
+			t.Fatalf("expected updatePaths to be non-empty")
+		}
+		gotLabels := updateReq.GetResourceLabels().GetLabels()
+		if gotLabels["service_name"] != "new-service" {
+			t.Errorf("expected resource_labels[service_name]=new-service, got %v", gotLabels)
+		}
+		if _, hasGKE := gotLabels["goog-gke-node-pool-provisioning-model"]; hasGKE {
+			t.Errorf("expected updateReq resource_labels not to include unrequested goog-gke label, got %v", gotLabels)
+		}
+	})
+
+	t.Run("respects explicitly specified goog-gke label in user spec", func(t *testing.T) {
+		desired := &krm.ContainerNodePool{
+			Spec: krm.ContainerNodePoolSpec{
+				NodeConfig: &krm.NodePoolNodeConfig{
+					ResourceLabels: map[string]string{
+						"service_name":                          "my-service",
+						"goog-gke-node-pool-provisioning-model": "spot",
+					},
+				},
+			},
+		}
+		actual := &pb.NodePool{
+			Config: &pb.NodeConfig{
+				ResourceLabels: map[string]string{
+					"service_name":                          "my-service",
+					"goog-gke-node-pool-provisioning-model": "on-demand",
+				},
+			},
+		}
+
+		adapter := newAdapter(desired, actual)
+		diffRes, err := common.CompareSpecifiedSpec(
+			ctx,
+			&desired.Spec,
+			actual,
+			ContainerNodePoolSpec_FromProto,
+			ContainerNodePoolSpec_ToProto,
+			adapter.normalizeNodePool,
+			true,
+		)
+		if err != nil {
+			t.Fatalf("unexpected error comparing specs: %v", err)
+		}
+		if !diffRes.HasPathWithPrefix("config.resource_labels") {
+			t.Fatalf("expected diff when explicitly specified goog-gke label differs, got paths: %v", diffRes.FieldMask.GetPaths())
+		}
+	})
+
+	t.Run("no diff when user omits resourceLabels and GKE sets goog-gke auto label", func(t *testing.T) {
+		desired := &krm.ContainerNodePool{
+			Spec: krm.ContainerNodePoolSpec{
+				NodeConfig: &krm.NodePoolNodeConfig{},
+			},
+		}
+		actual := &pb.NodePool{
+			Config: &pb.NodeConfig{
+				ResourceLabels: map[string]string{
+					"goog-gke-node-pool-provisioning-model": "on-demand",
+				},
+			},
+		}
+
+		adapter := newAdapter(desired, actual)
+		diffRes, err := common.CompareSpecifiedSpec(
+			ctx,
+			&desired.Spec,
+			actual,
+			ContainerNodePoolSpec_FromProto,
+			ContainerNodePoolSpec_ToProto,
+			adapter.normalizeNodePool,
+			true,
+		)
+		if err != nil {
+			t.Fatalf("unexpected error comparing specs: %v", err)
+		}
+		if !diffRes.Empty() {
+			t.Fatalf("expected no diff when resourceLabels is omitted, got paths: %v", diffRes.FieldMask.GetPaths())
+		}
+	})
+}
