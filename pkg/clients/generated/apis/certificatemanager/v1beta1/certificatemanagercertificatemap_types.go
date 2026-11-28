@@ -43,6 +43,10 @@ type CertificateManagerCertificateMapSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* Immutable. The location of the certificate map. Defaults to "global". */
+	// +optional
+	Location *string `json:"location,omitempty"`
+
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 

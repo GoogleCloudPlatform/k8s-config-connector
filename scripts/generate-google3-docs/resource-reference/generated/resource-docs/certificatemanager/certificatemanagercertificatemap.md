@@ -57,6 +57,7 @@ title: "CertificateManagerCertificateMap"
 #### Schema
 ```yaml
 description: string
+location: string
 projectRef:
   external: string
   name: string
@@ -79,6 +80,16 @@ resourceID: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>A human-readable description of the resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>location</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Immutable. The location of the certificate map. Defaults to "global".</p>
         </td>
     </tr>
     <tr>
