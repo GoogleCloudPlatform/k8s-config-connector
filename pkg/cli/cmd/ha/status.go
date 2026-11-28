@@ -81,15 +81,8 @@ func (o *statusOptions) validate() error {
 	if err := o.baseOptions.validate(); err != nil {
 		return err
 	}
-	// Like `ha setup`, require GKE contexts so that every cluster's project and location are known.
-	var errs []error
-	for _, contextName := range o.contexts {
-		if _, err := parseGKEContext(contextName); err != nil {
-			errs = append(errs, err)
-		}
-	}
 	o.bucket = normalizeBucketName(o.bucket)
-	return errors.Join(errs...)
+	return nil
 }
 
 // errHAStatusError is returned when the HA status is ERROR, so that the command exits non-zero.
@@ -101,7 +94,8 @@ func runStatus(ctx context.Context, opts statusOptions) error {
 		return err
 	}
 
-	report := executeStatus(ctx, handles, time.Now())
+	runner := newExecCommandRunner(opts.stdout, opts.stderr, false)
+	report := executeStatusWithRunner(ctx, handles, time.Now(), runner)
 
 	stdout := opts.stdout
 	if stdout == nil {
@@ -118,9 +112,16 @@ func runStatus(ctx context.Context, opts statusOptions) error {
 // executeStatus inspects every cluster and builds the HA status report. now is used to tell
 // whether the lease has expired; it is a parameter so tests are deterministic.
 func executeStatus(ctx context.Context, handles []*clusterHandle, now time.Time) *statusReport {
+	return executeStatusWithRunner(ctx, handles, now, nil)
+}
+
+func executeStatusWithRunner(ctx context.Context, handles []*clusterHandle, now time.Time, runner commandRunner) *statusReport {
+	if runner == nil {
+		runner = newExecCommandRunner(io.Discard, io.Discard, false)
+	}
 	clusters := make([]*clusterStatus, 0, len(handles))
 	for _, h := range handles {
-		clusters = append(clusters, inspectCluster(ctx, h))
+		clusters = append(clusters, inspectCluster(ctx, h, runner))
 	}
 	return buildStatusReport(clusters, now)
 }
@@ -179,15 +180,16 @@ const statusClusterTimeout = 30 * time.Second
 
 // inspectCluster fetches the cluster's HA state with fetchClusterHAState and maps the result
 // to the HA column.
-func inspectCluster(ctx context.Context, h *clusterHandle) *clusterStatus {
-	// validate() checked that every context is a GKE context.
-	gke, _ := parseGKEContext(h.contextName)
-	c := &clusterStatus{gke: gke, role: roleNone}
+func inspectCluster(ctx context.Context, h *clusterHandle, runner commandRunner) *clusterStatus {
+	c := &clusterStatus{
+		gke:  gkeClusterInfo{contextName: h.contextName},
+		role: roleNone,
+	}
 
-	ctx, cancel := context.WithTimeout(ctx, statusClusterTimeout)
+	fetchCtx, cancel := context.WithTimeout(ctx, statusClusterTimeout)
 	defer cancel()
 
-	c.state, c.err = fetchClusterHAState(ctx, h)
+	c.state, c.err = fetchClusterHAState(fetchCtx, h)
 
 	var notConfigured *multiClusterLeaseNotConfiguredError
 	var notFound *configConnectorNotFoundError
@@ -202,6 +204,37 @@ func inspectCluster(ctx context.Context, h *clusterHandle) *clusterStatus {
 	default:
 		c.ha = clusterHAError
 	}
+
+	// Prefer ConfigConnector.spec.experiments.multiClusterLease.gkeCluster when the cluster
+	// is reachable and configured (zero extra gcloud calls).
+	if c.ha == clusterHAConfigured && c.state != nil && c.state.configConnector != nil {
+		if mcl := multiClusterLeaseSpec(c.state.configConnector); mcl != nil && mcl.GKECluster != nil {
+			c.gke = gkeClusterInfo{
+				contextName: h.contextName,
+				project:     mcl.GKECluster.Project,
+				location:    mcl.GKECluster.Location,
+				clusterName: mcl.GKECluster.Name,
+			}
+		}
+	}
+
+	// Fall back to resolveGKECluster when the cluster is unreachable or unconfigured so
+	// PROJECT, LOCATION, and clusterIdentity() remain accurate.
+	if c.gke.project == "" {
+		gke, err := resolveGKECluster(ctx, h, runner)
+		if err == nil {
+			c.gke = gke
+		} else {
+			c.gke.contextName = h.contextName
+			if c.err == nil {
+				c.ha = clusterHAError
+				c.err = err
+			} else {
+				c.err = fmt.Errorf("%w; resolving GKE cluster: %w", c.err, err)
+			}
+		}
+	}
+
 	return c
 }
 

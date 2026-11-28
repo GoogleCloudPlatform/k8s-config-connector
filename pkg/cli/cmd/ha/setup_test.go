@@ -33,6 +33,7 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -1128,4 +1129,150 @@ func newBaseConfigConnector() *operatorv1beta1.ConfigConnector {
 			Mode: "cluster",
 		},
 	}
+}
+
+func TestExecuteSetup_ConnectGateway(t *testing.T) {
+	newGatewayHandles := func(t *testing.T) []*clusterHandle {
+		hA := newFakeClusterHandle(t, "connectgateway_fleet-proj_global_cluster-a", newBaseConfigConnector())
+		hA.client.RestConfig = &rest.Config{
+			Host: "https://connectgateway.googleapis.com/v1/projects/fleet-proj/locations/global/gkeMemberships/cluster-a",
+		}
+		hB := newFakeClusterHandle(t, "connectgateway_fleet-proj_global_cluster-b", newBaseConfigConnector())
+		hB.client.RestConfig = &rest.Config{
+			Host: "https://connectgateway.googleapis.com/v1/projects/fleet-proj/locations/global/gkeMemberships/cluster-b",
+		}
+		return []*clusterHandle{hA, hB}
+	}
+
+	mockRunner := func() *recordingCommandRunner {
+		return &recordingCommandRunner{
+			outputFn: func(ctx context.Context, name string, args ...string) ([]byte, error) {
+				cmd := name + " " + strings.Join(args, " ")
+				if strings.Contains(cmd, "fleet memberships describe cluster-a") {
+					return []byte(`{
+						"endpoint": {
+							"gkeCluster": {
+								"resourceLink": "//container.googleapis.com/projects/proj-a/locations/us-central1/clusters/cluster-a"
+							}
+						}
+					}`), nil
+				}
+				if strings.Contains(cmd, "fleet memberships describe cluster-b") {
+					return []byte(`{
+						"endpoint": {
+							"gkeCluster": {
+								"resourceLink": "//container.googleapis.com/projects/proj-b/locations/us-east1/clusters/cluster-b"
+							}
+						}
+					}`), nil
+				}
+				if strings.Contains(cmd, "container clusters describe") {
+					return []byte(`{
+						"endpoint": "1.2.3.4",
+						"controlPlaneEndpointsConfig": {
+							"dnsEndpointConfig": {
+								"endpoint": "gke-test.us-central1.gke.goog",
+								"allowExternalTraffic": true
+							}
+						}
+					}`), nil
+				}
+				return nil, nil
+			},
+		}
+	}
+
+	t.Run("full setup configures gkeCluster and runs non-mutating describes via output", func(t *testing.T) {
+		handles := newGatewayHandles(t)
+		runner := mockRunner()
+		opts := newTestSetupOptions()
+		opts.leaderEndpointType = operatorv1beta1.LeaderEndpointTypeDNS
+
+		err := executeSetup(context.Background(), opts, handles, runner)
+		if err != nil {
+			t.Fatalf("executeSetup failed: %v", err)
+		}
+
+		ccA, err := fetchConfigConnector(context.Background(), handles[0])
+		if err != nil {
+			t.Fatalf("fetchConfigConnector failed for cluster A: %v", err)
+		}
+		mclA := ccA.Spec.Experiments.MultiClusterLease
+		if mclA == nil || mclA.GKECluster == nil {
+			t.Fatalf("expected cluster A to have GKECluster, got: %+v", mclA)
+		}
+		wantGKEA := operatorv1beta1.GKECluster{Project: "proj-a", Location: "us-central1", Name: "cluster-a"}
+		if *mclA.GKECluster != wantGKEA {
+			t.Fatalf("got cluster A GKECluster %+v, want %+v", *mclA.GKECluster, wantGKEA)
+		}
+
+		ccB, err := fetchConfigConnector(context.Background(), handles[1])
+		if err != nil {
+			t.Fatalf("fetchConfigConnector failed for cluster B: %v", err)
+		}
+		mclB := ccB.Spec.Experiments.MultiClusterLease
+		if mclB == nil || mclB.GKECluster == nil {
+			t.Fatalf("expected cluster B to have GKECluster, got: %+v", mclB)
+		}
+		wantGKEB := operatorv1beta1.GKECluster{Project: "proj-b", Location: "us-east1", Name: "cluster-b"}
+		if *mclB.GKECluster != wantGKEB {
+			t.Fatalf("got cluster B GKECluster %+v, want %+v", *mclB.GKECluster, wantGKEB)
+		}
+	})
+
+	t.Run("yaml-only renders manifests for resolved GKE clusters", func(t *testing.T) {
+		handles := newGatewayHandles(t)
+		runner := mockRunner()
+		opts := newTestSetupOptions()
+		opts.yamlOnly = true
+		var stdout bytes.Buffer
+		opts.stdout = &stdout
+
+		err := executeSetup(context.Background(), opts, handles, runner)
+		if err != nil {
+			t.Fatalf("executeSetup failed: %v", err)
+		}
+
+		rendered := stdout.String()
+		if !strings.Contains(rendered, `name: cluster-a`) || !strings.Contains(rendered, `project: proj-a`) {
+			t.Fatalf("expected rendered YAML to contain resolved GKE cluster-a coordinates, got:\n%s", rendered)
+		}
+		if !strings.Contains(rendered, `name: cluster-b`) || !strings.Contains(rendered, `project: proj-b`) {
+			t.Fatalf("expected rendered YAML to contain resolved GKE cluster-b coordinates, got:\n%s", rendered)
+		}
+	})
+
+	t.Run("dry-run executes read-only fleet membership describe via output with zero mutations", func(t *testing.T) {
+		handles := newGatewayHandles(t)
+		runner := mockRunner()
+		opts := newTestSetupOptions()
+		opts.dryRun = true
+		var stdout bytes.Buffer
+		opts.stdout = &stdout
+
+		err := executeSetup(context.Background(), opts, handles, runner)
+		if err != nil {
+			t.Fatalf("executeSetup failed: %v", err)
+		}
+
+		hasDescribeMembershipA := false
+		hasDescribeMembershipB := false
+		for _, cmd := range runner.outputCommands {
+			if strings.Contains(cmd, "fleet memberships describe cluster-a") {
+				hasDescribeMembershipA = true
+			}
+			if strings.Contains(cmd, "fleet memberships describe cluster-b") {
+				hasDescribeMembershipB = true
+			}
+		}
+		if !hasDescribeMembershipA || !hasDescribeMembershipB {
+			t.Fatalf("expected fleet memberships describe in outputCommands, got: %v", runner.outputCommands)
+		}
+
+		for _, cmd := range runner.outputCommands {
+			if strings.Contains(cmd, "create") || strings.Contains(cmd, "add-iam-policy-binding") {
+				t.Fatalf("expected outputCommands not to contain mutating command %q", cmd)
+			}
+		}
+	})
 }

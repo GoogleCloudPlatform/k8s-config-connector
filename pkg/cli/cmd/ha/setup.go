@@ -244,7 +244,7 @@ func runSetup(ctx context.Context, opts setupOptions) error {
 }
 
 func executeSetup(ctx context.Context, opts setupOptions, handles []*clusterHandle, runner commandRunner) error {
-	configurers, gkeClusters, err := initClusterConfigurers(ctx, handles, opts)
+	configurers, gkeClusters, err := initClusterConfigurers(ctx, handles, opts, runner)
 	if err != nil {
 		return err
 	}
@@ -269,7 +269,7 @@ func executeSetup(ctx context.Context, opts setupOptions, handles []*clusterHand
 	return waitForHAHealthy(ctx, opts, configurers, handles)
 }
 
-func initClusterConfigurers(ctx context.Context, handles []*clusterHandle, opts setupOptions) ([]*clusterConfigurer, []gkeClusterInfo, error) {
+func initClusterConfigurers(ctx context.Context, handles []*clusterHandle, opts setupOptions, runner commandRunner) ([]*clusterConfigurer, []gkeClusterInfo, error) {
 	if len(handles) == 0 {
 		return nil, nil, fmt.Errorf("no cluster handles provided for `config-connector ha setup`")
 	}
@@ -278,7 +278,7 @@ func initClusterConfigurers(ctx context.Context, handles []*clusterHandle, opts 
 	configurers := make([]*clusterConfigurer, 0, len(handles))
 	gkeClusters := make([]gkeClusterInfo, 0, len(handles))
 	for _, h := range handles {
-		cfg, err := newClusterConfigurer(ctx, h, opts.mclImage, opts.syncerImage, opts.leaderEndpointType, opts.leaderEndpointTypeExplicit, opts.leaseName, opts.leaseNamespace, opts.bucket)
+		cfg, err := newClusterConfigurer(ctx, h, runner, opts.mclImage, opts.syncerImage, opts.leaderEndpointType, opts.leaderEndpointTypeExplicit, opts.leaseName, opts.leaseNamespace, opts.bucket)
 		if err != nil {
 			errs = append(errs, err)
 			continue
