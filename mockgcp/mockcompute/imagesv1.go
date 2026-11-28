@@ -34,32 +34,25 @@ type ImagesV1 struct {
 }
 
 func (s *ImagesV1) GetFromFamily(ctx context.Context, req *pb.GetFromFamilyImageRequest) (*pb.Image, error) {
-	obj := &pb.Image{}
-
-	family := req.GetFamily()
-	if family == "" {
-		family = "debian-11"
-	}
-	imageName := family + "-bullseye-v20231010"
-	if family == "debian-12" {
-		imageName = "debian-12-bookworm-v20261023"
+	if isPublicImageProject(req.GetProject()) {
+		img, ok := lookupPublicImageByFamily(req.GetProject(), req.GetFamily())
+		if !ok {
+			return nil, imageNotFound(fmt.Sprintf("projects/%s/global/images/family/%s", req.GetProject(), req.GetFamily()))
+		}
+		return img.toProto(ctx), nil
 	}
 
-	obj.Kind = PtrTo("compute#image")
-	obj.Name = PtrTo(imageName)
-	obj.Description = PtrTo(fmt.Sprintf("Debian, Debian GNU/Linux, %s, amd64", family))
-	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, "projects/debian-cloud/global/images/"+imageName))
-	obj.Family = PtrTo(family)
-	obj.Status = PtrTo("UP")
-
-	return obj, nil
+	return s.findStoredImageByFamily(ctx, req.GetProject(), req.GetFamily())
 }
 
 func (s *ImagesV1) Get(ctx context.Context, req *pb.GetImageRequest) (*pb.Image, error) {
-	// Get from family
-	if req.GetProject() == "debian-cloud" && (req.GetImage() == "debian-11" || req.GetImage() == "debian-12") {
-		fqn := fmt.Sprintf("projects/debian-cloud/global/images/%s", req.GetImage())
-		return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+	// Public image projects are not registered with the mock, so they are served from the public image table.
+	if isPublicImageProject(req.GetProject()) {
+		img, ok := lookupPublicImageByName(req.GetProject(), req.GetImage())
+		if !ok {
+			return nil, imageNotFound(fmt.Sprintf("projects/%s/global/images/%s", req.GetProject(), req.GetImage()))
+		}
+		return img.toProto(ctx), nil
 	}
 
 	name, err := s.parseImageName(req.GetProject(), req.GetImage())

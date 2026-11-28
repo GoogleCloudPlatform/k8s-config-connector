@@ -49,6 +49,26 @@
 </tbody>
 </table>
 
+## Network IP references
+
+`spec.networkInterface[].networkIpRef` accepts these forms:
+
+*   `name`: a ComputeAddress resource, referenced by name. KCC resolves it to the address IP. This is the recommended form.
+*   `external`: a literal IP address, for example `10.128.0.42`.
+*   `external`: an address selfLink, in any API version or host, for example `https://www.googleapis.com/compute/v1/projects/PROJECT/regions/REGION/addresses/NAME`.
+*   `external`: a path of the form `projects/PROJECT/regions/REGION/addresses/NAME`.
+
+KCC resolves only regional address references, that is the path form above or a selfLink of one. A global address reference is not resolved, so changing to one keeps the immutable-field behaviour described below.
+
+Google Compute Engine stores the resolved IP of an address reference, not the reference itself. For an existing instance whose live `network_ip` is an IP, and whose network, subnetwork, and subnetwork project are unchanged, the Terraform provider handles a regional address reference as follows:
+
+*   KCC looks up the address with `addresses.get`. If the address resolves to the instance's current IP, there is no diff.
+*   Changing the reference to a literal IP that differs from the live IP, or to an address that resolves to a different IP, is an immutable change. The reconcile fails with `cannot make changes to immutable field(s)`, and the listed field is `networkInterface.0.NetworkIp`. To change the IP, recreate the instance.
+
+Creation, and changes to the network, subnetwork, or subnetwork project, do not trigger a lookup.
+
+If the lookup fails, the reconcile fails with an error of the form `network_interface.N.network_ip: resolving address "<ref>": <cause>`. The Config Connector service account needs the `compute.addresses.get` permission on the project that owns the address (the host project for Shared VPC). A deleted address also fails the lookup.
+
 {{template "resource.tmpl" .}}
 {{template "endnote.tmpl" .}}
 {% endblock %}

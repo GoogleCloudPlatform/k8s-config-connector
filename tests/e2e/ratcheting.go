@@ -181,6 +181,10 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeInstanceGroupNamedPort"}:
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeInstanceGroup"}:
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeInstance"}:
+		if strings.HasPrefix(testName, "computeinstance-293") {
+			return true
+		}
+		return false
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeInstanceTemplate"}:
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeInterconnectAttachment"}:
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeInterconnect"}:
@@ -477,4 +481,10 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 
 	t.Logf("skipping re-reconciliation test for gvk %v", gvk)
 	return false
+}
+
+// ShouldAssertNoDiffOnRereconcile determines if the re-reconciliation check also fails when the
+// Terraform-based controller still finds changes to apply (even if applying them makes no write calls).
+func ShouldAssertNoDiffOnRereconcile(testName string) bool {
+	return strings.HasPrefix(testName, "computeinstance-293")
 }
