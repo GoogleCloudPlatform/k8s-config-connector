@@ -858,8 +858,9 @@ type IssueModelLabelStats struct {
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.IssueModelLabelStats.unclassified_conversations_count
 	UnclassifiedConversationsCount *int64 `json:"unclassifiedConversationsCount,omitempty"`
 
-	// TODO: unsupported map type with key string and value message
-
+	// Statistics on each issue. Key is the issue's resource name.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.IssueModelLabelStats.issue_stats
+	IssueStats map[string]IssueModelLabelStats_IssueStats `json:"issueStats,omitempty"`
 }
 
 // +kcc:proto=google.cloud.contactcenterinsights.v1.IssueModelLabelStats.IssueStats

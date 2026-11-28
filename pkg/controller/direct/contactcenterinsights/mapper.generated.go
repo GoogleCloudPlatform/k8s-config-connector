@@ -557,8 +557,7 @@ func CCInsightsQAScorecardRevisionObservedState_FromProto(mapCtx *direct.MapCont
 	// MISSING: Name
 	out.Snapshot = QaScorecardObservedState_FromProto(mapCtx, in.GetSnapshot())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	// MISSING: AlternateIds
-	// (near miss): "AlternateIds" vs "AlternateIDs"
+	out.AlternateIDs = in.AlternateIds
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
@@ -570,8 +569,7 @@ func CCInsightsQAScorecardRevisionObservedState_ToProto(mapCtx *direct.MapContex
 	// MISSING: Name
 	out.Snapshot = QaScorecardObservedState_ToProto(mapCtx, in.Snapshot)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	// MISSING: AlternateIds
-	// (near miss): "AlternateIds" vs "AlternateIDs"
+	out.AlternateIds = in.AlternateIDs
 	out.State = direct.Enum_ToProto[pb.QaScorecardRevision_State](mapCtx, in.State)
 	return out
 }
@@ -1252,7 +1250,14 @@ func IssueModelLabelStats_FromProto(mapCtx *direct.MapContext, in *pb.IssueModel
 	out := &krm.IssueModelLabelStats{}
 	out.AnalyzedConversationsCount = direct.LazyPtr(in.GetAnalyzedConversationsCount())
 	out.UnclassifiedConversationsCount = direct.LazyPtr(in.GetUnclassifiedConversationsCount())
-	// MISSING: IssueStats
+	if in.IssueStats != nil {
+		out.IssueStats = make(map[string]krm.IssueModelLabelStats_IssueStats, len(in.IssueStats))
+		for k, v := range in.IssueStats {
+			if c := IssueModelLabelStats_IssueStats_FromProto(mapCtx, v); c != nil {
+				out.IssueStats[k] = *c
+			}
+		}
+	}
 	return out
 }
 func IssueModelLabelStats_ToProto(mapCtx *direct.MapContext, in *krm.IssueModelLabelStats) *pb.IssueModelLabelStats {
@@ -1262,7 +1267,12 @@ func IssueModelLabelStats_ToProto(mapCtx *direct.MapContext, in *krm.IssueModelL
 	out := &pb.IssueModelLabelStats{}
 	out.AnalyzedConversationsCount = direct.ValueOf(in.AnalyzedConversationsCount)
 	out.UnclassifiedConversationsCount = direct.ValueOf(in.UnclassifiedConversationsCount)
-	// MISSING: IssueStats
+	if in.IssueStats != nil {
+		out.IssueStats = make(map[string]*pb.IssueModelLabelStats_IssueStats, len(in.IssueStats))
+		for k, v := range in.IssueStats {
+			out.IssueStats[k] = IssueModelLabelStats_IssueStats_ToProto(mapCtx, &v)
+		}
+	}
 	return out
 }
 func IssueModelLabelStats_IssueStats_FromProto(mapCtx *direct.MapContext, in *pb.IssueModelLabelStats_IssueStats) *krm.IssueModelLabelStats_IssueStats {
