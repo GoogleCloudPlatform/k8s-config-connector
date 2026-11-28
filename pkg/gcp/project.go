@@ -18,11 +18,62 @@ import (
 	"context"
 	"fmt"
 	"os/exec"
+	"regexp"
 	"strings"
 
 	"golang.org/x/oauth2/google"
 	sqladmin "google.golang.org/api/sqladmin/v1beta4"
 )
+
+var (
+	partitionedEmailDomainRegex  = regexp.MustCompile(`@([a-z0-9-]+):([a-z0-9-]+)\.iam\.gserviceaccount\.com`)
+	partitionedWorkloadPoolRegex = regexp.MustCompile(`\b([a-z0-9-]+):([a-z0-9-]+)\.svc\.id\.goog\b`)
+)
+
+// SplitPartitionedProjectID splits a partitioned project ID ("partition:project")
+// into its partition prefix and project name. For standard commercial projects,
+// partitioned is false and project is the original projectID.
+func SplitPartitionedProjectID(projectID string) (partition, project string, partitioned bool) {
+	p, proj, ok := strings.Cut(projectID, ":")
+	if !ok || p == "" || proj == "" {
+		return "", projectID, false
+	}
+	return p, proj, true
+}
+
+// FormatProjectDomainPrefix formats a project ID for use in DNS/RFC 5322 domain labels.
+// Partitioned project IDs ("partition:project") are formatted using reversed dot-syntax
+// ("project.partition") because colons are prohibited in RFC 5322 email domains and DNS names.
+func FormatProjectDomainPrefix(projectID string) string {
+	if partition, project, ok := SplitPartitionedProjectID(projectID); ok {
+		return fmt.Sprintf("%s.%s", project, partition)
+	}
+	return projectID
+}
+
+// FormatServiceAccountEmail constructs the RFC 5322-compliant IAM service account email
+// for a given project ID and service account short name.
+func FormatServiceAccountEmail(projectID, saName string) string {
+	return fmt.Sprintf("%s@%s.iam.gserviceaccount.com", saName, FormatProjectDomainPrefix(projectID))
+}
+
+// FormatWorkloadPool constructs the GKE Workload Identity pool domain for a given project ID.
+func FormatWorkloadPool(projectID string) string {
+	return fmt.Sprintf("%s.svc.id.goog", FormatProjectDomainPrefix(projectID))
+}
+
+// NormalizePartitionedDomains rewrites colon-delimited partitioned project IDs inside
+// IAM service account email domains (@partition:project.iam.gserviceaccount.com) and
+// GKE Workload Identity pools (partition:project.svc.id.goog) to their reversed dot-syntax
+// equivalents (@project.partition.iam.gserviceaccount.com and project.partition.svc.id.goog).
+func NormalizePartitionedDomains(input string) string {
+	if !strings.Contains(input, ":") {
+		return input
+	}
+	out := partitionedEmailDomainRegex.ReplaceAllString(input, "@$2.$1.iam.gserviceaccount.com")
+	out = partitionedWorkloadPoolRegex.ReplaceAllString(out, "$2.$1.svc.id.goog")
+	return out
+}
 
 // GetDefaultProjectID tries to retrieve the default project id through the following:
 //  1. Grabbing the project id specified in the application-default GCP credentials on the host machine. This often
