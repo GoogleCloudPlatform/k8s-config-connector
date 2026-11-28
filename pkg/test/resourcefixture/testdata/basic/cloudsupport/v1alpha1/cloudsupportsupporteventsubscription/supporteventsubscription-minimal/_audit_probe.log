@@ -1,0 +1,29 @@
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-updated-${uniqueId}?alt=json
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/pubsubtopic-updated-${uniqueId}"
+}
