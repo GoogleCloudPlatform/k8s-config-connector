@@ -40,6 +40,26 @@ type Storage interface {
 	Delete(ctx context.Context, fqn string, dest proto.Message) error
 }
 
+
+type TypedStorage[T proto.Message] interface {
+	// Create stores the object, erroring if it already exists
+	Create(ctx context.Context, fqn string, create T) error
+
+	// Update stores a new version of an object, erroring if it does not already exist
+	Update(ctx context.Context, fqn string, update T) error
+
+	// Get returns an existing object.
+	// The error is "ready to return"; we return codes.NotFound if not found.
+	Get(ctx context.Context, fqn string, dest T) error
+
+	// List returns all matching objects
+	List(ctx context.Context, options ListOptions, callback func(obj T) error) error
+
+	// Delete deletes the object, returning a not found error if it does not exist.
+	// The error is "ready to return", e.g. we return codes.NotFound if not found.
+	Delete(ctx context.Context, fqn string, dest T) error
+}
+
 // ListOptions restricts the objects returned by a List
 type ListOptions struct {
 	// Prefix ensures that only objects whose key matches the prefix are returned
