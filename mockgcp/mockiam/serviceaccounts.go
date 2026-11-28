@@ -49,7 +49,7 @@ func (s *IAMServer) GetServiceAccount(ctx context.Context, req *pb.GetServiceAcc
 		var found *pb.ServiceAccount
 		serviceAccountKind := (&pb.ServiceAccount{}).ProtoReflect().Descriptor()
 		if err := s.storage.List(ctx, serviceAccountKind, storage.ListOptions{
-			Prefix: "projects/" + name.Project.ID + "/",
+			Prefix: "projects/" + name.Project.ID + "/serviceAccounts/",
 		}, func(obj proto.Message) error {
 			sa := obj.(*pb.ServiceAccount)
 			if sa.UniqueId == uniqueID {
@@ -139,13 +139,80 @@ func (s *IAMServer) DeleteServiceAccount(ctx context.Context, req *pb.DeleteServ
 		return nil, err
 	}
 
-	fqn := name.String()
+	sa, err := s.GetServiceAccount(ctx, &pb.GetServiceAccountRequest{Name: req.Name})
+	if err != nil {
+		return nil, err
+	}
 	deletedObj := &pb.ServiceAccount{}
-	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
+	if err := s.storage.Delete(ctx, sa.Name, deletedObj); err != nil {
+		return nil, err
+	}
+	// Kept by unique ID for UndeleteServiceAccount, as the API keeps a
+	// deleted account for 30 days.
+	if err := s.storage.Create(ctx, deletedServiceAccountName(name.Project, sa.UniqueId), deletedObj); err != nil {
 		return nil, err
 	}
 
 	return &emptypb.Empty{}, nil
+}
+
+func deletedServiceAccountName(project *projects.ProjectData, uniqueID string) string {
+	return "projects/" + project.ID + "/deletedServiceAccounts/" + uniqueID
+}
+
+// Lists the project's [ServiceAccounts][google.iam.admin.v1.ServiceAccount],
+// enabled and disabled, not deleted ones, in one page.
+func (s *IAMServer) ListServiceAccounts(ctx context.Context, req *pb.ListServiceAccountsRequest) (*pb.ListServiceAccountsResponse, error) {
+	projectName, err := projects.ParseProjectName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+	project, err := s.Projects.GetProject(projectName)
+	if err != nil {
+		return nil, err
+	}
+	resp := &pb.ListServiceAccountsResponse{}
+	serviceAccountKind := (&pb.ServiceAccount{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, serviceAccountKind, storage.ListOptions{
+		Prefix: "projects/" + project.ID + "/serviceAccounts/",
+	}, func(obj proto.Message) error {
+		resp.Accounts = append(resp.Accounts, obj.(*pb.ServiceAccount))
+		return nil
+	}); err != nil {
+		return nil, status.Errorf(codes.Internal, "error reading serviceaccounts: %v", err)
+	}
+	return resp, nil
+}
+
+// Restores a deleted [ServiceAccount][google.iam.admin.v1.ServiceAccount],
+// named by its unique ID only. It fails if an account with the same email
+// exists again.
+func (s *IAMServer) UndeleteServiceAccount(ctx context.Context, req *pb.UndeleteServiceAccountRequest) (*pb.UndeleteServiceAccountResponse, error) {
+	name, err := s.parseServiceAccountName(ctx, req.GetName())
+	if err != nil {
+		return nil, err
+	}
+	if !isNumber(name.Email) {
+		return nil, status.Errorf(codes.InvalidArgument, "the account must be named by its unique ID to undelete it")
+	}
+	deleted := deletedServiceAccountName(name.Project, name.Email)
+	sa := &pb.ServiceAccount{}
+	if err := s.storage.Get(ctx, deleted, sa); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Account deleted: %s", name.Email)
+		}
+		return nil, err
+	}
+	if err := s.storage.Get(ctx, sa.Name, &pb.ServiceAccount{}); err == nil {
+		return nil, status.Errorf(codes.FailedPrecondition, "Cannot undelete %s: an account with its email exists", sa.Email)
+	}
+	if err := s.storage.Create(ctx, sa.Name, sa); err != nil {
+		return nil, err
+	}
+	if err := s.storage.Delete(ctx, deleted, &pb.ServiceAccount{}); err != nil {
+		return nil, err
+	}
+	return &pb.UndeleteServiceAccountResponse{RestoredAccount: sa}, nil
 }
 
 func (s *IAMServer) PatchServiceAccount(ctx context.Context, req *pb.PatchServiceAccountRequest) (*pb.ServiceAccount, error) {
@@ -191,20 +258,14 @@ func (s *IAMServer) PatchServiceAccount(ctx context.Context, req *pb.PatchServic
 }
 
 func (s *IAMServer) DisableServiceAccount(ctx context.Context, req *pb.DisableServiceAccountRequest) (*emptypb.Empty, error) {
-	name, err := s.parseServiceAccountName(ctx, req.GetName())
+	sa, err := s.GetServiceAccount(ctx, &pb.GetServiceAccountRequest{Name: req.GetName()})
 	if err != nil {
-		return nil, err
-	}
-
-	fqn := name.String()
-	sa := &pb.ServiceAccount{}
-	if err := s.storage.Get(ctx, fqn, sa); err != nil {
 		return nil, err
 	}
 
 	sa.Disabled = true
 
-	if err := s.storage.Update(ctx, fqn, sa); err != nil {
+	if err := s.storage.Update(ctx, sa.Name, sa); err != nil {
 		return nil, err
 	}
 
@@ -212,20 +273,14 @@ func (s *IAMServer) DisableServiceAccount(ctx context.Context, req *pb.DisableSe
 }
 
 func (s *IAMServer) EnableServiceAccount(ctx context.Context, req *pb.EnableServiceAccountRequest) (*emptypb.Empty, error) {
-	name, err := s.parseServiceAccountName(ctx, req.GetName())
+	sa, err := s.GetServiceAccount(ctx, &pb.GetServiceAccountRequest{Name: req.GetName()})
 	if err != nil {
-		return nil, err
-	}
-
-	fqn := name.String()
-	sa := &pb.ServiceAccount{}
-	if err := s.storage.Get(ctx, fqn, sa); err != nil {
 		return nil, err
 	}
 
 	sa.Disabled = false
 
-	if err := s.storage.Update(ctx, fqn, sa); err != nil {
+	if err := s.storage.Update(ctx, sa.Name, sa); err != nil {
 		return nil, err
 	}
 
