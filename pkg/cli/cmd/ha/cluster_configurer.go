@@ -54,12 +54,12 @@ type clusterConfigurer struct {
 	mclRolloutPollInterval time.Duration
 }
 
-func newClusterConfigurer(ctx context.Context, handle *clusterHandle, mclImage, syncerImage, leaderEndpointType string, leaderEndpointTypeExplicit bool, leaseName, leaseNamespace, bucket string) (*clusterConfigurer, error) {
+func newClusterConfigurer(ctx context.Context, handle *clusterHandle, runner commandRunner, mclImage, syncerImage, leaderEndpointType string, leaderEndpointTypeExplicit bool, leaseName, leaseNamespace, bucket string) (*clusterConfigurer, error) {
 	if handle == nil || handle.client == nil {
 		return nil, fmt.Errorf("cluster handle has a nil Kubernetes client")
 	}
 
-	gkeInfo, err := parseGKEContext(handle.contextName)
+	gkeInfo, err := resolveGKECluster(ctx, handle, runner)
 	if err != nil {
 		return nil, err
 	}

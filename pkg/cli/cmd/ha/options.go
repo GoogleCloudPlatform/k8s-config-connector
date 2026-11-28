@@ -35,6 +35,7 @@ import (
 	rbacv1 "k8s.io/api/rbac/v1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/client-go/tools/clientcmd"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -109,7 +110,9 @@ func validateBucketName(bucket string) error {
 // clusterHandle wraps a kubeconfig context name and its initialized Kubernetes client.
 type clusterHandle struct {
 	contextName string
+	clusterName string
 	client      *kubecli.Client
+	gkeInfo     *gkeClusterInfo
 }
 
 // buildClusterHandles initializes a Kubernetes client for each kubeconfig context name.
@@ -118,9 +121,17 @@ func buildClusterHandles(ctx context.Context, contexts []string) ([]*clusterHand
 	if err != nil {
 		return nil, fmt.Errorf("creating HA runtime scheme: %w", err)
 	}
+	loadingRules := clientcmd.NewDefaultClientConfigLoadingRules()
+	kubeConfig, _ := loadingRules.Load()
 	var errs []error
 	handles := make([]*clusterHandle, 0, len(contexts))
 	for _, ctxName := range contexts {
+		var clusterName string
+		if kubeConfig != nil && kubeConfig.Contexts != nil {
+			if ctxObj, ok := kubeConfig.Contexts[ctxName]; ok && ctxObj != nil {
+				clusterName = ctxObj.Cluster
+			}
+		}
 		c, err := kubecli.NewClient(ctx, kubecli.ClusterOptions{
 			Context:        ctxName,
 			Scheme:         scheme,
@@ -132,6 +143,7 @@ func buildClusterHandles(ctx context.Context, contexts []string) ([]*clusterHand
 		}
 		handles = append(handles, &clusterHandle{
 			contextName: ctxName,
+			clusterName: clusterName,
 			client:      c,
 		})
 	}
