@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"net/url"
 	"reflect"
+	"regexp"
 	"sort"
 	"strings"
 	"time"
@@ -29,6 +30,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/httplogreport/logparser"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
+
+// futureTimestampDaysPlaceholder matches a fixture value that is entirely a ${futureTimestampDays:N}
+// placeholder (see ReplaceTestVars in pkg/test/controller/k8s.go).
+var futureTimestampDaysPlaceholder = regexp.MustCompile(`^\$\{futureTimestampDays:\d+\}$`)
 
 // Item represents a single field difference between create.yaml and update.yaml.
 type Item struct {
@@ -569,6 +574,14 @@ func valuesCompatible(foundVal, expectedVal, createVal any, diffPath string) boo
 	}
 	if foundVal == nil || expectedVal == nil {
 		return false
+	}
+	// ${futureTimestampDays:N} is resolved to "now + N days" when the test runs, and the resulting
+	// timestamp is normalized in the golden log, so the literal value cannot be compared. Treat any
+	// non-empty string sent/returned for that field as the expected value.
+	if eStr, ok := expectedVal.(string); ok && futureTimestampDaysPlaceholder.MatchString(eStr) {
+		if fStr, ok := foundVal.(string); ok && fStr != "" {
+			return true
+		}
 	}
 	if createVal != nil && ValuesMatch(foundVal, createVal) {
 		return false

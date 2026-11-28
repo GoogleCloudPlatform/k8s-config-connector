@@ -24,4 +24,4 @@ spec:
   backupMinimumEnforcedRetentionDuration: "86400s"
   accessRestriction: "WITHIN_ORGANIZATION"
   ignoreInactiveDatasources: true
-  effectiveTime: "2025-08-17T10:00:00Z"
+  effectiveTime: "${futureTimestampDays:7}"

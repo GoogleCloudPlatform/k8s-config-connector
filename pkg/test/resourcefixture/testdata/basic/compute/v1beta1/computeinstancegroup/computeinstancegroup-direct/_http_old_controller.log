@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 
@@ -19,6 +20,80 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "peerings": [
+    {
+      "autoCreateRoutes": true,
+      "connectionStatus": {
+        "trafficConfiguration": {
+          "exportCustomRoutesToPeer": true,
+          "exportSubnetRoutesWithPublicIpToPeer": true,
+          "importCustomRoutesFromPeer": true,
+          "importSubnetRoutesWithPublicIpFromPeer": true,
+          "stackType": "IPV4_ONLY"
+        },
+        "updateStrategy": "INDEPENDENT"
+      },
+      "exchangeSubnetRoutes": true,
+      "exportCustomRoutes": true,
+      "exportSubnetRoutesWithPublicIp": true,
+      "importCustomRoutes": true,
+      "importSubnetRoutesWithPublicIp": true,
+      "name": "filestore-peer-205697518936",
+      "network": "https://www.googleapis.com/compute/beta/projects/r839adf9e2adedea3p-tp/global/networks/${networkID}-2309458234058",
+      "stackType": "IPV4_ONLY",
+      "state": "ACTIVE",
+      "stateDetails": "[2026-09-15T15:22:39.817-07:00]: Connected.",
+      "updateStrategy": "INDEPENDENT"
+    },
+    {
+      "autoCreateRoutes": true,
+      "connectionStatus": {
+        "trafficConfiguration": {
+          "exportCustomRoutesToPeer": false,
+          "exportSubnetRoutesWithPublicIpToPeer": true,
+          "importCustomRoutesFromPeer": false,
+          "importSubnetRoutesWithPublicIpFromPeer": true,
+          "stackType": "IPV4_ONLY"
+        },
+        "updateStrategy": "INDEPENDENT"
+      },
+      "exchangeSubnetRoutes": true,
+      "exportCustomRoutes": false,
+      "exportSubnetRoutesWithPublicIp": true,
+      "importCustomRoutes": false,
+      "importSubnetRoutesWithPublicIp": true,
+      "name": "redis-peer-1035741069106",
+      "network": "https://www.googleapis.com/compute/beta/projects/n93e82bfd992400f1p-tp/global/networks/${networkID}-redis-e619463a-57d4-4053-a70d-b8c275ad4d49",
+      "stackType": "IPV4_ONLY",
+      "state": "ACTIVE",
+      "stateDetails": "[2026-08-27T08:50:32.943-07:00]: Connected.",
+      "updateStrategy": "INDEPENDENT"
+    },
+    {
+      "autoCreateRoutes": true,
+      "connectionStatus": {
+        "trafficConfiguration": {
+          "exportCustomRoutesToPeer": false,
+          "exportSubnetRoutesWithPublicIpToPeer": false,
+          "importCustomRoutesFromPeer": false,
+          "importSubnetRoutesWithPublicIpFromPeer": false,
+          "stackType": "IPV4_ONLY"
+        },
+        "updateStrategy": "INDEPENDENT"
+      },
+      "exchangeSubnetRoutes": true,
+      "exportCustomRoutes": false,
+      "exportSubnetRoutesWithPublicIp": false,
+      "importCustomRoutes": false,
+      "importSubnetRoutesWithPublicIp": false,
+      "name": "servicenetworking-googleapis-com",
+      "network": "https://www.googleapis.com/compute/beta/projects/j2b4b3bfb609f2b07p-tp/global/networks/servicenetworking",
+      "stackType": "IPV4_ONLY",
+      "state": "ACTIVE",
+      "stateDetails": "[2026-11-20T09:04:42.789-08:00]: Connected.",
+      "updateStrategy": "INDEPENDENT"
+    }
+  ],
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "subnetworks": [
@@ -32,6 +107,7 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast3/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/${networkID}",
@@ -96,7 +172,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12?alt=json&prettyPrint=false
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -114,17 +190,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found",
+        "message": "The resource 'projects/debian-cloud/global/images/debian-12' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found"
+    "message": "The resource 'projects/debian-cloud/global/images/debian-12' was not found"
   }
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-12?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -137,10 +213,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "family": "debian-11",
+  "family": "debian-12",
   "kind": "compute#image",
-  "name": "debian-11-bullseye-v20231010",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "name": "debian-12-bookworm-v20261117",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12-bookworm-v20261117",
   "status": "READY"
 }
 
@@ -158,7 +234,7 @@ Content-Type: application/json
         "boot": true,
         "initializeParams": {
           "diskType": "pd-standard",
-          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
         },
         "interface": "SCSI",
         "mode": "READ_WRITE",
@@ -204,7 +280,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${instanceTemplateID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
   "user": "user@example.com"
 }
 
@@ -234,36 +310,8 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${instanceTemplateID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
   "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}?alt=json&prettyPrint=false
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found"
-  }
 }
 
 ---
@@ -282,6 +330,7 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "id": "000000000000000000000",
   "kind": "compute#instanceTemplate",
   "name": "${instanceTemplateID}",
@@ -290,11 +339,11 @@ X-Xss-Protection: 0
       {
         "autoDelete": true,
         "boot": true,
-        "deviceName": "boot",
+        "deviceName": "persistent-disk-0",
         "index": 0,
         "initializeParams": {
           "diskType": "pd-standard",
-          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
         },
         "interface": "SCSI",
         "kind": "compute#attachedDisk",
@@ -308,29 +357,30 @@ X-Xss-Protection: 0
     },
     "machineType": "n1-standard-1",
     "metadata": {
-      "fingerprint": "1B2M2Y8AsgTpgAmY7PhCfg==",
+      "fingerprint": "x4iOk7cA2GY=",
       "kind": "compute#metadata"
     },
     "networkInterfaces": [
       {
         "kind": "compute#networkInterface",
         "name": "nic0",
-        "network": "projects/${projectId}/global/networks/${networkID}"
+        "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
       }
     ],
     "scheduling": {
       "automaticRestart": true,
       "onHostMaintenance": "MIGRATE",
-      "preemptible": false
+      "preemptible": false,
+      "provisioningModel": "STANDARD"
     },
     "tags": {}
   },
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12?alt=json&prettyPrint=false
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -348,17 +398,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found",
+        "message": "The resource 'projects/debian-cloud/global/images/debian-12' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found"
+    "message": "The resource 'projects/debian-cloud/global/images/debian-12' was not found"
   }
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-12?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -371,10 +421,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "family": "debian-11",
+  "family": "debian-12",
   "kind": "compute#image",
-  "name": "debian-11-bullseye-v20231010",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "name": "debian-12-bookworm-v20261117",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12-bookworm-v20261117",
   "status": "READY"
 }
 
@@ -423,6 +473,7 @@ X-Xss-Protection: 0
 {
   "availableCpuPlatforms": [
     "Ampere Altra",
+    "ARM Generic",
     "Intel Broadwell",
     "Intel Cascade Lake",
     "Intel Emerald Rapids",
@@ -438,6 +489,7 @@ X-Xss-Protection: 0
     "Intel Sandy Bridge",
     "Intel Sapphire Rapids",
     "Intel Skylake",
+    "Google Axion",
     "AMD Turin"
   ],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -448,7 +500,7 @@ X-Xss-Protection: 0
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a",
   "status": "UP",
-  "supportsPzs": false
+  "supportsPzs": true
 }
 
 ---
@@ -467,6 +519,7 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "id": "000000000000000000000",
   "kind": "compute#instanceTemplate",
   "name": "${instanceTemplateID}",
@@ -475,11 +528,11 @@ X-Xss-Protection: 0
       {
         "autoDelete": true,
         "boot": true,
-        "deviceName": "boot",
+        "deviceName": "persistent-disk-0",
         "index": 0,
         "initializeParams": {
           "diskType": "pd-standard",
-          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
         },
         "interface": "SCSI",
         "kind": "compute#attachedDisk",
@@ -493,24 +546,25 @@ X-Xss-Protection: 0
     },
     "machineType": "n1-standard-1",
     "metadata": {
-      "fingerprint": "1B2M2Y8AsgTpgAmY7PhCfg==",
+      "fingerprint": "x4iOk7cA2GY=",
       "kind": "compute#metadata"
     },
     "networkInterfaces": [
       {
         "kind": "compute#networkInterface",
         "name": "nic0",
-        "network": "projects/${projectId}/global/networks/${networkID}"
+        "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
       }
     ],
     "scheduling": {
       "automaticRestart": true,
       "onHostMaintenance": "MIGRATE",
-      "preemptible": false
+      "preemptible": false,
+      "provisioningModel": "STANDARD"
     },
     "tags": {}
   },
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}"
 }
 
 ---
@@ -523,10 +577,10 @@ Content-Type: application/json
     {
       "autoDelete": true,
       "boot": true,
-      "deviceName": "boot",
+      "deviceName": "persistent-disk-0",
       "initializeParams": {
         "diskType": "zones/us-central1-a/diskTypes/pd-standard",
-        "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+        "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
       },
       "interface": "SCSI",
       "kind": "compute#attachedDisk",
@@ -543,7 +597,8 @@ Content-Type: application/json
   "params": {},
   "scheduling": {
     "automaticRestart": true,
-    "onHostMaintenance": "MIGRATE"
+    "onHostMaintenance": "MIGRATE",
+    "provisioningModel": "STANDARD"
   },
   "tags": {},
   "zone": ""
@@ -622,21 +677,46 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "deletionProtection": false,
   "disks": [
     {
+      "architecture": "X86_64",
       "autoDelete": true,
       "boot": true,
-      "deviceName": "boot",
-      "initializeParams": {
-        "diskType": "zones/us-central1-a/diskTypes/pd-standard",
-        "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
-      },
+      "deviceName": "persistent-disk-0",
+      "diskSizeGb": "10",
+      "guestOsFeatures": [
+        {
+          "type": "UEFI_COMPATIBLE"
+        },
+        {
+          "type": "VIRTIO_SCSI_MULTIQUEUE"
+        },
+        {
+          "type": "GVNIC"
+        },
+        {
+          "type": "SEV_CAPABLE"
+        },
+        {
+          "type": "SEV_LIVE_MIGRATABLE_V2"
+        },
+        {
+          "type": "SUSPEND_SAFE_FPR"
+        }
+      ],
+      "index": 0,
       "interface": "SCSI",
       "kind": "compute#attachedDisk",
+      "licenses": [
+        "https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-12-bookworm"
+      ],
       "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
       "type": "PERSISTENT"
     }
   ],
+  "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#instance",
   "labelFingerprint": "abcdef0123A=",
@@ -644,16 +724,292 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "metadata": {},
+  "machineType": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+  "metadata": {
+    "fingerprint": "x4iOk7cA2GY=",
+    "kind": "compute#metadata"
+  },
   "name": "${instanceID}",
-  "params": {},
+  "networkInterfaces": [
+    {
+      "fingerprint": "abcdef0123A=",
+      "kind": "compute#networkInterface",
+      "name": "nic0",
+      "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+      "networkIP": "10.128.0.2",
+      "stackType": "IPV4_ONLY",
+      "subnetwork": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/${networkID}"
+    }
+  ],
+  "resourceStatus": {
+    "effectiveInstanceMetadata": {
+      "vmDnsSettingMetadataValue": "GlobalDefault"
+    },
+    "scheduling": {}
+  },
   "scheduling": {
     "automaticRestart": true,
-    "onHostMaintenance": "MIGRATE"
+    "onHostMaintenance": "MIGRATE",
+    "preemptible": false,
+    "provisioningModel": "STANDARD"
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+  "shieldedInstanceConfig": {
+    "enableIntegrityMonitoring": true,
+    "enableSecureBoot": false,
+    "enableVtpm": true
+  },
+  "shieldedInstanceIntegrityPolicy": {
+    "updateAutoLearnPolicy": true
+  },
+  "shieldedVmConfig": {
+    "enableIntegrityMonitoring": true,
+    "enableSecureBoot": false,
+    "enableVtpm": true
+  },
+  "shieldedVmIntegrityPolicy": {
+    "updateAutoLearnPolicy": true
+  },
+  "startRestricted": false,
   "status": "RUNNING",
-  "tags": {},
+  "tags": {
+    "fingerprint": "42WmSpB8rSM="
+  },
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "architecture": "X86_64",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "guestOsFeatures": [
+    {
+      "type": "UEFI_COMPATIBLE"
+    },
+    {
+      "type": "VIRTIO_SCSI_MULTIQUEUE"
+    },
+    {
+      "type": "GVNIC"
+    },
+    {
+      "type": "SEV_CAPABLE"
+    },
+    {
+      "type": "SEV_LIVE_MIGRATABLE_V2"
+    },
+    {
+      "type": "SUSPEND_SAFE_FPR"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "compute#disk",
+  "labelFingerprint": "abcdef0123A=",
+  "licenseCodes": [
+    "2147286739765738111"
+  ],
+  "licenses": [
+    "https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-12-bookworm"
+  ],
+  "name": "${instanceID}",
+  "physicalBlockSizeBytes": "4096",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12-bookworm-v20261117",
+  "sourceImageId": "2250282185721494505",
+  "status": "READY",
+  "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
+  "users": [
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instances/${instanceID}"
+  ],
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "deletionProtection": false,
+  "disks": [
+    {
+      "architecture": "X86_64",
+      "autoDelete": true,
+      "boot": true,
+      "deviceName": "persistent-disk-0",
+      "diskSizeGb": "10",
+      "guestOsFeatures": [
+        {
+          "type": "UEFI_COMPATIBLE"
+        },
+        {
+          "type": "VIRTIO_SCSI_MULTIQUEUE"
+        },
+        {
+          "type": "GVNIC"
+        },
+        {
+          "type": "SEV_CAPABLE"
+        },
+        {
+          "type": "SEV_LIVE_MIGRATABLE_V2"
+        },
+        {
+          "type": "SUSPEND_SAFE_FPR"
+        }
+      ],
+      "index": 0,
+      "interface": "SCSI",
+      "kind": "compute#attachedDisk",
+      "licenses": [
+        "https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-12-bookworm"
+      ],
+      "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
+      "type": "PERSISTENT"
+    }
+  ],
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#instance",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineType": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+  "metadata": {
+    "fingerprint": "x4iOk7cA2GY=",
+    "kind": "compute#metadata"
+  },
+  "name": "${instanceID}",
+  "networkInterfaces": [
+    {
+      "fingerprint": "abcdef0123A=",
+      "kind": "compute#networkInterface",
+      "name": "nic0",
+      "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+      "networkIP": "10.128.0.2",
+      "stackType": "IPV4_ONLY",
+      "subnetwork": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/${networkID}"
+    }
+  ],
+  "resourceStatus": {
+    "effectiveInstanceMetadata": {
+      "vmDnsSettingMetadataValue": "GlobalDefault"
+    },
+    "scheduling": {}
+  },
+  "scheduling": {
+    "automaticRestart": true,
+    "onHostMaintenance": "MIGRATE",
+    "preemptible": false,
+    "provisioningModel": "STANDARD"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+  "shieldedInstanceConfig": {
+    "enableIntegrityMonitoring": true,
+    "enableSecureBoot": false,
+    "enableVtpm": true
+  },
+  "shieldedInstanceIntegrityPolicy": {
+    "updateAutoLearnPolicy": true
+  },
+  "shieldedVmConfig": {
+    "enableIntegrityMonitoring": true,
+    "enableSecureBoot": false,
+    "enableVtpm": true
+  },
+  "shieldedVmIntegrityPolicy": {
+    "updateAutoLearnPolicy": true
+  },
+  "startRestricted": false,
+  "status": "RUNNING",
+  "tags": {
+    "fingerprint": "42WmSpB8rSM="
+  },
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "architecture": "X86_64",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "guestOsFeatures": [
+    {
+      "type": "UEFI_COMPATIBLE"
+    },
+    {
+      "type": "VIRTIO_SCSI_MULTIQUEUE"
+    },
+    {
+      "type": "GVNIC"
+    },
+    {
+      "type": "SEV_CAPABLE"
+    },
+    {
+      "type": "SEV_LIVE_MIGRATABLE_V2"
+    },
+    {
+      "type": "SUSPEND_SAFE_FPR"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "compute#disk",
+  "labelFingerprint": "abcdef0123A=",
+  "licenseCodes": [
+    "2147286739765738111"
+  ],
+  "licenses": [
+    "https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-12-bookworm"
+  ],
+  "name": "${instanceID}",
+  "physicalBlockSizeBytes": "4096",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12-bookworm-v20261117",
+  "sourceImageId": "2250282185721494505",
+  "status": "READY",
+  "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
+  "users": [
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instances/${instanceID}"
+  ],
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
@@ -702,6 +1058,7 @@ X-Xss-Protection: 0
 {
   "availableCpuPlatforms": [
     "Ampere Altra",
+    "ARM Generic",
     "Intel Broadwell",
     "Intel Cascade Lake",
     "Intel Emerald Rapids",
@@ -717,6 +1074,7 @@ X-Xss-Protection: 0
     "Intel Sandy Bridge",
     "Intel Sapphire Rapids",
     "Intel Skylake",
+    "Google Axion",
     "AMD Turin"
   ],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -727,7 +1085,7 @@ X-Xss-Protection: 0
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a",
   "status": "UP",
-  "supportsPzs": false
+  "supportsPzs": true
 }
 
 ---
@@ -746,6 +1104,7 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "id": "000000000000000000000",
   "kind": "compute#instanceTemplate",
   "name": "${instanceTemplateID}",
@@ -754,11 +1113,11 @@ X-Xss-Protection: 0
       {
         "autoDelete": true,
         "boot": true,
-        "deviceName": "boot",
+        "deviceName": "persistent-disk-0",
         "index": 0,
         "initializeParams": {
           "diskType": "pd-standard",
-          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
         },
         "interface": "SCSI",
         "kind": "compute#attachedDisk",
@@ -772,24 +1131,25 @@ X-Xss-Protection: 0
     },
     "machineType": "n1-standard-1",
     "metadata": {
-      "fingerprint": "1B2M2Y8AsgTpgAmY7PhCfg==",
+      "fingerprint": "x4iOk7cA2GY=",
       "kind": "compute#metadata"
     },
     "networkInterfaces": [
       {
         "kind": "compute#networkInterface",
         "name": "nic0",
-        "network": "projects/${projectId}/global/networks/${networkID}"
+        "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
       }
     ],
     "scheduling": {
       "automaticRestart": true,
       "onHostMaintenance": "MIGRATE",
-      "preemptible": false
+      "preemptible": false,
+      "provisioningModel": "STANDARD"
     },
     "tags": {}
   },
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}"
 }
 
 ---
@@ -802,10 +1162,10 @@ Content-Type: application/json
     {
       "autoDelete": true,
       "boot": true,
-      "deviceName": "boot",
+      "deviceName": "persistent-disk-0",
       "initializeParams": {
         "diskType": "zones/us-central1-a/diskTypes/pd-standard",
-        "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+        "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
       },
       "interface": "SCSI",
       "kind": "compute#attachedDisk",
@@ -822,7 +1182,8 @@ Content-Type: application/json
   "params": {},
   "scheduling": {
     "automaticRestart": true,
-    "onHostMaintenance": "MIGRATE"
+    "onHostMaintenance": "MIGRATE",
+    "provisioningModel": "STANDARD"
   },
   "tags": {},
   "zone": ""
@@ -901,21 +1262,46 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "deletionProtection": false,
   "disks": [
     {
+      "architecture": "X86_64",
       "autoDelete": true,
       "boot": true,
-      "deviceName": "boot",
-      "initializeParams": {
-        "diskType": "zones/us-central1-a/diskTypes/pd-standard",
-        "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
-      },
+      "deviceName": "persistent-disk-0",
+      "diskSizeGb": "10",
+      "guestOsFeatures": [
+        {
+          "type": "UEFI_COMPATIBLE"
+        },
+        {
+          "type": "VIRTIO_SCSI_MULTIQUEUE"
+        },
+        {
+          "type": "GVNIC"
+        },
+        {
+          "type": "SEV_CAPABLE"
+        },
+        {
+          "type": "SEV_LIVE_MIGRATABLE_V2"
+        },
+        {
+          "type": "SUSPEND_SAFE_FPR"
+        }
+      ],
+      "index": 0,
       "interface": "SCSI",
       "kind": "compute#attachedDisk",
+      "licenses": [
+        "https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-12-bookworm"
+      ],
       "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
       "type": "PERSISTENT"
     }
   ],
+  "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#instance",
   "labelFingerprint": "abcdef0123A=",
@@ -923,16 +1309,292 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "metadata": {},
+  "machineType": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+  "metadata": {
+    "fingerprint": "x4iOk7cA2GY=",
+    "kind": "compute#metadata"
+  },
   "name": "${instanceID}",
-  "params": {},
+  "networkInterfaces": [
+    {
+      "fingerprint": "abcdef0123A=",
+      "kind": "compute#networkInterface",
+      "name": "nic0",
+      "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+      "networkIP": "10.128.0.12",
+      "stackType": "IPV4_ONLY",
+      "subnetwork": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/${networkID}"
+    }
+  ],
+  "resourceStatus": {
+    "effectiveInstanceMetadata": {
+      "vmDnsSettingMetadataValue": "GlobalDefault"
+    },
+    "scheduling": {}
+  },
   "scheduling": {
     "automaticRestart": true,
-    "onHostMaintenance": "MIGRATE"
+    "onHostMaintenance": "MIGRATE",
+    "preemptible": false,
+    "provisioningModel": "STANDARD"
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+  "shieldedInstanceConfig": {
+    "enableIntegrityMonitoring": true,
+    "enableSecureBoot": false,
+    "enableVtpm": true
+  },
+  "shieldedInstanceIntegrityPolicy": {
+    "updateAutoLearnPolicy": true
+  },
+  "shieldedVmConfig": {
+    "enableIntegrityMonitoring": true,
+    "enableSecureBoot": false,
+    "enableVtpm": true
+  },
+  "shieldedVmIntegrityPolicy": {
+    "updateAutoLearnPolicy": true
+  },
+  "startRestricted": false,
   "status": "RUNNING",
-  "tags": {},
+  "tags": {
+    "fingerprint": "42WmSpB8rSM="
+  },
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "architecture": "X86_64",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "guestOsFeatures": [
+    {
+      "type": "UEFI_COMPATIBLE"
+    },
+    {
+      "type": "VIRTIO_SCSI_MULTIQUEUE"
+    },
+    {
+      "type": "GVNIC"
+    },
+    {
+      "type": "SEV_CAPABLE"
+    },
+    {
+      "type": "SEV_LIVE_MIGRATABLE_V2"
+    },
+    {
+      "type": "SUSPEND_SAFE_FPR"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "compute#disk",
+  "labelFingerprint": "abcdef0123A=",
+  "licenseCodes": [
+    "2147286739765738111"
+  ],
+  "licenses": [
+    "https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-12-bookworm"
+  ],
+  "name": "${instanceID}",
+  "physicalBlockSizeBytes": "4096",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12-bookworm-v20261117",
+  "sourceImageId": "2250282185721494505",
+  "status": "READY",
+  "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
+  "users": [
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instances/${instanceID}"
+  ],
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "deletionProtection": false,
+  "disks": [
+    {
+      "architecture": "X86_64",
+      "autoDelete": true,
+      "boot": true,
+      "deviceName": "persistent-disk-0",
+      "diskSizeGb": "10",
+      "guestOsFeatures": [
+        {
+          "type": "UEFI_COMPATIBLE"
+        },
+        {
+          "type": "VIRTIO_SCSI_MULTIQUEUE"
+        },
+        {
+          "type": "GVNIC"
+        },
+        {
+          "type": "SEV_CAPABLE"
+        },
+        {
+          "type": "SEV_LIVE_MIGRATABLE_V2"
+        },
+        {
+          "type": "SUSPEND_SAFE_FPR"
+        }
+      ],
+      "index": 0,
+      "interface": "SCSI",
+      "kind": "compute#attachedDisk",
+      "licenses": [
+        "https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-12-bookworm"
+      ],
+      "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
+      "type": "PERSISTENT"
+    }
+  ],
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#instance",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "machineType": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+  "metadata": {
+    "fingerprint": "x4iOk7cA2GY=",
+    "kind": "compute#metadata"
+  },
+  "name": "${instanceID}",
+  "networkInterfaces": [
+    {
+      "fingerprint": "abcdef0123A=",
+      "kind": "compute#networkInterface",
+      "name": "nic0",
+      "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+      "networkIP": "10.128.0.12",
+      "stackType": "IPV4_ONLY",
+      "subnetwork": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/${networkID}"
+    }
+  ],
+  "resourceStatus": {
+    "effectiveInstanceMetadata": {
+      "vmDnsSettingMetadataValue": "GlobalDefault"
+    },
+    "scheduling": {}
+  },
+  "scheduling": {
+    "automaticRestart": true,
+    "onHostMaintenance": "MIGRATE",
+    "preemptible": false,
+    "provisioningModel": "STANDARD"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+  "shieldedInstanceConfig": {
+    "enableIntegrityMonitoring": true,
+    "enableSecureBoot": false,
+    "enableVtpm": true
+  },
+  "shieldedInstanceIntegrityPolicy": {
+    "updateAutoLearnPolicy": true
+  },
+  "shieldedVmConfig": {
+    "enableIntegrityMonitoring": true,
+    "enableSecureBoot": false,
+    "enableVtpm": true
+  },
+  "shieldedVmIntegrityPolicy": {
+    "updateAutoLearnPolicy": true
+  },
+  "startRestricted": false,
+  "status": "RUNNING",
+  "tags": {
+    "fingerprint": "42WmSpB8rSM="
+  },
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "architecture": "X86_64",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "guestOsFeatures": [
+    {
+      "type": "UEFI_COMPATIBLE"
+    },
+    {
+      "type": "VIRTIO_SCSI_MULTIQUEUE"
+    },
+    {
+      "type": "GVNIC"
+    },
+    {
+      "type": "SEV_CAPABLE"
+    },
+    {
+      "type": "SEV_LIVE_MIGRATABLE_V2"
+    },
+    {
+      "type": "SUSPEND_SAFE_FPR"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "compute#disk",
+  "labelFingerprint": "abcdef0123A=",
+  "licenseCodes": [
+    "2147286739765738111"
+  ],
+  "licenses": [
+    "https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-12-bookworm"
+  ],
+  "name": "${instanceID}",
+  "physicalBlockSizeBytes": "4096",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12-bookworm-v20261117",
+  "sourceImageId": "2250282185721494505",
+  "status": "READY",
+  "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
+  "users": [
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instances/${instanceID}"
+  ],
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
@@ -1001,7 +1663,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "insert",
+  "operationType": "compute.instanceGroups.insert",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -1033,7 +1695,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "insert",
+  "operationType": "compute.instanceGroups.insert",
   "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -1071,15 +1733,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "addInstances",
-  "progress": 0,
+  "operationType": "compute.instanceGroups.addInstances",
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${instanceGroupID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}",
   "user": "user@example.com",
@@ -1107,7 +1770,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "addInstances",
+  "operationType": "compute.instanceGroups.addInstances",
   "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -1135,6 +1798,7 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#instanceGroup",
@@ -1152,6 +1816,7 @@ X-Xss-Protection: 0
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}",
   "size": 2,
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
@@ -1177,7 +1842,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "id": "000000000000000000000",
   "items": [
     {
       "instance": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
@@ -1213,6 +1877,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: UPDATE
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}
 Content-Type: application/json
 
@@ -1228,6 +1893,7 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#instanceGroup",
@@ -1245,6 +1911,7 @@ X-Xss-Protection: 0
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}",
   "size": 2,
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
@@ -1270,7 +1937,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "id": "000000000000000000000",
   "items": [
     {
       "instance": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
@@ -1337,7 +2003,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "setNamedPorts",
+  "operationType": "compute.instanceGroups.setNamedPorts",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -1369,7 +2035,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "setNamedPorts",
+  "operationType": "compute.instanceGroups.setNamedPorts",
   "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -1408,7 +2074,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "removeInstances",
+  "operationType": "compute.instanceGroups.removeInstances",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -1440,7 +2106,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "removeInstances",
+  "operationType": "compute.instanceGroups.removeInstances",
   "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -1468,6 +2134,7 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#instanceGroup",
@@ -1485,6 +2152,7 @@ X-Xss-Protection: 0
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}",
   "size": 1,
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
@@ -1510,7 +2178,87 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "items": [
+    {
+      "instance": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+      "namedPorts": [
+        {
+          "name": "https",
+          "port": 8443
+        },
+        {
+          "name": "fred",
+          "port": 8555
+        }
+      ],
+      "status": "RUNNING"
+    }
+  ],
+  "kind": "compute#instanceGroupsListInstances"
+}
+
+---
+
+# Phase: DELETE
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
+  "kind": "compute#instanceGroup",
+  "name": "${instanceGroupID}",
+  "namedPorts": [
+    {
+      "name": "https",
+      "port": 8443
+    },
+    {
+      "name": "fred",
+      "port": 8555
+    }
+  ],
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}",
+  "size": 1,
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/listInstances
+Content-Type: application/json
+
+{
+  "instanceGroup": "${instanceGroupID}",
+  "project": "${projectId}",
+  "zone": "us-central1-a"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
   "items": [
     {
       "instance": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
@@ -1547,6 +2295,7 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#instanceGroup",
@@ -1564,6 +2313,7 @@ X-Xss-Protection: 0
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}",
   "size": 1,
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
@@ -1589,86 +2339,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "id": "000000000000000000000",
-  "items": [
-    {
-      "instance": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
-      "namedPorts": [
-        {
-          "name": "https",
-          "port": 8443
-        },
-        {
-          "name": "fred",
-          "port": 8555
-        }
-      ],
-      "status": "RUNNING"
-    }
-  ],
-  "kind": "compute#instanceGroupsListInstances"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "fingerprint": "abcdef0123A=",
-  "id": "000000000000000000000",
-  "kind": "compute#instanceGroup",
-  "name": "${instanceGroupID}",
-  "namedPorts": [
-    {
-      "name": "https",
-      "port": 8443
-    },
-    {
-      "name": "fred",
-      "port": 8555
-    }
-  ],
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}",
-  "size": 1,
-  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
-}
-
----
-
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}/listInstances
-Content-Type: application/json
-
-{
-  "instanceGroup": "${instanceGroupID}",
-  "project": "${projectId}",
-  "zone": "us-central1-a"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
   "items": [
     {
       "instance": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
@@ -1708,7 +2378,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "delete",
+  "operationType": "compute.instanceGroups.delete",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -1740,7 +2410,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "delete",
+  "operationType": "compute.instanceGroups.delete",
   "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -1767,21 +2437,46 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "deletionProtection": false,
   "disks": [
     {
+      "architecture": "X86_64",
       "autoDelete": true,
       "boot": true,
-      "deviceName": "boot",
-      "initializeParams": {
-        "diskType": "zones/us-central1-a/diskTypes/pd-standard",
-        "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
-      },
+      "deviceName": "persistent-disk-0",
+      "diskSizeGb": "10",
+      "guestOsFeatures": [
+        {
+          "type": "UEFI_COMPATIBLE"
+        },
+        {
+          "type": "VIRTIO_SCSI_MULTIQUEUE"
+        },
+        {
+          "type": "GVNIC"
+        },
+        {
+          "type": "SEV_CAPABLE"
+        },
+        {
+          "type": "SEV_LIVE_MIGRATABLE_V2"
+        },
+        {
+          "type": "SUSPEND_SAFE_FPR"
+        }
+      ],
+      "index": 0,
       "interface": "SCSI",
       "kind": "compute#attachedDisk",
+      "licenses": [
+        "https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-12-bookworm"
+      ],
       "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
       "type": "PERSISTENT"
     }
   ],
+  "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#instance",
   "labelFingerprint": "abcdef0123A=",
@@ -1789,16 +2484,116 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "metadata": {},
+  "machineType": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+  "metadata": {
+    "fingerprint": "x4iOk7cA2GY=",
+    "kind": "compute#metadata"
+  },
   "name": "${instanceID}",
-  "params": {},
+  "networkInterfaces": [
+    {
+      "fingerprint": "abcdef0123A=",
+      "kind": "compute#networkInterface",
+      "name": "nic0",
+      "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+      "networkIP": "10.128.0.12",
+      "stackType": "IPV4_ONLY",
+      "subnetwork": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/${networkID}"
+    }
+  ],
+  "resourceStatus": {
+    "effectiveInstanceMetadata": {
+      "vmDnsSettingMetadataValue": "GlobalDefault"
+    },
+    "scheduling": {}
+  },
   "scheduling": {
     "automaticRestart": true,
-    "onHostMaintenance": "MIGRATE"
+    "onHostMaintenance": "MIGRATE",
+    "preemptible": false,
+    "provisioningModel": "STANDARD"
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+  "shieldedInstanceConfig": {
+    "enableIntegrityMonitoring": true,
+    "enableSecureBoot": false,
+    "enableVtpm": true
+  },
+  "shieldedInstanceIntegrityPolicy": {
+    "updateAutoLearnPolicy": true
+  },
+  "shieldedVmConfig": {
+    "enableIntegrityMonitoring": true,
+    "enableSecureBoot": false,
+    "enableVtpm": true
+  },
+  "shieldedVmIntegrityPolicy": {
+    "updateAutoLearnPolicy": true
+  },
+  "startRestricted": false,
   "status": "RUNNING",
-  "tags": {},
+  "tags": {
+    "fingerprint": "42WmSpB8rSM="
+  },
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "architecture": "X86_64",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "guestOsFeatures": [
+    {
+      "type": "UEFI_COMPATIBLE"
+    },
+    {
+      "type": "VIRTIO_SCSI_MULTIQUEUE"
+    },
+    {
+      "type": "GVNIC"
+    },
+    {
+      "type": "SEV_CAPABLE"
+    },
+    {
+      "type": "SEV_LIVE_MIGRATABLE_V2"
+    },
+    {
+      "type": "SUSPEND_SAFE_FPR"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "compute#disk",
+  "labelFingerprint": "abcdef0123A=",
+  "licenseCodes": [
+    "2147286739765738111"
+  ],
+  "licenses": [
+    "https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-12-bookworm"
+  ],
+  "name": "${instanceID}",
+  "physicalBlockSizeBytes": "4096",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12-bookworm-v20261117",
+  "sourceImageId": "2250282185721494505",
+  "status": "READY",
+  "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
+  "users": [
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instances/${instanceID}"
+  ],
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
@@ -1879,21 +2674,46 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "deletionProtection": false,
   "disks": [
     {
+      "architecture": "X86_64",
       "autoDelete": true,
       "boot": true,
-      "deviceName": "boot",
-      "initializeParams": {
-        "diskType": "zones/us-central1-a/diskTypes/pd-standard",
-        "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
-      },
+      "deviceName": "persistent-disk-0",
+      "diskSizeGb": "10",
+      "guestOsFeatures": [
+        {
+          "type": "UEFI_COMPATIBLE"
+        },
+        {
+          "type": "VIRTIO_SCSI_MULTIQUEUE"
+        },
+        {
+          "type": "GVNIC"
+        },
+        {
+          "type": "SEV_CAPABLE"
+        },
+        {
+          "type": "SEV_LIVE_MIGRATABLE_V2"
+        },
+        {
+          "type": "SUSPEND_SAFE_FPR"
+        }
+      ],
+      "index": 0,
       "interface": "SCSI",
       "kind": "compute#attachedDisk",
+      "licenses": [
+        "https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-12-bookworm"
+      ],
       "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
       "type": "PERSISTENT"
     }
   ],
+  "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#instance",
   "labelFingerprint": "abcdef0123A=",
@@ -1901,16 +2721,116 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "metadata": {},
+  "machineType": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+  "metadata": {
+    "fingerprint": "x4iOk7cA2GY=",
+    "kind": "compute#metadata"
+  },
   "name": "${instanceID}",
-  "params": {},
+  "networkInterfaces": [
+    {
+      "fingerprint": "abcdef0123A=",
+      "kind": "compute#networkInterface",
+      "name": "nic0",
+      "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+      "networkIP": "10.128.0.2",
+      "stackType": "IPV4_ONLY",
+      "subnetwork": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/${networkID}"
+    }
+  ],
+  "resourceStatus": {
+    "effectiveInstanceMetadata": {
+      "vmDnsSettingMetadataValue": "GlobalDefault"
+    },
+    "scheduling": {}
+  },
   "scheduling": {
     "automaticRestart": true,
-    "onHostMaintenance": "MIGRATE"
+    "onHostMaintenance": "MIGRATE",
+    "preemptible": false,
+    "provisioningModel": "STANDARD"
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+  "shieldedInstanceConfig": {
+    "enableIntegrityMonitoring": true,
+    "enableSecureBoot": false,
+    "enableVtpm": true
+  },
+  "shieldedInstanceIntegrityPolicy": {
+    "updateAutoLearnPolicy": true
+  },
+  "shieldedVmConfig": {
+    "enableIntegrityMonitoring": true,
+    "enableSecureBoot": false,
+    "enableVtpm": true
+  },
+  "shieldedVmIntegrityPolicy": {
+    "updateAutoLearnPolicy": true
+  },
+  "startRestricted": false,
   "status": "RUNNING",
-  "tags": {},
+  "tags": {
+    "fingerprint": "42WmSpB8rSM="
+  },
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "architecture": "X86_64",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "guestOsFeatures": [
+    {
+      "type": "UEFI_COMPATIBLE"
+    },
+    {
+      "type": "VIRTIO_SCSI_MULTIQUEUE"
+    },
+    {
+      "type": "GVNIC"
+    },
+    {
+      "type": "SEV_CAPABLE"
+    },
+    {
+      "type": "SEV_LIVE_MIGRATABLE_V2"
+    },
+    {
+      "type": "SUSPEND_SAFE_FPR"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "compute#disk",
+  "labelFingerprint": "abcdef0123A=",
+  "licenseCodes": [
+    "2147286739765738111"
+  ],
+  "licenses": [
+    "https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-12-bookworm"
+  ],
+  "name": "${instanceID}",
+  "physicalBlockSizeBytes": "4096",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12-bookworm-v20261117",
+  "sourceImageId": "2250282185721494505",
+  "status": "READY",
+  "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
+  "users": [
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instances/${instanceID}"
+  ],
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
@@ -1979,7 +2899,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}?alt=json&prettyPrint=false
 
-404 Not Found
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1990,15 +2910,110 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 404,
-    "errors": [
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#instanceTemplate",
+  "name": "${instanceTemplateID}",
+  "properties": {
+    "disks": [
       {
-        "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found",
-        "reason": "notFound"
+        "autoDelete": true,
+        "boot": true,
+        "deviceName": "persistent-disk-0",
+        "index": 0,
+        "initializeParams": {
+          "diskType": "pd-standard",
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-12"
+        },
+        "interface": "SCSI",
+        "kind": "compute#attachedDisk",
+        "mode": "READ_WRITE",
+        "type": "PERSISTENT"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found"
-  }
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "machineType": "n1-standard-1",
+    "metadata": {
+      "fingerprint": "x4iOk7cA2GY=",
+      "kind": "compute#metadata"
+    },
+    "networkInterfaces": [
+      {
+        "kind": "compute#networkInterface",
+        "name": "nic0",
+        "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
+      }
+    ],
+    "scheduling": {
+      "automaticRestart": true,
+      "onHostMaintenance": "MIGRATE",
+      "preemptible": false,
+      "provisioningModel": "STANDARD"
+    },
+    "tags": {}
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${instanceTemplateID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${instanceTemplateID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "user": "user@example.com"
 }

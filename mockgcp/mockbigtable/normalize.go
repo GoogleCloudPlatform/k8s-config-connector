@@ -37,6 +37,15 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".expireTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".status.observedState.startTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".status.observedState.endTime", mockgcpregistry.PlaceholderTimestamp)
+	if strings.Contains(url, "google.bigtable.admin.") {
+		// Backup expiry/tiering times are relative to "now" when running against real GCP
+		// (Bigtable only accepts an expireTime up to 90 days out), so normalize them everywhere they appear.
+		replacements.ReplacePath(".backup.expireTime", mockgcpregistry.PlaceholderTimestamp)
+		replacements.ReplacePath(".backup.hotToStandardTime", mockgcpregistry.PlaceholderTimestamp)
+		replacements.ReplacePath(".hotToStandardTime", mockgcpregistry.PlaceholderTimestamp)
+		replacements.ReplacePath(".response.hotToStandardTime", mockgcpregistry.PlaceholderTimestamp)
+		replacements.ReplacePath(".spec.hotToStandardTime", mockgcpregistry.PlaceholderTimestamp)
+	}
 
 	// Materialized Views
 	replacements.ReplacePath(".materializedViews[].etag", "abcdef0123A=")

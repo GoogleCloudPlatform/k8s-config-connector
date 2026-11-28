@@ -27,7 +27,7 @@ spec:
   accessRestriction: WITHIN_ORGANIZATION
   backupMinimumEnforcedRetentionDuration: 86500s
   description: This is an updated full backup vault
-  effectiveTime: "2025-08-17T10:00:00Z"
+  effectiveTime: "2024-04-01T12:34:56.123456Z"
   ignoreInactiveDatasources: false
   location: us-central1
   projectRef:

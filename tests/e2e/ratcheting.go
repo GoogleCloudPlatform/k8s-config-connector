@@ -130,7 +130,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 		}
 	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableAppProfile"}:
 	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableAuthorizedView"}:
-	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableBackup"}:
 	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableGCPolicy"}:
 	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableInstance"}:
 	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableLogicalView"}:

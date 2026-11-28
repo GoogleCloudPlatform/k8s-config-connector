@@ -24,6 +24,12 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	// BackupVault effectiveTime must be between 1 and 30 days after "now" on real GCP, so fixtures use
+	// ${futureTimestampDays:N}; normalize the resulting value everywhere it appears.
+	replacements.ReplacePath(".effectiveTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".backupVault.effectiveTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.effectiveTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".spec.effectiveTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 var reBackupVaultSA = regexp.MustCompile(`vault-\d+-\d+@gcp-sa-backupdr-pr\.iam\.gserviceaccount\.com`)

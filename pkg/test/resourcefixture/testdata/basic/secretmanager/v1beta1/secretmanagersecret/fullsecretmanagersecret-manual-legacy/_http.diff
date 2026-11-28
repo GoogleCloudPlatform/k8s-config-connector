@@ -1,24 +1,26 @@
-616c616
+617c617
 < GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json
 ---
 > GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-639c639
+640c640
 < POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?alt=json&secretId=secretmanagersecret-${uniqueId}
 ---
 > POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?%24alt=json%3Benum-encoding%3Dint&secretId=secretmanagersecret-${uniqueId}
-723c723
+724c724,725
 < GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json
 ---
+> # Phase: UPDATE
 > GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-774c774
+775,776c776
+< # Phase: UPDATE
 < PATCH https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json&updateMask=labels%2Cannotations%2Ctopics%2Crotation
 ---
 > PATCH https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=annotations%2CexpireTime%2Clabels%2Crotation.nextRotationTime%2Ctopics
-781a782
+783a784
 >   "etag": "abcdef0123A=",
-788a790
+790a792
 >   "name": "projects/${projectId}/secrets/secretmanagersecret-${uniqueId}",
-915c917,970
+918c920,973
 < DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json
 ---
 > GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
@@ -62,7 +64,7 @@
 >     }
 >   },
 >   "rotation": {
->     "nextRotationTime": "2025-10-03T15:01:23Z",
+>     "nextRotationTime": "2035-10-03T15:01:23Z",
 >     "rotationPeriod": "3600s"
 >   },
 >   "topics": [
