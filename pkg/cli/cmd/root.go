@@ -64,6 +64,7 @@ func init() {
 	rootCmd.AddCommand(applyCmd)
 	rootCmd.AddCommand(NewPreviewCmd())
 	rootCmd.AddCommand(NewHACmd())
+	rootCmd.AddCommand(NewBackupCmd())
 
 	powertools.AddCommands(rootCmd)
 
