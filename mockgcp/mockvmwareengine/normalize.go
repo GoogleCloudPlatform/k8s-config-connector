@@ -42,6 +42,37 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	// PrivateConnection peeringId
 	replacements.ReplacePath(".peeringId", "peering-55c50401-d392-4c50-94af-d4a1242f70ac")
 	replacements.ReplacePath(".response.peeringId", "peering-55c50401-d392-4c50-94af-d4a1242f70ac")
+
+	// PrivateCloud generated fields
+	components := []struct {
+		field   string
+		prefix  string
+		version string
+	}{
+		{field: "hcx", prefix: "hcx-414861.c8819727", version: "4.10.3.24447633"},
+		{field: "nsx", prefix: "nsx-414860.c8819727", version: "3.2.3.1"},
+		{field: "vcenter", prefix: "vcsa-359395.c8819727", version: "7.0.3.23085514"},
+	}
+	for _, c := range components {
+		c := c
+		for _, root := range []string{"", ".response", ".status.observedState"} {
+			replacements.TransformString(root+"."+c.field+".fqdn", func(s string) string {
+				return normalizeVMwareEngineFQDN(s, c.prefix)
+			})
+			replacements.ReplacePath(root+"."+c.field+".version", c.version)
+		}
+	}
+}
+
+func normalizeVMwareEngineFQDN(fqdn string, hostClusterPrefix string) string {
+	if fqdn == "" {
+		return ""
+	}
+	region := "us-west2"
+	if parts := strings.Split(fqdn, "."); len(parts) == 5 && parts[3] == "gve" && parts[4] == "goog" && parts[2] != "" {
+		region = parts[2]
+	}
+	return hostClusterPrefix + "." + region + ".gve.goog"
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

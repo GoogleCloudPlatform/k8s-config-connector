@@ -757,6 +757,13 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 						return strings.ReplaceAll(s, folderId, "${folderID}")
 					})
+				case "executions":
+					if id := tokens[len(tokens)-1]; id != "" {
+						needle := "executions/" + id
+						visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+							return strings.ReplaceAll(s, needle, "executions/123456789")
+						})
+					}
 				}
 			}
 		}

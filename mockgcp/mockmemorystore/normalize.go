@@ -62,6 +62,13 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".instanceUid", PlaceholderUID)
 	replacements.ReplacePath(".encryptionInfo.lastUpdateTime", mockgcpregistry.PlaceholderTimestamp)
 
+	// Maintenance versions
+	replacements.ReplacePath(".effectiveMaintenanceVersion", "MEMORYSTORE_20260313_01_02")
+	replacements.ReplacePath(".response.effectiveMaintenanceVersion", "MEMORYSTORE_20260313_01_02")
+	replacements.ReplacePath(".status.observedState.effectiveMaintenanceVersion", "MEMORYSTORE_20260313_01_02")
+	replacements.ReplacePath(".availableMaintenanceVersions", []any{"MEMORYSTORE_20260313_01_02", "MEMORYSTORE_20260313_01_03"})
+	replacements.ReplacePath(".response.availableMaintenanceVersions", []any{"MEMORYSTORE_20260313_01_02", "MEMORYSTORE_20260313_01_03"})
+	replacements.ReplacePath(".status.observedState.availableMaintenanceVersions", []any{"MEMORYSTORE_20260313_01_02", "MEMORYSTORE_20260313_01_03"})
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
