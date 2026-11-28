@@ -383,6 +383,27 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		}
 	}
 
+	// Check finalizers and the abandon deletion policy before any cloud read,
+	// so abandon can release the controller finalizer when Find would fail.
+	if !u.GetDeletionTimestamp().IsZero() {
+		logger.Info("finalizing resource deletion", "resource", k8s.GetNamespacedName(u))
+		if !k8s.HasFinalizer(u, k8s.ControllerFinalizerName) {
+			// Resource has no controller finalizer; no finalization necessary
+			logger.Info("no controller finalizer; no finalization necessary",
+				"resource", k8s.GetNamespacedName(u))
+			return false, nil
+		}
+		if k8s.HasFinalizer(u, k8s.DeletionDefenderFinalizerName) {
+			// deletion defender has not yet finalized; allowing watch catching the finalizer removal to handle this case.
+			logger.Info("deletion defender has not yet finalized; cannot delete yet", "resource", k8s.GetNamespacedName(u))
+			return false, nil
+		}
+		if k8s.HasAbandonAnnotation(u) {
+			logger.Info("deletion policy set to abandon; abandoning underlying resource", "resource", k8s.GetNamespacedName(u))
+			return false, r.handleDeleted(ctx, u)
+		}
+	}
+
 	var adapter Adapter
 	var adapteErr error
 	switch m := r.Reconciler.model.(type) {
@@ -441,22 +462,7 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 
 	defer execution.RecoverWithInternalError(&err)
 	if !u.GetDeletionTimestamp().IsZero() {
-		logger.Info("finalizing resource deletion", "resource", k8s.GetNamespacedName(u))
-		if !k8s.HasFinalizer(u, k8s.ControllerFinalizerName) {
-			// Resource has no controller finalizer; no finalization necessary
-			logger.Info("no controller finalizer; no finalization necessary",
-				"resource", k8s.GetNamespacedName(u))
-			return false, nil
-		}
-		if k8s.HasFinalizer(u, k8s.DeletionDefenderFinalizerName) {
-			// deletion defender has not yet finalized; allowing watch catching the finalizer removal to handle this case.
-			logger.Info("deletion defender has not yet finalized; cannot delete yet", "resource", k8s.GetNamespacedName(u))
-			return false, nil
-		}
-		if k8s.HasAbandonAnnotation(u) {
-			logger.Info("deletion policy set to abandon; abandoning underlying resource", "resource", k8s.GetNamespacedName(u))
-			return false, r.handleDeleted(ctx, u)
-		}
+		// Finalizer guards and abandon handling already ran before adapter construction.
 		if !existsAlready {
 			logger.Info("underlying resource does not exist; no API call necessary", "resource", k8s.GetNamespacedName(u))
 			return false, r.handleDeleted(ctx, u)
